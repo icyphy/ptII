@@ -70,7 +70,6 @@ public class PersistenceAttribute extends SingletonAttribute {
         super(container, name);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -83,8 +82,8 @@ public class PersistenceAttribute extends SingletonAttribute {
      */
     public NamedObj clone(Workspace workspace)
             throws CloneNotSupportedException {
-        PersistenceAttribute object =
-            (PersistenceAttribute) super.clone(workspace);
+        PersistenceAttribute object = (PersistenceAttribute) super
+                .clone(workspace);
         object._persistence = true;
         return object;
     }
@@ -116,8 +115,7 @@ public class PersistenceAttribute extends SingletonAttribute {
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
         NamedObj oldContainer;
-        if (_oldPersistence != null
-            && (oldContainer = getContainer()) != null) {
+        if (_oldPersistence != null && (oldContainer = getContainer()) != null) {
             oldContainer.setPersistent(_oldPersistence);
         }
         super.setContainer(container);

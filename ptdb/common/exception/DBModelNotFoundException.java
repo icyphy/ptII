@@ -28,10 +28,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.common.exception;
 
-
 ///////////////////////////////////////////////////////////////////
 //// DBModelNotFoundException
-
 
 /**
  *

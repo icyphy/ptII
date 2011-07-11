@@ -99,8 +99,8 @@ public class StandardOutEffigy extends Effigy {
     public static StandardOutEffigy newStandardOutEffigy(
             CompositeEntity container, URL base, URL in) throws Exception {
         // Create a new effigy.
-        StandardOutEffigy effigy = new StandardOutEffigy(container, container
-                .uniqueName("standardOutEffigy"));
+        StandardOutEffigy effigy = new StandardOutEffigy(container,
+                container.uniqueName("standardOutEffigy"));
 
         // We cannot easily communicate with the StandardOut once we launch
         // it, so mark this effigy as unmodifiable

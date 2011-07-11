@@ -300,8 +300,8 @@ public class TaskReceiver extends Source {
             NameComponent namecomp = new NameComponent(
                     ((StringToken) coordinatorName.getToken()).stringValue(),
                     "Multi");
-            _debug(getName(), " looking for name: ", (coordinatorName
-                    .getToken()).toString());
+            _debug(getName(), " looking for name: ",
+                    (coordinatorName.getToken()).toString());
 
             NameComponent[] path = { namecomp };
             _coordinator = ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
@@ -310,8 +310,9 @@ public class TaskReceiver extends Source {
             _orb.connect(_client);
 
             if (_coordinator != null) {
-                _coordinator.register(((StringToken) thisClientName.getToken())
-                        .stringValue(), _client);
+                _coordinator
+                        .register(((StringToken) thisClientName.getToken())
+                                .stringValue(), _client);
             }
 
             //registe the consumer with the given name
@@ -390,8 +391,8 @@ public class TaskReceiver extends Source {
                 _lastReadToken = new StringToken(data.extract_string());
 
                 if (_debugging) {
-                    _debug(getName(), " receive data:\n"
-                            + _lastReadToken.toString());
+                    _debug(getName(),
+                            " receive data:\n" + _lastReadToken.toString());
                 }
 
                 if (_fireIsWaiting) {

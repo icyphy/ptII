@@ -1,4 +1,5 @@
 package ptolemy.domains.jogl.lib;
+
 import javax.media.opengl.GL;
 
 import ptolemy.actor.lib.Transformer;
@@ -11,13 +12,14 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 /**
  * An actor that is used for rotating 3D objects.
  *
  * @author Yasemin Demir
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
-public class Rotate3D extends Transformer{
+public class Rotate3D extends Transformer {
 
     /**
      *  Construct a Rotate3D object in the given container with the given name.
@@ -33,7 +35,7 @@ public class Rotate3D extends Transformer{
      *  CompositeActor and the name collides with an entity in the container.
      */
     public Rotate3D(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
@@ -66,7 +68,6 @@ public class Rotate3D extends Transformer{
      */
     public PortParameter axis;
 
-
     public void fire() throws IllegalActionException {
         angle.update();
         axis.update();
@@ -75,25 +76,23 @@ public class Rotate3D extends Transformer{
         }
 
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof GL)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of GL. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
 
             GL gl = ((GL) inputObject);
             gl.glLoadIdentity();
-            double angleValue = ((DoubleToken)angle.getToken()).doubleValue();
+            double angleValue = ((DoubleToken) angle.getToken()).doubleValue();
             ArrayToken axisValue = ((ArrayToken) axis.getToken());
 
-            gl.glRotated(
-                    angleValue,
+            gl.glRotated(angleValue,
                     ((DoubleToken) axisValue.getElement(1)).doubleValue(),
                     ((DoubleToken) axisValue.getElement(2)).doubleValue(),
-                    ((DoubleToken) axisValue.getElement(3)).doubleValue()
-            );
+                    ((DoubleToken) axisValue.getElement(3)).doubleValue());
             output.send(0, new ObjectToken(gl));
         }
 

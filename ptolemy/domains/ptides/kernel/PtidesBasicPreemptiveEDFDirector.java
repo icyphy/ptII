@@ -85,21 +85,21 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
             // if the input event already processed, so should the pure event.
             return true;
         }
-        PtidesEvent lastEvent = ((List<PtidesEvent>)_currentlyExecutingStack.peek()
-                .contents).get(0);
+        PtidesEvent lastEvent = ((List<PtidesEvent>) _currentlyExecutingStack
+                .peek().contents).get(0);
         // If last event has smaller or equal the timestamp of the new event,
         // do not preempt.
         if (lastEvent.compareTo(event) <= 0) {
             return false;
         }
         if (_debugging) {
-            _debug("We decided to preempt the current "
-                    + "executing event: "
-                    + lastEvent.toString()
-                    + " with another event: " + event.toString()
-                    + ". This preemption happened at platform execution " +
-                                    "physical time "
-                    + getPlatformPhysicalTag(executionTimeClock).timestamp + "."
+            _debug("We decided to preempt the current " + "executing event: "
+                    + lastEvent.toString() + " with another event: "
+                    + event.toString()
+                    + ". This preemption happened at platform execution "
+                    + "physical time "
+                    + getPlatformPhysicalTag(executionTimeClock).timestamp
+                    + "."
                     + getPlatformPhysicalTag(executionTimeClock).microstep);
         }
         return true;

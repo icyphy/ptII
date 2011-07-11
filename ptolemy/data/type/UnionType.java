@@ -137,8 +137,8 @@ public class UnionType extends StructuredType implements Cloneable {
      */
     public Token convert(Token token) throws IllegalActionException {
         if (!isCompatible(token.getType())) {
-            throw new IllegalArgumentException(Token
-                    .notSupportedConversionMessage(token, this.toString()));
+            throw new IllegalArgumentException(
+                    Token.notSupportedConversionMessage(token, this.toString()));
         }
 
         UnionToken unionToken = (UnionToken) token;

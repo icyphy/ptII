@@ -82,11 +82,14 @@ public class CodeGeneratorUtilities {
                 // If getToken() fails, make sure that you are calling
                 // setExpression with a string that has double quotes.
                 if (variable.getToken() == null) {
-                    throw new InternalErrorException(namedObj, null,
-                            "Internal error, for variable " + variable
-                            + ", getToken() returned null.  Make sure that you are "
-                            + "calling setExpression() in the c'tor for "
-                            + variable + ".");
+                    throw new InternalErrorException(
+                            namedObj,
+                            null,
+                            "Internal error, for variable "
+                                    + variable
+                                    + ", getToken() returned null.  Make sure that you are "
+                                    + "calling setExpression() in the c'tor for "
+                                    + variable + ".");
                 }
                 String value = variable.getToken().toString();
 
@@ -172,7 +175,8 @@ public class CodeGeneratorUtilities {
             if (input.indexOf("@help:all@") != -1) {
                 allResults.append(key + " = " + entries.getValue() + "\n");
             } else {
-                input = StringUtilities.substitute(input, key, entries.getValue());
+                input = StringUtilities.substitute(input, key,
+                        entries.getValue());
             }
         }
 
@@ -223,8 +227,8 @@ public class CodeGeneratorUtilities {
 
         BufferedReader inputReader = null;
         try {
-            inputReader = new BufferedReader(new InputStreamReader(inputFileURL
-                    .openStream()));
+            inputReader = new BufferedReader(new InputStreamReader(
+                    inputFileURL.openStream()));
             String inputLine;
             String lineSeparator = System.getProperty("line.separator");
 

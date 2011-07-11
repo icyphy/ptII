@@ -318,7 +318,6 @@ public class PetriNetDirector extends Director {
         _initParameters();
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -500,8 +499,7 @@ public class PetriNetDirector extends Director {
             i = 0;
             while (cPlace.hasNext()) {
                 Place p = (Place) cPlace.next();
-                _addMarkingToDescription(description, p
-                        .getMarking(), i, names);
+                _addMarkingToDescription(description, p.getMarking(), i, names);
                 i++;
             }
             description.append("\n");
@@ -517,8 +515,8 @@ public class PetriNetDirector extends Director {
                         while (cPlace.hasNext()) {
                             Place p = (Place) cPlace.next();
 
-                            _addMarkingToDescription(
-                                    description, p.getMarking(), i, names);
+                            _addMarkingToDescription(description,
+                                    p.getMarking(), i, names);
                             i++;
                         }
                         description.append("\n");
@@ -530,7 +528,6 @@ public class PetriNetDirector extends Director {
                 }
             }
 
-
             if (_debugging) {
                 _debug("fire(): " + description.toString());
             }
@@ -540,7 +537,8 @@ public class PetriNetDirector extends Director {
             while (actors.hasNext()) {
                 Nameable component = (Nameable) actors.next();
                 if (component instanceof PetriNetDisplayer) {
-                    ((PetriNetDisplayer) component).setText(description.toString());
+                    ((PetriNetDisplayer) component).setText(description
+                            .toString());
                     ((PetriNetDisplayer) component).openDisplay();
 
                 }
@@ -677,7 +675,6 @@ public class PetriNetDirector extends Director {
         }
     }
 
-
     /**
      * Test whether a given Transition is enabled or not.
 
@@ -768,7 +765,6 @@ public class PetriNetDirector extends Director {
         return readyToFire;
     }
 
-
     /**This method preinitializes the actors associated with this
      * director.
      *
@@ -783,7 +779,8 @@ public class PetriNetDirector extends Director {
 
         Nameable container = getContainer();
         if (container instanceof TypedCompositeActor) {
-            Iterator rList = ((TypedCompositeActor) container).relationList().iterator();
+            Iterator rList = ((TypedCompositeActor) container).relationList()
+                    .iterator();
             while (rList.hasNext()) {
                 ComponentRelation r = (ComponentRelation) rList.next();
                 Attribute tAttribute = r.getAttribute("width");
@@ -851,22 +848,22 @@ public class PetriNetDirector extends Director {
         }
     }
 
-//    /**
-//     * This method is a helper method that adds white space to a string
-//     *
-//     * @param amount
-//     *            The amount of white space to add to the output string.
-//     *
-//     * @return Return the new output string with white space added.
-//     */
-//    private String _createWhiteSpace(int amount) {
-//        String output = "";
-//        for (int i = 0; i < amount; i++) {
-//            output += " ";
-//        }
-//        return output;
-//    }
-//
+    //    /**
+    //     * This method is a helper method that adds white space to a string
+    //     *
+    //     * @param amount
+    //     *            The amount of white space to add to the output string.
+    //     *
+    //     * @return Return the new output string with white space added.
+    //     */
+    //    private String _createWhiteSpace(int amount) {
+    //        String output = "";
+    //        for (int i = 0; i < amount; i++) {
+    //            output += " ";
+    //        }
+    //        return output;
+    //    }
+    //
     /** Create the random number generator using current parameter values.
      *  @exception IllegalActionException If thrown while reading the
      *  seed Token.
@@ -1077,8 +1074,9 @@ public class PetriNetDirector extends Director {
                 if (components.get(i) instanceof TypedCompositeActor) {
                     TypedCompositeActor realTransition = (TypedCompositeActor) components
                             .get(i);
-                    if (isTransitionReady(realTransition))
+                    if (isTransitionReady(realTransition)) {
                         fireTransition(realTransition);
+                    }
                 }
             }
             return true;

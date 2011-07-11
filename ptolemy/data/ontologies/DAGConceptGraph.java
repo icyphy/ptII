@@ -104,8 +104,8 @@ public class DAGConceptGraph extends ConceptGraph {
         Concept concept1 = _getInputObjectAsAConcept(e1);
         Concept concept2 = _getInputObjectAsAConcept(e2);
 
-        if ((concept1 instanceof FiniteConcept) &&
-                (concept2 instanceof FiniteConcept)) {
+        if ((concept1 instanceof FiniteConcept)
+                && (concept2 instanceof FiniteConcept)) {
             return _dag.compare(concept1, concept2);
         } else if (concept1 instanceof InfiniteConcept) {
             try {
@@ -247,26 +247,26 @@ public class DAGConceptGraph extends ConceptGraph {
      *   GREATESTLOWER or LEASTUPPER.
      *  @return The concept that is the correct bound for the two concepts.
      */
-    private Concept _getBoundForConcepts(Concept concept1,
-                        Concept concept2, BoundType boundType) {
-        if ((concept1 instanceof FiniteConcept) &&
-                (concept2 instanceof FiniteConcept)) {
-            switch(boundType) {
+    private Concept _getBoundForConcepts(Concept concept1, Concept concept2,
+            BoundType boundType) {
+        if ((concept1 instanceof FiniteConcept)
+                && (concept2 instanceof FiniteConcept)) {
+            switch (boundType) {
             case GREATESTLOWER:
                 return (Concept) _dag.greatestLowerBound(concept1, concept2);
             case LEASTUPPER:
                 return (Concept) _dag.leastUpperBound(concept1, concept2);
             default:
                 throw new IllegalArgumentException("Unrecognized bound type: "
-                        + boundType + ". Expected either GREATESTLOWER or " +
-                                        "LEASTUPPER");
+                        + boundType + ". Expected either GREATESTLOWER or "
+                        + "LEASTUPPER");
             }
         } else if (concept1 instanceof InfiniteConcept) {
             return _getBoundForInfiniteConcept((InfiniteConcept) concept1,
-                                concept2, boundType);
+                    concept2, boundType);
         } else if (concept2 instanceof InfiniteConcept) {
             return _getBoundForInfiniteConcept((InfiniteConcept) concept2,
-                                concept1, boundType);
+                    concept1, boundType);
         } else { // This case should never happen.
             throw new IllegalArgumentException("Invalid concepts '" + concept1
                     + "' and '" + concept2 + "' (neither finite nor infinite)");
@@ -282,17 +282,18 @@ public class DAGConceptGraph extends ConceptGraph {
      *   GREATESTLOWER or LEASTUPPER.
      *  @return The concept that is the correct bound for the two concepts.
      */
-    private Concept _getBoundForInfiniteConcept(InfiniteConcept infiniteConcept,
-                Concept otherConcept, BoundType boundType) {
-        switch(boundType) {
+    private Concept _getBoundForInfiniteConcept(
+            InfiniteConcept infiniteConcept, Concept otherConcept,
+            BoundType boundType) {
+        switch (boundType) {
         case GREATESTLOWER:
             return infiniteConcept.greatestLowerBound(otherConcept);
         case LEASTUPPER:
             return infiniteConcept.leastUpperBound(otherConcept);
         default:
             throw new IllegalArgumentException("Unrecognized bound type: "
-                    + boundType + ". Expected either GREATESTLOWER or " +
-                                    "LEASTUPPER");
+                    + boundType + ". Expected either GREATESTLOWER or "
+                    + "LEASTUPPER");
         }
     }
 
@@ -308,11 +309,10 @@ public class DAGConceptGraph extends ConceptGraph {
             return (Concept) input;
         } else {
             String methodName = Thread.currentThread().getStackTrace()[1]
-                                     .getMethodName();
-            throw new IllegalArgumentException("ConceptGraph." +
-                    methodName + ": an argument is not an instance of " +
-                    "Concept: " + input + " is an instance of " +
-                    input.getClass());
+                    .getMethodName();
+            throw new IllegalArgumentException("ConceptGraph." + methodName
+                    + ": an argument is not an instance of " + "Concept: "
+                    + input + " is an instance of " + input.getClass());
         }
     }
 

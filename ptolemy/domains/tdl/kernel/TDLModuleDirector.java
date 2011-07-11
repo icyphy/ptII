@@ -159,8 +159,8 @@ public class TDLModuleDirector extends ModalDirector {
                         doneAction = ((TDLActor) getController())
                                 .inputIsSafeToProcess((IOPort) action.object);
                         ((TDLActor) getController()).readInput(node,
-                                (IOPort) action.object, modePeriod
-                                        .getLongValue());
+                                (IOPort) action.object,
+                                modePeriod.getLongValue());
                         if (doneAction) {
                             scheduleEventsAfterAction(node);
                         }

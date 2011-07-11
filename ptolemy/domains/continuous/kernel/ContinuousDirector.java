@@ -416,7 +416,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             _ODESolver._setRound(round);
             if (_debugging) {
                 _debug("-- Get step size from enclosing Continuous director: "
-                        + _currentStepSize + ", and also the solver round: " + round + ".");
+                        + _currentStepSize + ", and also the solver round: "
+                        + round + ".");
             }
             _resetAllReceivers();
             _transferInputsToInside();
@@ -624,7 +625,8 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the time is earlier than
      *  the current time.
      */
-    public Time fireAt(Actor actor, Time time, int index) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int index)
+            throws IllegalActionException {
         if (_debugging) {
             String name = "this director";
             if (actor != null) {
@@ -935,8 +937,8 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
-            _debug("\nCalling prefire() at time " + _currentTime + " and index "
-                    + _index);
+            _debug("\nCalling prefire() at time " + _currentTime
+                    + " and index " + _index);
         }
         // This code is sufficiently confusing that, at the expense
         // of code duplication, we completely separate three cases.
@@ -1639,11 +1641,11 @@ public class ContinuousDirector extends FixedPointDirector implements
             _startTime = ((Actor) getContainer()).getExecutiveDirector()
                     .getModelStartTime();
         } else {
-            _startTime = new Time(this, ((DoubleToken) startTime.getToken())
-                    .doubleValue());
+            _startTime = new Time(this,
+                    ((DoubleToken) startTime.getToken()).doubleValue());
         }
-        _stopTime = new Time(this, ((DoubleToken) stopTime.getToken())
-                .doubleValue());
+        _stopTime = new Time(this,
+                ((DoubleToken) stopTime.getToken()).doubleValue());
         _iterationBeginTime = _startTime;
         _iterationBeginIndex = 0;
 
@@ -1859,8 +1861,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         _currentTime = enclosingDirector._currentTime
                 .subtract(_accumulatedSuspendTime);
         if (_debugging) {
-            _debug("-- Setting current time to "
-                    + _currentTime
+            _debug("-- Setting current time to " + _currentTime
                     + ", which aligns with the enclosing director's time of "
                     + enclosingDirector._currentTime
                     + ", given the accumulated suspend time of "

@@ -51,7 +51,6 @@ public class StringToXML extends Transformer {
     //FIXME: The type of the output ports is set to XmlTOken for now.
     // It should ???
 
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.

@@ -97,4 +97,3 @@ public interface SyntacticTerm {
     public abstract boolean hasCode();
 
 }
-

@@ -253,15 +253,13 @@ public class JCanvasPanner extends JPanel {
             // Draw the Rectangles in untransformed coordinates, since we
             // always want them to show up 1 pixel wide.
             Dimension size = _target.getSize();
-            Rectangle2D visibleRect = new Rectangle2D.Double(0, 0, size
-                    .getWidth(), size.getHeight());
+            Rectangle2D visibleRect = new Rectangle2D.Double(0, 0,
+                    size.getWidth(), size.getHeight());
             visibleRect = ShapeUtilities.transformBounds(visibleRect, forward);
 
             g.setColor(Color.red);
-            g
-                    .drawRect((int) visibleRect.getX(), (int) visibleRect
-                            .getY(), (int) visibleRect.getWidth(),
-                            (int) visibleRect.getHeight());
+            g.drawRect((int) visibleRect.getX(), (int) visibleRect.getY(),
+                    (int) visibleRect.getWidth(), (int) visibleRect.getHeight());
 
             // NOTE: No longer meaningful, since always full space.
 

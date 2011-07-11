@@ -355,12 +355,12 @@ public class Copernicus {
             Process process = Runtime.getRuntime().exec(commands);
 
             // Set up a Thread to read in any error messages
-            _StreamReaderThread errorGobbler = new _StreamReaderThread(process
-                    .getErrorStream(), System.err);
+            _StreamReaderThread errorGobbler = new _StreamReaderThread(
+                    process.getErrorStream(), System.err);
 
             // Set up a Thread to read in any output messages
-            _StreamReaderThread outputGobbler = new _StreamReaderThread(process
-                    .getInputStream(), System.out);
+            _StreamReaderThread outputGobbler = new _StreamReaderThread(
+                    process.getInputStream(), System.out);
 
             // Start up the Threads
             errorGobbler.start();
@@ -782,10 +782,9 @@ public class Copernicus {
 
         try {
             NamedObj namedObj = new NamedObj();
-            usage
-                    .append("\n\nThe following attributes of the code generator can\n"
-                            + "be set.  For example '-codeGenerator java' means\n"
-                            + "to use the java code generator\n\n");
+            usage.append("\n\nThe following attributes of the code generator can\n"
+                    + "be set.  For example '-codeGenerator java' means\n"
+                    + "to use the java code generator\n\n");
 
             _generatorAttribute = new GeneratorAttribute(namedObj,
                     GENERATOR_NAME);

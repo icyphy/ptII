@@ -58,11 +58,12 @@ public abstract class ConceptFunction {
      *  @exception IllegalActionException If the output ontology is null.
      */
     public ConceptFunction(String name, boolean numArgsIsFixed,
-            List<Ontology> argumentDomainOntologies, Ontology outputRangeOntology)
-            throws IllegalActionException {
+            List<Ontology> argumentDomainOntologies,
+            Ontology outputRangeOntology) throws IllegalActionException {
         _name = name;
         _numArgsIsFixed = numArgsIsFixed;
-        _argumentDomainOntologies = new LinkedList<Ontology>(argumentDomainOntologies);
+        _argumentDomainOntologies = new LinkedList<Ontology>(
+                argumentDomainOntologies);
         _outputRangeOntology = outputRangeOntology;
 
         if (_outputRangeOntology == null) {
@@ -82,15 +83,13 @@ public abstract class ConceptFunction {
      *   or numArgs is invalid.
      */
     public ConceptFunction(String name, int numArgs,
-            Ontology inputOutputOntology)
-            throws IllegalActionException {
+            Ontology inputOutputOntology) throws IllegalActionException {
         if (inputOutputOntology == null) {
-            throw new IllegalActionException(
-                    "The ontology cannot be null.");
+            throw new IllegalActionException("The ontology cannot be null.");
         }
         if (numArgs < -1) {
-            throw new IllegalActionException(
-                    "Invalid number of arguments: " + numArgs);
+            throw new IllegalActionException("Invalid number of arguments: "
+                    + numArgs);
         }
 
         _name = name;
@@ -98,11 +97,11 @@ public abstract class ConceptFunction {
         _outputRangeOntology = inputOutputOntology;
         _argumentDomainOntologies = new LinkedList<Ontology>();
         if (_numArgsIsFixed) {
-           for (int i = 0; i < numArgs; i++) {
-               _argumentDomainOntologies.add(inputOutputOntology);
-           }
+            for (int i = 0; i < numArgs; i++) {
+                _argumentDomainOntologies.add(inputOutputOntology);
+            }
         } else {
-           _argumentDomainOntologies.add(inputOutputOntology);
+            _argumentDomainOntologies.add(inputOutputOntology);
         }
     }
 
@@ -122,35 +121,42 @@ public abstract class ConceptFunction {
                     "The input array to the ConceptFunction " + this
                             + " is null.");
 
-        // If the function has a fixed number of arguments, check to make sure
-        // the input list has the right number of arguments and also check
-        // that each argument is contained by its domain ontology.
-        // If the number of arguments is not fixed, then we cannot
-        // check the domain ontologies here, and the derived class must do
-        // its own check depending on how it implements a variable argument
-        // concept function.
+            // If the function has a fixed number of arguments, check to make sure
+            // the input list has the right number of arguments and also check
+            // that each argument is contained by its domain ontology.
+            // If the number of arguments is not fixed, then we cannot
+            // check the domain ontologies here, and the derived class must do
+            // its own check depending on how it implements a variable argument
+            // concept function.
         } else if (_numArgsIsFixed) {
             if (argValues.size() != getNumberOfArguments()) {
                 throw new IllegalActionException(
-                    "The input array to the ConceptFunction "
-                            + this
-                            + " has the "
-                            + "wrong number of arguments. Expected number of arguments: "
-                            + getNumberOfArguments() + ", size of the input argument array: "
-                            + argValues.size());
+                        "The input array to the ConceptFunction "
+                                + this
+                                + " has the "
+                                + "wrong number of arguments. Expected number of arguments: "
+                                + getNumberOfArguments()
+                                + ", size of the input argument array: "
+                                + argValues.size());
             } else {
                 // Check each concept argument value to make sure it is either null or
                 // contained in the ontology domain for that argument.
                 int index = 0;
                 for (Concept argument : argValues) {
                     if (argument != null
-                        && !_argumentDomainOntologies.get(index).entityList(
-                                Concept.class).contains(argument)) {
-                        throw new IllegalActionException("The input value "
-                            + argument + " at argument index " + index
-                            + " to the ConceptFunction " + this
-                            + " is not within the expected domain ontology "
-                            + _argumentDomainOntologies.get(index) + ".");
+                            && !_argumentDomainOntologies.get(index)
+                                    .entityList(Concept.class)
+                                    .contains(argument)) {
+                        throw new IllegalActionException(
+                                "The input value "
+                                        + argument
+                                        + " at argument index "
+                                        + index
+                                        + " to the ConceptFunction "
+                                        + this
+                                        + " is not within the expected domain ontology "
+                                        + _argumentDomainOntologies.get(index)
+                                        + ".");
                     }
                     index++;
                 }

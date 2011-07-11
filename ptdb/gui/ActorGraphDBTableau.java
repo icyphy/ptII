@@ -212,7 +212,6 @@ public class ActorGraphDBTableau extends Tableau {
             }
         }
 
-
     }
 
 }

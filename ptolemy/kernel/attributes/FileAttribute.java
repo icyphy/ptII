@@ -409,8 +409,8 @@ public class FileAttribute extends StringAttribute implements FileOrURLAccessor 
 
         // Keep these alphabetized.
         if (result.indexOf("$CWD") >= 0) {
-            result = StringUtilities.substitute(result, "$CWD", StringUtilities
-                    .getProperty("user.dir"));
+            result = StringUtilities.substitute(result, "$CWD",
+                    StringUtilities.getProperty("user.dir"));
         }
 
         if (result.indexOf("$HOME") >= 0) {

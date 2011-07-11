@@ -242,8 +242,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         //System.out.println("peer Advertisement: " + responderAdvString);
         try {
             // create a peer advertisement
-            InputStream is = new ByteArrayInputStream(responderAdvString
-                    .getBytes());
+            InputStream is = new ByteArrayInputStream(
+                    responderAdvString.getBytes());
             PeerAdvertisement responderAdv = (PeerAdvertisement) AdvertisementFactory
                     .newAdvertisement(_XML_MIME_TYPE, is);
             System.out.println(" [  Got a Discovery Response ["
@@ -512,8 +512,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                 }
 
                 _actorQueryResponse = new ResolverResponse(
-                        _ACTOR_QUERY_HANDLER_NAME, null, 0, actorListText
-                                .toString());
+                        _ACTOR_QUERY_HANDLER_NAME, null, 0,
+                        actorListText.toString());
             } catch (IOException ex) {
                 System.out.println("Warning: error reading actor list file.\n"
                         + ex.getMessage());
@@ -826,8 +826,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         String clsName = cls.getName();
         char fileSeparator = System.getProperty("file.separator").charAt(0);
         String pathName = clsName.replace('.', fileSeparator);
-        String pathDir = pathName.substring(0, pathName
-                .lastIndexOf(fileSeparator));
+        String pathDir = pathName.substring(0,
+                pathName.lastIndexOf(fileSeparator));
 
         //String rootPath = System.getProperty("ptolemy.ptII.dir", ".");
         String rootPath = System.getProperty("user.dir");
@@ -840,8 +840,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             }
         }
 
-        File clsFile = new File(destDir, pathName.substring(pathName
-                .lastIndexOf(fileSeparator) + 1, pathName.length())
+        File clsFile = new File(destDir, pathName.substring(
+                pathName.lastIndexOf(fileSeparator) + 1, pathName.length())
                 + ".class");
 
         FileOutputStream output = null;

@@ -247,7 +247,8 @@ public class PoissonClock extends RandomSource implements TimedActor {
             return;
         }
         if (director instanceof SuperdenseTimeDirector) {
-            int currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
+            int currentMicrostep = ((SuperdenseTimeDirector) director)
+                    .getIndex();
             if (currentMicrostep < 1 && !triggerInputPresent) {
                 // The time matches, but the microstep is too early.
                 return;
@@ -350,7 +351,6 @@ public class PoissonClock extends RandomSource implements TimedActor {
             // means the microstep was too early. Request a refiring.
             _fireAt(currentTime);
         }
-
 
         if (currentTime.compareTo(_stopTime) >= 0) {
             return false;

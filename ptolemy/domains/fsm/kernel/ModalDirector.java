@@ -202,8 +202,7 @@ public class ModalDirector extends FSMDirector {
                     break;
                 }
                 if (_debugging) {
-                    _debug(
-                            "Prefire and fire the refinement of the current state: ",
+                    _debug("Prefire and fire the refinement of the current state: ",
                             actors[i].getFullName());
                 }
                 if (actors[i].prefire()) {

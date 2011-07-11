@@ -93,6 +93,7 @@ public interface BufferingProfile {
      * @exception IllegalActionException If iterating is not
      *  permitted, or if prefire(), fire(), or postfire() throw it.
      **/
-    int iterate(int iterationCount, boolean fireExclusive) throws IllegalActionException;
+    int iterate(int iterationCount, boolean fireExclusive)
+            throws IllegalActionException;
 
 }

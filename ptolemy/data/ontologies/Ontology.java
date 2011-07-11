@@ -93,8 +93,8 @@ public class Ontology extends CompositeEntity {
      *  @exception IllegalActionException Thrown if there is an error getting the
      *   concept.
      */
-    public Concept getConceptByString(String conceptString) throws
-        IllegalActionException {
+    public Concept getConceptByString(String conceptString)
+            throws IllegalActionException {
         // If the conceptString is wrapped by quotes, strip them off before
         // trying to find the concept that matches the conceptString.
         if (conceptString.startsWith("\"") && conceptString.endsWith("\"")) {
@@ -107,12 +107,11 @@ public class Ontology extends CompositeEntity {
         // If the concept is not found, check to see if it is an infinite
         // concept that is represented by a concept in this ontology.
         if (result == null) {
-            for (InfiniteConceptRepresentative infiniteRepresentative :
-                    entityList(InfiniteConceptRepresentative.class)) {
-                if (infiniteRepresentative.containsThisInfiniteConceptString(
-                        conceptString)) {
-                    return infiniteRepresentative.getInfiniteConceptByString(
-                            conceptString);
+            for (InfiniteConceptRepresentative infiniteRepresentative : entityList(InfiniteConceptRepresentative.class)) {
+                if (infiniteRepresentative
+                        .containsThisInfiniteConceptString(conceptString)) {
+                    return infiniteRepresentative
+                            .getInfiniteConceptByString(conceptString);
                 }
             }
         }

@@ -227,8 +227,10 @@ public class PID extends DETransformer {
                 // discontinuous and we should throw an exception
                 // unless derivative control is disabled (Kd=0).
 
-                if (timeGap.isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
-                    if (!((DoubleToken)Kd.getToken()).isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()
+                if (timeGap.isCloseTo(DoubleToken.ZERO, Complex.EPSILON)
+                        .booleanValue()) {
+                    if (!((DoubleToken) Kd.getToken()).isCloseTo(
+                            DoubleToken.ZERO, Complex.EPSILON).booleanValue()
                             && !currentToken.equals(lastToken)) {
                         throw new IllegalActionException(
                                 "PID controller recevied discontinuous input.");
@@ -237,21 +239,25 @@ public class PID extends DETransformer {
                 // Otherwise, the signal is continuous and we add
                 // integral and derivative components.
                 else {
-                    if (!((DoubleToken)Ki.getToken()).isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
+                    if (!((DoubleToken) Ki.getToken()).isCloseTo(
+                            DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
                         //Calculate integral component and accumulate
                         _accumulated = (DoubleToken) _accumulated
-                                .add(currentToken.add(lastToken).multiply(
-                                        timeGap).multiply(new DoubleToken(0.5)));
+                                .add(currentToken.add(lastToken)
+                                        .multiply(timeGap)
+                                        .multiply(new DoubleToken(0.5)));
                         // Add integral component to controller output.
                         currentOutput = (DoubleToken) currentOutput
                                 .add(_accumulated.multiply(Ki.getToken()));
                     }
 
                     // Add derivative component to controller output.
-                    if (!((DoubleToken)Kd.getToken()).isCloseTo(DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
+                    if (!((DoubleToken) Kd.getToken()).isCloseTo(
+                            DoubleToken.ZERO, Complex.EPSILON).booleanValue()) {
                         currentOutput = (DoubleToken) currentOutput
-                                .add(currentToken.subtract(lastToken).divide(
-                                        timeGap).multiply(Kd.getToken()));
+                                .add(currentToken.subtract(lastToken)
+                                        .divide(timeGap)
+                                        .multiply(Kd.getToken()));
                     }
                 }
             }

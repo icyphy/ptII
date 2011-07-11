@@ -97,5 +97,6 @@ public class MoMLModelAttributeController extends AttributeController {
      *  "lookInside" is historical and preserved to keep backward compatibility
      *  with subclasses.
      */
-    private LookInsideAction _lookInsideAction = new LookInsideAction("Open Model");
+    private LookInsideAction _lookInsideAction = new LookInsideAction(
+            "Open Model");
 }

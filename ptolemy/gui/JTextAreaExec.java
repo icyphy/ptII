@@ -102,8 +102,8 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         JScrollPane jScrollPane = new JScrollPane(_jTextArea);
         add(jScrollPane);
 
-        setBorder(BorderFactory.createTitledBorder(BorderFactory
-                .createLineBorder(Color.black), name));
+        setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.black), name));
 
         _progressBar = new JProgressBar();
 
@@ -264,8 +264,8 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                             + "), \""
                             + envpKey
                             + "\"\n\t_envp not null, returning: "
-                            + _envp[i].substring(key.length() + 1, _envp[i]
-                                    .length()));
+                            + _envp[i].substring(key.length() + 1,
+                                    _envp[i].length()));
                 }
                 return _envp[i].substring(key.length() + 1, _envp[i].length());
             }

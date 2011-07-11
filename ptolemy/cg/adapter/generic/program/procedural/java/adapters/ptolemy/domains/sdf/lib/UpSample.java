@@ -26,7 +26,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib;
 
-
 /**
  A code generation adapter class for ptolemy.domains.sdf.lib.UpSample.
 
@@ -36,7 +35,9 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class UpSample extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.UpSample {
+public class UpSample
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.UpSample {
 
     /**
      * Construct a UpSample adapter.

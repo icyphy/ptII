@@ -38,7 +38,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 ////SyntacticCodeGenerator
 
@@ -143,13 +142,13 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
      */
     protected void _showGraph() throws IllegalActionException {
         try {
-            Configuration config = (Configuration)Configuration.configurations().get(0);
+            Configuration config = (Configuration) Configuration
+                    .configurations().get(0);
             _syntaxTableau = config.openInstance(_syntaxGraph);
             _syntaxTableau.show();
         } catch (Exception ex) {
             throw new IllegalActionException(getComponent(), ex,
-                    "Failed to show "
-                    + "the SyntacticGraph in a Tableau");
+                    "Failed to show " + "the SyntacticGraph in a Tableau");
 
         }
     }

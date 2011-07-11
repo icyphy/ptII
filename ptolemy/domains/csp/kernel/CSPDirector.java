@@ -366,10 +366,9 @@ public class CSPDirector extends CompositeProcessDirector implements
                     if (destinations[channel] != null) {
                         result.append("   on channel " + channel + ":\n");
                         for (int copy = 0; copy < destinations[channel].length; copy++) {
-                            result
-                                    .append("-- to "
-                                            + _receiverStatus(destinations[channel][copy])
-                                            + "\n");
+                            result.append("-- to "
+                                    + _receiverStatus(destinations[channel][copy])
+                                    + "\n");
                         }
                     }
                 }

@@ -234,8 +234,7 @@ public class TimeKeeper {
 
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    if (time
-                            .compareTo(((DDEReceiver) receivers[i][j])._lastTime) > 0) {
+                    if (time.compareTo(((DDEReceiver) receivers[i][j])._lastTime) > 0) {
                         ((DDEReceiver) receivers[i][j]).put(new NullToken(),
                                 time);
                     }

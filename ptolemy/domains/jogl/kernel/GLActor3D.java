@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
- public abstract interface GLActor3D {
+public abstract interface GLActor3D {
 
     /** Render a Jogl OpenGL 3D object.
      *  @param object The GL object to be rendered.

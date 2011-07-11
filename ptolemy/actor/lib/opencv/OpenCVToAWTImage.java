@@ -40,7 +40,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// OpenCVToAWTImage
 
@@ -88,21 +87,21 @@ public class OpenCVToAWTImage extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof OpenCVImageObject)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of OpenCVImageObject. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
             OpenCVImageObject oio = (OpenCVImageObject) inputObject;
 
             PImage my_image = oio.img;
             Image output_image;
-            MemoryImageSource mis = new MemoryImageSource(
-                                        my_image.width, my_image.height, my_image.pixels, 0, my_image.width);
-                        output_image = _dummyFrame.createImage(mis);
-                        output.send(0, new AWTImageToken(output_image));
+            MemoryImageSource mis = new MemoryImageSource(my_image.width,
+                    my_image.height, my_image.pixels, 0, my_image.width);
+            output_image = _dummyFrame.createImage(mis);
+            output.send(0, new AWTImageToken(output_image));
         }
     }
 

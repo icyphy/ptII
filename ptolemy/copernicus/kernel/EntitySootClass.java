@@ -104,8 +104,9 @@ public class EntitySootClass extends SootClass {
     private SootMethod _createConstructor(SootClass theClass,
             SootMethod superConstructor) {
         // Create the constructor.
-        SootMethod constructor = new SootMethod("<init>", superConstructor
-                .getParameterTypes(), superConstructor.getReturnType(),
+        SootMethod constructor = new SootMethod("<init>",
+                superConstructor.getParameterTypes(),
+                superConstructor.getReturnType(),
                 superConstructor.getModifiers());
 
         theClass.addMethod(constructor);

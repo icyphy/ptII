@@ -371,7 +371,6 @@ public class GetDocumentationAction extends FigureAction {
     /** The configuration. */
     protected Configuration _configuration;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -463,8 +462,8 @@ public class GetDocumentationAction extends FigureAction {
                     // not for Ptolemy?  Why?
 
                     // Create a new tableau with a unique name
-                    tableau = new DocTableau((DocEffigy) effigy, effigy
-                            .uniqueName("DocTableau"));
+                    tableau = new DocTableau((DocEffigy) effigy,
+                            effigy.uniqueName("DocTableau"));
                     ((DocTableau) tableau).setTitle("Documentation for "
                             + target.getFullName());
                 } catch (KernelException exception) {

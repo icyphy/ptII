@@ -35,7 +35,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// Read
 
@@ -74,15 +73,15 @@ public class Read extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof OpenCV)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of OpenCV. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
             // Read the next frame.
-            OpenCV openCV = (OpenCV)inputObject;
+            OpenCV openCV = (OpenCV) inputObject;
             openCV.read();
             output.send(0, new ObjectToken(openCV));
         }

@@ -680,9 +680,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
          */
         public void mouseReleased(LayerEvent e) {
             _mouseDragging = false;
-            _canvas
-                    .setCursor(Cursor
-                            .getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            _canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
 
         ///////////////////////////////////////////////////////////////////

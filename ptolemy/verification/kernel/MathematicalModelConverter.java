@@ -143,8 +143,8 @@ public class MathematicalModelConverter extends Attribute {
             if (_model instanceof CompositeActor) {
                 systemDescription.append(SMVUtility.generateSMVDescription(
                         (CompositeActor) _model.clone(), inputTemporalFormula,
-                        formulaType.toString(), String
-                                .valueOf(variableSpanSize)));
+                        formulaType.toString(),
+                        String.valueOf(variableSpanSize)));
             } else {
                 systemDescription.append(((FmvAutomaton) _model.clone())
                         .convertToSMVFormat(inputTemporalFormula, formulaType,
@@ -284,7 +284,9 @@ public class MathematicalModelConverter extends Attribute {
                                 try {
                                     reader.close();
                                 } catch (IOException ex) {
-                                    System.err.println("Failed to close reader? " + ex);
+                                    System.err
+                                            .println("Failed to close reader? "
+                                                    + ex);
                                 }
                             }
                         }

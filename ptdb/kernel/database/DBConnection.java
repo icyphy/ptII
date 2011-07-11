@@ -92,7 +92,6 @@ public interface DBConnection {
      */
     public void commitConnection() throws DBConnectionException;
 
-
     /**
      * Execute the necessary commands to create a new attribute in the database
      * according to the attribute specification given in the task parameter.
@@ -125,8 +124,8 @@ public interface DBConnection {
      * string.
      */
     public String executeCreateModelTask(CreateModelTask task)
-            throws DBExecutionException, ModelAlreadyExistException, CircularDependencyException;
-
+            throws DBExecutionException, ModelAlreadyExistException,
+            CircularDependencyException;
 
     /**
      * Execute the necessary commands to delete an attribute from the database
@@ -159,7 +158,6 @@ public interface DBConnection {
      */
     public List<XMLDBModel> executeGetListOfAllModels()
             throws DBExecutionException;
-
 
     /**
      * Search models that contain the given attributes in the database.
@@ -235,8 +233,6 @@ public interface DBConnection {
     public XMLDBModel executeGetCompleteModelTask(GetModelTask task)
             throws DBExecutionException;
 
-
-
     /**
      * Search models that contain given graphical pattern in the database.
      *
@@ -277,15 +273,13 @@ public interface DBConnection {
     public String executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException, CircularDependencyException;
 
-
     /**
      * Execute remove models task to delete a list of models from the database.
      * @param task Contains a list of models to be deleted from the database.
      * @exception DBExecutionException Thrown if the operation fails.
      */
-    public void executeRemoveModelsTask (RemoveModelsTask task)
+    public void executeRemoveModelsTask(RemoveModelsTask task)
             throws DBExecutionException;
-
 
     /**
      * Execute rename model task which will change the name of the model in
@@ -300,7 +294,6 @@ public interface DBConnection {
     public void executeRenameModelTask(RenameModelTask task)
             throws DBConnectionException, DBExecutionException,
             ModelAlreadyExistException, DBModelNotFoundException;
-
 
     /**
      * Execute the necessary commands to update an attribute in the database

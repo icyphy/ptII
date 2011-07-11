@@ -28,7 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.common.exception;
 
-
 ///////////////////////////////////////////////////////////////////
 //// SearchCriteriaParseException
 

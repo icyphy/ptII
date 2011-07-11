@@ -56,7 +56,8 @@ import diva.gui.GUIUtilities;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class OntologyGraphFrame extends ExtendedGraphFrame implements ActionListener {
+public class OntologyGraphFrame extends ExtendedGraphFrame implements
+        ActionListener {
 
     /** Construct a frame associated with the specified ontology model. After
      *  constructing this, it is necessary to call setVisible(true) to make the
@@ -171,8 +172,9 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements ActionList
      */
     protected JMenuItem[] _debugMenuItems() {
         // Add debug menu.
-        JMenuItem[] debugMenuItems = { new JMenuItem(CHECK_LATTICE,
-                KeyEvent.VK_D), new JMenuItem(CLEAR_LATTICE_ERRORS) };
+        JMenuItem[] debugMenuItems = {
+                new JMenuItem(CHECK_LATTICE, KeyEvent.VK_D),
+                new JMenuItem(CLEAR_LATTICE_ERRORS) };
         return debugMenuItems;
     }
 
@@ -237,8 +239,9 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements ActionList
 
             if (actionCommand.equals(CHECK_LATTICE)) {
                 Ontology ontologyModel = (Ontology) getModel();
-                ReportOntologyLatticeStatus.showStatusAndHighlightCounterExample(
-                        ontologyModel, (OntologyGraphController) _controller);
+                ReportOntologyLatticeStatus
+                        .showStatusAndHighlightCounterExample(ontologyModel,
+                                _controller);
             } else if (actionCommand.equals(CLEAR_LATTICE_ERRORS)) {
                 _controller.clearAllErrorHighlights();
             }

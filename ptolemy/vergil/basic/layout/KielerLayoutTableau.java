@@ -177,7 +177,8 @@ public class KielerLayoutTableau extends Tableau {
             AbstractAction[] actions = new AbstractAction[] {
                     new PlaceAllAction(), new PlaceAction(),
                     new PlaceAndRouteAction(), new RemoveVerticesAction(),
-                    new HideVerticesAction(), new KielerTableauPtolemyLayoutAction() };
+                    new HideVerticesAction(),
+                    new KielerTableauPtolemyLayoutAction() };
 
             for (int i = 0; i < buttons.length; i++) {
                 JButton button;
@@ -219,7 +220,8 @@ public class KielerLayoutTableau extends Tableau {
          *  @param showUnnecessaryRelationsToggle true if we are to toggle between showing
          *  and hiding unnecessary relation vertices.
          */
-        public BaseLayoutAction(boolean applyEdgeLayout, boolean bendPointAnnotation, boolean boxLayout,
+        public BaseLayoutAction(boolean applyEdgeLayout,
+                boolean bendPointAnnotation, boolean boxLayout,
                 boolean removeUnnecessaryRelations,
                 boolean showUnnecessaryRelationsToggle) {
             if (((applyEdgeLayout || boxLayout) && (removeUnnecessaryRelations || showUnnecessaryRelationsToggle))
@@ -231,7 +233,8 @@ public class KielerLayoutTableau extends Tableau {
                                 + "removeUnnecessaryRelations and showUnnecessaryRelationsToggle can be true.");
             }
             _applyEdgeLayout = applyEdgeLayout && !bendPointAnnotation;
-            _applyEdgeLayoutBendPointAnnotation = applyEdgeLayout && bendPointAnnotation;
+            _applyEdgeLayoutBendPointAnnotation = applyEdgeLayout
+                    && bendPointAnnotation;
             _boxLayout = boxLayout;
             _removeUnnecessaryRelations = removeUnnecessaryRelations;
             _showUnnecessaryRelationsToggle = showUnnecessaryRelationsToggle;
@@ -283,9 +286,8 @@ public class KielerLayoutTableau extends Tableau {
                         message = "findEffigy() found no Tableaux?  There should have been one "
                                 + "ActorGraphFrame.";
                     } else {
-                        JFrame firstFrame = ((Tableau) Configuration
-                                .findEffigy(model).entityList(Tableau.class)
-                                .get(0)).getFrame();
+                        JFrame firstFrame = (Configuration.findEffigy(model)
+                                .entityList(Tableau.class).get(0)).getFrame();
                         if (firstFrame instanceof KielerLayoutFrame) {
                             message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
                                     + "please save the model before running the layout mechanism.";
@@ -372,13 +374,13 @@ public class KielerLayoutTableau extends Tableau {
     /** New automatic layout option placing all connected nodes and annotating
      * relations with bend point positions of connected links.
      */
-//    private class PlaceAndRouteAnnotationAction extends BaseLayoutAction {
-//        /** Construct a HideAndRouteAction.
-//         */
-//        public PlaceAndRouteAnnotationAction() {
-//            super(true, true, false, false, false);
-//        }
-//    }
+    //    private class PlaceAndRouteAnnotationAction extends BaseLayoutAction {
+    //        /** Construct a HideAndRouteAction.
+    //         */
+    //        public PlaceAndRouteAnnotationAction() {
+    //            super(true, true, false, false, false);
+    //        }
+    //    }
 
     /** Toggle between showing and hiding of unnecessary relation vertices.
      */
@@ -386,7 +388,7 @@ public class KielerLayoutTableau extends Tableau {
         /** Construct a HideAndRouteAction.
          */
         public HideVerticesAction() {
-            super(false, false,false, false, true);
+            super(false, false, false, false, true);
         }
     }
 
@@ -398,7 +400,7 @@ public class KielerLayoutTableau extends Tableau {
          */
         public PlaceAllAction() {
             // applyEdgeLayout = false, boxLayout = true
-            super(false, false,true, false, false);
+            super(false, false, true, false, false);
         }
     }
 
@@ -411,7 +413,7 @@ public class KielerLayoutTableau extends Tableau {
          *  boxLayout set to false.
          */
         public PlaceAction() {
-            super(false, false,false, false, false);
+            super(false, false, false, false, false);
         }
     }
 
@@ -423,7 +425,7 @@ public class KielerLayoutTableau extends Tableau {
          *  boxLayout set to false.
          */
         public PlaceAndRouteAction() {
-            super(true, false,false, false, false);
+            super(true, false, false, false, false);
         }
     }
 
@@ -438,7 +440,7 @@ public class KielerLayoutTableau extends Tableau {
          *  boxLayout set to false.
          */
         public RemoveVerticesAction() {
-            super(false, false,false, true, false);
+            super(false, false, false, true, false);
         }
     }
 

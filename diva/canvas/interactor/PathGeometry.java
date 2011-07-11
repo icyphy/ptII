@@ -29,6 +29,7 @@ package diva.canvas.interactor;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
@@ -125,7 +126,7 @@ public class PathGeometry implements Geometry {
      */
     public Shape getShape() {
         if (_path == null) {
-            GeneralPath p = new GeneralPath(GeneralPath.WIND_NON_ZERO,
+            GeneralPath p = new GeneralPath(Path2D.WIND_NON_ZERO,
                     _vertexCount + 2);
             int c = 0;
 

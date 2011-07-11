@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating Red (cxh)
  *
  */
-public class BootstrapSampleDelay extends SampleDelay{
+public class BootstrapSampleDelay extends SampleDelay {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,11 +71,11 @@ public class BootstrapSampleDelay extends SampleDelay{
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public BootstrapSampleDelay(final CompositeEntity container, final String name)
-            throws IllegalActionException, NameDuplicationException {
+    public BootstrapSampleDelay(final CompositeEntity container,
+            final String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
     }
-
 
     /** During the first iteration, read exactly one input token, update
      *  the initialOutputs for a future run and send the token to the output.
@@ -89,7 +89,7 @@ public class BootstrapSampleDelay extends SampleDelay{
             initialOutputs.setExpression("{" + message.toString() + "}");
             initialOutputs.setPersistent(true);
             once = false;
-        }  else {
+        } else {
             super.fire();
         }
     }

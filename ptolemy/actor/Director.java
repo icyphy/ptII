@@ -410,6 +410,7 @@ public class Director extends Attribute implements Executable {
      *  time with the given microstep. This method behaves exactly
      *  like {@link #fireAt(Actor, Time)}, except that it also
      *  passes up to the executive director the microstep.
+     *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
      *  @param microstep The requested microstep.
      *  @return An instance of Time with value NEGATIVE_INFINITY, or
@@ -421,7 +422,8 @@ public class Director extends Attribute implements Executable {
      *   and it throws it. Derived classes may choose to throw this
      *   exception for other reasons.
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         // If this director is enclosed within another model, then we
         // pass the request up the chain. If the enclosing executive director
         // respects fireAt(), this will result in the container of this
@@ -431,7 +433,8 @@ public class Director extends Attribute implements Executable {
         // refiring at the specified time.
         if (isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
-            return container.getExecutiveDirector().fireAt(container, time, microstep);
+            return container.getExecutiveDirector().fireAt(container, time,
+                    microstep);
         }
         // If we are not embedded, then return a value indicating that the
         // fireAt() request is being ignored. If the caller is OK with that,
@@ -725,8 +728,7 @@ public class Director extends Attribute implements Executable {
             // NOTE: Some (weird) directors pretend they are not embedded even
             // if they are (e.g. in Ptides), so we call _isEmbedded() to give
             // the subclass the option of pretending it is not embedded.
-            if (isEmbedded()
-                    && (containersContainer instanceof CompositeActor)) {
+            if (isEmbedded() && (containersContainer instanceof CompositeActor)) {
                 // The container is an embedded model.
                 Time currentTime = ((CompositeActor) containersContainer)
                         .getDirector().getModelTime();
@@ -1003,15 +1005,16 @@ public class Director extends Attribute implements Executable {
         _stopRequested = false;
         _finishRequested = false;
 
-
         Nameable container = getContainer();
         // Preinitialize all the contained actors.
         if (container instanceof CompositeActor) {
             // Populate any LazyTypedComposites.
             // Needed by $PTII/ptolemy/cg/lib/test/auto/ModularCodeGen4.xml
-            Iterator entities = ((CompositeActor)toplevel()).entityList(LazyTypedCompositeActor.class).iterator();
+            Iterator entities = ((CompositeActor) toplevel()).entityList(
+                    LazyTypedCompositeActor.class).iterator();
             while (entities.hasNext()) {
-                LazyTypedCompositeActor lazyComposite = (LazyTypedCompositeActor)entities.next();
+                LazyTypedCompositeActor lazyComposite = (LazyTypedCompositeActor) entities
+                        .next();
                 lazyComposite.populate();
             }
 
@@ -1489,16 +1492,15 @@ public class Director extends Attribute implements Executable {
      *   agree to fire the actor at the specified time, or if there
      *   is no director.
      */
-    protected Time _fireContainerAt(Time time, int microstep) throws IllegalActionException {
+    protected Time _fireContainerAt(Time time, int microstep)
+            throws IllegalActionException {
         Actor container = (Actor) getContainer();
         if (container != null) {
             Director director = container.getExecutiveDirector();
             if (director != null) {
                 if (_debugging) {
                     _debug("**** Requesting that enclosing director refire me at "
-                            + time
-                            + " with microstep "
-                            + microstep);
+                            + time + " with microstep " + microstep);
                 }
                 Time result = director.fireAt(container, time, microstep);
                 if (!result.equals(time)) {
@@ -1522,8 +1524,6 @@ public class Director extends Attribute implements Executable {
     protected boolean _isEmbedded() {
         return isEmbedded();
     }
-
-
 
     /** Return true if this is a top-level director.
      *  Parts of this method is read synchronized on the workspace.

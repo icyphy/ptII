@@ -81,8 +81,8 @@ public class TransformationAttributeIcon extends EditorIcon {
         LabelFigure label = new LabelFigure(text, _LABEL_FONT, 1.0,
                 SwingConstants.CENTER);
         Rectangle2D bounds = label.getBounds();
-        Figure background = new BasicRectangle(bounds.getMinX() - 5, bounds
-                .getMinY() - 5, bounds.getWidth() + 10,
+        Figure background = new BasicRectangle(bounds.getMinX() - 5,
+                bounds.getMinY() - 5, bounds.getWidth() + 10,
                 bounds.getHeight() + 10, _BACKGROUND_COLOR, 1);
         CompositeFigure figure = new CompositeFigure(background);
         figure.add(label);

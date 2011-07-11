@@ -163,8 +163,8 @@ public class TokenEffigy extends Effigy {
         LineNumberReader reader = null;
 
         try {
-            reader = new LineNumberReader(new InputStreamReader(input
-                    .openStream()));
+            reader = new LineNumberReader(new InputStreamReader(
+                    input.openStream()));
 
             while (true) {
                 // NOTE: The following tolerates all major line terminators.
@@ -312,8 +312,8 @@ public class TokenEffigy extends Effigy {
                 String extension = getExtension(input);
 
                 if (extension.equals("ptd")) {
-                    TokenEffigy effigy = new TokenEffigy(container, container
-                            .uniqueName("effigy"));
+                    TokenEffigy effigy = new TokenEffigy(container,
+                            container.uniqueName("effigy"));
                     effigy.uri.setURL(input);
                     return effigy;
                 }

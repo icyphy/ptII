@@ -87,8 +87,8 @@ public class Picture extends JPanel {
      */
     public void displayImage() {
         if ((_imageSource == null) && (_image == null)) {
-            _imageSource = new MemoryImageSource(_width, _height, ColorModel
-                    .getRGBdefault(), _pixels, 0, _width);
+            _imageSource = new MemoryImageSource(_width, _height,
+                    ColorModel.getRGBdefault(), _pixels, 0, _width);
             _imageSource.setAnimated(true);
             _image = createImage(_imageSource);
         }

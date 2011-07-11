@@ -251,8 +251,8 @@ public class PNDirector extends Director {
 
         // Initialize each queue variable.
         for (Channel buffer : _queues) {
-            args.set(0, _generateQueueReference(buffer.port,
-                    buffer.channelNumber));
+            args.set(0,
+                    _generateQueueReference(buffer.port, buffer.channelNumber));
             args.set(1, _getQueueSize(buffer.port, buffer.channelNumber));
             args.set(2, targetType(((TypedIOPort) buffer.port).getType()));
             code.append(_codeStream.getCodeBlock("initBuffer", args));
@@ -271,9 +271,8 @@ public class PNDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code
-                .append(((CodeGeneratorHelper) _getHelper(_director
-                        .getContainer())).generateFireCode());
+        code.append(((CodeGeneratorHelper) _getHelper(_director.getContainer()))
+                .generateFireCode());
 
         return code.toString();
     }

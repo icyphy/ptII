@@ -30,8 +30,6 @@ package ptolemy.actor.lib.opencv;
 import hypermedia.video.OpenCV;
 import processing.core.PImage;
 
-
-
 ///////////////////////////////////////////////////////////////////
 //// OpenCVImageObject
 
@@ -43,7 +41,7 @@ import processing.core.PImage;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class OpenCVImageObject  {
+public class OpenCVImageObject {
 
     // FIXME: rename this to OpenCVPImage.
     // 1) It should be PImage, not Image

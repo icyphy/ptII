@@ -342,8 +342,9 @@ public class IterateOverArray extends MirrorComposite {
 
                     if ((compare == CPO.HIGHER)
                             || (compare == CPO.INCOMPARABLE)) {
-                        Inequality inequality = new Inequality(sourcePort
-                                .getTypeTerm(), destinationPort.getTypeTerm());
+                        Inequality inequality = new Inequality(
+                                sourcePort.getTypeTerm(),
+                                destinationPort.getTypeTerm());
                         result.add(inequality);
                     }
                 }
@@ -387,8 +388,9 @@ public class IterateOverArray extends MirrorComposite {
                             destinationPort.getTypeTerm());
                     result.add(ineq1);
 
-                    Inequality ineq2 = new Inequality(destinationPort
-                            .getTypeTerm(), sourcePort.getTypeTerm());
+                    Inequality ineq2 = new Inequality(
+                            destinationPort.getTypeTerm(),
+                            sourcePort.getTypeTerm());
                     result.add(ineq2);
                 } else if (sourcePort.getContainer().equals(this)) {
                     if (sourcePort.sourcePortList().size() == 0) {
@@ -405,9 +407,9 @@ public class IterateOverArray extends MirrorComposite {
                     // source port array be compatible with the
                     // destination port.
                     try {
-                        Inequality ineq = new Inequality(ArrayType
-                                .elementType(sourcePort), destinationPort
-                                .getTypeTerm());
+                        Inequality ineq = new Inequality(
+                                ArrayType.elementType(sourcePort),
+                                destinationPort.getTypeTerm());
                         result.add(ineq);
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -416,9 +418,9 @@ public class IterateOverArray extends MirrorComposite {
                     // Require that the destination port type be an array
                     // with elements compatible with the source port.
                     try {
-                        Inequality ineq = new Inequality(ArrayType
-                                .arrayOf(sourcePort), destinationPort
-                                .getTypeTerm());
+                        Inequality ineq = new Inequality(
+                                ArrayType.arrayOf(sourcePort),
+                                destinationPort.getTypeTerm());
                         result.add(ineq);
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -697,8 +699,8 @@ public class IterateOverArray extends MirrorComposite {
                                 .size()]);
 
                         if (_debugging) {
-                            _debug(getName(), "transferring output to "
-                                    + port.getName());
+                            _debug(getName(),
+                                    "transferring output to " + port.getName());
                         }
 
                         port.send(i, new ArrayToken(elementType, tokens));
@@ -827,8 +829,8 @@ public class IterateOverArray extends MirrorComposite {
                     _workspace.getReadAccess();
 
                     ArrayType type = (ArrayType) getType();
-                    int compare = TypeLattice.compare(token.getType(), type
-                            .getElementType());
+                    int compare = TypeLattice.compare(token.getType(),
+                            type.getElementType());
 
                     if ((compare == CPO.HIGHER)
                             || (compare == CPO.INCOMPARABLE)) {

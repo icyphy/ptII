@@ -28,7 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.common.dto;
 
-
 ///////////////////////////////////////////////////////////////////
 ////SetupParameters
 
@@ -45,7 +44,6 @@ package ptdb.common.dto;
  * @Pt.AcceptedRating Red (yalsaeed)
  *
  */
-
 
 public class SetupParameters {
 
@@ -68,7 +66,6 @@ public class SetupParameters {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /**
      * Return the cache container name.
      * @return The cache container name.
@@ -77,7 +74,6 @@ public class SetupParameters {
     public String getCacheContainerName() {
         return _cacheContainerName;
     }
-
 
     /**
      * Return the container name.
@@ -99,9 +95,6 @@ public class SetupParameters {
         return _url;
     }
 
-
-
-
     /**
      * Set the cache container name parameter to the given name.
      * @param cacheContainerName The cache container name.
@@ -110,8 +103,6 @@ public class SetupParameters {
     public void setCacheContainerName(String cacheContainerName) {
         _cacheContainerName = cacheContainerName;
     }
-
-
 
     /**
      * Set the container name parameter to the given value.

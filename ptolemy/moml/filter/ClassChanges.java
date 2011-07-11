@@ -355,8 +355,7 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.domains.properties.kernel.PropertyLatticeComposite");
 
         // Renamed the DE Sampler to SampleAndHold.
-        _classChanges.put(
-                "ptolemy.domains.de.lib.Sampler",
+        _classChanges.put("ptolemy.domains.de.lib.Sampler",
                 "ptolemy.domains.de.lib.SampleAndHold");
     }
 

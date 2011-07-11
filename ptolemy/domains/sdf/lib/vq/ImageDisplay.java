@@ -179,8 +179,7 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
                 _picture = new Picture(xSize, ySize);
 
                 //_picture.setImage(image);
-                _picture
-                        .setImage(_convertBWImageToPackedRGBImage((IntMatrixToken) in));
+                _picture.setImage(_convertBWImageToPackedRGBImage((IntMatrixToken) in));
                 _picture.setBackground(null);
                 container.add("Center", _picture);
                 container.validate();
@@ -201,8 +200,7 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
                 }
             } else {
                 // The _frame is null, the size has not changed, set the image.
-                _picture
-                        .setImage(_convertBWImageToPackedRGBImage((IntMatrixToken) in));
+                _picture.setImage(_convertBWImageToPackedRGBImage((IntMatrixToken) in));
                 _picture.displayImage();
                 _picture.repaint();
             }

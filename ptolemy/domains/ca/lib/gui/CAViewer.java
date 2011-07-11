@@ -181,8 +181,8 @@ public class CAViewer extends AbstractPlaceableActor {
                     _effigy.clear();
                     _tableau.show();
                 } else {
-                    _effigy = new TokenEffigy(containerEffigy, containerEffigy
-                            .uniqueName("tokenEffigy"));
+                    _effigy = new TokenEffigy(containerEffigy,
+                            containerEffigy.uniqueName("tokenEffigy"));
                     _effigy.identifier.setExpression(getFullName());
                     _tableau = new CATableau(_effigy, "tokenTableau");
                     _tableau.setMatrix(matrix);

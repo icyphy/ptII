@@ -195,7 +195,8 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
         for (int line = startLine; line < endLine; line++) {
             try {
-                String linetext = text.getText(text.getLineStartOffset(line),
+                String linetext = text.getText(
+                        text.getLineStartOffset(line),
                         text.getLineEndOffset(line)
                                 - text.getLineStartOffset(line));
                 graphics2D.drawString(linetext, (int) format.getImageableX(),

@@ -70,7 +70,7 @@ public class FSMActor extends Entity {
         }
         if (name.equals("transitions")) {
             ArrayList transitions = new ArrayList();
-            for (State s : (List<State>) fa.entityList(State.class)) {
+            for (State s : fa.entityList(State.class)) {
                 transitions.addAll(s.outgoingPort.linkedRelationList());
             }
             return new ListTerm<Transition>("emptyTransitionSet", " ;" + _eol,

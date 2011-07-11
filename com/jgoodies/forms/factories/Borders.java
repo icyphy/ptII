@@ -101,8 +101,8 @@ public final class Borders {
      * and a button bar in its bottom.
      */
     public static final Border BUTTON_BAR_GAP_BORDER = createEmptyBorder(
-            LayoutStyle.getCurrent().getButtonBarPad(), Sizes.dluX(0), Sizes
-                    .dluY(0), Sizes.dluX(0));
+            LayoutStyle.getCurrent().getButtonBarPad(), Sizes.dluX(0),
+            Sizes.dluY(0), Sizes.dluX(0));
 
     /**
      * A standardized Border that describes the border around
@@ -249,8 +249,8 @@ public final class Borders {
          * @return the border's Insets
          */
         public Insets getBorderInsets(Component c) {
-            return new Insets(top.getPixelSize(c), left.getPixelSize(c), bottom
-                    .getPixelSize(c), right.getPixelSize(c));
+            return new Insets(top.getPixelSize(c), left.getPixelSize(c),
+                    bottom.getPixelSize(c), right.getPixelSize(c));
         }
 
         /**

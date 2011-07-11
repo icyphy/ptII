@@ -223,7 +223,8 @@ public class ConceptRelationController extends BasicEdgeController {
             c.setUserObject(edge);
 
             Link relationLink = (Link) edge;
-            ConceptRelation relation = (ConceptRelation) relationLink.getRelation();
+            ConceptRelation relation = (ConceptRelation) relationLink
+                    .getRelation();
 
             // When first dragging out a relation, the relation
             // may still be null.
@@ -231,7 +232,8 @@ public class ConceptRelationController extends BasicEdgeController {
 
                 c.setToolTipText(relation.getName());
 
-                List<ColorAttribute> colors = relation.attributeList(ColorAttribute.class);
+                List<ColorAttribute> colors = relation
+                        .attributeList(ColorAttribute.class);
                 if (colors != null && colors.size() > 0) {
                     // Use the first color only if there is more than one.
                     c.setStrokePaint(colors.get(0).asColor());
@@ -298,8 +300,8 @@ public class ConceptRelationController extends BasicEdgeController {
                 // Do not accept the connection if it is a link back to
                 // the same concept.
                 if (modelElement instanceof Concept) {
-                    boolean isSelfLink = _isConnectorHeadOrTailConnectedToConcept(c,
-                                (Concept) modelElement, !isHead);
+                    boolean isSelfLink = _isConnectorHeadOrTailConnectedToConcept(
+                            c, (Concept) modelElement, !isHead);
                     return !isSelfLink;
                 } else {
                     return false;
@@ -319,8 +321,8 @@ public class ConceptRelationController extends BasicEdgeController {
          *  @return true if the connector's head or tail is connected to the given
          *   ontology concept, false otherwise.
          */
-        private boolean _isConnectorHeadOrTailConnectedToConcept(Connector connector,
-                Concept concept, boolean isHead) {
+        private boolean _isConnectorHeadOrTailConnectedToConcept(
+                Connector connector, Concept concept, boolean isHead) {
             if ((connector != null)) {
                 Site connectionSite = null;
                 if (isHead) {
@@ -333,9 +335,8 @@ public class ConceptRelationController extends BasicEdgeController {
                     if (tailFigure != null) {
                         Object tailObject = tailFigure.getUserObject();
                         if (tailObject instanceof Locatable) {
-                            if (concept.equals(
-                                    ((Locatable) tailObject).
-                                        getContainer())) {
+                            if (concept.equals(((Locatable) tailObject)
+                                    .getContainer())) {
                                 return true;
                             }
                         }

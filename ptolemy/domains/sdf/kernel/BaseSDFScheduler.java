@@ -250,15 +250,15 @@ public abstract class BaseSDFScheduler extends Scheduler {
                         "External port is both an input and an output, "
                                 + "which is not allowed in SDF.");
             } else if (port.isInput()) {
-                DFUtilities.setIfNotDefined(port, "tokenConsumptionRate", rate
-                        .intValue());
+                DFUtilities.setIfNotDefined(port, "tokenConsumptionRate",
+                        rate.intValue());
 
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenConsumptionRate to " + rate.intValue());
                 }
             } else if (port.isOutput()) {
-                DFUtilities.setIfNotDefined(port, "tokenProductionRate", rate
-                        .intValue());
+                DFUtilities.setIfNotDefined(port, "tokenProductionRate",
+                        rate.intValue());
 
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenProductionRate to " + rate.intValue());
@@ -288,7 +288,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     // If we've already set the rate, then check that the
                     // rate for any other internal port is correct.
                     if ((foundOutputPort != null) && (newRate != inferredRate)) {
-                        throw new NotSchedulableException(port,
+                        throw new NotSchedulableException(
+                                port,
                                 "External output port "
                                         + port
                                         + " is connected on the inside to ports "

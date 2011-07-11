@@ -363,9 +363,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     // Possible matrix promotion, where we allow
                     // scalar(0,0) to simply have value scalar.
                     if (argValues[0] instanceof IntToken
-                            && ((IntToken)argValues[0]).intValue() == 0
+                            && ((IntToken) argValues[0]).intValue() == 0
                             && argValues[1] instanceof IntToken
-                            && ((IntToken)argValues[1]).intValue() == 0) {
+                            && ((IntToken) argValues[1]).intValue() == 0) {
                         // If there is a corresponding matrix type,
                         // then return the value. To find out whether there
                         // is a corresponding matrix type, just try to create
@@ -392,7 +392,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     // Possible array promotion, where we allow
                     // scalar(0) to simply have value scalar.
                     if (argValues[0] instanceof IntToken
-                            && ((IntToken)argValues[0]).intValue() == 0) {
+                            && ((IntToken) argValues[0]).intValue() == 0) {
                         result = value;
                     } else {
                         // Either the argument is not an int or
@@ -410,7 +410,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     // throw exception.
                     throw new IllegalActionException(
                             "Cannot index or apply arguments to "
-                            + value.toString());
+                                    + value.toString());
                 }
             }
 
@@ -591,8 +591,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ASTPtRootNode cloneTree;
 
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
-        cloneTree = specializer.specialize(node.getExpressionTree(), node
-                .getArgumentNameList(), _scope);
+        cloneTree = specializer.specialize(node.getExpressionTree(),
+                node.getArgumentNameList(), _scope);
 
         // Infer the return type.
         if (_typeInference == null) {
@@ -602,8 +602,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         _typeInference.inferTypes(node, _scope);
 
         FunctionType type = (FunctionType) node.getType();
-        ExpressionFunction definedFunction = new ExpressionFunction(node
-                .getArgumentNameList(), node.getArgumentTypes(), cloneTree);
+        ExpressionFunction definedFunction = new ExpressionFunction(
+                node.getArgumentNameList(), node.getArgumentTypes(), cloneTree);
         FunctionToken result = new FunctionToken(definedFunction, type);
         _evaluatedChildToken = (result);
         return;
@@ -809,8 +809,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         if (node.getForm() == 1) {
             //int numChildren = node.jjtGetNumChildren();
-            result = MatrixToken.arrayToMatrix(tokens, node.getRowCount(), node
-                    .getColumnCount());
+            result = MatrixToken.arrayToMatrix(tokens, node.getRowCount(),
+                    node.getColumnCount());
         } else if (node.getForm() == 2) {
             try {
                 int columnCount = MatrixToken.determineSequenceLength(
@@ -831,8 +831,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                        .getRowCount()
-                        * columnCount];
+                        .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
@@ -842,8 +841,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                             * i, columnCount);
                 }
 
-                result = MatrixToken.arrayToMatrix(matrixTokens, node
-                        .getRowCount(), columnCount);
+                result = MatrixToken.arrayToMatrix(matrixTokens,
+                        node.getRowCount(), columnCount);
             } catch (IllegalActionException ex) {
                 // FIXME: better detail message that includes the thing
                 // we were parsing.
@@ -1068,11 +1067,13 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             PartiallyOrderedToken rightScalar = (PartiallyOrderedToken) rightToken;
 
             if (operator.kind == PtParserConstants.GTE) {
-                result = rightScalar.isLessThan(leftScalar).or(leftToken.isEqualTo(rightToken));
+                result = rightScalar.isLessThan(leftScalar).or(
+                        leftToken.isEqualTo(rightToken));
             } else if (operator.kind == PtParserConstants.GT) {
                 result = rightScalar.isLessThan(leftScalar);
             } else if (operator.kind == PtParserConstants.LTE) {
-                result = leftScalar.isLessThan(rightScalar).or(leftToken.isEqualTo(rightToken));
+                result = leftScalar.isLessThan(rightScalar).or(
+                        leftToken.isEqualTo(rightToken));
             } else if (operator.kind == PtParserConstants.LT) {
                 result = leftScalar.isLessThan(rightScalar);
             } else {
@@ -1639,8 +1640,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     try {
                         result = method.invoke(object, args);
                         if (result == null) {
-                            result = new ObjectToken(null, method
-                                    .getReturnType());
+                            result = new ObjectToken(null,
+                                    method.getReturnType());
                         }
                         break;
                     } catch (IllegalArgumentException e) {

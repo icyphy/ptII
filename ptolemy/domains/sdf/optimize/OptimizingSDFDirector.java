@@ -213,9 +213,8 @@ public class OptimizingSDFDirector extends SDFDirector {
         super.attributeChanged(attribute);
     }
 
-
-///////////////////////////////////////////////////////////////////////////
-////                   private fields                                  ////
+    ///////////////////////////////////////////////////////////////////////////
+    ////                   private fields                                  ////
 
     /** Initialize the object.   In this case, we give the OptimizingSDFDirector a
      *  default scheduler of the class OptimizingSDFScheduler, an iterations
@@ -225,7 +224,9 @@ public class OptimizingSDFDirector extends SDFDirector {
             NameDuplicationException {
 
         // set the schedule to an instance of OptimizingSDFScheduler
-        OptimizingSDFScheduler scheduler = new OptimizingSDFScheduler(this, uniqueName("OptimizingSDFScheduler"), _optimizationCriterionValue);
+        OptimizingSDFScheduler scheduler = new OptimizingSDFScheduler(this,
+                uniqueName("OptimizingSDFScheduler"),
+                _optimizationCriterionValue);
 
         // set the default value of the parameter
         optimizationCriterion.setExpression("\"Buffers\"");
@@ -250,7 +251,8 @@ public class OptimizingSDFDirector extends SDFDirector {
         OptimizingSDFScheduler os = (OptimizingSDFScheduler) getScheduler();
         if (optimizationCriterion.getValueAsString().equals("\"Buffers\"")) {
             _optimizationCriterionValue = OptimizationCriteria.BUFFERS;
-        } else if (optimizationCriterion.getValueAsString().equals("\"Execution Time\"")) {
+        } else if (optimizationCriterion.getValueAsString().equals(
+                "\"Execution Time\"")) {
             _optimizationCriterionValue = OptimizationCriteria.EXECUTIONTIME;
         } else {
             throw new IllegalActionException("Unknown optimization criterion");

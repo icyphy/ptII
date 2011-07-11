@@ -131,8 +131,8 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
                             }
                         });
                         popUpMenu.add(close);
-                        popUpMenu.show((Component) e.getSource(), e.getX(), e
-                                .getY());
+                        popUpMenu.show((Component) e.getSource(), e.getX(),
+                                e.getY());
                     }
                 }
             }
@@ -289,8 +289,8 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
         Tableau answer = null;
 
         if (tableauFullName != null) {
-            tableauFullName = tableauFullName.substring(15, tableauFullName
-                    .length());
+            tableauFullName = tableauFullName.substring(15,
+                    tableauFullName.length());
 
             Entity tableau = _configuration.getEntity(tableauFullName);
 

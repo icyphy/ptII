@@ -165,8 +165,8 @@ public class JVMTableau extends Tableau {
                 // Ignore.
             }
 
-            final JTextArea messageArea = new JTextArea(propertyBuffer
-                    .toString(), 20, 100);
+            final JTextArea messageArea = new JTextArea(
+                    propertyBuffer.toString(), 20, 100);
 
             messageArea.setEditable(false);
 
@@ -235,19 +235,16 @@ public class JVMTableau extends Tableau {
         long freeMemory = runtime.freeMemory() / 1024;
         long maxMemory = runtime.maxMemory() / 1024;
 
-        textArea
-                .setText("Memory: "
-                        + totalMemory
-                        + "K Free: "
-                        + freeMemory
-                        + "K ("
-                        + Math
-                                .round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
-                        + "%) Max: "
-                        + maxMemory
-                        + "K ("
-                        + Math
-                                .round((((double) totalMemory) / ((double) maxMemory)) * 100.0)
-                        + "%)");
+        textArea.setText("Memory: "
+                + totalMemory
+                + "K Free: "
+                + freeMemory
+                + "K ("
+                + Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
+                + "%) Max: "
+                + maxMemory
+                + "K ("
+                + Math.round((((double) totalMemory) / ((double) maxMemory)) * 100.0)
+                + "%)");
     }
 }

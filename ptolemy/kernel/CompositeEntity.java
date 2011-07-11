@@ -780,8 +780,9 @@ public class CompositeEntity extends ComponentEntity {
                     ComponentEntity entity = (ComponentEntity) entityObject;
                     if (!entity.isClassDefinition()) {
                         if (entity instanceof CompositeEntity) {
-                            _addAll(result, ((CompositeEntity) entity)
-                                    .deepRelationSet());
+                            _addAll(result,
+                                    ((CompositeEntity) entity)
+                                            .deepRelationSet());
                         }
                     }
                 }
@@ -997,13 +998,16 @@ public class CompositeEntity extends ComponentEntity {
                         }
                     }
 
-                    String escapedPortName = StringUtilities.escapeForXML(port.getName());
-                    String escapedRelationName = StringUtilities.escapeForXML(relationName);
+                    String escapedPortName = StringUtilities.escapeForXML(port
+                            .getName());
+                    String escapedRelationName = StringUtilities
+                            .escapeForXML(relationName);
                     if (useIndex) {
                         useIndex = false;
                         result.append(_getIndentPrefix(depth) + "<link port=\""
                                 + escapedPortName + "\" insertAt=\"" + index
-                                + "\" relation=\"" + escapedRelationName + "\"/>\n");
+                                + "\" relation=\"" + escapedRelationName
+                                + "\"/>\n");
                     } else {
                         result.append(_getIndentPrefix(depth) + "<link port=\""
                                 + escapedPortName + "\" relation=\""
@@ -1067,8 +1071,8 @@ public class CompositeEntity extends ComponentEntity {
                     // is contained within its container, so we don't have to
                     // check it separately for a common implier.
                     if (port.getDerivedLevel() <= (depth + 1)
-                            && _commonImplier(relation, depth, port
-                                    .getContainer(), depth)) {
+                            && _commonImplier(relation, depth,
+                                    port.getContainer(), depth)) {
                         continue;
                     }
                     // Used to have the previous logic here, skipping the link export,
@@ -1125,16 +1129,19 @@ public class CompositeEntity extends ComponentEntity {
 
                         // Escape any < character that occurs in name.
                         // setName(String).
-                        String escapedName = StringUtilities.escapeForXML(entity.getName());
-                        String escapedPortName = StringUtilities.escapeForXML(port.getName());
-                        String escapedRelationName = StringUtilities.escapeForXML(relationName);
+                        String escapedName = StringUtilities
+                                .escapeForXML(entity.getName());
+                        String escapedPortName = StringUtilities
+                                .escapeForXML(port.getName());
+                        String escapedRelationName = StringUtilities
+                                .escapeForXML(relationName);
                         if (useIndex) {
                             useIndex = false;
                             result.append(_getIndentPrefix(depth)
                                     + "<link port=\"" + escapedName + "."
-                                    + escapedPortName + "\" insertAt=\"" + index
-                                    + "\" relation=\"" + escapedRelationName
-                                    + "\"/>\n");
+                                    + escapedPortName + "\" insertAt=\""
+                                    + index + "\" relation=\""
+                                    + escapedRelationName + "\"/>\n");
                         } else {
                             result.append(_getIndentPrefix(depth)
                                     + "<link port=\"" + escapedName + "."
@@ -1524,7 +1531,7 @@ public class CompositeEntity extends ComponentEntity {
                     if (/*!entity.isClassDefinition()&& */!entity.isOpaque() /*entity instanceof CompositeEntity*/) {
                         result.add(entity);
                         result.addAll(((CompositeEntity) entity)
-                                      .lazyAllCompositeEntityList());
+                                .lazyAllCompositeEntityList());
 
                     }
                 }
@@ -1558,10 +1565,10 @@ public class CompositeEntity extends ComponentEntity {
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
                     if (/*!entity.isClassDefinition()&& !entity.isOpaque()*/
-                        entity instanceof CompositeEntity) {
+                    entity instanceof CompositeEntity) {
                         result.add(entity);
                         result.addAll(((CompositeEntity) entity)
-                                      .lazyAllCompositeTransparentAndOpaqueEntityList());
+                                .lazyAllCompositeTransparentAndOpaqueEntityList());
 
                     }
                 }
@@ -1910,8 +1917,8 @@ public class CompositeEntity extends ComponentEntity {
                 if (!actorMap.containsKey(entityClassName)) {
                     actorMap.put(entityClassName, one);
                 } else {
-                    actorMap.put(entityClassName, Integer.valueOf(actorMap
-                            .get(entityClassName) + 1));
+                    actorMap.put(entityClassName,
+                            Integer.valueOf(actorMap.get(entityClassName) + 1));
                 }
 
                 if (clazz != null) {
@@ -1958,13 +1965,14 @@ public class CompositeEntity extends ComponentEntity {
             }
 
             Map<Integer, Integer> compositeEntityDepthMap = new TreeMap<Integer, Integer>();
-            entities = lazyAllCompositeTransparentAndOpaqueEntityList().iterator();
+            entities = lazyAllCompositeTransparentAndOpaqueEntityList()
+                    .iterator();
 
             while (entities.hasNext()) {
                 Entity entity = (Entity) entities.next();
                 if (entity instanceof CompositeEntity) {
                     compositeEntityCount++;
-                    if (((CompositeEntity)entity).isOpaque()) {
+                    if (((CompositeEntity) entity).isOpaque()) {
                         opaqueCompositeEntityCount++;
                     }
                     // Find the depth and add it to the list
@@ -2376,8 +2384,10 @@ public class CompositeEntity extends ComponentEntity {
 
                         // Escape any < character in name. unescapeForXML occurs in
                         // setName(String).
-                        String escapedRecordPortName = StringUtilities.escapeForXML(record.port.getName(this));
-                        String escapedRecordRelation1Name = StringUtilities.escapeForXML(record.relation1.getName(this));
+                        String escapedRecordPortName = StringUtilities
+                                .escapeForXML(record.port.getName(this));
+                        String escapedRecordRelation1Name = StringUtilities
+                                .escapeForXML(record.relation1.getName(this));
                         output.write(_getIndentPrefix(depth) + "<link port=\""
                                 + escapedRecordPortName + "\" insertAt=\""
                                 + record.index + "\" relation=\""
@@ -2391,8 +2401,10 @@ public class CompositeEntity extends ComponentEntity {
                             + _depthInside(record.relation1), record.relation2,
                             depth + _depthInside(record.relation2))) {
 
-                        String escapedRecordRelation1Name = StringUtilities.escapeForXML(record.relation1.getName(this));
-                        String escapedRecordRelation2Name = StringUtilities.escapeForXML(record.relation2.getName(this));
+                        String escapedRecordRelation1Name = StringUtilities
+                                .escapeForXML(record.relation1.getName(this));
+                        String escapedRecordRelation2Name = StringUtilities
+                                .escapeForXML(record.relation2.getName(this));
 
                         output.write(_getIndentPrefix(depth)
                                 + "<link relation1=\""

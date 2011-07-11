@@ -156,11 +156,9 @@ public class HelicopterActor extends TypedAtomicActor {
         double Th = ((DoubleToken) inputTh.get(0)).doubleValue();
 
         double ddPx = ((-Tm * Math.cos(Th) * Math.sin(A)) + (Tm * Math.sin(Th) * Math
-                .cos(A)))
-                / _mass;
+                .cos(A))) / _mass;
         double ddPz = (((-Tm * Math.sin(Th) * Math.sin(A)) - (Tm * Math.cos(Th) * Math
-                .cos(A))) / _mass)
-                + g;
+                .cos(A))) / _mass) + g;
         double ddTh = ((_Mm * A) + (_hm * Tm * Math.sin(A))) / _Iy;
         outputDDPx.broadcast(new DoubleToken(ddPx));
         outputDDPz.broadcast(new DoubleToken(ddPz));

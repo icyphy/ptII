@@ -41,7 +41,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  */
 public class StringConst
         extends
-            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.StringConst {
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.StringConst {
 
     /**
      *  Construct a StringConst adapter.

@@ -114,8 +114,8 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *  component in the model
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
-        _evaluatedObject = _resolveLabel(_getNodeLabel(node), _adapter
-                .getComponent());
+        _evaluatedObject = _resolveLabel(_getNodeLabel(node),
+                _adapter.getComponent());
 
         if (_evaluatedObject == null) {
             throw _unsupportedVisitException("Cannot resolve label: "

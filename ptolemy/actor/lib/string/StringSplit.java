@@ -105,7 +105,7 @@ public class StringSplit extends Transformer {
         super.fire();
 
         if (input.hasToken(0)) {
-            String inputValue = ((StringToken)input.get(0)).stringValue();
+            String inputValue = ((StringToken) input.get(0)).stringValue();
             String[] result = inputValue.split(separator.stringValue());
             Token[] resultTokens = new Token[result.length];
             for (int i = 0; i < result.length; i++) {

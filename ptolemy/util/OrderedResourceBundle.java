@@ -197,8 +197,8 @@ public class OrderedResourceBundle {
                                 break;
                             }
                         }
-                        nextLine = nextLine.substring(startIndex, nextLine
-                                .length());
+                        nextLine = nextLine.substring(startIndex,
+                                nextLine.length());
                         readLine = choppedLine + nextLine;
                         lineLen = readLine.length();
                     }

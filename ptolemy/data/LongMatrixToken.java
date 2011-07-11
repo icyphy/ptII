@@ -289,8 +289,8 @@ public class LongMatrixToken extends MatrixToken {
 
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
             if (token.isNil()) {
-                throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, "[long]"));
+                throw new IllegalActionException(
+                        Token.notSupportedConversionMessage(token, "[long]"));
             }
 
             LongToken longToken = LongToken.convert(token);
@@ -621,8 +621,8 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken) rightArgument;
-        long[] result = LongArrayMath.add(convertedArgument
-                ._getInternalLongArray(), _value);
+        long[] result = LongArrayMath.add(
+                convertedArgument._getInternalLongArray(), _value);
         return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
@@ -789,8 +789,8 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken) rightArgument;
-        long[] result = LongArrayMath.subtract(_value, convertedArgument
-                ._getInternalLongArray());
+        long[] result = LongArrayMath.subtract(_value,
+                convertedArgument._getInternalLongArray());
         return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 

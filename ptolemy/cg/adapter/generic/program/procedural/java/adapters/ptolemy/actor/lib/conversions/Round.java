@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.conversions;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Round
 

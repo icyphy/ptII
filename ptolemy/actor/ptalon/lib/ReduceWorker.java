@@ -222,9 +222,9 @@ public class ReduceWorker extends TypedAtomicActor {
                                     classNameForReduce.stringValue()
                                             + " does not have a no argument constructor");
                         } catch (InstantiationException e) {
-                            throw new IllegalActionException(classNameForReduce
-                                    .stringValue()
-                                    + " is abstract.");
+                            throw new IllegalActionException(
+                                    classNameForReduce.stringValue()
+                                            + " is abstract.");
                         } catch (ClassCastException e) {
                             throw new IllegalActionException(
                                     "Unable to cast instance of "

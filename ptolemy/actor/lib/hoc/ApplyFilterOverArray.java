@@ -471,8 +471,8 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
             Token t = ((Variable) attribute).getToken();
             return ((BooleanToken) t).booleanValue();
         } else if (attribute instanceof Settable) {
-            BooleanToken t = new BooleanToken(((Settable) attribute)
-                    .getExpression());
+            BooleanToken t = new BooleanToken(
+                    ((Settable) attribute).getExpression());
             return t.booleanValue();
         } else {
             throw new IllegalActionException(this,

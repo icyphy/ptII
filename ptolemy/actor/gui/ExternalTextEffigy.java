@@ -129,8 +129,8 @@ public class ExternalTextEffigy extends TextEffigy {
     public static TextEffigy newTextEffigy(CompositeEntity container,
             String text) throws Exception {
         // Create a new effigy.
-        ExternalTextEffigy effigy = new ExternalTextEffigy(container, container
-                .uniqueName("effigy"));
+        ExternalTextEffigy effigy = new ExternalTextEffigy(container,
+                container.uniqueName("effigy"));
 
         // Cheat: we'll get the text off the container at
         // show(Content)-time. This get's around the problem of stale
@@ -153,8 +153,8 @@ public class ExternalTextEffigy extends TextEffigy {
      */
     public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
             URL in) throws Exception {
-        ExternalTextEffigy effigy = new ExternalTextEffigy(container, container
-                .uniqueName("effigy"));
+        ExternalTextEffigy effigy = new ExternalTextEffigy(container,
+                container.uniqueName("effigy"));
 
         // A URL has been given.  Read it.
         // Note: Here the text editor would be given the in URL to

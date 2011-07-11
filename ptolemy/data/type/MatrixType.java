@@ -100,8 +100,8 @@ public class MatrixType extends StructuredType implements Cloneable,
         if (token instanceof MatrixToken) {
             return token;
         }
-        throw new IllegalActionException(Token
-                .notSupportedIncomparableConversionMessage(token, "matrix"));
+        throw new IllegalActionException(
+                Token.notSupportedIncomparableConversionMessage(token, "matrix"));
     }
 
     /** Determine if the argument represents the same MatrixType as this
@@ -276,8 +276,8 @@ public class MatrixType extends StructuredType implements Cloneable,
             } else {
                 // NOTE: No point in converting to a boolean matrix,
                 // since you can't do anything with it.
-                throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                throw new IllegalActionException(
+                        Token.notSupportedConversionMessage(token, toString()));
             }
         }
     }
@@ -293,8 +293,9 @@ public class MatrixType extends StructuredType implements Cloneable,
                 return ComplexMatrixToken.convert(token);
             } else {
                 if (token.isNil()) {
-                    throw new IllegalActionException(Token
-                            .notSupportedConversionMessage(token, toString()));
+                    throw new IllegalActionException(
+                            Token.notSupportedConversionMessage(token,
+                                    toString()));
                 }
                 // Try to create a new [complex] type with just one member.
                 // The following conversion will fail if the member cannot
@@ -326,8 +327,9 @@ public class MatrixType extends StructuredType implements Cloneable,
                     // not have NaN, so we catch this problem here.
                     // Note that this code is called by the "cast" expression
                     // language method from data.expr.UtilityFunctions
-                    throw new IllegalActionException(Token
-                            .notSupportedConversionMessage(token, toString()));
+                    throw new IllegalActionException(
+                            Token.notSupportedConversionMessage(token,
+                                    toString()));
                 }
                 // Try to create a new [double] type with just one member.
                 // The following conversion will fail if the member cannot
@@ -351,8 +353,9 @@ public class MatrixType extends StructuredType implements Cloneable,
                 return IntMatrixToken.convert(token);
             } else {
                 if (token.isNil()) {
-                    throw new IllegalActionException(Token
-                            .notSupportedConversionMessage(token, toString()));
+                    throw new IllegalActionException(
+                            Token.notSupportedConversionMessage(token,
+                                    toString()));
                 }
 
                 // Try to create a new [int] type with just one member.
@@ -377,8 +380,9 @@ public class MatrixType extends StructuredType implements Cloneable,
                 return FixMatrixToken.convert(token);
             } else {
                 if (token.isNil()) {
-                    throw new IllegalActionException(Token
-                            .notSupportedConversionMessage(token, toString()));
+                    throw new IllegalActionException(
+                            Token.notSupportedConversionMessage(token,
+                                    toString()));
                 }
                 // Try to create a new [fix] type with just one member.
                 // The following conversion will fail if the member cannot
@@ -402,8 +406,9 @@ public class MatrixType extends StructuredType implements Cloneable,
                 return LongMatrixToken.convert(token);
             } else {
                 if (token.isNil()) {
-                    throw new IllegalActionException(Token
-                            .notSupportedConversionMessage(token, toString()));
+                    throw new IllegalActionException(
+                            Token.notSupportedConversionMessage(token,
+                                    toString()));
                 }
                 // Try to create a new [long] type with just one member.
                 // The following conversion will fail if the member cannot

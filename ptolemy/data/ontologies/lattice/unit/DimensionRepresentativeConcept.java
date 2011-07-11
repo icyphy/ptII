@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.AcceptedRating Red (cshelton)
 */
 public abstract class DimensionRepresentativeConcept extends
-    FlatTokenRepresentativeConcept {
+        FlatTokenRepresentativeConcept {
 
     /** Create a new DimensionRepresentativeConcept with the specified name and
      *  ontology.
@@ -101,7 +101,8 @@ public abstract class DimensionRepresentativeConcept extends
         if (attribute.equals(unitInfoRecords)) {
             Token unitTokenArrayToken = unitInfoRecords.getToken();
             if (unitTokenArrayToken != null) {
-                Token[] unitTokenArray = ((ArrayToken) unitTokenArrayToken).arrayValue();
+                Token[] unitTokenArray = ((ArrayToken) unitTokenArrayToken)
+                        .arrayValue();
                 _userDefinedUnitRecords = new RecordToken[unitTokenArray.length];
                 for (int i = 0; i < unitTokenArray.length; i++) {
                     _userDefinedUnitRecords[i] = (RecordToken) unitTokenArray[i];
@@ -121,7 +122,8 @@ public abstract class DimensionRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if there is a problem getting any
      *   unit concepts from the ontology.
      */
-    public List<? extends UnitConcept> getAllUnits() throws IllegalActionException {
+    public List<? extends UnitConcept> getAllUnits()
+            throws IllegalActionException {
         if (_unitListVersion != workspace().getVersion()) {
             _unitList = _getAllUserDefinedUnits();
 
@@ -129,10 +131,13 @@ public abstract class DimensionRepresentativeConcept extends
             List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
             for (UnitConversionInfo unitParameter : unitParameterList) {
                 try {
-                    String unitConceptString = getName() + "_" + unitParameter.getName();
-                    Concept unitConcept = getOntology().getConceptByString(unitConceptString);
-                    if (unitConcept instanceof DerivedUnitConcept &&
-                            this.equals(((DerivedUnitConcept) unitConcept).getDimension())) {
+                    String unitConceptString = getName() + "_"
+                            + unitParameter.getName();
+                    Concept unitConcept = getOntology().getConceptByString(
+                            unitConceptString);
+                    if (unitConcept instanceof DerivedUnitConcept
+                            && this.equals(((DerivedUnitConcept) unitConcept)
+                                    .getDimension())) {
                         _unitList.add((DerivedUnitConcept) unitConcept);
                     }
                 } catch (IllegalActionException ex) {
@@ -178,15 +183,16 @@ public abstract class DimensionRepresentativeConcept extends
             List<UnitConversionInfo> unitParameterList = attributeList(UnitConversionInfo.class);
             for (UnitConversionInfo unitParameter : unitParameterList) {
                 if (unitName.equals(unitParameter.getName())) {
-                    RecordToken unitConversionInfoRecord = (RecordToken) unitParameter.getToken();
+                    RecordToken unitConversionInfoRecord = (RecordToken) unitParameter
+                            .getToken();
                     if (unitConversionInfoRecord == null) {
                         throw new IllegalActionException(this,
-                                "Invalid unit specification parameter: " +
-                                unitParameter);
+                                "Invalid unit specification parameter: "
+                                        + unitParameter);
                     } else {
                         RecordToken unitNameRecord = new RecordToken(
-                                new String[]{UnitConversionInfo.unitNameLabel},
-                                new Token[]{new StringToken(unitName)});
+                                new String[] { UnitConversionInfo.unitNameLabel },
+                                new Token[] { new StringToken(unitName) });
                         return RecordToken.merge(unitNameRecord,
                                 unitConversionInfoRecord);
                     }
@@ -214,9 +220,11 @@ public abstract class DimensionRepresentativeConcept extends
             return null;
         } else {
             for (RecordToken unitRecordToken : _userDefinedUnitRecords) {
-                Token unitNameToken = unitRecordToken.get(UnitConversionInfo.unitNameLabel);
-                if (unitNameToken instanceof StringToken &&
-                        unitName.equals(((StringToken) unitNameToken).stringValue())) {
+                Token unitNameToken = unitRecordToken
+                        .get(UnitConversionInfo.unitNameLabel);
+                if (unitNameToken instanceof StringToken
+                        && unitName.equals(((StringToken) unitNameToken)
+                                .stringValue())) {
                     return unitRecordToken;
                 }
             }
@@ -230,7 +238,8 @@ public abstract class DimensionRepresentativeConcept extends
      *  @exception IllegalActionException Thrown if there is a problem getting the
      *   list of units.
      */
-    private List<UnitConcept> _getAllUserDefinedUnits() throws IllegalActionException {
+    private List<UnitConcept> _getAllUserDefinedUnits()
+            throws IllegalActionException {
         List<UnitConcept> result = new ArrayList<UnitConcept>();
 
         // The array of user defined unit records is null, return an empty list.
@@ -238,10 +247,13 @@ public abstract class DimensionRepresentativeConcept extends
             return result;
         } else {
             for (RecordToken unitRecordToken : _userDefinedUnitRecords) {
-                Token unitNameToken = unitRecordToken.get(UnitConversionInfo.unitNameLabel);
+                Token unitNameToken = unitRecordToken
+                        .get(UnitConversionInfo.unitNameLabel);
                 if (unitNameToken instanceof StringToken) {
-                    String unitName = ((StringToken) unitNameToken).stringValue();
-                    Concept unit = getOntology().getConceptByString(getName() + "_" + unitName);
+                    String unitName = ((StringToken) unitNameToken)
+                            .stringValue();
+                    Concept unit = getOntology().getConceptByString(
+                            getName() + "_" + unitName);
                     if (unit instanceof DerivedUnitConcept) {
                         result.add((DerivedUnitConcept) unit);
                     }

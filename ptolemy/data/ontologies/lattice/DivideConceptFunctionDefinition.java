@@ -63,8 +63,8 @@ public class DivideConceptFunctionDefinition extends
             NameDuplicationException {
         super(container, name);
 
-        Token[] argNames = new Token[]{(Token) new StringToken("dividend"),
-                (Token) new StringToken("divisor")};
+        Token[] argNames = new Token[] { new StringToken("dividend"),
+                new StringToken("divisor") };
         argumentNames.setToken(new ArrayToken(argNames));
         argumentNames.setVisibility(Settable.NOT_EDITABLE);
 

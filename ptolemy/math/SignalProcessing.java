@@ -1531,9 +1531,7 @@ public class SignalProcessing {
         public final double operate(double time) {
             double shiftedTime = time - _mean;
             return _factor
-                    * Math
-                            .exp(-shiftedTime * shiftedTime
-                                    * _oneOverTwoVariance);
+                    * Math.exp(-shiftedTime * shiftedTime * _oneOverTwoVariance);
         }
 
         private final double _mean;

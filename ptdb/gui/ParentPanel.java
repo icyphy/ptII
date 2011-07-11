@@ -29,7 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.gui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -189,8 +188,8 @@ public class ParentPanel extends JPanel {
 
         try {
 
-            PtolemyEffigy effigy = LoadManager.loadModel(
-                    _parentModelName, _configuration);
+            PtolemyEffigy effigy = LoadManager.loadModel(_parentModelName,
+                    _configuration);
 
             if (effigy != null) {
 
@@ -198,12 +197,10 @@ public class ParentPanel extends JPanel {
 
             } else {
 
-                JOptionPane
-                .showMessageDialog((Component) this,
-                        "The specified model could " +
-                        "not be found in the database.",
-                        "Load Error",
-                        JOptionPane.INFORMATION_MESSAGE, null);
+                JOptionPane.showMessageDialog(this,
+                        "The specified model could "
+                                + "not be found in the database.",
+                        "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             }
 

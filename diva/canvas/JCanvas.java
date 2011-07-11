@@ -128,11 +128,12 @@ public class JCanvas extends JComponent implements Printable {
      *  @exception PrinterException If printing to graphics object fails.
      *  @exception IOException If conversion to the specified format fails or is not supported
      */
-    public void exportImage(OutputStream out, String formatName) throws PrinterException, IOException {
+    public void exportImage(OutputStream out, String formatName)
+            throws PrinterException, IOException {
 
         boolean match = false;
         String[] supportedFormats = ImageIO.getWriterFormatNames();
-        for (int i=0; i < supportedFormats.length; i++) {
+        for (int i = 0; i < supportedFormats.length; i++) {
             if (formatName.equalsIgnoreCase(supportedFormats[i])) {
                 match = true;
                 break;
@@ -144,8 +145,8 @@ public class JCanvas extends JComponent implements Printable {
         }
 
         Dimension size = getSize();
-        BufferedImage bufferedImage =
-                new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = new BufferedImage(size.width,
+                size.height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = bufferedImage.createGraphics();
         RenderingHints hints = new RenderingHints(null);
         hints.put(RenderingHints.KEY_ANTIALIASING,
@@ -156,7 +157,8 @@ public class JCanvas extends JComponent implements Printable {
         boolean transparent = false;
         if (!transparent) {
             graphics.setColor(Color.white); // set the background color
-            Rectangle2D rectangle = new Rectangle2D.Double(0, 0, size.getWidth(), size.getHeight());
+            Rectangle2D rectangle = new Rectangle2D.Double(0, 0,
+                    size.getWidth(), size.getHeight());
             graphics.fill(rectangle);
         }
         Paper paper = new Paper();
@@ -334,8 +336,8 @@ public class JCanvas extends JComponent implements Printable {
         }
 
         Rectangle2D pageBounds = new Rectangle2D.Double(format.getImageableX(),
-                format.getImageableY(), format.getImageableWidth(), format
-                        .getImageableHeight());
+                format.getImageableY(), format.getImageableWidth(),
+                format.getImageableHeight());
         ((Graphics2D) graphics).transform(CanvasUtilities.computeFitTransform(
                 printRegion, pageBounds));
         graphics.setClip(printRegion);

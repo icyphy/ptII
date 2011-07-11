@@ -136,7 +136,8 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
      */
     public void dispose() {
         if (_debugClosing) {
-            System.out.println("OntologySolverGraphFrame.dispose() : " + this.getName());
+            System.out.println("OntologySolverGraphFrame.dispose() : "
+                    + this.getName());
         }
 
         KeyStroke[] keyStroke = _rightComponent.getRegisteredKeyStrokes();
@@ -198,8 +199,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         GUIUtilities.addHotKey(_getRightComponent(),
                 _instantiateAttributeAction);
         GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
-        GUIUtilities.addHotKey(_getRightComponent(),
-                _instantiateEntityAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _instantiateEntityAction);
 
         // Create the ontology menu.
         _ontologyMenu = new JMenu("Ontology");
@@ -210,8 +210,8 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         GUIUtilities.addToolBarButton(_toolbar, _insertOntologyAction);
 
         // Add debug menu.
-        JMenuItem[] debugMenuItems = {
-                new JMenuItem("Check Monotonicity of Concept Functions") };
+        JMenuItem[] debugMenuItems = { new JMenuItem(
+                "Check Monotonicity of Concept Functions") };
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -251,8 +251,8 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
         // The cast is safe because the constructor only accepts
         // CompositeEntity.
-        final OntologySolverGraphModel graphModel =
-            new OntologySolverGraphModel((CompositeEntity) entity);
+        final OntologySolverGraphModel graphModel = new OntologySolverGraphModel(
+                (CompositeEntity) entity);
         return new BasicGraphPane(_controller, graphModel, entity);
     }
 
@@ -296,8 +296,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
     ////                         private variables                 ////
 
     /** The most recent class name for instantiating an attribute. */
-    private String _lastAttributeClassName =
-        "ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute";
+    private String _lastAttributeClassName = "ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute";
 
     /** The most recent class name for instantiating an entity. */
     private String _lastEntityClassName = "ptolemy.data.ontologies.Ontology";
@@ -414,12 +413,14 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
             // We only need to instantiate this IconController in order to
             // render the figure for the insert ontology button on the toolbar
-            IconController toolbarIconController = new IconController(_controller);
+            IconController toolbarIconController = new IconController(
+                    _controller);
             NodeRenderer toolbarRenderer = toolbarIconController.new IconRenderer();
             Figure toolbarFigure = toolbarRenderer.render(_prototypeOntology);
 
             // Standard toolbar icons are 25x25 pixels.
-            FigureIcon toolbarIcon = new FigureIcon(toolbarFigure, 25, 25, 1, false);
+            FigureIcon toolbarIcon = new FigureIcon(toolbarFigure, 25, 25, 1,
+                    false);
             putValue(diva.gui.GUIUtilities.LARGE_ICON, toolbarIcon);
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_I, Toolkit.getDefaultToolkit()
@@ -447,8 +448,8 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             query.addFileChooser("ontologyFilename", "Ontology Model Filename",
                     "", null, _ontologyDirectory);
 
-            ComponentDialog dialog = new ComponentDialog(OntologySolverGraphFrame.this,
-                    "Insert Ontology", query);
+            ComponentDialog dialog = new ComponentDialog(
+                    OntologySolverGraphFrame.this, "Insert Ontology", query);
 
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
@@ -458,7 +459,8 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
                         .getGraphModel();
                 NamedObj context = model.getPtolemyModel();
 
-                String ontologyFileName = query.getStringValue("ontologyFilename");
+                String ontologyFileName = query
+                        .getStringValue("ontologyFilename");
                 File ontologyFile = new File(ontologyFileName);
 
                 // Update the ontology directory to the most recent directory visited in the dialog.
@@ -473,7 +475,8 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
                 String source = " source=\"" + sourceURL + "\"";
 
                 String ontologyName = ontologyFile.getName();
-                ontologyName = ontologyName.substring(0, ontologyName.indexOf("."));
+                ontologyName = ontologyName.substring(0,
+                        ontologyName.indexOf("."));
 
                 // Use the center of the screen as a location.
                 Rectangle2D bounds = getVisibleCanvasRectangle();
@@ -482,9 +485,9 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
-                String moml = "<group name=\"auto\"><entity name=\"" + ontologyName
-                        + "\" class=\"" + ontologyName + "\"" + source
-                        + "><property name=\"_location\" "
+                String moml = "<group name=\"auto\"><entity name=\""
+                        + ontologyName + "\" class=\"" + ontologyName + "\""
+                        + source + "><property name=\"_location\" "
                         + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
                         + ", " + y + "\"></property></entity></group>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
@@ -520,8 +523,9 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             query.setTextWidth(60);
             query.addLine("class", "Class name", _lastAttributeClassName);
 
-            ComponentDialog dialog = new ComponentDialog(OntologySolverGraphFrame.this,
-                    "Instantiate Attribute", query);
+            ComponentDialog dialog = new ComponentDialog(
+                    OntologySolverGraphFrame.this, "Instantiate Attribute",
+                    query);
 
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
@@ -582,8 +586,8 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             query.addLine("class", "Class name", _lastEntityClassName);
             query.addLine("location", "Location (URL)", _lastLocation);
 
-            ComponentDialog dialog = new ComponentDialog(OntologySolverGraphFrame.this,
-                    "Instantiate Entity", query);
+            ComponentDialog dialog = new ComponentDialog(
+                    OntologySolverGraphFrame.this, "Instantiate Entity", query);
 
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.

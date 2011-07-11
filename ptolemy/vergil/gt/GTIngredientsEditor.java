@@ -153,7 +153,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
             } else {
                 try {
                     target.workspace().getReadAccess();
-                    attribute = (Attribute) target.attributeList(
+                    attribute = target.attributeList(
                             GTIngredientsAttribute.class).get(0);
                 } finally {
                     target.workspace().doneReading();
@@ -167,7 +167,7 @@ public class GTIngredientsEditor extends PtolemyDialog {
             } else {
                 try {
                     target.workspace().getReadAccess();
-                    attribute = (Attribute) target.attributeList(
+                    attribute = target.attributeList(
                             GTIngredientsAttribute.class).get(0);
                 } finally {
                     target.workspace().doneReading();
@@ -268,8 +268,8 @@ public class GTIngredientsEditor extends PtolemyDialog {
 
     public void centerOnScreen() {
         Toolkit tk = Toolkit.getDefaultToolkit();
-        setLocation((tk.getScreenSize().width - getSize().width) / 2, (tk
-                .getScreenSize().height - getSize().height) / 2);
+        setLocation((tk.getScreenSize().width - getSize().width) / 2,
+                (tk.getScreenSize().height - getSize().height) / 2);
     }
 
     public void commit() {
@@ -346,8 +346,8 @@ public class GTIngredientsEditor extends PtolemyDialog {
                             continue;
                         }
 
-                        String className = filePath.substring(0, filePath
-                                .length() - 6);
+                        String className = filePath.substring(0,
+                                filePath.length() - 6);
                         className = className.replace('$', '.');
                         String fullClassName = pkg + "." + className;
                         try {
@@ -593,8 +593,8 @@ public class GTIngredientsEditor extends PtolemyDialog {
         JComponent[] components = row.getEditingComponents();
         for (int i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i] != null) {
-                ingredient.setEnabled(i, Boolean.valueOf(checkBoxes[i]
-                        .isSelected()));
+                ingredient.setEnabled(i,
+                        Boolean.valueOf(checkBoxes[i].isSelected()));
             }
             JComponent editor = components[i];
             if (editor instanceof JTextField) {
@@ -603,8 +603,8 @@ public class GTIngredientsEditor extends PtolemyDialog {
                 ingredient.setValue(i, ((JComboBox) editor).getSelectedItem()
                         .toString());
             } else if (editor instanceof JCheckBox) {
-                ingredient.setValue(i, Boolean.valueOf(((JCheckBox) editor)
-                        .isSelected()));
+                ingredient.setValue(i,
+                        Boolean.valueOf(((JCheckBox) editor).isSelected()));
             }
         }
 

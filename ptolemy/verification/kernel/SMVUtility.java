@@ -433,8 +433,7 @@ public class SMVUtility {
                 State destinationInThis = transition.destinationState();
 
                 if (!stateSet.contains(destinationInThis)) {
-                    frontier
-                            .put(destinationInThis.getName(), destinationInThis);
+                    frontier.put(destinationInThis.getName(), destinationInThis);
                     stateSet.add(destinationInThis);
                 }
 
@@ -479,12 +478,10 @@ public class SMVUtility {
                                         // variable.
                                         returnVariableSet
                                                 .add(characterOfSubGuard[0]
-                                                        .trim()
-                                                        + "_isPresent");
+                                                        .trim() + "_isPresent");
                                         returnVariableSet
                                                 .add(characterOfSubGuard[0]
-                                                        .trim()
-                                                        + "_value");
+                                                        .trim() + "_value");
                                     }
 
                                 } else {
@@ -559,8 +556,7 @@ public class SMVUtility {
                 State destinationInThis = transition.destinationState();
 
                 if (!stateSet.contains(destinationInThis)) {
-                    frontier
-                            .put(destinationInThis.getName(), destinationInThis);
+                    frontier.put(destinationInThis.getName(), destinationInThis);
                     stateSet.add(destinationInThis);
                 }
 
@@ -678,8 +674,7 @@ public class SMVUtility {
                 State destinationInThis = transition.destinationState();
 
                 if (!stateSet.contains(destinationInThis)) {
-                    frontier
-                            .put(destinationInThis.getName(), destinationInThis);
+                    frontier.put(destinationInThis.getName(), destinationInThis);
                     stateSet.add(destinationInThis);
                 }
 
@@ -792,9 +787,8 @@ public class SMVUtility {
                                                                 .remove(characterOfSubGuard[0]
                                                                         .trim());
                                                         _variableInfo
-                                                                .put(
-                                                                        characterOfSubGuard[0]
-                                                                                .trim(),
+                                                                .put(characterOfSubGuard[0]
+                                                                        .trim(),
                                                                         variable);
                                                     }
                                                 } else {
@@ -802,14 +796,11 @@ public class SMVUtility {
                                                     // insert all info.
                                                     VariableInfo newVariable = new VariableInfo(
 
-                                                            Integer
-                                                                    .toString(numberRetrival),
-                                                            Integer
-                                                                    .toString(numberRetrival));
+                                                            Integer.toString(numberRetrival),
+                                                            Integer.toString(numberRetrival));
                                                     _variableInfo
-                                                            .put(
-                                                                    characterOfSubGuard[0]
-                                                                            .trim(),
+                                                            .put(characterOfSubGuard[0]
+                                                                    .trim(),
                                                                     newVariable);
 
                                                 }
@@ -834,8 +825,8 @@ public class SMVUtility {
                         String[] characters = splitExpression[i].split("=");
                         if (characters.length >= 1) {
                             String lValue = characters[0].trim();
-                            if (Pattern.matches("^-?\\d+$", characters[1]
-                                    .trim()) == true) {
+                            if (Pattern.matches("^-?\\d+$",
+                                    characters[1].trim()) == true) {
                                 int numberRetrival = Integer
                                         .parseInt(characters[1].trim());
                                 // add it into the _variableInfo
@@ -1066,8 +1057,7 @@ public class SMVUtility {
                 State destinationInThis = transition.destinationState();
 
                 if (!stateSet.contains(destinationInThis)) {
-                    frontier
-                            .put(destinationInThis.getName(), destinationInThis);
+                    frontier.put(destinationInThis.getName(), destinationInThis);
                     stateSet.add(destinationInThis);
                 }
 
@@ -1147,8 +1137,7 @@ public class SMVUtility {
                                 if (b == true) {
                                     // We add it into the list for transition.
                                     signalPremise.append(characterOfSubGuard[0]
-                                            .trim()
-                                            + " & ");
+                                            .trim() + " & ");
 
                                 } else {
                                     // Store in the set. Use try-catch to;
@@ -1412,10 +1401,9 @@ public class SMVUtility {
                                                             }
                                                         }
                                                         valueDomain
-                                                                .put(
-                                                                        lValue
-                                                                                .trim()
-                                                                                + "_isPresent",
+                                                                .put(lValue
+                                                                        .trim()
+                                                                        + "_isPresent",
                                                                         domainIsPresent);
                                                     }
                                                     ArrayList<Integer> domainValue = valueDomain
@@ -1438,10 +1426,11 @@ public class SMVUtility {
                                                                         .remove(j);
                                                             }
                                                         }
-                                                        valueDomain.put(lValue
-                                                                .trim()
-                                                                + "_value",
-                                                                domainValue);
+                                                        valueDomain
+                                                                .put(lValue
+                                                                        .trim()
+                                                                        + "_value",
+                                                                        domainValue);
                                                     }
                                                 } else {
                                                     ArrayList<Integer> domain = valueDomain
@@ -1457,8 +1446,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domain.get(j)
                                                                     .intValue() != numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
+                                                                domain.remove(j);
                                                             }
                                                         }
                                                         valueDomain.put(lValue,
@@ -1493,10 +1481,9 @@ public class SMVUtility {
                                                             }
                                                         }
                                                         valueDomain
-                                                                .put(
-                                                                        lValue
-                                                                                .trim()
-                                                                                + "_isPresent",
+                                                                .put(lValue
+                                                                        .trim()
+                                                                        + "_isPresent",
                                                                         domainIsPresent);
                                                     }
                                                     ArrayList<Integer> domainValue = valueDomain
@@ -1519,10 +1506,11 @@ public class SMVUtility {
                                                                         .remove(j);
                                                             }
                                                         }
-                                                        valueDomain.put(lValue
-                                                                .trim()
-                                                                + "_value",
-                                                                domainValue);
+                                                        valueDomain
+                                                                .put(lValue
+                                                                        .trim()
+                                                                        + "_value",
+                                                                        domainValue);
                                                     }
                                                 } else {
                                                     ArrayList<Integer> domain = valueDomain
@@ -1538,8 +1526,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domain.get(j)
                                                                     .intValue() == numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
+                                                                domain.remove(j);
                                                             }
                                                         }
                                                         valueDomain.put(lValue,
@@ -1574,10 +1561,9 @@ public class SMVUtility {
                                                             }
                                                         }
                                                         valueDomain
-                                                                .put(
-                                                                        lValue
-                                                                                .trim()
-                                                                                + "_isPresent",
+                                                                .put(lValue
+                                                                        .trim()
+                                                                        + "_isPresent",
                                                                         domainIsPresent);
                                                     }
                                                     ArrayList<Integer> domainValue = valueDomain
@@ -1600,10 +1586,11 @@ public class SMVUtility {
                                                                         .remove(j);
                                                             }
                                                         }
-                                                        valueDomain.put(lValue
-                                                                .trim()
-                                                                + "_value",
-                                                                domainValue);
+                                                        valueDomain
+                                                                .put(lValue
+                                                                        .trim()
+                                                                        + "_value",
+                                                                        domainValue);
                                                     }
                                                 } else {
                                                     ArrayList<Integer> domain = valueDomain
@@ -1619,8 +1606,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domain.get(j)
                                                                     .intValue() > numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
+                                                                domain.remove(j);
                                                             }
                                                         }
                                                         valueDomain.put(lValue,
@@ -1660,10 +1646,9 @@ public class SMVUtility {
                                                             }
                                                         }
                                                         valueDomain
-                                                                .put(
-                                                                        lValue
-                                                                                .trim()
-                                                                                + "_isPresent",
+                                                                .put(lValue
+                                                                        .trim()
+                                                                        + "_isPresent",
                                                                         domainIsPresent);
                                                     }
                                                     ArrayList<Integer> domainValue = valueDomain
@@ -1686,10 +1671,11 @@ public class SMVUtility {
                                                                         .remove(j);
                                                             }
                                                         }
-                                                        valueDomain.put(lValue
-                                                                .trim()
-                                                                + "_value",
-                                                                domainValue);
+                                                        valueDomain
+                                                                .put(lValue
+                                                                        .trim()
+                                                                        + "_value",
+                                                                        domainValue);
                                                     }
                                                 } else {
                                                     ArrayList<Integer> domain = valueDomain
@@ -1705,8 +1691,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domain.get(j)
                                                                     .intValue() < numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
+                                                                domain.remove(j);
                                                             }
                                                         }
                                                         valueDomain.put(lValue,
@@ -1743,10 +1728,10 @@ public class SMVUtility {
                                                                     .remove(j);
                                                         }
                                                     }
-                                                    valueDomain.put(lValue
-                                                            .trim()
-                                                            + "_isPresent",
-                                                            domainIsPresent);
+                                                    valueDomain
+                                                            .put(lValue.trim()
+                                                                    + "_isPresent",
+                                                                    domainIsPresent);
 
                                                     ArrayList<Integer> domainValue = valueDomain
                                                             .remove(lValue
@@ -1768,9 +1753,9 @@ public class SMVUtility {
                                                                     .remove(j);
                                                         }
                                                     }
-                                                    valueDomain.put(lValue
-                                                            .trim()
-                                                            + "_value",
+                                                    valueDomain.put(
+                                                            lValue.trim()
+                                                                    + "_value",
                                                             domainValue);
                                                 } else {
                                                     ArrayList<Integer> domain = valueDomain
@@ -1821,10 +1806,9 @@ public class SMVUtility {
                                                             }
                                                         }
                                                         valueDomain
-                                                                .put(
-                                                                        lValue
-                                                                                .trim()
-                                                                                + "_isPresent",
+                                                                .put(lValue
+                                                                        .trim()
+                                                                        + "_isPresent",
                                                                         domainIsPresent);
                                                     }
                                                     ArrayList<Integer> domainValue = valueDomain
@@ -1847,10 +1831,11 @@ public class SMVUtility {
                                                                         .remove(j);
                                                             }
                                                         }
-                                                        valueDomain.put(lValue
-                                                                .trim()
-                                                                + "_value",
-                                                                domainValue);
+                                                        valueDomain
+                                                                .put(lValue
+                                                                        .trim()
+                                                                        + "_value",
+                                                                        domainValue);
                                                     }
                                                 } else {
 
@@ -1867,8 +1852,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domain.get(j)
                                                                     .intValue() >= numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
+                                                                domain.remove(j);
                                                             }
                                                         }
                                                         valueDomain.put(lValue,
@@ -1906,8 +1890,8 @@ public class SMVUtility {
                         if (characters.length >= 1) {
                             String lValue = characters[0].trim();
                             String rValue = characters[1].trim();
-                            if (Pattern.matches("^-?\\d+$", characters[1]
-                                    .trim()) == true) {
+                            if (Pattern.matches("^-?\\d+$",
+                                    characters[1].trim()) == true) {
 
                                 // Generate all possible conditions that leads
                                 // to this change.
@@ -1921,8 +1905,8 @@ public class SMVUtility {
                                 _generatePremiseAndResultEachTransition(
                                         signalPremise.toString()
                                                 + statePrecondition,
-                                        valueDomain, "state", destinationInThis
-                                                .getDisplayName(), "S");
+                                        valueDomain, "state",
+                                        destinationInThis.getDisplayName(), "S");
 
                             } else {
                                 // The right hand side is actually complicated
@@ -2166,9 +2150,9 @@ public class SMVUtility {
                     // transition.
                     String statePrecondition = "state="
                             + stateInThis.getDisplayName();
-                    _generatePremiseAndResultEachTransition(signalPremise
-                            .toString()
-                            + statePrecondition, valueDomain, "state",
+                    _generatePremiseAndResultEachTransition(
+                            signalPremise.toString() + statePrecondition,
+                            valueDomain, "state",
                             destinationInThis.getDisplayName(), "S");
                 }
 
@@ -2185,10 +2169,9 @@ public class SMVUtility {
 
                         String statePrecondition = "state="
                                 + stateInThis.getDisplayName();
-                        _generatePremiseAndResultEachTransition(signalPremise
-                                .toString()
-                                + statePrecondition, valueDomain, lValue
-                                + "_isPresent", "1", "N");
+                        _generatePremiseAndResultEachTransition(
+                                signalPremise.toString() + statePrecondition,
+                                valueDomain, lValue + "_isPresent", "1", "N");
 
                         // MODIFICATION 2008.07.22:
                         // Now we also need to consider the value
@@ -2200,8 +2183,8 @@ public class SMVUtility {
 
                         if (characters.length >= 1) {
                             String rValue = characters[1].trim();
-                            if (Pattern.matches("^-?\\d+$", characters[1]
-                                    .trim()) == true) {
+                            if (Pattern.matches("^-?\\d+$",
+                                    characters[1].trim()) == true) {
                                 // Generate all possible conditions that leads
                                 // to this change.
 
@@ -4118,8 +4101,8 @@ public class SMVUtility {
                                     modularDescription
                                             .add(_translateSingleFSMActor(
                                                     (FSMActor) innerActor,
-                                                    span, false, state
-                                                            .getName()));
+                                                    span, false,
+                                                    state.getName()));
                                 } else if (innerActor instanceof CompositeActor) {
                                     // First see if its director is SR.
                                     // If not, then it is beyond our current
@@ -4739,15 +4722,13 @@ public class SMVUtility {
                                                         .get(controller
                                                                 .getName()) != null) {
                                                     if (_globalSignalDistributionInfo
-                                                            .get(
-                                                                    controller
-                                                                            .getName())
+                                                            .get(controller
+                                                                    .getName())
                                                             .contains(
                                                                     signalName) == false) {
                                                         _globalSignalDistributionInfo
-                                                                .get(
-                                                                        controller
-                                                                                .getName())
+                                                                .get(controller
+                                                                        .getName())
                                                                 .add(signalName);
                                                     }
                                                 }
@@ -4855,9 +4836,8 @@ public class SMVUtility {
                                                             .get(controller
                                                                     .getName()) != null) {
                                                         if (_globalSignalNestedRetrivalInfo
-                                                                .get(
-                                                                        controller
-                                                                                .getName())
+                                                                .get(controller
+                                                                        .getName())
                                                                 .contains(
                                                                         signalName) == true) {
                                                             containInTheModule = true;
@@ -4887,17 +4867,14 @@ public class SMVUtility {
                                                                     .get(controller
                                                                             .getName()) != null) {
                                                                 if (_globalSignalDistributionInfo
-                                                                        .get(
-                                                                                controller
-                                                                                        .getName())
+                                                                        .get(controller
+                                                                                .getName())
                                                                         .contains(
                                                                                 signalName) == false) {
                                                                     _globalSignalDistributionInfo
-                                                                            .get(
-                                                                                    controller
-                                                                                            .getName())
-                                                                            .add(
-                                                                                    signalName);
+                                                                            .get(controller
+                                                                                    .getName())
+                                                                            .add(signalName);
                                                                 }
                                                             }
 
@@ -4979,9 +4956,8 @@ public class SMVUtility {
                                                             .get(controller
                                                                     .getName()) != null) {
                                                         if (_globalSignalNestedRetrivalInfo
-                                                                .get(
-                                                                        controller
-                                                                                .getName())
+                                                                .get(controller
+                                                                        .getName())
                                                                 .contains(
                                                                         signalName) == true) {
                                                             containInTheModule = true;
@@ -5011,17 +4987,14 @@ public class SMVUtility {
                                                                     .get(controller
                                                                             .getName()) != null) {
                                                                 if (_globalSignalDistributionInfo
-                                                                        .get(
-                                                                                controller
-                                                                                        .getName())
+                                                                        .get(controller
+                                                                                .getName())
                                                                         .contains(
                                                                                 signalName) == false) {
                                                                     _globalSignalDistributionInfo
-                                                                            .get(
-                                                                                    controller
-                                                                                            .getName())
-                                                                            .add(
-                                                                                    signalName);
+                                                                            .get(controller
+                                                                                    .getName())
+                                                                            .add(signalName);
                                                                 }
                                                             }
 

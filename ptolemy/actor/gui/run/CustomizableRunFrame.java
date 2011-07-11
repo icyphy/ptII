@@ -167,8 +167,7 @@ public class CustomizableRunFrame extends TableauFrame {
                                     try {
                                         InterfaceTableau tableau = new InterfaceTableau(
                                                 effigy,
-                                                effigy
-                                                        .uniqueName("interfaceTableau"));
+                                                effigy.uniqueName("interfaceTableau"));
                                         tableau.show();
                                     } catch (KernelException e) {
                                         MessageHandler.error(

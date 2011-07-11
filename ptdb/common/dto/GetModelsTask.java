@@ -58,8 +58,6 @@ public class GetModelsTask extends Task {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-
     /**
      * Return the model name that is needed to be fetched from the database.
      *

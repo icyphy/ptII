@@ -429,9 +429,10 @@ public class Manager extends NamedObj implements Runnable {
                 // if there are any.
                 if (initialThrowable != null) {
                     if (_container == null) {
-                        throw new InternalErrorException(this, initialThrowable,
+                        throw new InternalErrorException(this,
+                                initialThrowable,
                                 "The container of the manager was null. "
-                                + "Try calling composite.setManager().");
+                                        + "Try calling composite.setManager().");
                     }
                     List<?> exceptionHandlersList = _container
                             .entityList(ExceptionHandler.class);
@@ -774,7 +775,8 @@ public class Manager extends NamedObj implements Runnable {
      *  @param throwable The throwable
      */
     public void notifyListenersOfThrowable(final Throwable throwable) {
-        Thread thread = new ErrorReportingThread("Error reporting thread", throwable);
+        Thread thread = new ErrorReportingThread("Error reporting thread",
+                throwable);
         thread.start();
     }
 
@@ -1251,8 +1253,7 @@ public class Manager extends NamedObj implements Runnable {
                 + "K Free: "
                 + freeMemory
                 + "K ("
-                + Math
-                        .round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
+                + Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
                 + "%)";
     }
 
@@ -1581,38 +1582,39 @@ public class Manager extends NamedObj implements Runnable {
                 // we can catch Errors like
                 // java.lang.UnsatisfiedLink.
                 String errorMessage = MessageHandler
-                    .shortDescription(_throwable)
-                    + " occurred: "
-                    + _throwable.getClass()
-                    + "("
-                    + _throwable.getMessage() + ")";
+                        .shortDescription(_throwable)
+                        + " occurred: "
+                        + _throwable.getClass()
+                        + "("
+                        + _throwable.getMessage()
+                        + ")";
                 _debug("-- Manager notifying listeners of exception: "
                         + _throwable);
 
                 if (_executionListeners == null) {
                     System.err
-                        .println("No executionListeners? Error message was: "
-                                + errorMessage);
+                            .println("No executionListeners? Error message was: "
+                                    + errorMessage);
                     _throwable.printStackTrace();
                 } else {
 
                     // If the execution id is not null, map the
                     // throwable to the id.
                     if (_executionIdentifier != null) {
-                        _throwableToExecutionIdentifier.put(_throwable, _executionIdentifier);
+                        _throwableToExecutionIdentifier.put(_throwable,
+                                _executionIdentifier);
                     }
 
                     ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners
-                        .listIterator();
+                            .listIterator();
 
                     while (listeners.hasNext()) {
                         WeakReference<ExecutionListener> reference = listeners
-                            .next();
+                                .next();
                         ExecutionListener listener = reference.get();
 
                         if (listener != null) {
-                            listener
-                                .executionError(Manager.this, _throwable);
+                            listener.executionError(Manager.this, _throwable);
                         } else {
                             listeners.remove();
                         }
@@ -1625,7 +1627,6 @@ public class Manager extends NamedObj implements Runnable {
         private Throwable _throwable;
     }
 
-
     private class PtolemyRunThread extends PtolemyThread {
         // This thread is a named inner class so that we can find it
         // by name when looking for memory leaks.
@@ -1633,6 +1634,7 @@ public class Manager extends NamedObj implements Runnable {
         public PtolemyRunThread(Runnable target, String name) {
             super(target, name);
         }
+
         public void run() {
             // The run() method will set _thread to null
             // upon completion of the run.

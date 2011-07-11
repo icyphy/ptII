@@ -173,7 +173,8 @@ public class PthalesReceiver extends SDFReceiver {
             }
             return result;
         } else {
-            throw new NoTokenException(getContainer(), "Empty buffer in PthalesReceiver !");
+            throw new NoTokenException(getContainer(),
+                    "Empty buffer in PthalesReceiver !");
         }
     }
 
@@ -620,7 +621,8 @@ public class PthalesReceiver extends SDFReceiver {
 
         // Position computation
         int rep = (int) Math.floor(position / (patternSize * _nbTokens));
-        int dim = (int) Math.floor(position % (patternSize * _nbTokens)) / _nbTokens;
+        int dim = (int) Math.floor(position % (patternSize * _nbTokens))
+                / _nbTokens;
         int numToken = (int) Math.floor(position % _nbTokens);
 
         // address indexes

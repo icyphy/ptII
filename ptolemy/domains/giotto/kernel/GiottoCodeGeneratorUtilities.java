@@ -363,9 +363,8 @@ public class GiottoCodeGeneratorUtilities {
             code.append(_driverCode(model, actor));
         }
 
-        code
-                .append("\n//////////////////////////////////////////////////////\n"
-                        + "////                    output drivers            ////\n\n");
+        code.append("\n//////////////////////////////////////////////////////\n"
+                + "////                    output drivers            ////\n\n");
 
         // Generate driver functions for toplevel output ports.
         // FIXME: the giotto director should do some checking to

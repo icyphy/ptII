@@ -89,8 +89,8 @@ public class RenameDialogAction extends FigureAction {
     public RenameDialogAction(String name) {
         super(name);
 
-        putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                KeyEvent.VK_F2, 0));
+        putValue(GUIUtilities.ACCELERATOR_KEY,
+                KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
     }
 
     ///////////////////////////////////////////////////////////////////

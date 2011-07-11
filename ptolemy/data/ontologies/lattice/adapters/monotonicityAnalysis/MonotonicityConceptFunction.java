@@ -65,8 +65,7 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
      */
     public MonotonicityConceptFunction(String name, int numArgs,
             Ontology monotonicityAnalysisOntology,
-            List<Ontology> domainOntologies)
-            throws IllegalActionException {
+            List<Ontology> domainOntologies) throws IllegalActionException {
         super(name, numArgs, monotonicityAnalysisOntology);
 
         _setup(monotonicityAnalysisOntology, domainOntologies);
@@ -89,8 +88,8 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
             throws IllegalActionException {
         for (Object entity : domainOntology.allAtomicEntityList()) {
             if (entity instanceof Concept) {
-                Constants.add(((Concept) entity).getName(),
-                        new ConceptToken((Concept)entity));
+                Constants.add(((Concept) entity).getName(), new ConceptToken(
+                        (Concept) entity));
             }
         }
     }
@@ -119,25 +118,29 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
         // FIXME: Should we hard code all the Concept name strings here?
         // Instantiate all the concepts for the monotonicityAnalysis ontology
         // Throw an exception if any of them are not found
-        _constantConcept = (FiniteConcept) _monotonicityAnalysisOntology.getEntity("Constant");
+        _constantConcept = (FiniteConcept) _monotonicityAnalysisOntology
+                .getEntity("Constant");
         if (_constantConcept == null) {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept Constant not found in monotonicityAnalysis ontology.");
         }
 
-        _monotonicConcept = (FiniteConcept) _monotonicityAnalysisOntology.getEntity("Monotonic");
+        _monotonicConcept = (FiniteConcept) _monotonicityAnalysisOntology
+                .getEntity("Monotonic");
         if (_monotonicConcept == null) {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept Monotonic not found in monotonicityAnalysis ontology.");
         }
 
-        _antimonotonicConcept = (FiniteConcept) _monotonicityAnalysisOntology.getEntity("Antimonotonic");
+        _antimonotonicConcept = (FiniteConcept) _monotonicityAnalysisOntology
+                .getEntity("Antimonotonic");
         if (_antimonotonicConcept == null) {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept Antimonotonic not found in monotonicityAnalysis ontology.");
         }
 
-        _generalConcept = (FiniteConcept) _monotonicityAnalysisOntology.getEntity("General");
+        _generalConcept = (FiniteConcept) _monotonicityAnalysisOntology
+                .getEntity("General");
         if (_generalConcept == null) {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept General not found in monotonicityAnalysis ontology.");

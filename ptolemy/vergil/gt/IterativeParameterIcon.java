@@ -98,8 +98,8 @@ public class IterativeParameterIcon extends XMLIcon {
                 SwingConstants.CENTER);
         label.setFillPaint(Color.blue);
         Rectangle2D bounds = label.getBounds();
-        Figure background = new BasicRectangle(bounds.getMinX() - 5, bounds
-                .getMinY() - 5, bounds.getWidth() + 10,
+        Figure background = new BasicRectangle(bounds.getMinX() - 5,
+                bounds.getMinY() - 5, bounds.getWidth() + 10,
                 bounds.getHeight() + 10, _BACKGROUND_COLOR, 1);
         CompositeFigure figure = new CompositeFigure(background);
         figure.add(label);

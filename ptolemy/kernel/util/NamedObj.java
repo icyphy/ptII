@@ -1121,8 +1121,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     return attributes;
                 } catch (Exception ex) {
                     throw new InternalErrorException(this, ex,
-                            "Failed to get decorator attribute \"" +
-                            decorator + "\"");
+                            "Failed to get decorator attribute \"" + decorator
+                                    + "\"");
                 }
             }
         }
@@ -2165,8 +2165,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @exception IllegalActionException If the attribute is not an
      *   an instance of the expect class (in derived classes).
      */
-    protected void _addAttribute(Attribute attribute) throws NameDuplicationException,
-            IllegalActionException {
+    protected void _addAttribute(Attribute attribute)
+            throws NameDuplicationException, IllegalActionException {
         try {
             _workspace.getWriteAccess();
 
@@ -2195,7 +2195,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
 
             if (_debugging) {
-                _debug("Added attribute", attribute.getName(), "to", getFullName());
+                _debug("Added attribute", attribute.getName(), "to",
+                        getFullName());
             }
         } finally {
             _workspace.doneWriting();
@@ -2474,8 +2475,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     while (parameters.hasNext()) {
                         Attribute parameter = (Attribute) parameters.next();
                         result.append(parameter._description(detail,
-                                indent + 1, 2)
-                                + "\n");
+                                indent + 1, 2) + "\n");
                     }
                 }
 
@@ -2835,9 +2835,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected void _validateSettables(Collection attributesValidated)
             throws IllegalActionException {
-        Iterator<Settable> attributes = attributeList(Settable.class).iterator();
+        Iterator<Settable> attributes = attributeList(Settable.class)
+                .iterator();
         while (attributes.hasNext()) {
-            Settable attribute = (Settable) attributes.next();
+            Settable attribute = attributes.next();
             if (attributesValidated.contains(attribute)) {
                 continue;
             }
@@ -3115,8 +3116,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                             // Is it shadowed?  Create a new override
                             // list to pass to the candidate.
                             newOverride = new LinkedList<Integer>(override);
-                            newOverride.set(depth, Integer
-                                    .valueOf(myBreadth + 1));
+                            newOverride.set(depth,
+                                    Integer.valueOf(myBreadth + 1));
 
                             if (_isShadowed(candidate._override, newOverride)) {
                                 // Yes it is.

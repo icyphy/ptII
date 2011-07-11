@@ -182,7 +182,8 @@ public class ProcessDirector extends SequencedModelDirector {
             fireSchedule(seqSchedule);
 
             // Add all the unexecuted actors to the list after the process' full schedule has been executed.
-            unexecutedSequenceNumbersList.addAll(seqSchedule.getUnexecutedList());
+            unexecutedSequenceNumbersList.addAll(seqSchedule
+                    .getUnexecutedList());
         }
 
         // If the fireUnexectedActors parameter is true,
@@ -192,10 +193,12 @@ public class ProcessDirector extends SequencedModelDirector {
             SequenceSchedule unexecutedSchedule = null;
 
             while (!unexecutedSequenceNumbersList.isEmpty()) {
-                unexecutedSchedule = _scheduler.getSchedule(unexecutedSequenceNumbersList, false);
+                unexecutedSchedule = _scheduler.getSchedule(
+                        unexecutedSequenceNumbersList, false);
 
                 fireSchedule(unexecutedSchedule);
-                unexecutedSequenceNumbersList = (ArrayList<SequenceAttribute>) unexecutedSchedule.getUnexecutedList();
+                unexecutedSequenceNumbersList = (ArrayList<SequenceAttribute>) unexecutedSchedule
+                        .getUnexecutedList();
             }
         }
     }
@@ -248,14 +251,16 @@ public class ProcessDirector extends SequencedModelDirector {
                     processes.add(processName);
                 }
                 Collections.sort(processes);
-                _processExecutionArray = processes.toArray(new String[processes.size()]);
+                _processExecutionArray = processes.toArray(new String[processes
+                        .size()]);
             }
         }
 
         // Get key set from _processSeqMap
         for (String processName : _processExecutionArray) {
             // Get collection of ProcessAttributes for this key
-            ArrayList processAttributes = (ArrayList) _processSeqMap.get(processName);
+            ArrayList processAttributes = (ArrayList) _processSeqMap
+                    .get(processName);
 
             // Sort it
             Collections.sort(processAttributes);
@@ -344,9 +349,10 @@ public class ProcessDirector extends SequencedModelDirector {
             NameDuplicationException {
         super._init();
 
-        defaultProcessExecutionArray =
-            new Parameter(this, "Default Process Execution Array");
-        defaultProcessExecutionArray.setTypeEquals(new ArrayType(BaseType.STRING));
+        defaultProcessExecutionArray = new Parameter(this,
+                "Default Process Execution Array");
+        defaultProcessExecutionArray.setTypeEquals(new ArrayType(
+                BaseType.STRING));
 
         _processExecutionArray = null;
         _usingDefaultProcessArray = false;
@@ -358,16 +364,19 @@ public class ProcessDirector extends SequencedModelDirector {
      *  @exception IllegalActionException If there is a problem getting the array token from the parameter.
      */
     protected String[] _getDefaultProcessExecutionArray()
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (defaultProcessExecutionArray.getExpression().equals("")) {
             return new String[0];
         } else {
-            ArrayToken processNameArrayToken = (ArrayToken) defaultProcessExecutionArray.getToken();
-            Token[] processExecutionTokenArray = processNameArrayToken.arrayValue();
+            ArrayToken processNameArrayToken = (ArrayToken) defaultProcessExecutionArray
+                    .getToken();
+            Token[] processExecutionTokenArray = processNameArrayToken
+                    .arrayValue();
 
             String[] processNameExecutionArray = new String[processExecutionTokenArray.length];
             for (int i = 0; i < processExecutionTokenArray.length; i++) {
-                processNameExecutionArray[i] = ((StringToken) processExecutionTokenArray[i]).stringValue();
+                processNameExecutionArray[i] = ((StringToken) processExecutionTokenArray[i])
+                        .stringValue();
             }
             return processNameExecutionArray;
         }
@@ -407,7 +416,8 @@ public class ProcessDirector extends SequencedModelDirector {
 
                 // Beth added 01/21/09 - Ignore the process name "None", or the empty string
                 // These should be treated as dependent actors
-                if (!processID.equalsIgnoreCase("None") && processID.length() > 0) {
+                if (!processID.equalsIgnoreCase("None")
+                        && processID.length() > 0) {
                     _processSeqMap.put(processID, seq);
                 }
 

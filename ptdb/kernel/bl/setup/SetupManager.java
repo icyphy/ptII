@@ -100,28 +100,26 @@ public class SetupManager {
         DBConnection mainConnection = null;
         DBConnection cacheConnection = null;
 
-
         try {
 
-            mainConnection = DBConnectorFactory.getSyncConnection(
-                    dbMainConnParams);
+            mainConnection = DBConnectorFactory
+                    .getSyncConnection(dbMainConnParams);
 
             if (mainConnection == null) {
                 throw new DBConnectionException(
                         "Failed to create connection with the following parameters: "
-                        + "\nURL: " + url
-                        + "\nContainer Name: " + containerName);
+                                + "\nURL: " + url + "\nContainer Name: "
+                                + containerName);
             }
 
-            cacheConnection = DBConnectorFactory.getSyncConnection(
-                    dbCacheConnParams);
-
+            cacheConnection = DBConnectorFactory
+                    .getSyncConnection(dbCacheConnParams);
 
             if (cacheConnection == null) {
                 throw new DBConnectionException(
                         "Failed to create connection with the following parameters: "
-                        + "\nURL: " + url
-                        + "\nCache Container Name: " + cacheContainerName);
+                                + "\nURL: " + url + "\nCache Container Name: "
+                                + cacheContainerName);
             }
 
         } catch (DBConnectionException e) {
@@ -160,7 +158,6 @@ public class SetupManager {
         String ptdbParams = DBConnectorFactory._PROPERTIES_FILE_PATH;
         Properties props = new Properties();
 
-
         File tempFile = FileUtilities.nameToFile(ptdbParams, null);
         File file = new File(tempFile.getPath().replaceAll("%20", " "));
         // if the file does not exist, then create it.
@@ -168,42 +165,39 @@ public class SetupManager {
 
             if (file.createNewFile() == false) {
 
-                throw new IOException(
-                        "Could not create the properties file "
-                                + ptdbParams);
+                throw new IOException("Could not create the properties file "
+                        + ptdbParams);
             }
         }
-
 
         URL url = FileUtilities.nameToURL(ptdbParams, null, null);
 
         if (url == null) {
-            throw new IOException(
-                    "Could not find the properties file "
-                            + ptdbParams);
+            throw new IOException("Could not find the properties file "
+                    + ptdbParams);
         }
 
         String defaultDBClassName = "";
 
         props.load(url.openStream());
 
-        String dbClassName = (String) props
+        String dbClassName = props
                 .getProperty(DBConnectorFactory._DB_CLASS_NAME);
 
         if (dbClassName == null || dbClassName.length() == 0) {
             dbClassName = defaultDBClassName;
         }
 
-
         props.setProperty(DBConnectorFactory._DB_CLASS_NAME, dbClassName);
         props.setProperty(DBConnectorFactory._DB_URL, params.getUrl());
-        props.setProperty(DBConnectorFactory._XMLDB_CONTAINER_NAME, params
-                .getContainerName());
-        props.setProperty(DBConnectorFactory._CACHE_CONTAINER_NAME, params
-                .getCacheContainerName());
+        props.setProperty(DBConnectorFactory._XMLDB_CONTAINER_NAME,
+                params.getContainerName());
+        props.setProperty(DBConnectorFactory._CACHE_CONTAINER_NAME,
+                params.getCacheContainerName());
 
         // The stream is closed inside the store method and we do not have control over it.
-        props.store(new FileOutputStream(url.getPath().replaceAll("%20", " ")), null);
+        props.store(new FileOutputStream(url.getPath().replaceAll("%20", " ")),
+                null);
 
         DBConnectorFactory.loadDBProperties();
 

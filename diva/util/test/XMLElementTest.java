@@ -73,8 +73,8 @@ public class XMLElementTest extends TestSuite {
 
             public void check() throws TestFailedException {
                 String result = "<element name0=\"value0\" name1=\"value1\"></element>\n";
-                assertEquals(result, elt.toString(), result + " != "
-                        + elt.toString());
+                assertEquals(result, elt.toString(),
+                        result + " != " + elt.toString());
             }
         });
     }
@@ -93,8 +93,8 @@ public class XMLElementTest extends TestSuite {
 
             public void check() throws TestFailedException {
                 String result = "<element name0=\"value0\" name1=\"value1\"></element>\n";
-                assertEquals(result, elt.toString(), result + " != "
-                        + elt.toString());
+                assertEquals(result, elt.toString(),
+                        result + " != " + elt.toString());
 
                 assertEquals("value0", elt.getAttribute("name0"),
                         "Attribute name0");
@@ -107,8 +107,8 @@ public class XMLElementTest extends TestSuite {
 
                 result = "<element name1=\"value1\"></element>\n";
                 elt.removeAttribute("name0");
-                assertEquals(result, elt.toString(), result + " != "
-                        + elt.toString());
+                assertEquals(result, elt.toString(),
+                        result + " != " + elt.toString());
             }
         });
     }
@@ -136,8 +136,8 @@ public class XMLElementTest extends TestSuite {
 
             public void check() throws TestFailedException {
                 String result = "<element0>\n<element1>\n<element2></element2>\n</element1>\n</element0>\n";
-                assertEquals(result, elt0.toString(), result + " != "
-                        + elt0.toString());
+                assertEquals(result, elt0.toString(),
+                        result + " != " + elt0.toString());
 
                 assertExpr(elt0.containsElement(elt1),
                         "elt0.containsElement(elt1)");
@@ -157,8 +157,8 @@ public class XMLElementTest extends TestSuite {
                 // No go ahead and remove some stuff
                 result = "<element0></element0>\n";
                 elt0.removeElement(elt1);
-                assertEquals(result, elt0.toString(), result + " != "
-                        + elt0.toString());
+                assertEquals(result, elt0.toString(),
+                        result + " != " + elt0.toString());
                 assertExpr(!elt0.containsElement(elt1),
                         "!elt0.containsElement(elt1)");
             }

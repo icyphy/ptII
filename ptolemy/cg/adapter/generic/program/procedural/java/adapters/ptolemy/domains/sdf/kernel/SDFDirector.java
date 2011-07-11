@@ -102,9 +102,11 @@ public class SDFDirector
         // $PTII/bin/ptcg -language java -variablesAsArrays true $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/Commutator.xml
 
         StringBuffer code = new StringBuffer();
-        boolean variablesAsArrays = ((BooleanToken) getCodeGenerator().variablesAsArrays.getToken()).booleanValue();
+        boolean variablesAsArrays = ((BooleanToken) getCodeGenerator().variablesAsArrays
+                .getToken()).booleanValue();
         if (variablesAsArrays) {
-            CompositeActor container = (CompositeActor) _director.getContainer();
+            CompositeActor container = (CompositeActor) _director
+                    .getContainer();
 
             // $PTII/bin/ptcg -verbosity 10 -language java -variablesAsArrays true $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay.xml
 
@@ -118,17 +120,19 @@ public class SDFDirector
 
                     int bufferSize = _ports.getBufferSize(port);
                     code2.append(generatePortName(port)
-                            + " = new " + targetType(port.getType())
+                            + " = new "
+                            + targetType(port.getType())
                             + "["
-                            + java.lang.Math
-                            .max(port.getWidth(), port.getWidthInside()) + "]"
-                            + "[" + bufferSize + "];" + _eol);
+                            + java.lang.Math.max(port.getWidth(),
+                                    port.getWidthInside()) + "]" + "["
+                            + bufferSize + "];" + _eol);
                 } else if (port.getWidth() > 1 || port.getWidthInside() > 1) {
                     code2.append(generatePortName(port)
-                            + " = new " + targetType(port.getType())
+                            + " = new "
+                            + targetType(port.getType())
                             + "["
-                            + java.lang.Math
-                            .max(port.getWidth(), port.getWidthInside()) + "];" + _eol);
+                            + java.lang.Math.max(port.getWidth(),
+                                    port.getWidthInside()) + "];" + _eol);
                 }
             }
 
@@ -140,44 +144,53 @@ public class SDFDirector
                 if (rate > 0) {
                     int bufferSize = _ports.getBufferSize(port);
                     code2.append(generatePortName(port)
-                            + " = new " + targetType(port.getType())
+                            + " = new "
+                            + targetType(port.getType())
                             + "["
-                            + java.lang.Math
-                            .max(port.getWidth(), port.getWidthInside()) + "]"
-                            + "[" + bufferSize + "];" + _eol);
+                            + java.lang.Math.max(port.getWidth(),
+                                    port.getWidthInside()) + "]" + "["
+                            + bufferSize + "];" + _eol);
                 } else if (port.getWidth() > 1 || port.getWidthInside() > 1) {
                     code2.append(generatePortName(port)
-                            + " = new " + targetType(port.getType())
+                            + " = new "
+                            + targetType(port.getType())
                             + "["
-                            + java.lang.Math
-                            .max(port.getWidth(), port.getWidthInside()) + "];" + _eol);
+                            + java.lang.Math.max(port.getWidth(),
+                                    port.getWidthInside()) + "];" + _eol);
                 }
             }
             if (code2.length() > 0) {
-                code.append(getCodeGenerator().comment("Java SDFDirector: variablesAsArrays is true, "
-                                + "added decls for multiports and multirate multiports")
+                code.append(getCodeGenerator()
+                        .comment(
+                                "Java SDFDirector: variablesAsArrays is true, "
+                                        + "added decls for multiports and multirate multiports")
                         + code2.toString());
             }
 
-            code.append(getCodeGenerator().comment("Java SDFDirector: variablesAsArrays is true, initializing "
+            code.append(getCodeGenerator().comment(
+                    "Java SDFDirector: variablesAsArrays is true, initializing "
                             + "ports."));
             Iterator<?> actors = container.deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                    .getAdapter(actor);
+                        .getAdapter(actor);
                 if (actor instanceof CompositeActor
                         && ((CompositeActor) actor).isOpaque()
-                        //&& actor.getContainer() == null
-                    ) {
-                    code.append(getCodeGenerator().comment("Java SDFDirector: actor is opaque: " + actor.getFullName()));
+                //&& actor.getContainer() == null
+                ) {
+                    code.append(getCodeGenerator().comment(
+                            "Java SDFDirector: actor is opaque: "
+                                    + actor.getFullName()));
                     //code.append(adapterObject.generateVariableDeclaration());
                 } else {
                     //code.append(getCodeGenerator().comment("Java SDFDirector: actor is not opaque: " + actor.getFullName()));
                     code.append(_generatePortVariableDeclaration(adapterObject));
 
                     if (variablesAsArrays) {
-                        code.append(getCodeGenerator().comment("Java SDFDirector: variablesAsArrays is true initialized elements in ports3"));
+                        code.append(getCodeGenerator()
+                                .comment(
+                                        "Java SDFDirector: variablesAsArrays is true initialized elements in ports3"));
                         // Initialize elements in ports3_
                         ports = actor.outputPortList().iterator();
                         while (ports.hasNext()) {
@@ -186,10 +199,11 @@ public class SDFDirector
                             int bufferSize = _ports.getBufferSize(port);
                             if (port.isMultiport() && rate > 0) {
                                 code.append(generatePortName(port)
-                                        + " = new " + targetType(port.getType())
+                                        + " = new "
+                                        + targetType(port.getType())
                                         + "["
-                                        + java.lang.Math
-                                        .max(port.getWidth(), port.getWidthInside()) + "]"
+                                        + java.lang.Math.max(port.getWidth(),
+                                                port.getWidthInside()) + "]"
                                         + "[" + bufferSize + "];" + _eol);
                             }
                         }
@@ -248,7 +262,8 @@ public class SDFDirector
                         " is not an instance of TypedIOPort.");
             }
             Type type = ((TypedIOPort) inputPort).getType();
-            String portName = TemplateParser.escapePortName(inputPort.getName());
+            String portName = TemplateParser
+                    .escapePortName(inputPort.getName());
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
@@ -294,7 +309,8 @@ public class SDFDirector
         } else {
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
-                    String name = TemplateParser.escapePortName(inputPort.getName());
+                    String name = TemplateParser.escapePortName(inputPort
+                            .getName());
 
                     if (inputPort.isMultiport()) {
                         name = name + '#' + i;
@@ -304,8 +320,8 @@ public class SDFDirector
                         code.append(compositeActorAdapter.getReference("@"
                                 + name + "," + k, false)
                                 + " = "
-                                + compositeActorAdapter.getReference(name + "," + k, false)
-                                + ";" + _eol);
+                                + compositeActorAdapter.getReference(name + ","
+                                        + k, false) + ";" + _eol);
                     }
                 }
             }
@@ -348,7 +364,8 @@ public class SDFDirector
                         + "];" + _eol);
             }
 
-            String portName = TemplateParser.escapePortName(outputPort.getName());
+            String portName = TemplateParser.escapePortName(outputPort
+                    .getName());
             String tokensToThisPort = "tokensTo" + portName;
 
             // FindBugs wants this instanceof check.
@@ -387,9 +404,8 @@ public class SDFDirector
                 }
 
                 for (int k = 0; k < rate; k++) {
-                    String portReference = compositeActorAdapter
-                            .getReference("@" + portNameWithChannelNumber + ","
-                                    + k, false);
+                    String portReference = compositeActorAdapter.getReference(
+                            "@" + portNameWithChannelNumber + "," + k, false);
                     /*if (type == PointerToken.POINTER) {
                         code.append(tokensToOneChannel + "[" + k
                                 + "] = " + "(int) " + portReference + ";"
@@ -409,7 +425,8 @@ public class SDFDirector
         } else {
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (i < outputPort.getWidth()) {
-                    String name = TemplateParser.escapePortName(outputPort.getName());
+                    String name = TemplateParser.escapePortName(outputPort
+                            .getName());
 
                     if (outputPort.isMultiport()) {
                         name = name + '#' + i;
@@ -420,10 +437,12 @@ public class SDFDirector
                     //   + rate + " " + compositeActorAdapter + " " + compositeActorAdapter.getClass())));
 
                     for (int k = 0; k < rate; k++) {
-                        String result = compositeActorAdapter.getReference(name + "," + k, false)
-                            + " = "
-                            + CodeStream.indent(compositeActorAdapter.getReference("@" + name + "," + k, false))
-                            + ";" + _eol;
+                        String result = compositeActorAdapter.getReference(name
+                                + "," + k, false)
+                                + " = "
+                                + CodeStream.indent(compositeActorAdapter
+                                        .getReference("@" + name + "," + k,
+                                                false)) + ";" + _eol;
                         code.append(result);
                     }
                 }
@@ -445,8 +464,8 @@ public class SDFDirector
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        StringBuffer variableDeclarations = new StringBuffer(super
-                .generateVariableDeclaration());
+        StringBuffer variableDeclarations = new StringBuffer(
+                super.generateVariableDeclaration());
 
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
 
@@ -469,7 +488,8 @@ public class SDFDirector
 
         if (director.getContainer().getContainer() == null) {
             variableDeclarations.append(_eol
-                    + getCodeGenerator().comment("Provide the iteration count."));
+                    + getCodeGenerator()
+                            .comment("Provide the iteration count."));
             variableDeclarations.append("public static int _iteration = 0;"
                     + _eol);
         }
@@ -495,7 +515,8 @@ public class SDFDirector
      *  @exception IllegalActionException If thrown while generating
      *  the input or output variables.
      */
-    protected String _generatePortVariableDeclaration(NamedProgramCodeGeneratorAdapter target)
+    protected String _generatePortVariableDeclaration(
+            NamedProgramCodeGeneratorAdapter target)
             throws IllegalActionException {
         // Note that if the variablesAsArrays parameter is true, then
         // the port declarations are generated by
@@ -537,7 +558,8 @@ public class SDFDirector
      *   director cannot be found.
      */
     @Override
-    protected String _generateVariableDeclaration(NamedProgramCodeGeneratorAdapter target)
+    protected String _generateVariableDeclaration(
+            NamedProgramCodeGeneratorAdapter target)
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -546,9 +568,13 @@ public class SDFDirector
         String name = NamedProgramCodeGeneratorAdapter.generateName(target
                 .getComponent());
         // Generate variable declarations for referenced parameters.
-        if (((BooleanToken) codeGenerator.variablesAsArrays.getToken()).booleanValue()) {
-            code.append(codeGenerator.comment("Java SDFDirector: variablesAsArrays is true, skipping "
-                            + "generating " + name + "'s referenced parameter declarations."));
+        if (((BooleanToken) codeGenerator.variablesAsArrays.getToken())
+                .booleanValue()) {
+            code.append(codeGenerator
+                    .comment("Java SDFDirector: variablesAsArrays is true, skipping "
+                            + "generating "
+                            + name
+                            + "'s referenced parameter declarations."));
 
         } else {
             String referencedParameterDeclaration = _generateReferencedParameterDeclaration(target);
@@ -607,18 +633,20 @@ public class SDFDirector
 
         if (!channelAndOffset[1].equals("")) {
             if (!(attribute instanceof Parameter)) {
-                throw new InternalErrorException(attribute, null,
-                        "Attribute " + attribute.getFullName()
-                        + " is not a Parameter.");
+                throw new InternalErrorException(attribute, null, "Attribute "
+                        + attribute.getFullName() + " is not a Parameter.");
             } else {
-                Type elementType = ((ArrayType) ((Parameter) attribute).getType())
-                    .getElementType();
+                Type elementType = ((ArrayType) ((Parameter) attribute)
+                        .getType()).getElementType();
 
                 //result.append("[" + channelAndOffset[1] + "]");
-                result.insert(0, "("
-                        + getCodeGenerator().codeGenType(elementType).replace(
-                                "Array", "Token").replace("Matrix", "Token")
-                        + ")(/*JCGH44*/Array_get(");
+                result.insert(
+                        0,
+                        "("
+                                + getCodeGenerator().codeGenType(elementType)
+                                        .replace("Array", "Token")
+                                        .replace("Matrix", "Token")
+                                + ")(/*JCGH44*/Array_get(");
                 if (getCodeGenerator().isPrimitive(elementType)) {
                     result.insert(0, "(");
                 }
@@ -627,7 +655,7 @@ public class SDFDirector
 
                 if (getCodeGenerator().isPrimitive(elementType)) {
                     String cgType = getCodeGenerator().codeGenType(elementType)
-                        .toLowerCase();
+                            .toLowerCase();
                     if (cgType.equals("integer")) {
                         cgType = "int";
                     }
@@ -654,11 +682,12 @@ public class SDFDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _portVariableDeclaration(StringBuffer codeResult, TypedIOPort port)
-            throws IllegalActionException {
+    private void _portVariableDeclaration(StringBuffer codeResult,
+            TypedIOPort port) throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        boolean variablesAsArrays = ((BooleanToken) getCodeGenerator().variablesAsArrays.getToken()).booleanValue();
+        boolean variablesAsArrays = ((BooleanToken) getCodeGenerator().variablesAsArrays
+                .getToken()).booleanValue();
         if (!variablesAsArrays) {
             code.append("public static " + targetType(port.getType()) + " ");
         }
@@ -687,8 +716,8 @@ public class SDFDirector
 
         if (port.isMultiport()) {
             code.append("["
-                    + java.lang.Math
-                            .max(port.getWidth(), port.getWidthInside()) + "]");
+                    + java.lang.Math.max(port.getWidth(), port.getWidthInside())
+                    + "]");
         }
 
         if (bufferSize > 1) {
@@ -813,9 +842,9 @@ public class SDFDirector
                 code.append(" " + getTypeConvertReference(channel));
 
                 //int bufferSize = getBufferSize(channel.port);
-                int bufferSize = Math.max(DFUtilities
-                        .getTokenProductionRate(channel.port), DFUtilities
-                        .getTokenConsumptionRate(channel.port));
+                int bufferSize = Math.max(
+                        DFUtilities.getTokenProductionRate(channel.port),
+                        DFUtilities.getTokenConsumptionRate(channel.port));
 
                 if (bufferSize > 1) {
                     //code.append("[" + bufferSize + "]");

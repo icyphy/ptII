@@ -128,8 +128,8 @@ public class MovieReader extends Source implements ControllerListener {
                         // Web Start: javax.media.Manager.createDataSource()
                         // does not deal with jar urls because it cannot
                         // find a data source, so we copy the jar file.
-                        copyFileName = JNLPUtilities.saveJarURLAsTempFile(url
-                                .toString(), "JMFMovieReader", null, null);
+                        copyFileName = JNLPUtilities.saveJarURLAsTempFile(
+                                url.toString(), "JMFMovieReader", null, null);
 
                         File copyFile = new File(copyFileName);
                         urlCopy = copyFile.toURI().toURL();

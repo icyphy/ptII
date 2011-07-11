@@ -178,8 +178,8 @@ public class MatrixViewer extends AbstractPlaceableActor {
                 }
 
                 try {
-                    _effigy = new TokenEffigy(containerEffigy, containerEffigy
-                            .uniqueName("tokenEffigy"));
+                    _effigy = new TokenEffigy(containerEffigy,
+                            containerEffigy.uniqueName("tokenEffigy"));
 
                     // The default identifier is "Unnamed", which is
                     // no good for two reasons: Wrong title bar label,

@@ -350,7 +350,6 @@ public class BasicSwitch extends MonitoredQuantityManager {
         }
     }
 
-
     /** If there are still tokens in the queue and a token has been
      *  produced in the fire, schedule a refiring.
      *  @exception IllegalActionExecption Thrown if refiring cannot be scheduled or
@@ -393,8 +392,8 @@ public class BasicSwitch extends MonitoredQuantityManager {
                 new TimedEvent(lastTimeStamp.add(_inputBufferDelay),
                         new Object[] { receiver, token }));
         _tokenCount++;
-        sendQMTokenEvent((Actor) source.getContainer()
-                .getContainer(), 0, _tokenCount, EventType.RECEIVED);
+        sendQMTokenEvent((Actor) source.getContainer().getContainer(), 0,
+                _tokenCount, EventType.RECEIVED);
         _scheduleRefire();
 
         if (_debugging) {
@@ -500,13 +499,10 @@ public class BasicSwitch extends MonitoredQuantityManager {
     /** Number of switch ports. */
     protected int _numberOfPorts;
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Tokens processed by the switch fabric. */
     private TreeSet<TimedEvent> _switchFabricQueue;
-
 
 }

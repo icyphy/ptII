@@ -236,8 +236,8 @@ public class DECQEventQueue implements DEEventQueue {
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
-            long value = (long) (((DEEvent) event).timeStamp().subtract(
-                    _zeroReference).getLongValue() / _binWidth);
+            long value = (long) (((DEEvent) event).timeStamp()
+                    .subtract(_zeroReference).getLongValue() / _binWidth);
             if (value != Long.MAX_VALUE) {
                 return value;
             } else {
@@ -294,8 +294,9 @@ public class DECQEventQueue implements DEEventQueue {
             }
 
             for (int i = 0; i < (entryArray.length - 1); ++i) {
-                diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp().subtract(
-                        ((DEEvent) entryArray[i]).timeStamp()).getDoubleValue();
+                diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
+                        .subtract(((DEEvent) entryArray[i]).timeStamp())
+                        .getDoubleValue();
                 if (diff[i] < 2 * average) {
                     effectiveSamples++;
                     effectiveAverage = effectiveAverage + diff[i];

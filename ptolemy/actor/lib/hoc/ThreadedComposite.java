@@ -609,8 +609,8 @@ public class ThreadedComposite extends MirrorComposite {
                             // There is now an output frame to be produced.
                             if (ThreadedComposite.this._debugging) {
                                 ThreadedComposite.this._debug(
-                                        "Sending output token ", token
-                                                + " to port "
+                                        "Sending output token ",
+                                        token + " to port "
                                                 + token.port.getName());
                             }
 
@@ -648,7 +648,8 @@ public class ThreadedComposite extends MirrorComposite {
                                     + " for actor: " + actor.getFullName());
                 }
                 try {
-                    result = director.fireAt(ThreadedComposite.this, time, microstep);
+                    result = director.fireAt(ThreadedComposite.this, time,
+                            microstep);
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex, "Actor "
                             + actor.getFullName()

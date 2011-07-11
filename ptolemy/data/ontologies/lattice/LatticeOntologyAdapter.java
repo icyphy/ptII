@@ -140,9 +140,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @return true if the interconnectConstraintType is for sources, false otherwise
      */
     public boolean isConstraintSource() {
-        boolean constraintSource =
-            interconnectConstraintType == ConstraintType.SOURCE_GE_SINK ||
-            interconnectConstraintType == ConstraintType.EQUALS;
+        boolean constraintSource = interconnectConstraintType == ConstraintType.SOURCE_GE_SINK
+                || interconnectConstraintType == ConstraintType.EQUALS;
         return constraintSource;
     }
 
@@ -221,12 +220,12 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
         boolean constraintSource = actorConstraintType == ConstraintType.SOURCE_GE_SINK;
 
         List<Object> portList1 = constraintSource ? ((AtomicActor) getComponent())
-                .inputPortList()
-                : ((AtomicActor) getComponent()).outputPortList();
+                .inputPortList() : ((AtomicActor) getComponent())
+                .outputPortList();
 
         List<Object> portList2 = constraintSource ? ((AtomicActor) getComponent())
-                .outputPortList()
-                : ((AtomicActor) getComponent()).inputPortList();
+                .outputPortList() : ((AtomicActor) getComponent())
+                .inputPortList();
 
         Iterator ports = portList1.iterator();
 
@@ -236,13 +235,15 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
         }
 
         boolean constrainPortConnectionSources = isConstraintSource();
-        for (TypedIOPort port : (List<TypedIOPort>)
-                _getConstraintedPorts(constrainPortConnectionSources)) {
+        for (TypedIOPort port : (List<TypedIOPort>) _getConstraintedPorts(constrainPortConnectionSources)) {
 
             // Add default constraints for multiports with more than one channel.
-            if (((TypedIOPort) port).isMultiport() && ((TypedIOPort) port).getWidth() > 1) {
-                _constrainObject(interconnectConstraintType, port,
-                        _getConstraintingPorts(constrainPortConnectionSources, port));
+            if ((port).isMultiport() && (port).getWidth() > 1) {
+                _constrainObject(
+                        interconnectConstraintType,
+                        port,
+                        _getConstraintingPorts(constrainPortConnectionSources,
+                                port));
             }
         }
     }
@@ -389,8 +390,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {
         LatticeOntologySolver solver = getSolver();
-        if (solver.solverStrategy.getExpression().equals(
-                "none")) {
+        if (solver.solverStrategy.getExpression().equals("none")) {
             return new LinkedList();
         }
         return _getASTNodeAdapters();

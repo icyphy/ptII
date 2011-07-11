@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-
 ///////////////////////////////////////////////////////////////////
 //// SyntacticTermList
 
@@ -51,14 +50,14 @@ import java.util.List;
  @Pt.ProposedRating Red (shaver)
  @Pt.AcceptedRating Red
 */
-public class SyntacticTermList extends LinkedList<SyntacticTerm>
-    implements SyntacticTerm {
+public class SyntacticTermList extends LinkedList<SyntacticTerm> implements
+        SyntacticTerm {
 
     /** Constructs an empty term list with no rank information. */
     public SyntacticTermList() {
         super();
-        _inputs     = new LinkedList();
-        _outputs    = new LinkedList();
+        _inputs = new LinkedList();
+        _outputs = new LinkedList();
         _rank = null;
     }
 
@@ -74,13 +73,16 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
     public boolean add(SyntacticTerm term) {
         SyntacticRank rank = term.rank();
         if (rank != null) {
-            if (isEmpty()) _rank = rank.copy();
-            else _rank.product(rank);
+            if (isEmpty()) {
+                _rank = rank.copy();
+            } else {
+                _rank.product(rank);
+            }
         }
 
         super.add(term);
-        _inputs  .addAll(term.getInputs());
-        _outputs .addAll(term.getOutputs());
+        _inputs.addAll(term.getInputs());
+        _outputs.addAll(term.getOutputs());
         return true;
     }
 
@@ -128,8 +130,11 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
     public void add(int index, SyntacticTerm term) {
         SyntacticRank rank = term.rank();
         if (rank != null) {
-            if (isEmpty()) _rank = rank.copy();
-            else _rank.product(rank);
+            if (isEmpty()) {
+                _rank = rank.copy();
+            } else {
+                _rank.product(rank);
+            }
         }
 
         super.add(index, term);
@@ -146,17 +151,22 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
      *  @return whether term was removed.
      */
     public boolean remove(Object ot) {
-        if (!(ot instanceof SyntacticTerm) || !contains(ot)) return false;
+        if (!(ot instanceof SyntacticTerm) || !contains(ot)) {
+            return false;
+        }
 
-        SyntacticTerm term = (SyntacticTerm)ot;
-        _inputs  .removeAll(term.getInputs());
-        _outputs .removeAll(term.getOutputs());
+        SyntacticTerm term = (SyntacticTerm) ot;
+        _inputs.removeAll(term.getInputs());
+        _outputs.removeAll(term.getOutputs());
         super.remove(term);
 
         SyntacticRank rank = term.rank();
         if (rank != null) {
-            if (isEmpty()) _rank = null;
-            else _rank.quotent(rank);
+            if (isEmpty()) {
+                _rank = null;
+            } else {
+                _rank.quotent(rank);
+            }
         }
 
         return true;
@@ -180,14 +190,16 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
      */
     public SyntacticTerm set(int index, SyntacticTerm term) {
         SyntacticTerm cterm = get(index);
-        if (cterm == null) return null;
+        if (cterm == null) {
+            return null;
+        }
 
         SyntacticRank crank = cterm.rank();
         if (crank != null) {
             _rank.quotent(crank);
         }
 
-        SyntacticRank rank  = term.rank();
+        SyntacticRank rank = term.rank();
         if (rank != null) {
             _rank.product(rank);
         }
@@ -301,8 +313,8 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         _inputs.clear();
         _outputs.clear();
         for (SyntacticTerm term : this) {
-            _inputs  .addAll(term.getInputs());
-            _outputs .addAll(term.getOutputs());
+            _inputs.addAll(term.getInputs());
+            _outputs.addAll(term.getOutputs());
         }
     }
 

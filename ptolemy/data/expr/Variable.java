@@ -1139,8 +1139,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _debug("setTypeAtLeast: " + name);
         }
 
-        Inequality ineq = new Inequality(lesser.getTypeTerm(), this
-                .getTypeTerm());
+        Inequality ineq = new Inequality(lesser.getTypeTerm(),
+                this.getTypeTerm());
         _constraints.add(ineq);
     }
 
@@ -1258,8 +1258,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _debug("setTypeSameAs: " + name);
         }
 
-        Inequality ineq = new Inequality(this.getTypeTerm(), equal
-                .getTypeTerm());
+        Inequality ineq = new Inequality(this.getTypeTerm(),
+                equal.getTypeTerm());
         _constraints.add(ineq);
         ineq = new Inequality(equal.getTypeTerm(), this.getTypeTerm());
         _constraints.add(ineq);

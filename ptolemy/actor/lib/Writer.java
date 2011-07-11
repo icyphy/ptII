@@ -96,7 +96,7 @@ public class Writer extends Sink {
                 }
 
                 if (input.hasToken(i)) {
-                    StringToken inputToken = (StringToken)input.get(i);
+                    StringToken inputToken = (StringToken) input.get(i);
                     last = inputToken.stringValue();
                     _writer.write(last);
                 }

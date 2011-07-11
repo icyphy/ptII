@@ -67,21 +67,22 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
      *  @exception IllegalActionException If the base class throws it.
      */
     public static FlatScalarTokenInfiniteConcept createFlatScalarTokenInfiniteConcept(
-            Ontology ontology, FlatScalarTokenRepresentativeConcept representative,
-            ScalarToken value)
-                throws IllegalActionException {
+            Ontology ontology,
+            FlatScalarTokenRepresentativeConcept representative,
+            ScalarToken value) throws IllegalActionException {
         try {
             if (!representative.withinInterval(value)) {
-                throw new IllegalActionException("Token " + value + " is not " +
-                                "within the numerical interval defined in the " +
-                                "representative concept.");
+                throw new IllegalActionException("Token " + value + " is not "
+                        + "within the numerical interval defined in the "
+                        + "representative concept.");
             }
-            return new FlatScalarTokenInfiniteConcept(ontology, representative, value);
+            return new FlatScalarTokenInfiniteConcept(ontology, representative,
+                    value);
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(
                     "Name conflict with automatically generated infinite concept name.\n"
-                  + "This should never happen."
-                  + "Original exception:" + e.toString());
+                            + "This should never happen."
+                            + "Original exception:" + e.toString());
         }
     }
 
@@ -118,8 +119,8 @@ public class FlatScalarTokenInfiniteConcept extends FlatTokenInfiniteConcept {
      */
     protected FlatScalarTokenInfiniteConcept(Ontology ontology,
             FlatScalarTokenRepresentativeConcept representative,
-            ScalarToken value)
-                throws IllegalActionException, NameDuplicationException {
+            ScalarToken value) throws IllegalActionException,
+            NameDuplicationException {
         super(ontology, representative, value);
     }
 }

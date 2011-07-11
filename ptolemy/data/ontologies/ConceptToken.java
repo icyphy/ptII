@@ -75,11 +75,13 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
      *  @return true if the values are the same Concept, or false otherwise.
      */
     public BooleanToken isEqualTo(Token rightArgument) {
-        if (this != null && rightArgument != null
+        if (this != null
+                && rightArgument != null
                 && rightArgument instanceof ConceptToken
                 && ((ConceptToken) rightArgument).conceptValue() != null
                 && conceptValue() != null
-                && ((ConceptToken) rightArgument).conceptValue().equals(conceptValue())) {
+                && ((ConceptToken) rightArgument).conceptValue().equals(
+                        conceptValue())) {
             return BooleanToken.TRUE;
         } else {
             return BooleanToken.FALSE;
@@ -105,12 +107,14 @@ public class ConceptToken extends ObjectToken implements PartiallyOrderedToken {
             //        "isLessThan", this, rightArgument));
             // so we use this instead:
             throw new IllegalActionException(
-            "Cannot compare Concept with non-Concept.");
+                    "Cannot compare Concept with non-Concept.");
         }
         Concept rightConcept = ((ConceptToken) rightArgument).conceptValue();
         Concept leftConcept = this.conceptValue();
-        boolean lessThanOrEqual = rightConcept != null && rightConcept.isAboveOrEqualTo(leftConcept);
-        boolean equal = leftConcept != null && rightConcept != null && leftConcept.equals(rightConcept);
+        boolean lessThanOrEqual = rightConcept != null
+                && rightConcept.isAboveOrEqualTo(leftConcept);
+        boolean equal = leftConcept != null && rightConcept != null
+                && leftConcept.equals(rightConcept);
         return new BooleanToken(lessThanOrEqual && !equal);
     }
 

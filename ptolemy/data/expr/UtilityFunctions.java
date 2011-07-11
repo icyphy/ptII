@@ -250,19 +250,20 @@ public class UtilityFunctions {
      *  @exception IllegalActionException If the types of the array arguments
      *   are not Arrays.
      */
-    public static Type concatenateReturnType(Type firstArrayType, Type secondArrayType)
-            throws IllegalActionException {
+    public static Type concatenateReturnType(Type firstArrayType,
+            Type secondArrayType) throws IllegalActionException {
         // Note that this method is deliberately not listed in the Expression
         // chapter because it is very specialized.
         if (!(firstArrayType instanceof ArrayType)
                 || !(secondArrayType instanceof ArrayType)) {
-            throw new IllegalActionException("Type " + firstArrayType
-                    + " or " + secondArrayType + " is not an ArrayType?");
+            throw new IllegalActionException("Type " + firstArrayType + " or "
+                    + secondArrayType + " is not an ArrayType?");
         } else {
-            return new ArrayType(((ArrayType) (TypeLattice.lattice()
-                                    .leastUpperBound(firstArrayType, secondArrayType))).getElementType(),
-                    ((ArrayType)firstArrayType).length()
-                    + ((ArrayType)secondArrayType).length());
+            return new ArrayType(
+                    ((ArrayType) (TypeLattice.lattice().leastUpperBound(
+                            firstArrayType, secondArrayType))).getElementType(),
+                    ((ArrayType) firstArrayType).length()
+                            + ((ArrayType) secondArrayType).length());
         }
     }
 
@@ -286,18 +287,24 @@ public class UtilityFunctions {
                     + " is not an ArrayType?");
         } else {
             int nElements = 0;
-            ArrayType arrayType = (ArrayType)firstArrayType;
+            ArrayType arrayType = (ArrayType) firstArrayType;
             if (arrayType.getElementType() instanceof ArrayType) {
-                ArrayType arrayArrayType = (ArrayType)arrayType.getElementType();
+                ArrayType arrayArrayType = (ArrayType) arrayType
+                        .getElementType();
                 if (arrayArrayType.hasKnownLength()) {
-                    nElements += ((ArrayType) arrayType.getElementType()).length();
+                    nElements += ((ArrayType) arrayType.getElementType())
+                            .length();
                 }
             }
             if (nElements > 0) {
-                return new ArrayType(((ArrayType)arrayType.getElementType()).getElementType(),
+                return new ArrayType(
+                        ((ArrayType) arrayType.getElementType())
+                                .getElementType(),
                         nElements);
             } else {
-                return new ArrayType(((ArrayType)arrayType.getElementType()).getElementType());
+                return new ArrayType(
+                        ((ArrayType) arrayType.getElementType())
+                                .getElementType());
             }
         }
     }
@@ -467,8 +474,8 @@ public class UtilityFunctions {
                 }
 
                 // Force size to be unknown
-                return new ArrayType(((ArrayType) arrayTokenType)
-                        .getElementType());
+                return new ArrayType(
+                        ((ArrayType) arrayTokenType).getElementType());
             }
         } else {
             return BaseType.UNKNOWN;
@@ -566,8 +573,8 @@ public class UtilityFunctions {
 
         if (!file.exists()) {
             String cp = System.getProperty("java.class.path");
-            StringTokenizer tokens = new StringTokenizer(cp, System
-                    .getProperty("path.separator"));
+            StringTokenizer tokens = new StringTokenizer(cp,
+                    System.getProperty("path.separator"));
 
             while (tokens.hasMoreTokens()) {
                 String token = tokens.nextToken();
@@ -1903,8 +1910,8 @@ public class UtilityFunctions {
      *  @param throwable The throwable that occured when System.load() or System.loadLibrary()
      *  was called.
      */
-    private static void _loadLibrary(String library, String sharedLibrarySuffix,
-            Throwable throwable) {
+    private static void _loadLibrary(String library,
+            String sharedLibrarySuffix, Throwable throwable) {
         // We have a separate method here so that we can call it with
         // jnilib and then with dylib because under Web Start on Mac OS X 10.5
         // with Java 10.5, shared libraries need to have a .jnilib extension.  Sigh.
@@ -1915,9 +1922,9 @@ public class UtilityFunctions {
         String osName = StringUtilities.getProperty("os.name");
         if (osName.startsWith("SunOS") || osName.startsWith("Linux")
                 || osName.startsWith("Mac OS X")) {
-        // Under Solaris, libraries start with lib, so
-        // we find the last /, and if the next chars are not "lib"
-        // then we insert "lib".
+            // Under Solaris, libraries start with lib, so
+            // we find the last /, and if the next chars are not "lib"
+            // then we insert "lib".
 
             int index = library.lastIndexOf("/");
 
@@ -1937,9 +1944,9 @@ public class UtilityFunctions {
                         // the path.  If we don't do this on the Mac,
                         // then libptymatlab.dynlib will not be found.
                         shortLibraryName = "/lib"
-                            + library.substring(index + 1);
+                                + library.substring(index + 1);
                         library = library.substring(0, index)
-                            + shortLibraryName;
+                                + shortLibraryName;
                     }
                 }
             }
@@ -1986,11 +1993,13 @@ public class UtilityFunctions {
                 try {
                     int index = shortLibraryName2.lastIndexOf("/");
                     if (index != -1) {
-                        shortLibraryName2 = shortLibraryName2.substring(index + 1);
+                        shortLibraryName2 = shortLibraryName2
+                                .substring(index + 1);
                     }
                     index = shortLibraryName2.lastIndexOf("lib");
                     if (index != -1) {
-                        shortLibraryName2 = shortLibraryName2.substring(index + 3);
+                        shortLibraryName2 = shortLibraryName2
+                                .substring(index + 3);
                     }
                     System.loadLibrary(shortLibraryName2);
                     return;
@@ -2018,21 +2027,31 @@ public class UtilityFunctions {
                         // Ignore.
                     }
 
-                    Error error = new UnsatisfiedLinkError("Did not find '"
-                            + library + "' in path, searched " + "user.home ("
-                            + userDir + ") user.dir (" + userHome
-                            + ") and the classpath for '" + libraryPath
-                            + "', but that was not found either.\n"
-                            + "The Java classpath was: " + classpath
-                            + "\nIn addition, loadLibrary(\""
-                            + shortLibraryName
-                            + "\") was called, the exception for the "
-                            + "loadLibrary() call was: " + ex2
-                            + (shortLibraryName.equals(shortLibraryName2) ? ""
-                                    : "\nAlso, loadlibrary(\""
-                                    + shortLibraryName2 + "\") was called, "
-                                    + "the exception  for the loadLibrary call was: "
-                                    + ex3));
+                    Error error = new UnsatisfiedLinkError(
+                            "Did not find '"
+                                    + library
+                                    + "' in path, searched "
+                                    + "user.home ("
+                                    + userDir
+                                    + ") user.dir ("
+                                    + userHome
+                                    + ") and the classpath for '"
+                                    + libraryPath
+                                    + "', but that was not found either.\n"
+                                    + "The Java classpath was: "
+                                    + classpath
+                                    + "\nIn addition, loadLibrary(\""
+                                    + shortLibraryName
+                                    + "\") was called, the exception for the "
+                                    + "loadLibrary() call was: "
+                                    + ex2
+                                    + (shortLibraryName
+                                            .equals(shortLibraryName2) ? ""
+                                            : "\nAlso, loadlibrary(\""
+                                                    + shortLibraryName2
+                                                    + "\") was called, "
+                                                    + "the exception  for the loadLibrary call was: "
+                                                    + ex3));
                     error.initCause(throwable);
                     error.printStackTrace();
                     throw error;

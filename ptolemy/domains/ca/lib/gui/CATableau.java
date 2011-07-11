@@ -245,8 +245,8 @@ class CAMatrixViewer extends Component {
 
             for (int i = 0; i < rowCount; i++) {
                 for (int j = 0; j < columnCount; j++) {
-                    int x1 = (int) (((float) j) * columnWidth);
-                    int y1 = (int) (((float) i) * rowWidth);
+                    int x1 = (int) ((j) * columnWidth);
+                    int y1 = (int) ((i) * rowWidth);
 
                     int x2 = (int) (columnWidth);
                     int y2 = (int) (rowWidth);
@@ -259,8 +259,8 @@ class CAMatrixViewer extends Component {
                         graphics.setColor(shadow);
                         graphics.fillPolygon(xPoints, yPoints, 3);
                         graphics.setColor(cellColor);
-                        graphics.fillRect(borderSize, borderSize, x2 - borderSize * 2,
-                                y2 - borderSize * 2);
+                        graphics.fillRect(borderSize, borderSize, x2
+                                - borderSize * 2, y2 - borderSize * 2);
 
                         graphics.translate(-x1, -y1);
                     }
@@ -270,12 +270,12 @@ class CAMatrixViewer extends Component {
             graphics.setColor(darkGray);
             graphics.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
             for (int i = 1; i <= columnCount; i++) {
-                int x = (int) (((float) i) * columnWidth);
+                int x = (int) ((i) * columnWidth);
                 graphics.drawLine(x, 0, x, this.getHeight());
             }
 
             for (int i = 1; i <= rowCount; i++) {
-                int y = (int) (((float) i) * rowWidth);
+                int y = (int) ((i) * rowWidth);
                 graphics.drawLine(0, y, this.getWidth(), y);
             }
         }
@@ -290,7 +290,6 @@ class CAMatrixViewer extends Component {
     public void setMatrix(double[][] matrix) {
         this.matrix = matrix;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

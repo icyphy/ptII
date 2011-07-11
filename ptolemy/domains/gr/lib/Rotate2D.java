@@ -192,8 +192,8 @@ public class Rotate2D extends GRTransform2D {
             final AffineTransform inputTransform = AffineTransform
                     .getRotateInstance(angle, anchorXValue, anchorYValue);
 
-            if (!figure.getTransformContext().getTransform().equals(
-                    inputTransform)) {
+            if (!figure.getTransformContext().getTransform()
+                    .equals(inputTransform)) {
                 if (!_isAccumulating()) {
                     inputTransform.concatenate(figure.getTransformContext()
                             .getInverseTransform());

@@ -55,7 +55,8 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 @Pt.AcceptedRating Red ()
 */
 
-public abstract class SharedBufferTransformer extends Transformer implements BufferingProfile {
+public abstract class SharedBufferTransformer extends Transformer implements
+        BufferingProfile {
 
     /**
      * Construct an instance of a SharedBufferTransformer. Should not be used
@@ -150,8 +151,8 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
      *  permitted, or if prefire(), fire(), or postfire() throw it.
      **/
     public int iterate(int iterationCount, boolean fireExclusive)
-        throws IllegalActionException {
-        _nextIterationExclusive  = fireExclusive;
+            throws IllegalActionException {
+        _nextIterationExclusive = fireExclusive;
         int result = super.iterate(iterationCount);
         // default to copying firing
         _nextIterationExclusive = false;

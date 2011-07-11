@@ -418,7 +418,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             }
         }
 
-        String[] functionsArray = new String [functions.size()];
+        String[] functionsArray = new String[functions.size()];
         functions.toArray(functionsArray);
 
         // True if we have a delete function that needs to return a Token
@@ -1101,10 +1101,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     protected String _printExecutionTime() {
         StringBuffer endCode = new StringBuffer();
         endCode.append(super._printExecutionTime());
-        endCode
-                .append("clock_gettime(CLOCK_REALTIME, &end);\n"
-                        + "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n"
-                        + "printf(\"execution time: %g seconds\\n\", dT);\n\n");
+        endCode.append("clock_gettime(CLOCK_REALTIME, &end);\n"
+                + "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n"
+                + "printf(\"execution time: %g seconds\\n\", dT);\n\n");
         return endCode.toString();
     }
 
@@ -1252,7 +1251,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     if (!JVMBitWidth.is32Bit()) {
                         widthFlag = "-m64 ";
                     }
-                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", widthFlag + "-dynamiclib");
+                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", widthFlag
+                            + "-dynamiclib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
                 } else if (osName.startsWith("SunOS")) {
@@ -1291,7 +1291,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             String uriString = uriAttribute.getURI().toString();
             templateList.add(uriString.substring(0,
                     uriString.lastIndexOf("/") + 1)
-                    + _sanitizedModelName + ".mk.in");
+                    + _sanitizedModelName
+                    + ".mk.in");
         }
 
         String generatorDirectory = generatorPackageList.stringValue().replace(
@@ -1347,9 +1348,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 }
             }
         } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable, "Failed to read \""
-                    + makefileTemplateName + "\" or write \""
-                    + makefileOutputName + "\"");
+            throw new IllegalActionException(this, throwable,
+                    "Failed to read \"" + makefileTemplateName
+                            + "\" or write \"" + makefileOutputName + "\"");
         } finally {
             if (makefileTemplateReader != null) {
                 try {
@@ -1443,7 +1444,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             for (int loop = 2; loop > 0; loop--) {
                 // Get all the directories that have include/jni.h under them.
                 File[] jdkFiles = potentialJavaHomeParentFile
-                    .listFiles(new _JniFileFilter());
+                        .listFiles(new _JniFileFilter());
                 if (jdkFiles != null && jdkFiles.length >= 1) {
                     // Sort and get the last directory, which should
                     // be the most recent JDK.
@@ -1490,7 +1491,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 // If we are under WebStart or running from jar files, we
                 // will need to copy libjvm.dll.a from the jar file
                 // that gcc can find it.
-                URL libjvmURL = Thread.currentThread().getContextClassLoader()
+                URL libjvmURL = Thread
+                        .currentThread()
+                        .getContextClassLoader()
                         .getResource(
                                 libjvmRelativeDirectory + "/" + libjvmFileName);
                 if (libjvmURL != null) {
@@ -1511,8 +1514,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                             libjvmAbsolutePath = libjvmAbsolutePath.replace(
                                     '\\', '/');
                             libjvmAbsoluteDirectory = libjvmAbsolutePath
-                                    .substring(0, libjvmAbsolutePath
-                                            .lastIndexOf("/"));
+                                    .substring(0,
+                                            libjvmAbsolutePath.lastIndexOf("/"));
 
                             // Get rid of everything before the last /lib
                             // and the .dll.a
@@ -1524,8 +1527,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
                         }
                     } catch (Throwable throwable) {
-                        throw new IllegalActionException(getComponent(), throwable,
-                                "Could not copy \"" + libjvmURL
+                        throw new IllegalActionException(getComponent(),
+                                throwable, "Could not copy \"" + libjvmURL
                                         + "\" to the file system, path was: \""
                                         + libjvmAbsolutePath + "\"");
                     }
@@ -1598,8 +1601,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
          *  @return true if include/jni.h is found.
          */
         public boolean accept(File pathname) {
-            return new File(pathname, "/include/jni.h")
-                .canRead();
+            return new File(pathname, "/include/jni.h").canRead();
         }
     }
 

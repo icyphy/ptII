@@ -56,8 +56,8 @@ public class Expression extends LatticeOntologyAdapter {
         List<Object> originalConceptables = super.getPropertyables();
         List<Object> newConceptables = new LinkedList<Object>();
         for (Object conceptable : originalConceptables) {
-            if (conceptable instanceof IOPort &&
-                    ((IOPort) conceptable).isInput()) {
+            if (conceptable instanceof IOPort
+                    && ((IOPort) conceptable).isInput()) {
                 continue;
             } else {
                 newConceptables.add(conceptable);

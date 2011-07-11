@@ -190,8 +190,8 @@ public class VergilErrorHandler implements ErrorHandler {
         // FIXME: The user should be able to click on the links and
         // jump to the line in the offending text.
         // Show the stack trace in a scrollable text area.
-        JTextArea text = new JTextArea(KernelException
-                .stackTraceToString(exception), 60, 80);
+        JTextArea text = new JTextArea(
+                KernelException.stackTraceToString(exception), 60, 80);
         JScrollPane scrollPane = new JScrollPane(text);
         scrollPane.setPreferredSize(new Dimension(600, 300));
         text.setCaretPosition(0);

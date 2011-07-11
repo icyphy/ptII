@@ -61,7 +61,8 @@ public class UnitConversionInfo extends Parameter {
      *   in the DimensionRepresentativeConcept container with the same name.
      */
     public UnitConversionInfo(DimensionRepresentativeConcept container,
-            String name) throws IllegalActionException, NameDuplicationException {
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         setTypeAtMost(BaseType.RECORD);
     }
@@ -96,15 +97,15 @@ public class UnitConversionInfo extends Parameter {
      *  @exception NameDuplicationException Thrown if there is already a NamedObj
      *   in the DimensionRepresentativeConcept container with the same name.
      */
-    public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
-        if (container == null ||
-                container instanceof DimensionRepresentativeConcept) {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        if (container == null
+                || container instanceof DimensionRepresentativeConcept) {
             super.setContainer(container);
         } else {
-            throw new IllegalActionException(this, "A UnitConversionInfo " +
-                            "parameter must be contained by a " +
-                            "DimensionRepresentativeConcept.");
+            throw new IllegalActionException(this, "A UnitConversionInfo "
+                    + "parameter must be contained by a "
+                    + "DimensionRepresentativeConcept.");
         }
     }
 }

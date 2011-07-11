@@ -48,8 +48,7 @@ public class ActuatorSetup extends OutputDevice {
      * @param actor The associated actor.
      *
      */
-    public ActuatorSetup(
-            ptolemy.domains.ptides.lib.ActuatorSetup actor) {
+    public ActuatorSetup(ptolemy.domains.ptides.lib.ActuatorSetup actor) {
         super(actor);
     }
 
@@ -67,7 +66,6 @@ public class ActuatorSetup extends OutputDevice {
         return processCode(_codeStream.toString());
     }
 
-
     /**
      * Generate the fire code. In this base class, add the name of the
      * associated component in the comment. It checks the inline parameter
@@ -82,8 +80,7 @@ public class ActuatorSetup extends OutputDevice {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
 
-        ptolemy.domains.ptides.lib.ActuatorSetup actor =
-            (ptolemy.domains.ptides.lib.ActuatorSetup) getComponent();
+        ptolemy.domains.ptides.lib.ActuatorSetup actor = (ptolemy.domains.ptides.lib.ActuatorSetup) getComponent();
         PtidesPreemptiveEDFDirector adapter = (PtidesPreemptiveEDFDirector) getAdapter(actor
                 .getDirector());
 

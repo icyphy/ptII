@@ -170,9 +170,8 @@ public class DataflowWithRates extends Dataflow {
             InputPattern inputPattern = inputPatterns[j];
             Expression repeatExpr = inputPattern.getRepeatExpr();
             int repeatVal = _computeRepeatExpression(repeatExpr, action);
-            signature.addInputRate(inputPattern.getPortname(), inputPattern
-                    .getVariables().length
-                    * repeatVal);
+            signature.addInputRate(inputPattern.getPortname(),
+                    inputPattern.getVariables().length * repeatVal);
         }
 
         OutputExpression[] outputexps = action.getOutputExpressions();
@@ -181,9 +180,8 @@ public class DataflowWithRates extends Dataflow {
             OutputExpression outputexp = outputexps[j];
             Expression repeatExpr = outputexp.getRepeatExpr();
             int repeatVal = _computeRepeatExpression(repeatExpr, action);
-            signature.addOutputRate(outputexp.getPortname(), outputexp
-                    .getExpressions().length
-                    * repeatVal);
+            signature.addOutputRate(outputexp.getPortname(),
+                    outputexp.getExpressions().length * repeatVal);
         }
 
         return signature;

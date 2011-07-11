@@ -246,8 +246,8 @@ public class SoundActor extends TypedAtomicActor {
                     playbackData[base] = (byte) intValue;
                     break;
                 default:
-                    throw new IllegalArgumentException(
-                            _bytesPerSample + " is not supported.");
+                    throw new IllegalArgumentException(_bytesPerSample
+                            + " is not supported.");
                 }
             }
         }

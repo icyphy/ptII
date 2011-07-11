@@ -140,8 +140,8 @@ public class FreeVariableModelAnalysis {
                 root = parser.generateParseTree(expression);
             }
 
-            Set freeIdentifiers = new HashSet(collector
-                    .collectFreeVariables(root));
+            Set freeIdentifiers = new HashSet(
+                    collector.collectFreeVariables(root));
 
             // Identifiers that reference other variables in the same container
             // are bound, not free.

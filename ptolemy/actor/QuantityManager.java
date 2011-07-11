@@ -57,7 +57,8 @@ public interface QuantityManager {
      *  @return A new receiver.
      *  @exception IllegalActionException If the receiver cannot be created.
      */
-    public abstract Receiver getReceiver(Receiver receiver)  throws IllegalActionException;
+    public abstract Receiver getReceiver(Receiver receiver)
+            throws IllegalActionException;
 
     /** Reset the QuantityManager.
      */
@@ -73,7 +74,7 @@ public interface QuantityManager {
      *  @param token The token for the communication to mediate.
      *  @exception IllegalActionException If the token cannot be sent.
      */
-    public void sendToken(Receiver source, Receiver receiver, Token token) throws IllegalActionException;
-
+    public void sendToken(Receiver source, Receiver receiver, Token token)
+            throws IllegalActionException;
 
 }

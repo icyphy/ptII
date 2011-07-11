@@ -140,8 +140,9 @@ public class ROM extends SynchronousFixTransformer {
             }
 
             ArrayToken valuesArray = (ArrayToken) values.getToken();
-            FixPoint value = new FixPoint(((ScalarToken) valuesArray
-                    .getElement(addressValue)).intValue());
+            FixPoint value = new FixPoint(
+                    ((ScalarToken) valuesArray.getElement(addressValue))
+                            .intValue());
             Token result = new FixToken(value);
 
             sendOutput(output, 0, result);

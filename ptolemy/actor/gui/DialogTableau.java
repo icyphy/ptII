@@ -141,8 +141,8 @@ public class DialogTableau extends Tableau {
         DialogTableau newDialogTableau;
 
         try {
-            newDialogTableau = new DialogTableau(effigy, effigy
-                    .uniqueName("dialog"));
+            newDialogTableau = new DialogTableau(effigy,
+                    effigy.uniqueName("dialog"));
 
             PtolemyDialog dialog = null;
             Constructor[] constructors = dialogClass.getConstructors();

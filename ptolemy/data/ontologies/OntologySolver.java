@@ -153,7 +153,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
         return _momlHandler;
     }
 
-
     /** Invoke the solver directly, and display any concepts resolved by this
      * solver.
      * @return True if the invocation succeeds; otherwise false which means an
@@ -180,7 +179,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
             checkErrors();
 
             if (displayProperties) {
-                 displayConcepts();
+                displayConcepts();
             }
 
         } catch (KernelException e) {

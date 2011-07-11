@@ -56,9 +56,11 @@ public abstract class MoMLFilterSimple implements MoMLFilter {
      *  @return The value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue, String xmlFile, MoMLParser parser) {
+            String attributeName, String attributeValue, String xmlFile,
+            MoMLParser parser) {
         // Ignore the MoMLParser argument for backward compatiblity.
-        return filterAttributeValue(container, element, attributeName, attributeValue, xmlFile);
+        return filterAttributeValue(container, element, attributeName,
+                attributeValue, xmlFile);
     }
 
     /** Reset private variables.
@@ -72,7 +74,8 @@ public abstract class MoMLFilterSimple implements MoMLFilter {
      *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData, String xmlFile, MoMLParser parser) throws Exception {
+            StringBuffer currentCharData, String xmlFile, MoMLParser parser)
+            throws Exception {
         filterEndElement(container, elementName, currentCharData, xmlFile);
     }
 }

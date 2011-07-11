@@ -817,7 +817,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 AST __t27 = _t;
                 PtalonAST tmp17_AST = null;
                 PtalonAST tmp17_AST_in = null;
-                tmp17_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp17_AST = (PtalonAST) astFactory.create(_t);
                 tmp17_AST_in = (PtalonAST) _t;
                 astFactory.addASTChild(currentAST, tmp17_AST);
                 ASTPair __currentAST27 = currentAST.copy();
@@ -843,8 +843,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                         AST __t29 = _t;
                         PtalonAST tmp18_AST = null;
                         PtalonAST tmp18_AST_in = null;
-                        tmp18_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
+                        tmp18_AST = (PtalonAST) astFactory.create(_t);
                         tmp18_AST_in = (PtalonAST) _t;
                         astFactory.addASTChild(currentAST, tmp18_AST);
                         ASTPair __currentAST29 = currentAST.copy();
@@ -916,7 +915,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 AST __t30 = _t;
                 PtalonAST tmp19_AST = null;
                 PtalonAST tmp19_AST_in = null;
-                tmp19_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp19_AST = (PtalonAST) astFactory.create(_t);
                 tmp19_AST_in = (PtalonAST) _t;
                 astFactory.addASTChild(currentAST, tmp19_AST);
                 ASTPair __currentAST30 = currentAST.copy();
@@ -927,7 +926,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 AST __t31 = _t;
                 PtalonAST tmp20_AST = null;
                 PtalonAST tmp20_AST_in = null;
-                tmp20_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp20_AST = (PtalonAST) astFactory.create(_t);
                 tmp20_AST_in = (PtalonAST) _t;
                 astFactory.addASTChild(currentAST, tmp20_AST);
                 ASTPair __currentAST31 = currentAST.copy();
@@ -980,7 +979,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
         PtalonAST qualified_identifier_AST = null;
 
         PtalonAST tmp21_AST = null;
-        tmp21_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+        tmp21_AST = (PtalonAST) astFactory.create(_t);
         astFactory.addASTChild(currentAST, tmp21_AST);
         match(_t, QUALID);
         _t = _t.getNextSibling();
@@ -1008,7 +1007,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
             AST __t33 = _t;
             PtalonAST tmp22_AST = null;
             PtalonAST tmp22_AST_in = null;
-            tmp22_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+            tmp22_AST = (PtalonAST) astFactory.create(_t);
             tmp22_AST_in = (PtalonAST) _t;
             astFactory.addASTChild(currentAST, tmp22_AST);
             ASTPair __currentAST33 = currentAST.copy();
@@ -1039,7 +1038,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                     AST __t35 = _t;
                     PtalonAST tmp23_AST = null;
                     PtalonAST tmp23_AST_in = null;
-                    tmp23_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                    tmp23_AST = (PtalonAST) astFactory.create(_t);
                     tmp23_AST_in = (PtalonAST) _t;
                     astFactory.addASTChild(currentAST, tmp23_AST);
                     ASTPair __currentAST35 = currentAST.copy();
@@ -1115,7 +1114,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
             AST __t37 = _t;
             PtalonAST tmp24_AST = null;
             PtalonAST tmp24_AST_in = null;
-            tmp24_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+            tmp24_AST = (PtalonAST) astFactory.create(_t);
             tmp24_AST_in = (PtalonAST) _t;
             astFactory.addASTChild(currentAST, tmp24_AST);
             ASTPair __currentAST37 = currentAST.copy();
@@ -1416,7 +1415,8 @@ public class PtalonPopulator extends antlr.TreeParser implements
         info.enterActorDeclaration(a.getText());
 
         {
-            _loop57: do {
+            _loop57:
+            do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -1541,7 +1541,8 @@ public class PtalonPopulator extends antlr.TreeParser implements
             }
         }
         {
-            _loop53: do {
+            _loop53:
+            do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -2051,7 +2052,8 @@ public class PtalonPopulator extends antlr.TreeParser implements
         }
 
         {
-            _loop78: do {
+            _loop78:
+            do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -2116,7 +2118,8 @@ public class PtalonPopulator extends antlr.TreeParser implements
         }
 
         {
-            _loop81: do {
+            _loop81:
+            do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -2274,7 +2277,8 @@ public class PtalonPopulator extends antlr.TreeParser implements
         }
 
         {
-            _loop88: do {
+            _loop88:
+            do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -2441,7 +2445,8 @@ public class PtalonPopulator extends antlr.TreeParser implements
         _t = __t94;
         _t = _t.getNextSibling();
         {
-            _loop96: do {
+            _loop96:
+            do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -2583,7 +2588,8 @@ public class PtalonPopulator extends antlr.TreeParser implements
         info.enterTransformation(incremental);
 
         {
-            _loop102: do {
+            _loop102:
+            do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }
@@ -2752,7 +2758,8 @@ public class PtalonPopulator extends antlr.TreeParser implements
         this.info.setActiveBranch(true);
 
         {
-            _loop108: do {
+            _loop108:
+            do {
                 if (_t == null) {
                     _t = ASTNULL;
                 }

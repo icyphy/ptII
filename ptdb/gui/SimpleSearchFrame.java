@@ -224,50 +224,43 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
         addWindowListener(new WindowListener() {
 
-
             public void windowOpened(WindowEvent e) {
                 // Do nothing.
             }
-
 
             public void windowIconified(WindowEvent e) {
                 // Do nothing.
             }
 
-
             public void windowDeiconified(WindowEvent e) {
                 // Do nothing.
             }
-
 
             public void windowDeactivated(WindowEvent e) {
                 // Do nothing.
             }
 
-
             public void windowClosing(WindowEvent e) {
 
                 closeFrame();
 
-//                if (_patternMatchframe != null) {
-//                    _patternMatchframe.dispose();
-//                }
-//
-//                dispose();
+                //                if (_patternMatchframe != null) {
+                //                    _patternMatchframe.dispose();
+                //                }
+                //
+                //                dispose();
             }
-
 
             public void windowClosed(WindowEvent e) {
 
                 closeFrame();
-//
-//                if (_patternMatchframe != null) {
-//                    _patternMatchframe.dispose();
-//                }
-//
-//                dispose();
+                //
+                //                if (_patternMatchframe != null) {
+                //                    _patternMatchframe.dispose();
+                //                }
+                //
+                //                dispose();
             }
-
 
             public void windowActivated(WindowEvent e) {
                 // Do nothing.
@@ -278,16 +271,13 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
         _attributesListPanel.getNameTextField().addKeyListener(
                 new KeyListener() {
 
-
                     public void keyTyped(KeyEvent e) {
                         // Do nothing.
                     }
 
-
                     public void keyReleased(KeyEvent e) {
                         // Do nothing.
                     }
-
 
                     public void keyPressed(KeyEvent e) {
 
@@ -748,14 +738,13 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                     }
 
                     if (filename.exists()
-                            && !filename.getCanonicalFile().toString().equals(
-                                    _saveLocation)) {
+                            && !filename.getCanonicalFile().toString()
+                                    .equals(_saveLocation)) {
 
                         Object[] options = { "Yes", "No" };
-                        int n = JOptionPane.showOptionDialog(this, filename
-                                .toString()
-                                + " already exists.\n"
-                                + "Do you want to replace it?",
+                        int n = JOptionPane.showOptionDialog(this,
+                                filename.toString() + " already exists.\n"
+                                        + "Do you want to replace it?",
                                 "Overwrite File?", JOptionPane.YES_NO_OPTION,
                                 JOptionPane.WARNING_MESSAGE, null, options,
                                 options[1]);
@@ -1011,7 +1000,6 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
             new Thread(new Runnable() {
 
-
                 public void run() {
                     // Call the Search Manager to trigger the search.
                     SearchManager searchManager = new SearchManager();
@@ -1104,7 +1092,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
                             _containerModel, _sourceFrame,
                             SimpleSearchFrame.this);
 
-                    _ptdbContainedFramesManager.addContainedFrame(_patternMatchframe);
+                    _ptdbContainedFramesManager
+                            .addContainedFrame(_patternMatchframe);
 
                 } catch (Exception e2) {
 

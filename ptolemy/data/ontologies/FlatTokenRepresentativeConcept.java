@@ -42,7 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  */
-public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentative {
+public class FlatTokenRepresentativeConcept extends
+        InfiniteConceptRepresentative {
 
     /** Create a new FlatTokenRepresentativeConcept with the specified name and
      *  ontology.
@@ -90,8 +91,7 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
      *   creating the FlatTokenInfiniteConcept from the given token.
      */
     public FlatTokenInfiniteConcept getFlatTokenInfiniteConceptByToken(
-            Token tokenValue)
-        throws IllegalActionException {
+            Token tokenValue) throws IllegalActionException {
 
         String conceptString = getName() + "_" + tokenValue.toString();
         return (FlatTokenInfiniteConcept) getInfiniteConceptByString(conceptString);
@@ -119,7 +119,8 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
                 tempTokenVariable = new Variable(this, "_tempTokenVariable");
                 tempTokenVariable.setExpression(expression);
 
-                return _instantiateFlatTokenInfiniteConcept(tempTokenVariable.getToken());
+                return _instantiateFlatTokenInfiniteConcept(tempTokenVariable
+                        .getToken());
             } catch (NameDuplicationException nameDupEx) {
                 throw new IllegalActionException(this, nameDupEx,
                         "Could not instantiate "
@@ -131,16 +132,18 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
                         tempTokenVariable.setContainer(null);
                     }
                 } catch (NameDuplicationException nameDupExAfterSetContainerToNull) {
-                    throw new IllegalActionException(this,
-                            nameDupExAfterSetContainerToNull, "Could " +
-                                    "not remove tempTokenVariable object from this " +
-                                    "concept after it is no longer needed.");
+                    throw new IllegalActionException(
+                            this,
+                            nameDupExAfterSetContainerToNull,
+                            "Could "
+                                    + "not remove tempTokenVariable object from this "
+                                    + "concept after it is no longer needed.");
                 }
             }
         } else {
-            throw new IllegalActionException(this, "The given string cannot " +
-                            "be used to derive a valid infinite concept contained " +
-                            "by this representative.");
+            throw new IllegalActionException(this, "The given string cannot "
+                    + "be used to derive a valid infinite concept contained "
+                    + "by this representative.");
         }
     }
 
@@ -154,9 +157,8 @@ public class FlatTokenRepresentativeConcept extends InfiniteConceptRepresentativ
      *   cannot be created.
      */
     protected FlatTokenInfiniteConcept _instantiateFlatTokenInfiniteConcept(
-            Token tokenValue) throws
-        IllegalActionException {
+            Token tokenValue) throws IllegalActionException {
         return FlatTokenInfiniteConcept.createFlatTokenInfiniteConcept(
-                    getOntology(), this, tokenValue);
+                getOntology(), this, tokenValue);
     }
 }

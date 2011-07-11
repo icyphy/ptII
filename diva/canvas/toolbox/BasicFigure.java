@@ -336,8 +336,9 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
         _lineWidth = lineWidth;
 
         if (_stroke instanceof BasicStroke) {
-            _stroke = new BasicStroke(lineWidth, ((BasicStroke) _stroke)
-                    .getEndCap(), ((BasicStroke) _stroke).getLineJoin(),
+            _stroke = new BasicStroke(lineWidth,
+                    ((BasicStroke) _stroke).getEndCap(),
+                    ((BasicStroke) _stroke).getLineJoin(),
                     ((BasicStroke) _stroke).getMiterLimit(),
                     ((BasicStroke) _stroke).getDashArray(), 0.0f);
         } else {

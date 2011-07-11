@@ -139,8 +139,7 @@ public class PortNameChanges extends MoMLFilterSimple {
             // We are processing actors that have port names.
             // Now map the old port to the new port.
             String newPort = (String) _containerPortMap.get(container
-                    .getFullName()
-                    + "." + attributeValue);
+                    .getFullName() + "." + attributeValue);
 
             // Extreme chaos here because sometimes
             // container.getFullName() will be ".transform_2.transform" and

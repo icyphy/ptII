@@ -505,7 +505,6 @@ public class GraphPatternSearchEditor extends TransformationEditor implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     protected void _addMenus() {
 
         super._addMenus();

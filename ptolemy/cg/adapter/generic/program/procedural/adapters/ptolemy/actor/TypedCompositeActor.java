@@ -196,8 +196,7 @@ public class TypedCompositeActor extends
      *   the actor.
      */
     @Override
-    public String generateVariableDeclaration()
-            throws IllegalActionException {
+    public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Director directorAdapter = (Director) getCodeGenerator().getAdapter(
@@ -523,10 +522,11 @@ public class TypedCompositeActor extends
         Iterator<?> outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .outputPortList().iterator();
 
-        if ((getComponent() instanceof ModularCodeGenTypedCompositeActor) &&
-                ((ptolemy.actor.CompositeActor) getComponent())
-                .outputPortList().size() > 0)
+        if ((getComponent() instanceof ModularCodeGenTypedCompositeActor)
+                && ((ptolemy.actor.CompositeActor) getComponent())
+                        .outputPortList().size() > 0) {
             code.append("if (export) {" + _eol);
+        }
 
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();

@@ -214,7 +214,8 @@ public class TTESwitch extends MonitoredQuantityManager {
      */
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
-        if (_nextTimeFree != null && currentTime.compareTo(_nextTimeFree) == 0
+        if (_nextTimeFree != null
+                && currentTime.compareTo(_nextTimeFree) == 0
                 && (_ttTokens.size() == 1 || (_ttTokens.size() == 0 && _etTokens
                         .size() > 0))) {
             _nextTimeFree = currentTime.add(_serviceTimeValue);

@@ -121,7 +121,7 @@ public class FileWriter extends Sink {
      *  @exception CloneNotSupportedException If the superclass throws it.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FileWriter newObject = (FileWriter)super.clone(workspace);
+        FileWriter newObject = (FileWriter) super.clone(workspace);
         newObject._previousFilename = null;
         newObject._writer = null;
         return newObject;
@@ -143,7 +143,8 @@ public class FileWriter extends Sink {
             // NOTE: getExpression() will not get the current value
             // of this sort of PortParameter. Instead, it gets the
             // default value. Have to use getToken().
-            String filenameValue = ((StringToken)filename.getToken()).stringValue();
+            String filenameValue = ((StringToken) filename.getToken())
+                    .stringValue();
 
             if (filenameValue == null || filenameValue.equals("\"\"")) {
                 // See $PTII/ptolemy/domains/sdf/kernel/test/auto/zeroRate_delay5.xml, which sets
@@ -171,7 +172,7 @@ public class FileWriter extends Sink {
                 if (input.hasToken(i)) {
                     Token inputToken = input.get(i);
                     if (inputToken instanceof StringToken) {
-                        last = ((StringToken)inputToken).stringValue();
+                        last = ((StringToken) inputToken).stringValue();
                     } else {
                         last = inputToken.toString();
                     }
@@ -219,7 +220,8 @@ public class FileWriter extends Sink {
      *  @param writer The writer to write to.
      *  @exception IllegalActionException If an IO error occurs.
      */
-    private void _setWriter(java.io.Writer writer) throws IllegalActionException {
+    private void _setWriter(java.io.Writer writer)
+            throws IllegalActionException {
         try {
             if ((_writer != null) && (_writer != _stdOut)) {
                 _writer.close();

@@ -52,7 +52,7 @@ public class LimitedFiringSource extends NamedProgramCodeGeneratorAdapter {
      */
     public LimitedFiringSource(ptolemy.actor.lib.LimitedFiringSource actor) {
         super(actor);
-   }
+    }
 
     /**
      * Generate postfire code if the firingCountLimit parameter is non-zero.
@@ -65,9 +65,10 @@ public class LimitedFiringSource extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.actor.lib.LimitedFiringSource actor = (ptolemy.actor.lib.LimitedFiringSource) getComponent();
 
-        if (((IntToken)actor.firingCountLimit.getToken()).intValue() > 0) {
+        if (((IntToken) actor.firingCountLimit.getToken()).intValue() > 0) {
             ArrayList<String> args = new ArrayList<String>();
-            code.append(getTemplateParser().generateBlockCode("postfireFiringCountLimitBlock", args));
+            code.append(getTemplateParser().generateBlockCode(
+                    "postfireFiringCountLimitBlock", args));
         }
         return code.toString();
     }
@@ -83,9 +84,10 @@ public class LimitedFiringSource extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.actor.lib.LimitedFiringSource actor = (ptolemy.actor.lib.LimitedFiringSource) getComponent();
 
-        if (((IntToken)actor.firingCountLimit.getToken()).intValue() > 0) {
+        if (((IntToken) actor.firingCountLimit.getToken()).intValue() > 0) {
             ArrayList<String> args = new ArrayList<String>();
-            code.append(getTemplateParser().generateBlockCode("preinitializeFiringCountLimitBlock", args));
+            code.append(getTemplateParser().generateBlockCode(
+                    "preinitializeFiringCountLimitBlock", args));
         }
         return code.toString();
     }

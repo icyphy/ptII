@@ -258,7 +258,7 @@ public class IOPort extends ComponentPort {
             if (parameterToken != null) {
                 if (parameterToken instanceof ObjectToken) {
                     // FIXME: Why is quantityManagerObject not read?
-                    /* Object quantityManagerObject =*/ ((ObjectToken) parameterToken)
+                    /* Object quantityManagerObject =*/((ObjectToken) parameterToken)
                             .getValue();
                     _qmListValid = false;
                 }

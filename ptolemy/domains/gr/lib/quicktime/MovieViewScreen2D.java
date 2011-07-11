@@ -236,14 +236,12 @@ public class MovieViewScreen2D extends ViewScreen2D implements StdQTConstants,
             int kTrackStart = 0;
             int kMediaTime = 0;
             int kMediaRate = 1;
-            _videoTrack.insertMedia(kTrackStart, kMediaTime, _videoMedia
-                    .getDuration(), kMediaRate);
+            _videoTrack.insertMedia(kTrackStart, kMediaTime,
+                    _videoMedia.getDuration(), kMediaRate);
 
             // Save movie to file.
             OpenMovieFile outStream = OpenMovieFile.asWrite(_file);
-            _movie
-                    .addResource(outStream, movieInDataForkResID, _file
-                            .getName());
+            _movie.addResource(outStream, movieInDataForkResID, _file.getName());
             outStream.close();
             System.out.println("Finished movie");
         } catch (Exception ex) {

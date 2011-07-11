@@ -79,9 +79,11 @@ public class JCanvasTest extends TestSuite {
             public void check() throws TestFailedException {
                 CanvasPane pane = canvas.getCanvasPane();
                 assertExpr(pane != null, "pane != null");
-                assertExpr(pane.getClass().getName().equals(
-                        "diva.canvas.GraphicsPane"), pane.getClass().getName()
-                        + " != diva.canvas.GraphicsPane");
+                assertExpr(
+                        pane.getClass().getName()
+                                .equals("diva.canvas.GraphicsPane"), pane
+                                .getClass().getName()
+                                + " != diva.canvas.GraphicsPane");
             }
         });
     }

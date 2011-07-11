@@ -78,8 +78,8 @@ public class DummyTransformer extends SharedBufferTransformer {
         super(container, name);
     }
 
-/////////////////////////////////////////////////////////////////////
-////                    protected fields                         ////
+    /////////////////////////////////////////////////////////////////////
+    ////                    protected fields                         ////
 
     /**
      * Fire the actor in shared firing mode.
@@ -90,12 +90,13 @@ public class DummyTransformer extends SharedBufferTransformer {
         if (input.hasToken(0)) {
             Token t = input.get(0);
             if (!(t instanceof DummyReferenceToken)) {
-                throw new IllegalActionException("Token is of wrong type. Expected DummyReferenceToken");
+                throw new IllegalActionException(
+                        "Token is of wrong type. Expected DummyReferenceToken");
             }
-            DummyReferenceToken rt = (DummyReferenceToken)t;
+            DummyReferenceToken rt = (DummyReferenceToken) t;
             // Get and duplicate the frame
             DummyFrame f = ((DummyFrame) rt.getReference()).clone();
-            f.value ++;
+            f.value++;
             // send a new token
             output.send(0, new DummyReferenceToken(f));
         }
@@ -109,10 +110,10 @@ public class DummyTransformer extends SharedBufferTransformer {
     protected void _fireExclusive() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token t = input.get(0);
-            DummyReferenceToken rt = (DummyReferenceToken)t;
+            DummyReferenceToken rt = (DummyReferenceToken) t;
             // Get the frame without duplicating
             DummyFrame f = (DummyFrame) rt.getReference();
-            f.value ++;
+            f.value++;
             // send the original token
             output.send(0, t);
         }

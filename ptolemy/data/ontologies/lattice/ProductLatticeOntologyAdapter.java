@@ -60,8 +60,8 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  @exception IllegalActionException Thrown if the adapter cannot be
      *   initialized.
      */
-    public ProductLatticeOntologyAdapter(ProductLatticeOntologySolver solver, Object component)
-            throws IllegalActionException {
+    public ProductLatticeOntologyAdapter(ProductLatticeOntologySolver solver,
+            Object component) throws IllegalActionException {
         this(solver, component, true);
     }
 
@@ -79,7 +79,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
             throws IllegalActionException {
         super(solver, component, useDefaultConstraints);
 
-       _tupleAdapters =  getTupleAdapters(solver, component);
+        _tupleAdapters = getTupleAdapters(solver, component);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,9 +96,12 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
         if (!_useDefaultConstraints) {
             for (LatticeOntologyAdapter adapter : _tupleAdapters) {
                 if (adapter != null) {
-                    Ontology adapterOntology = adapter.getSolver().getOntology();
-                    adapter._addDefaultConstraints(adapter.getSolver()._getConstraintType());
-                    addConstraintsFromTupleOntologyAdapter(adapter.constraintList(), adapterOntology, this);
+                    Ontology adapterOntology = adapter.getSolver()
+                            .getOntology();
+                    adapter._addDefaultConstraints(adapter.getSolver()
+                            ._getConstraintType());
+                    addConstraintsFromTupleOntologyAdapter(
+                            adapter.constraintList(), adapterOntology, this);
                 }
             }
         }
@@ -131,12 +134,12 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  @exception IllegalActionException Thrown if there is an error creating
      *   the new constraints.
      */
-    public static void addConstraintsFromTupleOntologyAdapter(List<Inequality> constraints,
-            Ontology sourceOntology,
+    public static void addConstraintsFromTupleOntologyAdapter(
+            List<Inequality> constraints, Ontology sourceOntology,
             LatticeOntologyAdapter productLatticeOntologyAdapter)
-                throws IllegalActionException {
-        ProductLatticeOntology productOntology =
-            ((ProductLatticeOntologySolver) productLatticeOntologyAdapter.getSolver()).getOntology();
+            throws IllegalActionException {
+        ProductLatticeOntology productOntology = ((ProductLatticeOntologySolver) productLatticeOntologyAdapter
+                .getSolver()).getOntology();
 
         for (Inequality constraint : constraints) {
             Object greater = constraint.getGreaterTerm().getAssociatedObject();
@@ -146,48 +149,62 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
             if (lesser == null) {
 
                 // Get the derived product lattice concept for this concept value.
-                lesser = getDerivedConceptForProductLattice((Concept) constraint.getLesserTerm().getValue(), productOntology);
+                lesser = getDerivedConceptForProductLattice(
+                        (Concept) constraint.getLesserTerm().getValue(),
+                        productOntology);
                 if (lesser != null) {
                     productLatticeOntologyAdapter.setAtLeast(greater, lesser);
                 }
 
-            // The lesser element is a concept function so it needs a wrapper for the product lattice ontology solver.
+                // The lesser element is a concept function so it needs a wrapper for the product lattice ontology solver.
             } else if (lesser instanceof ConceptFunction) {
-                String wrapperName = "wrapper_" + ((ConceptFunction) lesser).getName();
-                ProductLatticeWrapperConceptFunction wrapperFunction =
-                    new ProductLatticeWrapperConceptFunction(wrapperName, productOntology, sourceOntology, (ConceptFunction) lesser);
+                String wrapperName = "wrapper_"
+                        + ((ConceptFunction) lesser).getName();
+                ProductLatticeWrapperConceptFunction wrapperFunction = new ProductLatticeWrapperConceptFunction(
+                        wrapperName, productOntology, sourceOntology,
+                        (ConceptFunction) lesser);
 
                 // Get the dependent terms for the concept function inequality term and make them new terms
                 // for the product lattice ontology.
-                InequalityTerm[] dependentTerms = ((ConceptFunctionInequalityTerm) constraint.getLesserTerm()).getDependentTerms();
+                InequalityTerm[] dependentTerms = ((ConceptFunctionInequalityTerm) constraint
+                        .getLesserTerm()).getDependentTerms();
                 for (int i = 0; i < dependentTerms.length; i++) {
                     Object termObject = dependentTerms[i].getAssociatedObject();
 
                     if (termObject != null) {
-                        dependentTerms[i] = productLatticeOntologyAdapter.getSolver().getConceptTerm(termObject);
+                        dependentTerms[i] = productLatticeOntologyAdapter
+                                .getSolver().getConceptTerm(termObject);
                     } else {
-                        Concept concept = (Concept) dependentTerms[i].getValue();
-                        Concept newTermConcept = getDerivedConceptForProductLattice(concept, productOntology);
+                        Concept concept = (Concept) dependentTerms[i]
+                                .getValue();
+                        Concept newTermConcept = getDerivedConceptForProductLattice(
+                                concept, productOntology);
                         dependentTerms[i] = newTermConcept;
                     }
                 }
 
                 productLatticeOntologyAdapter.setAtLeast(greater,
-                        new ConceptFunctionInequalityTerm(wrapperFunction, dependentTerms));
+                        new ConceptFunctionInequalityTerm(wrapperFunction,
+                                dependentTerms));
 
-            // Otherwise the lesser element is just another object in the model
-            // that needs a derived concept function to transform its concept
-            // value in the original latice into a derived product lattice
-            // concept value for the product lattice ontology solver.
+                // Otherwise the lesser element is just another object in the model
+                // that needs a derived concept function to transform its concept
+                // value in the original latice into a derived product lattice
+                // concept value for the product lattice ontology solver.
             } else {
                 List<Ontology> domainOntologyList = new ArrayList<Ontology>(1);
                 domainOntologyList.add(sourceOntology);
-                ProductLatticeDerivedConceptFunction derivedFunction =
-                    new ProductLatticeDerivedConceptFunction("derivedFunction", productOntology, sourceOntology);
+                ProductLatticeDerivedConceptFunction derivedFunction = new ProductLatticeDerivedConceptFunction(
+                        "derivedFunction", productOntology, sourceOntology);
 
-                productLatticeOntologyAdapter.setAtLeast(greater,
-                        new ConceptFunctionInequalityTerm(derivedFunction,
-                                new InequalityTerm[]{ productLatticeOntologyAdapter.getSolver().getConceptTerm(lesser) }));
+                productLatticeOntologyAdapter
+                        .setAtLeast(
+                                greater,
+                                new ConceptFunctionInequalityTerm(
+                                        derivedFunction,
+                                        new InequalityTerm[] { productLatticeOntologyAdapter
+                                                .getSolver().getConceptTerm(
+                                                        lesser) }));
             }
         }
     }
@@ -210,26 +227,28 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      */
     public static Concept getComponentConceptFromProductLatticeConcept(
             Concept productLatticeConcept, Ontology componentOntology)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         if (productLatticeConcept instanceof RecordConcept) {
-            RecordConcept originalOntologyRecordConcept =
-                RecordConcept.createRecordConcept(componentOntology);
-            for (String field : ((RecordConcept) productLatticeConcept).keySet()) {
-                ((RecordConcept) originalOntologyRecordConcept).putConcept(field,
-                        ((ProductLatticeConcept) ((RecordConcept) productLatticeConcept).
-                                getConcept(field)).
-                                    getComponentConceptValue(
-                                            componentOntology));
+            RecordConcept originalOntologyRecordConcept = RecordConcept
+                    .createRecordConcept(componentOntology);
+            for (String field : ((RecordConcept) productLatticeConcept)
+                    .keySet()) {
+                (originalOntologyRecordConcept)
+                        .putConcept(
+                                field,
+                                ((ProductLatticeConcept) ((RecordConcept) productLatticeConcept)
+                                        .getConcept(field))
+                                        .getComponentConceptValue(componentOntology));
             }
             return originalOntologyRecordConcept;
         } else if (productLatticeConcept instanceof ProductLatticeConcept) {
-            return ((ProductLatticeConcept) productLatticeConcept).
-                    getComponentConceptValue(componentOntology);
+            return ((ProductLatticeConcept) productLatticeConcept)
+                    .getComponentConceptValue(componentOntology);
         } else {
-            throw new IllegalActionException("The productLatticeConcept input " +
-                            "must be an instance of either ProductLatticeConcept " +
-                            "or RecordConcept.");
+            throw new IllegalActionException("The productLatticeConcept input "
+                    + "must be an instance of either ProductLatticeConcept "
+                    + "or RecordConcept.");
         }
     }
 
@@ -245,41 +264,56 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  @exception IllegalActionException Thrown if the concept's ontology is not
      *   part of the given product lattice ontology.
      */
-    public static Concept getDerivedConceptForProductLattice(Concept concept, ProductLatticeOntology productOntology)
+    public static Concept getDerivedConceptForProductLattice(Concept concept,
+            ProductLatticeOntology productOntology)
             throws IllegalActionException {
         if (concept instanceof RecordConcept) {
-            RecordConcept productLatticeRecordConcept = RecordConcept.createRecordConcept(productOntology);
+            RecordConcept productLatticeRecordConcept = RecordConcept
+                    .createRecordConcept(productOntology);
             for (String field : ((RecordConcept) concept).keySet()) {
-                productLatticeRecordConcept.putConcept(field, getDerivedConceptForProductLattice(((RecordConcept) concept).getConcept(field), productOntology));
+                productLatticeRecordConcept.putConcept(
+                        field,
+                        getDerivedConceptForProductLattice(
+                                ((RecordConcept) concept).getConcept(field),
+                                productOntology));
             }
 
             return productLatticeRecordConcept;
         } else {
-            List<Ontology> tupleOntologies = productOntology.getLatticeOntologies();
+            List<Ontology> tupleOntologies = productOntology
+                    .getLatticeOntologies();
             Ontology sourceOntology = concept.getOntology();
             boolean foundOntology = false;
 
             if (tupleOntologies != null) {
-                List<Concept> conceptTuple = new ArrayList<Concept>(tupleOntologies.size());
+                List<Concept> conceptTuple = new ArrayList<Concept>(
+                        tupleOntologies.size());
                 for (Ontology ontology : tupleOntologies) {
 
                     // FIXME: A single ontology could have multiple instances but we don't
                     // have a defined equals() method for ontologies, so this hack of
                     // comparing their Ptolemy class names is used.
-                    if (sourceOntology.getClassName().equals(ontology.getClassName())) {
-                        conceptTuple.add(ontology.getConceptByString(concept.toString()));
+                    if (sourceOntology.getClassName().equals(
+                            ontology.getClassName())) {
+                        conceptTuple.add(ontology.getConceptByString(concept
+                                .toString()));
                         foundOntology = true;
                     } else {
-                        conceptTuple.add((Concept) ontology.getConceptGraph().bottom());
+                        conceptTuple.add(ontology.getConceptGraph().bottom());
                     }
                 }
 
                 if (!foundOntology) {
-                    throw new IllegalActionException("The concept " + concept.getName() +
-                            " belongs to an ontology " + sourceOntology.getName() +
-                            " that is not a component of the given product lattice ontology " + productOntology.getName() + ".");
+                    throw new IllegalActionException(
+                            "The concept "
+                                    + concept.getName()
+                                    + " belongs to an ontology "
+                                    + sourceOntology.getName()
+                                    + " that is not a component of the given product lattice ontology "
+                                    + productOntology.getName() + ".");
                 }
-                ProductLatticeConcept value = productOntology.getProductLatticeConceptFromTuple(conceptTuple);
+                ProductLatticeConcept value = productOntology
+                        .getProductLatticeConceptFromTuple(conceptTuple);
                 return value;
             } else {
                 return null;
@@ -295,10 +329,14 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  @exception IllegalActionException Thrown if there is an error in initializing
      *   the tuple ontology adapters.
      */
-    public static List<LatticeOntologyAdapter> getTupleAdapters(ProductLatticeOntologySolver solver, Object component) throws IllegalActionException {
+    public static List<LatticeOntologyAdapter> getTupleAdapters(
+            ProductLatticeOntologySolver solver, Object component)
+            throws IllegalActionException {
         List<LatticeOntologyAdapter> tupleAdapters = new ArrayList<LatticeOntologyAdapter>();
-        List<Ontology> tupleOntologies = ((ProductLatticeOntology) solver.getOntology()).getLatticeOntologies();
-        List<LatticeOntologySolver> containedSolvers = solver.getAllContainedOntologySolvers();
+        List<Ontology> tupleOntologies = (solver.getOntology())
+                .getLatticeOntologies();
+        List<LatticeOntologySolver> containedSolvers = solver
+                .getAllContainedOntologySolvers();
 
         if (tupleOntologies != null && containedSolvers != null) {
             for (Ontology ontology : tupleOntologies) {
@@ -307,8 +345,10 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                     // FIXME: A single ontology could have multiple instances but we don't
                     // have a defined equals() method for ontologies, so this hack of
                     // comparing their Ptolemy class names is used.
-                    if (innerSolver.getOntology().getClassName().equals(ontology.getClassName())) {
-                        LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) innerSolver.getAdapter(component);
+                    if (innerSolver.getOntology().getClassName()
+                            .equals(ontology.getClassName())) {
+                        LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) innerSolver
+                                .getAdapter(component);
                         tupleAdapters.add(adapter);
                         break;
                     }

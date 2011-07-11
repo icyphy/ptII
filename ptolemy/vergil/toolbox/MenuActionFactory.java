@@ -152,8 +152,8 @@ public class MenuActionFactory implements MenuItemFactory {
         JMenuItem menuItem;
         if (_action != null) {
             // Single action as a simple menu entry.
-            menuItem = _add(menu, _action, (String) _action
-                    .getValue(Action.NAME));
+            menuItem = _add(menu, _action,
+                    (String) _action.getValue(Action.NAME));
         } else {
             // Requested a submenu with a group of actions.
             final JMenu submenu = new JMenu(_label);

@@ -121,8 +121,7 @@ public class ExportPDFAction extends AbstractAction {
         } catch (Throwable ex) {
             // This exception will occur if the iText library is not installed.
             MessageHandler
-                    .error(
-                            "iText library is not installed. See http://itextpdf.com/."
+                    .error("iText library is not installed. See http://itextpdf.com/."
                             + "  You must have iText.jar in your classpath.  Sometimes, "
                             + "iText.jar may be found in $PTII/vendors/itext/iText.jar.",
                             ex);
@@ -174,7 +173,8 @@ public class ExportPDFAction extends AbstractAction {
                 }
 
                 if (file.exists()) {
-                    if (!MessageHandler.yesNoQuestion("Overwrite " + file.getName() + "?")) {
+                    if (!MessageHandler.yesNoQuestion("Overwrite "
+                            + file.getName() + "?")) {
                         return;
                     }
                 }
@@ -198,14 +198,15 @@ public class ExportPDFAction extends AbstractAction {
                 paper.setImageableArea(0.0, 0.0, size.width, size.height);
                 PageFormat format = new PageFormat();
                 format.setPaper(paper);
-                ((Printable)_frame).print(graphics, format, 0);
+                ((Printable) _frame).print(graphics, format, 0);
                 graphics.dispose();
                 contentByte.addTemplate(template, 0, 0);
 
                 // Open the PDF file.
                 // FIXME: _read is protected in BasicGraphFrame
                 //_read(file.toURI().toURL());
-                MessageHandler.message("PDF file exported to " + file.getName());
+                MessageHandler
+                        .message("PDF file exported to " + file.getName());
             }
         } catch (Exception e) {
             MessageHandler.error("Export to PDF failed", e);

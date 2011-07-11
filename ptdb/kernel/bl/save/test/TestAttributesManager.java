@@ -69,8 +69,8 @@ import ptdb.kernel.database.DBConnection;
  *
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest( { AttributesManager.class })
-@SuppressStaticInitializationFor( { "ptdb.common.util.DBConnectorFactory" })
+@PrepareForTest({ AttributesManager.class })
+@SuppressStaticInitializationFor({ "ptdb.common.util.DBConnectorFactory" })
 public class TestAttributesManager {
 
     ///////////////////////////////////////////////////////////////////
@@ -116,8 +116,8 @@ public class TestAttributesManager {
 
         AttributesManager attributesManager = new AttributesManager();
 
-        assertEquals(updateAttribute, attributesManager
-                .createAttribute(xmldbAttribute));
+        assertEquals(updateAttribute,
+                attributesManager.createAttribute(xmldbAttribute));
 
         PowerMock.verifyAll();
 

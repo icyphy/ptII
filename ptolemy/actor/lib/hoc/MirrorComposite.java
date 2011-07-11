@@ -397,8 +397,7 @@ public class MirrorComposite extends TypedCompositeActor implements
                             }
 
                             if (insidePort instanceof MirrorPort) {
-                                castPort
-                                        .setAssociatedPort((MirrorPort) insidePort);
+                                castPort.setAssociatedPort((MirrorPort) insidePort);
                             }
 
                             // Create a link only if it doesn't already exist.

@@ -91,10 +91,8 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
             throws IllegalActionException, NameDuplicationException {
 
         handleActorOpenRequest("Changes to this actor will not "
-                            + "be saved to the database.  "
-                            + "To make changes to the "
-                            + "referenced model, open "
-                            + "it from the database.", actor);
+                + "be saved to the database.  " + "To make changes to the "
+                + "referenced model, open " + "it from the database.", actor);
 
     }
 
@@ -157,10 +155,8 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
             throws IllegalActionException, NameDuplicationException {
 
         handleActorOpenRequest("Changes to this instance will not "
-                + "be saved to the database.  "
-                + "To make changes to the "
-                + "referenced model, open "
-                + "it from the database.", actor);
+                + "be saved to the database.  " + "To make changes to the "
+                + "referenced model, open " + "it from the database.", actor);
     }
 
     /** Determine of a given actor is a database reference actor.

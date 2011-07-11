@@ -389,8 +389,8 @@ public class ChannelState extends MACActorBase {
 
             // force the state transition to the corresponding noNav states
             _NavTimer.expirationTime = _currentTime;
-            _setAttribute(_tNavEnd, new DoubleToken(_currentTime
-                    .getDoubleValue()));
+            _setAttribute(_tNavEnd,
+                    new DoubleToken(_currentTime.getDoubleValue()));
             _curSrc = nosrc;
             break;
         }

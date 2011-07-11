@@ -498,7 +498,8 @@ public class TMDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException If requested time is in
      *  the past.
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         // ignore requests that are later than the stop time.
         if (_debugging) {
             _debug("+ requesting firing of " + ((Nameable) actor).getFullName()
@@ -646,8 +647,8 @@ public class TMDirector extends Director implements TimedDirector {
 
                 if (Math.abs(event.processingTime()) < 1e-10) {
                     if (_debugging) {
-                        _debug(getName(), "finish processing ", event
-                                .toString());
+                        _debug(getName(), "finish processing ",
+                                event.toString());
                     }
 
                     _eventQueue.take();

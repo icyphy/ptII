@@ -192,7 +192,6 @@ public class PHY extends NetworkActorBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
 
     /** Override the base class to declare that the <i>fromMAC</i>
      *  output port does not
@@ -208,7 +207,7 @@ public class PHY extends NetworkActorBase {
         _declareDelayDependency(fromMAC, channelStatus, 0.0);
         _declareDelayDependency(fromMAC, PHYConfirm, 0.0);
     }
-    
+
     public void fire() throws IllegalActionException {
         super.fire();
 

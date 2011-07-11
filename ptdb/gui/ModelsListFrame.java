@@ -28,7 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.gui;
 
-import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -61,6 +60,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
     public ModelsListFrame() {
 
     }
+
     /** Create new form ModelsListFrame.
      * @param configuration The configuration under which Ptolemy is running.
      * */
@@ -101,7 +101,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
         _setPageNumbers();
         jScrollPane1.setViewportView(_modelsListTable);
 
-//        _modelsListTable.getColumnModel().getColumn(0).setPreferredWidth(20);
+        //        _modelsListTable.getColumnModel().getColumn(0).setPreferredWidth(20);
 
         _modelsListTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -217,74 +217,64 @@ public class ModelsListFrame extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
                 getContentPane());
         getContentPane().setLayout(layout);
-        layout
-                .setHorizontalGroup(layout
-                        .createParallelGroup(
-                                javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(
-                                javax.swing.GroupLayout.Alignment.TRAILING,
-                                layout
-                                        .createSequentialGroup()
-                                        .addContainerGap()
-                                        .addGroup(
-                                                layout
-                                                        .createParallelGroup(
-                                                                javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(_hintLabel,
-                                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(
-                                                                jScrollPane1,
-                                                                javax.swing.GroupLayout.Alignment.LEADING,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                380,
-                                                                Short.MAX_VALUE)
-                                                        .addGroup(
-                                                                javax.swing.GroupLayout.Alignment.LEADING,
-                                                                layout
-                                                                        .createSequentialGroup()
-                                                                        .addComponent(
-                                                                                jPanel1,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                Short.MAX_VALUE)
-                                                                        .addPreferredGap(
-                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                        .addComponent(
-                                                                                _nextPageButton,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addContainerGap()));
-        layout
-                .setVerticalGroup(layout
-                        .createParallelGroup(
-                                javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(
-                                layout
-                                        .createSequentialGroup()
-                                        .addComponent(_hintLabel)
-                                        .addComponent(
-                                                jScrollPane1,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                265,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(
-                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(
-                                                layout
-                                                        .createParallelGroup(
-                                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(
-                                                                jPanel1,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(
-                                                                _nextPageButton,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addContainerGap()));
+        layout.setHorizontalGroup(layout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(
+                        javax.swing.GroupLayout.Alignment.TRAILING,
+                        layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(
+                                        layout.createParallelGroup(
+                                                javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(
+                                                        _hintLabel,
+                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(
+                                                        jScrollPane1,
+                                                        javax.swing.GroupLayout.Alignment.LEADING,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        380, Short.MAX_VALUE)
+                                                .addGroup(
+                                                        javax.swing.GroupLayout.Alignment.LEADING,
+                                                        layout.createSequentialGroup()
+                                                                .addComponent(
+                                                                        jPanel1,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        Short.MAX_VALUE)
+                                                                .addPreferredGap(
+                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(
+                                                                        _nextPageButton,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap()));
+        layout.setVerticalGroup(layout
+                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(
+                        layout.createSequentialGroup()
+                                .addComponent(_hintLabel)
+                                .addComponent(jScrollPane1,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        265,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(
+                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(
+                                        layout.createParallelGroup(
+                                                javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(
+                                                        jPanel1,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(
+                                                        _nextPageButton,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap()));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -372,12 +362,10 @@ public class ModelsListFrame extends javax.swing.JFrame {
 
             } else {
 
-                JOptionPane
-                .showMessageDialog((Component) this,
-                        "The specified model could " +
-                        "not be found in the database.",
-                        "Load Error",
-                        JOptionPane.INFORMATION_MESSAGE, null);
+                JOptionPane.showMessageDialog(this,
+                        "The specified model could "
+                                + "not be found in the database.",
+                        "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             }
 
@@ -415,8 +403,8 @@ public class ModelsListFrame extends javax.swing.JFrame {
                 modelData[i++][1] = model.getModelName();
             }
 
-            _modelsListTable.setModel(new javax.swing.table.DefaultTableModel(modelData,
-                    new String[] { " # ", "Model Name" }) {
+            _modelsListTable.setModel(new javax.swing.table.DefaultTableModel(
+                    modelData, new String[] { " # ", "Model Name" }) {
                 Class[] types = new Class[] { java.lang.Long.class,
                         java.lang.String.class };
                 boolean[] canEdit = new boolean[] { false, false };
@@ -450,17 +438,17 @@ public class ModelsListFrame extends javax.swing.JFrame {
         _pageNumberCombo.setModel(new javax.swing.DefaultComboBoxModel(pages));
     }
 
-//    /*
-//    /**
-//    * @param args the command line arguments
-//    */
-//    public static void main(String args[]) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new ModelsListFrame(null).setVisible(true);
-//            }
-//        });
-//    }
+    //    /*
+    //    /**
+    //    * @param args the command line arguments
+    //    */
+    //    public static void main(String args[]) {
+    //        java.awt.EventQueue.invokeLater(new Runnable() {
+    //            public void run() {
+    //                new ModelsListFrame(null).setVisible(true);
+    //            }
+    //        });
+    //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button _previousPageButton;

@@ -65,7 +65,7 @@ public class TimeTriggeredEncoderHandler extends GPInputHandler {
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 

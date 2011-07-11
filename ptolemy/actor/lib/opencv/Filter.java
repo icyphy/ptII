@@ -36,7 +36,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// Filter
 
@@ -76,21 +75,21 @@ public class Filter extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof OpenCV)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of OpenCV. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            OpenCV openCV = (OpenCV)inputObject;
+            OpenCV openCV = (OpenCV) inputObject;
             PImage my_image = openCV.image();
-                        float type = (float) 0.6;
-                        my_image.filter(16,type);
-                        openCV.absDiff();
-                        openCV.copy(my_image);
-                        openCV.remember(OpenCV.BUFFER);
-          output.send(0, new ObjectToken(openCV));
+            float type = (float) 0.6;
+            my_image.filter(16, type);
+            openCV.absDiff();
+            openCV.copy(my_image);
+            openCV.remember(OpenCV.BUFFER);
+            output.send(0, new ObjectToken(openCV));
         }
     }
 

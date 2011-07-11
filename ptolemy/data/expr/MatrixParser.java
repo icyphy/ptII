@@ -80,7 +80,8 @@ public class MatrixParser/*@bgen(jjtree)*/implements
                 ;
             }
             m.add(row);
-            label_1: while (true) {
+            label_1:
+            while (true) {
                 switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                 case 14:
                     ;
@@ -145,7 +146,8 @@ public class MatrixParser/*@bgen(jjtree)*/implements
         try {
             element = element();
             row.add(new Double(element));
-            label_2: while (true) {
+            label_2:
+            while (true) {
                 switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                 case 16:
                     ;

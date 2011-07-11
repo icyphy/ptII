@@ -1467,8 +1467,7 @@ class CEmit {
         CAccept accept;
 
         if (CUtility.DEBUG) {
-            CUtility
-                    .cuassert(m_spec.m_accept_vector.size() == m_spec.m_anchor_array.length);
+            CUtility.cuassert(m_spec.m_accept_vector.size() == m_spec.m_anchor_array.length);
         }
 
         bogus_index = -2;
@@ -2471,8 +2470,7 @@ class CMinimize {
                                 && ((goto_first == CDTrans.F)
                                         || (goto_next == CDTrans.F) || (m_ingroup[goto_next] != m_ingroup[goto_first]))) {
                             if (CUtility.DEBUG) {
-                                CUtility
-                                        .cuassert(dtrans_group.elementAt(j) == next);
+                                CUtility.cuassert(dtrans_group.elementAt(j) == next);
                             }
 
                             dtrans_group.removeElementAt(j);
@@ -2489,24 +2487,16 @@ class CMinimize {
                             m_ingroup[next.m_label] = m_group.size() - 1;
 
                             if (CUtility.DEBUG) {
-                                CUtility
-                                        .cuassert(m_group.contains(new_group) == true);
+                                CUtility.cuassert(m_group.contains(new_group) == true);
                                 CUtility.cuassert(m_group
                                         .contains(dtrans_group) == true);
-                                CUtility
-                                        .cuassert(dtrans_group.contains(first) == true);
-                                CUtility
-                                        .cuassert(dtrans_group.contains(next) == false);
-                                CUtility
-                                        .cuassert(new_group.contains(first) == false);
-                                CUtility
-                                        .cuassert(new_group.contains(next) == true);
-                                CUtility
-                                        .cuassert(dtrans_group.size() == group_size);
-                                CUtility
-                                        .cuassert(i == m_ingroup[first.m_label]);
-                                CUtility
-                                        .cuassert((m_group.size() - 1) == m_ingroup[next.m_label]);
+                                CUtility.cuassert(dtrans_group.contains(first) == true);
+                                CUtility.cuassert(dtrans_group.contains(next) == false);
+                                CUtility.cuassert(new_group.contains(first) == false);
+                                CUtility.cuassert(new_group.contains(next) == true);
+                                CUtility.cuassert(dtrans_group.size() == group_size);
+                                CUtility.cuassert(i == m_ingroup[first.m_label]);
+                                CUtility.cuassert((m_group.size() - 1) == m_ingroup[next.m_label]);
                             }
 
                             break;
@@ -2805,9 +2795,8 @@ class CNfa2Dfa {
                     }
 
                     if (CUtility.DEBUG) {
-                        CUtility
-                                .cuassert(((null == bunch.m_nfa_set) && (null == bunch.m_nfa_bit))
-                                        || ((null != bunch.m_nfa_set) && (null != bunch.m_nfa_bit)));
+                        CUtility.cuassert(((null == bunch.m_nfa_set) && (null == bunch.m_nfa_bit))
+                                || ((null != bunch.m_nfa_set) && (null != bunch.m_nfa_bit)));
                     }
 
                     /* Create new state or set state to empty. */
@@ -2830,8 +2819,7 @@ class CNfa2Dfa {
                 }
 
                 if (CUtility.DEBUG) {
-                    CUtility
-                            .cuassert(m_spec.m_dtrans_vector.size() == dfa.m_label);
+                    CUtility.cuassert(m_spec.m_dtrans_vector.size() == dfa.m_label);
                 }
 
                 m_spec.m_dtrans_vector.addElement(dtrans);

@@ -94,40 +94,33 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
 
         addWindowListener(new WindowListener() {
 
-
             public void windowOpened(WindowEvent e) {
                 _sourceFrame.setEnabled(false);
 
             }
 
-
             public void windowIconified(WindowEvent e) {
                 // Do nothing.
             }
-
 
             public void windowDeiconified(WindowEvent e) {
                 // Do nothing.
             }
 
-
             public void windowDeactivated(WindowEvent e) {
                 // Do nothing.
             }
-
 
             public void windowClosing(WindowEvent e) {
                 // Do nothing.
 
             }
 
-
             public void windowClosed(WindowEvent e) {
                 _sourceFrame.setEnabled(true);
                 _sourceFrame.toFront();
 
             }
-
 
             public void windowActivated(WindowEvent e) {
                 // Do nothing.
@@ -164,8 +157,8 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
                     _update();
 
                 } catch (IllegalNameException e1) {
-                    JOptionPane.showMessageDialog(RenameModelFrame.this, e1
-                            .getMessage());
+                    JOptionPane.showMessageDialog(RenameModelFrame.this,
+                            e1.getMessage());
                 }
 
             }
@@ -201,7 +194,6 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
         repaint();
 
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -243,8 +235,8 @@ public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
             _model.setName(newName);
             // Update the moml to update to the new model name.
 
-            MoMLChangeRequest change = new MoMLChangeRequest(this, null, _model
-                    .exportMoML());
+            MoMLChangeRequest change = new MoMLChangeRequest(this, null,
+                    _model.exportMoML());
             change.setUndoable(true);
 
             _model.requestChange(change);

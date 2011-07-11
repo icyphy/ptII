@@ -66,7 +66,8 @@ public class Entity extends RTMaudeAdaptor {
      *   < Name : ClassName | attr_1 : attr_value_1, ... , attr_n : attr_value_n >
      */
     protected String _generateFireCode() throws IllegalActionException {
-        return _generateBlockCode("fireBlock", CodeStream.indent(1,
+        return _generateBlockCode("fireBlock", CodeStream.indent(
+                1,
                 new ListTerm<String>("", "," + _eol, _codeStream
                         .getAllCodeBlockNames()) {
                     public String item(String v) throws IllegalActionException {
@@ -97,8 +98,8 @@ public class Entity extends RTMaudeAdaptor {
             }.generateCode();
         }
         if (name.equals("parameters")) {
-            return new ListTerm<Variable>("none", "",
-                    getComponent().attributeList(Variable.class)) {
+            return new ListTerm<Variable>("none", "", getComponent()
+                    .attributeList(Variable.class)) {
                 public String item(Variable v) throws IllegalActionException {
                     return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
                 }

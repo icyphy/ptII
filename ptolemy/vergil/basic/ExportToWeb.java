@@ -88,7 +88,8 @@ public class ExportToWeb {
      *   or exporting the web page.
      */
     public void exportToWeb(final String modelFileName,
-            final String destinationDirectory, final boolean run) throws Exception {
+            final String destinationDirectory, final boolean run)
+            throws Exception {
         // Open the model. The following code executes in the swing
         // event thread and sets the value of the local variable
         // _modelToExport.
@@ -97,8 +98,9 @@ public class ExportToWeb {
             public void run() {
                 try {
                     System.out.println("Opening " + modelFileName);
-                    _modelToExport = ConfigurationApplication.openModel(modelFileName);
-                    _masterEffigy = (Effigy)Configuration.findEffigy(_modelToExport);
+                    _modelToExport = ConfigurationApplication
+                            .openModel(modelFileName);
+                    _masterEffigy = Configuration.findEffigy(_modelToExport);
                     if (_masterEffigy == null) {
                         throw new Exception("Cannot find effigy.");
                     }
@@ -107,7 +109,7 @@ public class ExportToWeb {
                     if (!(toplevel instanceof Configuration)) {
                         throw new Exception("Cannot find configuration.");
                     }
-                    _configuration = (Configuration)toplevel;
+                    _configuration = (Configuration) toplevel;
 
                 } catch (Throwable throwable) {
                     System.out.println("Failed to open " + modelFileName
@@ -121,97 +123,101 @@ public class ExportToWeb {
             throw new Exception("No model to export.");
         }
 
-       _basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(_modelToExport);
+        _basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(_modelToExport);
 
-       // Get permission to write to the destination directory.
-       final File directory = new File(destinationDirectory);
-       if (directory.exists()) {
-           if (directory.isDirectory()) {
-               if (!MessageHandler.yesNoQuestion(
-                       "Directory exists: " + directory + ". Overwrite contents?")) {
-                   MessageHandler.message("HTML export canceled.");
-                   return;
-               }
-           } else {
-               if (!MessageHandler.yesNoQuestion(
-                       "File exists with the same name. Overwrite file?")) {
-                   MessageHandler.message("HTML export canceled.");
-                   return;
-               }
-               if (!directory.delete()) {
-                   MessageHandler.message("Unable to delete file.");
-                   return;
-               }
-               if (!directory.mkdir()) {
-                   MessageHandler.message("Unable to create directory.");
-                   return;
-               }
-           }
-       } else {
-           if (!directory.mkdir()) {
-               MessageHandler.message("Unable to create directory.");
-               return;
-           }
-       }
+        // Get permission to write to the destination directory.
+        final File directory = new File(destinationDirectory);
+        if (directory.exists()) {
+            if (directory.isDirectory()) {
+                if (!MessageHandler.yesNoQuestion("Directory exists: "
+                        + directory + ". Overwrite contents?")) {
+                    MessageHandler.message("HTML export canceled.");
+                    return;
+                }
+            } else {
+                if (!MessageHandler
+                        .yesNoQuestion("File exists with the same name. Overwrite file?")) {
+                    MessageHandler.message("HTML export canceled.");
+                    return;
+                }
+                if (!directory.delete()) {
+                    MessageHandler.message("Unable to delete file.");
+                    return;
+                }
+                if (!directory.mkdir()) {
+                    MessageHandler.message("Unable to create directory.");
+                    return;
+                }
+            }
+        } else {
+            if (!directory.mkdir()) {
+                MessageHandler.message("Unable to create directory.");
+                return;
+            }
+        }
 
-       if (run) {
-           // Optionally run the model.
-           Runnable runAction = new Runnable() {
-                   public void run() {
-                       try {
-                           System.out.println("Running " + _modelToExport.getFullName());
-                           Manager manager = _modelToExport.getManager();
-                           if (manager == null) {
-                               manager = new Manager(_modelToExport.workspace(), "MyManager");
-                               _modelToExport.setManager(manager);
-                           }
-                           _modelToExport.setModelErrorHandler(new BasicModelErrorHandler());
-                           manager.execute();
-                       } catch (Exception ex) {
-                           ex.printStackTrace();
-                           throw new RuntimeException(ex);
-                       }
-                   }
-               };
-           SwingUtilities.invokeAndWait(runAction);
-       }
+        if (run) {
+            // Optionally run the model.
+            Runnable runAction = new Runnable() {
+                public void run() {
+                    try {
+                        System.out.println("Running "
+                                + _modelToExport.getFullName());
+                        Manager manager = _modelToExport.getManager();
+                        if (manager == null) {
+                            manager = new Manager(_modelToExport.workspace(),
+                                    "MyManager");
+                            _modelToExport.setManager(manager);
+                        }
+                        _modelToExport
+                                .setModelErrorHandler(new BasicModelErrorHandler());
+                        manager.execute();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        throw new RuntimeException(ex);
+                    }
+                }
+            };
+            SwingUtilities.invokeAndWait(runAction);
+        }
 
-       // Open submodels and export to web
-       Runnable ExportToWebAction = new Runnable() {
-           public void run() {
-               try {
-                   // Open submodels.
-                   System.out.println("Opening submodels.");
+        // Open submodels and export to web
+        Runnable ExportToWebAction = new Runnable() {
+            public void run() {
+                try {
+                    // Open submodels.
+                    System.out.println("Opening submodels.");
 
-                   Set<Effigy> effigiesToClose = new HashSet<Effigy>();
-                   effigiesToClose.add(_masterEffigy);
+                    Set<Effigy> effigiesToClose = new HashSet<Effigy>();
+                    effigiesToClose.add(_masterEffigy);
 
-                   List<Entity> entities = _modelToExport.entityList();
-                   for (Entity entity : entities) {
-                       _openEntity(entity, effigiesToClose);
-                   }
+                    List<Entity> entities = _modelToExport.entityList();
+                    for (Entity entity : entities) {
+                        _openEntity(entity, effigiesToClose);
+                    }
 
-                   System.out.println("Writing web files to " + directory);
-                   ExportHTMLAction action = new ExportHTMLAction(_basicGraphFrame);
-                   action.writeHTML(directory);
+                    System.out.println("Writing web files to " + directory);
+                    ExportHTMLAction action = new ExportHTMLAction(
+                            _basicGraphFrame);
+                    action.writeHTML(directory);
 
-                   System.out.println("Closing the model.");
-                   // Close all tableau for top-level effigies.
-                   // For simple cases, the following line will work. But if the
-                   // model has classes defined in a separate file, then it won't.
-                   // ConfigurationApplication.closeModelWithoutSavingOrExiting(_modelToExport);
-                   Iterator iterator = effigiesToClose.iterator();
-                   while (iterator.hasNext()) {
-                       Effigy effigy = (Effigy)iterator.next();
-                       effigy.closeTableaux();
-                   }
-               } catch (Exception ex) {
-                   ex.printStackTrace();
-                   throw new RuntimeException(ex);
-               }
-           }
-       };
-       SwingUtilities.invokeAndWait(ExportToWebAction);
+                    System.out.println("Closing the model.");
+                    // Close all tableau for top-level effigies.
+                    // For simple cases, the following line will work. But if the
+                    // model has classes defined in a separate file, then it won't.
+                    // ConfigurationApplication.closeModelWithoutSavingOrExiting(_modelToExport);
+                    Iterator iterator = effigiesToClose.iterator();
+                    while (iterator.hasNext()) {
+                        Effigy effigy = (Effigy) iterator.next();
+                        effigy.closeTableaux();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+        SwingUtilities.invokeAndWait(ExportToWebAction);
     }
 
     /** Export a model as an image.
@@ -245,9 +251,9 @@ public class ExportToWeb {
      *  the second argument names a Ptolemy MoML file.
      */
     public static void main(String args[]) {
-        String usage ="Usage: java -classpath $PTII "
-                    + "ptolemy.vergil.basic.ExportToWeb "
-                    + "[-run] model.xml directory";
+        String usage = "Usage: java -classpath $PTII "
+                + "ptolemy.vergil.basic.ExportToWeb "
+                + "[-run] model.xml directory";
         boolean run = false;
         String modelFileName = null;
         String directoryName = null;
@@ -296,8 +302,9 @@ public class ExportToWeb {
      *  @exception IllegalActionException If opening fails.
      *  @exception NameDuplicationException Not thrown.
      */
-    private void _openComposite(CompositeEntity entity, Set<Effigy> effigiesToClose)
-            throws IllegalActionException, NameDuplicationException {
+    private void _openComposite(CompositeEntity entity,
+            Set<Effigy> effigiesToClose) throws IllegalActionException,
+            NameDuplicationException {
         Tableau tableau = _configuration.openModel(entity);
         NamedObj effigy = tableau.getContainer();
         // If the model for the effigy is not the same as the entity,
@@ -306,9 +313,9 @@ public class ExportToWeb {
         // the same top level as entity, then it will have to be
         // explicitly closed.
         if (effigy instanceof Effigy && !_masterEffigy.deepContains(effigy)) {
-            effigiesToClose.add((Effigy)effigy);
+            effigiesToClose.add((Effigy) effigy);
         }
-        List<Entity> entities = ((CompositeEntity)entity).entityList();
+        List<Entity> entities = (entity).entityList();
         for (Entity inside : entities) {
             _openEntity(inside, effigiesToClose);
         }
@@ -325,11 +332,11 @@ public class ExportToWeb {
     private void _openEntity(Entity entity, Set<Effigy> effigiesToClose)
             throws IllegalActionException, NameDuplicationException {
         if (entity instanceof CompositeEntity) {
-            _openComposite((CompositeEntity)entity, effigiesToClose);
+            _openComposite((CompositeEntity) entity, effigiesToClose);
         } else if (entity instanceof State) {
-            TypedActor[] refinements = ((State)entity).getRefinement();
+            TypedActor[] refinements = ((State) entity).getRefinement();
             for (TypedActor refinement : refinements) {
-                _openComposite((CompositeEntity)refinement, effigiesToClose);
+                _openComposite((CompositeEntity) refinement, effigiesToClose);
             }
         }
     }

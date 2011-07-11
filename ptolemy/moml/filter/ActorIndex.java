@@ -140,16 +140,16 @@ public class ActorIndex {
                 try {
                     classesReader.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close "
-                            + classesReader + " " + ex);
+                    System.out.println("Failed to close " + classesReader + " "
+                            + ex);
                 }
             }
             if (modelReader != null) {
                 try {
                     modelReader.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close "
-                            + modelReader + " " + ex);
+                    System.out.println("Failed to close " + modelReader + " "
+                            + ex);
                 }
             }
         }
@@ -179,9 +179,10 @@ public class ActorIndex {
                 // Get PTII as C:/cxh/ptII
                 String ptII = null;
                 try {
-                    ptII = new URI(StringUtilities
-                            .getProperty("ptolemy.ptII.dirAsURL")).normalize()
-                            .getPath();
+                    ptII = new URI(
+                            StringUtilities
+                                    .getProperty("ptolemy.ptII.dirAsURL"))
+                            .normalize().getPath();
                     // Under Windows, convert /C:/foo/bar to C:/foo/bar
                     ptII = new File(ptII).getCanonicalPath().replace('\\', '/');
                 } catch (URISyntaxException ex) {
@@ -207,13 +208,13 @@ public class ActorIndex {
                     }
                     relativePath = relativePathBuffer.toString();
                     // Strip off the last ../
-                    relativePath = relativePath.substring(0, relativePath
-                            .length() - 3);
+                    relativePath = relativePath.substring(0,
+                            relativePath.length() - 3);
                 }
 
                 // Make directories if necessary
-                File outputDirectoryFile = new File(new File(outputFileName)
-                        .getParent());
+                File outputDirectoryFile = new File(
+                        new File(outputFileName).getParent());
                 if (!outputDirectoryFile.exists()) {
                     System.out.println("Creating " + outputDirectoryFile);
                     if (!outputDirectoryFile.mkdirs()) {

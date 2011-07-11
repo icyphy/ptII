@@ -61,8 +61,8 @@ public class BooleanSwitch extends CCodeGeneratorHelper {
     public String generateTrueOutputs() throws IllegalActionException {
         ptolemy.actor.lib.BooleanSwitch actor = (ptolemy.actor.lib.BooleanSwitch) getComponent();
 
-        int width = Math.min(actor.input.getWidth(), actor.trueOutput
-                .getWidth());
+        int width = Math.min(actor.input.getWidth(),
+                actor.trueOutput.getWidth());
 
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();
@@ -86,8 +86,8 @@ public class BooleanSwitch extends CCodeGeneratorHelper {
     public String generateFalseOutputs() throws IllegalActionException {
         ptolemy.actor.lib.BooleanSwitch actor = (ptolemy.actor.lib.BooleanSwitch) getComponent();
 
-        int width = Math.min(actor.input.getWidth(), actor.trueOutput
-                .getWidth());
+        int width = Math.min(actor.input.getWidth(),
+                actor.trueOutput.getWidth());
 
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();

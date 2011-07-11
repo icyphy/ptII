@@ -586,8 +586,8 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                 configurePrinted = true;
             }
             if (actor instanceof FSMActor) {
-                ((FSMActor) actor).exportSubmodel(output, depth + 1, actor
-                        .getName());
+                ((FSMActor) actor).exportSubmodel(output, depth + 1,
+                        actor.getName());
             } else {
                 ((NamedObj) actor).exportMoML(output, depth + 1);
             }
@@ -615,8 +615,8 @@ public class State extends ComponentEntity implements ConfigurableEntity,
                 try {
                     if (modalModel == null) {
                         modalModel = new ModalModel(workspace());
-                        new InvisibleModalModel(modalModel, modalModel
-                                .uniqueName("_invisibleModalModel"));
+                        new InvisibleModalModel(modalModel,
+                                modalModel.uniqueName("_invisibleModalModel"));
                         container.setContainer(modalModel);
                     }
                 } catch (NameDuplicationException e) {

@@ -64,11 +64,10 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  @exception IllegalActionException If a function cannot be created.
      */
     public IfNodeFunction(ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,
-            Ontology monotonicityOntology,
-            List<Ontology> domainOntologies)
+            Ontology monotonicityOntology, List<Ontology> domainOntologies)
             throws IllegalActionException {
-        super("defaultASTPtFunctionalIfNodeFunction", 3,
-                monotonicityOntology, domainOntologies);
+        super("defaultASTPtFunctionalIfNodeFunction", 3, monotonicityOntology,
+                domainOntologies);
         _ifNode = ifNode;
     }
 
@@ -94,8 +93,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                         .bottom())
                 || c3.equals(_monotonicityAnalysisOntology.getConceptGraph()
                         .bottom())) {
-            return (Concept) _monotonicityAnalysisOntology.getConceptGraph()
-                    .bottom();
+            return _monotonicityAnalysisOntology.getConceptGraph().bottom();
         } else if (c1 instanceof MonotonicityConcept
                 && c2 instanceof MonotonicityConcept
                 && c3 instanceof MonotonicityConcept) {
@@ -120,8 +118,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
 
             return result;
         } else {
-            return (Concept) _monotonicityAnalysisOntology.getConceptGraph()
-                    .top();
+            return _monotonicityAnalysisOntology.getConceptGraph().top();
         }
     }
 
@@ -138,8 +135,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *    Nonmonotonic, depending on the result of the analysis.
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
-    protected FiniteConcept _finiteEvaluateFunction(
-            String variable,
+    protected FiniteConcept _finiteEvaluateFunction(String variable,
             List<FiniteConcept> inputConceptValues)
             throws IllegalActionException {
         _nodeToCounterexamples.remove(_ifNode);
@@ -232,9 +228,8 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *      evaluating the parse tree, or an invalid childNumber is
      *      passed.
      */
-    private Concept _evaluateChild(int childNumber,
-            String variable, FiniteConcept value)
-            throws IllegalActionException {
+    private Concept _evaluateChild(int childNumber, String variable,
+            FiniteConcept value) throws IllegalActionException {
         ptolemy.data.expr.ASTPtRootNode childNode = (ptolemy.data.expr.ASTPtRootNode) _ifNode
                 .jjtGetChild(childNumber);
 
@@ -296,7 +291,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         ConceptGraph inputLattice = constant.getOntology().getConceptGraph();
         List<Concept> downset = Arrays.asList(inputLattice.downSet(constant));
         for (Concept b : downset) {
-            for (Concept d : ((FiniteConcept)b).getCoverSetAbove()) {
+            for (Concept d : ((FiniteConcept) b).getCoverSetAbove()) {
                 if (downset.contains(d)) {
                     continue;
                 }
@@ -340,8 +335,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *    Nonmonotonic, depending on the result of the analysis.
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
-    private FiniteConcept _standardIfAnalysis(
-            String variable,
+    private FiniteConcept _standardIfAnalysis(String variable,
             List<FiniteConcept> inputConceptValues)
             throws IllegalActionException {
         CPO monotonicityLattice = _monotonicityAnalysisOntology

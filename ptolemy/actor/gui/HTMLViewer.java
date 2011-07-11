@@ -151,8 +151,9 @@ public class HTMLViewer extends TableauFrame implements Printable,
                             getConfiguration());
 
                 } catch (Throwable throwable) {
-                    MessageHandler.error("Problem processing '"
-                            + event.getDescription() + "'.", throwable);
+                    MessageHandler.error(
+                            "Problem processing '" + event.getDescription()
+                                    + "'.", throwable);
                 }
             }
 
@@ -188,8 +189,9 @@ public class HTMLViewer extends TableauFrame implements Printable,
                             getConfiguration(),
                             event.getDescription().substring(6), getEffigy() });
                 } catch (Throwable throwable) {
-                    MessageHandler.error("Problem processing '"
-                            + event.getDescription() + "'.", throwable);
+                    MessageHandler.error(
+                            "Problem processing '" + event.getDescription()
+                                    + "'.", throwable);
                 }
             }
             // NOTE: It would be nice to use target="_browser" or some
@@ -278,8 +280,8 @@ public class HTMLViewer extends TableauFrame implements Printable,
                             // Note that openModel will call MessageHandler
                             // if there are problems, so there is no point
                             // putting a try/catch block here.
-                            configuration.openModel(newURL, newURL, newURL
-                                    .toExternalForm(),
+                            configuration.openModel(newURL, newURL,
+                                    newURL.toExternalForm(),
                                     BrowserEffigy.staticFactory);
                         } else {
                             // Note that openModel will call MessageHandler
@@ -288,8 +290,8 @@ public class HTMLViewer extends TableauFrame implements Printable,
                             // then if the newURL is not found, we could
                             // try looking for the link relative to the
                             // classpath.
-                            configuration.openModel(newURL, newURL, newURL
-                                    .toExternalForm());
+                            configuration.openModel(newURL, newURL,
+                                    newURL.toExternalForm());
                         }
                     } else {
                         // If there is no configuration,
@@ -330,9 +332,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
         }
 
         AffineTransform at = new AffineTransform();
-        at
-                .translate((int) format.getImageableX(), (int) format
-                        .getImageableY());
+        at.translate((int) format.getImageableX(), (int) format.getImageableY());
         at.translate(0, -(format.getImageableHeight() * index));
         at.scale(scale, scale);
 

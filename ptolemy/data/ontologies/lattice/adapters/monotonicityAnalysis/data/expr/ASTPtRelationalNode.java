@@ -81,8 +81,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
         ptolemy.data.expr.ASTPtRelationalNode _relationalNode = (ptolemy.data.expr.ASTPtRelationalNode) _getNode();
 
         ASTPtRelationalNodeFunction astRelationFunction = new ASTPtRelationalNodeFunction(
-                _relationalNode.getOperator(),
-                getSolver().getOntology(),
+                _relationalNode.getOperator(), getSolver().getOntology(),
                 getSolver().getAllContainedOntologies());
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
@@ -94,12 +93,12 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                    private inner class                    ////
 
-
     /** A representation of the monotonic function used to infer the
      *  monotonicity of conditional nodes (if nodes) in the abstract
      *  syntax trees of Ptolemy expressions.
      */
-    private class ASTPtRelationalNodeFunction extends MonotonicityConceptFunction {
+    private class ASTPtRelationalNodeFunction extends
+            MonotonicityConceptFunction {
 
         /** Create a new function for inferring the monotonicity concept
          *  over a relational node, given the operator at the node,
@@ -112,8 +111,8 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *  @exception IllegalActionException If a function cannot be created.
          */
         public ASTPtRelationalNodeFunction(ptolemy.data.expr.Token operator,
-                Ontology monotonicityOntology,
-                List<Ontology> domainOntologies) throws IllegalActionException {
+                Ontology monotonicityOntology, List<Ontology> domainOntologies)
+                throws IllegalActionException {
             super("defaultASTPtRelationalNodeFunction", 2,
                     monotonicityOntology, domainOntologies);
             _operator = operator.toString();
@@ -142,26 +141,30 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
 
             Concept c1 = inputConceptValues.get(0);
             Concept c2 = inputConceptValues.get(1);
-            if (c1.equals(_monotonicityAnalysisOntology.getConceptGraph().bottom())
-                    || c2.equals(_monotonicityAnalysisOntology.getConceptGraph().bottom())) {
-                return (Concept)_monotonicityAnalysisOntology.getConceptGraph().bottom();
+            if (c1.equals(_monotonicityAnalysisOntology.getConceptGraph()
+                    .bottom())
+                    || c2.equals(_monotonicityAnalysisOntology
+                            .getConceptGraph().bottom())) {
+                return _monotonicityAnalysisOntology.getConceptGraph().bottom();
             } else if (c1 instanceof MonotonicityConcept
                     && c2 instanceof MonotonicityConcept) {
                 MonotonicityConcept lhs = (MonotonicityConcept) c1;
                 MonotonicityConcept rhs = (MonotonicityConcept) c2;
 
-                MonotonicityConcept result = MonotonicityConcept.createMonotonicityConcept(_monotonicityAnalysisOntology);
+                MonotonicityConcept result = MonotonicityConcept
+                        .createMonotonicityConcept(_monotonicityAnalysisOntology);
                 TreeSet<String> variables = new TreeSet<String>(lhs.keySet());
                 variables.addAll(rhs.keySet());
 
                 for (String v : variables) {
-                    FiniteConcept monotonicity = _evaluateFininteConcept(lhs.getMonotonicity(v), rhs.getMonotonicity(v));
+                    FiniteConcept monotonicity = _evaluateFininteConcept(
+                            lhs.getMonotonicity(v), rhs.getMonotonicity(v));
                     result.putMonotonicity(v, monotonicity);
                 }
 
                 return result;
             } else {
-                return (Concept)_monotonicityAnalysisOntology.getConceptGraph().top();
+                return _monotonicityAnalysisOntology.getConceptGraph().top();
             }
         }
 
@@ -180,13 +183,18 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *    Nonmonotonic</code>, depending on the result of the analysis.
          *  @exception IllegalActionException If there is an error evaluating the function.
          */
-        private FiniteConcept _evaluateFininteConcept(FiniteConcept lhs, FiniteConcept rhs)
-                throws IllegalActionException {
-            if (_constantConcept.isAboveOrEqualTo(lhs) && _constantConcept.isAboveOrEqualTo(rhs)) {
+        private FiniteConcept _evaluateFininteConcept(FiniteConcept lhs,
+                FiniteConcept rhs) throws IllegalActionException {
+            if (_constantConcept.isAboveOrEqualTo(lhs)
+                    && _constantConcept.isAboveOrEqualTo(rhs)) {
                 return _constantConcept;
             }
-            boolean monotonicAntimonotonic = _monotonicConcept.isAboveOrEqualTo(lhs) && _antimonotonicConcept.isAboveOrEqualTo(rhs);
-            boolean antimonotonicMonotonic = _antimonotonicConcept.isAboveOrEqualTo(lhs) && _monotonicConcept.isAboveOrEqualTo(rhs);
+            boolean monotonicAntimonotonic = _monotonicConcept
+                    .isAboveOrEqualTo(lhs)
+                    && _antimonotonicConcept.isAboveOrEqualTo(rhs);
+            boolean antimonotonicMonotonic = _antimonotonicConcept
+                    .isAboveOrEqualTo(lhs)
+                    && _monotonicConcept.isAboveOrEqualTo(rhs);
             if (_operator.equals("<=") || _operator.equals("<")) {
                 if (monotonicAntimonotonic) {
                     return _monotonicConcept;

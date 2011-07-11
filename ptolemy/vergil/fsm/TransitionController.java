@@ -390,7 +390,7 @@ public class TransitionController extends BasicEdgeController {
                 // For some inexplicable reason, the I key doesn't work here.
                 // So we use L.
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                                KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
                                 .getMenuShortcutKeyMask()));
             }
         }

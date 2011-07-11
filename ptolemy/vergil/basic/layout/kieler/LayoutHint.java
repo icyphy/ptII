@@ -536,28 +536,28 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 NamedObj head = _findNamedObj(this,
                         ((StringToken) headToken.get("id")).stringValue());
                 double[] headLocation = new double[2];
-                headLocation[0] = ((DoubleToken) headToken
-                        .get("x")).doubleValue();
-                headLocation[1] = ((DoubleToken) headToken
-                        .get("y")).doubleValue();
+                headLocation[0] = ((DoubleToken) headToken.get("x"))
+                        .doubleValue();
+                headLocation[1] = ((DoubleToken) headToken.get("y"))
+                        .doubleValue();
                 int headMultiportWidth = 1;
                 if (headToken.get("index") != null) {
                     headMultiportWidth = ((IntToken) headToken.get("index"))
-                                    .intValue();
+                            .intValue();
                 }
 
                 RecordToken tailToken = ((RecordToken) layoutItem.get("tail"));
                 NamedObj tail = _findNamedObj(this,
                         ((StringToken) tailToken.get("id")).stringValue());
                 double[] tailLocation = new double[2];
-                tailLocation[0] = ((DoubleToken) tailToken
-                        .get("x")).doubleValue();
-                tailLocation[1] = ((DoubleToken) tailToken
-                        .get("y")).doubleValue();
+                tailLocation[0] = ((DoubleToken) tailToken.get("x"))
+                        .doubleValue();
+                tailLocation[1] = ((DoubleToken) tailToken.get("y"))
+                        .doubleValue();
                 int tailMultiportWidth = 1;
                 if (tailToken.get("index") != null) {
                     tailMultiportWidth = ((IntToken) tailToken.get("index"))
-                                    .intValue();
+                            .intValue();
                 }
 
                 // the LayoutHintItem record contains a points entry, containing
@@ -816,8 +816,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             if (_headMultiportIndex[1] != 1) {
                 buffer.append(",index=" + _headMultiportIndex[1]);
             }
-            buffer.append("}, " + "tail={id=\"" + _getName(_tail) + "\"" + ",x="
-                    + _tailLocation[0] + ",y=" + _tailLocation[1]);
+            buffer.append("}, " + "tail={id=\"" + _getName(_tail) + "\""
+                    + ",x=" + _tailLocation[0] + ",y=" + _tailLocation[1]);
             if (_tailMultiportIndex[1] != 1) {
                 buffer.append(",index=" + _tailMultiportIndex[1]);
             }

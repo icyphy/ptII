@@ -85,7 +85,8 @@ public class TokenToExpression extends NamedProgramCodeGeneratorAdapter {
                 } else {
                     // test/auto/Commutator.xml needs this.
                     ArrayList args2 = new ArrayList();
-                    args2.add("TYPE_" + getCodeGenerator().codeGenType(elementType));
+                    args2.add("TYPE_"
+                            + getCodeGenerator().codeGenType(elementType));
                     codeStream.appendCodeBlock("TokenArrayFireBlock", args2);
                 }
             } else {

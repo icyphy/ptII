@@ -171,8 +171,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         }
 
         // Find the method...
-        CachedMethod cachedMethod = CachedMethod.findMethod(node
-                .getFunctionName(), argTypes, CachedMethod.FUNCTION);
+        CachedMethod cachedMethod = CachedMethod.findMethod(
+                node.getFunctionName(), argTypes, CachedMethod.FUNCTION);
 
         if (!cachedMethod.isValid()) {
             throw new IllegalActionException("Function " + cachedMethod

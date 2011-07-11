@@ -119,7 +119,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
                     if (isEqualConstraint) {
                         setSameAs(node, namedObj);
 
-                    // Set up one-direction constraint.
+                        // Set up one-direction constraint.
                     } else if (constrainParent) {
                         setAtLeast(node, namedObj);
                     } else {

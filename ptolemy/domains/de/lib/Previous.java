@@ -145,8 +145,8 @@ public class Previous extends DETransformer {
                 typeConstraints.add(ineq);
             }
 
-            Inequality ineq2 = new Inequality(input.getTypeTerm(), output
-                    .getTypeTerm());
+            Inequality ineq2 = new Inequality(input.getTypeTerm(),
+                    output.getTypeTerm());
             typeConstraints.add(ineq2);
         } catch (IllegalActionException ex) {
             // Errors in the initialValue parameter should

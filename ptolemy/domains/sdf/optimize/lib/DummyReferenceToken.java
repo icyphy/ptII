@@ -52,7 +52,6 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 */
 public class DummyReferenceToken extends Token {
 
-
     /**
      * Create an instance of a reference token.
      * @param r the object the token shall refer to
@@ -77,8 +76,8 @@ public class DummyReferenceToken extends Token {
         return _ref.toString();
     }
 
-////////////////////////////////////////////////
-////           private fields               ////
+    ////////////////////////////////////////////////
+    ////           private fields               ////
 
     /**
      * Holds the reference to some object.

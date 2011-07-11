@@ -356,17 +356,20 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myLeftReleasedListener,
-                    "LeftReleased", KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0,
-                            true), JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    "LeftReleased",
+                    KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of right-arrow call-backs.
             label.registerKeyboardAction(myRightPressedListener,
-                    "RightPressed", KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
-                            0, false), JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    "RightPressed",
+                    KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myRightReleasedListener,
-                    "RightReleased", KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
-                            0, true), JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    "RightReleased",
+                    KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of down-arrow call-backs.
             label.registerKeyboardAction(myDownPressedListener, "DownPressed",
@@ -374,8 +377,9 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myDownReleasedListener,
-                    "DownReleased", KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0,
-                            true), JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    "DownReleased",
+                    KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);
             label.addMouseListener(new FocusMouseListener());
@@ -474,8 +478,8 @@ public class ArrowKeySensor extends TypedAtomicActor {
             try {
                 _actionListener.actionPerformed(e);
             } catch (Throwable ex) {
-                ptolemy.util.MessageHandler.error(ptolemy.util.MessageHandler
-                        .shortDescription(ex), ex);
+                ptolemy.util.MessageHandler.error(
+                        ptolemy.util.MessageHandler.shortDescription(ex), ex);
             }
         }
 

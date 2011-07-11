@@ -303,8 +303,8 @@ public abstract class SequencedModelDirector extends Director {
                                 BooleanToken.TRUE)) {
                     initialValueParameter = new Parameter();
                     if (userDefinedDefaultOutputInitialValue.getToken() != null) {
-                        port.send(channel, userDefinedDefaultOutputInitialValue
-                                .getToken());
+                        port.send(channel,
+                                userDefinedDefaultOutputInitialValue.getToken());
                     } else {
                         initialValueParameter.setExpression(port.getType()
                                 .zero().toString());
@@ -327,9 +327,7 @@ public abstract class SequencedModelDirector extends Director {
                             initialValueParameter = new Parameter();
                             initialValueParameter.setExpression(port.getType()
                                     .zero().toString());
-                            port
-                                    .send(channel, initialValueParameter
-                                            .getToken());
+                            port.send(channel, initialValueParameter.getToken());
                         }
                     } else {
                         initialValueParameter.setTypeAtMost(port.getType());
@@ -608,9 +606,9 @@ public abstract class SequencedModelDirector extends Director {
         // MultipleFireMethodsInterface can potentially have more than one Sequence or Process Attribute,
         // but other actors cannot.
         if (!sequenceAttributes.isEmpty()) {
-            if (sequenceAttributes.size() > 1 &&
-                    !(actor instanceof MultipleFireMethodsInterface &&
-                            ((MultipleFireMethodsInterface) actor).numFireMethods() > 1)) {
+            if (sequenceAttributes.size() > 1
+                    && !(actor instanceof MultipleFireMethodsInterface && ((MultipleFireMethodsInterface) actor)
+                            .numFireMethods() > 1)) {
                 throw new IllegalActionException(
                         this,
                         " Actor "
@@ -780,10 +778,11 @@ public abstract class SequencedModelDirector extends Director {
 
             // If the actor is a MultipleFireMethodsInterface, set
             // its fire method before firing it.
-            if (actor instanceof MultipleFireMethodsInterface &&
-                    ((MultipleFireMethodsInterface) actor).numFireMethods() > 1) {
+            if (actor instanceof MultipleFireMethodsInterface
+                    && ((MultipleFireMethodsInterface) actor).numFireMethods() > 1) {
                 String methodName = firing.getMethodName();
-                ((MultipleFireMethodsInterface) actor).setFireMethod(methodName);
+                ((MultipleFireMethodsInterface) actor)
+                        .setFireMethod(methodName);
             }
 
             int iterationCount = firing.getIterationCount();
@@ -845,8 +844,8 @@ public abstract class SequencedModelDirector extends Director {
                 "Enable Default Output Initial Value", BooleanToken.TRUE);
         defaultOutputInitialValue.setTypeEquals(BaseType.BOOLEAN);
 
-        fireUnexecutedActors = new Parameter(this,
-                "fireUnexecutedActors", BooleanToken.FALSE);
+        fireUnexecutedActors = new Parameter(this, "fireUnexecutedActors",
+                BooleanToken.FALSE);
         fireUnexecutedActors.setTypeEquals(BaseType.BOOLEAN);
     }
 

@@ -69,12 +69,19 @@ public class SyntacticSeries extends SyntacticTermList {
      *  @return true if added, false if invalid.
      */
     public boolean add(SyntacticTerm term) {
-        if (contains(term)) return false;
+        if (contains(term)) {
+            return false;
+        }
 
-        SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank.compose(this, term);
-        if (rank == null) return false;
+        SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank
+                .compose(this, term);
+        if (rank == null) {
+            return false;
+        }
 
-        if (!super.add(term)) return false;
+        if (!super.add(term)) {
+            return false;
+        }
 
         if (size() == 1) {
             _inputs.clear();
@@ -96,10 +103,15 @@ public class SyntacticSeries extends SyntacticTermList {
      *  @param term Term to be added to series.
      */
     public void push(SyntacticTerm term) {
-        if (contains(term)) return;
+        if (contains(term)) {
+            return;
+        }
 
-        SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank.compose(term, this);
-        if (rank == null) return;
+        SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank
+                .compose(term, this);
+        if (rank == null) {
+            return;
+        }
 
         // Java 1.5 does not have push(), but
         // http://download.oracle.com/javase/6/docs/api/java/util/LinkedList.html#push%28E%29
@@ -128,7 +140,9 @@ public class SyntacticSeries extends SyntacticTermList {
      *  @param term Term to add to series.
      */
     public void add(int index, SyntacticTerm term) {
-        if (contains(term) || index < 0 || index > size()) return;
+        if (contains(term) || index < 0 || index > size()) {
+            return;
+        }
 
         if (index == size()) { // append case
             add(term);
@@ -141,8 +155,9 @@ public class SyntacticSeries extends SyntacticTermList {
         }
 
         else { // middle case
-            SyntacticTerm tF = get(index), tP = get(index-1);
-            if (SyntacticRank.compose(tP, term) == null || SyntacticRank.compose(term, tF) == null) {
+            SyntacticTerm tF = get(index), tP = get(index - 1);
+            if (SyntacticRank.compose(tP, term) == null
+                    || SyntacticRank.compose(term, tF) == null) {
                 super.add(index, term);
             }
         }
@@ -159,7 +174,9 @@ public class SyntacticSeries extends SyntacticTermList {
      *  @return whether term has been removed.
      */
     public boolean remove(SyntacticTerm term) {
-        if (!contains(term)) return false;
+        if (!contains(term)) {
+            return false;
+        }
         int index = this.indexOf(term);
         int size = this.size();
 
@@ -173,9 +190,9 @@ public class SyntacticSeries extends SyntacticTermList {
             _inputs.addAll(this.get(1).getInputs());
         }
 
-        else if (index == size-1) {
+        else if (index == size - 1) {
             _outputs.clear();
-            _outputs.addAll(this.get(index-1).getOutputs());
+            _outputs.addAll(this.get(index - 1).getOutputs());
         }
 
         super.remove(term);
@@ -198,7 +215,9 @@ public class SyntacticSeries extends SyntacticTermList {
     public String generateCode() {
         LinkedList<String> termStrs = new LinkedList();
         for (SyntacticTerm node : this) {
-            if (node.hasCode()) termStrs.add(node.generateCode());
+            if (node.hasCode()) {
+                termStrs.add(node.generateCode());
+            }
         }
 
         return SyntacticGraph.stringJoin(termStrs, "\n        =>= ");

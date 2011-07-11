@@ -101,18 +101,17 @@ public class AttributesSearchListPanel extends AttributesListPanel {
 
         JPanel modelDeletePanel = new JPanel();
         modelDeletePanel.setLayout(new BoxLayout(modelDeletePanel,
-                        BoxLayout.X_AXIS));
+                BoxLayout.X_AXIS));
         modelDeletePanel.setAlignmentX(LEFT_ALIGNMENT);
         modelDeletePanel.setAlignmentY(TOP_ALIGNMENT);
 
-        GenericAttributePanel genericAttPanel = new
-            GenericAttributePanel();
+        GenericAttributePanel genericAttPanel = new GenericAttributePanel();
 
         JButton deleteButton = new JButton("Delete");
-            deleteButton.setAlignmentY(TOP_ALIGNMENT);
+        deleteButton.setAlignmentY(TOP_ALIGNMENT);
 
         deleteButton.setActionCommand("Delete");
-                deleteButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        deleteButton.setHorizontalTextPosition(SwingConstants.CENTER);
 
         modelDeletePanel.add(genericAttPanel);
         modelDeletePanel.add(deleteButton);
@@ -125,8 +124,7 @@ public class AttributesSearchListPanel extends AttributesListPanel {
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
 
-                _attListPanel.remove((JPanel)
-                _AttDelete.get(event.getSource()));
+                _attListPanel.remove((JPanel) _AttDelete.get(event.getSource()));
                 _AttDelete.remove(event.getSource());
                 _attListPanel.remove((JButton) event.getSource());
 
@@ -145,7 +143,7 @@ public class AttributesSearchListPanel extends AttributesListPanel {
     }
 
     protected ArrayList<Attribute> getAttributes()
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         //ArrayList<Attribute> returnList = super.getAttributes();
 
@@ -173,8 +171,8 @@ public class AttributesSearchListPanel extends AttributesListPanel {
                                     ((ModelAttributePanel) componentArray2[j])
                                             .getAttributeName());
                             stringParameter
-                            .setExpression(((ModelAttributePanel) componentArray2[j])
-                                    .getValue());
+                                    .setExpression(((ModelAttributePanel) componentArray2[j])
+                                            .getValue());
                             returnList.add(stringParameter);
 
                         } catch (NameDuplicationException e) {
@@ -193,50 +191,47 @@ public class AttributesSearchListPanel extends AttributesListPanel {
 
             if (componentArray1[i] instanceof JPanel) {
 
-              Component[] componentArray2
-                = ((JPanel) componentArray1[i]).getComponents();
+                Component[] componentArray2 = ((JPanel) componentArray1[i])
+                        .getComponents();
 
-              for (int j = 0; j < componentArray2.length; j++) {
+                for (int j = 0; j < componentArray2.length; j++) {
 
-                  if (componentArray2[j]
-                    instanceof GenericAttributePanel) {
+                    if (componentArray2[j] instanceof GenericAttributePanel) {
 
-                          try {
+                        try {
 
-                              PTDBSearchAttribute attribute =
-                                  new PTDBSearchAttribute();
+                            PTDBSearchAttribute attribute = new PTDBSearchAttribute();
 
-                              attribute.setGenericAttribute(true);
+                            attribute.setGenericAttribute(true);
 
-                              if ((((GenericAttributePanel) componentArray2[j])
-                                      .getAttributeClass()).length()>0) {
-                                  attribute.setGenericClassName
-                                  ((((GenericAttributePanel) componentArray2[j])
-                                      .getAttributeClass()));
-                              }
+                            if ((((GenericAttributePanel) componentArray2[j])
+                                    .getAttributeClass()).length() > 0) {
+                                attribute
+                                        .setGenericClassName((((GenericAttributePanel) componentArray2[j])
+                                                .getAttributeClass()));
+                            }
 
-                              attribute.setName((
-                                      (GenericAttributePanel)
-                                      componentArray2[j]).getAttributeName());
+                            attribute
+                                    .setName(((GenericAttributePanel) componentArray2[j])
+                                            .getAttributeName());
 
+                            //if ((((GenericAttributePanel) componentArray2[j])
+                            //        .getValue()).length()>0) {
+                            attribute
+                                    .setExpression(((GenericAttributePanel) componentArray2[j])
+                                            .getValue());
+                            //}
 
-                              //if ((((GenericAttributePanel) componentArray2[j])
-                              //        .getValue()).length()>0) {
-                                  attribute.setExpression((
-                                          (GenericAttributePanel)
-                                          componentArray2[j]).getValue());
-                              //}
+                            returnList.add(attribute);
 
-                              returnList.add(attribute);
-
-                          } catch (NameDuplicationException e) {
-                              e.printStackTrace();
-                          }
+                        } catch (NameDuplicationException e) {
+                            e.printStackTrace();
+                        }
 
                     }
-                 }
-               }
-           }
+                }
+            }
+        }
 
         return returnList;
 
@@ -250,7 +245,9 @@ public class AttributesSearchListPanel extends AttributesListPanel {
      */
     public boolean allAttributeNamesSet() {
 
-        if (!super.allAttributeNamesSet()) return false;
+        if (!super.allAttributeNamesSet()) {
+            return false;
+        }
 
         Component[] componentArray1 = _attListPanel.getComponents();
 

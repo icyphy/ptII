@@ -1206,10 +1206,10 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             .getRelation(relationName);
                     TypedIOPort port = (TypedIOPort) actor.getPort(portName);
                     if (port == null) {
-                        port = new TypedIOPort(actor, actor
-                                .uniqueName(portName));
-                        inner: for (Object connection : relation
-                                .linkedPortList()) {
+                        port = new TypedIOPort(actor,
+                                actor.uniqueName(portName));
+                        inner:
+                        for (Object connection : relation.linkedPortList()) {
                             if (connection instanceof TypedIOPort) {
                                 TypedIOPort testPort = (TypedIOPort) connection;
                                 if (testPort.getContainer().equals(_actor)) {
@@ -1244,10 +1244,10 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                 relationName);
                         rel.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                         if (port == null) {
-                            port = new TypedIOPort(actor, actor
-                                    .uniqueName(portName));
-                            inner: for (Object connection : rel
-                                    .linkedPortList()) {
+                            port = new TypedIOPort(actor,
+                                    actor.uniqueName(portName));
+                            inner:
+                            for (Object connection : rel.linkedPortList()) {
                                 if (connection instanceof TypedIOPort) {
                                     TypedIOPort testPort = (TypedIOPort) connection;
                                     if (testPort.getContainer().equals(_actor)) {
@@ -1273,8 +1273,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         connectionPoint.link(rel);
                     } else {
                         if (port == null) {
-                            port = new TypedIOPort(actor, actor
-                                    .uniqueName(portName));
+                            port = new TypedIOPort(actor,
+                                    actor.uniqueName(portName));
                             port.setMultiport(true);
                             port.setInput(true);
                             port.setOutput(false);
@@ -1289,8 +1289,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     TypedIOPort containerPort = (TypedIOPort) _actor
                             .getPort(containerPortName);
                     if (port == null) {
-                        port = new TypedIOPort(actor, actor
-                                .uniqueName(portName));
+                        port = new TypedIOPort(actor,
+                                actor.uniqueName(portName));
                         if (containerPort.isInput()) {
                             port.setInput(true);
                         }
@@ -1321,8 +1321,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         TypedIOPort containerPort = (TypedIOPort) _actor
                                 .getPort(containerPortName);
                         if (port == null) {
-                            port = new TypedIOPort(actor, actor
-                                    .uniqueName(portName));
+                            port = new TypedIOPort(actor,
+                                    actor.uniqueName(portName));
                             if (containerPort.isInput()) {
                                 port.setInput(true);
                             }
@@ -1343,10 +1343,10 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         TypedIOPort port = (TypedIOPort) actor
                                 .getPort(portName);
                         if (port == null) {
-                            port = new TypedIOPort(actor, actor
-                                    .uniqueName(portName));
-                            inner: for (Object connection : relation
-                                    .linkedPortList()) {
+                            port = new TypedIOPort(actor,
+                                    actor.uniqueName(portName));
+                            inner:
+                            for (Object connection : relation.linkedPortList()) {
                                 if (connection instanceof TypedIOPort) {
                                     TypedIOPort testPort = (TypedIOPort) connection;
                                     if (testPort.getContainer().equals(_actor)) {
@@ -1380,10 +1380,10 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                     relationName);
                             rel.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                             if (port == null) {
-                                port = new TypedIOPort(actor, actor
-                                        .uniqueName(portName));
-                                inner: for (Object connection : rel
-                                        .linkedPortList()) {
+                                port = new TypedIOPort(actor,
+                                        actor.uniqueName(portName));
+                                inner:
+                                for (Object connection : rel.linkedPortList()) {
                                     if (connection instanceof TypedIOPort) {
                                         TypedIOPort testPort = (TypedIOPort) connection;
                                         if (testPort.getContainer().equals(
@@ -1410,8 +1410,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             connectionPoint.link(rel);
                         } else {
                             if (port == null) {
-                                port = new TypedIOPort(actor, actor
-                                        .uniqueName(portName));
+                                port = new TypedIOPort(actor,
+                                        actor.uniqueName(portName));
                                 port.setMultiport(true);
                                 port.setInput(true);
                                 port.setOutput(false);

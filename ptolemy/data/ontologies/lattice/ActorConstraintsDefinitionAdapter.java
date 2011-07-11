@@ -86,7 +86,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      *   initialized.
      */
     public ActorConstraintsDefinitionAdapter(LatticeOntologySolver solver,
-            ComponentEntity component, List<StringParameter> constraintExpressions)
+            ComponentEntity component,
+            List<StringParameter> constraintExpressions)
             throws IllegalActionException {
         // Don't use default constraints for user-defined actor constraints.
         super(solver, component, false);
@@ -115,13 +116,15 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 NamedObj actorElement = null;
 
                 if (isActorElementAPort(constraintExpression)) {
-                    actorElement = ((ComponentEntity) getComponent()).getPort(objName);
+                    actorElement = ((ComponentEntity) getComponent())
+                            .getPort(objName);
                 } else if (isActorElementAnAttribute(constraintExpression)) {
                     actorElement = ((ComponentEntity) getComponent())
                             .getAttribute(objName);
                 }
-                _setConstraints(actorElement, ((StringToken) (constraintExpression
-                        .getToken())).stringValue());
+                _setConstraints(actorElement,
+                        ((StringToken) (constraintExpression.getToken()))
+                                .stringValue());
             }
         }
         return super.constraintList();
@@ -143,7 +146,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                         && isActorElementAPort(constraintExpression)) {
 
                     String portName = getActorElementName(constraintExpression);
-                    Port portToAdd = ((ComponentEntity) getComponent()).getPort(portName);
+                    Port portToAdd = ((ComponentEntity) getComponent())
+                            .getPort(portName);
                     list.add(portToAdd);
                 }
             } catch (IllegalActionException e) {
@@ -212,8 +216,9 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                         throw new IllegalActionException(actorElement,
                                 "Error parsing actor constraint function: "
                                         + "could not find the argument named "
-                                        + actorElementInExpressionName + " in the actor "
-                                        + getComponent() + ".");
+                                        + actorElementInExpressionName
+                                        + " in the actor " + getComponent()
+                                        + ".");
                     }
 
                     /* 10/5/10 Charles Shelton - I don't think it is wrong for a constraint function
@@ -239,17 +244,18 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 argumentList.size());
 
         Ontology functionOntology = getSolver().getOntology();
-        List<Ontology> domainOntologies = new ArrayList<Ontology>(argumentTerms.length);
+        List<Ontology> domainOntologies = new ArrayList<Ontology>(
+                argumentTerms.length);
         for (int i = 0; i < argumentTerms.length; i++) {
             domainOntologies.add(functionOntology);
         }
 
         ConceptFunction function = new ExpressionConceptFunction(
                 ((ComponentEntity) getComponent()).getName() + "_"
-                        + actorElement.getName()
-                        + "_ConstraintFunction", true, domainOntologies,
-                functionOntology, argumentNameList, functionString,
-                (OntologySolverModel) getSolver().getContainedModel(), actorElement);
+                        + actorElement.getName() + "_ConstraintFunction", true,
+                domainOntologies, functionOntology, argumentNameList,
+                functionString, (OntologySolverModel) getSolver()
+                        .getContainedModel(), actorElement);
 
         ConceptFunctionInequalityTerm functionTerm = new ConceptFunctionInequalityTerm(
                 function, argumentTerms);
@@ -310,9 +316,11 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             String constraintDir = null;
             String RHSString = null;
             if (dirAndRHSStrings == null) {
-                throw new IllegalActionException(actorElement,
+                throw new IllegalActionException(
+                        actorElement,
                         "Cannot set a constraint for the actor "
-                                + getComponent() + ". Unrecognized direction in the constraint string: "
+                                + getComponent()
+                                + ". Unrecognized direction in the constraint string: "
                                 + constraintString);
             } else {
                 constraintDir = dirAndRHSStrings.get(0);
@@ -320,8 +328,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             }
 
             // First see if the right term is just the name of a Concept
-            Object RHSTerm = getSolver().getOntology().getEntity(
-                    RHSString);
+            Object RHSTerm = getSolver().getOntology().getEntity(RHSString);
             String objName = null;
 
             // If the right term was not a concept, see if it is another element
@@ -345,12 +352,12 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             // ontology analysis.
             if (RHSTerm != null && !(RHSTerm instanceof Concept)) {
                 for (StringParameter constraintExpression : _constraintTermExpressions) {
-                    if (getActorElementName(constraintExpression).equals(objName)) {
+                    if (getActorElementName(constraintExpression).equals(
+                            objName)) {
                         if (isActorElementIgnored(constraintExpression)) {
                             throw new IllegalActionException(actorElement,
                                     "Cannot set up a constraint for "
-                                            + actorElement
-                                            + " in actor "
+                                            + actorElement + " in actor "
                                             + getComponent()
                                             + " because the actor element "
                                             + RHSTerm
@@ -367,8 +374,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             // or port in the actor, then it must be a parseable
             // concept function definition.
             if (RHSTerm == null) {
-                RHSTerm = _getConceptFunctionTerm(actorElement,
-                        RHSString);
+                RHSTerm = _getConceptFunctionTerm(actorElement, RHSString);
             }
 
             if (RHSTerm == null) {
@@ -382,11 +388,12 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 setAtLeast(actorElement, RHSTerm);
             } else if (constraintDir.equals(LTE)) {
                 if (RHSTerm instanceof ConceptFunctionInequalityTerm) {
-                    throw new IllegalActionException(actorElement,
-                                "When the constraint is '<=' which" +
-                                    " indicates an acceptance criterion and not a consraint for the solver, the" +
-                                    " inequality cannot have a monotonic function inequality term" +
-                                    " on its RHS.");
+                    throw new IllegalActionException(
+                            actorElement,
+                            "When the constraint is '<=' which"
+                                    + " indicates an acceptance criterion and not a consraint for the solver, the"
+                                    + " inequality cannot have a monotonic function inequality term"
+                                    + " on its RHS.");
                 } else {
                     setAtMost(actorElement, RHSTerm);
                 }

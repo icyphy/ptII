@@ -125,8 +125,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector implements
      */
     public void emitCurrentStates() {
         try {
-            Iterator dynamicActors = getScheduler().getSchedule().get(
-                    CTSchedule.DYNAMIC_ACTORS).actorIterator();
+            Iterator dynamicActors = getScheduler().getSchedule()
+                    .get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
 
             while (dynamicActors.hasNext() && !_stopRequested) {
                 CTDynamicActor dynamicActor = (CTDynamicActor) dynamicActors
@@ -291,8 +291,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector implements
         try {
             setModelTime(getIterationBeginTime());
 
-            Iterator statefulActors = getScheduler().getSchedule().get(
-                    CTSchedule.STATEFUL_ACTORS).actorIterator();
+            Iterator statefulActors = getScheduler().getSchedule()
+                    .get(CTSchedule.STATEFUL_ACTORS).actorIterator();
 
             while (statefulActors.hasNext() && !_stopRequested) {
                 CTStatefulActor statefulActor = (CTStatefulActor) statefulActors
@@ -354,8 +354,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector implements
      */
     public void markState() {
         try {
-            Iterator statefulActors = getScheduler().getSchedule().get(
-                    CTSchedule.STATEFUL_ACTORS).actorIterator();
+            Iterator statefulActors = getScheduler().getSchedule()
+                    .get(CTSchedule.STATEFUL_ACTORS).actorIterator();
 
             while (statefulActors.hasNext() && !_stopRequested) {
                 CTStatefulActor statefulActor = (CTStatefulActor) statefulActors

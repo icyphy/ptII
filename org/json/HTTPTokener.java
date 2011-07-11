@@ -40,7 +40,6 @@ public class HTTPTokener extends JSONTokener {
         super(s);
     }
 
-
     /**
      * Get the next token or string. This is used in parsing HTTP headers.
      * @exception JSONException

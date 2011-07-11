@@ -64,9 +64,9 @@ public class UnaryOperationMonotonicFunctionDefinition extends
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public UnaryOperationMonotonicFunctionDefinition(
-            CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public UnaryOperationMonotonicFunctionDefinition(CompositeEntity container,
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
 
         // Since a binary function always has 2 arguments, its
@@ -83,10 +83,11 @@ public class UnaryOperationMonotonicFunctionDefinition extends
 
         // Constrain argument list to have only 1 argument.
         argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 1));
-        argumentDomainOntologies.setTypeEquals(new ArrayType(BaseType.STRING, 1));
+        argumentDomainOntologies
+                .setTypeEquals(new ArrayType(BaseType.STRING, 1));
         argumentDomainOntologies.setVisibility(Settable.NONE);
 
-        Token[] argNamesArray = new Token[]{(Token) new StringToken("arg")};
+        Token[] argNamesArray = new Token[] { new StringToken("arg") };
         argumentNames.setToken(new ArrayToken(argNamesArray));
         argumentNames.setVisibility(Settable.NOT_EDITABLE);
 
@@ -118,11 +119,12 @@ public class UnaryOperationMonotonicFunctionDefinition extends
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == functionOntologyName) {
-            StringToken ontologyNameToken = (StringToken) functionOntologyName.getToken();
+            StringToken ontologyNameToken = (StringToken) functionOntologyName
+                    .getToken();
             outputRangeOntologyName.setToken(ontologyNameToken);
 
-            ArrayToken domainOntologiesToken =
-                new ArrayToken(new Token[]{(Token) ontologyNameToken});
+            ArrayToken domainOntologiesToken = new ArrayToken(
+                    new Token[] { ontologyNameToken });
             argumentDomainOntologies.setToken(domainOntologiesToken);
         }
 

@@ -229,8 +229,8 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                 Actor actor = (Actor) actors.next();
 
                 if (_debugging && _verbose) {
-                    _debug(getName(), " fire refinement", ((NamedObj) actor)
-                            .getName());
+                    _debug(getName(), " fire refinement",
+                            ((NamedObj) actor).getName());
                 }
 
                 // If this is the first time this state is visited, check
@@ -297,8 +297,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
 
                         if (transitionActors[i].prefire()) {
                             if (_debugging) {
-                                _debug(
-                                        getFullName(),
+                                _debug(getFullName(),
                                         " fire transition refinement",
                                         ((ptolemy.kernel.util.NamedObj) transitionActors[i])
                                                 .getName());

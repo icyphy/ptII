@@ -213,8 +213,8 @@ public class GeneratorAttribute extends SingletonAttribute implements
             addChangeListener(this);
 
             try {
-                requestChange(new MoMLChangeRequest(this, this, buffer
-                        .toString()));
+                requestChange(new MoMLChangeRequest(this, this,
+                        buffer.toString()));
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex, "Failed to parse "
                         + buffer.toString());
@@ -467,10 +467,8 @@ public class GeneratorAttribute extends SingletonAttribute implements
 
             if ((tooltipAttribute != null)
                     && tooltipAttribute instanceof Documentation) {
-                results
-                        .append("\n Documentation: "
-                                + ((Documentation) tooltipAttribute)
-                                        .getValueAsString());
+                results.append("\n Documentation: "
+                        + ((Documentation) tooltipAttribute).getValueAsString());
             } else {
                 String tip = Documentation.consolidate(attribute);
 

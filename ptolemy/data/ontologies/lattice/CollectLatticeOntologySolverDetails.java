@@ -90,8 +90,8 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
 
         unacceptableTerms = new StringAttribute(this, "unacceptableTerms");
         unacceptableTerms.setExpression("");
-        TextStyle unacceptableTermsStyle = new TextStyle(
-                unacceptableTerms, "_style");
+        TextStyle unacceptableTermsStyle = new TextStyle(unacceptableTerms,
+                "_style");
         unacceptableTermsStyle.height.setExpression("10");
         unacceptableTermsStyle.width.setExpression("80");
 
@@ -137,10 +137,12 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
      */
     public void test() throws IllegalActionException {
         _findSolver();
-        Hashtable<String, String> initialSolverInfo = _solver.getInitialSolverInformation();
-        Hashtable<String, String> resolvedSolverInfo = _solver.getResolvedSolverInformation();
+        Hashtable<String, String> initialSolverInfo = _solver
+                .getInitialSolverInformation();
+        Hashtable<String, String> resolvedSolverInfo = _solver
+                .getResolvedSolverInformation();
 
-        String currentInitialSolverConstraintsString = (String) initialSolverInfo
+        String currentInitialSolverConstraintsString = initialSolverInfo
                 .get("initialSolverConstraints");
         if (currentInitialSolverConstraintsString == null
                 || !currentInitialSolverConstraintsString
@@ -158,7 +160,7 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
                             + currentInitialSolverConstraintsString);
         }
 
-        String currentResolvedSolverConstraintsString = (String) resolvedSolverInfo
+        String currentResolvedSolverConstraintsString = resolvedSolverInfo
                 .get("resolvedSolverConstraints");
         if (currentResolvedSolverConstraintsString == null
                 || !currentResolvedSolverConstraintsString
@@ -185,17 +187,16 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
      */
     public void train() throws IllegalActionException {
         _findSolver();
-        Hashtable<String, String> initialSolverInfo = _solver.getInitialSolverInformation();
-        Hashtable<String, String> resolvedSolverInfo = _solver.getResolvedSolverInformation();
+        Hashtable<String, String> initialSolverInfo = _solver
+                .getInitialSolverInformation();
+        Hashtable<String, String> resolvedSolverInfo = _solver
+                .getResolvedSolverInformation();
 
-        trainedInitialSolverConstraints
-                .setExpression((String) initialSolverInfo
-                        .get("initialSolverConstraints"));
-        trainedResolvedSolverConstraints
-                .setExpression((String) resolvedSolverInfo
-                        .get("resolvedSolverConstraints"));
-        unacceptableTerms
-                .setExpression(_solver.getUnacceptableTermsAsString());
+        trainedInitialSolverConstraints.setExpression(initialSolverInfo
+                .get("initialSolverConstraints"));
+        trainedResolvedSolverConstraints.setExpression(resolvedSolverInfo
+                .get("resolvedSolverConstraints"));
+        unacceptableTerms.setExpression(_solver.getUnacceptableTermsAsString());
     }
 
     ///////////////////////////////////////////////////////////////////

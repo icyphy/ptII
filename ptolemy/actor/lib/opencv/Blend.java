@@ -36,7 +36,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// Blend
 
@@ -68,7 +67,6 @@ public class Blend extends Transformer {
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
 
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,30 +76,31 @@ public class Blend extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof OpenCV)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of OpenCV. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            OpenCV openCV = (OpenCV)inputObject;
+            OpenCV openCV = (OpenCV) inputObject;
             PImage my_image = openCV.image();
             PImage test_image = null;
-                        try {
-                                test_image = (PImage) my_image.clone();
-                        } catch (CloneNotSupportedException e) {
-                                e.printStackTrace();
-                        }
-                        if (test_image != null) {
-                                my_image.blend(test_image, 0, 0, 640, 480, 320, 240, 250, 250, 2);
-                        } else {
-                                throw new IllegalArgumentException("Error");
-                        }
-                        openCV.absDiff();
-                        openCV.copy(my_image);
-                        openCV.remember(OpenCV.BUFFER);
-          output.send(0, new ObjectToken(openCV));
+            try {
+                test_image = (PImage) my_image.clone();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+            if (test_image != null) {
+                my_image.blend(test_image, 0, 0, 640, 480, 320, 240, 250, 250,
+                        2);
+            } else {
+                throw new IllegalArgumentException("Error");
+            }
+            openCV.absDiff();
+            openCV.copy(my_image);
+            openCV.remember(OpenCV.BUFFER);
+            output.send(0, new ObjectToken(openCV));
         }
     }
 

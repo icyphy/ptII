@@ -196,9 +196,8 @@ public class StyleConfigurer extends Query implements QueryListener {
                 if (isExpert) {
                     moml.append("<deleteProperty name=\"_expertMode\"/>");
                 } else {
-                    moml
-                            .append("<property name=\"_expertMode\" "
-                                    + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                    moml.append("<property name=\"_expertMode\" "
+                            + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
                 }
             }
         } else {
@@ -243,8 +242,8 @@ public class StyleConfigurer extends Query implements QueryListener {
             moml.append("</group></property></group>");
         }
 
-        MoMLChangeRequest change = new MoMLChangeRequest(this, _object, moml
-                .toString());
+        MoMLChangeRequest change = new MoMLChangeRequest(this, _object,
+                moml.toString());
         _object.requestChange(change);
     }
 

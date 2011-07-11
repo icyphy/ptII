@@ -175,8 +175,8 @@ public class ArraySort extends Transformer {
 
                 // Dummy array to give the run-time type to toArray().
                 Token[] dummy = new Token[0];
-                result = new ArrayToken(inputElementType, (Token[]) list
-                        .toArray(dummy));
+                result = new ArrayToken(inputElementType,
+                        (Token[]) list.toArray(dummy));
             }
 
             output.send(0, result);

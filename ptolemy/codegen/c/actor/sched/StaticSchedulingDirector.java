@@ -262,8 +262,8 @@ public class StaticSchedulingDirector extends Director {
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        StringBuffer variableDeclarations = new StringBuffer(super
-                .generateVariableDeclaration());
+        StringBuffer variableDeclarations = new StringBuffer(
+                super.generateVariableDeclaration());
         Attribute period = _director.getAttribute("period");
         if (period != null) {
             Double periodValue = ((DoubleToken) ((Variable) period).getToken())

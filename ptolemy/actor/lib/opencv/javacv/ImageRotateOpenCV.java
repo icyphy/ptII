@@ -114,28 +114,30 @@ public class ImageRotateOpenCV extends Transformer {
         int rotation = ((IntToken) (rotationInDegrees.getToken())).intValue();
 
         if (input1.hasToken(0)) {
-                rotation = ((IntToken) input1.get(0)).intValue();
+            rotation = ((IntToken) input1.get(0)).intValue();
         }
         if (input.hasToken(0)) {
-                ObjectToken inputToken = (ObjectToken) input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
 
-                Object inputObject = inputToken.getValue();
+            Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof IplImage)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
 
             IplImage my_image = (IplImage) inputObject;
             IplImage my_dest = cvCloneImage(my_image);
 
-                CvPoint2D32f my_center = new CvPoint2D32f(my_image.width/2,my_image.height/2);
-                int flags = CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS;
-            CvScalar fillval=cvScalarAll(0);
-            CvMat map_matrix = cvCreateMat(2,3, CV_32FC1);
-            cv2DRotationMatrix(my_center.byValue(),(double) rotation, scale, map_matrix);
-                cvWarpAffine(my_image, my_dest, map_matrix, flags, fillval.byValue());
-                output.send(0, new ObjectToken(my_dest));
+            CvPoint2D32f my_center = new CvPoint2D32f(my_image.width / 2,
+                    my_image.height / 2);
+            int flags = CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS;
+            CvScalar fillval = cvScalarAll(0);
+            CvMat map_matrix = cvCreateMat(2, 3, CV_32FC1);
+            cv2DRotationMatrix(my_center.byValue(), rotation, scale, map_matrix);
+            cvWarpAffine(my_image, my_dest, map_matrix, flags,
+                    fillval.byValue());
+            output.send(0, new ObjectToken(my_dest));
 
         }
 

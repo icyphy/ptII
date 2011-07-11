@@ -309,18 +309,20 @@ public class Refinement extends TypedCompositeActor implements RefinementActor,
             // What if there is already a port but its input and output properties
             // don't match? Could get very subtle bugs.
             if (container instanceof ModalModel) {
-                if (((ModalModel)container).getPort(port.getName()) == null
-                        && ! (port instanceof ParameterPort)) {
+                if (((ModalModel) container).getPort(port.getName()) == null
+                        && !(port instanceof ParameterPort)) {
                     // It is ok to have ParameterPorts inside a refinement.
                     // To replicate, create a refinement and drag in a ParameterPort.
                     // See also $PTII/ptolemy/domains/continuous/demo/Pendulum3D/Pendulum3D.xml
-                    throw new IllegalActionException(this,
+                    throw new IllegalActionException(
+                            this,
                             "Ports must be added to a ModalController via the newPort()"
-                            + " method, which in Vergil is accessed by clicking on one of"
-                            + " the port buttons at the top of the window."
-                            + "Failed to add a port of type " + port.getClass().getName()
-                            + " named \"" + port.getName()
-                            + "\" to " + container.getFullName());
+                                    + " method, which in Vergil is accessed by clicking on one of"
+                                    + " the port buttons at the top of the window."
+                                    + "Failed to add a port of type "
+                                    + port.getClass().getName() + " named \""
+                                    + port.getName() + "\" to "
+                                    + container.getFullName());
                 }
             }
         }

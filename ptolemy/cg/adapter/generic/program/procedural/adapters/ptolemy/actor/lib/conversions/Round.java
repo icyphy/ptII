@@ -66,7 +66,6 @@ public class Round extends NamedProgramCodeGeneratorAdapter {
         //code.append(super._generateFireCode());
         super._generateFireCode();
 
-
         ptolemy.actor.lib.conversions.Round actor = (ptolemy.actor.lib.conversions.Round) getComponent();
 
         String function = actor.function.getExpression();

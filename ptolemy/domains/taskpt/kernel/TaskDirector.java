@@ -150,8 +150,9 @@ public class TaskDirector extends TaskPtDirector {
                     PtrToken ptr = (PtrToken) t;
 
                     Memory mem = getThreadMemory();
-                    if (mem == null)
+                    if (mem == null) {
                         throw new IllegalActionException("no memory found.");
+                    }
 
                     int addr = ptr.getAddress();
                     int size = ptr.getSize();
@@ -160,8 +161,8 @@ public class TaskDirector extends TaskPtDirector {
                         for (int i = 0; i < insideWidth; ++i) {
                             port.sendInside(i, token);
                         }
-                        _debug("Transferring input token " + token + " from address "
-                                + (addr + j));
+                        _debug("Transferring input token " + token
+                                + " from address " + (addr + j));
                     }
 
                 } else {
@@ -212,8 +213,9 @@ public class TaskDirector extends TaskPtDirector {
         int offset = 0;
 
         Memory mem = getThreadMemory();
-        if (mem == null)
+        if (mem == null) {
             throw new IllegalActionException("no memory found.");
+        }
 
         if (_debugging) {
             _debug("Calling transferOutputs on port: " + port.getFullName());

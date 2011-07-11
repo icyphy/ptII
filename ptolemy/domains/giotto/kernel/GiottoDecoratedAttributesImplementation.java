@@ -70,7 +70,6 @@ public class GiottoDecoratedAttributesImplementation extends
     // FIXME: Need a description of why a copy was necessary as
     // opposed to subclassing.
 
-
     /** Construct a DecoratedAttribute from the container and the decorator.
      *  @param container The container this object.
      *  @param decorator The decorator.

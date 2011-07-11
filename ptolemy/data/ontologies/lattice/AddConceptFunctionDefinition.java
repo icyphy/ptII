@@ -58,13 +58,12 @@ public class AddConceptFunctionDefinition extends
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public AddConceptFunctionDefinition(CompositeEntity container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+    public AddConceptFunctionDefinition(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        Token[] argNames = new Token[]{(Token) new StringToken("addend1"),
-                (Token) new StringToken("addend2")};
+        Token[] argNames = new Token[] { new StringToken("addend1"),
+                new StringToken("addend2") };
         argumentNames.setToken(new ArrayToken(argNames));
         argumentNames.setVisibility(Settable.NOT_EDITABLE);
 

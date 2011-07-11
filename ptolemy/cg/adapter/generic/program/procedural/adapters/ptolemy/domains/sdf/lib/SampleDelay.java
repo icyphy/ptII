@@ -64,29 +64,29 @@ public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-//     @Override
-//     public String generatePreinitializeCode() throws IllegalActionException {
-//         super.generatePreinitializeCode();
+    //     @Override
+    //     public String generatePreinitializeCode() throws IllegalActionException {
+    //         super.generatePreinitializeCode();
 
-//         ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
+    //         ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
 
-//         ArrayList<String> args = new ArrayList<String>();
+    //         ArrayList<String> args = new ArrayList<String>();
 
-//         Type type = actor.input.getType();
-//         args.add(targetType(type));
+    //         Type type = actor.input.getType();
+    //         args.add(targetType(type));
 
-//         CodeStream codeStream = _templateParser.getCodeStream();
+    //         CodeStream codeStream = _templateParser.getCodeStream();
 
-//         if (codeStream.isEmpty()) {
-//             codeStream.append(_eol
-//                     + getCodeGenerator().comment(
-//                             "preinitialize " + getComponent().getName()));
-//         }
+    //         if (codeStream.isEmpty()) {
+    //             codeStream.append(_eol
+    //                     + getCodeGenerator().comment(
+    //                             "preinitialize " + getComponent().getName()));
+    //         }
 
-//         codeStream.appendCodeBlock("preinitBlock", args);
+    //         codeStream.appendCodeBlock("preinitBlock", args);
 
-//         return processCode(codeStream.toString());
-//     }
+    //         return processCode(codeStream.toString());
+    //     }
 
     /** Generate the initialize code for the SampleDelay actor by
      *  declaring the initial values of the sink channels of the
@@ -105,8 +105,8 @@ public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
 
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.append(_eol
-                + getCodeGenerator().comment("initialize "
-                        + generateSimpleName(getComponent())));
+                + getCodeGenerator().comment(
+                        "initialize " + generateSimpleName(getComponent())));
 
         ArrayList<String> args = new ArrayList<String>();
         args.add("");

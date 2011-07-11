@@ -164,7 +164,7 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
         // events and haven't seen any performance issues."
 
         // start
-        if ( (infoflags & ImageObserver.FRAMEBITS) != 0 ) {
+        if ((infoflags & ImageObserver.FRAMEBITS) != 0) {
             repaint();
         }
         // end

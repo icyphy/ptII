@@ -51,7 +51,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularSDFCodeGenerator;
 import ptolemy.cg.lib.Profile.FiringFunction;
@@ -233,11 +233,12 @@ public class ModularCompiledSDFTypedCompositeActor extends
             throws IllegalActionException {
         boolean publisher = _isPublishedPort(port);
         boolean subscriber = _isSubscribedPort(port);
-        return new Profile.Port(port.getName(), publisher, subscriber, port
-                .getWidth(), DFUtilities.getTokenConsumptionRate(port),
+        return new Profile.Port(port.getName(), publisher, subscriber,
+                port.getWidth(), DFUtilities.getTokenConsumptionRate(port),
                 JavaCodeGenerator.ptTypeToCodegenType(((TypedIOPort) port)
-                        .getType()), port.isInput(), port.isOutput(), port.isMultiport(),
-                _pubSubChannelName(port, publisher, subscriber));
+                        .getType()), port.isInput(), port.isOutput(),
+                port.isMultiport(), _pubSubChannelName(port, publisher,
+                        subscriber));
     }
 
     /** React to a change in an attribute.  This method is called by
@@ -337,8 +338,8 @@ public class ModularCompiledSDFTypedCompositeActor extends
     public List portList() {
         Profile profile = _getProfile();
         if (_USE_PROFILE && profile != null) {
-            List<TypedIOPort> ports = new LinkedList<TypedIOPort>(super
-                    .portList());
+            List<TypedIOPort> ports = new LinkedList<TypedIOPort>(
+                    super.portList());
             HashSet<String> portSet = new HashSet<String>();
             for (Object port : ports) {
                 portSet.add(((NamedObj) port).getName());
@@ -355,8 +356,8 @@ public class ModularCompiledSDFTypedCompositeActor extends
                             NamedObj container = getContainer();
                             if (container instanceof CompositeActor) {
                                 ((CompositeActor) container)
-                                        .registerPublisherPort(port
-                                                .getPubSubChannelName(),
+                                        .registerPublisherPort(
+                                                port.getPubSubChannelName(),
                                                 newPort);
                             }
                         }
@@ -424,8 +425,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 Object tokenHolder = null;
 
                 int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
-                        .getWidth()
-                        : port.getWidthInside();
+                        .getWidth() : port.getWidthInside();
 
                 if (type == BaseType.INT) {
                     tokenHolder = new int[numberOfChannels][];
@@ -571,8 +571,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 super.initialize();
                 _generateCode();
             }
-            String className = NamedProgramCodeGeneratorAdapter
-                    .generateName(this);
+            String className = CodeGeneratorAdapter.generateName(this);
             Class<?> classInstance = null;
             URL url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
             URL[] urls = new URL[] { url };
@@ -845,8 +844,8 @@ public class ModularCompiledSDFTypedCompositeActor extends
 
                             if (port.subscriber()
                                     && !portSet.contains(port.name())) {
-                                IOPort newPort = new TypedIOPort(this, port
-                                        .name());
+                                IOPort newPort = new TypedIOPort(this,
+                                        port.name());
                                 new Parameter(newPort, "_hide",
                                         BooleanToken.TRUE);
                                 newPort.setInput(port.input());
@@ -857,8 +856,8 @@ public class ModularCompiledSDFTypedCompositeActor extends
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container)
-                                            .linkToPublishedPort(port
-                                                    .getPubSubChannelName(),
+                                            .linkToPublishedPort(
+                                                    port.getPubSubChannelName(),
                                                     newPort);
                                 }
                             }
@@ -1036,7 +1035,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *  @param publisherPort The publisher port.
      */
     public void unregisterPublisherPort(String name, IOPort publisherPort)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             ++_creatingPubSub;
             NamedObj container = getContainer();
@@ -1087,16 +1086,15 @@ public class ModularCompiledSDFTypedCompositeActor extends
      */
     public Profile getProfile() {
         if (_profile == null) {
-            String className = NamedProgramCodeGeneratorAdapter
-                    .generateName(this)
+            String className = CodeGeneratorAdapter.generateName(this)
                     + "_profile";
             Class<?> classInstance = null;
 
             NamedObj toplevel = toplevel();
             FileParameter path;
             try {
-                path = new FileParameter(toplevel, toplevel
-                        .uniqueName("dummyParam"));
+                path = new FileParameter(toplevel,
+                        toplevel.uniqueName("dummyParam"));
                 path.setExpression("$HOME/cg/");
                 URL url = path.asFile().toURI().toURL();
                 path.setContainer(null); //Remove the parameter again.
@@ -1277,14 +1275,13 @@ public class ModularCompiledSDFTypedCompositeActor extends
                 // if _modelChanged => _profile == null
                 return _profile;
             } else {
-                String className = NamedProgramCodeGeneratorAdapter
-                        .generateName(this)
+                String className = CodeGeneratorAdapter.generateName(this)
                         + "_profile";
                 Class<?> classInstance = null;
 
                 NamedObj toplevel = toplevel();
-                FileParameter path = new FileParameter(toplevel, toplevel
-                        .uniqueName("dummyParam"));
+                FileParameter path = new FileParameter(toplevel,
+                        toplevel.uniqueName("dummyParam"));
                 path.setExpression("$HOME/cg/");
                 URL url = path.asFile().toURI().toURL();
                 path.setContainer(null); //Remove the parameter again.
@@ -1418,14 +1415,14 @@ public class ModularCompiledSDFTypedCompositeActor extends
                             Object element = getPayload.invoke(elements[j],
                                     (Object[]) null);
                             if (type == BaseType.INT) {
-                                convertedTokens[j] = new IntToken(Integer
-                                        .parseInt(element.toString()));
+                                convertedTokens[j] = new IntToken(
+                                        Integer.parseInt(element.toString()));
                             } else if (type == BaseType.DOUBLE) {
-                                convertedTokens[j] = new DoubleToken(Double
-                                        .parseDouble(element.toString()));
+                                convertedTokens[j] = new DoubleToken(
+                                        Double.parseDouble(element.toString()));
                             } else if (type == BaseType.BOOLEAN) {
-                                convertedTokens[j] = new BooleanToken(Boolean
-                                        .parseBoolean(element.toString()));
+                                convertedTokens[j] = new BooleanToken(
+                                        Boolean.parseBoolean(element.toString()));
                             } else {
                                 //FIXME: need to deal with other types
                             }

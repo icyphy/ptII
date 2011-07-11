@@ -429,8 +429,10 @@ public class LifeCycleManager extends TypedCompositeActor {
                                 + port.getName());
                     }
 
-                    port.send(0, new StringToken(((Settable) attribute)
-                            .getExpression()));
+                    port.send(
+                            0,
+                            new StringToken(((Settable) attribute)
+                                    .getExpression()));
                 }
             }
         }

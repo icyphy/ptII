@@ -72,7 +72,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating yellow (chf)
  * @Pt.AcceptedRating yellow (vogel)
  */
-public class JoglDirector extends StaticSchedulingDirector{
+public class JoglDirector extends StaticSchedulingDirector {
 
     /**
      * Construct a director in the default workspace with an empty string as its
@@ -143,8 +143,8 @@ public class JoglDirector extends StaticSchedulingDirector{
      * which corresponds roughly to 30 frames per second.
      */
     public Parameter iterationTimeLowerBound;
-    //FixME: Write comments here
 
+    //FixME: Write comments here
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -166,7 +166,6 @@ public class JoglDirector extends StaticSchedulingDirector{
         JoglDirector newObject = (JoglDirector) (super.clone(workspace));
         return newObject;
     }
-
 
     /** In this director, do nothing. Override the super class method. This method does nothing and
      *  everything is postponed to the postfire() method. This assures
@@ -197,7 +196,8 @@ public class JoglDirector extends StaticSchedulingDirector{
      * @exception IllegalActionException
      *                If by the executive director.
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         Nameable container = getContainer();
@@ -345,8 +345,6 @@ public class JoglDirector extends StaticSchedulingDirector{
         }
     }
 
-
-
     /**
      * Reset this director to an uninitialized state to prepare for the end of
      * an execution.
@@ -358,8 +356,6 @@ public class JoglDirector extends StaticSchedulingDirector{
         super.wrapup();
         _reset();
     }
-
-
 
     /**
      * Create an actor table that caches all the actors directed by this
@@ -470,13 +466,13 @@ public class JoglDirector extends StaticSchedulingDirector{
             }
 
             //if (actor instanceof CompositeActor) {
-                //CompositeActor compositeActor = (CompositeActor) actor;
-                //Director insideDirector = compositeActor.getDirector();
-                // FIXME: This is bogus.  This is assuming there is no
-                // more than one inside director, and is delegating the
-                // incrementing of time to that inside director.
-                //_insideDirector = insideDirector;
-                //_pseudoTimeEnabled = true;
+            //CompositeActor compositeActor = (CompositeActor) actor;
+            //Director insideDirector = compositeActor.getDirector();
+            // FIXME: This is bogus.  This is assuming there is no
+            // more than one inside director, and is delegating the
+            // incrementing of time to that inside director.
+            //_insideDirector = insideDirector;
+            //_pseudoTimeEnabled = true;
             //}
 
             boolean flag = actor.prefire();
@@ -547,8 +543,6 @@ public class JoglDirector extends StaticSchedulingDirector{
                     "Cannot create default iterations parameter.");
         }
 
-
-
         _reset();
     }
 
@@ -577,7 +571,4 @@ public class JoglDirector extends StaticSchedulingDirector{
 
     private int _stopIteration = 0;
 
-
-
 }
-

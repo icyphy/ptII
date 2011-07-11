@@ -87,7 +87,6 @@ public class TestSaveRequirementsIntegration {
 
         }
 
-
         assertTrue(exceptionThrown);
 
     }
@@ -108,28 +107,30 @@ public class TestSaveRequirementsIntegration {
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"" + dbModel.getModelName() + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\""
+                + dbModel.getModelName()
+                + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
         SaveModelManager saveModelManager = new SaveModelManager();
 
@@ -138,14 +139,14 @@ public class TestSaveRequirementsIntegration {
 
         effigy = LoadManager.loadModel(dbModel.getModelName(), configuration);
 
-        boolean equal = effigy.getModel().getName().equals(dbModel.getModelName());
+        boolean equal = effigy.getModel().getName()
+                .equals(dbModel.getModelName());
 
         assertTrue(equal);
 
         removeModel(new XMLDBModel(dbModel.getModelName()));
 
     }
-
 
     @Test
     public void testUpdatingModel() throws Exception {
@@ -163,28 +164,30 @@ public class TestSaveRequirementsIntegration {
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"" + dbModel.getModelName() + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\""
+                + dbModel.getModelName()
+                + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
         SaveModelManager saveModelManager = new SaveModelManager();
 
@@ -199,10 +202,10 @@ public class TestSaveRequirementsIntegration {
 
         effigy = LoadManager.loadModel(dbModel.getModelName(), configuration);
 
-        boolean equal = effigy.getModel().getName().equals(dbModel.getModelName());
+        boolean equal = effigy.getModel().getName()
+                .equals(dbModel.getModelName());
 
         assertTrue(equal);
-
 
         removeModel(new XMLDBModel(dbModel.getModelName()));
 
@@ -224,28 +227,30 @@ public class TestSaveRequirementsIntegration {
         XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()));
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"" + dbModel.getModelName() + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\""
+                + dbModel.getModelName()
+                + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
         SaveModelManager saveModelManager = new SaveModelManager();
 
@@ -292,12 +297,11 @@ public class TestSaveRequirementsIntegration {
 
         assertTrue(equal);
 
-
         removeModel(new XMLDBModel(dbModel.getModelName()));
 
     }
 
-    private void removeModel(XMLDBModel dbModel) throws Exception{
+    private void removeModel(XMLDBModel dbModel) throws Exception {
 
         DBConnection dbConnection = null;
 
@@ -383,7 +387,8 @@ public class TestSaveRequirementsIntegration {
             try {
                 DBModelFetcher.load("TestRenameModel");
             } catch (DBExecutionException e) {
-                fail("Test failed. Model (TestRenameModel) not found in the database." + e.getMessage());
+                fail("Test failed. Model (TestRenameModel) not found in the database."
+                        + e.getMessage());
             }
         } catch (Exception e) {
             fail("Failed with exception - " + e.getMessage());

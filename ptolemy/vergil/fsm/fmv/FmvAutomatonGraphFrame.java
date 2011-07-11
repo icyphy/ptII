@@ -197,8 +197,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                             GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Translate into .SMV file");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_T));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_T));
         }
 
         /**
@@ -253,7 +253,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                         // fileSaveDialog.setFileFilter(filter);
                         fileSaveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
                         fileSaveDialog
-                            .setDialogTitle("Convert Ptolemy model into .smv file");
+                                .setDialogTitle("Convert Ptolemy model into .smv file");
                         if (_directory != null) {
                             fileSaveDialog.setCurrentDirectory(_directory);
                         } else {
@@ -264,41 +264,45 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                             // So we use the current directory instead.
                             // FIXME: Could this throw a security exception in an
                             // applet?
-                            String cwd = StringUtilities.getProperty("user.dir");
+                            String cwd = StringUtilities
+                                    .getProperty("user.dir");
 
                             if (cwd != null) {
-                                fileSaveDialog.setCurrentDirectory(new File(cwd));
+                                fileSaveDialog
+                                        .setCurrentDirectory(new File(cwd));
                             }
                         }
 
                         int returnValue = fileSaveDialog
-                            .showOpenDialog(FmvAutomatonGraphFrame.this);
+                                .showOpenDialog(FmvAutomatonGraphFrame.this);
 
                         if (returnValue == JFileChooser.APPROVE_OPTION) {
                             _directory = fileSaveDialog.getCurrentDirectory();
 
                             File smvFile = fileSaveDialog.getSelectedFile()
-                                .getCanonicalFile();
+                                    .getCanonicalFile();
 
                             if (smvFile.exists()) {
                                 String queryString = "Overwrite "
-                                    + smvFile.getName() + "?";
-                                int selected = JOptionPane.showOptionDialog(null,
-                                        queryString, "Overwrite?",
+                                        + smvFile.getName() + "?";
+                                int selected = JOptionPane.showOptionDialog(
+                                        null, queryString, "Overwrite?",
                                         JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.QUESTION_MESSAGE, null, null,
-                                        null);
+                                        JOptionPane.QUESTION_MESSAGE, null,
+                                        null, null);
                                 if (selected == 0) {
                                     try {
                                         smvFileWriter = new FileWriter(smvFile);
-                                        smvFileWriter.write(fmvFormat.toString());
+                                        smvFileWriter.write(fmvFormat
+                                                .toString());
                                     } finally {
                                         if (smvFileWriter != null) {
                                             try {
                                                 smvFileWriter.close();
                                             } catch (IOException ex) {
-                                                MessageHandler.error("Failed to close "
-                                                        + smvFile, ex);
+                                                MessageHandler.error(
+                                                        "Failed to close "
+                                                                + smvFile, ex);
                                             }
                                         }
                                     }
@@ -353,8 +357,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                             GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Invoke NuSMV");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_I));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_I));
         }
 
         /**
@@ -395,8 +399,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                 try {
                     Runtime rt = Runtime.getRuntime();
                     Process pr = rt.exec("NuSMV " + "\"" + filepath + "\"");
-                    InputStreamReader inputStream = new InputStreamReader(pr
-                            .getInputStream());
+                    InputStreamReader inputStream = new InputStreamReader(
+                            pr.getInputStream());
                     reader = new BufferedReader(inputStream);
                     String line = null;
                     while ((line = reader.readLine()) != null) {
@@ -418,8 +422,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                 // StringBuffer str stores the information of the verification.
                 Query query = new Query();
                 query.setTextWidth(80);
-                query.addTextArea("formula", "Verification Results", str
-                        .toString());
+                query.addTextArea("formula", "Verification Results",
+                        str.toString());
                 ComponentDialog dialog = new ComponentDialog(null, "Terminal",
                         query);
 

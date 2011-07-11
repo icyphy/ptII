@@ -292,9 +292,8 @@ public class HTMLViewerTableau extends Tableau {
         String ptsupportPath = "/ptolemy/ptsupport.jar";
 
         if (ptIIDirAsURLName.endsWith(ptsupportPath)) {
-            ptIIDirAsURLName = ptIIDirAsURLName.substring(0, ptIIDirAsURLName
-                    .length()
-                    - ptsupportPath.length());
+            ptIIDirAsURLName = ptIIDirAsURLName.substring(0,
+                    ptIIDirAsURLName.length() - ptsupportPath.length());
         }
 
         String relativePath = null;
@@ -372,8 +371,8 @@ public class HTMLViewerTableau extends Tableau {
     // @param urlString A string representing a jar URL or a relative URL.
     private static URL _entryResourceWithoutFragment(String urlString)
             throws IOException, MalformedURLException {
-        String urlStringBase = urlString.substring(0, urlString
-                .lastIndexOf("#"));
+        String urlStringBase = urlString.substring(0,
+                urlString.lastIndexOf("#"));
 
         URL anotherURL = null;
 

@@ -29,6 +29,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 import java.util.HashSet;
 import java.util.Set;
+
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -67,12 +68,12 @@ public class Scale extends NamedProgramCodeGeneratorAdapter {
         if (_needScaleMethods) {
             codestream.appendCodeBlocks("Scale_scaleOn.*");
             if (!codestream.isEmpty()) {
-                sharedCode.add(_templateParser.processCode(codestream.toString()));
+                sharedCode.add(_templateParser.processCode(codestream
+                        .toString()));
             }
         }
         return sharedCode;
     }
-
 
     /**
      * Generate fire code for the Scale actor.

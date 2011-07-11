@@ -115,9 +115,9 @@ public class TestSearchByAttributeIntegration {
         SearchCriteria searchCriteria = new SearchCriteria();
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        StringParameter criteriaVariable = new StringParameter(new Entity(), "CreatedBy");
+        StringParameter criteriaVariable = new StringParameter(new Entity(),
+                "CreatedBy");
         criteriaVariable.setToken("Ashwini Bijwe");
-
 
         ArrayList<Attribute> attributesList = new ArrayList<Attribute>();
         attributesList.add(criteriaVariable);
@@ -129,7 +129,7 @@ public class TestSearchByAttributeIntegration {
 
         boolean doesExist = false;
 
-        for (XMLDBModel model :resultModels) {
+        for (XMLDBModel model : resultModels) {
             if (model.getModelName().equals("ModelB")) {
                 doesExist = true;
                 break;
@@ -162,7 +162,8 @@ public class TestSearchByAttributeIntegration {
         SearchCriteria searchCriteria = new SearchCriteria();
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        StringParameter criteriaVariable = new StringParameter(new Entity(), "No Match attribute");
+        StringParameter criteriaVariable = new StringParameter(new Entity(),
+                "No Match attribute");
         criteriaVariable.setToken("test valuexxx");
 
         ArrayList<Attribute> attributesList = new ArrayList<Attribute>();

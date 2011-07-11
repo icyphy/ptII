@@ -69,8 +69,8 @@ public class ImageFlip extends Transformer {
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
 
-        flipModeParam = new Parameter(this, "flip mode (0:vertical,1:horizontal,-1:both)",
-                new IntToken(0));
+        flipModeParam = new Parameter(this,
+                "flip mode (0:vertical,1:horizontal,-1:both)", new IntToken(0));
         flipModeParam.setTypeEquals(BaseType.INT);
     }
 
@@ -91,14 +91,14 @@ public class ImageFlip extends Transformer {
         int flipMode = ((IntToken) (flipModeParam.getToken())).intValue();
 
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof IplImage)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            _frame = (IplImage)inputObject;
+            _frame = (IplImage) inputObject;
             cvFlip(_frame, _frame, flipMode);
             output.send(0, new ObjectToken(_frame));
         }

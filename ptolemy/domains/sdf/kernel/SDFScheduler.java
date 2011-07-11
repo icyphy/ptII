@@ -781,8 +781,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             portParametersFound.add(portParameter);
                             portParameterMessageBuffer
                                     .append(((PortParameter) portParameter)
-                                            .getFullName()
-                                            + " ");
+                                            .getFullName() + " ");
                             if (count > 100) {
                                 break;
                             }
@@ -808,8 +807,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             messageBuffer.append("\nUnreached Actors:\n");
             count = 0;
             for (Iterator unreachedActors = remainingActors.iterator(); unreachedActors
-                    .hasNext()
-                    && count < 100; count++) {
+                    .hasNext() && count < 100; count++) {
                 NamedObj unreachedActor = (NamedObj) (unreachedActors.next());
                 messageBuffer.append(unreachedActor.getFullName() + " ");
             }
@@ -825,8 +823,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
             count = 0;
             for (Iterator actors = reachedActorList.iterator(); actors
-                    .hasNext()
-                    && count < 100; count++) {
+                    .hasNext() && count < 100; count++) {
                 Entity entity = (Entity) actors.next();
                 messageBuffer.append(entity.getFullName() + " ");
             }
@@ -1339,13 +1336,17 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                                     + " was not found in the map from external ports of the container"
                                     + " to the fractional rates of that port, or is null.  "
                                     + " Perhaps there is a link to a port within a class "
-                                    + "definition? The container of " + currentPort.getFullName()
-                                    + (((Entity)(currentPort.getContainer())).isWithinClassDefinition()
-                                            ? " is" : " is not")
+                                    + "definition? The container of "
+                                    + currentPort.getFullName()
+                                    + (((Entity) (currentPort.getContainer()))
+                                            .isWithinClassDefinition() ? " is"
+                                            : " is not")
                                     + " within an actor oriented class definition. "
-                                    + "The container of " + connectedPort.getFullName()
-                                    + (((Entity)(connectedPort.getContainer())).isWithinClassDefinition()
-                                            ? " is" : " is not")
+                                    + "The container of "
+                                    + connectedPort.getFullName()
+                                    + (((Entity) (connectedPort.getContainer()))
+                                            .isWithinClassDefinition() ? " is"
+                                            : " is not")
                                     + " within an actor oriented class definition.");
 
                 }
@@ -1607,8 +1608,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
                 // Update the firingsRemainingVector for this actor.
                 firingsRemaining -= numberOfFirings;
-                firingsRemainingVector.put(currentActor, Integer
-                        .valueOf(firingsRemaining));
+                firingsRemainingVector.put(currentActor,
+                        Integer.valueOf(firingsRemaining));
 
                 if (_debugging && VERBOSE) {
                     _debug(currentActor.getName() + " should fire "
@@ -1725,8 +1726,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             // Only display the first 100 connected or disconnected actors.
             int count = 0;
             for (Iterator actors = unscheduledActorList.iterator(); actors
-                    .hasNext()
-                    && count < 100; count++) {
+                    .hasNext() && count < 100; count++) {
                 Entity entity = (Entity) actors.next();
                 message.append(entity.getFullName() + " ");
             }
@@ -1742,8 +1742,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             count = 0;
 
             for (Iterator actors = scheduledActorList.iterator(); actors
-                    .hasNext()
-                    && count < 100; count++) {
+                    .hasNext() && count < 100; count++) {
                 Entity entity = (Entity) actors.next();
                 message.append(entity.getFullName() + " ");
             }

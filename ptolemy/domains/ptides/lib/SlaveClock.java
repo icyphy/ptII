@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (jiazou)
  */
 public class SlaveClock extends TypedAtomicActor {
-    
+
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -92,7 +92,7 @@ public class SlaveClock extends TypedAtomicActor {
      *  output.
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public  methods                   ////
 
@@ -103,14 +103,13 @@ public class SlaveClock extends TypedAtomicActor {
         super.fire();
         DoubleToken token;
         if (input.hasToken(0)) {
-            token = (DoubleToken)input.get(0);
+            token = (DoubleToken) input.get(0);
         } else {
             return;
         }
-        PtidesBasicDirector director = (PtidesBasicDirector)getDirector();
+        PtidesBasicDirector director = (PtidesBasicDirector) getDirector();
         PtidesBasicDirector.RealTimeClock realTimeClock = director.platformTimeClock;
-        Tag platformTag = director
-            .getPlatformPhysicalTag(realTimeClock);
+        Tag platformTag = director.getPlatformPhysicalTag(realTimeClock);
         if (token.doubleValue() > platformTag.timestamp.getDoubleValue()) {
             realTimeClock.updateClockDrift(1.3);
         } else if (token.doubleValue() < platformTag.timestamp.getDoubleValue()) {
@@ -129,8 +128,8 @@ public class SlaveClock extends TypedAtomicActor {
         super.initialize();
         Director director = getDirector();
         if (!(director instanceof PtidesBasicDirector)) {
-            throw new IllegalActionException(this, "This actor can only " +
-                            "work under a Ptides director.");
+            throw new IllegalActionException(this, "This actor can only "
+                    + "work under a Ptides director.");
         }
     }
 
@@ -144,7 +143,7 @@ public class SlaveClock extends TypedAtomicActor {
 
         HashSet typeConstraints = new HashSet<Inequality>();
         Inequality inequality = new Inequality(output.getTypeTerm(),
-        output.getTypeTerm());
+                output.getTypeTerm());
         typeConstraints.add(inequality);
         return typeConstraints;
     }

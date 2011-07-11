@@ -166,7 +166,7 @@ public class SequenceAttribute extends Parameter implements Comparable {
      * @return int sequence number
      * @exception IllegalActionException If there is a problem getting the token value.
      */
-    public int getSequenceNumber() throws IllegalActionException{
+    public int getSequenceNumber() throws IllegalActionException {
         // FIXME:  0 is actually a valid sequence number - want different default return?
         int seqNumber = 0;
 
@@ -175,9 +175,10 @@ public class SequenceAttribute extends Parameter implements Comparable {
 
         // Check to make sure sequence number is positive or zero.
         if (seqNumber < 0) {
-            throw new IllegalActionException(this, "In SequenceAttribute " +
-                    getName() + " the sequence number must be a positive integer. " +
-                    "It cannot be zero or negative.");
+            throw new IllegalActionException(this, "In SequenceAttribute "
+                    + getName()
+                    + " the sequence number must be a positive integer. "
+                    + "It cannot be zero or negative.");
         }
 
         return seqNumber;

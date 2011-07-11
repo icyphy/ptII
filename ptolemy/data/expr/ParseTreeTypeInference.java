@@ -191,7 +191,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     // constructs like (1)(0,0), where the constant 1
                     // gets converted automatically to a matrix.
                     ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(0);
-                    _setType(child, MatrixType.getMatrixTypeForElementType(baseType));
+                    _setType(child,
+                            MatrixType.getMatrixTypeForElementType(baseType));
                     return;
                 }
             }
@@ -245,8 +246,11 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
                 ptolemy.data.Token integerBits = parseTreeEvaluator
                         .evaluateParseTree(integerBitsNode, _scope);
-                _setType(node, new FixType(new Precision(((ScalarToken) length)
-                        .intValue(), ((ScalarToken) integerBits).intValue())));
+                _setType(
+                        node,
+                        new FixType(new Precision(((ScalarToken) length)
+                                .intValue(), ((ScalarToken) integerBits)
+                                .intValue())));
                 return;
             } catch (Throwable throwable) {
                 // Do nothing... rely on the regular method resolution
@@ -441,8 +445,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type trueType = _inferChild(node, 1);
         Type falseType = _inferChild(node, 2);
 
-        _setType(node, (Type) TypeLattice.lattice().leastUpperBound(trueType,
-                falseType));
+        _setType(
+                node,
+                (Type) TypeLattice.lattice().leastUpperBound(trueType,
+                        falseType));
     }
 
     /** Set the type of the given node to be the type of constant the

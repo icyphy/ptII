@@ -93,7 +93,6 @@ public class SearchManager {
         AttributeSearcher attributeSearcher = new AttributeSearcher(
                 searchCriteria);
 
-
         NameSearcher nameSearcher = new NameSearcher(searchCriteria);
 
         CommandSearcher commandSearcher = new CommandSearcher(searchCriteria);

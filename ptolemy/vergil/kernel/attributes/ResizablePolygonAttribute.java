@@ -80,8 +80,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
 
         ArrayType type = new ArrayType(BaseType.DOUBLE);
         vertices.setTypeEquals(type);
-        vertices
-                .setExpression("{0.0, 0.0, 50.0, 0.0, 25.0, 50.0, -25.0, 50.0}");
+        vertices.setExpression("{0.0, 0.0, 50.0, 0.0, 25.0, 50.0, -25.0, 50.0}");
     }
 
     ///////////////////////////////////////////////////////////////////

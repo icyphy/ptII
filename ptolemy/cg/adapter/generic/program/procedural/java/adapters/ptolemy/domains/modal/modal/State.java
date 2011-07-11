@@ -44,9 +44,7 @@ Code generator helper for modal controller.
 @Pt.ProposedRating red (sssf)
 @Pt.AcceptedRating red (sssf)
 */
-public class State
-        extends
-        NamedProgramCodeGeneratorAdapter  {
+public class State extends NamedProgramCodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated with the given
      *  state.

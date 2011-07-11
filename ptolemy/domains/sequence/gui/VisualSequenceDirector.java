@@ -160,8 +160,8 @@ public class VisualSequenceDirector extends SequenceDirector {
                 try {
                     String[] buttons = { "Cancel", "Done" };
 
-                    ComponentDialog dialog = new ComponentDialog(parent, object
-                            .getFullName(), pane, buttons, null, true);
+                    ComponentDialog dialog = new ComponentDialog(parent,
+                            object.getFullName(), pane, buttons, null, true);
 
                     String response = dialog.buttonPressed();
 

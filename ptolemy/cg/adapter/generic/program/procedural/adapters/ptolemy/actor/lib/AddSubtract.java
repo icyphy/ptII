@@ -88,8 +88,8 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
             codeStream.appendCodeBlock("minusOnlyInitSum", initArgs);
         } else {
             Type type = actor.output.getType();
-             if (!getCodeGenerator().isPrimitive(type)) {
-                 initArgs.add("$tokenFunc($get(output)::zero())");
+            if (!getCodeGenerator().isPrimitive(type)) {
+                initArgs.add("$tokenFunc($get(output)::zero())");
             } else {
                 // FIXME: this seems wrong, why doesn't zero work here?
                 //$PTII/bin/ptcg -language java ./adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/AddSubtract.xml
@@ -101,7 +101,8 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
                     initArgs.add("0");
                 }
             }
-            codeStream.append(getTemplateParser().generateBlockCode("initSum", initArgs));
+            codeStream.append(getTemplateParser().generateBlockCode("initSum",
+                    initArgs));
         }
         args.add("");
         args.add(outputType);

@@ -164,8 +164,7 @@ public class HTMLAbout {
                             + _aboutHTML("ptolemy/configs/bcvtb/intro.htm")
                             + _aboutHTML("ptolemy/configs/doc/completeDemosBcvtb.htm")
                             + _aboutHTML("ptolemy/configs/doc/demosBcvtb.htm")
-                            + _aboutHTML("ptolemy/configs/doc/docsBcvtb.htm")
-                            );
+                            + _aboutHTML("ptolemy/configs/doc/docsBcvtb.htm"));
         }
         // Don't include DSP here, it uses the Ptiny demos anyway.
         if (_configurationExists("hyvisual")) {
@@ -190,8 +189,7 @@ public class HTMLAbout {
                             + _aboutHTML("doc/mainVergilPtinyKepler.htm")
                             + _aboutHTML("ptolemy/configs/doc/demosPtinyKepler.htm")
                             + _aboutHTML("ptolemy/configs/doc/docsPtinyKepler.htm")
-                            + _aboutHTML("ptolemy/configs/doc/completeDemosPtinyKepler.htm")
-                            );
+                            + _aboutHTML("ptolemy/configs/doc/completeDemosPtinyKepler.htm"));
 
         }
         if (_configurationExists("visualsense")) {
@@ -216,7 +214,8 @@ public class HTMLAbout {
                     StringToken demoToken = (StringToken) demoTokens
                             .getElement(i);
                     htmlBuffer.append(_aboutHTML(demoToken.stringValue()));
-                    System.out.println("HTMLAbout: adding " + demoToken.stringValue());
+                    System.out.println("HTMLAbout: adding "
+                            + demoToken.stringValue());
                 }
             }
         } catch (Exception ex) {
@@ -252,8 +251,8 @@ public class HTMLAbout {
             URL modelURL = new URL(demosURL, model);
 
             try {
-                configuration.openModel(demosURL, modelURL, modelURL
-                        .toExternalForm());
+                configuration.openModel(demosURL, modelURL,
+                        modelURL.toExternalForm());
             } catch (Throwable throwable) {
                 throw new Exception("Failed to open '" + modelURL + "'",
                         throwable);
@@ -342,9 +341,8 @@ public class HTMLAbout {
             // we open it up as a .xml file, we get a graphical browser
             // that does not tell us much.  If we open it up as a .htm,
             // then the output is confusing.
-            newURL = _temporaryHTMLFile("configuration", ".txt", configuration
-                    .check()
-                    + configuration.exportMoML());
+            newURL = _temporaryHTMLFile("configuration", ".txt",
+                    configuration.check() + configuration.exportMoML());
         } else if (event.getDescription().startsWith("about:demos")) {
             // Expand all the local .xml files in the fragment
             // and return a URL pointing to the fragment.
@@ -484,8 +482,7 @@ public class HTMLAbout {
                 // so that we can use FileUtilities.nameToURL() from within
                 // ptolemy.moml.filter.ActorIndex
                 fileWriter.write(StringUtilities.substitute(demo, ptII,
-                        "$CLASSPATH")
-                        + "\n");
+                        "$CLASSPATH") + "\n");
             }
         } finally {
             if (fileWriter != null) {
@@ -547,8 +544,8 @@ public class HTMLAbout {
         if (aboutAttribute != null) {
             baseURL = aboutAttribute.asURL();
             String aboutURLString = baseURL.toExternalForm();
-            String base = aboutURLString.substring(0, aboutURLString
-                    .lastIndexOf("/"));
+            String base = aboutURLString.substring(0,
+                    aboutURLString.lastIndexOf("/"));
             baseURL = MoMLApplication.specToURL(base + "/intro.htm");
             System.out
                     .println("HTMLAbout._expandLibrary(): looking in about URL: "
@@ -613,8 +610,8 @@ public class HTMLAbout {
 
         System.out.println("HTMLAbout._expandLibrary(): baseURL: " + baseURL);
         System.out.println("HTMLAbout._expandLibrary(): modelURL: " + modelURL);
-        Tableau tableau = configuration.openModel(baseURL, modelURL, modelURL
-                .toExternalForm());
+        Tableau tableau = configuration.openModel(baseURL, modelURL,
+                modelURL.toExternalForm());
         final JFrame jFrame = tableau.getFrame();
         //jFrame.show();
 
@@ -649,7 +646,8 @@ public class HTMLAbout {
         try {
             url = MoMLApplication.specToURL(demosFileName);
         } catch (Exception ex) {
-            System.out.println("Warning: " + demosFileName + " not found: " + ex);
+            System.out.println("Warning: " + demosFileName + " not found: "
+                    + ex);
         }
         return url;
     }
@@ -674,8 +672,8 @@ public class HTMLAbout {
             String demosFileName = (String) demosFileNames.next();
             URL demoURL = _getDemoURL(demosFileName);
             if (demoURL != null) {
-                results.append("<h2><a href=\"" + demoURL + "\"><code>" + demoURL
-                        + "</code></a></h2>\n<ul>\n");
+                results.append("<h2><a href=\"" + demoURL + "\"><code>"
+                        + demoURL + "</code></a></h2>\n<ul>\n");
 
                 List demosList = _getURLs(demoURL, ".*.xml$", true, 0);
                 Iterator demos = demosList.iterator();
@@ -683,8 +681,8 @@ public class HTMLAbout {
                     String demo = (String) demos.next();
                     if (!completeDemosList.contains(demo)) {
                         URL missingDemoURL = MoMLApplication.specToURL(demo);
-                        results.append(" <li><a href=\"" + missingDemoURL + "\">"
-                                + missingDemoURL + "</a>\n");
+                        results.append(" <li><a href=\"" + missingDemoURL
+                                + "\">" + missingDemoURL + "</a>\n");
                     }
                 }
                 results.append("</ul>\n");
@@ -849,7 +847,9 @@ public class HTMLAbout {
         boolean configurationExists = false;
 
         try {
-            URL url = Thread.currentThread().getContextClassLoader()
+            URL url = Thread
+                    .currentThread()
+                    .getContextClassLoader()
                     .getResource(
                             "ptolemy/configs/" + configurationName
                                     + "/configuration.xml");

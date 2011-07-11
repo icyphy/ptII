@@ -80,7 +80,7 @@ public class ObjectDetect extends Transformer {
 
         pathName = new StringAttribute(this, "pathName");
         pathName.setExpression("C:/Program Files/OpenCV/data/haarcascades/haarcascade_frontalface_default.xml");
-   }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -97,21 +97,22 @@ public class ObjectDetect extends Transformer {
     public void fire() throws IllegalActionException {
 
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof IplImage)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            _srcFrame = (IplImage)inputObject;
-            CvSize size = new CvSize(40,40);
-            _objectSeq = cvHaarDetectObjects (_srcFrame, _cascade, _storage, 1.11, 4, 0, size.byValue());
+            _srcFrame = (IplImage) inputObject;
+            CvSize size = new CvSize(40, 40);
+            _objectSeq = cvHaarDetectObjects(_srcFrame, _cascade, _storage,
+                    1.11, 4, 0, size.byValue());
 
             output.send(0, new ObjectToken(_objectSeq));
 
-//            draw_object_circle(_objectSeq,_srcFrame);
-//            output.send(0, new ObjectToken(_srcFrame));
+            //            draw_object_circle(_objectSeq,_srcFrame);
+            //            output.send(0, new ObjectToken(_srcFrame));
         }
     }
 
@@ -123,61 +124,62 @@ public class ObjectDetect extends Transformer {
 
         //FIXME: dummy call for CvHaarClassifierCascade.
         //       That causes crash before calling a function of cv library.
-        IplImage dummy_img = cvCreateImage(new CvSize(60,60).byValue(), IPL_DEPTH_8U, 1);
-        cvEqualizeHist (dummy_img, dummy_img);
+        IplImage dummy_img = cvCreateImage(new CvSize(60, 60).byValue(),
+                IPL_DEPTH_8U, 1);
+        cvEqualizeHist(dummy_img, dummy_img);
         dummy_img.release();
-
 
         String cascade_name = pathName.getExpression();
         //String cascade_name = "C:/temp/haarcascade_frontalface_default.xml";
-        _cascade = new CvHaarClassifierCascade(cvLoad (cascade_name, null, null, null));
+        _cascade = new CvHaarClassifierCascade(cvLoad(cascade_name, null, null,
+                null));
         if (_storage == null) {
-            _storage = cvCreateMemStorage (0);
+            _storage = cvCreateMemStorage(0);
         }
-        cvClearMemStorage (_storage);
-//       _dstFrame = null;
+        cvClearMemStorage(_storage);
+        //       _dstFrame = null;
     }
-     /** Release image.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
+
+    /** Release image.
+    *  @exception IllegalActionException If thrown by the super class.
+    */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-//        if (_cascade != null) {
-//            _cascade.release();
-//        }
-//        if (_storage != null) {
-//            _storage.release();
-//        }
-//        if (_objectSeq != null) {
-//            _storage.release();
-//        }
+        //        if (_cascade != null) {
+        //            _cascade.release();
+        //        }
+        //        if (_storage != null) {
+        //            _storage.release();
+        //        }
+        //        if (_objectSeq != null) {
+        //            _storage.release();
+        //        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-//    private void draw_object_circle(CvSeq objs, IplImage _image )throws IllegalActionException {
-//        int i = 0;
-//        int objTotal = 0;
-//        if (objs != null) objTotal = objs.total;
-//
-//        for (i = 0; i < objTotal; i++) {
-//            Pointer r = cvGetSeqElem (objs, i);
-//            CvRect rect = new CvRect(r);
-//            CvPoint center = new CvPoint(0,0);
-//            int radius;
-//            center.x = (int)round (rect.x + rect.width * 0.5);
-//            center.y = (int)round (rect.y + rect.height * 0.5);
-//            radius = (int)round ((rect.width + rect.height) * 0.25);
-//            cvCircle (_image, center.byValue(), radius, CvScalar.RED , 3, 8, 0);
-//          }
-//
-//    }
-
+    //    private void draw_object_circle(CvSeq objs, IplImage _image )throws IllegalActionException {
+    //        int i = 0;
+    //        int objTotal = 0;
+    //        if (objs != null) objTotal = objs.total;
+    //
+    //        for (i = 0; i < objTotal; i++) {
+    //            Pointer r = cvGetSeqElem (objs, i);
+    //            CvRect rect = new CvRect(r);
+    //            CvPoint center = new CvPoint(0,0);
+    //            int radius;
+    //            center.x = (int)round (rect.x + rect.width * 0.5);
+    //            center.y = (int)round (rect.y + rect.height * 0.5);
+    //            radius = (int)round ((rect.width + rect.height) * 0.25);
+    //            cvCircle (_image, center.byValue(), radius, CvScalar.RED , 3, 8, 0);
+    //          }
+    //
+    //    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private IplImage _srcFrame;
-//    private IplImage _dstFrame;
+    //    private IplImage _dstFrame;
     private CvHaarClassifierCascade _cascade;
     private CvMemStorage _storage;
     private CvSeq _objectSeq;

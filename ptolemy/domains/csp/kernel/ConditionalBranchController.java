@@ -255,10 +255,10 @@ public class ConditionalBranchController extends AbstractBranchController {
             }
             if (_successfulBranch == -1) {
                 // Conditional construct was ended prematurely
-                throw new TerminateProcessException(((Nameable) getParent())
-                        .getName()
-                        + ": exiting conditional"
-                        + " branching due to TerminateProcessException.");
+                throw new TerminateProcessException(
+                        ((Nameable) getParent()).getName()
+                                + ": exiting conditional"
+                                + " branching due to TerminateProcessException.");
             }
 
             _threadList = null;
@@ -270,9 +270,9 @@ public class ConditionalBranchController extends AbstractBranchController {
             }
             return result;
         } catch (InterruptedException ex) {
-            throw new TerminateProcessException(((Nameable) getParent())
-                    .getName()
-                    + ".chooseBranch interrupted.");
+            throw new TerminateProcessException(
+                    ((Nameable) getParent()).getName()
+                            + ".chooseBranch interrupted.");
         } finally {
             _branches = null;
             _successfulBranch = -1;
@@ -342,13 +342,13 @@ public class ConditionalBranchController extends AbstractBranchController {
         CSPDirector director = _getDirector();
         synchronized (director) {
             if (_branchTrying != branchID) {
-                throw new InvalidStateException(((Nameable) getParent())
-                        .getName()
-                        + ": branchSucceeded called with a branch id "
-                        + branchID
-                        + ", which is not "
-                        + "equal to the id of the branch registered as trying,"
-                        + _branchTrying);
+                throw new InvalidStateException(
+                        ((Nameable) getParent()).getName()
+                                + ": branchSucceeded called with a branch id "
+                                + branchID
+                                + ", which is not "
+                                + "equal to the id of the branch registered as trying,"
+                                + _branchTrying);
             }
             _successfulBranch = _branchTrying;
             // Have to mark the controller thread unblocked in this thread

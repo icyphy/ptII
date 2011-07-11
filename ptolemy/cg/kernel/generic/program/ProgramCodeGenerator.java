@@ -281,8 +281,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                         : ptType == BaseType.BOOLEAN ? "Boolean"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         : ptType == PointerToken.POINTER ? "Pointer"
-                                                                 : ptType == BaseType.COMPLEX ? "Complex"
-                                                                : null;
+                                                                : ptType == BaseType.COMPLEX ? "Complex"
+                                                                        : null;
 
         if (result == null) {
             if (ptType instanceof ArrayType) {
@@ -399,7 +399,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  Derived classes should throw this exception if there are problems
      *  accessing the name or generating the name.
      */
-    public String generateFireFunctionMethodInvocation(NamedObj namedObj) throws IllegalActionException {
+    public String generateFireFunctionMethodInvocation(NamedObj namedObj)
+            throws IllegalActionException {
         return generateFireFunctionMethodName(namedObj);
     }
 
@@ -414,8 +415,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  Derived classes should throw this exception if there are problems
      *  accessing the name or generating the name.
      */
-    public String generateFireFunctionMethodName(NamedObj namedObj) throws IllegalActionException {
-        return TemplateParser.escapeName(CodeGeneratorAdapter.generateName(namedObj));
+    public String generateFireFunctionMethodName(NamedObj namedObj)
+            throws IllegalActionException {
+        return TemplateParser.escapeName(CodeGeneratorAdapter
+                .generateName(namedObj));
     }
 
     /** Generate the fire function variable name and method
@@ -430,9 +433,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  of the method.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
-    public String [] generateFireFunctionVariableAndMethodName(NamedObj namedObj)
+    public String[] generateFireFunctionVariableAndMethodName(NamedObj namedObj)
             throws IllegalActionException {
-        String [] results = new String[2];
+        String[] results = new String[2];
         results[0] = "";
         results[1] = CodeGeneratorAdapter.generateName(namedObj);
         return results;
@@ -580,7 +583,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      * @param bufferSize The size of the port buffer.
      * @return The name of the port as an array element.
      */
-    public String generatePortName(TypedIOPort port, String portName, int bufferSize) {
+    public String generatePortName(TypedIOPort port, String portName,
+            int bufferSize) {
 
         // Generate the port name as an element in array.
         // This is done to make the generate java file easier to compile.
@@ -597,7 +601,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // generating code, so we have a separate HashMap that
         // that is used at code generation time to map from
         // names to the index in the corresponding type array.
-
 
         String typeName = targetType(port.getType());
 
@@ -647,17 +650,17 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             typeMaxIndex = _portTypeMaxIndex3;
         } else {
             throw new InternalErrorException(this, null,
-                    "This should not be happening. "
-                    + "Port " + port.getFullName()
-                    + " isMultiport(): " + port.isMultiport()
-                    + " buffer size: " + bufferSize);
+                    "This should not be happening. " + "Port "
+                            + port.getFullName() + " isMultiport(): "
+                            + port.isMultiport() + " buffer size: "
+                            + bufferSize);
         }
 
         // Look up the type in our HashTable of types.
-        HashMap<String,Integer> portMap = null;
-        if ((portMap = typeMap.get(typeName)) == null ) {
+        HashMap<String, Integer> portMap = null;
+        if ((portMap = typeMap.get(typeName)) == null) {
             // A type that is not in our map of types.
-            portMap = new HashMap<String,Integer>();
+            portMap = new HashMap<String, Integer>();
             typeMap.put(typeName, portMap);
             typeMaxIndex.put(typeName, 0);
         }
@@ -671,7 +674,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             portMap.put(portName, portIndex);
         }
 
-        return arrayName + StringUtilities.sanitizeName(typeName) + "[" + portIndex + "]";
+        return arrayName + StringUtilities.sanitizeName(typeName) + "["
+                + portIndex + "]";
     }
 
     /** Generate into the specified code stream the code associated with
@@ -927,8 +931,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  the include or import listed in the first element.
      *  @exception IOException If thrown while reading the code.
      */
-    public List<String> splitVariableDeclaration(int linesPerMethod, String prefix, String code)
-            throws IOException {
+    public List<String> splitVariableDeclaration(int linesPerMethod,
+            String prefix, String code) throws IOException {
         List<String> results = new LinkedList<String>();
         results.add("");
         results.add(code);
@@ -960,25 +964,28 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         // The command-line options that take arguments.
         String[][] options = {
-            { "-generateComment", "   true|false (default: true)" },
-            { "-inline", "            true|false (default: false)" },
-            { "-maximumLinesPerBlock", "<an integer, default: 2500>"},
-            { "-measureTime", "       true|false (default: false)" },
-            { "-run", "               true|false (default: true)" },
-            { "-runCommand", "        <a string, default: make -f @modelName@.mk run>" },
-            { "-variablesAsArrays", " true|false (default:false)"},
-            { "-verbosity", "         <an integer, try 1 or 10>, (default: 0)"}};
+                { "-generateComment", "   true|false (default: true)" },
+                { "-inline", "            true|false (default: false)" },
+                { "-maximumLinesPerBlock", "<an integer, default: 2500>" },
+                { "-measureTime", "       true|false (default: false)" },
+                { "-run", "               true|false (default: true)" },
+                { "-runCommand",
+                        "        <a string, default: make -f @modelName@.mk run>" },
+                { "-variablesAsArrays", " true|false (default:false)" },
+                { "-verbosity",
+                        "         <an integer, try 1 or 10>, (default: 0)" } };
 
         String[][] parentOptions = super.updateCommandOptions();
-        String[][] allOptions = new String[parentOptions.length + options.length][2];
+        String[][] allOptions = new String[parentOptions.length
+                + options.length][2];
         int i = 0;
         for (; i < parentOptions.length; i++) {
             allOptions[i][0] = parentOptions[i][0];
             allOptions[i][1] = parentOptions[i][1];
         }
         for (int j = 0; j < options.length; j++) {
-            allOptions[i + j ][0] = options[j][0];
-            allOptions[i + j ][1] = options[j][1];
+            allOptions[i + j][0] = options[j][0];
+            allOptions[i + j][1] = options[j][1];
         }
         return allOptions;
     }
@@ -1076,15 +1083,15 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         try {
             if (((IntToken) verbosity.getToken()).intValue() > 9) {
                 callingMethod = new Throwable().getStackTrace()[2]
-                        .getClassName().replace('$', '.')
-                        + _eol;
+                        .getClassName().replace('$', '.') + _eol;
             }
         } catch (IllegalActionException ex) {
             callingMethod = ex.toString();
         }
         // We escape the comment so that if there are $ in the comment
         // then we don't interpret them later.
-        return "/* " + callingMethod + TemplateParser.escapeName(comment) + " */" + _eol;
+        return "/* " + callingMethod + TemplateParser.escapeName(comment)
+                + " */" + _eol;
     }
 
     /** Generate the body code that lies between variable declaration
@@ -1300,7 +1307,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // has to be generated after everything.
         String includeFiles = _generateIncludeFiles();
 
-
         startTime = _printTimeAndMemory(startTime,
                 "CodeGenerator: generating code consumed: ");
 
@@ -1340,8 +1346,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         code.append(comment("end preinitialize method code"));
         //code.append(globalCode);
 
-        String[] splitPreinitializeMethodBodyCode = _splitBody("_preinitializeMethod_",
-                preinitializeMethodBodyCode);
+        String[] splitPreinitializeMethodBodyCode = _splitBody(
+                "_preinitializeMethod_", preinitializeMethodBodyCode);
         code.append(comment("Before appending splitPreinitializeMethodBodyCode[0]."));
         code.append(splitPreinitializeMethodBodyCode[0]);
         // Set this to null to free up space.
@@ -1352,12 +1358,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         splitPreinitializeMethodBodyCode[1] = null;
         code.append(preinitializeMethodExitCode);
 
-
         if (!inlineValue) {
 
             code.append(comment("Before appending fireFunctionCode."));
             code.append(fireFunctionCode);
-            fireFunctionCode =  null;
+            fireFunctionCode = null;
             code.append(comment("After appending fireFunctionCode."));
         }
 
@@ -1411,7 +1416,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         }
          */
         //if (containsCode(wrapupCode)) {
-        String [] splitWrapupCode = _splitBody("_wrapup_", wrapupCode);
+        String[] splitWrapupCode = _splitBody("_wrapup_", wrapupCode);
         code.append(splitWrapupCode[0]);
         splitWrapupCode[0] = null;
         code.append(wrapupEntryCode);
@@ -1509,7 +1514,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return code.toString();
     }
 
-
     /** Generate the preinitialization method body.
      *
      *  <p>Typically, the preinitialize code consists of variable
@@ -1520,7 +1524,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return a string for the preinitialization method body.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected String _generatePreinitializeMethodBodyCode() throws IllegalActionException {
+    protected String _generatePreinitializeMethodBodyCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
 
@@ -1538,7 +1543,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return a string for the preinitialization procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected String _generatePreinitializeMethodEntryCode() throws IllegalActionException {
+    protected String _generatePreinitializeMethodEntryCode()
+            throws IllegalActionException {
         return comment("preinitialization entry code");
     }
 
@@ -1546,7 +1552,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return a string for the preinitialization procedure exit point.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected String _generatePreinitializeMethodExitCode() throws IllegalActionException {
+    protected String _generatePreinitializeMethodExitCode()
+            throws IllegalActionException {
         return comment("preinitialization exit code");
     }
 
@@ -1664,12 +1671,12 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             results = splitVariableDeclaration(
                     ((IntToken) maximumLinesPerBlock.getToken()).intValue(),
                     NamedProgramCodeGeneratorAdapter
-                    .generateName(getContainer()) + suffix,
-                    code);
+                            .generateName(getContainer()) + suffix, code);
         } catch (Throwable throwable) {
             // Ignore
-            System.out.println("Warning: Failed to split variable declaration: "
-                    + throwable);
+            System.out
+                    .println("Warning: Failed to split variable declaration: "
+                            + throwable);
             throwable.printStackTrace();
             results.add("");
             results.add(code);
@@ -1738,8 +1745,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         try {
             results = splitLongBody(
                     ((IntToken) maximumLinesPerBlock.getToken()).intValue(),
-                    prefix + NamedProgramCodeGeneratorAdapter
-                            .generateName(getContainer()), code);
+                    prefix
+                            + NamedProgramCodeGeneratorAdapter
+                                    .generateName(getContainer()), code);
         } catch (Throwable throwable) {
             // Ignore
             System.out.println("Warning: Failed to split code: " + throwable);
@@ -1765,8 +1773,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.  Derived
      *  classes should throw this if there is a problem writing the file(s).
      */
-    protected String _writeVariableDeclarations(List<String> variableDeclarations)
-            throws IllegalActionException {
+    protected String _writeVariableDeclarations(
+            List<String> variableDeclarations) throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         int lineNumber = 0;
         for (String blocks : variableDeclarations) {
@@ -1799,7 +1807,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  array.  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
      */
-    protected HashMap<String, HashMap<String,Integer>> _portTypeMap;
+    protected HashMap<String, HashMap<String, Integer>> _portTypeMap;
 
     /** A map from String type name to a HashMap of port name to Array
      *  Index.  The {@link #variablesAsArrays} parameter enables use of
@@ -1807,14 +1815,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected HashMap<String, Integer> _portTypeMaxIndex;
 
-
     /** A map from String type name to a HashMap of multiport or port
      *  to an array index.  Multiports with a buffersize of 1 or
      *  ports with a buffer size greater than 1 end up in this array.
      *  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
      */
-    protected HashMap<String, HashMap<String,Integer>> _portTypeMap2;
+    protected HashMap<String, HashMap<String, Integer>> _portTypeMap2;
 
     /** A map from String type name to a HashMap of multiport or port
      *  to the maximum number in the corresponding array.
@@ -1831,7 +1838,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  The {@link #variablesAsArrays} parameter enables use of
      *  this map to reduce the number of variables generated.
      */
-    protected HashMap<String, HashMap<String,Integer>> _portTypeMap3;
+    protected HashMap<String, HashMap<String, Integer>> _portTypeMap3;
 
     /** A map from String type name to a HashMap of multiports to an
      *  to the maximum number in the corresponding array.
@@ -1846,7 +1853,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected static List<String> _primitiveTypes = Arrays.asList(new String[] {
             "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-            "Pointer"});
+            "Pointer" });
 
     /** The initial default value of the <i>runCommand</i> parameter.
      *  The constructor of a derived class may compare the value of <i>runCommand</i>
@@ -1873,7 +1880,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 
     /** The current indent level when pretty printing code. */
     private int _indent;

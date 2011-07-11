@@ -162,8 +162,7 @@ public class ModelDirectory extends CompositeEntity {
 
             // Check to see if the remaining effigies have any tableaux.
             for (Iterator effigies = remainingEntities.iterator(); effigies
-                    .hasNext()
-                    && !anyTableau;) {
+                    .hasNext() && !anyTableau;) {
                 Effigy effigy = (Effigy) effigies.next();
 
                 if (effigy.numberOfOpenTableaux() > 0) {

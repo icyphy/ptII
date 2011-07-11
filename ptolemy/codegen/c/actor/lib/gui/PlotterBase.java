@@ -130,8 +130,8 @@ public class PlotterBase extends CCodeGeneratorHelper {
         StringBuffer result = new StringBuffer();
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new StringReader(stringWriter
-                    .toString()));
+            reader = new BufferedReader(new StringReader(
+                    stringWriter.toString()));
             String line = null;
 
             try {

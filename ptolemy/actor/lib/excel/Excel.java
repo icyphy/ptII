@@ -62,8 +62,7 @@ public class Excel extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Excel() throws IllegalActionException,
-            NameDuplicationException {
+    public Excel() throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -78,8 +77,8 @@ public class Excel extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Excel(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public Excel(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
     }
 
@@ -98,7 +97,7 @@ public class Excel extends TypedAtomicActor {
     public Excel(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -115,10 +114,10 @@ public class Excel extends TypedAtomicActor {
         // File name
         String destFileName = ((Parameter) getAttribute("file"))
                 .getExpression();
-//         if (PthalesGenericActor.getIteration(this) > 0) {
-//             String[] name = destFileName.split("\\.");
-//             destFileName = name[0] + "_" + _iterationCount + "." + name[1];
-//         }
+        //         if (PthalesGenericActor.getIteration(this) > 0) {
+        //             String[] name = destFileName.split("\\.");
+        //             destFileName = name[0] + "_" + _iterationCount + "." + name[1];
+        //         }
         // Macro used
         String macro = ((Parameter) getAttribute("macro")).getExpression();
 
@@ -130,83 +129,83 @@ public class Excel extends TypedAtomicActor {
 
         // BEFORE CALLING TASK //
         // Input ports created and filled before elementary task called
-//        int dataSize = PthalesIOPort.getDataProducedSize(portIn)
-//                * PthalesIOPort.getNbTokenPerData(portIn);
+        //        int dataSize = PthalesIOPort.getDataProducedSize(portIn)
+        //                * PthalesIOPort.getNbTokenPerData(portIn);
         // Token Arrays from simulation
-//        Token[] tokensIn = new Token[dataSize];
-//        tokensIn = portIn.get(0, dataSize);
+        //        Token[] tokensIn = new Token[dataSize];
+        //        tokensIn = portIn.get(0, dataSize);
 
         // Excel open
         WritableWorkbook workbook = null;
         //WritableSheet sheet = null;
         try {
             workbook = Workbook.createWorkbook((new File(destFileName)));
-            /*sheet =*/ workbook.createSheet("Res", 0);
+            /*sheet =*/workbook.createSheet("Res", 0);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-//         LinkedHashMap<String, Integer> sizes = PthalesIOPort.getArraySizes(portIn);
-//         int size = PthalesIOPort.getDataProducedSize(portIn)
-//                 * PthalesIOPort.getNbTokenPerData(portIn);
+        //         LinkedHashMap<String, Integer> sizes = PthalesIOPort.getArraySizes(portIn);
+        //         int size = PthalesIOPort.getDataProducedSize(portIn)
+        //                 * PthalesIOPort.getNbTokenPerData(portIn);
 
-//         Object[] dims = sizes.keySet().toArray();
-//         int reps[] = new int[dims.length + 1];
+        //         Object[] dims = sizes.keySet().toArray();
+        //         int reps[] = new int[dims.length + 1];
 
-//         Number n = null;
-//         int posX = 0;
-//         double module = 0;
+        //         Number n = null;
+        //         int posX = 0;
+        //         double module = 0;
 
-//         int[] jump = new int[dims.length - 1];
-//         jump[0] = 1;
-//         for (int j = 2; j < dims.length; j++) {
-//             jump[j - 1] = jump[j - 2] * sizes.get(dims[j - 1]);
-//         }
+        //         int[] jump = new int[dims.length - 1];
+        //         jump[0] = 1;
+        //         for (int j = 2; j < dims.length; j++) {
+        //             jump[j - 1] = jump[j - 2] * sizes.get(dims[j - 1]);
+        //         }
 
-//         // Module output
-//         for (int i = 0; i < size / 2; i++) {
+        //         // Module output
+        //         for (int i = 0; i < size / 2; i++) {
 
-//             // Module computation (type dependent)
-//             if (tokensIn[i] instanceof FloatToken) {
-//                 module = Math.sqrt(((FloatToken) tokensIn[2 * i]).floatValue()
-//                         * ((FloatToken) tokensIn[2 * i]).floatValue()
-//                         + ((FloatToken) tokensIn[2 * i + 1]).floatValue()
-//                         * ((FloatToken) tokensIn[2 * i + 1]).floatValue());
-//             }
-//             if (tokensIn[i] instanceof IntToken) {
-//                 module = Math.sqrt(((IntToken) tokensIn[2 * i]).intValue()
-//                         * ((IntToken) tokensIn[2 * i]).intValue()
-//                         + ((IntToken) tokensIn[2 * i + 1]).intValue()
-//                         * ((IntToken) tokensIn[2 * i + 1]).intValue());
-//             }
+        //             // Module computation (type dependent)
+        //             if (tokensIn[i] instanceof FloatToken) {
+        //                 module = Math.sqrt(((FloatToken) tokensIn[2 * i]).floatValue()
+        //                         * ((FloatToken) tokensIn[2 * i]).floatValue()
+        //                         + ((FloatToken) tokensIn[2 * i + 1]).floatValue()
+        //                         * ((FloatToken) tokensIn[2 * i + 1]).floatValue());
+        //             }
+        //             if (tokensIn[i] instanceof IntToken) {
+        //                 module = Math.sqrt(((IntToken) tokensIn[2 * i]).intValue()
+        //                         * ((IntToken) tokensIn[2 * i]).intValue()
+        //                         + ((IntToken) tokensIn[2 * i + 1]).intValue()
+        //                         * ((IntToken) tokensIn[2 * i + 1]).intValue());
+        //             }
 
-//             // Setting module to a cell
-//             n = new Number(posX, reps[0], module);
+        //             // Setting module to a cell
+        //             n = new Number(posX, reps[0], module);
 
-//             try {
-//                 // Add the cell to the sheet
-//                 sheet.addCell(n);
-//             } catch (RowsExceededException e) {
-//                 e.printStackTrace();
-//             } catch (WriteException e) {
-//                 e.printStackTrace();
-//             }
+        //             try {
+        //                 // Add the cell to the sheet
+        //                 sheet.addCell(n);
+        //             } catch (RowsExceededException e) {
+        //                 e.printStackTrace();
+        //             } catch (WriteException e) {
+        //                 e.printStackTrace();
+        //             }
 
-//             reps[0]++;
+        //             reps[0]++;
 
-//             posX = 0;
-//             for (int nRep = 0; nRep < dims.length; nRep++) {
-//                 if (reps[nRep] == sizes.get(dims[nRep])) {
-//                     reps[nRep] = 0;
-//                     reps[nRep + 1]++;
-//                 }
+        //             posX = 0;
+        //             for (int nRep = 0; nRep < dims.length; nRep++) {
+        //                 if (reps[nRep] == sizes.get(dims[nRep])) {
+        //                     reps[nRep] = 0;
+        //                     reps[nRep + 1]++;
+        //                 }
 
-//                 if (nRep >= 1) {
-//                     posX += reps[nRep] * jump[nRep - 1];
-//                 }
-//             }
-//        }
+        //                 if (nRep >= 1) {
+        //                     posX += reps[nRep] * jump[nRep - 1];
+        //                 }
+        //             }
+        //        }
 
         try {
             // Excel output
@@ -219,7 +218,6 @@ public class Excel extends TypedAtomicActor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         try {
             // Close Excel file
@@ -260,10 +258,10 @@ public class Excel extends TypedAtomicActor {
      */
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {
-//super._initialize();
+        //super._initialize();
 
         // Only has an input port
-//        PthalesIOPort.initialize(new TypedIOPort(this, "in", true, false));
+        //        PthalesIOPort.initialize(new TypedIOPort(this, "in", true, false));
 
         if (getAttribute("file") == null) {
             Parameter file = new StringParameter(this, "file");
@@ -289,6 +287,6 @@ public class Excel extends TypedAtomicActor {
         // Reset iteration number (used for excel file name)
         _iterationCount = 0;
 
-   }
+    }
 
 }

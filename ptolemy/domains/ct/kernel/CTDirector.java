@@ -385,7 +385,8 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the time is earlier than
      *  the current time, or the breakpoint table is null.
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         // Check if the request time is earlier than the current time.
         Time currentTime = getModelTime();
 
@@ -428,7 +429,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
     protected Time _fireContainerAt(Time time) throws IllegalActionException {
         return _fireContainerAt(time, 0);
     }
-
 
     /** Return the breakpoint table. The result can be null if the breakpoint
      *  table has never been created.
@@ -913,11 +913,19 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
             throw new IllegalActionException(this, e, "ODESolver: " + className
                     + " is not accessible.");
         } catch (NoSuchMethodException e) {
-            throw new IllegalActionException(this, e, "ODESolver: " + className
-                    + " does not have a constructor that takes a Workspace argument.");
+            throw new IllegalActionException(
+                    this,
+                    e,
+                    "ODESolver: "
+                            + className
+                            + " does not have a constructor that takes a Workspace argument.");
         } catch (InvocationTargetException e) {
-            throw new IllegalActionException(this, e, "ODESolver: " + className
-                    + " invocation of the constructor that takes a Workspace argument failed.");
+            throw new IllegalActionException(
+                    this,
+                    e,
+                    "ODESolver: "
+                            + className
+                            + " invocation of the constructor that takes a Workspace argument failed.");
         }
 
         newSolver._makeSolverOf(this);

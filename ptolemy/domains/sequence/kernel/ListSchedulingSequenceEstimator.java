@@ -174,7 +174,7 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
                 try {
                     int sequenceNumber = attribute.getSequenceNumber();
                     if (sequenceNumber < actorSequenceNumber) {
-                        preds.add((Actor) attribute.getContainer());
+                        preds.add(attribute.getContainer());
                     }
                 } catch (IllegalActionException e) {
                 }

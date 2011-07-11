@@ -112,7 +112,6 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         super(workspace);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

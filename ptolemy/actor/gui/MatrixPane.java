@@ -84,10 +84,10 @@ public class MatrixPane extends JScrollPane {
 
     /** Clear the display. */
     public void clear() {
-            // When invoking methods in the table object,
-            // be sure to invoke them from the Swing Event
-            // thread.
-            // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4826
+        // When invoking methods in the table object,
+        // be sure to invoke them from the Swing Event
+        // thread.
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4826
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 table.setModel(_emptyTableModel);

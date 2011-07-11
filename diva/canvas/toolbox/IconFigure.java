@@ -268,8 +268,8 @@ public class IconFigure extends AbstractFigure {
      */
     public void translate(double x, double y) {
         repaint();
-        _transform.translate(x / _transform.getScaleX(), y
-                / _transform.getScaleY());
+        _transform.translate(x / _transform.getScaleX(),
+                y / _transform.getScaleY());
 
         for (Iterator i = _terminals.iterator(); i.hasNext();) {
             ((Terminal) i.next()).translate(x, y);

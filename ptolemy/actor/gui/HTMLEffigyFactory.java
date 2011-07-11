@@ -116,25 +116,25 @@ public class HTMLEffigyFactory extends EffigyFactory {
             // Handle about:
             String path = input.getPath();
             int slashIndex = path.lastIndexOf("/");
-            if (slashIndex != -1 && path.substring(slashIndex + 1).startsWith("about:")) {
+            if (slashIndex != -1
+                    && path.substring(slashIndex + 1).startsWith("about:")) {
                 Configuration configuration = (Configuration) toplevel();
                 // FIXME: This is a hack, HTMLAbout should be refactored
                 // to expose the functionality we need.
                 try {
                     HyperlinkEvent event = new HyperlinkEvent(this,
-                            HyperlinkEvent.EventType.ACTIVATED,
-                            null /*URL*/,
+                            HyperlinkEvent.EventType.ACTIVATED, null /*URL*/,
                             path.substring(slashIndex + 1));
                     URL url = HTMLAbout.hyperlinkUpdate(event, configuration);
 
-                    EffigyFactory factory = (EffigyFactory)((Configuration)toplevel()).getEntity("effigyFactory");
+                    EffigyFactory factory = (EffigyFactory) ((Configuration) toplevel())
+                            .getEntity("effigyFactory");
                     return factory.createEffigy(container, base, url);
 
                 } catch (Throwable throwable) {
                     throw new Exception("Failed to open " + input, throwable);
                 }
             }
-
 
             // The extension doesn't match.  Try the content type.
             URLConnection connection = input.openConnection();
@@ -147,8 +147,8 @@ public class HTMLEffigyFactory extends EffigyFactory {
             try {
                 contentType = connection.getContentType();
             } catch (SecurityException ex) {
-                throw new SecurityException(
-                        "Failed to open " + base + " " + input, ex);
+                throw new SecurityException("Failed to open " + base + " "
+                        + input, ex);
             }
 
             if (contentType == null) {
@@ -162,8 +162,8 @@ public class HTMLEffigyFactory extends EffigyFactory {
         }
 
         // Create a new effigy.
-        HTMLEffigy effigy = new HTMLEffigy(container, container
-                .uniqueName("effigy"));
+        HTMLEffigy effigy = new HTMLEffigy(container,
+                container.uniqueName("effigy"));
         effigy.uri.setURL(input);
 
         // FIXME: What to do about the base?

@@ -172,7 +172,8 @@ public class KielerJUnitTest {
             public void run() {
                 try {
                     System.out.print(" " + modelFileName + " ");
-                    model[0] = ConfigurationApplication.openModel(modelFileName);
+                    model[0] = ConfigurationApplication
+                            .openModel(modelFileName);
                 } catch (Throwable throwableCause) {
                     throwable[0] = throwableCause;
                     throw new RuntimeException(throwableCause);
@@ -308,7 +309,8 @@ public class KielerJUnitTest {
         Runnable closeAction = new Runnable() {
             public void run() {
                 try {
-                    ConfigurationApplication.closeModelWithoutSavingOrExiting(model[0]);
+                    ConfigurationApplication
+                            .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Throwable throwableCause) {
                     throwable[0] = throwableCause;
                     throw new RuntimeException(throwableCause);

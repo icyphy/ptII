@@ -99,7 +99,7 @@ public class MultiplyDivide extends NamedProgramCodeGeneratorAdapter {
             codeStream.appendCodeBlock("multiplyBlock", args);
         }
 
-        for (int i = divideOnly ? 1: 0 ; i < actor.divide.getWidth(); i++) {
+        for (int i = divideOnly ? 1 : 0; i < actor.divide.getWidth(); i++) {
             args.set(0, Integer.toString(i));
             args.set(2, divideType);
             codeStream.appendCodeBlock("divideBlock", args);

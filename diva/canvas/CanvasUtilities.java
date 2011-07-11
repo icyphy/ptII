@@ -192,8 +192,8 @@ public final class CanvasUtilities {
             f = (Figure) i.next();
         }
         Rectangle2D b = f.getBounds();
-        Rectangle2D bounds = new Rectangle2D.Double(b.getX(), b.getY(), b
-                .getWidth(), b.getHeight());
+        Rectangle2D bounds = new Rectangle2D.Double(b.getX(), b.getY(),
+                b.getWidth(), b.getHeight());
 
         // Scan the rest of the children and take the union
         while (i.hasNext()) {

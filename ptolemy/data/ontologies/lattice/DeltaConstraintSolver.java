@@ -83,7 +83,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      *  for all applicable elements in the model.
      *  @exception KernelException If the _resolveProperties method throws it.
      */
-   // public void resolveConcepts() throws KernelException {
+    // public void resolveConcepts() throws KernelException {
     public void resolveConflicts() throws KernelException {
 
         // Reset the list of resolved constraints before executing the ontology solver resolution.
@@ -94,12 +94,11 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
         boolean errorOccurred = false;
         try {
             super.resolveConcepts();
-        } catch(KernelException ex) {
+        } catch (KernelException ex) {
             errorOccurred = true;
         }
 
-        if (errorOccurred || hasUnacceptableTerms())
-        {
+        if (errorOccurred || hasUnacceptableTerms()) {
             _doDeltaIteration(toplevel, _resolvedConstraintList);
         }
     }
@@ -132,21 +131,22 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      *  executing the delta iteration.
      */
     private void _doDeltaIteration(NamedObj toplevel,
-            List<Inequality> constraintList)
-            throws TypeConflictException, IllegalActionException {
+            List<Inequality> constraintList) throws TypeConflictException,
+            IllegalActionException {
 
         List<Inequality> errorList = constraintList;
         int blockSize = errorList.size() / 2;
 
-        WHILE_LOOP: while (blockSize >= 1) {
+        WHILE_LOOP:
+        while (blockSize >= 1) {
             System.err.println("Blocksize " + blockSize);
             for (int i = 0; i < errorList.size(); i += blockSize) {
 
                 //modify the list of constraints
                 List<Inequality> testList = new LinkedList<Inequality>(
                         errorList);
-                testList.removeAll(errorList.subList(i, Math.min(errorList
-                        .size(), i + blockSize)));
+                testList.removeAll(errorList.subList(i,
+                        Math.min(errorList.size(), i + blockSize)));
 
                 if (testList.size() > 0) {
                     _clearLists();
@@ -182,8 +182,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      */
 
     protected boolean _resolvePropertiesHasErrors(NamedObj toplevel,
-            List<Inequality> constraintList) throws IllegalActionException
-    {
+            List<Inequality> constraintList) throws IllegalActionException {
         boolean errorOccured = false;
         try {
             super._resolveConcepts(toplevel, constraintList);
@@ -199,8 +198,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
         }
 
         // Check for unacceptable solution properties.
-        if (hasUnacceptableTerms())
-        {
+        if (hasUnacceptableTerms()) {
             errorOccured = true;
         }
 

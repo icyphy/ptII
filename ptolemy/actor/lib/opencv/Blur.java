@@ -35,7 +35,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// Blur
 
@@ -74,14 +73,14 @@ public class Blur extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof OpenCV)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of OpenCV. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            OpenCV openCV = (OpenCV)inputObject;
+            OpenCV openCV = (OpenCV) inputObject;
             openCV.copy(openCV.image(0));
             openCV.blur(OpenCV.BLUR, 13); //Does not have to be 13. Can be any odd number.
             output.send(0, new ObjectToken(openCV));

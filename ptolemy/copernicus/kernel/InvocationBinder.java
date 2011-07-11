@@ -149,8 +149,8 @@ public class InvocationBinder extends SceneTransformer {
 
                     // HACK! because the callgraph seems to be
                     // incorrect in soot 2.0.1
-                    if (!Scene.v().getApplicationClasses().contains(
-                            target.getDeclaringClass())) {
+                    if (!Scene.v().getApplicationClasses()
+                            .contains(target.getDeclaringClass())) {
                         continue;
                     }
 

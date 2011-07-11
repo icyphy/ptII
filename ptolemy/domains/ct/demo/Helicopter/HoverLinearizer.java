@@ -149,8 +149,8 @@ public class HoverLinearizer extends TypedAtomicActor {
             s.append(_alphaP[i] + " ");
         }
 
-        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(s
-                .toString()));
+        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(
+                s.toString()));
 
         _cPx = 0.0;
         paramCPx = new Parameter(this, "CPx", new DoubleToken(_cPx));

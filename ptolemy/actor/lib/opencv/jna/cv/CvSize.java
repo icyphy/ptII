@@ -9,8 +9,10 @@ public class CvSize extends Structure {
     public CvSize() {
         super();
     }
+
     public CvSize(int w, int h) {
         super();
-        width = w; height = h;
+        width = w;
+        height = h;
     }
 }

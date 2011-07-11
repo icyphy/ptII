@@ -45,7 +45,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-
 /**
 Parse the XML output from the Trade Space Specification Tool
 and create a MoML representation of the architecture model.
@@ -97,7 +96,7 @@ public class ModelCreator extends DefaultHandler {
         _startArchitecture = false;
         _startOption = false;
         _startDimension = false;
-       //_endArchitecture = false;
+        //_endArchitecture = false;
         _endOption = false;
         _endDimension = false;
         _outputFileName = filename.replace(".xml", "Model.xml");
@@ -112,15 +111,15 @@ public class ModelCreator extends DefaultHandler {
             handler._outputFileName = _outputFileName;
             xmlReader.setContentHandler(handler);
             xmlReader.setErrorHandler(handler);
-            reader = new FileReader("ptolemy/actor/lib/logic"
-                    + "/fuzzy/"+ filename);
+            reader = new FileReader("ptolemy/actor/lib/logic" + "/fuzzy/"
+                    + filename);
             xmlReader.parse(new InputSource(reader));
 
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex, "Failed to parse "
                     + filename + ".");
-        } finally{
-            if (reader!=null) {
+        } finally {
+            if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException ex) {
@@ -146,7 +145,8 @@ public class ModelCreator extends DefaultHandler {
             tempBuff.append(ch, start, length);
             _architecture.name = tempBuff.toString();
             if (_debugging) {
-                System.out.println("architecture name is " + _architecture.name);
+                System.out
+                        .println("architecture name is " + _architecture.name);
             }
         } else if (_startOption == true) {
             _startOption = false;
@@ -162,9 +162,10 @@ public class ModelCreator extends DefaultHandler {
             tempBuff.append(ch, start, length);
             _option._relatedDimensions.add(tempBuff.toString());
             if (_debugging) {
-                System.out.println("related dimension is: " + tempBuff.toString());
-                System.out
-                .println("size is " + _option._relatedDimensions.size());
+                System.out.println("related dimension is: "
+                        + tempBuff.toString());
+                System.out.println("size is "
+                        + _option._relatedDimensions.size());
             }
         }
         if (_debugging) {
@@ -304,8 +305,8 @@ public class ModelCreator extends DefaultHandler {
     public void processingInstruction(String target, String data) {
         if (_debugging) {
             System.out.println("Inside processignInstruction:");
-            System.out.println("target name is: " + target + " and data value is: "
-                    + data);
+            System.out.println("target name is: " + target
+                    + " and data value is: " + data);
         }
     }
 
@@ -325,43 +326,46 @@ public class ModelCreator extends DefaultHandler {
      * @exception IllegalActionException If the input file cannot be read or
      *  parsed.
      */
-    public static void main(String args[])throws IllegalActionException {
+    public static void main(String args[]) throws IllegalActionException {
         BufferedReader reader = null;
         String fileName = null;
         try {
             if (args.length < 1) {
 
-                System.out.println("Enter the name of the XML file containing the TSST XML output");
+                System.out
+                        .println("Enter the name of the XML file containing the TSST XML output");
                 try {
-                    reader = new BufferedReader(new InputStreamReader(System.in));
+                    reader = new BufferedReader(
+                            new InputStreamReader(System.in));
                     fileName = reader.readLine();
                 } catch (IOException ex) {
-                    throw new IllegalActionException(null, ex, "Failed to parse input.");
-                } finally{
-                    if (reader!=null) {
+                    throw new IllegalActionException(null, ex,
+                            "Failed to parse input.");
+                } finally {
+                    if (reader != null) {
                         try {
                             reader.close();
                         } catch (IOException ex) {
                             throw new IllegalActionException(null, ex,
-                            "Failed to close buffered reader which reads input.");
+                                    "Failed to close buffered reader which reads input.");
                         }
                     }
                 }
-            }else {
+            } else {
                 fileName = args[0];
             }
-            if (fileName!= null) {
+            if (fileName != null) {
                 //Note: Findbugs correctly detects a deadstore to a local
                 // variable. This is acceptable in this case since the work is done
                 // in the constructor
-                /*ModelCreator cF =*/ new ModelCreator(fileName);
+                /*ModelCreator cF =*/new ModelCreator(fileName);
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(1);
-        }finally{
-            if (reader!=null) {
+        } finally {
+            if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException ex) {
@@ -371,8 +375,6 @@ public class ModelCreator extends DefaultHandler {
                 }
             }
         }
-
-
 
         System.exit(0);
     }
@@ -438,7 +440,7 @@ public class ModelCreator extends DefaultHandler {
         ////    public variables                                       ////
 
         /**Name of the TSST architecture being modeled by this Architecture class.*/
-        public String name="";
+        public String name = "";
         /** List of TSST options associated with this architecture.*/
         public ArrayList<Option> myOptions;
 
@@ -477,6 +479,7 @@ public class ModelCreator extends DefaultHandler {
             _name = "dummy";
             _relatedDimensions = new ArrayList<String>();
         }
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -504,24 +507,22 @@ public class ModelCreator extends DefaultHandler {
      */
     private void readCreate() {
         ArrayList<String> componentNames = new ArrayList<String>();
-        StringBuffer output=new StringBuffer(
-                "<?xml version= \"1.0\" standalone=\"no\"?>"+_eol
-                +"<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD "
-                +"MoML 1//EN\""+ _eol
-                +"    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/"
-                +"MoML_1.dtd\">"+ _eol
-                +"<entity name=\"dummy\" class=\"ptolemy.actor.Typed"
-                +"CompositeActor\">"+_eol
-                + "<property name=\"_createdBy\" class=\"ptolemy."
-                +"kernel.attributes.VersionAttribute\" "
-                +"value=\"8.0.beta\">"+ _eol
-                +"</property>"+ _eol
-                +"<property name=\"SDF Director\" class=\"ptolemy."
-                +"domains.sdf.kernel.SDFDirector\">"
-                +"<property name=\"iterations\" class=\"ptolemy."
-                +"data.expr.Parameter\" value=\"1\">"
-                +"     </property>"+_eol
-                +"</property>"+ _eol);
+        StringBuffer output = new StringBuffer(
+                "<?xml version= \"1.0\" standalone=\"no\"?>" + _eol
+                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD "
+                        + "MoML 1//EN\"" + _eol
+                        + "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/"
+                        + "MoML_1.dtd\">" + _eol
+                        + "<entity name=\"dummy\" class=\"ptolemy.actor.Typed"
+                        + "CompositeActor\">" + _eol
+                        + "<property name=\"_createdBy\" class=\"ptolemy."
+                        + "kernel.attributes.VersionAttribute\" "
+                        + "value=\"8.0.beta\">" + _eol + "</property>" + _eol
+                        + "<property name=\"SDF Director\" class=\"ptolemy."
+                        + "domains.sdf.kernel.SDFDirector\">"
+                        + "<property name=\"iterations\" class=\"ptolemy."
+                        + "data.expr.Parameter\" value=\"1\">"
+                        + "     </property>" + _eol + "</property>" + _eol);
 
         try {
             Option option;
@@ -533,8 +534,8 @@ public class ModelCreator extends DefaultHandler {
             if (_debugging) {
                 System.out.println("There are currently "
                         + _architecture.myOptions.size()
-                        + " components with this architecture "
-                        + "named "+ _architecture.getName());
+                        + " components with this architecture " + "named "
+                        + _architecture.getName());
                 System.out.println("There were " + componentNames.size()
                         + " components ");
             }
@@ -542,38 +543,30 @@ public class ModelCreator extends DefaultHandler {
                 output.append("<entity name=\""
                         + componentNames.get(i)
                         + "\" class=\"ptolemy.actor.lib.logic.fuzzy."
-                        +"FuzzyLogic\">"
-                        +"<property name=\"rulesFileName\" "
-                        +"class=\"ptolemy.data.expr.Parameter\""
-                        +" value=\""
-                        + ((Option) (_architecture.myOptions.get(i))).
-                        _relatedDimensions.get(0)
-                        + ".xml\">"
-                        +"</property>"
-                        +"<property name=\"componentType\" "
-                        +"class=\"ptolemy.data.expr.Parameter"
-                        +"\" value=\""
-                        + ((Option) (_architecture.myOptions.get(i))).
-                        _name + "\">"
-                        +"</property>"+_eol
-                        +"</entity>");
+                        + "FuzzyLogic\">"
+                        + "<property name=\"rulesFileName\" "
+                        + "class=\"ptolemy.data.expr.Parameter\""
+                        + " value=\""
+                        + ((Option) (_architecture.myOptions.get(i)))._relatedDimensions
+                                .get(0) + ".xml\">" + "</property>"
+                        + "<property name=\"componentType\" "
+                        + "class=\"ptolemy.data.expr.Parameter" + "\" value=\""
+                        + ((Option) (_architecture.myOptions.get(i)))._name
+                        + "\">" + "</property>" + _eol + "</entity>");
             }
 
-            output.append(" <entity name=\"AddSubtract\" class=\"ptolemy.actor." +
-                    "lib.AddSubtract\">"+_eol+
-            " </entity>");
+            output.append(" <entity name=\"AddSubtract\" class=\"ptolemy.actor."
+                    + "lib.AddSubtract\">" + _eol + " </entity>");
             output.append("<entity name=\"CumulativeCostDisplay\" class=\"ptolemy."
-                    +"actor.lib.gui.Display\">" + _eol
-                    +"</entity>"+_eol);
+                    + "actor.lib.gui.Display\">" + _eol + "</entity>" + _eol);
 
-            int relationCount = componentNames.size()+1;
+            int relationCount = componentNames.size() + 1;
             for (int i = 0; i < relationCount; i++) {
                 output.append(" <relation name=\"relation" + i
-                        + "\" class=\"ptolemy.actor.TypedIORelation\">"+_eol
-                        +"<property name=\"width\" class=\"ptolemy"
-                        +".data.expr.Parameter\" value=\"Auto\">"+_eol
-                        + "</property>"+ _eol
-                        +"</relation>"+ _eol);
+                        + "\" class=\"ptolemy.actor.TypedIORelation\">" + _eol
+                        + "<property name=\"width\" class=\"ptolemy"
+                        + ".data.expr.Parameter\" value=\"Auto\">" + _eol
+                        + "</property>" + _eol + "</relation>" + _eol);
             }
 
             int relationNumber = 0;
@@ -582,11 +575,9 @@ public class ModelCreator extends DefaultHandler {
                 // Cost
                 output.append("<link port=\"" + componentNames.get(i)
                         + ".output\" relation=\"relation" + relationNumber
-                        +"\"/>"+_eol
-                        +"<link port=\""+ "AddSubtract.plus\""
-                        +" relation=\"relation" + relationNumber
-                        +"\"/>"
-                        +_eol);
+                        + "\"/>" + _eol + "<link port=\""
+                        + "AddSubtract.plus\"" + " relation=\"relation"
+                        + relationNumber + "\"/>" + _eol);
 
                 relationNumber++;
 
@@ -597,25 +588,24 @@ public class ModelCreator extends DefaultHandler {
                 // Cost
                 output.append("<link port=\""
                         + "AddSubtract.output\" relation=\"relation"
-                        + relationNumber + "\"/>"+ _eol
-                        +"<link port=\"CumulativeCostDisplay.input\" relation=\""
-                        +"relation" +relationNumber + "\"/>"+ _eol);
+                        + relationNumber
+                        + "\"/>"
+                        + _eol
+                        + "<link port=\"CumulativeCostDisplay.input\" relation=\""
+                        + "relation" + relationNumber + "\"/>" + _eol);
                 relationNumber++;
 
                 output.append("</entity>");
             }
         } finally {
             if (_debugging) {
-                System.out
-                .println("I've closed the output stream. The " +
-                        "output file has the name "
-                        + _outputFileName);
+                System.out.println("I've closed the output stream. The "
+                        + "output file has the name " + _outputFileName);
             }
-            BufferedWriter outputStream=null;
+            BufferedWriter outputStream = null;
             try {
                 outputStream = new BufferedWriter(new FileWriter(
-                        "ptolemy/actor/lib/logic/fuzzy/" +
-                        _outputFileName));
+                        "ptolemy/actor/lib/logic/fuzzy/" + _outputFileName));
                 outputStream.write(output.toString());
                 outputStream.close();
             } catch (IOException ioe) {
@@ -625,10 +615,9 @@ public class ModelCreator extends DefaultHandler {
                     }
                 } catch (IOException ioex) {
                     if (_debugging) {
-                        System.out.println("There was an exception " +
-                                "when attempting to close the " +
-                                "file from" +
-                        "the ioexception catch block");
+                        System.out.println("There was an exception "
+                                + "when attempting to close the " + "file from"
+                                + "the ioexception catch block");
                     }
                 }
                 ioe.printStackTrace();
@@ -647,7 +636,6 @@ public class ModelCreator extends DefaultHandler {
      */
     private Architecture _architecture;
 
-
     //these variables are used in the class
     private Option _option;
     private String _outputFileName;
@@ -665,4 +653,3 @@ public class ModelCreator extends DefaultHandler {
     private boolean _endDimension;
 
 }
-

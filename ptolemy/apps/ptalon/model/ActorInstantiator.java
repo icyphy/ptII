@@ -69,8 +69,8 @@ public class ActorInstantiator {
             if (_actorClass != null) {
                 Constructor<? extends ComponentEntity> constructor = _actorClass
                         .getConstructor(CompositeEntity.class, String.class);
-                _entity = constructor.newInstance(_actor, _actor
-                        .uniqueName(actorNameInPtalon));
+                _entity = constructor.newInstance(_actor,
+                        _actor.uniqueName(actorNameInPtalon));
                 return true;
             }
         } catch (SecurityException e) {
@@ -88,8 +88,8 @@ public class ActorInstantiator {
         }
         try {
             if (_ptalonUrl != null) {
-                PtalonModel model = new PtalonModel(_actor, _actor
-                        .uniqueName(actorNameInPtalon));
+                PtalonModel model = new PtalonModel(_actor,
+                        _actor.uniqueName(actorNameInPtalon));
                 File file = new File(_ptalonUrl);
                 FileReader reader;
                 reader = new FileReader(file);

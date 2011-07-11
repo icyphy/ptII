@@ -47,8 +47,7 @@ public class MotorSetup extends ActuatorSetup {
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    public MotorSetup(
-            ptolemy.domains.ptides.lib.luminary.MotorSetup actor)
+    public MotorSetup(ptolemy.domains.ptides.lib.luminary.MotorSetup actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
     }

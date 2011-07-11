@@ -563,8 +563,8 @@ public class FormEditor extends JPanel {
             boolean forceVisible) {
         // we don't want to update the selection interval if nothing changed...
         table.getSelectionModel().setSelectionInterval(rowIndex, rowIndex);
-        table.getColumnModel().getSelectionModel().setSelectionInterval(
-                columnIndex, columnIndex);
+        table.getColumnModel().getSelectionModel()
+                .setSelectionInterval(columnIndex, columnIndex);
 
         if (forceVisible) {
             // let's make sure the cell is in the visible range...
@@ -632,13 +632,13 @@ public class FormEditor extends JPanel {
         }
 
         public void fireDelete() {
-            super.fireContentsChanged(this, 0, Math.max(0, container
-                    .getComponents().length - 1));
+            super.fireContentsChanged(this, 0,
+                    Math.max(0, container.getComponents().length - 1));
         }
 
         public void fireInsert() {
-            super.fireContentsChanged(this, 0, Math.max(0, container
-                    .getComponents().length - 1));
+            super.fireContentsChanged(this, 0,
+                    Math.max(0, container.getComponents().length - 1));
         }
     }
 
@@ -1064,8 +1064,9 @@ public class FormEditor extends JPanel {
                     } catch (Exception exception) {
                         exception.printStackTrace();
                         wasSuccessful = false;
-                        JOptionPane.showMessageDialog(null, exception
-                                .getMessage(), "Error Creating Component",
+                        JOptionPane.showMessageDialog(null,
+                                exception.getMessage(),
+                                "Error Creating Component",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 }
@@ -1208,8 +1209,8 @@ public class FormEditor extends JPanel {
                     containerLayout.setColumnSpec(col - 1, value);
                     specsChanged();
                 } catch (IllegalArgumentException iae) {
-                    JOptionPane.showMessageDialog(FormEditor.this, iae
-                            .getMessage(), "Invalid Layout",
+                    JOptionPane.showMessageDialog(FormEditor.this,
+                            iae.getMessage(), "Invalid Layout",
                             JOptionPane.ERROR_MESSAGE);
                 }
             } else if (col == 0) {
@@ -1275,10 +1276,10 @@ public class FormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Remove the component (Alt+D)");
             putValue(Action.LONG_DESCRIPTION, "Remove the component (Alt+D)");
-            putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
-                    .getResource("Remove24.gif")));
-            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_D, KeyEvent.CTRL_MASK));
+            putValue(Action.SMALL_ICON,
+                    new ImageIcon(FormEditor.class.getResource("Remove24.gif")));
+            putValue(Action.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -1306,8 +1307,8 @@ public class FormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Create a new component (Alt+N)");
             putValue(Action.LONG_DESCRIPTION, "Create a new component (Alt+N)");
-            putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
-                    .getResource("New24.gif")));
+            putValue(Action.SMALL_ICON,
+                    new ImageIcon(FormEditor.class.getResource("New24.gif")));
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_N));
         }
 
@@ -1387,8 +1388,10 @@ public class FormEditor extends JPanel {
                     "Inserts a row before the selected row");
             putValue(Action.LONG_DESCRIPTION,
                     "Inserts a row before the selected row");
-            putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
-                    .getResource("RowInsertBefore24.gif")));
+            putValue(
+                    Action.SMALL_ICON,
+                    new ImageIcon(FormEditor.class
+                            .getResource("RowInsertBefore24.gif")));
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
         }
 
@@ -1407,8 +1410,10 @@ public class FormEditor extends JPanel {
                     "Inserts a row after the selected row");
             putValue(Action.LONG_DESCRIPTION,
                     "Inserts a row after the selected row");
-            putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
-                    .getResource("RowInsertAfter24.gif")));
+            putValue(
+                    Action.SMALL_ICON,
+                    new ImageIcon(FormEditor.class
+                            .getResource("RowInsertAfter24.gif")));
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_O));
         }
 
@@ -1427,8 +1432,10 @@ public class FormEditor extends JPanel {
                     "Inserts a column before the selected column");
             putValue(Action.LONG_DESCRIPTION,
                     "Inserts a column before the selected column");
-            putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
-                    .getResource("ColumnInsertBefore24.gif")));
+            putValue(
+                    Action.SMALL_ICON,
+                    new ImageIcon(FormEditor.class
+                            .getResource("ColumnInsertBefore24.gif")));
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_K));
         }
 
@@ -1447,8 +1454,10 @@ public class FormEditor extends JPanel {
                     "Inserts a column after the selected column");
             putValue(Action.LONG_DESCRIPTION,
                     "Inserts a column after the selected column");
-            putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
-                    .getResource("ColumnInsertAfter24.gif")));
+            putValue(
+                    Action.SMALL_ICON,
+                    new ImageIcon(FormEditor.class
+                            .getResource("ColumnInsertAfter24.gif")));
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
         }
 
@@ -1465,8 +1474,10 @@ public class FormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Deletes the selected row");
             putValue(Action.LONG_DESCRIPTION, "Deletes the selected row");
-            putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
-                    .getResource("RowDelete24.gif")));
+            putValue(
+                    Action.SMALL_ICON,
+                    new ImageIcon(FormEditor.class
+                            .getResource("RowDelete24.gif")));
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
         }
 
@@ -1495,8 +1506,9 @@ public class FormEditor extends JPanel {
             containerLayout.removeRowSpec(rowIndex - 1);
 
             tableModel.fireTableRowsDeleted(rowIndex, rowIndex);
-            table.changeSelection(Math.min(rowIndex, containerLayout
-                    .getRowCount()), 0, false, false);
+            table.changeSelection(
+                    Math.min(rowIndex, containerLayout.getRowCount()), 0,
+                    false, false);
             specsChanged();
             table.requestFocus();
         }
@@ -1508,8 +1520,10 @@ public class FormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Deletes the selected column");
             putValue(Action.LONG_DESCRIPTION, "Deletes the selected column");
-            putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
-                    .getResource("ColumnDelete24.gif")));
+            putValue(
+                    Action.SMALL_ICON,
+                    new ImageIcon(FormEditor.class
+                            .getResource("ColumnDelete24.gif")));
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
         }
 
@@ -1535,8 +1549,9 @@ public class FormEditor extends JPanel {
 
             containerLayout.removeColumnSpec(columnIndex - 1);
             tableModel.fireTableStructureChanged();
-            table.changeSelection(0, Math.min(columnIndex, containerLayout
-                    .getColumnCount()), false, false);
+            table.changeSelection(0,
+                    Math.min(columnIndex, containerLayout.getColumnCount()),
+                    false, false);
             specsChanged();
             table.requestFocus();
         }

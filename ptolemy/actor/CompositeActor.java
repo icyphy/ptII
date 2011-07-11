@@ -430,8 +430,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // the behavior of the schedule might depend on rate variables
             // set from ParameterPorts.
             for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
-                    .hasNext()
-                    && !_stopRequested;) {
+                    .hasNext() && !_stopRequested;) {
                 IOPort p = (IOPort) inputPorts.next();
 
                 if (p instanceof ParameterPort) {
@@ -444,8 +443,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // The director will also update the schedule in
             // the process, if necessary.
             for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
-                    .hasNext()
-                    && !_stopRequested;) {
+                    .hasNext() && !_stopRequested;) {
                 IOPort p = (IOPort) inputPorts.next();
 
                 if (!(p instanceof ParameterPort)) {
@@ -723,8 +721,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
         } else {
             if (_publishedPorts != null) {
                 for (String name : _publishedPorts.keySet()) {
-                    if (_publishedPorts.get(name).contains(port))
+                    if (_publishedPorts.get(name).contains(port)) {
                         return name;
+                    }
                 }
             }
         }
@@ -745,8 +744,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
         } else {
             if (_subscribedPorts != null) {
                 for (String name : _subscribedPorts.keySet()) {
-                    if (_subscribedPorts.get(name).contains(port))
+                    if (_subscribedPorts.get(name).contains(port)) {
                         return name;
+                    }
                 }
             }
         }
@@ -1124,8 +1124,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     subscriberPort);
         } else {
             IORelation relation = _publisherRelations != null ? _publisherRelations
-                    .get(name)
-                    : null;
+                    .get(name) : null;
 
             if (relation == null) {
                 IOPort publishedPort = getPublishedPort(name);
@@ -1330,8 +1329,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
         } else {
             if (_publishedPorts == null) {
                 if (!global || this == toplevel()) {
-                    throw new IllegalActionException(subscriberPort
-                            .getContainer(),
+                    throw new IllegalActionException(
+                            subscriberPort.getContainer(),
                             "No Publishers were found adjacent to or below "
                                     + subscriberPort.getContainer()
                                             .getFullName());
@@ -1347,8 +1346,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
                 }
                 if (!matched && (!global || this == toplevel())) {
-                    throw new IllegalActionException(subscriberPort
-                            .getContainer(),
+                    throw new IllegalActionException(
+                            subscriberPort.getContainer(),
                             "Failed to find a publisher to match \"" + pattern
                                     + "\"");
                 }
@@ -1807,8 +1806,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 _publishedPorts.put(name, portList);
             }
 
-            if (!portList.contains(port))
+            if (!portList.contains(port)) {
                 portList.add(port);
+            }
 
             if (global && this != toplevel()) {
 
@@ -2203,8 +2203,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // Remove the link to a previous relation, if necessary.
 
             IORelation relation = _publisherRelations != null ? _publisherRelations
-                    .get(name)
-                    : null;
+                    .get(name) : null;
 
             if (relation != null) {
                 subscriberPort.unlink(relation);
@@ -2253,8 +2252,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // Remove the link to a previous relation, if necessary.
 
             IORelation relation = _publisherRelations != null ? _publisherRelations
-                    .get(name)
-                    : null;
+                    .get(name) : null;
 
             if (relation != null) {
                 subscriberPort.unlink(relation);
@@ -2286,8 +2284,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         ((IORelation) relationObj).setContainer(null);
                         notifyConnectivityChange();
                     } catch (NameDuplicationException ex) {
-                        throw new InternalErrorException(subscriberPort
-                                .getContainer(), ex,
+                        throw new InternalErrorException(
+                                subscriberPort.getContainer(), ex,
                                 "Failed to set the container to null?");
                     }
                 }
@@ -2399,8 +2397,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
                     ((IORelation) relationObj).setContainer(null);
                 } catch (NameDuplicationException ex) {
-                    throw new InternalErrorException(subscriberPort
-                            .getContainer(), ex,
+                    throw new InternalErrorException(
+                            subscriberPort.getContainer(), ex,
                             "Failed to set the container to null?");
                 }
             }
@@ -2448,7 +2446,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  be set
      */
     public void unregisterPublisherPort(String name, IOPort publisherPort,
-                                        boolean global) throws IllegalActionException, NameDuplicationException {
+            boolean global) throws IllegalActionException,
+            NameDuplicationException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
@@ -2732,7 +2731,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (addPiggyBackAtThisLevel && _piggybacks != null) {
             piggybacks.addAll(_piggybacks);
         }
-        for (CompositeActor actor : (List<CompositeActor>) entityList(CompositeActor.class)) {
+        for (CompositeActor actor : entityList(CompositeActor.class)) {
             if (!actor.isOpaque()) {
                 actor._getTransparentActorPiggybacks(piggybacks, true);
             }

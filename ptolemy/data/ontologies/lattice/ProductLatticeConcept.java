@@ -75,8 +75,9 @@ public class ProductLatticeConcept extends FiniteConcept {
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public ProductLatticeConcept(ProductLatticeOntology ontology, String name, List<Concept> conceptTuple)
-            throws NameDuplicationException, IllegalActionException {
+    public ProductLatticeConcept(ProductLatticeOntology ontology, String name,
+            List<Concept> conceptTuple) throws NameDuplicationException,
+            IllegalActionException {
         this(ontology, name);
         _conceptTuple = new ArrayList<Concept>(conceptTuple);
     }
@@ -94,7 +95,8 @@ public class ProductLatticeConcept extends FiniteConcept {
      *   color from the component concept value.
      */
     public ColorAttribute getColor() throws IllegalActionException {
-        Ontology colorOntology = ((ProductLatticeOntology) getOntology()).getColorOntology();
+        Ontology colorOntology = ((ProductLatticeOntology) getOntology())
+                .getColorOntology();
 
         if (colorOntology != null) {
             Concept componentConcept = getComponentConceptValue(colorOntology);
@@ -115,7 +117,7 @@ public class ProductLatticeConcept extends FiniteConcept {
      *   of the product lattice ontology to which this concept belongs.
      */
     public Concept getComponentConceptValue(Ontology ontology)
-        throws IllegalActionException{
+            throws IllegalActionException {
         // FIXME: What about if there are multiple elements in the tuple with
         // the same ontology?
         for (Concept innerConcept : _conceptTuple) {
@@ -123,13 +125,17 @@ public class ProductLatticeConcept extends FiniteConcept {
             // FIXME: A single ontology could have multiple instances but we don't
             // have a defined equals() method for ontologies, so this hack of
             // comparing their Ptolemy class names is used.
-            if (innerConcept.getOntology().getClassName().equals(ontology.getClassName())) {
+            if (innerConcept.getOntology().getClassName()
+                    .equals(ontology.getClassName())) {
                 return ontology.getConceptByString(innerConcept.toString());
             }
         }
-        throw new IllegalActionException(this, "The ontology " + ontology.getName() +
-                " is not a component of this concept's product lattice ontology " +
-                getOntology().getName() + ".");
+        throw new IllegalActionException(
+                this,
+                "The ontology "
+                        + ontology.getName()
+                        + " is not a component of this concept's product lattice ontology "
+                        + getOntology().getName() + ".");
     }
 
     /** Return the list of concepts that compose this product lattice concept.
@@ -143,14 +149,14 @@ public class ProductLatticeConcept extends FiniteConcept {
     *
     *  @return The containing product lattice ontology.
     */
-   public Ontology getOntology() {
-       NamedObj container = getContainer();
-       if (container instanceof ProductLatticeOntology) {
-           return (ProductLatticeOntology) container;
-       } else {
-           return null;
-       }
-   }
+    public Ontology getOntology() {
+        NamedObj container = getContainer();
+        if (container instanceof ProductLatticeOntology) {
+            return (ProductLatticeOntology) container;
+        } else {
+            return null;
+        }
+    }
 
     /** Return the string that represents this concept, its name.
      *  @return The string name that represents this concept.

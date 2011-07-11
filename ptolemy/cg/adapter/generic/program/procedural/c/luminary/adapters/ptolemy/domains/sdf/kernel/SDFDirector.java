@@ -32,8 +32,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -82,9 +82,9 @@ public class SDFDirector
         // done using instanceof operator"
         if ((container instanceof CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
                 .getToken()).booleanValue())
-                // Findbugs says that we don't need this instance check
-                // because container is, by definition, a CompositeActor.
-                // thus, we could probably remove this if ().
+        // Findbugs says that we don't need this instance check
+        // because container is, by definition, a CompositeActor.
+        // thus, we could probably remove this if ().
                 || (container instanceof CompositeActor)) {
 
             // FindBugs wants this instanceof check.
@@ -104,15 +104,14 @@ public class SDFDirector
                 //     input = Event_Head->data;
                 // }
                 code.append("if (");
-                code.append(portAdapter.generateHasTokenCode(Integer
-                        .toString(i), offset));
+                code.append(portAdapter.generateHasTokenCode(
+                        Integer.toString(i), offset));
                 code.append(") {" + _eol);
 
                 // the input port to transfer the data to was declared earlier, and is of this name:
                 StringBuffer inputCode = new StringBuffer();
                 boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
-                inputCode.append(NamedProgramCodeGeneratorAdapter
-                        .generateName(inputPort));
+                inputCode.append(CodeGeneratorAdapter.generateName(inputPort));
                 int bufferSize = _ports.getBufferSize(inputPort);
                 if (inputPort.isMultiport()) {
                     inputCode.append("[" + Integer.toString(i) + "]");
@@ -190,9 +189,9 @@ public class SDFDirector
         // done using instanceof operator"
         if ((container instanceof CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
                 .getToken()).booleanValue())
-                // Findbugs says that we don't need this instance check
-                // because container is, by definition, a CompositeActor.
-                // thus, we could probably remove this if ().
+        // Findbugs says that we don't need this instance check
+        // because container is, by definition, a CompositeActor.
+        // thus, we could probably remove this if ().
                 || (container instanceof CompositeActor)) {
 
             ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(outputPort);
@@ -203,8 +202,8 @@ public class SDFDirector
             for (int i = 0; i < outputPort.getWidth(); i++) {
 
                 StringBuffer outputCode = new StringBuffer();
-                outputCode.append(NamedProgramCodeGeneratorAdapter
-                        .generateName(outputPort));
+                outputCode
+                        .append(CodeGeneratorAdapter.generateName(outputPort));
 
                 if (outputPort.isMultiport()) {
                     outputCode.append("[" + Integer.toString(i) + "]");

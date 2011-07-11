@@ -62,20 +62,21 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
      *  is added to the array as the last element.  Otherwise, the
      *  options argument is returned.
      */
-    protected Object [] _checkThrowableNameable(Object [] options,
+    protected Object[] _checkThrowableNameable(Object[] options,
             Throwable throwable) {
         // If the throwable has a Nameable, then add a button
         boolean addButton = false;
-        Object [] result = options;
+        Object[] result = options;
         if (throwable instanceof KernelException) {
-            Nameable nameable1 = ((KernelException)throwable).getNameable1();
+            Nameable nameable1 = ((KernelException) throwable).getNameable1();
             if (nameable1 instanceof NamedObj) {
                 addButton = true;
             }
         }
         if (throwable instanceof KernelRuntimeException) {
             // SDFDirector throws a KRE if the graph is disconnected.
-            Iterator nameables = ((KernelRuntimeException)throwable).getNameables().iterator();
+            Iterator nameables = ((KernelRuntimeException) throwable)
+                    .getNameables().iterator();
             while (nameables.hasNext()) {
                 if (nameables.next() instanceof NamedObj) {
                     addButton = true;
@@ -99,21 +100,23 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
     protected void _showNameable(Throwable throwable) {
         Nameable nameable1 = null;
         if (throwable instanceof KernelException) {
-            nameable1 = ((KernelException)throwable).getNameable1();
+            nameable1 = ((KernelException) throwable).getNameable1();
         } else if (throwable instanceof KernelRuntimeException) {
-            Iterator nameables = ((KernelRuntimeException)throwable).getNameables().iterator();
+            Iterator nameables = ((KernelRuntimeException) throwable)
+                    .getNameables().iterator();
             while (nameables.hasNext()) {
                 Object object = nameables.next();
                 if (object instanceof NamedObj) {
-                    nameable1 = (NamedObj)object;
+                    nameable1 = (NamedObj) object;
                     break;
                 }
             }
 
         }
         if (nameable1 != null) {
-            Effigy effigy = Configuration.findEffigy(((NamedObj)nameable1).toplevel());
-            Configuration configuration = (Configuration)effigy.toplevel();
+            Effigy effigy = Configuration.findEffigy(((NamedObj) nameable1)
+                    .toplevel());
+            Configuration configuration = (Configuration) effigy.toplevel();
             try {
                 Nameable container = nameable1;
                 while (container != null
@@ -124,7 +127,7 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
                     // Hmm.  Could not find container?
                     container = nameable1;
                 }
-                configuration.openModel((NamedObj)container);
+                configuration.openModel((NamedObj) container);
             } catch (KernelException ex) {
                 // FIXME: Could be an endless loop here if
                 // we keep failing to open container.
@@ -135,6 +138,6 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
         }
 
         message("Internal Error: The throwable \"" + throwable
-                    + "\" is not a KernelException or KernelRuntimeException?");
+                + "\" is not a KernelException or KernelRuntimeException?");
     }
 }

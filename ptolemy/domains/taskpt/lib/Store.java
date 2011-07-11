@@ -73,11 +73,12 @@ public class Store extends LoadStore {
      * @exception IllegalActionException Thrown if no memory is found, an exception is
      * thrown.
      */
-     public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
 
         Memory mem = getMemory();
-        if (mem == null)
+        if (mem == null) {
             throw new IllegalActionException("no memory found.");
+        }
 
         Token tok = ptr.get(0);
 

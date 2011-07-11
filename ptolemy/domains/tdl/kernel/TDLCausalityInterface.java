@@ -194,9 +194,10 @@ public class TDLCausalityInterface extends CausalityInterfaceForComposites {
                     if (((CompositeActor) port.getContainer()).getDirector() != this._actor
                             .getDirector()
                             && ((CompositeActor) port.getContainer())
-                                    .getDirector().defaultDependency().equals(
-                                            this._actor.getDirector()
-                                                    .defaultDependency())) {
+                                    .getDirector()
+                                    .defaultDependency()
+                                    .equals(this._actor.getDirector()
+                                            .defaultDependency())) {
                         Collection<IOPort> deepInputPorts = port
                                 .deepInsidePortList();
                         for (IOPort inputPort : deepInputPorts) {

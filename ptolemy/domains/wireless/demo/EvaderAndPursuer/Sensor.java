@@ -120,8 +120,7 @@ public class Sensor extends TypedAtomicActor {
         // Since this actor sources the data at this port, we have to
         // declare the type.
         TypeAttribute portType = new TypeAttribute(output, "type");
-        portType
-                .setExpression("{location=arrayType(double, 2), time=double, depth=int}");
+        portType.setExpression("{location=arrayType(double, 2), time=double, depth=int}");
 
         // Create an icon for this sensor node.
         EditorIcon node_icon = new EditorIcon(this, "_icon");

@@ -154,7 +154,7 @@ public class DBModelFetcher {
      *
      */
     public static ArrayList<XMLDBModel> load(ArrayList<XMLDBModel> modelList)
-        throws DBConnectionException, DBExecutionException {
+            throws DBConnectionException, DBExecutionException {
 
         ArrayList<XMLDBModel> returnList = new ArrayList();
 
@@ -162,12 +162,13 @@ public class DBModelFetcher {
 
         try {
 
-            for (XMLDBModel model: modelList) {
+            for (XMLDBModel model : modelList) {
 
                 XMLDBModel resultModel;
-                GetModelTask getModelTask =
-                    new GetModelTask(model.getModelName());
-                resultModel = connection.executeGetCompleteModelTask(getModelTask);
+                GetModelTask getModelTask = new GetModelTask(
+                        model.getModelName());
+                resultModel = connection
+                        .executeGetCompleteModelTask(getModelTask);
 
                 if (resultModel != null) {
 

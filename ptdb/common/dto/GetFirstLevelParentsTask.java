@@ -3,7 +3,6 @@
  */
 package ptdb.common.dto;
 
-
 ///////////////////////////////////////////////////////////////////
 //// GetFirstLevelParentsTask
 
@@ -18,9 +17,7 @@ package ptdb.common.dto;
  * @Pt.AcceptedRating Red (abijwe)
  *
  */
-public class GetFirstLevelParentsTask extends Task{
-
-
+public class GetFirstLevelParentsTask extends Task {
 
     /**
      * Construct an instance of this class and set the model for which the first
@@ -30,7 +27,6 @@ public class GetFirstLevelParentsTask extends Task{
     public GetFirstLevelParentsTask(XMLDBModel model) {
         this._model = model;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

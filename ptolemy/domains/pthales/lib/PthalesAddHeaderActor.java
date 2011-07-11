@@ -117,7 +117,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
         IOPort portOut = (IOPort) getPort("out");
 
         // One port in theory
-//        IOPort previousPort = (IOPort) portIn.connectedPortList().get(0);
+        //        IOPort previousPort = (IOPort) portIn.connectedPortList().get(0);
         int nbDims = PthalesIOPort.getDimensions(portIn).length;
 
         // Token Arrays from simulation
@@ -126,7 +126,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
         // Input ports created and filled before elementary task called
         int dataSize = PthalesIOPort.getDataProducedSize(portIn)
                 * PthalesIOPort.getNbTokenPerData(portIn);
-//        tokensIn = new Token[dataSize];
+        //        tokensIn = new Token[dataSize];
         tokensIn = portIn.get(0, dataSize);
 
         // Header construction

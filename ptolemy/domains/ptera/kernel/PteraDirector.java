@@ -377,7 +377,8 @@ public class PteraDirector extends Director implements TimedDirector,
      *   does not support fireAt() precisely (it does not agree to refire
      *   this Ptera model at the requested time).
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         if (getContainer() instanceof ModalModel
                 && actor instanceof RefinementActor) {
             Event event = (Event) ((RefinementActor) actor).getRefinedState();

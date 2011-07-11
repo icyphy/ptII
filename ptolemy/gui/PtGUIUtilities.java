@@ -120,7 +120,8 @@ public class PtGUIUtilities {
      *  @return true if java.awt.FileDialog should be used.
      */
     public static boolean useFileDialog() {
-        String useFileDialog = StringUtilities.getProperty("ptolemy.ptII.useFileDialog");
+        String useFileDialog = StringUtilities
+                .getProperty("ptolemy.ptII.useFileDialog");
         if (useFileDialog.length() > 0) {
             if (useFileDialog.equals("true")) {
                 return true;

@@ -68,7 +68,6 @@ public class Load extends LoadStore {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Load tokens from a (shared) memory. Use the address given by the
      * the PtrToken in the <i>ptr</i> port.
      *
@@ -76,8 +75,9 @@ public class Load extends LoadStore {
      */
     public void fire() throws IllegalActionException {
         Memory mem = getMemory();
-        if (mem == null)
+        if (mem == null) {
             throw new IllegalActionException("no memory found.");
+        }
 
         Token in = ptr.get(0);
         if (in instanceof PtrToken) {

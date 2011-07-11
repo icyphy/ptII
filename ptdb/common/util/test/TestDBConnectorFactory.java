@@ -76,7 +76,8 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Red (abijwe)
  *
  */
-@PrepareForTest( { DBConnectorFactory.class, TestDBConnectorFactory.class, FileUtilities.class, DBConnectionParameters.class })
+@PrepareForTest({ DBConnectorFactory.class, TestDBConnectorFactory.class,
+        FileUtilities.class, DBConnectionParameters.class })
 @RunWith(PowerMockRunner.class)
 public class TestDBConnectorFactory {
 
@@ -105,10 +106,9 @@ public class TestDBConnectorFactory {
      */
     @Before
     public void setUp() throws Exception {
-        _testPath = ptIIPath + fileSeparator + "ptdb"
-            + fileSeparator + "kernel"
-            + fileSeparator + "database"
-            + fileSeparator + "test" + fileSeparator;
+        _testPath = ptIIPath + fileSeparator + "ptdb" + fileSeparator
+                + "kernel" + fileSeparator + "database" + fileSeparator
+                + "test" + fileSeparator;
     }
 
     /**
@@ -132,12 +132,13 @@ public class TestDBConnectorFactory {
                 "DB ClassName is incorrect.",
                 parameters
                         .contains("_dbClassName = ptdb.kernel.database.OracleXMLDBConnection"));
-        assertTrue("DB URL is incorrect.", parameters
-                .contains("_dbUrl = " + _getDatabasePath()));
-        assertTrue("DB Container Name is incorrect.", parameters
-                .contains("_dbContainerName = Testing.dbxml"));
-        assertTrue("Cache Container Name is incorrect.", parameters
-                .contains("_cacheContainerName = Testing_cache.dbxml"));
+        assertTrue("DB URL is incorrect.",
+                parameters.contains("_dbUrl = " + _getDatabasePath()));
+        assertTrue("DB Container Name is incorrect.",
+                parameters.contains("_dbContainerName = Testing.dbxml"));
+        assertTrue("Cache Container Name is incorrect.",
+                parameters
+                        .contains("_cacheContainerName = Testing_cache.dbxml"));
 
         //////////////////////////////////////////////////////////////////////////////////////////
         //Incorrect URL
@@ -146,8 +147,10 @@ public class TestDBConnectorFactory {
 
             URL urlInvalid = ClassLoader.getSystemResource("invalid_resource");
             mockStatic(FileUtilities.class);
-            expect(FileUtilities.nameToURL("$CLASSPATH/ptdb/config/ptdb-params.properties", null, null))
-                    .andReturn(urlInvalid);
+            expect(
+                    FileUtilities.nameToURL(
+                            "$CLASSPATH/ptdb/config/ptdb-params.properties",
+                            null, null)).andReturn(urlInvalid);
             PowerMock.replay(FileUtilities.class);
 
             DBConnectorFactory.loadDBProperties();
@@ -156,8 +159,8 @@ public class TestDBConnectorFactory {
             fail("No error reported");
 
         } catch (ExceptionInInitializerError e) {
-            assertTrue("Set up setting has unchanged", DBConnectorFactory
-                    .isSetupDone() == isSetupDone);
+            assertTrue("Set up setting has unchanged",
+                    DBConnectorFactory.isSetupDone() == isSetupDone);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -178,8 +181,8 @@ public class TestDBConnectorFactory {
             fail("No error reported");
 
         } catch (ExceptionInInitializerError e) {
-            assertTrue("Set up setting has unchanged", DBConnectorFactory
-                    .isSetupDone() == isSetupDone);
+            assertTrue("Set up setting has unchanged",
+                    DBConnectorFactory.isSetupDone() == isSetupDone);
         } catch (IOException e) {
             fail("Wrong error reported");
             e.printStackTrace();
@@ -191,7 +194,7 @@ public class TestDBConnectorFactory {
 
             URL url = PowerMock.createMock(URL.class);
             InputStream is = new FileInputStream(_testPath
-                                         + "ptdb-test1.properties");
+                    + "ptdb-test1.properties");
 
             mockStatic(FileUtilities.class);
             expect(FileUtilities.nameToURL(ptdbParamsURL, null, null))
@@ -208,14 +211,14 @@ public class TestDBConnectorFactory {
                     "DB ClassName is incorrect.",
                     parameters
                             .contains("_dbClassName = ptdb.kernel.database.OracleXMLDBConnection"));
-            assertTrue("DB URL is incorrect.", parameters
-                    .contains("_dbUrl = null;"));
-            assertTrue("DB Container Name is incorrect.", parameters
-                    .contains("_dbContainerName = null"));
-            assertTrue("Cache Container Name is incorrect.", parameters
-                    .contains("_cacheContainerName = null"));
-            assertTrue("Set up cannot be completed", parameters
-                    .contains("_isDBSetupDone = false"));
+            assertTrue("DB URL is incorrect.",
+                    parameters.contains("_dbUrl = null;"));
+            assertTrue("DB Container Name is incorrect.",
+                    parameters.contains("_dbContainerName = null"));
+            assertTrue("Cache Container Name is incorrect.",
+                    parameters.contains("_cacheContainerName = null"));
+            assertTrue("Set up cannot be completed",
+                    parameters.contains("_isDBSetupDone = false"));
             is.close();
 
         } catch (ExceptionInInitializerError e) {
@@ -251,14 +254,14 @@ public class TestDBConnectorFactory {
                     "DB ClassName is incorrect.",
                     parameters
                             .contains("_dbClassName = ptdb.kernel.database.OracleXMLDBConnection"));
-            assertTrue("DB URL is incorrect.", parameters
-                    .contains("_dbUrl = ;"));
-            assertTrue("DB Container Name is incorrect.", parameters
-                    .contains("_dbContainerName = null"));
-            assertTrue("Cache Container Name is incorrect.", parameters
-                    .contains("_cacheContainerName = null"));
-            assertTrue("Set up cannot be completed", parameters
-                    .contains("_isDBSetupDone = false"));
+            assertTrue("DB URL is incorrect.",
+                    parameters.contains("_dbUrl = ;"));
+            assertTrue("DB Container Name is incorrect.",
+                    parameters.contains("_dbContainerName = null"));
+            assertTrue("Cache Container Name is incorrect.",
+                    parameters.contains("_cacheContainerName = null"));
+            assertTrue("Set up cannot be completed",
+                    parameters.contains("_isDBSetupDone = false"));
             is.close();
 
         } catch (ExceptionInInitializerError e) {
@@ -327,7 +330,7 @@ public class TestDBConnectorFactory {
                     .andThrow(new ClassNotFoundException());
             PowerMock.replay(Class.class);
 
-            /*DBConnection conn = */ DBConnectorFactory.getSyncConnection(true);
+            /*DBConnection conn = */DBConnectorFactory.getSyncConnection(true);
 
             PowerMock.verify(Class.class);
 
@@ -357,7 +360,7 @@ public class TestDBConnectorFactory {
 
             PowerMock.replay(Class.class, mockXmlDBClass);
 
-            /*DBConnection conn =*/ DBConnectorFactory.getSyncConnection(true);
+            /*DBConnection conn =*/DBConnectorFactory.getSyncConnection(true);
 
             PowerMock.verify(Class.class, mockXmlDBClass);
 
@@ -425,7 +428,7 @@ public class TestDBConnectorFactory {
 
             PowerMock.replay(Class.class, mockXmlDBClass);
 
-            /*DBConnection conn =*/ DBConnectorFactory.getSyncConnection(true);
+            /*DBConnection conn =*/DBConnectorFactory.getSyncConnection(true);
 
             PowerMock.verify(Class.class, mockXmlDBClass);
 
@@ -444,8 +447,8 @@ public class TestDBConnectorFactory {
             fail("Unexpected error - " + e.getMessage());
         }
         DBConnectionParameters dbParams = DBConnectorFactory
-        .getDBConnectionParameters();
-//////////////////////////////////////////////////////////////////////////////////////////
+                .getDBConnectionParameters();
+        //////////////////////////////////////////////////////////////////////////////////////////
         //With wrong newInstance - InstantiationException
         try {
 
@@ -498,11 +501,12 @@ public class TestDBConnectorFactory {
             fail("Unexpected error - " + e.getMessage());
         }
     }
+
     @Test
     public void testGetSyncConnection_WithException() throws Exception {
-//////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////
         DBConnectionParameters dbParams = DBConnectorFactory
-        .getDBConnectionParameters();
+                .getDBConnectionParameters();
         //With wrong newInstance - IllegalAccessException
         try {
 
@@ -510,7 +514,9 @@ public class TestDBConnectorFactory {
             Constructor xmlDBConstructor = PowerMock
                     .createMock(Constructor.class);
 
-            PowerMock.expectNew(DBConnectionParameters.class, dbParams.getUrl(), dbParams.getContainerName(), false).andReturn(dbParams);
+            PowerMock.expectNew(DBConnectionParameters.class,
+                    dbParams.getUrl(), dbParams.getContainerName(), false)
+                    .andReturn(dbParams);
             mockStatic(Class.class);
             expect(Class.forName("ptdb.kernel.database.OracleXMLDBConnection"))
                     .andReturn(mockXmlDBClass);
@@ -525,12 +531,12 @@ public class TestDBConnectorFactory {
             //expect(xmlDBConstructor.newInstance(dbParams)).andReturn(
             //                                                             mockXmlDBClass);
 
-            PowerMock.replay(DBConnectionParameters.class,Class.class,
+            PowerMock.replay(DBConnectionParameters.class, Class.class,
                     mockXmlDBClass, xmlDBConstructor);
 
             DBConnectorFactory.getSyncConnection(false);
 
-            PowerMock.verify(DBConnectionParameters.class,Class.class,
+            PowerMock.verify(DBConnectionParameters.class, Class.class,
                     mockXmlDBClass, xmlDBConstructor);
 
             fail("Did not give the expected IllegalAccessException");
@@ -559,9 +565,9 @@ public class TestDBConnectorFactory {
 
     @Test
     public void testGetSyncConnection_WithException2() throws Exception {
-//////////////////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////////////////
         DBConnectionParameters dbParams = DBConnectorFactory
-        .getDBConnectionParameters();
+                .getDBConnectionParameters();
 
         //With wrong newInstance - InvocationTargetException
         try {
@@ -583,7 +589,7 @@ public class TestDBConnectorFactory {
                     xmlDBConstructor);
             expect(xmlDBConstructor.newInstance(dbParams)).andThrow(
                     new InvocationTargetException(new Exception("Test")));
-                    //PowerMock.createMock(InvocationTargetException.class));
+            //PowerMock.createMock(InvocationTargetException.class));
             PowerMock.replay(DBConnectionParameters.class, Class.class,
                     mockXmlDBClass, xmlDBConstructor);
 
@@ -623,7 +629,6 @@ public class TestDBConnectorFactory {
     @Test
     public void testGetSyncConn_SetupNotDone() throws Exception {
 
-
         try {
             PowerMock
                     .mockStaticPartial(DBConnectorFactory.class, "isSetupDone");
@@ -635,8 +640,9 @@ public class TestDBConnectorFactory {
             PowerMock.verify(DBConnectorFactory.class);
 
         } catch (DBConnectionException e) {
-            assertTrue("Unexpected exception - " + e.getMessage(), e
-                    .getMessage().startsWith(
+            assertTrue(
+                    "Unexpected exception - " + e.getMessage(),
+                    e.getMessage().startsWith(
                             "XML Database Connection is not configured."));
         }
     }
@@ -658,7 +664,7 @@ public class TestDBConnectorFactory {
             PowerMock.verifyAll();
 
         } catch (DBConnectionException e) {
-           fail("Unexpected exception - " + e.getMessage());
+            fail("Unexpected exception - " + e.getMessage());
         }
 
         PowerMock.mockStaticPartial(DBConnectorFactory.class, "isSetupDone");
@@ -671,16 +677,19 @@ public class TestDBConnectorFactory {
         assertTrue("Setup parameters should be null", setupParameters != null);
         String parameters = DBConnectorFactory.getParametersString();
 
-        assertTrue("DB URL is incorrect.", parameters.contains("_dbUrl = "
-                + setupParameters.getUrl()));
-        assertTrue("DB Container Name is incorrect.", parameters
-                .contains("_dbContainerName = "
+        assertTrue("DB URL is incorrect.",
+                parameters.contains("_dbUrl = " + setupParameters.getUrl()));
+        assertTrue(
+                "DB Container Name is incorrect.",
+                parameters.contains("_dbContainerName = "
                         + setupParameters.getContainerName()));
-        assertTrue("Cache Container Name is incorrect.", parameters
-                .contains("_cacheContainerName = "
+        assertTrue(
+                "Cache Container Name is incorrect.",
+                parameters.contains("_cacheContainerName = "
                         + setupParameters.getCacheContainerName()));
 
     }
+
     /**
      * Test method for {@link ptdb.common.util.DBConnectorFactory#getAsyncConnection()}.
      * @exception Exception

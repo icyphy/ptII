@@ -596,8 +596,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param lesser A Typeable object.
      */
     public void setTypeAtLeast(Typeable lesser) {
-        Inequality inequality = new Inequality(lesser.getTypeTerm(), this
-                .getTypeTerm());
+        Inequality inequality = new Inequality(lesser.getTypeTerm(),
+                this.getTypeTerm());
         _constraints.add(inequality);
     }
 
@@ -671,8 +671,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param equal A Typeable object.
      */
     public void setTypeSameAs(Typeable equal) {
-        Inequality inequality = new Inequality(this.getTypeTerm(), equal
-                .getTypeTerm());
+        Inequality inequality = new Inequality(this.getTypeTerm(),
+                equal.getTypeTerm());
         _constraints.add(inequality);
         inequality = new Inequality(equal.getTypeTerm(), this.getTypeTerm());
         _constraints.add(inequality);

@@ -116,7 +116,8 @@ public class OntologyEntityController extends AttributeInOntologyController {
     ////                         protected variables               ////
 
     /** The action that handles opening an ontology model. */
-    protected LookInsideAction _lookInsideAction = new LookInsideAction("Open Ontology");
+    protected LookInsideAction _lookInsideAction = new LookInsideAction(
+            "Open Ontology");
 
     /** The action that handles opening an instance of an ontology class. */
     protected OpenInstanceAction _openInstanceAction = new OpenInstanceAction();

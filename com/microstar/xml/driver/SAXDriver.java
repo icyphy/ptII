@@ -151,14 +151,14 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
 
         try {
             if (source.getCharacterStream() != null) {
-                parser.parse(source.getSystemId(), source.getPublicId(), source
-                        .getCharacterStream());
+                parser.parse(source.getSystemId(), source.getPublicId(),
+                        source.getCharacterStream());
             } else if (source.getByteStream() != null) {
-                parser.parse(source.getSystemId(), source.getPublicId(), source
-                        .getByteStream(), source.getEncoding());
+                parser.parse(source.getSystemId(), source.getPublicId(),
+                        source.getByteStream(), source.getEncoding());
             } else {
-                parser.parse(source.getSystemId(), source.getPublicId(), source
-                        .getEncoding());
+                parser.parse(source.getSystemId(), source.getPublicId(),
+                        source.getEncoding());
             }
         } catch (SAXException e) {
             throw e;

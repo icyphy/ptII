@@ -32,8 +32,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
 
             String _id = $ex.getId();
 
-            if (_id
-                    .equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
+            if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
                         .read($in);
             } else {
@@ -64,8 +63,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
 
             String _id = $ex.getId();
 
-            if (_id
-                    .equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
+            if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
                         .read($in);
             } else {
@@ -96,8 +94,7 @@ public class _CoordinatorStub extends org.omg.CORBA.portable.ObjectImpl
 
             String _id = $ex.getId();
 
-            if (_id
-                    .equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
+            if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
                         .read($in);
             } else {

@@ -81,8 +81,8 @@ public class JNLPUtilities {
         if (possibleJarURL.toExternalForm().startsWith("jar:")) {
             // FIXME: Could it be that we only want to convert spaces before
             // the '!/' string?
-            URL jarURL = new URL(StringUtilities.substitute(possibleJarURL
-                    .toExternalForm(), " ", "%20"));
+            URL jarURL = new URL(StringUtilities.substitute(
+                    possibleJarURL.toExternalForm(), " ", "%20"));
 
             // FIXME: should we check to see if the jarURL exists here?
             return jarURL;
@@ -216,13 +216,14 @@ public class JNLPUtilities {
         String jarURLParentFileName = jarURLFileName.substring(0,
                 jarURLFileName.lastIndexOf("/"));
 
-        String parentEntryFileName = entryFileName.substring(0, entryFileName
-                .lastIndexOf("/"));
+        String parentEntryFileName = entryFileName.substring(0,
+                entryFileName.lastIndexOf("/"));
 
         if (jarURLParentFileName.endsWith(parentEntryFileName)
                 && jarURLParentFileName.startsWith("jar:file:/")) {
             // The top level directory, probably $PTII
-            String jarURLTop = jarURLParentFileName.substring(9,
+            String jarURLTop = jarURLParentFileName.substring(
+                    9,
                     jarURLParentFileName.length()
                             - parentEntryFileName.length());
 

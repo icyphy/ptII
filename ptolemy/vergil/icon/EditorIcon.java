@@ -325,8 +325,8 @@ public class EditorIcon extends Attribute {
                 } else {
                     LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
                             SwingConstants.CENTER);
-                    label.translateTo(backBounds.getCenterX(), backBounds
-                            .getCenterY());
+                    label.translateTo(backBounds.getCenterX(),
+                            backBounds.getCenterY());
                     figure.add(label);
                 }
             }
@@ -343,8 +343,7 @@ public class EditorIcon extends Attribute {
             boolean showAllParameters = value.equals("All");
 
             if ((showOverriddenParameters && !_isPropertySet(container,
-                    "_hideAllParameters"))
-                    || showAllParameters) {
+                    "_hideAllParameters")) || showAllParameters) {
                 StringBuffer parameters = new StringBuffer();
                 Iterator settables = container.attributeList(Settable.class)
                         .iterator();

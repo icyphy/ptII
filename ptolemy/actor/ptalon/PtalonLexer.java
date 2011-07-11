@@ -107,7 +107,8 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
     }
 
     public Token nextToken() throws TokenStreamException {
-        tryAgain: for (;;) {
+        tryAgain:
+        for (;;) {
             int _ttype = Token.INVALID_TYPE;
             resetText();
             try { // for char stream error handling
@@ -633,7 +634,8 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
             }
         }
         {
-            _loop89: do {
+            _loop89:
+            do {
                 switch (LA(1)) {
                 case 'a':
                 case 'b':
@@ -734,7 +736,8 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         _ttype = NUMBER_LITERAL;
         {
             int _cnt92 = 0;
-            _loop92: do {
+            _loop92:
+            do {
                 if (((LA(1) >= '0' && LA(1) <= '9'))) {
                     matchRange('0', '9');
                 } else {
@@ -754,7 +757,8 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
                 match('.');
                 {
                     int _cnt95 = 0;
-                    _loop95: do {
+                    _loop95:
+                    do {
                         if (((LA(1) >= '0' && LA(1) <= '9'))) {
                             matchRange('0', '9');
                         } else {
@@ -790,7 +794,8 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         _ttype = STRING_LITERAL;
         match('"');
         {
-            _loop99: do {
+            _loop99:
+            do {
                 switch (LA(1)) {
                 case '\\': {
                     mESC(false);
@@ -1004,7 +1009,8 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         _ttype = LINE_COMMENT;
         match("//");
         {
-            _loop106: do {
+            _loop106:
+            do {
                 if ((_tokenSet_1.member(LA(1)))) {
                     {
                         match(_tokenSet_1);
@@ -1059,7 +1065,8 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         match('[');
         match('[');
         {
-            _loop112: do {
+            _loop112:
+            do {
                 // nongreedy exit test
                 if ((LA(1) == ']') && (LA(2) == ']') && (true)) {
                     break _loop112;
@@ -1094,7 +1101,8 @@ public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes,
         match('/');
         match('*');
         {
-            _loop115: do {
+            _loop115:
+            do {
                 // nongreedy exit test
                 if ((LA(1) == '*') && (LA(2) == '/') && (true)) {
                     break _loop115;

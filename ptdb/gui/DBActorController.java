@@ -198,7 +198,7 @@ public class DBActorController extends ActorController {
                             effigy.showTableaux();
                         } else {
                             MessageHandler.error("The specified model could "
-                                            + "not be found in the database.");
+                                    + "not be found in the database.");
 
                         }
                     } catch (Exception e1) {

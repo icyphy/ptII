@@ -138,7 +138,7 @@ public class GiottoReceiver extends Receiver {
         if (!(sourcePort instanceof TypedIOPort)) {
             throw new InternalErrorException(sourcePort, null,
                     "Could not cast " + sourcePort.getFullName()
-                    + " to a TypedIOPort.");
+                            + " to a TypedIOPort.");
         } else {
             //TypedIOPort sourceTypedIOPort = (TypedIOPort) sourcePort;
             try {
@@ -146,13 +146,13 @@ public class GiottoReceiver extends Receiver {
                         (TypedIOPort) sourcePort,
                         new String[] { Integer.toString(channel), offset },
                         forComposite, true, containingActorAdapter)
-                    + "=" + token + ";" + _eol;
+                        + "=" + token + ";" + _eol;
             } catch (Throwable throwable) {
                 result = _getExecutiveDirectorForReceiver().getReference(
                         (TypedIOPort) sourcePort,
                         new String[] { Integer.toString(channel), offset },
                         forComposite, true, containingActorAdapter)
-                    + "=" + token + ";" + _eol;
+                        + "=" + token + ";" + _eol;
             }
         }
         return result;

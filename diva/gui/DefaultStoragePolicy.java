@@ -204,8 +204,8 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                     return false;
                 }
 
-                d.getApplication().getAppContext().showStatus(
-                        "Saved " + d.getTitle());
+                d.getApplication().getAppContext()
+                        .showStatus("Saved " + d.getTitle());
                 d.setDirty(false);
             }
         }
@@ -234,10 +234,11 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
 
                 if (chosenFile.exists()) {
                     // Query on overwrite
-                    int opt = JOptionPane.showConfirmDialog(context
-                            .makeComponent(), "File \"" + chosenFile.getName()
-                            + "\" exists. Overwrite?", "Overwrite file?",
-                            JOptionPane.YES_NO_OPTION);
+                    int opt = JOptionPane.showConfirmDialog(
+                            context.makeComponent(),
+                            "File \"" + chosenFile.getName()
+                                    + "\" exists. Overwrite?",
+                            "Overwrite file?", JOptionPane.YES_NO_OPTION);
 
                     if (opt != JOptionPane.YES_OPTION) {
                         context.showStatus("File not saved");

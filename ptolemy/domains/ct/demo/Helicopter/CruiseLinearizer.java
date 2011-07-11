@@ -149,16 +149,16 @@ public class CruiseLinearizer extends TypedAtomicActor {
             sP.append(_alphaP[i] + " ");
         }
 
-        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP
-                .toString()));
+        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(
+                sP.toString()));
 
         StringBuffer sV = new StringBuffer();
         for (int i = 0; i < 4; i++) {
             sV.append(_alphaV[i] + " ");
         }
 
-        paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV
-                .toString()));
+        paramAlphaV = new Parameter(this, "AlphaV", new StringToken(
+                sV.toString()));
 
         _cVx = 5.0;
         paramCVx = new Parameter(this, "CVx", new DoubleToken(_cVx));

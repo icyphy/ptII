@@ -52,8 +52,8 @@ public class OntologySolverModel extends CompositeEntity {
      *  @exception NameDuplicationException If the container already contains an
      *   entity with the specified name.
      */
-    public OntologySolverModel(CompositeEntity container, String name) throws
-        IllegalActionException, NameDuplicationException {
+    public OntologySolverModel(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _solverContainer = null;
     }

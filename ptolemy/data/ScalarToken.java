@@ -72,7 +72,7 @@ import ptolemy.math.FixPoint;
  @Pt.AcceptedRating Green (yuhong)
  */
 public abstract class ScalarToken extends Token implements
-BitwiseOperationToken, PartiallyOrderedToken {
+        BitwiseOperationToken, PartiallyOrderedToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -543,8 +543,7 @@ BitwiseOperationToken, PartiallyOrderedToken {
             throws IllegalActionException {
         if (!_areUnitsEqual(units)) {
             throw new IllegalActionException(notSupportedMessage("inUnitsOf",
-                    this, units)
-                    + " because the units are not the same.");
+                    this, units) + " because the units are not the same.");
         }
 
         return (ScalarToken) this.divide(units);
@@ -714,7 +713,8 @@ BitwiseOperationToken, PartiallyOrderedToken {
             //throw new IllegalActionException(null, ex, notSupportedMessage(
             //        "isLessThan", this, rightArgument))
             //// and must do this instead:
-            throw new IllegalActionException("Cannot compare ScalarToken with " + rightArgument);
+            throw new IllegalActionException("Cannot compare ScalarToken with "
+                    + rightArgument);
         }
         return isLessThan((ScalarToken) rightArgument);
     }
@@ -1471,8 +1471,7 @@ BitwiseOperationToken, PartiallyOrderedToken {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("add", this,
-                    rightArgument)
-                    + " because the units are not the same.");
+                    rightArgument) + " because the units are not the same.");
         }
 
         ScalarToken result = _add(convertedArgument);
@@ -1709,8 +1708,7 @@ BitwiseOperationToken, PartiallyOrderedToken {
             throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
             throw new IllegalActionException(notSupportedMessage("isLessThan",
-                    this, rightArgument)
-                    + " because one or the other is nil");
+                    this, rightArgument) + " because one or the other is nil");
         }
 
         ScalarToken convertedArgument = (ScalarToken) rightArgument;

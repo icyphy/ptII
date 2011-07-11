@@ -208,10 +208,9 @@ public class Publisher extends TypedAtomicActor {
             // ptolemy/actor/lib/test/auto/PublisherClassNoParameter.xml
             if (!isWithinClassDefinition()) {
                 String newValue = channel.stringValue();
-                boolean globalValue = ((BooleanToken) global
-                        .getToken()).booleanValue();
-                if (!newValue.equals(_channel)
-                        || globalValue != _global) {
+                boolean globalValue = ((BooleanToken) global.getToken())
+                        .booleanValue();
+                if (!newValue.equals(_channel) || globalValue != _global) {
                     NamedObj container = getContainer();
                     if (container instanceof CompositeActor) {
                         // The vergil and config tests were failing because
@@ -220,7 +219,8 @@ public class Publisher extends TypedAtomicActor {
                             if (attribute == global) {
                                 if (_global && !globalValue) {
                                     ((CompositeActor) container)
-                                            .unregisterPublisherPort(_channel, output, true);
+                                            .unregisterPublisherPort(_channel,
+                                                    output, true);
                                 }
                             }
 
@@ -228,7 +228,7 @@ public class Publisher extends TypedAtomicActor {
                                     && (!(_channel == null || _channel.trim()
                                             .equals("")))) {
                                 if (((BooleanToken) propagateNameChanges
-                                                .getToken()).booleanValue()) {
+                                        .getToken()).booleanValue()) {
                                     _updateChannelNameOfConnectedSubscribers(
                                             _channel, newValue);
                                 }
@@ -367,7 +367,8 @@ public class Publisher extends TypedAtomicActor {
         // Publisher.
         Manager manager = getManager();
         if (manager == null) {
-            CompositeActor toplevel = (CompositeActor) (getContainer().toplevel());
+            CompositeActor toplevel = (CompositeActor) (getContainer()
+                    .toplevel());
             manager = new Manager(toplevel.workspace(), "PubManager");
             toplevel.setManager(manager);
         }
@@ -377,7 +378,7 @@ public class Publisher extends TypedAtomicActor {
         } catch (KernelException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to preinitialize() while trying to update the connected"
-                    + " Subscribers.");
+                            + " Subscribers.");
         } finally {
             try {
                 manager.wrapup();
@@ -386,7 +387,7 @@ public class Publisher extends TypedAtomicActor {
                 if (!manager.isExitingAfterWrapup()) {
                     throw new IllegalActionException(this, throwable,
                             "Manager.wrapup() failed while trying to update the names"
-                            + " of the connected Subscribers.");
+                                    + " of the connected Subscribers.");
                 }
             }
         }
@@ -394,11 +395,12 @@ public class Publisher extends TypedAtomicActor {
         //for (IOPort port : output.deepConnectedInPortList()) {
         Iterator ports = output.sinkPortList().iterator();
         while (ports.hasNext()) {
-            IOPort port = (IOPort)ports.next();
+            IOPort port = (IOPort) ports.next();
             NamedObj container = port.getContainer();
             if (container instanceof Subscriber) {
-                Subscriber subscriber = (Subscriber)container;
-                if (subscriber.channel.getExpression().equals(previousChannelName)) {
+                Subscriber subscriber = (Subscriber) container;
+                if (subscriber.channel.getExpression().equals(
+                        previousChannelName)) {
                     // Avoid updating SubscriptionAggregators that have regular
                     // expressions that are different than the Publisher channel name.
                     subscriber.channel.setExpression(newChannelName);
@@ -411,12 +413,15 @@ public class Publisher extends TypedAtomicActor {
                         if (receivers[i] != null) {
                             for (int j = 0; j < receivers[i].length; j++) {
                                 if (receivers[i][j] != null) {
-                                    IOPort remotePort = receivers[i][j].getContainer();
+                                    IOPort remotePort = receivers[i][j]
+                                            .getContainer();
                                     if (remotePort != null) {
                                         container = remotePort.getContainer();
                                         if (container instanceof Subscriber) {
-                                            Subscriber subscriber = (Subscriber)container;
-                                            if (subscriber.channel.getExpression().equals(previousChannelName)) {
+                                            Subscriber subscriber = (Subscriber) container;
+                                            if (subscriber.channel
+                                                    .getExpression()
+                                                    .equals(previousChannelName)) {
                                                 // Avoid updating
                                                 // SubscriptionAggregators
                                                 // that have regular
@@ -424,8 +429,10 @@ public class Publisher extends TypedAtomicActor {
                                                 // are different than
                                                 // the Publisher
                                                 // channel name.
-                                                subscriber.channel.setExpression(newChannelName);
-                                                subscriber.attributeChanged(subscriber.channel);
+                                                subscriber.channel
+                                                        .setExpression(newChannelName);
+                                                subscriber
+                                                        .attributeChanged(subscriber.channel);
 
                                             }
                                         }

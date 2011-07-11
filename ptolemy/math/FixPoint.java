@@ -207,8 +207,8 @@ public class FixPoint implements Cloneable, Serializable {
     public static Precision addPrecision(Precision leftArgument,
             Precision rightArgument) {
         Precision union = Precision.union(leftArgument, rightArgument);
-        Precision newPrecision = new Precision(union.getSign(), union
-                .getNumberOfBits() + 1, union.getExponent());
+        Precision newPrecision = new Precision(union.getSign(),
+                union.getNumberOfBits() + 1, union.getExponent());
         return newPrecision;
     }
 
@@ -298,8 +298,8 @@ public class FixPoint implements Cloneable, Serializable {
     public FixPoint add(FixPoint arg) {
 
         // Align the two arguments
-        int minExponent = Math.min(_precision.getExponent(), arg._precision
-                .getExponent());
+        int minExponent = Math.min(_precision.getExponent(),
+                arg._precision.getExponent());
         BigInteger thisValue = _alignToExponent(minExponent);
         BigInteger thatValue = arg._alignToExponent(minExponent);
 
@@ -341,8 +341,8 @@ public class FixPoint implements Cloneable, Serializable {
      *  @return The BigDecimal value of this FixPoint.
      */
     public BigDecimal bigDecimalValue() {
-        return Precision.shiftBigDecimal(new BigDecimal(_value), _precision
-                .getExponent());
+        return Precision.shiftBigDecimal(new BigDecimal(_value),
+                _precision.getExponent());
     }
 
     /** Return this, that is, return the reference to this object.
@@ -647,8 +647,8 @@ public class FixPoint implements Cloneable, Serializable {
     public FixPoint subtract(FixPoint arg) {
 
         // Align the two arguments
-        int minExponent = Math.min(_precision.getExponent(), arg._precision
-                .getExponent());
+        int minExponent = Math.min(_precision.getExponent(),
+                arg._precision.getExponent());
         BigInteger thisValue = _alignToExponent(minExponent);
         BigInteger thatValue = arg._alignToExponent(minExponent);
 

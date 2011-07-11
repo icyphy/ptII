@@ -163,8 +163,8 @@ public class ArrayIndex {
             for (int i = 0; i < 500; i++) {
                 for (int j = 0; j < 16; j++) {
                     String key = atKey(i + 1, j + 1);
-                    _map.put(key, Double
-                            .valueOf(SourceMatrix.sourcematrix_0[i][j]));
+                    _map.put(key,
+                            Double.valueOf(SourceMatrix.sourcematrix_0[i][j]));
                 }
             }
         } else {

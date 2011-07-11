@@ -1197,9 +1197,8 @@ public class DatagramReader extends TypedAtomicActor {
                                             .setReceiveBufferSize(((IntToken) platformBufferLength
                                                     .getToken()).intValue());
                                 } else {
-                                    _socket
-                                            .setReceiveBufferSize(((IntToken) platformBufferLength
-                                                    .getToken()).intValue());
+                                    _socket.setReceiveBufferSize(((IntToken) platformBufferLength
+                                            .getToken()).intValue());
                                 }
                             }
 

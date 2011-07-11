@@ -127,8 +127,8 @@ public class Inequality {
      *  the value of the terms.
      */
     public boolean isSatisfied(CPO cpo) throws IllegalActionException {
-        int result = cpo.compare(_lesserTerm.getValue(), _greaterTerm
-                .getValue());
+        int result = cpo.compare(_lesserTerm.getValue(),
+                _greaterTerm.getValue());
         return ((result == CPO.LOWER) || (result == CPO.SAME));
     }
 

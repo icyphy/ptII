@@ -31,8 +31,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Frame;
 import java.awt.FileDialog;
+import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -48,9 +48,9 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -261,7 +261,7 @@ public abstract class Top extends JFrame {
         }
 
         // Deal with help menu action listeners
-        /*int c =*/ MemoryCleaner.removeActionListeners(_historyMenu);
+        /*int c =*/MemoryCleaner.removeActionListeners(_historyMenu);
         //System.out.println("_historyMenu: "+c);
         _historyMenuListener = null;
 
@@ -271,26 +271,26 @@ public abstract class Top extends JFrame {
         //MemoryCleaner.removeWindowListeners(this);
 
         // Deal with file menu action listeners
-        /*c =*/ MemoryCleaner.removeActionListeners(_fileMenu);
+        /*c =*/MemoryCleaner.removeActionListeners(_fileMenu);
         //System.out.println("_fileMenu: "+c);
         for (int i = 0; i < _fileMenuItems.length; i++) {
             JMenuItem menuItem = _fileMenuItems[i];
-            /*c =*/ MemoryCleaner.removeActionListeners(menuItem);
+            /*c =*/MemoryCleaner.removeActionListeners(menuItem);
             //System.out.println("_fileMenuItems["+i+"]: "+c);
         }
         _fileMenuListener = null;
 
         // Deal with help menu action listeners
-        /*c =*/ MemoryCleaner.removeActionListeners(_helpMenu);
+        /*c =*/MemoryCleaner.removeActionListeners(_helpMenu);
         //System.out.println("_helpMenu: "+c);
         for (int i = 0; i < _helpMenuItems.length; i++) {
             JMenuItem menuItem = _helpMenuItems[i];
-            /*c =*/ MemoryCleaner.removeActionListeners(menuItem);
+            /*c =*/MemoryCleaner.removeActionListeners(menuItem);
             //System.out.println("_helpMenuItems["+i+"]: "+c);
         }
         _helpMenuListener = null;
 
-        /*c =*/ MemoryCleaner.removeActionListeners(_menubar);
+        /*c =*/MemoryCleaner.removeActionListeners(_menubar);
         //System.out.println("_menubar: "+c);
         _menubar.removeAll();
 
@@ -301,7 +301,8 @@ public abstract class Top extends JFrame {
         // I think it has to do with the KeyboardFocusManager
         // holding onto the last focused component, so clearing and
         // cycling seems to free up the reference to this window.
-        KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        KeyboardFocusManager focusManager = KeyboardFocusManager
+                .getCurrentKeyboardFocusManager();
         focusManager.clearGlobalFocusOwner();
         focusManager.downFocusCycle();
 
@@ -339,7 +340,6 @@ public abstract class Top extends JFrame {
 
         super.dispose();
     }
-
 
     /** Return true if the window is set to be centered when pack() is called.
      *  @return True if the window will be centered when pack is called.
@@ -380,7 +380,6 @@ public abstract class Top extends JFrame {
     public boolean isDisposed() {
         return _disposed;
     }
-
 
     /** Return true if the menu of this window has been populated.
      *  The menu is populated as a side effect of the first invocation to
@@ -439,7 +438,8 @@ public abstract class Top extends JFrame {
      *  @param throwable The Throwable to report.
      */
     public void report(final String message, final Throwable throwable) {
-        Runnable doReport = new StatusBarMessageReportRunnable(message,throwable);
+        Runnable doReport = new StatusBarMessageReportRunnable(message,
+                throwable);
 
         deferIfNecessary(doReport);
     }
@@ -872,8 +872,8 @@ public abstract class Top extends JFrame {
         }
         if (foundPDFPrinter) {
             // This gets ignored, but let's try it anyway
-            Destination destination = new Destination(new File("ptolemy.pdf")
-                    .toURI());
+            Destination destination = new Destination(
+                    new File("ptolemy.pdf").toURI());
             aset.add(destination);
 
             // On the Mac, calling job.setJobName() will set the file name,
@@ -1028,7 +1028,8 @@ public abstract class Top extends JFrame {
     protected FileDialog _saveAsFileDialogComponent() {
         // The name of this method ends in "Component" because
         // there already was a _saveAsFileDialog() method.
-        FileDialog fileDialog = new FileDialog(this, "Save as...", FileDialog.SAVE);
+        FileDialog fileDialog = new FileDialog(this, "Save as...",
+                FileDialog.SAVE);
 
         if (_filenameFilter != null) {
             fileDialog.setFilenameFilter(_filenameFilter);
@@ -1079,7 +1080,7 @@ public abstract class Top extends JFrame {
             }
         }
 
-        /*int c =*/ MemoryCleaner.removeActionListeners(_historyMenu);
+        /*int c =*/MemoryCleaner.removeActionListeners(_historyMenu);
         //System.out.println("_historyMenu: "+c);
 
         if (_historyMenu != null) {
@@ -1213,7 +1214,8 @@ public abstract class Top extends JFrame {
                 } else if (actionCommand.equals("Close")) {
                     if (!isDisposed()) {
                         Window thisWindow = (Window) Top.this;
-                        WindowEvent wev = new WindowEvent(thisWindow, WindowEvent.WINDOW_CLOSING);
+                        WindowEvent wev = new WindowEvent(thisWindow,
+                                WindowEvent.WINDOW_CLOSING);
                         Toolkit toolkit = Toolkit.getDefaultToolkit();
                         EventQueue queue = toolkit.getSystemEventQueue();
                         queue.postEvent(wev);
@@ -1307,7 +1309,8 @@ public abstract class Top extends JFrame {
      *  uses javax.swing.JFileChooser.
      */
     private void _openFileDialog() {
-        FileDialog fileDialog = new FileDialog(this, "Select a model file", FileDialog.LOAD);
+        FileDialog fileDialog = new FileDialog(this, "Select a model file",
+                FileDialog.LOAD);
 
         if (_filenameFilter != null) {
             fileDialog.setFilenameFilter(_filenameFilter);
@@ -1328,7 +1331,7 @@ public abstract class Top extends JFrame {
             // FIXME: we should support users under applets opening files
             // on the server.
             String currentWorkingDirectory = StringUtilities
-                .getProperty("user.dir");
+                    .getProperty("user.dir");
 
             if (currentWorkingDirectory != null) {
                 fileDialog.setDirectory(currentWorkingDirectory);
@@ -1355,8 +1358,7 @@ public abstract class Top extends JFrame {
                 // if it is here, we get the time it takes to
                 // read any file, not just a Ptolemy model.
                 System.out.println("Opened " + file + " in "
-                        + (System.currentTimeMillis() - startTime)
-                        + " ms.");
+                        + (System.currentTimeMillis() - startTime) + " ms.");
             }
             // Only add file if no exception
             _updateHistory(file.getAbsolutePath(), false);
@@ -1663,7 +1665,6 @@ public abstract class Top extends JFrame {
      */
     protected boolean _debugClosing = false;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -1684,19 +1685,21 @@ public abstract class Top extends JFrame {
 
     /** A runnable for setting the status bar message for a report. */
     class StatusBarMessageReportRunnable implements Runnable {
-        public StatusBarMessageReportRunnable(String message, Throwable throwable) {
+        public StatusBarMessageReportRunnable(String message,
+                Throwable throwable) {
             _message = message;
             _throwable = throwable;
         }
+
         public void run() {
             if (_statusBar != null) {
                 _statusBar.setMessage(MessageHandler
-                        .shortDescription(_throwable)
-                        + ". " + _message);
+                        .shortDescription(_throwable) + ". " + _message);
             }
 
             MessageHandler.error(_message, _throwable);
         }
+
         private String _message;
         private Throwable _throwable;
     }
@@ -1706,11 +1709,13 @@ public abstract class Top extends JFrame {
         public StatusBarMessageRunnable(String message) {
             _message = message;
         }
+
         public void run() {
             if (_statusBar != null) {
                 _statusBar.setMessage(_message);
             }
         }
+
         private String _message;
     }
 
@@ -1732,11 +1737,9 @@ public abstract class Top extends JFrame {
                     if (_fileMenuItems[i] == null) {
                         _fileMenu.addSeparator();
                     } else {
-                        _fileMenuItems[i]
-                                .setActionCommand(_fileMenuItems[i]
-                                        .getText());
-                        _fileMenuItems[i]
-                                .addActionListener(_fileMenuListener);
+                        _fileMenuItems[i].setActionCommand(_fileMenuItems[i]
+                                .getText());
+                        _fileMenuItems[i].addActionListener(_fileMenuListener);
                         _fileMenu.add(_fileMenuItems[i]);
                     }
                 }
@@ -1839,7 +1842,8 @@ public abstract class Top extends JFrame {
     class CloseWindowAdapter extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
             if (_debugClosing) {
-                System.out.println("Top$CloseWindowAdapter.windowClosing() : " + (Top.this).getName());
+                System.out.println("Top$CloseWindowAdapter.windowClosing() : "
+                        + (Top.this).getName());
             }
 
             Window window = e.getWindow();
@@ -1870,8 +1874,7 @@ public abstract class Top extends JFrame {
                 // Impossible to read History
             } catch (Exception ex) {
                 MessageHandler
-                        .error(
-                                "Impossible to read history. Please check that file exists and is not in use !",
+                        .error("Impossible to read history. Please check that file exists and is not in use !",
                                 ex);
                 try {
                     _updateHistory(actionCommand, true);

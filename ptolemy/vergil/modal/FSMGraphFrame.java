@@ -431,19 +431,17 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
                     Effigy effigy = (Effigy) getTableau().getContainer();
 
                     // Create a new text effigy inside this one.
-                    Effigy textEffigy = new TextEffigy(effigy, effigy
-                            .uniqueName("debug listener"));
+                    Effigy textEffigy = new TextEffigy(effigy,
+                            effigy.uniqueName("debug listener"));
                     DebugListenerTableau tableau = new DebugListenerTableau(
                             textEffigy, textEffigy.uniqueName("debugListener"));
-                    tableau
-                            .setDebuggable(((FSMActor) getModel())
-                                    .getDirector());
+                    tableau.setDebuggable(((FSMActor) getModel()).getDirector());
                 } else if (actionCommand.equals("Listen to State Machine")) {
                     Effigy effigy = (Effigy) getTableau().getContainer();
 
                     // Create a new text effigy inside this one.
-                    Effigy textEffigy = new TextEffigy(effigy, effigy
-                            .uniqueName("debug listener"));
+                    Effigy textEffigy = new TextEffigy(effigy,
+                            effigy.uniqueName("debug listener"));
                     DebugListenerTableau tableau = new DebugListenerTableau(
                             textEffigy, textEffigy.uniqueName("debugListener"));
                     tableau.setDebuggable(getModel());

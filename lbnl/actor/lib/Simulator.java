@@ -305,28 +305,37 @@ public class Simulator extends SDFTransformer {
      */
     protected void _outputInitToken() throws IllegalActionException {
         double[] dblRea = server.getDoubleArray();
-        if ( server.getClientFlag() == 1) {
+        if (server.getClientFlag() == 1) {
+            final String em = "Actor "
+                    + this.getFullName()
+                    + ": "
+                    + LS
+                    + "When trying to read from server, at time "
+                    + getDirector().getModelTime().getDoubleValue()
+                    + ","
+                    + "client sent flag "
+                    + server.getClientFlag()
+                    + ","
+                    + LS
+                    + "which indicates that it reached the end of its simulation."
+                    + LS
+                    + "This should not happen during the initialization of this actor.";
+            throw new IllegalActionException(em);
+        } else if (server.getClientFlag() != 0) {
             final String em = "Actor " + this.getFullName() + ": " + LS
-                + "When trying to read from server, at time "
-                + getDirector().getModelTime().getDoubleValue() + ","
-                + "client sent flag " + server.getClientFlag() + "," + LS
-                + "which indicates that it reached the end of its simulation." + LS
-                + "This should not happen during the initialization of this actor.";
+                    + "When trying to read from server, at time "
+                    + getDirector().getModelTime().getDoubleValue() + ","
+                    + "client sent flag " + server.getClientFlag() + "," + LS
+                    + "which indicates a problem in the client.";
             throw new IllegalActionException(em);
         }
-        else
-            if ( server.getClientFlag() != 0) {
-            final String em = "Actor " + this.getFullName() + ": " + LS
-                + "When trying to read from server, at time "
-                + getDirector().getModelTime().getDoubleValue() + ","
-                + "client sent flag " + server.getClientFlag() + "," + LS
-                + "which indicates a problem in the client.";
-            throw new IllegalActionException(em);
-        }
-        if ( dblRea == null ) {
-            final String em = "Actor " + this.getFullName() + ": " + LS
-                + "When trying to read from server, obtained 'null' at time "
-                + getDirector().getModelTime().getDoubleValue();
+        if (dblRea == null) {
+            final String em = "Actor "
+                    + this.getFullName()
+                    + ": "
+                    + LS
+                    + "When trying to read from server, obtained 'null' at time "
+                    + getDirector().getModelTime().getDoubleValue();
             throw new IllegalActionException(em);
         }
         outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
@@ -470,13 +479,13 @@ public class Simulator extends SDFTransformer {
             } catch (IOException e2) {
             }
             ; // do nothing here
-            // If the client sent a termination flag, then clientTerminated=true
-            // In this case, the client may have closed the socket connection, and
-            // hence we don't throw an IOException, but rather issue a warning
-            // in case that Ptolemy proceeds with its iterations.
-            // Without the check (!clientTerminated), an IOException is thrown
-            // on Windows (but not on Mac or Linux) from the actor that connects
-            // to EnergyPlus.
+              // If the client sent a termination flag, then clientTerminated=true
+              // In this case, the client may have closed the socket connection, and
+              // hence we don't throw an IOException, but rather issue a warning
+              // in case that Ptolemy proceeds with its iterations.
+              // Without the check (!clientTerminated), an IOException is thrown
+              // on Windows (but not on Mac or Linux) from the actor that connects
+              // to EnergyPlus.
             if (!clientTerminated) {
                 throw new IllegalActionException(this, e, em);
             }
@@ -634,9 +643,8 @@ public class Simulator extends SDFTransformer {
             chi = ".";
         }
         final URI modelURI = URIAttribute.getModelURI(namedObj);
-        final String par = modelURI != null ?
-            new File(modelURI.getPath()).getParent()
-            : null;
+        final String par = modelURI != null ? new File(modelURI.getPath())
+                .getParent() : null;
         final File fil = new File(par, chi);
         chi = fil.getPath();
         return chi;

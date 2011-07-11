@@ -237,7 +237,8 @@ public class OntologyGraphController extends WithIconGraphController {
             Interactor interactor = controller.getNodeInteractor();
 
             if (interactor instanceof CompositeInteractor) {
-                ((CompositeInteractor) interactor).addInteractor(_relationCreator);
+                ((CompositeInteractor) interactor)
+                        .addInteractor(_relationCreator);
             }
         }
     }
@@ -345,12 +346,15 @@ public class OntologyGraphController extends WithIconGraphController {
                     Entity prototype = library.getEntity("Concept");
 
                     if (prototype != null) {
-                        Location newConceptLocation = (Location) prototype.getAttribute(locationName, Location.class);
+                        Location newConceptLocation = (Location) prototype
+                                .getAttribute(locationName, Location.class);
                         if (newConceptLocation == null) {
-                            newConceptLocation = new Location(prototype, locationName);
-                            newConceptLocation.setLocation(new double[]{x, y});
+                            newConceptLocation = new Location(prototype,
+                                    locationName);
+                            newConceptLocation
+                                    .setLocation(new double[] { x, y });
                         }
-                        newConceptLocation.setLocation(new double[]{x, y});
+                        newConceptLocation.setLocation(new double[] { x, y });
                         moml = prototype.exportMoML(conceptName);
                     }
                 }
@@ -359,7 +363,8 @@ public class OntologyGraphController extends WithIconGraphController {
             }
 
             if (moml == null) {
-                moml = "<entity name=\"" + conceptName
+                moml = "<entity name=\""
+                        + conceptName
                         + "\" class=\"ptolemy.data.ontologies.FiniteConcept\">\n"
                         + "<property name=\"solutionColor\" "
                         + "class=\"ptolemy.actor.gui.ColorAttribute\" "
@@ -413,10 +418,10 @@ public class OntologyGraphController extends WithIconGraphController {
                 Site tailSite;
 
                 // Temporary sites.  One of these will get removed later.
-                headSite = new AutonomousSite(layer, event.getLayerX(), event
-                        .getLayerY());
-                tailSite = new AutonomousSite(layer, event.getLayerX(), event
-                        .getLayerY());
+                headSite = new AutonomousSite(layer, event.getLayerX(),
+                        event.getLayerY());
+                tailSite = new AutonomousSite(layer, event.getLayerX(),
+                        event.getLayerY());
 
                 // Render the edge.
                 Connector c = getEdgeController(relationLink).render(

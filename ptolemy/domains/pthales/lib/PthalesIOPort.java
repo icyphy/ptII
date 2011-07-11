@@ -111,7 +111,8 @@ public class PthalesIOPort {
         Actor actor = (Actor) port.getContainer();
         Integer[] repetitions = { 1 };
 
-        repetitions = PthalesAtomicActor.getRepetitions((ComponentEntity) actor);
+        repetitions = PthalesAtomicActor
+                .getRepetitions((ComponentEntity) actor);
 
         return getArraySizes(port, repetitions);
     }
@@ -121,7 +122,8 @@ public class PthalesIOPort {
      *  @return array sizes
      *  @param repetitions The repetitions values.
      */
-    public static LinkedHashMap<String, Integer> getArraySizes(IOPort port, Integer[] repetitions) {
+    public static LinkedHashMap<String, Integer> getArraySizes(IOPort port,
+            Integer[] repetitions) {
         LinkedHashMap<String, Integer> sizes = new LinkedHashMap<String, Integer>();
         LinkedHashMap<String, Token> sizesToMap = new LinkedHashMap<String, Token>();
 
@@ -134,21 +136,31 @@ public class PthalesIOPort {
 
         for (String patternDimensionName : patternDimensionNames) {
             if (!tilingDimensionNames.contains(patternDimensionName)) {
-                sizes.put(patternDimensionName, pattern.get(patternDimensionName)[0]);
-                sizesToMap.put(patternDimensionName, new IntToken(pattern.get(patternDimensionName)[0]));
+                sizes.put(patternDimensionName,
+                        pattern.get(patternDimensionName)[0]);
+                sizesToMap.put(patternDimensionName,
+                        new IntToken(pattern.get(patternDimensionName)[0]));
             } else {
                 for (Object tilingDimensionName : tilingDimensionNames) {
                     if (tilingDimensionName.equals(patternDimensionName)) {
                         if (i < repetitions.length) {
-                            sizes.put(patternDimensionName, pattern.get(patternDimensionName)[0]
-                                    + (repetitions[i]-1) * tiling.get(tilingDimensionName)[0]);
-                            sizesToMap.put(patternDimensionName, new IntToken(pattern
-                                    .get(patternDimensionName)[0]
-                                    + (repetitions[i]-1) * tiling.get(tilingDimensionName)[0]));
+                            sizes.put(
+                                    patternDimensionName,
+                                    pattern.get(patternDimensionName)[0]
+                                            + (repetitions[i] - 1)
+                                            * tiling.get(tilingDimensionName)[0]);
+                            sizesToMap
+                                    .put(patternDimensionName,
+                                            new IntToken(
+                                                    pattern.get(patternDimensionName)[0]
+                                                            + (repetitions[i] - 1)
+                                                            * tiling.get(tilingDimensionName)[0]));
                         } else {
                             // Not enough reps for tilings, rep = 1
-                            sizes.put(patternDimensionName, pattern.get(patternDimensionName)[0]);
-                            sizesToMap.put(patternDimensionName, new IntToken(pattern.get(patternDimensionName)[0]));
+                            sizes.put(patternDimensionName,
+                                    pattern.get(patternDimensionName)[0]);
+                            sizesToMap.put(patternDimensionName, new IntToken(
+                                    pattern.get(patternDimensionName)[0]));
                         }
                     }
                 }
@@ -159,7 +171,8 @@ public class PthalesIOPort {
         if (repetitions != null) {
             i = 0;
             for (Object til : tilingDimensionNames) {
-                if (i < repetitions.length && !((String) til).startsWith("empty")
+                if (i < repetitions.length
+                        && !((String) til).startsWith("empty")
                         && !patternDimensionNames.contains(til)) {
                     sizes.put((String) til, repetitions[i] * tiling.get(til)[0]);
                     sizesToMap.put((String) til, new IntToken(repetitions[i]
@@ -611,8 +624,10 @@ public class PthalesIOPort {
                             .getPort("out"), dims, sizes);
 
             // Header found, update of all following Pthales actors
-            propagateIterations((IOPort) ((PthalesRemoveHeaderActor) portIn
-                    .getContainer()).getPort("out"), arraySizes);
+            propagateIterations(
+                    (IOPort) ((PthalesRemoveHeaderActor) portIn.getContainer())
+                            .getPort("out"),
+                    arraySizes);
         }
 
         if (portIn.isOutput()) {
@@ -673,8 +688,8 @@ public class PthalesIOPort {
         // Iterations
         if (portIn.getContainer() instanceof PthalesCompositeActor) {
             // Iteration computation
-            ((PthalesCompositeActor) portIn.getContainer()).computeSetIterations(
-                    portIn, sizes);
+            ((PthalesCompositeActor) portIn.getContainer())
+                    .computeSetIterations(portIn, sizes);
 
             // Once iterations are computed, output port can be computed
             for (IOPort portOut : (List<IOPort>) ((PthalesCompositeActor) portIn
@@ -722,7 +737,6 @@ public class PthalesIOPort {
         }
     }
 
-
     /** Check if data type is a structure.
      * If yes, gives the number of tokens needed to store all the data
      * By default, the return value is 1
@@ -732,7 +746,7 @@ public class PthalesIOPort {
         Parameter p = (Parameter) port.getAttribute("dataType");
         if (p != null && port instanceof TypedIOPort) {
             ((TypedIOPort) port).setTypeEquals(BaseType.GENERAL);
-               }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

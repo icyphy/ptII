@@ -295,7 +295,8 @@ public abstract class ActorController extends AttributeController {
      * "lookInside" is historical and preserved to keep backward compatibility
      * with subclasses.
      */
-    protected LookInsideAction _lookInsideAction = new LookInsideAction("Open Actor");
+    protected LookInsideAction _lookInsideAction = new LookInsideAction(
+            "Open Actor");
 
     /**
      * The action that handles opening an instance.
@@ -518,13 +519,14 @@ public abstract class ActorController extends AttributeController {
             // This is used by Kepler.
             int count = 0;
             for (Object p : portList) {
-                Port port = (Port)p;
+                Port port = (Port) p;
                 Attribute portHide = port.getAttribute("_hide");
                 try {
-                    if ( ! (portHide != null
-                                    && portHide instanceof Variable
-                                    && ((Variable)portHide).getToken().equals(BooleanToken.TRUE)
-                                    && port.linkedRelationList().isEmpty()) ) {
+                    if (!(portHide != null
+                            && portHide instanceof Variable
+                            && ((Variable) portHide).getToken().equals(
+                                    BooleanToken.TRUE) && port
+                            .linkedRelationList().isEmpty())) {
                         count++;
                     }
                 } catch (IllegalActionException ex) {
@@ -552,7 +554,8 @@ public abstract class ActorController extends AttributeController {
                 try {
                     if (portHide != null
                             && portHide instanceof Variable
-                            && ((Variable)portHide).getToken().equals(BooleanToken.TRUE)
+                            && ((Variable) portHide).getToken().equals(
+                                    BooleanToken.TRUE)
                             && port.linkedRelationList().isEmpty()) {
                         continue;
                     }
@@ -769,8 +772,8 @@ public abstract class ActorController extends AttributeController {
                 // child of the model window. So, we create a new text
                 // effigy inside this one. Specify model's effigy as
                 // a container for this new effigy.
-                Effigy textEffigy = new TextEffigy(effigy, effigy
-                        .uniqueName("debugListener" + object.getName()));
+                Effigy textEffigy = new TextEffigy(effigy,
+                        effigy.uniqueName("debugListener" + object.getName()));
 
                 DebugListenerTableau debugTableau = new DebugListenerTableau(
                         textEffigy, textEffigy.uniqueName("debugListener"
@@ -809,8 +812,7 @@ public abstract class ActorController extends AttributeController {
         public OpenInstanceAction() {
             super("Open Instance");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                            KeyEvent.VK_L,
-                            java.awt.Event.ALT_MASK));
+                    KeyEvent.VK_L, java.awt.Event.ALT_MASK));
         }
 
         public void actionPerformed(ActionEvent event) {
@@ -827,25 +829,24 @@ public abstract class ActorController extends AttributeController {
             try {
                 StringParameter actorInteractionAddonParameter;
                 actorInteractionAddonParameter = (StringParameter) _configuration
-                    .getAttribute("_actorInteractionAddon", Parameter.class);
+                        .getAttribute("_actorInteractionAddon", Parameter.class);
 
                 if (actorInteractionAddonParameter != null) {
-                    String actorInteractionAddonClassName
-                        = actorInteractionAddonParameter
+                    String actorInteractionAddonClassName = actorInteractionAddonParameter
                             .stringValue();
 
-                        Class actorInteractionAddonClass = Class
+                    Class actorInteractionAddonClass = Class
                             .forName(actorInteractionAddonClassName);
 
-                        ActorInteractionAddon actorInteractionAddon =
-                            (ActorInteractionAddon) actorInteractionAddonClass
+                    ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
                             .newInstance();
 
-                        if (actorInteractionAddon.isActorOfInterestForAddonController(object)) {
-                            actorInteractionAddon.openInstanceAction(this, object);
-                        }
-
+                    if (actorInteractionAddon
+                            .isActorOfInterestForAddonController(object)) {
+                        actorInteractionAddon.openInstanceAction(this, object);
                     }
+
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -863,9 +864,9 @@ public abstract class ActorController extends AttributeController {
                 // open the source code as a last resort.
                 Frame parent = getFrame();
                 DialogTableau dialogTableau = DialogTableau.createDialog(
-                        parent, _configuration, ((TableauFrame) parent)
-                                .getEffigy(), OpenInstanceDialog.class,
-                        (Entity) object);
+                        parent, _configuration,
+                        ((TableauFrame) parent).getEffigy(),
+                        OpenInstanceDialog.class, (Entity) object);
 
                 if (dialogTableau != null) {
                     dialogTableau.show();

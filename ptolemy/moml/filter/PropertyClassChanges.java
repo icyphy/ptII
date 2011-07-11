@@ -158,8 +158,12 @@ public class PropertyClassChanges extends MoMLFilterSimple {
                 if ((container != null)
                         && !container.getFullName().equals(
                                 _currentActorFullName)
-                        && !container.getFullName().substring(0,
-                                container.getFullName().lastIndexOf("."))
+                        && !container
+                                .getFullName()
+                                .substring(
+                                        0,
+                                        container.getFullName()
+                                                .lastIndexOf("."))
                                 .equals(_currentActorFullName)
 
                 ) {

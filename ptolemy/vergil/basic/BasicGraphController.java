@@ -718,10 +718,10 @@ public abstract class BasicGraphController extends AbstractGraphController
                 // code.
                 String sourceFileName = StringUtilities
                         .objectToSourceFileName(target);
-                URL sourceURL = target.getClass().getClassLoader().getResource(
-                        sourceFileName);
-                _configuration.openModel(null, sourceURL, sourceURL
-                        .toExternalForm());
+                URL sourceURL = target.getClass().getClassLoader()
+                        .getResource(sourceFileName);
+                _configuration.openModel(null, sourceURL,
+                        sourceURL.toExternalForm());
             } catch (Exception ex) {
                 MessageHandler.error("Open base class failed.", ex);
             }
@@ -747,8 +747,9 @@ public abstract class BasicGraphController extends AbstractGraphController
             // Only makes sense if this is an ActorGraphFrame.
             if (_frame instanceof ActorGraphFrame) {
                 DialogTableau dialogTableau = DialogTableau.createDialog(
-                        _frame, _configuration, ((ActorGraphFrame) _frame)
-                                .getEffigy(), UnitSolverDialog.class,
+                        _frame, _configuration,
+                        ((ActorGraphFrame) _frame).getEffigy(),
+                        UnitSolverDialog.class,
                         (Entity) ((ActorGraphFrame) _frame).getModel());
 
                 if (dialogTableau != null) {

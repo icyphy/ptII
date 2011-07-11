@@ -371,7 +371,9 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                 // If we are under WebStart or running from jar files, we
                 // will need to copy libjvm.dll.a from the jar file
                 // that gcc can find it.
-                URL libjvmURL = Thread.currentThread().getContextClassLoader()
+                URL libjvmURL = Thread
+                        .currentThread()
+                        .getContextClassLoader()
                         .getResource(
                                 libjvmRelativeDirectory + "/" + libjvmFileName);
                 if (libjvmURL != null) {
@@ -393,8 +395,8 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                             libjvmAbsolutePath = libjvmAbsolutePath.replace(
                                     '\\', '/');
                             libjvmAbsoluteDirectory = libjvmAbsolutePath
-                                    .substring(0, libjvmAbsolutePath
-                                            .lastIndexOf("/"));
+                                    .substring(0,
+                                            libjvmAbsolutePath.lastIndexOf("/"));
 
                             // Get rid of everything before the last /lib
                             // and the .dll.a
@@ -533,9 +535,9 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                 code.append(" " + _getTypeConvertReference(channel));
 
                 //int bufferSize = getBufferSize(channel.port);
-                int bufferSize = Math.max(DFUtilities
-                        .getTokenProductionRate(channel.port), DFUtilities
-                        .getTokenConsumptionRate(channel.port));
+                int bufferSize = Math.max(
+                        DFUtilities.getTokenProductionRate(channel.port),
+                        DFUtilities.getTokenConsumptionRate(channel.port));
 
                 if (bufferSize > 1) {
                     code.append("[" + bufferSize + "]");
@@ -567,10 +569,13 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                     .getElementType();
 
             //result.append("[" + channelAndOffset[1] + "]");
-            result.insert(0, "("
-                    + codeGenType(elementType).replace("Array", "Token")
-                            .replace("Matrix", "Token")
-                    + ")(/*JCGH44*/Array_get(");
+            result.insert(
+                    0,
+                    "("
+                            + codeGenType(elementType)
+                                    .replace("Array", "Token").replace(
+                                            "Matrix", "Token")
+                            + ")(/*JCGH44*/Array_get(");
             if (isPrimitive(elementType)) {
                 result.insert(0, "(");
             }

@@ -387,11 +387,11 @@ public class RelationWidthInference {
                     } else {
                         StringBuffer portDetails = new StringBuffer();
                         IORelation relation = unspecifiedSet.iterator().next();
-                        Iterator deepPorts = relation.deepLinkedPortList().iterator();
+                        Iterator deepPorts = relation.deepLinkedPortList()
+                                .iterator();
                         while (deepPorts.hasNext()) {
-                            portDetails.append((IOPort)(deepPorts.next()));
+                            portDetails.append((deepPorts.next()));
                         }
-
 
                         throw new IllegalActionException(
                                 relation,

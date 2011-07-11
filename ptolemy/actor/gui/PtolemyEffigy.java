@@ -331,8 +331,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 // Create a blank effigy.
                 // Use the strategy pattern so derived classes can
                 // override this.
-                PtolemyEffigy effigy = _newEffigy(container, container
-                        .uniqueName("effigy"));
+                PtolemyEffigy effigy = _newEffigy(container,
+                        container.uniqueName("effigy"));
 
                 // If this factory contains an entity called "blank", then
                 // clone that.
@@ -395,8 +395,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 }
 
                 // Create a blank effigy.
-                PtolemyEffigy effigy = _newEffigy(container, container
-                        .uniqueName("effigy"));
+                PtolemyEffigy effigy = _newEffigy(container,
+                        container.uniqueName("effigy"));
 
                 MoMLParser parser = new MoMLParser();
 
@@ -437,11 +437,13 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 
                         if (toplevel != null) {
                             NamedObj model = toplevel;
-                            int index = -1 ;
+                            int index = -1;
                             if ((index = input.toString().indexOf("#")) != -1) {
-                                String fullName = input.toString().substring(index+1, input.toString().length());
+                                String fullName = input.toString().substring(
+                                        index + 1, input.toString().length());
                                 if (toplevel instanceof CompositeEntity) {
-                                    model = ((CompositeEntity)toplevel).getEntity(fullName);
+                                    model = ((CompositeEntity) toplevel)
+                                            .getEntity(fullName);
                                 }
                             }
                             try {

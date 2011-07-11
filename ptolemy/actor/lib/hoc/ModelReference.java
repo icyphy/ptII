@@ -839,8 +839,10 @@ public class ModelReference extends TypedAtomicActor implements
                                 + port.getName());
                     }
 
-                    port.send(0, new StringToken(((Settable) attribute)
-                            .getExpression()));
+                    port.send(
+                            0,
+                            new StringToken(((Settable) attribute)
+                                    .getExpression()));
                 }
             }
         }

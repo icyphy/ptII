@@ -122,9 +122,9 @@ public class ManhattanConnector extends AbstractConnector {
 
         if (count > 1) {
             // pick a location for the label in the middle of the connector.
-            _labelLocation = new Point2D.Double((poly.getX(count / 2) + poly
-                    .getX((count / 2) - 1)) / 2, (poly.getY(count / 2) + poly
-                    .getY((count / 2) - 1)) / 2);
+            _labelLocation = new Point2D.Double(
+                    (poly.getX(count / 2) + poly.getX((count / 2) - 1)) / 2,
+                    (poly.getY(count / 2) + poly.getY((count / 2) - 1)) / 2);
         } else {
             // attach the label to the only point of the connector.
             _labelLocation = new Point2D.Double(poly.getX(0), poly.getY(0));

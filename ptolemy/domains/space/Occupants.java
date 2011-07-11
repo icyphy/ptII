@@ -338,8 +338,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
         // in _occupantInSpaceFields, but the sponsor needs to be dealt
         // with specially.
         String oldSponsorName = _getField(person, "sponsorlname");
-        query.addLine("spacenotes", "spacenotes", _getField(person,
-                "spacenotes"));
+        query.addLine("spacenotes", "spacenotes",
+                _getField(person, "spacenotes"));
         query.addLine("occupancy", "occupancy", _getField(person, "occupancy"));
         query.addLine("departure", "departure", _getField(person, "departure"));
         query.addLine("sponsorlname", "sponsorlname", oldSponsorName);
@@ -384,14 +384,10 @@ public class Occupants extends ArrayOfRecordsRecorder {
         }
 
         Map<String, Token> map = _recordAsMap(person);
-        map.put("spacenotes", new StringToken(query
-                .getStringValue("spacenotes")));
-        map
-                .put("occupancy", new StringToken(query
-                        .getStringValue("occupancy")));
-        map
-                .put("departure", new StringToken(query
-                        .getStringValue("departure")));
+        map.put("spacenotes",
+                new StringToken(query.getStringValue("spacenotes")));
+        map.put("occupancy", new StringToken(query.getStringValue("occupancy")));
+        map.put("departure", new StringToken(query.getStringValue("departure")));
         map.put("sponsorlname", new StringToken(newSponsorName));
         map.put("sponsorfnames", new StringToken(sponsorFnames));
         map.put("sponsorid", new StringToken(sponsorID));
@@ -953,8 +949,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                             _selectedRow, _selectedRow);
                 }
 
-                ComponentDialog dialog = new ComponentDialog(parent, object
-                        .getFullName(), pane, buttons, null, true);
+                ComponentDialog dialog = new ComponentDialog(parent,
+                        object.getFullName(), pane, buttons, null, true);
 
                 String response = dialog.buttonPressed();
 
@@ -1103,8 +1099,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
                                             "Share with occupant",
                                             "Replace occupant",
                                             "Swap with occupant", "Cancel" };
-                                    JLabel label = new JLabel(question
-                                            .toString());
+                                    JLabel label = new JLabel(
+                                            question.toString());
                                     ComponentDialog confirm = new ComponentDialog(
                                             parent, message, label,
                                             confirmButtons);
@@ -1149,8 +1145,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     } catch (KernelException e) {
                         // This should have been caught earlier.
                         MessageHandler
-                                .error(
-                                        "Update failed. Perhaps you need to resynchronize with the database?",
+                                .error("Update failed. Perhaps you need to resynchronize with the database?",
                                         e);
                         return;
                     }
@@ -1333,8 +1328,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     } catch (KernelException e) {
                         // This should have been caught earlier.
                         MessageHandler
-                                .error(
-                                        "Update failed. Perhaps you need to resynchronize with the database?",
+                                .error("Update failed. Perhaps you need to resynchronize with the database?",
                                         e);
                         return;
                     }
@@ -1375,8 +1369,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                             StringBuffer sql = new StringBuffer();
                             sql.append("insert into ");
                             sql.append(table.stringValue());
-                            sql
-                                    .append(" (bldg,room,deskno,hasdesk,roomtype,spacenotes) values(");
+                            sql.append(" (bldg,room,deskno,hasdesk,roomtype,spacenotes) values(");
                             sql.append(_quotedString(building));
                             sql.append(",");
                             sql.append(_quotedString(room));
@@ -1398,8 +1391,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
                     } catch (KernelException e) {
                         // This should have been caught earlier.
                         MessageHandler
-                                .error(
-                                        "Update failed. Perhaps you need to resynchronize with the database?",
+                                .error("Update failed. Perhaps you need to resynchronize with the database?",
                                         e);
                         return;
                     }

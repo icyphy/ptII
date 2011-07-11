@@ -55,7 +55,8 @@ import diva.graph.GraphController;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayActions {
+public class ProductLatticeOntologySolverDisplayActions extends
+        OntologyDisplayActions {
 
     /** Construct a ProductLatticeOntologyDisplayActions object with the specified container
      *  and name.
@@ -66,8 +67,9 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ProductLatticeOntologySolverDisplayActions(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public ProductLatticeOntologySolverDisplayActions(NamedObj container,
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
     }
 
@@ -95,7 +97,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
      *   the new highlight colors menu.
      */
     public void updateHighlightColorsMenu(ProductLatticeOntology solverOntology)
-        throws IllegalActionException{
+            throws IllegalActionException {
         _highlighterController.setHighlightColorsMenu(solverOntology);
     }
 
@@ -111,7 +113,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
      *  lattice ontology to use as a basis for highlighting the resolved concepts.
      */
     protected static class ProductLatticeHighlighterController extends
-        HighlighterController {
+            HighlighterController {
 
         /** Create a HighlighterController that is associated with a controller.
          *  @param displayActions The ProductLatticeOntologySolverDisplayActions object reference.
@@ -124,15 +126,15 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
             _displayActions = displayActions;
 
             try {
-                ProductLatticeOntology ontology =
-                    ((ProductLatticeOntologySolver) _displayActions.
-                        getContainer()).getOntology();
+                ProductLatticeOntology ontology = ((ProductLatticeOntologySolver) _displayActions
+                        .getContainer()).getOntology();
                 setHighlightColorsMenu(ontology);
             } catch (IllegalActionException ex) {
-                throw new IllegalStateException("Could not create the highlight " +
-                                "colors menu actions for the " +
-                                "ProductLatticeOntologySolver" + displayActions.
-                                getContainer().getName(), ex);
+                throw new IllegalStateException(
+                        "Could not create the highlight "
+                                + "colors menu actions for the "
+                                + "ProductLatticeOntologySolver"
+                                + displayActions.getContainer().getName(), ex);
             }
         }
 
@@ -143,7 +145,7 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
          *   the new highlight colors menu.
          */
         public void setHighlightColorsMenu(ProductLatticeOntology solverOntology)
-            throws IllegalActionException {
+                throws IllegalActionException {
             // Remove the old highlight colors menu if it has been created.
             if (_highlightColorsMenu != null) {
                 _menuFactory.removeMenuItemFactory(_highlightColorsMenu);
@@ -158,19 +160,18 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
                 }
             }
 
-            SetHighlightColorsAction[] highlightColorsActions =
-                new SetHighlightColorsAction[numSubOntologies + 1];
+            SetHighlightColorsAction[] highlightColorsActions = new SetHighlightColorsAction[numSubOntologies + 1];
 
             // Create a new SetHighlightColorsAction for each ontology contained
             // in the product lattice ontology.
             for (int i = 0; i < numSubOntologies; i++) {
-                highlightColorsActions[i] = _displayActions.new
-                    SetHighlightColorsAction(subOntologies.get(i));
+                highlightColorsActions[i] = _displayActions.new SetHighlightColorsAction(
+                        subOntologies.get(i));
             }
 
             // Also create a "None" option for when we want to show no colors.
-            highlightColorsActions[highlightColorsActions.length - 1] =
-                _displayActions.new SetHighlightColorsAction(null);
+            highlightColorsActions[highlightColorsActions.length - 1] = _displayActions.new SetHighlightColorsAction(
+                    null);
 
             // Create the set highlight colors sub menu and add it to the
             // context menu.
@@ -206,7 +207,8 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
          *   being created.
          */
         public SetHighlightColorsAction(Ontology highlightOntology) {
-            super(highlightOntology == null ? "None" : highlightOntology.getName());
+            super(highlightOntology == null ? "None" : highlightOntology
+                    .getName());
             _highlightOntology = highlightOntology;
         }
 
@@ -221,13 +223,12 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
 
-            ProductLatticeOntologySolver solver =
-                ((ProductLatticeOntologySolver) ProductLatticeOntologySolverDisplayActions.this
-                        .getContainer());
+            ProductLatticeOntologySolver solver = ((ProductLatticeOntologySolver) ProductLatticeOntologySolverDisplayActions.this
+                    .getContainer());
             OntologyMoMLHandler handler = solver.getMoMLHandler();
 
             try {
-                ProductLatticeOntology ontology = (ProductLatticeOntology) solver.getOntology();
+                ProductLatticeOntology ontology = solver.getOntology();
                 ontology.setColorOntology(_highlightOntology);
                 if (_highlightOntology == null) {
                     handler.clearDisplay(true, false);
@@ -236,9 +237,9 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
                     handler.highlightConcepts();
                 }
             } catch (IllegalActionException ex) {
-                throw new IllegalStateException("Could not highlight " +
-                                "the concept colors for the ontology " +
-                                _highlightOntology.getName() + ".", ex);
+                throw new IllegalStateException("Could not highlight "
+                        + "the concept colors for the ontology "
+                        + _highlightOntology.getName() + ".", ex);
             }
         }
 
@@ -261,7 +262,8 @@ public class ProductLatticeOntologySolverDisplayActions extends OntologyDisplayA
          *   colors to use.
          *  @param name The name of the SetHighlightColorsMenu object.
          */
-        public SetHighlightColorsMenu(SetHighlightColorsAction[] actions, String name) {
+        public SetHighlightColorsMenu(SetHighlightColorsAction[] actions,
+                String name) {
             super(actions, name);
         }
     }

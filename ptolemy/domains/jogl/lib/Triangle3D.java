@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class Triangle3D extends TypedAtomicActor implements GLActor3D{
+public class Triangle3D extends TypedAtomicActor implements GLActor3D {
     /**
      *  Construct a Line3D object in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
@@ -81,7 +81,7 @@ public class Triangle3D extends TypedAtomicActor implements GLActor3D{
         lineStart = new Parameter(this, "lineStart");
         lineStart.setExpression("{0.0, 0.0, 0.0}");
 
-        lineEnd= new Parameter(this, "lineEnd");
+        lineEnd = new Parameter(this, "lineEnd");
         lineEnd.setExpression("{1.0, 0.0, 0.0}");
     }
 
@@ -122,8 +122,7 @@ public class Triangle3D extends TypedAtomicActor implements GLActor3D{
         gl.glLineWidth((float) widthValue.doubleValue());
         gl.glBegin(GL.GL_LINES);
 
-        gl.glColor3d(
-                ((DoubleToken) rgbColorValue.getElement(0)).doubleValue(),
+        gl.glColor3d(((DoubleToken) rgbColorValue.getElement(0)).doubleValue(),
                 ((DoubleToken) rgbColorValue.getElement(1)).doubleValue(),
                 ((DoubleToken) rgbColorValue.getElement(2)).doubleValue());
 
@@ -134,11 +133,10 @@ public class Triangle3D extends TypedAtomicActor implements GLActor3D{
                 ((DoubleToken) lineStartToken.getElement(2)).doubleValue());
 
         // ending point of the line
-        gl.glVertex3d(
-                ((DoubleToken) lineEndToken.getElement(0)).doubleValue(),
+        gl.glVertex3d(((DoubleToken) lineEndToken.getElement(0)).doubleValue(),
                 ((DoubleToken) lineEndToken.getElement(1)).doubleValue(),
                 ((DoubleToken) lineEndToken.getElement(2)).doubleValue());
 
-        gl.glEnd( );
+        gl.glEnd();
     }
 }

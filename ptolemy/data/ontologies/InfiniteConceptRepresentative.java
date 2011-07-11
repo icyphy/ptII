@@ -77,8 +77,8 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
      *  @return A new instance of InfiniteConceptRepresentative.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        InfiniteConceptRepresentative newObject =
-            (InfiniteConceptRepresentative) super.clone(workspace);
+        InfiniteConceptRepresentative newObject = (InfiniteConceptRepresentative) super
+                .clone(workspace);
         newObject._instantiatedInfiniteConcepts = new HashSet<InfiniteConcept>();
         return newObject;
     }
@@ -94,10 +94,8 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
      *   creating the infinite concept from the given string.
      */
     public InfiniteConcept getInfiniteConceptByString(
-            String infiniteConceptString)
-        throws IllegalActionException {
-        InfiniteConcept result = _findInstantiatedInfiniteConcept(
-                infiniteConceptString);
+            String infiniteConceptString) throws IllegalActionException {
+        InfiniteConcept result = _findInstantiatedInfiniteConcept(infiniteConceptString);
 
         if (result == null) {
             result = _createInfiniteConceptInstance(infiniteConceptString);
@@ -124,8 +122,8 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
      *  @return true if the string can represent an infinite concept for this
      *   representative, false otherwise.
      */
-    public abstract boolean containsThisInfiniteConceptString(String
-            infiniteConceptString);
+    public abstract boolean containsThisInfiniteConceptString(
+            String infiniteConceptString);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -141,9 +139,9 @@ public abstract class InfiniteConceptRepresentative extends FiniteConcept {
             try {
                 infiniteConcept.setContainer(null);
             } catch (NameDuplicationException ex) {
-                throw new IllegalActionException(this, ex, "Could not set " +
-                                "the container for infinite concept " +
-                                infiniteConcept + " to null.");
+                throw new IllegalActionException(this, ex, "Could not set "
+                        + "the container for infinite concept "
+                        + infiniteConcept + " to null.");
             }
         }
         _instantiatedInfiniteConcepts.clear();

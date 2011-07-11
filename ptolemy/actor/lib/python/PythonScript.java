@@ -629,8 +629,8 @@ public class PythonScript extends TypedAtomicActor {
 
                 int jythonIndex = -1;
                 if (classpath == null) {
-                    System.setProperty("python.home", StringUtilities
-                            .getProperty("user.home"));
+                    System.setProperty("python.home",
+                            StringUtilities.getProperty("user.home"));
                 } else {
                     jythonIndex = classpath.toLowerCase().indexOf("jython.jar");
                 }
@@ -638,15 +638,15 @@ public class PythonScript extends TypedAtomicActor {
                 if (jythonIndex == -1) {
                     // We did not find jython.jar, so set it to user.home.
                     // WebStart will end up here.
-                    System.setProperty("python.home", StringUtilities
-                            .getProperty("user.home"));
+                    System.setProperty("python.home",
+                            StringUtilities.getProperty("user.home"));
                 } else {
                     // We found jython.jar, return the parent directory.
                     // Under WebStart, jython.jar will not be in the classpath
                     int start = classpath.lastIndexOf(
                             java.io.File.pathSeparator, jythonIndex) + 1;
-                    System.setProperty("python.home", classpath.substring(
-                            start, jythonIndex));
+                    System.setProperty("python.home",
+                            classpath.substring(start, jythonIndex));
                 }
 
                 // End of code based on python/core/PySystemState.findRoot()
@@ -670,8 +670,8 @@ public class PythonScript extends TypedAtomicActor {
             Properties preProperties = new Properties();
 
             for (int i = 0; i < propertyNames.length; i++) {
-                preProperties.setProperty(propertyNames[i], System
-                        .getProperty(propertyNames[i]));
+                preProperties.setProperty(propertyNames[i],
+                        System.getProperty(propertyNames[i]));
             }
 
             PySystemState.initialize(preProperties, null, new String[] { "" });

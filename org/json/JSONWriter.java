@@ -157,8 +157,8 @@ public class JSONWriter {
      */
     private JSONWriter end(char m, char c) throws JSONException {
         if (this.mode != m) {
-            throw new JSONException(m == 'a' ? "Misplaced endArray." :
-                            "Misplaced endObject.");
+            throw new JSONException(m == 'a' ? "Misplaced endArray."
+                    : "Misplaced endObject.");
         }
         this.pop(m);
         try {
@@ -220,7 +220,6 @@ public class JSONWriter {
         throw new JSONException("Misplaced key.");
     }
 
-
     /**
      * Begin appending a new object. All keys and values until the balancing
      * <code>endObject</code> will be appended to this object. The
@@ -244,7 +243,6 @@ public class JSONWriter {
 
     }
 
-
     /**
      * Pop an array or object scope.
      * @param c The scope to close.
@@ -259,7 +257,8 @@ public class JSONWriter {
             throw new JSONException("Nesting error.");
         }
         this.top -= 1;
-        this.mode = this.top == 0 ? 'd' : this.stack[this.top - 1] == null ? 'a' : 'k';
+        this.mode = this.top == 0 ? 'd'
+                : this.stack[this.top - 1] == null ? 'a' : 'k';
     }
 
     /**
@@ -275,7 +274,6 @@ public class JSONWriter {
         this.mode = jo == null ? 'a' : 'k';
         this.top += 1;
     }
-
 
     /**
      * Append either the value <code>true</code> or the value
@@ -307,7 +305,6 @@ public class JSONWriter {
     public JSONWriter value(long l) throws JSONException {
         return this.append(Long.toString(l));
     }
-
 
     /**
      * Append an object value.

@@ -66,7 +66,8 @@ public class IORelation extends RTMaudeAdaptor {
             if (rec.length() > 0) {
                 rec.append("\n");
             }
-            rec.append(_generateBlockCode(this.defaultTermBlock,
+            rec.append(_generateBlockCode(
+                    this.defaultTermBlock,
                     generateEPortId(r.getContainer(), pi),
                     new ListTerm<ptolemy.actor.IOPort>("noPort", " ; ", r
                             .linkedDestinationPortList()) {
@@ -87,8 +88,8 @@ public class IORelation extends RTMaudeAdaptor {
      */
     private String generateEPortId(NamedObj container, ptolemy.actor.IOPort port)
             throws IllegalActionException {
-        return _generateBlockCode("scopeBlock", generateActorIdforPort(
-                container, port), port.getName());
+        return _generateBlockCode("scopeBlock",
+                generateActorIdforPort(container, port), port.getName());
     }
 
     /** Returns the name of the container of the given port

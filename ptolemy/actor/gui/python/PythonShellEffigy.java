@@ -167,8 +167,8 @@ public class PythonShellEffigy extends Effigy {
          */
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
-            return new PythonShellEffigy(container, container
-                    .uniqueName("effigy"));
+            return new PythonShellEffigy(container,
+                    container.uniqueName("effigy"));
         }
     }
 }

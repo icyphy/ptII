@@ -186,8 +186,7 @@ public class XZHigherDerivatives extends TypedAtomicActor {
 
         double D4Px = (((2.0 * DTh * DTm * Math.cos(Th)) / _mass)
                 + ((Tm * Math.cos(Th) * ((A * _Mm) + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass)) + ((DDTm * Math
-                .sin(Th)) / _mass))
-                - ((DTh * DTh * Tm * Math.sin(Th)) / _mass);
+                .sin(Th)) / _mass)) - ((DTh * DTh * Tm * Math.sin(Th)) / _mass);
 
         double D3Pz = -((DTm * Math.cos(Th)) / _mass)
                 + ((DTh * Tm * Math.sin(Th)) / _mass);

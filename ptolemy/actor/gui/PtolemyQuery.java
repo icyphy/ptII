@@ -212,8 +212,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof ColorAttribute) {
-                    component = addColorChooser(name, displayName, attribute
-                            .getExpression());
+                    component = addColorChooser(name, displayName,
+                            attribute.getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof CustomQueryBoxParameter) {
@@ -290,9 +290,9 @@ public class PtolemyQuery extends Query implements QueryListener,
 
                     // FIXME: Should remember previous browse location?
                     // Next to last argument is the starting directory.
-                    component = addFileChooser(name, displayName, attribute
-                            .getExpression(), base, directory, allowFiles,
-                            allowDirectories, isOutput,
+                    component = addFileChooser(name, displayName,
+                            attribute.getExpression(), base, directory,
+                            allowFiles, allowDirectories, isOutput,
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
@@ -307,8 +307,9 @@ public class PtolemyQuery extends Query implements QueryListener,
 
                     // NOTE: Make this always editable since Parameter
                     // supports a form of expressions for value propagation.
-                    component = addChoice(name, displayName, castAttribute
-                            .getChoices(), castAttribute.getExpression(), true,
+                    component = addChoice(name, displayName,
+                            castAttribute.getChoices(),
+                            castAttribute.getExpression(), true,
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
@@ -342,8 +343,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                         }
                     }
 
-                    component = addTextArea(name, displayName, attribute
-                            .getExpression(),
+                    component = addTextArea(name, displayName,
+                            attribute.getExpression(),
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute), heightValue,
                             widthValue);
@@ -467,8 +468,8 @@ public class PtolemyQuery extends Query implements QueryListener,
 
             if ((tooltipAttribute != null)
                     && tooltipAttribute instanceof Documentation) {
-                setToolTip(entryName, ((Documentation) tooltipAttribute)
-                        .getValueAsString());
+                setToolTip(entryName,
+                        ((Documentation) tooltipAttribute).getValueAsString());
             } else {
                 String tip = Documentation.consolidate((NamedObj) attribute);
 

@@ -227,10 +227,11 @@ public class DBConnectorFactory {
     private static DBConnection _createConnection(String containerName,
             boolean isTransactionRequired) throws DBConnectionException {
 
-        if (!isSetupDone())
+        if (!isSetupDone()) {
             throw new DBConnectionException(
                     "XML Database Connection is not configured. "
                             + "Please provide details in ptdb-params.properties");
+        }
 
         DBConnectionParameters dbConnParams = new DBConnectionParameters(
                 _dbUrl, containerName, isTransactionRequired);
@@ -250,10 +251,11 @@ public class DBConnectorFactory {
             DBConnectionParameters dbConnectionParameters)
             throws DBConnectionException {
 
-        if (_dbClassName == null)
+        if (_dbClassName == null) {
             throw new DBConnectionException(
                     "DBConnection class for ptdb is undefined. "
                             + "Please provide valid classname in ptdb-params.properties");
+        }
 
         DBConnection xmlDBConnection = null;
         try {
@@ -384,8 +386,8 @@ public class DBConnectorFactory {
         strBuf.append("_isDBSetupDone = ").append(_isDBSetupDone).append(";");
         strBuf.append("_dbClassName = ").append(_dbClassName).append(";");
         strBuf.append("_dbUrl = ").append(_dbUrl).append(";");
-        strBuf.append("_dbContainerName = ").append(_dbContainerName).append(
-                ";");
+        strBuf.append("_dbContainerName = ").append(_dbContainerName)
+                .append(";");
         strBuf.append("_cacheContainerName = ").append(_cacheContainerName)
                 .append(";");
 
@@ -460,8 +462,8 @@ public class DBConnectorFactory {
      */
     static {
         try {
-        loadDBProperties();
-        } catch(ExceptionInInitializerError e) {
+            loadDBProperties();
+        } catch (ExceptionInInitializerError e) {
 
         }
 

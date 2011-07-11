@@ -62,12 +62,12 @@ public class AbstractActionsAttribute extends RTMaudeAdaptor {
         final ptolemy.domains.fsm.kernel.AbstractActionsAttribute aa = (ptolemy.domains.fsm.kernel.AbstractActionsAttribute) getComponent();
         final ParseTreeCodeGenerator pcg = getParseTreeCodeGenerator();
 
-        return new ListTerm<String>("emptyMap", " ;" + _eol, aa
-                .getDestinationNameList()) {
+        return new ListTerm<String>("emptyMap", " ;" + _eol,
+                aa.getDestinationNameList()) {
             public String item(String aan) throws IllegalActionException {
                 pcg.evaluateParseTree(aa.getParseTree(aan), null);
-                return _generateBlockCode("mapBlock", aan, pcg
-                        .generateFireCode());
+                return _generateBlockCode("mapBlock", aan,
+                        pcg.generateFireCode());
             }
         }.generateCode();
     }

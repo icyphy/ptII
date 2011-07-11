@@ -166,8 +166,8 @@ public class ExecShellEffigy extends Effigy {
          */
         public Effigy createEffigy(CompositeEntity container, URL base,
                 URL input) throws Exception {
-            return new ExecShellEffigy(container, container
-                    .uniqueName("effigy"));
+            return new ExecShellEffigy(container,
+                    container.uniqueName("effigy"));
         }
     }
 }

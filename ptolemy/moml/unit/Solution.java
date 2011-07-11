@@ -247,13 +247,15 @@ public class Solution {
                 IOPort port = (IOPort) source;
                 ComponentEntity actor = (ComponentEntity) (port.getContainer());
                 moml.append("<entity name=\"" + actor.getName() + "\">"
-                        + _momlAnnotate(port, colorString, expression) + "</entity>");
+                        + _momlAnnotate(port, colorString, expression)
+                        + "</entity>");
             } else if (source instanceof IORelation) {
                 IORelation relation = (IORelation) source;
                 moml.append(_momlAnnotate(relation, colorString, expression));
             } else if (source instanceof ComponentEntity) {
                 ComponentEntity componentEntity = (ComponentEntity) source;
-                moml.append(_momlAnnotate(componentEntity, colorString, expression));
+                moml.append(_momlAnnotate(componentEntity, colorString,
+                        expression));
             }
         }
 
@@ -844,9 +846,8 @@ public class Solution {
             return "";
         } else {
             float[] colorArray = colorValue.getRGBComponents(null);
-            return new String("{ " + colorArray[0] + ", " + colorArray[1] +
-                              ", " + colorArray[2] + ", " + colorArray[3] +
-                              " }");
+            return new String("{ " + colorArray[0] + ", " + colorArray[1]
+                    + ", " + colorArray[2] + ", " + colorArray[3] + " }");
         }
     }
 

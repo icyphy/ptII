@@ -71,7 +71,7 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     /** Return a new node controller which supports additional menu options.  
      *  @param controller The associated graph controller.
      *  @return A new node controller.
@@ -80,31 +80,31 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
         super.create(controller);
         return new DeltaConstraintSolverHighlighterController(this, controller);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
-    
+
     /** The controller that adds commands to the context menu for the
      *  DeltaConstraintSolver ontology solver.
      */
-    private static class DeltaConstraintSolverHighlighterController
-        extends HighlighterController {
-        
+    private static class DeltaConstraintSolverHighlighterController extends
+            HighlighterController {
+
         /** Create a DeltaConstraintSolverHighlighterController that is associated with a controller.
          *  @param displayActions The OntologyDisplayActions object reference.
          *  @param controller The controller.
          */
         public DeltaConstraintSolverHighlighterController(
-                DeltaConstraintSolverDisplayActions displayActions, 
+                DeltaConstraintSolverDisplayActions displayActions,
                 GraphController controller) {
-        super(displayActions, controller);
-        
-        HighlightConflicts highlightConflicts = displayActions.new HighlightConflicts();
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                highlightConflicts));
+            super(displayActions, controller);
+
+            HighlightConflicts highlightConflicts = displayActions.new HighlightConflicts();
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    highlightConflicts));
         }
     }
-    
+
     /** The action for the highlight conflicts command to be added
      *  to the context menu.
      */
@@ -127,7 +127,7 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             NamedObj container = getContainer();
-            
+
             // Get the set of objects to highlight from the 
             // DeltaConstraintSolver and highlight them
             if (container instanceof DeltaConstraintSolver) {
@@ -145,11 +145,11 @@ public class DeltaConstraintSolverDisplayActions extends OntologyDisplayActions 
                         solver.getMoMLHandler().highlightConcepts();
                         solver.getMoMLHandler().showConceptAnnotations();
                     }
+                } catch (KernelException ex) {
+                    MessageHandler.error(
+                            "Identifying solver conflicts failed.", ex);
                 }
-                catch(KernelException ex) {
-                    MessageHandler.error("Identifying solver conflicts failed.", ex);
-                }  
-            } 
+            }
         }
     }
 }

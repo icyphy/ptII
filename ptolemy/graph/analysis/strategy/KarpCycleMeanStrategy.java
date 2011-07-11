@@ -213,8 +213,8 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
 
             while (nodes.hasNext()) {
                 Node node = (Node) nodes.next();
-                maximumPathLength[k].put(node, Double
-                        .valueOf(-Double.MAX_VALUE));
+                maximumPathLength[k].put(node,
+                        Double.valueOf(-Double.MAX_VALUE));
             }
         }
 

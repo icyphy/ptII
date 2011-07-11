@@ -68,9 +68,8 @@ public class BufferingProfileFiring extends Firing {
         fireExclusive = exclusive;
     }
 
-
-///////////////////////////////////////////////////////////////
-////                  public variables                     ////
+    ///////////////////////////////////////////////////////////////
+    ////                  public variables                     ////
 
     /**
      * Indicates whether this firing is to be performed exclusively (true)

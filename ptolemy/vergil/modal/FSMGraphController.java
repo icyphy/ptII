@@ -374,10 +374,10 @@ public class FSMGraphController extends FSMViewerGraphController {
                 Site tailSite;
 
                 // Temporary sites.  One of these will get removed later.
-                headSite = new AutonomousSite(layer, event.getLayerX(), event
-                        .getLayerY());
-                tailSite = new AutonomousSite(layer, event.getLayerX(), event
-                        .getLayerY());
+                headSite = new AutonomousSite(layer, event.getLayerX(),
+                        event.getLayerY());
+                tailSite = new AutonomousSite(layer, event.getLayerX(),
+                        event.getLayerY());
 
                 // Render the edge.
                 Connector c = getEdgeController(link).render(link, layer,
@@ -428,8 +428,8 @@ public class FSMGraphController extends FSMViewerGraphController {
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
             putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             putValue("tooltip", "New State");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_W));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_W));
         }
 
         /** Execute the action. */

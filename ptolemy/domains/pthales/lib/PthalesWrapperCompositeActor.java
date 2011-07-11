@@ -111,6 +111,6 @@ public class PthalesWrapperCompositeActor extends TypedCompositeActor {
      *  @return A new object implementing the Receiver interface.
      */
     public Receiver newInsideReceiver() throws IllegalActionException {
-       return new SDFReceiver();
+        return new SDFReceiver();
     }
 }

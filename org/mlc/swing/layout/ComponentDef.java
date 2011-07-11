@@ -246,8 +246,8 @@ public class ComponentDef implements Comparable<Object> {
         if (attributes != null) {
             for (int index = 0; index < attributes.getLength(); index++) {
                 Node attribute = attributes.item(index);
-                attributeMap.put(attribute.getNodeName(), attribute
-                        .getNodeValue());
+                attributeMap.put(attribute.getNodeName(),
+                        attribute.getNodeValue());
             }
         }
 

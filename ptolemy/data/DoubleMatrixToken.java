@@ -227,8 +227,9 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A 2-D Complex matrix
      */
     public final Complex[][] complexMatrix() {
-        return ComplexMatrixMath.toMatrixFromArray(DoubleArrayMath
-                .toComplexArray(_value), _rowCount, _columnCount);
+        return ComplexMatrixMath
+                .toMatrixFromArray(DoubleArrayMath.toComplexArray(_value),
+                        _rowCount, _columnCount);
     }
 
     /** Convert the specified token into an instance of DoubleMatrixToken.
@@ -514,8 +515,8 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     public final Token oneRight() {
         try {
-            return new DoubleMatrixToken(DoubleMatrixMath
-                    .identity(_columnCount), DO_NOT_COPY);
+            return new DoubleMatrixToken(
+                    DoubleMatrixMath.identity(_columnCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("DoubleMatrixToken.oneRight: "
@@ -593,8 +594,8 @@ public class DoubleMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         DoubleMatrixToken convertedArgument = (DoubleMatrixToken) rightArgument;
-        double[] result = DoubleArrayMath.add(convertedArgument
-                ._getInternalDoubleArray(), _value);
+        double[] result = DoubleArrayMath.add(
+                convertedArgument._getInternalDoubleArray(), _value);
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
     }
@@ -771,8 +772,8 @@ public class DoubleMatrixToken extends MatrixToken {
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         DoubleMatrixToken convertedArgument = (DoubleMatrixToken) rightArgument;
-        double[] result = DoubleArrayMath.subtract(_value, convertedArgument
-                ._getInternalDoubleArray());
+        double[] result = DoubleArrayMath.subtract(_value,
+                convertedArgument._getInternalDoubleArray());
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
     }

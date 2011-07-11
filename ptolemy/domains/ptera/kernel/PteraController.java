@@ -405,8 +405,8 @@ public class PteraController extends ModalController {
      *  @see ptolemy.graph.Inequality
      */
     public Set<Inequality> typeConstraints() {
-        Set<Inequality> constraintList = new HashSet<Inequality>(super
-                .typeConstraints());
+        Set<Inequality> constraintList = new HashSet<Inequality>(
+                super.typeConstraints());
         List<?> events = entityList(Event.class);
         for (Object eventObject : events) {
             Event event = (Event) eventObject;

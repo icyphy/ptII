@@ -87,10 +87,9 @@ public class FSMDirector extends
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code
-                .append(_eol
-                        + "//generate transferOutputsCode inside pret FSM  director called."
-                        + _eol);
+        code.append(_eol
+                + "//generate transferOutputsCode inside pret FSM  director called."
+                + _eol);
         super.generateTransferOutputsCode(outputPort, code);
 
     }

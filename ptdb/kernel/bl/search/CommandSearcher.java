@@ -61,7 +61,6 @@ public class CommandSearcher extends AbstractSearcher implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /**
      * Checks whether the command search criteria has been set in
      *  this command searcher instance.
@@ -76,7 +75,6 @@ public class CommandSearcher extends AbstractSearcher implements
         }
         return true;
     }
-
 
     /**
      * Perform the actual search for the attributes search criteria.

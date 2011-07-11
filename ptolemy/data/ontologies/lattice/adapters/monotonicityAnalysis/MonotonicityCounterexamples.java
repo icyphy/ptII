@@ -72,7 +72,6 @@ public class MonotonicityCounterexamples {
         return !_counterexamples.isEmpty();
     }
 
-
     /** Return a set of all the counterexamples.
      *  For each pair in the set returned, (x1, x2),
      *  we have x1 <= x2, but on the function under consideration
@@ -99,7 +98,8 @@ public class MonotonicityCounterexamples {
 
         resultBuffer.append("{");
         for (Entry<Concept, Concept> pair : entrySet()) {
-            resultBuffer.append("(" + pair.getKey().toString() + "," + pair.getValue() + ")");
+            resultBuffer.append("(" + pair.getKey().toString() + ","
+                    + pair.getValue() + ")");
         }
         resultBuffer.append("}");
 
@@ -121,7 +121,7 @@ public class MonotonicityCounterexamples {
      *  Thus, these pairs prove as counterexamples to the
      *  monotonicity of f.
      */
-    public class ConceptPair implements Map.Entry<Concept,Concept> {
+    public class ConceptPair implements Map.Entry<Concept, Concept> {
         /** Create a counterexample pair given both of the concepts that  make
          *  up the counterexample.
          *
@@ -129,15 +129,16 @@ public class MonotonicityCounterexamples {
          *  @param g The greater concept, i.e. x2
          */
         public ConceptPair(Concept l, Concept g) {
-            lesser = l; greater = g;
+            lesser = l;
+            greater = g;
         }
+
         /** The lesser of the concepts (i.e. x1)
          */
         public Concept lesser;
         /** The greater of the concepts (i.e. x2)
          */
         public Concept greater;
-
 
         /** Return the lesser concept of the counterexample.
          *
@@ -147,6 +148,7 @@ public class MonotonicityCounterexamples {
         public Concept getKey() {
             return lesser;
         }
+
         /** Return the greater concept of the counterexample.
          *
          *  @return The greater concept
@@ -156,6 +158,7 @@ public class MonotonicityCounterexamples {
         public Concept getValue() {
             return greater;
         }
+
         /** Do nothing.
          *  (Counterexamples are immutable)
          *

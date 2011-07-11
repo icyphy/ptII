@@ -31,7 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptdb.common.exception;
 
-
 ///////////////////////////////////////////////////////////////////
 //// XMLDBModelParsingException
 
@@ -47,7 +46,7 @@ package ptdb.common.exception;
  */
 public class XMLDBModelParsingException extends Exception {
 
-///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
      * Construct an instance of XMLDBModelParsingException

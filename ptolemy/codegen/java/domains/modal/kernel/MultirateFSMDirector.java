@@ -374,8 +374,7 @@ public class MultirateFSMDirector extends FSMDirector {
                                         sinkPort, i);
                                 if (offsetObject instanceof Integer) {
                                     int offset = ((Integer) offsetObject)
-                                            .intValue()
-                                            + k;
+                                            .intValue() + k;
                                     offset %= helper.getBufferSize(sinkPort, i);
                                     temp = Integer.toString(offset);
                                 } else {
@@ -409,8 +408,8 @@ public class MultirateFSMDirector extends FSMDirector {
                             int offset = ((Integer) offsetObject).intValue();
                             offset = (offset + rate)
                                     % helper.getBufferSize(sinkPort, i);
-                            helper.setWriteOffset(sinkPort, i, Integer
-                                    .valueOf(offset));
+                            helper.setWriteOffset(sinkPort, i,
+                                    Integer.valueOf(offset));
                         } else {
                             int modulo = helper.getBufferSize(sinkPort, i) - 1;
                             String offsetVariable = (String) helper
@@ -679,8 +678,7 @@ public class MultirateFSMDirector extends FSMDirector {
                             .getParseTree(destinationName);
                     if (destination instanceof Variable) {
                         codeBuffer.append(_codeGenerator
-                                .generateVariableName(destination)
-                                + " = ");
+                                .generateVariableName(destination) + " = ");
                     } else {
                         throw new IllegalActionException("No output can be"
                                 + " produced in any action for "

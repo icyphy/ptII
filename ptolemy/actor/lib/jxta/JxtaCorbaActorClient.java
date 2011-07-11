@@ -280,8 +280,8 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements
 
                 if ((att != ORBInitProperties) && (att != remoteActorName)
                         && (att instanceof Parameter)) {
-                    _debug(getName(), " check remote parameter: ", att
-                            .getName());
+                    _debug(getName(), " check remote parameter: ",
+                            att.getName());
 
                     if (!_remoteActor.hasParameter(att.getName())) {
                         throw new IllegalActionException(this, "Parameter: "
@@ -297,8 +297,8 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements
                 IOPort p = (IOPort) ports.next();
                 _debug(getName(), " check remote port: ", p.getName());
 
-                if (!_remoteActor.hasPort(p.getName(), p.isInput(), p
-                        .isOutput(), p.isMultiport())) {
+                if (!_remoteActor.hasPort(p.getName(), p.isInput(),
+                        p.isOutput(), p.isMultiport())) {
                     _debug("Port: " + p.getName()
                             + " not found on the remote side"
                             + " or has wrong type.");
@@ -515,8 +515,8 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements
                     Token inputToken = port.get(0);
 
                     try {
-                        _remoteActor.transferInput(inputName, i, inputToken
-                                .toString());
+                        _remoteActor.transferInput(inputName, i,
+                                inputToken.toString());
                     } catch (SystemException ex) {
                         throw new InvalidStateException(this,
                                 "Communication failiar." + ex.getMessage());

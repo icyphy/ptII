@@ -138,8 +138,8 @@ public class DoubleToFix extends Converter {
                         "Invalid precision (not a 1 by 2 matrix).");
             }
 
-            Precision precision = new Precision(token.getElementAt(0, 0), token
-                    .getElementAt(0, 1));
+            Precision precision = new Precision(token.getElementAt(0, 0),
+                    token.getElementAt(0, 1));
             output.setTypeEquals(new FixType(precision));
             _quantization = _quantization.setPrecision(precision);
         } else if (attribute == rounding) {
@@ -163,8 +163,9 @@ public class DoubleToFix extends Converter {
         DoubleToFix newObject = (DoubleToFix) super.clone(workspace);
 
         newObject._quantization = new FixPointQuantization(
-                newObject._quantization.getPrecision(), newObject._quantization
-                        .getOverflow(), newObject._quantization.getRounding());
+                newObject._quantization.getPrecision(),
+                newObject._quantization.getOverflow(),
+                newObject._quantization.getRounding());
 
         return newObject;
     }

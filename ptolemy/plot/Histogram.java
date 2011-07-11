@@ -215,10 +215,8 @@ public class Histogram extends PlotBox {
     public synchronized void exportToPlot(PrintWriter output, String dtd) {
         if (dtd == null) {
             output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
-            output
-                    .println("<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
-            output
-                    .println("    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
+            output.println("<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
+            output.println("    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
         } else {
             output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
@@ -530,8 +528,8 @@ public class Histogram extends PlotBox {
             while (keys.hasMoreElements()) {
                 Integer bin = (Integer) keys.nextElement();
                 Integer count = (Integer) data.get(bin);
-                _drawPlotPoint(graphics, dataset, bin.intValue(), count
-                        .intValue());
+                _drawPlotPoint(graphics, dataset, bin.intValue(),
+                        count.intValue());
             }
         }
     }

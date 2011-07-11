@@ -106,10 +106,8 @@ public class FSMDirector extends
                 + "//before call to generateActorCode in FSM Constructor"
                 + _eol);
         code.append(_generateActorCode());
-        code
-                .append(_eol
-                        + "//after call to generateActorCode in FSM Constructor"
-                        + _eol);
+        code.append(_eol
+                + "//after call to generateActorCode in FSM Constructor" + _eol);
         return code.toString();
     }
 
@@ -121,10 +119,9 @@ public class FSMDirector extends
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code
-                .append(_eol
-                        + "//generate transferOutputsCode inside OPENRTOS FSM  director called."
-                        + _eol);
+        code.append(_eol
+                + "//generate transferOutputsCode inside OPENRTOS FSM  director called."
+                + _eol);
         super.generateTransferOutputsCode(outputPort, code);
 
     }

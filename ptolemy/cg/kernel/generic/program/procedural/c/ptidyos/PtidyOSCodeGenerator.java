@@ -98,7 +98,8 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      */
     protected void _generateAssemblyFile() throws IllegalActionException {
         PtidesPreemptiveEDFDirector directorAdapter = null;
-        Director director = ((TypedCompositeActor) getContainer()).getDirector();
+        Director director = ((TypedCompositeActor) getContainer())
+                .getDirector();
         if (director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
             _writeCode(directorAdapter.generateAsseblyFile());
@@ -108,14 +109,15 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
             for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
                     .deepEntityList()) {
                 Director insideDirector = actor.getDirector();
-                 if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
                     directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
                     _writeCode(directorAdapter.generateAsseblyFile());
                 }
             }
         } else {
-            throw new IllegalActionException(director, "This PtidyOS code generator should be used " +
-                            "with a Ptides director.");
+            throw new IllegalActionException(director,
+                    "This PtidyOS code generator should be used "
+                            + "with a Ptides director.");
         }
     }
 

@@ -121,8 +121,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
         for (int i = 0; i < actor.populations.getWidth(); i++) {
             args.set(0, Integer.toString(i));
             // code.append(_generateBlockCode("initArraysBinomialSelectorBlock", args));
-            codeStream
-                    .appendCodeBlock("initArraysBinomialSelectorBlock", args);
+            codeStream.appendCodeBlock("initArraysBinomialSelectorBlock", args);
         }
 
         args.set(0, Integer.toString(actor.populations.getWidth()));

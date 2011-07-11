@@ -315,8 +315,8 @@ public class PtolemyFormEditor extends JPanel {
                             string.append("}");
                         }
                     }
-                    query.addColorChooser(propertyName, propertyName, string
-                            .toString());
+                    query.addColorChooser(propertyName, propertyName,
+                            string.toString());
                     previousValues.put(propertyName, string.toString());
                 }
             }
@@ -546,8 +546,9 @@ public class PtolemyFormEditor extends JPanel {
             _specsChanged();
         } catch (IllegalArgumentException iae) {
             // FIXME: Use our error reporting.
-            JOptionPane.showMessageDialog(PtolemyFormEditor.this, iae
-                    .getMessage(), "Invalid Layout", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(PtolemyFormEditor.this,
+                    iae.getMessage(), "Invalid Layout",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -570,8 +571,9 @@ public class PtolemyFormEditor extends JPanel {
             _specsChanged();
         } catch (IllegalArgumentException iae) {
             // FIXME: Use our error reporting.
-            JOptionPane.showMessageDialog(PtolemyFormEditor.this, iae
-                    .getMessage(), "Invalid Layout", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(PtolemyFormEditor.this,
+                    iae.getMessage(), "Invalid Layout",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -584,9 +586,10 @@ public class PtolemyFormEditor extends JPanel {
             // FIXME: we should use rollover icons like what is in
             // vergil.basic.BasicGraphFrame, where we call
             // diva.util.GUIUtilities.
-            abstractAction.putValue(Action.SMALL_ICON, new ImageIcon(
-                    FileUtilities.nameToURL(iconDirectory + iconName, null,
-                            null)));
+            abstractAction.putValue(
+                    Action.SMALL_ICON,
+                    new ImageIcon(FileUtilities.nameToURL(iconDirectory
+                            + iconName, null, null)));
         } catch (IOException ex) {
             System.out.println("Failed to open " + iconDirectory + iconName);
             ex.printStackTrace();
@@ -598,8 +601,8 @@ public class PtolemyFormEditor extends JPanel {
             boolean forceVisible) {
         // we don't want to update the selection interval if nothing changed...
         _table.getSelectionModel().setSelectionInterval(rowIndex, rowIndex);
-        _table.getColumnModel().getSelectionModel().setSelectionInterval(
-                columnIndex, columnIndex);
+        _table.getColumnModel().getSelectionModel()
+                .setSelectionInterval(columnIndex, columnIndex);
 
         if (forceVisible) {
             // let's make sure the cell is in the visible range...
@@ -912,8 +915,9 @@ public class PtolemyFormEditor extends JPanel {
             }
             _containerLayout.removeColumnSpec(columnIndex - 1);
             _tableModel.fireTableStructureChanged();
-            _table.changeSelection(0, Math.min(columnIndex, _containerLayout
-                    .getColumnCount()), false, false);
+            _table.changeSelection(0,
+                    Math.min(columnIndex, _containerLayout.getColumnCount()),
+                    false, false);
             _specsChanged();
             _table.requestFocus();
         }
@@ -952,8 +956,9 @@ public class PtolemyFormEditor extends JPanel {
             }
             _containerLayout.removeRowSpec(rowIndex - 1);
             _tableModel.fireTableRowsDeleted(rowIndex, rowIndex);
-            _table.changeSelection(Math.min(rowIndex, _containerLayout
-                    .getRowCount()), 0, false, false);
+            _table.changeSelection(
+                    Math.min(rowIndex, _containerLayout.getRowCount()), 0,
+                    false, false);
             _specsChanged();
             _table.requestFocus();
         }
@@ -987,8 +992,8 @@ public class PtolemyFormEditor extends JPanel {
                     _containerLayout.setColumnSpec(col - 1, value);
                     _specsChanged();
                 } catch (IllegalArgumentException iae) {
-                    JOptionPane.showMessageDialog(PtolemyFormEditor.this, iae
-                            .getMessage(), "Invalid Layout",
+                    JOptionPane.showMessageDialog(PtolemyFormEditor.this,
+                            iae.getMessage(), "Invalid Layout",
                             JOptionPane.ERROR_MESSAGE);
                 }
             } else if (col == 0) {
@@ -1128,8 +1133,8 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.SHORT_DESCRIPTION, "Pack the run control panel");
             putValue(Action.LONG_DESCRIPTION, "Pack the run control panel");
             _putValue(this, "Pack.gif");
-            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_P, 0));
+            putValue(Action.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_P, 0));
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
@@ -1158,8 +1163,8 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.LONG_DESCRIPTION, "Delete the selected component. "
                     + "A component must be selected for this to be enabled.");
             _putValue(this, "Remove24.gif");
-            putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DELETE, 0));
+            putValue(Action.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
         }
 

@@ -147,8 +147,8 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             if (!subpanelNode.getNodeName().equals("container")) {
                 continue;
             }
-            String subpanelName = subpanelNode.getAttributes().getNamedItem(
-                    "name").getNodeValue();
+            String subpanelName = subpanelNode.getAttributes()
+                    .getNamedItem("name").getNodeValue();
             if (subpanelName.equals("top")) {
                 NodeList nodeList = components.item(i).getChildNodes();
                 for (int j = 0; j < nodeList.getLength(); j++) {
@@ -461,90 +461,75 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
         xml.append("<container name=\"top\" "
                 + "columnSpecs=\"default,3dlu,default:grow\" "
                 + "rowSpecs=\"default\">\n");
-        xml
-                .append("<cellconstraints name=\"Subpanel:ControlPanel\" gridX=\"1\" gridY=\"1\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
-                        + "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" "
-                        + "rightInset=\"0\" leftInset=\"0\"/>\n");
-        xml
-                .append("<cellconstraints name=\"Subpanel:PlaceablePanel\" gridX=\"3\" gridY=\"1\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
-                        + "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" "
-                        + "rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<cellconstraints name=\"Subpanel:ControlPanel\" gridX=\"1\" gridY=\"1\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
+                + "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" "
+                + "rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<cellconstraints name=\"Subpanel:PlaceablePanel\" gridX=\"3\" gridY=\"1\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
+                + "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" "
+                + "rightInset=\"0\" leftInset=\"0\"/>\n");
         xml.append("</container>\n");
 
         // Subpanel with the run control buttons, the top-level parameters,
         // and the director parameters.
-        xml
-                .append("<container name=\"Subpanel:ControlPanel\" "
-                        + "columnSpecs=\"default\" "
-                        + "rowSpecs=\"default,5dlu,default,5dlu,default,5dlu,default,5dlu,"
-                        + "default,5dlu,default,5dlu,default\">\n");
-        xml
-                .append("<cellconstraints name=\"Label:Run Control\" gridX=\"1\" gridY=\"1\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" "
-                        + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
-                        + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
-        xml
-                .append("<cellconstraints name=\"Subpanel:Run Control\" gridX=\"1\" gridY=\"3\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" "
-                        + "horizontalAlignment=\"default\" verticalAlignment=\"top\" "
-                        + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<container name=\"Subpanel:ControlPanel\" "
+                + "columnSpecs=\"default\" "
+                + "rowSpecs=\"default,5dlu,default,5dlu,default,5dlu,default,5dlu,"
+                + "default,5dlu,default,5dlu,default\">\n");
+        xml.append("<cellconstraints name=\"Label:Run Control\" gridX=\"1\" gridY=\"1\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" "
+                + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
+                + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<cellconstraints name=\"Subpanel:Run Control\" gridX=\"1\" gridY=\"3\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" "
+                + "horizontalAlignment=\"default\" verticalAlignment=\"top\" "
+                + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
         // Place a configurer for the top-level settables here.
-        xml
-                .append("<cellconstraints name=\"Label:Top-Level Parameters\" gridX=\"1\" gridY=\"5\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" "
-                        + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
-                        + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
-        xml
-                .append("<cellconstraints name=\"ConfigureTopLevel\" gridX=\"1\" gridY=\"7\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
-                        + "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" "
-                        + "rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<cellconstraints name=\"Label:Top-Level Parameters\" gridX=\"1\" gridY=\"5\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" "
+                + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
+                + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<cellconstraints name=\"ConfigureTopLevel\" gridX=\"1\" gridY=\"7\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
+                + "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" "
+                + "rightInset=\"0\" leftInset=\"0\"/>\n");
         // Place a configurer for the director settables here.
-        xml
-                .append("<cellconstraints name=\"Label:Director Parameters\" gridX=\"1\" gridY=\"9\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" "
-                        + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
-                        + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
-        xml
-                .append("<cellconstraints name=\"ConfigureDirector\" gridX=\"1\" gridY=\"11\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
-                        + "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" "
-                        + "rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<cellconstraints name=\"Label:Director Parameters\" gridX=\"1\" gridY=\"9\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" "
+                + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
+                + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<cellconstraints name=\"ConfigureDirector\" gridX=\"1\" gridY=\"11\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" "
+                + "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" "
+                + "rightInset=\"0\" leftInset=\"0\"/>\n");
         xml.append("</container>\n");
 
         // Subpanel with the run control buttons.
-        xml
-                .append("<container name=\"Subpanel:Run Control\" "
-                        + "columnSpecs=\"default,3dlu,default,3dlu,default,3dlu,default\" "
-                        + "rowSpecs=\"default\">\n");
-        xml
-                .append("<cellconstraints name=\"GoButton\" gridX=\"1\" gridY=\"1\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" "
-                        + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
-                        + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
-        xml
-                .append("<cellconstraints name=\"PauseButton\" gridX=\"3\" gridY=\"1\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" "
-                        + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
-                        + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
-        xml
-                .append("<cellconstraints name=\"ResumeButton\" gridX=\"5\" gridY=\"1\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" "
-                        + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
-                        + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
-        xml
-                .append("<cellconstraints name=\"StopButton\" gridX=\"7\" gridY=\"1\" "
-                        + "gridWidth=\"1\" gridHeight=\"1\" "
-                        + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
-                        + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<container name=\"Subpanel:Run Control\" "
+                + "columnSpecs=\"default,3dlu,default,3dlu,default,3dlu,default\" "
+                + "rowSpecs=\"default\">\n");
+        xml.append("<cellconstraints name=\"GoButton\" gridX=\"1\" gridY=\"1\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" "
+                + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
+                + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<cellconstraints name=\"PauseButton\" gridX=\"3\" gridY=\"1\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" "
+                + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
+                + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<cellconstraints name=\"ResumeButton\" gridX=\"5\" gridY=\"1\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" "
+                + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
+                + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("<cellconstraints name=\"StopButton\" gridX=\"7\" gridY=\"1\" "
+                + "gridWidth=\"1\" gridHeight=\"1\" "
+                + "horizontalAlignment=\"default\" verticalAlignment=\"default\" "
+                + "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
         xml.append("</container>\n");
 
         // Subpanel for each object that implements Placeable.
         xml.append("<container name=\"Subpanel:PlaceablePanel\" ");
-        xml
-                .append("columnSpecs=\"default,3dlu,default,3dlu,default,3dlu,default\" ");
+        xml.append("columnSpecs=\"default,3dlu,default,3dlu,default,3dlu,default\" ");
         // FIXME: Need some way to resize plot windows here...
         xml.append("rowSpecs=\"default");
         StringBuffer constraints = new StringBuffer();

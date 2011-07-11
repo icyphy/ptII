@@ -405,8 +405,8 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
         if (orientationSpec != null) {
             if (orientationSpec.trim().toLowerCase().equals("horizontal")) {
                 orientation = ModelPane.HORIZONTAL;
-            } else if (orientationSpec.trim().toLowerCase().equals(
-                    "controls_only")) {
+            } else if (orientationSpec.trim().toLowerCase()
+                    .equals("controls_only")) {
                 orientation = ModelPane.CONTROLS_ONLY;
             }
         }

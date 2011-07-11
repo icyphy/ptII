@@ -103,8 +103,7 @@ public class PDFAttribute extends VisibleAttribute {
         // Put the sample PDF in the local directory so that it stays with this actor.
         // Use $CLASSSPATH intstead of $PTII so that this class can find sample.pdf
         // under Web Start.
-        source
-                .setExpression("$CLASSPATH/ptolemy/vergil/pdfrenderer/sample.pdf");
+        source.setExpression("$CLASSPATH/ptolemy/vergil/pdfrenderer/sample.pdf");
 
         scale = new Parameter(this, "scale");
         scale.setTypeEquals(BaseType.DOUBLE);

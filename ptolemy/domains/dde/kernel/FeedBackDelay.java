@@ -176,15 +176,15 @@ public class FeedBackDelay extends DDEActor {
         if (thread instanceof DDEThread) {
             if (token instanceof NullToken) {
                 if (delayNullVal) {
-                    _sendOutToken(token, getDirector().getModelTime().add(
-                            getDelay()));
+                    _sendOutToken(token,
+                            getDirector().getModelTime().add(getDelay()));
                 } else {
                     _sendOutToken(token, getDirector().getModelTime());
                 }
             } else {
                 if (delayRealVal) {
-                    _sendOutToken(token, getDirector().getModelTime().add(
-                            getDelay()));
+                    _sendOutToken(token,
+                            getDirector().getModelTime().add(getDelay()));
                 } else {
                     _sendOutToken(token, getDirector().getModelTime());
                 }

@@ -140,12 +140,12 @@ public class PeriodicSampler extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        ContinuousDirector director = (ContinuousDirector)getDirector();
+        ContinuousDirector director = (ContinuousDirector) getDirector();
         Time currentTime = director.getModelTime();
         int microstep = director.getIndex();
         if (_debugging) {
-            _debug("Current time is " + currentTime
-                    + " with microstep " + microstep);
+            _debug("Current time is " + currentTime + " with microstep "
+                    + microstep);
         }
         if (currentTime.compareTo(_nextSamplingTime) == 0 && microstep == 1) {
             int width = Math.min(input.getWidth(), output.getWidth());
@@ -154,7 +154,8 @@ public class PeriodicSampler extends Transformer {
                     // There is a deferred output for this input channel.
                     output.send(i, _pendingOutputs[i]);
                     if (_debugging) {
-                        _debug("Sending output value " + _pendingOutputs[i] + " on channel " + i);
+                        _debug("Sending output value " + _pendingOutputs[i]
+                                + " on channel " + i);
                     }
                 }
             }
@@ -187,7 +188,7 @@ public class PeriodicSampler extends Transformer {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        ContinuousDirector director = (ContinuousDirector)getDirector();
+        ContinuousDirector director = (ContinuousDirector) getDirector();
         Time currentTime = director.getModelTime();
         int microstep = director.getIndex();
         if (currentTime.compareTo(_nextSamplingTime) == 0) {
@@ -200,12 +201,14 @@ public class PeriodicSampler extends Transformer {
                         _pendingOutputs[i] = null;
                     }
                     if (_debugging) {
-                        _debug("Read input: " + _pendingOutputs[i] + " on channel " + i);
+                        _debug("Read input: " + _pendingOutputs[i]
+                                + " on channel " + i);
                     }
                 }
                 director.fireAt(this, currentTime, 1);
             } else if (microstep == 1) {
-                double samplePeriodValue = ((DoubleToken) samplePeriod.getToken()).doubleValue();
+                double samplePeriodValue = ((DoubleToken) samplePeriod
+                        .getToken()).doubleValue();
                 _nextSamplingTime = currentTime.add(samplePeriodValue);
                 director.fireAt(this, _nextSamplingTime, 0);
             }

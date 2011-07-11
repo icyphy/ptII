@@ -112,7 +112,7 @@ public class Tag implements Comparable {
      *  @return a string representation of this class.
      */
     public String toString() {
-        return "timestamp = " + timestamp.getDoubleValue() +
-            ", microstep = " + microstep;
+        return "timestamp = " + timestamp.getDoubleValue() + ", microstep = "
+                + microstep;
     }
 }

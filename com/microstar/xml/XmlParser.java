@@ -891,7 +891,8 @@ public class XmlParser {
 
         if (atts != null) {
             String aname;
-            loop: while (atts.hasMoreElements()) {
+            loop:
+            while (atts.hasMoreElements()) {
                 aname = (String) atts.nextElement();
 
                 // See if it was specified.
@@ -903,8 +904,8 @@ public class XmlParser {
 
                 // I guess not...
                 if (handler != null) {
-                    handler.attribute(aname, getAttributeExpandedValue(gi,
-                            aname), false);
+                    handler.attribute(aname,
+                            getAttributeExpandedValue(gi, aname), false);
                 }
             }
         }
@@ -1525,7 +1526,8 @@ public class XmlParser {
         char c;
 
         if (tryRead('x')) {
-            loop1: while (true) {
+            loop1:
+            while (true) {
                 c = readCh();
 
                 switch (c) {
@@ -1564,7 +1566,8 @@ public class XmlParser {
                 }
             }
         } else {
-            loop2: while (true) {
+            loop2:
+            while (true) {
                 c = readCh();
 
                 switch (c) {
@@ -1909,7 +1912,8 @@ public class XmlParser {
             int lineAugment = 0;
             int columnAugment = 0;
 
-            loop: for (int i = readBufferPos; i < readBufferLength; i++) {
+            loop:
+            for (int i = readBufferPos; i < readBufferLength; i++) {
                 switch (readBuffer[i]) {
                 case ' ':
                 case '\t':
@@ -1964,7 +1968,8 @@ public class XmlParser {
         char c;
 
         if (USE_CHEATS) {
-            loop: for (int i = readBufferPos; i < readBufferLength; i++) {
+            loop:
+            for (int i = readBufferPos; i < readBufferLength; i++) {
                 switch (readBuffer[i]) {
                 case '%':
 
@@ -2077,7 +2082,8 @@ public class XmlParser {
         try {
             c = readCh();
 
-            loop: while (c != delim) {
+            loop:
+            while (c != delim) {
                 switch (c) {
                 // Literals never have line ends
                 case '\n':
@@ -3918,7 +3924,8 @@ public class XmlParser {
 
         readBufferOverflow = -1;
 
-        loop: for (i = 0, j = 0; j < readBufferLength; i++, j++) {
+        loop:
+        for (i = 0, j = 0; j < readBufferLength; i++, j++) {
             switch (readBuffer[j]) {
             case '\r':
 

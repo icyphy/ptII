@@ -60,8 +60,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *   throws it.
      */
     public ASTPtLeafNode(LatticeOntologySolver solver,
-            ptolemy.data.expr.ASTPtLeafNode node)
-            throws IllegalActionException {
+            ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -81,27 +80,44 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
             if (nodeToken != null) {
                 if (nodeToken instanceof BooleanToken) {
                     if (((BooleanToken) nodeToken).booleanValue()) {
-                        setAtLeast(node, getSolver().getOntology().getConceptByString("BooleanTrue"));
+                        setAtLeast(node, getSolver().getOntology()
+                                .getConceptByString("BooleanTrue"));
                     } else {
-                        setAtLeast(node, getSolver().getOntology().getConceptByString("BooleanFalse"));
+                        setAtLeast(node, getSolver().getOntology()
+                                .getConceptByString("BooleanFalse"));
                     }
                 } else if (nodeToken instanceof ScalarToken) {
-                    if (((ScalarToken) nodeToken).isEqualTo(nodeToken.zero()).booleanValue()) {
-                        setAtLeast(node, getSolver().getOntology().getConceptByString("Zero"));
-                    } else if (((ScalarToken) nodeToken).isGreaterThan((ScalarToken) nodeToken.zero()).booleanValue()) {
-                        FlatScalarTokenRepresentativeConcept positiveRepresentative =
-                            (FlatScalarTokenRepresentativeConcept) getSolver().getOntology().getConceptByString("PositiveValue");
-                        setAtLeast(node, positiveRepresentative.getFlatTokenInfiniteConceptByToken(nodeToken));
+                    if (((ScalarToken) nodeToken).isEqualTo(nodeToken.zero())
+                            .booleanValue()) {
+                        setAtLeast(node, getSolver().getOntology()
+                                .getConceptByString("Zero"));
+                    } else if (((ScalarToken) nodeToken).isGreaterThan(
+                            (ScalarToken) nodeToken.zero()).booleanValue()) {
+                        FlatScalarTokenRepresentativeConcept positiveRepresentative = (FlatScalarTokenRepresentativeConcept) getSolver()
+                                .getOntology().getConceptByString(
+                                        "PositiveValue");
+                        setAtLeast(
+                                node,
+                                positiveRepresentative
+                                        .getFlatTokenInfiniteConceptByToken(nodeToken));
                     } else {
-                        FlatScalarTokenRepresentativeConcept negativeRepresentative =
-                            (FlatScalarTokenRepresentativeConcept) getSolver().getOntology().getConceptByString("NegativeValue");
-                        setAtLeast(node, negativeRepresentative.getFlatTokenInfiniteConceptByToken(nodeToken));
+                        FlatScalarTokenRepresentativeConcept negativeRepresentative = (FlatScalarTokenRepresentativeConcept) getSolver()
+                                .getOntology().getConceptByString(
+                                        "NegativeValue");
+                        setAtLeast(
+                                node,
+                                negativeRepresentative
+                                        .getFlatTokenInfiniteConceptByToken(nodeToken));
                     }
                 } else {
-                    setAtLeast(node, getSolver().getOntology().getConceptByString("Undefined"));
+                    setAtLeast(node, getSolver().getOntology()
+                            .getConceptByString("Undefined"));
                 }
             } else {
-                setAtLeast(node, getSolver().getOntology().getConceptByString("Undefined"));
+                setAtLeast(
+                        node,
+                        getSolver().getOntology().getConceptByString(
+                                "Undefined"));
             }
         }
 

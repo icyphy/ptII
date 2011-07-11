@@ -53,7 +53,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 
-
 /**
  * A Cellular Automata director.
  * <p>
@@ -205,8 +204,7 @@ public class CADirector extends Director {
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof TypedCompositeActor) {
-            TypedCompositeActor composite = (TypedCompositeActor) container
-;
+            TypedCompositeActor composite = (TypedCompositeActor) container;
             Variable vxl = (Variable) composite.getAttribute("xLocation");
             Variable vyl = (Variable) composite.getAttribute("yLocation");
             Variable vcv = (Variable) composite.getAttribute("currentValue");
@@ -227,20 +225,24 @@ public class CADirector extends Director {
             vcv.setToken(new DoubleToken(_cells[i][j]));
 
             int previousRow = i - 1;
-            if (previousRow < 0)
+            if (previousRow < 0) {
                 previousRow = _matrixSize - 1;
+            }
 
             int nextRow = i + 1;
-            if (nextRow >= _matrixSize)
+            if (nextRow >= _matrixSize) {
                 nextRow = 0;
+            }
 
             int previousColumn = j - 1;
-            if (previousColumn < 0)
+            if (previousColumn < 0) {
                 previousColumn = _matrixSize - 1;
+            }
 
             int nextColumn = j + 1;
-            if (nextColumn >= _matrixSize)
+            if (nextColumn >= _matrixSize) {
                 nextColumn = 0;
+            }
 
             vn1.setToken(new DoubleToken(_cells[previousRow][previousColumn]));
             vn2.setToken(new DoubleToken(_cells[previousRow][j]));
@@ -266,7 +268,7 @@ public class CADirector extends Director {
                 } else if (actor instanceof MatrixViewer) {
                 } else if (actor instanceof Const) {
                     Const c = (Const) actor;
-                    Variable v = (Variable) c.value;
+                    Variable v = c.value;
                     if (!(v.getToken() instanceof DoubleMatrixToken)) {
                         actor.iterate(1);
                     }
@@ -289,8 +291,7 @@ public class CADirector extends Director {
 
         _matrixSize = ((IntToken) size.getToken()).intValue();
         double[][] initial = new double[_matrixSize][_matrixSize];
-        boolean isRandom = ((BooleanToken) random.getToken())
-                .booleanValue();
+        boolean isRandom = ((BooleanToken) random.getToken()).booleanValue();
 
         if (isRandom) {
             Random generator = new Random();
@@ -417,8 +418,7 @@ public class CADirector extends Director {
         doubleArray[0][1] = 0;
         doubleArray[0][2] = 0.0;
 
-        initialMatrix = new Parameter(this,
-                "initialMatrix",
+        initialMatrix = new Parameter(this, "initialMatrix",
                 new DoubleMatrixToken(doubleArray));
     }
 
@@ -447,7 +447,8 @@ public class CADirector extends Director {
         try {
             _showMatrix();
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Failed to show the matrix.");
+            throw new IllegalActionException(this, ex,
+                    "Failed to show the matrix.");
         }
 
         _currentIteration--;
@@ -500,7 +501,7 @@ public class CADirector extends Director {
                 actorMatrixViewer = actor;
             } else if (actor instanceof Const) {
                 Const c = (Const) actor;
-                Variable v = (Variable) c.value;
+                Variable v = c.value;
                 if (v.getToken() instanceof DoubleMatrixToken) {
                     actorConst = actor;
                 }

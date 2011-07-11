@@ -61,11 +61,11 @@ public class Combine extends TypedAtomicActor {
     public Combine(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         // Parameters
         function = new StringAttribute(this, "function");
         function.setExpression("add");
-        
+
         _function = _ADD;
         _present = false;
         _value = 0;
@@ -109,7 +109,6 @@ public class Combine extends TypedAtomicActor {
      */
     public TypedIOPort value;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -119,51 +118,50 @@ public class Combine extends TypedAtomicActor {
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
-   public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
         super.fire();
-        
+
         // Actor is scheduled
         if (_debugging) {
             _debug("Combine scheduled.");
         }
-        
-            // Check if any ports have known inputs.
-            for (int i = 0; i < input.getWidth(); i++) {
+
+        // Check if any ports have known inputs.
+        for (int i = 0; i < input.getWidth(); i++) {
             if (input.isKnown(i) && input.hasToken(i)) {
-                    _present = true;
-                    if (_debugging) {
-                        _debug("Combine: Port " + i + " has token.");
-                    }
-                    
-                    IntToken in = (IntToken) input.get(i);
+                _present = true;
+                if (_debugging) {
+                    _debug("Combine: Port " + i + " has token.");
+                }
+
+                IntToken in = (IntToken) input.get(i);
                 if (in != null) {
                     _value = _updateFunction(in.intValue(), _value);
-                }                    
+                }
             }
-            }
+        }
 
-            if (!_present) {
+        if (!_present) {
             if (_debugging) {
-                    _debug("Checking iff unknown by all connected ports");
+                _debug("Checking iff unknown by all connected ports");
             }
             //check if all ports are cleared (known w/o any token)
             boolean allKnown = true;
             for (int i = 0; i < input.getWidth(); i++) {
                 allKnown &= input.isKnown(i);
-                _debug("allKnown after "+input.getName()+":"+allKnown);
+                _debug("allKnown after " + input.getName() + ":" + allKnown);
             }
             if (allKnown) {
                 _debug("Sending clear out");
                 output.sendClear(0);
                 value.sendClear(0);
             }
-            }
-            else  {
+        } else {
             // Send out integer token if presentToken
-            _debug("Sending value "+_value+" out");
+            _debug("Sending value " + _value + " out");
             output.send(0, new IntToken(1));
             value.send(0, new IntToken(_value));
-            }
+        }
     }
 
     /** This actor must be *NON-strict* because it must not wait for more than
@@ -171,7 +169,7 @@ public class Combine extends TypedAtomicActor {
      */
     public boolean isStrict() {
         return false;
-    }    
+    }
 
     public boolean prefire() throws IllegalActionException {
         return true;
@@ -181,9 +179,9 @@ public class Combine extends TypedAtomicActor {
         //cleanup for next run
         _present = false;
         resetValue();
-              return true;
+        return true;
     }
-    
+
     /** Set the RailwayInterface and open a TCP connection to the
      *  Model Railway interface program w/ the given <i>host</i> and
      *  <i>port</i> parameters.
@@ -191,20 +189,21 @@ public class Combine extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-          //cleanup for first run
+        //cleanup for first run
         _present = false;
         resetValue();
     }
-    
+
     /** This should reset the value according to the current combine function. 
      */
     private void resetValue() {
-            if (_function == _MINIMUM)
-                    _value = 10000000;
-            else if ((_function == _MULTIPLY)||(_function == _AND))
-                    _value = 1;
-            else
-                    _value = 0;
+        if (_function == _MINIMUM) {
+            _value = 10000000;
+        } else if ((_function == _MULTIPLY) || (_function == _AND)) {
+            _value = 1;
+        } else {
+            _value = 0;
+        }
     }
 
     /** Terminate the TCP connection of the Model Railway interface.
@@ -214,7 +213,7 @@ public class Combine extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
-            super.wrapup();
+        super.wrapup();
     }
 
     /** Calculate the function on the given arguments.
@@ -226,51 +225,62 @@ public class Combine extends TypedAtomicActor {
     protected int _updateFunction(int in, int old)
             throws IllegalActionException {
         int result;
-        
+
         if (_function == _NONE) {
-            throw new IllegalActionException(
-                    "Combine actor (" + getFullName() + ")" +
-                    " function must not be NONE");
+            throw new IllegalActionException("Combine actor (" + getFullName()
+                    + ")" + " function must not be NONE");
         }
-                
+
         switch (_function) {
-                case _CONSTANT:
-                        result = _constValue;
-                        break;
-                case _ADD:
-                        result = old + in;
-                        break;
-                case _MULTIPLY:
-                        result = old * in;
-                        break;
-                case _MAXIMUM:
-                        if (in > old) result = in;
-                        else          result = old; 
-                        break;
-                case _MINIMUM:
-                        if (in < old) result = in;
-                        else          result = old; 
-                        break;
-                case _AND:
-                        //assume: 1 true, 0 false
-                        if ((old == 0)||(in ==0)) result = 0;
-                        else result = 1;
-                        break;
-                case _OR:
-                        //assume: 1 true, 0 false
-                        if ((old == 1)||(in == 1)) result = 1;
-                        else result = 0;
-                        break;
-                default:
-                throw new IllegalActionException(
-                        "Invalid value for _function private variable. "
-                                + "Combine actor (" + getFullName() + ")"
-                                + " on function type " + _function);
+        case _CONSTANT:
+            result = _constValue;
+            break;
+        case _ADD:
+            result = old + in;
+            break;
+        case _MULTIPLY:
+            result = old * in;
+            break;
+        case _MAXIMUM:
+            if (in > old) {
+                result = in;
+            } else {
+                result = old;
+            }
+            break;
+        case _MINIMUM:
+            if (in < old) {
+                result = in;
+            } else {
+                result = old;
+            }
+            break;
+        case _AND:
+            //assume: 1 true, 0 false
+            if ((old == 0) || (in == 0)) {
+                result = 0;
+            } else {
+                result = 1;
+            }
+            break;
+        case _OR:
+            //assume: 1 true, 0 false
+            if ((old == 1) || (in == 1)) {
+                result = 1;
+            } else {
+                result = 0;
+            }
+            break;
+        default:
+            throw new IllegalActionException(
+                    "Invalid value for _function private variable. "
+                            + "Combine actor (" + getFullName() + ")"
+                            + " on function type " + _function);
         }
 
         return result;
-    }    
-    
+    }
+
     /** Override the base class to determine which function is being
      *  specified.  Read the value of the function attribute and set
      *  the cached value appropriately.
@@ -295,53 +305,55 @@ public class Combine extends TypedAtomicActor {
             } else if (functionName.equals("or")) {
                 _function = _OR;
             } else {
-                    try {
-                            _constValue = Integer.parseInt(function.getValueAsString());
-                            _function = _CONSTANT;
-                    } catch(Exception e){
-                    throw new IllegalActionException(this,
-                            "Unrecognized synchronous signal combine function: " + functionName
+                try {
+                    _constValue = Integer.parseInt(function.getValueAsString());
+                    _function = _CONSTANT;
+                } catch (Exception e) {
+                    throw new IllegalActionException(
+                            this,
+                            "Unrecognized synchronous signal combine function: "
+                                    + functionName
                                     + ". Valid combine functions are 'add', 'mult', 'max', "
                                     + "'min', 'and', 'or' and any constant number.");
-                    }
+                }
             }
         } else {
             super.attributeChanged(attribute);
         }
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** Noop. */
-    protected final int _NONE  = 0;
+    protected final int _NONE = 0;
     /** Add. */
-    protected final int _ADD   = 1;
+    protected final int _ADD = 1;
     /** Multiply. */
-    protected final int _MULTIPLY  = 2;
+    protected final int _MULTIPLY = 2;
     /** Maximum. */
-    protected final int _MAXIMUM   = 3;
+    protected final int _MAXIMUM = 3;
     /** Minimum. */
-    protected final int _MINIMUM   = 4;
+    protected final int _MINIMUM = 4;
     /** Logical Or. */
-    protected final int _OR    = 5;
+    protected final int _OR = 5;
     /** Logical And. */
-    protected final int _AND   = 6;
+    protected final int _AND = 6;
     /** Constant. */
     protected final int _CONSTANT = 8;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Const function value. */
     private int _constValue;
-    
+
     /** Active combine function. */
     private int _function;
-        
+
     /** True if the signal is present. */
     private boolean _present;
-    
+
     /** Current (combined) signal value. */
     private int _value;
 

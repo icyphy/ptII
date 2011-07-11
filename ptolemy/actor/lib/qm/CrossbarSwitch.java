@@ -187,8 +187,7 @@ public class CrossbarSwitch extends BasicSwitch {
                     }
                     _outputTokens.get(i).add(
                             new TimedEvent(lastTimeStamp
-                                    .add(_outputBufferDelay),
-                                    event.contents));
+                                    .add(_outputBufferDelay), event.contents));
                     _switchFabricQueue.get(i).remove(event);
                     // Reset crossbar state.
                     for (int j = 0; j < _numberOfPorts; j++) {
@@ -287,7 +286,6 @@ public class CrossbarSwitch extends BasicSwitch {
      *  for this connection is busy.
      */
     protected HashMap<Integer, FIFOQueue> _waitingOnSwitchFabricQueue;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

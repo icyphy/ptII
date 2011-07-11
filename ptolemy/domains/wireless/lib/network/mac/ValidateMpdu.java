@@ -165,8 +165,8 @@ public class ValidateMpdu extends MACActorBase {
                             _dRts = (2 * _aSifsTime) + (2 * _aSlotTime)
                                     + (_sAckCtsLng / _rxRate)
                                     + _aPreambleLength + _aPlcpHeaderLength;
-                            _timer = setTimer(RtsTimeout, currentTime
-                                    .add(_dRts * 1e-6));
+                            _timer = setTimer(RtsTimeout,
+                                    currentTime.add(_dRts * 1e-6));
                         }
 
                         // working with record tokens to represent messages

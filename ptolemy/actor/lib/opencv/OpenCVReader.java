@@ -36,7 +36,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// OpenCVReader
 
@@ -77,11 +76,11 @@ public class OpenCVReader extends Source {
      *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
-            _openCV.read();
-            //_openCV.flip(OpenCV.FLIP_BOTH);
+        _openCV.read();
+        //_openCV.flip(OpenCV.FLIP_BOTH);
 
-            PImage img = _openCV.image();
-            OpenCVImageObject oio = new OpenCVImageObject(_openCV, img);
+        PImage img = _openCV.image();
+        OpenCVImageObject oio = new OpenCVImageObject(_openCV, img);
 
         output.send(0, new ObjectToken(oio));
     }
@@ -95,7 +94,7 @@ public class OpenCVReader extends Source {
             _openCV = new OpenCV();
         }
         // FIXME: Size of the image should be parameters of this object.
-        _openCV.capture( 640, 480 );
+        _openCV.capture(640, 480);
         // _openCV.cascade( OpenCV.CASCADE_FRONTALFACE_ALT );
 
     }

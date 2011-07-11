@@ -72,8 +72,8 @@ public class ParseTreeConstraintAnnotationEvaluator extends
             super.visitLeafNode(node);
 
         } catch (IllegalActionException ex) {
-            _evaluatedObject = _adapter.getSolver().getOntology().getConceptByString(
-                    _getNodeLabel(node));
+            _evaluatedObject = _adapter.getSolver().getOntology()
+                    .getConceptByString(_getNodeLabel(node));
 
             if (_evaluatedObject == null) {
                 throw new IllegalActionException(_adapter.getSolver()

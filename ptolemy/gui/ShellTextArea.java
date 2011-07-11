@@ -85,8 +85,8 @@ public class ShellTextArea extends JPanel {
         JScrollPane jScrollPane = new JScrollPane(_jTextArea);
         add(jScrollPane);
 
-        setBorder(BorderFactory.createTitledBorder(BorderFactory
-                .createLineBorder(Color.black), ""));
+        setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.black), ""));
 
         // Event handling
         _jTextArea.addKeyListener(new ShellKeyListener());

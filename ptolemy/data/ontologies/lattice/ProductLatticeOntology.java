@@ -117,8 +117,11 @@ public class ProductLatticeOntology extends Ontology {
                         String conceptName = _getNameFromConceptTuple(tuple);
                         new ProductLatticeConcept(this, conceptName, tuple);
                     } catch (NameDuplicationException nameDupEx) {
-                        throw new IllegalActionException(this, nameDupEx, "Could not " +
-                         "create ProductLatticeConcept for the ProductLatticeOntology.");
+                        throw new IllegalActionException(
+                                this,
+                                nameDupEx,
+                                "Could not "
+                                        + "create ProductLatticeConcept for the ProductLatticeOntology.");
                     }
                 }
             }
@@ -146,16 +149,20 @@ public class ProductLatticeOntology extends Ontology {
      *   not composed of concepts from the component ontologies of this
      *   product lattice ontology.
      */
-    public ProductLatticeConcept getProductLatticeConceptFromTuple(List<Concept> conceptTuple)
-        throws IllegalActionException {
+    public ProductLatticeConcept getProductLatticeConceptFromTuple(
+            List<Concept> conceptTuple) throws IllegalActionException {
         if (conceptTuple.size() != _latticeOntologies.size()) {
-            throw new IllegalActionException(this, "The input conceptTuple does not have the " +
-                            "correct number of entries for the number of ontologies that compose this " +
-                            "product lattice ontology.");
+            throw new IllegalActionException(
+                    this,
+                    "The input conceptTuple does not have the "
+                            + "correct number of entries for the number of ontologies that compose this "
+                            + "product lattice ontology.");
         } else if (_conceptOntologiesDontMatch(conceptTuple)) {
-            throw new IllegalActionException(this, "The input conceptTuple does not " +
-                            "have concepts from the correct ontologies that compose this " +
-                        "product lattice ontology.");
+            throw new IllegalActionException(
+                    this,
+                    "The input conceptTuple does not "
+                            + "have concepts from the correct ontologies that compose this "
+                            + "product lattice ontology.");
         } else {
             // First try to find the concept with the given tuple in the ontology.
             // If it is not there, then one or more of the component ontologies must
@@ -165,10 +172,14 @@ public class ProductLatticeOntology extends Ontology {
             if (concept == null) {
                 try {
                     String conceptName = _getNameFromConceptTuple(conceptTuple);
-                    concept = new ProductLatticeConcept(this, conceptName, conceptTuple);
+                    concept = new ProductLatticeConcept(this, conceptName,
+                            conceptTuple);
                 } catch (NameDuplicationException ex) {
-                    throw new IllegalActionException(this, ex, "Could not create the product lattice concept " +
-                                    "in the given product lattice ontology because one with that name already exists.");
+                    throw new IllegalActionException(
+                            this,
+                            ex,
+                            "Could not create the product lattice concept "
+                                    + "in the given product lattice ontology because one with that name already exists.");
                 }
             }
             return concept;
@@ -190,17 +201,21 @@ public class ProductLatticeOntology extends Ontology {
 
             List<Ontology> ontologiesList = new ArrayList<Ontology>();
             if (ontologies != null && ontologies.length() != 0) {
-                Token[] ontologiesTokenArray = (Token[]) ontologies.arrayValue();
+                Token[] ontologiesTokenArray = ontologies.arrayValue();
                 for (int i = 0; i < ontologiesTokenArray.length; i++) {
-                    Ontology ontology = (Ontology) ((ObjectToken) ontologiesTokenArray[i]).getValue();
+                    Ontology ontology = (Ontology) ((ObjectToken) ontologiesTokenArray[i])
+                            .getValue();
                     if (ontology != null) {
                         if (ontology.isLattice()) {
                             ontologiesList.add(ontology);
                         } else {
-                            throw new IllegalActionException(this, "All the ontologies" +
-                                    " that comprise a product lattice ontology" +
-                                    " must be lattices. The ontology " +
-                                    ontology.getName() + " is not a lattice.");
+                            throw new IllegalActionException(
+                                    this,
+                                    "All the ontologies"
+                                            + " that comprise a product lattice ontology"
+                                            + " must be lattices. The ontology "
+                                            + ontology.getName()
+                                            + " is not a lattice.");
                         }
                     }
                 }
@@ -227,11 +242,12 @@ public class ProductLatticeOntology extends Ontology {
      *   part of the product lattice ontology.
      */
     public void setColorOntology(Ontology colorOntology)
-        throws IllegalActionException {
-        if (colorOntology != null && !_latticeOntologies.contains(colorOntology)) {
-            throw new IllegalActionException(this, "The ontology " +
-                    colorOntology.getName() + " is not a component " +
-                            "of the product lattice ontology " + this.getName());
+            throws IllegalActionException {
+        if (colorOntology != null
+                && !_latticeOntologies.contains(colorOntology)) {
+            throw new IllegalActionException(this, "The ontology "
+                    + colorOntology.getName() + " is not a component "
+                    + "of the product lattice ontology " + this.getName());
         } else {
             _colorOntology = colorOntology;
         }
@@ -268,8 +284,8 @@ public class ProductLatticeOntology extends Ontology {
      */
     private boolean _conceptOntologiesDontMatch(List<Concept> conceptTuple) {
         for (int i = 0; i < _latticeOntologies.size(); i++) {
-            if (!conceptTuple.get(i).getOntology().getClassName().
-                    equals(_latticeOntologies.get(i).getClassName())) {
+            if (!conceptTuple.get(i).getOntology().getClassName()
+                    .equals(_latticeOntologies.get(i).getClassName())) {
                 return true;
             }
         }
@@ -286,12 +302,14 @@ public class ProductLatticeOntology extends Ontology {
      *  @return The list of all combinations of concept tuples for the given
      *   ontologies.
      */
-    private List<List<Concept>> _createAllConceptTuples(List<Ontology> ontologiesList) {
+    private List<List<Concept>> _createAllConceptTuples(
+            List<Ontology> ontologiesList) {
         List<List<Concept>> conceptTupleList = new ArrayList<List<Concept>>();
 
         if (ontologiesList != null && !ontologiesList.isEmpty()) {
             Ontology firstOntology = ontologiesList.get(0);
-            List<Ontology> otherOntologies = new ArrayList<Ontology>(ontologiesList);
+            List<Ontology> otherOntologies = new ArrayList<Ontology>(
+                    ontologiesList);
             otherOntologies.remove(0);
 
             for (Object concept : firstOntology.entityList(Concept.class)) {
@@ -322,9 +340,11 @@ public class ProductLatticeOntology extends Ontology {
      *  @return The product lattice concept that contains the given list of
      *   concept as its tuple, or null if it cannot be found in this ontology.
      */
-    private ProductLatticeConcept _findProductLatticeConceptByTuple(List<Concept> conceptTuple) {
+    private ProductLatticeConcept _findProductLatticeConceptByTuple(
+            List<Concept> conceptTuple) {
         for (Object concept : entityList(ProductLatticeConcept.class)) {
-            List<Concept> productLatticeTuple = ((ProductLatticeConcept) concept).getConceptTuple();
+            List<Concept> productLatticeTuple = ((ProductLatticeConcept) concept)
+                    .getConceptTuple();
             if (productLatticeTuple.equals(conceptTuple)) {
                 return (ProductLatticeConcept) concept;
             }
@@ -356,13 +376,17 @@ public class ProductLatticeOntology extends Ontology {
         try {
             latticeOntologies = new Parameter(this, "latticeOntologies");
         } catch (NameDuplicationException nameDupEx) {
-            throw new IllegalActionException(this, nameDupEx, "Cannot create " +
-                            "the latticeOntologies Parameter in the ProductLatticeOntology.");
+            throw new IllegalActionException(
+                    this,
+                    nameDupEx,
+                    "Cannot create "
+                            + "the latticeOntologies Parameter in the ProductLatticeOntology.");
         }
 
         _attachText("_iconDescription", _ICON);
 
-        latticeOntologies.setTypeEquals(new ArrayType(new ObjectType(Ontology.class)));
+        latticeOntologies.setTypeEquals(new ArrayType(new ObjectType(
+                Ontology.class)));
     }
 
     /** Remove all concepts from the product lattice ontology and clear the list
@@ -375,8 +399,8 @@ public class ProductLatticeOntology extends Ontology {
             try {
                 ((ProductLatticeConcept) concept).setContainer(null);
             } catch (NameDuplicationException nameDupEx) {
-                throw new IllegalActionException(this, nameDupEx, "Could not " +
-                                "remove concepts from the ProductLatticeOntology.");
+                throw new IllegalActionException(this, nameDupEx, "Could not "
+                        + "remove concepts from the ProductLatticeOntology.");
             }
         }
     }

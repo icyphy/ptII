@@ -146,8 +146,7 @@ public class ContainerLayout implements LayoutManager2 {
      */
     public Map<String, Object> getCustomProperties(String componentName) {
         return componentNameToCustomProps.containsKey(componentName) ? componentNameToCustomProps
-                .get(componentName)
-                : new HashMap<String, Object>();
+                .get(componentName) : new HashMap<String, Object>();
     }
 
     /**

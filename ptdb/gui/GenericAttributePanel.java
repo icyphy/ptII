@@ -94,7 +94,6 @@ public class GenericAttributePanel extends JPanel {
         _attributeValue.setPreferredSize(new Dimension(180, 20));
         _attributeValue.setAlignmentX(LEFT_ALIGNMENT);
 
-
         JLabel classLabel = new JLabel(" Class ");
         classLabel.setPreferredSize(new Dimension(40, 20));
         classLabel.setAlignmentX(LEFT_ALIGNMENT);
@@ -105,18 +104,16 @@ public class GenericAttributePanel extends JPanel {
 
         _attributeName.addFocusListener(new FocusListener() {
 
-
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
 
             }
 
-
             public void focusLost(FocusEvent arg0) {
 
                 if (!_attributeName.getText().equals(_currentNameText)) {
-                        setModified(true);
-                        _currentNameText = _attributeName.getText();
+                    setModified(true);
+                    _currentNameText = _attributeName.getText();
                 }
 
             }
@@ -125,18 +122,16 @@ public class GenericAttributePanel extends JPanel {
 
         _attributeValue.addFocusListener(new FocusListener() {
 
-
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
 
             }
 
-
             public void focusLost(FocusEvent arg0) {
 
                 if (!_attributeValue.getText().equals(_currentValueText)) {
-                        setModified(true);
-                        _currentValueText = _attributeValue.getText();
+                    setModified(true);
+                    _currentValueText = _attributeValue.getText();
                 }
 
             }
@@ -145,24 +140,21 @@ public class GenericAttributePanel extends JPanel {
 
         _attributeClass.addFocusListener(new FocusListener() {
 
-
             public void focusGained(FocusEvent arg0) {
                 // Do nothing.
 
             }
 
-
             public void focusLost(FocusEvent arg0) {
 
                 if (!_attributeClass.getText().equals(_currentClassText)) {
-                        setModified(true);
-                        _currentClassText = _attributeClass.getText();
+                    setModified(true);
+                    _currentClassText = _attributeClass.getText();
                 }
 
             }
 
         });
-
 
         add(nameLabel);
         add(_attributeName);
@@ -184,11 +176,11 @@ public class GenericAttributePanel extends JPanel {
     *          the type mapped to the selected attribute.
     *
     */
-   public String getValue() {
+    public String getValue() {
 
-       return _attributeValue.getText();
+        return _attributeValue.getText();
 
-   }
+    }
 
     /** Get the selected attribute's name.
      *
@@ -208,11 +200,11 @@ public class GenericAttributePanel extends JPanel {
     *          This attribute's class.
     *
     */
-   public String getAttributeClass() {
+    public String getAttributeClass() {
 
-       return _attributeClass.getText();
+        return _attributeClass.getText();
 
-   }
+    }
 
     /** Get an indication if the panel has been modified.
      *  True if it has, false if it hasn't.
@@ -242,7 +234,6 @@ public class GenericAttributePanel extends JPanel {
 
     }
 
-
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
 
@@ -255,4 +246,3 @@ public class GenericAttributePanel extends JPanel {
     private String _currentClassText;
 
 }
-

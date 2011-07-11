@@ -166,8 +166,8 @@ public class NonStrictFSMDirector extends FSMDirector {
                 Transition enabledTransition = (Transition) transitions.next();
 
                 if (!enabledTransition.isNondeterministic()) {
-                    throw new MultipleEnabledTransitionsException(controller
-                            .currentState(),
+                    throw new MultipleEnabledTransitionsException(
+                            controller.currentState(),
                             "Multiple enabled transitions found but "
                                     + enabledTransition.getName()
                                     + " is deterministic.");

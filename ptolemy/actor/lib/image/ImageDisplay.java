@@ -321,8 +321,8 @@ public class ImageDisplay extends Sink implements Placeable {
                 }
 
                 try {
-                    _effigy = new TokenEffigy(containerEffigy, containerEffigy
-                            .uniqueName("imageEffigy"));
+                    _effigy = new TokenEffigy(containerEffigy,
+                            containerEffigy.uniqueName("imageEffigy"));
 
                     // The default identifier is "Unnamed", which is
                     // no good for two reasons: Wrong title bar label,

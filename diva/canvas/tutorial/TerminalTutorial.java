@@ -93,8 +93,8 @@ public class TerminalTutorial {
         layer.add(square);
 
         // Create a BoundsGeometry to help get sites
-        BoundsGeometry _geometry = new BoundsGeometry(square, square
-                .getBounds());
+        BoundsGeometry _geometry = new BoundsGeometry(square,
+                square.getBounds());
 
         // Create a set of terminals, one by one
         // NORTH

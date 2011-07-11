@@ -293,8 +293,8 @@ public class DebuggerParameter extends TableauParameter implements
             throw new IllegalActionException(this, e, "Unable to create "
                     + "tableau.");
         }
-        TextEditor frame = new TextEditor(tableau.getTitle(), textEffigy
-                .getDocument());
+        TextEditor frame = new TextEditor(tableau.getTitle(),
+                textEffigy.getDocument());
         frame.text.setColumns(((IntToken) columnsDisplayed.getToken())
                 .intValue());
         frame.text.setRows(((IntToken) rowsDisplayed.getToken()).intValue());

@@ -106,7 +106,8 @@ public class TypedCompositeActor extends NamedProgramCodeGeneratorAdapter {
      *   or while creating buffer size and offset map.
      */
     @Override
-    public String generatePreinitializeMethodBodyCode() throws IllegalActionException {
+    public String generatePreinitializeMethodBodyCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeMethodBodyCode());
 

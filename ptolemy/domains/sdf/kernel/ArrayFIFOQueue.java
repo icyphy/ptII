@@ -113,7 +113,7 @@ public final class ArrayFIFOQueue implements Cloneable {
             System.arraycopy(model._queueArray, 0, _queueArray, 0,
                     _queueArray.length);
             if (model._historyList != null) {
-                    _historyList = new LinkedList(model._historyList);
+                _historyList = new LinkedList(model._historyList);
             }
         }
     }
@@ -221,7 +221,7 @@ public final class ArrayFIFOQueue implements Cloneable {
 
                     throw new NoSuchElementException("No object at offset "
                             + offset + " in the FIFOQueue" + message);
-                    }
+                }
             } else {
                 String message = "";
 
@@ -230,7 +230,8 @@ public final class ArrayFIFOQueue implements Cloneable {
                 }
 
                 throw new NoSuchElementException("No object at offset "
-                        + offset + " in the FIFOQueue" + message + " has no history.");
+                        + offset + " in the FIFOQueue" + message
+                        + " has no history.");
             }
         }
 
@@ -273,7 +274,8 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return An enumeration of objects in the history.
      */
     public Enumeration historyElements() {
-        return Collections.enumeration((_historyList != null) ? _historyList : Collections.EMPTY_LIST);
+        return Collections.enumeration((_historyList != null) ? _historyList
+                : Collections.EMPTY_LIST);
     }
 
     /** Return the number of objects in the history.

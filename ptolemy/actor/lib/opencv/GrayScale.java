@@ -36,7 +36,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// GrayScale
 
@@ -75,20 +74,22 @@ public class GrayScale extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof OpenCVImageObject)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of OpenCVImageObject. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
             OpenCVImageObject oio = (OpenCVImageObject) inputObject;
             OpenCV openCV = oio.openCV;
-            openCV.copy(oio.img, 0, 0, oio.img.width, oio.img.height, 0,0,oio.img.width, oio.img.height);
+            openCV.copy(oio.img, 0, 0, oio.img.width, oio.img.height, 0, 0,
+                    oio.img.width, oio.img.height);
             openCV.convert(OpenCV.GRAY);
             PImage buf = openCV.image(1);
             PImage newImg = new PImage(buf.width, buf.height, buf.format);
-            newImg.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width, buf.height);
+            newImg.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width,
+                    buf.height);
             oio.img = newImg;
             output.send(0, new ObjectToken(oio));
         }

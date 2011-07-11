@@ -43,8 +43,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (blickly)
  *
  */
-public abstract class MapTypeInfiniteConcept<C extends Concept>
-        extends InfiniteConcept {
+public abstract class MapTypeInfiniteConcept<C extends Concept> extends
+        InfiniteConcept {
 
     /** Create a new MapTypeInfiniteConcept contained in the given ontology,
      *  with the given default concept.
@@ -167,8 +167,7 @@ public abstract class MapTypeInfiniteConcept<C extends Concept>
      *  The map must be sorted to ensure that the toString method
      *  returns a unique representation of the concept.
      */
-    private SortedMap<String, C> _keyToConcept =
-        new TreeMap<String, C>();
+    private SortedMap<String, C> _keyToConcept = new TreeMap<String, C>();
 
     /** The value of the map concept to be returned when there is no explicit
      *  concept mapped.  Defaults to null.

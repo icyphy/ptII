@@ -40,7 +40,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
 
-
 ///////////////////////////////////////////////////////////////////
 //// ImageFlip
 
@@ -82,17 +81,17 @@ public class ImageCopy extends Transformer {
     public void fire() throws IllegalActionException {
 
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof Pointer)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            _frame = (Pointer)inputObject;
+            _frame = (Pointer) inputObject;
             if (_copyFrame == Pointer.NULL) {
                 _copyFrame = cvCloneImage(_frame).getPointer();
-            }else {
+            } else {
                 cvCopy(_frame, _copyFrame, Pointer.NULL);
             }
             output.send(0, new ObjectToken(_copyFrame));
@@ -107,13 +106,14 @@ public class ImageCopy extends Transformer {
         _copyFrame = Pointer.NULL;
 
     }
-     /** Release image.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
+
+    /** Release image.
+    *  @exception IllegalActionException If thrown by the super class.
+    */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_copyFrame == Pointer.NULL) {
-            cvReleaseImage (new PointerByReference(_copyFrame));
+            cvReleaseImage(new PointerByReference(_copyFrame));
         }
     }
 

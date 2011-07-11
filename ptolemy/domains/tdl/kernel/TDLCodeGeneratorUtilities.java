@@ -423,12 +423,14 @@ public class TDLCodeGeneratorUtilities {
                     if (l.size() > 0) {
                         Port actuator = (Port) l.get(0);
                         String portName = actuator.getFullName().substring(1);
-                        String importModule = portName.substring(portName
-                                .indexOf('.') + 1, portName.lastIndexOf('.'));
+                        String importModule = portName.substring(
+                                portName.indexOf('.') + 1,
+                                portName.lastIndexOf('.'));
 
                         portName = port.getFullName().substring(1);
-                        String currentModule = portName.substring(portName
-                                .indexOf('.') + 1, portName.lastIndexOf('.'));
+                        String currentModule = portName.substring(
+                                portName.indexOf('.') + 1,
+                                portName.lastIndexOf('.'));
                         if (!(sb.indexOf("import " + importModule) >= 0)) {
                             String insertPosition = "module " + currentModule
                                     + " {";

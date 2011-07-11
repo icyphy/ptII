@@ -96,8 +96,8 @@ public class BrowserEffigy extends Effigy {
     public static BrowserEffigy newBrowserEffigy(CompositeEntity container,
             URL base, URL in) throws Exception {
         // Create a new effigy.
-        BrowserEffigy effigy = new BrowserEffigy(container, container
-                .uniqueName("browserEffigy"));
+        BrowserEffigy effigy = new BrowserEffigy(container,
+                container.uniqueName("browserEffigy"));
 
         // We cannot easily communicate with the Browser once we launch
         // it, so mark this effigy as unmodifiable

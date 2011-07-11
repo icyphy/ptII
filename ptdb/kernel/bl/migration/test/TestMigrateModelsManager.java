@@ -64,10 +64,9 @@ import ptolemy.util.StringUtilities;
  */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest( { MigrateModelsManager.class })
-@SuppressStaticInitializationFor( { "ptdb.common.util.DBConnectorFactory" })
+@PrepareForTest({ MigrateModelsManager.class })
+@SuppressStaticInitializationFor({ "ptdb.common.util.DBConnectorFactory" })
 public class TestMigrateModelsManager {
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -86,12 +85,12 @@ public class TestMigrateModelsManager {
         MigrateModelsManager migrateModelsManager = new MigrateModelsManager();
 
         try {
-            String csvFilePath = migrateModelsManager
-                    .migrateModels(directoryPath, true, true);
+            String csvFilePath = migrateModelsManager.migrateModels(
+                    directoryPath, true, true);
 
-            assertTrue(csvFilePath.equals(directoryPath + System.getProperty("file.separator") + "migrationResults.csv"));
-
-
+            assertTrue(csvFilePath.equals(directoryPath
+                    + System.getProperty("file.separator")
+                    + "migrationResults.csv"));
 
         } catch (IOException e) {
 
@@ -122,14 +121,12 @@ public class TestMigrateModelsManager {
 
         try {
 
-            String csvFilePath = migrateModelsManager
-                    .migrateModels(directoryPath, true, true);
+            String csvFilePath = migrateModelsManager.migrateModels(
+                    directoryPath, true, true);
 
             assertTrue(csvFilePath.equals(directoryPath
-                   + System.getProperty("file.separator") + "migrationResults.csv"));
-
-
-
+                    + System.getProperty("file.separator")
+                    + "migrationResults.csv"));
 
         } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
@@ -142,8 +139,6 @@ public class TestMigrateModelsManager {
         }
 
     }
-
-
 
     /**
      * Test the migrateModels() method in the case when the given path is
@@ -162,13 +157,12 @@ public class TestMigrateModelsManager {
 
         try {
 
-            String csvFilePath = migrateModelsManager
-                    .migrateModels(directoryPath, false, true);
+            String csvFilePath = migrateModelsManager.migrateModels(
+                    directoryPath, false, true);
 
             assertTrue(csvFilePath.equals(directoryPath
-                   + System.getProperty("file.separator") + "migrationResults.csv"));
-
-
+                    + System.getProperty("file.separator")
+                    + "migrationResults.csv"));
 
             File csvFile = new File(csvFilePath);
 
@@ -197,8 +191,6 @@ public class TestMigrateModelsManager {
         }
 
     }
-
-
 
     /**
      * Test the migrateModels() method in the case when the given path is
@@ -217,13 +209,12 @@ public class TestMigrateModelsManager {
 
         try {
 
-            String csvFilePath = migrateModelsManager
-                    .migrateModels(directoryPath, false, true);
+            String csvFilePath = migrateModelsManager.migrateModels(
+                    directoryPath, false, true);
 
             assertTrue(csvFilePath.equals(directoryPath
-                   + System.getProperty("file.separator") + "migrationResults.csv"));
-
-
+                    + System.getProperty("file.separator")
+                    + "migrationResults.csv"));
 
             File csvFile = new File(csvFilePath);
 
@@ -253,7 +244,6 @@ public class TestMigrateModelsManager {
         }
 
     }
-
 
     /**
      * Test the migrateModels() method in the case when the given path is
@@ -272,13 +262,12 @@ public class TestMigrateModelsManager {
 
         try {
 
-            String csvFilePath = migrateModelsManager
-                    .migrateModels(directoryPath, false, false);
+            String csvFilePath = migrateModelsManager.migrateModels(
+                    directoryPath, false, false);
 
             assertTrue(csvFilePath.equals(directoryPath
-                   + System.getProperty("file.separator") + "migrationResults.csv"));
-
-
+                    + System.getProperty("file.separator")
+                    + "migrationResults.csv"));
 
             File csvFile = new File(csvFilePath);
 
@@ -300,8 +289,6 @@ public class TestMigrateModelsManager {
 
             }
 
-
-
             PowerMock.verifyAll();
 
         } catch (IOException e) {
@@ -314,7 +301,6 @@ public class TestMigrateModelsManager {
         }
 
     }
-
 
     /**
      * Test the migrateModels() method in the case when the given path is
@@ -331,12 +317,12 @@ public class TestMigrateModelsManager {
 
         try {
 
-            String csvFilePath = migrateModelsManager
-                    .migrateModels(directoryPath, true, true);
+            String csvFilePath = migrateModelsManager.migrateModels(
+                    directoryPath, true, true);
 
             assertTrue(csvFilePath.equals(directoryPath
-                    + System.getProperty("file.separator") + "migrationResults.csv"));
-
+                    + System.getProperty("file.separator")
+                    + "migrationResults.csv"));
 
         } catch (Exception e) {
             fail("Failed to migrate models - " + e.getMessage());
@@ -364,9 +350,7 @@ public class TestMigrateModelsManager {
 
         try {
 
-
-            migrateModelsManager
-                    .migrateModels(directoryPath, true, true);
+            migrateModelsManager.migrateModels(directoryPath, true, true);
 
             fail("The Migration operation did not report any error when the path was incorrect.");
 
@@ -374,11 +358,6 @@ public class TestMigrateModelsManager {
             assertTrue(true);
         }
     }
-
-
-
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -459,7 +438,8 @@ public class TestMigrateModelsManager {
 
             for (int i = 0; i < levels; i++) {
 
-                String subPath = directoryPath + System.getProperty("file.separator") + "sub" + i;
+                String subPath = directoryPath
+                        + System.getProperty("file.separator") + "sub" + i;
 
                 File sub = new File(subPath);
 
@@ -467,8 +447,8 @@ public class TestMigrateModelsManager {
 
                     for (int j = 0; j < models; j++) {
                         FileWriter writer = new FileWriter(sub
-                                + System.getProperty("file.separator") + "testModel" + i + j
-                                + ".xml");
+                                + System.getProperty("file.separator")
+                                + "testModel" + i + j + ".xml");
                         try {
 
                             writer.write(fileContent);

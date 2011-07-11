@@ -266,16 +266,12 @@ public class HDFDirector extends SDFDirector {
 
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code
-                                .append("for ($actorSymbol(i) = 0; $actorSymbol(i) < "
-                                        + count
-                                        + " ; $actorSymbol(i)++) {"
-                                        + _eol);
+                        code.append("for ($actorSymbol(i) = 0; $actorSymbol(i) < "
+                                + count + " ; $actorSymbol(i)++) {" + _eol);
                     }
 
                     code.append(CodeGeneratorHelper
-                            .generateName((NamedObj) actor)
-                            + "();" + _eol);
+                            .generateName((NamedObj) actor) + "();" + _eol);
 
                     // update buffer offset after firing each actor once
                     Iterator ports = ((Entity) actor).portList().iterator();

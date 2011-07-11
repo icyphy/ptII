@@ -83,8 +83,8 @@ public class ArrayAppend extends CCodeGeneratorHelper {
             Type inputType = actor.input.getType();
 
             if (inputType instanceof ArrayType) {
-                args.set(1, codeGenType(((ArrayType) inputType)
-                        .getElementType()));
+                args.set(1,
+                        codeGenType(((ArrayType) inputType).getElementType()));
                 code.append(_generateBlockCode("fillArray", args));
 
             } else {

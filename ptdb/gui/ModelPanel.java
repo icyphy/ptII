@@ -29,7 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.gui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -82,7 +81,7 @@ public class ModelPanel extends JPanel {
         setLayout(new FlowLayout(FlowLayout.LEADING));
         setAlignmentX(LEFT_ALIGNMENT);
 
-        setMaximumSize(new Dimension(getMaximumSize().width,30));
+        setMaximumSize(new Dimension(getMaximumSize().width, 30));
         setMinimumSize(getMaximumSize());
 
         Border border = BorderFactory.createEmptyBorder(0, 3, 0, 0);
@@ -156,12 +155,10 @@ public class ModelPanel extends JPanel {
 
             } else {
 
-                JOptionPane
-                .showMessageDialog((Component) this,
-                        "The specified model could " +
-                        "not be found in the database.",
-                        "Load Error",
-                        JOptionPane.INFORMATION_MESSAGE, null);
+                JOptionPane.showMessageDialog(this,
+                        "The specified model could "
+                                + "not be found in the database.",
+                        "Load Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             }
 

@@ -243,8 +243,8 @@ public class ExplicitRK23Solver extends ODESolver {
 
         if (error > director.getValueResolution()) {
             newh = h
-                    * Math.max(0.5, 0.8 * Math.pow((tolerance / error),
-                            1.0 / _order));
+                    * Math.max(0.5,
+                            0.8 * Math.pow((tolerance / error), 1.0 / _order));
         }
 
         _debug("integrator: " + integrator.getName()

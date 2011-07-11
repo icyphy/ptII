@@ -72,8 +72,8 @@ import ptolemy.kernel.util.Workspace;
 */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DBModelFetcher.class, LoadManager.class,
-    DBConnectorFactory.class, Utilities.class})
+@PrepareForTest({ DBModelFetcher.class, LoadManager.class,
+        DBConnectorFactory.class, Utilities.class })
 @SuppressStaticInitializationFor("ptdb.kernel.bl.load.DBModelFetcher")
 public class TestLoadManager {
 
@@ -86,7 +86,7 @@ public class TestLoadManager {
     @Test
     public void testloadModel() throws Exception {
 
-        String inputString="model1";
+        String inputString = "model1";
 
         //MoMLParser parser = new MoMLParser();
         //parser.reset();
@@ -109,28 +109,28 @@ public class TestLoadManager {
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"model1\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\"model1\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
         //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
 
@@ -145,7 +145,6 @@ public class TestLoadManager {
 
     }
 
-
     /**
      * Mock the LoadModelManager.  Create a fake XMLDBModel object and specify
      * it as the return from load().  Then verify that, given an XMLDBModelObject,
@@ -155,7 +154,7 @@ public class TestLoadManager {
     @Test
     public void testLoadModelUsingId() throws Exception {
 
-        String inputString="model1";
+        String inputString = "model1";
 
         //MoMLParser parser = new MoMLParser();
         //parser.reset();
@@ -178,33 +177,34 @@ public class TestLoadManager {
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"model1\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\"model1\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
         //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
 
         PowerMock.mockStatic(DBModelFetcher.class);
-        EasyMock.expect(DBModelFetcher.loadUsingId(inputString)).andReturn(dbModel);
+        EasyMock.expect(DBModelFetcher.loadUsingId(inputString)).andReturn(
+                dbModel);
 
         //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
         PowerMock.replayAll();
@@ -213,6 +213,7 @@ public class TestLoadManager {
         PowerMock.verifyAll();
 
     }
+
     /**
      * Test importing a model by reference.  No DBReference tag is present.
      * @exception Exception
@@ -222,7 +223,7 @@ public class TestLoadManager {
 
         Entity container = new Entity("container");
 
-        String inputString="model1";
+        String inputString = "model1";
 
         Entity entity = null;
 
@@ -231,46 +232,45 @@ public class TestLoadManager {
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
-            //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
+        //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
 
-            PowerMock.mockStatic(DBModelFetcher.class);
-            EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
+        PowerMock.mockStatic(DBModelFetcher.class);
+        EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
 
-            //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
-            PowerMock.replayAll();
-            entity = LoadManager.importModel(inputString, true, container);
-            assertEquals(entity.getName(), "modelName");
+        //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
+        PowerMock.replayAll();
+        entity = LoadManager.importModel(inputString, true, container);
+        assertEquals(entity.getName(), "modelName");
 
-            assertEquals(
-                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(),
-                    "TRUE");
-            PowerMock.verifyAll();
+        assertEquals(
+                ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                        .getExpression(), "TRUE");
+        PowerMock.verifyAll();
 
-        }
+    }
 
     /**
      * Test importing a model by value.  No DBReference tag is present.
@@ -281,7 +281,7 @@ public class TestLoadManager {
 
         Entity container = new Entity("container");
 
-        String inputString="model1";
+        String inputString = "model1";
 
         Entity entity = null;
 
@@ -290,47 +290,47 @@ public class TestLoadManager {
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>" + "<property name=\""
+                + XMLDBModel.DB_REFERENCE_ATTR
+                + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
-            //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
+        //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
 
-            PowerMock.mockStatic(DBModelFetcher.class);
-            EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
+        PowerMock.mockStatic(DBModelFetcher.class);
+        EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
 
-            //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
-            PowerMock.replayAll();
-            entity = LoadManager.importModel(inputString, true, container);
-            assertEquals(entity.getName(), "modelName");
+        //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
+        PowerMock.replayAll();
+        entity = LoadManager.importModel(inputString, true, container);
+        assertEquals(entity.getName(), "modelName");
 
-            assertEquals(
-                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(),
-                    "TRUE");
-            PowerMock.verifyAll();
+        assertEquals(
+                ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                        .getExpression(), "TRUE");
+        PowerMock.verifyAll();
 
-        }
+    }
 
     /**
      * Test importing a model by reference.  No DBReference tag is present.
@@ -341,7 +341,7 @@ public class TestLoadManager {
 
         Entity container = new Entity("container");
 
-        String inputString="model1";
+        String inputString = "model1";
 
         Entity entity = null;
 
@@ -350,46 +350,45 @@ public class TestLoadManager {
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
-            //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
+        //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
 
-            PowerMock.mockStatic(DBModelFetcher.class);
-            EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
+        PowerMock.mockStatic(DBModelFetcher.class);
+        EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
 
-            //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
-            PowerMock.replayAll();
-            entity = LoadManager.importModel(inputString, false, container);
-            assertEquals(entity.getName(), "modelName");
+        //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
+        PowerMock.replayAll();
+        entity = LoadManager.importModel(inputString, false, container);
+        assertEquals(entity.getName(), "modelName");
 
-            assertEquals(
-                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(),
-                    "FALSE");
-            PowerMock.verifyAll();
+        assertEquals(
+                ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                        .getExpression(), "FALSE");
+        PowerMock.verifyAll();
 
-        }
+    }
 
     /**
      * Test importing a model by reference.  No DBReference tag is present.
@@ -409,47 +408,47 @@ public class TestLoadManager {
         XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>" + "<property name=\""
+                + XMLDBModel.DB_REFERENCE_ATTR
+                + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
-            //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
+        //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
 
-            PowerMock.mockStatic(DBModelFetcher.class);
-            EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
+        PowerMock.mockStatic(DBModelFetcher.class);
+        EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
 
-            //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
-            PowerMock.replayAll();
-            entity = LoadManager.importModel(inputString, false, container);
-            assertEquals(entity.getName(), "modelName");
+        //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
+        PowerMock.replayAll();
+        entity = LoadManager.importModel(inputString, false, container);
+        assertEquals(entity.getName(), "modelName");
 
-            assertEquals(
-                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(),
-                    "FALSE");
-            PowerMock.verifyAll();
+        assertEquals(
+                ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                        .getExpression(), "FALSE");
+        PowerMock.verifyAll();
 
-        }
+    }
 
     /**
      * Test attempting to import a model with a null model name.
@@ -460,7 +459,7 @@ public class TestLoadManager {
 
         Entity container = new Entity("container");
 
-        String inputString=null;
+        String inputString = null;
 
         //Entity entity = null;
 
@@ -470,7 +469,7 @@ public class TestLoadManager {
 
         try {
 
-            /*entity =*/ LoadManager.importModel(inputString, false, container);
+            /*entity =*/LoadManager.importModel(inputString, false, container);
 
         } catch (Exception e) {
 
@@ -482,198 +481,192 @@ public class TestLoadManager {
 
         PowerMock.verifyAll();
 
-        }
-
-
-        /**
-         * Test importing a model with a circular dependency present.
-         * @exception Exception
-         */
-        @Test
-        public void testCircularDepencency() throws Exception {
-
-            String containerModel = "container";
-            String importModel="model1";
-            Entity container = new Entity(containerModel);
-            String referenceString = "<reference string>";
-
-            XMLDBModel dbModel = new XMLDBModel(importModel);
-            dbModel.setIsNew(false);
-            dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                            + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                            + "<entity name=\"" + importModel + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                            + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                            + "</property>"
-                            + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
-                            + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                            + "</property>"
-                            + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                            + "</property>"
-                            + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                            + "</property>"
-                            + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                            + "</property>"
-                            + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                            + "<doc>Create a constant sequence.</doc>"
-                            + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                            + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                            + "</property>"
-                            + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                            + "</property>"
-                            + "</property>"
-                            + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                            + "</property>" + "</entity>" + "</entity>");
-
-
-            PowerMock.mockStatic(DBConnectorFactory.class);
-            PowerMock.mockStatic(DBModelFetcher.class);
-            PowerMock.mockStatic(Utilities.class);
-
-            DBConnection dBConnectionMock =
-                PowerMock.createMock(DBConnection.class);
-            GetReferenceStringTask getReferenceStringTask =
-                PowerMock.createMock(GetReferenceStringTask.class);
-
-            EasyMock.
-                expect(DBModelFetcher.load(importModel)).andReturn(dbModel);
-
-            EasyMock.expect(DBConnectorFactory.getSyncConnection(false))
-                .andReturn(dBConnectionMock);
-
-            PowerMock.expectNew
-                (GetReferenceStringTask.class, importModel)
-                .andReturn(getReferenceStringTask);
-
-            EasyMock.expect
-                (dBConnectionMock
-                        .executeGetReferenceStringTask
-                        (getReferenceStringTask))
-                        .andReturn(referenceString);
-
-            EasyMock.expect
-                (Utilities.modelReferenceExists
-                        (containerModel, referenceString)).andReturn(true);
-
-            dBConnectionMock.closeConnection();
-
-            PowerMock.replayAll();
-
-            boolean exceptionThrown = false;
-
-            try {
-
-                /*Entity modelWithImport = */
-                    LoadManager.importModel(importModel, true, container);
-
-            } catch (CircularDependencyException e) {
-
-                exceptionThrown = true;
-
-            }
-
-            assertTrue(exceptionThrown);
-
-
-            PowerMock.verifyAll();
-        }
-
-
-        /**
-         * Test importing a model with no circular dependency present.
-         * @exception Exception
-         */
-        @Test
-        public void testNoCircularDepencency() throws Exception {
-
-            String containerModel = "container";
-            String importModel="model1";
-            Entity container = new Entity(containerModel);
-            String referenceString = "<reference string>";
-
-            XMLDBModel dbModel = new XMLDBModel(importModel);
-            dbModel.setIsNew(false);
-            dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                            + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                            + "<entity name=\"" + importModel + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                            + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                            + "</property>"
-                            + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
-                            + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                            + "</property>"
-                            + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                            + "</property>"
-                            + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                            + "</property>"
-                            + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                            + "</property>"
-                            + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                            + "<doc>Create a constant sequence.</doc>"
-                            + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                            + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                            + "</property>"
-                            + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                            + "</property>"
-                            + "</property>"
-                            + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                            + "</property>" + "</entity>" + "</entity>");
-
-
-            PowerMock.mockStatic(DBConnectorFactory.class);
-            PowerMock.mockStatic(DBModelFetcher.class);
-            PowerMock.mockStatic(Utilities.class);
-
-            DBConnection dBConnectionMock =
-                PowerMock.createMock(DBConnection.class);
-            GetReferenceStringTask getReferenceStringTask =
-                PowerMock.createMock(GetReferenceStringTask.class);
-
-            EasyMock.
-                expect(DBModelFetcher.load(importModel)).andReturn(dbModel);
-
-            EasyMock.expect(DBConnectorFactory.getSyncConnection(false))
-                .andReturn(dBConnectionMock);
-
-            PowerMock.expectNew
-                (GetReferenceStringTask.class, importModel)
-                .andReturn(getReferenceStringTask);
-
-            EasyMock.expect
-                (dBConnectionMock
-                        .executeGetReferenceStringTask
-                        (getReferenceStringTask))
-                        .andReturn(referenceString);
-
-            EasyMock.expect
-                (Utilities.modelReferenceExists
-                        (containerModel, referenceString)).andReturn(false);
-
-            dBConnectionMock.closeConnection();
-
-            PowerMock.replayAll();
-
-            boolean exceptionThrown = false;
-            Entity modelWithImport = new Entity();
-
-            try {
-
-                modelWithImport =
-                    LoadManager.importModel(importModel, true, container);
-
-            } catch (CircularDependencyException e) {
-
-                exceptionThrown = true;
-
-            }
-
-            assertFalse(exceptionThrown);
-
-            assertEquals(
-                    ((StringConstantParameter) modelWithImport.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(),
-                    "TRUE");
-
-            PowerMock.verifyAll();
-        }
     }
 
+    /**
+     * Test importing a model with a circular dependency present.
+     * @exception Exception
+     */
+    @Test
+    public void testCircularDepencency() throws Exception {
 
+        String containerModel = "container";
+        String importModel = "model1";
+        Entity container = new Entity(containerModel);
+        String referenceString = "<reference string>";
+
+        XMLDBModel dbModel = new XMLDBModel(importModel);
+        dbModel.setIsNew(false);
+        dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\""
+                + importModel
+                + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\""
+                + XMLDBModel.DB_REFERENCE_ATTR
+                + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
+
+        PowerMock.mockStatic(DBConnectorFactory.class);
+        PowerMock.mockStatic(DBModelFetcher.class);
+        PowerMock.mockStatic(Utilities.class);
+
+        DBConnection dBConnectionMock = PowerMock
+                .createMock(DBConnection.class);
+        GetReferenceStringTask getReferenceStringTask = PowerMock
+                .createMock(GetReferenceStringTask.class);
+
+        EasyMock.expect(DBModelFetcher.load(importModel)).andReturn(dbModel);
+
+        EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
+                dBConnectionMock);
+
+        PowerMock.expectNew(GetReferenceStringTask.class, importModel)
+                .andReturn(getReferenceStringTask);
+
+        EasyMock.expect(
+                dBConnectionMock
+                        .executeGetReferenceStringTask(getReferenceStringTask))
+                .andReturn(referenceString);
+
+        EasyMock.expect(
+                Utilities.modelReferenceExists(containerModel, referenceString))
+                .andReturn(true);
+
+        dBConnectionMock.closeConnection();
+
+        PowerMock.replayAll();
+
+        boolean exceptionThrown = false;
+
+        try {
+
+            /*Entity modelWithImport = */
+            LoadManager.importModel(importModel, true, container);
+
+        } catch (CircularDependencyException e) {
+
+            exceptionThrown = true;
+
+        }
+
+        assertTrue(exceptionThrown);
+
+        PowerMock.verifyAll();
+    }
+
+    /**
+     * Test importing a model with no circular dependency present.
+     * @exception Exception
+     */
+    @Test
+    public void testNoCircularDepencency() throws Exception {
+
+        String containerModel = "container";
+        String importModel = "model1";
+        Entity container = new Entity(containerModel);
+        String referenceString = "<reference string>";
+
+        XMLDBModel dbModel = new XMLDBModel(importModel);
+        dbModel.setIsNew(false);
+        dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\""
+                + importModel
+                + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\""
+                + XMLDBModel.DB_REFERENCE_ATTR
+                + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
+
+        PowerMock.mockStatic(DBConnectorFactory.class);
+        PowerMock.mockStatic(DBModelFetcher.class);
+        PowerMock.mockStatic(Utilities.class);
+
+        DBConnection dBConnectionMock = PowerMock
+                .createMock(DBConnection.class);
+        GetReferenceStringTask getReferenceStringTask = PowerMock
+                .createMock(GetReferenceStringTask.class);
+
+        EasyMock.expect(DBModelFetcher.load(importModel)).andReturn(dbModel);
+
+        EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
+                dBConnectionMock);
+
+        PowerMock.expectNew(GetReferenceStringTask.class, importModel)
+                .andReturn(getReferenceStringTask);
+
+        EasyMock.expect(
+                dBConnectionMock
+                        .executeGetReferenceStringTask(getReferenceStringTask))
+                .andReturn(referenceString);
+
+        EasyMock.expect(
+                Utilities.modelReferenceExists(containerModel, referenceString))
+                .andReturn(false);
+
+        dBConnectionMock.closeConnection();
+
+        PowerMock.replayAll();
+
+        boolean exceptionThrown = false;
+        Entity modelWithImport = new Entity();
+
+        try {
+
+            modelWithImport = LoadManager.importModel(importModel, true,
+                    container);
+
+        } catch (CircularDependencyException e) {
+
+            exceptionThrown = true;
+
+        }
+
+        assertFalse(exceptionThrown);
+
+        assertEquals(
+                ((StringConstantParameter) modelWithImport.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                        .getExpression(), "TRUE");
+
+        PowerMock.verifyAll();
+    }
+}

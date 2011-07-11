@@ -106,7 +106,8 @@ public class LatticeOntologySolver extends OntologySolver {
         solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
         solvingFixedPoint.setExpression("least");
 
-        _trainedConceptRecordArray = new Parameter(this, "_trainedConceptRecordArray");
+        _trainedConceptRecordArray = new Parameter(this,
+                "_trainedConceptRecordArray");
         _trainedConceptRecordArray.setVisibility(Settable.NONE);
         _trainedConceptRecordArray.setPersistent(true);
         _setTrainedConceptsParameterType();
@@ -230,8 +231,7 @@ public class LatticeOntologySolver extends OntologySolver {
             throws IllegalActionException {
         initialize();
 
-        String initialSolverConstraints =
-            _getConstraintsAsString(_initialConstraintList);
+        String initialSolverConstraints = _getConstraintsAsString(_initialConstraintList);
 
         Hashtable<String, String> initialSolverInfo = new Hashtable<String, String>();
         initialSolverInfo.put("initialSolverConstraints",
@@ -310,7 +310,6 @@ public class LatticeOntologySolver extends OntologySolver {
         return _getAdapter(object);
     }
 
-
     /**
      * Return the concept value associated with the specified object.
      * @param object The specified object.
@@ -355,8 +354,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * @return  True if one or more terms resolved to unacceptable concepts,
      *          false otherwise.
      */
-    public boolean hasUnacceptableTerms()
-    {
+    public boolean hasUnacceptableTerms() {
         if (_resolvedUnacceptableList != null
                 && !_resolvedUnacceptableList.isEmpty()) {
             return true;
@@ -374,16 +372,14 @@ public class LatticeOntologySolver extends OntologySolver {
         super.initialize();
 
         NamedObj toplevel = _toplevel();
-        LatticeOntologyAdapter toplevelAdapter =
-            (LatticeOntologyAdapter) getAdapter(toplevel);
+        LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
 
         // FIXME: The code from here to constraintList() doesn't really
         // belong here. The constraintList() method of the Adapter should
         // ensure that the constraint list it returns is valid.
         toplevelAdapter.reinitialize();
 
-        toplevelAdapter
-                ._addDefaultConstraints(_getConstraintType());
+        toplevelAdapter._addDefaultConstraints(_getConstraintType());
 
         // FIXME: have to generate the connection every time
         // because the model structure can changed.
@@ -444,53 +440,57 @@ public class LatticeOntologySolver extends OntologySolver {
             workspace().doneWriting();
         }
 
-        ArrayToken trainedConceptsArrayToken = (ArrayToken) _trainedConceptRecordArray.getToken();
+        ArrayToken trainedConceptsArrayToken = (ArrayToken) _trainedConceptRecordArray
+                .getToken();
         if (trainedConceptsArrayToken == null) {
-            throw new IllegalActionException("The " + getName() +
-                        " ontology solver has not been trained for ontology " +
-                        "concept resolution, so its analysis cannot be tested.");
+            throw new IllegalActionException("The " + getName()
+                    + " ontology solver has not been trained for ontology "
+                    + "concept resolution, so its analysis cannot be tested.");
         } else {
-            Token[] trainedConceptRecordsArray = trainedConceptsArrayToken.arrayValue();
+            Token[] trainedConceptRecordsArray = trainedConceptsArrayToken
+                    .arrayValue();
             Set<NamedObj> allNamedObjs = getAllConceptableNamedObjs();
 
             for (Token trainedConceptToken : trainedConceptRecordsArray) {
                 RecordToken conceptRecord = (RecordToken) trainedConceptToken;
 
-                String conceptableFullName = ((StringToken)
-                        conceptRecord.get(_namedObjLabel)).stringValue();
+                String conceptableFullName = ((StringToken) conceptRecord
+                        .get(_namedObjLabel)).stringValue();
                 NamedObj conceptable = _getConceptableFromFullName(
                         conceptableFullName, allNamedObjs);
                 if (conceptable == null) {
-                    throw new IllegalActionException(this, "The full name " +
-                            conceptableFullName +
-                            " does not refer to a valid model object that " +
-                            "can be resolved to an ontology concept.");
+                    throw new IllegalActionException(this, "The full name "
+                            + conceptableFullName
+                            + " does not refer to a valid model object that "
+                            + "can be resolved to an ontology concept.");
                 }
-                String trainedConceptString = (String) ((StringToken)
-                        conceptRecord.get(_conceptLabel)).stringValue();
+                String trainedConceptString = ((StringToken) conceptRecord
+                        .get(_conceptLabel)).stringValue();
 
                 Concept inferredConcept = getConcept(conceptable);
                 if (inferredConcept == null) {
-                    if (trainedConceptString != null && !trainedConceptString.equals("")) {
+                    if (trainedConceptString != null
+                            && !trainedConceptString.equals("")) {
                         throw new IllegalActionException(conceptable,
-                                "Testing failure at " + conceptable.toString() + '\n'
-                                + "Expected '" + trainedConceptString
-                                + "' but did not infer anything.");
+                                "Testing failure at " + conceptable.toString()
+                                        + '\n' + "Expected '"
+                                        + trainedConceptString
+                                        + "' but did not infer anything.");
                     }
-                } else if (!inferredConcept.toString().equals(trainedConceptString)) {
+                } else if (!inferredConcept.toString().equals(
+                        trainedConceptString)) {
                     throw new IllegalActionException(conceptable,
-                            "Testing failure at " + conceptable.toString() + '\n'
-                            + "Expected '" + trainedConceptString
-                            + "' but got '" + inferredConcept.toString() +
-                            "' instead.");
+                            "Testing failure at " + conceptable.toString()
+                                    + '\n' + "Expected '"
+                                    + trainedConceptString + "' but got '"
+                                    + inferredConcept.toString() + "' instead.");
                 }
             }
 
             if (!allNamedObjs.isEmpty()) {
-                throw new IllegalActionException(this, "Some of the " +
-                                "conceptable model elements do not have " +
-                                "trained concept values. They are: " +
-                                allNamedObjs);
+                throw new IllegalActionException(this, "Some of the "
+                        + "conceptable model elements do not have "
+                        + "trained concept values. They are: " + allNamedObjs);
             }
         }
     }
@@ -527,7 +527,8 @@ public class LatticeOntologySolver extends OntologySolver {
 
                 trainedConcepts[index++] = conceptRecord;
             }
-            _trainedConceptRecordArray.setToken(new ArrayToken(trainedConcepts));
+            _trainedConceptRecordArray
+                    .setToken(new ArrayToken(trainedConcepts));
         } finally {
             workspace().doneWriting();
         }
@@ -570,14 +571,15 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException If the string cannot be formed from the
      *          list of inequality terms
      */
-    protected String getUnacceptableTermsAsString() throws IllegalActionException {
+    protected String getUnacceptableTermsAsString()
+            throws IllegalActionException {
 
         StringBuffer output = new StringBuffer();
 
         if (_resolvedUnacceptableList != null
                 && !_resolvedUnacceptableList.isEmpty()) {
             for (InequalityTerm term : _resolvedUnacceptableList) {
-            output.append(term.toString() + _eol);
+                output.append(term.toString() + _eol);
             }
         }
 
@@ -625,16 +627,13 @@ public class LatticeOntologySolver extends OntologySolver {
 
     // Per-lattice
 
-
     // Per-container.  Not implemented currently.
 
     // Per-term
 
-
     // collectUnacceptableConcepts(Ontology?)
     // A concept is deemed acceptable unless explicitly specified otherwise
     // DO this way, or should ontology provide a list?  Perhaps ontology should provide a list?
-
 
     // collectUnacceptableConcepts(Container?)
     // collectUnacceptableConcepts(Term?)
@@ -670,14 +669,14 @@ public class LatticeOntologySolver extends OntologySolver {
             return _adapterStore.get(component);
         } else {
             // Next look for the adapter in the LatticeOntologySolver model.
-            List<ActorConstraintsDefinitionAttribute> modelDefinedAdapters =
-                ((OntologySolverModel) _model)
+            List<ActorConstraintsDefinitionAttribute> modelDefinedAdapters = ((OntologySolverModel) _model)
                     .attributeList(ActorConstraintsDefinitionAttribute.class);
             for (ActorConstraintsDefinitionAttribute adapterDefinitionAttribute : modelDefinedAdapters) {
-                if (((StringToken)  adapterDefinitionAttribute.actorClassName
-                        .getToken()).stringValue().equals(component.getClass().getName())) {
-                    adapter = adapterDefinitionAttribute
-                            .createAdapter((ComponentEntity) component, this);
+                if (((StringToken) adapterDefinitionAttribute.actorClassName
+                        .getToken()).stringValue().equals(
+                        component.getClass().getName())) {
+                    adapter = adapterDefinitionAttribute.createAdapter(
+                            (ComponentEntity) component, this);
                     break;
                 }
             }
@@ -727,8 +726,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * @exception OntologyResolutionException If constraints are unsatisfiable
      */
     protected void _resolveConcepts(NamedObj toplevel,
-            List<Inequality> constraintList)
-        throws OntologyResolutionException {
+            List<Inequality> constraintList) throws OntologyResolutionException {
 
         List<Inequality> conflicts = new ArrayList<Inequality>();
 
@@ -859,12 +857,12 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException If solver strategy or fixed point
      *      type cannot be understood.
      */
-    protected ConstraintType _getConstraintType()
-            throws IllegalActionException {
+    protected ConstraintType _getConstraintType() throws IllegalActionException {
         String strategy = solverStrategy.stringValue();
         String fixedPoint = solvingFixedPoint.stringValue();
         if ((strategy.equals("forward") && fixedPoint.equals("least"))
-                || (strategy.equals("backward") && fixedPoint.equals("greatest"))) {
+                || (strategy.equals("backward") && fixedPoint
+                        .equals("greatest"))) {
             return ConstraintType.SINK_GE_SOURCE;
         } else if ((strategy.equals("backward") && fixedPoint.equals("least"))
                 || (strategy.equals("forward") && fixedPoint.equals("greatest"))) {
@@ -875,9 +873,9 @@ public class LatticeOntologySolver extends OntologySolver {
             return ConstraintType.NONE;
         } else {
             throw new IllegalActionException(
-                    "Cannot understand solver strategy.\n"
-                  + "Strategy: \"" + strategy + "\"\n"
-                  + "Fixed Point: \"" + fixedPoint + '"');
+                    "Cannot understand solver strategy.\n" + "Strategy: \""
+                            + strategy + "\"\n" + "Fixed Point: \""
+                            + fixedPoint + '"');
         }
     }
 
@@ -940,8 +938,8 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @return A string representing the list of inequality constraints that can be written to a log file.
      *  @exception IllegalActionException If the string cannot be formed from the list of inequality constraints.
      */
-    private String _getConstraintsAsString(
-            List<Inequality> constraintList) throws IllegalActionException {
+    private String _getConstraintsAsString(List<Inequality> constraintList)
+            throws IllegalActionException {
 
         StringBuffer output = new StringBuffer();
         for (Inequality inequality : constraintList) {
@@ -955,11 +953,13 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException Thrown if there is a problem setting
      *   the type constraint.
      */
-    private void _setTrainedConceptsParameterType() throws IllegalActionException {
+    private void _setTrainedConceptsParameterType()
+            throws IllegalActionException {
         Type[] typeArray = new Type[2];
         typeArray[0] = BaseType.STRING;
         typeArray[1] = BaseType.STRING;
-        RecordType conceptRecordType = new RecordType(_trainedConceptRecordLabels, typeArray);
+        RecordType conceptRecordType = new RecordType(
+                _trainedConceptRecordLabels, typeArray);
         ArrayType conceptRecordArrayType = new ArrayType(conceptRecordType);
         _trainedConceptRecordArray.setTypeEquals(conceptRecordArrayType);
     }
@@ -989,6 +989,6 @@ public class LatticeOntologySolver extends OntologySolver {
     private static final String _conceptLabel = "Concept";
 
     /** The array of labels for the trained concept records. */
-    private static final String[] _trainedConceptRecordLabels =
-        new String[]{_namedObjLabel, _conceptLabel};
+    private static final String[] _trainedConceptRecordLabels = new String[] {
+            _namedObjLabel, _conceptLabel };
 }

@@ -87,7 +87,7 @@ public class Utilities {
             throw new IllegalNameException("The name cannot be empty!");
         }
 
-//        if (name.matches("^[A-Za-z0-9]+$")) {
+        //        if (name.matches("^[A-Za-z0-9]+$")) {
         if (name.matches("^[\\w]+$")) {
             return true;
         } else {
@@ -95,7 +95,6 @@ public class Utilities {
                     + "contain numbers and letters.");
         }
     }
-
 
     /**
      * Check if the given name meet the attribute name convention.

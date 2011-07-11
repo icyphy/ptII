@@ -57,7 +57,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Green (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstraintsDefinitionAdapter {
+public class ActorProductLatticeConstraintsDefinitionAdapter extends
+        ActorConstraintsDefinitionAdapter {
 
     /** Construct the lattice ontology adapter for the given component
      *  and property lattice.
@@ -68,13 +69,15 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
      *  @exception IllegalActionException Thrown if the adapter cannot be
      *   initialized.
      */
-    public ActorProductLatticeConstraintsDefinitionAdapter(ProductLatticeOntologySolver solver,
-            ComponentEntity component, List<StringParameter> constraintExpressions)
+    public ActorProductLatticeConstraintsDefinitionAdapter(
+            ProductLatticeOntologySolver solver, ComponentEntity component,
+            List<StringParameter> constraintExpressions)
             throws IllegalActionException {
         // Don't use default constraints for user-defined actor constraints.
         super(solver, component, constraintExpressions);
 
-        _tupleAdapters = ProductLatticeOntologyAdapter.getTupleAdapters(solver, component);
+        _tupleAdapters = ProductLatticeOntologyAdapter.getTupleAdapters(solver,
+                component);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,13 +102,16 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
      *   false otherwise.
      *  @exception IllegalActionException If the constrain expression parameter is null.
      */
-    public static boolean areActorElementConstraintsInherited(StringParameter actorElementConstraintExpression)
-        throws IllegalActionException {
+    public static boolean areActorElementConstraintsInherited(
+            StringParameter actorElementConstraintExpression)
+            throws IllegalActionException {
         if (actorElementConstraintExpression == null) {
-            throw new IllegalActionException("The constraint expression for the actor" +
-                        " element cannot be null.");
+            throw new IllegalActionException(
+                    "The constraint expression for the actor"
+                            + " element cannot be null.");
         }
-        return actorElementConstraintExpression.getExpression().trim().equals(INHERIT);
+        return actorElementConstraintExpression.getExpression().trim()
+                .equals(INHERIT);
     }
 
     /** Return the constraints of this component. The constraints are
@@ -123,7 +129,8 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
             NamedObj actorElement = null;
 
             if (isActorElementAPort(constraintExpression)) {
-                actorElement = ((ComponentEntity) getComponent()).getPort(objName);
+                actorElement = ((ComponentEntity) getComponent())
+                        .getPort(objName);
             } else if (isActorElementAnAttribute(constraintExpression)) {
                 actorElement = ((ComponentEntity) getComponent())
                         .getAttribute(objName);
@@ -134,17 +141,23 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
             if (areActorElementConstraintsInherited(constraintExpression)) {
                 for (LatticeOntologyAdapter adapter : _tupleAdapters) {
                     if (adapter != null) {
-                        Ontology adapterOntology = adapter.getSolver().getOntology();
-                        adapter._addDefaultConstraints(adapter.getSolver()._getConstraintType());
-                        List<Inequality> actorElementConstraints = _getActorElementConstraints(actorElement, adapter.constraintList());
-                        ProductLatticeOntologyAdapter.
-                            addConstraintsFromTupleOntologyAdapter(actorElementConstraints, adapterOntology, this);
+                        Ontology adapterOntology = adapter.getSolver()
+                                .getOntology();
+                        adapter._addDefaultConstraints(adapter.getSolver()
+                                ._getConstraintType());
+                        List<Inequality> actorElementConstraints = _getActorElementConstraints(
+                                actorElement, adapter.constraintList());
+                        ProductLatticeOntologyAdapter
+                                .addConstraintsFromTupleOntologyAdapter(
+                                        actorElementConstraints,
+                                        adapterOntology, this);
                     }
                 }
             } else if (!isActorElementIgnored(constraintExpression)
                     && !isActorElementUnconstrained(constraintExpression)) {
-                _setConstraints(actorElement, ((StringToken) (constraintExpression
-                        .getToken())).stringValue());
+                _setConstraints(actorElement,
+                        ((StringToken) (constraintExpression.getToken()))
+                                .stringValue());
             }
         }
 
@@ -166,11 +179,13 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends ActorConstr
      *  @return The list of constraints that only apply to the given actor element.
      */
     private List<Inequality> _getActorElementConstraints(NamedObj actorElement,
-                List<Inequality> adapterConstraintsList) {
-        List<Inequality> elementConstraints = new ArrayList<Inequality>(adapterConstraintsList);
+            List<Inequality> adapterConstraintsList) {
+        List<Inequality> elementConstraints = new ArrayList<Inequality>(
+                adapterConstraintsList);
 
         for (Inequality constraint : adapterConstraintsList) {
-            if (!actorElement.equals(constraint.getGreaterTerm().getAssociatedObject())) {
+            if (!actorElement.equals(constraint.getGreaterTerm()
+                    .getAssociatedObject())) {
                 elementConstraints.remove(constraint);
             }
         }

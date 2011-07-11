@@ -47,7 +47,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 /** This abstract class implements functionality to monitor the activity of a
  *  quantity manager as well as assign a color attribute to a quantity manager.
  *  This color is used to perform highlighting on the ports that use this
@@ -63,7 +62,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public abstract class MonitoredQuantityManager extends TypedAtomicActor implements QuantityManager {
+public abstract class MonitoredQuantityManager extends TypedAtomicActor
+        implements QuantityManager {
 
     /** Construct a MonitoredQuantityManager with a name and a container.
      *  The container argument must not be null, or a
@@ -91,7 +91,8 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor implemen
      *  @return A new intermediate receiver.
      *  @exception IllegalActionException Not thrown in this class but may be thrown in derived classes.
      */
-    public IntermediateReceiver getReceiver(Receiver receiver) throws IllegalActionException {
+    public IntermediateReceiver getReceiver(Receiver receiver)
+            throws IllegalActionException {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);
         return intermediateReceiver;
@@ -124,14 +125,14 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor implemen
      *      by the quantity manager.
      *  @param eventType Type of event.
      */
-    public void sendQMTokenEvent(Actor source, int messageId,
-            int messageCnt, EventType eventType) {
+    public void sendQMTokenEvent(Actor source, int messageId, int messageCnt,
+            EventType eventType) {
         if (_listeners != null) {
             Iterator listeners = _listeners.iterator();
             while (listeners.hasNext()) {
                 ((QuantityManagerListener) listeners.next()).event(this,
-                        source, messageId, messageCnt, getDirector().getModelTime()
-                                .getDoubleValue(), eventType);
+                        source, messageId, messageCnt, getDirector()
+                                .getModelTime().getDoubleValue(), eventType);
             }
         }
     }
@@ -161,14 +162,15 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor implemen
      *  @exception NoRoomException If the receiver has no room for the token.
      *  @exception IllegalActionException If the receiver cannot receive the token.
      */
-    protected void _sendToReceiver(Receiver receiver, Token token) throws NoRoomException, IllegalActionException {
+    protected void _sendToReceiver(Receiver receiver, Token token)
+            throws NoRoomException, IllegalActionException {
         if (receiver instanceof IntermediateReceiver) {
             ((IntermediateReceiver) receiver).source = this;
         }
         receiver.put(token);
         _tokenCount--;
-        sendQMTokenEvent((Actor) receiver.getContainer()
-                .getContainer(), 0, _tokenCount, EventType.SENT);
+        sendQMTokenEvent((Actor) receiver.getContainer().getContainer(), 0,
+                _tokenCount, EventType.SENT);
     }
 
     /** Listeners registered to receive events from this object. */
@@ -176,6 +178,5 @@ public abstract class MonitoredQuantityManager extends TypedAtomicActor implemen
 
     /** Amount of tokens currently being processed by the switch. */
     protected int _tokenCount;
-
 
 }

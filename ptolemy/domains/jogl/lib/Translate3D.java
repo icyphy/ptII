@@ -1,4 +1,5 @@
 package ptolemy.domains.jogl.lib;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
@@ -18,7 +19,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @author Yasemin Demir
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
-public class Translate3D extends Transformer{
+public class Translate3D extends Transformer {
 
     /**
      *  Construct a Translate3D object in the given container with the given name.
@@ -34,7 +35,7 @@ public class Translate3D extends Transformer{
      *  CompositeActor and the name collides with an entity in the container.
      */
     public Translate3D(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
 
@@ -55,23 +56,23 @@ public class Translate3D extends Transformer{
         }
 
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof GLAutoDrawable)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of GL. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
 
-            GL gl = ((GLAutoDrawable)inputObject).getGL();
+            GL gl = ((GLAutoDrawable) inputObject).getGL();
 
             ArrayToken translationValue = ((ArrayToken) translation.getToken());
 
-            gl.glTranslated(
-                    ((DoubleToken) translationValue.getElement(0)).doubleValue(),
-                    ((DoubleToken) translationValue.getElement(1)).doubleValue(),
-                    ((DoubleToken) translationValue.getElement(2)).doubleValue()
-            );
+            gl.glTranslated(((DoubleToken) translationValue.getElement(0))
+                    .doubleValue(), ((DoubleToken) translationValue
+                    .getElement(1)).doubleValue(),
+                    ((DoubleToken) translationValue.getElement(2))
+                            .doubleValue());
             output.send(0, new ObjectToken(gl));
         }
 

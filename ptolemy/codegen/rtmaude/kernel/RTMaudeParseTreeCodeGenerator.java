@@ -104,8 +104,6 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         return result;
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -368,20 +366,19 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
             throws IllegalActionException {
 
         char[] lefts = new char[separatorList.size()];
-        Arrays.fill(lefts,'(');
-        _writer.print(lefts);           // starts with left parentheses
+        Arrays.fill(lefts, '(');
+        _writer.print(lefts); // starts with left parentheses
 
         Iterator separators = separatorList.iterator();
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) {
-                _writer
-                        .print(" "
-                                + _transformOp(((Token) separators.next()).image)
-                                + " ");
+                _writer.print(" "
+                        + _transformOp(((Token) separators.next()).image) + " ");
             }
             _printChild(node, i);
-            if (i > 0)
+            if (i > 0) {
                 _writer.print(')');
+            }
         }
     }
 
@@ -392,12 +389,12 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
      * @param string The separator
      * @exception IllegalActionException
      */
-    private void _printChildrenSeparated(ASTPtRootNode node, String string, boolean paran)
-            throws IllegalActionException {
+    private void _printChildrenSeparated(ASTPtRootNode node, String string,
+            boolean paran) throws IllegalActionException {
         if (paran) {
             char[] lefts = new char[node.jjtGetNumChildren() - 1];
-            Arrays.fill(lefts,'(');
-            _writer.print(lefts);           // starts with left parentheses
+            Arrays.fill(lefts, '(');
+            _writer.print(lefts); // starts with left parentheses
         }
 
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
@@ -405,8 +402,9 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 _writer.print(" " + _transformOp(string) + " ");
             }
             _printChild(node, i);
-            if (paran && i > 0)
-                _writer.print(')');     // close a parenthesis.
+            if (paran && i > 0) {
+                _writer.print(')'); // close a parenthesis.
+            }
         }
     }
 

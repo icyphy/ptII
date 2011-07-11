@@ -130,8 +130,9 @@ public class SDFReceiver extends Receiver {
             // which has nested ModularCodegen.
             forComposite = false;
         }
-        if (port.isInput() && ((Actor)(sourcePort.getContainer())).getDirector()
-                != ((Actor)(port.getContainer())).getDirector()) {
+        if (port.isInput()
+                && ((Actor) (sourcePort.getContainer())).getDirector() != ((Actor) (port
+                        .getContainer())).getDirector()) {
             // Needed for $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/hierarchicalModel_2_2e.xml
             forComposite = false;
         }
@@ -146,12 +147,12 @@ public class SDFReceiver extends Receiver {
             result = _getDirectorForReceiver().getReference(port,
                     new String[] { Integer.toString(channel), offset },
                     forComposite, true, containingActorAdapter)
-                + " = " + token + ";" + _eol;
+                    + " = " + token + ";" + _eol;
         } catch (Throwable throwable) {
             result = _getExecutiveDirectorForReceiver().getReference(port,
                     new String[] { Integer.toString(channel), offset },
                     forComposite, true, containingActorAdapter)
-                + " = " + token + ";" + _eol;
+                    + " = " + token + ";" + _eol;
         }
         return result;
         //        adapter.processCode("$ref(" + port.getName() + "#" + channel
@@ -242,8 +243,8 @@ public class SDFReceiver extends Receiver {
      */
     protected StaticSchedulingDirector _getExecutiveDirectorForReceiver()
             throws IllegalActionException {
-        return (StaticSchedulingDirector) getAdapter(((Actor) getComponent().getContainer()
-                .getContainer()).getExecutiveDirector());
+        return (StaticSchedulingDirector) getAdapter(((Actor) getComponent()
+                .getContainer().getContainer()).getExecutiveDirector());
     }
 
     //$send(port#channel) ==> port_channel[writeOffset]

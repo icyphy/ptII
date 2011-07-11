@@ -167,8 +167,8 @@ public final class FormFactory {
      *
      * @see #GROWING_BUTTON_COLSPEC
      */
-    public static final ColumnSpec BUTTON_COLSPEC = new ColumnSpec(Sizes
-            .bounded(Sizes.PREFERRED, LayoutStyle.getCurrent()
+    public static final ColumnSpec BUTTON_COLSPEC = new ColumnSpec(
+            Sizes.bounded(Sizes.PREFERRED, LayoutStyle.getCurrent()
                     .getDefaultButtonWidth(), null));
 
     /**

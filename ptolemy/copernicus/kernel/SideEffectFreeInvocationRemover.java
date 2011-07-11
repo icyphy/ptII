@@ -208,8 +208,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                 boolean removable = true;
 
                 for (Iterator i = new Targets(callGraph.edgesOutOf(unit)); i
-                        .hasNext()
-                        && removable;) {
+                        .hasNext() && removable;) {
                     SootMethod targetMethod = (SootMethod) i.next();
 
                     // System.out.println("Checking Target = " + targetMethod);

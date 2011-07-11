@@ -517,8 +517,8 @@ public class CodeStream {
                 + indent);
         if (tmpString.endsWith(_eol + indent)) {
             // Chop off the last indent
-            tmpString = tmpString.substring(0, tmpString.length()
-                    - indent.length());
+            tmpString = tmpString.substring(0,
+                    tmpString.length() - indent.length());
         }
         // Insert the initial indent.
         return indent + tmpString;
@@ -856,8 +856,7 @@ public class CodeStream {
 
                     if (_needLineInfo()) {
                         codeToBeParsed.append(_codeGenerator.generateLineInfo(
-                                lineNumber, filename)
-                                + _eol);
+                                lineNumber, filename) + _eol);
                     }
                     codeToBeParsed.append(line + _eol);
                 }
@@ -1165,8 +1164,8 @@ public class CodeStream {
         }
 
         // Keep parsing for extra parameters.
-        for (int commaIndex = CodeGeneratorHelper._indexOf(",", codeInFile
-                .toString(), startIndex); commaIndex != -1
+        for (int commaIndex = CodeGeneratorHelper._indexOf(",",
+                codeInFile.toString(), startIndex); commaIndex != -1
                 && commaIndex <= endIndex; commaIndex = CodeGeneratorHelper
                 ._indexOf(",", codeInFile.toString(), commaIndex + 1)) {
 
@@ -1379,8 +1378,8 @@ public class CodeStream {
             LinkedHashMap table = (LinkedHashMap) scopeList.get(0);
 
             if (!table.containsKey(signature)) {
-                return _getCode(signature, arguments, scopeList
-                        .subList(1, size));
+                return _getCode(signature, arguments,
+                        scopeList.subList(1, size));
             } else {
                 Object[] codeObject = (Object[]) table.get(signature);
                 StringBuffer codeBlock = (StringBuffer) codeObject[1];
@@ -1443,9 +1442,7 @@ public class CodeStream {
                 int macroIndex = _indexOfMacro(codeBlock, macro, 0, true);
 
                 while (macroIndex >= 0) {
-                    result
-                            .append(codeBlock.substring(lastMacroEnd,
-                                    macroIndex));
+                    result.append(codeBlock.substring(lastMacroEnd, macroIndex));
 
                     int dotIndex = codeBlock.indexOf(".", macroIndex);
                     int openIndex = codeBlock.indexOf("(", macroIndex);
@@ -1489,8 +1486,8 @@ public class CodeStream {
 
                     StringBuffer callCodeBlock = (!isSuper) ? getCode(
                             callSignature, callArguments) : _getCode(
-                            callSignature, callArguments, scopeList.subList(1,
-                                    scopeList.size()));
+                            callSignature, callArguments,
+                            scopeList.subList(1, scopeList.size()));
 
                     if (callCodeBlock == null) {
                         throw new IllegalActionException(_adaptor,
@@ -1504,8 +1501,8 @@ public class CodeStream {
                     macroIndex = _indexOfMacro(codeBlock, macro, lastMacroEnd,
                             true);
                 }
-                result.append(codeBlock.substring(lastMacroEnd, codeBlock
-                        .length()));
+                result.append(codeBlock.substring(lastMacroEnd,
+                        codeBlock.length()));
 
                 codeBlock = result;
             }
@@ -1551,8 +1548,8 @@ public class CodeStream {
                 return (List) ((Object[]) currentScope.get(signature))[2];
 
             } else {
-                return _getParameters(signature, scopeList.subList(1, scopeList
-                        .size()));
+                return _getParameters(signature,
+                        scopeList.subList(1, scopeList.size()));
             }
         }
 

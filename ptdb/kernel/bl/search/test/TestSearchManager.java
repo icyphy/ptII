@@ -93,11 +93,11 @@ import ptolemy.vergil.gt.MatchResultRecorder;
  *
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest( { SearchManager.class, AttributeSearcher.class,
+@PrepareForTest({ SearchManager.class, AttributeSearcher.class,
         NameSearcher.class, CommandSearcher.class, XQueryGraphSearcher.class,
         PatternMatchGraphSearcher.class, HierarchyFetcher.class,
         SearchResultBuffer.class, GraphMatcher.class })
-@SuppressStaticInitializationFor( { "ptdb.common.util.DBConnectorFactory",
+@SuppressStaticInitializationFor({ "ptdb.common.util.DBConnectorFactory",
         "ptdb.kernel.bl.load.DBModelFetcher" })
 public class TestSearchManager {
 

@@ -94,8 +94,8 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
         try {
             return _templateParser.processCode(code);
         } catch (IllegalActionException ex) {
-            throw new IllegalActionException(null, ex, "Failed to parse \"" + code
-                    + "\"");
+            throw new IllegalActionException(null, ex, "Failed to parse \""
+                    + code + "\"");
         }
     }
 
@@ -160,11 +160,13 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
             if (getComponent() instanceof Nameable) {
 
-                codeStream.insert(0, _eol
-                        + getCodeGenerator().comment(
-                                shortBlockName
-                                        + (((Nameable) getComponent())
-                                                .getName())));
+                codeStream.insert(
+                        0,
+                        _eol
+                                + getCodeGenerator().comment(
+                                        shortBlockName
+                                                + (((Nameable) getComponent())
+                                                        .getName())));
             }
         }
         return processCode(codeStream.toString());

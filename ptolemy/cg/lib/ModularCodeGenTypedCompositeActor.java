@@ -47,7 +47,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator;
 import ptolemy.data.ArrayToken;
@@ -161,11 +161,11 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             throws IllegalActionException {
         boolean publisher = _isPublishedPort(port);
         boolean subscriber = _isSubscribedPort(port);
-        return new Profile.Port(port.getName(), publisher, subscriber, port
-                .getWidth(), DFUtilities.getTokenConsumptionRate(port),
+        return new Profile.Port(port.getName(), publisher, subscriber,
+                port.getWidth(), DFUtilities.getTokenConsumptionRate(port),
                 JavaCodeGenerator.ptTypeToCodegenType(((TypedIOPort) port)
-                        .getType()), port.isInput(), port.isOutput(), port
-                        .isMultiport(), _pubSubChannelName(port, publisher,
+                        .getType()), port.isInput(), port.isOutput(),
+                port.isMultiport(), _pubSubChannelName(port, publisher,
                         subscriber));
     }
 
@@ -252,7 +252,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                             newPort.setMultiport(port.multiport());
                         }
 
-
                         NamedObj container = getContainer();
                         if (container instanceof CompositeActor) {
                             ((CompositeActor) container).registerPublisherPort(
@@ -277,9 +276,9 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             populate();
         } else {
             throw new InternalErrorException(this, null,
-                    "This should not be happening."
-                    + " _USE_PROFILE was " + _USE_PROFILE
-                    + " and profile was " + profile + "?");
+                    "This should not be happening." + " _USE_PROFILE was "
+                            + _USE_PROFILE + " and profile was " + profile
+                            + "?");
         }
         return super.portList();
     }
@@ -318,8 +317,9 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
             List<Object> argList = new LinkedList<Object>();
 
-            if (outputPortList().size() > 0)
+            if (outputPortList().size() > 0) {
                 argList.add(true);
+            }
 
             Iterator<?> inputPorts = inputPortList().iterator();
             while (inputPorts.hasNext()) {
@@ -329,8 +329,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 Object tokenHolder = null;
 
                 int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
-                        .getWidth()
-                        : port.getWidthInside();
+                        .getWidth() : port.getWidthInside();
 
                 if (type == BaseType.INT) {
                     tokenHolder = new int[numberOfChannels][];
@@ -470,8 +469,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 executeChangeRequests();
                 _generateCode();
             }
-            String className = NamedProgramCodeGeneratorAdapter
-                    .generateName(this);
+            String className = CodeGeneratorAdapter.generateName(this);
             URL url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
             // FIXME: generateInSubdirectory fix
             if (((BooleanToken) _codeGenerator.generateInSubdirectory
@@ -502,10 +500,12 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 } catch (ClassNotFoundException ex2) {
                     ex2.printStackTrace();
                     throw new ClassNotFoundException("Failed to load "
-                            + className + " using URLClassLoader based on "
-                            + url + ", urls were: "
-                            + java.util.Arrays.deepToString(classLoader.getURLs())
-                            + "\n" + ex2);
+                            + className
+                            + " using URLClassLoader based on "
+                            + url
+                            + ", urls were: "
+                            + java.util.Arrays.deepToString(classLoader
+                                    .getURLs()) + "\n" + ex2);
                 }
             }
 
@@ -637,8 +637,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
                             if (port.subscriber()
                                     && !portSet.contains(port.name())) {
-                                IOPort newPort = new TypedIOPort(this, port
-                                        .name());
+                                IOPort newPort = new TypedIOPort(this,
+                                        port.name());
                                 new Parameter(newPort, "_hide",
                                         BooleanToken.TRUE);
                                 newPort.setInput(port.input());
@@ -649,8 +649,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
                                     ((CompositeActor) container)
-                                            .linkToPublishedPort(port
-                                                    .getPubSubChannelName(),
+                                            .linkToPublishedPort(
+                                                    port.getPubSubChannelName(),
                                                     newPort);
                                 }
                             }
@@ -874,7 +874,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *  @exception NameDuplicationException If the actor already has a
      *   parameter with this name.
      */
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
         // However, a parent class, TypedCompositeActor sets the classname
@@ -951,14 +952,13 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 // if _modelChanged => _profile == null
                 return _profile;
             } else {
-                String className = NamedProgramCodeGeneratorAdapter
-                        .generateName(this)
+                String className = CodeGeneratorAdapter.generateName(this)
                         + "_profile";
                 Class<?> classInstance = null;
 
                 NamedObj toplevel = toplevel();
-                FileParameter path = new FileParameter(toplevel, toplevel
-                        .uniqueName("dummyParam"));
+                FileParameter path = new FileParameter(toplevel,
+                        toplevel.uniqueName("dummyParam"));
                 path.setExpression("$HOME/cg/");
                 URL url = path.asFile().toURI().toURL();
                 path.setContainer(null); //Remove the parameter again.
@@ -1029,8 +1029,9 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         } else if (publisher) {
             NamedObj container = getContainer();
             while ((container instanceof CompositeActor)
-                    && !((CompositeActor) container).isOpaque())
+                    && !((CompositeActor) container).isOpaque()) {
                 container = ((CompositeActor) container).getContainer();
+            }
 
             return ((CompositeActor) container).getPublishedPortChannel(port);
         }
@@ -1130,14 +1131,14 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                             Object element = getPayload.invoke(elements[j],
                                     (Object[]) null);
                             if (type == BaseType.INT) {
-                                convertedTokens[j] = new IntToken(Integer
-                                        .parseInt(element.toString()));
+                                convertedTokens[j] = new IntToken(
+                                        Integer.parseInt(element.toString()));
                             } else if (type == BaseType.DOUBLE) {
-                                convertedTokens[j] = new DoubleToken(Double
-                                        .parseDouble(element.toString()));
+                                convertedTokens[j] = new DoubleToken(
+                                        Double.parseDouble(element.toString()));
                             } else if (type == BaseType.BOOLEAN) {
-                                convertedTokens[j] = new BooleanToken(Boolean
-                                        .parseBoolean(element.toString()));
+                                convertedTokens[j] = new BooleanToken(
+                                        Boolean.parseBoolean(element.toString()));
                             } else {
                                 //FIXME: need to deal with other types
                             }

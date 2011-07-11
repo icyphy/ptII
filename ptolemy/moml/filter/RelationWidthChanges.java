@@ -143,9 +143,8 @@ public class RelationWidthChanges extends MoMLFilterSimple {
             VersionAttribute version = (VersionAttribute) container;
             try {
                 if (xmlFile != null) {
-                    _changesNeededForXmlFile.put(xmlFile,
-                            version.isLessThan(new VersionAttribute(
-                                    "7.2.devel")));
+                    _changesNeededForXmlFile.put(xmlFile, version
+                            .isLessThan(new VersionAttribute("7.2.devel")));
                 }
             } catch (IllegalActionException e) {
                 // We don't expect that this fails.

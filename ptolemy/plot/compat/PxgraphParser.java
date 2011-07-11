@@ -705,8 +705,8 @@ public class PxgraphParser {
                         if (arg.length() > arg.indexOf('x')) {
                             // =WxH
                             height = Integer.valueOf(
-                                    arg.substring(arg.indexOf('x') + 1, arg
-                                            .length())).intValue();
+                                    arg.substring(arg.indexOf('x') + 1,
+                                            arg.length())).intValue();
                         }
                     }
 
@@ -795,7 +795,8 @@ public class PxgraphParser {
 
             int c;
             String partialarg = null;
-            out: while (true) {
+            out:
+            while (true) {
                 c = stoken.nextToken();
 
                 //System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" ");
@@ -1023,8 +1024,8 @@ public class PxgraphParser {
                                 datasetname.append(in.readChar());
                             }
 
-                            _plot.addLegend(_currentdataset, datasetname
-                                    .toString());
+                            _plot.addLegend(_currentdataset,
+                                    datasetname.toString());
                             _plot.setConnected(true);
                             break;
 

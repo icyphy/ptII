@@ -52,8 +52,9 @@ public class ProductLatticeOntologyASTNodeAdapter extends
      *  @param node The given AST node.
      *  @exception IllegalActionException Thrown if the adapter cannot be created.
      */
-    public ProductLatticeOntologyASTNodeAdapter(ProductLatticeOntologySolver solver,
-            ASTPtRootNode node) throws IllegalActionException {
+    public ProductLatticeOntologyASTNodeAdapter(
+            ProductLatticeOntologySolver solver, ASTPtRootNode node)
+            throws IllegalActionException {
         this(solver, node, true);
     }
 
@@ -66,12 +67,13 @@ public class ProductLatticeOntologyASTNodeAdapter extends
      *  @exception IllegalActionException Thrown if the adapter cannot
      *   be created.
      */
-    public ProductLatticeOntologyASTNodeAdapter(ProductLatticeOntologySolver solver,
-            ASTPtRootNode node, boolean useDefaultConstraints)
-            throws IllegalActionException {
+    public ProductLatticeOntologyASTNodeAdapter(
+            ProductLatticeOntologySolver solver, ASTPtRootNode node,
+            boolean useDefaultConstraints) throws IllegalActionException {
         super(solver, node, useDefaultConstraints);
 
-        _tupleAdapters = ProductLatticeOntologyAdapter.getTupleAdapters(solver, node);
+        _tupleAdapters = ProductLatticeOntologyAdapter.getTupleAdapters(solver,
+                node);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,10 +91,14 @@ public class ProductLatticeOntologyASTNodeAdapter extends
         if (!_useDefaultConstraints) {
             for (LatticeOntologyAdapter adapter : _tupleAdapters) {
                 if (adapter != null) {
-                    Ontology adapterOntology = adapter.getSolver().getOntology();
-                    adapter._addDefaultConstraints(adapter.getSolver()._getConstraintType());
-                    ProductLatticeOntologyAdapter.
-                        addConstraintsFromTupleOntologyAdapter(adapter.constraintList(), adapterOntology, this);
+                    Ontology adapterOntology = adapter.getSolver()
+                            .getOntology();
+                    adapter._addDefaultConstraints(adapter.getSolver()
+                            ._getConstraintType());
+                    ProductLatticeOntologyAdapter
+                            .addConstraintsFromTupleOntologyAdapter(
+                                    adapter.constraintList(), adapterOntology,
+                                    this);
                 }
             }
         }

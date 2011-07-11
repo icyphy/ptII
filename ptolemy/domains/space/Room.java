@@ -71,11 +71,10 @@ public class Room extends DatabaseSelect {
         hide.setExpression("true");
 
         columns.setVisibility(Settable.EXPERT);
-        columns
-                .setExpression("{bldg=string, room=string, lname=string, "
-                        + "fnames=string, deskno=string, spaceid=string, classcd=string, "
-                        + "sponsorlname=string, email=string, spacenotes=string, "
-                        + "occupancy=string, departure=string}");
+        columns.setExpression("{bldg=string, room=string, lname=string, "
+                + "fnames=string, deskno=string, spaceid=string, classcd=string, "
+                + "sponsorlname=string, email=string, spacenotes=string, "
+                + "occupancy=string, departure=string}");
 
         hide = new Parameter(columns.getPort(), "_hide");
         hide.setExpression("true");

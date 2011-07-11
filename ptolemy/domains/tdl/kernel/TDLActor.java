@@ -193,22 +193,22 @@ public class TDLActor extends FSMActor {
 
         //Time physicalTime = null;
         if (topLevelDirector != null) {
-            /*physicalTime =*/ topLevelDirector.getModelTime();
+            /*physicalTime =*/topLevelDirector.getModelTime();
         } else {
-            /*physicalTime =*/ executiveDirector.getModelTime();
+            /*physicalTime =*/executiveDirector.getModelTime();
         }
-//        TDLCausalityInterface causalityInterface = (TDLCausalityInterface) ((CompositeActor) ((TDLModule) getContainer())
-//                .getContainer()).getCausalityInterface();
-//        Dependency minimumDelay = causalityInterface.getMinimumDelay(port);
-//        if (minimumDelay instanceof RealDependency) {
-//            boolean isSafe = ((RealDependency) minimumDelay).value() == Double.MAX_VALUE
-//                    || modelTime.subtract(
-//                            ((RealDependency) minimumDelay).value()).compareTo(
-//                            physicalTime) <= 0;
-//            return isSafe;
-//        } else {
-//            return true;
-//        }
+        //        TDLCausalityInterface causalityInterface = (TDLCausalityInterface) ((CompositeActor) ((TDLModule) getContainer())
+        //                .getContainer()).getCausalityInterface();
+        //        Dependency minimumDelay = causalityInterface.getMinimumDelay(port);
+        //        if (minimumDelay instanceof RealDependency) {
+        //            boolean isSafe = ((RealDependency) minimumDelay).value() == Double.MAX_VALUE
+        //                    || modelTime.subtract(
+        //                            ((RealDependency) minimumDelay).value()).compareTo(
+        //                            physicalTime) <= 0;
+        //            return isSafe;
+        //        } else {
+        //            return true;
+        //        }
         return true;
     }
 

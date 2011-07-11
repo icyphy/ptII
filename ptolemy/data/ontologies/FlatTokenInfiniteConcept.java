@@ -73,15 +73,15 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @exception IllegalActionException If the base class throws it.
      */
     public static FlatTokenInfiniteConcept createFlatTokenInfiniteConcept(
-            Ontology ontology, FlatTokenRepresentativeConcept representative, Token value)
-                throws IllegalActionException {
+            Ontology ontology, FlatTokenRepresentativeConcept representative,
+            Token value) throws IllegalActionException {
         try {
             return new FlatTokenInfiniteConcept(ontology, representative, value);
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(
                     "Name conflict with automatically generated infinite concept name.\n"
-                  + "This should never happen."
-                  + "Original exception:" + e.toString());
+                            + "This should never happen."
+                            + "Original exception:" + e.toString());
         }
     }
 
@@ -102,7 +102,8 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
     public int compare(Concept concept) throws IllegalActionException {
-        if (concept.getOntology() == null || !(concept.getOntology().equals(getOntology()))) {
+        if (concept.getOntology() == null
+                || !(concept.getOntology().equals(getOntology()))) {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
         }
@@ -111,13 +112,14 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             return getOntology().getConceptGraph().compare(_representative,
                     concept);
         } else {
-            if (!_representative.equals(((FlatTokenInfiniteConcept) concept).
-                    _representative)) {
+            if (!_representative
+                    .equals(((FlatTokenInfiniteConcept) concept)._representative)) {
                 return getOntology().getConceptGraph().compare(_representative,
                         ((FlatTokenInfiniteConcept) concept)._representative);
             } else {
-                if (_tokenValue.isEqualTo(((FlatTokenInfiniteConcept) concept).
-                        _tokenValue).booleanValue()) {
+                if (_tokenValue.isEqualTo(
+                        ((FlatTokenInfiniteConcept) concept)._tokenValue)
+                        .booleanValue()) {
                     return CPO.SAME;
                 } else {
                     return CPO.INCOMPARABLE;
@@ -177,8 +179,8 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @return The hash code of this concept.
      */
     public int hashCode() {
-        return getOntology().hashCode() + _representative.hashCode() +
-            _tokenValue.hashCode();
+        return getOntology().hashCode() + _representative.hashCode()
+                + _tokenValue.hashCode();
     }
 
     /** Return the string representation of this flat token infinite concept.
@@ -205,9 +207,8 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @exception IllegalActionException If the base class throws it.
      */
     protected FlatTokenInfiniteConcept(Ontology ontology,
-            FlatTokenRepresentativeConcept representative,
-            Token value)
-                throws IllegalActionException, NameDuplicationException {
+            FlatTokenRepresentativeConcept representative, Token value)
+            throws IllegalActionException, NameDuplicationException {
         super(ontology);
         _representative = representative;
         _tokenValue = value;
@@ -225,8 +226,8 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @return The concept that is either the least upper bound or greatest
      *   lower bound of the array of concepts.
      */
-    private Concept _getBoundFromConceptGraph(Concept concept1, Concept concept2,
-            BoundType boundType) {
+    private Concept _getBoundFromConceptGraph(Concept concept1,
+            Concept concept2, BoundType boundType) {
         ConceptGraph conceptGraph = getOntology().getConceptGraph();
         switch (boundType) {
         case GREATESTLOWER:
@@ -235,8 +236,8 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             return conceptGraph.leastUpperBound(concept1, concept2);
         default:
             throw new IllegalArgumentException("Unrecognized bound type: "
-                    + boundType + ". Expected either GREATESTLOWER or " +
-                                    "LEASTUPPER");
+                    + boundType + ". Expected either GREATESTLOWER or "
+                    + "LEASTUPPER");
         }
     }
 
@@ -249,10 +250,10 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @return The concept that is the bound of this and the given concept.
      */
     private Concept _getBoundWithOtherConcept(Concept concept,
-                        BoundType boundType) {
-        if (concept instanceof FlatTokenInfiniteConcept &&
-                _representative.equals(((FlatTokenInfiniteConcept) concept).
-                        getRepresentative())) {
+            BoundType boundType) {
+        if (concept instanceof FlatTokenInfiniteConcept
+                && _representative.equals(((FlatTokenInfiniteConcept) concept)
+                        .getRepresentative())) {
             if (this.equals(concept)) {
                 return this;
             } else {
@@ -262,18 +263,18 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
             Concept otherConcept = concept;
             Concept otherConceptRepresentative = null;
             if (concept instanceof InfiniteConcept) {
-                otherConceptRepresentative = ((InfiniteConcept) concept).
-                    getRepresentative();
+                otherConceptRepresentative = ((InfiniteConcept) concept)
+                        .getRepresentative();
                 if (otherConceptRepresentative != null) {
                     otherConcept = otherConceptRepresentative;
                 }
             }
             Concept bound = _getBoundFromConceptGraph(_representative,
-                                otherConcept, boundType);
+                    otherConcept, boundType);
             if (bound.equals(_representative)) {
                 return this;
-            } else if (bound.equals(otherConceptRepresentative) &&
-                    otherConceptRepresentative != null) {
+            } else if (bound.equals(otherConceptRepresentative)
+                    && otherConceptRepresentative != null) {
                 return concept;
             } else if (bound instanceof InfiniteConceptRepresentative) {
                 return null;
@@ -293,22 +294,23 @@ public class FlatTokenInfiniteConcept extends InfiniteConcept {
      *  @return The concept directly above if boundType is LEASTUPPER or
      *   the concept directly below if boundType is GREATESTLOWER.
      */
-    private FiniteConcept _getConceptAboveOrBelowRepresentative(BoundType boundType) {
+    private FiniteConcept _getConceptAboveOrBelowRepresentative(
+            BoundType boundType) {
         FiniteConcept[] conceptsAboveOrBelow = new FiniteConcept[0];
 
-        switch(boundType) {
+        switch (boundType) {
         case GREATESTLOWER:
-            conceptsAboveOrBelow = _representative.getCoverSetBelow().
-                toArray(conceptsAboveOrBelow);
+            conceptsAboveOrBelow = _representative.getCoverSetBelow().toArray(
+                    conceptsAboveOrBelow);
             break;
         case LEASTUPPER:
-            conceptsAboveOrBelow = _representative.getCoverSetAbove().
-                toArray(conceptsAboveOrBelow);
+            conceptsAboveOrBelow = _representative.getCoverSetAbove().toArray(
+                    conceptsAboveOrBelow);
             break;
         default:
             throw new IllegalArgumentException("Unrecognized bound type: "
-                    + boundType + ". Expected either GREATESTLOWER or " +
-                                    "LEASTUPPER");
+                    + boundType + ". Expected either GREATESTLOWER or "
+                    + "LEASTUPPER");
         }
 
         // If there is more than one concept above or below, or the one

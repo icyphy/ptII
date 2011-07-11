@@ -77,9 +77,12 @@ public class SimulatedPlatformPhysicalTime extends TimedSource {
     public void fire() throws IllegalActionException {
         PtidesBasicDirector director = (PtidesBasicDirector) getDirector();
 
-        output.send(0, new DoubleToken((director.getPlatformPhysicalTag(
-                ((PtidesBasicDirector)getDirector()).platformTimeClock).timestamp
-        .getDoubleValue())));
+        output.send(
+                0,
+                new DoubleToken(
+                        (director
+                                .getPlatformPhysicalTag(((PtidesBasicDirector) getDirector()).platformTimeClock).timestamp
+                                .getDoubleValue())));
 
         super.fire();
     }

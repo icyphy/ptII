@@ -199,8 +199,8 @@ public class ChicController extends AttributeController {
 
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_L, Event.CTRL_MASK));
+            putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -223,8 +223,8 @@ public class ChicController extends AttributeController {
                 URL toRead = getClass().getClassLoader().getResource(filename);
 
                 if (toRead != null) {
-                    _configuration.openModel(null, toRead, toRead
-                            .toExternalForm());
+                    _configuration.openModel(null, toRead,
+                            toRead.toExternalForm());
                 } else {
                     MessageHandler.error(_CANNOT_FIND_MESSAGE);
                 }

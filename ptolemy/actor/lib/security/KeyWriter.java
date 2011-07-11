@@ -123,10 +123,10 @@ public class KeyWriter extends KeyStoreActor {
                 FileOutputStream keyStoreOutputStream = null;
 
                 try {
-                    keyStoreOutputStream = new FileOutputStream(fileOrURL
-                            .asFile());
-                    _keyStore.store(keyStoreOutputStream, _storePassword
-                            .toCharArray());
+                    keyStoreOutputStream = new FileOutputStream(
+                            fileOrURL.asFile());
+                    _keyStore.store(keyStoreOutputStream,
+                            _storePassword.toCharArray());
                     keyStoreOutputStream.close();
                 } finally {
                     try {

@@ -54,7 +54,7 @@ public class Diff {
                 if (aStringSplit[i].equals(bStringSplit[j])) {
                     lcs[i][j] = lcs[i + 1][j + 1] + 1;
                 } else {
-                    lcs[i][j] = Math.max(lcs[i+1][j], lcs[i][j+1]);
+                    lcs[i][j] = Math.max(lcs[i + 1][j], lcs[i][j + 1]);
                 }
             }
         }
@@ -98,8 +98,8 @@ public class Diff {
      *  into a URL.
      *  @exception IOException If a file cannot be read.
      */
-    public static void main(String[] args)
-            throws MalformedURLException, IOException {
+    public static void main(String[] args) throws MalformedURLException,
+            IOException {
         if (args.length != 2) {
             System.err.println("Error: number of arguments must be 2, "
                     + "not " + args.length + ".");
@@ -111,7 +111,7 @@ public class Diff {
         URL urlB = new File(args[1]).toURI().toURL();
 
         System.out.println(diff(
-                        new String(FileUtilities.binaryReadURLToByteArray(urlA)),
-                        new String(FileUtilities.binaryReadURLToByteArray(urlB))));
+                new String(FileUtilities.binaryReadURLToByteArray(urlA)),
+                new String(FileUtilities.binaryReadURLToByteArray(urlB))));
     }
 }

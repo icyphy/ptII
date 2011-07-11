@@ -128,8 +128,8 @@ public class LayoutConstraintsManager {
     }
 
     public List<ContainerLayout> getLayouts() {
-        List<ContainerLayout> list = new ArrayList<ContainerLayout>(layouts
-                .size());
+        List<ContainerLayout> list = new ArrayList<ContainerLayout>(
+                layouts.size());
         list.addAll(layouts);
         return list;
     }
@@ -250,9 +250,7 @@ public class LayoutConstraintsManager {
                 xml.append("verticalAlignment=\""
                         + getAlignment(constraints.vAlign) + "\" ");
                 xml.append("topInset=\"" + constraints.insets.top + "\" ");
-                xml
-                        .append("bottomInset=\"" + constraints.insets.bottom
-                                + "\" ");
+                xml.append("bottomInset=\"" + constraints.insets.bottom + "\" ");
                 xml.append("rightInset=\"" + constraints.insets.right + "\" ");
                 xml.append("leftInset=\"" + constraints.insets.left + "\"/>\n");
             }
@@ -311,8 +309,8 @@ public class LayoutConstraintsManager {
                                             .get(propertyName) }));
                             xmlEncoder.close();
 
-                            String propertyXml = new String(stream
-                                    .toByteArray());
+                            String propertyXml = new String(
+                                    stream.toByteArray());
                             int voidStart = propertyXml.indexOf("<void");
                             int voidEnd = propertyXml.indexOf(">", voidStart);
                             int end = propertyXml.lastIndexOf("</void>");
@@ -488,11 +486,9 @@ public class LayoutConstraintsManager {
                         "Container must have a name attribute");
             }
             String columnSpecs = containerAttributes.get("columnSpecs") != null ? containerAttributes
-                    .get("columnSpecs")
-                    : "";
+                    .get("columnSpecs") : "";
             String rowSpecs = containerAttributes.get("rowSpecs") != null ? containerAttributes
-                    .get("rowSpecs")
-                    : "";
+                    .get("rowSpecs") : "";
 
             final ContainerLayout containerLayout = new ContainerLayout(
                     containerName, columnSpecs, rowSpecs);
@@ -637,8 +633,8 @@ public class LayoutConstraintsManager {
         if (attributes != null) {
             for (int index = 0; index < attributes.getLength(); index++) {
                 Node attribute = attributes.item(index);
-                attributeMap.put(attribute.getNodeName(), attribute
-                        .getNodeValue());
+                attributeMap.put(attribute.getNodeName(),
+                        attribute.getNodeValue());
             }
         }
 

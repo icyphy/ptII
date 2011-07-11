@@ -123,7 +123,8 @@ public class ActorGraphTableau extends Tableau {
      */
     public boolean close() {
         if (_debugClosing) {
-            System.out.println("ActorGraphTableau.close() : " + getFrame().getName());
+            System.out.println("ActorGraphTableau.close() : "
+                    + getFrame().getName());
         }
 
         return super.close();
@@ -171,7 +172,8 @@ public class ActorGraphTableau extends Tableau {
             // Need to check for PlotEffigy here, or
             // $PTII/bin/vergil $PTII/ptolemy/plot/demo/sinusoids.xml will not open the
             // plot.
-            if (effigy instanceof PtolemyEffigy && ! (effigy instanceof PlotEffigy)) {
+            if (effigy instanceof PtolemyEffigy
+                    && !(effigy instanceof PlotEffigy)) {
                 // First see whether the effigy already contains a graphTableau.
                 ActorGraphTableau tableau = (ActorGraphTableau) effigy
                         .getEntity("graphTableau");

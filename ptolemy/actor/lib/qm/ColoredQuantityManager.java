@@ -28,7 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-
 package ptolemy.actor.lib.qm;
 
 import ptolemy.actor.QuantityManager;
@@ -49,7 +48,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (derler)
  *  @Pt.AcceptedRating Red (derler)
  */
-public abstract class ColoredQuantityManager extends TypedAtomicActor implements QuantityManager {
+public abstract class ColoredQuantityManager extends TypedAtomicActor implements
+        QuantityManager {
 
     /** Construct a Bus with a name and a container.
      *  The container argument must not be null, or a

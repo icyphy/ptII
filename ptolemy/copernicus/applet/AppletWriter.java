@@ -218,19 +218,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         // The URL, usually a URL that refers to the _outputDirectory,
         // except when we are deploying
-        _ptIILocalURL = PhaseOptions.getString(options,
-                "ptIILocalURL");
+        _ptIILocalURL = PhaseOptions.getString(options, "ptIILocalURL");
         if (_ptIILocalURL == null) {
             try {
-                _ptIILocalURL = new URL(new File(
-                                               _outputDirectory).toURI().toURL(), _codeBase).toString();
-                } catch (Exception ex) {
+                _ptIILocalURL = new URL(new File(_outputDirectory).toURI()
+                        .toURL(), _codeBase).toString();
+            } catch (Exception ex) {
                 throw new InternalErrorException(null, ex,
-                                                 "Failed to create URL for \"" + _outputDirectory + "\"");
+                        "Failed to create URL for \"" + _outputDirectory + "\"");
             }
         } else {
-            System.out.println("AppletWriter: ptIILocalURL = "
-                               + _ptIILocalURL);
+            System.out.println("AppletWriter: ptIILocalURL = " + _ptIILocalURL);
         }
 
         _ptIIUserDirectory = PhaseOptions.getString(options,
@@ -695,9 +693,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
 
             CodeGeneratorUtilities.substitute(_templateDirectory
-                    + "default.css", _substituteMap, defaultStyleSheetDirectory
-                    .toString()
-                    + "/default.css");
+                    + "default.css", _substituteMap,
+                    defaultStyleSheetDirectory.toString() + "/default.css");
         } catch (Exception ex) {
             // This exception tends to get eaten by soot, so we print as well.
             System.err.println("Problem writing makefile or html files:" + ex);
@@ -865,8 +862,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 System.out.println("_deepOpaqueEntityJars: "
                         + componentEntity.getClass().getName());
             }
-            if (componentEntity.getClass().getName().contains(
-                    "ptolemy.actor.lib.jni")) {
+            if (componentEntity.getClass().getName()
+                    .contains("ptolemy.actor.lib.jni")) {
 
                 if (_debug) {
                     System.out.println("_deepOpaqueEntityJars1: "
@@ -912,16 +909,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private static String _checkForJNLPExtensions(String jarFileName) {
         StringBuffer result = new StringBuffer();
         if (jarFileName.contains("ptolemy/actor/lib/jai/jai.jar")) {
-            result
-                    .append("    <extension href=\"http://download.java.net/media/jai-imageio/webstart/release/jai-imageio-1.1-latest.jnlp\"/>\n");
+            result.append("    <extension href=\"http://download.java.net/media/jai-imageio/webstart/release/jai-imageio-1.1-latest.jnlp\"/>\n");
         }
         if (jarFileName.contains("ptolemy/actor/lib/jmf/jmf.jar")) {
-            result
-                    .append("<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>\n");
+            result.append("<jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/customizer.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/jmf.jar\"/>\n    <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/mediaplayer.jar\"/>\n   <jar href=\"http://cvs588.gsfc.nasa.gov/WebStartiliads/dev/lib/jmf/JMF-2.1.1e/lib/multiplayer.jar\"/>\n");
         }
         if (jarFileName.contains("ptolemy/domains/gr/gr.jar")) {
-            result
-                    .append("   <extension href=\"http://download.java.net/media/java3d/webstart/release/java3d-latest.jnlp\"/>\n");
+            result.append("   <extension href=\"http://download.java.net/media/java3d/webstart/release/java3d-latest.jnlp\"/>\n");
         }
         return result.toString();
     }
@@ -1105,8 +1099,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     // where the class is found.  If the class is foo.bar.biz,
                     // the we look for $PTII/foo/bar/bar.jar
                     String pathName = className.replace('.', '/');
-                    String directoryName = pathName.substring(0, pathName
-                            .lastIndexOf("/"));
+                    String directoryName = pathName.substring(0,
+                            pathName.lastIndexOf("/"));
                     String jarFileName = directoryName
                             + directoryName.substring(directoryName
                                     .lastIndexOf("/")) + ".jar";
@@ -1595,12 +1589,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             auxiliaryClassMap.put("data/properties.jar needs tester.jar",
                     "ptolemy/domains/tester/tester.jar");
             auxiliaryClassMap
-                    .put(
-                            "data/properties.jar needs domains/properties/properties.jar",
+                    .put("data/properties.jar needs domains/properties/properties.jar",
                             "ptolemy/domains/properties/properties.jar");
             auxiliaryClassMap
-                    .put(
-                            "data/properties.jar needs vergil/properties/properties.jar",
+                    .put("data/properties.jar needs vergil/properties/properties.jar",
                             "ptolemy/vergil/properties/properties.jar");
         }
 
@@ -1696,15 +1688,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         if (domainPackage.equals("ptolemy.domains.sdf.lib.vq")) {
             return "ptolemy/domains/sdf/lib/vq/vq.jar";
         }
-        String domainPackageDomain = domainPackage.substring(0, domainPackage
-                .lastIndexOf("."));
+        String domainPackageDomain = domainPackage.substring(0,
+                domainPackage.lastIndexOf("."));
 
         String domainDomain = domainPackageDomain.substring(domainPackageDomain
                 .lastIndexOf(".") + 1);
 
         String results = StringUtilities.substitute(domainPackageDomain, ".",
-                "/")
-                + "/" + domainDomain + ".jar";
+                "/") + "/" + domainDomain + ".jar";
         if (results.equals("ptolemy/ptolemy.jar")) {
             return "ptolemy/ptsupport.jar";
         }
@@ -1718,7 +1709,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // FIXME: Hardwired paths and passwords here.
         String keystoreFileName = StringUtilities
                 .getProperty("ptolemy.ptII.dir")
-                + File.separator + "ptKeystore";
+                + File.separator
+                + "ptKeystore";
 
         String storePassword = "this.is.the.storePassword,change.it";
         String keyPassword = "this.is.the.keyPassword,change.it";
@@ -1726,7 +1718,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         String keystorePropertiesFileName = StringUtilities
                 .getProperty("ptolemy.ptII.dir")
-                + File.separator + "ptKeystore.properties";
+                + File.separator
+                + "ptKeystore.properties";
 
         Properties properties = new Properties();
         try {
@@ -1735,7 +1728,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 fileInputStream = new FileInputStream(
                         keystorePropertiesFileName);
                 System.out.println("Reading properties file: "
-                                   + keystorePropertiesFileName);
+                        + keystorePropertiesFileName);
                 properties.load(fileInputStream);
                 System.out.println("Properties: " + properties);
                 String property = null;

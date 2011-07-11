@@ -285,8 +285,8 @@ abstract public class GRShadedShape extends GRActor3D {
 
                     if ((_viewScreen != null) && (textureURL != null)) {
                         TextureLoader loader;
-                        loader = new TextureLoader(textureURL, _viewScreen
-                                .getCanvas());
+                        loader = new TextureLoader(textureURL,
+                                _viewScreen.getCanvas());
 
                         Texture loadedTexture = loader.getTexture();
 

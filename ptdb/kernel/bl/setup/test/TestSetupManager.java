@@ -63,7 +63,7 @@ import ptdb.kernel.database.OracleXMLDBConnection;
 //// TestSetupManager
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest( { SetupManager.class, DBConnection.class,
+@PrepareForTest({ SetupManager.class, DBConnection.class,
         DBConnectorFactory.class, DBExecutionException.class,
         OracleXMLDBConnection.class })
 @SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory")
@@ -88,15 +88,15 @@ public class TestSetupManager {
 
         SetupManager setupManager = new SetupManager();
 
-//        PowerMock.mockStatic(DBConnectorFactory.class);
-//
-//        SetupParameters setupParametersMock = PowerMock
-//                .createMock(SetupParameters.class);
-//
-//        EasyMock.expect(DBConnectorFactory.getSetupParameters()).andReturn(
-//                setupParametersMock);
+        //        PowerMock.mockStatic(DBConnectorFactory.class);
+        //
+        //        SetupParameters setupParametersMock = PowerMock
+        //                .createMock(SetupParameters.class);
+        //
+        //        EasyMock.expect(DBConnectorFactory.getSetupParameters()).andReturn(
+        //                setupParametersMock);
 
-//        PowerMock.replayAll();
+        //        PowerMock.replayAll();
 
         SetupParameters resultSetupParameters = setupManager
                 .getSetupParameters();
@@ -156,16 +156,10 @@ public class TestSetupManager {
     @Test
     public void testTestConnection() throws Exception {
 
-
-
         SetupManager setupManager = new SetupManager();
 
-
-
-
-
         try {
-//            DBConnectorFactory.loadDBProperties();
+            //            DBConnectorFactory.loadDBProperties();
 
             SetupParameters setupParam = setupManager.getSetupParameters();
 
@@ -198,7 +192,7 @@ public class TestSetupManager {
         boolean isSuccessful = false;
 
         try {
-//            DBConnectorFactory.loadDBProperties();
+            //            DBConnectorFactory.loadDBProperties();
 
             setupManager.testConnection(setupParam);
         } catch (DBConnectionException e) {
@@ -232,7 +226,7 @@ public class TestSetupManager {
 
         try {
 
-//            DBConnectorFactory.loadDBProperties();
+            //            DBConnectorFactory.loadDBProperties();
 
             setupManager.testConnection(setupParam);
         } catch (DBConnectionException e) {
@@ -263,16 +257,14 @@ public class TestSetupManager {
 
         PowerMock.mockStatic(DBConnectorFactory.class);
 
-
         DBConnectorFactory.loadDBProperties();
 
         PowerMock.expectLastCall().atLeastOnce();
 
-
         PowerMock.replayAll();
 
-
-        SetupParameters setupParam = new SetupParameters("D:/Whatever", "testing.dbxml", "testing_cache.dbxml");
+        SetupParameters setupParam = new SetupParameters("D:/Whatever",
+                "testing.dbxml", "testing_cache.dbxml");
 
         try {
 
@@ -321,8 +313,7 @@ public class TestSetupManager {
         }
     }
 
-
-//    static {
-//        DBConnectorFactory.loadDBProperties();
-//    }
+    //    static {
+    //        DBConnectorFactory.loadDBProperties();
+    //    }
 }

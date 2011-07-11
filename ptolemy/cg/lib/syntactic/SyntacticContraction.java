@@ -74,7 +74,9 @@ public class SyntacticContraction implements SyntacticTerm {
      *  @return list of input ports.
      */
     public List<SyntacticPort> getInputs() {
-        if (_kernel == null) return null;
+        if (_kernel == null) {
+            return null;
+        }
         List<SyntacticPort> ports = _kernel.getInputs();
         return ports.subList(_degree, ports.size());
     }
@@ -85,7 +87,9 @@ public class SyntacticContraction implements SyntacticTerm {
      *  @return list of output ports.
      */
     public List<SyntacticPort> getOutputs() {
-        if (_kernel == null) return null;
+        if (_kernel == null) {
+            return null;
+        }
         List<SyntacticPort> ports = _kernel.getOutputs();
         return ports.subList(_degree, ports.size());
     }
@@ -122,7 +126,9 @@ public class SyntacticContraction implements SyntacticTerm {
      *  @return the index of the port or null if none.
      */
     public Integer inputIndex(SyntacticPort port) {
-        if (_kernel == null) return null;
+        if (_kernel == null) {
+            return null;
+        }
         Integer index = _kernel.inputIndex(port);
         return index == null || index < _degree ? null : (index - _degree);
     }
@@ -151,15 +157,17 @@ public class SyntacticContraction implements SyntacticTerm {
      *  @return whether kernel was set.
      */
     public boolean setKernel(SyntacticTerm term) {
-        SyntacticRank rank  = term.rank();
+        SyntacticRank rank = term.rank();
         SyntacticRank crank = SyntacticRank.contract(rank, _degree);
 
-        if (crank == null) return false;
+        if (crank == null) {
+            return false;
+        }
         _rank = crank;
         _kernel = term;
 
-        System.out.print("\nSetting Kernel with degree "
-            + _degree + " and boundary " + crank.generateCode() + ".\n");
+        System.out.print("\nSetting Kernel with degree " + _degree
+                + " and boundary " + crank.generateCode() + ".\n");
 
         return true;
     }
@@ -174,8 +182,11 @@ public class SyntacticContraction implements SyntacticTerm {
      *  @return lexical representation of term.
      */
     public String generateCode() {
-        if (_kernel == null) return "{}";
-        else return "{" + _degree + ": " + _kernel.generateCode() + "}";
+        if (_kernel == null) {
+            return "{}";
+        } else {
+            return "{" + _degree + ": " + _kernel.generateCode() + "}";
+        }
     }
 
     /** Get the sort order of the term.

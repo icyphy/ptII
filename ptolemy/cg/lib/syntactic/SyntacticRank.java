@@ -68,8 +68,8 @@ public class SyntacticRank {
         _rank = new int[_dimension];
         _rank[_forwardOut] = fo;
         _rank[_reverseOut] = ro;
-        _rank[_forwardIn]  = fi;
-        _rank[_reverseIn]  = ri;
+        _rank[_forwardIn] = fi;
+        _rank[_reverseIn] = ri;
     }
 
     /** Construct a new forward rank.
@@ -84,8 +84,8 @@ public class SyntacticRank {
         _rank = new int[_dimension];
         _rank[_forwardOut] = fo;
         _rank[_reverseOut] = 0;
-        _rank[_forwardIn]  = fi;
-        _rank[_reverseIn]  = 0;
+        _rank[_forwardIn] = fi;
+        _rank[_reverseIn] = 0;
     }
 
     /** Copy a rank.
@@ -94,7 +94,7 @@ public class SyntacticRank {
      */
     public SyntacticRank copy() {
         return new SyntacticRank(_rank[_forwardOut], _rank[_reverseOut],
-                        _rank[_forwardIn],  _rank[_reverseIn]);
+                _rank[_forwardIn], _rank[_reverseIn]);
     }
 
     /** Get the forward output rank.
@@ -149,11 +149,13 @@ public class SyntacticRank {
      *  @return code representation of rank.
      */
     public String generateCode() {
-        if (_rank[_reverseOut] == 0 && _rank[_reverseIn] == 0)
+        if (_rank[_reverseOut] == 0 && _rank[_reverseIn] == 0) {
             return "<" + _rank[_forwardIn] + " -> " + _rank[_forwardOut] + ">";
-        else return "<" +
-            + _rank[_forwardIn]  + "(" + _rank[_reverseOut] + ")" + " -> "
-            + _rank[_forwardOut] + "(" + _rank[_reverseIn]  + ")" + ">";
+        } else {
+            return "<" + +_rank[_forwardIn] + "(" + _rank[_reverseOut] + ")"
+                    + " -> " + _rank[_forwardOut] + "(" + _rank[_reverseIn]
+                    + ")" + ">";
+        }
     }
 
     /** Generate code representation for no rank information.
@@ -183,9 +185,11 @@ public class SyntacticRank {
      */
     static public SyntacticRank compose(SyntacticRank a, SyntacticRank b) {
         boolean canCompose = a.forwardOut() == b.forwardIn();
-        if (!canCompose) System.out.print("Composition problem");
-        return canCompose
-            ? new SyntacticRank(a.forwardIn(), b.forwardOut()) : null;
+        if (!canCompose) {
+            System.out.print("Composition problem");
+        }
+        return canCompose ? new SyntacticRank(a.forwardIn(), b.forwardOut())
+                : null;
     }
 
     /** Compose the ranks of two terms.
@@ -211,8 +215,9 @@ public class SyntacticRank {
      *  @return sum of first and second ranks.
      */
     static public SyntacticRank add(SyntacticRank a, SyntacticRank b) {
-        return a.forwardIn() == b.forwardIn() && a.forwardOut() == b.forwardOut()
-            ? new SyntacticRank(a.forwardIn(), a.forwardOut()) : null;
+        return a.forwardIn() == b.forwardIn()
+                && a.forwardOut() == b.forwardOut() ? new SyntacticRank(
+                a.forwardIn(), a.forwardOut()) : null;
     }
 
     /** Add the ranks of two terms.
@@ -236,7 +241,8 @@ public class SyntacticRank {
      *  @return product of ranks.
      */
     static public SyntacticRank product(SyntacticRank a, SyntacticRank b) {
-        return new SyntacticRank(a.forwardIn() + b.forwardIn(), a.forwardOut() + b.forwardOut());
+        return new SyntacticRank(a.forwardIn() + b.forwardIn(), a.forwardOut()
+                + b.forwardOut());
     }
 
     /** Multiply the ranks of two terms.
@@ -259,7 +265,9 @@ public class SyntacticRank {
      *  @return Contracted rank or null if not possible.
      */
     static public SyntacticRank contract(SyntacticRank a, int n) {
-        if (n < 0 || n > a.forwardIn() || n > a.forwardOut()) return null;
+        if (n < 0 || n > a.forwardIn() || n > a.forwardOut()) {
+            return null;
+        }
         return new SyntacticRank(a.forwardIn() - n, a.forwardOut() - n);
     }
 
@@ -270,8 +278,8 @@ public class SyntacticRank {
      *  @see #product(SyntacticRank, SyntacticRank)
      */
     public SyntacticRank product(SyntacticRank a) {
-        _rank[_forwardIn]   += a.forwardIn();
-        _rank[_forwardOut]  += a.forwardOut();
+        _rank[_forwardIn] += a.forwardIn();
+        _rank[_forwardOut] += a.forwardOut();
         return this;
     }
 
@@ -284,11 +292,10 @@ public class SyntacticRank {
      *  @see #product(SyntacticRank, SyntacticRank)
      */
     public SyntacticRank quotent(SyntacticRank a) {
-        _rank[_forwardIn]   = Math.max(_rank[_forwardIn]  - a.forwardIn(), 0);
-        _rank[_forwardOut]  = Math.max(_rank[_forwardOut] - a.forwardOut(), 0);
+        _rank[_forwardIn] = Math.max(_rank[_forwardIn] - a.forwardIn(), 0);
+        _rank[_forwardOut] = Math.max(_rank[_forwardOut] - a.forwardOut(), 0);
         return this;
     }
-
 
     /** Forward output index. */
     private static final int _forwardOut = 0;
@@ -297,13 +304,13 @@ public class SyntacticRank {
     private static final int _reverseOut = 1;
 
     /** Forward input index. */
-    private static final int _forwardIn  = 2;
+    private static final int _forwardIn = 2;
 
     /** Reverse input index. */
-    private static final int _reverseIn  = 3;
+    private static final int _reverseIn = 3;
 
     /** Dimension of rank. */
-    private static final int _dimension  = 4;
+    private static final int _dimension = 4;
 
     /** Rank stored as an array. */
     private int _rank[];

@@ -202,8 +202,9 @@ public class TestIcon extends NameIcon {
             if (colorParameter != null) {
                 ArrayToken array = (ArrayToken) colorParameter.getToken();
                 if (array.length() == 4) {
-                    Color color = new Color((float) ((ScalarToken) array
-                            .getElement(0)).doubleValue(),
+                    Color color = new Color(
+                            (float) ((ScalarToken) array.getElement(0))
+                                    .doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
                                     .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
@@ -225,8 +226,8 @@ public class TestIcon extends NameIcon {
         LabelFigure label = new LabelFigure(text, _ACTION_FONT, 1.0,
                 SwingConstants.CENTER);
         Rectangle2D newBounds = label.getBounds();
-        label.translateTo(bounds.getCenterX(), bounds.getMaxY()
-                + newBounds.getHeight() / 2.0 + 7.0);
+        label.translateTo(bounds.getCenterX(),
+                bounds.getMaxY() + newBounds.getHeight() / 2.0 + 7.0);
         figure.add(label);
         return label;
     }

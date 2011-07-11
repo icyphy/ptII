@@ -496,15 +496,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *   and it throws it. Derived classes may choose to throw this
      *   exception for other reasons.
      */
-    public Time fireAt(Actor actor, Time time, int index) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int index)
+            throws IllegalActionException {
         if (_eventQueue == null) {
             throw new IllegalActionException(this,
                     "Calling fireAt() before preinitialize().");
         }
         if (_debugging) {
             _debug("DEDirector: Actor " + actor.getFullName()
-                    + " requests refiring at " + time
-                    + " with microstep " + index);
+                    + " requests refiring at " + time + " with microstep "
+                    + index);
         }
         // Normally, we do not need to delegate the request up
         // the hierarchy. This will be done in postfire.
@@ -567,15 +568,18 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                     result = getModelTime();
                 }
             }
-            if (result.compareTo(getModelTime()) == 0 && index <= _microstep && !_isInitializing) {
+            if (result.compareTo(getModelTime()) == 0 && index <= _microstep
+                    && !_isInitializing) {
                 // NOTE: Incrementing the microstep here is wrong if we are in initialize().
                 index = _microstep + 1;
 
                 if (index == Integer.MAX_VALUE) {
-                    throw new IllegalActionException(this, actor,
+                    throw new IllegalActionException(
+                            this,
+                            actor,
                             "Microstep has hit the maximum while scheduling a firing of "
-                            + actor.getFullName()
-                            + ". Perhaps the model has a stuttering Zeno Condition?");
+                                    + actor.getFullName()
+                                    + ". Perhaps the model has a stuttering Zeno Condition?");
                 }
             }
 
@@ -1105,8 +1109,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      */
     public void preinitialize() throws IllegalActionException {
         // Initialize an event queue.
-        _eventQueue = new DECQEventQueue(((IntToken) minBinCount.getToken())
-                .intValue(), ((IntToken) binCountFactor.getToken()).intValue(),
+        _eventQueue = new DECQEventQueue(
+                ((IntToken) minBinCount.getToken()).intValue(),
+                ((IntToken) binCountFactor.getToken()).intValue(),
                 ((BooleanToken) isCQAdaptive.getToken()).booleanValue());
 
         // Add debug listeners.
@@ -1134,7 +1139,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             // done in preinitialize.
             CompositeActor container = (CompositeActor) getContainer();
             CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
-                .getCausalityInterface();
+                    .getCausalityInterface();
             causality.checkForCycles();
         }
 
@@ -1293,43 +1298,42 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  @exception IllegalActionException if model time is set backwords.
      */
     protected boolean _checkForNextEvent() throws IllegalActionException {
-      // The following code enforces that a firing of a
-      // DE director only handles events with the same tag.
-      // If the earliest event in the event queue is in the future,
-      // this code terminates the current iteration.
-      // This code is applied on both embedded and top-level directors.
-      synchronized (_eventQueue) {
-          if (!_eventQueue.isEmpty()) {
-              DEEvent next = _eventQueue.get();
+        // The following code enforces that a firing of a
+        // DE director only handles events with the same tag.
+        // If the earliest event in the event queue is in the future,
+        // this code terminates the current iteration.
+        // This code is applied on both embedded and top-level directors.
+        synchronized (_eventQueue) {
+            if (!_eventQueue.isEmpty()) {
+                DEEvent next = _eventQueue.get();
 
-              if ((next.timeStamp().compareTo(getModelTime()) > 0)) {
-                  // If the next event is in the future time,
-                  // jump out of the big while loop in fire() and
-                  // proceed to postfire().
-                  return false;
-              } else if (next.microstep() > _microstep) {
-                  // If the next event has a bigger microstep,
-                  // jump out of the big while loop in fire() and
-                  // proceed to postfire().
-                  return false;
-              } else if ((next.timeStamp().compareTo(getModelTime()) < 0)
-                      || (next.microstep() < _microstep)) {
-                  throw new IllegalActionException(
-                          "The tag of the next event ("
-                                  + next.timeStamp() + "."
-                                  + next.microstep()
-                                  + ") can not be less than"
-                                  + " the current tag (" + getModelTime()
-                                  + "." + _microstep + ") !");
-              } else {
-                  // The next event has the same tag as the current tag,
-                  // indicating that at least one actor is going to be
-                  // fired at the current iteration.
-                  // Continue the current iteration.
-              }
-          }
-      }
-      return true;
+                if ((next.timeStamp().compareTo(getModelTime()) > 0)) {
+                    // If the next event is in the future time,
+                    // jump out of the big while loop in fire() and
+                    // proceed to postfire().
+                    return false;
+                } else if (next.microstep() > _microstep) {
+                    // If the next event has a bigger microstep,
+                    // jump out of the big while loop in fire() and
+                    // proceed to postfire().
+                    return false;
+                } else if ((next.timeStamp().compareTo(getModelTime()) < 0)
+                        || (next.microstep() < _microstep)) {
+                    throw new IllegalActionException(
+                            "The tag of the next event (" + next.timeStamp()
+                                    + "." + next.microstep()
+                                    + ") can not be less than"
+                                    + " the current tag (" + getModelTime()
+                                    + "." + _microstep + ") !");
+                } else {
+                    // The next event has the same tag as the current tag,
+                    // indicating that at least one actor is going to be
+                    // fired at the current iteration.
+                    // Continue the current iteration.
+                }
+            }
+        }
+        return true;
     }
 
     /** Disable the specified actor.  All events destined to this actor
@@ -1392,10 +1396,12 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                 microstep = _microstep + 1;
 
                 if (microstep == Integer.MAX_VALUE) {
-                    throw new IllegalActionException(this, actor,
+                    throw new IllegalActionException(
+                            this,
+                            actor,
                             "Microstep has hit the maximum while scheduling a firing of "
-                            + actor.getFullName()
-                            + ". Perhaps the model has a stuttering Zeno Condition?");
+                                    + actor.getFullName()
+                                    + ". Perhaps the model has a stuttering Zeno Condition?");
                 }
             }
         } else if (time.compareTo(getModelTime()) < 0) {
@@ -1425,7 +1431,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  the enqueued event will be the greater of the current
      *  microstep and 1. That is, an event destined for a port
      *  is never queued with microstep less than 1.
-     *  </p><p>
+     *  <p>
      *  If the event queue is not ready or the actor containing the destination
      *  port is disabled, do nothing.
      *
@@ -1478,13 +1484,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         if (_debugging) {
             _debug("enqueue a trigger event for ",
                     ((NamedObj) actor).getName(), " time = " + getModelTime()
-                            + " microstep = " + microstep + " depth = "
-                            + depth);
+                            + " microstep = " + microstep + " depth = " + depth);
         }
 
         // Register this trigger event.
-        DEEvent newEvent = new DEEvent(ioPort, getModelTime(), microstep,
-                depth);
+        DEEvent newEvent = new DEEvent(ioPort, getModelTime(), microstep, depth);
         _eventQueue.put(newEvent);
     }
 
@@ -1996,14 +2000,14 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                                     }
                                 }
                             } // while
-                            // If stopFire() has been called, then the wait for real
-                            // time above was interrupted by a change request. Hence,
-                            // real time will not have reached the time of the first
-                            // event in the event queue. If we allow this method to
-                            // proceed, it will set model time to that event time,
-                            // which is in the future. This violates the principle
-                            // of synchronize to real time.  Hence, we must return
-                            // without processing the event or incrementing time.
+                              // If stopFire() has been called, then the wait for real
+                              // time above was interrupted by a change request. Hence,
+                              // real time will not have reached the time of the first
+                              // event in the event queue. If we allow this method to
+                              // proceed, it will set model time to that event time,
+                              // which is in the future. This violates the principle
+                              // of synchronize to real time.  Hence, we must return
+                              // without processing the event or incrementing time.
 
                             // NOTE: CompositeActor used to call stopFire() before
                             // queuing the change request, which created the risk
@@ -2068,7 +2072,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                     // Advance the current microstep to the event microstep.
                     _microstep = lastFoundEvent.microstep();
                     if (_debugging) {
-                        _debug("Current time is: (" + currentTime + ", " + _microstep + ")");
+                        _debug("Current time is: (" + currentTime + ", "
+                                + _microstep + ")");
                     }
                 }
 

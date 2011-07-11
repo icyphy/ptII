@@ -188,8 +188,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
             } else {
                 if (xDiff < 0) {
                     //System.out.println("routing backwards");
-                    point = new Point2D.Double(head.getX() - MINDIST, head
-                            .getY());
+                    point = new Point2D.Double(head.getX() - MINDIST,
+                            head.getY());
                 } else if (((yDiff > 0) && (tailDir == SwingConstants.SOUTH))
                         || ((yDiff < 0) && (tailDir == SwingConstants.NORTH))) {
                     //System.out.println("completing 90");
@@ -198,8 +198,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
                     double pos = Math.min(head.getX(), tail.getX()) - MINDIST;
                     point = new Point2D.Double(pos, head.getY());
                 } else {
-                    point = new Point2D.Double(head.getX() - (xDiff / 2), head
-                            .getY());
+                    point = new Point2D.Double(head.getX() - (xDiff / 2),
+                            head.getY());
                 }
 
                 if (yDiff > 0) {
@@ -218,8 +218,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
             } else {
                 if (xDiff > 0) {
                     //System.out.println("routing backwards");
-                    point = new Point2D.Double(head.getX() + MINDIST, head
-                            .getY());
+                    point = new Point2D.Double(head.getX() + MINDIST,
+                            head.getY());
                 } else if (((yDiff > 0) && (tailDir == SwingConstants.SOUTH))
                         || ((yDiff < 0) && (tailDir == SwingConstants.NORTH))) {
                     //System.out.println("completing 90");
@@ -228,8 +228,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
                     double pos = Math.max(head.getX(), tail.getX()) + MINDIST;
                     point = new Point2D.Double(pos, head.getY());
                 } else {
-                    point = new Point2D.Double(head.getX() - (xDiff / 2), head
-                            .getY());
+                    point = new Point2D.Double(head.getX() - (xDiff / 2),
+                            head.getY());
                 }
 
                 if (yDiff > 0) {

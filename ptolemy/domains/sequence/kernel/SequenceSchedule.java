@@ -173,7 +173,8 @@ public class SequenceSchedule extends Schedule {
      *  nodes to their subgraphs Used in conjunction with the control
      *  graph for determining the schedule.
      */
-    public SequenceSchedule(List<SequenceAttribute> independentList,
+    public SequenceSchedule(
+            List<SequenceAttribute> independentList,
             Hashtable<SequenceAttribute, Hashtable> controlTable,
             Hashtable<SequenceAttribute, DirectedAcyclicGraph> sequencedActorsToSubgraph) {
         super();
@@ -522,15 +523,19 @@ public class SequenceSchedule extends Schedule {
                 // if there are any depedendent branches that are true and that
                 // contain other actors for this control actor
                 else if (_currentControlSeqAttr != null) {
-                    ArrayList<SequenceAttribute> seqAttributes = findBranchActors(_currentControlSeqAttr, true);
+                    ArrayList<SequenceAttribute> seqAttributes = findBranchActors(
+                            _currentControlSeqAttr, true);
                     if (seqAttributes != null && !seqAttributes.isEmpty()) {
                         _lastHasNext = true;
                     } else {
                         // If this is a control actor that has no taken dependent branches,
                         // then we still need to add its untaken branches to the unexecuted List.
-                        ArrayList<SequenceAttribute> unexecutedSeqAttributes = findBranchActors(_currentControlSeqAttr, false);
-                        if (unexecutedSeqAttributes != null && !unexecutedSeqAttributes.isEmpty()) {
-                            _unexecutedList.addAll(findBranchActors(_currentControlSeqAttr, false));
+                        ArrayList<SequenceAttribute> unexecutedSeqAttributes = findBranchActors(
+                                _currentControlSeqAttr, false);
+                        if (unexecutedSeqAttributes != null
+                                && !unexecutedSeqAttributes.isEmpty()) {
+                            _unexecutedList.addAll(findBranchActors(
+                                    _currentControlSeqAttr, false));
                         }
                     }
                 }
@@ -721,7 +726,8 @@ public class SequenceSchedule extends Schedule {
                                 "Error - SequenceScheduler encounter a ScheduleElement that is not an instance of SequenceFiring");
                     }
 
-                    theFiring = (SequenceFiring) _schedule.get(_schedulePosition);
+                    theFiring = (SequenceFiring) _schedule
+                            .get(_schedulePosition);
                     _schedulePosition++;
                 }
 
@@ -739,7 +745,8 @@ public class SequenceSchedule extends Schedule {
                     */
                     if (_currentControlSeqAttr != null) {
                         // Check for branch actors to add to the _independentList
-                        ArrayList seqAttributes = findBranchActors(_currentControlSeqAttr, true);
+                        ArrayList seqAttributes = findBranchActors(
+                                _currentControlSeqAttr, true);
 
                         if (seqAttributes != null && !seqAttributes.isEmpty()) {
                             // If the control actor is a While loop, add it back into
@@ -759,8 +766,10 @@ public class SequenceSchedule extends Schedule {
                         }
 
                         // Add all the unexecuted branch(es) actors to the unexecuted list.
-                        ArrayList<SequenceAttribute> unexecutedSeqAttributes = findBranchActors(_currentControlSeqAttr, false);
-                        if (unexecutedSeqAttributes != null && !unexecutedSeqAttributes.isEmpty()) {
+                        ArrayList<SequenceAttribute> unexecutedSeqAttributes = findBranchActors(
+                                _currentControlSeqAttr, false);
+                        if (unexecutedSeqAttributes != null
+                                && !unexecutedSeqAttributes.isEmpty()) {
                             _unexecutedList.addAll(unexecutedSeqAttributes);
                         }
 
@@ -816,7 +825,8 @@ public class SequenceSchedule extends Schedule {
                                     //    System.out.println("Node: " + i + " is " + ((Actor) ((NamedObj) nodes[i]).getContainer()).getFullName());
                                     //}
                                     for (int i = 0; i < nodes.length; i++) {
-                                        Actor act = (Actor) ((NamedObj) nodes[i]).getContainer();
+                                        Actor act = (Actor) ((NamedObj) nodes[i])
+                                                .getContainer();
 
                                         // If the actor to be fired is a MultipleFireMethodsInterface, then set the fire method name
                                         // for the actor. Check to see if the node in the graph is a process attribute or an output port.
@@ -824,27 +834,40 @@ public class SequenceSchedule extends Schedule {
                                         // If it is a ProcessAttribute, get the method name from the ProcessAttribute.
                                         // Otherwise, use the default fire method for the actor.
                                         String methodName = null;
-                                        if (act instanceof MultipleFireMethodsInterface && ((MultipleFireMethodsInterface) act).numFireMethods() > 1) {
+                                        if (act instanceof MultipleFireMethodsInterface
+                                                && ((MultipleFireMethodsInterface) act)
+                                                        .numFireMethods() > 1) {
                                             if (nodes[i] instanceof ProcessAttribute) {
                                                 try {
-                                                    methodName = ((ProcessAttribute) nodes[i]).getMethodName();
+                                                    methodName = ((ProcessAttribute) nodes[i])
+                                                            .getMethodName();
                                                 } catch (IllegalActionException e) {
-                                                    throw new NoSuchElementException("Problem scheduling the next actor to fire in the sequence schedule " +
-                                                            "because the ProcessAttribute for a MultipleFireMethodsInterface " + act.getName() +
-                                                            " with more than one fire method has an invalid fire method setting: " + e.getMessage());
+                                                    throw new NoSuchElementException(
+                                                            "Problem scheduling the next actor to fire in the sequence schedule "
+                                                                    + "because the ProcessAttribute for a MultipleFireMethodsInterface "
+                                                                    + act.getName()
+                                                                    + " with more than one fire method has an invalid fire method setting: "
+                                                                    + e.getMessage());
                                                 }
                                             } else if (nodes[i] instanceof IOPort) {
-                                                StringAttribute methodNameAttribute = (StringAttribute) ((IOPort) nodes[i]).getAttribute("methodName");
+                                                StringAttribute methodNameAttribute = (StringAttribute) ((IOPort) nodes[i])
+                                                        .getAttribute("methodName");
                                                 if (methodNameAttribute != null) {
-                                                    methodName = methodNameAttribute.getValueAsString();
+                                                    methodName = methodNameAttribute
+                                                            .getValueAsString();
                                                 } else {
-                                                    throw new NoSuchElementException("Problem scheduling the next actor to fire in the sequence schedule " +
-                                                            "because the output port " + ((IOPort) nodes[i]).getName() + " for a MultipleFireMethodsInterface " +
-                                                            act.getName() +
-                                                            " with more than one fire method has no fire method name attribute.");
+                                                    throw new NoSuchElementException(
+                                                            "Problem scheduling the next actor to fire in the sequence schedule "
+                                                                    + "because the output port "
+                                                                    + ((IOPort) nodes[i])
+                                                                            .getName()
+                                                                    + " for a MultipleFireMethodsInterface "
+                                                                    + act.getName()
+                                                                    + " with more than one fire method has no fire method name attribute.");
                                                 }
                                             } else {
-                                                methodName = ((MultipleFireMethodsInterface) act).getDefaultFireMethodName();
+                                                methodName = ((MultipleFireMethodsInterface) act)
+                                                        .getDefaultFireMethodName();
                                             }
                                         }
 
@@ -903,27 +926,26 @@ public class SequenceSchedule extends Schedule {
             throw new UnsupportedOperationException();
         }
 
-//        /** Determines if an actor has already been scheduled to fire.
-//         *  FIXME:  Make this more efficient in the future!  Try hashtable of actors.
-//         *
-//         *  @param act The specified actor.
-//         *  @param methodName The specified method name to be executed for the actor.
-//         *  @return true If the actor has already been scheduled, false otherwise.
-//         */
-//        private boolean alreadyScheduled(Actor act, String methodName) {
-//            boolean checkMethodName = act instanceof MultipleFireMethodsInterface &&
-//                                        ((MultipleFireMethodsInterface) act).numFireMethods() > 1;
-//            for (int i = 0; i < _schedule.size(); i++) {
-//                SequenceFiring f = (SequenceFiring) _schedule.get(i);
-//                if (f.getActor().equals(act) &&
-//                        (!checkMethodName ||
-//                                (checkMethodName && f.getMethodName().equals(methodName)))) {
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }
-
+        //        /** Determines if an actor has already been scheduled to fire.
+        //         *  FIXME:  Make this more efficient in the future!  Try hashtable of actors.
+        //         *
+        //         *  @param act The specified actor.
+        //         *  @param methodName The specified method name to be executed for the actor.
+        //         *  @return true If the actor has already been scheduled, false otherwise.
+        //         */
+        //        private boolean alreadyScheduled(Actor act, String methodName) {
+        //            boolean checkMethodName = act instanceof MultipleFireMethodsInterface &&
+        //                                        ((MultipleFireMethodsInterface) act).numFireMethods() > 1;
+        //            for (int i = 0; i < _schedule.size(); i++) {
+        //                SequenceFiring f = (SequenceFiring) _schedule.get(i);
+        //                if (f.getActor().equals(act) &&
+        //                        (!checkMethodName ||
+        //                                (checkMethodName && f.getMethodName().equals(methodName)))) {
+        //                    return true;
+        //                }
+        //            }
+        //            return false;
+        //        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////

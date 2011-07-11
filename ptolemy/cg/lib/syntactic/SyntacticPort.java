@@ -92,8 +92,9 @@ public class SyntacticPort extends ComponentPort {
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      * */
-    public SyntacticPort(SyntacticNode container, Port port, boolean direction, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public SyntacticPort(SyntacticNode container, Port port, boolean direction,
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         _representedPort = port;
         _representedChannel = 0;
@@ -112,12 +113,16 @@ public class SyntacticPort extends ComponentPort {
      */
     public SyntacticPort getConnectedPort() {
         List<Port> rports = connectedPortList();
-        if (rports.size() == 0) return null;
+        if (rports.size() == 0) {
+            return null;
+        }
 
         Port rport = rports.get(0);
-        if (!(rport instanceof SyntacticPort)) return null;
+        if (!(rport instanceof SyntacticPort)) {
+            return null;
+        }
 
-        return (SyntacticPort)rport;
+        return (SyntacticPort) rport;
     }
 
     /** Get node in which port is contained.
@@ -125,8 +130,10 @@ public class SyntacticPort extends ComponentPort {
      */
     public SyntacticNode getNode() {
         NamedObj obj = this.getContainer();
-        if (obj == null || !(obj instanceof SyntacticNode)) return null;
-        return (SyntacticNode)obj;
+        if (obj == null || !(obj instanceof SyntacticNode)) {
+            return null;
+        }
+        return (SyntacticNode) obj;
     }
 
     /** Set the channel of the represented port.
@@ -200,16 +207,23 @@ public class SyntacticPort extends ComponentPort {
      *  @return IOType of given port.
      */
     static public IOType portType(Port port) {
-        if (!(port instanceof IOPort)) return IOType.none;
+        if (!(port instanceof IOPort)) {
+            return IOType.none;
+        }
 
-        IOPort ioport = (IOPort)port;
-        boolean isin  = ioport.isInput();
+        IOPort ioport = (IOPort) port;
+        boolean isin = ioport.isInput();
         boolean isout = ioport.isOutput();
 
-        if (isin && isout) return IOType.io;
-        else if (isin)     return IOType.in;
-        else if (isout)    return IOType.out;
-        else               return IOType.none;
+        if (isin && isout) {
+            return IOType.io;
+        } else if (isin) {
+            return IOType.in;
+        } else if (isout) {
+            return IOType.out;
+        } else {
+            return IOType.none;
+        }
     }
 
     /** Decide whether a port is exterior in the given entity.
@@ -220,7 +234,7 @@ public class SyntacticPort extends ComponentPort {
      *  @return whether port is exterior for the given entity.
      */
     static public boolean isPortExterior(Port port, CompositeEntity entity) {
-        return port.getContainer() == (NamedObj)entity;
+        return port.getContainer() == entity;
     }
 
     /** Gets the IOType of a given port with reference to a composite entity.
@@ -242,11 +256,12 @@ public class SyntacticPort extends ComponentPort {
      *  @return the width of the port or null if not a port.
      *  @exception IllegalActionException
      */
-    static public Integer portWidth(Port port)
-        throws IllegalActionException {
-        if (!(port instanceof IOPort)) return null;
+    static public Integer portWidth(Port port) throws IllegalActionException {
+        if (!(port instanceof IOPort)) {
+            return null;
+        }
 
-        IOPort ioport = (IOPort)port;
+        IOPort ioport = (IOPort) port;
         int width = ioport.getWidth();
         return width;
     }
@@ -269,9 +284,7 @@ public class SyntacticPort extends ComponentPort {
          *  @return reversed IO type.
          */
         public IOType reverse() {
-            return this == in  ? out
-                 : this == out ? in
-                 : this;
+            return this == in ? out : this == out ? in : this;
         }
     }
 

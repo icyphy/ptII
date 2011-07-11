@@ -127,12 +127,13 @@ public class ActuatorSetup extends OutputDevice {
 
         // Perform port consistency check if the schedulerExecutionTime
         // parameter of the director is 0.0.
-        Parameter parameter = (Parameter) getDirector().getAttribute("schedulerExecutionTime");
+        Parameter parameter = (Parameter) getDirector().getAttribute(
+                "schedulerExecutionTime");
         if ((parameter != null)
                 && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)) {
             boolean flag = false;
-            for (IOPort output : (List<IOPort>)outputPortList()) {
-                for (IOPort sinkPort : (List<IOPort>)output.sinkPortList()) {
+            for (IOPort output : (List<IOPort>) outputPortList()) {
+                for (IOPort sinkPort : (List<IOPort>) output.sinkPortList()) {
                     if (sinkPort.getContainer() == getContainer()) {
                         flag = true;
                         break;
@@ -140,10 +141,9 @@ public class ActuatorSetup extends OutputDevice {
                 }
             }
             if (!flag) {
-                throw new IllegalActionException(
-                        this,
-                        "A ActuatorSetup must be connected to a port " +
-                        "on the outside.");
+                throw new IllegalActionException(this,
+                        "A ActuatorSetup must be connected to a port "
+                                + "on the outside.");
             }
         }
     }

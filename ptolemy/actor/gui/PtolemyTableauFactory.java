@@ -93,7 +93,8 @@ public class PtolemyTableauFactory extends TableauFactory {
 
         // Delegate to the first contained effigy to open a view.
         Tableau tableau = null;
-        Iterator<TableauFactory> factories = attributeList(TableauFactory.class).iterator();
+        Iterator<TableauFactory> factories = attributeList(TableauFactory.class)
+                .iterator();
 
         if (factories.hasNext()) {
             TableauFactory factory = factories.next();

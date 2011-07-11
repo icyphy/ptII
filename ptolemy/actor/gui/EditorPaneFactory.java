@@ -130,8 +130,8 @@ public class EditorPaneFactory extends Attribute {
         JTabbedPane tabs = new JTabbedPane();
         boolean foundOne = false;
 
-        List<Settable> parameters = new LinkedList<Settable>(object
-                .attributeList(Settable.class));
+        List<Settable> parameters = new LinkedList<Settable>(
+                object.attributeList(Settable.class));
         int nbrOfTabs = 1;
         PtolemyQuery mainTab = new PtolemyQuery(object);
         mainTab.setTextWidth(40);

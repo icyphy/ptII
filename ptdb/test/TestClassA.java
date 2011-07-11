@@ -44,29 +44,27 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ClassA.class)
 public class TestClassA {
 
-
     @Test
     public void testCreateDirectoryStructure() throws Exception {
-            final String path = "directoryPath";
-            File fileMock = PowerMock.createMock(File.class);
+        final String path = "directoryPath";
+        File fileMock = PowerMock.createMock(File.class);
 
-            ClassA tested = new ClassA();
+        ClassA tested = new ClassA();
 
-            PowerMock.expectNew(File.class, path).andReturn(fileMock);
+        PowerMock.expectNew(File.class, path).andReturn(fileMock);
 
-            EasyMock.expect(fileMock.exists()).andReturn(false);
-            EasyMock.expect(fileMock.mkdirs()).andReturn(true);
+        EasyMock.expect(fileMock.exists()).andReturn(false);
+        EasyMock.expect(fileMock.mkdirs()).andReturn(true);
 
-            PowerMock.replay(fileMock, File.class);
+        PowerMock.replay(fileMock, File.class);
 
-            assertTrue(tested.createDirectoryStructure(path));
+        assertTrue(tested.createDirectoryStructure(path));
 
-            PowerMock.verify(fileMock, File.class);
+        PowerMock.verify(fileMock, File.class);
     }
 
     @Test
-    public void testGetSunSign() throws Exception
-    {
+    public void testGetSunSign() throws Exception {
         ClassB mockClassB = PowerMock.createMock(ClassB.class);
         ClassA classA = new ClassA();
 

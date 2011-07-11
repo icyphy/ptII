@@ -74,7 +74,7 @@ import ptdb.kernel.database.DBConnection;
  *
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest( { SaveModelManager.class, DBConnection.class,
+@PrepareForTest({ SaveModelManager.class, DBConnection.class,
         DBConnectorFactory.class, CreateModelTask.class, SaveModelTask.class,
         DBExecutionException.class, CacheManager.class, RenameModelTask.class })
 @SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory,ptdb.kernel.database.CacheManager")
@@ -192,8 +192,6 @@ public class TestSaveModelManager {
 
         xmlDBModel.setModel("<entity name=\"" + xmlDBModel.getModelName()
                 + "\"></entity>");
-
-
 
         CreateModelTask createModelTaskMock = PowerMock
                 .createMock(CreateModelTask.class);
@@ -346,7 +344,7 @@ public class TestSaveModelManager {
         xmlDBModel.setModel("<entity name=\"" + xmlDBModel.getModelName()
                 + "\"></entity>");
 
-//        EasyMock.expect(xmlDBModel.getIsNew()).andReturn(false);
+        //        EasyMock.expect(xmlDBModel.getIsNew()).andReturn(false);
 
         SaveModelTask saveModelTaskMock = PowerMock
                 .createMock(SaveModelTask.class);
@@ -516,8 +514,8 @@ public class TestSaveModelManager {
         SaveModelManager manager = new SaveModelManager();
         try {
             model = manager.populateChildModelsList(model);
-            assertTrue("Referenced models list is null.", model
-                    .getReferencedChildren() != null);
+            assertTrue("Referenced models list is null.",
+                    model.getReferencedChildren() != null);
             assertTrue("Incorrect number of reference models were returned.",
                     model.getReferencedChildren().size() == 2);
         } catch (XMLDBModelParsingException e) {
@@ -530,9 +528,9 @@ public class TestSaveModelManager {
         try {
             adderModel = manager.populateChildModelsList(adderModel);
 
-            assertTrue("Referenced models list is not empty.", adderModel
-                    .getReferencedChildren() == null
-                    || adderModel.getReferencedChildren().size() == 0);
+            assertTrue("Referenced models list is not empty.",
+                    adderModel.getReferencedChildren() == null
+                            || adderModel.getReferencedChildren().size() == 0);
         } catch (XMLDBModelParsingException e) {
             fail("Failed with error - " + e.getMessage());
         }
@@ -543,8 +541,8 @@ public class TestSaveModelManager {
         try {
             oneAdderModel = manager.populateChildModelsList(oneAdderModel);
 
-            assertTrue("Referenced models list is null.", oneAdderModel
-                    .getReferencedChildren() != null);
+            assertTrue("Referenced models list is null.",
+                    oneAdderModel.getReferencedChildren() != null);
 
             assertTrue("Incorrect number of reference models were returned.",
                     oneAdderModel.getReferencedChildren().size() == 2);
@@ -556,8 +554,8 @@ public class TestSaveModelManager {
         try {
             twoAdderModel = manager.populateChildModelsList(twoAdderModel);
 
-            assertTrue("Referenced models list is null.", twoAdderModel
-                    .getReferencedChildren() != null);
+            assertTrue("Referenced models list is null.",
+                    twoAdderModel.getReferencedChildren() != null);
 
             assertTrue("Incorrect number of reference models were returned.",
                     twoAdderModel.getReferencedChildren().size() == 2);
@@ -846,8 +844,8 @@ public class TestSaveModelManager {
 
         modelToBeSaved.setIsNew(false);
 
-        modelToBeSaved.setModel("<entity name=\"" + modelToBeSaved.getModelName()
-                + "\"></entity>");
+        modelToBeSaved.setModel("<entity name=\""
+                + modelToBeSaved.getModelName() + "\"></entity>");
 
         FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                 .createMock(FetchHierarchyTask.class);
@@ -935,8 +933,8 @@ public class TestSaveModelManager {
 
         modelToBeSaved.setIsNew(true);
 
-        modelToBeSaved.setModel("<entity name=\"" + modelToBeSaved.getModelName()
-                + "\"></entity>");
+        modelToBeSaved.setModel("<entity name=\""
+                + modelToBeSaved.getModelName() + "\"></entity>");
 
         FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                 .createMock(FetchHierarchyTask.class);
@@ -991,8 +989,6 @@ public class TestSaveModelManager {
         PowerMock.verifyAll();
     }
 
-
-
     /**
      * Test the save with parents methods when the parameters are complete.
      * @exception Exception Thrown if an exception occurred and was not handled.
@@ -1021,19 +1017,14 @@ public class TestSaveModelManager {
         EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
                 dBConnectionNoTransactionMock);
 
-
-
-
-
-
         XMLDBModel modelToBeSaved = new XMLDBModel("ModelToBeSaved");
 
         modelToBeSaved.setModelId(Utilities.generateId("ModelToBeSaved"));
 
         modelToBeSaved.setIsNew(false);
 
-        modelToBeSaved.setModel("<entity name=\"" + modelToBeSaved.getModelName()
-                + "\"></entity>");
+        modelToBeSaved.setModel("<entity name=\""
+                + modelToBeSaved.getModelName() + "\"></entity>");
 
         FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                 .createMock(FetchHierarchyTask.class);
@@ -1063,7 +1054,6 @@ public class TestSaveModelManager {
                         .executeFetchHierarchyTask(fetchHierarchyTaskMock))
                 .andReturn(null);
 
-
         ArrayList<String> parentsList = new ArrayList<String>();
 
         parentsList.add("parent");
@@ -1073,23 +1063,21 @@ public class TestSaveModelManager {
 
         GetModelTask getTask = new GetModelTask(modelToBeSaved.getModelName());
 
-        PowerMock.expectNew(GetModelTask.class, modelToBeSaved.getModelName()).andReturn(
-                getTask);
+        PowerMock.expectNew(GetModelTask.class, modelToBeSaved.getModelName())
+                .andReturn(getTask);
 
         EasyMock.expect(dBConnectionMock.executeGetModelTask(getTask))
                 .andReturn(modelToBeSaved);
 
-        XMLDBModel newVersion = new XMLDBModel(modelWithReference.getVersionName());
+        XMLDBModel newVersion = new XMLDBModel(
+                modelWithReference.getVersionName());
 
-
-        PowerMock.expectNew(XMLDBModel.class, modelWithReference.getVersionName()).andReturn(
-                newVersion);
-
+        PowerMock.expectNew(XMLDBModel.class,
+                modelWithReference.getVersionName()).andReturn(newVersion);
 
         newVersion.setIsNew(true);
         newVersion.setModel("<entity></entity>");
         newVersion.setModelId("new_modelId");
-
 
         ArrayList<XMLDBModel> newVersionList = new ArrayList<XMLDBModel>();
 
@@ -1100,8 +1088,8 @@ public class TestSaveModelManager {
         EasyMock.expect(CacheManager.removeFromCache(newVersionList))
                 .andReturn(true);
 
-
-        PowerMock.expectNew(XMLDBModel.class, "parent").andReturn(modelToBeSaved);
+        PowerMock.expectNew(XMLDBModel.class, "parent").andReturn(
+                modelToBeSaved);
 
         ArrayList<XMLDBModel> modelsToRemove = new ArrayList<XMLDBModel>();
 
@@ -1110,39 +1098,29 @@ public class TestSaveModelManager {
         EasyMock.expect(CacheManager.removeFromCache(modelsToRemove))
                 .andReturn(true);
 
-
-
-        CreateModelTask newVersionCreateMock = new CreateModelTask(modelToBeSaved);
+        CreateModelTask newVersionCreateMock = new CreateModelTask(
+                modelToBeSaved);
 
         PowerMock.expectNew(CreateModelTask.class, newVersion).andReturn(
                 newVersionCreateMock);
 
-
-        EasyMock.expect(dBConnectionMock.executeCreateModelTask(newVersionCreateMock))
+        EasyMock.expect(
+                dBConnectionMock.executeCreateModelTask(newVersionCreateMock))
                 .andReturn(newVersion.getModelId());
 
-
-
-
-        UpdateParentsToNewVersionTask updateParentsToNewVersionTask =
-            new UpdateParentsToNewVersionTask();
+        UpdateParentsToNewVersionTask updateParentsToNewVersionTask = new UpdateParentsToNewVersionTask();
 
         PowerMock.expectNew(UpdateParentsToNewVersionTask.class).andReturn(
                 updateParentsToNewVersionTask);
 
-
         updateParentsToNewVersionTask.setNewModel(newVersion);
 
-        updateParentsToNewVersionTask
-                .setOldModel(modelToBeSaved);
+        updateParentsToNewVersionTask.setOldModel(modelToBeSaved);
 
-        updateParentsToNewVersionTask
-                .setParentsList(parentsList);
+        updateParentsToNewVersionTask.setParentsList(parentsList);
 
-
-
-        dBConnectionMock.executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
-
+        dBConnectionMock
+                .executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
 
         SaveModelTask taskMock = new SaveModelTask(modelToBeSaved);
 
@@ -1151,11 +1129,6 @@ public class TestSaveModelManager {
 
         EasyMock.expect(dBConnectionMock.executeSaveModelTask(taskMock))
                 .andReturn(modelToBeSaved.getModelId());
-
-
-
-
-
 
         dBConnectionMock.commitConnection();
 
@@ -1181,8 +1154,6 @@ public class TestSaveModelManager {
         PowerMock.verifyAll();
     }
 
-
-
     /**
      * Test the save with parents methods when null connection.
      * @exception Exception Thrown if an exception occurred and was not handled.
@@ -1197,10 +1168,8 @@ public class TestSaveModelManager {
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 null);
 
-
         XMLDBModelWithReferenceChanges modelWithReference = new XMLDBModelWithReferenceChanges(
                 new XMLDBModel("Test"), null, "newModel");
-
 
         PowerMock.replayAll();
 
@@ -1245,7 +1214,6 @@ public class TestSaveModelManager {
         PowerMock.verifyAll();
     }
 
-
     /**
      * Test the save with parents methods when null connection.
      * @exception Exception Thrown if an exception occurred and was not handled.
@@ -1253,7 +1221,8 @@ public class TestSaveModelManager {
     @Test
     public void test_saveWithParents_NullModelToBeSaved() throws Exception {
         SaveModelManager saveManager = new SaveModelManager();
-        XMLDBModelWithReferenceChanges modelWithReference = new XMLDBModelWithReferenceChanges(null, null, "Test");
+        XMLDBModelWithReferenceChanges modelWithReference = new XMLDBModelWithReferenceChanges(
+                null, null, "Test");
         PowerMock.replayAll();
         try {
             saveManager.saveWithParents(modelWithReference);

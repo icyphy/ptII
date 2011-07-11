@@ -353,8 +353,8 @@ public class PtalonMatcher extends TypedCompositeActor implements
     }
 
     private HashKey _getKey(PtalonActor actor) throws IllegalActionException {
-        HashKey key = new HashKey((StringToken) actor.ptalonCodeLocation
-                .getToken());
+        HashKey key = new HashKey(
+                (StringToken) actor.ptalonCodeLocation.getToken());
         for (Object parameter : actor
                 .attributeList(PtalonExpressionParameter.class)) {
             key.put((PtalonExpressionParameter) parameter);

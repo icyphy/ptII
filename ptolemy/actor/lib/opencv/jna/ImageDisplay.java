@@ -27,7 +27,6 @@
 
 package ptolemy.actor.lib.opencv.jna;
 
-
 import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvDestroyWindow;
 import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvNamedWindow;
 import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvShowImage;
@@ -40,7 +39,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.jna.Pointer;
-
 
 ///////////////////////////////////////////////////////////////////
 //// OpenCVToAWTImage
@@ -70,35 +68,34 @@ public class ImageDisplay extends Sink {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        cvNamedWindow ("Display", 1);
+        cvNamedWindow("Display", 1);
     }
-
 
     /** Display IplImage.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             //if (!(inputObject instanceof IplImage)) {
             if (!(inputObject instanceof Pointer)) {
-               throw new IllegalActionException(this,
+                throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
             //_frame = (IplImage)inputObject;
-            _frame = (Pointer)inputObject;
+            _frame = (Pointer) inputObject;
             //_frame = cvCloneImage((IplImage)inputObject);
             // Read the next frame.
 
-            cvShowImage ("Display", _frame);
+            cvShowImage("Display", _frame);
             //_frameNum++;
             //cvSaveImage("c:/temp/test_cap" + _frameNum + ".png",_frame);
-            cvWaitKey (2);
+            cvWaitKey(2);
             //if (c == 0x1b) _frameNum+=10000;
             //System.out.println(_frameNum);
-         }
+        }
         return super.postfire();
     }
 
@@ -108,7 +105,7 @@ public class ImageDisplay extends Sink {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         //cvReleaseImage(new PointerByReference(_frame));
-        cvDestroyWindow ("Display");
+        cvDestroyWindow("Display");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -52,5 +52,6 @@ public interface ImageExportable {
      *  @exception IOException If writing to the stream fails.
      *  @exception PrinterException  If the specified format is not supported.
      */
-    public void writeImage(OutputStream stream, String format) throws PrinterException, IOException;
+    public void writeImage(OutputStream stream, String format)
+            throws PrinterException, IOException;
 }

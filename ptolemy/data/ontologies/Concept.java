@@ -115,18 +115,18 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         }
     }
 
-   /** Return the ontology that contains this concept.
-    *
-    *  @return The containing ontology.
-    */
-   public Ontology getOntology() {
-       NamedObj container = getContainer();
-       if (container instanceof Ontology) {
-           return (Ontology) container;
-       } else {
-           return null;
-       }
-   }
+    /** Return the ontology that contains this concept.
+     *
+     *  @return The containing ontology.
+     */
+    public Ontology getOntology() {
+        NamedObj container = getContainer();
+        if (container instanceof Ontology) {
+            return (Ontology) container;
+        } else {
+            return null;
+        }
+    }
 
     /** Return the current value of the InequalityTerm. Since a concept
      *  is a constant, not a variable, its value is just itself.

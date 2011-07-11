@@ -71,9 +71,10 @@ public class ProductLatticeCPO extends ConceptGraph {
         try {
             _ontologyList = _productOntology.getLatticeOntologies();
         } catch (IllegalActionException ex) {
-            throw new IllegalArgumentException("Invalid product lattice ontology; " +
-                            "could not get the list of tuple ontologies for the product " +
-                            "lattice ontology.", ex);
+            throw new IllegalArgumentException(
+                    "Invalid product lattice ontology; "
+                            + "could not get the list of tuple ontologies for the product "
+                            + "lattice ontology.", ex);
         }
 
         _findBottom();
@@ -115,13 +116,14 @@ public class ProductLatticeCPO extends ConceptGraph {
 
         if (e1 instanceof InfiniteConcept) {
             try {
-                return ((InfiniteConcept)e1).compare((Concept)e2);
+                return ((InfiniteConcept) e1).compare((Concept) e2);
             } catch (IllegalActionException e) {
                 return CPO.INCOMPARABLE;
             }
         } else if (e2 instanceof InfiniteConcept) {
             try {
-                int oppositeResult = ((InfiniteConcept)e2).compare((Concept)e1);
+                int oppositeResult = ((InfiniteConcept) e2)
+                        .compare((Concept) e1);
                 return DirectedAcyclicGraph.reverseCompareCode(oppositeResult);
             } catch (IllegalActionException e) {
                 return CPO.INCOMPARABLE;
@@ -129,8 +131,10 @@ public class ProductLatticeCPO extends ConceptGraph {
         }
 
         _validateInputArguments(e1, e2);
-        List<Concept> leftArgTuple = ((ProductLatticeConcept) e1).getConceptTuple();
-        List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
+        List<Concept> leftArgTuple = ((ProductLatticeConcept) e1)
+                .getConceptTuple();
+        List<Concept> rightArgTuple = ((ProductLatticeConcept) e2)
+                .getConceptTuple();
         int tupleSize = leftArgTuple.size();
         int numSame = 0;
         int numHigher = 0;
@@ -140,7 +144,8 @@ public class ProductLatticeCPO extends ConceptGraph {
         // track which ones are higher, same, or lower.
         for (int i = 0; i < tupleSize; i++) {
             Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-            int comparison = tupleOntology.getConceptGraph().compare(leftArgTuple.get(i), rightArgTuple.get(i));
+            int comparison = tupleOntology.getConceptGraph().compare(
+                    leftArgTuple.get(i), rightArgTuple.get(i));
 
             if (comparison == CPO.HIGHER) {
                 numHigher++;
@@ -156,76 +161,78 @@ public class ProductLatticeCPO extends ConceptGraph {
         if (numSame == tupleSize) {
             return CPO.SAME;
 
-        // If all concepts in the tuple are higher or the same, the product lattice concept
-        // is higher.
+            // If all concepts in the tuple are higher or the same, the product lattice concept
+            // is higher.
         } else if (numHigher == tupleSize || numHigher + numSame == tupleSize) {
             return CPO.HIGHER;
 
-        // If all concepts in the tuple are lower or the same, the product lattice concept
-        // is lower.
+            // If all concepts in the tuple are lower or the same, the product lattice concept
+            // is lower.
         } else if (numLower == tupleSize || numLower + numSame == tupleSize) {
             return CPO.LOWER;
 
-        // Otherwise the product lattice concepts are incomparable.
+            // Otherwise the product lattice concepts are incomparable.
         } else {
             return CPO.INCOMPARABLE;
         }
     }
 
-   /** Compute the down-set of an element in this concept graph.
-    *
-    *  This is implemented by deferring to the downSet functions of the
-    *  component graphs and then enumerating all the product results.
-    *
-    *  @param e An Object representing a ProductLatticeConcept in this
-    *   concept graph.
-    *  @return An array of ProductLatticeConcepts of the down-set of
-    *   the given argument concept.
-    *  @exception IllegalArgumentException If the passed object is not a
-    *   ProductLatticeConcept or does not belong to this CPO.
-    */
-   public ProductLatticeConcept[] downSet(Object e) {
-       // FIXME: Modify _validateInputArguments to check single argument more
-       // gracefully.  (Right now the error messages will be a little weird.)
-       _validateInputArguments(e, e);
-       ProductLatticeConcept productConcept = (ProductLatticeConcept)e;
+    /** Compute the down-set of an element in this concept graph.
+     *
+     *  This is implemented by deferring to the downSet functions of the
+     *  component graphs and then enumerating all the product results.
+     *
+     *  @param e An Object representing a ProductLatticeConcept in this
+     *   concept graph.
+     *  @return An array of ProductLatticeConcepts of the down-set of
+     *   the given argument concept.
+     *  @exception IllegalArgumentException If the passed object is not a
+     *   ProductLatticeConcept or does not belong to this CPO.
+     */
+    public ProductLatticeConcept[] downSet(Object e) {
+        // FIXME: Modify _validateInputArguments to check single argument more
+        // gracefully.  (Right now the error messages will be a little weird.)
+        _validateInputArguments(e, e);
+        ProductLatticeConcept productConcept = (ProductLatticeConcept) e;
 
-       // Get individual down set from each component ontology.
-       List<List<Concept>> downSets = new ArrayList<List<Concept>>();
-       for (Concept c : productConcept.getConceptTuple()) {
-           ConceptGraph cg = c.getOntology().getConceptGraph();
-           List<Concept> downSet = Arrays.asList(cg.downSet(c));
-           downSets.add(downSet);
-       }
-
-       // Take the product of each of those resulting component concepts.
-       List<List<Concept>> productLatticeConcepts = new ArrayList<List<Concept>>();
-       productLatticeConcepts.add(new ArrayList<Concept>());
-       for (List<Concept> concepts : downSets) {
-           List<List<Concept>> oldLayer = productLatticeConcepts;
-           productLatticeConcepts = new ArrayList<List<Concept>>();
-           for (Concept c : concepts) {
-               for (List<Concept> intermediateResult : oldLayer) {
-                   List<Concept> newLayer = new ArrayList<Concept>(intermediateResult);
-                   newLayer.add(c);
-                   productLatticeConcepts.add(newLayer);
-               }
-           }
-       }
-
-       // Change the lists of lists into a ProductLatticeConcept[] to return.
-       List<ProductLatticeConcept> result = new ArrayList<ProductLatticeConcept>();
-       for (List<Concept> pc : productLatticeConcepts) {
-           try {
-            result.add(_productOntology.getProductLatticeConceptFromTuple(pc));
-        } catch (IllegalActionException ex) {
-            throw new IllegalArgumentException("ProductLatticeCPO: "
-                    + "Argument's ontologies do not match this CPO: "
-                    + " arg = " + e + ", CPO = " + this, ex);
+        // Get individual down set from each component ontology.
+        List<List<Concept>> downSets = new ArrayList<List<Concept>>();
+        for (Concept c : productConcept.getConceptTuple()) {
+            ConceptGraph cg = c.getOntology().getConceptGraph();
+            List<Concept> downSet = Arrays.asList(cg.downSet(c));
+            downSets.add(downSet);
         }
-       }
-       return result.toArray(new ProductLatticeConcept[result.size()]);
-   }
+
+        // Take the product of each of those resulting component concepts.
+        List<List<Concept>> productLatticeConcepts = new ArrayList<List<Concept>>();
+        productLatticeConcepts.add(new ArrayList<Concept>());
+        for (List<Concept> concepts : downSets) {
+            List<List<Concept>> oldLayer = productLatticeConcepts;
+            productLatticeConcepts = new ArrayList<List<Concept>>();
+            for (Concept c : concepts) {
+                for (List<Concept> intermediateResult : oldLayer) {
+                    List<Concept> newLayer = new ArrayList<Concept>(
+                            intermediateResult);
+                    newLayer.add(c);
+                    productLatticeConcepts.add(newLayer);
+                }
+            }
+        }
+
+        // Change the lists of lists into a ProductLatticeConcept[] to return.
+        List<ProductLatticeConcept> result = new ArrayList<ProductLatticeConcept>();
+        for (List<Concept> pc : productLatticeConcepts) {
+            try {
+                result.add(_productOntology
+                        .getProductLatticeConceptFromTuple(pc));
+            } catch (IllegalActionException ex) {
+                throw new IllegalArgumentException("ProductLatticeCPO: "
+                        + "Argument's ontologies do not match this CPO: "
+                        + " arg = " + e + ", CPO = " + this, ex);
+            }
+        }
+        return result.toArray(new ProductLatticeConcept[result.size()]);
+    }
 
     /** Compute the greatest lower bound (GLB) of two elements.
      *  The GLB of two elements is the greatest element in the CPO
@@ -246,24 +253,29 @@ public class ProductLatticeCPO extends ConceptGraph {
         Concept glb = _cachedGLBs.get(inputs);
         if (glb == null) {
             _validateInputArguments(e1, e2);
-            List<Concept> leftArgTuple = ((ProductLatticeConcept) e1).getConceptTuple();
-            List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
+            List<Concept> leftArgTuple = ((ProductLatticeConcept) e1)
+                    .getConceptTuple();
+            List<Concept> rightArgTuple = ((ProductLatticeConcept) e2)
+                    .getConceptTuple();
             int tupleSize = leftArgTuple.size();
 
             List<Concept> glbTuple = new ArrayList<Concept>(tupleSize);
             for (int i = 0; i < tupleSize; i++) {
                 Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-                Concept ithGLB = (Concept) (tupleOntology.getConceptGraph().
-                        leastUpperBound(leftArgTuple.get(i), rightArgTuple.get(i)));
+                Concept ithGLB = (tupleOntology.getConceptGraph()
+                        .leastUpperBound(leftArgTuple.get(i),
+                                rightArgTuple.get(i)));
                 glbTuple.add(ithGLB);
             }
             try {
-                glb = _productOntology.getProductLatticeConceptFromTuple(glbTuple);
+                glb = _productOntology
+                        .getProductLatticeConceptFromTuple(glbTuple);
                 _cachedGLBs.put(inputs, glb);
             } catch (IllegalActionException ex) {
-                throw new IllegalArgumentException("Could not create the product " +
-                                "lattice concept greatest lower bound from the " +
-                                "component greates lower bound concepts.", ex);
+                throw new IllegalArgumentException(
+                        "Could not create the product "
+                                + "lattice concept greatest lower bound from the "
+                                + "component greates lower bound concepts.", ex);
             }
         }
         return glb;
@@ -303,30 +315,35 @@ public class ProductLatticeCPO extends ConceptGraph {
         Concept lub = _cachedLUBs.get(inputs);
         if (lub == null) {
             if (e1 instanceof InfiniteConcept) {
-                return ((InfiniteConcept)e1).leastUpperBound((Concept)e2);
+                return ((InfiniteConcept) e1).leastUpperBound((Concept) e2);
             } else if (e2 instanceof InfiniteConcept) {
-                return ((InfiniteConcept)e2).leastUpperBound((Concept)e1);
+                return ((InfiniteConcept) e2).leastUpperBound((Concept) e1);
             }
 
             _validateInputArguments(e1, e2);
-            List<Concept> leftArgTuple = ((ProductLatticeConcept) e1).getConceptTuple();
-            List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
+            List<Concept> leftArgTuple = ((ProductLatticeConcept) e1)
+                    .getConceptTuple();
+            List<Concept> rightArgTuple = ((ProductLatticeConcept) e2)
+                    .getConceptTuple();
             int tupleSize = leftArgTuple.size();
 
             List<Concept> lubTuple = new ArrayList<Concept>(tupleSize);
             for (int i = 0; i < tupleSize; i++) {
                 Ontology tupleOntology = leftArgTuple.get(i).getOntology();
-                Concept ithLUB = (Concept) (tupleOntology.getConceptGraph().
-                        leastUpperBound(leftArgTuple.get(i), rightArgTuple.get(i)));
+                Concept ithLUB = (tupleOntology.getConceptGraph()
+                        .leastUpperBound(leftArgTuple.get(i),
+                                rightArgTuple.get(i)));
                 lubTuple.add(ithLUB);
             }
             try {
-                lub = _productOntology.getProductLatticeConceptFromTuple(lubTuple);
+                lub = _productOntology
+                        .getProductLatticeConceptFromTuple(lubTuple);
                 _cachedLUBs.put(inputs, lub);
             } catch (IllegalActionException ex) {
-                throw new IllegalArgumentException("Could not create the product " +
-                                "lattice concept least upper bound from the " +
-                                "component least upper bound concepts.", ex);
+                throw new IllegalArgumentException(
+                        "Could not create the product "
+                                + "lattice concept least upper bound from the "
+                                + "component least upper bound concepts.", ex);
             }
         }
         return lub;
@@ -350,10 +367,12 @@ public class ProductLatticeCPO extends ConceptGraph {
     private void _findBottom() {
         StringBuffer conceptNameBuffer = new StringBuffer();
         for (Ontology ontology : _ontologyList) {
-            conceptNameBuffer.append(((Concept) ontology.getConceptGraph().bottom()).getName());
+            conceptNameBuffer.append((ontology.getConceptGraph().bottom())
+                    .getName());
         }
         String productLatticeConceptName = conceptNameBuffer.toString();
-        _bottomConcept = (ProductLatticeConcept) _productOntology.getEntity(productLatticeConceptName);
+        _bottomConcept = (ProductLatticeConcept) _productOntology
+                .getEntity(productLatticeConceptName);
     }
 
     /** Set the top concept of the product lattice.
@@ -361,10 +380,12 @@ public class ProductLatticeCPO extends ConceptGraph {
     private void _findTop() {
         StringBuffer conceptNameBuffer = new StringBuffer();
         for (Ontology ontology : _ontologyList) {
-            conceptNameBuffer.append(((Concept) ontology.getConceptGraph().top()).getName());
+            conceptNameBuffer.append((ontology.getConceptGraph().top())
+                    .getName());
         }
         String productLatticeConceptName = conceptNameBuffer.toString();
-        _topConcept = (ProductLatticeConcept) _productOntology.getEntity(productLatticeConceptName);
+        _topConcept = (ProductLatticeConcept) _productOntology
+                .getEntity(productLatticeConceptName);
     }
 
     /** Validate that the input arguments are valid ProductLatticeConcepts in the same
@@ -375,38 +396,46 @@ public class ProductLatticeCPO extends ConceptGraph {
      *  @exception IllegalArgumentException Thrown if either argument is invalid.
      */
     private void _validateInputArguments(Object e1, Object e2) {
-        if (!(e1 instanceof ProductLatticeConcept) || !(e2 instanceof ProductLatticeConcept)) {
+        if (!(e1 instanceof ProductLatticeConcept)
+                || !(e2 instanceof ProductLatticeConcept)) {
             throw new IllegalArgumentException("ProductLatticeCPO: "
                     + "Arguments are not instances of ProductLatticeConcept: "
                     + " arg1 = " + e1 + ", arg2 = " + e2);
         }
 
-        if (!(((ProductLatticeConcept) e1).getOntology().equals(((ProductLatticeConcept) e2).getOntology()))) {
-            throw new IllegalArgumentException("Attempt to compare elements from two distinct ontologies: "
-                    + " arg1 = " + e1 + ", arg2 = " + e2);
+        if (!(((ProductLatticeConcept) e1).getOntology()
+                .equals(((ProductLatticeConcept) e2).getOntology()))) {
+            throw new IllegalArgumentException(
+                    "Attempt to compare elements from two distinct ontologies: "
+                            + " arg1 = " + e1 + ", arg2 = " + e2);
         }
 
-        List<Concept> leftArgTuple = ((ProductLatticeConcept) e1).getConceptTuple();
-        List<Concept> rightArgTuple = ((ProductLatticeConcept) e2).getConceptTuple();
+        List<Concept> leftArgTuple = ((ProductLatticeConcept) e1)
+                .getConceptTuple();
+        List<Concept> rightArgTuple = ((ProductLatticeConcept) e2)
+                .getConceptTuple();
 
         if (leftArgTuple == null || leftArgTuple.isEmpty()) {
-            throw new IllegalArgumentException("Attempt to compare ProductLatticeConcept " +
-                    "elements where one does not have a valid " +
-                    "concept tuple: arg1 = " + e1);
+            throw new IllegalArgumentException(
+                    "Attempt to compare ProductLatticeConcept "
+                            + "elements where one does not have a valid "
+                            + "concept tuple: arg1 = " + e1);
         }
 
         if (rightArgTuple == null || rightArgTuple.isEmpty()) {
-            throw new IllegalArgumentException("Attempt to compare ProductLatticeConcept " +
-                    "elements where one does not have a valid " +
-                    "concept tuple: arg2 = " + e2);
+            throw new IllegalArgumentException(
+                    "Attempt to compare ProductLatticeConcept "
+                            + "elements where one does not have a valid "
+                            + "concept tuple: arg2 = " + e2);
         }
 
         if (leftArgTuple.size() != rightArgTuple.size()) {
-            throw new IllegalArgumentException("Attempt to compare " +
-                    "ProductLatticeConcept elements that do not have the same size " +
-                    "concept tuple arrays even though they are in the same " +
-                    "Ontology. This is an error."
-                    + " arg1 = " + e1 + ", arg2 = " + e2);
+            throw new IllegalArgumentException(
+                    "Attempt to compare "
+                            + "ProductLatticeConcept elements that do not have the same size "
+                            + "concept tuple arrays even though they are in the same "
+                            + "Ontology. This is an error." + " arg1 = " + e1
+                            + ", arg2 = " + e2);
         }
     }
 

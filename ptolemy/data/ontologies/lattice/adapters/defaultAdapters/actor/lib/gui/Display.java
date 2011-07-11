@@ -59,8 +59,7 @@ public class Display extends LatticeOntologyAdapter {
      *  @exception IllegalActionException If the adapter cannot be initialized.
      */
     public Display(LatticeOntologySolver solver,
-            ptolemy.actor.lib.gui.Display actor)
-            throws IllegalActionException {
+            ptolemy.actor.lib.gui.Display actor) throws IllegalActionException {
         super(solver, actor, false);
     }
 
@@ -74,8 +73,7 @@ public class Display extends LatticeOntologyAdapter {
      */
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
-        ptolemy.actor.lib.gui.Display displayActor =
-            (ptolemy.actor.lib.gui.Display) getComponent();
+        ptolemy.actor.lib.gui.Display displayActor = (ptolemy.actor.lib.gui.Display) getComponent();
         result.remove(displayActor.title);
         return result;
     }

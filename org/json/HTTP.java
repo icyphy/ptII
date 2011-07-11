@@ -69,14 +69,14 @@ public class HTTP {
      * @exception JSONException
      */
     public static JSONObject toJSONObject(String string) throws JSONException {
-        JSONObject     o = new JSONObject();
-        HTTPTokener    x = new HTTPTokener(string);
-        String         t;
+        JSONObject o = new JSONObject();
+        HTTPTokener x = new HTTPTokener(string);
+        String t;
 
         t = x.nextToken();
         if (t.toUpperCase().startsWith("HTTP")) {
 
-// Response
+            // Response
 
             o.put("HTTP-Version", t);
             o.put("Status-Code", x.nextToken());
@@ -85,14 +85,14 @@ public class HTTP {
 
         } else {
 
-// Request
+            // Request
 
             o.put("Method", t);
             o.put("Request-URI", x.nextToken());
             o.put("HTTP-Version", x.nextToken());
         }
 
-// Fields
+        // Fields
 
         while (x.more()) {
             String name = x.nextTo(':');
@@ -102,7 +102,6 @@ public class HTTP {
         }
         return o;
     }
-
 
     /**
      * Convert a JSONObject into an HTTP header. A request header must contain
@@ -125,8 +124,8 @@ public class HTTP {
      *  information.
      */
     public static String toString(JSONObject o) throws JSONException {
-        Iterator     keys = o.keys();
-        String       s;
+        Iterator keys = o.keys();
+        String s;
         StringBuffer sb = new StringBuffer();
         if (o.has("Status-Code") && o.has("Reason-Phrase")) {
             sb.append(o.getString("HTTP-Version"));
@@ -148,9 +147,9 @@ public class HTTP {
         sb.append(CRLF);
         while (keys.hasNext()) {
             s = keys.next().toString();
-            if (!s.equals("HTTP-Version")      && !s.equals("Status-Code") &&
-                    !s.equals("Reason-Phrase") && !s.equals("Method") &&
-                    !s.equals("Request-URI")   && !o.isNull(s)) {
+            if (!s.equals("HTTP-Version") && !s.equals("Status-Code")
+                    && !s.equals("Reason-Phrase") && !s.equals("Method")
+                    && !s.equals("Request-URI") && !o.isNull(s)) {
                 sb.append(s);
                 sb.append(": ");
                 sb.append(o.getString(s));

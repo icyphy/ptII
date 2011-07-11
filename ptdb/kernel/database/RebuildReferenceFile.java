@@ -125,8 +125,9 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
             return _referencesMap.get(modelName);
         }
 
-        referenceBuilder.append("<entity DBModelId=\"").append(modelId).append(
-                "\" name=\"").append(modelName).append("\" >").append("\n");
+        referenceBuilder.append("<entity DBModelId=\"").append(modelId)
+                .append("\" name=\"").append(modelName).append("\" >")
+                .append("\n");
 
         /* Retrieve the model content from the database.*/
         GetModelTask task = new GetModelTask(modelName);
@@ -203,9 +204,10 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
 
                 if (isReferenced && referencedModelId != null) {
                     String referencedModelName = _getModelNameFromModelId(referencedModelId);
-                    referenceBuilder
-                            .append(_buildReferenceString(new XMLDBModel(
-                                    referencedModelName, referencedModelId))).append("\n");
+                    referenceBuilder.append(
+                            _buildReferenceString(new XMLDBModel(
+                                    referencedModelName, referencedModelId)))
+                            .append("\n");
                 }
             }
         }
@@ -282,10 +284,10 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         String modelName = null;
 
         String query = "for $prop in collection(\""
-            + _params.getContainerName()
-            + "\")/entity/property where $prop/@name = \"DBModelId\" "
-            + " and $prop/@value = \"" + modelId + "\""
-            + " return base-uri($prop)";
+                + _params.getContainerName()
+                + "\")/entity/property where $prop/@name = \"DBModelId\" "
+                + " and $prop/@value = \"" + modelId + "\""
+                + " return base-uri($prop)";
 
         XmlQueryContext context = _xmlManager.createQueryContext();
         XmlResults results = _xmlManager.query(query, context, null);

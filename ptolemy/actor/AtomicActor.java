@@ -198,8 +198,8 @@ public class AtomicActor extends ComponentEntity implements Actor,
                 } catch (IllegalActionException ex) {
                     // Should never happen.
                     throw new InternalErrorException(this, ex,
-                            "Cannot create receivers on Port \"" + port.getFullName()
-                            + "\".");
+                            "Cannot create receivers on Port \""
+                                    + port.getFullName() + "\".");
                 } finally {
                     // Note that this does not increment the workspace version.
                     // We have not changed the structure of the model.
@@ -894,7 +894,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
 
         super._addPort(port);
     }
-
 
     /** Set the dependency between the input and output port to
      *  represent a time delay with the specified value.

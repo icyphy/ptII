@@ -49,6 +49,7 @@ public class TokenUtilitiesTest {
      */
     public static String doubleMultiply(Double left, Double right) {
         // Doing this in Jacl results in a different value.
-        return Double.valueOf(left.doubleValue() * right.doubleValue()).toString();
+        return Double.valueOf(left.doubleValue() * right.doubleValue())
+                .toString();
     }
 }

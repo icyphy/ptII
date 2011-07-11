@@ -39,7 +39,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
 import ptolemy.cg.lib.Profile;
@@ -98,8 +98,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
      *                when the profile can't be generated.
      */
     public void createProfile() throws IllegalActionException {
-        String modelName = NamedProgramCodeGeneratorAdapter
-                .generateName(_model);
+        String modelName = CodeGeneratorAdapter.generateName(_model);
         String profileClassName = modelName + "_profile";
 
         StringBuffer profileCode = new StringBuffer();
@@ -361,11 +360,14 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             + "model.run();" + _eol + "}" + _eol
                             + "public void run() throws Exception {" + _eol);
         } else {
-            if ((getContainer() instanceof ModularCodeGenTypedCompositeActor) &&
-                    ((Actor) getContainer()).outputPortList().size() > 0)
-                mainEntryCode.append(_eol + _eol + "public Object[] fire (boolean export, " + _eol);
-            else
-                mainEntryCode.append(_eol + _eol + "public Object[] fire (" + _eol);
+            if ((getContainer() instanceof ModularCodeGenTypedCompositeActor)
+                    && ((Actor) getContainer()).outputPortList().size() > 0) {
+                mainEntryCode.append(_eol + _eol
+                        + "public Object[] fire (boolean export, " + _eol);
+            } else {
+                mainEntryCode.append(_eol + _eol + "public Object[] fire ("
+                        + _eol);
+            }
 
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
@@ -444,14 +446,12 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 return INDENT1 + "return null;" + _eol + "}" + _eol + "}"
                         + _eol;
             } else if (_model instanceof ModularCodeGenTypedCompositeActor) {
-                return INDENT1 + INDENT1 + "return tokensToAllOutputPorts;" + _eol +
-                INDENT1 + "} else  {" + _eol
-                + "return null;" + _eol + "}"
-                + _eol + "}"
-                   + _eol + "}" + _eol;
+                return INDENT1 + INDENT1 + "return tokensToAllOutputPorts;"
+                        + _eol + INDENT1 + "} else  {" + _eol + "return null;"
+                        + _eol + "}" + _eol + "}" + _eol + "}" + _eol;
             } else {
                 return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
-                    + _eol + "}" + _eol;
+                        + _eol + "}" + _eol;
             }
         }
     }

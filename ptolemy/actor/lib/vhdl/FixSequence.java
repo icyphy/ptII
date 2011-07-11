@@ -176,8 +176,9 @@ public class FixSequence extends FixTransformer {
                         .getName(((Parameter) getAttribute("outputRounding"))
                                 .getExpression().toLowerCase());
 
-                FixPoint result = new FixPoint(((ScalarToken) valuesArray
-                        .getElement(_currentIndex)).doubleValue(),
+                FixPoint result = new FixPoint(
+                        ((ScalarToken) valuesArray.getElement(_currentIndex))
+                                .doubleValue(),
                         new FixPointQuantization(precision, overflow, rounding));
                 sendOutput(output, 0, new FixToken(result));
                 _outputProduced = true;

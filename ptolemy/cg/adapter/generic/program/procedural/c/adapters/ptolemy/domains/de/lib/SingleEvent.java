@@ -65,7 +65,7 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
         double doubleTime = ((DoubleToken) time.getToken()).doubleValue();
         Parameter valuePar = ((ptolemy.domains.de.lib.SingleEvent) getComponent()).value;
         double value;
-        Token valueToken= valuePar.getToken();
+        Token valueToken = valuePar.getToken();
         if (valueToken instanceof BooleanToken) {
             if (((BooleanToken) valueToken).booleanValue() == true) {
                 value = 1;
@@ -77,8 +77,8 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
         } else if (valueToken instanceof DoubleToken) {
             value = ((DoubleToken) valueToken).doubleValue();
         } else {
-            throw new IllegalActionException("Token type at single " +
-                            "event not supported yet.");
+            throw new IllegalActionException("Token type at single "
+                    + "event not supported yet.");
         }
 
         int intPart = (int) doubleTime;

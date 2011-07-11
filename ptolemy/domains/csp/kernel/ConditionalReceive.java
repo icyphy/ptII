@@ -207,11 +207,11 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     }
                     // Should never happen that a get or a ConditionalReceive
                     // is already at the receiver.
-                    throw new InvalidStateException(((Nameable) controller
-                            .getParent()).getName()
-                            + ": ConditionalReceive branch trying to "
-                            + " rendezvous with a receiver that already "
-                            + " has a get or a ConditionalReceive waiting.");
+                    throw new InvalidStateException(
+                            ((Nameable) controller.getParent()).getName()
+                                    + ": ConditionalReceive branch trying to "
+                                    + " rendezvous with a receiver that already "
+                                    + " has a get or a ConditionalReceive waiting.");
                 }
 
                 // Loop until either the rendezvous succeeds or the branch fails.
@@ -255,8 +255,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                     && side2._isBranchReady(receiver
                                             ._getOtherID())) {
                                 // Convert the conditional receive to a get().
-                                receiver
-                                        ._setConditionalReceive(false, null, -1);
+                                receiver._setConditionalReceive(false, null, -1);
                                 _setToken(receiver.get());
                                 // Reset the conditional send flag on the other side.
                                 receiver._setConditionalSend(false, null, -1);

@@ -225,8 +225,8 @@ public class PlotMLParser extends PlotBoxMLParser {
 
                 String msg = "XML element \"" + elementName
                         + "\" triggers exception:\n  " + ex.toString();
-                throw new XmlException(msg, _currentExternalEntity(), _parser
-                        .getLineNumber(), _parser.getColumnNumber());
+                throw new XmlException(msg, _currentExternalEntity(),
+                        _parser.getLineNumber(), _parser.getColumnNumber());
             }
         }
 

@@ -123,9 +123,8 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
      *  @exception IllegalActionException If the base class throws it.
      */
     protected UnitConcept(Ontology ontology,
-            DimensionRepresentativeConcept representative,
-            RecordToken unitInfo)
-                throws IllegalActionException, NameDuplicationException {
+            DimensionRepresentativeConcept representative, RecordToken unitInfo)
+            throws IllegalActionException, NameDuplicationException {
         super(ontology, representative, unitInfo);
 
         Token unitName = unitInfo.get(UnitConversionInfo.unitNameLabel);
@@ -133,8 +132,8 @@ public abstract class UnitConcept extends FlatTokenInfiniteConcept {
             _unitName = ((StringToken) unitName).stringValue();
         } else {
             throw new IllegalActionException(this,
-                    "Invalid unit name token (must be a String token): " +
-                    unitName);
+                    "Invalid unit name token (must be a String token): "
+                            + unitName);
         }
     }
 

@@ -178,8 +178,8 @@ public class HierarchicalStateController extends StateController {
                     if (firstExtenderDescription == null) {
                         firstExtenderDescription = description;
                     }
-                    refinementClasses.put(description, extender.className
-                            .stringValue());
+                    refinementClasses.put(description,
+                            extender.className.stringValue());
                 } catch (IllegalActionException e1) {
                     // Ignore.
                 }
@@ -187,9 +187,7 @@ public class HierarchicalStateController extends StateController {
 
             String[] choiceNames = (String[]) refinementClasses.keySet()
                     .toArray(new String[refinementClasses.size()]);
-            query
-                    .addChoice("Class", "Class", choiceNames, choiceNames[0],
-                            true);
+            query.addChoice("Class", "Class", choiceNames, choiceNames[0], true);
             if (firstExtenderDescription != null) {
                 query.set("Class", firstExtenderDescription);
             }

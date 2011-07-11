@@ -172,7 +172,7 @@ public class Derivative extends TypedAtomicActor {
             initialize();
             return;
         }
-        DoubleToken currentInput = (DoubleToken)input.get(0);
+        DoubleToken currentInput = (DoubleToken) input.get(0);
 
         Time currentTime = getDirector().getModelTime();
         if (_previousTime == null) {
@@ -191,14 +191,16 @@ public class Derivative extends TypedAtomicActor {
                 // No time has elapsed.
                 derivative.send(0, _previousOutput);
                 if (_previousValue != currentInput.doubleValue()) {
-                    impulse.send(0, new DoubleToken(
-                            currentInput.doubleValue() - _previousValue));
+                    impulse.send(0, new DoubleToken(currentInput.doubleValue()
+                            - _previousValue));
                     _previousValue = currentInput.doubleValue();
                 }
             } else {
                 // Time has elapsed.
-                double timeGap = currentTime.subtract(_previousTime).getDoubleValue();
-                double derivativeValue = (currentInput.doubleValue() - _previousValue) / timeGap;
+                double timeGap = currentTime.subtract(_previousTime)
+                        .getDoubleValue();
+                double derivativeValue = (currentInput.doubleValue() - _previousValue)
+                        / timeGap;
                 _previousOutput = new DoubleToken(derivativeValue);
                 derivative.send(0, _previousOutput);
                 _previousValue = currentInput.doubleValue();

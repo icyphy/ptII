@@ -43,7 +43,6 @@ package ptdb.common.exception;
 ///////////////////////////////////////////////////////////////////
 //// ModelAlreadyExistException
 
-
 public class ModelAlreadyExistException extends Exception {
 
     /**

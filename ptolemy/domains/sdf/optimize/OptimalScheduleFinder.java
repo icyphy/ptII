@@ -26,7 +26,6 @@
 
  */
 
-
 package ptolemy.domains.sdf.optimize;
 
 import java.io.Serializable;
@@ -72,7 +71,6 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 
 public class OptimalScheduleFinder {
 
-
     /**
      * Construct an instance of the OptimalScheduleFinder. Creates an object
      * associated with the OptimizingSDFSchedule <i>scheduler</i> and using
@@ -80,7 +78,8 @@ public class OptimalScheduleFinder {
      * @param scheduler scheduler
      * @param criterion optimization criterion
      */
-    public OptimalScheduleFinder(OptimizingSDFScheduler scheduler, OptimizationCriteria criterion) {
+    public OptimalScheduleFinder(OptimizingSDFScheduler scheduler,
+            OptimizationCriteria criterion) {
         _myScheduler = scheduler;
         _optimizationCriterion = criterion;
     }
@@ -101,7 +100,8 @@ public class OptimalScheduleFinder {
 
             // run a greedy exploration
             // keeping toExplore sorted on maximal progress makes it greedy
-            _SortedSetOfStates toExplore = new _SortedSetOfStates(new _StateComparatorMaximumProgress());
+            _SortedSetOfStates toExplore = new _SortedSetOfStates(
+                    new _StateComparatorMaximumProgress());
             // add the initial state
             toExplore.add(initialState());
             // store the end state when found
@@ -118,8 +118,7 @@ public class OptimalScheduleFinder {
                     // found !!
                     optimalEndState = state;
                     scheduleFound = true;
-                }
-                else {
+                } else {
                     // try all possible actions (actor firings) enabled from this state
                     Iterator actorIterator = _actors.iterator();
                     while (actorIterator.hasNext()) {
@@ -135,9 +134,13 @@ public class OptimalScheduleFinder {
                             actor.fireExclusive(newState);
                             // update the value to be optimized depending on the optimization criterion
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
-                                newState.value = Math.max(_channels.channelSize(newState) + actor.exclusiveBuffers, newState.value);
+                                newState.value = Math.max(
+                                        _channels.channelSize(newState)
+                                                + actor.exclusiveBuffers,
+                                        newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
-                                newState.value = state.value + actor.exclusiveExecutionTime;
+                                newState.value = state.value
+                                        + actor.exclusiveExecutionTime;
                             }
                             // add the new state to the list of states to be explored
                             toExplore.add(newState);
@@ -151,9 +154,13 @@ public class OptimalScheduleFinder {
                             actor.fire(newState);
                             // update the value to be optimized depending on the optimization criterion
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
-                                newState.value = Math.max(_channels.channelSize(newState) + actor.sharedBuffers, newState.value);
+                                newState.value = Math.max(
+                                        _channels.channelSize(newState)
+                                                + actor.sharedBuffers,
+                                        newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
-                                newState.value = state.value + actor.sharedExecutionTime;
+                                newState.value = state.value
+                                        + actor.sharedExecutionTime;
                             }
                             // add the new state to the list of states to be explored
                             toExplore.add(newState);
@@ -208,8 +215,7 @@ public class OptimalScheduleFinder {
                     // found !!
                     optimalEndState = state;
                     scheduleFound = true;
-                }
-                else {
+                } else {
                     // try all possible actions (actor firings) enabled from this state
                     Iterator actorIterator = _actors.iterator();
                     while (actorIterator.hasNext()) {
@@ -225,9 +231,13 @@ public class OptimalScheduleFinder {
                             actor.fireExclusive(newState);
                             // update the value to be optimized depending on the optimization criterion
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
-                                newState.value = Math.max(_channels.channelSize(newState) + actor.exclusiveBuffers, newState.value);
+                                newState.value = Math.max(
+                                        _channels.channelSize(newState)
+                                                + actor.exclusiveBuffers,
+                                        newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
-                                newState.value = state.value + actor.exclusiveExecutionTime;
+                                newState.value = state.value
+                                        + actor.exclusiveExecutionTime;
                             }
                             // add the new state to the list of states to be explored
                             toExplore.add(newState);
@@ -241,9 +251,13 @@ public class OptimalScheduleFinder {
                             actor.fire(newState);
                             // update the value to be optimized depending on the optimization criterion
                             if (_optimizationCriterion == OptimizationCriteria.BUFFERS) {
-                                newState.value = Math.max(_channels.channelSize(newState) + actor.sharedBuffers, newState.value);
+                                newState.value = Math.max(
+                                        _channels.channelSize(newState)
+                                                + actor.sharedBuffers,
+                                        newState.value);
                             } else if (_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME) {
-                                newState.value = state.value + actor.sharedExecutionTime;
+                                newState.value = state.value
+                                        + actor.sharedExecutionTime;
                             }
                             // add the new state to the list of states to be explored
                             toExplore.add(newState);
@@ -264,15 +278,16 @@ public class OptimalScheduleFinder {
         return result;
     }
 
-///////////////////////////////////////////////////////////////////////////
-////                 protected fields                                  ////
+    ///////////////////////////////////////////////////////////////////////////
+    ////                 protected fields                                  ////
 
     /**
      * Instantiate the analysis model from the core model.
      * @param firingVector contains repetition vector information
      * @exception IllegalActionException if model information inconsistent
      */
-    protected void _instantiateAnalysisModel(Map firingVector) throws IllegalActionException {
+    protected void _instantiateAnalysisModel(Map firingVector)
+            throws IllegalActionException {
 
         // initialize lists and maps
         _actors = new _ListOfActors();
@@ -290,19 +305,23 @@ public class OptimalScheduleFinder {
             if (actor instanceof BufferingProfile) {
                 BufferingProfile actorWithBufferingProfile = (BufferingProfile) actor;
                 // set the profile accordingly
-                sharedBuffers  = actorWithBufferingProfile.sharedBuffers();
-                exclusiveBuffers  = actorWithBufferingProfile.exclusiveBuffers();
-                sharedExecutionTime = actorWithBufferingProfile.sharedExecutionTime();
-                exclusiveExecutionTime = actorWithBufferingProfile.exclusiveExecutionTime();
+                sharedBuffers = actorWithBufferingProfile.sharedBuffers();
+                exclusiveBuffers = actorWithBufferingProfile.exclusiveBuffers();
+                sharedExecutionTime = actorWithBufferingProfile
+                        .sharedExecutionTime();
+                exclusiveExecutionTime = actorWithBufferingProfile
+                        .exclusiveExecutionTime();
             } else {
                 // set the profile to default values
-                sharedBuffers  = 0;
-                exclusiveBuffers  = 0;
+                sharedBuffers = 0;
+                exclusiveBuffers = 0;
                 sharedExecutionTime = 0;
                 exclusiveExecutionTime = 0;
             }
             // create a model actor
-            _Actor modelActor = new _Actor(actor.getName(), (Integer)pair.getValue(), sharedBuffers, exclusiveBuffers, sharedExecutionTime, exclusiveExecutionTime);
+            _Actor modelActor = new _Actor(actor.getName(),
+                    (Integer) pair.getValue(), sharedBuffers, exclusiveBuffers,
+                    sharedExecutionTime, exclusiveExecutionTime);
             // add the actor
             _actors.add(modelActor);
             // remember the link to the real actor
@@ -312,10 +331,11 @@ public class OptimalScheduleFinder {
             List portList = actor.outputPortList();
             Iterator portIterator = portList.iterator();
             while (portIterator.hasNext()) {
-                TypedIOPort port = (TypedIOPort)portIterator.next();
+                TypedIOPort port = (TypedIOPort) portIterator.next();
                 _Channel channel = new _Channel();
                 // set the number of initial tokens
-                channel.initialTokens = DFUtilities.getTokenInitProduction(port);
+                channel.initialTokens = DFUtilities
+                        .getTokenInitProduction(port);
                 // add the channel to the list
                 _channels.add(channel);
                 // remember the link to the IOPort
@@ -327,13 +347,14 @@ public class OptimalScheduleFinder {
         actorIterator = firingVector.keySet().iterator();
         while (actorIterator.hasNext()) {
             // for every actor...
-            ptolemy.actor.Actor actor = (ptolemy.actor.Actor) actorIterator.next();
+            ptolemy.actor.Actor actor = (ptolemy.actor.Actor) actorIterator
+                    .next();
             _Actor modelActor = (_Actor) _actorMap.getBW(actor);
             List portList = actor.outputPortList();
             Iterator portIterator = portList.iterator();
             while (portIterator.hasNext()) {
                 // for every output port of the actor
-                TypedIOPort port = (TypedIOPort)portIterator.next();
+                TypedIOPort port = (TypedIOPort) portIterator.next();
                 // get the rate of the port
                 int rate = DFUtilities.getRate(port);
                 // get the channel of this port
@@ -347,16 +368,17 @@ public class OptimalScheduleFinder {
             portIterator = portList.iterator();
             while (portIterator.hasNext()) {
                 // for every input port of the actor
-                TypedIOPort port = (TypedIOPort)portIterator.next();
+                TypedIOPort port = (TypedIOPort) portIterator.next();
                 // get the rate of the port
                 int rate = DFUtilities.getRate(port);
                 // get the producing IOPort
                 List sourcePortList = port.sourcePortList();
                 // input port may have more than one source if it is a multiport
                 // make a port in this model for every input port connected
-                for (int i = 0; i<sourcePortList.size(); i++) {
+                for (int i = 0; i < sourcePortList.size(); i++) {
                     // get the channel of the producing port
-                    _Channel channel = (_Channel) _channelMap.getFW(sourcePortList.get(i));
+                    _Channel channel = (_Channel) _channelMap
+                            .getFW(sourcePortList.get(i));
                     // if the source port is not related to a channel, then it is an external port
                     // and we do not care about it.
                     if (channel != null) {
@@ -370,7 +392,6 @@ public class OptimalScheduleFinder {
         }
     }
 
-
     /**
      * the state of the channel in the channel array has one integer at stateIndex
      * indicating the number of tokens in the channel and another integer at stateIndex+1
@@ -379,749 +400,767 @@ public class OptimalScheduleFinder {
      * If a token is produced, then the value increases for all consumers. When a consumer
      * reads it decreases only for that consumer.
      */
-     protected static class _Channel{
+    protected static class _Channel {
 
-         /**
-          * Construct a instance of Channel and initialize nrConsumers to 0.
-          */
-         _Channel() {
-             _numberOfConsumers = 0;
-         }
+        /**
+         * Construct a instance of Channel and initialize nrConsumers to 0.
+         */
+        _Channel() {
+            _numberOfConsumers = 0;
+        }
 
-         /**
-          * The number of initial tokens on the channel.
-          */
-         int initialTokens;
+        /**
+         * The number of initial tokens on the channel.
+         */
+        int initialTokens;
 
-         /**
-          * Assign stateIndex and returns the next available index to be assigned
-          * to the next channel, depending on the number of consumers of this channel.
-          * @param index state index for the channel
-          * @return index for the next component
-          */
-         int assignStateIndex(int index) {
-             assert _numberOfConsumers > 0;
-             _stateIndex = index;
-             return index + _numberOfConsumers;
-         }
+        /**
+         * Assign stateIndex and returns the next available index to be assigned
+         * to the next channel, depending on the number of consumers of this channel.
+         * @param index state index for the channel
+         * @return index for the next component
+         */
+        int assignStateIndex(int index) {
+            assert _numberOfConsumers > 0;
+            _stateIndex = index;
+            return index + _numberOfConsumers;
+        }
 
-         /**
-          * Called for any input port to be connected to the channel. Returns an index
-          * into the state vector for this port to manage the number of remaining tokens
-          * to be read.
-          * @return index for the new port
-          */
-         int assignPortIndex() {
-             int nextIndex = _numberOfConsumers;
-             _numberOfConsumers++;
-             return nextIndex;
-         }
+        /**
+         * Called for any input port to be connected to the channel. Returns an index
+         * into the state vector for this port to manage the number of remaining tokens
+         * to be read.
+         * @return index for the new port
+         */
+        int assignPortIndex() {
+            int nextIndex = _numberOfConsumers;
+            _numberOfConsumers++;
+            return nextIndex;
+        }
 
-         /**
-          * Get the number of available tokens to the consuming port with index 'portIndex'
-          * in state 'state'.
-          * @param portIndex port index
-          * @param state state
-          * @return the number of available tokens in the channel to port with index i
-          */
-         int tokens(int portIndex, _State state) {
-             return state.channelContent[_stateIndex + portIndex];
-         }
+        /**
+         * Get the number of available tokens to the consuming port with index 'portIndex'
+         * in state 'state'.
+         * @param portIndex port index
+         * @param state state
+         * @return the number of available tokens in the channel to port with index i
+         */
+        int tokens(int portIndex, _State state) {
+            return state.channelContent[_stateIndex + portIndex];
+        }
 
-         /**
-          * Get the number of exclusively available tokens to the consuming port with
-          * index 'portIndex' in state 'state'.
-          * @param portIndex port index
-          * @param state state
-          * @return the number of exclusively available tokens in the channel to port with index i
-          */
-         int exclusiveTokens(int portIndex, _State state) {
-             int myTokens = tokens(portIndex, state);
-             int max = myTokens;
-             // we can only use them exclusively if all others have already consumed them
-             for (int j = 0; j < _numberOfConsumers; j++) {
-                 if (j != portIndex) {
-                     max = Math.min(max, myTokens - tokens(j, state));
-                 }
-             }
-             if (max < 0) max = 0;
-             return max;
-         }
+        /**
+         * Get the number of exclusively available tokens to the consuming port with
+         * index 'portIndex' in state 'state'.
+         * @param portIndex port index
+         * @param state state
+         * @return the number of exclusively available tokens in the channel to port with index i
+         */
+        int exclusiveTokens(int portIndex, _State state) {
+            int myTokens = tokens(portIndex, state);
+            int max = myTokens;
+            // we can only use them exclusively if all others have already consumed them
+            for (int j = 0; j < _numberOfConsumers; j++) {
+                if (j != portIndex) {
+                    max = Math.min(max, myTokens - tokens(j, state));
+                }
+            }
+            if (max < 0) {
+                max = 0;
+            }
+            return max;
+        }
 
-         /**
-          * Add new tokens into the channel.
-          * @param state state to be updated
-          * @param rate number of tokens to add
-          */
-         void addTokens(_State state, int rate) {
-             // add tokens for all consuming ports
-             for (int i = 0; i < _numberOfConsumers; i++) {
-                 state.channelContent[_stateIndex + i] += rate;
-             }
-         }
+        /**
+         * Add new tokens into the channel.
+         * @param state state to be updated
+         * @param rate number of tokens to add
+         */
+        void addTokens(_State state, int rate) {
+            // add tokens for all consuming ports
+            for (int i = 0; i < _numberOfConsumers; i++) {
+                state.channelContent[_stateIndex + i] += rate;
+            }
+        }
 
-         /**
-          * Remove tokens from the channel for given port.
-          * @param state state to be updated
-          * @param portIndex port index
-          * @param rate number of tokens to remove
-          */
-         void removeTokens(_State state, int portIndex, int rate) {
-             state.channelContent[_stateIndex + portIndex] += rate; // rate is negative
-         }
+        /**
+         * Remove tokens from the channel for given port.
+         * @param state state to be updated
+         * @param portIndex port index
+         * @param rate number of tokens to remove
+         */
+        void removeTokens(_State state, int portIndex, int rate) {
+            state.channelContent[_stateIndex + portIndex] += rate; // rate is negative
+        }
 
-         /**
-          * Initialize the state 'state' to this channel's initial state
-          * by putting the appropriate number of initial tokens in it.
-          * @param state state to be initialized
-          */
-         void setInitialState(_State state) {
-             for (int j = 0; j < _numberOfConsumers; j++) {
-                 state.channelContent[_stateIndex + j] = initialTokens;
-             }
-         }
+        /**
+         * Initialize the state 'state' to this channel's initial state
+         * by putting the appropriate number of initial tokens in it.
+         * @param state state to be initialized
+         */
+        void setInitialState(_State state) {
+            for (int j = 0; j < _numberOfConsumers; j++) {
+                state.channelContent[_stateIndex + j] = initialTokens;
+            }
+        }
 
-         /**
-          * return the amount of memory taken by the channel content.
-          * which is the maximum number of tokens still to be read by any
-          * consumer
-          * @param state state
-          * @return amount of memory occupied by channel content
-          */
-         int channelSize(_State state) {
-             int result = 0;
-             for (int i = 0; i < _numberOfConsumers; i++) {
-                 result = Math.max(result, state.channelContent[i]);
-             }
-             return result;
-         }
+        /**
+         * return the amount of memory taken by the channel content.
+         * which is the maximum number of tokens still to be read by any
+         * consumer
+         * @param state state
+         * @return amount of memory occupied by channel content
+         */
+        int channelSize(_State state) {
+            int result = 0;
+            for (int i = 0; i < _numberOfConsumers; i++) {
+                result = Math.max(result, state.channelContent[i]);
+            }
+            return result;
+        }
 
-         /**
-          * The number of actors consuming from this channel.
-          */
-         int _numberOfConsumers=-1;
+        /**
+         * The number of actors consuming from this channel.
+         */
+        int _numberOfConsumers = -1;
 
-         /**
-          * Index of this channel into the global state vector.
-          */
-         int _stateIndex;
-     }
+        /**
+         * Index of this channel into the global state vector.
+         */
+        int _stateIndex;
+    }
 
-     /**
-      * A list of channels, based on LinkedList.
-      */
-     protected static class _ListOfChannels extends LinkedList {
-
-         /**
-          * Count the overall memory taken by channels in the list in state 'state'.
-          * @param state state
-          * @return total memory size occupied by channels
-          */
-         int channelSize(_State state) {
-             Iterator channelIterator = iterator();
-             int result = 0;
-             // iterate over channels in the list
-             while (channelIterator.hasNext()) {
-                 _Channel channel = (_Channel) channelIterator.next();
-                 // add up channel size
-                 result += channel.channelSize(state);
-             }
-             return result;
-         }
-     }
-
-     /**
-     * A port of an actor, connected to a channel.
-     * A port as a rate determining the number of tokens produced/consumed in
-     * a firing of its actor.
-     * Negative rates represent input ports, positive rates output ports.
+    /**
+     * A list of channels, based on LinkedList.
      */
-     protected static class _Port {
+    protected static class _ListOfChannels extends LinkedList {
 
-         /**
-          * Construct an instance of _Port with rate <i>rate</i> and for channel
-          * <i>channel</i>.
-          * @param rate port rate (negative for input port)
-          * @param channel channel to which it is bound
-          */
-         _Port(int rate, _Channel channel) {
-             _rate = rate;
-             _channel = channel;
-         }
+        /**
+         * Count the overall memory taken by channels in the list in state 'state'.
+         * @param state state
+         * @return total memory size occupied by channels
+         */
+        int channelSize(_State state) {
+            Iterator channelIterator = iterator();
+            int result = 0;
+            // iterate over channels in the list
+            while (channelIterator.hasNext()) {
+                _Channel channel = (_Channel) channelIterator.next();
+                // add up channel size
+                result += channel.channelSize(state);
+            }
+            return result;
+        }
+    }
 
-         /**
-          * Assign index to the port into the channel state vector
-          * only if it is an input port.
-          */
-         void assignIndex() {
-             if (_rate < 0) {
-                 _portIndex = _channel.assignPortIndex();
-             }
-         }
+    /**
+    * A port of an actor, connected to a channel.
+    * A port as a rate determining the number of tokens produced/consumed in
+    * a firing of its actor.
+    * Negative rates represent input ports, positive rates output ports.
+    */
+    protected static class _Port {
 
-         /**
-          * test if the port is enabled, i.e. if the associated channel has enough
-          * tokens on this port to fire in state s
-          * @param state state
-          * @return true if it is enabled
-          */
-         boolean isEnabled(_State state) {
-             // an output port is always enabled
-             if (_rate >= 0) return true;
-             // otherwise check tokens, recall that rate is negative
-             return _channel.tokens(_portIndex, state) + _rate >= 0;
-         }
+        /**
+         * Construct an instance of _Port with rate <i>rate</i> and for channel
+         * <i>channel</i>.
+         * @param rate port rate (negative for input port)
+         * @param channel channel to which it is bound
+         */
+        _Port(int rate, _Channel channel) {
+            _rate = rate;
+            _channel = channel;
+        }
 
-         /**
-          * test if the port is enabled for exclusive firing, i.e. if the associated
-          * channel has enough tokens on this port to fire exclusively in state s
-          * @param state state
-          * @return true if it is enabled
-          */
-         boolean isExclusiveEnabled(_State state) {
-             // an output port is always enabled
-             if (_rate >= 0) return true;
-             // otherwise check tokens, recall that rate is negative
-             return _channel.exclusiveTokens(_portIndex, state) + _rate >= 0;
-         }
+        /**
+         * Assign index to the port into the channel state vector
+         * only if it is an input port.
+         */
+        void assignIndex() {
+            if (_rate < 0) {
+                _portIndex = _channel.assignPortIndex();
+            }
+        }
 
-         /**
-          * Fire the port by accounting the numbers of tokens.
-          * @param state state to use for firing
-          */
-         void fire(_State state) {
-             if (_rate > 0)
-                 // producing port
-                 _channel.addTokens(state, _rate);
-             else
-                 // consuming port
-                 _channel.removeTokens(state, _portIndex, _rate);
-         }
+        /**
+         * test if the port is enabled, i.e. if the associated channel has enough
+         * tokens on this port to fire in state s
+         * @param state state
+         * @return true if it is enabled
+         */
+        boolean isEnabled(_State state) {
+            // an output port is always enabled
+            if (_rate >= 0) {
+                return true;
+            }
+            // otherwise check tokens, recall that rate is negative
+            return _channel.tokens(_portIndex, state) + _rate >= 0;
+        }
 
-         /**
-          * The index for this port into the channel's state vector.
-          */
-         int _portIndex;
+        /**
+         * test if the port is enabled for exclusive firing, i.e. if the associated
+         * channel has enough tokens on this port to fire exclusively in state s
+         * @param state state
+         * @return true if it is enabled
+         */
+        boolean isExclusiveEnabled(_State state) {
+            // an output port is always enabled
+            if (_rate >= 0) {
+                return true;
+            }
+            // otherwise check tokens, recall that rate is negative
+            return _channel.exclusiveTokens(_portIndex, state) + _rate >= 0;
+        }
 
-         /**
-          * the port rate, negative if input port
-          */
-         int _rate;
+        /**
+         * Fire the port by accounting the numbers of tokens.
+         * @param state state to use for firing
+         */
+        void fire(_State state) {
+            if (_rate > 0) {
+                // producing port
+                _channel.addTokens(state, _rate);
+            } else {
+                // consuming port
+                _channel.removeTokens(state, _portIndex, _rate);
+            }
+        }
 
-         /**
-          * The channel associated with the port.
-          */
-         _Channel _channel;
-     }
+        /**
+         * The index for this port into the channel's state vector.
+         */
+        int _portIndex;
 
-     /**
-      * A list of ports, based on LinkeList.
-      */
-     protected static class _ListOfPorts extends LinkedList{
-     }
+        /**
+         * the port rate, negative if input port
+         */
+        int _rate;
 
-     /**
-      * A model of an actor. Containing the firing profile, its count in the repetition
-      * vector and a number of ports.
-      */
-     protected static class _Actor {
+        /**
+         * The channel associated with the port.
+         */
+        _Channel _channel;
+    }
 
-         /**
-          * Construct an instance of Actor, providing its name, repetition vector
-          * count and profile information.
-          * @param name name for the actor
-          * @param repetitionCount repetition vector entry of the actor
-          * @param sharedBuffersNeeded number of frame buffers needed for shared firing
-          * @param exclusiveBuffersNeeded number of frame buffers needed for exclusive firing
-          * @param sharedExecutionTimeNeeded execution time needed for share firing
-          * @param exclusiveExecutionTimeNeeded execution time needed for exclusive firing
-          */
-         protected _Actor(String name, int repetitionCount, int sharedBuffersNeeded,
-                 int exclusiveBuffersNeeded, int sharedExecutionTimeNeeded,
-                 int exclusiveExecutionTimeNeeded) {
-             _name = name;
-             _repetitionCount = repetitionCount;
-             sharedBuffers = sharedBuffersNeeded;
-             exclusiveBuffers = exclusiveBuffersNeeded;
-             sharedExecutionTime = sharedExecutionTimeNeeded;
-             exclusiveExecutionTime = exclusiveExecutionTimeNeeded;
-             _ports = new _ListOfPorts();
-         }
+    /**
+     * A list of ports, based on LinkeList.
+     */
+    protected static class _ListOfPorts extends LinkedList {
+    }
 
-         /**
-          * The number of frame buffers the actor requires in a shared firing.
-          */
-         int sharedBuffers;
+    /**
+     * A model of an actor. Containing the firing profile, its count in the repetition
+     * vector and a number of ports.
+     */
+    protected static class _Actor {
 
-         /**
-          * The number of frame buffers the actor requires in an exclusive firing.
-          */
-         int exclusiveBuffers;
+        /**
+         * Construct an instance of Actor, providing its name, repetition vector
+         * count and profile information.
+         * @param name name for the actor
+         * @param repetitionCount repetition vector entry of the actor
+         * @param sharedBuffersNeeded number of frame buffers needed for shared firing
+         * @param exclusiveBuffersNeeded number of frame buffers needed for exclusive firing
+         * @param sharedExecutionTimeNeeded execution time needed for share firing
+         * @param exclusiveExecutionTimeNeeded execution time needed for exclusive firing
+         */
+        protected _Actor(String name, int repetitionCount,
+                int sharedBuffersNeeded, int exclusiveBuffersNeeded,
+                int sharedExecutionTimeNeeded, int exclusiveExecutionTimeNeeded) {
+            _name = name;
+            _repetitionCount = repetitionCount;
+            sharedBuffers = sharedBuffersNeeded;
+            exclusiveBuffers = exclusiveBuffersNeeded;
+            sharedExecutionTime = sharedExecutionTimeNeeded;
+            exclusiveExecutionTime = exclusiveExecutionTimeNeeded;
+            _ports = new _ListOfPorts();
+        }
 
-         /**
-          * Execution time (estimate) for the actor for a shared firing.
-          */
-         int sharedExecutionTime;
+        /**
+         * The number of frame buffers the actor requires in a shared firing.
+         */
+        int sharedBuffers;
 
-         /**
-          * Execution time (estimate) for the actor for an exclusive firing.
-          */
-         int exclusiveExecutionTime;
+        /**
+         * The number of frame buffers the actor requires in an exclusive firing.
+         */
+        int exclusiveBuffers;
 
-         /**
-          * Assign stateIndex to actor and its ports and returns the index for
-          * the next component.
-          * @param index index to assign to the actor
-          * @return index to assign to next actor
-          */
-          int assignStateIndex(int index) {
-             // iterate over ports to assign index to ports in channel state vector
-             Iterator portIterator = _ports.iterator();
-             while (portIterator.hasNext()) {
-                 _Port port = (_Port)portIterator.next();
-                 port.assignIndex();
-             }
-             // index for actor
-             _stateIndex = index;
-             return index + 1;
-         }
+        /**
+         * Execution time (estimate) for the actor for a shared firing.
+         */
+        int sharedExecutionTime;
 
-         /**
-          * Test whether the actor is enabled for a shared firing in given state <i>state</i>.
-          * @param state state
-          * @return true if enabled
-          */
-         boolean isEnabled(_State state) {
-             // no more firings needed in iteration
-             if (state.actorContent[_stateIndex] == 0) return false;
-             // test if all ports are enabled
-             Iterator portIterator = _ports.iterator();
-             while (portIterator.hasNext()) {
-                 _Port port = (_Port) portIterator.next();
-                 if (!port.isEnabled(state)) {
-                     return false;
-                 }
-             }
-             // all are enabled, go ahead
-             return true;
-         }
+        /**
+         * Execution time (estimate) for the actor for an exclusive firing.
+         */
+        int exclusiveExecutionTime;
 
-         /**
-          * Test whether the actor is enabled for an exclusive firing in given state <i>state</i>.
-          * @param state state
-          * @return true if enabled
-          */
-         boolean isExclusiveEnabled(_State state) {
-             // no more firings needed in iteration
-             if (state.actorContent[_stateIndex] == 0) return false;
-             // test if all ports are enabled
-             Iterator portIterator = _ports.iterator();
-             while (portIterator.hasNext()) {
-                 _Port port = (_Port) portIterator.next();
-                 if (!port.isExclusiveEnabled(state)) {
-                     return false;
-                 }
-             }
-             // all are enabled, go ahead
-             return true;
-         }
+        /**
+         * Assign stateIndex to actor and its ports and returns the index for
+         * the next component.
+         * @param index index to assign to the actor
+         * @return index to assign to next actor
+         */
+        int assignStateIndex(int index) {
+            // iterate over ports to assign index to ports in channel state vector
+            Iterator portIterator = _ports.iterator();
+            while (portIterator.hasNext()) {
+                _Port port = (_Port) portIterator.next();
+                port.assignIndex();
+            }
+            // index for actor
+            _stateIndex = index;
+            return index + 1;
+        }
 
-         /**
-          * adapt state 'state' according to a shared firing. Assumes it is enabled.
-          * @param state state
-          */
-         void fire(_State state) {
-             // fire all ports
-             Iterator portIterator = _ports.iterator();
-             while (portIterator.hasNext()) {
-                 _Port port = (_Port) portIterator.next();
-                 port.fire(state);
-             }
-             // one less firing remaining in iteration
-             state.actorContent[_stateIndex]--;
-             // remember in the state which actor fired
-             state.firingActor = this;
-             // mark that the firing is shared, not exclusive
-             state.firingExclusive = false;
-             }
+        /**
+         * Test whether the actor is enabled for a shared firing in given state <i>state</i>.
+         * @param state state
+         * @return true if enabled
+         */
+        boolean isEnabled(_State state) {
+            // no more firings needed in iteration
+            if (state.actorContent[_stateIndex] == 0) {
+                return false;
+            }
+            // test if all ports are enabled
+            Iterator portIterator = _ports.iterator();
+            while (portIterator.hasNext()) {
+                _Port port = (_Port) portIterator.next();
+                if (!port.isEnabled(state)) {
+                    return false;
+                }
+            }
+            // all are enabled, go ahead
+            return true;
+        }
 
-         /**
-          * adapt state 'state' according to an exclusive firing. Assumes it is enabled.
-          * @param state state
-          */
-         void fireExclusive(_State state) {
-             // fire all ports
-             Iterator portIterator = _ports.iterator();
-             while (portIterator.hasNext()) {
-                 _Port port = (_Port) portIterator.next();
-                 port.fire(state);
-                 }
-             // one less firing remaining in iteration
-             state.actorContent[_stateIndex]--;
-             // remember in the state which actor fired
-             state.firingActor = this;
-             // mark that the firing is shared, not exclusive
-             state.firingExclusive = true;
-         }
+        /**
+         * Test whether the actor is enabled for an exclusive firing in given state <i>state</i>.
+         * @param state state
+         * @return true if enabled
+         */
+        boolean isExclusiveEnabled(_State state) {
+            // no more firings needed in iteration
+            if (state.actorContent[_stateIndex] == 0) {
+                return false;
+            }
+            // test if all ports are enabled
+            Iterator portIterator = _ports.iterator();
+            while (portIterator.hasNext()) {
+                _Port port = (_Port) portIterator.next();
+                if (!port.isExclusiveEnabled(state)) {
+                    return false;
+                }
+            }
+            // all are enabled, go ahead
+            return true;
+        }
 
-         /**
-          * Add a port to the actor.
-          * @param port port to add
-          */
-         void addPort(_Port port) {
-             _ports.add(port);
-         }
+        /**
+         * adapt state 'state' according to a shared firing. Assumes it is enabled.
+         * @param state state
+         */
+        void fire(_State state) {
+            // fire all ports
+            Iterator portIterator = _ports.iterator();
+            while (portIterator.hasNext()) {
+                _Port port = (_Port) portIterator.next();
+                port.fire(state);
+            }
+            // one less firing remaining in iteration
+            state.actorContent[_stateIndex]--;
+            // remember in the state which actor fired
+            state.firingActor = this;
+            // mark that the firing is shared, not exclusive
+            state.firingExclusive = false;
+        }
 
-         /**
-          * Initialize state of to initial state of the network. Specifically, set
-          * the count for this actor to the number of firings in one iteration.
-          * @param state state to initialize
-          */
-         void setInitialState(_State state) {
-             state.actorContent[_stateIndex] = _repetitionCount;
-         }
+        /**
+         * adapt state 'state' according to an exclusive firing. Assumes it is enabled.
+         * @param state state
+         */
+        void fireExclusive(_State state) {
+            // fire all ports
+            Iterator portIterator = _ports.iterator();
+            while (portIterator.hasNext()) {
+                _Port port = (_Port) portIterator.next();
+                port.fire(state);
+            }
+            // one less firing remaining in iteration
+            state.actorContent[_stateIndex]--;
+            // remember in the state which actor fired
+            state.firingActor = this;
+            // mark that the firing is shared, not exclusive
+            state.firingExclusive = true;
+        }
 
-         /**
-          * index for the actor into the global state vector
-          */
-         int _stateIndex;
+        /**
+         * Add a port to the actor.
+         * @param port port to add
+         */
+        void addPort(_Port port) {
+            _ports.add(port);
+        }
 
-         /**
-          * A list of ports of the actor, both input and output ports.
-          */
-         _ListOfPorts _ports;
+        /**
+         * Initialize state of to initial state of the network. Specifically, set
+         * the count for this actor to the number of firings in one iteration.
+         * @param state state to initialize
+         */
+        void setInitialState(_State state) {
+            state.actorContent[_stateIndex] = _repetitionCount;
+        }
 
-         /**
-          * The name of the actor.
-          */
-         String _name;
+        /**
+         * index for the actor into the global state vector
+         */
+        int _stateIndex;
 
-         /**
-          * Count for the actor in the repetition vector of the graph.
-          */
-         int _repetitionCount;
-     }
+        /**
+         * A list of ports of the actor, both input and output ports.
+         */
+        _ListOfPorts _ports;
 
-     /**
-      * A list of actors, derived from LinkedList.
-      */
-     protected static class _ListOfActors extends LinkedList{
-     }
+        /**
+         * The name of the actor.
+         */
+        String _name;
 
-     /**
-      * State models a global state of the SDF graph and remembers the actor that was
-      * fired to reach it.
-      * It consists of two integer array containing the channel content and
-      * the actor states (remaining number of firings to complete an iteration)
-      * respectively.
-      * Moreover, it memorizes the firing to reach the state, which actor fired and
-      * whether the firing was exclusive. A state is typically first cloned from its
-      * predecessor state and then an actor firing is executed on it.
-      * It also maintains a link to its predecessor state. This way the path to reach
-      * this state can be reconstructed. It also maintain an optimization 'value'
-      * associated with the path leading to this state. This value is used for
-      * optimization.
-      */
-     protected static class _State {
+        /**
+         * Count for the actor in the repetition vector of the graph.
+         */
+        int _repetitionCount;
+    }
 
-         /**
-          * Construct an instance of State, with a reference to a previous state.
-          * @param thePreviousState link to previous state
-          */
-         _State(_State thePreviousState) {
-             previousState = thePreviousState;
-         }
+    /**
+     * A list of actors, derived from LinkedList.
+     */
+    protected static class _ListOfActors extends LinkedList {
+    }
 
-         /**
-          * Create new state by cloning state 'state' and marking
-          * s as its predecessor state.
-          * @param state state to clone
-          * @return the new state
-          */
-         _State clone(_State state) {
-             _State result = new _State(state);
-             // copy global graph state
-             result.channelContent = channelContent.clone();
-             result.actorContent = actorContent.clone();
-             // copy value
-             result.value = value;
-             return result;
-         }
-         /**
-          * true if the firing to reach the state was exclusive.
-          */
-         boolean firingExclusive;
+    /**
+     * State models a global state of the SDF graph and remembers the actor that was
+     * fired to reach it.
+     * It consists of two integer array containing the channel content and
+     * the actor states (remaining number of firings to complete an iteration)
+     * respectively.
+     * Moreover, it memorizes the firing to reach the state, which actor fired and
+     * whether the firing was exclusive. A state is typically first cloned from its
+     * predecessor state and then an actor firing is executed on it.
+     * It also maintains a link to its predecessor state. This way the path to reach
+     * this state can be reconstructed. It also maintain an optimization 'value'
+     * associated with the path leading to this state. This value is used for
+     * optimization.
+     */
+    protected static class _State {
 
-         /**
-          * The actor that was fired to reach this state.
-          * remains nil for the initial state.
-          */
-         _Actor firingActor;
+        /**
+         * Construct an instance of State, with a reference to a previous state.
+         * @param thePreviousState link to previous state
+         */
+        _State(_State thePreviousState) {
+            previousState = thePreviousState;
+        }
 
-         /**
-          * Link to the previous state.
-          */
-         _State previousState;
+        /**
+         * Create new state by cloning state 'state' and marking
+         * s as its predecessor state.
+         * @param state state to clone
+         * @return the new state
+         */
+        _State clone(_State state) {
+            _State result = new _State(state);
+            // copy global graph state
+            result.channelContent = channelContent.clone();
+            result.actorContent = actorContent.clone();
+            // copy value
+            result.value = value;
+            return result;
+        }
 
-         // actual state information
-         /**
-          * Array to store all channel content.
-          * Channels and input ports within those channels are given their unique
-          * index into this array.
-          */
-         int[] channelContent;
+        /**
+         * true if the firing to reach the state was exclusive.
+         */
+        boolean firingExclusive;
 
-         /**
-          * Array to store all actor content, remaining number of firings.
-          * Actors are given their unique index into this array.
-          */
-         int[] actorContent;
+        /**
+         * The actor that was fired to reach this state.
+         * remains nil for the initial state.
+         */
+        _Actor firingActor;
 
-         /**
-          * Value to be optimized, smaller is better.
-          */
-         int value;
+        /**
+         * Link to the previous state.
+         */
+        _State previousState;
 
-         /**
-          * Test whether this is a valid end state, i.e. whether all actors have
-          * completed their required number of firings.
-          * @return true is end state
-          */
-         boolean isEndState() {
-             // test all actors
-             for (int i = 0; i < actorContent.length; i++) {
-                 if (actorContent[i] > 0) return false;
-             }
-             return true;
-         }
+        // actual state information
+        /**
+         * Array to store all channel content.
+         * Channels and input ports within those channels are given their unique
+         * index into this array.
+         */
+        int[] channelContent;
 
-         /**
-          * Determine the number of remaining firings.
-          * @return number of remaining firings
-          */
-         int getFiringsToCompletion() {
-             int result = 0;
-             for (int i = 0; i < actorContent.length; i++) {
-                 result += actorContent[i];
-             }
-             return result;
-         }
+        /**
+         * Array to store all actor content, remaining number of firings.
+         * Actors are given their unique index into this array.
+         */
+        int[] actorContent;
 
-     }
+        /**
+         * Value to be optimized, smaller is better.
+         */
+        int value;
 
-     /**
-      * A set of states, based on HashSet.
-      */
-     protected static class _SetOfStates extends HashSet {
-     }
+        /**
+         * Test whether this is a valid end state, i.e. whether all actors have
+         * completed their required number of firings.
+         * @return true is end state
+         */
+        boolean isEndState() {
+            // test all actors
+            for (int i = 0; i < actorContent.length; i++) {
+                if (actorContent[i] > 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
 
-     /**
-      * An abstract super class for Comparators to maintain a sorted
-      * list of states.
-      */
-     protected static abstract class _StateComparator implements Comparator, Serializable {
-     }
+        /**
+         * Determine the number of remaining firings.
+         * @return number of remaining firings
+         */
+        int getFiringsToCompletion() {
+            int result = 0;
+            for (int i = 0; i < actorContent.length; i++) {
+                result += actorContent[i];
+            }
+            return result;
+        }
 
-     /**
-      * A Comparator to maintain a sorted list of states, sorted on their value.
-      */
-     protected static class _StateComparatorLowestValue extends _StateComparator {
+    }
 
-         /**
-          * compare two states on their value. If values tie, then sort
-          * on arbitrary other criteria
-          * @param o1 first object to compare
-          * @param o2 second object to compare
-          * @return -1 if o1<o2, +1 if o1>o2 0 otherwise
-          */
-         public int compare(Object o1, Object o2) {
-             _State state1 = (_State) o1;
-             _State state2 = (_State) o2;
-             // sort on value
-             if (state1.value != state2.value) {
-                 return state1.value - state2.value;
-             } else {
-                 // value tie. compare channel state
-                 for (int i = 0; i < state1.channelContent.length; i++) {
-                     if (state1.channelContent[i] != state2.channelContent[i])
-                         return state1.channelContent[i] - state2.channelContent[i];
-                 }
-                 // still no difference, compare actor state
-                 for (int i = 0; i < state1.actorContent.length; i++) {
-                     if (state1.actorContent[i]!= state2.actorContent[i])
-                         return state1.actorContent[i]-state2.actorContent[i];
-                 }
-                 // they are really equal
-                 return 0;
-             }
-         }
-     }
+    /**
+     * A set of states, based on HashSet.
+     */
+    protected static class _SetOfStates extends HashSet {
+    }
 
-     /**
-      * A Comparator to maintain a sorted list of states, sorted on their
-      * progress to the final state.
-      */
-     protected static class _StateComparatorMaximumProgress extends _StateComparator {
+    /**
+     * An abstract super class for Comparators to maintain a sorted
+     * list of states.
+     */
+    protected static abstract class _StateComparator implements Comparator,
+            Serializable {
+    }
 
-         /**
-          * Construct an instance of StateComparatorMaximumProgress. It creates
-          * a secondary comparator based on StateComparatorLowestValue.
-          */
-         _StateComparatorMaximumProgress() {
-             _backupComparator = new _StateComparatorLowestValue();
-         }
+    /**
+     * A Comparator to maintain a sorted list of states, sorted on their value.
+     */
+    protected static class _StateComparatorLowestValue extends _StateComparator {
 
-         /**
-          * Compare the states based on smallest number of remaining firings.
-          * @param o1 first object to compare
-          * @param o2 second object to compare
-          * @return -1 if o1<o2, +1 if o1>o2 0 otherwise
-          */
-         public int compare(Object o1, Object o2) {
-             _State state1 = (_State) o1;
-             _State state2 = (_State) o2;
-             int progress1 = state1.getFiringsToCompletion();
-             int progress2 = state2.getFiringsToCompletion();
-             if (progress1 != progress2) {
-                 // least number of firings first
-                 return progress1 - progress2;
-             } else {
-                 // tie, invoke backup comparator
+        /**
+         * compare two states on their value. If values tie, then sort
+         * on arbitrary other criteria
+         * @param o1 first object to compare
+         * @param o2 second object to compare
+         * @return -1 if o1<o2, +1 if o1>o2 0 otherwise
+         */
+        public int compare(Object o1, Object o2) {
+            _State state1 = (_State) o1;
+            _State state2 = (_State) o2;
+            // sort on value
+            if (state1.value != state2.value) {
+                return state1.value - state2.value;
+            } else {
+                // value tie. compare channel state
+                for (int i = 0; i < state1.channelContent.length; i++) {
+                    if (state1.channelContent[i] != state2.channelContent[i]) {
+                        return state1.channelContent[i]
+                                - state2.channelContent[i];
+                    }
+                }
+                // still no difference, compare actor state
+                for (int i = 0; i < state1.actorContent.length; i++) {
+                    if (state1.actorContent[i] != state2.actorContent[i]) {
+                        return state1.actorContent[i] - state2.actorContent[i];
+                    }
+                }
+                // they are really equal
+                return 0;
+            }
+        }
+    }
+
+    /**
+     * A Comparator to maintain a sorted list of states, sorted on their
+     * progress to the final state.
+     */
+    protected static class _StateComparatorMaximumProgress extends
+            _StateComparator {
+
+        /**
+         * Construct an instance of StateComparatorMaximumProgress. It creates
+         * a secondary comparator based on StateComparatorLowestValue.
+         */
+        _StateComparatorMaximumProgress() {
+            _backupComparator = new _StateComparatorLowestValue();
+        }
+
+        /**
+         * Compare the states based on smallest number of remaining firings.
+         * @param o1 first object to compare
+         * @param o2 second object to compare
+         * @return -1 if o1<o2, +1 if o1>o2 0 otherwise
+         */
+        public int compare(Object o1, Object o2) {
+            _State state1 = (_State) o1;
+            _State state2 = (_State) o2;
+            int progress1 = state1.getFiringsToCompletion();
+            int progress2 = state2.getFiringsToCompletion();
+            if (progress1 != progress2) {
+                // least number of firings first
+                return progress1 - progress2;
+            } else {
+                // tie, invoke backup comparator
                 return _backupComparator.compare(state1, state2);
-             }
-         }
+            }
+        }
 
-         /**
-          * a secondary comparator to break a tie.
-          */
-         _StateComparator _backupComparator;
-     }
+        /**
+         * a secondary comparator to break a tie.
+         */
+        _StateComparator _backupComparator;
+    }
 
-     /**
-      * A sorted set of states. Internally using a TreeSet.
-      */
-     protected static class _SortedSetOfStates  {
-
-         /**
-          * Construct an instance of SortedSetOfStates. Creates the default
-          * comparator and TreeSet. Default comparator sorts on lowest value.
-          */
-         _SortedSetOfStates() {
-             _comparator = new _StateComparatorLowestValue();
-             _treeSet = new TreeSet(_comparator);
-         }
-
-         /**
-          * Construct an instance with an explicitly specified comparator.
-          * @param comparator comparator
-          */
-         _SortedSetOfStates(_StateComparator comparator) {
-             _comparator = comparator;
-             _treeSet = new TreeSet(_comparator);
-         }
-
-         /**
-          * Removes the first state from the sorted list.
-          * @return state
-          */
-         _State removeFirstState() {
-             _State state = (_State) _treeSet.first();
-             _treeSet.remove(state);
-             return state;
-         }
-
-         /**
-          * Adds a state to the sorted list.
-          * @param state to add
-          */
-         void add(_State state) {
-             _treeSet.add(state);
-         }
-
-         /**
-          * Test if list is empty.
-          * @return true if empty
-          */
-         boolean isEmpty() {
-             return _treeSet.isEmpty();
-         }
-
-         /**
-          * The comparator to use for sorting
-          */
-         _StateComparator _comparator;
-
-         /**
-          * A tree set to store the sorted list.
-          */
-         TreeSet _treeSet;
-     }
-
-     /**
-      * A two-way hash map provides fast lookup in both directions
-      * of a bijective function between objects.
-      * Supports only adding.
-      * (Didn't know whether Java provides a standard solution.)
-      */
-     protected static class _TwoWayHashMap {
-
-         /**
-          * Construct an instance of two-way hash map.
-          */
-         _TwoWayHashMap() {
-             _forwardMap = new HashMap();
-             _backwardMap = new HashMap();
-         }
-
-         /**
-          * Put an association between objects A and B in the hash map.
-          * @param A object A
-          * @param B object B
-          */
-         void put(Object A, Object B) {
-             _forwardMap.put(A, B);
-             _backwardMap.put(B, A);
-         }
-
-         /**
-          * Forward lookup.
-          * @param A lookup object associated with object A
-          * @return associated object
-          */
-         Object getFW(Object A) {
-             return _forwardMap.get(A);
-         }
-
-         /**
-          * Backward lookup.
-          * @param B lookup object associated with object B
-          * @return associated object
-          */
-         Object getBW(Object B) {
-             return _backwardMap.get(B);
-         }
-
-         /**
-          * one-way hash map to make the forward association
-          */
-         HashMap _forwardMap;
-
-         /**
-          * one-way hash map to make the backward association
-          */
-         HashMap _backwardMap;
-
-     }
-
-
-///////////////////////////////////////////////////////////////////////////
-////                   private fields                                  ////
-
-     /**
-     * Build the final schedule from the end state found
-     * @param state optimal end state
-     * @return schedule
+    /**
+     * A sorted set of states. Internally using a TreeSet.
      */
+    protected static class _SortedSetOfStates {
+
+        /**
+         * Construct an instance of SortedSetOfStates. Creates the default
+         * comparator and TreeSet. Default comparator sorts on lowest value.
+         */
+        _SortedSetOfStates() {
+            _comparator = new _StateComparatorLowestValue();
+            _treeSet = new TreeSet(_comparator);
+        }
+
+        /**
+         * Construct an instance with an explicitly specified comparator.
+         * @param comparator comparator
+         */
+        _SortedSetOfStates(_StateComparator comparator) {
+            _comparator = comparator;
+            _treeSet = new TreeSet(_comparator);
+        }
+
+        /**
+         * Removes the first state from the sorted list.
+         * @return state
+         */
+        _State removeFirstState() {
+            _State state = (_State) _treeSet.first();
+            _treeSet.remove(state);
+            return state;
+        }
+
+        /**
+         * Adds a state to the sorted list.
+         * @param state to add
+         */
+        void add(_State state) {
+            _treeSet.add(state);
+        }
+
+        /**
+         * Test if list is empty.
+         * @return true if empty
+         */
+        boolean isEmpty() {
+            return _treeSet.isEmpty();
+        }
+
+        /**
+         * The comparator to use for sorting
+         */
+        _StateComparator _comparator;
+
+        /**
+         * A tree set to store the sorted list.
+         */
+        TreeSet _treeSet;
+    }
+
+    /**
+     * A two-way hash map provides fast lookup in both directions
+     * of a bijective function between objects.
+     * Supports only adding.
+     * (Didn't know whether Java provides a standard solution.)
+     */
+    protected static class _TwoWayHashMap {
+
+        /**
+         * Construct an instance of two-way hash map.
+         */
+        _TwoWayHashMap() {
+            _forwardMap = new HashMap();
+            _backwardMap = new HashMap();
+        }
+
+        /**
+         * Put an association between objects A and B in the hash map.
+         * @param A object A
+         * @param B object B
+         */
+        void put(Object A, Object B) {
+            _forwardMap.put(A, B);
+            _backwardMap.put(B, A);
+        }
+
+        /**
+         * Forward lookup.
+         * @param A lookup object associated with object A
+         * @return associated object
+         */
+        Object getFW(Object A) {
+            return _forwardMap.get(A);
+        }
+
+        /**
+         * Backward lookup.
+         * @param B lookup object associated with object B
+         * @return associated object
+         */
+        Object getBW(Object B) {
+            return _backwardMap.get(B);
+        }
+
+        /**
+         * one-way hash map to make the forward association
+         */
+        HashMap _forwardMap;
+
+        /**
+         * one-way hash map to make the backward association
+         */
+        HashMap _backwardMap;
+
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    ////                   private fields                                  ////
+
+    /**
+    * Build the final schedule from the end state found
+    * @param state optimal end state
+    * @return schedule
+    */
     private Schedule _buildSchedule(_State state) {
         // create a new schedule
         Schedule result = new Schedule();
@@ -1142,16 +1181,19 @@ public class OptimalScheduleFinder {
         while (stateListIterator.hasNext()) {
             currentState = (_State) stateListIterator.next();
             // get the real actor from the model actor
-            ptolemy.actor.Actor actor = (ptolemy.actor.Actor) _actorMap.getFW(currentState.firingActor);
+            ptolemy.actor.Actor actor = (ptolemy.actor.Actor) _actorMap
+                    .getFW(currentState.firingActor);
             // check if the actor implements the special BufferingProfile interface
             if (actor instanceof BufferingProfile) {
                 // if yes, create a BufferingProfileFiring with the right parameters
-                BufferingProfileFiring firing = new BufferingProfileFiring(actor, currentState.firingExclusive);
+                BufferingProfileFiring firing = new BufferingProfileFiring(
+                        actor, currentState.firingExclusive);
                 firing.setIterationCount(1);
                 // add it to the schedule
                 result.add(firing);
                 // output the schedule to the debug listener
-                _myScheduler.showDebug("Fire actor " + actor.getFullName() + " exclusive: " + currentState.firingExclusive);
+                _myScheduler.showDebug("Fire actor " + actor.getFullName()
+                        + " exclusive: " + currentState.firingExclusive);
             } else {
                 // if no, create a normal Firing with the right parameters
                 Firing firing = new Firing(actor);
@@ -1164,7 +1206,6 @@ public class OptimalScheduleFinder {
         }
         return result;
     }
-
 
     /**
      * Assign the state indices into state vector to actors and channels

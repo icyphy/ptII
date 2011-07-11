@@ -27,8 +27,6 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
-import java.awt.Image;
-
 import name.audet.samuel.javacv.jna.cxcore.IplImage;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.AWTImageToken;
@@ -77,15 +75,15 @@ public class IplImageToAWTImage extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof IplImage)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            _frame = (IplImage)inputObject;
-            output.send(0, new AWTImageToken((Image)_frame.getBufferedImage()));
+            _frame = (IplImage) inputObject;
+            output.send(0, new AWTImageToken(_frame.getBufferedImage()));
         }
     }
 

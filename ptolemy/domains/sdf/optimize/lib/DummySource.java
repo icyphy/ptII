@@ -34,7 +34,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// DummySource
 
@@ -58,101 +57,99 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 */
 
 public class DummySource extends Source implements BufferingProfile {
-   private int _counter;
+    private int _counter;
 
+    /**
+     * Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public DummySource(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        output.setTypeEquals(BaseType.GENERAL);
+    }
 
-   /**
-    * Construct an actor with the given container and name.
-    *  @param container The container.
-    *  @param name The name of this actor.
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
-   public DummySource(CompositeEntity container, String name)
-           throws IllegalActionException, NameDuplicationException {
-       super(container, name);
-       output.setTypeEquals(BaseType.GENERAL);
-   }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    /**
+     * Fire the source actor and output a frame.
+     *  @exception IllegalActionException If thrown while writing to the port.
+     */
+    public void fire() throws IllegalActionException {
+        DummyFrame f = new DummyFrame();
+        f.value = _counter;
+        output.send(0, new DummyReferenceToken(f));
+    }
 
-   /**
-    * Fire the source actor and output a frame.
-    *  @exception IllegalActionException If thrown while writing to the port.
-    */
-   public void fire() throws IllegalActionException {
-       DummyFrame f = new DummyFrame();
-       f.value = _counter;
-       output.send(0, new DummyReferenceToken(f));
-   }
+    /**
+     * Post-fire the source actor and update the counter to give
+     * next token a unique sequence number.
+     *  @return True if execution can continue into the next iteration.
+     *  @exception IllegalActionException Not thrown in this class or it base class.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _counter++;
+        return super.postfire();
+    }
 
-   /**
-    * Post-fire the source actor and update the counter to give
-    * next token a unique sequence number.
-    *  @return True if execution can continue into the next iteration.
-    *  @exception IllegalActionException Not thrown in this class or it base class.
-    */
-   public boolean postfire() throws IllegalActionException {
-       _counter ++;
-       return super.postfire();
-   }
+    /** Initialize the actor. Initializes its counter.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _counter = 0;
+    }
 
-   /** Initialize the actor. Initializes its counter.
-    *  @exception IllegalActionException If thrown by the super class.
-    */
-   public void initialize() throws IllegalActionException {
-       super.initialize();
-       _counter = 0;
-   }
+    /**
+     * Iterate the actor.
+     * @param iterationCount The number of iterations to perform.
+     * @param fireExclusive Determines whether the firing is exclusive.
+     * @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     * @exception IllegalActionException If iterating is not
+     *  permitted, or if prefire(), fire(), or postfire() throw it.
+     */
+    public int iterate(int iterationCount, boolean fireExclusive)
+            throws IllegalActionException {
+        return super.iterate(iterationCount);
+    }
 
-   /**
-    * Iterate the actor.
-    * @param iterationCount The number of iterations to perform.
-    * @param fireExclusive Determines whether the firing is exclusive.
-    * @return NOT_READY, STOP_ITERATING, or COMPLETED.
-    * @exception IllegalActionException If iterating is not
-    *  permitted, or if prefire(), fire(), or postfire() throw it.
-    */
-   public int iterate(int iterationCount, boolean fireExclusive)
-       throws IllegalActionException {
-       return super.iterate(iterationCount);
-   }
+    /**
+     * Provides the buffering profile, number of buffers required for an exclusive firing.
+     * @return number of buffers for exclusive firing
+     */
+    public int exclusiveBuffers() {
+        return 0;
+    }
 
-   /**
-    * Provides the buffering profile, number of buffers required for an exclusive firing.
-    * @return number of buffers for exclusive firing
-    */
-   public int exclusiveBuffers() {
-       return 0;
-   }
+    /**
+     * Provides the buffering profile, execution time estimate required for an exclusive
+     * firing.
+     * @return execution time for exclusive firing
+     */
+    public int exclusiveExecutionTime() {
+        return 0;
+    }
 
-   /**
-    * Provides the buffering profile, execution time estimate required for an exclusive
-    * firing.
-    * @return execution time for exclusive firing
-    */
-   public int exclusiveExecutionTime() {
-       return 0;
-   }
+    /**
+     * Provides the buffering profile, number of buffers required for a shared firing.
+     * @return number of buffers for shared firing
+     */
+    public int sharedBuffers() {
+        return 0;
+    }
 
-   /**
-    * Provides the buffering profile, number of buffers required for a shared firing.
-    * @return number of buffers for shared firing
-    */
-   public int sharedBuffers() {
-       return 0;
-   }
-
-   /**
-    * Provides the buffering profile, execution time estimate required for a shared firing.
-    * @return execution time for shared firing
-    */
-   public int sharedExecutionTime() {
-       return 0;
-   }
-
+    /**
+     * Provides the buffering profile, execution time estimate required for a shared firing.
+     * @return execution time for shared firing
+     */
+    public int sharedExecutionTime() {
+        return 0;
+    }
 
 }

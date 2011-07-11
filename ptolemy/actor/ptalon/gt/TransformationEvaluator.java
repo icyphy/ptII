@@ -192,8 +192,8 @@ public class TransformationEvaluator extends PtalonEvaluator {
                 }
                 _removeAttributes(object,
                         new Class<?>[] { PreservationAttribute.class });
-                new PreservationAttribute(object, object
-                        .uniqueName("_preserved"));
+                new PreservationAttribute(object,
+                        object.uniqueName("_preserved"));
                 _preservedObjects.add(object);
             }
         } catch (PtalonScopeException e) {
@@ -274,8 +274,8 @@ public class TransformationEvaluator extends PtalonEvaluator {
         } else if (_isPreservingTransformation()) {
             try {
                 GTTools.deepRemoveAttributes(object, CreationAttribute.class);
-                new PreservationAttribute(object, object
-                        .uniqueName("_preserved"));
+                new PreservationAttribute(object,
+                        object.uniqueName("_preserved"));
             } catch (Throwable throwable) {
                 throw new PtalonRuntimeException("Unable to create attribute.",
                         throwable);

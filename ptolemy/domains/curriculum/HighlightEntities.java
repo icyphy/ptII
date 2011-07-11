@@ -178,8 +178,7 @@ public class HighlightEntities extends Attribute {
                                 moml.append(((ComponentEntity) entity)
                                         .getName());
                                 moml.append("\">");
-                                moml
-                                        .append("<deleteProperty name=\"_highlightColor\"/>");
+                                moml.append("<deleteProperty name=\"_highlightColor\"/>");
                                 moml.append("</entity>");
                             }
                         }

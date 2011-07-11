@@ -829,15 +829,20 @@ public class CCodeGenerator extends CodeGenerator {
 
                 NamedObj container = variable.getContainer();
                 CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
-                code.append(comment(1, "Variable: "
-                        + variable
-                        + " simpleName: "
-                        + CodeGeneratorHelper.generateSimpleName(variable)
-                        + " value: "
-                        + containerHelper.getParameterValue(CodeGeneratorHelper
-                                .generateSimpleName(variable), variable
-                                .getContainer()) + " variable Type: "
-                        + containerHelper.targetType(variable.getType())));
+                code.append(comment(
+                        1,
+                        "Variable: "
+                                + variable
+                                + " simpleName: "
+                                + CodeGeneratorHelper
+                                        .generateSimpleName(variable)
+                                + " value: "
+                                + containerHelper.getParameterValue(
+                                        CodeGeneratorHelper
+                                                .generateSimpleName(variable),
+                                        variable.getContainer())
+                                + " variable Type: "
+                                + containerHelper.targetType(variable.getType())));
 
                 code.append(_INDENT1
                         + generateVariableName(variable)
@@ -1220,10 +1225,9 @@ public class CCodeGenerator extends CodeGenerator {
     protected String _printExecutionTime() {
         StringBuffer endCode = new StringBuffer();
         endCode.append(super._printExecutionTime());
-        endCode
-                .append("clock_gettime(CLOCK_REALTIME, &end);\n"
-                        + "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n"
-                        + "printf(\"execution time: %g seconds\\n\", dT);\n\n");
+        endCode.append("clock_gettime(CLOCK_REALTIME, &end);\n"
+                + "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n"
+                + "printf(\"execution time: %g seconds\\n\", dT);\n\n");
         return endCode.toString();
     }
 
@@ -1366,8 +1370,8 @@ public class CCodeGenerator extends CodeGenerator {
                     }
                     substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-dynamiclib");
                     // Need when we call the plotter from generated C code.
-                    substituteMap.put("@PTJNI_PLATFORM_LDFLAG@", widthFlag +
-                            "-framework JavaVM -framework CoreFoundation");
+                    substituteMap.put("@PTJNI_PLATFORM_LDFLAG@", widthFlag
+                            + "-framework JavaVM -framework CoreFoundation");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
 
@@ -1410,7 +1414,8 @@ public class CCodeGenerator extends CodeGenerator {
             String uriString = uri.toString();
             templateList.add(uriString.substring(0,
                     uriString.lastIndexOf("/") + 1)
-                    + _sanitizedModelName + ".mk.in");
+                    + _sanitizedModelName
+                    + ".mk.in");
         }
         // 2. If the target parameter is set, look for a makefile.
         String generatorDirectory = generatorPackage.stringValue().replace('.',

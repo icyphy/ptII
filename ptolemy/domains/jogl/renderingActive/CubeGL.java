@@ -1,6 +1,5 @@
 package ptolemy.domains.jogl.renderingActive;
 
-
 // CubeGL.java
 // Andrew Davison, November 2006, ad@fivedots.coe.psu.ac.th
 
@@ -38,124 +37,123 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+public class CubeGL extends JFrame implements WindowListener {
+    private static int DEFAULT_FPS = 80;
 
-public class CubeGL extends JFrame implements WindowListener
-{
-  private static int DEFAULT_FPS = 80;
+    private static final int PWIDTH = 512; // size of panel
+    private static final int PHEIGHT = 512;
 
-  private static final int PWIDTH = 512;   // size of panel
-  private static final int PHEIGHT = 512;
+    private CubeCanvasGL canvas;
 
-  private CubeCanvasGL canvas;
+    private JTextField rotsTF; // displays cube rotations
+    private DecimalFormat df = new DecimalFormat("0.#"); // 1 dp
 
-  private JTextField rotsTF;   // displays cube rotations
-  private DecimalFormat df = new DecimalFormat("0.#");  // 1 dp
+    public CubeGL(long period) {
+        super("CubeGL (Active)");
 
+        Container c = getContentPane();
+        c.setLayout(new BorderLayout());
+        c.add(makeRenderPanel(period), BorderLayout.CENTER);
 
-  public CubeGL(long period)
-  {
-    super("CubeGL (Active)");
+        rotsTF = new JTextField("Rotations: ");
+        rotsTF.setEditable(false);
+        c.add(rotsTF, BorderLayout.SOUTH);
 
-    Container c = getContentPane();
-    c.setLayout( new BorderLayout() );
-    c.add( makeRenderPanel(period), BorderLayout.CENTER);
+        addWindowListener(this);
 
-    rotsTF = new JTextField("Rotations: ");
-    rotsTF.setEditable(false);
-    c.add(rotsTF, BorderLayout.SOUTH);
+        pack();
+        setVisible(true);
+    } // end of CubeGL()
 
-    addWindowListener(this);
+    private JPanel makeRenderPanel(long period)
+    // construct the canvas, inside a JPanel
+    {
+        JPanel renderPane = new JPanel();
+        renderPane.setLayout(new BorderLayout());
+        renderPane.setOpaque(false);
+        renderPane.setPreferredSize(new Dimension(PWIDTH, PHEIGHT));
 
-    pack();
-    setVisible(true);
-  } // end of CubeGL()
+        canvas = makeCanvas(period);
+        renderPane.add(canvas, BorderLayout.CENTER);
 
+        canvas.setFocusable(true);
+        canvas.requestFocus(); // the canvas now has focus, so receives key events
 
-  private JPanel makeRenderPanel(long period)
-  // construct the canvas, inside a JPanel
-  {
-    JPanel renderPane = new JPanel();
-    renderPane.setLayout( new BorderLayout() );
-    renderPane.setOpaque(false);
-    renderPane.setPreferredSize( new Dimension(PWIDTH, PHEIGHT));
+        // detect window resizes, and reshape the canvas accordingly
+        renderPane.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent evt) {
+                Dimension d = evt.getComponent().getSize();
+                // System.out.println("New size: " + d);
+                canvas.reshape(d.width, d.height);
+            } // end of componentResized()
+        });
 
-    canvas = makeCanvas(period);
-    renderPane.add(canvas, BorderLayout.CENTER);
+        return renderPane;
+    } // end of makeRenderPanel()
 
-    canvas.setFocusable(true);
-    canvas.requestFocus();    // the canvas now has focus, so receives key events
+    private CubeCanvasGL makeCanvas(long period) {
+        // get a configuration suitable for an AWT Canvas (for CubeCanvasGL)
+        GLCapabilities caps = new GLCapabilities();
 
-    // detect window resizes, and reshape the canvas accordingly
-    renderPane.addComponentListener( new ComponentAdapter() {
-      public void componentResized(ComponentEvent evt)
-      { Dimension d = evt.getComponent().getSize();
-        // System.out.println("New size: " + d);
-        canvas.reshape(d.width, d.height);
-      } // end of componentResized()
-    });
+        AWTGraphicsDevice dev = new AWTGraphicsDevice(null);
+        AWTGraphicsConfiguration awtConfig = (AWTGraphicsConfiguration) GLDrawableFactory
+                .getFactory().chooseGraphicsConfiguration(caps, null, dev);
 
-    return renderPane;
-  }  // end of makeRenderPanel()
+        GraphicsConfiguration config = null;
+        if (awtConfig != null) {
+            config = awtConfig.getGraphicsConfiguration();
+        }
 
+        return new CubeCanvasGL(this, period, PWIDTH, PHEIGHT, config, caps);
+    } // end of makeCanvas()
 
-  private CubeCanvasGL makeCanvas(long period)
-  {
-    // get a configuration suitable for an AWT Canvas (for CubeCanvasGL)
-    GLCapabilities caps = new GLCapabilities();
+    public void setRots(float rotX, float rotY, float rotZ)
+    // called from CubeCanvasGL to show cube rotations
+    {
+        rotsTF.setText("Rotations: (" + df.format(rotX) + ", "
+                + df.format(rotY) + ", " + df.format(rotZ) + ")");
+    }
 
-    AWTGraphicsDevice dev = new AWTGraphicsDevice(null);
-    AWTGraphicsConfiguration awtConfig = (AWTGraphicsConfiguration)
-       GLDrawableFactory.getFactory().chooseGraphicsConfiguration(caps, null, dev);
+    // ----------------- window listener methods -------------
 
-    GraphicsConfiguration config = null;
-    if (awtConfig != null)
-      config = awtConfig.getGraphicsConfiguration();
+    public void windowActivated(WindowEvent e) {
+        canvas.resumeGame();
+    }
 
-    return new CubeCanvasGL(this, period, PWIDTH, PHEIGHT, config, caps);
-  } // end of makeCanvas()
+    public void windowDeactivated(WindowEvent e) {
+        canvas.pauseGame();
+    }
 
+    public void windowDeiconified(WindowEvent e) {
+        canvas.resumeGame();
+    }
 
-  public void setRots(float rotX, float rotY, float rotZ)
-  // called from CubeCanvasGL to show cube rotations
-  {  rotsTF.setText("Rotations: (" + df.format(rotX) + ", " +
-                                     df.format(rotY) + ", " +
-                                     df.format(rotZ) + ")");  }
+    public void windowIconified(WindowEvent e) {
+        canvas.pauseGame();
+    }
 
+    public void windowClosing(WindowEvent e) {
+        canvas.stopGame();
+    }
 
+    public void windowClosed(WindowEvent e) {
+    }
 
-  // ----------------- window listener methods -------------
+    public void windowOpened(WindowEvent e) {
+    }
 
-  public void windowActivated(WindowEvent e)
-  { canvas.resumeGame();  }
+    // -----------------------------------------
 
-  public void windowDeactivated(WindowEvent e)
-  {  canvas.pauseGame();  }
+    public static void main(String[] args) {
+        int fps = DEFAULT_FPS;
+        if (args.length != 0) {
+            fps = Integer.parseInt(args[0]);
+        }
 
-  public void windowDeiconified(WindowEvent e)
-  {  canvas.resumeGame();  }
+        long period = (long) 1000.0 / fps;
+        System.out.println("fps: " + fps + "; period: " + period + " ms");
 
-  public void windowIconified(WindowEvent e)
-  {  canvas.pauseGame(); }
-
-  public void windowClosing(WindowEvent e)
-  {  canvas.stopGame();  }
-
-  public void windowClosed(WindowEvent e) {}
-  public void windowOpened(WindowEvent e) {}
-
-// -----------------------------------------
-
-  public static void main(String[] args)
-  {
-    int fps = DEFAULT_FPS;
-    if (args.length != 0)
-      fps = Integer.parseInt(args[0]);
-
-    long period = (long) 1000.0/fps;
-    System.out.println("fps: " + fps + "; period: " + period + " ms");
-
-    new CubeGL(period*1000000L);    // ms --> nanosecs
-  } // end of main()
-
+        new CubeGL(period * 1000000L); // ms --> nanosecs
+    } // end of main()
 
 } // end of CubeGL class

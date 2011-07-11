@@ -149,8 +149,8 @@ public class Fraction extends Object {
      * @return True if this Fraction is greater than the input.
      */
     public boolean greaterThan(Fraction testInput) {
-        int gcd = ExtendedMath.gcd(testInput.getDenominator(), this
-                .getDenominator());
+        int gcd = ExtendedMath.gcd(testInput.getDenominator(),
+                this.getDenominator());
         int thisScaled = this.multiply(new Fraction(gcd, 1)).getNumerator();
         int inputScaled = testInput.multiply(new Fraction(gcd, 1))
                 .getNumerator();

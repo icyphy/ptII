@@ -119,7 +119,8 @@ public class ExportImageJUnitTest {
         Runnable openModelAction = new Runnable() {
             public void run() {
                 try {
-                    model[0] = ConfigurationApplication.openModel(modelFileName);
+                    model[0] = ConfigurationApplication
+                            .openModel(modelFileName);
                 } catch (Throwable throwable) {
                     throw new RuntimeException(throwable);
                 }
@@ -128,7 +129,7 @@ public class ExportImageJUnitTest {
         SwingUtilities.invokeAndWait(openModelAction);
         _sleep();
 
-       _basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(model[0]);
+        _basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(model[0]);
 
         // Open a model that we will use to display the image.
 
@@ -142,7 +143,8 @@ public class ExportImageJUnitTest {
         Runnable openImageDisplayModelAction = new Runnable() {
             public void run() {
                 try {
-                    imageDisplayModel[0] = ConfigurationApplication.openModel("$CLASSPATH/ptolemy/actor/lib/image/test/auto/ImageReaderImageDisplay.xml");
+                    imageDisplayModel[0] = ConfigurationApplication
+                            .openModel("$CLASSPATH/ptolemy/actor/lib/image/test/auto/ImageReaderImageDisplay.xml");
                 } catch (Throwable throwable) {
                     throw new RuntimeException(throwable);
                 }
@@ -151,61 +153,69 @@ public class ExportImageJUnitTest {
         SwingUtilities.invokeAndWait(openImageDisplayModelAction);
         _sleep();
 
-       // Export images
-       // FIXME: we should get the list of acceptable format names from
-       // BasicGraphFrame
-       String [] formatNames = new String [] {"GIF", "PNG"};
-       for (int i = 0; i < formatNames.length; i++) {
-           final String formatName = formatNames[i];
-           Runnable exportImageAction = new Runnable() {
-                   public void run() {
-                       try {
-                           System.out.print(" " + formatName + " ");
-                           File imageFile = File.createTempFile(model[0].getName(), formatName.toLowerCase());
-                           imageFile.deleteOnExit();
-                           OutputStream out = null;
-                           try {
-                               out = new FileOutputStream(imageFile);
-                               // Export the image.
-                               _basicGraphFrame.getJGraph().exportImage(out, formatName);
-                           } finally {
-                               if (out != null) {
-                                   try {
-                                       out.close();
-                                   } catch (IOException ex) {
-                                       ex.printStackTrace();
-                                   }
-                               }
-                           }
+        // Export images
+        // FIXME: we should get the list of acceptable format names from
+        // BasicGraphFrame
+        String[] formatNames = new String[] { "GIF", "PNG" };
+        for (int i = 0; i < formatNames.length; i++) {
+            final String formatName = formatNames[i];
+            Runnable exportImageAction = new Runnable() {
+                public void run() {
+                    try {
+                        System.out.print(" " + formatName + " ");
+                        File imageFile = File.createTempFile(
+                                model[0].getName(), formatName.toLowerCase());
+                        imageFile.deleteOnExit();
+                        OutputStream out = null;
+                        try {
+                            out = new FileOutputStream(imageFile);
+                            // Export the image.
+                            _basicGraphFrame.getJGraph().exportImage(out,
+                                    formatName);
+                        } finally {
+                            if (out != null) {
+                                try {
+                                    out.close();
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                        }
 
-                           // Run a model that displays the image.
-                           ImageReader imageReader = (ImageReader) ((CompositeEntity)imageDisplayModel[0]).getEntity("ImageReader");
+                        // Run a model that displays the image.
+                        ImageReader imageReader = (ImageReader) ((CompositeEntity) imageDisplayModel[0])
+                                .getEntity("ImageReader");
 
-                           imageReader.fileOrURL.setExpression(imageFile.toURI().toURL().toString());
-                           Manager manager = model[0].getManager();
-                           if (manager == null) {
-                               manager = new Manager(imageDisplayModel[0].workspace(), "MyManager");
-                               ((TypedCompositeActor)imageDisplayModel[0]).setManager(manager);
-                           }
-                           ((TypedCompositeActor)imageDisplayModel[0]).setModelErrorHandler(new BasicModelErrorHandler());
-                           manager.execute();
+                        imageReader.fileOrURL.setExpression(imageFile.toURI()
+                                .toURL().toString());
+                        Manager manager = model[0].getManager();
+                        if (manager == null) {
+                            manager = new Manager(
+                                    imageDisplayModel[0].workspace(),
+                                    "MyManager");
+                            (imageDisplayModel[0]).setManager(manager);
+                        }
+                        (imageDisplayModel[0])
+                                .setModelErrorHandler(new BasicModelErrorHandler());
+                        manager.execute();
 
-                       } catch (Exception ex) {
-                           ex.printStackTrace();
-                           throw new RuntimeException(ex);
-                       }
-                   }
-               };
-           SwingUtilities.invokeAndWait(exportImageAction);
-           _sleep();
-       }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        throw new RuntimeException(ex);
+                    }
+                }
+            };
+            SwingUtilities.invokeAndWait(exportImageAction);
+            _sleep();
+        }
 
         /////
         // Close the model.
         Runnable closeAction = new Runnable() {
             public void run() {
                 try {
-                    ConfigurationApplication.closeModelWithoutSavingOrExiting(model[0]);
+                    ConfigurationApplication
+                            .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -225,7 +235,6 @@ public class ExportImageJUnitTest {
             //Ignore
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////

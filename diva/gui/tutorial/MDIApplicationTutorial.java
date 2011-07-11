@@ -221,16 +221,16 @@ public class MDIApplicationTutorial extends MDIApplication {
 
         // Conventional new/open/save buttons
         action = getAction("New");
-        GUIUtilities.addToolBarButton(tb, action, null, resources
-                .getImageIcon("NewImage"));
+        GUIUtilities.addToolBarButton(tb, action, null,
+                resources.getImageIcon("NewImage"));
 
         action = getAction("Open");
-        GUIUtilities.addToolBarButton(tb, action, null, resources
-                .getImageIcon("OpenImage"));
+        GUIUtilities.addToolBarButton(tb, action, null,
+                resources.getImageIcon("OpenImage"));
 
         action = getAction("Save");
-        GUIUtilities.addToolBarButton(tb, action, null, resources
-                .getImageIcon("SaveImage"));
+        GUIUtilities.addToolBarButton(tb, action, null,
+                resources.getImageIcon("SaveImage"));
     }
 
     /**

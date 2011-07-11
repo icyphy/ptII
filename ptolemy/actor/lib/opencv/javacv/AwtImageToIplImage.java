@@ -74,10 +74,10 @@ public class AwtImageToIplImage extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             // FIXME: this reads the input and ignores the value.
             // Perhaps "input" should be renamed to "trigger".
-            /*Image inputObject = (Image) */ inputToken.getValue();
+            /*Image inputObject = (Image) */inputToken.getValue();
             _frame = new IplImage();
             output.send(0, new ObjectToken(_frame));
         }

@@ -310,8 +310,8 @@ public class StateMatcher extends State implements GTEntity, TypedActor,
      */
     public boolean match(NamedObj object) {
         return object instanceof State
-                || object.getClass().getName().equals(
-                        "ptolemy.domains.fsm.kernel.State");
+                || object.getClass().getName()
+                        .equals("ptolemy.domains.fsm.kernel.State");
     }
 
     /** Return null.

@@ -90,7 +90,8 @@ public class EditorDropTargetListener implements DropTargetListener {
     public void dragEnter(DropTargetDragEvent dropEvent) {
         // Notify additionalListeners.
         for (int i = 0; i < _dropTarget.getAdditionalListeners().size(); i++) {
-            DropTargetListener listener = _dropTarget.getAdditionalListeners().elementAt(i);
+            DropTargetListener listener = _dropTarget.getAdditionalListeners()
+                    .elementAt(i);
             listener.dragEnter(dropEvent);
         }
 
@@ -110,7 +111,8 @@ public class EditorDropTargetListener implements DropTargetListener {
     public void dragExit(DropTargetEvent dropEvent) {
         // Notify additionalListeners.
         for (int i = 0; i < _dropTarget.getAdditionalListeners().size(); i++) {
-            DropTargetListener listener = _dropTarget.getAdditionalListeners().elementAt(i);
+            DropTargetListener listener = _dropTarget.getAdditionalListeners()
+                    .elementAt(i);
             listener.dragExit(dropEvent);
         }
         if (_highlighted != null) {
@@ -131,7 +133,8 @@ public class EditorDropTargetListener implements DropTargetListener {
     public void dragOver(DropTargetDragEvent dropEvent) {
         // Notify additionalListeners.
         for (int i = 0; i < _dropTarget.getAdditionalListeners().size(); i++) {
-            DropTargetListener listener = _dropTarget.getAdditionalListeners().elementAt(i);
+            DropTargetListener listener = _dropTarget.getAdditionalListeners()
+                    .elementAt(i);
             listener.dragOver(dropEvent);
         }
         // See whether there is a container under the point.
@@ -176,7 +179,8 @@ public class EditorDropTargetListener implements DropTargetListener {
     public void drop(DropTargetDropEvent dropEvent) {
         // Notify additionalListeners.
         for (int i = 0; i < _dropTarget.getAdditionalListeners().size(); i++) {
-            DropTargetListener listener = _dropTarget.getAdditionalListeners().elementAt(i);
+            DropTargetListener listener = _dropTarget.getAdditionalListeners()
+                    .elementAt(i);
             listener.drop(dropEvent);
         }
         // Unhighlight the target. Do this first in case
@@ -382,7 +386,8 @@ public class EditorDropTargetListener implements DropTargetListener {
     public void dropActionChanged(DropTargetDragEvent dropEvent) {
         // Notify additionalListeners.
         for (int i = 0; i < _dropTarget.getAdditionalListeners().size(); i++) {
-            DropTargetListener listener = _dropTarget.getAdditionalListeners().elementAt(i);
+            DropTargetListener listener = _dropTarget.getAdditionalListeners()
+                    .elementAt(i);
             listener.dropActionChanged(dropEvent);
         }
         // Used to do this... Not needed?

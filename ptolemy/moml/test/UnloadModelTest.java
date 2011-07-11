@@ -84,8 +84,8 @@ public class UnloadModelTest extends MoMLSimpleApplication {
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
-        toplevel = (CompositeActor) parser.parse(null, new File(
-                xmlFileName).toURI().toURL());
+        toplevel = (CompositeActor) parser.parse(null, new File(xmlFileName)
+                .toURI().toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);
@@ -146,8 +146,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
                 + "K Free: "
                 + freeMemory
                 + "K ("
-                + Math
-                        .round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
+                + Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
                 + "%)";
     }
 
@@ -162,24 +161,23 @@ public class UnloadModelTest extends MoMLSimpleApplication {
                 // use java -verbose:gc . . .
                 System.gc();
                 Thread.sleep(1000);
-                System.out.println("Memory before unloading: "
-                        + memory());
+                System.out.println("Memory before unloading: " + memory());
 
-//              if (toplevel instanceof CompositeEntity) {
-//                  try {
-//                      ParserAttribute parserAttribute = (ParserAttribute) toplevel
-//                          .getAttribute("_parser", ParserAttribute.class);
-//                      parserAttribute.setContainer(null);
-//                      ((CompositeEntity)toplevel).setContainer(null);
-//                  } catch (Exception ex) {
-//                      ex.printStackTrace();
-//                  }
-//              }
+                //              if (toplevel instanceof CompositeEntity) {
+                //                  try {
+                //                      ParserAttribute parserAttribute = (ParserAttribute) toplevel
+                //                          .getAttribute("_parser", ParserAttribute.class);
+                //                      parserAttribute.setContainer(null);
+                //                      ((CompositeEntity)toplevel).setContainer(null);
+                //                  } catch (Exception ex) {
+                //                      ex.printStackTrace();
+                //                  }
+                //              }
 
                 if (parser != null) {
-//                  if (parser.topObjectsCreated() != null) {
-//                      parser.topObjectsCreated().remove(toplevel);
-//                  }
+                    //                  if (parser.topObjectsCreated() != null) {
+                    //                      parser.topObjectsCreated().remove(toplevel);
+                    //                  }
 
                     parser.resetAll();
                     // parser is a public variable so setting it to
@@ -198,28 +196,27 @@ public class UnloadModelTest extends MoMLSimpleApplication {
                     MoMLParser.setMoMLFilters(null);
                 }
 
-
-//                 try {
-//                     toplevel.setContainer(null);
-//                     _manager.terminate();
-//                     toplevel.setManager(null);
-//                 } catch (Exception ex) {
-//                     ex.printStackTrace();
-//                 }
+                //                 try {
+                //                     toplevel.setContainer(null);
+                //                     _manager.terminate();
+                //                     toplevel.setManager(null);
+                //                 } catch (Exception ex) {
+                //                     ex.printStackTrace();
+                //                 }
 
                 // _manager is a protected variable so setting it to
                 // null will (hopefully) cause the garbage
                 // collector to collect it.
                 _manager = null;
 
-//                 try {
-//                     toplevel.workspace().getWriteAccess();
-//                     toplevel.workspace().removeAll();
-//                 } catch (Throwable throwable) {
-//                     throwable.printStackTrace();
-//                 } finally {
-//                     toplevel.workspace().doneWriting();
-//                 }
+                //                 try {
+                //                     toplevel.workspace().getWriteAccess();
+                //                     toplevel.workspace().removeAll();
+                //                 } catch (Throwable throwable) {
+                //                     throwable.printStackTrace();
+                //                 } finally {
+                //                     toplevel.workspace().doneWriting();
+                //                 }
 
                 // toplevel and workspace are a public variables so
                 // setting it to null will (hopefully) cause the
@@ -234,8 +231,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
 
                 System.gc();
                 Thread.sleep(1000);
-                System.out.println("Memory after  unloading: "
-                        + memory());
+                System.out.println("Memory after  unloading: " + memory());
 
                 System.out.println("Sleeping for 1000 seconds");
                 if (_sawThrowable != null) {

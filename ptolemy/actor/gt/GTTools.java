@@ -103,8 +103,7 @@ public class GTTools {
             throw new IllegalActionException(attribute.getClass()
                     .getSimpleName()
                     + " can only be added to "
-                    + containerClass.getSimpleName()
-                    + ".");
+                    + containerClass.getSimpleName() + ".");
         }
     }
 
@@ -166,8 +165,8 @@ public class GTTools {
                     "_uri", URIAttribute.class);
             NamedObj newModel;
             if (uriAttribute != null) {
-                newModel = parser.parse(uriAttribute.getURL(), model
-                        .exportMoML());
+                newModel = parser.parse(uriAttribute.getURL(),
+                        model.exportMoML());
             } else {
                 newModel = parser.parse(model.exportMoML());
             }
@@ -222,8 +221,10 @@ public class GTTools {
             Class<?>[] types = constructor.getParameterTypes();
             if (types.length == 2 && types[0].isInstance(container)
                     && types[1].equals(String.class)) {
-                constructor.newInstance(container, container.uniqueName("_"
-                        + attributeClass.getSimpleName()));
+                constructor.newInstance(
+                        container,
+                        container.uniqueName("_"
+                                + attributeClass.getSimpleName()));
                 break;
             }
         }
@@ -243,8 +244,8 @@ public class GTTools {
     public static void deepRemoveAttributes(NamedObj container,
             Class<? extends Attribute> attributeClass)
             throws IllegalActionException {
-        List<Object> attributes = new LinkedList<Object>(container
-                .attributeList(attributeClass));
+        List<Object> attributes = new LinkedList<Object>(
+                container.attributeList(attributeClass));
         for (Object attribute : attributes) {
             try {
                 ((Attribute) attribute).setContainer(null);

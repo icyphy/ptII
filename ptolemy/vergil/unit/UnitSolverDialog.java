@@ -162,8 +162,8 @@ public class UnitSolverDialog extends PtolemyDialog implements
         componentsPanel.setLayout(new BoxLayout(componentsPanel,
                 BoxLayout.Y_AXIS));
         componentsPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Components"), BorderFactory
-                        .createEmptyBorder(5, 5, 5, 5)));
+                BorderFactory.createTitledBorder("Components"),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         _setToSelectedButton.setEnabled(false);
         componentsPanel.add(_setToSelectedButton);
         _setToSelectedButton.addActionListener(this);

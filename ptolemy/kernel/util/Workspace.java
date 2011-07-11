@@ -795,8 +795,8 @@ public final class Workspace implements Nameable, Serializable {
      */
     protected synchronized String _description(int detail, int indent,
             int bracket) throws IllegalActionException {
-        StringBuffer result = new StringBuffer(NamedObj
-                ._getIndentPrefix(indent));
+        StringBuffer result = new StringBuffer(
+                NamedObj._getIndentPrefix(indent));
 
         if ((bracket == 1) || (bracket == 2)) {
             result.append("{");
@@ -830,7 +830,8 @@ public final class Workspace implements Nameable, Serializable {
                     detail &= ~NamedObj.CONTENTS;
                 }
 
-                String description = obj._description(detail, indent + 1, 2) + "\n";
+                String description = obj._description(detail, indent + 1, 2)
+                        + "\n";
                 result.append(description);
             }
 

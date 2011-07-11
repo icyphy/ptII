@@ -233,8 +233,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D Complex matrix
      */
     public Complex[][] complexMatrix() {
-        return ComplexMatrixMath.toMatrixFromArray(IntegerArrayMath
-                .toComplexArray(_value), _rowCount, _columnCount);
+        return ComplexMatrixMath.toMatrixFromArray(
+                IntegerArrayMath.toComplexArray(_value), _rowCount,
+                _columnCount);
     }
 
     /** Convert the specified token into an instance of IntMatrixToken.
@@ -301,8 +302,8 @@ public class IntMatrixToken extends MatrixToken {
 
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
             if (token.isNil()) {
-                throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, "[int]"));
+                throw new IllegalActionException(
+                        Token.notSupportedConversionMessage(token, "[int]"));
             }
             IntToken intToken = IntToken.convert(token);
             int intValue = intToken.intValue();
@@ -347,8 +348,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D double matrix.
      */
     public double[][] doubleMatrix() {
-        return DoubleMatrixMath.toMatrixFromArray(IntegerArrayMath
-                .toDoubleArray(_value), _rowCount, _columnCount);
+        return DoubleMatrixMath
+                .toMatrixFromArray(IntegerArrayMath.toDoubleArray(_value),
+                        _rowCount, _columnCount);
     }
 
     /** Return true if the argument is an instance of IntMatrixToken
@@ -538,8 +540,8 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D long matrix.
      */
     public long[][] longMatrix() {
-        return LongMatrixMath.toMatrixFromArray(IntegerArrayMath
-                .toLongArray(_value), _rowCount, _columnCount);
+        return LongMatrixMath.toMatrixFromArray(
+                IntegerArrayMath.toLongArray(_value), _rowCount, _columnCount);
     }
 
     /** Return a new Token representing the left multiplicative
@@ -648,8 +650,8 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         IntMatrixToken convertedArgument = (IntMatrixToken) rightArgument;
-        int[] result = IntegerArrayMath.add(convertedArgument
-                ._getInternalIntArray(), _value);
+        int[] result = IntegerArrayMath.add(
+                convertedArgument._getInternalIntArray(), _value);
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
@@ -817,8 +819,8 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         IntMatrixToken convertedArgument = (IntMatrixToken) rightArgument;
-        int[] result = IntegerArrayMath.subtract(_value, convertedArgument
-                ._getInternalIntArray());
+        int[] result = IntegerArrayMath.subtract(_value,
+                convertedArgument._getInternalIntArray());
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 

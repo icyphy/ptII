@@ -35,7 +35,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// Read
 
@@ -68,7 +67,7 @@ public class Copy extends Transformer {
         output.setTypeAtLeast(input);
         output.setMultiport(true);
         output.setTypeEquals(BaseType.OBJECT);
-      //  output.setTypeEquals(BaseType.OBJECT);
+        //  output.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,16 +77,15 @@ public class Copy extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof OpenCV)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of OpenCV. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
 
-
-            OpenCV openCV = (OpenCV)inputObject;
+            OpenCV openCV = (OpenCV) inputObject;
             OpenCV my_copy = new OpenCV();
 
             my_copy.allocate(openCV.width, openCV.height);
@@ -99,6 +97,5 @@ public class Copy extends Transformer {
 
         }
     }
-
 
 }

@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// SampleDelay
 
@@ -40,7 +39,9 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
  @Pt.ProposedRating Red (mschoebe)
  @Pt.AcceptedRating Red (mschoebe)
  */
-public class SampleDelay extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.SampleDelay {
+public class SampleDelay
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.SampleDelay {
     /**
      *  Construct a SampleDelay adapter.
      *  @param actor The given ptolemy.domains.sdf.lib.SampleDelay actor.

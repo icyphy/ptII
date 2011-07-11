@@ -112,8 +112,7 @@ public class DatabaseManager extends TypedAtomicActor {
         // Default database is the EECS database at Berkeley.
         // NOTE: the server and database name ("acgeecs")
         // are going to change in summer 2008...
-        database
-                .setExpression("jdbc:oracle:thin:@buffy.eecs.berkeley.edu:1521:acgeecs");
+        database.setExpression("jdbc:oracle:thin:@buffy.eecs.berkeley.edu:1521:acgeecs");
 
         passwordFile = new FileParameter(this, "passwordFile");
         passwordFile.setExpression("");
@@ -476,10 +475,8 @@ public class DatabaseManager extends TypedAtomicActor {
                     reader = passwordFile.openForReading();
                     _password = reader.readLine().toCharArray();
                 } catch (Exception ex) {
-                    System.out.println(getFullName()
-                            + ": Failed to read "
-                            + passwordFile.stringValue()
-                            + ex);
+                    System.out.println(getFullName() + ": Failed to read "
+                            + passwordFile.stringValue() + ex);
                 } finally {
                     if (reader != null) {
                         try {
@@ -487,7 +484,7 @@ public class DatabaseManager extends TypedAtomicActor {
                         } catch (IOException ex) {
                             throw new IllegalActionException(this, ex,
                                     "Failed to close "
-                                    + passwordFile.stringValue());
+                                            + passwordFile.stringValue());
                         }
                     }
                 }
@@ -530,9 +527,9 @@ public class DatabaseManager extends TypedAtomicActor {
         if (_connection == null) {
             // Get database connection.
             try {
-                _connection = DriverManager.getConnection(database
-                        .getExpression(), userName.getExpression(), new String(
-                        _password));
+                _connection = DriverManager.getConnection(
+                        database.getExpression(), userName.getExpression(),
+                        new String(_password));
                 // If updating, use single transaction.
                 _connection.setAutoCommit(false);
             } catch (SQLException ex) {
@@ -546,8 +543,8 @@ public class DatabaseManager extends TypedAtomicActor {
                     // Try the mysql driver
                     DriverManager.registerDriver((java.sql.Driver) Class
                             .forName("com.mysql.jdbc.Driver").newInstance());
-                    _connection = DriverManager.getConnection(database
-                            .getExpression(), userName.getExpression(),
+                    _connection = DriverManager.getConnection(
+                            database.getExpression(), userName.getExpression(),
                             new String(_password));
                     // If updating, use single transaction.
                     _connection.setAutoCommit(false);
@@ -557,9 +554,10 @@ public class DatabaseManager extends TypedAtomicActor {
                         DriverManager.registerDriver((java.sql.Driver) Class
                                 .forName("oracle.jdbc.OracleDriver")
                                 .newInstance());
-                        _connection = DriverManager.getConnection(database
-                                .getExpression(), userName.getExpression(),
-                                new String(_password));
+                        _connection = DriverManager
+                                .getConnection(database.getExpression(),
+                                        userName.getExpression(), new String(
+                                                _password));
                         // If updating, use single transaction.
                         _connection.setAutoCommit(false);
                     } catch (Exception ex3) {

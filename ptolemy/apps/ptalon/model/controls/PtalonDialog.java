@@ -190,8 +190,8 @@ public class PtalonDialog extends JDialog implements ActionListener,
             _model.setCode(_codeArea.getText());
             try {
                 _model.updateModel();
-                _tabbedPane.setComponentAt(1, this
-                        .createPtalonParametersPanel());
+                _tabbedPane.setComponentAt(1,
+                        this.createPtalonParametersPanel());
             } catch (IllegalActionException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Ptalon",
                         JOptionPane.ERROR_MESSAGE);
@@ -199,8 +199,8 @@ public class PtalonDialog extends JDialog implements ActionListener,
         }
     }
 
-    private static File _ptDir = new File(StringUtilities
-            .getProperty("ptolemy.ptII.dir"));
+    private static File _ptDir = new File(
+            StringUtilities.getProperty("ptolemy.ptII.dir"));
 
     private void _saveAs() {
         File file = _model.getFile();

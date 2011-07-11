@@ -302,10 +302,8 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         Iterator separators = separatorList.iterator();
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) {
-                _writer
-                        .print(" "
-                                + _transformOp(((Token) separators.next()).image)
-                                + " ");
+                _writer.print(" "
+                        + _transformOp(((Token) separators.next()).image) + " ");
             }
             _printChild(node, i);
         }

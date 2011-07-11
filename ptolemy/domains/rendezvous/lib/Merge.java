@@ -131,7 +131,7 @@ public class Merge extends TypedAtomicActor {
          _debug("Sending to the output.");
          }
          output.send(0, received);*/
-        RendezvousReceiver.getFromAnyPutToAll(input.getReceivers(), output
-                .getRemoteReceivers(), (RendezvousDirector) director);
+        RendezvousReceiver.getFromAnyPutToAll(input.getReceivers(),
+                output.getRemoteReceivers(), (RendezvousDirector) director);
     }
 }

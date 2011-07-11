@@ -63,8 +63,8 @@ public class MultiplyConceptFunctionDefinition extends
             NameDuplicationException {
         super(container, name);
 
-        Token[] argNames = new Token[]{(Token) new StringToken("factor1"),
-                (Token) new StringToken("factor2")};
+        Token[] argNames = new Token[] { new StringToken("factor1"),
+                new StringToken("factor2") };
         argumentNames.setToken(new ArrayToken(argNames));
         argumentNames.setVisibility(Settable.NOT_EDITABLE);
 

@@ -134,18 +134,22 @@ public class LabVIEWSimulator extends Simulator {
             // output port of this actor.
             _readFromServer();
             double[] dblRea = server.getDoubleArray();
-            double nextSimulationTime = server.getSimulationTimeReadFromClient();
+            double nextSimulationTime = server
+                    .getSimulationTimeReadFromClient();
             // If nextSimulationTime is negative, this implies the program
             // should be stopped. Thus we simply return from fire().
             if (nextSimulationTime < 0) {
                 return;
             }
-            getDirector().fireAt(this, new Time(getDirector(), nextSimulationTime));
+            getDirector().fireAt(this,
+                    new Time(getDirector(), nextSimulationTime));
             if (dblRea.length == 1) {
                 output.send(0, new DoubleToken(dblRea[0]));
             } else if (dblRea.length != 0) {
-                throw new IllegalActionException(this, "Received data from " +
-                "LabVIEW, the only supported data lenght right now is 1.");
+                throw new IllegalActionException(
+                        this,
+                        "Received data from "
+                                + "LabVIEW, the only supported data lenght right now is 1.");
             }
         } else { // Either client is down or this is the first time step. Consume token
             input.get(0);
@@ -153,7 +157,7 @@ public class LabVIEWSimulator extends Simulator {
         }
         //////////////////////////////////////////////////////
         // send output token
-//        output.send(0, outTok);
+        //        output.send(0, outTok);
     }
 
     /** Get a double array from the Token.
@@ -162,23 +166,23 @@ public class LabVIEWSimulator extends Simulator {
     * @return the double[] array with the elements of the Token
     * @exception IllegalActionException If the base class throws it.
     */
-   protected double[] _getDoubleArray(ptolemy.data.Token t)
-           throws IllegalActionException {
+    protected double[] _getDoubleArray(ptolemy.data.Token t)
+            throws IllegalActionException {
 
-       double[] result;
-       if (t == null) {
-           result = new double[0];
-       } else {
-           result = new double[1];
-           if (t instanceof DoubleToken) {
-               result[0] = ((DoubleToken)t).doubleValue();
-           } else {
-               throw new IllegalActionException(this, "Data received at the " +
-                         "input of this actor must be of type double");
-           }
-       }
-       return result;
-   }
+        double[] result;
+        if (t == null) {
+            result = new double[0];
+        } else {
+            result = new double[1];
+            if (t instanceof DoubleToken) {
+                result[0] = ((DoubleToken) t).doubleValue();
+            } else {
+                throw new IllegalActionException(this, "Data received at the "
+                        + "input of this actor must be of type double");
+            }
+        }
+        return result;
+    }
 
     /** Return true. Overwrites the prefire method in SDFTransformer.
      *  This actor extends Simulator, which unfortunately extends
@@ -200,43 +204,44 @@ public class LabVIEWSimulator extends Simulator {
      *  @exception IllegalActionException If the simulation process arguments
      *                           are invalid.
      */
-   protected void _startSimulation() throws IllegalActionException {
-   }
+    protected void _startSimulation() throws IllegalActionException {
+    }
 
-   /** During initialize, we output one token to startup the co-simulation
-    *  between Ptolemy and LabVIEW program.
-    */
-   protected void _outputInitToken() throws IllegalActionException {
-       Token token = new DoubleToken(0.0);
-       output.send(0, token);
-   }
-   /** Write the data to the server instance, which will send it to
-    * the client program.
-    *
-    * @exception IllegalActionException If there was an error when
-    * writing to the server.
-    */
-   protected void _writeToServer() throws IllegalActionException {
-       //////////////////////////////////////////////////////
-       // Write data to server
-       Token token = null;
-       if (input.hasToken(0)) {
-           token = input.get(0);
-       }
-       dblWri = _getDoubleArray(token);
+    /** During initialize, we output one token to startup the co-simulation
+     *  between Ptolemy and LabVIEW program.
+     */
+    protected void _outputInitToken() throws IllegalActionException {
+        Token token = new DoubleToken(0.0);
+        output.send(0, token);
+    }
 
-       try {
-           //                          Thread.sleep(1000); // in milliseconds
-           server.write(0, tokTim, dblWri);
-       } catch (IOException e) {
-           String em = "Error while writing to client: " + LS + e.getMessage();
-           throw new IllegalActionException(this, em);
-       }
-       // get tokens' time stamp. This time will be written to the
-       // client in the next time step, this time step read from the client
-       // the output which will be sent to clients in the next time step
-       // as inputs
-       tokTim = getDirector().getModelTime().getDoubleValue();
-       System.out.println("the current time is " + tokTim);
-   }
+    /** Write the data to the server instance, which will send it to
+     * the client program.
+     *
+     * @exception IllegalActionException If there was an error when
+     * writing to the server.
+     */
+    protected void _writeToServer() throws IllegalActionException {
+        //////////////////////////////////////////////////////
+        // Write data to server
+        Token token = null;
+        if (input.hasToken(0)) {
+            token = input.get(0);
+        }
+        dblWri = _getDoubleArray(token);
+
+        try {
+            //                          Thread.sleep(1000); // in milliseconds
+            server.write(0, tokTim, dblWri);
+        } catch (IOException e) {
+            String em = "Error while writing to client: " + LS + e.getMessage();
+            throw new IllegalActionException(this, em);
+        }
+        // get tokens' time stamp. This time will be written to the
+        // client in the next time step, this time step read from the client
+        // the output which will be sent to clients in the next time step
+        // as inputs
+        tokTim = getDirector().getModelTime().getDoubleValue();
+        System.out.println("the current time is " + tokTim);
+    }
 }

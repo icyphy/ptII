@@ -102,8 +102,8 @@ public class MenuApplication {
         // is frowned upon, but we do what we can here.
         if (_invokedFromAMenu()) {
             try {
-                System.setProperty("user.dir", StringUtilities
-                        .getProperty("user.home"));
+                System.setProperty("user.dir",
+                        StringUtilities.getProperty("user.home"));
             } catch (SecurityException ex) {
                 System.out
                         .println("Warning: MenuApplication: Could not get user.home property "

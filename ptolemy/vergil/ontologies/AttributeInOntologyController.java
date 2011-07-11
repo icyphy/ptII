@@ -32,7 +32,7 @@ import java.util.List;
 
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.graph.GraphController;;
+import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// AttributeInOntologyController
@@ -63,7 +63,8 @@ public class AttributeInOntologyController extends AttributeController {
      *  @param controller The associated graph controller.
      *  @param access The access level.
      */
-    public AttributeInOntologyController(GraphController controller, Access access) {
+    public AttributeInOntologyController(GraphController controller,
+            Access access) {
         super(controller);
 
         // Remove the "Listen To Attribute" menu action since it has no

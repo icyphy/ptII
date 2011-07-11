@@ -217,8 +217,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      */
     public static List<OntologySolver> getAllSolvers(
             SharedParameter sharedParameter) {
-        List<NamedObj> parameters = new ArrayList<NamedObj>(sharedParameter
-                .sharedParameterSet());
+        List<NamedObj> parameters = new ArrayList<NamedObj>(
+                sharedParameter.sharedParameterSet());
         List<OntologySolver> solvers = new LinkedList<OntologySolver>();
         for (NamedObj parameter : parameters) {
             Object container = parameter.getContainer();
@@ -430,7 +430,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *  @param solverUtilities The given ontology solver utilities object.
      *  @see #getOntologySolverUtilities
      */
-    public void setOntologySolverUtilities(OntologySolverUtilities solverUtilities) {
+    public void setOntologySolverUtilities(
+            OntologySolverUtilities solverUtilities) {
         _ontologySolverUtilities = solverUtilities;
     }
 
@@ -459,8 +460,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *   cannot be instantiated.
      */
     protected static OntologyAdapter _getAdapter(Object component,
-            OntologySolverBase solver)
-                throws IllegalActionException {
+            OntologySolverBase solver) throws IllegalActionException {
 
         if (solver._adapterStore.containsKey(component)) {
             return solver._adapterStore.get(component);
@@ -480,8 +480,9 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         */
 
         String packageName = _getPackageName(solver);
-        String defaultAdaptersPackageName = solver.getClass().getPackage().
-            getName() + ".adapters.defaultAdapters";
+        String defaultAdaptersPackageName = solver.getClass().getPackage()
+                .getName()
+                + ".adapters.defaultAdapters";
 
         Class componentClass = component.getClass();
 
@@ -545,8 +546,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
         if (!(adapterObject instanceof OntologyAdapter)) {
             throw new IllegalActionException(
-                    "Cannot resolve the concept for this component: " + component
-                            + ". Its adapter class does not"
+                    "Cannot resolve the concept for this component: "
+                            + component + ". Its adapter class does not"
                             + " implement OntologyAdapter.");
         }
         solver._adapterStore.put(component, (OntologyAdapter) adapterObject);
@@ -561,7 +562,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *  @exception IllegalActionException Thrown if there is a problem
      *   getting the ontology package name.
      */
-    protected static String _getPackageName(OntologySolverBase solver) throws IllegalActionException {
+    protected static String _getPackageName(OntologySolverBase solver)
+            throws IllegalActionException {
         // FIXME: Is it a good idea to hard code the adapters string in the package name?
         // 12/17/09 Charles Shelton
         // This was missing adapters directory for the correct package name.

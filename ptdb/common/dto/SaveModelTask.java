@@ -44,7 +44,6 @@ package ptdb.common.dto;
  */
 public class SaveModelTask extends Task {
 
-
     /**
      * Default nullary constructor.
      * <p>Should be removed once the code using it
@@ -66,7 +65,6 @@ public class SaveModelTask extends Task {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /**
      * Return the model to be saved in the database.
      * @return The model to be saved in the database.
@@ -87,7 +85,6 @@ public class SaveModelTask extends Task {
     public void setXMLDBModel(XMLDBModel xmlDBModel) {
         _xmlDBModel = xmlDBModel;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

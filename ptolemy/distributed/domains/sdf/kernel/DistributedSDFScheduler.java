@@ -591,8 +591,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
                 // Update the firingsRemainingVector for this actor.
                 firingsRemaining -= numberOfFirings;
-                firingsRemainingVector.put(currentActor, Integer
-                        .valueOf(firingsRemaining));
+                firingsRemainingVector.put(currentActor,
+                        Integer.valueOf(firingsRemaining));
 
                 if (_debugging && VERBOSE) {
                     _debug(currentActor.getName() + " should fire "

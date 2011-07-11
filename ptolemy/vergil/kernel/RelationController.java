@@ -157,9 +157,7 @@ public class RelationController extends ParameterizedNodeController {
             if (node != null) {
                 ActorGraphModel model = (ActorGraphModel) getController()
                         .getGraphModel();
-                figure
-                        .setToolTipText(relation.getName(model
-                                .getPtolemyModel()));
+                figure.setToolTipText(relation.getName(model.getPtolemyModel()));
                 // Old way to set the color.
                 try {
                     StringAttribute colorAttr = (StringAttribute) (relation

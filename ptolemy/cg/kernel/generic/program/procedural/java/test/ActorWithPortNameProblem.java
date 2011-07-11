@@ -59,9 +59,11 @@ public class ActorWithPortNameProblem extends TypedAtomicActor {
     public ActorWithPortNameProblem(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input = new TypedIOPort(this, "port with *-[]+\\_and spaces", true, false);
+        input = new TypedIOPort(this, "port with *-[]+\\_and spaces", true,
+                false);
 
-        multiportInput = new TypedIOPort(this, "multiport with *-[]+\\_and spaces", true, false);
+        multiportInput = new TypedIOPort(this,
+                "multiport with *-[]+\\_and spaces", true, false);
         multiportInput.setMultiport(true);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -104,7 +106,6 @@ public class ActorWithPortNameProblem extends TypedAtomicActor {
         if (input.hasToken(0)) {
             sum = input.get(0);
         }
-
 
         for (int i = 0; i < multiportInput.getWidth(); i++) {
             if (multiportInput.hasToken(i)) {

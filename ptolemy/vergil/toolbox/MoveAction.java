@@ -78,11 +78,11 @@ public class MoveAction extends FigureAction {
         // drawn first and then obscured.
 
         if (_type == TO_FIRST) {
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_B, Event.CTRL_MASK));
+            putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_B, Event.CTRL_MASK));
         } else if (_type == TO_LAST) {
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_F, Event.CTRL_MASK));
+            putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK));
         }
     }
 

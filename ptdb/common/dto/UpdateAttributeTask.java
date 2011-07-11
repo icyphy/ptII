@@ -28,7 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.common.dto;
 
-
 ///////////////////////////////////////////////////////////////////
 //// UpdateAttributeTask
 
@@ -46,9 +45,7 @@ package ptdb.common.dto;
  *
  */
 
-
 public class UpdateAttributeTask {
-
 
     /**
      * Construct an instance of the object and set the attribute to be updated
@@ -64,12 +61,12 @@ public class UpdateAttributeTask {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /**
-    * Return the attribute to be updated in the database.
-    *
-    * @return The attribute to be updated in the database.
-    * @see #setXMLDBAttribute
-    */
+    /**
+     * Return the attribute to be updated in the database.
+     *
+     * @return The attribute to be updated in the database.
+     * @see #setXMLDBAttribute
+     */
     public XMLDBAttribute getXMLDBAttribute() {
         return _xmlDBAttribute;
     }
@@ -83,7 +80,6 @@ public class UpdateAttributeTask {
     public void setXMLDBAttribute(XMLDBAttribute attribute) {
         _xmlDBAttribute = attribute;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -55,7 +55,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Green (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class ExpressionConceptFunctionDefinitionAttribute extends ConceptFunctionDefinitionAttribute {
+public class ExpressionConceptFunctionDefinitionAttribute extends
+        ConceptFunctionDefinitionAttribute {
 
     /** Construct the ExpressionConceptFunctionDefinitionAttribute attribute
      *  with the given container and name.
@@ -66,18 +67,20 @@ public class ExpressionConceptFunctionDefinitionAttribute extends ConceptFunctio
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ExpressionConceptFunctionDefinitionAttribute(CompositeEntity container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+    public ExpressionConceptFunctionDefinitionAttribute(
+            CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // By default the number of arguments for the concept function is fixed.
-        numberOfArgumentsIsFixed = new Parameter(this, "numberOfArgumentsIsFixed");
+        numberOfArgumentsIsFixed = new Parameter(this,
+                "numberOfArgumentsIsFixed");
         numberOfArgumentsIsFixed.setTypeEquals(BaseType.BOOLEAN);
         numberOfArgumentsIsFixed.setToken(BooleanToken.TRUE);
 
         // By default do not assume the function is monotonic.
-        constrainFunctionToBeMonotonic = new Parameter(this, "constrainFunctionToBeMonotonic");
+        constrainFunctionToBeMonotonic = new Parameter(this,
+                "constrainFunctionToBeMonotonic");
         constrainFunctionToBeMonotonic.setTypeEquals(BaseType.BOOLEAN);
         constrainFunctionToBeMonotonic.setToken(BooleanToken.FALSE);
 
@@ -87,7 +90,8 @@ public class ExpressionConceptFunctionDefinitionAttribute extends ConceptFunctio
         argumentNames = new Parameter(this, "argumentNames");
         argumentNames.setTypeEquals(new ArrayType(BaseType.STRING));
 
-        argumentDomainOntologies = new Parameter(this, "argumentDomainOntologies");
+        argumentDomainOntologies = new Parameter(this,
+                "argumentDomainOntologies");
         argumentDomainOntologies.setTypeEquals(new ArrayType(BaseType.STRING));
 
         conceptFunctionExpression = new StringParameter(this,
@@ -139,16 +143,19 @@ public class ExpressionConceptFunctionDefinitionAttribute extends ConceptFunctio
     public ExpressionConceptFunction createConceptFunction()
             throws IllegalActionException {
         if (((BooleanToken) numberOfArgumentsIsFixed.getToken()).booleanValue()) {
-            if (((ArrayToken) argumentDomainOntologies.getToken()).length() !=
-                ((ArrayToken) argumentNames.getToken()).length()) {
-                throw new IllegalActionException(this,
-                        "The concept function is specified to have a fixed" +
-                        " number of arguments, but the lengths of the arrays" +
-                        " for the argument names (" +
-                        ((ArrayToken) argumentNames.getToken()).length() +
-                        ") and argument domain ontologies("+
-                        ((ArrayToken) argumentDomainOntologies.getToken()).length() +
-                        ") are different.");
+            if (((ArrayToken) argumentDomainOntologies.getToken()).length() != ((ArrayToken) argumentNames
+                    .getToken()).length()) {
+                throw new IllegalActionException(
+                        this,
+                        "The concept function is specified to have a fixed"
+                                + " number of arguments, but the lengths of the arrays"
+                                + " for the argument names ("
+                                + ((ArrayToken) argumentNames.getToken())
+                                        .length()
+                                + ") and argument domain ontologies("
+                                + ((ArrayToken) argumentDomainOntologies
+                                        .getToken()).length()
+                                + ") are different.");
             }
         }
 
@@ -163,11 +170,11 @@ public class ExpressionConceptFunctionDefinitionAttribute extends ConceptFunctio
         }
 
         List<Ontology> argDomainOntologies = new LinkedList<Ontology>();
-        Token[] argDomainNames = ((ArrayToken) argumentDomainOntologies.
-                getToken()).arrayValue();
+        Token[] argDomainNames = ((ArrayToken) argumentDomainOntologies
+                .getToken()).arrayValue();
         for (Token ontologyName : argDomainNames) {
             Ontology ontology = (Ontology) ((CompositeEntity) getContainer())
-                .getEntity(((StringToken) ontologyName).stringValue());
+                    .getEntity(((StringToken) ontologyName).stringValue());
             if (ontology == null) {
                 throw new IllegalActionException(this,
                         "The specified domain ontology " + ontologyName
@@ -179,19 +186,21 @@ public class ExpressionConceptFunctionDefinitionAttribute extends ConceptFunctio
         }
 
         List<String> argNameList = new LinkedList<String>();
-        Token[] argNames = ((ArrayToken) argumentNames.
-                getToken()).arrayValue();
+        Token[] argNames = ((ArrayToken) argumentNames.getToken()).arrayValue();
         for (Token argName : argNames) {
             argNameList.add(((StringToken) argName).stringValue());
         }
 
         ExpressionConceptFunction newConceptFunction = new ExpressionConceptFunction(
-                    getName(), ((BooleanToken) numberOfArgumentsIsFixed.getToken()).booleanValue(),
-                    argDomainOntologies, outputRangeOntology, argNameList,
-                    conceptFunctionExpression.getExpression(),
-                    (OntologySolverModel) getContainer(), null);
+                getName(),
+                ((BooleanToken) numberOfArgumentsIsFixed.getToken())
+                        .booleanValue(), argDomainOntologies,
+                outputRangeOntology, argNameList,
+                conceptFunctionExpression.getExpression(),
+                (OntologySolverModel) getContainer(), null);
 
-        if (((BooleanToken) constrainFunctionToBeMonotonic.getToken()).booleanValue()) {
+        if (((BooleanToken) constrainFunctionToBeMonotonic.getToken())
+                .booleanValue()) {
             if (!newConceptFunction.isMonotonic()) {
                 throw new IllegalActionException(this,
                         "The defined concept function is constrained to "

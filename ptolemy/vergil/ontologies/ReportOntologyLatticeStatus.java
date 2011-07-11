@@ -57,32 +57,42 @@ public class ReportOntologyLatticeStatus {
      *  @param ontologyModel The specified ontology model.
      *  @param modelGraphController The graph controller for the ontology model.
      */
-    public static void showStatusAndHighlightCounterExample(Ontology ontologyModel, OntologyGraphController modelGraphController) {
+    public static void showStatusAndHighlightCounterExample(
+            Ontology ontologyModel, OntologyGraphController modelGraphController) {
         boolean isLattice = ontologyModel.isLattice();
         modelGraphController.clearAllErrorHighlights();
 
         if (isLattice) {
-            MessageHandler.message("The ontology model graph is a valid lattice.");
+            MessageHandler
+                    .message("The ontology model graph is a valid lattice.");
         } else {
-            NonLatticeCounterExample nonLatticeExample = ontologyModel.getConceptGraph().nonLatticeReason();
-            GraphExampleType exampleType = (GraphExampleType) nonLatticeExample.getExampleType();
+            NonLatticeCounterExample nonLatticeExample = ontologyModel
+                    .getConceptGraph().nonLatticeReason();
+            GraphExampleType exampleType = (GraphExampleType) nonLatticeExample
+                    .getExampleType();
             List concepts = nonLatticeExample.getNodeList();
 
             StringBuffer errorMessageBuffer = new StringBuffer();
-            errorMessageBuffer.append("The ontology model graph is not a valid lattice.\n");
+            errorMessageBuffer
+                    .append("The ontology model graph is not a valid lattice.\n");
 
-            switch(exampleType) {
+            switch (exampleType) {
             case LEASTUPPER:
-                errorMessageBuffer.append("These concepts have no least upper bound: ");
+                errorMessageBuffer
+                        .append("These concepts have no least upper bound: ");
                 break;
             case GREATESTLOWER:
-                errorMessageBuffer.append("These concepts have no greatest lower bound: ");
+                errorMessageBuffer
+                        .append("These concepts have no greatest lower bound: ");
                 break;
             case GRAPHCYCLE:
-                errorMessageBuffer.append("There is a cycle involving the concept: ");
+                errorMessageBuffer
+                        .append("There is a cycle involving the concept: ");
                 break;
             default:
-                errorMessageBuffer.append("unknown lattice counterexample type: " + exampleType + ": ");
+                errorMessageBuffer
+                        .append("unknown lattice counterexample type: "
+                                + exampleType + ": ");
             }
 
             boolean first = true;

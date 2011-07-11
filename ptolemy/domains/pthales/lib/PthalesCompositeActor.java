@@ -200,8 +200,9 @@ public class PthalesCompositeActor extends TypedCompositeActor {
                     nb = (patternDims.get(dims[i])[0] - 1)
                             * patternDims.get(dims[i])[1] + 1;
 
-                    if (baseDims != null && baseDims.containsKey(dims[i]))
+                    if (baseDims != null && baseDims.containsKey(dims[i])) {
                         nb += baseDims.get(dims[i])[0];
+                    }
 
                     jump = tilingDims.get(dims[i])[0];
                 }
@@ -244,7 +245,8 @@ public class PthalesCompositeActor extends TypedCompositeActor {
 
         Attribute repetitions = getAttribute(PthalesCompositeActor._REPETITIONS);
         if (repetitions != null && repetitions instanceof Parameter) {
-            ((Parameter) repetitions).setExpression(repetitionStringBuffer.toString());
+            ((Parameter) repetitions).setExpression(repetitionStringBuffer
+                    .toString());
         }
     }
 

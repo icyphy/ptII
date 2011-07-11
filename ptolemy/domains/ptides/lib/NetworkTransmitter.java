@@ -134,8 +134,8 @@ public class NetworkTransmitter extends OutputDevice {
         Director director = getDirector();
 
         if (director == null || !(director instanceof PtidesBasicDirector)) {
-            throw new IllegalActionException(this, "Director expected to" +
-                            "be a Ptides director, but it's not.");
+            throw new IllegalActionException(this, "Director expected to"
+                    + "be a Ptides director, but it's not.");
         }
 
         PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;
@@ -165,8 +165,8 @@ public class NetworkTransmitter extends OutputDevice {
         super.preinitialize();
 
         boolean flag = false;
-        for (IOPort output : (List<IOPort>)outputPortList()) {
-            for (IOPort sinkPort : (List<IOPort>)output.sinkPortList()) {
+        for (IOPort output : (List<IOPort>) outputPortList()) {
+            for (IOPort sinkPort : (List<IOPort>) output.sinkPortList()) {
                 if (sinkPort.getContainer() == getContainer()) {
                     flag = true;
                     break;
@@ -176,9 +176,9 @@ public class NetworkTransmitter extends OutputDevice {
         if (!flag) {
             throw new IllegalActionException(
                     this,
-                    "A NetworkTransmitter must be connected to a port " +
-                    "on the outside, and that port should be a network port " +
-                    "(a port with the parameter networkPort).");
+                    "A NetworkTransmitter must be connected to a port "
+                            + "on the outside, and that port should be a network port "
+                            + "(a port with the parameter networkPort).");
         }
     }
 
@@ -198,8 +198,8 @@ public class NetworkTransmitter extends OutputDevice {
         RecordType outputType = (RecordType) output.getType();
 
         HashSet typeConstraints = new HashSet<Inequality>();
-        Inequality inequality = new Inequality(input.getTypeTerm(), outputType
-                .getTypeTerm(payload));
+        Inequality inequality = new Inequality(input.getTypeTerm(),
+                outputType.getTypeTerm(payload));
         typeConstraints.add(inequality);
         return typeConstraints;
     }

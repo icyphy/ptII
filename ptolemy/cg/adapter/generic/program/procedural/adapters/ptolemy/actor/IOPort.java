@@ -102,10 +102,12 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         if (receivers.length != 0) {
             if (channelIndex >= receivers.length) {
                 throw new IllegalActionException(getComponent(),
-                        "The channelIndex \"" + channelIndex + "\" is greater than "
-                        + "or equal to the length of the receiver \"" + receivers.length
-                        + "\".  The channel was: \"" + channel + "\", the offset was: \""
-                        + offset + "\".");
+                        "The channelIndex \"" + channelIndex
+                                + "\" is greater than "
+                                + "or equal to the length of the receiver \""
+                                + receivers.length + "\".  The channel was: \""
+                                + channel + "\", the offset was: \"" + offset
+                                + "\".");
             }
             if (receivers[channelIndex].length > 1) {
                 throw new IllegalActionException(
@@ -113,21 +115,26 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                                 + "has more than one receiver");
             }
             if (receivers[channelIndex].length > 0) {
-                TypedIOPort port = (TypedIOPort)getComponent();
+                TypedIOPort port = (TypedIOPort) getComponent();
                 try {
                     // FIXME: I have no idea why generateGetCode of the receiver class is not called
                     // (for the CaseDirector??). So this is a hack that keeps PtidyOS working...
-                    if ( port.getContainer() != null && ((Actor)port.getContainer()).getDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
-                        return receivers[channelIndex][0].generateGetCode(offset);
+                    if (port.getContainer() != null
+                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+                        return receivers[channelIndex][0]
+                                .generateGetCode(offset);
                     }
-                    if ( port.getContainer() != null && ((Actor)port.getContainer()).getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
-                        return receivers[channelIndex][0].generateGetCode(offset);
+                    if (port.getContainer() != null
+                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
+                        return receivers[channelIndex][0]
+                                .generateGetCode(offset);
                     } else {
                         // Used by CaseDirector.
                         // FIXME: A real hack.  The problem is that ptolemy.actor.lib.hoc.CaseDirector
                         // extends actor.Director.  However, in cg, we end up needing a SDFDirector.
                         // This code is duplicated from StaticSchedulingDirector.generatePortName()
-                        String portName = StringUtilities.sanitizeName(port.getFullName());
+                        String portName = StringUtilities.sanitizeName(port
+                                .getFullName());
                         if (portName.startsWith("_")) {
                             portName = portName.substring(1, portName.length());
                         }
@@ -137,28 +144,31 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                         if (port.isMultiport()) {
                             return portName + "[" + offset + "]";
                         } else {
-                            if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken()).booleanValue()) {
+                            if (!((BooleanToken) getCodeGenerator().variablesAsArrays
+                                    .getToken()).booleanValue()) {
                                 return portName;
                             }
 
                             // Get the name of the port that refers to the array of all ports.
                             // FIXME: we don't handle ports that have a BufferSize > 1.
-                            return getCodeGenerator().generatePortName(port, portName, 1 /*_ports.getBufferSize(port)*/);
+                            return getCodeGenerator()
+                                    .generatePortName(port, portName, 1 /*_ports.getBufferSize(port)*/);
                         }
                         //return "";
                     }
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(getComponent(), throwable,
                             " Failed to generate code for receiver "
-                            + receivers[channelIndex][0] + " on channel "
-                            + channelIndex);
+                                    + receivers[channelIndex][0]
+                                    + " on channel " + channelIndex);
                 }
             }
         }
-        TypedIOPort port = (TypedIOPort)getComponent();
+        TypedIOPort port = (TypedIOPort) getComponent();
         Type type = port.getType();
         if (port instanceof ParameterPort) {
-            Parameter parameter = ((ParameterPort)getComponent()).getParameter();
+            Parameter parameter = ((ParameterPort) getComponent())
+                    .getParameter();
             // FIXME: Should this be isConnected() instead of numLinks()?
             if (port.numLinks() <= 0) {
                 // Then use the parameter (attribute) instead.
@@ -168,17 +178,19 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                     // FIXME: Shouldn't this happen every where?
                     // Escape \d for ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
                     return "\""
-                        + parameter.getExpression().replace("\\d", "\\\\d")
-                        .replace("\\D", "\\\\D")
-                        .replace("\"", "\\\"")
-                        .replace("\\b", "\\\\b")
-                        + "\"";
+                            + parameter.getExpression().replace("\\d", "\\\\d")
+                                    .replace("\\D", "\\\\D")
+                                    .replace("\"", "\\\"")
+                                    .replace("\\b", "\\\\b") + "\"";
                 } else {
                     return parameter.getValueAsString();
                 }
             } else {
-                throw new InternalErrorException(port, null, "Should not be happening, "
-                        + "a ParameterPort is connected, but not handled earlier?");
+                throw new InternalErrorException(
+                        port,
+                        null,
+                        "Should not be happening, "
+                                + "a ParameterPort is connected, but not handled earlier?");
             }
         }
 
@@ -186,7 +198,8 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         // The component port is not connected to anything, so get should
         // always return something trivial;
 
-        String returnValue = "$convert_" + getCodeGenerator().codeGenType(BaseType.INT) + "_"
+        String returnValue = "$convert_"
+                + getCodeGenerator().codeGenType(BaseType.INT) + "_"
                 + typeString + "(0)";
         System.err.println("cg IOPort: Warning: component port \""
                 + getComponent().getFullName()
@@ -279,17 +292,20 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
             // Need two _eol here to avoid problems with comments, see
             // $PTII/bin/ptcg -language java  $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/VectorAssemblerMatrix.xml
             code.append(_eol + "{" + _eol);
-            TypedIOPort port = (TypedIOPort)getComponent();
+            TypedIOPort port = (TypedIOPort) getComponent();
             Type type = port.getType();
-            code.append(targetType(type) + " temporary = " + dataToken + ";" + _eol);
-            boolean debug = ((IntToken)getCodeGenerator().verbosity.getToken()).intValue() > 9;
+            code.append(targetType(type) + " temporary = " + dataToken + ";"
+                    + _eol);
+            boolean debug = ((IntToken) getCodeGenerator().verbosity.getToken())
+                    .intValue() > 9;
             for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
                 if (debug) {
-                    code.append("/* IOPort.generatePutCode start. " + dataToken + " */" + _eol);
+                    code.append("/* IOPort.generatePutCode start. " + dataToken
+                            + " */" + _eol);
                 }
                 code.append(remoteReceivers[channelIndex][i].generatePutCode(
-                                (ptolemy.actor.IOPort) this.getComponent(), offset,
-                                "temporary"));
+                        (ptolemy.actor.IOPort) this.getComponent(), offset,
+                        "temporary"));
                 if (debug) {
                     code.append("/* IOPort.generatePutCode end. */" + _eol);
                 }

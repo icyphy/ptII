@@ -69,7 +69,8 @@ public class ConnectivityReporter extends Attribute {
          *  @param parent The parent Frame (top-level window).
          */
         public void createEditor(NamedObj object, Frame parent) {
-            List<Entity> entities = ((CompositeEntity)ConnectivityReporter.this.getContainer()).entityList();
+            List<Entity> entities = ((CompositeEntity) ConnectivityReporter.this
+                    .getContainer()).entityList();
             for (Entity entity : entities) {
                 List<IOPort> ports = entity.portList();
                 for (IOPort port : ports) {

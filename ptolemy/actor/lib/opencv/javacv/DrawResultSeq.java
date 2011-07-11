@@ -86,7 +86,7 @@ public class DrawResultSeq extends Transformer {
 
         seq = new TypedIOPort(this, "sequence", true, false);
         seq.setTypeEquals(BaseType.OBJECT);
-   }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -105,28 +105,28 @@ public class DrawResultSeq extends Transformer {
      *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {
-            rotation = 0;
+        rotation = 0;
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof IplImage)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            _srcFrame = (IplImage)inputObject;
+            _srcFrame = (IplImage) inputObject;
             if (rot_input.hasToken(0)) {
-                    rotation = ((IntToken)rot_input.get(0)).intValue();
+                rotation = ((IntToken) rot_input.get(0)).intValue();
             }
             if (seq.hasToken(0)) {
-                ObjectToken seqToken = (ObjectToken)seq.get(0);
+                ObjectToken seqToken = (ObjectToken) seq.get(0);
                 Object seqObject = seqToken.getValue();
                 if (!(seqObject instanceof CvSeq)) {
                     throw new IllegalActionException(this,
                             "Input is required to be an instance of IplImage. Got "
-                            + seqObject.getClass());
+                                    + seqObject.getClass());
                 }
-                _objectSeq = (CvSeq)seqObject;
+                _objectSeq = (CvSeq) seqObject;
 
                 draw_object_circle(_objectSeq, _srcFrame);
                 output.send(0, new ObjectToken(_srcFrame));
@@ -139,11 +139,12 @@ public class DrawResultSeq extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-       _dstFrame = null;
+        _dstFrame = null;
     }
-     /** Release image.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
+
+    /** Release image.
+    *  @exception IllegalActionException If thrown by the super class.
+    */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_dstFrame != null) {
@@ -153,50 +154,60 @@ public class DrawResultSeq extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private void draw_object_circle(CvSeq objs, IplImage _image )throws IllegalActionException {
+    private void draw_object_circle(CvSeq objs, IplImage _image)
+            throws IllegalActionException {
         int i = 0;
         int objTotal = 0;
-        if (objs != null) objTotal = objs.total;
+        if (objs != null) {
+            objTotal = objs.total;
+        }
 
         for (i = 0; i < objTotal; i++) {
-            Pointer r = cvGetSeqElem (objs, i);
+            Pointer r = cvGetSeqElem(objs, i);
             CvRect rect = new CvRect(r);
-            CvPoint center = new CvPoint(0,0);
+            CvPoint center = new CvPoint(0, 0);
             int radius;
-            center.x = (int) round (rect.x + rect.width * 0.5);
-            center.y = (int) round (rect.y + rect.height * 0.5);
+            center.x = (int) round(rect.x + rect.width * 0.5);
+            center.y = (int) round(rect.y + rect.height * 0.5);
             if (rotation != 0) {
-                    double xcord = (_srcFrame.width*.5) - center.x;
-                    double ycord = (_srcFrame.height*.5) - center.y;
-                    double altx = _srcFrame.width*.5;
-                    double alty = _srcFrame.height*.5;
-                    if (xcord < 0) {
-                            if (ycord < 0) {
-                            center.x = (int) (altx + Math.abs((Math.cos(rotation)*Math.abs(xcord))));
-                            center.y = (int) (alty + Math.abs((Math.sin(rotation)*Math.abs(ycord))));
-                            } else {
-                                    center.x = (int) (altx + Math.abs((Math.cos(rotation)*Math.abs(xcord))));
-                                center.y = (int) (alty - Math.abs((Math.sin(rotation)*Math.abs(ycord))));
-                            }
-
+                double xcord = (_srcFrame.width * .5) - center.x;
+                double ycord = (_srcFrame.height * .5) - center.y;
+                double altx = _srcFrame.width * .5;
+                double alty = _srcFrame.height * .5;
+                if (xcord < 0) {
+                    if (ycord < 0) {
+                        center.x = (int) (altx + Math
+                                .abs((Math.cos(rotation) * Math.abs(xcord))));
+                        center.y = (int) (alty + Math
+                                .abs((Math.sin(rotation) * Math.abs(ycord))));
                     } else {
-                            if (ycord > 0) {
-                                    center.x = (int) (altx - Math.abs((Math.cos(rotation)*Math.abs(xcord))));
-                                center.y = (int) (alty - Math.abs((Math.sin(rotation)*Math.abs(ycord))));
-                                } else {
-                                        center.x = (int) (altx - Math.abs((Math.cos(rotation)*Math.abs(xcord))));
-                                    center.y = (int) (alty + Math.abs((Math.sin(rotation)*Math.abs(ycord))));
-                                }
+                        center.x = (int) (altx + Math
+                                .abs((Math.cos(rotation) * Math.abs(xcord))));
+                        center.y = (int) (alty - Math
+                                .abs((Math.sin(rotation) * Math.abs(ycord))));
                     }
+
+                } else {
+                    if (ycord > 0) {
+                        center.x = (int) (altx - Math
+                                .abs((Math.cos(rotation) * Math.abs(xcord))));
+                        center.y = (int) (alty - Math
+                                .abs((Math.sin(rotation) * Math.abs(ycord))));
+                    } else {
+                        center.x = (int) (altx - Math
+                                .abs((Math.cos(rotation) * Math.abs(xcord))));
+                        center.y = (int) (alty + Math
+                                .abs((Math.sin(rotation) * Math.abs(ycord))));
+                    }
+                }
             }
 
-            radius = (int)round ((rect.width + rect.height) * 0.25);
-            cvCircle (_image, center.byValue(), radius, colors[i % 8], 3, 8, 0);
+            radius = (int) round((rect.width + rect.height) * 0.25);
+            cvCircle(_image, center.byValue(), radius, colors[i % 8], 3, 8, 0);
 
         }
 
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -205,8 +216,7 @@ public class DrawResultSeq extends Transformer {
     private CvSeq _objectSeq;
     private int rotation;
 
-    private CvScalar.ByValue[] colors = {
-            CvScalar.RED, CvScalar.BLUE, CvScalar.GREEN, CvScalar.CYAN,
-            CvScalar.YELLOW, CvScalar.MAGENTA, CvScalar.WHITE, CvScalar.GRAY
-            };
+    private CvScalar.ByValue[] colors = { CvScalar.RED, CvScalar.BLUE,
+            CvScalar.GREEN, CvScalar.CYAN, CvScalar.YELLOW, CvScalar.MAGENTA,
+            CvScalar.WHITE, CvScalar.GRAY };
 }

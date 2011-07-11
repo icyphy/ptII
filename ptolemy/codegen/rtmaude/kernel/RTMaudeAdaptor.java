@@ -115,8 +115,10 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      * @see ptolemy.codegen.kernel.CodeGeneratorHelper#generateFireFunctionCode()
      */
     public String generateFireFunctionCode() throws IllegalActionException {
-        return _generateBlockCode("fireFuncBlock", CodeStream.indent(1,
-                _generateFireCode() + generateTypeConvertFireCode()));
+        return _generateBlockCode(
+                "fireFuncBlock",
+                CodeStream.indent(1, _generateFireCode()
+                        + generateTypeConvertFireCode()));
     }
 
     /**
@@ -191,7 +193,6 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         return modNames;
     }
 
-
     /**
      * Generates the entry code for RTMaude model, whose template is defined
      * in "mainEntry" block.
@@ -207,9 +208,10 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
             incs = new LinkedHashSet(getBlockCodeList("funcModuleName"));
         }
 
-        return _generateBlockCode("mainEntry", CodeStream.indent(2,
-                new ListTerm<String>("ACTOR-BASE", " +" + _eol, incs)
-                        .generateCode()));
+        return _generateBlockCode(
+                "mainEntry",
+                CodeStream.indent(2, new ListTerm<String>("ACTOR-BASE", " +"
+                        + _eol, incs).generateCode()));
     }
 
     /**
@@ -241,7 +243,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
             }
         }
 
-        for (PropertyParameter p : (List<PropertyParameter>) _codeGenerator
+        for (PropertyParameter p : _codeGenerator
                 .attributeList(PropertyParameter.class)) {
             commands.append("(" + p.stringValue() + " .)" + _eol);
         }
@@ -350,7 +352,8 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      *  @return the translated expression.
      *  @exception IllegalActionException If thrown by the parser.
      */
-    protected String getTranslatedExpression(String expression) throws IllegalActionException {
+    protected String getTranslatedExpression(String expression)
+            throws IllegalActionException {
         // FIXME: Rename to _getTranslatedExpression
         ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
         PtParser parser = new PtParser();
@@ -360,15 +363,15 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
             parseTree = parser.generateParseTree(expression);
         } catch (Throwable throwable) {
             throw new IllegalActionException(getComponent(), throwable,
-                    "Failed to generate parse tree for \"" + getName() + "\". in \""
-                    + this.getContainer() + "\"");
+                    "Failed to generate parse tree for \"" + getName()
+                            + "\". in \"" + this.getContainer() + "\"");
         }
         try {
             parseTreeCodeGenerator.evaluateParseTree(parseTree, null);
         } catch (Exception ex) {
             throw new IllegalActionException(getComponent(), ex,
-                    "Failed to evaluate parse tree for\"" + getName() + "\". in \""
-                    + this.getContainer() + "\"");
+                    "Failed to evaluate parse tree for\"" + getName()
+                            + "\". in \"" + this.getContainer() + "\"");
         }
         return parseTreeCodeGenerator.generateFireCode();
     }

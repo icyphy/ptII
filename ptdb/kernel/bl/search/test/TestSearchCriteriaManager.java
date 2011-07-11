@@ -113,10 +113,11 @@ public class TestSearchCriteriaManager {
                 .getAttributes();
 
         for (int i = 0; i < storedSearchCriteria1.getAttributes().size(); i++) {
-            assertEquals(attributesList1.get(i).getName(), attributesList2.get(
-                    i).getName());
-            assertEquals(((StringParameter) attributesList1.get(i))
-                    .getValueAsString(),
+            assertEquals(attributesList1.get(i).getName(),
+                    attributesList2.get(i).getName());
+            assertEquals(
+                    ((StringParameter) attributesList1.get(i))
+                            .getValueAsString(),
                     ((StringParameter) attributesList2.get(i))
                             .getValueAsString());
         }

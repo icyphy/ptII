@@ -300,7 +300,6 @@ public class BoundsGeometry implements Geometry {
                 return 0.0;
             }
 
-
         }
 
         /** Get the point location of the site.

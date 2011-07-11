@@ -56,22 +56,27 @@ public class ConstPropagationAbsIntLessThan extends ConceptFunction {
      *  @exception IllegalActionException Thrown if the concept function cannot be created.
      */
     public ConstPropagationAbsIntLessThan(Ontology ontology)
-                throws IllegalActionException {
+            throws IllegalActionException {
         super("ConstPropagationAbsIntLessThan", 2, ontology);
 
         _constPropagationAbsIntOntology = ontology;
-        _positiveRepresentative = (FlatScalarTokenRepresentativeConcept)
-            _constPropagationAbsIntOntology.getConceptByString("PositiveValue");
-        _negativeRepresentative = (FlatScalarTokenRepresentativeConcept)
-            _constPropagationAbsIntOntology.getConceptByString("NegativeValue");
-        _zeroConcept = _constPropagationAbsIntOntology.getConceptByString("Zero");
-        _booleanTrueConcept = _constPropagationAbsIntOntology.getConceptByString("BooleanTrue");
-        _booleanFalseConcept = _constPropagationAbsIntOntology.getConceptByString("BooleanFalse");
+        _positiveRepresentative = (FlatScalarTokenRepresentativeConcept) _constPropagationAbsIntOntology
+                .getConceptByString("PositiveValue");
+        _negativeRepresentative = (FlatScalarTokenRepresentativeConcept) _constPropagationAbsIntOntology
+                .getConceptByString("NegativeValue");
+        _zeroConcept = _constPropagationAbsIntOntology
+                .getConceptByString("Zero");
+        _booleanTrueConcept = _constPropagationAbsIntOntology
+                .getConceptByString("BooleanTrue");
+        _booleanFalseConcept = _constPropagationAbsIntOntology
+                .getConceptByString("BooleanFalse");
 
-        ConceptGraph ontologyGraph = _constPropagationAbsIntOntology.getConceptGraph();
+        ConceptGraph ontologyGraph = _constPropagationAbsIntOntology
+                .getConceptGraph();
         if (ontologyGraph == null) {
-            throw new IllegalActionException("The Ontology " +
-                    _constPropagationAbsIntOntology + " has a null concept graph.");
+            throw new IllegalActionException("The Ontology "
+                    + _constPropagationAbsIntOntology
+                    + " has a null concept graph.");
         } else {
             _topOfTheLattice = ontologyGraph.top();
             _bottomOfTheLattice = ontologyGraph.bottom();
@@ -92,17 +97,19 @@ public class ConstPropagationAbsIntLessThan extends ConceptFunction {
      *   the output RecordConcept.
      */
     protected Concept _evaluateFunction(List<Concept> argValues)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         Concept arg1 = argValues.get(0);
         Concept arg2 = argValues.get(1);
 
         // If either concept is the bottom of the lattice, return bottom.
-        if (arg1.equals(_bottomOfTheLattice) || arg2.equals(_bottomOfTheLattice)) {
+        if (arg1.equals(_bottomOfTheLattice)
+                || arg2.equals(_bottomOfTheLattice)) {
             return _bottomOfTheLattice;
 
-        // If either concept is the top of the lattice, return top.
-        } else if (arg1.equals(_topOfTheLattice) || arg2.equals(_topOfTheLattice)) {
+            // If either concept is the top of the lattice, return top.
+        } else if (arg1.equals(_topOfTheLattice)
+                || arg2.equals(_topOfTheLattice)) {
             return _topOfTheLattice;
 
         } else {
@@ -124,7 +131,7 @@ public class ConstPropagationAbsIntLessThan extends ConceptFunction {
      *   performed.
      */
     private Concept _getLessThanResultConcept(Concept concept1, Concept concept2)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         _validateInputConcept(concept1);
         _validateInputConcept(concept2);
@@ -134,14 +141,18 @@ public class ConstPropagationAbsIntLessThan extends ConceptFunction {
         if (concept1.equals(_zeroConcept) && concept2.equals(_zeroConcept)) {
             return _booleanFalseConcept;
         } else if (concept1.equals(_zeroConcept)) {
-            token2 = ((FlatScalarTokenInfiniteConcept) concept2).getTokenValue();
+            token2 = ((FlatScalarTokenInfiniteConcept) concept2)
+                    .getTokenValue();
             token1 = (ScalarToken) token2.zero();
         } else if (concept2.equals(_zeroConcept)) {
-            token1 = ((FlatScalarTokenInfiniteConcept) concept1).getTokenValue();
+            token1 = ((FlatScalarTokenInfiniteConcept) concept1)
+                    .getTokenValue();
             token2 = (ScalarToken) token1.zero();
         } else {
-            token1 = ((FlatScalarTokenInfiniteConcept) concept1).getTokenValue();
-            token2 = ((FlatScalarTokenInfiniteConcept) concept2).getTokenValue();
+            token1 = ((FlatScalarTokenInfiniteConcept) concept1)
+                    .getTokenValue();
+            token2 = ((FlatScalarTokenInfiniteConcept) concept2)
+                    .getTokenValue();
         }
 
         return _getLessThanResult(token1, token2);
@@ -155,8 +166,8 @@ public class ConstPropagationAbsIntLessThan extends ConceptFunction {
      *  @exception IllegalActionException Thrown if there is a problem performing
      *   the less than operation.
      */
-    private Concept _getLessThanResult(ScalarToken token1,
-            ScalarToken token2) throws IllegalActionException {
+    private Concept _getLessThanResult(ScalarToken token1, ScalarToken token2)
+            throws IllegalActionException {
         boolean comparisonResult = token1.isLessThan(token2).booleanValue();
         if (comparisonResult) {
             return _booleanTrueConcept;
@@ -172,23 +183,33 @@ public class ConstPropagationAbsIntLessThan extends ConceptFunction {
      *   validation checks.
      */
     private void _validateInputConcept(Concept inputConcept)
-        throws IllegalActionException {
-        if (!(inputConcept.equals(_zeroConcept) ||
-                inputConcept instanceof FlatScalarTokenInfiniteConcept)) {
-            throw new IllegalActionException(inputConcept, "Invalid argument: " +
-                    "the input concepts must be instances of " +
-                    "FlatScalarTokenInfiniteConcept or the Concept Zero.");
-        } else if (!(inputConcept.equals(_zeroConcept) || (inputConcept instanceof FlatScalarTokenInfiniteConcept &&
-                (_positiveRepresentative.equals(((FlatScalarTokenInfiniteConcept) inputConcept).getRepresentative())
-                || _negativeRepresentative.equals(((FlatScalarTokenInfiniteConcept) inputConcept).getRepresentative()))
-                && ((FlatScalarTokenInfiniteConcept) inputConcept).getTokenValue() != null))) {
-            throw new IllegalActionException(inputConcept, "Invalid argument: " +
-                    "the FlatScalarTokenInfiniteConcept " + inputConcept.getName() +
-                    "has an incorrect representative concept or " +
-                    "a null token value. It's representative is: " +
-                    ((FlatScalarTokenInfiniteConcept) inputConcept).getRepresentative() + " and it should be " +
-                    _positiveRepresentative + " or " + _negativeRepresentative +
-                    ". It's token value is " + ((FlatScalarTokenInfiniteConcept) inputConcept).getTokenValue());
+            throws IllegalActionException {
+        if (!(inputConcept.equals(_zeroConcept) || inputConcept instanceof FlatScalarTokenInfiniteConcept)) {
+            throw new IllegalActionException(inputConcept, "Invalid argument: "
+                    + "the input concepts must be instances of "
+                    + "FlatScalarTokenInfiniteConcept or the Concept Zero.");
+        } else if (!(inputConcept.equals(_zeroConcept) || (inputConcept instanceof FlatScalarTokenInfiniteConcept
+                && (_positiveRepresentative
+                        .equals(((FlatScalarTokenInfiniteConcept) inputConcept)
+                                .getRepresentative()) || _negativeRepresentative
+                        .equals(((FlatScalarTokenInfiniteConcept) inputConcept)
+                                .getRepresentative())) && ((FlatScalarTokenInfiniteConcept) inputConcept)
+                .getTokenValue() != null))) {
+            throw new IllegalActionException(inputConcept,
+                    "Invalid argument: "
+                            + "the FlatScalarTokenInfiniteConcept "
+                            + inputConcept.getName()
+                            + "has an incorrect representative concept or "
+                            + "a null token value. It's representative is: "
+                            + ((FlatScalarTokenInfiniteConcept) inputConcept)
+                                    .getRepresentative()
+                            + " and it should be "
+                            + _positiveRepresentative
+                            + " or "
+                            + _negativeRepresentative
+                            + ". It's token value is "
+                            + ((FlatScalarTokenInfiniteConcept) inputConcept)
+                                    .getTokenValue());
         }
     }
 

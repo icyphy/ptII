@@ -394,8 +394,8 @@ public class VergilApplication extends MoMLApplication {
                 }
 
             } else {
-                factory = new PtolemyEffigy.Factory(directory, directory
-                        .uniqueName("ptolemyEffigy"));
+                factory = new PtolemyEffigy.Factory(directory,
+                        directory.uniqueName("ptolemyEffigy"));
             }
             Effigy effigy = factory.createEffigy(directory, null, null);
             configuration.createPrimaryTableau(effigy);

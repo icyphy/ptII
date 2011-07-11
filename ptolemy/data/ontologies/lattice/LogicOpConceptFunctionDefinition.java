@@ -63,8 +63,8 @@ public class LogicOpConceptFunctionDefinition extends
             NameDuplicationException {
         super(container, name);
 
-        Token[] argNames = new Token[]{(Token) new StringToken("booleanVar0"),
-                (Token) new StringToken("booleanVar1")};
+        Token[] argNames = new Token[] { new StringToken("booleanVar0"),
+                new StringToken("booleanVar1") };
         argumentNames.setToken(new ArrayToken(argNames));
         argumentNames.setVisibility(Settable.NOT_EDITABLE);
 

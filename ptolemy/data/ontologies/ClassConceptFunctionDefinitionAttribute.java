@@ -62,7 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ClassConceptFunctionDefinitionAttribute extends
-    ConceptFunctionDefinitionAttribute {
+        ConceptFunctionDefinitionAttribute {
 
     /** Construct the ClassConceptFunctionDefinitionAttribute attribute
      *  with the given container and name.
@@ -112,10 +112,10 @@ public class ClassConceptFunctionDefinitionAttribute extends
     public ConceptFunction createConceptFunction()
             throws IllegalActionException {
         if (!(workspace().getVersion() == _conceptFunctionVersion)) {
-            String conceptFunctionClassNameString =
-                conceptFunctionClassName.getValueAsString();
-            if (conceptFunctionClassNameString == null ||
-                    conceptFunctionClassNameString.equals("")) {
+            String conceptFunctionClassNameString = conceptFunctionClassName
+                    .getValueAsString();
+            if (conceptFunctionClassNameString == null
+                    || conceptFunctionClassNameString.equals("")) {
                 throw new IllegalActionException(this,
                         "ConceptFunction class name not specified.");
             }
@@ -124,15 +124,16 @@ public class ClassConceptFunctionDefinitionAttribute extends
             try {
                 // Verify that the conceptFunctionClassName correctly
                 // specifies an existing actor class.
-                conceptFunctionClass = Class.forName(conceptFunctionClassNameString)
-                .asSubclass(ConceptFunction.class);
+                conceptFunctionClass = Class.forName(
+                        conceptFunctionClassNameString).asSubclass(
+                        ConceptFunction.class);
             } catch (ClassNotFoundException classEx) {
                 throw new IllegalActionException(this, classEx,
-                        "ConceptFunction class " + conceptFunctionClassNameString
-                        + " not found.");
+                        "ConceptFunction class "
+                                + conceptFunctionClassNameString
+                                + " not found.");
             }
-            _cachedConceptFunction = _createConceptFunctionInstance(
-                    conceptFunctionClass);
+            _cachedConceptFunction = _createConceptFunctionInstance(conceptFunctionClass);
             _conceptFunctionVersion = workspace().getVersion();
         }
         return _cachedConceptFunction;
@@ -172,14 +173,14 @@ public class ClassConceptFunctionDefinitionAttribute extends
      */
     private ConceptFunction _createConceptFunctionInstance(
             Class<? extends ConceptFunction> conceptFunctionClass)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         _setConstructorArgsArrays();
 
         Constructor<? extends ConceptFunction> conceptFunctionConstructor = null;
         try {
             conceptFunctionConstructor = conceptFunctionClass
-                .getConstructor(_constructorArgTypes);
+                    .getConstructor(_constructorArgTypes);
         } catch (NoSuchMethodException ex) {
             // If there is no constructor that matches the object types exactly,
             // search for a constructor that is compatible if its argument
@@ -191,22 +192,23 @@ public class ClassConceptFunctionDefinitionAttribute extends
         ConceptFunction conceptFunctionInstance = null;
         try {
             conceptFunctionInstance = conceptFunctionConstructor
-                .newInstance(_constructorArgObjects);
+                    .newInstance(_constructorArgObjects);
         } catch (InvocationTargetException ex) {
-            throw new IllegalActionException(this, ex, "Exception thrown when " +
-                            "trying to call the constructor for the " +
-                            "ConceptFunction class " + conceptFunctionClass + ".");
+            throw new IllegalActionException(this, ex, "Exception thrown when "
+                    + "trying to call the constructor for the "
+                    + "ConceptFunction class " + conceptFunctionClass + ".");
         } catch (IllegalArgumentException ex) {
-            throw new IllegalActionException(this, ex, "Invalid argument " +
-                            "passed to the constructor for the ConceptFunction " +
-                            "class " + conceptFunctionClass + ".");
+            throw new IllegalActionException(this, ex, "Invalid argument "
+                    + "passed to the constructor for the ConceptFunction "
+                    + "class " + conceptFunctionClass + ".");
         } catch (InstantiationException ex) {
-            throw new IllegalActionException(this, ex, "Unable to instantiate" +
-                    " the ConceptFunction class " + conceptFunctionClass + ".");
+            throw new IllegalActionException(this, ex, "Unable to instantiate"
+                    + " the ConceptFunction class " + conceptFunctionClass
+                    + ".");
         } catch (IllegalAccessException ex) {
-            throw new IllegalActionException(this, ex, "Do not have access " +
-                    " the constructor for the ConceptFunction class " +
-                    conceptFunctionClass + " within this method.");
+            throw new IllegalActionException(this, ex, "Do not have access "
+                    + " the constructor for the ConceptFunction class "
+                    + conceptFunctionClass + " within this method.");
         }
 
         return conceptFunctionInstance;
@@ -231,19 +233,19 @@ public class ClassConceptFunctionDefinitionAttribute extends
             Class<? extends ConceptFunction> conceptFunctionClass,
             Class[] constructorArgTypes) throws IllegalActionException {
 
-        Constructor<? extends ConceptFunction> allConstructors[] =
-            (Constructor<? extends ConceptFunction>[])
-                conceptFunctionClass.getConstructors();
+        Constructor<? extends ConceptFunction> allConstructors[] = (Constructor<? extends ConceptFunction>[]) conceptFunctionClass
+                .getConstructors();
         for (Constructor<? extends ConceptFunction> constructor : allConstructors) {
             Class argumentClasses[] = constructor.getParameterTypes();
-            if (_argumentsMatchConstructorClasses(constructorArgTypes, argumentClasses)) {
+            if (_argumentsMatchConstructorClasses(constructorArgTypes,
+                    argumentClasses)) {
                 return constructor;
             }
         }
 
-        throw new IllegalActionException(this, "Could not find a constructor" +
-                " method for the concept function class " + conceptFunctionClass +
-                " with the given array of arguments.");
+        throw new IllegalActionException(this, "Could not find a constructor"
+                + " method for the concept function class "
+                + conceptFunctionClass + " with the given array of arguments.");
     }
 
     /** Set the array of objects that should be passed to the constructor
@@ -254,11 +256,14 @@ public class ClassConceptFunctionDefinitionAttribute extends
      *   parameter does not have a token specified.
      */
     private void _setConstructorArgsArrays() throws IllegalActionException {
-        ArrayToken constructorArgArrayToken = (ArrayToken) constructorArguments.getToken();
+        ArrayToken constructorArgArrayToken = (ArrayToken) constructorArguments
+                .getToken();
         if (constructorArgArrayToken == null) {
-            throw new IllegalActionException(this, "The constructor arguments array is not specified.");
+            throw new IllegalActionException(this,
+                    "The constructor arguments array is not specified.");
         } else {
-            Token[] constructorArgTokens = constructorArgArrayToken.arrayValue();
+            Token[] constructorArgTokens = constructorArgArrayToken
+                    .arrayValue();
             int arraySize = constructorArgTokens.length;
             _constructorArgObjects = new Object[arraySize];
             _constructorArgTypes = new Class[arraySize];
@@ -283,7 +288,8 @@ public class ClassConceptFunctionDefinitionAttribute extends
      *  @exception IllegalActionException Thrown if the Ptolemy token is not
      *   recognized and cannot be converted to the correct Java object.
      */
-    private void _getCorrectObjectFromToken(Token token, int arrayIndex) throws IllegalActionException {
+    private void _getCorrectObjectFromToken(Token token, int arrayIndex)
+            throws IllegalActionException {
         Object value = null;
         if (token instanceof ObjectToken) {
             value = ((ObjectToken) token).getValue();

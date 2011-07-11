@@ -329,8 +329,7 @@ public class FmvAutomaton extends FSMActor {
                 State destinationInThis = transition.destinationState();
 
                 if (!stateSet.contains(destinationInThis)) {
-                    frontier
-                            .put(destinationInThis.getName(), destinationInThis);
+                    frontier.put(destinationInThis.getName(), destinationInThis);
                     stateSet.add(destinationInThis);
                 }
 
@@ -409,10 +408,8 @@ public class FmvAutomaton extends FSMActor {
                                                 // Create a new one and
                                                 // insert all info.
                                                 VariableInfo newVariable = new VariableInfo(
-                                                        Integer
-                                                                .toString(numberRetrival),
-                                                        Integer
-                                                                .toString(numberRetrival));
+                                                        Integer.toString(numberRetrival),
+                                                        Integer.toString(numberRetrival));
                                                 _variableInfo.put(
                                                         characterOfSubGuard[0]
                                                                 .trim(),
@@ -460,8 +457,8 @@ public class FmvAutomaton extends FSMActor {
                             String lValue = characters[0].trim();
                             String rValue = characters[1].trim();
 
-                            if (Pattern.matches("^-?\\d+$", characters[1]
-                                    .trim()) == true) {
+                            if (Pattern.matches("^-?\\d+$",
+                                    characters[1].trim()) == true) {
 
                                 int numberRetrival = Integer.parseInt(rValue);
                                 // add it into the _variableInfo
@@ -637,8 +634,7 @@ public class FmvAutomaton extends FSMActor {
                 State destinationInThis = transition.destinationState();
 
                 if (!stateSet.contains(destinationInThis)) {
-                    frontier
-                            .put(destinationInThis.getName(), destinationInThis);
+                    frontier.put(destinationInThis.getName(), destinationInThis);
                     stateSet.add(destinationInThis);
                 }
 
@@ -1046,8 +1042,8 @@ public class FmvAutomaton extends FSMActor {
                                 String lValue = characters[0].trim();
                                 String rValue = characters[1].trim();
 
-                                if (Pattern.matches("^-?\\d+$", characters[1]
-                                        .trim()) == true) {
+                                if (Pattern.matches("^-?\\d+$",
+                                        characters[1].trim()) == true) {
 
                                     // Generate all possible conditions that leads
                                     // to this change.
@@ -1059,8 +1055,9 @@ public class FmvAutomaton extends FSMActor {
                                             lValue, rValue, "N");
                                     _generatePremiseAndResultEachTransition(
                                             statePrecondition, valueDomain,
-                                            "state", destinationInThis
-                                                    .getDisplayName(), "S");
+                                            "state",
+                                            destinationInThis.getDisplayName(),
+                                            "S");
 
                                 } else {
                                     // The right hand side is actually complicated
@@ -1124,7 +1121,8 @@ public class FmvAutomaton extends FSMActor {
                                                 lValue, offset, "*");
                                         _generatePremiseAndResultEachTransition(
                                                 statePrecondition, valueDomain,
-                                                "state", destinationInThis
+                                                "state",
+                                                destinationInThis
                                                         .getDisplayName(), "S");
 
                                     } else if (Pattern.matches(".*/.*", rValue)) {
@@ -1174,7 +1172,8 @@ public class FmvAutomaton extends FSMActor {
                                                 lValue, offset, "/");
                                         _generatePremiseAndResultEachTransition(
                                                 statePrecondition, valueDomain,
-                                                "state", destinationInThis
+                                                "state",
+                                                destinationInThis
                                                         .getDisplayName(), "S");
 
                                     } else if (Pattern.matches(".*+.*", rValue)) {
@@ -1223,12 +1222,13 @@ public class FmvAutomaton extends FSMActor {
 
                                         _generatePremiseAndResultEachTransition(
                                                 statePrecondition, valueDomain,
-                                                lValue, rValueOperends[1]
-                                                        .trim(), "+");
+                                                lValue,
+                                                rValueOperends[1].trim(), "+");
 
                                         _generatePremiseAndResultEachTransition(
                                                 statePrecondition, valueDomain,
-                                                "state", destinationInThis
+                                                "state",
+                                                destinationInThis
                                                         .getDisplayName(), "S");
 
                                     } else if (Pattern.matches(".*-.*", rValue)) {
@@ -1275,11 +1275,12 @@ public class FmvAutomaton extends FSMActor {
 
                                         _generatePremiseAndResultEachTransition(
                                                 statePrecondition, valueDomain,
-                                                lValue, rValueOperends[1]
-                                                        .trim(), "-");
+                                                lValue,
+                                                rValueOperends[1].trim(), "-");
                                         _generatePremiseAndResultEachTransition(
                                                 statePrecondition, valueDomain,
-                                                "state", destinationInThis
+                                                "state",
+                                                destinationInThis
                                                         .getDisplayName(), "S");
 
                                     }

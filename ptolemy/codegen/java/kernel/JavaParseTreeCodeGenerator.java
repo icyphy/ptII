@@ -603,8 +603,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         ASTPtRootNode cloneTree;
 
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
-        cloneTree = specializer.specialize(node.getExpressionTree(), node
-                .getArgumentNameList(), _scope);
+        cloneTree = specializer.specialize(node.getExpressionTree(),
+                node.getArgumentNameList(), _scope);
 
         // Infer the return type.
         if (_typeInference == null) {
@@ -614,8 +614,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _typeInference.inferTypes(node, _scope);
 
         FunctionType type = (FunctionType) node.getType();
-        ExpressionFunction definedFunction = new ExpressionFunction(node
-                .getArgumentNameList(), node.getArgumentTypes(), cloneTree);
+        ExpressionFunction definedFunction = new ExpressionFunction(
+                node.getArgumentNameList(), node.getArgumentTypes(), cloneTree);
         FunctionToken result = new FunctionToken(definedFunction, type);
         _evaluatedChildToken = (result);
 
@@ -978,8 +978,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                        .getRowCount()
-                        * columnCount];
+                        .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
@@ -989,8 +988,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                             * i, columnCount);
                 }
 
-                childToken = MatrixToken.arrayToMatrix(matrixTokens, node
-                        .getRowCount(), columnCount);
+                childToken = MatrixToken.arrayToMatrix(matrixTokens,
+                        node.getRowCount(), columnCount);
             } catch (IllegalActionException ex) {
                 // FIXME: better detail message that includes the thing
                 // we were parsing.

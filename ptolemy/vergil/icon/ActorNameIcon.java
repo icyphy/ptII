@@ -106,8 +106,8 @@ public class ActorNameIcon extends BoxedValueIcon {
             // If the container name exists, hide it.
             if (displayString.trim().length() > 0) {
                 try {
-                    SingletonParameter hideName = new SingletonParameter(this
-                            .getContainer(), "_hideName");
+                    SingletonParameter hideName = new SingletonParameter(
+                            this.getContainer(), "_hideName");
                     hideName.setExpression("true");
                 } catch (Exception e) {
                     // Do nothing.

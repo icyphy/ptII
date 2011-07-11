@@ -63,8 +63,8 @@ public class InequalityConceptFunctionDefinition extends
             NameDuplicationException {
         super(container, name);
 
-        Token[] argNames = new Token[]{(Token) new StringToken("left"),
-                (Token) new StringToken("right")};
+        Token[] argNames = new Token[] { new StringToken("left"),
+                new StringToken("right") };
         argumentNames.setToken(new ArrayToken(argNames));
         argumentNames.setVisibility(Settable.NOT_EDITABLE);
 

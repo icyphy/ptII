@@ -61,7 +61,7 @@ public class RecordDisassembler extends LatticeOntologyAdapter {
      */
     public RecordDisassembler(LatticeOntologySolver solver,
             ptolemy.actor.lib.RecordDisassembler actor)
-                throws IllegalActionException {
+            throws IllegalActionException {
         super(solver, actor, false);
     }
 
@@ -79,34 +79,34 @@ public class RecordDisassembler extends LatticeOntologyAdapter {
         SortedSet<String> fieldLabels = new TreeSet<String>();
 
         for (Object port : actor.outputPortList()) {
-           fieldLabels.add(((Port) port).getName());
+            fieldLabels.add(((Port) port).getName());
         }
 
         // The InequalityTerm array must order the terms from the output ports
         // in the exact same order as the SortedSet fieldLabels set of
         // label names.  This is necessary to ensure that the RecordFromIndividualConcepts
         // concept function is correctly evaluated.
-        InequalityTerm[] outputPortTerms = new InequalityTerm[fieldLabels.size()];
+        InequalityTerm[] outputPortTerms = new InequalityTerm[fieldLabels
+                .size()];
         int counter = 0;
         for (String field : fieldLabels) {
             outputPortTerms[counter++] = getPropertyTerm(actor.getPort(field));
         }
 
-        if (interconnectConstraintType == ConstraintType.EQUALS ||
-                interconnectConstraintType == ConstraintType.SOURCE_GE_SINK) {
+        if (interconnectConstraintType == ConstraintType.EQUALS
+                || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK) {
             setAtLeast(actor.input, new ConceptFunctionInequalityTerm(
                     new RecordFromIndividualConcepts("recordConcept",
-                            fieldLabels, ontology),
-                            outputPortTerms));
+                            fieldLabels, ontology), outputPortTerms));
         }
 
-        if (interconnectConstraintType == ConstraintType.EQUALS ||
-                interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
+        if (interconnectConstraintType == ConstraintType.EQUALS
+                || interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
             for (Object port : actor.outputPortList()) {
                 setAtLeast(port, new ConceptFunctionInequalityTerm(
                         new ConceptFromRecordField("conceptFromRecord",
                                 ((Port) port).getName(), ontology),
-                        new InequalityTerm[]{ getPropertyTerm(actor.input) }));
+                        new InequalityTerm[] { getPropertyTerm(actor.input) }));
             }
         }
 

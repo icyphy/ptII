@@ -116,8 +116,7 @@ public class BusAssembler extends TypedAtomicActor {
         super.fire();
         Iterator inputPorts = inputPortList().iterator();
         TypedIOPort inputPort = (TypedIOPort) (inputPorts.hasNext() ? inputPorts
-                .next()
-                : null);
+                .next() : null);
         int inputWidth = (inputPort != null) ? inputPort.getWidth() : 0;
         int i = 0;
         int j = 0;

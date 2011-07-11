@@ -96,6 +96,7 @@ public class ColtBinomial extends ColtRandomSource {
      */
     protected String _generateRandomNumber() throws IllegalActionException {
         ArrayList<String> args = new ArrayList<String>();
-        return getTemplateParser().generateBlockCode("binomialDistributionBlock", args);
+        return getTemplateParser().generateBlockCode(
+                "binomialDistributionBlock", args);
     }
 }

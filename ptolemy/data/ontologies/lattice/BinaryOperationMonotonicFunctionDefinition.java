@@ -83,7 +83,8 @@ public class BinaryOperationMonotonicFunctionDefinition extends
 
         // Constrain argument list to have only 2 arguments.
         argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 2));
-        argumentDomainOntologies.setTypeEquals(new ArrayType(BaseType.STRING, 2));
+        argumentDomainOntologies
+                .setTypeEquals(new ArrayType(BaseType.STRING, 2));
         argumentDomainOntologies.setVisibility(Settable.NONE);
 
         outputRangeOntologyName.setVisibility(Settable.NONE);
@@ -114,11 +115,12 @@ public class BinaryOperationMonotonicFunctionDefinition extends
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == functionOntologyName) {
-            StringToken ontologyNameToken = (StringToken) functionOntologyName.getToken();
+            StringToken ontologyNameToken = (StringToken) functionOntologyName
+                    .getToken();
             outputRangeOntologyName.setToken(ontologyNameToken);
 
-            ArrayToken domainOntologiesToken =
-                new ArrayToken(new Token[]{(Token) ontologyNameToken, (Token) ontologyNameToken});
+            ArrayToken domainOntologiesToken = new ArrayToken(new Token[] {
+                    ontologyNameToken, ontologyNameToken });
             argumentDomainOntologies.setToken(domainOntologiesToken);
         }
 

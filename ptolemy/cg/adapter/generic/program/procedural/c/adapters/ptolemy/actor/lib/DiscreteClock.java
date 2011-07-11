@@ -48,19 +48,19 @@ public class DiscreteClock extends NamedProgramCodeGeneratorAdapter {
         super(actor);
     }
 
-//    public String generateFireCode() throws IllegalActionException {
-//        CodeStream codeStream = _templateParser.getCodeStream();
-//        codeStream.clear();
-//        LinkedList args = new LinkedList();
-//        Parameter delay = ((ptolemy.actor.lib.TimeDelay) getComponent()).delay;
-//        double value = ((DoubleToken) delay.getToken()).doubleValue();
-//
-//        int intPart = (int) value;
-//        int fracPart = (int) ((value - intPart) * 1000000000.0);
-//        args.add(Integer.toString(intPart));
-//        args.add(Integer.toString(fracPart));
-//
-//        codeStream.appendCodeBlock("fireBlock", args);
-//        return processCode(codeStream.toString());
-//    }
+    //    public String generateFireCode() throws IllegalActionException {
+    //        CodeStream codeStream = _templateParser.getCodeStream();
+    //        codeStream.clear();
+    //        LinkedList args = new LinkedList();
+    //        Parameter delay = ((ptolemy.actor.lib.TimeDelay) getComponent()).delay;
+    //        double value = ((DoubleToken) delay.getToken()).doubleValue();
+    //
+    //        int intPart = (int) value;
+    //        int fracPart = (int) ((value - intPart) * 1000000000.0);
+    //        args.add(Integer.toString(intPart));
+    //        args.add(Integer.toString(fracPart));
+    //
+    //        codeStream.appendCodeBlock("fireBlock", args);
+    //        return processCode(codeStream.toString());
+    //    }
 }

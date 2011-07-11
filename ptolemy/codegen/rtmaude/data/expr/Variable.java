@@ -62,8 +62,9 @@ public class Variable extends RTMaudeAdaptor {
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         if (name.equals("evaluatedValue")) {
-            return this.getTranslatedExpression(
-                    ((ptolemy.data.expr.Variable) getComponent()).getValueAsString());
+            return this
+                    .getTranslatedExpression(((ptolemy.data.expr.Variable) getComponent())
+                            .getValueAsString());
         }
 
         return super.getInfo(name, parameters);

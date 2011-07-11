@@ -557,7 +557,8 @@ public class RealTimeComposite extends MirrorComposite {
                             ._debug("---- Actor requests firing at time "
                                     + time + ": " + actor.getFullName());
                 }
-                result = director.fireAt(RealTimeComposite.this, time, microstep);
+                result = director.fireAt(RealTimeComposite.this, time,
+                        microstep);
             }
             if (actor != RealTimeComposite.this) {
                 // The fireAt() request is coming from the inside, so
@@ -815,7 +816,8 @@ public class RealTimeComposite extends MirrorComposite {
                             Token token = port.get(i);
                             _inputTokens.add(new QueuedToken(port, i, token));
                             if (RealTimeComposite.this._debugging) {
-                                RealTimeComposite.this._debug(getName(),
+                                RealTimeComposite.this._debug(
+                                        getName(),
                                         "transferring input from "
                                                 + port.getName());
                             }
@@ -865,7 +867,8 @@ public class RealTimeComposite extends MirrorComposite {
                                 outputTokens
                                         .add(new QueuedToken(port, i, token));
                                 if (RealTimeComposite.this._debugging) {
-                                    RealTimeComposite.this._debug(getName(),
+                                    RealTimeComposite.this._debug(
+                                            getName(),
                                             "transferring output from "
                                                     + port.getName()
                                                     + " with value " + token);

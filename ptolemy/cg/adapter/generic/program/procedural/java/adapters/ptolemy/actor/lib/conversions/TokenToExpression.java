@@ -46,7 +46,8 @@ public class TokenToExpression
      *  Construct a TokenToExpression adapter.
      *  @param actor The given ptolemy.actor.lib.TokenToExpression actor.
      */
-    public TokenToExpression(ptolemy.actor.lib.conversions.TokenToExpression actor) {
+    public TokenToExpression(
+            ptolemy.actor.lib.conversions.TokenToExpression actor) {
         super(actor);
     }
 }

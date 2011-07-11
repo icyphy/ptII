@@ -456,9 +456,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             // Now replace the concrete offset with the variable.
             for (int i = 0; i < width; i++) {
-                helper
-                        .setReadOffset(port, i, channelReadOffset + "[" + i
-                                + "]");
+                helper.setReadOffset(port, i, channelReadOffset + "[" + i + "]");
             }
             channelReadOffset += "[" + width + "]";
             code.append("static int " + channelReadOffset + ";\n");
@@ -525,7 +523,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                     readTokens = DFUtilities.getRate(outputPort);
                     Iterator<?> sourcePorts = outputPort.insideSourcePortList()
                             .iterator();
-                    label1: while (sourcePorts.hasNext()) {
+                    label1:
+                    while (sourcePorts.hasNext()) {
                         IOPort sourcePort = (IOPort) sourcePorts.next();
                         //                            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
                         //                                    .getContainer());
@@ -600,7 +599,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                         readTokens = DFUtilities.getRate(inputPort);
                         Iterator<?> sourcePorts = inputPort.sourcePortList()
                                 .iterator();
-                        label2: while (sourcePorts.hasNext()) {
+                        label2:
+                        while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
                             //                                CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
                             //                                        .getContainer());

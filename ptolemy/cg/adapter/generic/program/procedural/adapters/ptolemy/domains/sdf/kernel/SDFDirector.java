@@ -41,6 +41,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -98,14 +99,15 @@ public class SDFDirector extends StaticSchedulingDirector {
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         List actorList = ((CompositeActor) _director.getContainer())
-            .deepEntityList();
+                .deepEntityList();
 
         // Sort by name so that we retrieve the actors from the list
         // by composite.
         Collections.sort(actorList, new FullNameComparator());
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
-        code.append(codeGenerator.comment("SDFDirector.generateFireFunctionCode()"));
+        code.append(codeGenerator
+                .comment("SDFDirector.generateFireFunctionCode()"));
 
         boolean inline = ((BooleanToken) codeGenerator.inline.getToken())
                 .booleanValue();
@@ -115,12 +117,12 @@ public class SDFDirector extends StaticSchedulingDirector {
         // the code should be appended.
         String hackStart = "/* SDFDirectorHack: ";
 
-        ptolemy.actor.Director director = (ptolemy.actor.Director)getComponent();
+        ptolemy.actor.Director director = (ptolemy.actor.Director) getComponent();
 
         // Place the fire functions in different inner classes so as to
         // result in smaller Java code that makes it possible for the compiler
         // to compile large files.
-        HashMap<String,StringBuffer> innerClasses = new HashMap<String,StringBuffer>();
+        HashMap<String, StringBuffer> innerClasses = new HashMap<String, StringBuffer>();
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -134,14 +136,17 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // inside inner classes.
 
                 // FIXME: What about other directors?
-                String results[] = codeGenerator.generateFireFunctionVariableAndMethodName((NamedObj)actor);
+                String results[] = codeGenerator
+                        .generateFireFunctionVariableAndMethodName((NamedObj) actor);
                 className = results[0];
 
                 StringBuffer innerClassBuffer = innerClasses.get(className);
                 if (innerClassBuffer == null) {
                     innerClassBuffer = new StringBuffer();
-                    if (!director.isEmbedded() || director.getContainer() instanceof ptolemy.cg.lib.CompiledCompositeActor) {
-                        innerClassBuffer.append(codeGenerator.generateFireFunctionCompositeStart(className));
+                    if (!director.isEmbedded()
+                            || director.getContainer() instanceof ptolemy.cg.lib.CompiledCompositeActor) {
+                        innerClassBuffer.append(codeGenerator
+                                .generateFireFunctionCompositeStart(className));
                     } else {
                         // If this director is not the top most
                         // codegen director, then place magic text
@@ -158,11 +163,13 @@ public class SDFDirector extends StaticSchedulingDirector {
                     // Process the magic text and get the name of the inner class in
                     // which to place the code.
                     int endIndex = subFireCode.indexOf(" */", startIndex);
-                    className = subFireCode.substring(startIndex + hackStart.length(), endIndex);
+                    className = subFireCode.substring(
+                            startIndex + hackStart.length(), endIndex);
                     innerClassBuffer = innerClasses.get(className);
                     if (innerClassBuffer == null) {
                         innerClassBuffer = new StringBuffer();
-                        innerClassBuffer.append("class " + className + "{" + _eol);
+                        innerClassBuffer.append("class " + className + "{"
+                                + _eol);
                         innerClasses.put(className, innerClassBuffer);
                     }
                 }
@@ -172,10 +179,13 @@ public class SDFDirector extends StaticSchedulingDirector {
         if (!inline) {
             // Go through each inner class, append the code and add a
             // closing curly bracket.
-            for (Map.Entry<String, StringBuffer> innerClassBuffer: innerClasses.entrySet()) {
+            for (Map.Entry<String, StringBuffer> innerClassBuffer : innerClasses
+                    .entrySet()) {
                 code.append(innerClassBuffer.getValue());
-                    if (!director.isEmbedded() || director.getContainer() instanceof ptolemy.cg.lib.CompiledCompositeActor) {
-                        code.append(codeGenerator.generateFireFunctionCompositeEnd());
+                if (!director.isEmbedded()
+                        || director.getContainer() instanceof ptolemy.cg.lib.CompiledCompositeActor) {
+                    code.append(codeGenerator
+                            .generateFireFunctionCompositeEnd());
                 }
             }
         }
@@ -219,7 +229,6 @@ public class SDFDirector extends StaticSchedulingDirector {
                 code.append(resetCode);
             }
         }
-
 
         // Reset the offset for all of the output ports.
         String resetCode = _resetOutputPortsOffset();
@@ -376,22 +385,18 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         if (width != 0) {
             // Declare the read offset variable.
-            String channelReadOffset = NamedProgramCodeGeneratorAdapter
-                    .generateName(port);
+            String channelReadOffset = CodeGeneratorAdapter.generateName(port);
             channelReadOffset += "_readOffset";
 
             // Now replace the concrete offset with the variable.
             for (int i = 0; i < width; i++) {
-                _ports
-                        .setReadOffset(port, i, channelReadOffset + "[" + i
-                                + "]");
+                _ports.setReadOffset(port, i, channelReadOffset + "[" + i + "]");
             }
             channelReadOffset += "[" + width + "]";
             code.append("static int " + channelReadOffset + ";\n");
 
             // Declare the write offset variable.
-            String channelWriteOffset = NamedProgramCodeGeneratorAdapter
-                    .generateName(port);
+            String channelWriteOffset = CodeGeneratorAdapter.generateName(port);
 
             channelWriteOffset += "_writeOffset";
 
@@ -491,7 +496,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
-                channelReadOffset.append(NamedProgramCodeGeneratorAdapter
+                channelReadOffset.append(CodeGeneratorAdapter
                         .generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
@@ -510,7 +515,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // Declare the write offset variable.
                 StringBuffer channelWriteOffset = new StringBuffer();
-                channelWriteOffset.append(NamedProgramCodeGeneratorAdapter
+                channelWriteOffset.append(CodeGeneratorAdapter
                         .generateName(port));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
@@ -608,10 +613,10 @@ public class SDFDirector extends StaticSchedulingDirector {
             if (!(attribute instanceof Parameter)) {
                 throw new InternalErrorException(attribute, null,
                         "The attribute " + attribute.getFullName()
-                        + " is not a Parameter.");
+                                + " is not a Parameter.");
             } else {
-                Type elementType = ((ArrayType) ((Parameter) attribute).getType())
-                    .getElementType();
+                Type elementType = ((ArrayType) ((Parameter) attribute)
+                        .getType()).getElementType();
 
                 result.insert(0, "Array_get(");
                 if (getCodeGenerator().isPrimitive(elementType)) {
@@ -713,7 +718,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                     readTokens = DFUtilities.getRate(outputPort);
                     Iterator<?> sourcePorts = outputPort.insideSourcePortList()
                             .iterator();
-                    label1: while (sourcePorts.hasNext()) {
+                    label1:
+                    while (sourcePorts.hasNext()) {
                         IOPort sourcePort = (IOPort) sourcePorts.next();
                         //                            ProgramCodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(sourcePort
                         //                                    .getContainer());
@@ -799,7 +805,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                         readTokens = DFUtilities.getRate(inputPort);
                         Iterator<?> sourcePorts = inputPort.sourcePortList()
                                 .iterator();
-                        label2: while (sourcePorts.hasNext()) {
+                        label2:
+                        while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
                             //                                ProgramCodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(sourcePort
                             //                                        .getContainer());
@@ -955,8 +962,8 @@ public class SDFDirector extends StaticSchedulingDirector {
          *  of the fullName()s.
          */
         public int compare(Object object1, Object object2) {
-            String name1 = ((NamedObj)object1).getFullName();
-            String name2 = ((NamedObj)object2).getFullName();
+            String name1 = ((NamedObj) object1).getFullName();
+            String name2 = ((NamedObj) object2).getFullName();
 
             int index = 0;
             int dots1 = 0;

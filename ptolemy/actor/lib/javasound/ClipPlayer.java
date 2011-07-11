@@ -86,7 +86,8 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         fileOrURL = new FileParameter(this, "fileOrURL");
         // Use $CLASSPATH instead of $PTII so that this actor can find its
         // audio file under Web Start.
-        fileOrURL.setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
+        fileOrURL
+                .setExpression("$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
 
         overlay = new Parameter(this, "overlay");
         overlay.setTypeEquals(BaseType.BOOLEAN);
@@ -163,7 +164,8 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         }
         super.fire();
 
-        boolean overlayValue = ((BooleanToken) overlay.getToken()).booleanValue();
+        boolean overlayValue = ((BooleanToken) overlay.getToken())
+                .booleanValue();
         if (overlayValue || _clips.size() == 0) {
             // If there is an inactive clip in the list, then use that.
             // Otherwise, create a new one.
@@ -181,7 +183,8 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                     stream = AudioSystem.getAudioInputStream(fileOrURL.asURL());
                 } catch (IOException ex) {
                     // Handle jar urls from WebStart or the installer
-                    URL possibleJarURL = ClassUtilities.jarURLEntryResource(fileOrURL.getExpression());
+                    URL possibleJarURL = ClassUtilities
+                            .jarURLEntryResource(fileOrURL.getExpression());
                     stream = AudioSystem.getAudioInputStream(possibleJarURL);
                 }
 
@@ -191,7 +194,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Error opening audio file or URL: "
-                        + fileOrURL.getExpression());
+                                + fileOrURL.getExpression());
             }
         } else {
             // Restart the last clip.
@@ -206,13 +209,15 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
             clip.setFramePosition(0);
             clip.start();
         }
-        boolean playToCompletionValue = ((BooleanToken) playToCompletion.getToken()).booleanValue();
+        boolean playToCompletionValue = ((BooleanToken) playToCompletion
+                .getToken()).booleanValue();
         if (playToCompletionValue) {
             // Wait until the clip is finished.
             synchronized (_outputEvents) {
                 while (true) {
                     if (_outputEvents.size() > 0) {
-                        BooleanToken lastMessage = _outputEvents.get(_outputEvents.size() - 1);
+                        BooleanToken lastMessage = _outputEvents
+                                .get(_outputEvents.size() - 1);
                         if (!lastMessage.booleanValue()) {
                             // Got the STOP message.
                             break;
@@ -223,7 +228,8 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                     try {
                         _outputEvents.wait();
                     } catch (InterruptedException e) {
-                        throw new IllegalActionException(this, "Wait for completion interrupted");
+                        throw new IllegalActionException(this,
+                                "Wait for completion interrupted");
                     }
                 }
             }

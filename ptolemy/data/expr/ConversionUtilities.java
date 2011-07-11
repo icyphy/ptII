@@ -320,8 +320,9 @@ public class ConversionUtilities {
                     .forName("[[Lptolemy.math.FixPoint;"))) {
                 return BaseType.FIX_MATRIX;
             } else if (tokenClass.isArray()) {
-                return new ArrayType(convertJavaTypeToTokenType(tokenClass
-                        .getComponentType()));
+                return new ArrayType(
+                        convertJavaTypeToTokenType(tokenClass
+                                .getComponentType()));
             } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
                 return new ObjectType(tokenClass);
             } else if (tokenClass.isArray()) {
@@ -543,9 +544,11 @@ public class ConversionUtilities {
                 } else if (elementType.equals(BaseType.BOOLEAN)) {
                     return Class.forName("[Z");
                 } else {
-                    return java.lang.reflect.Array.newInstance(
-                            convertTokenTypeToJavaType(arrayType
-                                    .getElementType()), 0).getClass();
+                    return java.lang.reflect.Array
+                            .newInstance(
+                                    convertTokenTypeToJavaType(arrayType
+                                            .getElementType()),
+                                    0).getClass();
                 }
             } else {
                 // Bailout.  The type is not recognized, so defer to

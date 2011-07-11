@@ -147,7 +147,7 @@ public class Backoff extends MACActorBase {
         _declareDelayDependency(getBackoff, BKDone, 0.0);
         _declareDelayDependency(fromDataPump, BKDone, 0.0);
     }
-    
+
     /** The main function
      *  @exception IllegalActionException If an error occurs reading
      *   or writing inputs or outputs.
@@ -312,8 +312,8 @@ public class Backoff extends MACActorBase {
 
     private void _startBackoff() throws IllegalActionException {
         _backoffStartTime = _currentTime;
-        _BackoffTimer = setTimer(BackoffTimeOut, _currentTime.add(_slotCnt
-                * _aSlotTime * 1e-6));
+        _BackoffTimer = setTimer(BackoffTimeOut,
+                _currentTime.add(_slotCnt * _aSlotTime * 1e-6));
         _state = Channel_Idle;
         _status = Idle;
     }

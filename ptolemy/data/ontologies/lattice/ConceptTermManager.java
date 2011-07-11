@@ -179,9 +179,9 @@ public class ConceptTermManager implements ConceptTermFactory {
          */
         public Object getValue() {
             //if (_isEffective) {
-                return _solver.getConcept(_object);
-           // }
-           // return null;
+            return _solver.getConcept(_object);
+            // }
+            // return null;
         }
 
         /** Return this ptolemy.graph.InequalityTerm in an array if this term represent

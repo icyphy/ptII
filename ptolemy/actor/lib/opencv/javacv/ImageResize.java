@@ -42,7 +42,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// ImageResize
 
@@ -98,20 +97,23 @@ public class ImageResize extends Transformer {
         CvSize size = new CvSize(width, height);
 
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof IplImage)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            _frame = (IplImage)inputObject;
+            _frame = (IplImage) inputObject;
 
             if (_resizedFrame == null) {
-                _resizedFrame = cvCreateImage(size.byValue(), _frame.depth, _frame.nChannels);
-            }else if (_resizedFrame.width != width || _resizedFrame.height != height) {
+                _resizedFrame = cvCreateImage(size.byValue(), _frame.depth,
+                        _frame.nChannels);
+            } else if (_resizedFrame.width != width
+                    || _resizedFrame.height != height) {
                 cvReleaseImage(_resizedFrame.pointerByReference());
-                _resizedFrame = cvCreateImage(size.byValue(), _frame.depth, _frame.nChannels);
+                _resizedFrame = cvCreateImage(size.byValue(), _frame.depth,
+                        _frame.nChannels);
             }
             cvResize(_frame, _resizedFrame, CV_INTER_CUBIC);
 
@@ -126,15 +128,16 @@ public class ImageResize extends Transformer {
         super.initialize();
         _resizedFrame = null;
     }
-     /** Release image.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
+
+    /** Release image.
+    *  @exception IllegalActionException If thrown by the super class.
+    */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         // FIXME If releasing when the following actor using this frame, it causes fatal error.
-//        if (_copyFrame != null) {
-//            _copyFrame.release();
-//        }
+        //        if (_copyFrame != null) {
+        //            _copyFrame.release();
+        //        }
     }
 
     ///////////////////////////////////////////////////////////////////

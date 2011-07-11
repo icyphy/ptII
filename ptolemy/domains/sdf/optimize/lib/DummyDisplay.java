@@ -79,7 +79,8 @@ public class DummyDisplay extends Sink implements BufferingProfile {
      *  @exception IllegalActionException If iterating is not
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
-    public int iterate(int iterationCount, boolean fireExclusive) throws IllegalActionException {
+    public int iterate(int iterationCount, boolean fireExclusive)
+            throws IllegalActionException {
         return super.iterate(iterationCount);
     }
 
@@ -115,6 +116,5 @@ public class DummyDisplay extends Sink implements BufferingProfile {
     public int exclusiveExecutionTime() {
         return 1;
     }
-
 
 }

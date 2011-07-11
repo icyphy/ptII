@@ -92,8 +92,8 @@ public class SideEffectAnalysis {
             if (!in.equals(out)) {
                 _setEffectFlow(nextMethod, out);
 
-                for (Iterator invokers = new Sources(callGraph
-                        .edgesInto(nextMethod)); invokers.hasNext();) {
+                for (Iterator invokers = new Sources(
+                        callGraph.edgesInto(nextMethod)); invokers.hasNext();) {
                     SootMethod invoker = (SootMethod) invokers.next();
 
                     if (_reachables.contains(invoker)) {

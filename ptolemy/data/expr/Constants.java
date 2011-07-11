@@ -259,8 +259,8 @@ public class Constants {
     // then ignore the securityException and do nothing.
     private static void _putProperty(String variableName, String property) {
         try {
-            _table.put(variableName, new StringToken(StringUtilities
-                    .getProperty(property)));
+            _table.put(variableName,
+                    new StringToken(StringUtilities.getProperty(property)));
         } catch (SecurityException ex) {
             System.out.println("Warning: While trying to set '" + variableName
                     + "', failed to read '" + property + "' property "

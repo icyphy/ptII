@@ -62,8 +62,8 @@ public class AlphabetizeOperation {
                 String filename = file.getPath();
                 CodeStream stream = new CodeStream(filename, null);
 
-                TreeSet sortedSet = new TreeSet(stream
-                        .getAllCodeBlockSignatures());
+                TreeSet sortedSet = new TreeSet(
+                        stream.getAllCodeBlockSignatures());
 
                 StringBuffer code = new StringBuffer();
                 for (Object signature : sortedSet) {

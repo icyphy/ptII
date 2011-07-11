@@ -1,6 +1,5 @@
 package ptolemy.domains.jogl.lib;
 
-
 import javax.media.opengl.GL;
 
 import ptolemy.actor.gui.ColorAttribute;
@@ -20,8 +19,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @author Yasemin Demir
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
-public class Point3D extends Sink{
-
+public class Point3D extends Sink {
 
     /**
      *  Construct a Point3D object in the given container with the given name.
@@ -37,11 +35,10 @@ public class Point3D extends Sink{
      *  CompositeActor and the name collides with an entity in the container.
      */
     public Point3D(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
-
 
         radius = new Parameter(this, "radius");
         radius.setExpression("1.0");
@@ -52,13 +49,11 @@ public class Point3D extends Sink{
         origin = new Parameter(this, "origin");
         origin.setExpression("{0.0, 0.0, 0.0}");
 
-
     }
 
     /**Specifies the diameter of the rasterized point.  The initial
      * value is 1.
      */
-
 
     public Parameter radius;
 
@@ -74,19 +69,17 @@ public class Point3D extends Sink{
      */
     public Parameter origin;
 
-
-
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called fire()");
         }
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof GL)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of GL. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
 
             GL gl = (GL) inputObject;
@@ -94,25 +87,22 @@ public class Point3D extends Sink{
             ArrayToken rgbColorValue = ((ArrayToken) rgbColor.getToken());
             DoubleToken radiusValue = (DoubleToken) radius.getToken();
 
-
             gl.glPointSize((float) radiusValue.doubleValue());
             gl.glBegin(GL.GL_POINTS);
 
-            gl.glColor3d(((DoubleToken) rgbColorValue.getElement(0)).doubleValue(),
+            gl.glColor3d(
+                    ((DoubleToken) rgbColorValue.getElement(0)).doubleValue(),
                     ((DoubleToken) rgbColorValue.getElement(1)).doubleValue(),
                     ((DoubleToken) rgbColorValue.getElement(2)).doubleValue());
 
             // origin of the line
-            gl.glVertex3d(((DoubleToken) originToken.getElement(0)).doubleValue(),
+            gl.glVertex3d(
+                    ((DoubleToken) originToken.getElement(0)).doubleValue(),
                     ((DoubleToken) originToken.getElement(1)).doubleValue(),
                     ((DoubleToken) originToken.getElement(2)).doubleValue());
             gl.glEnd();
 
-
-
-
         }
     }
-
 
 }

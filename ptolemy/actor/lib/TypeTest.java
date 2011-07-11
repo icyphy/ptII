@@ -171,10 +171,11 @@ public class TypeTest extends Discard {
 
             if (portNames.size() > 0) {
                 portActorNameList.add(entity.getName());
-                portAssignments.add(new RecordToken((String[]) portNames
-                        .toArray(new String[portNames.size()]),
-                        (Token[]) portTypes
-                                .toArray(new Token[portTypes.size()])));
+                portAssignments
+                        .add(new RecordToken((String[]) portNames
+                                .toArray(new String[portNames.size()]),
+                                (Token[]) portTypes.toArray(new Token[portTypes
+                                        .size()])));
             }
 
             ArrayList paramNames = new ArrayList();
@@ -197,13 +198,13 @@ public class TypeTest extends Discard {
         }
 
         RecordToken actualPortTypes = new RecordToken(
-                (String[]) portActorNameList
-                        .toArray(new String[portActorNameList.size()]),
+                (String[]) portActorNameList.toArray(new String[portActorNameList
+                        .size()]),
                 (Token[]) portAssignments.toArray(new Token[portAssignments
                         .size()]));
         RecordToken actualParameterTypes = new RecordToken(
-                (String[]) parameterActorNameList
-                        .toArray(new String[parameterActorNameList.size()]),
+                (String[]) parameterActorNameList.toArray(new String[parameterActorNameList
+                        .size()]),
                 (Token[]) parameterAssignments
                         .toArray(new Token[parameterAssignments.size()]));
 

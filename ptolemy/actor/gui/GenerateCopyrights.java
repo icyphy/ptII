@@ -101,8 +101,7 @@ public class GenerateCopyrights {
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
-        _addIfPresent(copyrightsMap,
-                "ptolemy.actor.gui.run.PtolemyFormEditor",
+        _addIfPresent(copyrightsMap, "ptolemy.actor.gui.run.PtolemyFormEditor",
                 "com/jgoodies/jgoodies-copyright.htm");
 
         _addIfPresent(copyrightsMap, "actor.lib.logic.fuzzy.FuzzyLogic",
@@ -114,12 +113,10 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
 
-        _addIfPresent(copyrightsMap,
-                "org.json.JSONObject",
+        _addIfPresent(copyrightsMap, "org.json.JSONObject",
                 "org/json/json-license.htm");
 
-        _addIfPresent(copyrightsMap,
-                "ptolemy.actor.gui.run.RunLayoutFrame",
+        _addIfPresent(copyrightsMap, "ptolemy.actor.gui.run.RunLayoutFrame",
                 "org/mlc/mlc-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.caltrop.actors.CalInterpreter",
@@ -196,12 +193,10 @@ public class GenerateCopyrights {
                 "ptolemy.vergil.basic.layout,KielerLayoutGUI",
                 "ptolemy/vergil/basic/layout/kieler/kieler-copyright.htm");
 
-        _addIfPresent(copyrightsMap,
-                "ptolemy.vergil.basic.ExportHTMLAction",
+        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.ExportHTMLAction",
                 "ptolemy/vergil/javascript/javascript-license.htm");
 
-        _addIfPresent(copyrightsMap,
-                "ptolemy.actor.lib.opencv.OpenCVReader",
+        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.opencv.OpenCVReader",
                 "ptolemy/actor/lib/opencv/opencv-copyright.htm");
 
         _addIfPresent(copyrightsMap,
@@ -214,7 +209,8 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.vergil.pdfrenderer.PDFAttribute",
                 "ptolemy/vergil/pdfrenderer/PDFRenderer-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.domains.gr.lib.vr.GRTexture2D.java",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.domains.gr.lib.vr.GRTexture2D.java",
                 "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
 
         _addIfPresent(copyrightsMap,
@@ -230,12 +226,10 @@ public class GenerateCopyrights {
                 "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
 
-        _addIfPresent(copyrightsMap,
-                "org.junit.runner.JUnitCore",
+        _addIfPresent(copyrightsMap, "org.junit.runner.JUnitCore",
                 "lib/junit-license.htm");
 
-        _addIfPresent(copyrightsMap,
-                "com.github.ojdcheck.OpenJavaDocCheck",
+        _addIfPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
                 "lib/ojdcheck-license.htm");
 
         _addIfPresent(copyrightsMap,
@@ -383,18 +377,25 @@ public class GenerateCopyrights {
                     + "</code></a>\n");
         }
 
-        htmlBuffer.append("<p>" + applicationName
-                + " uses AElfred as an XML Parser.\n"
-                + "AElfred is covered by the copyright in\n " + "<a href=\""
-                + aelfredCopyright + "\"><code>."
-                + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n</p>"
-                + "<p>" + applicationName
-                + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
-                + "Significant portions of the ptolemy.graph package were developed by "
-                + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
-                + "and his group. and are covered by a BSD License in\n " + "<a href=\""
-                + graphCopyright + "\"><code>"
-                + _canonicalizeURLToPTII(graphCopyright) + "</code></a>\n</p>");
+        htmlBuffer
+                .append("<p>"
+                        + applicationName
+                        + " uses AElfred as an XML Parser.\n"
+                        + "AElfred is covered by the copyright in\n "
+                        + "<a href=\""
+                        + aelfredCopyright
+                        + "\"><code>."
+                        + _canonicalizeURLToPTII(aelfredCopyright)
+                        + "</code></a>\n</p>"
+                        + "<p>"
+                        + applicationName
+                        + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
+                        + "Significant portions of the ptolemy.graph package were developed by "
+                        + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
+                        + "and his group. and are covered by a BSD License in\n "
+                        + "<a href=\"" + graphCopyright + "\"><code>"
+                        + _canonicalizeURLToPTII(graphCopyright)
+                        + "</code></a>\n</p>");
 
         return htmlBuffer.toString();
     }
@@ -414,15 +415,13 @@ public class GenerateCopyrights {
      * the library
      */
     private static void _addIfPresent(Map copyrightsMap,
-            String applicationClassName,
-            String libraryClassName,
+            String applicationClassName, String libraryClassName,
             String copyrightPath) {
         // If actor.lib.database.DatabaseManager is present, then
         // we look for MySQL and Oracle JDBC packages.
         try {
             Class.forName(applicationClassName);
-            _addIfPresent(copyrightsMap, libraryClassName,
-                    copyrightPath);
+            _addIfPresent(copyrightsMap, libraryClassName, copyrightPath);
         } catch (Throwable throwable) {
             // Ignore, this just means that the applicationClassName
             // could not be found, so we need not include information

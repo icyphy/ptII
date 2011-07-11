@@ -271,8 +271,8 @@ public class ConnectorInteractor extends DragInteractor {
         });
 
         if (figure != null) {
-            Site snap = findSite(figure, hitRect.getCenterX(), hitRect
-                    .getCenterY());
+            Site snap = findSite(figure, hitRect.getCenterX(),
+                    hitRect.getCenterY());
 
             if (snap != null) {
                 _target = figure;
@@ -315,8 +315,8 @@ public class ConnectorInteractor extends DragInteractor {
                 Site current = _handle.getSite();
 
                 // FIXME: shouldn't this be x,y?
-                Site snap = findSite(current, bounds.getCenterX(), bounds
-                        .getCenterY());
+                Site snap = findSite(current, bounds.getCenterX(),
+                        bounds.getCenterY());
 
                 //debug("SNAP: " + snap);
                 if ((snap != null) && (snap != current)) {

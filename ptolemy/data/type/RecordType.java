@@ -178,8 +178,8 @@ public class RecordType extends StructuredType implements Cloneable {
      */
     public Token convert(Token token) throws IllegalActionException {
         if (!isCompatible(token.getType())) {
-            throw new IllegalArgumentException(Token
-                    .notSupportedConversionMessage(token, this.toString()));
+            throw new IllegalArgumentException(
+                    Token.notSupportedConversionMessage(token, this.toString()));
         }
 
         RecordToken recordToken = (RecordToken) token;

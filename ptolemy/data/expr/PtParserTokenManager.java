@@ -1819,7 +1819,8 @@ public class PtParserTokenManager implements PtParserConstants {
         Token matchedToken;
         int curPos = 0;
 
-        EOFLoop: for (;;) {
+        EOFLoop:
+        for (;;) {
             try {
                 curChar = input_stream.BeginToken();
             } catch (java.io.IOException e) {

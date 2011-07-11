@@ -117,17 +117,15 @@ public class FixTransformer extends TypedAtomicActor {
     public void sendOutput(TypedIOPort port, int channel, Token token)
             throws NoRoomException, IllegalActionException {
         if (port.getType() == BaseType.FIX && token instanceof FixToken) {
-            Precision precision = new Precision(((Parameter) getAttribute(port
-                    .getName()
-                    + "Precision")).getExpression());
+            Precision precision = new Precision(
+                    ((Parameter) getAttribute(port.getName() + "Precision"))
+                            .getExpression());
 
             Overflow overflow = Overflow.getName(((Parameter) getAttribute(port
-                    .getName()
-                    + "Overflow")).getExpression().toLowerCase());
+                    .getName() + "Overflow")).getExpression().toLowerCase());
 
             Rounding rounding = Rounding.getName(((Parameter) getAttribute(port
-                    .getName()
-                    + "Rounding")).getExpression().toLowerCase());
+                    .getName() + "Rounding")).getExpression().toLowerCase());
 
             Quantization quantization = new FixPointQuantization(precision,
                     overflow, rounding);

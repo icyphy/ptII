@@ -219,8 +219,9 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                                     && outPortConstraints.isEmpty()) {
                                 // ports not constrained, use default
                                 // constraint
-                                Inequality inequality = new Inequality(inPort
-                                        .getTypeTerm(), outPort.getTypeTerm());
+                                Inequality inequality = new Inequality(
+                                        inPort.getTypeTerm(),
+                                        outPort.getTypeTerm());
                                 result.add(inequality);
                             }
                         }

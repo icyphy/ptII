@@ -522,10 +522,10 @@ public abstract class AbstractActionsAttribute extends Action implements
                     // Not a port, then it must be a variable.
                     if (_numbers.get(index) != null &&
                     // If the destination is not a variable, it should
-                            // be a port, and port(i) refers to the i-th channel
-                            // of the port, which has the same type as the port
-                            // itself.
-                            // -- tfeng (11/26/2008)
+                    // be a port, and port(i) refers to the i-th channel
+                    // of the port, which has the same type as the port
+                    // itself.
+                    // -- tfeng (11/26/2008)
                             (getDestination(_name) instanceof Variable)) {
                         // Has a number in parentheses following the name.
                         ArrayType arrayType = new ArrayType(type);

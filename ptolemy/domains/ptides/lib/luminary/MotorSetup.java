@@ -44,8 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating Red (jiazou)
  *
  */
-public class MotorSetup extends ActuatorSetup implements
-        ActuationDevice {
+public class MotorSetup extends ActuatorSetup implements ActuationDevice {
 
     /**
      * Constructs a MotorOutputDevice  object.

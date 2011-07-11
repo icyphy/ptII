@@ -72,10 +72,11 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @exception IllegalActionException If there is a problem instantiating
      *   the parse tree evaluator object.
      */
-    public ExpressionConceptFunctionParseTreeEvaluator(List<String> argumentNames,
-            List<Concept> inputConceptValues, OntologySolverModel solverModel,
-            List<Ontology> argumentDomainOntologies, Ontology outputRangeOntology)
-        throws IllegalActionException {
+    public ExpressionConceptFunctionParseTreeEvaluator(
+            List<String> argumentNames, List<Concept> inputConceptValues,
+            OntologySolverModel solverModel,
+            List<Ontology> argumentDomainOntologies,
+            Ontology outputRangeOntology) throws IllegalActionException {
         _argumentNames = new LinkedList<String>(argumentNames);
         _argumentConceptValues = new LinkedList<Concept>(inputConceptValues);
         _solverModel = solverModel;
@@ -99,10 +100,9 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   the parse tree evaluator object.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(
-            Map<String, Concept> arguments,
-            OntologySolverModel solverModel,
+            Map<String, Concept> arguments, OntologySolverModel solverModel,
             List<Ontology> domainOntologies, Ontology outputRangeOntology)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _solverModel = solverModel;
         _scopeOntologies = new LinkedList<Ontology>(domainOntologies);
         _scopeOntologies.add(outputRangeOntology);
@@ -142,21 +142,21 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   evaluation or if the result is not a ConceptToken or an ObjectToken
      *   containing a Concept.
      */
-    public ConceptToken evaluateParseTree(ASTPtRootNode node,
-            ParserScope scope) throws IllegalActionException {
+    public ConceptToken evaluateParseTree(ASTPtRootNode node, ParserScope scope)
+            throws IllegalActionException {
         Token evaluatedToken = super.evaluateParseTree(node, scope);
 
         if (evaluatedToken instanceof ConceptToken) {
             return (ConceptToken) evaluatedToken;
-        } else if (evaluatedToken instanceof ObjectToken &&
-                ((ObjectToken) evaluatedToken).getValueClass().
-                    isAssignableFrom(Concept.class)) {
-            return new ConceptToken((Concept)
-                    ((ObjectToken) evaluatedToken).getValue());
+        } else if (evaluatedToken instanceof ObjectToken
+                && ((ObjectToken) evaluatedToken).getValueClass()
+                        .isAssignableFrom(Concept.class)) {
+            return new ConceptToken(
+                    (Concept) ((ObjectToken) evaluatedToken).getValue());
         } else {
-            throw new IllegalActionException("Evaluated expression concept " +
-                            "function result must either be a ConceptToken or an " +
-                            "ObjectToken containing a Concept");
+            throw new IllegalActionException("Evaluated expression concept "
+                    + "function result must either be a ConceptToken or an "
+                    + "ObjectToken containing a Concept");
         }
     }
 
@@ -170,13 +170,12 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         String functionName = node.getFunctionName();
-        List<ConceptFunctionDefinitionAttribute> conceptFunctionDefs =
-            _conceptFunctionDefinitions();
+        List<ConceptFunctionDefinitionAttribute> conceptFunctionDefs = _conceptFunctionDefinitions();
 
         ConceptFunction function = null;
         for (Object functionDef : conceptFunctionDefs) {
-            if (((ConceptFunctionDefinitionAttribute) functionDef)
-                    .getName().equals(functionName)) {
+            if (((ConceptFunctionDefinitionAttribute) functionDef).getName()
+                    .equals(functionName)) {
                 function = ((ConceptFunctionDefinitionAttribute) functionDef)
                         .createConceptFunction();
                 break;
@@ -197,7 +196,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         }
 
         if (node.getFunctionName().compareTo("lub") == 0) {
-            CPO cpo = ((Ontology) argValues.get(0).getContainer()).getConceptGraph();
+            CPO cpo = ((Ontology) argValues.get(0).getContainer())
+                    .getConceptGraph();
             Concept bound = (Concept) cpo.leastUpperBound(argValues.toArray());
             _evaluatedChildToken = new ConceptToken(bound);
             return;
@@ -209,23 +209,20 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
                             + " in the concept function expression string.");
         }
 
-        if (function.isNumberOfArgumentsFixed() &&
-                argCount != function.getNumberOfArguments()) {
-            throw new IllegalActionException(
-                    "The concept function "
-                            + functionName
-                            + " has the wrong number of arguments. "
-                            + "Expected # arguments: "
-                            + function.getNumberOfArguments()
-                            + ", actual # arguments: " + argCount);
+        if (function.isNumberOfArgumentsFixed()
+                && argCount != function.getNumberOfArguments()) {
+            throw new IllegalActionException("The concept function "
+                    + functionName + " has the wrong number of arguments. "
+                    + "Expected # arguments: "
+                    + function.getNumberOfArguments()
+                    + ", actual # arguments: " + argCount);
         }
-
 
         // Evaluate the concept function and set the evaluated token
         // to the string name of the concept that is the output of the
         // function.
-        _evaluatedChildToken = new ConceptToken(function.evaluateFunction(
-                argValues));
+        _evaluatedChildToken = new ConceptToken(
+                function.evaluateFunction(argValues));
     }
 
     /** Evaluate each leaf node in the parse tree to a concept
@@ -237,8 +234,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @exception IllegalActionException If the node label cannot be
      *   resolved to a concept.
      */
-    public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         _evaluatedChildToken = null;
         String nodeLabel = _getNodeLabel(node);
 
@@ -281,19 +277,19 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @exception IllegalActionException If the concept cannot be found.
      */
     protected Concept _getNamedConcept(String conceptString)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         Concept outputConcept = null;
         for (Ontology domainOntology : _scopeOntologies) {
-            outputConcept = (Concept) domainOntology.getConceptByString(conceptString);
+            outputConcept = domainOntology.getConceptByString(conceptString);
             if (outputConcept != null) {
                 break;
             }
         }
 
         if (outputConcept == null) {
-            throw new IllegalActionException("Concept named " + conceptString +
-                    " was not found in any of the domain ontologies.");
+            throw new IllegalActionException("Concept named " + conceptString
+                    + " was not found in any of the domain ontologies.");
         }
 
         return outputConcept;
@@ -336,8 +332,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         if (_solverModel == null) {
             return new LinkedList<ConceptFunctionDefinitionAttribute>();
         } else {
-            return _solverModel.attributeList(
-                    ConceptFunctionDefinitionAttribute.class);
+            return _solverModel
+                    .attributeList(ConceptFunctionDefinitionAttribute.class);
         }
     }
 

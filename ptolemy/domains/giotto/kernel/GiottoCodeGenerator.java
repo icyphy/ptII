@@ -188,8 +188,9 @@ public class GiottoCodeGenerator extends Attribute {
 
                 manager.preinitializeAndResolveTypes();
 
-                TextEffigy codeEffigy = TextEffigy.newTextEffigy(configuration
-                        .getDirectory(), generateGiottoCode(model));
+                TextEffigy codeEffigy = TextEffigy
+                        .newTextEffigy(configuration.getDirectory(),
+                                generateGiottoCode(model));
                 codeEffigy.setModified(true);
                 configuration.createPrimaryTableau(codeEffigy);
 

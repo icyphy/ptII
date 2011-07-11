@@ -146,9 +146,9 @@ public class FixConst extends FixTransformer {
                 .getName(((Parameter) getAttribute("outputRounding"))
                         .getExpression().toLowerCase());
 
-        FixPoint result = new FixPoint(((ScalarToken) value.getToken())
-                .doubleValue(), new FixPointQuantization(precision, overflow,
-                rounding));
+        FixPoint result = new FixPoint(
+                ((ScalarToken) value.getToken()).doubleValue(),
+                new FixPointQuantization(precision, overflow, rounding));
 
         sendOutput(output, 0, new FixToken(result));
     }

@@ -254,7 +254,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException If thrown by the superclass attributeChanged()
      * method.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         super.attributeChanged(attribute);
 
         if (attribute == controllerName) {
@@ -306,7 +307,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @return A default dependency between input ports and output ports.
      */
     public Dependency defaultDependency() {
-        Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((Actor) getContainer())
+                .getExecutiveDirector();
         if (executiveDirector != null) {
             return executiveDirector.defaultDependency();
         }
@@ -341,8 +343,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
         controller.readInputs();
 
-        List<Transition> enabledPreemptiveTransitions = controller.enabledTransitions(currentState
-                .preemptiveTransitionList());
+        List<Transition> enabledPreemptiveTransitions = controller
+                .enabledTransitions(currentState.preemptiveTransitionList());
         if (enabledPreemptiveTransitions.size() > 0) {
             // Do not call the following unless there is actually a
             // preemptive transition enabled because in a fixed-point
@@ -350,20 +352,26 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             // chooseTransition with the list of preemptive
             // transitions after a non-preemptive transition was
             // already discovered to be enabled.
-            _lastChosenTransition = controller.chooseTransition(enabledPreemptiveTransitions);
+            _lastChosenTransition = controller
+                    .chooseTransition(enabledPreemptiveTransitions);
             if (_debugging) {
-                _debug("Preemptive transition enabled:", _lastChosenTransition.getName());
+                _debug("Preemptive transition enabled:",
+                        _lastChosenTransition.getName());
             }
             // First execute the refinements of the transition.
-            Actor[] transitionRefinements = _lastChosenTransition.getRefinement();
+            Actor[] transitionRefinements = _lastChosenTransition
+                    .getRefinement();
 
             if (transitionRefinements != null) {
                 for (int i = 0; i < transitionRefinements.length; ++i) {
-                    if (_stopRequested || _disabledActors.contains(transitionRefinements[i])) {
+                    if (_stopRequested
+                            || _disabledActors
+                                    .contains(transitionRefinements[i])) {
                         break;
                     }
                     if (_debugging) {
-                        _debug("Fire transition refinement:", transitionRefinements[i].getName());
+                        _debug("Fire transition refinement:",
+                                transitionRefinements[i].getName());
                     }
                     // FIXME: What should model time be for transition refinements?
                     // It is not reasonable for it to be the time of the originating
@@ -371,7 +379,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     // and time will end up bouncing around...
                     if (transitionRefinements[i].prefire()) {
                         transitionRefinements[i].fire();
-                        _transitionRefinementsToPostfire.add(transitionRefinements[i]);
+                        _transitionRefinementsToPostfire
+                                .add(transitionRefinements[i]);
                     }
                 }
             }
@@ -385,12 +394,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             // If an output port is known because this preempted
             // transition already set it we do not send a clear.
             if (controller._currentState.getRefinement() != null) {
-                TypedActor[] refinements = controller._currentState.getRefinement();
+                TypedActor[] refinements = controller._currentState
+                        .getRefinement();
                 // do the following for all refinements
                 for (Actor refinementActor : refinements) {
                     if (refinementActor instanceof CompositeActor) {
                         CompositeActor refinement = (CompositeActor) refinementActor;
-                        for (IOPort refinementPort : ((List<IOPort>) refinement.outputPortList())) {
+                        for (IOPort refinementPort : ((List<IOPort>) refinement
+                                .outputPortList())) {
                             if (!refinementPort.isKnown()) {
                                 refinementPort.sendClear(0);
                             }
@@ -419,13 +430,15 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         if (stateRefinements != null) {
             for (int i = 0; i < stateRefinements.length; ++i) {
-                if (_stopRequested || _disabledActors.contains(stateRefinements[i])) {
+                if (_stopRequested
+                        || _disabledActors.contains(stateRefinements[i])) {
                     break;
                 }
                 _setTimeForRefinement(stateRefinements[i]);
                 if (stateRefinements[i].prefire()) {
                     if (_debugging) {
-                        _debug("Fire state refinement:", stateRefinements[i].getName());
+                        _debug("Fire state refinement:",
+                                stateRefinements[i].getName());
                     }
                     // NOTE: If the state refinement is an FSMActor, then the following
                     // fire() method doesn't do the right thing. That fire() method does
@@ -445,21 +458,25 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 .nonpreemptiveTransitionList());
         if (_lastChosenTransition != null) {
             if (_debugging) {
-                _debug("Nonpreemptive transition enabled:", _lastChosenTransition.getName());
+                _debug("Nonpreemptive transition enabled:",
+                        _lastChosenTransition.getName());
             }
             stateRefinements = _lastChosenTransition.getRefinement();
             if (stateRefinements != null) {
                 for (int i = 0; i < stateRefinements.length; ++i) {
-                    if (_stopRequested || _disabledActors.contains(stateRefinements[i])) {
+                    if (_stopRequested
+                            || _disabledActors.contains(stateRefinements[i])) {
                         break;
                     }
                     // FIXME: What to set time to for the refinement?
                     if (stateRefinements[i].prefire()) {
                         if (_debugging) {
-                            _debug("Fire transition refinement:", stateRefinements[i].getName());
+                            _debug("Fire transition refinement:",
+                                    stateRefinements[i].getName());
                         }
                         stateRefinements[i].fire();
-                        _transitionRefinementsToPostfire.add(stateRefinements[i]);
+                        _transitionRefinementsToPostfire
+                                .add(stateRefinements[i]);
                     }
                 }
                 controller.readOutputsFromRefinement();
@@ -495,7 +512,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @return The time at which the actor passed as an argument will be fired.
      * @exception IllegalActionException If thrown by the executive director.
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         if (_currentOffset != null) {
@@ -506,7 +524,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             Actor modalModel = (Actor) container;
             Director executiveDirector = modalModel.getExecutiveDirector();
             if (executiveDirector != null) {
-                Time result = executiveDirector.fireAt(modalModel, time, microstep);
+                Time result = executiveDirector.fireAt(modalModel, time,
+                        microstep);
                 if (_currentOffset != null) {
                     result = result.subtract(_currentOffset);
                 }
@@ -540,7 +559,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             String name = controllerName.getExpression();
 
             if (name == null) {
-                throw new IllegalActionException(this, "No name for mode " + "controller is set.");
+                throw new IllegalActionException(this, "No name for mode "
+                        + "controller is set.");
             }
 
             Nameable container = getContainer();
@@ -553,7 +573,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             Entity entity = cont.getEntity(name);
 
             if (entity == null) {
-                throw new IllegalActionException(this, "No controller found " + "with name " + name);
+                throw new IllegalActionException(this, "No controller found "
+                        + "with name " + name);
             }
 
             if (!(entity instanceof FSMActor)) {
@@ -587,8 +608,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     public Time getModelNextIterationTime() {
         try {
             FSMActor controller = getController();
-            List transitionList = controller.currentState().outgoingPort.linkedRelationList();
-            List enabledTransitions = controller.enabledTransitions(transitionList);
+            List transitionList = controller.currentState().outgoingPort
+                    .linkedRelationList();
+            List enabledTransitions = controller
+                    .enabledTransitions(transitionList);
             if (enabledTransitions.size() > 0) {
                 return _currentTime;
             }
@@ -619,18 +642,21 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         List list = new LinkedList();
 
         // Collect assignments from FSM transitions
-        for (Iterator states = getController().entityList().iterator(); states.hasNext();) {
+        for (Iterator states = getController().entityList().iterator(); states
+                .hasNext();) {
             State state = (State) states.next();
 
-            for (Iterator transitions = state.outgoingPort.linkedRelationList().iterator(); transitions
-                    .hasNext();) {
+            for (Iterator transitions = state.outgoingPort.linkedRelationList()
+                    .iterator(); transitions.hasNext();) {
                 Transition transition = (Transition) transitions.next();
 
-                for (Iterator actions = transition.choiceActionList().iterator(); actions.hasNext();) {
-                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions.next();
+                for (Iterator actions = transition.choiceActionList()
+                        .iterator(); actions.hasNext();) {
+                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions
+                            .next();
 
-                    for (Iterator names = action.getDestinationNameList().iterator(); names
-                            .hasNext();) {
+                    for (Iterator names = action.getDestinationNameList()
+                            .iterator(); names.hasNext();) {
                         String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
 
@@ -640,11 +666,13 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     }
                 }
 
-                for (Iterator actions = transition.commitActionList().iterator(); actions.hasNext();) {
-                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions.next();
+                for (Iterator actions = transition.commitActionList()
+                        .iterator(); actions.hasNext();) {
+                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions
+                            .next();
 
-                    for (Iterator names = action.getDestinationNameList().iterator(); names
-                            .hasNext();) {
+                    for (Iterator names = action.getDestinationNameList()
+                            .iterator(); names.hasNext();) {
                         String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
 
@@ -683,9 +711,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @see ptolemy.actor.SuperdenseTimeDirector
      */
     public int getIndex() {
-        Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((Actor) getContainer())
+                .getExecutiveDirector();
         if (executiveDirector instanceof SuperdenseTimeDirector) {
-            return ((SuperdenseTimeDirector) executiveDirector).getIndex() + _indexOffset;
+            return ((SuperdenseTimeDirector) executiveDirector).getIndex()
+                    + _indexOffset;
         }
         return 0;
     }
@@ -717,8 +747,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException If multiple enabled transition is detected,
      * or mode controller can not be found, or can not read outputs from refinements.
      */
-    public boolean handleModelError(NamedObj context, IllegalActionException exception)
-            throws IllegalActionException {
+    public boolean handleModelError(NamedObj context,
+            IllegalActionException exception) throws IllegalActionException {
         // NOTE: Besides throwing exception directly, we can handle
         // multiple enabled transitions in different ways by the derived
         // sub classes.
@@ -841,7 +871,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * may be used in scheduling by the enclosing director.
      */
     public void invalidateSchedule() {
-        Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((Actor) getContainer())
+                .getExecutiveDirector();
         if (executiveDirector != null) {
             executiveDirector.invalidateSchedule();
         }
@@ -931,7 +962,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         Actor[] refinements = controller.currentState().getRefinement();
         if (refinements != null) {
             for (Actor stateRefinement : refinements) {
-                if (_lastChosenTransition != null && stateRefinement instanceof Suspendable) {
+                if (_lastChosenTransition != null
+                        && stateRefinement instanceof Suspendable) {
                     ((Suspendable) stateRefinement).suspend(environmentTime);
                 }
             }
@@ -942,11 +974,13 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         if (_lastChosenTransition != null) {
             State destinationState = _lastChosenTransition.destinationState();
             if (destinationState != null) {
-                TypedActor[] destinationRefinements = destinationState.getRefinement();
+                TypedActor[] destinationRefinements = destinationState
+                        .getRefinement();
                 if (destinationRefinements != null) {
                     for (TypedActor destinationRefinement : destinationRefinements) {
                         if (destinationRefinement instanceof Suspendable) {
-                            ((Suspendable) destinationRefinement).resume(environmentTime);
+                            ((Suspendable) destinationRefinement)
+                                    .resume(environmentTime);
                         }
                     }
                 }
@@ -957,7 +991,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         for (Actor transitionRefinement : _transitionRefinementsToPostfire) {
             if (_debugging) {
-                _debug("Postfiring transition refinment:", transitionRefinement.getName());
+                _debug("Postfiring transition refinment:",
+                        transitionRefinement.getName());
             }
             // FIXME: What to set time to?
             if (!transitionRefinement.postfire()) {
@@ -968,7 +1003,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             }
         }
 
-        _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller.currentState());
+        _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
+                .currentState());
 
         // Reset all the receivers on the inside of output ports.
         // FIXME: Check derived classes. This may only make sense for FSMReceiver.
@@ -1044,7 +1080,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 // but we tolerate it here.
                 if (destinationDirector != this
                         && destinationDirector instanceof SuperdenseTimeDirector) {
-                    ((SuperdenseTimeDirector) destinationDirector).setIndex(index);
+                    ((SuperdenseTimeDirector) destinationDirector)
+                            .setIndex(index);
                 }
             }
         }
@@ -1087,7 +1124,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque" + "input port.");
+                    "transferInputs: port argument is not an opaque"
+                            + "input port.");
         }
 
         boolean transferredToken = false;
@@ -1103,24 +1141,34 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 if (port.isKnown(i)) {
                     if (port.hasToken(i)) {
                         Token t = port.get(i);
-                        if ((insideReceivers != null) && (insideReceivers[i] != null)) {
+                        if ((insideReceivers != null)
+                                && (insideReceivers[i] != null)) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
                                 insideReceivers[i][j].put(t);
                                 if (_debugging) {
-                                    _debug(getFullName(), "transferring input " + t + " from "
-                                            + port.getFullName() + " to "
-                                            + (insideReceivers[i][j]).getContainer().getFullName());
+                                    _debug(getFullName(), "transferring input "
+                                            + t
+                                            + " from "
+                                            + port.getFullName()
+                                            + " to "
+                                            + (insideReceivers[i][j])
+                                                    .getContainer()
+                                                    .getFullName());
                                 }
                             }
                             transferredToken = true;
                         }
                     } else {
                         /** Port does not have a token. */
-                        if ((insideReceivers != null) && (insideReceivers[i] != null)) {
+                        if ((insideReceivers != null)
+                                && (insideReceivers[i] != null)) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
                                 if (_debugging) {
-                                    _debug(getName(), "input port has no token. Clearing "
-                                            + (insideReceivers[i][j]).getContainer().getFullName());
+                                    _debug(getName(),
+                                            "input port has no token. Clearing "
+                                                    + (insideReceivers[i][j])
+                                                            .getContainer()
+                                                            .getFullName());
                                 }
                                 insideReceivers[i][j].clear();
                             }
@@ -1132,7 +1180,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         _debug("Input port status is not known. Resetting inside receivers of "
                                 + port.getName());
                     }
-                    if ((insideReceivers != null) && (insideReceivers[i] != null)) {
+                    if ((insideReceivers != null)
+                            && (insideReceivers[i] != null)) {
                         for (int j = 0; j < insideReceivers[i].length; j++) {
                             insideReceivers[i][j].reset();
                         }
@@ -1140,8 +1189,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 }
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
-                throw new InternalErrorException("Director.transferInputs: Internal error: "
-                        + ex.getMessage());
+                throw new InternalErrorException(
+                        "Director.transferInputs: Internal error: "
+                                + ex.getMessage());
             }
         }
         return transferredToken;
@@ -1196,38 +1246,48 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
                         for (int j = 0; j < allReceivers[i].length; ++j) {
                             Receiver receiver = allReceivers[i][j];
-                            Nameable cont = receiver.getContainer().getContainer();
+                            Nameable cont = receiver.getContainer()
+                                    .getContainer();
 
                             if (cont == controller) {
                                 resultsList.add(receiver);
                             } else {
                                 // check transitions
-                                Iterator transitions = state.nonpreemptiveTransitionList()
+                                Iterator transitions = state
+                                        .nonpreemptiveTransitionList()
                                         .iterator();
 
                                 while (transitions.hasNext()) {
-                                    Transition transition = (Transition) transitions.next();
-                                    _checkActorsForReceiver(transition.getRefinement(), cont,
+                                    Transition transition = (Transition) transitions
+                                            .next();
+                                    _checkActorsForReceiver(
+                                            transition.getRefinement(), cont,
                                             receiver, resultsList);
                                 }
 
                                 // check refinements
                                 List stateList = new LinkedList();
                                 stateList.add(state);
-                                transitions = state.preemptiveTransitionList().iterator();
+                                transitions = state.preemptiveTransitionList()
+                                        .iterator();
 
                                 while (transitions.hasNext()) {
-                                    Transition transition = (Transition) transitions.next();
-                                    stateList.add(transition.destinationState());
-                                    _checkActorsForReceiver(transition.getRefinement(), cont,
+                                    Transition transition = (Transition) transitions
+                                            .next();
+                                    stateList
+                                            .add(transition.destinationState());
+                                    _checkActorsForReceiver(
+                                            transition.getRefinement(), cont,
                                             receiver, resultsList);
                                 }
 
                                 Iterator nextStates = stateList.iterator();
 
                                 while (nextStates.hasNext()) {
-                                    actors = ((State) nextStates.next()).getRefinement();
-                                    _checkActorsForReceiver(actors, cont, receiver, resultsList);
+                                    actors = ((State) nextStates.next())
+                                            .getRefinement();
+                                    _checkActorsForReceiver(actors, cont,
+                                            receiver, resultsList);
                                 }
                             }
                         }
@@ -1247,7 +1307,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             }
 
             _localReceiverMapsVersion = workspace().getVersion();
-            _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller.currentState());
+            _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
+                    .currentState());
         } finally {
             workspace().doneReading();
         }
@@ -1266,7 +1327,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *                If there is more than one transition enabled, or if thrown by any choice
      *                action contained by the enabled transition, or if there is no controller.
      */
-    protected Transition _chooseTransition(List transitionList) throws IllegalActionException {
+    protected Transition _chooseTransition(List transitionList)
+            throws IllegalActionException {
         FSMActor controller = getController();
 
         if (controller != null) {
@@ -1287,7 +1349,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException
      *                If there is no controller.
      */
-    protected Receiver[][] _currentLocalReceivers(IOPort port) throws IllegalActionException {
+    protected Receiver[][] _currentLocalReceivers(IOPort port)
+            throws IllegalActionException {
         if (_localReceiverMapsVersion != workspace().getVersion()) {
             _buildLocalReceiverMaps();
         }
@@ -1314,7 +1377,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException
      *                If there is no controller.
      */
-    protected Transition _getLastChosenTransition() throws IllegalActionException {
+    protected Transition _getLastChosenTransition()
+            throws IllegalActionException {
         FSMActor controller = getController();
 
         if (controller != null) {
@@ -1408,7 +1472,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *                If the port is not an opaque output port.
      *
      */
-    protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
+    protected boolean _transferOutputs(IOPort port)
+            throws IllegalActionException {
         boolean result = false;
         if (_debugging) {
             _debug("Calling transferOutputs on port: " + port.getFullName());
@@ -1416,7 +1481,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "Attempted to transferOutputs on a port that " + "is not an opaque input port.");
+                    "Attempted to transferOutputs on a port that "
+                            + "is not an opaque input port.");
         }
 
         for (int i = 0; i < port.getWidthInside(); i++) {
@@ -1425,8 +1491,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     if (port.hasTokenInside(i)) {
                         Token t = port.getInside(i);
                         if (_debugging) {
-                            _debug(getName(), "transferring output " + t + " from "
-                                    + port.getName());
+                            _debug(getName(), "transferring output " + t
+                                    + " from " + port.getName());
                         }
                         port.send(i, t);
                         // mark this port as we sent a token to
@@ -1437,7 +1503,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     } else {
                         if (!_hadToken.contains(port)) {
                             if (_debugging) {
-                                _debug(getName(), "sending clear from " + port.getName());
+                                _debug(getName(),
+                                        "sending clear from " + port.getName());
                             }
                             // only send a clear (=absent) to the
                             // port, iff it is ensured that in the
@@ -1451,8 +1518,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             // in the fixed-point iteration, it will not be possible
                             // for a transition to become enabled that might send data
                             // on this port.
-                            if ((controller.getLastChosenTransition() != null) ||
-                                    _isSafeToClear(port, i, controller)) {
+                            if ((controller.getLastChosenTransition() != null)
+                                    || _isSafeToClear(port, i, controller)) {
                                 port.send(i, null);
                             }
                         }
@@ -1532,8 +1599,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @return True if after this method is called, any output port is absent.
      * @exception IllegalActionException If something goes wrong.
      */
-    private boolean _assertAbsentOutputs(FSMActor controller, boolean checkRefinement)
-            throws IllegalActionException {
+    private boolean _assertAbsentOutputs(FSMActor controller,
+            boolean checkRefinement) throws IllegalActionException {
 
         // First, check the refinements.
         if (checkRefinement) {
@@ -1552,8 +1619,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             && refinementDirector != this) {
                         // The refinement is an FSM, so we perform must/may analysis
                         // to identify outputs that can be determined to be absent.
-                        FSMActor refinementController = ((FSMDirector)refinementDirector).getController();
-                        if (!_assertAbsentOutputs(refinementController, checkRefinement)) {
+                        FSMActor refinementController = ((FSMDirector) refinementDirector)
+                                .getController();
+                        if (!_assertAbsentOutputs(refinementController,
+                                checkRefinement)) {
                             // The refinement has no absent outputs (they are all either
                             // unknown or present), therefore we cannot assert any outputs
                             // to be absent at this level either.
@@ -1573,7 +1642,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // on each channel c,
         // if all the refinements and the controller FSM agree that
         // p on c is absent, then we assert it to be absent.
-        Actor container = (Actor)getContainer();
+        Actor container = (Actor) getContainer();
         List<IOPort> outputs = container.outputPortList();
         if (outputs.size() == 0) {
             // There are no outputs, so in effect, all outputs
@@ -1588,7 +1657,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 refinementPorts = new IOPort[refinements.length];
                 int i = 0;
                 for (TypedActor refinement : refinements) {
-                    refinementPorts[i++] = (IOPort)((Entity)refinement).getPort(port.getName());
+                    refinementPorts[i++] = (IOPort) ((Entity) refinement)
+                            .getPort(port.getName());
                 }
             }
             for (int channel = 0; channel < port.getWidthInside(); channel++) {
@@ -1605,9 +1675,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             // be known and we would not be here. Hence, we
                             // have to check the inside of this refinement port.
                             if (refinementPorts[i] != null
-                                    && channel < refinementPorts[i].getWidthInside()
-                                    && (!refinementPorts[i].isKnownInside(channel)
-                                       || refinementPorts[i].hasTokenInside(channel))) {
+                                    && channel < refinementPorts[i]
+                                            .getWidthInside()
+                                    && (!refinementPorts[i]
+                                            .isKnownInside(channel) || refinementPorts[i]
+                                            .hasTokenInside(channel))) {
                                 // A refinement has either unknown or non-absent
                                 // output. Give up on this channel. It cannot be
                                 // asserted absent.
@@ -1624,17 +1696,20 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     // If we get here, all refinements (if any) agree that
                     // the current channel of the current port is absent. See
                     // whether this controller FSM also agrees.
-                    IOPort controllerPort = (IOPort)controller.getPort(port.getName());
+                    IOPort controllerPort = (IOPort) controller.getPort(port
+                            .getName());
                     // FIXME: If controllerPort is null, then presumably we should
                     // be able to set the output port to absent, but how to do that?
                     // We can't do it by sending null from controllerPort, because
                     // there is no controllerPort!
                     if (controllerPort != null) {
-                        channelIsAbsent = _isSafeToClear(controllerPort, channel, controller);
+                        channelIsAbsent = _isSafeToClear(controllerPort,
+                                channel, controller);
                         if (channelIsAbsent) {
                             foundAbsentOutputs = true;
                             controllerPort.send(channel, null);
-                            _debug("Asserting absence and clearing port: " + port.getName());
+                            _debug("Asserting absence and clearing port: "
+                                    + port.getName());
                         }
                     }
                 } else {
@@ -1649,8 +1724,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         return foundAbsentOutputs;
     }
 
-    private void _checkActorsForReceiver(TypedActor[] actors, Nameable cont, Receiver receiver,
-            List resultsList) {
+    private void _checkActorsForReceiver(TypedActor[] actors, Nameable cont,
+            Receiver receiver, List resultsList) {
         if (actors != null) {
             for (int k = 0; k < actors.length; ++k) {
                 if (cont == actors[k]) {
@@ -1730,9 +1805,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             // FIXME: The implementation should not re-parse the output
             // actions and get the information from the parsed AST.
             // This code already exists somewhere... Where?
-            String outputActionsExpression = transition.outputActions.getExpression();
-            String regexp = "(^|((.|\\s)*\\W))" + port.getName() + "\\s*=[^=](.|\\s)*";
-            boolean transitionWritesToThePort = outputActionsExpression.trim().matches(regexp);
+            String outputActionsExpression = transition.outputActions
+                    .getExpression();
+            String regexp = "(^|((.|\\s)*\\W))" + port.getName()
+                    + "\\s*=[^=](.|\\s)*";
+            boolean transitionWritesToThePort = outputActionsExpression.trim()
+                    .matches(regexp);
 
             if (transitionWritesToThePort) {
                 // Next check to see whether the guard evaluates to false.
@@ -1770,7 +1848,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         List<IOPort> outputs = ((Actor) getContainer()).outputPortList();
         for (IOPort output : outputs) {
             if (_debugging) {
-                _debug("Resetting inside receivers of output port: " + output.getName());
+                _debug("Resetting inside receivers of output port: "
+                        + output.getName());
             }
             Receiver[][] receivers = output.getInsideReceivers();
             if (receivers != null) {
@@ -1799,7 +1878,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException
      *                If setModelTime() throws it.
      */
-    private void _setTimeForRefinement(Actor refinement) throws IllegalActionException {
+    private void _setTimeForRefinement(Actor refinement)
+            throws IllegalActionException {
         Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
         if (executiveDirector != null) {
@@ -1807,7 +1887,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             if (refinement instanceof Suspendable) {
                 // Adjust current time to be the environment time minus
                 // the accumulated suspended time of the refinement.
-                Time suspendedTime = ((Suspendable) refinement).accumulatedSuspendTime();
+                Time suspendedTime = ((Suspendable) refinement)
+                        .accumulatedSuspendTime();
                 if (suspendedTime != null) {
                     setModelTime(environmentTime.subtract(suspendedTime));
                     _currentOffset = suspendedTime;

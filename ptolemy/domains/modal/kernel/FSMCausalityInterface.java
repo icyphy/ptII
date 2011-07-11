@@ -226,8 +226,8 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                             _reverseDependencies.put(writtenOutput, outputMap);
                         }
                         for (IOPort readInput : inputs) {
-                            outputMap.put(readInput, _defaultDependency
-                                    .oTimesIdentity());
+                            outputMap.put(readInput,
+                                    _defaultDependency.oTimesIdentity());
 
                             // Now handle the forward dependencies.
                             Map<IOPort, Dependency> inputMap = _forwardDependencies
@@ -236,8 +236,8 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                                 inputMap = new HashMap<IOPort, Dependency>();
                                 _forwardDependencies.put(readInput, inputMap);
                             }
-                            inputMap.put(writtenOutput, _defaultDependency
-                                    .oTimesIdentity());
+                            inputMap.put(writtenOutput,
+                                    _defaultDependency.oTimesIdentity());
                         }
                     }
                 } // End of iteration over transitions.

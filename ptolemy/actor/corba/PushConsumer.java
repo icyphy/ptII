@@ -342,8 +342,8 @@ public class PushConsumer extends Source {
                 _lastReadToken = new StringToken(data.extract_string());
 
                 if (_debugging) {
-                    _debug(getName(), " receive data:\n"
-                            + _lastReadToken.toString());
+                    _debug(getName(),
+                            " receive data:\n" + _lastReadToken.toString());
                 }
 
                 if (_fireIsWaiting) {

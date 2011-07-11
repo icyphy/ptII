@@ -94,8 +94,8 @@ public class DDF extends DataflowWithRates {
                 _currentSignature = _computeActionRates(_actions[action]);
             }
 
-            _annotatePortsWithRates(_ptActor.inputPortList(), _currentSignature
-                    .getInputRates(), "tokenConsumptionRate");
+            _annotatePortsWithRates(_ptActor.inputPortList(),
+                    _currentSignature.getInputRates(), "tokenConsumptionRate");
             _annotatePortsWithRates(_ptActor.outputPortList(),
                     _currentSignature.getOutputRates(), "tokenProductionRate");
         } catch (Exception ex) {
@@ -149,8 +149,8 @@ public class DDF extends DataflowWithRates {
                 _currentSignature = _computeActionRates(_actions[action]);
             }
 
-            _annotatePortsWithRates(_ptActor.inputPortList(), _currentSignature
-                    .getInputRates(), "tokenConsumptionRate");
+            _annotatePortsWithRates(_ptActor.inputPortList(),
+                    _currentSignature.getInputRates(), "tokenConsumptionRate");
             _annotatePortsWithRates(_ptActor.outputPortList(),
                     _currentSignature.getOutputRates(), "tokenProductionRate");
             return true;

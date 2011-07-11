@@ -696,8 +696,8 @@ public class Helicopter extends TypedCompositeActor {
         sub.connect(subinD3Px, (ComponentPort) lin.getPort("inputD3Px"));
         sub.connect(subinD4Px, (ComponentPort) lin.getPort("inputD4Px"));
 
-        Relation rInPz = sub.connect(subinPz, (ComponentPort) lin
-                .getPort("inputPz"));
+        Relation rInPz = sub.connect(subinPz,
+                (ComponentPort) lin.getPort("inputPz"));
 
         //sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
         sub.connect(subinDPz, (ComponentPort) lin.getPort("inputDPz"));
@@ -708,10 +708,10 @@ public class Helicopter extends TypedCompositeActor {
         sub.connect(suboutVx, (ComponentPort) lin.getPort("outputVx"));
         sub.connect(suboutVz, (ComponentPort) lin.getPort("outputVz"));
 
-        Relation rV = sub.connect(suboutV, (ComponentPort) lin
-                .getPort("outputV"));
-        Relation rR = sub.connect(suboutR, (ComponentPort) lin
-                .getPort("outputR"));
+        Relation rV = sub.connect(suboutV,
+                (ComponentPort) lin.getPort("outputV"));
+        Relation rR = sub.connect(suboutR,
+                (ComponentPort) lin.getPort("outputR"));
 
         // connect and set the monitors
         Parameter p = null;

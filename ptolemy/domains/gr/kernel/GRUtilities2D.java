@@ -53,8 +53,8 @@ public class GRUtilities2D {
      */
     public static Color makeColor(DoubleMatrixToken colorVector) {
         Color color = new Color((float) colorVector.getElementAt(0, 0),
-                (float) colorVector.getElementAt(0, 1), (float) colorVector
-                        .getElementAt(0, 2));
+                (float) colorVector.getElementAt(0, 1),
+                (float) colorVector.getElementAt(0, 2));
         return color;
     }
 }

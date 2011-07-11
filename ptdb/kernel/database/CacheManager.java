@@ -75,7 +75,7 @@ public class CacheManager {
      *          Thrown if a problem occurs removing a model from the cache.
      */
     public static boolean removeFromCache(ArrayList<XMLDBModel> modelsToRemove)
-        throws DBConnectionException, DBExecutionException {
+            throws DBConnectionException, DBExecutionException {
 
         boolean isSuccessful = false;
 
@@ -96,7 +96,8 @@ public class CacheManager {
                         "Unable to get synchronous connection to the cache.");
             }
 
-            RemoveModelsTask removeModelsTask = new RemoveModelsTask(modelsToRemove);
+            RemoveModelsTask removeModelsTask = new RemoveModelsTask(
+                    modelsToRemove);
             dbConnection.executeRemoveModelsTask(removeModelsTask);
 
             isSuccessful = true;
@@ -110,9 +111,8 @@ public class CacheManager {
                 dbConnection.abortConnection();
             }
 
-            throw new DBExecutionException("Failed to remove " +
-                            "models from the cache - "
-                        + e.getMessage(), e);
+            throw new DBExecutionException("Failed to remove "
+                    + "models from the cache - " + e.getMessage(), e);
         } finally {
 
             if (dbConnection != null) {
@@ -139,7 +139,7 @@ public class CacheManager {
      *          MoML from the database.
      */
     public static XMLDBModel loadFromCache(String modelName)
-        throws DBConnectionException, DBExecutionException {
+            throws DBConnectionException, DBExecutionException {
 
         XMLDBModel returnXMLDBModel = null;
 
@@ -190,7 +190,7 @@ public class CacheManager {
      *          Thrown if a problem occurs updating the cache.
      */
     public static void updateCache(HashMap assemblies)
-        throws DBConnectionException, DBExecutionException {
+            throws DBConnectionException, DBExecutionException {
 
         DBConnection dbConnection = null;
 
@@ -231,7 +231,7 @@ public class CacheManager {
             }
 
             throw new DBExecutionException("Failed to update the cache - "
-                        + e.getMessage(), e);
+                    + e.getMessage(), e);
         } finally {
 
             if (dbConnection != null) {

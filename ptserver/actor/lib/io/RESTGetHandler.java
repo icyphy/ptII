@@ -52,7 +52,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
-
 /**
 RESTGetHandler is an actor that takes a model and a RESTful string specifying a
 model resource as inputs, and prints information about that resource to the
@@ -99,7 +98,6 @@ public class RESTGetHandler extends TypedAtomicActor {
 
         destinationFileName = new FileParameter(this, "destinationFile");
         sourceModel = new FileParameter(this, "sourceModel");
-
 
     }
 
@@ -159,8 +157,8 @@ public class RESTGetHandler extends TypedAtomicActor {
 
         if (_readyToFire) {
 
-            if (outputToFile != null && outputToFile.getToken() != null &&
-                    outputToFile.getToken().equals(BooleanToken.TRUE)) {
+            if (outputToFile != null && outputToFile.getToken() != null
+                    && outputToFile.getToken().equals(BooleanToken.TRUE)) {
                 // TODO:  Output to file
             } else {
                 output.send(0, new StringToken(getHTML()));
@@ -192,8 +190,8 @@ public class RESTGetHandler extends TypedAtomicActor {
         // Open the destination file for writing.
         // Produce an error message if there is a problem and prohibit firing.
         // TODO:  More error checking
-        if (outputToFile != null && outputToFile.getToken() != null &&
-                outputToFile.getToken().equals(BooleanToken.TRUE)) {
+        if (outputToFile != null && outputToFile.getToken() != null
+                && outputToFile.getToken().equals(BooleanToken.TRUE)) {
             // TODO:  Implement writing to file.  For now, throw an exception
             /*
             _destinationFile = destinationFileName.asFile();
@@ -201,17 +199,15 @@ public class RESTGetHandler extends TypedAtomicActor {
                 _readyToFire = true;
             }
             */
-            throw new IllegalActionException(this, "File export is not yet " +
-                            "implemented for RESTGetHandler.  Please uncheck the" +
-                            "outputToFile parmater, and read the output from the " +
-                            "output port.");
+            throw new IllegalActionException(this, "File export is not yet "
+                    + "implemented for RESTGetHandler.  Please uncheck the"
+                    + "outputToFile parmater, and read the output from the "
+                    + "output port.");
         } else {
             _readyToFire = true;
         }
 
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -225,15 +221,14 @@ public class RESTGetHandler extends TypedAtomicActor {
      * list if the request is malformed.
      * @exception  If the resource is improperly formatted
      */
-    protected List<NamedObj> findResources() throws IllegalActionException{
+    protected List<NamedObj> findResources() throws IllegalActionException {
         Vector<NamedObj> containers = new Vector<NamedObj>();
 
         // Get the top-level container
         // TODO:  In future, allow other models to be referenced
         NamedObj container = this;
 
-        while (container.getContainer() != null)
-        {
+        while (container.getContainer() != null) {
             container = container.getContainer();
         }
         containers.add(container);
@@ -241,33 +236,31 @@ public class RESTGetHandler extends TypedAtomicActor {
         // Parse the resource string
         // If blank, return the top-level container
         if (resource == null || resource.getExpression() == null) {
-          throw new IllegalActionException(this, "Please specify " +
-            "a resource.");
-        } else  {
+            throw new IllegalActionException(this, "Please specify "
+                    + "a resource.");
+        } else {
             String expression = resource.getExpression();
 
-            StringTokenizer tokenizer =
-                new StringTokenizer(expression);
+            StringTokenizer tokenizer = new StringTokenizer(expression);
 
             while (tokenizer.hasMoreTokens()) {
                 String objectName = tokenizer.nextToken("/");
 
                 // Check for case where there is just a / and no name
                 // If that happens, query is malformed
-                if (!objectName.isEmpty() ) {
+                if (!objectName.isEmpty()) {
 
                     // Check for queries
                     if (objectName.contains(".")) {
                         // TODO:  Handle queries
 
-
-                    }  else {
+                    } else {
                         int numContainers = containers.size();
 
                         // Add new objects
                         for (int i = 0; i < numContainers; i++) {
-                            Iterator iterator =
-                                containers.get(i).containedObjectsIterator();
+                            Iterator iterator = containers.get(i)
+                                    .containedObjectsIterator();
                             while (iterator.hasNext()) {
                                 NamedObj next = (NamedObj) iterator.next();
                                 if (next.getName().equals(objectName)) {
@@ -287,13 +280,13 @@ public class RESTGetHandler extends TypedAtomicActor {
                             containers.remove(0);
                         }
                     }
-                }  else {
-                    throw new IllegalActionException(this, "The resource "+
-                            expression + " is not properly " +
-                            "formatted.  Please enter a valid resouce.");
-                    }
+                } else {
+                    throw new IllegalActionException(this, "The resource "
+                            + expression + " is not properly "
+                            + "formatted.  Please enter a valid resouce.");
                 }
             }
+        }
 
         return containers;
     }
@@ -356,14 +349,12 @@ public class RESTGetHandler extends TypedAtomicActor {
         Iterator objIterator = obj.containedObjectsIterator();
         while (objIterator.hasNext()) {
             NamedObj nextObj = (NamedObj) objIterator.next();
-            containedResources
-                .add("http:/" + nextObj.getFullName().replace(".", "/"));
+            containedResources.add("http:/"
+                    + nextObj.getFullName().replace(".", "/"));
         }
 
         return containedResources;
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -391,7 +382,7 @@ public class RESTGetHandler extends TypedAtomicActor {
                 expression = StringUtilities.escapeForXML(expression);
                 expression = expression.replaceAll("'", "\\\\'");
                 if (expression.length() == 0) {
-                    expression="&nbsp;";
+                    expression = "&nbsp;";
                 }
                 table.append(expression);
                 table.append("</td><td>");
@@ -399,17 +390,17 @@ public class RESTGetHandler extends TypedAtomicActor {
                 value = StringUtilities.escapeForXML(value);
                 value = value.replaceAll("'", "\\\\'");
                 if (value.length() == 0) {
-                    value="&nbsp;";
+                    value = "&nbsp;";
                 }
                 table.append(value);
                 table.append("</td></tr>");
             }
         }
         if (hasParameter) {
-            table.insert(0, "<table border=&quot;1&quot;>" +
-                            "<tr><td><b>Parameter</b></td>" +
-                            "<td><b>Expression</b></td>" +
-                            "<td><b>Value</b></td></tr>");
+            table.insert(0, "<table border=&quot;1&quot;>"
+                    + "<tr><td><b>Parameter</b></td>"
+                    + "<td><b>Expression</b></td>"
+                    + "<td><b>Value</b></td></tr>");
             table.append("</table>");
         } else {
             table.append("Has no parameters.");
@@ -430,4 +421,3 @@ public class RESTGetHandler extends TypedAtomicActor {
      */
     boolean _readyToFire = false;
 }
-

@@ -64,14 +64,15 @@ public class ActorWithPrivateParameter extends Source {
         _myPrivateParameter.setExpression("2.0");
 
         // This is wrong, use displayName().
-        _myPrivateParameterWithADifferentName = new Parameter(this, "my Private Parameter spaces in the name");
+        _myPrivateParameterWithADifferentName = new Parameter(this,
+                "my Private Parameter spaces in the name");
         _myPrivateParameterWithADifferentName.setExpression("3.0");
 
         // It is wrong to set the name to be different this way, but
         // we have a test case that does it.  The right way is to use displayName().
-        disconnectedPort = new TypedIOPort(this, "Disconnected Port", false, true);
+        disconnectedPort = new TypedIOPort(this, "Disconnected Port", false,
+                true);
         disconnectedPort.setTypeEquals(BaseType.DOUBLE);
-
 
         // Set the type constraint.
         output.setTypeAtLeast(_myPrivateParameter);
@@ -86,8 +87,9 @@ public class ActorWithPrivateParameter extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        double a = ((DoubleToken)_myPrivateParameter.getToken()).doubleValue();
-        double b = ((DoubleToken)_myPrivateParameterWithADifferentName.getToken()).doubleValue();
+        double a = ((DoubleToken) _myPrivateParameter.getToken()).doubleValue();
+        double b = ((DoubleToken) _myPrivateParameterWithADifferentName
+                .getToken()).doubleValue();
         output.send(0, new DoubleToken(a + b));
         disconnectedPort.send(0, new DoubleToken(a + b));
     }
@@ -98,8 +100,6 @@ public class ActorWithPrivateParameter extends Source {
     ////                         private fields                    ////
 
     private Parameter _myPrivateParameter;
-
-    private Parameter _myPrivateDisconnectedParameter;
 
     public Parameter _myPrivateParameterWithADifferentName;
 

@@ -163,8 +163,8 @@ public class PTreeMenuCreator extends MouseAdapter {
 
         if (object instanceof NamedObj) {
             NamedObj namedObj = (NamedObj) object;
-            JContextMenu menu = new JContextMenu(namedObj, namedObj
-                    .getFullName());
+            JContextMenu menu = new JContextMenu(namedObj,
+                    namedObj.getFullName());
             Iterator i = menuItemFactoryList().iterator();
 
             while (i.hasNext()) {

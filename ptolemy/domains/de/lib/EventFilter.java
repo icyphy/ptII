@@ -70,8 +70,7 @@ public class EventFilter extends DETransformer {
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
-                + "style=\"fill:yellow\"/>\n"
-                + "<text x=\"-15\" y=\"4\""
+                + "style=\"fill:yellow\"/>\n" + "<text x=\"-15\" y=\"4\""
                 + "style=\"font-size:11; font-family:SansSerif\">true?</text>"
                 + "</svg>\n");
     }

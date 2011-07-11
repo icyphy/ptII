@@ -461,8 +461,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
             // Atomic node
             if (childGraph == null) {
                 PSDFNodeWeight weight = (PSDFNodeWeight) node.getWeight();
-                SymbolicFiring firing = new SymbolicFiring((Actor) weight
-                        .getComputation(), "1");
+                SymbolicFiring firing = new SymbolicFiring(
+                        (Actor) weight.getComputation(), "1");
                 return firing;
 
                 // Super node

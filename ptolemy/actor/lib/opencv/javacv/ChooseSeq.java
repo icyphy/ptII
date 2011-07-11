@@ -70,8 +70,6 @@ public class ChooseSeq extends Transformer {
         output.setTypeEquals(BaseType.OBJECT);
         output1.setTypeEquals(BaseType.INT);
 
-
-
         pathName = new StringAttribute(this, "pathName");
         pathName.setExpression("haarcascade_frontalface_default.xml");
 
@@ -89,7 +87,7 @@ public class ChooseSeq extends Transformer {
 
         seq5 = new TypedIOPort(this, "sequence5", true, false);
         seq5.setTypeEquals(BaseType.OBJECT);
-   }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -108,111 +106,93 @@ public class ChooseSeq extends Transformer {
      */
     public void fire() throws IllegalActionException {
 
+        if (seq1.hasToken(0)) {
+            ObjectToken seqToken1 = (ObjectToken) seq1.get(0);
+            Object seqObject1 = seqToken1.getValue();
+            if (!(seqObject1 instanceof CvSeq)) {
+                throw new IllegalActionException(this,
+                        "Input is required to be an instance of IplImage. Got "
+                                + seqObject1.getClass());
+            }
+            _objectSeq = (CvSeq) seqObject1;
 
+            rotation_angle = 0;
 
-            if (seq1.hasToken(0)) {
-                ObjectToken seqToken1 = (ObjectToken)seq1.get(0);
-                Object seqObject1 = seqToken1.getValue();
-                if (!(seqObject1 instanceof CvSeq)) {
-                    throw new IllegalActionException(this,
-                            "Input is required to be an instance of IplImage. Got "
-                            + seqObject1.getClass());
-                }
-                _objectSeq = (CvSeq)seqObject1;
+        }
 
-
-                rotation_angle = 0;
-
+        if (seq2.hasToken(0)) {
+            ObjectToken seqToken2 = (ObjectToken) seq2.get(0);
+            Object seqObject2 = seqToken2.getValue();
+            if (!(seqObject2 instanceof CvSeq)) {
+                throw new IllegalActionException(this,
+                        "Input is required to be an instance of IplImage. Got "
+                                + seqObject2.getClass());
+            }
+            CvSeq tester = (CvSeq) seqObject2;
+            int total = tester.total;
+            if (total != 0) {
+                _objectSeq = tester;
+                rotation_angle = 25;
             }
 
+        }
 
+        if (seq3.hasToken(0)) {
+            ObjectToken seqToken3 = (ObjectToken) seq3.get(0);
+            Object seqObject3 = seqToken3.getValue();
+            if (!(seqObject3 instanceof CvSeq)) {
+                throw new IllegalActionException(this,
+                        "Input is required to be an instance of IplImage. Got "
+                                + seqObject3.getClass());
+            }
 
+            CvSeq tester = (CvSeq) seqObject3;
+            int total = tester.total;
+            if (total != 0) {
+                _objectSeq = tester;
+                rotation_angle = 50;
+            }
 
-                if (seq2.hasToken(0)) {
-                    ObjectToken seqToken2 = (ObjectToken)seq2.get(0);
-                    Object seqObject2 = seqToken2.getValue();
-                    if (!(seqObject2 instanceof CvSeq)) {
-                        throw new IllegalActionException(this,
-                                "Input is required to be an instance of IplImage. Got "
-                                + seqObject2.getClass());
-                    }
-                    CvSeq tester = (CvSeq)seqObject2;
-                    int total = tester.total;
-                    if (total != 0) {
-                            _objectSeq = tester;
-                            rotation_angle = 25;
-                    }
+        }
 
+        if (seq4.hasToken(0)) {
+            ObjectToken seqToken4 = (ObjectToken) seq4.get(0);
+            Object seqObject4 = seqToken4.getValue();
+            if (!(seqObject4 instanceof CvSeq)) {
+                throw new IllegalActionException(this,
+                        "Input is required to be an instance of IplImage. Got "
+                                + seqObject4.getClass());
+            }
 
-                }
+            CvSeq tester = (CvSeq) seqObject4;
+            int total = tester.total;
+            if (total != 0) {
+                _objectSeq = tester;
+                rotation_angle = -25;
+            }
 
+        }
 
+        if (seq5.hasToken(0)) {
+            ObjectToken seqToken5 = (ObjectToken) seq5.get(0);
+            Object seqObject5 = seqToken5.getValue();
+            if (!(seqObject5 instanceof CvSeq)) {
+                throw new IllegalActionException(this,
+                        "Input is required to be an instance of IplImage. Got "
+                                + seqObject5.getClass());
+            }
 
-                    if (seq3.hasToken(0)) {
-                        ObjectToken seqToken3 = (ObjectToken)seq3.get(0);
-                        Object seqObject3 = seqToken3.getValue();
-                        if (!(seqObject3 instanceof CvSeq)) {
-                            throw new IllegalActionException(this,
-                                    "Input is required to be an instance of IplImage. Got "
-                                    + seqObject3.getClass());
-                        }
+            CvSeq tester = (CvSeq) seqObject5;
+            int total = tester.total;
+            if (total != 0) {
+                _objectSeq = tester;
+                rotation_angle = -50;
+            }
 
+        }
 
-                        CvSeq tester = (CvSeq)seqObject3;
-                        int total = tester.total;
-                        if (total != 0) {
-                                _objectSeq = tester;
-                                rotation_angle = 50;
-                        }
-
-
-                    }
-
-
-
-                        if (seq4.hasToken(0)) {
-                            ObjectToken seqToken4 = (ObjectToken)seq4.get(0);
-                            Object seqObject4 = seqToken4.getValue();
-                            if (!(seqObject4 instanceof CvSeq)) {
-                                throw new IllegalActionException(this,
-                                        "Input is required to be an instance of IplImage. Got "
-                                        + seqObject4.getClass());
-                            }
-
-
-                            CvSeq tester = (CvSeq)seqObject4;
-                            int total = tester.total;
-                            if (total != 0) {
-                                    _objectSeq = tester;
-                                    rotation_angle = -25;
-                            }
-
-
-                        }
-
-
-
-                            if (seq5.hasToken(0)) {
-                                ObjectToken seqToken5 = (ObjectToken)seq5.get(0);
-                                Object seqObject5 = seqToken5.getValue();
-                                if (!(seqObject5 instanceof CvSeq)) {
-                                    throw new IllegalActionException(this,
-                                            "Input is required to be an instance of IplImage. Got "
-                                            + seqObject5.getClass());
-                                }
-
-
-                                CvSeq tester = (CvSeq)seqObject5;
-                                int total = tester.total;
-                                if (total != 0) {
-                                        _objectSeq = tester;
-                                        rotation_angle = -50;
-                                }
-
-                            }
-
-                            output.send(0, new ObjectToken(_objectSeq));
-                            output1.send(0, new IntToken(rotation_angle));
+        output.send(0, new ObjectToken(_objectSeq));
+        output1.send(0, new IntToken(rotation_angle));
 
     }
 
@@ -222,7 +202,6 @@ public class ChooseSeq extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

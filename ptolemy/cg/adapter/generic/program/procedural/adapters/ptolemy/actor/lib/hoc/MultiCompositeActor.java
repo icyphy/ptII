@@ -26,6 +26,7 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.hoc;
+
 import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
@@ -66,31 +67,39 @@ public class MultiCompositeActor extends TypedCompositeActor {
      */
     @Override
     public String generateVariableDeclaration() throws IllegalActionException {
-        StringBuffer code = new StringBuffer(super.generateVariableDeclaration());
+        StringBuffer code = new StringBuffer(
+                super.generateVariableDeclaration());
         //ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
         //        .getContainer();
-        Iterator refinements = /*container.*/((CompositeActor)getComponent()).deepEntityList().iterator();
+        Iterator refinements = /*container.*/((CompositeActor) getComponent())
+                .deepEntityList().iterator();
         while (refinements.hasNext()) {
             CompositeActor refinement = (CompositeActor) refinements.next();
-            code.append(getCodeGenerator().comment("Case Variable Declarations for " + refinement.getFullName()));
-//             Director director = refinement.getDirector();
-//             NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(director);
-//             code.append(refinementAdapter.generateVariableDeclaration());
+            code.append(getCodeGenerator().comment(
+                    "Case Variable Declarations for "
+                            + refinement.getFullName()));
+            //             Director director = refinement.getDirector();
+            //             NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(director);
+            //             code.append(refinementAdapter.generateVariableDeclaration());
             //NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(refinement);
             //code.append(refinementAdapter.generateVariableDeclaration());
         }
-//         code.append(((NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(
-//                                 ((CompositeActor)getComponent()).getDirector()))
-//                 .generateVariableDeclaration());
+        //         code.append(((NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(
+        //                                 ((CompositeActor)getComponent()).getDirector()))
+        //                 .generateVariableDeclaration());
 
-         Iterator<?> ports = ((ptolemy.kernel.Entity) getComponent())
-                .portList().iterator();
-         while (ports.hasNext()) {
-             ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) ports.next();
-             code.append(getCodeGenerator().comment("Case Variable Declarations for port " + port.getFullName()));
-             //NamedProgramCodeGeneratorAdapter portAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(port);
-             _portVariableDeclaration(code, port);
-         }
+        Iterator<?> ports = ((ptolemy.kernel.Entity) getComponent()).portList()
+                .iterator();
+        while (ports.hasNext()) {
+            ptolemy.actor.TypedIOPort port = (ptolemy.actor.TypedIOPort) ports
+                    .next();
+            code.append(getCodeGenerator()
+                    .comment(
+                            "Case Variable Declarations for port "
+                                    + port.getFullName()));
+            //NamedProgramCodeGeneratorAdapter portAdapter = (NamedProgramCodeGeneratorAdapter)getCodeGenerator().getAdapter(port);
+            _portVariableDeclaration(code, port);
+        }
         return code.toString();
     }
 
@@ -102,7 +111,8 @@ public class MultiCompositeActor extends TypedCompositeActor {
      * @exception IllegalActionException If there is a problem getting
      * information about the port.
      */
-    public  String generatePortName(TypedIOPort port) throws IllegalActionException {
+    public String generatePortName(TypedIOPort port)
+            throws IllegalActionException {
         // FIXME: note that if we have a port that has a character that
         // is santized away, then we will run into problems if we try to
         // refer to the port by the sanitized name.
@@ -121,20 +131,22 @@ public class MultiCompositeActor extends TypedCompositeActor {
         }
         portName = TemplateParser.escapePortName(portName);
 
-        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken()).booleanValue()) {
+        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
+                .booleanValue()) {
             return portName;
         }
 
         // Get the name of the port that refers to the array of all ports.
-        return getCodeGenerator().generatePortName(port, portName, 1 /*_ports.getBufferSize(port)*/);
+        return getCodeGenerator()
+                .generatePortName(port, portName, 1 /*_ports.getBufferSize(port)*/);
     }
 
-
-    private void _portVariableDeclaration(StringBuffer codeResult, TypedIOPort port)
-            throws IllegalActionException {
+    private void _portVariableDeclaration(StringBuffer codeResult,
+            TypedIOPort port) throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        boolean variablesAsArrays = ((BooleanToken) getCodeGenerator().variablesAsArrays.getToken()).booleanValue();
+        boolean variablesAsArrays = ((BooleanToken) getCodeGenerator().variablesAsArrays
+                .getToken()).booleanValue();
         if (!variablesAsArrays) {
             code.append("public static " + targetType(port.getType()) + " ");
         }
@@ -163,8 +175,8 @@ public class MultiCompositeActor extends TypedCompositeActor {
 
         if (port.isMultiport()) {
             code.append("["
-                    + java.lang.Math
-                            .max(port.getWidth(), port.getWidthInside()) + "]");
+                    + java.lang.Math.max(port.getWidth(), port.getWidthInside())
+                    + "]");
         }
 
         if (bufferSize > 1) {

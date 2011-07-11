@@ -166,9 +166,10 @@ public class PthalesScheduler extends SDFScheduler {
                     if (receiverss != null && receiverss.length > 0) {
                         for (Receiver receiver : receiverss) {
                             //FIXME: Should we do this?
-                            if (receiver instanceof PthalesReceiver)
+                            if (receiver instanceof PthalesReceiver) {
                                 ((PthalesReceiver) receiver).setOutputArray(
                                         port, model);
+                            }
                         }
                     }
                 }
@@ -195,9 +196,10 @@ public class PthalesScheduler extends SDFScheduler {
                         if (receiverss != null && receiverss.length > 0) {
                             for (Receiver receiver : receiverss) {
                                 //FIXME: Should we do this?
-                                if (receiver instanceof PthalesReceiver)
+                                if (receiver instanceof PthalesReceiver) {
                                     ((PthalesReceiver) receiver)
                                             .setOutputArray(port, actor);
+                                }
                             }
                         }
                     }
@@ -224,9 +226,10 @@ public class PthalesScheduler extends SDFScheduler {
                                 // FIXME: Is the cast to LinkedHashSet
                                 // safe?  Depends on the Java
                                 // implementation of LinkedHashMap.
-                                if (receiver instanceof PthalesReceiver)
+                                if (receiver instanceof PthalesReceiver) {
                                     ((PthalesReceiver) receiver).setInputArray(
                                             port, actor);
+                                }
                             }
                         }
                     }

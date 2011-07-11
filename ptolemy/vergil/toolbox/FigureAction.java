@@ -248,7 +248,7 @@ public class FigureAction extends AbstractAction {
         }
 
         if (parent instanceof Frame) {
-            _frame = new WeakReference((Frame) parent);
+            _frame = new WeakReference(parent);
         } else {
             _frame = null;
         }

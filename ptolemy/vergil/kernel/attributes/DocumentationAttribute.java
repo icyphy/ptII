@@ -167,7 +167,8 @@ public class DocumentationAttribute extends VisibleAttribute {
                     try {
                         background = jFileChooserBugFix.saveBackground();
                         JFileChooser fileDialog = new JFileChooser();
-                        fileDialog.setDialogTitle("Select a documentation file.");
+                        fileDialog
+                                .setDialogTitle("Select a documentation file.");
 
                         //File _directory = null;
 
@@ -182,10 +183,10 @@ public class DocumentationAttribute extends VisibleAttribute {
                             //_directory = fileDialog.getCurrentDirectory();
 
                             String fileName = fileDialog.getSelectedFile()
-                                .getAbsolutePath();
+                                    .getAbsolutePath();
 
                             docAttribute = new FileParameter(container,
-                                "_documentation");
+                                    "_documentation");
                             docAttribute.setExpression(fileName);
                         }
                     } finally {

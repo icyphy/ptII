@@ -122,8 +122,8 @@ public class Wire extends TypedAtomicActor {
                             if (thread instanceof DDEThread) {
                                 TimeKeeper timeKeeper = ((DDEThread) thread)
                                         .getTimeKeeper();
-                                outReceiver.put(token, timeKeeper
-                                        .getModelTime());
+                                outReceiver.put(token,
+                                        timeKeeper.getModelTime());
                             }
                         }
                     }

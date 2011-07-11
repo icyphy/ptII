@@ -113,7 +113,8 @@ public class WirelessReceiver extends DEReceiver {
      *  @exception IllegalActionException If cannot get the director or if
      *   the current microstep is zero.
      */
-    public synchronized void put(Token token, Token properties) throws IllegalActionException {
+    public synchronized void put(Token token, Token properties)
+            throws IllegalActionException {
         if (token == null) {
             return;
         }

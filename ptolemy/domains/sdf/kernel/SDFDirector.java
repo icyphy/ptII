@@ -344,9 +344,11 @@ public class SDFDirector extends StaticSchedulingDirector implements
 
         // Subclasses may set this to null and handle this themselves.
         try {
-            newObject._periodicDirectorHelper = new PeriodicDirectorHelper(newObject);
+            newObject._periodicDirectorHelper = new PeriodicDirectorHelper(
+                    newObject);
         } catch (IllegalActionException e) {
-            throw new CloneNotSupportedException("Failed to create PeriodicDirectorHelper.");
+            throw new CloneNotSupportedException(
+                    "Failed to create PeriodicDirectorHelper.");
         }
 
         return newObject;
@@ -431,7 +433,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  @return Either the requested time or the current time plus the
      *  period.
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         if (_periodicDirectorHelper != null) {
             return _periodicDirectorHelper.fireAt(actor, time);
         }
@@ -769,8 +772,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
                     // transfer the input token if there is one.
                     // In this case, consume one input token if there is one.
                     if (_debugging) {
-                        _debug(getName(), "Dropping single input from "
-                                + port.getName());
+                        _debug(getName(),
+                                "Dropping single input from " + port.getName());
                     }
 
                     if (port.hasToken(i)) {

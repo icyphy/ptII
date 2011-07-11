@@ -124,8 +124,9 @@ public class GraphReader {
                                     + " to " + sink);
                         }
 
-                        Edge newEdge = graph.addEdge((Node) (_actorMap
-                                .get(source)), (Node) (_actorMap.get(sink)),
+                        Edge newEdge = graph.addEdge(
+                                (Node) (_actorMap.get(source)),
+                                (Node) (_actorMap.get(sink)),
                                 _computeEdgeWeight(outPort, inPort));
                         _processNewEdge(graph, newEdge, outPort, inPort);
                     }

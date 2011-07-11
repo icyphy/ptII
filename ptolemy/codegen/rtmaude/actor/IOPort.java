@@ -63,20 +63,21 @@ public class IOPort extends RTMaudeAdaptor implements PortCodeGenerator {
         ptolemy.actor.IOPort p = (ptolemy.actor.IOPort) getComponent();
         StringBuffer res = new StringBuffer();
         if (p.getWidth() > 1 && p.isInput()) {
-            String sources = new ListTerm<ptolemy.actor.IOPort>("noPort", " ; ",
-                    p.sourcePortList()) {
+            String sources = new ListTerm<ptolemy.actor.IOPort>("noPort",
+                    " ; ", p.sourcePortList()) {
                 public String item(ptolemy.actor.IOPort port)
                         throws IllegalActionException {
-                    return _generateBlockCode("scopeBlock",
-                                port.getContainer().getName(), port.getName());
+                    return _generateBlockCode("scopeBlock", port.getContainer()
+                            .getName(), port.getName());
                 }
             }.generateCode();
             res.append(_generateBlockCode("multiBlock", sources));
-        }
-        else if (p.isInput())
+        } else if (p.isInput()) {
             res.append(_generateBlockCode(defaultTermBlock, "InPort"));
-        if (p.isOutput())
+        }
+        if (p.isOutput()) {
             res.append(_generateBlockCode(defaultTermBlock, "OutPort"));
+        }
         // For input/output ports, coupled ports are generated (with identical names)
         // Currently, we only consider the case of modal fsm actors.
         return res.toString();

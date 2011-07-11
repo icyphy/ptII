@@ -158,8 +158,8 @@ public class SearchCriteriaManager {
 
                     for (int i = 0; i < attributesNodeList.getLength(); i++) {
 
-                        if (attributesNodeList.item(i).getNodeName().equals(
-                                "attribute")) {
+                        if (attributesNodeList.item(i).getNodeName()
+                                .equals("attribute")) {
                             Node attributeNode = attributesNodeList.item(i);
                             NamedNodeMap attributeInfoMap = attributeNode
                                     .getAttributes();

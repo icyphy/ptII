@@ -458,7 +458,7 @@ public class Expression extends TypedAtomicActor {
             } catch (Exception ex) {
                 throw new IllegalActionException(Expression.this, ex,
                         "An error occurred during expression type inference of \""
-                        + expression.getExpression() + "\".");
+                                + expression.getExpression() + "\".");
             }
         }
 

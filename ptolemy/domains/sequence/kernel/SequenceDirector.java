@@ -153,11 +153,13 @@ public class SequenceDirector extends SequencedModelDirector {
         // after the full schedule is completed.
         if (((BooleanToken) fireUnexecutedActors.getToken()).booleanValue()) {
 
-            List<SequenceAttribute> unexecutedList = _schedule.getUnexecutedList();
+            List<SequenceAttribute> unexecutedList = _schedule
+                    .getUnexecutedList();
             SequenceSchedule unexecutedSchedule = null;
 
             while (!unexecutedList.isEmpty()) {
-                unexecutedSchedule = _scheduler.getSchedule(unexecutedList, false);
+                unexecutedSchedule = _scheduler.getSchedule(unexecutedList,
+                        false);
 
                 fireSchedule(unexecutedSchedule);
                 unexecutedList = unexecutedSchedule.getUnexecutedList();
@@ -206,8 +208,8 @@ public class SequenceDirector extends SequencedModelDirector {
             // Throw exception
             throw new IllegalActionException(
                     "There are unreachable upstream actors in the model: "
-                            + unreachableActors.substring(0, unreachableActors
-                                    .length() - 2));
+                            + unreachableActors.substring(0,
+                                    unreachableActors.length() - 2));
         }
 
         // The firing iterator is called in prefire()

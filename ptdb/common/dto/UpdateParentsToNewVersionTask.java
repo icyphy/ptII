@@ -5,7 +5,6 @@ package ptdb.common.dto;
 
 import java.util.ArrayList;
 
-
 ///////////////////////////////////////////////////////////////////
 //// UpdateParentsToNewVersionTask
 
@@ -20,7 +19,6 @@ import java.util.ArrayList;
  *
  */
 public class UpdateParentsToNewVersionTask extends Task {
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -94,8 +94,9 @@ public class OptimizingSDFScheduler extends SDFScheduler {
      * @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    public OptimizingSDFScheduler(OptimizingSDFDirector container, String name, OptimizationCriteria crit)
-            throws IllegalActionException, NameDuplicationException {
+    public OptimizingSDFScheduler(OptimizingSDFDirector container, String name,
+            OptimizationCriteria crit) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         optimizationCriterion = crit;
     }
@@ -275,8 +276,6 @@ public class OptimizingSDFScheduler extends SDFScheduler {
                 }
             }
 
-
-
             // Simulate production of initial tokens.
             Iterator actors = actorList.iterator();
 
@@ -308,7 +307,8 @@ public class OptimizingSDFScheduler extends SDFScheduler {
             }
 
             // Now the initial state is known and we can compute the optimal schedule
-            OptimalScheduleFinder finder = new OptimalScheduleFinder(this, optimizationCriterion);
+            OptimalScheduleFinder finder = new OptimalScheduleFinder(this,
+                    optimizationCriterion);
 
             // Collect the repetition vector from _firingVector
             // exclude the composite actor from the vector
@@ -360,6 +360,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
 
         return optimizedSchedule;
     }
+
     /** Simulate the creation of tokens by the given output port when
      *  its actor fires.  If any actors that receive tokens are then ready to
      *  fire, given that only actors in the actor list are being scheduled, then
@@ -380,7 +381,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
             for (int copy = 0; copy < receivers[channel].length; copy++) {
                 if (!(receivers[channel][copy] instanceof SDFReceiver)) {
                     // NOTE: This should only occur if it is null.
-                    assert receivers[channel][copy]==null;
+                    assert receivers[channel][copy] == null;
                     continue;
                 }
 

@@ -126,16 +126,16 @@ public class DtdDemo extends XmlApp {
             // External binary entity
             case XmlParser.ENTITY_NDATA:
                 value = makeExternalIdentifiers(
-                        parser.getEntityPublicId(ename), parser
-                                .getEntitySystemId(ename))
+                        parser.getEntityPublicId(ename),
+                        parser.getEntitySystemId(ename))
                         + "NDATA " + parser.getEntityNotationName(ename);
                 break;
 
             // External text entity
             case XmlParser.ENTITY_TEXT:
                 value = makeExternalIdentifiers(
-                        parser.getEntityPublicId(ename), parser
-                                .getEntitySystemId(ename));
+                        parser.getEntityPublicId(ename),
+                        parser.getEntitySystemId(ename));
                 break;
             }
 

@@ -76,49 +76,53 @@ public class TestCacheRequirementsIntegration {
     public void testUpdateCache() throws Exception {
 
         java.util.Date time = new java.util.Date();
-        XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime()) + "model");
+        XMLDBModel dbModel = new XMLDBModel(String.valueOf(time.getTime())
+                + "model");
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"" + dbModel.getModelName() + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<property name=\"TestAttribute\" class=\"ptolemy.data.expr.StringParameter\" value=\"OLD\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
-
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\""
+                + dbModel.getModelName()
+                + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<property name=\"TestAttribute\" class=\"ptolemy.data.expr.StringParameter\" value=\"OLD\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
         SaveModelManager saveManager = new SaveModelManager();
 
-        /*String modelID =*/ saveManager.save(dbModel);
+        /*String modelID =*/saveManager.save(dbModel);
 
         // Load the model to place it into cache.
         PtolemyEffigy effigy = loadModel(dbModel.getModelName());
 
         // Change the value of the attribute for the copy that will go in the cache.
-        ((StringParameter) effigy.getModel().getAttribute("TestAttribute")).setExpression("NEW");
+        ((StringParameter) effigy.getModel().getAttribute("TestAttribute"))
+                .setExpression("NEW");
         changeModel(effigy.getModel());
 
         // Create an assembly and update the cache.
         HashMap assemblies = new HashMap();
-        assemblies.put(effigy.getModel().getName(), effigy.getModel().exportMoML());
+        assemblies.put(effigy.getModel().getName(), effigy.getModel()
+                .exportMoML());
         CacheManager.updateCache(assemblies);
 
         // Now load the model from the cache.
@@ -128,11 +132,13 @@ public class TestCacheRequirementsIntegration {
         // Verify that the cache was actually updated.
         //  Verify that the model is loaded from the cache.
         // The Attribute value will be "NEW".
-        assertEquals(((StringParameter) effigy.getModel().getAttribute("TestAttribute")).getExpression(), "NEW");
+        assertEquals(
+                ((StringParameter) effigy.getModel().getAttribute(
+                        "TestAttribute")).getExpression(), "NEW");
 
         // Save the model again.  This should clear it from the cache.
         dbModel.setIsNew(false);
-        /*modelID =*/ saveManager.save(dbModel);
+        /*modelID =*/saveManager.save(dbModel);
 
         // Now load the model again.  This time it will be from the DB (not the cache).
         effigy = null;
@@ -140,7 +146,9 @@ public class TestCacheRequirementsIntegration {
 
         // Verify it it is loaded from the DB.
         // Attribute value will be "OLD".
-        assertEquals(((StringParameter) effigy.getModel().getAttribute("TestAttribute")).getExpression(), "OLD");
+        assertEquals(
+                ((StringParameter) effigy.getModel().getAttribute(
+                        "TestAttribute")).getExpression(), "OLD");
 
         // Clean up.
         ArrayList<XMLDBModel> modelsToRemove = new ArrayList();
@@ -150,7 +158,7 @@ public class TestCacheRequirementsIntegration {
 
     }
 
-    private void removeModel(XMLDBModel dbModel) throws Exception{
+    private void removeModel(XMLDBModel dbModel) throws Exception {
 
         DBConnection dbConnection = null;
 
@@ -183,15 +191,15 @@ public class TestCacheRequirementsIntegration {
 
     }
 
-    private PtolemyEffigy loadModel(String modelName) throws Exception{
+    private PtolemyEffigy loadModel(String modelName) throws Exception {
 
-       // MoMLParser parser = new MoMLParser();
+        // MoMLParser parser = new MoMLParser();
         //parser.resetAll();
         //String configPath = "ptolemy/configs/ptdb/configuration.xml";
 
         //URL configURL = ConfigurationApplication.specToURL(configPath);
         //Configuration configuration = (Configuration) parser.parse(configURL,
-         //       configURL);
+        //       configURL);
 
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
@@ -206,12 +214,12 @@ public class TestCacheRequirementsIntegration {
         return effigy;
     }
 
-    private void changeModel(NamedObj model) throws Exception{
+    private void changeModel(NamedObj model) throws Exception {
 
         try {
 
-            MoMLChangeRequest change = new MoMLChangeRequest(
-                    this, null, model.exportMoML());
+            MoMLChangeRequest change = new MoMLChangeRequest(this, null,
+                    model.exportMoML());
             change.setUndoable(true);
 
             model.requestChange(change);

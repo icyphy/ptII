@@ -41,7 +41,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
-public class ModalController extends NamedProgramCodeGeneratorAdapter  {
+public class ModalController extends NamedProgramCodeGeneratorAdapter {
 
     /** Construct the code generator helper associated
      *  with the given modal controller.
@@ -49,6 +49,6 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter  {
      */
     public ModalController(ptolemy.domains.modal.modal.ModalController component) {
         super(component);
-            }
+    }
 
 }

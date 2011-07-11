@@ -119,9 +119,10 @@ public class AsynchronousDBConnection implements DBConnection {
          */
         while (!hasExecutionCompleted && maxWait != 0) {
 
-            if (_taskQueue.hasExecutionError())
-                throw new DBConnectionException(_taskQueue
-                        .getExecutionErrorMessage());
+            if (_taskQueue.hasExecutionError()) {
+                throw new DBConnectionException(
+                        _taskQueue.getExecutionErrorMessage());
+            }
 
             hasExecutionCompleted = _taskQueue.hasExecutionCompleted();
             maxWait--;
@@ -147,7 +148,6 @@ public class AsynchronousDBConnection implements DBConnection {
          */
         _taskQueue.setAllTasksAdded();
     }
-
 
     /**
      * Search models that contain the given attributes in the database.
@@ -185,7 +185,6 @@ public class AsynchronousDBConnection implements DBConnection {
                 "Asynchronous DB Execution error - executeCreateAttributeTask is "
                         + "not supported by this type of DBConnection");
     }
-
 
     /**
      * Execute the necessary commands to create a new model in the database according
@@ -275,8 +274,8 @@ public class AsynchronousDBConnection implements DBConnection {
      * @exception DBExecutionException If thrown while fetching the parents list
      * from the database.
      */
-    public List<XMLDBModel> executeGetFirstLevelParents(GetFirstLevelParentsTask task)
-            throws DBExecutionException {
+    public List<XMLDBModel> executeGetFirstLevelParents(
+            GetFirstLevelParentsTask task) throws DBExecutionException {
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeGetFirstLevelParents is "
                         + "not supported by this type of DBConnection");
@@ -311,12 +310,11 @@ public class AsynchronousDBConnection implements DBConnection {
      */
     public XMLDBModel executeGetModelTask(GetModelTask task)
             throws DBExecutionException {
-                throw new DBExecutionException(
-                        "Asynchronous DB Execution error - executeGetModelTask "
-                                + "is not supported by this type of DBConnection");
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeGetModelTask "
+                        + "is not supported by this type of DBConnection");
 
     }
-
 
     /**
      * Execute the necessary commands to retrieve a model from the database
@@ -331,9 +329,9 @@ public class AsynchronousDBConnection implements DBConnection {
      */
     public XMLDBModel executeGetCompleteModelTask(GetModelTask task)
             throws DBExecutionException {
-                throw new DBExecutionException(
-                        "Asynchronous DB Execution error - executeGetCompleteModelTask "
-                                + "is not supported by this type of DBConnection");
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeGetCompleteModelTask "
+                        + "is not supported by this type of DBConnection");
 
     }
 
@@ -385,6 +383,7 @@ public class AsynchronousDBConnection implements DBConnection {
                 "Asynchronous DB Execution error - executeModelNameSearchTask "
                         + "is not supported by this type of DBConnection");
     }
+
     /**
      * Execute the necessary commands to save/update a model in the
      * database according
@@ -409,20 +408,18 @@ public class AsynchronousDBConnection implements DBConnection {
         return null;
     }
 
-
     /**
      * Execute remove models task to delete a list of models from the database.
      * @param task Contains a list of models to be deleted from the database.
      * @exception DBExecutionException Thrown if the operation fails.
      */
-    public void executeRemoveModelsTask (RemoveModelsTask task)
+    public void executeRemoveModelsTask(RemoveModelsTask task)
             throws DBExecutionException {
 
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeRemoveModelsTask "
                         + "is not supported by this type of DBConnection");
     }
-
 
     /**
      * Execute rename model task which will change the name of the model in
@@ -443,7 +440,6 @@ public class AsynchronousDBConnection implements DBConnection {
                         + "is not supported by this type of DBConnection");
 
     }
-
 
     /**
      * Execute the necessary commands to update an attribute in the database
@@ -474,12 +470,11 @@ public class AsynchronousDBConnection implements DBConnection {
      * already exists.
      */
     public void executeUpdateModelInCache(XMLDBModel xmlDBModel)
-            throws DBExecutionException{
+            throws DBExecutionException {
 
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeUpdateModelInCache "
                         + "is not supported by this type of DBConnection");
-
 
     }
 
@@ -495,6 +490,7 @@ public class AsynchronousDBConnection implements DBConnection {
             UpdateParentsToNewVersionTask task) throws DBExecutionException {
         _executeTask(task);
     }
+
     /**
      * Return a string representation for the
      * internal parameters of the class.
@@ -506,10 +502,10 @@ public class AsynchronousDBConnection implements DBConnection {
     public String toString() {
 
         StringBuffer connState = new StringBuffer();
-        connState.append(":Processing Error-").append(
-                _taskQueue.hasProcessingError()).append(":");
-        connState.append(":All Tasks Added-").append(
-                _taskQueue.areAllTasksAdded()).append(":");
+        connState.append(":Processing Error-")
+                .append(_taskQueue.hasProcessingError()).append(":");
+        connState.append(":All Tasks Added-")
+                .append(_taskQueue.areAllTasksAdded()).append(":");
         return connState.toString();
     }
 
@@ -528,15 +524,17 @@ public class AsynchronousDBConnection implements DBConnection {
         /*
          * If this is the first task, then start the executor thread
          */
-        if (_taskQueue.size() == 0)
+        if (_taskQueue.size() == 0) {
             _executorThread.run();
+        }
         /*
          * If the executor thread failed due to an exception;
          * throw that exception
          */
-        if (_taskQueue.hasExecutionError())
-            throw new DBExecutionException(_taskQueue
-                    .getExecutionErrorMessage());
+        if (_taskQueue.hasExecutionError()) {
+            throw new DBExecutionException(
+                    _taskQueue.getExecutionErrorMessage());
+        }
         /*
          * Add the task to the queue
          */

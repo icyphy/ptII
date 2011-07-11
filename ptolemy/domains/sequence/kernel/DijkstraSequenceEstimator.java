@@ -86,7 +86,8 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
      * is not acyclic.
      */
     public Vector<Actor> estimateSequencedSchedule(
-            List<SequenceAttribute> independentList) throws NotSchedulableException {
+            List<SequenceAttribute> independentList)
+            throws NotSchedulableException {
 
         _init();
 
@@ -135,7 +136,8 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
         _maxDistance = 0;
     }
 
-    private void _initSequencedActors(List<SequenceAttribute> independentList) throws NotSchedulableException {
+    private void _initSequencedActors(List<SequenceAttribute> independentList)
+            throws NotSchedulableException {
         if (independentList != null) {
             Iterator sequenceAttributes = independentList.iterator();
             while (sequenceAttributes.hasNext()) {
@@ -143,8 +145,8 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
                         .next();
                 try {
                     int sequenceNumber = attribute.getSequenceNumber();
-                    _SequenceInfo info = new _SequenceInfo(sequenceNumber, true,
-                            false);
+                    _SequenceInfo info = new _SequenceInfo(sequenceNumber,
+                            true, false);
                     //info.original = sequenceNumber;
                     Actor actor = (Actor) attribute.getContainer();
                     _sequenceInfos.put(actor, info);
@@ -152,10 +154,15 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
                 } catch (IllegalActionException e) {
                     List unschedulableActorList = new ArrayList(1);
                     unschedulableActorList.add(attribute.getContainer());
-                    throw new NotSchedulableException(unschedulableActorList, e,
-                            "The actor " + attribute.getContainer().getName() + " cannot be scheduled because " +
-                                            "its SequenceAttribute " + attribute +
-                                            " does not contain a valid sequence number.");
+                    throw new NotSchedulableException(
+                            unschedulableActorList,
+                            e,
+                            "The actor "
+                                    + attribute.getContainer().getName()
+                                    + " cannot be scheduled because "
+                                    + "its SequenceAttribute "
+                                    + attribute
+                                    + " does not contain a valid sequence number.");
                 }
             }
         }
@@ -251,9 +258,9 @@ public class DijkstraSequenceEstimator extends SequenceEstimator {
                         // update distance, if a longer way is found.
                         _unsettled.add(connectedActor);
                         _SequenceInfo.distance = actorDistance + 1;
-//                        if (_SequenceInfo.isFixed) {
-//                            _SequenceInfo.changed = true;
-//                        }
+                        //                        if (_SequenceInfo.isFixed) {
+                        //                            _SequenceInfo.changed = true;
+                        //                        }
                     }
                 }
             }

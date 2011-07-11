@@ -167,8 +167,7 @@ public class ConvertToLazy implements ChangeListener {
                 if (entity.getClassName().equals(
                         "ptolemy.actor.TypedCompositeActor")
                         && count((TypedCompositeActor) entity) >= threshold) {
-                    entity
-                            .setClassName("ptolemy.actor.LazyTypedCompositeActor");
+                    entity.setClassName("ptolemy.actor.LazyTypedCompositeActor");
                 }
             }
         }

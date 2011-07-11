@@ -172,10 +172,11 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
             }
 
             putValue("tooltip", "Up");
-            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, KeyStroke
-                    .getKeyStroke(KeyEvent.VK_EQUALS, java.awt.Event.CTRL_MASK));
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_M));
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
+                            java.awt.Event.CTRL_MASK));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_M));
         }
 
         public void actionPerformed(ActionEvent e) {

@@ -84,13 +84,13 @@ public class ShortestPathFinder extends Attribute {
 
         // Create a way to get the index of a node given
         // a reference to the node itself.
-        Map<Object,Integer> entityToIndex = new HashMap<Object,Integer>();
+        Map<Object, Integer> entityToIndex = new HashMap<Object, Integer>();
         for (int i = 0; i < entities.length; i++) {
             entityToIndex.put(entities[i], new Integer(i));
         }
 
         // Set the start node as the current node and begin.
-        Entity current = (Entity)entities[start];
+        Entity current = (Entity) entities[start];
         int currentIndex = start;
         boolean done = false;
         while (!done) {
@@ -103,9 +103,12 @@ public class ShortestPathFinder extends Attribute {
                 if (port.isOutput()) {
                     List<IOPort> remotePorts = port.connectedPortList();
                     for (IOPort remotePort : remotePorts) {
-                        Entity neighbor = (Entity)remotePort.getContainer();
-                        int neighborIndex = entityToIndex.get(neighbor).intValue();
-                        if (visited[neighborIndex]) continue;
+                        Entity neighbor = (Entity) remotePort.getContainer();
+                        int neighborIndex = entityToIndex.get(neighbor)
+                                .intValue();
+                        if (visited[neighborIndex]) {
+                            continue;
+                        }
                         if (distance[neighborIndex] > currentDistance + 1) {
                             distance[neighborIndex] = currentDistance + 1;
                         }
@@ -116,21 +119,25 @@ public class ShortestPathFinder extends Attribute {
             visited[currentIndex] = true;
 
             // We are done if the current node is the end node.
-            if (currentIndex == end) break;
+            if (currentIndex == end) {
+                break;
+            }
 
             // Find the unvisited node with the minimum distance to be the
             // next current node.
             int minimumDistance = Integer.MAX_VALUE;
             done = true;
             for (int i = 0; i < entities.length; i++) {
-                if (visited[i]) continue;
+                if (visited[i]) {
+                    continue;
+                }
                 done = false;
                 if (distance[i] <= minimumDistance) {
                     minimumDistance = distance[i];
                     currentIndex = i;
                 }
             }
-            current = (Entity)entities[currentIndex];
+            current = (Entity) entities[currentIndex];
         }
         return distance[end];
     }
@@ -150,16 +157,17 @@ public class ShortestPathFinder extends Attribute {
 
         public void createEditor(NamedObj object, Frame parent) {
             // Get the entities of the model.
-            List<Entity> entitiesList = ((CompositeEntity)
-                    ShortestPathFinder.this.getContainer()).entityList();
+            List<Entity> entitiesList = ((CompositeEntity) ShortestPathFinder.this
+                    .getContainer()).entityList();
             Object[] entities = entitiesList.toArray();
 
             // Ask the user for a start and end node.
             Query query = new Query();
             query.addChoice("start", "start node", entities, entities[0]);
-            query.addChoice("end", "end node", entities, entities[entities.length - 1]);
-            ComponentDialog dialog = new ComponentDialog(
-                    parent, "Specify start and end nodes", query);
+            query.addChoice("end", "end node", entities,
+                    entities[entities.length - 1]);
+            ComponentDialog dialog = new ComponentDialog(parent,
+                    "Specify start and end nodes", query);
 
             // If the user clicks OK, proceed.
             if (dialog.buttonPressed().equals("OK")) {

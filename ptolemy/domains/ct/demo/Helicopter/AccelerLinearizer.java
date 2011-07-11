@@ -149,8 +149,8 @@ public class AccelerLinearizer extends TypedAtomicActor {
             sP.append(_alphaP[i] + " ");
         }
 
-        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP
-                .toString()));
+        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(
+                sP.toString()));
 
         StringBuffer sA = new StringBuffer();
 
@@ -158,8 +158,8 @@ public class AccelerLinearizer extends TypedAtomicActor {
             sA.append(_alphaA[i] + " ");
         }
 
-        paramAlphaA = new Parameter(this, "AlphaA", new StringToken(sA
-                .toString()));
+        paramAlphaA = new Parameter(this, "AlphaA", new StringToken(
+                sA.toString()));
 
         _cAx = 9.8 / 25.0;
         paramCAx = new Parameter(this, "CAx", new DoubleToken(_cAx));

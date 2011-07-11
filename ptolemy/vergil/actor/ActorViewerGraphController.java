@@ -212,26 +212,22 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 try {
 
                     StringParameter actorInteractionAddonParameter;
-                    actorInteractionAddonParameter = (StringParameter)
-                        this.getConfiguration()
-                        .getAttribute("_actorInteractionAddon",
-                                Parameter.class);
-
+                    actorInteractionAddonParameter = (StringParameter) this
+                            .getConfiguration().getAttribute(
+                                    "_actorInteractionAddon", Parameter.class);
 
                     if (actorInteractionAddonParameter != null) {
-                        String actorInteractionAddonClassName =
-                            actorInteractionAddonParameter.stringValue();
+                        String actorInteractionAddonClassName = actorInteractionAddonParameter
+                                .stringValue();
 
-                            Class actorInteractionAddonClass = Class
+                        Class actorInteractionAddonClass = Class
                                 .forName(actorInteractionAddonClassName);
 
-                            ActorInteractionAddon actorInteractionAddon =
-                                (ActorInteractionAddon)
-                                actorInteractionAddonClass.newInstance();
+                        ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
+                                .newInstance();
 
-                            isActorOfInterest = actorInteractionAddon
-                                .isActorOfInterestForAddonController
-                                ((NamedObj) semanticObject);
+                        isActorOfInterest = actorInteractionAddon
+                                .isActorOfInterestForAddonController((NamedObj) semanticObject);
 
                     }
                 } catch (Exception e) {
@@ -281,7 +277,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
             StringParameter actorInteractionAddon;
             actorInteractionAddon = (StringParameter) this.getConfiguration()
-                .getAttribute("_actorInteractionAddon", Parameter.class);
+                    .getAttribute("_actorInteractionAddon", Parameter.class);
 
             if (actorInteractionAddon != null) {
                 _addonActorController.setConfiguration(configuration);
@@ -308,7 +304,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
             StringParameter actorInteractionAddon;
             actorInteractionAddon = (StringParameter) this.getConfiguration()
-                .getAttribute("_actorInteractionAddon", Parameter.class);
+                    .getAttribute("_actorInteractionAddon", Parameter.class);
 
             if (actorInteractionAddon != null) {
                 _addonActorController.addHotKeys(jgraph);
@@ -338,21 +334,21 @@ public class ActorViewerGraphController extends RunnableGraphController {
         try {
 
             StringParameter actorInteractionAddonParameter;
-            actorInteractionAddonParameter = (StringParameter) this.getConfiguration()
-                .getAttribute("_actorInteractionAddon", Parameter.class);
+            actorInteractionAddonParameter = (StringParameter) this
+                    .getConfiguration().getAttribute("_actorInteractionAddon",
+                            Parameter.class);
 
             if (actorInteractionAddonParameter != null) {
-                String actorInteractionAddonClassName =
-                    actorInteractionAddonParameter.stringValue();
+                String actorInteractionAddonClassName = actorInteractionAddonParameter
+                        .stringValue();
                 Class actorInteractionAddonClass = Class
-                    .forName(actorInteractionAddonClassName);
+                        .forName(actorInteractionAddonClassName);
 
-                ActorInteractionAddon actorInteractionAddon =
-                    (ActorInteractionAddon) actorInteractionAddonClass
-                    .newInstance();
+                ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
+                        .newInstance();
 
-                _addonActorController =
-                    actorInteractionAddon.getControllerInstance(this, false);
+                _addonActorController = actorInteractionAddon
+                        .getControllerInstance(this, false);
 
             }
 

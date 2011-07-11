@@ -915,8 +915,8 @@ public class CachedMethod {
                     // preferable to this one.  matchedConversions is
                     // the set of previously found conversions.
                     match = _areConversionsPreferable(conversions, arguments,
-                            matchedConversions, matchedMethod
-                                    .getParameterTypes());
+                            matchedConversions,
+                            matchedMethod.getParameterTypes());
                 }
 
                 if (match) {
@@ -977,8 +977,9 @@ public class CachedMethod {
                     // Compare to previous match, if there has
                     // been one.
                     if ((preferredMethod == null)
-                            || _areConversionsPreferable(conversions, method
-                                    .getParameterTypes(), preferredConversions,
+                            || _areConversionsPreferable(conversions,
+                                    method.getParameterTypes(),
+                                    preferredConversions,
                                     preferredMethod.getParameterTypes())) {
                         // Either there is no previous match,
                         // or the current match is preferable

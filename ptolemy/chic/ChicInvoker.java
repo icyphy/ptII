@@ -123,9 +123,9 @@ public class ChicInvoker extends Attribute {
      */
     public boolean checkInterfaceCompatibility(int compiler, boolean silent)
             throws IllegalActionException, NameDuplicationException {
-        return _checkInterfaceCompatibility((CompositeActor) this
-                .getContainer(), compiler, silent, chicAttributeName
-                .getExpression());
+        return _checkInterfaceCompatibility(
+                (CompositeActor) this.getContainer(), compiler, silent,
+                chicAttributeName.getExpression());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -256,8 +256,7 @@ public class ChicInvoker extends Attribute {
                                         chicInterface = chicInterface
                                                 .replaceAll(
                                                         "(?<!(\\w|\\$|\\.))"
-                                                                + port
-                                                                        .getName()
+                                                                + port.getName()
                                                                 + "\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
                                                         ((Actor) connectedPort
                                                                 .getContainer() == model) ? _sanitizeName(connectedPort
@@ -269,8 +268,7 @@ public class ChicInvoker extends Attribute {
                                         chicInterface = chicInterface
                                                 .replaceAll(
                                                         "(?<!(\\w|\\$|\\.))"
-                                                                + port
-                                                                        .getName()
+                                                                + port.getName()
                                                                 + "\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
                                                         _sanitizeName(port
                                                                 .getFullName()));
@@ -280,8 +278,7 @@ public class ChicInvoker extends Attribute {
                                         chicInterface = chicInterface
                                                 .replaceAll(
                                                         "(?<!(\\w|\\$|\\.))"
-                                                                + port
-                                                                        .getFullName()
+                                                                + port.getFullName()
                                                                 + "\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
                                                         ((Actor) connectedPort
                                                                 .getContainer() == model) ? _sanitizeName(connectedPort
@@ -337,8 +334,7 @@ public class ChicInvoker extends Attribute {
                                             chicInterface = chicInterface
                                                     .replaceAll(
                                                             "(?<!(^|[\\n\\r]|\\w|\\$|\\.))"
-                                                                    + port
-                                                                            .getName()
+                                                                    + port.getName()
                                                                     + "(?!(\\w|\\$|\\.))",
                                                             ((Actor) sourcePort
                                                                     .getContainer() == model) ? _sanitizeName(sourcePort
@@ -350,8 +346,7 @@ public class ChicInvoker extends Attribute {
                                             chicInterface = chicInterface
                                                     .replaceAll(
                                                             "(?<!(^|[\\n\\r]|\\w|\\$|\\.))"
-                                                                    + port
-                                                                            .getName()
+                                                                    + port.getName()
                                                                     + "(?!(\\w|\\$|\\.))",
                                                             _sanitizeName(port
                                                                     .getFullName()));
@@ -360,8 +355,7 @@ public class ChicInvoker extends Attribute {
                                         chicInterface = chicInterface
                                                 .replaceAll(
                                                         "(?<!(^|[\\n\\r]|\\w|\\$|\\.))"
-                                                                + port
-                                                                        .getName()
+                                                                + port.getName()
                                                                 + "(?!(\\w|\\$|\\.))",
                                                         _sanitizeName(port
                                                                 .getFullName()));
@@ -389,8 +383,7 @@ public class ChicInvoker extends Attribute {
                                             chicInterface = chicInterface
                                                     .replaceAll(
                                                             "(?<!(^|[\\n\\r]|\\w|\\$|\\.))"
-                                                                    + port
-                                                                            .getFullName()
+                                                                    + port.getFullName()
                                                                     + "(?!(\\w|\\$|\\.))",
                                                             ((Actor) sourcePort
                                                                     .getContainer() == model) ? _sanitizeName(sourcePort
@@ -458,8 +451,7 @@ public class ChicInvoker extends Attribute {
                                                         + "\\.inside\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
                                                 ((Actor) insidePort
                                                         .getContainer() == model) ? _sanitizeName(insidePort
-                                                        .getName()
-                                                        + ".inside")
+                                                        .getName() + ".inside")
                                                         : _sanitizeName(insidePort
                                                                 .getFullName()));
                             }
@@ -497,8 +489,7 @@ public class ChicInvoker extends Attribute {
                                                         + "(?!(\\w|\\$|\\.))",
                                                 ((Actor) sourcePort
                                                         .getContainer() == model) ? _sanitizeName(sourcePort
-                                                        .getName()
-                                                        + ".inside")
+                                                        .getName() + ".inside")
                                                         : _sanitizeName(sourcePort
                                                                 .getFullName()));
                             }

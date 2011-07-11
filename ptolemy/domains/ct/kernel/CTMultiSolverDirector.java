@@ -254,8 +254,7 @@ public class CTMultiSolverDirector extends CTDirector {
         _iterateWaveformGenerators(schedule);
 
         if (_debugging) {
-            _debug(
-                    "  ---> " + getName(),
+            _debug("  ---> " + getName(),
                     ": using a breakpoint solver, find integrator output "
                             + "values and iterate continuous actors to find all "
                             + "continuous-time signal values.");
@@ -968,8 +967,7 @@ public class CTMultiSolverDirector extends CTDirector {
             _iterateWaveformGenerators(schedule);
 
             if (_debugging) {
-                _debug(
-                        "  ---> " + getName(),
+                _debug("  ---> " + getName(),
                         ": using a breakpoint solver, find integrator output "
                                 + "values and iterate continuous actors to find all "
                                 + "continuous-time signal values.");
@@ -1218,8 +1216,8 @@ public class CTMultiSolverDirector extends CTDirector {
             while (actors.hasNext()) {
                 CTStepSizeControlActor actor = (CTStepSizeControlActor) actors
                         .next();
-                predictedStep = Math.min(predictedStep, actor
-                        .predictedStepSize());
+                predictedStep = Math.min(predictedStep,
+                        actor.predictedStepSize());
                 foundOne = true;
             }
 
@@ -1229,8 +1227,8 @@ public class CTMultiSolverDirector extends CTDirector {
             while (actors.hasNext()) {
                 CTStepSizeControlActor actor = (CTStepSizeControlActor) actors
                         .next();
-                predictedStep = Math.min(predictedStep, actor
-                        .predictedStepSize());
+                predictedStep = Math.min(predictedStep,
+                        actor.predictedStepSize());
                 foundOne = true;
             }
 

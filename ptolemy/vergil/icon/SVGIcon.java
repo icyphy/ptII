@@ -407,8 +407,8 @@ public class SVGIcon extends EditorIcon implements ValueListener {
 
         while (children.hasNext()) {
             XmlElement child = (XmlElement) children.next();
-            _createAttribute(child.getType(), child.getAttributeMap(), child
-                    .getPCData());
+            _createAttribute(child.getType(), child.getAttributeMap(),
+                    child.getPCData());
         }
     }
 

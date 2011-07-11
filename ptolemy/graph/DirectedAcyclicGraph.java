@@ -237,8 +237,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         try {
             _validate();
 
-        // If there is a cycle in the graph, a runtime GraphStateException
-        // will be thrown by the _validate() method.
+            // If there is a cycle in the graph, a runtime GraphStateException
+            // will be thrown by the _validate() method.
         } catch (GraphStateException graphStateEx) {
             Node cycleNode = _findNodeWithCycle();
 
@@ -269,8 +269,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         for (int i = 0; i < (nodes.length - 1); i++) {
             for (int j = i + 1; j < nodes.length; j++) {
                 if (greatestLowerBound(nodes[i], nodes[j]) == null) {
-                    return new NonLatticeCounterExample(BoundType.GREATESTLOWER,
-                            nodes[i], nodes[j]);
+                    return new NonLatticeCounterExample(
+                            BoundType.GREATESTLOWER, nodes[i], nodes[j]);
                 }
             }
         }
@@ -570,8 +570,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         } else if (incomparables.size() != 0) {
             for (ListIterator iterator = incomparables.listIterator(0); iterator
                     .hasNext();) {
-                int result = _compareNodeId(ids[0], ((Integer) iterator.next())
-                        .intValue());
+                int result = _compareNodeId(ids[0],
+                        ((Integer) iterator.next()).intValue());
 
                 if ((result == HIGHER) || (result == INCOMPARABLE)) {
                     return null;
@@ -750,8 +750,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         boolean[][] transitiveClosure = transitiveClosure();
 
         if (!((CachedStrategy) _transitiveClosureAnalysis.analyzer())
-                .obsolete()
-                && isAcyclic()) {
+                .obsolete() && isAcyclic()) {
             _closure = transitiveClosure;
             return;
         }

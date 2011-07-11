@@ -220,7 +220,8 @@ public class DDEDirector extends CompositeProcessDirector implements
      * the past or if the thread calling this method is a DDEThread
      * but the specified actor is not contained by the DDEThread.
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         double ETERNITY = PrioritizedTimedQueue.ETERNITY;
         DDEThread ddeThread;
         Thread thread = Thread.currentThread();

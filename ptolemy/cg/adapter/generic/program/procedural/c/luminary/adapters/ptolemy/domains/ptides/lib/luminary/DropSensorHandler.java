@@ -66,20 +66,20 @@ public class DropSensorHandler extends GPInputHandler {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
-//    public String generateFireCode() throws IllegalActionException {
-//        List args = new LinkedList();
-//        CodeStream _codeStream = _templateParser.getCodeStream();
-//
-//        ptolemy.domains.ptides.lib.luminary.DropSensorHandler actor =
-//            (ptolemy.domains.ptides.lib.luminary.DropSensorHandler) getComponent();
-//        PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
-//                .getDirector());
-//
-//        args.add((adapter.sensors.get(actor)).toString());
-//
-//        _codeStream.clear();
-//        _codeStream.appendCodeBlock("fireBlock", args);
-//
-//        return processCode(_codeStream.toString());
-//    }
+    //    public String generateFireCode() throws IllegalActionException {
+    //        List args = new LinkedList();
+    //        CodeStream _codeStream = _templateParser.getCodeStream();
+    //
+    //        ptolemy.domains.ptides.lib.luminary.DropSensorHandler actor =
+    //            (ptolemy.domains.ptides.lib.luminary.DropSensorHandler) getComponent();
+    //        PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
+    //                .getDirector());
+    //
+    //        args.add((adapter.sensors.get(actor)).toString());
+    //
+    //        _codeStream.clear();
+    //        _codeStream.appendCodeBlock("fireBlock", args);
+    //
+    //        return processCode(_codeStream.toString());
+    //    }
 }

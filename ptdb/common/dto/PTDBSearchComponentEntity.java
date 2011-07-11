@@ -30,7 +30,6 @@ package ptdb.common.dto;
 
 import ptolemy.kernel.ComponentEntity;
 
-
 ///////////////////////////////////////////////////////////////
 //// PTDBSearchComponentEntity
 
@@ -52,6 +51,6 @@ public class PTDBSearchComponentEntity extends ComponentEntity {
      * Default constructor.
      */
     public PTDBSearchComponentEntity() {
-       super();
+        super();
     }
 }

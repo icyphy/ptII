@@ -47,6 +47,7 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -358,7 +359,7 @@ public class NamedProgramCodeGeneratorAdapter extends
                 + getCodeGenerator().comment(
                         "Fire "
                                 + composite
-                                +  NamedProgramCodeGeneratorAdapter
+                                + CodeGeneratorAdapter
                                         .generateName(getComponent())));
 
         if (getCodeGenerator().inline.getToken() == BooleanToken.TRUE) {
@@ -395,8 +396,9 @@ public class NamedProgramCodeGeneratorAdapter extends
         // differentiate from the inner classes that are generated for
         // the first few Composites when inline is false.
         String[] splitFireCode = getCodeGenerator()._splitBody(
-                "_fireFunction_" +  NamedProgramCodeGeneratorAdapter.generateName(getComponent()) + "_",
-                fireCode);
+                "_fireFunction_"
+                        + CodeGeneratorAdapter.generateName(getComponent())
+                        + "_", fireCode);
         code.append(splitFireCode[0]);
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
         code.append(_eol + "void "
@@ -501,7 +503,8 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  this base class, return the empty string.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generatePreinitializeMethodBodyCode() throws IllegalActionException {
+    public String generatePreinitializeMethodBodyCode()
+            throws IllegalActionException {
         return "";
     }
 
@@ -783,11 +786,11 @@ public class NamedProgramCodeGeneratorAdapter extends
      * this actor.  In this base class, return an array of length 0.
      * @return an array of length 0.
      */
-//     public int[][] getRates() {
-//         // Findbugs suggests returning an array of length 0 instead
-//         // of returning null.
-//         return new int[0][0]
-//     }
+    //     public int[][] getRates() {
+    //         // Findbugs suggests returning an array of length 0 instead
+    //         // of returning null.
+    //         return new int[0][0]
+    //     }
 
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
@@ -1119,8 +1122,8 @@ public class NamedProgramCodeGeneratorAdapter extends
                     // is either directly specified by a constant or it is a
                     // modified variable.
                     PtParser parser = new PtParser();
-                    String parameterValue = getParameterValue(name, result
-                            .getContainer());
+                    String parameterValue = getParameterValue(name,
+                            result.getContainer());
                     try {
                         ASTPtRootNode parseTree = parser
                                 .generateParseTree(parameterValue);
@@ -1207,7 +1210,6 @@ public class NamedProgramCodeGeneratorAdapter extends
         private Variable _variable = null;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1219,7 +1221,9 @@ public class NamedProgramCodeGeneratorAdapter extends
      */
     private String _generateFireInvocation(NamedObj component)
             throws IllegalActionException {
-        return getCodeGenerator().generateFireFunctionMethodInvocation(component) + "()";
+        return getCodeGenerator().generateFireFunctionMethodInvocation(
+                component)
+                + "()";
     }
 
     /**

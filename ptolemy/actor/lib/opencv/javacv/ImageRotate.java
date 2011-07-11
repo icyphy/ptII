@@ -104,26 +104,28 @@ public class ImageRotate extends Transformer {
         double scale = ((DoubleToken) (scaleParam.getToken())).doubleValue();
 
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof IplImage)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            _src_frame = (IplImage)inputObject;
+            _src_frame = (IplImage) inputObject;
             _dst_frame = cvCloneImage(_src_frame);
 
             // FIXME: this sample use the center of entire image
-            CvPoint2D32f center = cvPoint2D32f( _src_frame.width/2, _src_frame.height/2 );
+            CvPoint2D32f center = cvPoint2D32f(_src_frame.width / 2,
+                    _src_frame.height / 2);
 
             // interpolation param
-            int flags = CV_INTER_LINEAR+CV_WARP_FILL_OUTLIERS;
-            CvScalar fillval=cvScalarAll(0);
+            int flags = CV_INTER_LINEAR + CV_WARP_FILL_OUTLIERS;
+            CvScalar fillval = cvScalarAll(0);
 
             cv2DRotationMatrix(center.byValue(), angle, scale, map_matrix);
 
-            cvWarpAffine(_src_frame, _dst_frame, map_matrix, flags,fillval.byValue());
+            cvWarpAffine(_src_frame, _dst_frame, map_matrix, flags,
+                    fillval.byValue());
             output.send(0, new ObjectToken(_dst_frame));
         }
     }
@@ -133,9 +135,8 @@ public class ImageRotate extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        map_matrix = cvCreateMat(2,3,CV_32FC1);
+        map_matrix = cvCreateMat(2, 3, CV_32FC1);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

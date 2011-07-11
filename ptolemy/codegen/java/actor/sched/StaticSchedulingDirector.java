@@ -120,9 +120,7 @@ public class StaticSchedulingDirector extends Director {
                         code.append("int i;" + _eol);
                         isIDefined = true;
                     }
-                    code
-                            .append("for (i = 0; i < " + count + " ; i++) {"
-                                    + _eol);
+                    code.append("for (i = 0; i < " + count + " ; i++) {" + _eol);
                 }
 
                 code.append(CodeGeneratorHelper.generateName((NamedObj) actor)
@@ -261,8 +259,8 @@ public class StaticSchedulingDirector extends Director {
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        StringBuffer variableDeclarations = new StringBuffer(super
-                .generateVariableDeclaration());
+        StringBuffer variableDeclarations = new StringBuffer(
+                super.generateVariableDeclaration());
         Attribute period = _director.getAttribute("period");
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
         // Print period and iteration counter only if it is the containing actor

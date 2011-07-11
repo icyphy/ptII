@@ -151,8 +151,8 @@ public class RxCoordination extends MACActorBase {
 
                     dAck = ((IntToken) msg.get("dAck")).intValue();
                     ackto = ((IntToken) msg.get("ackto")).intValue();
-                    endRx = new Time(getDirector(), ((DoubleToken) msg
-                            .get("endRx")).doubleValue());
+                    endRx = new Time(getDirector(),
+                            ((DoubleToken) msg.get("endRx")).doubleValue());
 
                     if (dAck > 0) {
                         dAck = dAck - _dRsp;
@@ -168,8 +168,8 @@ public class RxCoordination extends MACActorBase {
 
                 case RxIndicate:
                     pdu = (RecordToken) msg.get("pdu");
-                    endRx = new Time(getDirector(), ((DoubleToken) msg
-                            .get("endRx")).doubleValue());
+                    endRx = new Time(getDirector(),
+                            ((DoubleToken) msg.get("endRx")).doubleValue());
 
                     int Type = ((IntToken) pdu.get("Type")).intValue();
                     int Subtype = ((IntToken) pdu.get("Subtype")).intValue();
@@ -220,8 +220,8 @@ public class RxCoordination extends MACActorBase {
                                         .intValue();
                                 _rspdu = _createPacket(Cts, durId - _dRsp,
                                         Addr2);
-                                setTimer(SifsTimeout, endRx
-                                        .add(_dSifsDly * 1e-6));
+                                setTimer(SifsTimeout,
+                                        endRx.add(_dSifsDly * 1e-6));
                                 _currentState = Wait_Sifs;
                             }
 

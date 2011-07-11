@@ -181,8 +181,9 @@ public class OctagonEventIcon extends NameIcon {
             if (colorParameter != null) {
                 ArrayToken array = (ArrayToken) colorParameter.getToken();
                 if (array.length() == 4) {
-                    Color color = new Color((float) ((ScalarToken) array
-                            .getElement(0)).doubleValue(),
+                    Color color = new Color(
+                            (float) ((ScalarToken) array.getElement(0))
+                                    .doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
                                     .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
@@ -271,9 +272,9 @@ public class OctagonEventIcon extends NameIcon {
         background.translate((backBounds.getWidth() - width) / 2 - 3.0, 0.0);
         figure.setBackgroundFigure(background);
 
-        label.translateTo(background.getBounds().getCenterX(), backBounds
-                .getMaxY()
-                + stringBounds.getHeight() / 2.0 - 1.0 - _spacingValue);
+        label.translateTo(background.getBounds().getCenterX(),
+                backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0
+                        - _spacingValue);
         figure.add(label);
     }
 

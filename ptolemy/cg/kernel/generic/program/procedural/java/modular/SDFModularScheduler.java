@@ -311,8 +311,7 @@ public class SDFModularScheduler extends SDFScheduler {
                             portParametersFound.add(portParameter);
                             portParameterMessageBuffer
                                     .append(((PortParameter) portParameter)
-                                            .getFullName()
-                                            + " ");
+                                            .getFullName() + " ");
                             if (count > 100) {
                                 break;
                             }
@@ -338,8 +337,7 @@ public class SDFModularScheduler extends SDFScheduler {
             messageBuffer.append("\nUnreached Actors:\n");
             count = 0;
             for (Iterator unreachedActors = remainingActors.iterator(); unreachedActors
-                    .hasNext()
-                    && count < 100; count++) {
+                    .hasNext() && count < 100; count++) {
                 NamedObj unreachedActor = (NamedObj) (unreachedActors.next());
                 messageBuffer.append(unreachedActor.getFullName() + " ");
             }
@@ -355,8 +353,7 @@ public class SDFModularScheduler extends SDFScheduler {
 
             count = 0;
             for (Iterator actors = reachedActorList.iterator(); actors
-                    .hasNext()
-                    && count < 100; count++) {
+                    .hasNext() && count < 100; count++) {
                 Entity entity = (Entity) actors.next();
                 messageBuffer.append(entity.getFullName() + " ");
             }

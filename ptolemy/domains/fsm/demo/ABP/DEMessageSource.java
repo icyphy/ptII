@@ -109,9 +109,10 @@ public class DEMessageSource extends RandomSource {
         DEDirector dir = (DEDirector) getDirector();
         Time now = dir.getModelTime();
         _generateRandomNumber();
-        dir.fireAt(this, now.add(((DoubleToken) maxDelay.getToken())
-                .doubleValue()
-                * _current));
+        dir.fireAt(
+                this,
+                now.add(((DoubleToken) maxDelay.getToken()).doubleValue()
+                        * _current));
     }
 
     /** If this is the first fire, output the request

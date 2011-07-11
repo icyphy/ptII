@@ -1117,15 +1117,14 @@ public class JavaCodeGenerator extends CodeGenerator {
         StringBuffer endCode = new StringBuffer();
         endCode.append(super._printExecutionTime());
 
-        endCode
-                .append("Runtime runtime = Runtime.getRuntime();\n"
-                        + "long totalMemory = runtime.totalMemory() / 1024;\n"
-                        + "long freeMemory = runtime.freeMemory() / 1024;\n"
-                        + "System.out.println(System.currentTimeMillis() - startTime + \""
-                        + " ms. Memory: \" + totalMemory + \"K Free: \""
-                        + " + freeMemory + \"K (\" + "
-                        + "Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)"
-                        + " + \"%\");\n");
+        endCode.append("Runtime runtime = Runtime.getRuntime();\n"
+                + "long totalMemory = runtime.totalMemory() / 1024;\n"
+                + "long freeMemory = runtime.freeMemory() / 1024;\n"
+                + "System.out.println(System.currentTimeMillis() - startTime + \""
+                + " ms. Memory: \" + totalMemory + \"K Free: \""
+                + " + freeMemory + \"K (\" + "
+                + "Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)"
+                + " + \"%\");\n");
         return endCode.toString();
     }
 
@@ -1230,8 +1229,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             // the value of the generatorPackage.
             substituteMap = CodeGeneratorUtilities.newMap(this);
             substituteMap.put("@modelName@", _sanitizedModelName);
-            substituteMap.put("@CLASSPATHSEPARATOR@", StringUtilities
-                    .getProperty("path.separator"));
+            substituteMap.put("@CLASSPATHSEPARATOR@",
+                    StringUtilities.getProperty("path.separator"));
             substituteMap
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
             substituteMap.put("@PTCGLibraries@",
@@ -1296,7 +1295,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             String uriString = uriAttribute.getURI().toString();
             templateList.add(uriString.substring(0,
                     uriString.lastIndexOf("/") + 1)
-                    + _sanitizedModelName + ".mk.in");
+                    + _sanitizedModelName
+                    + ".mk.in");
         }
         // 2. If the target parameter is set, look for a makefile.
         String generatorDirectory = generatorPackage.stringValue().replace('.',

@@ -81,26 +81,25 @@ public class ImageConvertColor extends Transformer {
     public void fire() throws IllegalActionException {
 
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof IplImage)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            _srcFrame = (IplImage)inputObject;
+            _srcFrame = (IplImage) inputObject;
 
             if (_dstFrame == null) {
                 _dstFrame = cvCreateImage(cvGetSize(_srcFrame), IPL_DEPTH_8U, 1);
                 _dstFrame.origin = _srcFrame.origin;
             }
-            cvCvtColor (_srcFrame, _dstFrame, CV_BGR2GRAY);
+            cvCvtColor(_srcFrame, _dstFrame, CV_BGR2GRAY);
 
-//            // FIXME : In Windows, the result of image may be flip.
-//            if (_dstFrame.origin == 0) {
-//                cvFlip(_dstFrame, _dstFrame, 0);  // vertical
-//            }
-
+            //            // FIXME : In Windows, the result of image may be flip.
+            //            if (_dstFrame.origin == 0) {
+            //                cvFlip(_dstFrame, _dstFrame, 0);  // vertical
+            //            }
 
             output.send(0, new ObjectToken(_dstFrame));
         }
@@ -113,9 +112,10 @@ public class ImageConvertColor extends Transformer {
         super.initialize();
         _dstFrame = null;
     }
-     /** Release image.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
+
+    /** Release image.
+    *  @exception IllegalActionException If thrown by the super class.
+    */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_dstFrame != null) {

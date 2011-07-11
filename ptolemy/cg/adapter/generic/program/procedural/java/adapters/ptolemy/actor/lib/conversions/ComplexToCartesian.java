@@ -46,7 +46,8 @@ public class ComplexToCartesian
      *  Construct a ComplexToCartesian adapter.
      *  @param actor The given ptolemy.actor.lib.ComplexToCartesian actor.
      */
-    public ComplexToCartesian(ptolemy.actor.lib.conversions.ComplexToCartesian actor) {
+    public ComplexToCartesian(
+            ptolemy.actor.lib.conversions.ComplexToCartesian actor) {
         super(actor);
     }
 }

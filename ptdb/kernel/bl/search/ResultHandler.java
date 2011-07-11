@@ -90,7 +90,6 @@ public interface ResultHandler {
      */
     public boolean isSearchCancelled();
 
-
     /**
      * In the case of getting some models that cannot be parsed or contains
      * some error, use this method to pass these error models to store for
@@ -99,7 +98,6 @@ public interface ResultHandler {
      * @param errorModels The error models.
      */
     public void passErrorModels(List<XMLDBModel> errorModels);
-
 
     /**
      * Set the DB connection for this result handler.

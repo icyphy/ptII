@@ -90,8 +90,8 @@ public class Scale extends LatticeOntologyAdapter {
         }
 
         if (multiplyFunction != null) {
-            if (interconnectConstraintType == ConstraintType.EQUALS ||
-                    interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
+            if (interconnectConstraintType == ConstraintType.EQUALS
+                    || interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
                 // The output of the Scale actor is the product of the input and the factor parameter
                 // So use the MultiplyConceptFunction for the output property.
                 setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
@@ -102,8 +102,8 @@ public class Scale extends LatticeOntologyAdapter {
         }
 
         // Add back in default constraints for the output to input relationship.
-        if (!_useDefaultConstraints && (interconnectConstraintType == ConstraintType.EQUALS ||
-                interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
+        if (!_useDefaultConstraints
+                && (interconnectConstraintType == ConstraintType.EQUALS || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
             setAtLeast(actor.input, actor.output);
             setAtLeast(actor.factor, actor.output);
         }

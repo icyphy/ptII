@@ -34,7 +34,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import diva.gui.GUIUtilities;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -48,6 +47,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorInteractionAddon;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.gui.GUIUtilities;
 
 /** <p>The action to open a composite actor model, an ontology, or a
  *  MoMLModelAttribute. This class must remain named LookInsideAction for
@@ -164,7 +164,8 @@ public class LookInsideAction extends FigureAction {
             // it's container is the directory is the directory in the
             // configuration. We want it to be contained by the following
             // containerEffigy.
-            final Effigy containerEffigy = _configuration.getEffigy(momlModelAttribute.getContainer());
+            final Effigy containerEffigy = _configuration
+                    .getEffigy(momlModelAttribute.getContainer());
 
             // Second, the effigy returned above returns the wrong value in its
             // masterEffigy() method. That method returns the effigy associated
@@ -173,8 +174,7 @@ public class LookInsideAction extends FigureAction {
             // We accomplish this by substituting a new effigy.
             // This technique is borrowed from what is done in
             // PtolemyFrame.getEffigy().
-            PtolemyEffigy newEffigy = new PtolemyEffigy(
-                    containerEffigy,
+            PtolemyEffigy newEffigy = new PtolemyEffigy(containerEffigy,
                     containerEffigy.uniqueName(model.getName())) {
                 public Effigy masterEffigy() {
                     return containerEffigy.masterEffigy();
@@ -203,24 +203,24 @@ public class LookInsideAction extends FigureAction {
         try {
             StringParameter actorInteractionAddonParameter;
             actorInteractionAddonParameter = (StringParameter) _configuration
-                .getAttribute("_actorInteractionAddon", Parameter.class);
+                    .getAttribute("_actorInteractionAddon", Parameter.class);
 
             if (actorInteractionAddonParameter != null) {
                 String actorInteractionAddonClassName = actorInteractionAddonParameter
                         .stringValue();
 
-                    Class actorInteractionAddonClass = Class
+                Class actorInteractionAddonClass = Class
                         .forName(actorInteractionAddonClassName);
 
-                    ActorInteractionAddon actorInteractionAddon =
-                        (ActorInteractionAddon) actorInteractionAddonClass
+                ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
                         .newInstance();
 
-                    if (actorInteractionAddon.isActorOfInterestForAddonController(modelObject)) {
-                        actorInteractionAddon.lookInsideAction(this, modelObject);
-                    }
-
+                if (actorInteractionAddon
+                        .isActorOfInterestForAddonController(modelObject)) {
+                    actorInteractionAddon.lookInsideAction(this, modelObject);
                 }
+
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

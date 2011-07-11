@@ -145,23 +145,19 @@ public class ExecutorThread implements Runnable {
                  * In case of error, we abort the connection and set the
                  * ExecutionError and stop the execution of this thread
                  */
-                _abortConnection("Database execution error - "
-                        + e.getMessage());
+                _abortConnection("Database execution error - " + e.getMessage());
                 return;
 
             } catch (InterruptedException e) {
-                _abortConnection("Database execution error - "
-                        + e.getMessage());
+                _abortConnection("Database execution error - " + e.getMessage());
                 e.printStackTrace();
                 return;
             } catch (DBExecutionException e) {
-                _abortConnection("Database execution error - "
-                        + e.getMessage());
+                _abortConnection("Database execution error - " + e.getMessage());
                 e.printStackTrace();
                 return;
             } catch (ModelAlreadyExistException e) {
-                _abortConnection("Database execution error - "
-                        + e.getMessage());
+                _abortConnection("Database execution error - " + e.getMessage());
                 e.printStackTrace();
                 return;
             } catch (CircularDependencyException e) {

@@ -39,10 +39,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class Const
-        extends
-            LimitedFiringSource {
-            //ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.LimitedFiringSource {
+public class Const extends LimitedFiringSource {
+    //ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.LimitedFiringSource {
     /**
      *  Construct a Const adapter.
      *  @param actor The given ptolemy.actor.lib.Const actor.

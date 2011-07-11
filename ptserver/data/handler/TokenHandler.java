@@ -71,6 +71,6 @@ public interface TokenHandler<T extends Token> {
      * @exception IOException if there is a problem with the outputStream
      * @exception IllegalActionException if there is the state becomes inconsistent
      */
-    T convertToToken(DataInputStream inputStream, Class<? extends T> tokenType) throws IOException,
-            IllegalActionException;
+    T convertToToken(DataInputStream inputStream, Class<? extends T> tokenType)
+            throws IOException, IllegalActionException;
 }

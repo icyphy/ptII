@@ -96,7 +96,6 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
         super(container, name);
     }
 
-
     /** Construct a PthalesDynamicCompositeActor in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -123,7 +122,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
      * @exception IllegalActionException If thrown while reading a port
      */
     public int computeIterations() throws /*NoTokenException,*/
-            IllegalActionException {
+    IllegalActionException {
 
         int minIterations = -1;
 

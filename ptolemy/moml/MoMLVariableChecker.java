@@ -92,8 +92,8 @@ public class MoMLVariableChecker {
      *  @exception IllegalActionException If there is a problem parsing
      *  the string, or validating a variable.
      */
-    public String checkCopy(String momlToBeChecked, NamedObj container, boolean hideVariables)
-            throws IllegalActionException {
+    public String checkCopy(String momlToBeChecked, NamedObj container,
+            boolean hideVariables) throws IllegalActionException {
 
         _variableBuffer = new StringWriter();
         Workspace workspace = new Workspace("copyWorkspace");
@@ -143,21 +143,23 @@ public class MoMLVariableChecker {
         if (parsedContainer != null) {
             // parsedContainer might be null if we failed to parse because
             // of a missing class
-            Iterator entities = parsedContainer.deepEntityList()
-                    .iterator();
+            Iterator entities = parsedContainer.deepEntityList().iterator();
             while (entities.hasNext()) {
                 Entity entity = (Entity) entities.next();
-                List<Attribute> entityAttributes = new LinkedList<Attribute>(entity.attributeList());
-                for (Attribute attribute: entityAttributes) {
-                    _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(attribute, container,
-                            parsedContainer, hideVariables);
+                List<Attribute> entityAttributes = new LinkedList<Attribute>(
+                        entity.attributeList());
+                for (Attribute attribute : entityAttributes) {
+                    _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(
+                            attribute, container, parsedContainer,
+                            hideVariables);
                 }
             }
 
-            List<Attribute> allAttributes = new LinkedList<Attribute>(parsedContainer.attributeList());
+            List<Attribute> allAttributes = new LinkedList<Attribute>(
+                    parsedContainer.attributeList());
             for (Attribute attribute : allAttributes) {
-                _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(attribute, container,
-                        parsedContainer, hideVariables);
+                _recursiveFindUndefinedConstantsOrIdentifiesInAttribute(
+                        attribute, container, parsedContainer, hideVariables);
             }
         }
 
@@ -192,8 +194,8 @@ public class MoMLVariableChecker {
                 try {
                     variable.getToken();
                 } catch (IllegalActionException ex) {
-                    doGetToken = _findUndefinedConstantsOrIdentifiers(
-                            ex, container, parsedContainer, hideVariables);
+                    doGetToken = _findUndefinedConstantsOrIdentifiers(ex,
+                            container, parsedContainer, hideVariables);
                 }
             }
             ;
@@ -203,13 +205,12 @@ public class MoMLVariableChecker {
         // look for missing things.  Note that Expression.expression
         // is a StringAttribute, so we pick that up here.
         if (attribute instanceof AbstractSettableAttribute) {
-            AbstractSettableAttribute settable =
-                (AbstractSettableAttribute) attribute;
+            AbstractSettableAttribute settable = (AbstractSettableAttribute) attribute;
             PtParser ptParser = new PtParser();
             ASTPtRootNode parseTree = null;
             try {
-                parseTree = ptParser.generateParseTree(settable
-                        .getExpression());
+                parseTree = ptParser
+                        .generateParseTree(settable.getExpression());
             } catch (Throwable throwable) {
                 // Skip things we can't parse, like StringAttributes
                 // that are docs.
@@ -226,10 +227,9 @@ public class MoMLVariableChecker {
             }
 
             if (parseTree != null) {
-                ParseTreeFreeVariableCollector variableCollector =
-                    new ParseTreeFreeVariableCollector();
+                ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
                 Set set = variableCollector.collectFreeVariables(parseTree,
-                        /*scope*/null);
+                /*scope*/null);
                 for (Iterator elements = set.iterator(); elements.hasNext();) {
                     String name = (String) elements.next();
 
@@ -350,12 +350,16 @@ public class MoMLVariableChecker {
         // Find the variable in the object we are copying.
 
         // Get the name of the variable without the .auto.
-        String variableName = exception.getNameable1().getFullName().substring(
-                ((NamedObj) exception.getNameable1()).toplevel().getName()
-                        .length() + 2);
+        String variableName = exception
+                .getNameable1()
+                .getFullName()
+                .substring(
+                        ((NamedObj) exception.getNameable1()).toplevel()
+                                .getName().length() + 2);
 
-        return _findUndefinedConstantsOrIdentifiers(variableName, idException
-                .nodeName(), container, parsedContainer, hideVariables);
+        return _findUndefinedConstantsOrIdentifiers(variableName,
+                idException.nodeName(), container, parsedContainer,
+                hideVariables);
     }
 
     /** Find the missing variables referred to by the given variable name and
@@ -375,7 +379,8 @@ public class MoMLVariableChecker {
      */
     private boolean _findUndefinedConstantsOrIdentifiers(String variableName,
             String nodeName, NamedObj container,
-            TypedCompositeActor parsedContainer, boolean hideVariables) throws IllegalActionException {
+            TypedCompositeActor parsedContainer, boolean hideVariables)
+            throws IllegalActionException {
         boolean doRerun = false;
 
         Attribute masterAttribute = container.getAttribute(variableName);
@@ -450,8 +455,7 @@ public class MoMLVariableChecker {
      *   the original string.
      */
     private String _insertHiddenMoMLTagIntoProperty(String moml) {
-        String hiddenMoML =
-            "<property name=\"style\" class=\"ptolemy.actor.gui.style.HiddenStyle\"></property>";
+        String hiddenMoML = "<property name=\"style\" class=\"ptolemy.actor.gui.style.HiddenStyle\"></property>";
         return moml.replaceFirst("</property>", hiddenMoML + "</property>");
     }
 

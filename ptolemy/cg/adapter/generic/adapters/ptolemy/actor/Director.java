@@ -260,7 +260,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  this base class, return the empty string.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generatePreinitializeMethodBodyCode() throws IllegalActionException {
+    public String generatePreinitializeMethodBodyCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
@@ -334,7 +335,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code,
-            boolean executive)  throws IllegalActionException {
+            boolean executive) throws IllegalActionException {
 
         code.append(CodeStream.indent(getCodeGenerator().comment(
                 "Transfer tokens to the inside")));
@@ -354,7 +355,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                 code.append(CodeStream.indent(_compositeActorAdapter
                         .getReference("@" + name, executive)));
                 code.append(" = ");
-                code.append(_compositeActorAdapter.getReference(name, executive));
+                code.append(_compositeActorAdapter
+                        .getReference(name, executive));
                 code.append(";" + _eol);
             }
         }
@@ -385,8 +387,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  other Directors call this with executive == false.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code,
-            boolean executive) throws IllegalActionException {
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code, boolean executive) throws IllegalActionException {
         code.append(getCodeGenerator()
                 .comment("Transfer tokens to the outside"));
 
@@ -401,10 +403,10 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                     name = name + '#' + i;
                 }
 
-                code.append(_compositeActorAdapter.getReference(name, false, executive)
-                        + " = ");
+                code.append(_compositeActorAdapter.getReference(name, false,
+                        executive) + " = ");
                 code.append(_compositeActorAdapter.getReference("@" + name,
-                                false, executive));
+                        false, executive));
                 code.append(";" + _eol);
             }
         }

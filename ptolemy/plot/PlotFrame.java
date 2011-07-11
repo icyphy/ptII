@@ -103,7 +103,8 @@ import ptolemy.vergil.basic.ImageExportable;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class PlotFrame extends JFrame implements PropertyChangeListener, ImageExportable {
+public class PlotFrame extends JFrame implements PropertyChangeListener,
+        ImageExportable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -237,16 +238,19 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
         // System.out.println(event.paramString());
         Object source = event.getSource();
         if (source instanceof JFileChooser) {
-            FileFilter filter = ((JFileChooser)source).getFileFilter();
-            JFileChooser fileDialog = (JFileChooser)source;
+            FileFilter filter = ((JFileChooser) source).getFileFilter();
+            JFileChooser fileDialog = (JFileChooser) source;
             if (filter instanceof EPSFileFilter) {
-                fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(), "plot.eps"));
+                fileDialog.setSelectedFile(new File(fileDialog
+                        .getCurrentDirectory(), "plot.eps"));
             } else if (filter instanceof FilterForGIF) {
-                fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(), "plot.gif"));
+                fileDialog.setSelectedFile(new File(fileDialog
+                        .getCurrentDirectory(), "plot.gif"));
             } else {
                 // FIXME: For some inexplicable reason, the following line does nothing if the
                 // directory already exists!!!!!!!!!!!!! Pretty lame...
-                fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(), "plot"));
+                fileDialog.setSelectedFile(new File(fileDialog
+                        .getCurrentDirectory(), "plot"));
             }
         }
     }
@@ -375,7 +379,8 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
                 "plot.gif"));
 
-        fileDialog.addPropertyChangeListener(JFileChooser.FILE_FILTER_CHANGED_PROPERTY, this);
+        fileDialog.addPropertyChangeListener(
+                JFileChooser.FILE_FILTER_CHANGED_PROPERTY, this);
 
         int returnVal = fileDialog.showDialog(this, "Export");
 
@@ -472,9 +477,9 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
                         input);
                 plot.repaint();
             } catch (FileNotFoundException ex) {
-                JOptionPane.showMessageDialog(this, "File not found:\n"
-                        + ex.toString(), "Ptolemy Plot Error",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "File not found:\n" + ex.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Error reading input:\n"
                         + ex.toString(), "Ptolemy Plot Error",
@@ -535,8 +540,8 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
             try {
                 job.print(aset);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Printing failed:\n"
-                        + ex.toString(), "Print Error",
+                JOptionPane.showMessageDialog(this,
+                        "Printing failed:\n" + ex.toString(), "Print Error",
                         JOptionPane.WARNING_MESSAGE);
             }
         }
@@ -601,8 +606,8 @@ public class PlotFrame extends JFrame implements PropertyChangeListener, ImageEx
                 // calls PlotBox.print(Graphics, PageFormat)
                 job.print();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Printing failed:\n"
-                        + ex.toString(), "Print Error",
+                JOptionPane.showMessageDialog(this,
+                        "Printing failed:\n" + ex.toString(), "Print Error",
                         JOptionPane.WARNING_MESSAGE);
             }
         }

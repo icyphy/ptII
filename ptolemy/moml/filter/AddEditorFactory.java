@@ -144,7 +144,8 @@ public class AddEditorFactory extends MoMLFilterSimple {
      *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData, String xmlFile, MoMLParser parser) throws Exception {
+            StringBuffer currentCharData, String xmlFile, MoMLParser parser)
+            throws Exception {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return;
         } else if (_currentAttributeHasLocation && (elementName != null)

@@ -26,7 +26,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib;
 
-
 /**
  A code generation adapter class for ptolemy.domains.sdf.lib.Repeat.
 
@@ -36,7 +35,9 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.doma
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Repeat extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.Repeat {
+public class Repeat
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.Repeat {
 
     /**
      * Construct a Repeat adapter.

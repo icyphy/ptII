@@ -102,8 +102,9 @@ public class StateIcon extends NameIcon {
             if (colorParameter != null) {
                 ArrayToken array = (ArrayToken) colorParameter.getToken();
                 if (array.length() == 4) {
-                    Color color = new Color((float) ((ScalarToken) array
-                            .getElement(0)).doubleValue(),
+                    Color color = new Color(
+                            (float) ((ScalarToken) array.getElement(0))
+                                    .doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
                                     .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))
@@ -113,7 +114,8 @@ public class StateIcon extends NameIcon {
                     return color;
                 }
             }
-            ColorAttribute colorAttribute = (ColorAttribute) (getAttribute("fill", ColorAttribute.class));
+            ColorAttribute colorAttribute = (ColorAttribute) (getAttribute(
+                    "fill", ColorAttribute.class));
             if (colorAttribute != null) {
                 return colorAttribute.asColor();
             }
@@ -124,8 +126,8 @@ public class StateIcon extends NameIcon {
         NamedObj container = getContainer();
         if (container instanceof State) {
             try {
-                ColorAttribute colorAttribute = (ColorAttribute) (
-                                container.getAttribute("fill", ColorAttribute.class));
+                ColorAttribute colorAttribute = (ColorAttribute) (container
+                        .getAttribute("fill", ColorAttribute.class));
                 if (colorAttribute != null) {
                     return colorAttribute.asColor();
                 }

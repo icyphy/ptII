@@ -190,8 +190,8 @@ public class ComponentDialog extends JDialog {
             // passing null to setLocationRelationTo() _may_ result
             // in centering on the screen, but it is not required to.
             Toolkit tk = Toolkit.getDefaultToolkit();
-            setLocation((tk.getScreenSize().width - getSize().width) / 2, (tk
-                    .getScreenSize().height - getSize().height) / 2);
+            setLocation((tk.getScreenSize().width - getSize().width) / 2,
+                    (tk.getScreenSize().height - getSize().height) / 2);
         }
 
         // NOTE: Java's AWT may yield random results if we do the following.

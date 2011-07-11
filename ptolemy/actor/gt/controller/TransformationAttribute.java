@@ -240,8 +240,8 @@ public class TransformationAttribute extends Attribute implements Configurable,
         List<ParserAttribute> parsers = container
                 .attributeList(ParserAttribute.class);
         ParserAttribute parserAttribute = parsers.size() > 0 ? parsers.get(0)
-                : new ParserAttribute(container, container
-                        .uniqueName("_parser"));
+                : new ParserAttribute(container,
+                        container.uniqueName("_parser"));
         MoMLParser oldParser = parsers.size() > 0 ? parserAttribute.getParser()
                 : null;
         parserAttribute.setParser(new MoMLParser());

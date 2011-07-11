@@ -77,23 +77,28 @@ public class OntologyMoMLHandler extends Attribute {
      *  @param text True if the ontology concept annotation text should be cleared.
      *  @exception IllegalActionException If getting the resolved concept fails.
      */
-    public void clearDisplay(boolean colors, boolean text) throws IllegalActionException {
+    public void clearDisplay(boolean colors, boolean text)
+            throws IllegalActionException {
         if (colors || text) {
             // Get the OntologySolver.
             OntologySolver solver = (OntologySolver) getContainer();
             for (Object propertyable : solver.getAllPropertyables()) {
                 if (propertyable instanceof NamedObj) {
-                    Concept concept = solver
-                    .getConcept(propertyable);
+                    Concept concept = solver.getConcept(propertyable);
                     if (concept != null
-                            || ((((NamedObj) propertyable).getAttribute("_showInfo") != null) && colors ||
-                                    (((NamedObj) propertyable).getAttribute("_highlightColor") != null) && text)) {
+                            || ((((NamedObj) propertyable)
+                                    .getAttribute("_showInfo") != null)
+                                    && colors || (((NamedObj) propertyable)
+                                    .getAttribute("_highlightColor") != null)
+                                    && text)) {
                         String request = "<group>";
-                        if (((NamedObj) propertyable).getAttribute("_showInfo") != null && text) {
+                        if (((NamedObj) propertyable).getAttribute("_showInfo") != null
+                                && text) {
                             request += "<deleteProperty name=\"_showInfo\"/>";
                         }
                         if (((NamedObj) propertyable)
-                                .getAttribute("_highlightColor") != null && colors) {
+                                .getAttribute("_highlightColor") != null
+                                && colors) {
                             request += "<deleteProperty name=\"_highlightColor\"/>";
                         }
                         request += "</group>";
@@ -125,7 +130,8 @@ public class OntologyMoMLHandler extends Attribute {
      *  @exception IllegalActionException Thrown if there is an error getting the
      *   colors for the resolved concept values.
      */
-    public void highlightConcepts(Set<Object> objects) throws IllegalActionException {
+    public void highlightConcepts(Set<Object> objects)
+            throws IllegalActionException {
         if (objects != null) {
             // Get the PropertySolver.
             OntologySolver solver = (OntologySolver) getContainer();
@@ -137,10 +143,10 @@ public class OntologyMoMLHandler extends Attribute {
                         ColorAttribute conceptColor = concept.getColor();
                         if (conceptColor != null) {
                             String request = "<property name=\"_highlightColor\" "
-                                + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
-                                + conceptColor.getExpression() + "\"/>";
-                            MoMLChangeRequest change = new MoMLChangeRequest(this,
-                                    (NamedObj) object, request, false);
+                                    + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
+                                    + conceptColor.getExpression() + "\"/>";
+                            MoMLChangeRequest change = new MoMLChangeRequest(
+                                    this, (NamedObj) object, request, false);
                             ((NamedObj) object).requestChange(change);
                         }
                     }

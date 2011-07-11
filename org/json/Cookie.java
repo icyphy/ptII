@@ -45,23 +45,22 @@ public class Cookie {
      * @return       The escaped result.
      */
     public static String escape(String string) {
-        char         c;
-        String       s = string.trim();
+        char c;
+        String s = string.trim();
         StringBuffer sb = new StringBuffer();
-        int          len = s.length();
+        int len = s.length();
         for (int i = 0; i < len; i += 1) {
             c = s.charAt(i);
             if (c < ' ' || c == '+' || c == '%' || c == '=' || c == ';') {
                 sb.append('%');
-                sb.append(Character.forDigit((char)((c >>> 4) & 0x0f), 16));
-                sb.append(Character.forDigit((char)(c & 0x0f), 16));
+                sb.append(Character.forDigit((char) ((c >>> 4) & 0x0f), 16));
+                sb.append(Character.forDigit((char) (c & 0x0f), 16));
             } else {
                 sb.append(c);
             }
         }
         return sb.toString();
     }
-
 
     /**
      * Convert a cookie specification string into a JSONObject. The string
@@ -79,9 +78,9 @@ public class Cookie {
      * @exception JSONException
      */
     public static JSONObject toJSONObject(String string) throws JSONException {
-        String         n;
-        JSONObject     o = new JSONObject();
-        Object         v;
+        String n;
+        JSONObject o = new JSONObject();
+        Object v;
         JSONTokener x = new JSONTokener(string);
         o.put("name", x.nextTo('='));
         x.next('=');
@@ -103,7 +102,6 @@ public class Cookie {
         }
         return o;
     }
-
 
     /**
      * Convert a JSONObject into a cookie specification string. The JSONObject
@@ -158,7 +156,7 @@ public class Cookie {
                 int d = JSONTokener.dehexchar(s.charAt(i + 1));
                 int e = JSONTokener.dehexchar(s.charAt(i + 2));
                 if (d >= 0 && e >= 0) {
-                    c = (char)(d * 16 + e);
+                    c = (char) (d * 16 + e);
                     i += 2;
                 }
             }

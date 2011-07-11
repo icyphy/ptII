@@ -181,8 +181,8 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
      *  @return False if the infoflags indicate that the image is
      *   completely loaded; true otherwise.
      */
-    public synchronized boolean imageUpdate(Image image, int infoflags, int x, int y,
-            int width, int height) {
+    public synchronized boolean imageUpdate(Image image, int infoflags, int x,
+            int y, int width, int height) {
         if ((infoflags & ImageObserver.ALLBITS) != 0) {
             // The image is now fully loaded.
             if (_scalePercentage != 0.0
@@ -200,10 +200,11 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         }
 
         if ((infoflags & (ImageObserver.ERROR | ImageObserver.ABORT)) != 0) {
-            URL url = getClass().getResource("/diva/canvas/toolbox/errorImage.gif");
+            URL url = getClass().getResource(
+                    "/diva/canvas/toolbox/errorImage.gif");
             Toolkit tk = Toolkit.getDefaultToolkit();
             Image errorImage = tk.getImage(url);
-            synchronized(this) {
+            synchronized (this) {
                 _image = errorImage;
                 _scaledImage = errorImage;
             }
@@ -241,7 +242,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         // This needs to be in the swing thread.
         Runnable doScale = new Runnable() {
             public void run() {
-                synchronized(ImageIcon.this) {
+                synchronized (ImageIcon.this) {
                     Toolkit tk = Toolkit.getDefaultToolkit();
                     // NOTE: Oddly, the following two calls below may not
                     // return the correct sizes unless the image is
@@ -254,14 +255,18 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                         // This will be handled in imageUpdate().
                         return;
                     }
-                    int newWidth = (int) Math.round((width * _scalePercentage) / 100.0);
-                    int newHeight = (int) Math.round((height * _scalePercentage) / 100.0);
+                    int newWidth = (int) Math
+                            .round((width * _scalePercentage) / 100.0);
+                    int newHeight = (int) Math
+                            .round((height * _scalePercentage) / 100.0);
 
-                    _scaledImage = _image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+                    _scaledImage = _image.getScaledInstance(newWidth,
+                            newHeight, Image.SCALE_SMOOTH);
 
                     _scalePercentageImplemented = _scalePercentage;
 
-                    if (tk.prepareImage(_scaledImage, width, height, ImageIcon.this)) {
+                    if (tk.prepareImage(_scaledImage, width, height,
+                            ImageIcon.this)) {
                         // Image is fully prepared. Request a re-rendering.
                         _updateFigures();
                     }
@@ -307,7 +312,8 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         }
 
         requestChange(new ChangeRequest(this, "Dummy change request") {
-            protected void _execute() {}
+            protected void _execute() {
+            }
         });
     }
 
@@ -318,7 +324,8 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
     private Image _image;
 
     // Placeholder icon to be used if images are not fully processed.
-    private static Figure _PLACEHOLDER_ICON = new BasicRectangle(0.0, 0.0, 10.0, 10.0);
+    private static Figure _PLACEHOLDER_ICON = new BasicRectangle(0.0, 0.0,
+            10.0, 10.0);
 
     // The scaled version of the image that is the master.
     private Image _scaledImage;

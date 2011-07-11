@@ -62,8 +62,9 @@ public class Main extends KernelMain {
                         + " outputDirectory:" + _outputDirectory);
 
         // Generate the interpreted files in outputDirectory
-        addTransform(pack, "wjtp.interpretedWriter", InterpretedWriter
-                .v(_toplevel), " outputDirectory:" + _outputDirectory);
+        addTransform(pack, "wjtp.interpretedWriter",
+                InterpretedWriter.v(_toplevel), " outputDirectory:"
+                        + _outputDirectory);
     }
 
     /** Parse any code generator specific arguments.

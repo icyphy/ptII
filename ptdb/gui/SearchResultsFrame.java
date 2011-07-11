@@ -78,7 +78,8 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (lholsing)
  */
 
-public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFrame {
+public class SearchResultsFrame extends JFrame implements Observer,
+        PTDBBasicFrame {
 
     /**
      * Construct a panel associated with a search result.
@@ -99,8 +100,6 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
         _containerModel = model;
         _sourceFrame = frame;
         _configuration = configuration;
-
-
 
         String title = "Search Results";
 
@@ -145,7 +144,7 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
         buttonPanel.add(_loadByValButton);
 
         _cancelButton = new JButton("Stop Search");
-//        _cancelButton.setEnabled(false);
+        //        _cancelButton.setEnabled(false);
         buttonPanel.add(_cancelButton);
 
         _loadByRefButton.addActionListener(new ActionListener() {
@@ -180,17 +179,15 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
 
         });
 
-
         JPanel statusPanel = new JPanel(new BorderLayout());
         statusPanel.setPreferredSize(new Dimension(ImageObserver.WIDTH, 50));
 
         outerPanel.add(statusPanel);
 
-
         _statusTextField = new JTextField();
 
-        _statusTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder
-                (javax.swing.border.EtchedBorder.RAISED));
+        _statusTextField.setBorder(javax.swing.BorderFactory
+                .createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
         _statusTextField.setEditable(false);
         _statusTextField.setSize(statusPanel.getSize());
 
@@ -276,13 +273,13 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
             } else {
                 if (_resultPanelList.size() == 0) {
                     // No result found.
-//                    JOptionPane.showMessageDialog(this, "No result found.");
+                    //                    JOptionPane.showMessageDialog(this, "No result found.");
 
                     _statusTextField.setText("No result found.");
                     _statusTextField.setForeground(Color.RED);
                 } else {
                     // Searching is done.
-//                    JOptionPane.showMessageDialog(this, "Search is done.");
+                    //                    JOptionPane.showMessageDialog(this, "Search is done.");
                     _statusTextField.setText("Search is done.");
                     _statusTextField.setForeground(Color.BLACK);
                 }
@@ -331,22 +328,22 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
 
                 } catch (CircularDependencyException e) {
 
-                    JOptionPane.showMessageDialog(this, "Importing this " +
-                            "model by reference will result in a circular " +
-                            "dependency.", "Import Error",
+                    JOptionPane.showMessageDialog(this, "Importing this "
+                            + "model by reference will result in a circular "
+                            + "dependency.", "Import Error",
                             JOptionPane.INFORMATION_MESSAGE, null);
 
                 } catch (Exception e) {
 
-                    MessageHandler.error("Cannot import the model - '" + modelName + "'.",
-                            e);
+                    MessageHandler.error("Cannot import the model - '"
+                            + modelName + "'.", e);
 
                 }
 
             }
             if (importDone) {
                 _sourceFrame.toFront();
-//                JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+                //                JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
                 _statusTextField.setText("Import complete!");
                 _statusTextField.setForeground(Color.BLACK);
             }
@@ -397,7 +394,7 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
             }
 
             _sourceFrame.toFront();
-//            JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+            //            JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
             _statusTextField.setText("Import complete!");
             _statusTextField.setForeground(Color.BLACK);
         } else {

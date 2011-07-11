@@ -134,7 +134,6 @@ public class PthalesAtomicActor extends TypedAtomicActor {
         return realIn;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////              static methods implementation              ////
 
@@ -210,7 +209,6 @@ public class PthalesAtomicActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////              protected fields                             ////
 
-
     /** The name of the internal repetitions parameter. */
     protected static String _INTERNAL_REPETITIONS = "internalRepetitions";
 
@@ -281,7 +279,6 @@ public class PthalesAtomicActor extends TypedAtomicActor {
         return iterations;
     }
 
-
     /** Set specific attributes common to all Pthales atomic actors.
      * @exception IllegalActionException
      * @exception NameDuplicationException
@@ -325,14 +322,14 @@ public class PthalesAtomicActor extends TypedAtomicActor {
                 int len = ((ArrayToken) token).length();
                 result = new Integer[len];
                 for (int i = 0; i < len; i++) {
-                    result[i] = new Integer(((IntToken) ((ArrayToken) token)
-                            .getElement(i)).intValue());
+                    result[i] = new Integer(
+                            ((IntToken) ((ArrayToken) token).getElement(i))
+                                    .intValue());
                 }
             }
         }
 
         return result;
     }
-
 
 }

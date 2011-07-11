@@ -1194,8 +1194,9 @@ public class FloatMatrixMath {
 
                 dotProductMatrix[j][i] = dotProduct;
 
-                rowArray = FloatArrayMath.subtract(rowArray, FloatArrayMath
-                        .scale(orthogonalMatrix[j], dotProduct
+                rowArray = FloatArrayMath.subtract(
+                        rowArray,
+                        FloatArrayMath.scale(orthogonalMatrix[j], dotProduct
                                 * oneOverNormSquaredArray[j]));
             }
 

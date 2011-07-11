@@ -64,7 +64,7 @@ O1, O1, and O2 in order.
  @Pt.AcceptedRating Red (mankit)
  */
 
-public class MultiHashMap<K,V> {
+public class MultiHashMap<K, V> {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -161,5 +161,5 @@ public class MultiHashMap<K,V> {
     /** The HashMap that stores the mappings of this MultiMap.  The multimap
      *  is constructed by having the values of the HashMap be collections.
      */
-    private HashMap<K,Collection<V>> _map = new HashMap<K,Collection<V>>();
+    private HashMap<K, Collection<V>> _map = new HashMap<K, Collection<V>>();
 }

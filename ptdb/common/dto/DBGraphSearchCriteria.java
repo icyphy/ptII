@@ -81,7 +81,6 @@ public class DBGraphSearchCriteria {
         return _compositeEntitiesList;
     }
 
-
     /**
      * Get the pattern of this graph search criteria.
      *
@@ -135,7 +134,6 @@ public class DBGraphSearchCriteria {
             ArrayList<CompositeEntity> compositeEntitiesList) {
         _compositeEntitiesList = compositeEntitiesList;
     }
-
 
     /**
      * Set the pattern of the graph search criteria.

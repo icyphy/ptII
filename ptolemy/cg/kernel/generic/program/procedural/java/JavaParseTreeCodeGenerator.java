@@ -606,8 +606,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         ASTPtRootNode cloneTree;
 
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
-        cloneTree = specializer.specialize(node.getExpressionTree(), node
-                .getArgumentNameList(), _scope);
+        cloneTree = specializer.specialize(node.getExpressionTree(),
+                node.getArgumentNameList(), _scope);
 
         // Infer the return type.
         if (_typeInference == null) {
@@ -617,12 +617,13 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         _typeInference.inferTypes(node, _scope);
 
         FunctionType type = (FunctionType) node.getType();
-        ExpressionFunction definedFunction = new ExpressionFunction(node
-                .getArgumentNameList(), node.getArgumentTypes(), cloneTree);
+        ExpressionFunction definedFunction = new ExpressionFunction(
+                node.getArgumentNameList(), node.getArgumentTypes(), cloneTree);
         FunctionToken result = new FunctionToken(definedFunction, type);
         _evaluatedChildToken = (result);
 
-        StringBuffer functionCode = new StringBuffer("\n/* FIXME: This code does work.*/\n");
+        StringBuffer functionCode = new StringBuffer(
+                "\n/* FIXME: This code does work.*/\n");
 
         // Handle functions like iterate()
         // FIXME: Needs to be finished.  iterate() takes a Ptolemy Token
@@ -647,7 +648,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
         functionCode.append("\n}\n),\n new ptolemy.data.type.Type[] \n{\n");
         for (int i = 0; i < argumentTypes.length; i++) {
-            functionCode.append("ptolemy.data.type.BaseType." + argumentTypes[i].toString().toUpperCase());
+            functionCode.append("ptolemy.data.type.BaseType."
+                    + argumentTypes[i].toString().toUpperCase());
             if (i < argumentTypes.length - 1) {
                 functionCode.append(", ");
             }
@@ -766,10 +768,10 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             if (_evaluatedChildToken instanceof ComplexToken) {
-                Complex complex = ((ComplexToken) _evaluatedChildToken).complexValue();
-                _childCode = "$Complex_new("
-                    + complex.real + ", " + complex.imag
-                    + ")";
+                Complex complex = ((ComplexToken) _evaluatedChildToken)
+                        .complexValue();
+                _childCode = "$Complex_new(" + complex.real + ", "
+                        + complex.imag + ")";
             } else if (_evaluatedChildToken instanceof StringToken) {
                 // In C, Strings should have \n tags substituted.
                 // See Test 17.2
@@ -1010,8 +1012,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                        .getRowCount()
-                        * columnCount];
+                        .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
@@ -1021,8 +1022,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                             * i, columnCount);
                 }
 
-                childToken = MatrixToken.arrayToMatrix(matrixTokens, node
-                        .getRowCount(), columnCount);
+                childToken = MatrixToken.arrayToMatrix(matrixTokens,
+                        node.getRowCount(), columnCount);
             } catch (IllegalActionException ex) {
                 // FIXME: better detail message that includes the thing
                 // we were parsing.
@@ -1132,8 +1133,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
             /*ptolemy.data.Token token =*/_evaluateChild(node, i);
 
             result = new StringBuffer("(" + _targetType(resultType) + ")"
-                    + "Math.pow((double)" + result.toString()
-                    + ", (double)" + _childCode);
+                    + "Math.pow((double)" + result.toString() + ", (double)"
+                    + _childCode);
 
             // Note that we check for ScalarTokens because anything
             // that has a meaningful intValue() method, such as
@@ -1807,7 +1808,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
                                                         //: ptType == PointerToken.POINTER ? "Pointer"
                                                         : ptType == BaseType.COMPLEX ? "Complex"
-                                                        : null;
+                                                                : null;
 
         if (result == null) {
             if (ptType instanceof ArrayType) {
@@ -1922,7 +1923,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         cFunctionMap.put("exp", "Math.exp");
         cFunctionMap.put("expm1", "Math.expm1");
         cFunctionMap.put("floor", "Math.floor");
-        cFunctionMap.put("iterate", "ptolemy.data.expr.UtilityFunctions.iterate");
+        cFunctionMap.put("iterate",
+                "ptolemy.data.expr.UtilityFunctions.iterate");
         cFunctionMap.put("log", "Math.log");
         cFunctionMap.put("log10", "Math.log10");
         cFunctionMap.put("log1p", "Math.log1p");

@@ -228,11 +228,11 @@ public class RunTableau extends Tableau {
                                     .getContainer();
 
                             // Create a new text effigy inside this one.
-                            Effigy textEffigy = new TextEffigy(effigy, effigy
-                                    .uniqueName("debug listener"));
+                            Effigy textEffigy = new TextEffigy(effigy,
+                                    effigy.uniqueName("debug listener"));
                             DebugListenerTableau tableau = new DebugListenerTableau(
-                                    textEffigy, textEffigy
-                                            .uniqueName("debugListener"));
+                                    textEffigy,
+                                    textEffigy.uniqueName("debugListener"));
                             tableau.setDebuggable(debug);
                         }
                     } catch (KernelException ex) {

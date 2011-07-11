@@ -435,24 +435,21 @@ public class Connector extends MoMLApplication {
 
         public void actionPerformed(ActionEvent e) {
             final NamedObj model = _frame.getModel();
-            model
-                    .requestChange(new ChangeRequest(this,
-                            "Load NAOMI attributes") {
-                        protected void _execute() throws Exception {
-                            try {
-                                synchronized (model) {
-                                    _loadInterfaceFromModel(model);
-                                    _undoable = true;
-                                    _mergeWithPrevious = false;
-                                    _loadAttributes(model,
-                                            _getAttributesPath(), true);
-                                    _saveInterface();
-                                }
-                            } catch (IllegalActionException e) {
-                                throw new InternalErrorException(e);
-                            }
+            model.requestChange(new ChangeRequest(this, "Load NAOMI attributes") {
+                protected void _execute() throws Exception {
+                    try {
+                        synchronized (model) {
+                            _loadInterfaceFromModel(model);
+                            _undoable = true;
+                            _mergeWithPrevious = false;
+                            _loadAttributes(model, _getAttributesPath(), true);
+                            _saveInterface();
                         }
-                    });
+                    } catch (IllegalActionException e) {
+                        throw new InternalErrorException(e);
+                    }
+                }
+            });
         }
 
         private PtolemyFrame _frame;
@@ -508,24 +505,21 @@ public class Connector extends MoMLApplication {
 
         public void actionPerformed(ActionEvent e) {
             final NamedObj model = _frame.getModel();
-            model
-                    .requestChange(new ChangeRequest(this,
-                            "Save NAOMI attributes") {
-                        protected void _execute() throws Exception {
-                            try {
-                                synchronized (model) {
-                                    _loadInterfaceFromModel(model);
-                                    _undoable = true;
-                                    _mergeWithPrevious = false;
-                                    _saveAttributes(model,
-                                            _getAttributesPath(), true);
-                                    _saveInterface();
-                                }
-                            } catch (IllegalActionException e) {
-                                throw new InternalErrorException(e);
-                            }
+            model.requestChange(new ChangeRequest(this, "Save NAOMI attributes") {
+                protected void _execute() throws Exception {
+                    try {
+                        synchronized (model) {
+                            _loadInterfaceFromModel(model);
+                            _undoable = true;
+                            _mergeWithPrevious = false;
+                            _saveAttributes(model, _getAttributesPath(), true);
+                            _saveInterface();
                         }
-                    });
+                    } catch (IllegalActionException e) {
+                        throw new InternalErrorException(e);
+                    }
+                }
+            });
         }
 
         private PtolemyFrame _frame;
@@ -806,8 +800,8 @@ public class Connector extends MoMLApplication {
 
     protected void _loadAttributes(NamedObj model, File attributesPath,
             boolean force) throws IllegalActionException {
-        Collection<NamedObj> children = new LinkedList<NamedObj>(GTTools
-                .getChildren(model, true, true, true, true));
+        Collection<NamedObj> children = new LinkedList<NamedObj>(
+                GTTools.getChildren(model, true, true, true, true));
         for (NamedObj child : children) {
             List<NaomiParameter> parameters = child
                     .attributeList(NaomiParameter.class);
@@ -885,8 +879,8 @@ public class Connector extends MoMLApplication {
                         + parameter.getName()
                         + "\" value=\""
                         + NaomiParameter.formatExpression(
-                                parameter.getMethod(), parameter
-                                        .getAttributeName(), date, unit, doc)
+                                parameter.getMethod(),
+                                parameter.getAttributeName(), date, unit, doc)
                         + "\"/>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this, child,
                         moml);
@@ -1075,8 +1069,8 @@ public class Connector extends MoMLApplication {
 
     protected void _saveAttributes(NamedObj model, File attributesPath,
             boolean force) throws IllegalActionException {
-        Collection<NamedObj> children = new LinkedList<NamedObj>(GTTools
-                .getChildren(model, true, true, true, true));
+        Collection<NamedObj> children = new LinkedList<NamedObj>(
+                GTTools.getChildren(model, true, true, true, true));
         for (NamedObj child : children) {
             List<NaomiParameter> parameters = child
                     .attributeList(NaomiParameter.class);
@@ -1186,9 +1180,7 @@ public class Connector extends MoMLApplication {
                     Element units = document.createElementNS(NAMESPACES[0][1],
                             "units");
                     if (!unit.equals("")) {
-                        units
-                                .setTextContent(StringUtilities
-                                        .escapeForXML(unit));
+                        units.setTextContent(StringUtilities.escapeForXML(unit));
                     }
                     root.appendChild(units);
                     Element documentation = document.createElementNS(

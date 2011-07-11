@@ -28,8 +28,7 @@ public class _ClientStub extends org.omg.CORBA.portable.ObjectImpl implements
 
             String _id = $ex.getId();
 
-            if (_id
-                    .equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
+            if (_id.equals("IDL:CoordinatorUtil/CorbaIllegalActionException:1.0")) {
                 throw ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionExceptionHelper
                         .read($in);
             } else {

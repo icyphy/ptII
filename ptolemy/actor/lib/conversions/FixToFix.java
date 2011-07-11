@@ -139,8 +139,8 @@ public class FixToFix extends Converter {
                         "Invalid precision (not a 1 by 2 matrix).");
             }
 
-            Precision precision = new Precision(token.getElementAt(0, 0), token
-                    .getElementAt(0, 1));
+            Precision precision = new Precision(token.getElementAt(0, 0),
+                    token.getElementAt(0, 1));
             _quantization = _quantization.setPrecision(precision);
             if (_quantization.getOverflow() == Overflow.GROW) {
                 output.setTypeEquals(BaseType.UNSIZED_FIX);
@@ -182,8 +182,9 @@ public class FixToFix extends Converter {
         // If this is not done, then there may be problems with actor
         // oriented classes.
         newObject._quantization = new FixPointQuantization(
-                newObject._quantization.getPrecision(), newObject._quantization
-                        .getOverflow(), newObject._quantization.getRounding());
+                newObject._quantization.getPrecision(),
+                newObject._quantization.getOverflow(),
+                newObject._quantization.getRounding());
 
         return newObject;
     }

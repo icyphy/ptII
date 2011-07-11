@@ -81,8 +81,8 @@ public abstract class GraphAnalyzer {
         try {
             top.workspace().getReadAccess();
 
-            children = new LinkedList<Object>(top
-                    .entityList(ComponentEntity.class));
+            children = new LinkedList<Object>(
+                    top.entityList(ComponentEntity.class));
 
             boolean collapsing = _relationCollapsing(top);
             if (!collapsing) {
@@ -149,8 +149,8 @@ public abstract class GraphAnalyzer {
     public boolean findFirstPath(Port startPort, Path path,
             Set<? super Relation> visitedRelations,
             Set<? super Port> visitedPorts) {
-        List<?> relationList = new LinkedList<Object>(startPort
-                .linkedRelationList());
+        List<?> relationList = new LinkedList<Object>(
+                startPort.linkedRelationList());
         if (startPort instanceof ComponentPort) {
             ((Collection<?>) relationList).addAll(((ComponentPort) startPort)
                     .insideRelationList());
@@ -326,8 +326,8 @@ public abstract class GraphAnalyzer {
                     }
 
                     visitedRelations.add(relation);
-                    List<?> portList = new LinkedList<Object>(relation
-                            .linkedPortList());
+                    List<?> portList = new LinkedList<Object>(
+                            relation.linkedPortList());
 
                     _removeIgnoredObjects(portList);
 

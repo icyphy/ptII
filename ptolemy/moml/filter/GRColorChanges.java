@@ -124,8 +124,8 @@ public class GRColorChanges extends MoMLFilterSimple {
             NamedObj actor = container.getContainer();
 
             if ((actor != null)
-                    && actor.getClass().getName().startsWith(
-                            "ptolemy.domains.gr.lib.ViewScreen")) {
+                    && actor.getClass().getName()
+                            .startsWith("ptolemy.domains.gr.lib.ViewScreen")) {
                 String value = ((Settable) container).getExpression().trim();
 
                 if (value.startsWith("[")) {
@@ -142,8 +142,8 @@ public class GRColorChanges extends MoMLFilterSimple {
             NamedObj actor = container.getContainer();
 
             if ((actor != null)
-                    && actor.getClass().getName().equals(
-                            "ptolemy.domains.gr.lib.PolyCylinder3D")) {
+                    && actor.getClass().getName()
+                            .equals("ptolemy.domains.gr.lib.PolyCylinder3D")) {
                 String value = ((Settable) container).getExpression().trim();
 
                 if (value.startsWith("[")) {
@@ -160,8 +160,8 @@ public class GRColorChanges extends MoMLFilterSimple {
             NamedObj actor = container.getContainer();
 
             if ((actor != null)
-                    && actor.getClass().getName().equals(
-                            "ptolemy.domains.gr.lib.CircularSweep3D")) {
+                    && actor.getClass().getName()
+                            .equals("ptolemy.domains.gr.lib.CircularSweep3D")) {
                 String value = ((Settable) container).getExpression().trim();
 
                 if (value.startsWith("[")) {

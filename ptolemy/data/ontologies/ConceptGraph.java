@@ -230,7 +230,7 @@ public abstract class ConceptGraph implements CPO {
         if (conceptSubset != null && conceptSubset.length > 0) {
             Concept bound = conceptSubset[0];
             for (Concept concept : conceptSubset) {
-                switch(boundType) {
+                switch (boundType) {
                 case GREATESTLOWER:
                     bound = greatestLowerBound(bound, concept);
                     break;
@@ -238,9 +238,10 @@ public abstract class ConceptGraph implements CPO {
                     bound = leastUpperBound(bound, concept);
                     break;
                 default:
-                    throw new IllegalArgumentException("Unrecognized bound type: "
-                            + boundType + ". Expected either GREATESTLOWER or " +
-                                            "LEASTUPPER");
+                    throw new IllegalArgumentException(
+                            "Unrecognized bound type: " + boundType
+                                    + ". Expected either GREATESTLOWER or "
+                                    + "LEASTUPPER");
                 }
             }
             return bound;
@@ -268,10 +269,10 @@ public abstract class ConceptGraph implements CPO {
             if (elementArray[i] instanceof Concept) {
                 conceptArray[i] = (Concept) elementArray[i];
             } else {
-                throw new IllegalArgumentException("Array of element objects " +
-                                "are not all Concepts. Element " + i +
-                                "is " + elementArray[i] + " which is an instance " +
-                                "of " + elementArray[i].getClass() + ".");
+                throw new IllegalArgumentException("Array of element objects "
+                        + "are not all Concepts. Element " + i + "is "
+                        + elementArray[i] + " which is an instance " + "of "
+                        + elementArray[i].getClass() + ".");
             }
         }
         return conceptArray;

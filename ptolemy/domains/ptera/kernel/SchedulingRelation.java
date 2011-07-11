@@ -283,8 +283,9 @@ public class SchedulingRelation extends Transition {
             String trimmedArguments = argumentsExpression.trim();
             boolean emptyArguments = trimmedArguments.startsWith("{")
                     && trimmedArguments.endsWith("}")
-                    && trimmedArguments.substring(1,
-                            trimmedArguments.length() - 1).trim().equals("");
+                    && trimmedArguments
+                            .substring(1, trimmedArguments.length() - 1).trim()
+                            .equals("");
             if (!emptyArguments) {
                 if (buffer.length() > 0) {
                     buffer.append("\n");

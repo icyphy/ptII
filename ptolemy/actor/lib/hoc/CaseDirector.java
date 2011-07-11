@@ -101,7 +101,8 @@ public class CaseDirector extends Director {
      *   or the specified time if there isn't one.
      *  @exception IllegalActionException If by the executive director.
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         Nameable container = getContainer();
@@ -213,8 +214,7 @@ public class CaseDirector extends Director {
 
             // Transfer input tokens.
             for (Iterator inputPorts = container.inputPortList().iterator(); inputPorts
-                    .hasNext()
-                    && !_stopRequested;) {
+                    .hasNext() && !_stopRequested;) {
                 IOPort port = (IOPort) inputPorts.next();
 
                 if (!(port instanceof ParameterPort)) {
@@ -242,11 +242,9 @@ public class CaseDirector extends Director {
                                                     insideReceivers[i][j]
                                                             .getContainer(),
                                                     false, i, false, token));
-                                            _debug(
-                                                    getFullName(),
+                                            _debug(getFullName(),
                                                     "transferring input from "
-                                                            + port
-                                                                    .getFullName()
+                                                            + port.getFullName()
                                                             + " to "
                                                             + (insideReceivers[i][j])
                                                                     .getContainer()

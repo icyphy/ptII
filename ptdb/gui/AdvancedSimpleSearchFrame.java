@@ -60,27 +60,22 @@ public class AdvancedSimpleSearchFrame extends JFrame {
 
         addWindowListener(new WindowListener() {
 
-
             public void windowOpened(WindowEvent e) {
                 // Do nothing.
 
             }
 
-
             public void windowIconified(WindowEvent e) {
                 // Do nothing.
             }
-
 
             public void windowDeiconified(WindowEvent e) {
                 // Do nothing.
             }
 
-
             public void windowDeactivated(WindowEvent e) {
                 // Do nothing.
             }
-
 
             public void windowClosing(WindowEvent e) {
                 AdvancedSimpleSearchFrame.this.setVisible(false);
@@ -88,12 +83,10 @@ public class AdvancedSimpleSearchFrame extends JFrame {
 
             }
 
-
             public void windowClosed(WindowEvent e) {
                 AdvancedSimpleSearchFrame.this.setVisible(false);
                 _parentFrame.setEnabled(true);
             }
-
 
             public void windowActivated(WindowEvent e) {
                 // Do nothing.
@@ -221,8 +214,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
         if (!_attributesListPanel.getModelName().trim().isEmpty()) {
 
             try {
-                Utilities.checkModelName(_attributesListPanel
-                        .getModelName());
+                Utilities.checkModelName(_attributesListPanel.getModelName());
             } catch (IllegalNameException e) {
 
                 JOptionPane.showMessageDialog(this,

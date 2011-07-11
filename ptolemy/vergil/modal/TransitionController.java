@@ -327,10 +327,10 @@ public class TransitionController extends BasicEdgeController {
      *  @see ptolemy.actor.gui.Configuration#openModel(NamedObj)
      */
     protected void _openInstanceOrModel(Configuration configuration,
-            NamedObj refinement) throws IllegalActionException, NameDuplicationException {
+            NamedObj refinement) throws IllegalActionException,
+            NameDuplicationException {
         configuration.openModel(refinement);
     }
-
 
     /** Set up look inside actions, if appropriate.
      */
@@ -449,7 +449,7 @@ public class TransitionController extends BasicEdgeController {
                 // For some inexplicable reason, the I key doesn't work here.
                 // So we use L.
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                                KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
                                 .getMenuShortcutKeyMask()));
             }
         }
@@ -481,7 +481,8 @@ public class TransitionController extends BasicEdgeController {
                     for (int i = 0; i < refinements.length; i++) {
                         // Open each refinement.
                         // Derived classes may open the instance, this class opens the model.
-                        _openInstanceOrModel(_configuration, (NamedObj) refinements[i]);
+                        _openInstanceOrModel(_configuration,
+                                (NamedObj) refinements[i]);
                     }
                 } else {
                     MessageHandler.error("No refinement.");

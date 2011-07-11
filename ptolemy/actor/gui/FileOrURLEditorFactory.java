@@ -143,8 +143,8 @@ public class FileOrURLEditorFactory extends EditorFactory {
                     } else {
                         URL fileURL = fileOrURLParameter.asFile().toURI()
                                 .toURL();
-                        configuration.openModel(null, fileURL, fileURL
-                                .toExternalForm());
+                        configuration.openModel(null, fileURL,
+                                fileURL.toExternalForm());
                     }
                 } catch (Exception ex) {
                     throw new InternalErrorException(object, ex,
@@ -158,8 +158,8 @@ public class FileOrURLEditorFactory extends EditorFactory {
             try {
                 if (helpFileParameter != null) {
                     URL fileURL = helpFileParameter.asFile().toURI().toURL();
-                    configuration.openModel(null, fileURL, fileURL
-                            .toExternalForm());
+                    configuration.openModel(null, fileURL,
+                            fileURL.toExternalForm());
                 } else {
                     throw new InternalErrorException("No help parameter?");
                 }

@@ -76,5 +76,6 @@ public abstract class ConceptFunctionDefinitionAttribute extends Attribute {
      *  @exception IllegalActionException If there is an error
      *   creating the conceptFunction.
      */
-    public abstract ConceptFunction createConceptFunction() throws IllegalActionException;
+    public abstract ConceptFunction createConceptFunction()
+            throws IllegalActionException;
 }

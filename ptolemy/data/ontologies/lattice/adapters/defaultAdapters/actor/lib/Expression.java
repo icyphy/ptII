@@ -52,8 +52,8 @@ public class Expression extends LatticeOntologyAdapter {
      *  @param actor The given Expression actor.
      *  @exception IllegalActionException If the adapter cannot be initialized.
      */
-    public Expression(LatticeOntologySolver solver, ptolemy.actor.lib.Expression actor)
-            throws IllegalActionException {
+    public Expression(LatticeOntologySolver solver,
+            ptolemy.actor.lib.Expression actor) throws IllegalActionException {
         super(solver, actor, false);
     }
 

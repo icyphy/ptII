@@ -1,6 +1,5 @@
 package ptolemy.domains.jogl.TourModelsGL;
 
-
 // TourModelsGL.java
 // Andrew Davison, December 2006, ad@fivedots.coe.psu.ac.th
 
@@ -31,123 +30,124 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class TourModelsGL extends JFrame implements WindowListener
-{
-  private static int DEFAULT_FPS = 80;
+public class TourModelsGL extends JFrame implements WindowListener {
+    private static int DEFAULT_FPS = 80;
 
-  private static final int PWIDTH = 512;   // size of panel
-  private static final int PHEIGHT = 512;
+    private static final int PWIDTH = 512; // size of panel
+    private static final int PHEIGHT = 512;
 
+    private TourModelsCanvasGL canvas;
 
-  private TourModelsCanvasGL canvas;
+    public TourModelsGL(long period) {
+        super("TourModelsGL");
 
+        Container c = getContentPane();
+        c.setLayout(new BorderLayout());
+        c.add(makeRenderPanel(period), BorderLayout.CENTER);
 
-  public TourModelsGL(long period)
-  {
-    super("TourModelsGL");
+        addWindowListener(this);
 
-    Container c = getContentPane();
-    c.setLayout( new BorderLayout() );
-    c.add(makeRenderPanel(period), BorderLayout.CENTER);
+        pack();
+        setVisible(true);
+    } // end of TourModelsGL()
 
-    addWindowListener(this);
+    private JPanel makeRenderPanel(long period)
+    // construct the canvas
+    {
+        JPanel renderPane = new JPanel();
+        renderPane.setLayout(new BorderLayout());
+        renderPane.setOpaque(false);
+        renderPane.setPreferredSize(new Dimension(PWIDTH, PHEIGHT));
 
-    pack();
-    setVisible(true);
-  } // end of TourModelsGL()
+        canvas = makeCanvas(period);
+        renderPane.add("Center", canvas);
 
+        canvas.setFocusable(true);
+        canvas.requestFocus(); // the canvas now has focus, so receives key events
 
-  private JPanel makeRenderPanel(long period)
-  // construct the canvas
-  {
-    JPanel renderPane = new JPanel();
-    renderPane.setLayout( new BorderLayout() );
-    renderPane.setOpaque(false);
-    renderPane.setPreferredSize( new Dimension(PWIDTH, PHEIGHT));
+        // detect window resizes, and reshape the canvas accordingly
+        renderPane.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent evt) {
+                Dimension d = evt.getComponent().getSize();
+                // System.out.println("New size: " + d);
+                canvas.reshape(d.width, d.height);
+            } // end of componentResized()
+        });
 
-    canvas = makeCanvas(period);
-    renderPane.add("Center", canvas);
+        return renderPane;
+    } // end of makeRenderPanel()
 
-    canvas.setFocusable(true);
-    canvas.requestFocus();    // the canvas now has focus, so receives key events
+    private TourModelsCanvasGL makeCanvas(long period) {
+        // get a configuration suitable for an AWT Canvas (for TourModelsCanvasGL)
+        GLCapabilities caps = new GLCapabilities();
 
-    // detect window resizes, and reshape the canvas accordingly
-    renderPane.addComponentListener( new ComponentAdapter() {
-      public void componentResized(ComponentEvent evt)
-      {  Dimension d = evt.getComponent().getSize();
-         // System.out.println("New size: " + d);
-         canvas.reshape(d.width, d.height);
-      } // end of componentResized()
-    });
+        AWTGraphicsDevice dev = new AWTGraphicsDevice(null);
+        AWTGraphicsConfiguration awtConfig = (AWTGraphicsConfiguration) GLDrawableFactory
+                .getFactory().chooseGraphicsConfiguration(caps, null, dev);
 
-    return renderPane;
-  }  // end of makeRenderPanel()
+        GraphicsConfiguration config = null;
+        if (awtConfig != null) {
+            config = awtConfig.getGraphicsConfiguration();
+        }
 
+        return new TourModelsCanvasGL(period, PWIDTH, PHEIGHT, config, caps);
+    } // end of makeCanvas()
 
-  private TourModelsCanvasGL makeCanvas(long period)
-  {
-    // get a configuration suitable for an AWT Canvas (for TourModelsCanvasGL)
-    GLCapabilities caps = new GLCapabilities();
+    // ----------------- window listener methods -------------
 
-    AWTGraphicsDevice dev = new AWTGraphicsDevice(null);
-    AWTGraphicsConfiguration awtConfig = (AWTGraphicsConfiguration)
-       GLDrawableFactory.getFactory().chooseGraphicsConfiguration(caps, null, dev);
+    public void windowActivated(WindowEvent e) {
+        canvas.resumeGame();
+    }
 
-    GraphicsConfiguration config = null;
-    if (awtConfig != null)
-      config = awtConfig.getGraphicsConfiguration();
+    public void windowDeactivated(WindowEvent e) {
+        canvas.pauseGame();
+    }
 
-    return new TourModelsCanvasGL(period, PWIDTH, PHEIGHT, config, caps);
-  } // end of makeCanvas()
+    public void windowDeiconified(WindowEvent e) {
+        canvas.resumeGame();
+    }
 
+    public void windowIconified(WindowEvent e) {
+        canvas.pauseGame();
+    }
 
-  // ----------------- window listener methods -------------
+    public void windowClosing(WindowEvent e) {
+        canvas.stopGame();
+    }
 
-  public void windowActivated(WindowEvent e)
-  { canvas.resumeGame();  }
+    public void windowClosed(WindowEvent e) {
+    }
 
-  public void windowDeactivated(WindowEvent e)
-  {  canvas.pauseGame();  }
+    public void windowOpened(WindowEvent e) {
+    }
 
-  public void windowDeiconified(WindowEvent e)
-  {  canvas.resumeGame();  }
+    // -----------------------------------------
 
-  public void windowIconified(WindowEvent e)
-  {  canvas.pauseGame(); }
+    public static void main(String[] args) {
+        try {
+            // Run this in the Swing Event Thread.
+            Runnable doActions = new Runnable() {
+                public void run() {
+                    try {
+                        int fps = DEFAULT_FPS;
+                        //    if (args.length != 0)
+                        //      fps = Integer.parseInt(args[0]);
 
-  public void windowClosing(WindowEvent e)
-  {  canvas.stopGame();  }
-
-  public void windowClosed(WindowEvent e) {}
-  public void windowOpened(WindowEvent e) {}
-
-// -----------------------------------------
-
-  public static void main(String[] args)
-  {
-      try {
-          // Run this in the Swing Event Thread.
-          Runnable doActions = new Runnable() {
-                  public void run() {
-                      try {
-                          int fps = DEFAULT_FPS;
-                          //    if (args.length != 0)
-                          //      fps = Integer.parseInt(args[0]);
-
-                          long period = (long) 1000.0/fps;
-                          System.out.println("fps: " + fps + "; period: " + period + " ms");
-                          new TourModelsGL(period*1000000L);    // ms --> nanosecs
-                      } catch (Exception ex) {
-                          System.err.println(ex.toString());
-                          ex.printStackTrace();
-                      }
-                  }
-              };
-          SwingUtilities.invokeAndWait(doActions);
-      } catch (Exception ex) {
-          System.err.println(ex.toString());
-          ex.printStackTrace();
-      } // end of main()
-  }
+                        long period = (long) 1000.0 / fps;
+                        System.out.println("fps: " + fps + "; period: "
+                                + period + " ms");
+                        new TourModelsGL(period * 1000000L); // ms --> nanosecs
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
+                    }
+                }
+            };
+            SwingUtilities.invokeAndWait(doActions);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            ex.printStackTrace();
+        } // end of main()
+    }
 
 } // end of TourModelsGL class

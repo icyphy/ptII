@@ -333,8 +333,8 @@ public class URLDirectoryReader extends URLReader {
         BufferedReader in = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(urlConnection
-                    .getInputStream()));
+            in = new BufferedReader(new InputStreamReader(
+                    urlConnection.getInputStream()));
 
             if (!contentType.startsWith("text/plain")
                     && !urlConnection.getURL().toString().endsWith("/")) {

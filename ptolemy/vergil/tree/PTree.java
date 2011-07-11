@@ -142,9 +142,7 @@ public class PTree extends JTree {
                     transferable.addObject((NamedObj) object);
 
                     //initial cursor, transferable, dsource listener
-                    e
-                            .startDrag(DragSource.DefaultCopyNoDrop,
-                                    transferable, dsl);
+                    e.startDrag(DragSource.DefaultCopyNoDrop, transferable, dsl);
                 }
             }
         }

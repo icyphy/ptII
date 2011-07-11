@@ -184,8 +184,10 @@ public class ArrayElementAsMatrix extends Transformer {
                         + "array, which has length " + token.length());
             }
 
-            output.send(0, token.getElement(xValue * xOffsetValue + yValue
-                    * yOffsetValue));
+            output.send(
+                    0,
+                    token.getElement(xValue * xOffsetValue + yValue
+                            * yOffsetValue));
         }
     }
 }

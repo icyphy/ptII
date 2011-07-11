@@ -141,10 +141,9 @@ public class PDFIcon extends DynamicEditorIcon {
                 return new Rectangle2D.Double(0.0, 0.0, 40.0, 40.0);
             }
             Rectangle2D boundingBox = _page.getBBox();
-            return new Rectangle2D.Double(boundingBox.getX(), boundingBox
-                    .getY(), boundingBox.getWidth() * _scale, boundingBox
-                    .getHeight()
-                    * _scale);
+            return new Rectangle2D.Double(boundingBox.getX(),
+                    boundingBox.getY(), boundingBox.getWidth() * _scale,
+                    boundingBox.getHeight() * _scale);
         }
 
         public void paint(Graphics2D graphics) {

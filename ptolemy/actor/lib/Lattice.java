@@ -179,9 +179,7 @@ public class Lattice extends Transformer {
         newObject._forwardCache = new double[newObject._order + 1];
         newObject._reflectionCoefficients = new double[newObject._order];
 
-        System
-                .arraycopy(_backward, 0, newObject._backward, 0,
-                        _backward.length);
+        System.arraycopy(_backward, 0, newObject._backward, 0, _backward.length);
         System.arraycopy(_backwardCache, 0, newObject._backwardCache, 0,
                 _backwardCache.length);
         System.arraycopy(_forward, 0, newObject._forward, 0, _forward.length);

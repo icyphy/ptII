@@ -215,8 +215,8 @@ abstract public class Profile {
          * @param pubSubChannelName The name
          */
         public Port(String name, boolean publisher, boolean subscriber,
-                int width, int rate, int type, boolean input, boolean output, boolean multiport,
-                String pubSubChannelName) {
+                int width, int rate, int type, boolean input, boolean output,
+                boolean multiport, String pubSubChannelName) {
             _name = name;
             _publisher = publisher;
             _subscriber = subscriber;

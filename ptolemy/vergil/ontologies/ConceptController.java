@@ -147,11 +147,9 @@ public class ConceptController extends AttributeInOntologyController {
                     // is executed via hotkey, the model graph is automatically
                     // repainted to reflect the change in the isAcceptable
                     // parameter on the Concept's icon.
-                    String moml = _getToggleAcceptabilityMoML(
-                            isAcceptableParameter);
-                    MoMLChangeRequest toggleAcceptabilityRequest =
-                        new MoMLChangeRequest(ConceptController.this, target,
-                                moml);
+                    String moml = _getToggleAcceptabilityMoML(isAcceptableParameter);
+                    MoMLChangeRequest toggleAcceptabilityRequest = new MoMLChangeRequest(
+                            ConceptController.this, target, moml);
                     toggleAcceptabilityRequest.setUndoable(true);
                     target.requestChange(toggleAcceptabilityRequest);
 
@@ -172,13 +170,14 @@ public class ConceptController extends AttributeInOntologyController {
          *  @exception IllegalActionException Thrown if there is a problem getting
          *   the current value of the isAcceptable parameter.
          */
-        private String _getToggleAcceptabilityMoML(Parameter
-                isAcceptableParameter) throws IllegalActionException {
-            BooleanToken value = (BooleanToken) isAcceptableParameter.getToken();
+        private String _getToggleAcceptabilityMoML(
+                Parameter isAcceptableParameter) throws IllegalActionException {
+            BooleanToken value = (BooleanToken) isAcceptableParameter
+                    .getToken();
             value = value.not();
 
-            return "<property name=\"" + isAcceptableParameter.getName() +
-                    "\" value = \"" + value.toString() + "\" />";
+            return "<property name=\"" + isAcceptableParameter.getName()
+                    + "\" value = \"" + value.toString() + "\" />";
         }
     }
 }

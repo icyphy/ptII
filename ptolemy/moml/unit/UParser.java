@@ -92,7 +92,8 @@ public class UParser implements UParserConstants {
         UnitExpr unitExpr = new UnitExpr();
         firstUnitTerm = uTerm();
         unitExpr.addUnitTerm(firstUnitTerm);
-        label_1: while (true) {
+        label_1:
+        while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case MULTIPLY:
             case DIVIDE:
@@ -260,7 +261,8 @@ public class UParser implements UParserConstants {
         Vector l = null;
         UnitEquation node;
         node = Equation();
-        label_2: while (true) {
+        label_2:
+        while (true) {
             if (jj_2_2(2)) {
                 ;
             } else {

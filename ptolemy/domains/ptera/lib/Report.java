@@ -204,8 +204,8 @@ public class Report extends Event {
                     throw new IllegalActionException(this, e, "Unable to "
                             + "create tableau.");
                 }
-                frame = new TextEditor(tableau.getTitle(), textEffigy
-                        .getDocument());
+                frame = new TextEditor(tableau.getTitle(),
+                        textEffigy.getDocument());
                 frame.text.setColumns(((IntToken) columnsDisplayed.getToken())
                         .intValue());
                 frame.text.setRows(((IntToken) rowsDisplayed.getToken())

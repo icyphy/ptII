@@ -42,7 +42,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 /**
  * An actor that is used for drawing 3D line.
  *
@@ -53,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating Red (cxh)
  * @author Yasemin Demir
  */
-public class Line3D extends TypedAtomicActor implements GLActor3D{
+public class Line3D extends TypedAtomicActor implements GLActor3D {
 
     /**
      *  Construct a Line3D object in the given container with the given name.
@@ -86,9 +85,8 @@ public class Line3D extends TypedAtomicActor implements GLActor3D{
         lineStart = new Parameter(this, "lineStart");
         lineStart.setExpression("{0.0, 0.0, 0.0}");
 
-        lineEnd= new Parameter(this, "lineEnd");
+        lineEnd = new Parameter(this, "lineEnd");
         lineEnd.setExpression("{1.0, 0.0, 0.0}");
-
 
     }
 
@@ -112,7 +110,6 @@ public class Line3D extends TypedAtomicActor implements GLActor3D{
     /** The x,y,z coordinate of the end position of the Cube in the view screen. */
     public Parameter lineEnd;
 
-
     /** Render a Jogl OpenGL 3D object.
      *  @param gl The GL object to be rendered.
      *  @exception IllegalActionException If the object cannot be rendered.
@@ -130,8 +127,7 @@ public class Line3D extends TypedAtomicActor implements GLActor3D{
         gl.glLineWidth((float) widthValue.doubleValue());
         gl.glBegin(GL.GL_LINES);
 
-        gl.glColor3d(
-                ((DoubleToken) rgbColorValue.getElement(0)).doubleValue(),
+        gl.glColor3d(((DoubleToken) rgbColorValue.getElement(0)).doubleValue(),
                 ((DoubleToken) rgbColorValue.getElement(1)).doubleValue(),
                 ((DoubleToken) rgbColorValue.getElement(2)).doubleValue());
 
@@ -142,12 +138,10 @@ public class Line3D extends TypedAtomicActor implements GLActor3D{
                 ((DoubleToken) lineStartToken.getElement(2)).doubleValue());
 
         // ending point of the line
-        gl.glVertex3d(
-                ((DoubleToken) lineEndToken.getElement(0)).doubleValue(),
+        gl.glVertex3d(((DoubleToken) lineEndToken.getElement(0)).doubleValue(),
                 ((DoubleToken) lineEndToken.getElement(1)).doubleValue(),
                 ((DoubleToken) lineEndToken.getElement(2)).doubleValue());
 
-        gl.glEnd( );
+        gl.glEnd();
     }
 }
-

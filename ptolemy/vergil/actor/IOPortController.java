@@ -394,35 +394,37 @@ public class IOPortController extends AttributeController {
 
                     List<MonitoredQuantityManager> qmList;
                     //port.workspace().getReadAccess();
-                    List list = ((IOPort)port).getQuantityManagers();
+                    List list = ((IOPort) port).getQuantityManagers();
                     if (list != null) {
-                    qmList = new ArrayList(list);
-                    //port.workspace().doneReading();
+                        qmList = new ArrayList(list);
+                        //port.workspace().doneReading();
 
-                    if (qmList != _qmList && qmList.size() > 0) {
+                        if (qmList != _qmList && qmList.size() > 0) {
 
-                        _qmList = qmList;
-                        if (((IOPort)port).isOutput()) {
-                            fill = qmList.get(0).color.asColor();
-                        } else {
-                            fill = qmList.get(qmList.size() - 1).color.asColor();
-                        }
-
-                        StringAttribute info = (StringAttribute) port.getAttribute("_showInfo");
-                        if (info == null) {
-                            info = new StringAttribute(port,
-                                    "_showInfo");
-                        }
-
-                        StringBuffer qmStringBuffer = new StringBuffer();
-                        for (int j = 0; j < qmList.size(); j++) {
-                            if (qmStringBuffer.length() > 0) {
-                                qmStringBuffer.append(", ");
+                            _qmList = qmList;
+                            if (((IOPort) port).isOutput()) {
+                                fill = qmList.get(0).color.asColor();
+                            } else {
+                                fill = qmList.get(qmList.size() - 1).color
+                                        .asColor();
                             }
-                            qmStringBuffer.append(qmList.get(j).getName());
+
+                            StringAttribute info = (StringAttribute) port
+                                    .getAttribute("_showInfo");
+                            if (info == null) {
+                                info = new StringAttribute(port, "_showInfo");
+                            }
+
+                            StringBuffer qmStringBuffer = new StringBuffer();
+                            for (int j = 0; j < qmList.size(); j++) {
+                                if (qmStringBuffer.length() > 0) {
+                                    qmStringBuffer.append(", ");
+                                }
+                                qmStringBuffer.append(qmList.get(j).getName());
+                            }
+                            info.setExpression("QM: "
+                                    + qmStringBuffer.toString());
                         }
-                        info.setExpression("QM: " + qmStringBuffer.toString());
-                    }
                     }
                 }
             } catch (IllegalActionException e1) {
@@ -436,8 +438,8 @@ public class IOPortController extends AttributeController {
 
             ColorAttribute colorAttribute;
             try {
-                colorAttribute = (ColorAttribute) (port
-                        .getAttribute("_color", ColorAttribute.class));
+                colorAttribute = (ColorAttribute) (port.getAttribute("_color",
+                        ColorAttribute.class));
                 if (colorAttribute != null) {
                     Color color = colorAttribute.asColor();
                     fill = color;
@@ -447,17 +449,13 @@ public class IOPortController extends AttributeController {
                 e1.printStackTrace();
             }
 
-
-
-
-
-//            StringAttribute _colorAttr = (StringAttribute) (port
-//                    .getAttribute("_color"));
-//
-//            if (_colorAttr != null) {
-//                String _color = _colorAttr.getExpression();
-//                fill = SVGUtilities.getColor(_color);
-//            }
+            //            StringAttribute _colorAttr = (StringAttribute) (port
+            //                    .getAttribute("_color"));
+            //
+            //            if (_colorAttr != null) {
+            //                String _color = _colorAttr.getExpression();
+            //                fill = SVGUtilities.getColor(_color);
+            //            }
 
             //ActorGraphModel model = (ActorGraphModel) getController()
             //        .getGraphModel();

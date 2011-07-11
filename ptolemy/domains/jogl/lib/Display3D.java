@@ -1,8 +1,5 @@
 package ptolemy.domains.jogl.lib;
 
-
-
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Frame;
@@ -26,14 +23,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 /**
  * An actor that is used for displaying 3D animation.
  *
  * @author Yasemin Demir
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
-public class Display3D extends TypedAtomicActor  implements Placeable {
+public class Display3D extends TypedAtomicActor implements Placeable {
 
     /**
      *  Construct a Display3D object in the given container with the given name.
@@ -49,21 +45,16 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
      *  CompositeActor and the name collides with an entity in the container.
      */
 
-
     public Display3D(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
 
         glIn = new TypedIOPort(this, "glIn");
         glIn.setInput(true);
         glIn.setTypeEquals(GLToken.GL_TYPE);
         glIn.setMultiport(true);
 
-
-
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     Ports and Parameters                  ////
@@ -74,10 +65,6 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
      */
     public TypedIOPort glIn;
 
-
-
-
-
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called fire()");
@@ -86,26 +73,22 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
         if (isResized) {
             _resize(_canvas);
             isResized = false;
-          }
+        }
 
+        _gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+        _gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 
-          _gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-          _gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+        _gl.glMatrixMode(GL.GL_MODELVIEW);
+        _gl.glLoadIdentity();
 
-          _gl.glMatrixMode(GL.GL_MODELVIEW);
-          _gl.glLoadIdentity();
-
-
-          for (int i = 0; i < _width; i++) {
-          GL object = (GL) glIn.get(i);
-          if (!(object instanceof ptolemy.domains.jogl.kernel.GLActor3D)) {
-                  ((GLActor3D) object).render(_gl);
-          }
-          }
-
+        for (int i = 0; i < _width; i++) {
+            GL object = (GL) glIn.get(i);
+            if (!(object instanceof ptolemy.domains.jogl.kernel.GLActor3D)) {
+                ((GLActor3D) object).render(_gl);
+            }
+        }
 
     }
-
 
     public void place(Container container) {
         _container = container;
@@ -120,8 +103,6 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
             c = c.getParent();
         }
 
-
-
         // If we had created a frame before, then blow it away.
         if (_frame != null) {
             _frame.dispose();
@@ -129,24 +110,19 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
             _frame.setSize(300, 300);
             _frame.setBackground(Color.WHITE);
 
-            _frame.addWindowListener(new WindowAdapter()
-            {
-                public void windowClosing(WindowEvent e)
-                {
+            _frame.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
                     System.exit(0);
                 }
             });
         }
 
-
-
-     }
+    }
 
     /**
      * Initializes rendering frame, canvas, gl object.
      *
      */
-
 
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -155,15 +131,14 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
         _canvas = new GLCanvas(_capabilities);
         _context = GLDrawableFactory.getFactory().createExternalGLContext();
         _context.makeCurrent();
-        _gl = _context.getGL ();
+        _gl = _context.getGL();
         _gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         _gl.glColor3f(0.0f, 0.0f, 0.0f);
         _gl.glClearDepth(1.0f);
         _gl.glEnable(GL.GL_DEPTH_TEST);
         _gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 
-     }
-
+    }
 
     /**
      * Resizes the screen.
@@ -180,7 +155,6 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
         _gl.glMatrixMode(GL.GL_MODELVIEW);
         _gl.glLoadIdentity();
     }
-
 
     /** This is added to the frame and drawable part of the frame. */
     protected GLCanvas _canvas;
@@ -199,14 +173,12 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
 
     GLContext _context;
 
-
     /** Specify height of the frame. */
     protected int _height = 480;
 
-
     /** Specify width of the frame. */
     protected int _width = 640;
-    int i =0;
+    int i = 0;
 
     private Container _container;
 
@@ -220,5 +192,3 @@ public class Display3D extends TypedAtomicActor  implements Placeable {
     GraphicsConfiguration config;
 
 }
-
-

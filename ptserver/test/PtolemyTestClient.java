@@ -30,11 +30,8 @@ package ptserver.test;
 import java.net.URL;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Manager;
-import ptolemy.domains.pn.kernel.PNDirector;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
-import ptserver.control.Ticket;
 import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,9 +67,9 @@ public class PtolemyTestClient {
             model.loadModel(resource);
             CompositeActor topLevelActor = model.getTopLevelActor();
 
-//            topLevelActor.getDirector().setContainer(null);
-//            topLevelActor.setDirector(new PNDirector(topLevelActor,
-//                    "PNDirector"));
+            //            topLevelActor.getDirector().setContainer(null);
+            //            topLevelActor.setDirector(new PNDirector(topLevelActor,
+            //                    "PNDirector"));
             //            topLevelActor.getDirector().addDebugListener(new DebugListener() {
             //
             //                public void message(String message) {

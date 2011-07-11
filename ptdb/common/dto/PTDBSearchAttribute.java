@@ -80,7 +80,9 @@ public class PTDBSearchAttribute extends Variable {
     public void setGenericAttribute(boolean isGenericAttribute) {
 
         _isGenericAttribute = isGenericAttribute;
-        if (!_isGenericAttribute) _genericClassName = "";
+        if (!_isGenericAttribute) {
+            _genericClassName = "";
+        }
 
     }
 
@@ -102,7 +104,7 @@ public class PTDBSearchAttribute extends Variable {
     public void setGenericClassName(String genericClassName) {
 
         _genericClassName = genericClassName;
-        if (_genericClassName.length()>0) {
+        if (_genericClassName.length() > 0) {
 
             _isGenericAttribute = true;
 

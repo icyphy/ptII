@@ -133,10 +133,10 @@ public class SDF extends DataflowWithRates {
      */
     public void setupActor() {
         // use the 0th element because the rates are all the same.
-        _annotatePortsWithRates(_ptActor.inputPortList(), _actionRates[0]
-                .getInputRates(), "tokenConsumptionRate");
-        _annotatePortsWithRates(_ptActor.outputPortList(), _actionRates[0]
-                .getOutputRates(), "tokenProductionRate");
+        _annotatePortsWithRates(_ptActor.inputPortList(),
+                _actionRates[0].getInputRates(), "tokenConsumptionRate");
+        _annotatePortsWithRates(_ptActor.outputPortList(),
+                _actionRates[0].getOutputRates(), "tokenProductionRate");
 
         int i = _selectInitializer();
 

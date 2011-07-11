@@ -192,8 +192,8 @@ public class BusContentionApplet extends PtolemyApplet {
 
         _jgraph.setBackground(getBackground());
 
-        StateListener listener = new StateListener((GraphPane) _jgraph
-                .getCanvasPane());
+        StateListener listener = new StateListener(
+                (GraphPane) _jgraph.getCanvasPane());
         _processActor1.addDebugListener(listener);
         _processActor2.addDebugListener(listener);
         _processActor3.addDebugListener(listener);
@@ -389,13 +389,13 @@ public class BusContentionApplet extends PtolemyApplet {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
             // Create an arrow at the head
-            Arrowhead headArrow = new Arrowhead(headSite.getX(), headSite
-                    .getY(), headSite.getNormal());
+            Arrowhead headArrow = new Arrowhead(headSite.getX(),
+                    headSite.getY(), headSite.getNormal());
             c.setHeadEnd(headArrow);
 
             // Create an arrow at the tail
-            Arrowhead tailArrow = new Arrowhead(tailSite.getX(), tailSite
-                    .getY(), tailSite.getNormal());
+            Arrowhead tailArrow = new Arrowhead(tailSite.getX(),
+                    tailSite.getY(), tailSite.getNormal());
             c.setTailEnd(tailArrow);
 
             c.setUserObject(edge);

@@ -712,8 +712,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
                                 history[size - 1], (i * ratio) - size + 1);
                     }
 
-                    _entries
-                            .addLast(new DoubleDouble(newEntry[0], newEntry[1]));
+                    _entries.addLast(new DoubleDouble(newEntry[0], newEntry[1]));
                 }
 
                 _stepsize = currentStepSize;

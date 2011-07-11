@@ -58,8 +58,7 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *   throws it.
      */
     public ASTPtLeafNode(LatticeOntologySolver solver,
-            ptolemy.data.expr.ASTPtLeafNode node)
-            throws IllegalActionException {
+            ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
         super(solver, node, false);
         _constantRepresentative = _getConstantRepresentative();
     }
@@ -78,11 +77,12 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
 
         if (node.isConstant()) {
             if (nodeToken != null) {
-                setAtLeast(node, _constantRepresentative.
-                        getFlatTokenInfiniteConceptByToken(nodeToken));
+                setAtLeast(node,
+                        _constantRepresentative
+                                .getFlatTokenInfiniteConceptByToken(nodeToken));
             } else {
-                throw new IllegalActionException("A constant expression " +
-                                "leaf node should not have a null token value.");
+                throw new IllegalActionException("A constant expression "
+                        + "leaf node should not have a null token value.");
             }
         }
 
@@ -100,18 +100,18 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
      *   FlatTokenInfiniteRepresentativeConcept, or there is more than one.
      */
     private FlatTokenRepresentativeConcept _getConstantRepresentative()
-        throws IllegalActionException {
-        List<FlatTokenRepresentativeConcept> _representatives =
-            _solver.getOntology().entityList(FlatTokenRepresentativeConcept.class);
+            throws IllegalActionException {
+        List<FlatTokenRepresentativeConcept> _representatives = _solver
+                .getOntology().entityList(FlatTokenRepresentativeConcept.class);
         if (_representatives == null || _representatives.isEmpty()) {
-            throw new IllegalActionException("Constant propagation ontology " +
-                            "does not have a constant representative concept.");
+            throw new IllegalActionException("Constant propagation ontology "
+                    + "does not have a constant representative concept.");
         } else if (_representatives.size() == 1) {
             return _representatives.get(0);
         } else {
-            throw new IllegalActionException("There should only be one flat " +
-                            "token representative concept in the constant " +
-                            "propagation ontology.");
+            throw new IllegalActionException("There should only be one flat "
+                    + "token representative concept in the constant "
+                    + "propagation ontology.");
         }
     }
 

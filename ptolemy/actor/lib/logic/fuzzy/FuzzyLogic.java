@@ -85,7 +85,7 @@ to run under the {@link ptolemy.actor.Director}.
 @Pt.AcceptedRating red (sssf)
  */
 
-public class FuzzyLogic extends TypedAtomicActor{
+public class FuzzyLogic extends TypedAtomicActor {
     /**
      *  Construct a fuzzy logic actor and set a default rule file name
      *  and a default component type.
@@ -96,7 +96,7 @@ public class FuzzyLogic extends TypedAtomicActor{
      *   by the proposed container.
      */
     public FuzzyLogic(CompositeEntity container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         rulesFileName = new FileParameter(this, "rulesFileName");
@@ -112,15 +112,14 @@ public class FuzzyLogic extends TypedAtomicActor{
         componentType = new Parameter(this, "componentType");
         componentType.setExpression("dummyType");
 
+        inputPorts = new Vector<TypedIOPort>();
+        outputPorts = new Vector<TypedIOPort>();
 
-        inputPorts = new Vector<TypedIOPort>() ;
-        outputPorts =  new Vector<TypedIOPort>();
-
-        tempInputPort = new TypedIOPort(this,"input",true,false);
+        tempInputPort = new TypedIOPort(this, "input", true, false);
         tempInputPort.setTypeEquals(BaseType.DOUBLE);
         inputPorts.addElement(tempInputPort);
 
-        tempOutputPort = new TypedIOPort(this,"output",false,true);
+        tempOutputPort = new TypedIOPort(this, "output", false, true);
         tempOutputPort.setTypeEquals(BaseType.DOUBLE);
         outputPorts.addElement(tempOutputPort);
         _numOutputs = 1;
@@ -211,15 +210,14 @@ public class FuzzyLogic extends TypedAtomicActor{
      */
     public Parameter componentType;
 
-
     /** The number of Inputs, which defaults to an integer with value 1. */
     public Parameter numInputs;
     // FIXME: This should be numberOfInputs
 
     /** The number of outputs, which defaults to an integer with value 1. */
     public Parameter numOutputs;
-    // FIXME: This should be numberOfOutputs.
 
+    // FIXME: This should be numberOfOutputs.
 
     ///////////////////////////////////////////////////////////////////
     ////                         public  methods                  ////
@@ -231,7 +229,7 @@ public class FuzzyLogic extends TypedAtomicActor{
      *  @exception IllegalActionException If the comparison is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == numOutputs) {
             int tempCount = 0;
             if (_debugging) {
@@ -239,17 +237,18 @@ public class FuzzyLogic extends TypedAtomicActor{
             }
             tempCount = Integer.parseInt(numOutputs.getExpression().trim());
             if (_debugging) {
-                _debug("Number of Outputs specified: "+tempCount);
+                _debug("Number of Outputs specified: " + tempCount);
             }
-            if (tempCount>_numOutputs)
-            {
+            if (tempCount > _numOutputs) {
                 if (_debugging) {
                     _debug(" need to create more output ports");
-                    _debug("tempCount is "+tempCount+" number of Outputs is "+_numOutputs);
+                    _debug("tempCount is " + tempCount
+                            + " number of Outputs is " + _numOutputs);
                 }
-                for (int i =  _numOutputs; i < tempCount; i++) {
+                for (int i = _numOutputs; i < tempCount; i++) {
                     try {
-                        tempOutputPort = new TypedIOPort(this,"output"+i,false,true);
+                        tempOutputPort = new TypedIOPort(this, "output" + i,
+                                false, true);
                         tempOutputPort.setTypeEquals(BaseType.DOUBLE);
                         outputPorts.addElement(tempOutputPort);
                     } catch (NameDuplicationException e) {
@@ -258,23 +257,23 @@ public class FuzzyLogic extends TypedAtomicActor{
                 _numOutputs = tempCount;
 
             }
-        }else if (attribute == numInputs) {
+        } else if (attribute == numInputs) {
             int tempCount = 0;
             if (_debugging) {
                 _debug("the number of inputs has been changed.");
             }
             tempCount = Integer.parseInt(numInputs.getExpression().trim());
             if (_debugging) {
-                _debug("Number of Inputs specified: "+tempCount);
+                _debug("Number of Inputs specified: " + tempCount);
             }
-            if (tempCount>_numInputs)
-            {
+            if (tempCount > _numInputs) {
                 if (_debugging) {
                     _debug(" need to create more input ports");
                 }
-                for (int i =  _numInputs; i < tempCount; i++) {
+                for (int i = _numInputs; i < tempCount; i++) {
                     try {
-                        tempInputPort = new TypedIOPort(this,"input"+i,true,false);
+                        tempInputPort = new TypedIOPort(this, "input" + i,
+                                true, false);
                         tempInputPort.setTypeEquals(BaseType.DOUBLE);
                         inputPorts.addElement(tempInputPort);
                     } catch (NameDuplicationException e) {
@@ -283,9 +282,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                 _numInputs = tempCount;
             }
 
-
         }
-
 
     }
 
@@ -302,7 +299,8 @@ public class FuzzyLogic extends TypedAtomicActor{
         }
 
         _fuzzyParser = new FuzzyParser(rulesFileName.asURL().getFile());
-        ArrayList<FuzzyLogicVar> tempArray = _fuzzyParser.getFuzzyLogicVariableArray();
+        ArrayList<FuzzyLogicVar> tempArray = _fuzzyParser
+                .getFuzzyLogicVariableArray();
 
         _linguisticVariableArray = _fuzzyParser.getLinguisticVariableArray();
         String componentTypeValue = componentType.getExpression();
@@ -312,16 +310,20 @@ public class FuzzyLogic extends TypedAtomicActor{
         String tempTermName;
 
         periodindex = rulesFileName.getExpression().indexOf('.');
-        if (rulesFileName.getExpression().substring(0,periodindex).equalsIgnoreCase(tempvar.name)) {
+        if (rulesFileName.getExpression().substring(0, periodindex)
+                .equalsIgnoreCase(tempvar.name)) {
             for (int j = 0; j < tempvar.termNames.size(); j++) {
                 tempTermName = tempvar.termNames.get(j);
                 commaindex = tempTermName.indexOf(',');
-                if (componentTypeValue.equalsIgnoreCase(tempTermName.substring(0,commaindex))) {
-                    _linguisticVariableArray.get(0).setInputValue(Double.parseDouble(tempTermName.substring(commaindex+1)));
+                if (componentTypeValue.equalsIgnoreCase(tempTermName.substring(
+                        0, commaindex))) {
+                    _linguisticVariableArray.get(0).setInputValue(
+                            Double.parseDouble(tempTermName
+                                    .substring(commaindex + 1)));
                 }
             }
 
-        }else {
+        } else {
             _linguisticVariableArray.get(0).setInputValue(1.5);
         }
 
@@ -346,9 +348,9 @@ public class FuzzyLogic extends TypedAtomicActor{
                     + rulesFileName.getExpression());
         }
 
-        double [] myOutputs = new double [_numOutputs];
+        double[] myOutputs = new double[_numOutputs];
         if (_debugging) {
-            _debug("number of outputs is : "+_numOutputs );
+            _debug("number of outputs is : " + _numOutputs);
         }
         Token token = null;
 
@@ -357,15 +359,16 @@ public class FuzzyLogic extends TypedAtomicActor{
             // read the values from the input ports
             // set the input values here
 
-            for (int i = 0; i< _numInputs; i++) {
+            for (int i = 0; i < _numInputs; i++) {
                 if (inputPorts.get(i).isOutsideConnected()) {
                     if (inputPorts.get(i).hasToken(0)) {
                         if (_debugging) {
-                            _debug("i is "+i);
+                            _debug("i is " + i);
                         }
                         token = inputPorts.get(i).get(0);
                         //FIXME:  find the right location in the linguistic variable array and set the value
-                        _linguisticVariableArray.get(i).setInputValue(Double.parseDouble(token.toString()));
+                        _linguisticVariableArray.get(i).setInputValue(
+                                Double.parseDouble(token.toString()));
 
                     }
                 }
@@ -375,17 +378,18 @@ public class FuzzyLogic extends TypedAtomicActor{
                 _fuzzyEngine.evaluateRule(_rules.get(i));
             }
 
-            ArrayList<Integer> indicesToDefuzzify = _fuzzyParser.getIndicesToDefuzzify();
+            ArrayList<Integer> indicesToDefuzzify = _fuzzyParser
+                    .getIndicesToDefuzzify();
 
-            for (int i = 0; i< indicesToDefuzzify.size(); i++) {
-                myOutputs[i] = _linguisticVariableArray.get(indicesToDefuzzify.get(i))
-                .defuzzify();
+            for (int i = 0; i < indicesToDefuzzify.size(); i++) {
+                myOutputs[i] = _linguisticVariableArray.get(
+                        indicesToDefuzzify.get(i)).defuzzify();
             }
 
-
             if (_debugging) {
-                for (int i = 0; i< _numOutputs; i++)
-                    _debug("result "+i+ " is: " +myOutputs[i]);
+                for (int i = 0; i < _numOutputs; i++) {
+                    _debug("result " + i + " is: " + myOutputs[i]);
+                }
             }
 
         } catch (Exception ex) {
@@ -395,7 +399,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                     + "for defuzzification.");
         }
 
-        for (int i = 0; i< _numOutputs; i++) {
+        for (int i = 0; i < _numOutputs; i++) {
             outputPorts.get(i).send(0, new DoubleToken(myOutputs[i]));
         }
 
@@ -415,7 +419,7 @@ public class FuzzyLogic extends TypedAtomicActor{
     ///////////////////////////////////////////////////////////////////
     ////                       protected classes                    ////
     /** A record type used when parsing a Fuzzy Logic XML file.*/
-    protected class FuzzyLogicVar{
+    protected class FuzzyLogicVar {
 
         /**
          * Fuzzy Logic Variable Constructor
@@ -423,6 +427,7 @@ public class FuzzyLogic extends TypedAtomicActor{
         FuzzyLogicVar() {
             termNames = new ArrayList<String>();
         }
+
         /**The name of the fuzzy logic variable */
         String name;
         /*An array of term names. Each string in the termNames array
@@ -431,6 +436,7 @@ public class FuzzyLogic extends TypedAtomicActor{
          * the name*/
         ArrayList<String> termNames;
     }
+
     /**
      * Parse an XML file containing the fuzzy logic rules.
      */
@@ -441,11 +447,12 @@ public class FuzzyLogic extends TypedAtomicActor{
         FuzzyParser() {
             initialize();
         }
+
         /**
          * Construct a Fuzzy Parser.
          * @param filename The name of the xml file containing the fuzzy logic rules
          */
-        FuzzyParser(String filename) throws IllegalActionException{
+        FuzzyParser(String filename) throws IllegalActionException {
 
             initialize();
             FileReader r = null;
@@ -459,8 +466,8 @@ public class FuzzyLogic extends TypedAtomicActor{
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex, "Failed to parse "
                         + filename + ".");
-            } finally{
-                if (r!=null) {
+            } finally {
+                if (r != null) {
                     try {
                         r.close();
                     } catch (IOException ex) {
@@ -471,6 +478,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                 }
             }
         }
+
         ////////////////////////////////////////////////////////////////////
         ////                         public methods                   ////
 
@@ -540,8 +548,6 @@ public class FuzzyLogic extends TypedAtomicActor{
             return _linguisticVarArray;
         }
 
-
-
         /** Return a string representation of the rules specified in
          *  the xml file.
          *  @return Return a string representation of the rules specified in
@@ -562,8 +568,6 @@ public class FuzzyLogic extends TypedAtomicActor{
                 _debug("saw the start of the document");
             }
         }
-
-
 
         /** Called each time the SAX parser sees the beginning of an element.
          * @param uri The Namespace Uniform Resource Identifier(URI)
@@ -615,21 +619,21 @@ public class FuzzyLogic extends TypedAtomicActor{
                 if ("TERM".equals(qName)) {
                     if (_startVar == true) {
                         String localName = atts.getValue(0);
-                        StringTokenizer st = new StringTokenizer(atts.getValue(1),
-                        " ");
+                        StringTokenizer st = new StringTokenizer(
+                                atts.getValue(1), " ");
 
                         double a = Double.valueOf(st.nextToken().trim())
-                        .doubleValue();
+                                .doubleValue();
                         double b = Double.valueOf(st.nextToken().trim())
-                        .doubleValue();
+                                .doubleValue();
                         double c = Double.valueOf(st.nextToken().trim())
-                        .doubleValue();
+                                .doubleValue();
                         double d = Double.valueOf(st.nextToken().trim())
-                        .doubleValue();
-                        (_linguisticVarArray.get(_currentIndex)).add(localName, a, b,
-                                c, d);
+                                .doubleValue();
+                        (_linguisticVarArray.get(_currentIndex)).add(localName,
+                                a, b, c, d);
 
-                        tempString = localName+","+(a+d)/2;
+                        tempString = localName + "," + (a + d) / 2;
                         _fuzzyVar.termNames.add(tempString);
                     }
 
@@ -646,9 +650,6 @@ public class FuzzyLogic extends TypedAtomicActor{
             }
         }
 
-
-
-
         ////////////////////////////////////////////////////////////////////
         ///                         private methods                     ////
         private void initialize() {
@@ -660,6 +661,7 @@ public class FuzzyLogic extends TypedAtomicActor{
             _fuzzyVar = new FuzzyLogicVar();
             _fuzzyLogicVariableArray = new ArrayList<FuzzyLogicVar>();
         }
+
         ////////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
         private int _currentIndex;
@@ -670,6 +672,6 @@ public class FuzzyLogic extends TypedAtomicActor{
         private ArrayList<LinguisticVariable> _linguisticVarArray;
         private ArrayList<String> _myRules;
         private boolean _startVar;
-        private ArrayList <Integer> _toDefuzzyify;
+        private ArrayList<Integer> _toDefuzzyify;
     }
 }

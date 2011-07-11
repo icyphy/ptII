@@ -657,8 +657,7 @@ public class REDUtility {
                 State destinationInThis = transition.destinationState();
 
                 if (!stateSet.contains(destinationInThis)) {
-                    frontier
-                            .put(destinationInThis.getName(), destinationInThis);
+                    frontier.put(destinationInThis.getName(), destinationInThis);
                     stateSet.add(destinationInThis);
                 }
 
@@ -939,8 +938,7 @@ public class REDUtility {
                 State destinationInThis = transition.destinationState();
 
                 if (!stateSet.contains(destinationInThis)) {
-                    frontier
-                            .put(destinationInThis.getName(), destinationInThis);
+                    frontier.put(destinationInThis.getName(), destinationInThis);
                     stateSet.add(destinationInThis);
                 }
 
@@ -1016,10 +1014,8 @@ public class REDUtility {
                                                 // insert all info.
                                                 VariableInfo newVariable = new VariableInfo(
 
-                                                        Integer
-                                                                .toString(numberRetrival),
-                                                        Integer
-                                                                .toString(numberRetrival));
+                                                        Integer.toString(numberRetrival),
+                                                        Integer.toString(numberRetrival));
                                                 _variableInfo.put(
                                                         characterOfSubGuard[0]
                                                                 .trim(),
@@ -1065,8 +1061,8 @@ public class REDUtility {
                         String[] characters = splitExpression[i].split("=");
                         if (characters.length >= 1) {
                             String lValue = characters[0].trim();
-                            if (Pattern.matches("^-?\\d+$", characters[1]
-                                    .trim()) == true) {
+                            if (Pattern.matches("^-?\\d+$",
+                                    characters[1].trim()) == true) {
                                 int numberRetrival = Integer
                                         .parseInt(characters[1].trim());
                                 // add it into the _variableInfo
@@ -1455,8 +1451,7 @@ public class REDUtility {
                                                         } else {
                                                             bean._preCondition
                                                                     .append(" && "
-                                                                            + actor
-                                                                                    .getName()
+                                                                            + actor.getName()
                                                                             + "_"
                                                                             + lValue
                                                                             + " == "
@@ -1464,8 +1459,7 @@ public class REDUtility {
                                                         }
                                                         bean._complementedCondition
                                                                 .add(new String(
-                                                                        actor
-                                                                                .getName()
+                                                                        actor.getName()
                                                                                 + "_"
                                                                                 + lValue
                                                                                 + " != "
@@ -1487,8 +1481,7 @@ public class REDUtility {
                                                         } else {
                                                             bean._preCondition
                                                                     .append(" && "
-                                                                            + actor
-                                                                                    .getName()
+                                                                            + actor.getName()
                                                                             + "_"
                                                                             + lValue
                                                                             + " != "
@@ -1496,8 +1489,7 @@ public class REDUtility {
                                                         }
                                                         bean._complementedCondition
                                                                 .add(new String(
-                                                                        actor
-                                                                                .getName()
+                                                                        actor.getName()
                                                                                 + "_"
                                                                                 + lValue
                                                                                 + " == "
@@ -1520,8 +1512,7 @@ public class REDUtility {
                                                         } else {
                                                             bean._preCondition
                                                                     .append(" && "
-                                                                            + actor
-                                                                                    .getName()
+                                                                            + actor.getName()
                                                                             + "_"
                                                                             + lValue
                                                                             + " <= "
@@ -1529,8 +1520,7 @@ public class REDUtility {
                                                         }
                                                         bean._complementedCondition
                                                                 .add(new String(
-                                                                        actor
-                                                                                .getName()
+                                                                        actor.getName()
                                                                                 + "_"
                                                                                 + lValue
                                                                                 + " > "
@@ -1553,8 +1543,7 @@ public class REDUtility {
                                                         } else {
                                                             bean._preCondition
                                                                     .append(" && "
-                                                                            + actor
-                                                                                    .getName()
+                                                                            + actor.getName()
                                                                             + "_"
                                                                             + lValue
                                                                             + " >= "
@@ -1562,8 +1551,7 @@ public class REDUtility {
                                                         }
                                                         bean._complementedCondition
                                                                 .add(new String(
-                                                                        actor
-                                                                                .getName()
+                                                                        actor.getName()
                                                                                 + "_"
                                                                                 + lValue
                                                                                 + " < "
@@ -1586,8 +1574,7 @@ public class REDUtility {
                                                         } else {
                                                             bean._preCondition
                                                                     .append(" && "
-                                                                            + actor
-                                                                                    .getName()
+                                                                            + actor.getName()
                                                                             + "_"
                                                                             + lValue
                                                                             + " > "
@@ -1595,8 +1582,7 @@ public class REDUtility {
                                                         }
                                                         bean._complementedCondition
                                                                 .add(new String(
-                                                                        actor
-                                                                                .getName()
+                                                                        actor.getName()
                                                                                 + "_"
                                                                                 + lValue
                                                                                 + " <= "
@@ -1620,8 +1606,7 @@ public class REDUtility {
                                                         } else {
                                                             bean._preCondition
                                                                     .append(" && "
-                                                                            + actor
-                                                                                    .getName()
+                                                                            + actor.getName()
                                                                             + "_"
                                                                             + lValue
                                                                             + " < "
@@ -1630,8 +1615,7 @@ public class REDUtility {
                                                         }
                                                         bean._complementedCondition
                                                                 .add(new String(
-                                                                        actor
-                                                                                .getName()
+                                                                        actor.getName()
                                                                                 + "_"
                                                                                 + lValue
                                                                                 + " >= "
@@ -1670,9 +1654,7 @@ public class REDUtility {
                                                 .getName()
                                                 + "_"
                                                 + lValue
-                                                + " = "
-                                                + rValue
-                                                + ";");
+                                                + " = " + rValue + ";");
                                     } else {
                                         // The right hand side is actually complicated
                                         // expression which needs to be carefully
@@ -2038,7 +2020,8 @@ public class REDUtility {
 
                                     newTransition.setName(((State) state)
                                             .getName()
-                                            + "-" + innerTransition.getName());
+                                            + "-"
+                                            + innerTransition.getName());
                                     // We need to attach states to it.
                                     // The newly attached states should be in
                                     // returnFSMActor.
@@ -2058,8 +2041,7 @@ public class REDUtility {
                                                                     .getName()
                                                                     .trim()
                                                                     + "-"
-                                                                    + source
-                                                                            .getName()
+                                                                    + source.getName()
                                                                             .trim())) {
 
                                                 sCorresponding = (State) cState;
@@ -2534,8 +2516,7 @@ public class REDUtility {
                     bean._moduleDescription.append("true ) { \n");
                 } else {
                     bean._moduleDescription.append(StateClockConstraint
-                            .toString()
-                            + " ) { \n");
+                            .toString() + " ) { \n");
                 }
                 bean._moduleDescription.append(StateTransitionCondition);
                 bean._moduleDescription.append("}\n");
@@ -2714,8 +2695,7 @@ public class REDUtility {
                     bean._moduleDescription.append("true ) { \n");
                 } else {
                     bean._moduleDescription.append(StateClockConstraint
-                            .toString()
-                            + " ) { \n");
+                            .toString() + " ) { \n");
                 }
 
                 bean._moduleDescription.append(StateTransitionCondition);
@@ -2803,8 +2783,7 @@ public class REDUtility {
                 REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
                 innerBean._name = clockActor.getName().trim();
                 innerBean._initialStateDescription = clockActor.getName()
-                        .trim()
-                        + "_init";
+                        .trim() + "_init";
                 bean._nameInitialState = innerBean;
                 return bean;
 
@@ -2855,8 +2834,7 @@ public class REDUtility {
                 REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
                 innerBean._name = clockActor.getName().trim();
                 innerBean._initialStateDescription = clockActor.getName()
-                        .trim()
-                        + "_init";
+                        .trim() + "_init";
                 bean._nameInitialState = innerBean;
 
                 return bean;
@@ -2929,13 +2907,11 @@ public class REDUtility {
                 REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
                 innerBean._name = clockActor.getName().trim();
                 innerBean._initialStateDescription = clockActor.getName()
-                        .trim()
-                        + "_init";
+                        .trim() + "_init";
                 bean._nameInitialState = innerBean;
 
                 bean._variableInitialDescriptionSet.add(clockActor.getName()
-                        .trim()
-                        + "_Cycle == 0" + " ");
+                        .trim() + "_Cycle == 0" + " ");
                 return bean;
             } else {
                 REDSingleEntityBean bean = new REDSingleEntityBean();
@@ -3011,13 +2987,11 @@ public class REDUtility {
                 REDModuleNameInitialBean innerBean = new REDModuleNameInitialBean();
                 innerBean._name = clockActor.getName().trim();
                 innerBean._initialStateDescription = clockActor.getName()
-                        .trim()
-                        + "_init";
+                        .trim() + "_init";
                 bean._nameInitialState = innerBean;
 
                 bean._variableInitialDescriptionSet.add(clockActor.getName()
-                        .trim()
-                        + "_Cycle == 0" + " ");
+                        .trim() + "_Cycle == 0" + " ");
                 return bean;
             }
         }
@@ -3621,8 +3595,7 @@ public class REDUtility {
                     bean._moduleDescription.append("true ) { \n");
                 } else {
                     bean._moduleDescription.append(StateClockConstraint
-                            .toString()
-                            + " ) { \n");
+                            .toString() + " ) { \n");
                 }
 
                 bean._moduleDescription.append(StateTransitionCondition);

@@ -265,13 +265,11 @@ public class SaveModelManager {
                         "Unable to get synchronous connection from the database");
             }
 
-
             if (!xmlDBModelWithReferenceChanges.getModelToBeSaved().getIsNew()
                     && xmlDBModelWithReferenceChanges.getVersionName() != null
                     && xmlDBModelWithReferenceChanges.getVersionName().length() > 0
                     && xmlDBModelWithReferenceChanges.getParentsList() != null
                     && xmlDBModelWithReferenceChanges.getParentsList().size() > 0) {
-
 
                 GetModelTask getModelTask = new GetModelTask(
                         xmlDBModelWithReferenceChanges.getModelToBeSaved()
@@ -287,16 +285,16 @@ public class SaveModelManager {
                 newXMLDBModel.setIsNew(true);
                 String modelContent = dbModelToBeSaved.getModel();
                 modelContent = modelContent.replaceFirst("name=\""
-                        + dbModelToBeSaved.getModelName() +"\"", "name=\""
-                        + xmlDBModelWithReferenceChanges.getVersionName() + "\"");
+                        + dbModelToBeSaved.getModelName() + "\"", "name=\""
+                        + xmlDBModelWithReferenceChanges.getVersionName()
+                        + "\"");
                 newXMLDBModel.setModel(modelContent);
 
                 String newModelId = save(newXMLDBModel, dbConnection);
 
                 newXMLDBModel.setModelId(newModelId);
 
-                UpdateParentsToNewVersionTask updateParentsToNewVersionTask =
-                    new UpdateParentsToNewVersionTask();
+                UpdateParentsToNewVersionTask updateParentsToNewVersionTask = new UpdateParentsToNewVersionTask();
 
                 updateParentsToNewVersionTask.setNewModel(newXMLDBModel);
 
@@ -329,7 +327,6 @@ public class SaveModelManager {
 
             modelId = save(xmlDBModelWithReferenceChanges.getModelToBeSaved(),
                     dbConnection);
-
 
             dbConnection.commitConnection();
 
@@ -425,120 +422,119 @@ public class SaveModelManager {
         Node topEntityNode = modelDocument.getElementsByTagName("entity").item(
                 0);
 
-//        if (topEntityNode != null) {
+        //        if (topEntityNode != null) {
 
-            NodeList entityList = topEntityNode.getChildNodes();
+        NodeList entityList = topEntityNode.getChildNodes();
 
-            boolean isChanged = false;
+        boolean isChanged = false;
 
-            if (entityList != null) {
+        if (entityList != null) {
 
-                for (int i = 0; i < entityList.getLength(); i++) {
+            for (int i = 0; i < entityList.getLength(); i++) {
 
-                    Node entity = entityList.item(i);
+                Node entity = entityList.item(i);
 
-                    if (!"entity".equals(entity.getNodeName())) {
-                        continue;
-                    }
+                if (!"entity".equals(entity.getNodeName())) {
+                    continue;
+                }
 
-                    /* Get all first-level nodes inside the given entity. */
-                    NodeList parameterList = entity.getChildNodes();
+                /* Get all first-level nodes inside the given entity. */
+                NodeList parameterList = entity.getChildNodes();
 
-                    String referencedModelId = null;
-                    boolean isReferenced = false;
-                    boolean isReferencedFound = false;
-                    boolean dbModelIdFound = false;
+                String referencedModelId = null;
+                boolean isReferenced = false;
+                boolean isReferencedFound = false;
+                boolean dbModelIdFound = false;
 
-                    /* Get value for the DBReference and DBModelName properties.*/
-                    for (int j = 0; j < parameterList.getLength(); j++) {
+                /* Get value for the DBReference and DBModelName properties.*/
+                for (int j = 0; j < parameterList.getLength(); j++) {
 
-                        Node parameter = parameterList.item(j);
+                    Node parameter = parameterList.item(j);
 
-                        if ("property".equals(parameter.getNodeName())) {
+                    if ("property".equals(parameter.getNodeName())) {
 
-                            String name = Utilities.getValueForAttribute(parameter,
-                                    "name");
+                        String name = Utilities.getValueForAttribute(parameter,
+                                "name");
 
-                            if (XMLDBModel.DB_MODEL_ID_ATTR.equals(name)
-                                    && !dbModelIdFound) {
+                        if (XMLDBModel.DB_MODEL_ID_ATTR.equals(name)
+                                && !dbModelIdFound) {
 
-                                referencedModelId = Utilities.getValueForAttribute(
-                                        parameter, "value");
+                            referencedModelId = Utilities.getValueForAttribute(
+                                    parameter, "value");
 
-                                dbModelIdFound = true;
+                            dbModelIdFound = true;
 
-                            } else if (XMLDBModel.DB_REFERENCE_ATTR.equals(name)
-                                    && !isReferencedFound) {
+                        } else if (XMLDBModel.DB_REFERENCE_ATTR.equals(name)
+                                && !isReferencedFound) {
 
-                                String value = Utilities.getValueForAttribute(
-                                        parameter, "value");
-                                isReferenced = "TRUE".equals(value);
+                            String value = Utilities.getValueForAttribute(
+                                    parameter, "value");
+                            isReferenced = "TRUE".equals(value);
 
-                                isReferencedFound = true;
-                            }
-
-                            if (isReferencedFound && dbModelIdFound) {
-                                break;
-                            }
-                        }
-                    }
-
-                    if (isReferenced && referencedModelId != null) {
-
-                        /*
-                         * As we are considering only "entity" nodes, we can be
-                         * sure that the type conversion will not fail.
-                         */
-                        Element entityElement = (Element) entity.cloneNode(false);
-                        NodeList childNodesList = entity.getChildNodes();
-
-                        /*
-                         * Create an entity node with the required properties and
-                         * replace the current referenced entity.
-                         */
-                        int k = 0;
-                        while (k < childNodesList.getLength()) {
-                            Node childNode = childNodesList.item(k);
-
-                            if ("property".equals(childNode.getNodeName())) {
-
-                                String name = Utilities.getValueForAttribute(
-                                        childNode, "name");
-
-                                if (name != null
-                                        && (name.startsWith("_")
-                                                || XMLDBModel.DB_REFERENCE_ATTR
-                                                        .equals(name) || XMLDBModel.DB_MODEL_ID_ATTR
-                                                .equals(name))) {
-                                    entityElement.appendChild(childNode);
-                                } else {
-                                    k++;
-                                }
-                            }
-                            else {
-                                k++;
-                            }
-
+                            isReferencedFound = true;
                         }
 
-                        entityElement.setAttribute(XMLDBModel.DB_MODEL_ID_ATTR,
-                                referencedModelId);
-                        topEntityNode.replaceChild(entityElement, entity);
-
-                        model.addReferencedChild(referencedModelId);
-                        isChanged = true;
+                        if (isReferencedFound && dbModelIdFound) {
+                            break;
+                        }
                     }
                 }
+
+                if (isReferenced && referencedModelId != null) {
+
+                    /*
+                     * As we are considering only "entity" nodes, we can be
+                     * sure that the type conversion will not fail.
+                     */
+                    Element entityElement = (Element) entity.cloneNode(false);
+                    NodeList childNodesList = entity.getChildNodes();
+
+                    /*
+                     * Create an entity node with the required properties and
+                     * replace the current referenced entity.
+                     */
+                    int k = 0;
+                    while (k < childNodesList.getLength()) {
+                        Node childNode = childNodesList.item(k);
+
+                        if ("property".equals(childNode.getNodeName())) {
+
+                            String name = Utilities.getValueForAttribute(
+                                    childNode, "name");
+
+                            if (name != null
+                                    && (name.startsWith("_")
+                                            || XMLDBModel.DB_REFERENCE_ATTR
+                                                    .equals(name) || XMLDBModel.DB_MODEL_ID_ATTR
+                                            .equals(name))) {
+                                entityElement.appendChild(childNode);
+                            } else {
+                                k++;
+                            }
+                        } else {
+                            k++;
+                        }
+
+                    }
+
+                    entityElement.setAttribute(XMLDBModel.DB_MODEL_ID_ATTR,
+                            referencedModelId);
+                    topEntityNode.replaceChild(entityElement, entity);
+
+                    model.addReferencedChild(referencedModelId);
+                    isChanged = true;
+                }
             }
+        }
 
-            /* Update model content only if the model has changed. */
-            if (isChanged) {
+        /* Update model content only if the model has changed. */
+        if (isChanged) {
 
-                String newModelContent = Utilities
-                        .getDocumentXMLString(modelDocument);
-                model.setModel(newModelContent);
+            String newModelContent = Utilities
+                    .getDocumentXMLString(modelDocument);
+            model.setModel(newModelContent);
 
-//            }
+            //            }
         }
 
         return model;
@@ -627,7 +623,6 @@ public class SaveModelManager {
         removeFromCacheList.add(originalModel);
         CacheManager.removeFromCache(removeFromCacheList);
 
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -671,22 +666,19 @@ public class SaveModelManager {
         }
         try {
 
-
             String modelBody = xmlDBModel.getModel();
 
             modelBody = removeDTD(modelBody);
 
-//            System.out.println(modelBody);
+            //            System.out.println(modelBody);
 
-//            if (modelBody.indexOf("<!DOCTYPE") >= 0) {
-//
-//                modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
-//                modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
-//            }
+            //            if (modelBody.indexOf("<!DOCTYPE") >= 0) {
+            //
+            //                modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
+            //                modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
+            //            }
 
             xmlDBModel.setModel(modelBody);
-
-
 
             xmlDBModel = populateChildModelsList(xmlDBModel);
 
@@ -694,8 +686,6 @@ public class SaveModelManager {
                 throw new DBConnectionException(
                         "Unable to get synchronous connection from the database");
             }
-
-
 
             if (xmlDBModel.getIsNew()) {
 
@@ -793,7 +783,6 @@ public class SaveModelManager {
 
     }
 
-
     /**
      * Remove the DTD from the model content.
      * @param modelConetnet The model content.
@@ -801,32 +790,35 @@ public class SaveModelManager {
      */
     private String removeDTD(String modelConetnet) {
 
-
         String newModelContent = "";
 
         newModelContent = modelConetnet;
 
-        if (newModelContent.indexOf("<?xml") == 0)
-        {
+        if (newModelContent.indexOf("<?xml") == 0) {
 
-            newModelContent = newModelContent.substring(newModelContent.indexOf("<?xml"));
+            newModelContent = newModelContent.substring(newModelContent
+                    .indexOf("<?xml"));
 
-            newModelContent = newModelContent.substring(newModelContent.indexOf(">") + 1);
+            newModelContent = newModelContent.substring(newModelContent
+                    .indexOf(">") + 1);
 
-            newModelContent = newModelContent.substring(newModelContent.indexOf("<"));
+            newModelContent = newModelContent.substring(newModelContent
+                    .indexOf("<"));
 
             newModelContent = newModelContent.trim();
 
         }
 
-        if (newModelContent.indexOf("<!DOCTYPE") == 0)
-        {
+        if (newModelContent.indexOf("<!DOCTYPE") == 0) {
 
-            newModelContent = newModelContent.substring(newModelContent.indexOf("<!DOCTYPE"));
+            newModelContent = newModelContent.substring(newModelContent
+                    .indexOf("<!DOCTYPE"));
 
-            newModelContent = newModelContent.substring(newModelContent.indexOf(">") + 1);
+            newModelContent = newModelContent.substring(newModelContent
+                    .indexOf(">") + 1);
 
-            newModelContent = newModelContent.substring(newModelContent.indexOf("<"));
+            newModelContent = newModelContent.substring(newModelContent
+                    .indexOf("<"));
 
             newModelContent = newModelContent.trim();
         }

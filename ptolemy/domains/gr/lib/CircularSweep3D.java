@@ -80,8 +80,7 @@ public class CircularSweep3D extends GRShadedShape {
 
         polyline = new Parameter(this, "polyline");
         polyline.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        polyline
-                .setExpression("{0.5, 0.25, 0.5, -0.25, 0.25, -0.25, 0.25, 0.25, 0.5, 0.25}");
+        polyline.setExpression("{0.5, 0.25, 0.5, -0.25, 0.25, -0.25, 0.25, 0.25, 0.5, 0.25}");
 
         angleSpan = new Parameter(this, "angleSpan");
         angleSpan.setTypeEquals(BaseType.DOUBLE);

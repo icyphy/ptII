@@ -111,8 +111,9 @@ public class StateIcon extends NameIcon {
             if (colorParameter != null) {
                 ArrayToken array = (ArrayToken) colorParameter.getToken();
                 if (array.length() == 4) {
-                    Color color = new Color((float) ((ScalarToken) array
-                            .getElement(0)).doubleValue(),
+                    Color color = new Color(
+                            (float) ((ScalarToken) array.getElement(0))
+                                    .doubleValue(),
                             (float) ((ScalarToken) array.getElement(1))
                                     .doubleValue(),
                             (float) ((ScalarToken) array.getElement(2))

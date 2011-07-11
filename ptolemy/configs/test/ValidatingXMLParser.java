@@ -79,7 +79,7 @@ public class ValidatingXMLParser extends DefaultHandler {
      *  have &lt;configure&gt;...&lt;configure&gt; removed.
      *  @exception Throwable If the XML is invalid XML.
      */
-    public static void parse(String fileName)  throws Throwable {
+    public static void parse(String fileName) throws Throwable {
         DefaultHandler handler = new ValidatingXMLParser();
 
         // Use the validating parser
@@ -98,8 +98,8 @@ public class ValidatingXMLParser extends DefaultHandler {
             xmlReader.setContentHandler(handler);
             xmlReader.parse(new InputSource(fileName));
         } catch (SAXParseException ex) {
-            System.out.println("\n Error parsing line " +
-                ex.getLineNumber() + ", uri " + ex.getSystemId());
+            System.out.println("\n Error parsing line " + ex.getLineNumber()
+                    + ", uri " + ex.getSystemId());
             System.out.println("   " + ex.getMessage());
             throw ex;
         }
@@ -117,9 +117,10 @@ public class ValidatingXMLParser extends DefaultHandler {
          *  otherwise return null.
          */
         public InputSource resolveEntity(String publicID, String systemID)
-            throws SAXException {
-            if (systemID.equals("http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd")) {
-                    return new InputSource(new StringReader(MoMLParser.MoML_DTD_1));
+                throws SAXException {
+            if (systemID
+                    .equals("http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd")) {
+                return new InputSource(new StringReader(MoMLParser.MoML_DTD_1));
             }
             return null;
         }
@@ -138,25 +139,24 @@ public class ValidatingXMLParser extends DefaultHandler {
     }
 
     public void startElement(String namespaceURI, String sName, // simple name
-        String qName, // qualified name
-        Attributes attrs) throws SAXException {
+            String qName, // qualified name
+            Attributes attrs) throws SAXException {
     }
 
     public void endElement(String namespaceURI, String sName, // simple name
-        String qName // qualified name
+            String qName // qualified name
     ) throws SAXException {
     }
 
-    public void characters(char[] buf, int offset, int len)
-        throws SAXException {
+    public void characters(char[] buf, int offset, int len) throws SAXException {
     }
 
     public void ignorableWhitespace(char[] buf, int offset, int len)
-        throws SAXException {
+            throws SAXException {
     }
 
     public void processingInstruction(String target, String data)
-        throws SAXException {
+            throws SAXException {
     }
 
     public void error(SAXParseException exception) throws SAXParseException {
@@ -165,8 +165,8 @@ public class ValidatingXMLParser extends DefaultHandler {
     }
 
     public void warning(SAXParseException exception) throws SAXParseException {
-        System.out.println("Warning: line " + exception.getLineNumber() +
-            ", uri " + exception.getSystemId());
+        System.out.println("Warning: line " + exception.getLineNumber()
+                + ", uri " + exception.getSystemId());
         System.out.println("   " + exception.getMessage());
     }
 }

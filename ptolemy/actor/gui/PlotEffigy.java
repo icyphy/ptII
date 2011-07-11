@@ -188,14 +188,14 @@ public class PlotEffigy extends PtolemyEffigy {
                             "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML",
                             null)) {
                         // This is a plot file.
-                        PlotEffigy effigy = new PlotEffigy(container, container
-                                .uniqueName("effigy"));
+                        PlotEffigy effigy = new PlotEffigy(container,
+                                container.uniqueName("effigy"));
                         effigy.uri.setURL(input);
                         return effigy;
                     }
                 } else if (extension.equals("plt") || extension.equals("plot")) {
-                    PlotEffigy effigy = new PlotEffigy(container, container
-                            .uniqueName("effigy"));
+                    PlotEffigy effigy = new PlotEffigy(container,
+                            container.uniqueName("effigy"));
                     effigy.uri.setURL(input);
                     return effigy;
                 }

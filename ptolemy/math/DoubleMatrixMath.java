@@ -1251,8 +1251,9 @@ public class DoubleMatrixMath {
 
                 dotProductMatrix[j][i] = dotProduct;
 
-                rowArray = DoubleArrayMath.subtract(rowArray, DoubleArrayMath
-                        .scale(orthogonalMatrix[j], dotProduct
+                rowArray = DoubleArrayMath.subtract(
+                        rowArray,
+                        DoubleArrayMath.scale(orthogonalMatrix[j], dotProduct
                                 * oneOverNormSquaredArray[j]));
             }
 

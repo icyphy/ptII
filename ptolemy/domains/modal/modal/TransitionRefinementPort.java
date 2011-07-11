@@ -680,8 +680,8 @@ public class TransitionRefinementPort extends RefinementPort {
                         TransitionRefinementPort sibling = null;
                         try {
                             container.setMirrorDisable(-1);
-                            sibling = new TransitionRefinementPort(
-                                container, getName() + "_in");
+                            sibling = new TransitionRefinementPort(container,
+                                    getName() + "_in");
                         } finally {
                             container.setMirrorDisable(0);
                         }

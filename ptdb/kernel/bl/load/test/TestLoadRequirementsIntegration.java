@@ -64,7 +64,6 @@ public class TestLoadRequirementsIntegration {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /**
      * Test the loadModel() method in LoadManagerInterface class.
      * <p> Conditions for this test:
@@ -152,7 +151,7 @@ public class TestLoadRequirementsIntegration {
                 "directory");
         modelDirectory.setContainer(configuration);
         try {
-           LoadManager.loadModel(inputString, configuration);
+            LoadManager.loadModel(inputString, configuration);
         } catch (Exception e) {
             assertTrue("The system threw an exception" + e.getMessage(), true);
         }

@@ -115,8 +115,9 @@ public class SubscriptionAggregator extends NamedProgramCodeGeneratorAdapter {
 
         if (codeStream.isEmpty()) {
             codeStream.append(_eol
-                    + getCodeGenerator().comment("preinitialize "
-                            + generateSimpleName(getComponent())));
+                    + getCodeGenerator().comment(
+                            "preinitialize "
+                                    + generateSimpleName(getComponent())));
         }
 
         codeStream.appendCodeBlock("preinitBlock", args);

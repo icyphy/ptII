@@ -159,9 +159,7 @@ public class ModalTransitionController extends TransitionController {
                 }
             }
 
-            query
-                    .addChoice("Class", "Class", choiceNames, choiceNames[0],
-                            true);
+            query.addChoice("Class", "Class", choiceNames, choiceNames[0], true);
 
             // Need a frame owner for first arg. for the dialog constructor.
             Frame owner = null;

@@ -61,8 +61,7 @@ public class IntermediateReceiver extends AbstractReceiver {
      *  @param qm The quantity manager that receives tokens received by this receiver.
      *  @param receiver The receiver wrapped by this intermediate receiver.
      */
-    public IntermediateReceiver(QuantityManager qm,
-            Receiver receiver) {
+    public IntermediateReceiver(QuantityManager qm, Receiver receiver) {
         _receiver = receiver;
         quantityManager = qm;
     }
@@ -150,7 +149,6 @@ public class IntermediateReceiver extends AbstractReceiver {
 
     /** The source actor that sent a token to this receiver. */
     public Actor source;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -147,7 +147,8 @@ public class AddIcon extends MoMLFilterSimple {
      *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData, String xmlFile, MoMLParser parser) throws Exception {
+            StringBuffer currentCharData, String xmlFile, MoMLParser parser)
+            throws Exception {
         if (_currentlyProcessingActorThatMayNeedAnIcon
                 && elementName.equals("entity") && (container != null)
                 && container.getFullName().equals(_currentActorFullName)) {
@@ -212,8 +213,7 @@ public class AddIcon extends MoMLFilterSimple {
 
         // In alphabetic order by actor class name.
         _actorsThatShouldHaveIcons
-                .put(
-                        "ptolemy.actor.lib.Const",
+                .put("ptolemy.actor.lib.Const",
                         "<property name=\"_icon\" "
                                 + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
                                 + "<property name=\"attributeName\" value=\"value\"/>\n"
@@ -222,8 +222,7 @@ public class AddIcon extends MoMLFilterSimple {
 
         // In alphabetic order by actor class name.
         _actorsThatShouldHaveIcons
-                .put(
-                        "ptolemy.actor.lib.Expression",
+                .put("ptolemy.actor.lib.Expression",
                         "<property name=\"_icon\" "
                                 + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
                                 + "<property name=\"attributeName\" value=\"expression\"/>\n"
@@ -239,8 +238,7 @@ public class AddIcon extends MoMLFilterSimple {
                 functionIcon);
 
         _actorsThatShouldHaveIcons
-                .put(
-                        "ptolemy.actor.lib.Scale",
+                .put("ptolemy.actor.lib.Scale",
                         "<property name=\"_icon\" "
                                 + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
                                 + "<property name=\"attributeName\" value=\"factor\"/>\n"

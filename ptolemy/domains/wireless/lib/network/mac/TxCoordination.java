@@ -318,8 +318,8 @@ public class TxCoordination extends MACActorBase {
                     _backoff(_ccw, -1);
                     _currentState = TxC_Backoff;
                 } else {
-                    _Trsp = setTimer(Timeout, currentTime
-                            .add(_CTSTimeout * 1e-6));
+                    _Trsp = setTimer(Timeout,
+                            currentTime.add(_CTSTimeout * 1e-6));
                     _currentState = Wait_Ack;
                 }
             }

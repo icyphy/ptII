@@ -233,8 +233,8 @@ public class GTFrame extends ExtendedGraphFrame {
                 }
                 try {
                     EditorFactory factory = new GTIngredientsEditor.Factory(
-                            target, target
-                                    .uniqueName("ingredientsEditorFactory"));
+                            target,
+                            target.uniqueName("ingredientsEditorFactory"));
                     factory.setPersistent(false);
                     factory.createEditor(target, frame);
                     factory.setContainer(null);

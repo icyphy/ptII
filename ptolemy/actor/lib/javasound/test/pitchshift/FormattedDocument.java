@@ -76,8 +76,8 @@ public class FormattedDocument extends PlainDocument {
     public void remove(int offs, int len) throws BadLocationException {
         String currentText = getText(0, getLength());
         String beforeOffset = currentText.substring(0, offs);
-        String afterOffset = currentText.substring(len + offs, currentText
-                .length());
+        String afterOffset = currentText.substring(len + offs,
+                currentText.length());
         String proposedResult = beforeOffset + afterOffset;
 
         try {

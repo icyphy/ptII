@@ -31,7 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptdb.common.dto;
 
-
 ///////////////////////////////////////////////////////////////////
 //// ModelNameSearchTask
 
@@ -53,6 +52,7 @@ public class ModelNameSearchTask extends Task {
     public ModelNameSearchTask(String modelName) {
         this.modelName = modelName;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -64,6 +64,7 @@ public class ModelNameSearchTask extends Task {
     public String getModelName() {
         return modelName;
     }
+
     /**
      * Set the given String as the model name.
      * @param modelName String to be set as model name.
@@ -76,6 +77,5 @@ public class ModelNameSearchTask extends Task {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private String modelName;
-
 
 }

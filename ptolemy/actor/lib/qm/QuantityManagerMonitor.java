@@ -28,7 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-
 package ptolemy.actor.lib.qm;
 
 import java.awt.Color;
@@ -55,7 +54,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.plot.Plot;
-
 
 /** This monitor shows when quantity managers in the model receive messages
  *  and send messages in a 2D plot. The x-Axis is the time, the y-Axis shows how
@@ -96,7 +94,6 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
 
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -127,16 +124,14 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
         }
 
         double x = time;
-        double y = (double) (((double) _quantityManagers.indexOf(qm)));
+        double y = ((_quantityManagers.indexOf(qm)));
         int actorDataset = (_quantityManagers.indexOf(qm));
         if (event == null) {
             plot.addPoint(actorDataset, x, y, false);
         } else if (event == EventType.RECEIVED) {
-            plot.addPoint(actorDataset, x, y + 0.1 * ((double) messageCnt),
-                    true);
+            plot.addPoint(actorDataset, x, y + 0.1 * (messageCnt), true);
         } else if (event == EventType.SENT) {
-            plot.addPoint(actorDataset, x, y + 0.1 * ((double) messageCnt),
-                    true);
+            plot.addPoint(actorDataset, x, y + 0.1 * (messageCnt), true);
         }
         plot.fillPlot();
         plot.repaint();
@@ -167,10 +162,9 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
             colors = new Color[_quantityManagers.size()];
             for (QuantityManager qm : _quantityManagers) {
                 int idx = _quantityManagers.indexOf(qm);
-                plot.addLegend(idx,
-                        ((NamedObj) qm).getName());
+                plot.addLegend(idx, ((NamedObj) qm).getName());
                 plot.addPoint(idx, 0.0, idx, false);
-                colors[idx] = ((MonitoredQuantityManager)qm).color.asColor();
+                colors[idx] = ((MonitoredQuantityManager) qm).color.asColor();
             }
 
             plot.doLayout();
@@ -184,8 +178,6 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
 
     /** List of quantity managers used in the model. */
     private List<QuantityManager> _quantityManagers;
-
-
 
     ///////////////////////////////////////////////////////////////////
     //                        inner classes                          //

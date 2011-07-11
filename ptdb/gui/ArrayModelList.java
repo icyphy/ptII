@@ -121,7 +121,6 @@ public class ArrayModelList extends AbstractListModel {
         }
     }
 
-
     /**
      * Update the item at a given index.
      *

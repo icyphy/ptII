@@ -292,8 +292,8 @@ public class TableIcon extends DynamicEditorIcon {
         // Double the padding below to allow for both sides.
         double width = Math.floor(bounds.getWidth()) + _HORIZONTAL_PADDING * 2;
         double height = Math.floor(bounds.getHeight()) + _VERTICAL_PADDING * 2;
-        Figure rectangle = new BasicRectangle(0, 0, width, height, boxColor
-                .asColor(), 1);
+        Figure rectangle = new BasicRectangle(0, 0, width, height,
+                boxColor.asColor(), 1);
         CompositeFigure finalResult = new CompositeFigure(rectangle);
         finalResult.add(result);
         return finalResult;

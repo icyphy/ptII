@@ -142,8 +142,8 @@ public class SignatureSigner extends SignatureActor {
                 _signature.initSign(_privateKey);
                 _signature.update(dataBytes);
 
-                output.send(0, ArrayToken
-                        .unsignedByteArrayToArrayToken(dataBytes));
+                output.send(0,
+                        ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
                 signature.send(0, ArrayToken
                         .unsignedByteArrayToArrayToken(_signature.sign()));
             } catch (Throwable throwable) {

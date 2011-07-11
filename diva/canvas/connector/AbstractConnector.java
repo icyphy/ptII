@@ -344,8 +344,9 @@ public abstract class AbstractConnector extends AbstractFigure implements
         repaint();
 
         if (_stroke instanceof BasicStroke) {
-            _stroke = new BasicStroke(lineWidth, ((BasicStroke) _stroke)
-                    .getEndCap(), ((BasicStroke) _stroke).getLineJoin(),
+            _stroke = new BasicStroke(lineWidth,
+                    ((BasicStroke) _stroke).getEndCap(),
+                    ((BasicStroke) _stroke).getLineJoin(),
                     ((BasicStroke) _stroke).getMiterLimit(),
                     ((BasicStroke) _stroke).getDashArray(), 0.0f);
         } else {

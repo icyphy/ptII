@@ -61,7 +61,7 @@ public class RecordAssembler extends LatticeOntologyAdapter {
      */
     public RecordAssembler(LatticeOntologySolver solver,
             ptolemy.actor.lib.RecordAssembler actor)
-                throws IllegalActionException {
+            throws IllegalActionException {
         super(solver, actor, false);
     }
 
@@ -79,7 +79,7 @@ public class RecordAssembler extends LatticeOntologyAdapter {
         SortedSet<String> fieldLabels = new TreeSet<String>();
 
         for (Object port : actor.inputPortList()) {
-           fieldLabels.add(((Port) port).getName());
+            fieldLabels.add(((Port) port).getName());
         }
 
         // The InequalityTerm array must order the terms from the input ports
@@ -92,21 +92,20 @@ public class RecordAssembler extends LatticeOntologyAdapter {
             inputPortTerms[counter++] = getPropertyTerm(actor.getPort(field));
         }
 
-        if (interconnectConstraintType == ConstraintType.EQUALS ||
-                interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
+        if (interconnectConstraintType == ConstraintType.EQUALS
+                || interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
             setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
                     new RecordFromIndividualConcepts("recordConcept",
-                            fieldLabels, ontology),
-                            inputPortTerms));
+                            fieldLabels, ontology), inputPortTerms));
         }
 
-        if (interconnectConstraintType == ConstraintType.EQUALS ||
-                interconnectConstraintType == ConstraintType.SOURCE_GE_SINK) {
+        if (interconnectConstraintType == ConstraintType.EQUALS
+                || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK) {
             for (Object port : actor.inputPortList()) {
                 setAtLeast(port, new ConceptFunctionInequalityTerm(
                         new ConceptFromRecordField("conceptFromRecord",
                                 ((Port) port).getName(), ontology),
-                        new InequalityTerm[]{ getPropertyTerm(actor.output) }));
+                        new InequalityTerm[] { getPropertyTerm(actor.output) }));
             }
         }
 

@@ -95,10 +95,10 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
         double[] p;
         if (_prototype.isInput() && _prototype.isOutput()) {
-            p = _offsetFigure(center.getX(), (visiblePart.getY() + visiblePart
-                    .getHeight())
-                    - _PORT_OFFSET, FigureAction.PASTE_OFFSET * 2, 0, pane,
-                    frame);
+            p = _offsetFigure(center.getX(),
+                    (visiblePart.getY() + visiblePart.getHeight())
+                            - _PORT_OFFSET, FigureAction.PASTE_OFFSET * 2, 0,
+                    pane, frame);
         } else if (_prototype.isInput()) {
             p = _offsetFigure(visiblePart.getX() + _PORT_OFFSET, center.getY(),
                     0, FigureAction.PASTE_OFFSET * 2, pane, frame);
@@ -368,8 +368,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 if (_prototype.isMultiport()) {
                     // Set the width of the multiport to -1 so that the width is inferred.
                     // See ptolemy/actor/lib/test/auto/VectorDisassemblerComposite.xml
-                    moml
-                            .append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\" value=\"-1\"/>");
+                    moml.append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\" value=\"-1\"/>");
                     moml.append("<property name=\"multiport\"/>");
                 }
             }

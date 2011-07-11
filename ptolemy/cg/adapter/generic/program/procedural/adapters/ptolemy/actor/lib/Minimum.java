@@ -31,8 +31,8 @@ import java.util.ArrayList;
 
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * An adapther class for ptolemy.actor.lib.Minimum.
@@ -89,7 +89,6 @@ public class Minimum extends NamedProgramCodeGeneratorAdapter {
         super._generateFireCode();
 
         ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
-
 
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.appendCodeBlock("fireInitBlock");

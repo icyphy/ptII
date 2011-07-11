@@ -910,8 +910,8 @@ class CSPTokenWriter {
                 //
                 //_indexToChannelNumber(i));
                 branches[i] = new ConditionalSend(true, _indexToPort(i),
-                        _indexToChannelNumber(i), i, (Token) datal
-                                .get(_count[i]), _cbc);
+                        _indexToChannelNumber(i), i,
+                        (Token) datal.get(_count[i]), _cbc);
             } else {
                 branches[i] = new ConditionalSend(false, _indexToPort(i),
                         _indexToChannelNumber(i), i, null, _cbc);

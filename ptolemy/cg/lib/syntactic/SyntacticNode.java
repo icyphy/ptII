@@ -153,7 +153,6 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         _label = "";
     }
 
-
     /** Represent an Entity and its ports for use in a SyntacticGraph.
      *  @param entity The Entity to be represented with the SyntacticNode
      *  @return if the representation is total.
@@ -161,7 +160,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public boolean representEntity(Entity entity)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
         // Check to make sure node is blank
         if (_isRepresented) {
@@ -186,23 +185,27 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
             // Only case at the present
             if (ep instanceof IOPort) {
-                IOPort ioep = (IOPort)ep;
+                IOPort ioep = (IOPort) ep;
                 int width = ioep.getWidth();
                 String epname = ioep.getName();
 
                 // If unconnected treat as single port
                 // for multiply connected ports make several
                 // ports connected in parallel
-                if (width < 1) width = 1;
+                if (width < 1) {
+                    width = 1;
+                }
 
                 if (ioep.isInput()) {
                     _inref.put(ep, _numIns);
 
                     for (int n = 0; n < width; ++n, ++_numIns) {
-                        SyntacticPort iport = new SyntacticPort(this, ep, true, "in_ref_" + n + "_" + epname);
+                        SyntacticPort iport = new SyntacticPort(this, ep, true,
+                                "in_ref_" + n + "_" + epname);
                         iport.setChannel(n);
                         _inputs.add(iport);
-                        StringAttribute cardinal = new StringAttribute(iport, "_cardinal");
+                        StringAttribute cardinal = new StringAttribute(iport,
+                                "_cardinal");
                         cardinal.setExpression("WEST");
                     }
                     _isInitial = false;
@@ -213,17 +216,19 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
                     _outref.put(ep, _numOuts);
 
                     for (int n = 0; n < width; ++n, ++_numOuts) {
-                        SyntacticPort oport = new SyntacticPort(this, ep, false, "out_ref_" + n + "_" + epname);
+                        SyntacticPort oport = new SyntacticPort(this, ep,
+                                false, "out_ref_" + n + "_" + epname);
                         oport.setChannel(n);
                         _outputs.add(oport);
-                        StringAttribute cardinal = new StringAttribute(oport, "_cardinal");
+                        StringAttribute cardinal = new StringAttribute(oport,
+                                "_cardinal");
                         cardinal.setExpression("EAST");
                     }
                     _isTerminal = false;
                 }
+            } else {
+                continue;
             }
-
-            else continue;
 
         }
 
@@ -246,8 +251,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    public int addPorts(Port port, boolean isin)
-            throws IllegalActionException, NameDuplicationException {
+    public int addPorts(Port port, boolean isin) throws IllegalActionException,
+            NameDuplicationException {
         String prefix = (isin ? "in_" : "out_");
         List<SyntacticPort> portset = isin ? _inputs : _outputs;
         String cardinality = isin ? "WEST" : "EAST";
@@ -258,15 +263,19 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         (isin ? _inref : _outref).put(port, index);
 
         for (int n = index; n < width + index; ++n, ++_numOuts) {
-            SyntacticPort rport = new SyntacticPort(this, port, isin, prefix + n);
+            SyntacticPort rport = new SyntacticPort(this, port, isin, prefix
+                    + n);
             rport.setChannel(n);
             portset.add(rport);
             StringAttribute cardinal = new StringAttribute(rport, "_cardinal");
             cardinal.setExpression(cardinality);
         }
 
-        if (isin) _numIns += width;
-        else _numOuts += width;
+        if (isin) {
+            _numIns += width;
+        } else {
+            _numOuts += width;
+        }
 
         return width;
     }
@@ -277,20 +286,22 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    public void representExteriorPort(Port port)
-        throws IllegalActionException, NameDuplicationException {
+    public void representExteriorPort(Port port) throws IllegalActionException,
+            NameDuplicationException {
 
         if (port instanceof IOPort) {
-            IOPort ioport = (IOPort)port;
+            IOPort ioport = (IOPort) port;
             int width = 1;//ioport.getWidthInside();
             _isIsolated = false;
             if (ioport.isInput()) {
                 for (int n = 0; n < width; ++n) {
-                    SyntacticPort oport = new SyntacticPort(this, ioport, false, "out_" + n + "_external_in");
+                    SyntacticPort oport = new SyntacticPort(this, ioport,
+                            false, "out_" + n + "_external_in");
                     oport.setChannel(n);
                     _outputs.add(oport);
                     _outref.put(port, n);
-                    StringAttribute cardinal = new StringAttribute(oport, "_cardinal");
+                    StringAttribute cardinal = new StringAttribute(oport,
+                            "_cardinal");
                     cardinal.setExpression("EAST");
                     _attachText("_iconDescription", _inputIcon);
                 }
@@ -300,14 +311,15 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
                 ++_numOuts;
 
                 _nodeType = NodeType.INPUT;
-            }
-            else if (ioport.isOutput()) {
+            } else if (ioport.isOutput()) {
                 for (int n = 0; n < width; ++n) {
-                    SyntacticPort iport = new SyntacticPort(this, ioport, true, "in_" + n + "_external_out");
+                    SyntacticPort iport = new SyntacticPort(this, ioport, true,
+                            "in_" + n + "_external_out");
                     iport.setChannel(n);
                     _inputs.add(iport);
                     _inref.put(port, n);
-                    StringAttribute cardinal = new StringAttribute(iport, "_cardinal");
+                    StringAttribute cardinal = new StringAttribute(iport,
+                            "_cardinal");
                     cardinal.setExpression("WEST");
                     _attachText("_iconDescription", _outputIcon);
                 }
@@ -330,21 +342,23 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      * */
     public void setSyntactic(int inputs, int outputs)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         _isInitial = inputs == 0;
         _isTerminal = outputs == 0;
         _isIsolated = _isInitial && _isTerminal;
 
         String name = this.getName();
         for (int n = 0; n < inputs; ++n, ++_numIns) {
-            SyntacticPort port = new SyntacticPort(this, null, true, "in_" + n + "_" + name);
+            SyntacticPort port = new SyntacticPort(this, null, true, "in_" + n
+                    + "_" + name);
             _inputs.add(port);
             StringAttribute cardinal = new StringAttribute(port, "_cardinal");
             cardinal.setExpression("WEST");
         }
 
         for (int n = 0; n < outputs; ++n, ++_numOuts) {
-            SyntacticPort port = new SyntacticPort(this, null, false, "out_" + n + "_" + name);
+            SyntacticPort port = new SyntacticPort(this, null, false, "out_"
+                    + n + "_" + name);
             _outputs.add(port);
             StringAttribute cardinal = new StringAttribute(port, "_cardinal");
             cardinal.setExpression("EAST");
@@ -356,8 +370,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    public void setIdentity()
-        throws IllegalActionException, NameDuplicationException {
+    public void setIdentity() throws IllegalActionException,
+            NameDuplicationException {
         setSyntactic(1, 1);
         _nodeType = NodeType.IDENTITY;
         _attachText("_iconDescription", _identityIcon);
@@ -368,14 +382,13 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    public void setFeedback(boolean direction)
-        throws IllegalActionException, NameDuplicationException {
+    public void setFeedback(boolean direction) throws IllegalActionException,
+            NameDuplicationException {
         if (direction) {
             setSyntactic(1, 0);
             _attachText("_iconDescription", _sendIcon);
             _nodeType = NodeType.SEND;
-        }
-        else {
+        } else {
             setSyntactic(0, 1);
             _attachText("_iconDescription", _returnIcon);
             _nodeType = NodeType.RECEIVE;
@@ -390,16 +403,16 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void setMediator(boolean direction, int valence)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (valence < 2) {
-            throw new IllegalActionException(this, "Cannot mediate less than 2 valence.");
+            throw new IllegalActionException(this,
+                    "Cannot mediate less than 2 valence.");
         }
 
         if (direction) {
             setSyntactic(1, valence);
             _nodeType = NodeType.SPLIT;
-        }
-        else {
+        } else {
             setSyntactic(valence, 1);
             _nodeType = NodeType.MERGE;
         }
@@ -412,10 +425,13 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    public void setCap(boolean direction)
-        throws IllegalActionException, NameDuplicationException {
-        if (direction) setSyntactic(1, 0);
-        else setSyntactic(0, 1);
+    public void setCap(boolean direction) throws IllegalActionException,
+            NameDuplicationException {
+        if (direction) {
+            setSyntactic(1, 0);
+        } else {
+            setSyntactic(0, 1);
+        }
         _attachText("_iconDescription", _capIcon);
         _nodeType = NodeType.CAP;
     }
@@ -426,7 +442,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     public void setPermutation(int permutation[])
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         int plen = permutation.length;
         setSyntactic(plen, plen);
         _attachText("_iconDescription", _makePermutationIcon(permutation));
@@ -441,12 +457,16 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      */
     public SyntacticNode getConnectedNode(SyntacticPort port) {
         SyntacticPort rport = port.getConnectedPort();
-        if (rport == null) return null;
+        if (rport == null) {
+            return null;
+        }
 
         NamedObj rent = rport.getContainer();
-        if (!(rent instanceof SyntacticNode)) return null;
+        if (!(rent instanceof SyntacticNode)) {
+            return null;
+        }
 
-        return (SyntacticNode)rent;
+        return (SyntacticNode) rent;
     }
 
     /** Get a unique list of connected nodes from a given list of ports.
@@ -457,12 +477,13 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         LinkedList<SyntacticNode> outstream = new LinkedList();
         for (SyntacticPort port : ports) {
             SyntacticNode rnode = getConnectedNode(port);
-            if (rnode != null && !outstream.contains(rnode)) outstream.add(rnode);
+            if (rnode != null && !outstream.contains(rnode)) {
+                outstream.add(rnode);
+            }
         }
 
         return outstream;
     }
-
 
     /** Get a list of nodes immediately downstream from outgoing connections.
      *  @return A list of immediately downstream nodes.
@@ -515,9 +536,9 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    public void setLocation(double x, double y)
-        throws IllegalActionException, NameDuplicationException {
-        Location location = (Location)getAttribute("_location");
+    public void setLocation(double x, double y) throws IllegalActionException,
+            NameDuplicationException {
+        Location location = (Location) getAttribute("_location");
         if (location == null) {
             location = new Location(this, "_location");
         }
@@ -527,10 +548,10 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
             if (_permutation != null) {
                 permlen = _permutation.length;
             }
-            y = permlen*35.0;
+            y = permlen * 35.0;
         }
 
-        double coords[] = {x, y};
+        double coords[] = { x, y };
         location.setLocation(coords);
     }
 
@@ -538,8 +559,12 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @return vertical offset down from baseline.
      */
     public double getLayoutVerticalSpace() {
-        if (isPermutation()) return 0.0;
-        if (isIdentity()) return 50.0;
+        if (isPermutation()) {
+            return 0.0;
+        }
+        if (isIdentity()) {
+            return 50.0;
+        }
         return 100.0;
     }
 
@@ -549,22 +574,30 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     public String getIdentifier() {
         String id = "";
         if (_nodeType == NodeType.PERMUTATION) {
-            if (_permutation == null) id = "";
-            else if (_permutation.length == 0) id = "[]";
-            else {
+            if (_permutation == null) {
+                id = "";
+            } else if (_permutation.length == 0) {
+                id = "[]";
+            } else {
                 id += "[" + (_permutation[0] + 1);
                 for (int n = 1; n < _permutation.length; ++n) {
                     id += " " + (_permutation[n] + 1);
                 }
                 id += "]";
             }
+        } else if (_nodeType == NodeType.SPLIT) {
+            id += "[ < " + _outputs.size() + " ]";
+        } else if (_nodeType == NodeType.MERGE) {
+            id += "[ " + _inputs.size() + " > ]";
+        } else if (isCap()) {
+            id += "T";
+        } else if (isIncoming()) {
+            id += "in";
+        } else if (isOutgoing()) {
+            id += "out";
+        } else if (isRepresentative()) {
+            id += _label;
         }
-        else if (_nodeType == NodeType.SPLIT)   id += "[ < " + _outputs.size() + " ]";
-        else if (_nodeType == NodeType.MERGE)   id += "[ " + _inputs.size() + " > ]";
-        else if (isCap())                       id += "T";
-        else if (isIncoming())                  id += "in";
-        else if (isOutgoing())                  id += "out";
-        else if (isRepresentative())            id += _label;
 
         return id;
     }
@@ -639,8 +672,11 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @return number of inputs.
      */
     public int sizeInputs() {
-        if (_nodeType.isIncoming()) return 1;
-        else return _inputs == null ? 0 : _inputs.size();
+        if (_nodeType.isIncoming()) {
+            return 1;
+        } else {
+            return _inputs == null ? 0 : _inputs.size();
+        }
     }
 
     /** Get the number of outputs to the node.
@@ -649,8 +685,11 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @return number of outputs.
      */
     public int sizeOutputs() {
-        if (_nodeType.isOutgoing()) return 1;
-        else return _outputs == null ? 0 : _outputs.size();
+        if (_nodeType.isOutgoing()) {
+            return 1;
+        } else {
+            return _outputs == null ? 0 : _outputs.size();
+        }
     }
 
     /** Get the Syntactic rank of the node.
@@ -672,7 +711,9 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @return first input or null.
      */
     public SyntacticPort getFirstInput() {
-        if (_inputs.size() == 0) return null;
+        if (_inputs.size() == 0) {
+            return null;
+        }
         return _inputs.getFirst();
     }
 
@@ -680,7 +721,9 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @return first output or null.
      */
     public SyntacticPort getFirstOutput() {
-        if (_outputs.size() == 0) return null;
+        if (_outputs.size() == 0) {
+            return null;
+        }
         return _outputs.getFirst();
     }
 
@@ -688,7 +731,9 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  ... which order?
      *  @return the order of the node.
      */
-    public int getOrder() { return _nodeType.getOrder(); }
+    public int getOrder() {
+        return _nodeType.getOrder();
+    }
 
     /** Determine whether node represents feedback.
      *  @return Whether node is a feedback node
@@ -832,16 +877,15 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         String indent = "....";
 
         if (isRepresentative() && _isRepresented) {
-            desc += prefix + indent + "Representing: " + _represented.getName() + suffix;
-        }
-        else {
+            desc += prefix + indent + "Representing: " + _represented.getName()
+                    + suffix;
+        } else {
             desc += prefix + indent + "Pure syntactic node" + suffix;
         }
 
-        desc +=
-            prefix + indent + "Initial: "  + _isInitial  + suffix +
-            prefix + indent + "Terminal: " + _isTerminal + suffix +
-            prefix + indent + "Isolated: " + _isIsolated + suffix;
+        desc += prefix + indent + "Initial: " + _isInitial + suffix + prefix
+                + indent + "Terminal: " + _isTerminal + suffix + prefix
+                + indent + "Isolated: " + _isIsolated + suffix;
 
         desc += prefix + indent + "inputs: {" + suffix;
         for (Port port : _inputs) {
@@ -869,18 +913,20 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      * */
     protected SyntacticPort _mapInputPort(Port port, int offset) {
         Integer base = _inref.get(port);
-        if (base == null) return null;
+        if (base == null) {
+            return null;
+        }
 
         SyntacticPort sport = null;
         try {
             sport = _inputs.get(base.intValue() + offset);
         }
 
-        catch (IndexOutOfBoundsException ex) {}
+        catch (IndexOutOfBoundsException ex) {
+        }
 
         return sport;
     }
-
 
     /** Get the SyntacticPort corresponding to a channel of a represented
      *  output port.
@@ -890,14 +936,17 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      * */
     protected SyntacticPort _mapOutputPort(Port port, int offset) {
         Integer base = _outref.get(port);
-        if (base == null) return null;
+        if (base == null) {
+            return null;
+        }
 
         SyntacticPort sport = null;
         try {
             sport = _outputs.get(base.intValue() + offset);
         }
 
-        catch (IndexOutOfBoundsException ex) {}
+        catch (IndexOutOfBoundsException ex) {
+        }
 
         return sport;
     }
@@ -909,19 +958,19 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException
      */
     protected String _makePermutationIcon(int permutation[])
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
 
         int permlen = permutation.length;
-        int pheight = permlen*35;
-        String svgicon =
-        "<svg>\n" +
-        "<rect x=\"-20\" y=\"" + (-pheight) + "\" width=\"40\" height=\"" + (2*pheight) + "\" style=\"fill:red\"/>\n";
+        int pheight = permlen * 35;
+        String svgicon = "<svg>\n" + "<rect x=\"-20\" y=\"" + (-pheight)
+                + "\" width=\"40\" height=\"" + (2 * pheight)
+                + "\" style=\"fill:red\"/>\n";
 
         for (int n = 0; n < permlen; ++n) {
             int m = permutation[n];
-            svgicon += "<line x1=\"-18\" y1=\"" + (n*70 + 35 - pheight)
-                + "\" x2=\"18\" y2=\"" + (m*70 + 35 - pheight)
-                + "\" />\n";
+            svgicon += "<line x1=\"-18\" y1=\"" + (n * 70 + 35 - pheight)
+                    + "\" x2=\"18\" y2=\"" + (m * 70 + 35 - pheight)
+                    + "\" />\n";
         }
 
         svgicon += "</svg>\n";
@@ -949,21 +998,19 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
         if (ins == 1 && outs > 1) {
             svgicon += "<polygon points=\"20,-20 -20,0 20,20\" style=\"fill:red\"/>\n";
-            double vinc = 30.0/((double)(outs-1));
+            double vinc = 30.0 / ((double) (outs - 1));
             for (int n = 0; n < outs; ++n) {
                 svgicon += "<line x1=\"-18\" y1=\"0\" x2=\"18\" y2=\""
-                    + (n*vinc - 15.0) + "\" />\n";
+                        + (n * vinc - 15.0) + "\" />\n";
             }
-        }
-        else if (outs == 1 && ins > 1) {
+        } else if (outs == 1 && ins > 1) {
             svgicon += "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:red\"/>\n";
-            double vinc = 30.0/((double)(ins-1));
+            double vinc = 30.0 / ((double) (ins - 1));
             for (int n = 0; n < ins; ++n) {
-                svgicon += "<line x1=\"-18\" y1=\"" + (n*vinc - 15.0)
-                    + "\" x2=\"18\" y2=\"0\" />\n";
+                svgicon += "<line x1=\"-18\" y1=\"" + (n * vinc - 15.0)
+                        + "\" x2=\"18\" y2=\"0\" />\n";
             }
-        }
-        else {
+        } else {
             svgicon += "<rect x=\"-20\" y=\"-20\" width=\"40\" height=\"40\" style=\"fill:green\"/>\n";
         }
 
@@ -1033,52 +1080,44 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     private int _permutation[];
 
     /** Icon for representative nodes */
-    private static String _representativeIcon =
-        "<svg>\n" +
-        "<rect x=\"-30\" y=\"-20\" width=\"60\" height=\"40\" style=\"fill:white\"/>\n" +
-        "<polygon points=\"-10,-10 -10,10 10,10 10,-10\" style=\"fill:orange\"/>\n" +
-        "</svg>\n";
+    private static String _representativeIcon = "<svg>\n"
+            + "<rect x=\"-30\" y=\"-20\" width=\"60\" height=\"40\" style=\"fill:white\"/>\n"
+            + "<polygon points=\"-10,-10 -10,10 10,10 10,-10\" style=\"fill:orange\"/>\n"
+            + "</svg>\n";
 
     /** Icon for identity nodes */
-    private static String _identityIcon =
-        "<svg>\n" +
-        "<rect x=\"-30\" y=\"-10\" width=\"60\" height=\"20\" style=\"fill:none\"/>\n" +
-        "<polygon points=\"-10,-10 20,0 -10,10\" style=\"fill:blue\"/>\n" +
-        "</svg>\n";
+    private static String _identityIcon = "<svg>\n"
+            + "<rect x=\"-30\" y=\"-10\" width=\"60\" height=\"20\" style=\"fill:none\"/>\n"
+            + "<polygon points=\"-10,-10 20,0 -10,10\" style=\"fill:blue\"/>\n"
+            + "</svg>\n";
 
     /** Icon for input nodes */
-    private static String _inputIcon =
-        "<svg>\n" +
-        "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:red\"/>\n" +
-        "</svg>\n";
+    private static String _inputIcon = "<svg>\n"
+            + "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:red\"/>\n"
+            + "</svg>\n";
 
     /** Icon for output nodes */
-    private static String _outputIcon =
-        "<svg>\n" +
-        "<polygon points=\"10,-20 -10,0 10,20\" style=\"fill:red\"/>\n" +
-        "</svg>\n";
+    private static String _outputIcon = "<svg>\n"
+            + "<polygon points=\"10,-20 -10,0 10,20\" style=\"fill:red\"/>\n"
+            + "</svg>\n";
 
     /** Icon for feedback return nodes */
-    private static String _returnIcon =
-        "<svg>\n" +
-        "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:gray\"/>\n" +
-        "</svg>\n";
+    private static String _returnIcon = "<svg>\n"
+            + "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:gray\"/>\n"
+            + "</svg>\n";
 
     /** Icon for feedback send nodes */
-    private static String _sendIcon =
-        "<svg>\n" +
-        "<polygon points=\"10,-20 -10,0 10,20\" style=\"fill:gray\"/>\n" +
-        "</svg>\n";
+    private static String _sendIcon = "<svg>\n"
+            + "<polygon points=\"10,-20 -10,0 10,20\" style=\"fill:gray\"/>\n"
+            + "</svg>\n";
 
     /** Icon for cap nodes */
-    private static String _capIcon =
-        "<svg>\n" +
-        "<rect x=\"-20\" y=\"-20\" width=\"40\" height=\"40\" style=\"fill:green\"/>\n" +
-        "</svg>\n";
+    private static String _capIcon = "<svg>\n"
+            + "<rect x=\"-20\" y=\"-20\" width=\"40\" height=\"40\" style=\"fill:green\"/>\n"
+            + "</svg>\n";
 
     ///////////////////////////////////////////////////////////////////
     ////                         internal classes                  ////
-
 
     /** Internal enum representing the types of nodes and
      *  how they are ordered, compared, and categorized.
@@ -1123,40 +1162,43 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         /** Make a new node type enum with a given order.
          *  @param sort order of node.
          */
-        private NodeType(int order) { this.order = order; }
+        private NodeType(int order) {
+            this.order = order;
+        }
 
         /** Decide whether type is unknown.
          *  @return whether type is unknown.
          */
-        public boolean isUnknown()   {
+        public boolean isUnknown() {
             return this == UNKNOWN;
         }
 
         /** Decide whether type is an input or output.
          *  @return whether type is input or output.
          */
-        public boolean isExterior()  {
+        public boolean isExterior() {
             return this == INPUT || this == OUTPUT;
         }
 
         /** Decide whether type is feedback in or out.
          *  @return whether type is feedback in or out.
          */
-        public boolean isFeedback()  {
-            return this == SEND  || this == RECEIVE;
+        public boolean isFeedback() {
+            return this == SEND || this == RECEIVE;
         }
 
         /** Decide whether type is a purely syntactic one.
          *  @return whether type is a purely syntactic one.
          */
-        public boolean isPure()      {
-            return this == IDENTITY || this == CAP || this == PERMUTATION || isMediator() || isFeedback();
+        public boolean isPure() {
+            return this == IDENTITY || this == CAP || this == PERMUTATION
+                    || isMediator() || isFeedback();
         }
 
         /** Decide whether type is a mediator.
          *  @return whether type is a mediator.
          */
-        public boolean isMediator()  {
+        public boolean isMediator() {
             return this == SPLIT || this == MERGE;
         }
 
@@ -1179,10 +1221,10 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         /** Sort order of type.
          *  @return sort order of type.
          */
-        public int getOrder() { return order; }
+        public int getOrder() {
+            return order;
+        }
 
     };
 
-
 }
-

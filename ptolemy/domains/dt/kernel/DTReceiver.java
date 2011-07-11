@@ -88,8 +88,8 @@ public class DTReceiver extends SDFReceiver {
         super(container);
         _init();
 
-        Time localTime = new Time(((Actor) container.getContainer())
-                .getDirector());
+        Time localTime = new Time(
+                ((Actor) container.getContainer()).getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -104,8 +104,8 @@ public class DTReceiver extends SDFReceiver {
         super(container, size);
         _init();
 
-        Time localTime = new Time(((Actor) container.getContainer())
-                .getDirector());
+        Time localTime = new Time(
+                ((Actor) container.getContainer()).getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -200,7 +200,8 @@ public class DTReceiver extends SDFReceiver {
 
         Iterator portListIterator = listOfConnectedPorts.iterator();
 
-        foundReceiver: while (portListIterator.hasNext()) {
+        foundReceiver:
+        while (portListIterator.hasNext()) {
             connectedPort = (IOPort) portListIterator.next();
 
             if (connectedPort.isOutput() == true) {

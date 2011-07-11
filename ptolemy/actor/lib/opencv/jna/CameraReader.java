@@ -53,58 +53,58 @@ import com.sun.jna.ptr.PointerByReference;
 * @Pt.AcceptedRating
 */
 public class CameraReader extends Source {
-   /** Construct an actor with the given container and name.
-    *  In addition to invoking the base class constructors, construct
-    *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
-    *  port. Initialize <i>init</i>
-    *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
-    *  @param container The container.
-    *  @param name The name of this actor.
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
-   public CameraReader(CompositeEntity container, String name)
-           throws IllegalActionException, NameDuplicationException {
-       super(container, name);
+    /** Construct an actor with the given container and name.
+     *  In addition to invoking the base class constructors, construct
+     *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
+     *  port. Initialize <i>init</i>
+     *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public CameraReader(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
-       output.setTypeEquals(BaseType.OBJECT);
-   }
+        output.setTypeEquals(BaseType.OBJECT);
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
-   /** Output a frame.
-    *  @exception IllegalActionException If thrown while writing to the port.
-    */
-   public void fire() throws IllegalActionException {
-       _frame = cvQueryFrame (_capture);
-       output.send(0, new ObjectToken(_frame));
-   }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /** Output a frame.
+     *  @exception IllegalActionException If thrown while writing to the port.
+     */
+    public void fire() throws IllegalActionException {
+        _frame = cvQueryFrame(_capture);
+        output.send(0, new ObjectToken(_frame));
+    }
 
-   /** Open the video capture device.
-    *  @exception IllegalActionException If thrown by the super class.
-    */
-   public void initialize() throws IllegalActionException {
-       super.initialize();
-       _capture = cvCreateCameraCapture(0);
+    /** Open the video capture device.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _capture = cvCreateCameraCapture(0);
 
-       // FIXME: These setting don't work correctly..
-//       cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_WIDTH, 320);
-//       cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_HEIGHT, 240);
-   }
+        // FIXME: These setting don't work correctly..
+        //       cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_WIDTH, 320);
+        //       cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_HEIGHT, 240);
+    }
 
-   /** Stop the capture.
-    *  @exception IllegalActionException If thrown by the super class.
-    */
-   public void wrapup() throws IllegalActionException {
-       super.wrapup();
-       cvReleaseCapture (new PointerByReference(_capture));
-   }
+    /** Stop the capture.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        cvReleaseCapture(new PointerByReference(_capture));
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         private variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-   private Pointer _capture;
-   private Pointer _frame;
+    private Pointer _capture;
+    private Pointer _frame;
 }

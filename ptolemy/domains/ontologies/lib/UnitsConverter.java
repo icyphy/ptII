@@ -87,8 +87,10 @@ public class UnitsConverter extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        unitSystemOntologySolver = new Parameter(this, "unitSystemOntologySolver");
-        unitSystemOntologySolver.setTypeEquals(new ObjectType(OntologySolver.class));
+        unitSystemOntologySolver = new Parameter(this,
+                "unitSystemOntologySolver");
+        unitSystemOntologySolver.setTypeEquals(new ObjectType(
+                OntologySolver.class));
 
         dimensionConcept = new StringAttribute(this, "dimensionConcept");
         inputUnitConcept = new StringAttribute(this, "inputUnitConcept");
@@ -150,9 +152,12 @@ public class UnitsConverter extends Transformer {
      *  @exception IllegalActionException Thrown if there is a problem setting
      *   the expression of the conversionLabel attribute.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
-        if (attribute.equals(inputUnitConcept) || attribute.equals(outputUnitConcept)) {
-            conversionLabel.setExpression(inputUnitConcept.getExpression() + " -> " + outputUnitConcept.getExpression());
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute.equals(inputUnitConcept)
+                || attribute.equals(outputUnitConcept)) {
+            conversionLabel.setExpression(inputUnitConcept.getExpression()
+                    + " -> " + outputUnitConcept.getExpression());
         } else {
             super.attributeChanged(attribute);
         }
@@ -188,14 +193,16 @@ public class UnitsConverter extends Transformer {
                     valueSIUnits = inputFactor.multiply(in.add(inputOffset));
 
                     // Transform the value in SI units to the specified output units.
-                    result = outputFactor.divideReverse(valueSIUnits).subtract(outputOffset);
+                    result = outputFactor.divideReverse(valueSIUnits).subtract(
+                            outputOffset);
                 } else {
                     // Scale on the right.
                     // Transform the input value from its original units to the SI units for this dimension.
                     valueSIUnits = in.add(inputOffset).multiply(inputFactor);
 
                     // Transform the value in SI units to the specified output units.
-                    result = valueSIUnits.divide(outputFactor).subtract(outputOffset);
+                    result = valueSIUnits.divide(outputFactor).subtract(
+                            outputOffset);
                 }
             }
             output.send(0, result);
@@ -217,8 +224,8 @@ public class UnitsConverter extends Transformer {
             throws IllegalActionException {
         Ontology unitOntology = _getUnitOntology();
         if (unitOntology == null) {
-            throw new IllegalActionException(this, "The unit system ontology " +
-                            "solver has not been specified.");
+            throw new IllegalActionException(this, "The unit system ontology "
+                    + "solver has not been specified.");
         }
 
         StringAttribute unitConceptName = null;
@@ -234,14 +241,14 @@ public class UnitsConverter extends Transformer {
                 dimensionConceptName = "";
             }
 
-            Concept unitConcept = unitOntology.getConceptByString(
-                    dimensionConceptName + "_" + unitName);
+            Concept unitConcept = unitOntology
+                    .getConceptByString(dimensionConceptName + "_" + unitName);
             if (unitConcept instanceof UnitConcept) {
                 return (UnitConcept) unitConcept;
             } else {
-                throw new IllegalActionException(this, "Could not find unit " +
-                                "named: " + dimensionConceptName + "_" +
-                                unitName + " in the ontology.");
+                throw new IllegalActionException(this, "Could not find unit "
+                        + "named: " + dimensionConceptName + "_" + unitName
+                        + " in the ontology.");
             }
         } else {
             return null;

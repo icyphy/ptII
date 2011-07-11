@@ -67,7 +67,8 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
      *  @exception NameDuplicationException If there is already a NamedObj with
      *   the same name in the container model.
      */
-    public SequencedIntegrator(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+    public SequencedIntegrator(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // create inports
@@ -79,8 +80,10 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
         sampleFactor = new TypedIOPort(this, "sampleFactor", true, false);
 
         // input port to trigger the setStateMethod
-        callSetStateMethod = new TypedIOPort(this, "callSetStateMethod", true, false);
-        StringAttribute callSetStateTrigger = new StringAttribute(callSetStateMethod, "methodName");
+        callSetStateMethod = new TypedIOPort(this, "callSetStateMethod", true,
+                false);
+        StringAttribute callSetStateTrigger = new StringAttribute(
+                callSetStateMethod, "methodName");
         callSetStateTrigger.setExpression(_setStateMethodName);
         callSetStateTrigger.setVisibility(Settable.NOT_EDITABLE);
 
@@ -89,13 +92,17 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
         currentState = new TypedIOPort(this, "currentState", false, true);
 
         // set direction of ports
-        StringAttribute sampleFactorCardinal = new StringAttribute(sampleFactor, "_cardinal");
+        StringAttribute sampleFactorCardinal = new StringAttribute(
+                sampleFactor, "_cardinal");
         sampleFactorCardinal.setExpression("NORTH");
-        StringAttribute sampleTimeCardinal = new StringAttribute(sampleTime, "_cardinal");
+        StringAttribute sampleTimeCardinal = new StringAttribute(sampleTime,
+                "_cardinal");
         sampleTimeCardinal.setExpression("SOUTH");
-        StringAttribute setStateValueCardinal = new StringAttribute(setStateValue, "_cardinal");
+        StringAttribute setStateValueCardinal = new StringAttribute(
+                setStateValue, "_cardinal");
         setStateValueCardinal.setExpression("SOUTH");
-        StringAttribute callSetStateCardinal = new StringAttribute(callSetStateMethod, "_cardinal");
+        StringAttribute callSetStateCardinal = new StringAttribute(
+                callSetStateMethod, "_cardinal");
         callSetStateCardinal.setExpression("NORTH");
 
         // set type constraints for output port
@@ -160,14 +167,18 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
     public void fire() throws IllegalActionException {
         Variable stateVar = getVariable();
 
-        if (_fireMethodName != null && _fireMethodName.equals(_setStateMethodName)) {
+        if (_fireMethodName != null
+                && _fireMethodName.equals(_setStateMethodName)) {
             _setStateMethod(stateVar);
-        } else if (_fireMethodName != null && _fireMethodName.equals(_integrateMethodName)) {
+        } else if (_fireMethodName != null
+                && _fireMethodName.equals(_integrateMethodName)) {
             _integrateMethod(stateVar);
-        } else if (_fireMethodName != null && _fireMethodName.equals(_currentStateMethodName)) {
+        } else if (_fireMethodName != null
+                && _fireMethodName.equals(_currentStateMethodName)) {
             _currentStateMethod(stateVar);
         } else {
-            throw new IllegalActionException(this, "Unrecognized fire method name: " + _fireMethodName);
+            throw new IllegalActionException(this,
+                    "Unrecognized fire method name: " + _fireMethodName);
         }
     }
 
@@ -185,7 +196,9 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
         Variable var = getVariable();
 
         if (!(var.getToken() instanceof ScalarToken)) {
-            throw new IllegalActionException(this, "The state parameter variable for SequencedIntegrator actor " + getName() + " must contain a ScalarToken.");
+            throw new IllegalActionException(this,
+                    "The state parameter variable for SequencedIntegrator actor "
+                            + getName() + " must contain a ScalarToken.");
         }
 
         // Set type constraints for the Srv_Debouce actor's internal state.
@@ -216,7 +229,8 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
      * @param stateVar The shared state variable for the SequencedIntegrator actor.
      * @exception IllegalActionException If there is a problem using the state variable value.
      */
-    private void _currentStateMethod(Variable stateVar) throws IllegalActionException {
+    private void _currentStateMethod(Variable stateVar)
+            throws IllegalActionException {
         currentState.send(0, stateVar.getToken());
     }
 
@@ -224,23 +238,27 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
      *  @param stateVar The shared state variable for the SequencedIntegrator actor.
      *  @exception IllegalActionException If there is a problem using the state variable value.
      */
-    private void _integrateMethod(Variable stateVar) throws IllegalActionException {
+    private void _integrateMethod(Variable stateVar)
+            throws IllegalActionException {
         ScalarToken integratorState = (ScalarToken) stateVar.getToken();
 
-        if (sampleFactor.hasToken(0) && sampleTime.hasToken(0) && input.hasToken(0)) {
+        if (sampleFactor.hasToken(0) && sampleTime.hasToken(0)
+                && input.hasToken(0)) {
             ScalarToken sampleFactorToken = (ScalarToken) sampleFactor.get(0);
             ScalarToken sampleTimeToken = (ScalarToken) sampleTime.get(0);
             ScalarToken inputToken = (ScalarToken) input.get(0);
 
-            integratorState = (ScalarToken) integratorState.add(inputToken.multiply(sampleFactorToken.multiply(sampleTimeToken)));
+            integratorState = (ScalarToken) integratorState.add(inputToken
+                    .multiply(sampleFactorToken.multiply(sampleTimeToken)));
 
             stateVar.setToken(integratorState);
             output.send(0, integratorState);
         } else {
-            throw new IllegalActionException(this,
-                    "Attempt to call the integrate method on a SequencedIntegrator, " +
-                    "but there is not an input token available on each of the input, " +
-                    "sampleFactor, and sampleTime input ports.");
+            throw new IllegalActionException(
+                    this,
+                    "Attempt to call the integrate method on a SequencedIntegrator, "
+                            + "but there is not an input token available on each of the input, "
+                            + "sampleFactor, and sampleTime input ports.");
         }
     }
 
@@ -250,14 +268,16 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
      *  @param stateVar The shared state variable for the SequencedIntegrator actor.
      *  @exception IllegalActionException If there is a problem using the state variable value.
      */
-    private void _setStateMethod(Variable stateVar) throws IllegalActionException {
+    private void _setStateMethod(Variable stateVar)
+            throws IllegalActionException {
         ScalarToken integratorState = null;
         if (setStateValue.hasToken(0)) {
             integratorState = (ScalarToken) setStateValue.get(0);
         } else {
-            throw new IllegalActionException(this,
-                    "Attempt to call the setState method on a SequencedIntegrator, " +
-                    "but there is no input token available on the setStateValue input.");
+            throw new IllegalActionException(
+                    this,
+                    "Attempt to call the setState method on a SequencedIntegrator, "
+                            + "but there is no input token available on the setStateValue input.");
         }
 
         stateVar.setToken(integratorState);

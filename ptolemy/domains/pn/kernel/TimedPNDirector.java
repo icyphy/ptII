@@ -216,8 +216,8 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  @exception IllegalActionException If the operation is not
      *  permissible (e.g. the given time is in the past).
      */
-    public synchronized Time fireAt(Actor actor, Time newFiringTime, int microstep)
-            throws IllegalActionException {
+    public synchronized Time fireAt(Actor actor, Time newFiringTime,
+            int microstep) throws IllegalActionException {
         if (newFiringTime.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this, "The process wants to "
                     + " get fired in the past!");

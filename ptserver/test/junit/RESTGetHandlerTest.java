@@ -52,10 +52,10 @@ import ptserver.actor.lib.io.RESTGetHandler;
  * @Pt.AcceptedRating Red (ltrnc)
  */
 public class RESTGetHandlerTest {
-    
+
     /** Model is created in the setUp() method and stored here. */
     public CompositeActor testModel;
-    
+
     /** The RESTGetHandler actor to test */
     public RESTGetHandler handler;
 
@@ -64,21 +64,21 @@ public class RESTGetHandlerTest {
         // Build test model.
         // Test model from MinimumDistanceCalculatorTest
         testModel = new CompositeActor();
-        
+
         // Actor a
         AtomicActor a = new AtomicActor(testModel, "a");
         IOPort aOut = new IOPort(a, "aOut", false, true);
-        
+
         // Actor b
         AtomicActor b = new AtomicActor(testModel, "b");
         IOPort bIn = new IOPort(b, "bIn", true, false);
         IOPort bOut = new IOPort(b, "bOut", false, true);
-        
+
         // Actor c
         AtomicActor c = new AtomicActor(testModel, "c");
         IOPort cIn1 = new IOPort(c, "cIn1", true, false);
         IOPort cIn2 = new IOPort(c, "cIn2", true, false);
-        
+
         // RESTGetHandler
         handler = new RESTGetHandler(testModel, "RESTGetHandler");
 
@@ -87,7 +87,7 @@ public class RESTGetHandlerTest {
         testModel.connect(bOut, cIn1);
         cIn2.link(relation);
     }
-    
+
     @Test
     public void test() throws Exception {
         handler.preinitialize();

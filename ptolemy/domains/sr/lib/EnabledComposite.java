@@ -195,8 +195,8 @@ public class EnabledComposite extends TypedCompositeActor {
             _forwardDependencies.put(enable, enableDependents);
             List<IOPort> outputs = _actor.outputPortList();
             for (IOPort output : outputs) {
-                enableDependents.put(output, _defaultDependency
-                        .oTimesIdentity());
+                enableDependents.put(output,
+                        _defaultDependency.oTimesIdentity());
                 Map<IOPort, Dependency> backward = _reverseDependencies
                         .get(output);
                 if (backward == null) {

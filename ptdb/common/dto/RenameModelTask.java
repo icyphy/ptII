@@ -28,7 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.common.dto;
 
-
 ///////////////////////////////////////////////////////////////////
 //// RenameModelTask
 
@@ -62,7 +61,6 @@ public class RenameModelTask {
         _newModelName = newModelName;
     }
 
-
     /**
      * Return the existing model set in the object.
      * @return The existing model set in the object.
@@ -80,7 +78,6 @@ public class RenameModelTask {
     public String getNewModelName() {
         return _newModelName;
     }
-
 
     /**
      * Set the existing model that its name need to be changed.

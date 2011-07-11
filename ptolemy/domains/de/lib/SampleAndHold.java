@@ -326,7 +326,7 @@ public class SampleAndHold extends Transformer {
      *      the output port.
      */
     protected void sendOutputIfTriggered(int commonWidth)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // If we have a trigger...
         boolean triggered = false;
         for (int j = 0; j < trigger.getWidth(); j++) {

@@ -317,6 +317,7 @@ public class EditParametersDialog extends ComponentDialog implements
         public ChangeFailedRunnable(Exception exception) {
             _exception = exception;
         }
+
         public void run() {
             // When a parameter is removed, and something depends on
             // it, this gets called when _query is null.
@@ -328,8 +329,8 @@ public class EditParametersDialog extends ComponentDialog implements
             String newName = _query.getStringValue("name");
             ComponentDialog dialog = _openAddDialog(_exception.getMessage()
                     + "\n\nPlease enter a new default value:", newName,
-                    _query.getStringValue("default"), _query
-                            .getStringValue("class"));
+                    _query.getStringValue("default"),
+                    _query.getStringValue("class"));
             _target.removeChangeListener(EditParametersDialog.this);
 
             if (!dialog.buttonPressed().equals("OK")) {
@@ -342,6 +343,7 @@ public class EditParametersDialog extends ComponentDialog implements
                 _target.requestChange(request);
             }
         }
+
         private Exception _exception;
     }
 

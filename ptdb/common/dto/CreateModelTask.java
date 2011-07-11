@@ -51,7 +51,7 @@ public class CreateModelTask extends Task {
      * constructor with the XMLDBModel parameter. </p>
      */
     public CreateModelTask() {
-      //FIXME: Remove this method as soon as the code pointing to it is modified.
+        //FIXME: Remove this method as soon as the code pointing to it is modified.
     }
 
     /**
@@ -66,7 +66,6 @@ public class CreateModelTask extends Task {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /**
      * Return the model to be created in the database.

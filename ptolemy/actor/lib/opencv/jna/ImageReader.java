@@ -53,69 +53,70 @@ import com.sun.jna.ptr.PointerByReference;
 * @Pt.AcceptedRating
 */
 public class ImageReader extends Source {
-   /** Construct an actor with the given container and name.
-    *  In addition to invoking the base class constructors, construct
-    *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
-    *  port. Initialize <i>init</i>
-    *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
-    *  @param container The container.
-    *  @param name The name of this actor.
-    *  @exception IllegalActionException If the actor cannot be contained
-    *   by the proposed container.
-    *  @exception NameDuplicationException If the container already has an
-    *   actor with this name.
-    */
-   public ImageReader(CompositeEntity container, String name)
-           throws IllegalActionException, NameDuplicationException {
-       super(container, name);
+    /** Construct an actor with the given container and name.
+     *  In addition to invoking the base class constructors, construct
+     *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
+     *  port. Initialize <i>init</i>
+     *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public ImageReader(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
 
-       pathName = new StringAttribute(this, "pathName");
-       pathName.setExpression("test.png");
+        pathName = new StringAttribute(this, "pathName");
+        pathName.setExpression("test.png");
 
-       output.setTypeEquals(BaseType.OBJECT);
-   }
+        output.setTypeEquals(BaseType.OBJECT);
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                     ports and parameters                  ////
-   /** The name of the file to write to. The default
-    *  value of this parameter is "test.png"
-    */   public StringAttribute pathName;
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    /** The name of the file to write to. The default
+     *  value of this parameter is "test.png"
+     */
+    public StringAttribute pathName;
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
-   /** Output a frame.
-    *  @exception IllegalActionException If thrown while writing to the port.
-    */
-   public void fire() throws IllegalActionException {
-       output.send(0, new ObjectToken(_image));
-   }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /** Output a frame.
+     *  @exception IllegalActionException If thrown while writing to the port.
+     */
+    public void fire() throws IllegalActionException {
+        output.send(0, new ObjectToken(_image));
+    }
 
-   /** Load image from file
-    *  @exception IllegalActionException If thrown by the super class.
-    */
-   public void initialize() throws IllegalActionException {
-       super.initialize();
-       String pathNameString = pathName.getExpression();
-       if (_image == null) {
-           _image = cvLoadImage(pathNameString,1);
-           if (_image == null) {
-               throw new IllegalActionException(this,
-                       "Fail to load image " + _image.getClass());
-           }
+    /** Load image from file
+     *  @exception IllegalActionException If thrown by the super class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        String pathNameString = pathName.getExpression();
+        if (_image == null) {
+            _image = cvLoadImage(pathNameString, 1);
+            if (_image == null) {
+                throw new IllegalActionException(this, "Fail to load image "
+                        + _image.getClass());
+            }
 
-       }
-   }
+        }
+    }
 
-   /** Stop the capture.
-    *  @exception IllegalActionException If thrown by the super class.
-    */
-   public void wrapup() throws IllegalActionException {
-       super.wrapup();
-       cvReleaseImage (new PointerByReference(_image));
-   }
+    /** Stop the capture.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        cvReleaseImage(new PointerByReference(_image));
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         private variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-   private Pointer _image;
+    private Pointer _image;
 }

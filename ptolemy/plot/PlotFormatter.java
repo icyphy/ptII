@@ -159,8 +159,8 @@ public class PlotFormatter extends JPanel {
             _originalStems = ((Plot) plot).getImpulses();
             _narrowQuery.addCheckBox("stems", "Stems", _originalStems);
             _saveConnected();
-            _narrowQuery.addCheckBox("connected", "Connect", ((Plot) plot)
-                    .getConnected());
+            _narrowQuery.addCheckBox("connected", "Connect",
+                    ((Plot) plot).getConnected());
         }
 
         _originalColor = plot.getColor();
@@ -209,9 +209,7 @@ public class PlotFormatter extends JPanel {
                 } else if (name.equals("ylabel")) {
                     _plot.setYLabel(_wideQuery.getStringValue("ylabel"));
                 } else if (name.equals("xrange")) {
-                    _plot
-                            .read("XRange: "
-                                    + _wideQuery.getStringValue("xrange"));
+                    _plot.read("XRange: " + _wideQuery.getStringValue("xrange"));
                 } else if (name.equals("xticks")) {
                     String spec = _wideQuery.getStringValue("xticks").trim();
                     _plot.read("XTicks: " + spec);
@@ -237,9 +235,7 @@ public class PlotFormatter extends JPanel {
                     //    _narrowQuery.setEnabled("ylog", false);
                     // }
                 } else if (name.equals("yrange")) {
-                    _plot
-                            .read("YRange: "
-                                    + _wideQuery.getStringValue("yrange"));
+                    _plot.read("YRange: " + _wideQuery.getStringValue("yrange"));
                 } else if (name.equals("marks")) {
                     ((Plot) _plot).setMarksStyle(_wideQuery
                             .getStringValue("marks"));

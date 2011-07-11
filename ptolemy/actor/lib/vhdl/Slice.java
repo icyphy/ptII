@@ -139,8 +139,8 @@ public class Slice extends FixTransformer {
             Arrays.fill(mask, newStartValue, newEndValue, '1');
 
             BigDecimal value = new BigDecimal(in.fixValue().getUnscaledValue()
-                    .and(new BigInteger(new String(mask), 2)).shiftRight(
-                            shiftBits));
+                    .and(new BigInteger(new String(mask), 2))
+                    .shiftRight(shiftBits));
             Precision precision = new Precision(
                     ((Parameter) getAttribute("outputPrecision"))
                             .getExpression());

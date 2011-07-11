@@ -228,8 +228,8 @@ abstract public class CryptographyActor extends TypedAtomicActor {
                         .arrayTokenToUnsignedByteArray((ArrayToken) input
                                 .get(0));
                 dataBytes = _process(dataBytes);
-                output.send(0, ArrayToken
-                        .unsignedByteArrayToArrayToken(dataBytes));
+                output.send(0,
+                        ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,

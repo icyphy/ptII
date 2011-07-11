@@ -93,23 +93,26 @@ public class ExpressionConceptFunction extends ConceptFunction {
      *   match the number of arguments for the function.
      */
     public ExpressionConceptFunction(String name, boolean numArgsIsFixed,
-            List<Ontology> argumentDomainOntologies, Ontology outputRangeOntology,
-            List<String> argumentNames, String conceptFunctionExpression,
-            OntologySolverModel solverModel, NamedObj functionScopeModelElement)
-        throws IllegalActionException {
+            List<Ontology> argumentDomainOntologies,
+            Ontology outputRangeOntology, List<String> argumentNames,
+            String conceptFunctionExpression, OntologySolverModel solverModel,
+            NamedObj functionScopeModelElement) throws IllegalActionException {
 
-        super(name, numArgsIsFixed, argumentDomainOntologies, outputRangeOntology);
+        super(name, numArgsIsFixed, argumentDomainOntologies,
+                outputRangeOntology);
         _argumentNames = new LinkedList<String>(argumentNames);
 
         if (_argumentNames == null) {
             throw new IllegalActionException(
                     "The argumentNames list cannot be null.");
-        } else if (numArgsIsFixed && _argumentNames.size() != getNumberOfArguments()) {
+        } else if (numArgsIsFixed
+                && _argumentNames.size() != getNumberOfArguments()) {
             throw new IllegalActionException(
                     "The size of the argument name list for the concept function's "
                             + "argument list does not match the given number of "
-                            + "arguments for the concept "
-                            + "function " + this + ": number of arguments = " + getNumberOfArguments()
+                            + "arguments for the concept " + "function " + this
+                            + ": number of arguments = "
+                            + getNumberOfArguments()
                             + ", size of the argument name list = "
                             + _argumentNames.size());
         }
@@ -156,15 +159,17 @@ public class ExpressionConceptFunction extends ConceptFunction {
 
         ConceptToken conceptToken = null;
         if (_functionScope != null) {
-            conceptToken = evaluator.evaluateParseTree(parseTree, _functionScope);
+            conceptToken = evaluator.evaluateParseTree(parseTree,
+                    _functionScope);
         } else {
             conceptToken = evaluator.evaluateParseTree(parseTree);
         }
         Concept output = conceptToken.conceptValue();
 
         if (output == null) {
-            throw new IllegalActionException("Error evaluating ExpressionConceptFunction:" +
-                            " output value is null.");
+            throw new IllegalActionException(
+                    "Error evaluating ExpressionConceptFunction:"
+                            + " output value is null.");
         }
 
         return output;

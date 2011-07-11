@@ -307,8 +307,9 @@ public class XmlApplet extends Applet implements XmlHandler {
             XmlParser parser = new XmlParser();
             parser.setHandler(this);
             ;
-            parser.parse(new URL(getDocumentBase(), getParameter("url"))
-                    .toString(), null, (String) null);
+            parser.parse(
+                    new URL(getDocumentBase(), getParameter("url")).toString(),
+                    null, (String) null);
         } catch (Exception e) {
             displayText("Caught exception (" + e.getClass().toString() + "): "
                     + e.getMessage());

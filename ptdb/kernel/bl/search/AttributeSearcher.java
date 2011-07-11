@@ -74,17 +74,17 @@ public class AttributeSearcher extends AbstractSearcher implements
 
                 if (!attributesMap.containsKey(originalAttribute.getName())) {
 
-                    PTDBGenericAttribute newAttribute = new PTDBGenericAttribute(originalAttribute.getName());
+                    PTDBGenericAttribute newAttribute = new PTDBGenericAttribute(
+                            originalAttribute.getName());
 
                     // Set the values and class name to newAttribute from
                     // originalAttribute.
-//                    newAttribute.setAttributeName(originalAttribute.getName());
-
+                    //                    newAttribute.setAttributeName(originalAttribute.getName());
 
                     //newAttribute.addValue(((Variable) originalAttribute)
                     //        .getValueAsString());
                     newAttribute.addValue(((Variable) originalAttribute)
-                                    .getExpression());
+                            .getExpression());
 
                     if (originalAttribute instanceof PTDBSearchAttribute) {
                         if (!((PTDBSearchAttribute) originalAttribute)
@@ -92,12 +92,11 @@ public class AttributeSearcher extends AbstractSearcher implements
 
                             newAttribute.setClassName(originalAttribute
                                     .getClassName());
-                        }
-                        else {
+                        } else {
 
-                            newAttribute.setClassName(
-                                    ((PTDBSearchAttribute) originalAttribute)
-                                    .getGenericClassName());
+                            newAttribute
+                                    .setClassName(((PTDBSearchAttribute) originalAttribute)
+                                            .getGenericClassName());
 
                         }
                     } else {

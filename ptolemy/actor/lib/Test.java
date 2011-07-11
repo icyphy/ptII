@@ -241,7 +241,8 @@ public class Test extends NonStrictTest {
             try {
                 isClose = token.isCloseTo(reference[i], _tolerance)
                         .booleanValue()
-                        || token.isNil() && reference[i].isNil();
+                        || token.isNil()
+                        && reference[i].isNil();
                 // Additional guards makes things slightly easier for
                 // Copernicus.
                 if (token instanceof ArrayToken

@@ -127,7 +127,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
                 // If the port is a multiport with more than one channel,
                 // don't add any constraints.  These will be added
                 // by the actor's adapter.
-                if (!(((TypedIOPort) port).isMultiport() && ((TypedIOPort) port).getWidth() > 1)) {
+                if (!((port).isMultiport() && (port).getWidth() > 1)) {
                     _constrainObject(adapter.interconnectConstraintType, port,
                             _getConstraintingPorts(constraintSource, port));
                 }
@@ -136,8 +136,8 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
 
         // Set up inner composite connection constraints.
         for (TypedIOPort port : (List<TypedIOPort>) _getConstraintedInsidePorts(isConstraintSource())) {
-            _constrainObject(interconnectConstraintType, port, port
-                    .insidePortList());
+            _constrainObject(interconnectConstraintType, port,
+                    port.insidePortList());
         }
 
         return super.constraintList();

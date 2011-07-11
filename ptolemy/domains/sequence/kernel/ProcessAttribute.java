@@ -192,7 +192,8 @@ public class ProcessAttribute extends SequenceAttribute {
 
         ArrayToken processArrayToken = (ArrayToken) getToken();
         if (processArrayToken.length() > 2) {
-            methodName = ((StringToken) processArrayToken.getElement(2)).stringValue();
+            methodName = ((StringToken) processArrayToken.getElement(2))
+                    .stringValue();
         }
 
         return methodName;
@@ -210,11 +211,12 @@ public class ProcessAttribute extends SequenceAttribute {
         ArrayToken processArrayToken = (ArrayToken) getToken();
 
         if (processArrayToken.length() > 0) {
-            StringToken processNameToken = (StringToken) (processArrayToken).getElement(0);
+            StringToken processNameToken = (StringToken) (processArrayToken)
+                    .getElement(0);
             processName = processNameToken.stringValue();
         } else {
-            throw new IllegalActionException(this, "ProcessAttribute " +
-                    getName() + " has no process name.");
+            throw new IllegalActionException(this, "ProcessAttribute "
+                    + getName() + " has no process name.");
         }
 
         return processName;
@@ -233,25 +235,31 @@ public class ProcessAttribute extends SequenceAttribute {
         ArrayToken processArrayToken = (ArrayToken) getToken();
 
         if (processArrayToken.length() > 1) {
-            StringToken sequenceNumToken = (StringToken) (processArrayToken).getElement(1);
+            StringToken sequenceNumToken = (StringToken) (processArrayToken)
+                    .getElement(1);
             try {
                 seqNumber = Integer.parseInt(sequenceNumToken.stringValue());
 
                 // Check to make sure sequence number is positive or zero.
                 if (seqNumber < 0) {
-                    throw new IllegalActionException(this, "In ProcessAttribute " +
-                            getName() + " the sequence number must be a positive integer. " +
-                            "It cannot be zero or negative.");
+                    throw new IllegalActionException(
+                            this,
+                            "In ProcessAttribute "
+                                    + getName()
+                                    + " the sequence number must be a positive integer. "
+                                    + "It cannot be zero or negative.");
                 }
             } catch (NumberFormatException e) {
-                throw new IllegalActionException(this, e, "ProcessAttribute " +
-                        getName() + " has an incorrectly formatted sequence number: " +
-                        sequenceNumToken.stringValue() + " - The sequence number must " +
-                        " be a positive integer.");
+                throw new IllegalActionException(this, e, "ProcessAttribute "
+                        + getName()
+                        + " has an incorrectly formatted sequence number: "
+                        + sequenceNumToken.stringValue()
+                        + " - The sequence number must "
+                        + " be a positive integer.");
             }
         } else {
-            throw new IllegalActionException(this, "ProcessAttribute " +
-                    getName() + " has no sequence number.");
+            throw new IllegalActionException(this, "ProcessAttribute "
+                    + getName() + " has no sequence number.");
         }
 
         return seqNumber;

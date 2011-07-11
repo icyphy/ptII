@@ -116,7 +116,8 @@ public class PtDoclet {
             for (int i = 0; i < classes.length; i++) {
                 String className = classes[i].toString();
                 if (classes[i].subclassOf(namedObjDoc)) {
-                    _writeDoc(className,
+                    _writeDoc(
+                            className,
                             _generateClassLevelDocumentation(classes[i])
                                     + _generateFieldDocumentation(classes[i],
                                             typedIOPortClass, "port")

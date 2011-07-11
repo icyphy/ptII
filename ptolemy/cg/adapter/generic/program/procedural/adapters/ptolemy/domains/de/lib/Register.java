@@ -64,8 +64,8 @@ public class Register extends NamedProgramCodeGeneratorAdapter {
         super._generateFireCode();
 
         ptolemy.domains.de.lib.Register actor = (ptolemy.domains.de.lib.Register) getComponent();
-        int commonWidth = Math.min(actor.input.getWidth(), actor.output
-                .getWidth());
+        int commonWidth = Math.min(actor.input.getWidth(),
+                actor.output.getWidth());
         ArrayList<String> templateArgs = new ArrayList<String>();
         String initialValueBlock;
 

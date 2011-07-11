@@ -307,14 +307,12 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                     }
 
                     if (newLayouts.contains(containerLayout)) {
-                        setLayoutBuffer
-                                .append(containerLayout.getName()
-                                        + ".setBorder(com.jgoodies.forms.factories.Borders.DIALOG_BORDER);\n");
-                        setLayoutBuffer
-                                .append(containerLayout.getName()
-                                        + ".setLayout(layoutConstraintsManager.createLayout (\""
-                                        + containerLayout.getName() + "\", "
-                                        + containerLayout.getName() + ");\n");
+                        setLayoutBuffer.append(containerLayout.getName()
+                                + ".setBorder(com.jgoodies.forms.factories.Borders.DIALOG_BORDER);\n");
+                        setLayoutBuffer.append(containerLayout.getName()
+                                + ".setLayout(layoutConstraintsManager.createLayout (\""
+                                + containerLayout.getName() + "\", "
+                                + containerLayout.getName() + ");\n");
                     }
                 }
 
@@ -388,7 +386,8 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                                 .getXML();
                         outStream.write(xml.getBytes());
                     } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(LayoutFrame.this,
+                        JOptionPane.showMessageDialog(
+                                LayoutFrame.this,
                                 "Error writing to file. "
                                         + exception.getMessage());
                         exception.printStackTrace();

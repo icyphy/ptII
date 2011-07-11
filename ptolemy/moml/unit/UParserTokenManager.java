@@ -135,7 +135,8 @@ public class UParserTokenManager implements UParserConstants {
             }
             if (curChar < 64) {
                 long l = 1L << curChar;
-                MatchLoop: do {
+                MatchLoop:
+                do {
                     switch (jjstateSet[--i]) {
                     case 0:
                         if ((0x3ff000000000000L & l) != 0L) {
@@ -290,7 +291,8 @@ public class UParserTokenManager implements UParserConstants {
                 } while (i != startsAt);
             } else if (curChar < 128) {
                 long l = 1L << (curChar & 077);
-                MatchLoop: do {
+                MatchLoop:
+                do {
                     switch (jjstateSet[--i]) {
                     case 0:
                     case 8:
@@ -361,7 +363,8 @@ public class UParserTokenManager implements UParserConstants {
             } else {
                 int i2 = (curChar & 0xff) >> 6;
                 long l2 = 1L << (curChar & 077);
-                MatchLoop: do {
+                MatchLoop:
+                do {
                     switch (jjstateSet[--i]) {
                     default:
                         break;
@@ -466,7 +469,8 @@ public class UParserTokenManager implements UParserConstants {
         Token matchedToken;
         int curPos = 0;
 
-        EOFLoop: for (;;) {
+        EOFLoop:
+        for (;;) {
             try {
                 curChar = input_stream.BeginToken();
             } catch (java.io.IOException e) {

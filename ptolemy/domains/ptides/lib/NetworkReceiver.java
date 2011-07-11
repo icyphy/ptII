@@ -139,8 +139,8 @@ public class NetworkReceiver extends InputDevice {
         Director director = getDirector();
 
         if (director == null || !(director instanceof PtidesBasicDirector)) {
-            throw new IllegalActionException(this, "Director expected to" +
-                    "be a Ptides director, but it's not.");
+            throw new IllegalActionException(this, "Director expected to"
+                    + "be a Ptides director, but it's not.");
         }
 
         PtidesBasicDirector ptidesDirector = (PtidesBasicDirector) director;
@@ -186,8 +186,8 @@ public class NetworkReceiver extends InputDevice {
         super.preinitialize();
 
         boolean flag = false;
-        for (IOPort input : (List<IOPort>)inputPortList()) {
-            for (IOPort sourcePort : (List<IOPort>)input.sourcePortList()) {
+        for (IOPort input : (List<IOPort>) inputPortList()) {
+            for (IOPort sourcePort : (List<IOPort>) input.sourcePortList()) {
                 if (sourcePort.getContainer() == getContainer()) {
                     flag = true;
                 }
@@ -196,9 +196,9 @@ public class NetworkReceiver extends InputDevice {
         if (!flag) {
             throw new IllegalActionException(
                     this,
-                    "A NetworkReceiver must be connected to a port " +
-                    "on the outside, and that port should be a network port " +
-                    "(a port with the parameter networkPort).");
+                    "A NetworkReceiver must be connected to a port "
+                            + "on the outside, and that port should be a network port "
+                            + "(a port with the parameter networkPort).");
         }
     }
 
@@ -214,8 +214,8 @@ public class NetworkReceiver extends InputDevice {
         input.setTypeAtMost(type);
 
         HashSet typeConstraints = new HashSet<Inequality>();
-        Inequality inequality = new Inequality(new PortFunction(), output
-                .getTypeTerm());
+        Inequality inequality = new Inequality(new PortFunction(),
+                output.getTypeTerm());
         typeConstraints.add(inequality);
         return typeConstraints;
     }

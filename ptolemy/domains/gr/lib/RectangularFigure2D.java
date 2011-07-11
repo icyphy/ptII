@@ -152,9 +152,9 @@ public abstract class RectangularFigure2D extends GRShape2D {
      * an exception.
      */
     protected Point.Double _getCenterPoint() throws IllegalActionException {
-        return new Point.Double(((DoubleToken) xPosition.getToken())
-                .doubleValue(), ((DoubleToken) yPosition.getToken())
-                .doubleValue());
+        return new Point.Double(
+                ((DoubleToken) xPosition.getToken()).doubleValue(),
+                ((DoubleToken) yPosition.getToken()).doubleValue());
     }
 
     /** Calculate the lower left point of the rectangle as a Point.Double.

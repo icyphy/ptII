@@ -264,13 +264,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         // Only include the palettePane and panner if there is an actor library.
         // The ptinyViewer configuration uses this.
-        Configuration configuration = getFrameController()
-            .getConfiguration();
+        Configuration configuration = getFrameController().getConfiguration();
         if ((CompositeEntity) configuration.getEntity("actor library") != null) {
             // Put the component back into the original window.
             _splitPane.setRightComponent(_getRightComponent());
             JTabbedPane tabbedPane = getFrameController().getTabbedPane();
-            tabbedPane.add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
+            tabbedPane
+                    .add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
             tabbedPane.setSelectedIndex(_selectedIndexBeforeFullScreen);
 
             // Restore association with the graph panner.
@@ -842,8 +842,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 boolean selected = true;
                 for (Object childObject : objects) {
                     NamedObj child = (NamedObj) childObject;
-                    if (GTTools.findMatchingAttribute(child, action
-                            .getAttributeClass(), false) == null) {
+                    if (GTTools.findMatchingAttribute(child,
+                            action.getAttributeClass(), false) == null) {
                         selected = false;
                         break;
                     }
@@ -1393,8 +1393,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                         URL xmlFile = clazz.getClassLoader().getResource(
                                 iconFile);
                         if (xmlFile != null) {
-                            MoMLParser parser = new MoMLParser(object
-                                    .workspace());
+                            MoMLParser parser = new MoMLParser(
+                                    object.workspace());
                             parser.setContext(object);
                             parser.parse(xmlFile, xmlFile);
                         }
@@ -1428,8 +1428,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                         CompositeActor actor = (CompositeActor) entityObject;
                         if (actor.attributeList(GTTableau.Factory.class)
                                 .isEmpty()) {
-                            new GTTableau.Factory(actor, actor
-                                    .uniqueName("_tableauFactory"));
+                            new GTTableau.Factory(actor,
+                                    actor.uniqueName("_tableauFactory"));
                         }
                     }
                 }
@@ -1987,8 +1987,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                         _viewers[_index].setVisible(true);
                     } else {
                         _viewers[_index] = _showViewer(_models[_index],
-                                _allResults[_index], _files[_index]
-                                        .getCanonicalPath());
+                                _allResults[_index],
+                                _files[_index].getCanonicalPath());
                         _viewers[_index].setBatchMode(true);
                         _viewers[_index]
                                 .setPreviousFileEnabled(_previousIndex >= 0);
@@ -2148,8 +2148,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
             _parser.reset();
             InputStream stream = file.toURI().toURL().openStream();
-            CompositeEntity model = (CompositeEntity) _parser.parse(null, file
-                    .getCanonicalPath(), stream);
+            CompositeEntity model = (CompositeEntity) _parser.parse(null,
+                    file.getCanonicalPath(), stream);
             return model;
         }
 
@@ -2157,8 +2157,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 throws MalformedURLException, Exception {
             _parser.reset();
             InputStream stream = url.openStream();
-            CompositeEntity model = (CompositeEntity) _parser.parse(null, url
-                    .toExternalForm(), stream);
+            CompositeEntity model = (CompositeEntity) _parser.parse(null,
+                    url.toExternalForm(), stream);
             return model;
         }
 
@@ -2512,8 +2512,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     if (results.isEmpty()) {
                         MessageHandler.message("No match found.");
                     } else {
-                        _viewer = _showViewer(model, results, modelURL
-                                .toExternalForm());
+                        _viewer = _showViewer(model, results,
+                                modelURL.toExternalForm());
                         _viewer.addWindowListener(this);
                     }
                 } catch (MalformedURLException ex) {

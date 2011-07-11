@@ -308,8 +308,8 @@ public class LocalZenoApplet extends PtolemyApplet {
         _jgraph = new JGraph(gp);
         _divaPanel.add(_jgraph);
 
-        StateListener listener = new StateListener((GraphPane) _jgraph
-                .getCanvasPane());
+        StateListener listener = new StateListener(
+                (GraphPane) _jgraph.getCanvasPane());
         _join1.addDebugListener(listener);
         _join2.addDebugListener(listener);
         _fork1.addDebugListener(listener);
@@ -448,8 +448,8 @@ public class LocalZenoApplet extends PtolemyApplet {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
             // Create an arrow at the head
-            Arrowhead headArrow = new Arrowhead(headSite.getX(), headSite
-                    .getY(), headSite.getNormal());
+            Arrowhead headArrow = new Arrowhead(headSite.getX(),
+                    headSite.getY(), headSite.getNormal());
             c.setHeadEnd(headArrow);
             c.setUserObject(edge);
             return c;

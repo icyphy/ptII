@@ -160,7 +160,9 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
 
         Director executiveDirector = getExecutiveDirector();
         Director localDirector = getDirector();
-        if (localDirector == null || !localDirector.getClass().equals(executiveDirector.getClass())) {
+        if (localDirector == null
+                || !localDirector.getClass().equals(
+                        executiveDirector.getClass())) {
             if (localDirector != null) {
                 try {
                     localDirector.setContainer(null);
@@ -173,16 +175,20 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
             Class directorClass = getExecutiveDirector().getClass();
             Constructor<?> constructor = null;
             try {
-                constructor = directorClass.getConstructor(new Class[] {CompositeEntity.class, String.class});
+                constructor = directorClass.getConstructor(new Class[] {
+                        CompositeEntity.class, String.class });
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Cannot create an instance of the enclosing director class: " + directorClass);
+                        "Cannot create an instance of the enclosing director class: "
+                                + directorClass);
             }
             try {
-                constructor.newInstance(new Object[] {this, getExecutiveDirector().getName()});
+                constructor.newInstance(new Object[] { this,
+                        getExecutiveDirector().getName() });
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to instantiate the enclosing director class: " + directorClass);
+                        "Failed to instantiate the enclosing director class: "
+                                + directorClass);
             }
         }
 

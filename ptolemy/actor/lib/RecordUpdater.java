@@ -216,8 +216,8 @@ public class RecordUpdater extends TypedAtomicActor {
 
         // Since the input port has a clone of the above RecordType, need to
         // get the type from the input port.
-        Inequality inequality = new Inequality(new FunctionTerm(), output
-                .getTypeTerm());
+        Inequality inequality = new Inequality(new FunctionTerm(),
+                output.getTypeTerm());
         constraints.add(inequality);
 
         return constraints;

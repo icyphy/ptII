@@ -74,7 +74,8 @@ public class MigrateModelsManager {
      * files.
      */
     public String migrateModels(String directoryPath,
-            boolean migrateFilesInSubDirectories, boolean checkContent) throws IOException {
+            boolean migrateFilesInSubDirectories, boolean checkContent)
+            throws IOException {
 
         //check if the path provided exists.
         File directoryFile = new File(directoryPath);
@@ -102,8 +103,9 @@ public class MigrateModelsManager {
         _csvFileWriter = new FileWriter(csvFilePath);
 
         //write the header for the csv file.
-        _csvFileWriter.write("Model Name,File Path,Migration Status,Error Messages"
-                + System.getProperty("line.separator"));
+        _csvFileWriter
+                .write("Model Name,File Path,Migration Status,Error Messages"
+                        + System.getProperty("line.separator"));
 
         try {
 
@@ -138,7 +140,8 @@ public class MigrateModelsManager {
      * writing files.
      */
     private void _readFiles(File directory, File parentDirectory,
-            boolean readSubDirectories, boolean checkContent) throws IOException {
+            boolean readSubDirectories, boolean checkContent)
+            throws IOException {
 
         // If the path sent is a file, try to create a model in the database out of it.
         if (directory.isFile()) {
@@ -154,10 +157,11 @@ public class MigrateModelsManager {
 
                 String fileContent = _getContent(directory);
 
-                if (checkContent == false ||
-                        (checkContent && _checkFileContent(fileContent))) {
+                if (checkContent == false
+                        || (checkContent && _checkFileContent(fileContent))) {
 
-                    _createDBModel(modelName, fileContent, directory.getAbsolutePath());
+                    _createDBModel(modelName, fileContent,
+                            directory.getAbsolutePath());
 
                 } else {
 
@@ -235,8 +239,8 @@ public class MigrateModelsManager {
      * @exception IOException Thrown if there is an error writing the result to
      * the CSV file.
      */
-    private void _createDBModel(String modelName, String modelContent, String filePath)
-            throws IOException {
+    private void _createDBModel(String modelName, String modelContent,
+            String filePath) throws IOException {
 
         XMLDBModel xmlDBModel = new XMLDBModel(modelName);
 
@@ -254,9 +258,8 @@ public class MigrateModelsManager {
                     + System.getProperty("line.separator"));
 
         } catch (Exception e) {
-            _csvFileWriter.write(modelName + ","+ filePath + ",Failed,"
-                    + e.getMessage()
-                    + System.getProperty("line.separator"));
+            _csvFileWriter.write(modelName + "," + filePath + ",Failed,"
+                    + e.getMessage() + System.getProperty("line.separator"));
         }
     }
 
@@ -271,7 +274,8 @@ public class MigrateModelsManager {
         boolean isPtolemyModel = false;
 
         if (fileContent.lastIndexOf("</") >= 0) {
-            String lastTag = fileContent.substring(fileContent.lastIndexOf("</"));
+            String lastTag = fileContent.substring(fileContent
+                    .lastIndexOf("</"));
 
             if (lastTag.toLowerCase().contains("entity")
                     || lastTag.toLowerCase().contains("class")) {

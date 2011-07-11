@@ -189,7 +189,8 @@ public class GRDirector extends StaticSchedulingDirector {
      *   or the specified time if there isn't one.
      *  @exception IllegalActionException If by the executive director.
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         Nameable container = getContainer();

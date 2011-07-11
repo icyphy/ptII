@@ -183,8 +183,7 @@ public class CActorBase extends TypedAtomicActor {
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         source = new FileParameter(this, "source");
-        source
-                .setExpression("$PTII/ptolemy/domains/giotto/cgc/demo/task_code.c");
+        source.setExpression("$PTII/ptolemy/domains/giotto/cgc/demo/task_code.c");
 
         // Should this be visible?
         // source.setVisibility(Settable.EXPERT);

@@ -95,9 +95,9 @@ public class LeftRightDirector extends StaticSchedulingDirector {
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         _iterationCount++;
-        int iterationsValue = ((IntToken)iterations.getToken()).intValue();
+        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
         if (iterationsValue > 0 && _iterationCount >= iterationsValue) {
-                return false;
+            return false;
         }
         return result;
     }
@@ -129,14 +129,13 @@ public class LeftRightDirector extends StaticSchedulingDirector {
             // Get the director.
             NamedObj director = getContainer();
             // Get the container of the director.
-            CompositeActor compositeActor
-                    = (CompositeActor) (director.getContainer());
+            CompositeActor compositeActor = (CompositeActor) (director
+                    .getContainer());
             // Get the actors to be fired by the director.
             List<Actor> actors = compositeActor.deepEntityList();
             // Create a sorted list of actors, sorted by
             // a specialized comparator.
-            TreeSet<Actor> sortedActors
-                    = new TreeSet(new LeftRightComparator());
+            TreeSet<Actor> sortedActors = new TreeSet(new LeftRightComparator());
             sortedActors.addAll(actors);
             // Construct a Schedule from the sorted list.
             Schedule schedule = new Schedule();
@@ -163,11 +162,9 @@ public class LeftRightDirector extends StaticSchedulingDirector {
                 // Attribute that implements the Locatable interface.
                 // Get a list of all such attributes, and use the first one
                 // (normally there will be only one).
-                List locations
-                        = ((Entity) o1).attributeList(Locatable.class);
+                List locations = ((Entity) o1).attributeList(Locatable.class);
                 if (locations.size() > 0) {
-                    location1
-                            = ((Locatable) locations.get(0)).getLocation();
+                    location1 = ((Locatable) locations.get(0)).getLocation();
                 }
                 locations = ((Entity) o2).attributeList(Locatable.class);
                 if (locations.size() > 0) {

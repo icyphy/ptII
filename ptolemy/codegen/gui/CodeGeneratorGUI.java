@@ -128,11 +128,11 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                     // Use Thread.currentThread() so that this code will
                     // work under WebStart.
                     URL infoURL = Thread.currentThread()
-                            .getContextClassLoader().getResource(
-                                    "ptolemy/codegen/README.html");
+                            .getContextClassLoader()
+                            .getResource("ptolemy/codegen/README.html");
 
-                    configuration.openModel(null, infoURL, infoURL
-                            .toExternalForm());
+                    configuration.openModel(null, infoURL,
+                            infoURL.toExternalForm());
                 } catch (Exception ex) {
                     throw new InternalErrorException(codeGenerator, ex,
                             "Failed to open doc/codegen.htm: ");
@@ -223,8 +223,8 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                                 .toURL();
                         // Use Thread.currentThread() so that this code will
                         // work under WebStart.
-                        configuration.openModel(null, codeURL, codeURL
-                                .toExternalForm());
+                        configuration.openModel(null, codeURL,
+                                codeURL.toExternalForm());
 
                     }
                     // Don't write the file to the window

@@ -33,11 +33,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import diva.graph.GraphEvent;
-import diva.graph.GraphUtilities;
-import diva.graph.modular.EdgeModel;
-import diva.graph.modular.MutableEdgeModel;
-import diva.graph.modular.NodeModel;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptRelation;
 import ptolemy.data.ontologies.Ontology;
@@ -53,6 +48,11 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
 import ptolemy.vergil.kernel.Link;
+import diva.graph.GraphEvent;
+import diva.graph.GraphUtilities;
+import diva.graph.modular.EdgeModel;
+import diva.graph.modular.MutableEdgeModel;
+import diva.graph.modular.NodeModel;
 
 ///////////////////////////////////////////////////////////////////
 //// OntologyGraphModel
@@ -399,8 +399,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = ((Locatable) node).getContainer();
             NamedObj container = deleteObj.getContainer();
-            return "<deleteEntity name=\"" + deleteObj.getName(container) +
-                    "\"/>\n";
+            return "<deleteEntity name=\"" + deleteObj.getName(container)
+                    + "\"/>\n";
         }
 
         /** Return the graph parent of the given node.
@@ -433,7 +433,6 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
         public Iterator outEdges(Object node) {
             return _getEdgeIterator(node, false);
         }
-
 
         /** Remove the given node from the model.  The node is assumed
          *  to be a Locatable belonging to an entity.
@@ -526,9 +525,9 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                 Link link = (Link) links.next();
                 Object endPoint = null;
                 if (inEdges) {
-                    endPoint = (NamedObj) link.getHead();
+                    endPoint = link.getHead();
                 } else {
-                    endPoint = (NamedObj) link.getTail();
+                    endPoint = link.getTail();
                 }
 
                 if ((endPoint != null) && endPoint.equals(nodeLocation)) {
@@ -573,7 +572,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          */
         public String getDeleteEdgeMoML(Object edge) {
             final Link relationLink = (Link) edge;
-            ConceptRelation ontologyRelation = (ConceptRelation) relationLink.getRelation();
+            ConceptRelation ontologyRelation = (ConceptRelation) relationLink
+                    .getRelation();
 
             // This moml is parsed to execute the change
             StringBuffer moml = new StringBuffer();
@@ -773,8 +773,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                     Flowable tailConcept = (Flowable) tail;
                     ComponentPort newPortToConnect = _getHeadOrTailPort(
                             headConcept, tailConcept, isHead);
-                    ComponentPort existingPortToConnect =
-                        _getHeadOrTailPort(headConcept, tailConcept, !isHead);
+                    ComponentPort existingPortToConnect = _getHeadOrTailPort(
+                            headConcept, tailConcept, !isHead);
                     NamedObj ptolemyModel = getPtolemyModel();
 
                     // If the context is not the entity that we're editing,
@@ -809,14 +809,14 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                     }
 
                     moml.append("<link port=\""
-                            + newPortToConnect.getName(ptolemyModel) + "\" relation=\""
-                            + relationName + "\"/>\n");
+                            + newPortToConnect.getName(ptolemyModel)
+                            + "\" relation=\"" + relationName + "\"/>\n");
 
                     // Record moml so that we can blow away these
                     // links in case we can't create them
                     failmoml.append("<unlink port=\""
-                            + newPortToConnect.getName(ptolemyModel) + "\" relation=\""
-                            + relationName + "\"/>\n");
+                            + newPortToConnect.getName(ptolemyModel)
+                            + "\" relation=\"" + relationName + "\"/>\n");
 
                     if (linkRelation == null) {
                         failmoml.append("<unlink port=\""
@@ -859,13 +859,13 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *  @see #setHead(Object, Object)
          *  @see #setTail(Object, Object)
          */
-        private void _setHeadOrTail(final Object edge, final Object newHeadOrTail,
-                final boolean isHead) {
+        private void _setHeadOrTail(final Object edge,
+                final Object newHeadOrTail, final boolean isHead) {
             final Link relationLink = (Link) edge;
             NamedObj linkHead = (NamedObj) relationLink.getHead();
             NamedObj linkTail = (NamedObj) relationLink.getTail();
-            ConceptRelation ontologyRelation =
-                (ConceptRelation) relationLink.getRelation();
+            ConceptRelation ontologyRelation = (ConceptRelation) relationLink
+                    .getRelation();
 
             // This moml is parsed to execute the change
             final StringBuffer moml = new StringBuffer();
@@ -907,8 +907,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                     head = linkHead;
                     tail = (NamedObj) newHeadOrTail;
                 }
-                relationName = _linkHeadOrTail(container, moml, failmoml,
-                        head, tail, ontologyRelation, isHead);
+                relationName = _linkHeadOrTail(container, moml, failmoml, head,
+                        tail, ontologyRelation, isHead);
             }
 
             moml.append("</group>\n");
@@ -926,8 +926,7 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                     }
 
                     if (relationNameToAdd != null) {
-                        ConceptRelation relation = (ConceptRelation)
-                            ((Ontology) getPtolemyModel())
+                        ConceptRelation relation = (ConceptRelation) ((Ontology) getPtolemyModel())
                                 .getRelation(relationNameToAdd);
                         relationLink.setRelation(relation);
                     }
@@ -948,7 +947,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
                     // Note: JDK1.2.2 requires that this variable not be
                     // called request or we get a compile error.
                     MoMLChangeRequest requestChange = new MoMLChangeRequest(
-                            OntologyGraphModel.this, container, failmoml.toString());
+                            OntologyGraphModel.this, container, failmoml
+                                    .toString());
 
                     // Fail moml execution not undoable
                     container.requestChange(requestChange);
@@ -977,8 +977,8 @@ public class OntologyGraphModel extends AbstractBasicGraphModel {
          *   relation, and false if it is the tail of the relation.
          *  @return The MoML string to unlink the relation.
          */
-        private String _unlinkHeadOrTail(NamedObj container, NamedObj headOrTail,
-                ConceptRelation relation, boolean isHead) {
+        private String _unlinkHeadOrTail(NamedObj container,
+                NamedObj headOrTail, ConceptRelation relation, boolean isHead) {
             NamedObj headOrTailObj = (NamedObj) getSemanticObject(headOrTail);
             Flowable conceptHeadOrTail = (Flowable) headOrTailObj;
             ComponentPort headOrTailPort = null;

@@ -173,7 +173,8 @@ public class TestModel extends GTEvent {
             // Filter out any graphical classes.
             RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
             // Remove VersionAttributes.
-            removeGraphicalClasses.put("ptolemy.kernel.attributes.VersionAttribute", null);
+            removeGraphicalClasses.put(
+                    "ptolemy.kernel.attributes.VersionAttribute", null);
             MoMLParser.addMoMLFilter(removeGraphicalClasses);
             entity = (CompositeEntity) GTTools.cleanupModel(entity, _parser);
         } finally {
@@ -231,11 +232,15 @@ public class TestModel extends GTEvent {
         if (!token.toString().equals(referenceToken.toString())) {
             String versionAttribute = "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"[^\"]\">";
             String replacement = "<!-- VersionAttribute -->";
-            if (token.toString().replaceAll(versionAttribute, replacement).equals(referenceToken.toString().replaceAll(versionAttribute, replacement))) {
+            if (token
+                    .toString()
+                    .replaceAll(versionAttribute, replacement)
+                    .equals(referenceToken.toString().replaceAll(
+                            versionAttribute, replacement))) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _iteration + ".\n"
-                        + "Value was: " + token
-                        + ".\nShould have been: " + referenceToken);
+                                + "Value was: " + token
+                                + ".\nShould have been: " + referenceToken);
             } else {
                 System.out.println("TestModel: results differed from known "
                         + "good results by only the VersionAttribute");
@@ -260,7 +265,6 @@ public class TestModel extends GTEvent {
         _initialized = true;
         _workspace.removeAll();
     }
-
 
     /** If <i>trainingMode</i> is <i>true</i>, then take the collected
      *  training tokens and store them as an array in <i>correctValues</i>.
@@ -392,8 +396,6 @@ public class TestModel extends GTEvent {
     /** Set to true when initialized() is called.
      */
     protected boolean _initialized = false;
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

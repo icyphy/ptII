@@ -64,7 +64,8 @@ public class TestAttributeSearcher {
      * attained.
      */
     @Test
-    public void testWholeSearchDoneWithoutNextHandler() throws DBConnectionException {
+    public void testWholeSearchDoneWithoutNextHandler()
+            throws DBConnectionException {
         AttributeSearcher attributeSearcher = new AttributeSearcher(
                 new SearchCriteria());
 

@@ -504,8 +504,8 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public Token oneRight() {
         try {
-            return new ComplexMatrixToken(ComplexMatrixMath
-                    .identity(_columnCount), DO_NOT_COPY);
+            return new ComplexMatrixToken(
+                    ComplexMatrixMath.identity(_columnCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("ComplexMatrixToken.oneRight: "
@@ -545,8 +545,8 @@ public class ComplexMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument = (ComplexMatrixToken) rightArgument;
-        Complex[][] result = ComplexMatrixMath.add(_value, convertedArgument
-                ._getInternalComplexMatrix());
+        Complex[][] result = ComplexMatrixMath.add(_value,
+                convertedArgument._getInternalComplexMatrix());
         return new ComplexMatrixToken(result);
     }
 

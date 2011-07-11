@@ -40,7 +40,7 @@ import ptdb.kernel.database.RebuildReferenceFile;
  * @Pt.AcceptedRating Red (abijwe)
  *
  */
-@PrepareForTest( { TestRebuildReferenceFile.class, RebuildReferenceFile.class })
+@PrepareForTest({ TestRebuildReferenceFile.class, RebuildReferenceFile.class })
 @RunWith(PowerMockRunner.class)
 public class TestRebuildReferenceFile {
 
@@ -96,15 +96,20 @@ public class TestRebuildReferenceFile {
     public void testMain() throws Exception {
         try {
 
-            BufferedReader mockBufferedReader = PowerMock.createMock(BufferedReader.class);
-            InputStreamReader mockInputStreamReader = PowerMock.createMock(InputStreamReader.class);
+            BufferedReader mockBufferedReader = PowerMock
+                    .createMock(BufferedReader.class);
+            InputStreamReader mockInputStreamReader = PowerMock
+                    .createMock(InputStreamReader.class);
 
-            PowerMock.expectNew(InputStreamReader.class, System.in).andReturn(mockInputStreamReader);
-            PowerMock.expectNew(BufferedReader.class, mockInputStreamReader).andReturn(mockBufferedReader);
+            PowerMock.expectNew(InputStreamReader.class, System.in).andReturn(
+                    mockInputStreamReader);
+            PowerMock.expectNew(BufferedReader.class, mockInputStreamReader)
+                    .andReturn(mockBufferedReader);
 
             EasyMock.expect(mockBufferedReader.readLine()).andReturn("Y");
             mockBufferedReader.close();
-            PowerMock.replay(InputStreamReader.class, BufferedReader.class, mockBufferedReader, mockInputStreamReader);
+            PowerMock.replay(InputStreamReader.class, BufferedReader.class,
+                    mockBufferedReader, mockInputStreamReader);
 
             RebuildReferenceFile.main(new String[1]);
             PowerMock.verify();

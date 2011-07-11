@@ -210,9 +210,9 @@ public class EventIcon extends StateIcon {
         }
         figure.setBackgroundFigure(background);
 
-        label.translateTo(background.getBounds().getCenterX(), backBounds
-                .getMaxY()
-                + stringBounds.getHeight() / 2.0 - 1.0 - _spacingValue);
+        label.translateTo(background.getBounds().getCenterX(),
+                backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0
+                        - _spacingValue);
         figure.add(label);
     }
 

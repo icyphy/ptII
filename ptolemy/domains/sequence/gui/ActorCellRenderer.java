@@ -74,10 +74,14 @@ public class ActorCellRenderer extends DefaultListCellRenderer {
                     .attributeList(SequenceAttribute.class);
             if (seqAttributes.size() > 0) {
                 try {
-                    name += " (" + seqAttributes.get(0).getSequenceNumber() + ")";
+                    name += " (" + seqAttributes.get(0).getSequenceNumber()
+                            + ")";
                 } catch (IllegalActionException e) {
-                    MessageHandler.error("Actor " + actor.getName() +
-                            "'s SequenceAttribute does not have a valid sequence number.", e);
+                    MessageHandler
+                            .error("Actor "
+                                    + actor.getName()
+                                    + "'s SequenceAttribute does not have a valid sequence number.",
+                                    e);
                 }
             }
             this.setText(name);

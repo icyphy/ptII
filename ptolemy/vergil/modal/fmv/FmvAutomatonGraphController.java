@@ -142,8 +142,8 @@ public class FmvAutomatonGraphController extends FSMGraphController {
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
             putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             putValue("tooltip", "New FmvState");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_W));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_W));
         }
 
         /** Execute the action. */

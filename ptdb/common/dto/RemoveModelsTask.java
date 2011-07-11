@@ -50,7 +50,6 @@ import java.util.ArrayList;
 
 public class RemoveModelsTask extends Task {
 
-
     /**
      * Construct an object from this class and set the models list.
      * @param modelsList The models list to be removed from the database.
@@ -84,7 +83,6 @@ public class RemoveModelsTask extends Task {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 
     /** List of models to be deleted. */
     ArrayList<XMLDBModel> _modelsList = null;

@@ -84,13 +84,13 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
         } catch (NameDuplicationException e) {
             throw new InternalErrorException(
                     "Name conflict with automatically generated infinite"
-                  + " concept name. This should never happen.\n"
-                  + "Original exception:" + e.toString());
+                            + " concept name. This should never happen.\n"
+                            + "Original exception:" + e.toString());
         } catch (IllegalActionException e) {
             throw new InternalErrorException(
                     "There was an error creating a new MonotonicityConcept"
-                  + "in the " + ontology + "ontology.\n"
-                  + "Original exception:" + e.toString());
+                            + "in the " + ontology + "ontology.\n"
+                            + "Original exception:" + e.toString());
         }
     }
 
@@ -133,15 +133,24 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
                 int result = graph.compare(getMonotonicity(key),
                         righthandSide.getMonotonicity(key));
                 switch (result) {
-                case CPO.HIGHER:       seenHigher = true; break;
-                case CPO.LOWER:        seenLower = true; break;
-                case CPO.INCOMPARABLE: seenIncomparable = true; break;
-                case CPO.SAME:         break;
+                case CPO.HIGHER:
+                    seenHigher = true;
+                    break;
+                case CPO.LOWER:
+                    seenLower = true;
+                    break;
+                case CPO.INCOMPARABLE:
+                    seenIncomparable = true;
+                    break;
+                case CPO.SAME:
+                    break;
                 default:
-                    throw new IllegalActionException(this, "ConceptGraph compare " +
-                            "did not return one of the defined CPO values. " +
-                            "Return value was " + result + ". This should " +
-                    "never happen.");
+                    throw new IllegalActionException(
+                            this,
+                            "ConceptGraph compare "
+                                    + "did not return one of the defined CPO values. "
+                                    + "Return value was " + result
+                                    + ". This should " + "never happen.");
                 }
             }
             if (!seenHigher && !seenLower && !seenIncomparable) {
@@ -197,8 +206,8 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      */
     // FIXME: GLB method needs to be implemented.
     public Concept greatestLowerBound(Concept concept) {
-        throw new IllegalArgumentException("greatestLowerBound method not " +
-                        "implemented.");
+        throw new IllegalArgumentException("greatestLowerBound method not "
+                + "implemented.");
     }
 
     /** Compute the least upper bound (LUB) of this and another concept.
@@ -207,7 +216,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      *  @return The concept that is the LUB of this and the given concept.
      */
     public Concept leastUpperBound(Concept concept) {
-        Concept top = (Concept)getOntology().getConceptGraph().top();
+        Concept top = getOntology().getConceptGraph().top();
         if (!(concept instanceof MonotonicityConcept)) {
             if (concept.equals(getOntology().getConceptGraph().bottom())) {
                 return this;
@@ -247,7 +256,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      */
     protected MonotonicityConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
-          super(ontology, (FiniteConcept) ontology.getConceptGraph().bottom());
+        super(ontology, (FiniteConcept) ontology.getConceptGraph().bottom());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -264,7 +273,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
         Set<String> allKeys = this._commonKeys(concept);
         for (String variableName : allKeys) {
             CPO graph = this.getOntology().getConceptGraph();
-            FiniteConcept monotonicity = (FiniteConcept)graph.leastUpperBound(
+            FiniteConcept monotonicity = (FiniteConcept) graph.leastUpperBound(
                     this.getMonotonicity(variableName),
                     concept.getMonotonicity(variableName));
             result.putMonotonicity(variableName, monotonicity);
@@ -291,11 +300,11 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      */
     private FiniteConcept _toFiniteMonotonicity() {
         ConceptGraph monotonicityLattice = getOntology().getConceptGraph();
-        FiniteConcept result = (FiniteConcept)monotonicityLattice.bottom();
+        FiniteConcept result = (FiniteConcept) monotonicityLattice.bottom();
         for (String var : keySet()) {
             FiniteConcept c = getConcept(var);
-            result =
-                (FiniteConcept)monotonicityLattice.leastUpperBound(result, c);
+            result = (FiniteConcept) monotonicityLattice.leastUpperBound(
+                    result, c);
         }
         return result;
     }

@@ -205,8 +205,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 List tokensFromAllInputPorts = new LinkedList();
 
                 for (Iterator inputPorts = inputPortList().iterator(); inputPorts
-                        .hasNext()
-                        && !_stopRequested;) {
+                        .hasNext() && !_stopRequested;) {
                     IOPort port = (IOPort) inputPorts.next();
                     if (!(port instanceof ParameterPort)) {
                         Object tokens = _transferInputs(port);
@@ -238,8 +237,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
                 int portNumber = 0;
                 for (Iterator outputPorts = outputPortList().iterator(); outputPorts
-                        .hasNext()
-                        && !_stopRequested;) {
+                        .hasNext() && !_stopRequested;) {
                     IOPort port = (IOPort) outputPorts.next();
                     _transferOutputs(port, tokensToAllOutputPorts[portNumber++]);
                 }
@@ -469,7 +467,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 + StringUtilities.getProperty("java.specification.version");
 
         // Create the .class file.
-        commands.add("javac " + specificationVersion + " -classpath . " + _sanitizedActorName + ".java");
+        commands.add("javac " + specificationVersion + " -classpath . "
+                + _sanitizedActorName + ".java");
 
         // Create the .h file.
         commands.add("javah -classpath . " + _sanitizedActorName);
@@ -868,8 +867,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         Token[] tokens = port.get(i, rate);
 
                         if (_debugging) {
-                            _debug(getName(), "transferring input from "
-                                    + port.getName());
+                            _debug(getName(),
+                                    "transferring input from " + port.getName());
                         }
 
                         if (type == BaseType.INT) {
@@ -923,8 +922,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     // No inside connection to transfer tokens to.
                     // In this case, consume one input token if there is one.
                     if (_debugging) {
-                        _debug(getName(), "Dropping single input from "
-                                + port.getName());
+                        _debug(getName(),
+                                "Dropping single input from " + port.getName());
                     }
 
                     if (port.hasToken(i)) {

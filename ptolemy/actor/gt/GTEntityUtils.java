@@ -189,9 +189,7 @@ public class GTEntityUtils {
                 i++;
             }
             if (!isIconSet && !foundPersistentIcon) {
-                object
-                        .requestChange(new RestoreAppearanceChangeRequest(
-                                entity));
+                object.requestChange(new RestoreAppearanceChangeRequest(entity));
             }
 
             ComponentEntity component = (ComponentEntity) entity;
@@ -427,8 +425,8 @@ public class GTEntityUtils {
          */
         protected void _execute() throws Exception {
             if (_removeEditorIcons(_entity)) {
-                _setIconDescription(_entity, _entity
-                        .getDefaultIconDescription());
+                _setIconDescription(_entity,
+                        _entity.getDefaultIconDescription());
             }
         }
 

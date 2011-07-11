@@ -358,14 +358,16 @@ public class ModalController extends FSMActor implements DropTargetHandler,
             // What if there is already a port but its input and output properties
             // don't match? Could get very subtle bugs.
             if (container instanceof ModalModel) {
-                if (((ModalModel)container).getPort(port.getName()) == null) {
-                    throw new IllegalActionException(this,
+                if (((ModalModel) container).getPort(port.getName()) == null) {
+                    throw new IllegalActionException(
+                            this,
                             "Ports must be added to a ModalController via the newPort()"
-                            + " method, which in Vergil is accessed by clicking on one of"
-                            + " the port buttons at the top of the window.  "
-                            + "Failed to add a port of type " + port.getClass().getName()
-                            + " named \"" + port.getName()
-                            + "\" to " + container.getFullName());
+                                    + " method, which in Vergil is accessed by clicking on one of"
+                                    + " the port buttons at the top of the window.  "
+                                    + "Failed to add a port of type "
+                                    + port.getClass().getName() + " named \""
+                                    + port.getName() + "\" to "
+                                    + container.getFullName());
                 }
             }
         }

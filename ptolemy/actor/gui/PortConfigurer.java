@@ -157,10 +157,9 @@ public class PortConfigurer extends Query implements QueryListener {
                     moml.append("\">");
 
                     String cardinalVal = getStringValue(nameCardinal);
-                    moml
-                            .append("<property name=\"_cardinal\" "
-                                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                                    + "value = \"" + cardinalVal + "\"/>");
+                    moml.append("<property name=\"_cardinal\" "
+                            + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                            + "value = \"" + cardinalVal + "\"/>");
                     moml.append("</port>");
                 }
 
@@ -194,22 +193,19 @@ public class PortConfigurer extends Query implements QueryListener {
                     if (selectedValues.contains("input")) {
                         moml.append("<property name=\"input\"/>");
                     } else {
-                        moml
-                                .append("<property name=\"input\" value=\"false\"/>");
+                        moml.append("<property name=\"input\" value=\"false\"/>");
                     }
 
                     if (selectedValues.contains("output")) {
                         moml.append("<property name=\"output\"/>");
                     } else {
-                        moml
-                                .append("<property name=\"output\" value=\"false\"/>");
+                        moml.append("<property name=\"output\" value=\"false\"/>");
                     }
 
                     if (selectedValues.contains("multiport")) {
                         moml.append("<property name=\"multiport\"/>");
                     } else {
-                        moml
-                                .append("<property name=\"multiport\" value=\"false\"/>");
+                        moml.append("<property name=\"multiport\" value=\"false\"/>");
                     }
 
                     if (_changed.contains(typeEntryName)) {

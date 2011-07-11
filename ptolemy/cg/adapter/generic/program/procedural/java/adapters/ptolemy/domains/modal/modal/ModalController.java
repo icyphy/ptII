@@ -109,7 +109,8 @@ public class ModalController
 
         // generate code for preemptive transition
         code.append(_eol + "/* Preemptive Transition */" + _eol + _eol);
-        controllerHelper.generateTransitionCode(code, new PreemptiveTransitions());
+        controllerHelper.generateTransitionCode(code,
+                new PreemptiveTransitions());
         code.append(_eol);
 
         // check to see if a preemptive transition is taken
@@ -123,7 +124,8 @@ public class ModalController
         // generate code for non-preemptive transition
         code.append(_eol + "/* Nonpreemptive Transition */" + _eol + _eol);
         // generateTransitionCode(code);
-        controllerHelper.generateTransitionCode(code, new NonPreemptiveTransitions());
+        controllerHelper.generateTransitionCode(code,
+                new NonPreemptiveTransitions());
         code.append("}" + _eol);
         code.append(_eol + "/* Transfer tokens to the outside */" + _eol);
         List<IOPort> outputPorts = _myController.outputPortList();
@@ -159,9 +161,9 @@ public class ModalController
             actor = (Actor) actors.next();
             getAdapter(actor);
             //if (actor.getDisplayName().contains("_Controller")) {
-                //actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                //      .getAdapter(actor);
-                //code.append(actorHelper.generateFireFunctionCode());
+            //actorHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+            //      .getAdapter(actor);
+            //code.append(actorHelper.generateFireFunctionCode());
             //}
 
         }
@@ -519,7 +521,8 @@ public class ModalController
     }
 
     /** Retrieve the nonpreemtive transitions. */
-    private static class NonPreemptiveTransitions implements TransitionRetriever {
+    private static class NonPreemptiveTransitions implements
+            TransitionRetriever {
         // Findbugs wants this to be static.
         /** Retrieve the nonpreemtive transitions.
          *  @param state The state

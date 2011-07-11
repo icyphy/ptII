@@ -68,10 +68,10 @@ public class ExportImage {
      *  @exception Exception Thrown if there is a problem reading the model
      *  or exporting the image.
      */
-    public void exportImage(final String formatName, final String modelFileName,
-            final boolean run, final boolean save)
+    public void exportImage(final String formatName,
+            final String modelFileName, final boolean run, final boolean save)
             throws Exception {
-       // FIXME: this seem wrong:  The inner classes are in different
+        // FIXME: this seem wrong:  The inner classes are in different
         // threads and can only access final variables.  However, we
         // use an array as a final variable, but we change the value
         // of the element of the array.  Is this thread safe?
@@ -84,7 +84,8 @@ public class ExportImage {
         Runnable openModelAction = new Runnable() {
             public void run() {
                 try {
-                    model[0] = ConfigurationApplication.openModel(modelFileName);
+                    model[0] = ConfigurationApplication
+                            .openModel(modelFileName);
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                     throw new RuntimeException(throwable);
@@ -94,93 +95,99 @@ public class ExportImage {
         SwingUtilities.invokeAndWait(openModelAction);
         _sleep();
 
-       _basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(model[0]);
+        _basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(model[0]);
 
+        if (run) {
+            // Optionally run the model.
+            Runnable runAction = new Runnable() {
+                public void run() {
+                    try {
+                        System.out.println("Running " + model[0].getFullName());
+                        Manager manager = model[0].getManager();
+                        if (manager == null) {
+                            manager = new Manager(model[0].workspace(),
+                                    "MyManager");
+                            (model[0]).setManager(manager);
+                        }
+                        (model[0])
+                                .setModelErrorHandler(new BasicModelErrorHandler());
+                        manager.execute();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        throw new RuntimeException(ex);
+                    }
+                }
+            };
+            SwingUtilities.invokeAndWait(runAction);
+            _sleep();
+        }
 
-       if (run) {
-           // Optionally run the model.
-           Runnable runAction = new Runnable() {
-                   public void run() {
-                       try {
-                           System.out.println("Running " + model[0].getFullName());
-                           Manager manager = model[0].getManager();
-                           if (manager == null) {
-                               manager = new Manager(model[0].workspace(), "MyManager");
-                               ((TypedCompositeActor)model[0]).setManager(manager);
-                           }
-                           ((TypedCompositeActor)model[0]).setModelErrorHandler(new BasicModelErrorHandler());
-                           manager.execute();
-                       } catch (Exception ex) {
-                           ex.printStackTrace();
-                           throw new RuntimeException(ex);
-                       }
-                   }
-               };
-           SwingUtilities.invokeAndWait(runAction);
-           _sleep();
-       }
+        if (save) {
+            // Optionally save the model.
+            // Sadly, running the DOPCenter.xml model does not seem to update the
+            // graph.  So, we run it and save it and then open it again.
+            Runnable saveAction = new Runnable() {
+                public void run() {
+                    try {
+                        System.out.println("Saving " + model[0].getFullName());
+                        ((PtolemyEffigy) (_basicGraphFrame.getTableau()
+                                .getContainer())).writeFile(new File(
+                                modelFileName));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        throw new RuntimeException(ex);
+                    }
+                }
+            };
+            SwingUtilities.invokeAndWait(saveAction);
+            _sleep();
+        }
 
-       if (save) {
-           // Optionally save the model.
-           // Sadly, running the DOPCenter.xml model does not seem to update the
-           // graph.  So, we run it and save it and then open it again.
-           Runnable saveAction = new Runnable() {
-                   public void run() {
-                       try {
-                           System.out.println("Saving " + model[0].getFullName());
-                           ((PtolemyEffigy)(_basicGraphFrame.getTableau().getContainer())).writeFile(new File(modelFileName));
-                       } catch (Exception ex) {
-                           ex.printStackTrace();
-                           throw new RuntimeException(ex);
-                       }
-                   }
-               };
-           SwingUtilities.invokeAndWait(saveAction);
-           _sleep();
-       }
-
-       // Export images
-       Runnable exportImageAction = new Runnable() {
-               public void run() {
-                   try {
-                       File imageFile = new File(model[0].getName()
-                               + "." + formatName.toLowerCase());
-                       OutputStream out = null;
-                       try {
-                           out = new FileOutputStream(imageFile);
-                           // Export the image.
-                           _basicGraphFrame.getJGraph().exportImage(out, formatName);
-                           System.out.println("Exported " + imageFile.getCanonicalPath());
-                       } finally {
-                           if (out != null) {
-                               try {
-                                   out.close();
-                               } catch (IOException ex) {
-                                   ex.printStackTrace();
-                               }
-                           }
-                       }
-                   } catch (Exception ex) {
-                       ex.printStackTrace();
-                       throw new RuntimeException(ex);
-                   }
-               }
-           };
-       SwingUtilities.invokeAndWait(exportImageAction);
-       _sleep();
+        // Export images
+        Runnable exportImageAction = new Runnable() {
+            public void run() {
+                try {
+                    File imageFile = new File(model[0].getName() + "."
+                            + formatName.toLowerCase());
+                    OutputStream out = null;
+                    try {
+                        out = new FileOutputStream(imageFile);
+                        // Export the image.
+                        _basicGraphFrame.getJGraph().exportImage(out,
+                                formatName);
+                        System.out.println("Exported "
+                                + imageFile.getCanonicalPath());
+                    } finally {
+                        if (out != null) {
+                            try {
+                                out.close();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+        SwingUtilities.invokeAndWait(exportImageAction);
+        _sleep();
 
         /////
         // Close the model.
         Runnable closeAction = new Runnable() {
             public void run() {
                 try {
-                    ConfigurationApplication.closeModelWithoutSavingOrExiting(model[0]);
+                    ConfigurationApplication
+                            .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     throw new RuntimeException(ex);
                 }
             }
-            };
+        };
         SwingUtilities.invokeAndWait(closeAction);
         _sleep();
     }
@@ -216,9 +223,9 @@ public class ExportImage {
      *  the second argument names a Ptolemy MoML file.
      */
     public static void main(String args[]) {
-        String usage ="Usage: java -classpath $PTII "
-                    + "ptolemy.vergil.basic.ExportImage "
-                    + "[-run] [-save] [GIF|gif|PNG|png] model.xml";
+        String usage = "Usage: java -classpath $PTII "
+                + "ptolemy.vergil.basic.ExportImage "
+                + "[-run] [-save] [GIF|gif|PNG|png] model.xml";
         if (args.length == 0 || args.length > 4) {
             // FIXME: we should get the list of acceptable format names from
             // BasicGraphFrame
@@ -265,7 +272,6 @@ public class ExportImage {
             //Ignore
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////

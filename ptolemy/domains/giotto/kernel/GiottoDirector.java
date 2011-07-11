@@ -372,7 +372,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         if (_debugging) {
             _debug("fireAt method was called for actor: " + actor.getFullName());
         }

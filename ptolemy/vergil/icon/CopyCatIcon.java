@@ -183,8 +183,8 @@ public class CopyCatIcon extends XMLIcon {
                                             .getConfigureText();
                                 }
 
-                                myDescription.configure(null, null, description
-                                        .getConfigureText());
+                                myDescription.configure(null, null,
+                                        description.getConfigureText());
                             }
                         }
                     }
@@ -227,10 +227,9 @@ public class CopyCatIcon extends XMLIcon {
         CompositeFigure composite = new CompositeFigure();
         for (int i = numberOfEchos; i > 0; i--) {
             BasicRectangle rectangle = new BasicRectangle(bounds.getX() + 5.0
-                    * i - _MARGIN, bounds.getY() + 5.0 * i - _MARGIN, bounds
-                    .getWidth()
-                    + 2 * _MARGIN, bounds.getHeight() + 2 * _MARGIN,
-                    echoBoxColor.asColor());
+                    * i - _MARGIN, bounds.getY() + 5.0 * i - _MARGIN,
+                    bounds.getWidth() + 2 * _MARGIN, bounds.getHeight() + 2
+                            * _MARGIN, echoBoxColor.asColor());
             composite.add(rectangle);
         }
         BasicRectangle rectangle3 = new BasicRectangle(bounds.getX() - _MARGIN,

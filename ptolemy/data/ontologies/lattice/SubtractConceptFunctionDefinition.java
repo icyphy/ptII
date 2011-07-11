@@ -63,8 +63,8 @@ public class SubtractConceptFunctionDefinition extends
             NameDuplicationException {
         super(container, name);
 
-        Token[] argNames = new Token[]{(Token) new StringToken("subtractor"),
-                (Token) new StringToken("subtractee")};
+        Token[] argNames = new Token[] { new StringToken("subtractor"),
+                new StringToken("subtractee") };
         argumentNames.setToken(new ArrayToken(argNames));
         argumentNames.setVisibility(Settable.NOT_EDITABLE);
 

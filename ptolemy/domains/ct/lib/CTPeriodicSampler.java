@@ -186,8 +186,8 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
             _hasCurrentEvent = true;
 
             if (_debugging && _verbose) {
-                _debug(getFullName(), " has an event at: "
-                        + director.getModelTime() + ".");
+                _debug(getFullName(),
+                        " has an event at: " + director.getModelTime() + ".");
             }
         } else {
             _hasCurrentEvent = false;

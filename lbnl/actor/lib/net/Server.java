@@ -166,8 +166,8 @@ public class Server {
      * @exception IOException If communication problems occur.
      */
     private void _write(StringBuffer strBuf) throws IOException {
-        BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(cliSoc
-                .getOutputStream()));
+        BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(
+                cliSoc.getOutputStream()));
         final String str = new String(strBuf);
         // We write 8192 characters at once since the client only
         // receives that many characters, even if setsockopt is called
@@ -177,8 +177,8 @@ public class Server {
         final int strLen = str.length();
         final int nWri = strLen / maxCha + 1;
         for (int i = 0; i < nWri; i++) {
-            wr.write(str.substring(i*maxCha,
-                                   java.lang.Math.min(strLen, (i+1)*maxCha)));
+            wr.write(str.substring(i * maxCha,
+                    java.lang.Math.min(strLen, (i + 1) * maxCha)));
             wr.flush();
         }
     }
@@ -226,8 +226,8 @@ public class Server {
         }
 
         ////////////////////////////////////////////////////////
-        final InputStreamReader inpStrRea = new InputStreamReader(cliSoc
-                .getInputStream());
+        final InputStreamReader inpStrRea = new InputStreamReader(
+                cliSoc.getInputStream());
         final BufferedReader d = new BufferedReader(inpStrRea);
         final String line = d.readLine();
         if (line == null) {

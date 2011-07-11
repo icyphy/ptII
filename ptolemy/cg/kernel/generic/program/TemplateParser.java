@@ -137,14 +137,20 @@ public class TemplateParser {
         boolean checkString = false;
         char[] nameArray = name.toCharArray();
         for (int i = 0; i < nameArray.length; i++) {
-            if (!Character.isJavaIdentifierPart(nameArray[i]) || nameArray[i] == '$') {
+            if (!Character.isJavaIdentifierPart(nameArray[i])
+                    || nameArray[i] == '$') {
                 checkString = true;
                 break;
             }
         }
 
         if (checkString) {
-            return name.replace("$", "_X_DOLLAR_X_").replace("-","_X_MINUS_X_").replace("*", "_X_STAR_X_").replace("[", "_X_LBRACKET_X_").replace("]", "_X_RBRACKET_X_").replace("+", "_X_PLUS_X_").replace("\\", "_X_BACKSLASH_X_").replace("^", "_X_CARET_X_");
+            return name.replace("$", "_X_DOLLAR_X_")
+                    .replace("-", "_X_MINUS_X_").replace("*", "_X_STAR_X_")
+                    .replace("[", "_X_LBRACKET_X_")
+                    .replace("]", "_X_RBRACKET_X_").replace("+", "_X_PLUS_X_")
+                    .replace("\\", "_X_BACKSLASH_X_")
+                    .replace("^", "_X_CARET_X_");
         } else {
             return name;
         }
@@ -238,20 +244,20 @@ public class TemplateParser {
 
         if (alternativeSourceRef == null) {
             sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                    .getAdapter(source.port.getContainer()))
-                    .getReference(sourcePortChannel, true);
+                    .getAdapter(source.port.getContainer())).getReference(
+                    sourcePortChannel, true);
             if (sourceRef.equals("")) {
                 // Needed by $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc/test/auto/CaseOpaque.xml
                 sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                        .getAdapter(source.port.getContainer()))
-                    .getReference(sourcePortChannel, false);
+                        .getAdapter(source.port.getContainer())).getReference(
+                        sourcePortChannel, false);
             }
         } else {
             sourceRef = alternativeSourceRef;
         }
 
-        String sinkPortChannel = escapePortName(sink.port.getName()) + "#" + sink.channelNumber
-                + ", " + offset;
+        String sinkPortChannel = escapePortName(sink.port.getName()) + "#"
+                + sink.channelNumber + ", " + offset;
 
         // For composite actor, generate a variable corresponding to
         // the inside receiver of an output port.
@@ -266,8 +272,8 @@ public class TemplateParser {
         if (sinkRef.equals("")) {
             // Needed by $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc/test/auto/CaseOpaque.xml
             sinkRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                .getAdapter(sink.port.getContainer())).getReference(
-                sinkPortChannel, true);
+                    .getAdapter(sink.port.getContainer())).getReference(
+                    sinkPortChannel, true);
         }
 
         // When the sink port is contained by a modal controller, it is
@@ -433,7 +439,7 @@ public class TemplateParser {
         if (offset == null) {
             if (attribute instanceof Variable) {
                 if (attribute instanceof PortParameter) {
-                    PortParameter portParameter = (PortParameter)attribute;
+                    PortParameter portParameter = (PortParameter) attribute;
                     TypedIOPort port = portParameter.getPort();
                     // FIXME: Not sure if we check for both inside and outside connections here.
                     if (port.isInsideConnected() || port.isOutsideConnected()) {
@@ -441,10 +447,10 @@ public class TemplateParser {
                         String[] portChannel = _parsePortChannel(name);
                         String channel = portChannel[1];
                         PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator
-                            .getAdapter(port);
+                                .getAdapter(port);
                         // FIXME: What about the offset?
                         return processCode(portAdapter.generateGetCode(channel,
-                                        /*offset*/ "0"));
+                        /*offset*/"0"));
                     }
                 }
                 // FIXME: need to ensure that the returned string
@@ -461,12 +467,12 @@ public class TemplateParser {
 
                 ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                 if (variable.isStringMode()) {
-                    return generateTypeConvertMethod("\""
-                            + StringUtilities.escapeString(parseTreeCodeGenerator
-                                    .escapeForTargetLanguage(variable
-                                            .getExpression()))
-                            + "\"", castType,
-                            "String");
+                    return generateTypeConvertMethod(
+                            "\""
+                                    + StringUtilities.escapeString(parseTreeCodeGenerator
+                                            .escapeForTargetLanguage(variable
+                                                    .getExpression())) + "\"",
+                            castType, "String");
                 }
 
                 PtParser parser = new PtParser();
@@ -671,12 +677,16 @@ public class TemplateParser {
              *  @return The generated code.
              */
             public String generateFireCode() {
-                throw new InternalErrorException("ParseTreeCodeGenerator.generateFireCode() "
-                        + "not implemented in ptolemy.cg.kernel.generic.program.TemplateParser "
-                        + "for " + _component + ". If this occurs, then the problem is that "
-                        + "this a TemplateParser is being instantiated instead of a JavaTemplateParser "
-                        + "or some other subclass of TemplateParser.");
+                throw new InternalErrorException(
+                        "ParseTreeCodeGenerator.generateFireCode() "
+                                + "not implemented in ptolemy.cg.kernel.generic.program.TemplateParser "
+                                + "for "
+                                + _component
+                                + ". If this occurs, then the problem is that "
+                                + "this a TemplateParser is being instantiated instead of a JavaTemplateParser "
+                                + "or some other subclass of TemplateParser.");
             }
+
             /** Trace the evaluation of the parse tree with the specified root
              *  node using the specified scope to resolve the values of
              *  variables.
@@ -686,8 +696,8 @@ public class TemplateParser {
              *  @exception IllegalActionException If an error occurs during
              *   evaluation.
              */
-            public String traceParseTreeEvaluation(ASTPtRootNode node, ParserScope scope)
-                    throws IllegalActionException {
+            public String traceParseTreeEvaluation(ASTPtRootNode node,
+                    ParserScope scope) throws IllegalActionException {
                 return "TemplateParser.traceParseTreeEvaluation() not implemented";
             }
 
@@ -742,7 +752,8 @@ public class TemplateParser {
             }
 
             if (code.charAt(currentPos) == '$'
-                    && currentPos < code.length() - 1 && code.charAt(currentPos + 1) == '$') {
+                    && currentPos < code.length() - 1
+                    && code.charAt(currentPos + 1) == '$') {
                 // Skip $$, which appears in ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
                 nextPos = _getMacroStartIndex(code, currentPos + 2);
                 if (nextPos < 0) {
@@ -763,8 +774,9 @@ public class TemplateParser {
                         // FIXME: A hack to look up $TMPDIR/FileWriter1Output.txt for
                         // $PTII/bin/ptcg -language java  -inline false  $PTII/ptolemy/actor/lib/test/auto/FileWriter1.xml
                         StringParameter variable = new StringParameter(
-                                ((NamedObj)_component).getContainer(),
-                                ((NamedObj)_component).getContainer().uniqueName("TemporaryTemplateParser"));
+                                ((NamedObj) _component).getContainer(),
+                                ((NamedObj) _component).getContainer()
+                                        .uniqueName("TemporaryTemplateParser"));
                         variable.setStringMode(true);
                         variable.setExpression(code);
                         variable.validate();
@@ -774,25 +786,24 @@ public class TemplateParser {
                         return value;
                     } catch (Throwable throwable) {
                         CGException.throwException(_component, throwable,
-                                "Failed to find open paren or open curly bracket in \n" + code
-                                + "\nFailed to create parse tree.");
+                                "Failed to find open paren or open curly bracket in \n"
+                                        + code
+                                        + "\nFailed to create parse tree.");
                     }
                 }
             }
             if (openCurlyBracketIndex != -1
-                    && ((openParenIndex != -1 && openCurlyBracketIndex < openParenIndex)
-                            || (openParenIndex == -1))) {
+                    && ((openParenIndex != -1 && openCurlyBracketIndex < openParenIndex) || (openParenIndex == -1))) {
                 // Houston, we might have ${foo}
                 int closeCurlyBracketIndex = code.indexOf("}", currentPos + 1);
                 if (closeCurlyBracketIndex == -1) {
                     CGException.throwException(_component,
                             "Failed to find '}' in \"" + code + "\".");
                 }
-                String attributeName = code.substring(openCurlyBracketIndex + 1,
-                        closeCurlyBracketIndex);
+                String attributeName = code.substring(
+                        openCurlyBracketIndex + 1, closeCurlyBracketIndex);
                 Attribute attribute = ModelScope.getScopedVariable(null,
-                        ((NamedObj)_component).getContainer(),
-                        attributeName);
+                        ((NamedObj) _component).getContainer(), attributeName);
                 Token constant = null;
                 if (attribute != null) {
                     Variable variable = (Variable) attribute;
@@ -803,14 +814,16 @@ public class TemplateParser {
                     if (constant != null) {
                         if (constant instanceof StringToken) {
                             // Get rid or leading and trailing double quotes.
-                            result.append(((StringToken)constant).stringValue());
+                            result.append(((StringToken) constant)
+                                    .stringValue());
                         } else {
                             result.append(constant.toString());
                         }
                     } else {
                         CGException.throwException(_component,
-                                "Failed to find '" + attributeName + "' variable in scope, "
-                                + "code was \"" + code + "\".");
+                                "Failed to find '" + attributeName
+                                        + "' variable in scope, "
+                                        + "code was \"" + code + "\".");
                     }
                 }
 
@@ -824,11 +837,11 @@ public class TemplateParser {
                 }
                 //previousPos = nextPos;
                 currentPos = nextPos;
-                result.append(code.substring(closeCurlyBracketIndex + 1, nextPos));
+                result.append(code.substring(closeCurlyBracketIndex + 1,
+                        nextPos));
             }
             if (openParenIndex != -1
-                    && ((openCurlyBracketIndex != -1 && openParenIndex < openCurlyBracketIndex)
-                            || (openCurlyBracketIndex == -1))) {
+                    && ((openCurlyBracketIndex != -1 && openParenIndex < openCurlyBracketIndex) || (openCurlyBracketIndex == -1))) {
                 closeParenIndex = _findClosedParen(code, openParenIndex);
 
                 if (closeParenIndex < 0) {
@@ -873,9 +886,10 @@ public class TemplateParser {
                 try {
                     name = code.substring(openParenIndex + 1, closeParenIndex);
                 } catch (StringIndexOutOfBoundsException ex) {
-                    throw new IllegalActionException((NamedObj)_component,
+                    throw new IllegalActionException((NamedObj) _component,
                             "Index " + (openParenIndex + 1) + " or Index "
-                            + closeParenIndex + " is out of bounds in \n" + code);
+                                    + closeParenIndex
+                                    + " is out of bounds in \n" + code);
                 }
                 //System.out.println("TemplateParser: name before processCode(): "
                 //        + name + " " + openParenIndex + " " + closeParenIndex);
@@ -892,8 +906,8 @@ public class TemplateParser {
                 } catch (Throwable throwable) {
                     CGException.throwException(this, throwable,
                             "Failed to replace the parameter \"" + name
-                            + "\" in the macro \"" + macro
-                            + "\".\nInitial code was:\n" + code);
+                                    + "\" in the macro \"" + macro
+                                    + "\".\nInitial code was:\n" + code);
                 }
 
                 result.append(code.substring(closeParenIndex + 1, nextPos));
@@ -902,22 +916,22 @@ public class TemplateParser {
                 currentPos = nextPos;
             }
         }
-//         // Print debugging information about who called this method.
-//         if (result.toString().endsWith("\n")) {
-//             StackTraceElement [] stackTrace = new Throwable().fillInStackTrace().getStackTrace();
-//             for (int i = 0; i < stackTrace.length; i++) {
-//                 if (!stackTrace[i].getMethodName().equals("processCode")) {
-//                     result.append("/* TemplateParser: "
-//                             + stackTrace[i].getClassName()
-//                             + "."
-//                             + stackTrace[i].getMethodName()
-//                             + " "
-//                             + stackTrace[i].getLineNumber()
-//                             + " */\n");
-//                     break;
-//                 }
-//             }
-//         }
+        //         // Print debugging information about who called this method.
+        //         if (result.toString().endsWith("\n")) {
+        //             StackTraceElement [] stackTrace = new Throwable().fillInStackTrace().getStackTrace();
+        //             for (int i = 0; i < stackTrace.length; i++) {
+        //                 if (!stackTrace[i].getMethodName().equals("processCode")) {
+        //                     result.append("/* TemplateParser: "
+        //                             + stackTrace[i].getClassName()
+        //                             + "."
+        //                             + stackTrace[i].getMethodName()
+        //                             + " "
+        //                             + stackTrace[i].getLineNumber()
+        //                             + " */\n");
+        //                     break;
+        //                 }
+        //             }
+        //         }
         //System.out.println("processCode: return bottom: " + result);
         return result.toString();
     }
@@ -965,11 +979,12 @@ public class TemplateParser {
 
         // Syntax checking.
         if (commaIndex == -1) {
-                CGException
+            CGException
                     .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
                             + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
                             + "The string \"::\" was not found. "
-                            + "Processed String was:\n:" + functionString
+                            + "Processed String was:\n:"
+                            + functionString
                             + "Initial String was:\n:" + initialFunctionString);
         }
 
@@ -978,7 +993,8 @@ public class TemplateParser {
                     .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
                             + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
                             + "No \"(\" found after \"::\". "
-                            + "Processed String was:\n:" + functionString
+                            + "Processed String was:\n:"
+                            + functionString
                             + "Initial String was:\n:" + initialFunctionString);
         }
 
@@ -987,8 +1003,10 @@ public class TemplateParser {
                     .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
                             + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
                             + "The last \")\" was not last character? "
-                            + "The last \")\" was at " + closeFuncParenIndex
-                            + "Processed String was:\n:" + functionString
+                            + "The last \")\" was at "
+                            + closeFuncParenIndex
+                            + "Processed String was:\n:"
+                            + functionString
                             + "Initial String was:\n:" + initialFunctionString);
         }
 
@@ -1002,8 +1020,9 @@ public class TemplateParser {
         if (isStatic) {
             // Record the referenced type function in the infoTable.
             if (_codeGenerator == null) {
-                throw new NullPointerException("Call TemplateParser.setCodeGenerator() "
-                        + "before calling getFunctionInvocation()");
+                throw new NullPointerException(
+                        "Call TemplateParser.setCodeGenerator() "
+                                + "before calling getFunctionInvocation()");
             }
             _codeGenerator._typeFuncUsed.add(functionName);
 
@@ -1148,7 +1167,8 @@ public class TemplateParser {
                             // Probably we should remove the $size feature, or at least,
                             // not support it on ports, but instead on tokens.
                             return ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                                    .getAdapter(_component)).getReference(name, true)
+                                    .getAdapter(_component)).getReference(name,
+                                    true)
                                     + ".payload."
                                     + _getCodeGenerator().codeGenType(type)
                                     + "->size";
@@ -1183,7 +1203,12 @@ public class TemplateParser {
         // ptolemy.util.StringUtilities.escapeForXML() for
         // a possibly faster solution.
         if (name.indexOf("_X_") != -1) {
-            return name.replace("_X_DOLLAR_X_", "$").replace("_X_MINUS_X_", "-").replace("_X_STAR_X_", "*").replace("_X_LBRACKET_X_", "[").replace("_X_RBRACKET_X_", "]").replace("_X_PLUS_X_", "+").replace("_X_BACKSLASH_X_", "\\").replace("_X_CARET_X_", "^");
+            return name.replace("_X_DOLLAR_X_", "$")
+                    .replace("_X_MINUS_X_", "-").replace("_X_STAR_X_", "*")
+                    .replace("_X_LBRACKET_X_", "[")
+                    .replace("_X_RBRACKET_X_", "]").replace("_X_PLUS_X_", "+")
+                    .replace("_X_BACKSLASH_X_", "\\")
+                    .replace("_X_CARET_X_", "^");
         } else {
             return name;
         }
@@ -1224,16 +1249,17 @@ public class TemplateParser {
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
         if (_codeGenerator == null) {
-            throw new NullPointerException("_codeGenerator was null,  be sure that "
-                    + "the adapter calls templateParser.setCodeGenerator(GenericCodeGenerator)");
+            throw new NullPointerException(
+                    "_codeGenerator was null,  be sure that "
+                            + "the adapter calls templateParser.setCodeGenerator(GenericCodeGenerator)");
         }
         // $$def(abc)
         // ==> abc$def(abc)
         int indexOfDollarSign = macro.indexOf('$');
         if (indexOfDollarSign >= 0) {
             String result = "$" + macro.substring(0, indexOfDollarSign);
-            String innerMacro = macro.substring(indexOfDollarSign + 1, macro
-                    .length());
+            String innerMacro = macro.substring(indexOfDollarSign + 1,
+                    macro.length());
             result += _replaceMacro(innerMacro, parameter);
             return result;
         }
@@ -1296,15 +1322,18 @@ public class TemplateParser {
             } else {
                 return _codeGenerator
                         .generateVariableName(((NamedObj) _component))
-                        + "_" + processCode(parameter);
+                        + "_"
+                        + processCode(parameter);
             }
         } else if (macro.equals("containerSymbol")) {
             if (parameter.trim().length() == 0) {
                 return _codeGenerator
-                    .generateVariableName((((NamedObj) _component).getContainer()));
+                        .generateVariableName((((NamedObj) _component)
+                                .getContainer()));
             } else {
                 return _codeGenerator
-                    .generateVariableName((((NamedObj) _component).getContainer()))
+                        .generateVariableName((((NamedObj) _component)
+                                .getContainer()))
                         + "_" + processCode(parameter);
             }
 
@@ -1349,9 +1378,7 @@ public class TemplateParser {
             }
 
             try {
-                checker
-                        .invoke(userMacro,
-                                new Object[] { parseList(parameter) });
+                checker.invoke(userMacro, new Object[] { parseList(parameter) });
                 return (String) handler.invoke(userMacro,
                         new Object[] { parseList(parameter) });
             } catch (Throwable throwable) {
@@ -1686,11 +1713,12 @@ public class TemplateParser {
             dataToken = parameters.get(2);
         } else {
             CGException
-                .throwException("\"" + parameter
+                    .throwException("\""
+                            + parameter
                             + "\" is not acceptable by $put(). "
-                                    + "$put could be used in the following ways: "
-                                    + "$put(output#channel, token); or, $put(output, token); or,"
-                                    + "$put(input#channel, offset, token); or, $put(input, offset, token)");
+                            + "$put could be used in the following ways: "
+                            + "$put(output#channel, token); or, $put(output, token); or,"
+                            + "$put(input#channel, offset, token); or, $put(input, offset, token)");
         }
 
         TypedIOPort port = null;
@@ -1775,15 +1803,15 @@ public class TemplateParser {
                 // variable is declared in the target language and should be
                 // referenced by the name anywhere it is used.
                 if (_codeGenerator._modifiedVariables.contains(result)) {
-                    return new ObjectToken(_codeGenerator
-                            .generateVariableName(result));
+                    return new ObjectToken(
+                            _codeGenerator.generateVariableName(result));
                 } else {
                     // This will lead to recursive call until a variable found
                     // is either directly specified by a constant or it is a
                     // modified variable.
                     PtParser parser = new PtParser();
-                    String parameterValue = getParameterValue(name, result
-                            .getContainer());
+                    String parameterValue = getParameterValue(name,
+                            result.getContainer());
                     try {
                         ASTPtRootNode parseTree = parser
                                 .generateParseTree(parameterValue);

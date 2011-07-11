@@ -51,6 +51,7 @@ public class StringCompare extends NamedProgramCodeGeneratorAdapter {
     public StringCompare(ptolemy.actor.lib.string.StringCompare actor) {
         super(actor);
     }
+
     /**
      * Generate fire code.
      * The method reads in <code>sinBlock</code>, <code>cosBlock</code>,
@@ -69,15 +70,13 @@ public class StringCompare extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.string.StringCompare actor = (ptolemy.actor.lib.string.StringCompare) getComponent();
 
         String function = actor.function.getExpression();
-        String ignoreCase = (((BooleanToken) actor.ignoreCase.getToken()).booleanValue() ? "ignoreCase" : "dontIgnoreCase");
+        String ignoreCase = (((BooleanToken) actor.ignoreCase.getToken())
+                .booleanValue() ? "ignoreCase" : "dontIgnoreCase");
         String codeBlockName = ignoreCase
-            + (function.equals("equals")
-                    ? "EqualsBlock"
-                    : (function.equals("startsWith")
-                            ? "StartsWithBlock"
-                            : (function.equals("endsWith")
-                                    ? "EndsWithBlock"
-                                    : "ContainsBlock")));
+                + (function.equals("equals") ? "EqualsBlock" : (function
+                        .equals("startsWith") ? "StartsWithBlock"
+                        : (function.equals("endsWith") ? "EndsWithBlock"
+                                : "ContainsBlock")));
         ArrayList<String> args = new ArrayList<String>();
         code.append(getTemplateParser().generateBlockCode(codeBlockName, args));
 

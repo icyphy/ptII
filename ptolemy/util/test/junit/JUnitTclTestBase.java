@@ -78,9 +78,11 @@ public class JUnitTclTestBase {
         if (fileName != null) {
             interp.evalFile(fileName);
         } else {
-            if ( ! new File("testDefs.tcl").exists()) {
+            if (!new File("testDefs.tcl").exists()) {
                 // We might be running from a different directory
-                String directory = getClass().getPackage().getName().replace('.', '/') + "/..";
+                String directory = getClass().getPackage().getName()
+                        .replace('.', '/')
+                        + "/..";
                 if (new File(directory + "/testDefs.tcl").exists()) {
                     // This is the code that is run by Eclipse
                     interp.eval("cd " + directory);

@@ -552,8 +552,8 @@ public class SVGParser {
 
         while (children.hasNext()) {
             XmlElement child = (XmlElement) children.next();
-            PaintedObject object = createPaintedObject(child.getType(), child
-                    .getAttributeMap(), child.getPCData());
+            PaintedObject object = createPaintedObject(child.getType(),
+                    child.getAttributeMap(), child.getPCData());
 
             if (object != null) {
                 list.add(object);

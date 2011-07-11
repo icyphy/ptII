@@ -94,8 +94,8 @@ public class FileUtilities {
         if ((sourceFile.getPath().indexOf("!/") == -1)
                 && (sourceFile.getPath().indexOf("!\\") == -1)) {
             try {
-                if (sourceFile.getCanonicalFile().toURI().toURL().sameFile(
-                        destinationURL)) {
+                if (sourceFile.getCanonicalFile().toURI().toURL()
+                        .sameFile(destinationURL)) {
                     return false;
                 }
             } catch (IOException ex) {
@@ -424,8 +424,8 @@ public class FileUtilities {
                         try {
                             // Under Webstart, ptalon, EightChannelFFT
                             // requires this.
-                            return new URL(baseDirectory.toURL(), newURI
-                                    .toString());
+                            return new URL(baseDirectory.toURL(),
+                                    newURI.toString());
                         } catch (Exception ex5) {
                             // Ignore
                         }
@@ -515,8 +515,8 @@ public class FileUtilities {
                 URL possibleJarURL = ClassUtilities.jarURLEntryResource(url
                         .toString());
                 if (possibleJarURL != null) {
-                    inputStreamReader = new InputStreamReader(possibleJarURL
-                            .openStream());
+                    inputStreamReader = new InputStreamReader(
+                            possibleJarURL.openStream());
                 }
                 // If possibleJarURL is null, this throws an exception,
                 // which we ignore and report the first exception (ex)

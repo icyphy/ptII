@@ -123,8 +123,8 @@ public class GuardCriterion extends Criterion {
     public boolean match(NamedObj object) {
         Variable guardVariable = null;
         try {
-            guardVariable = new Variable(object, object
-                    .uniqueName("guardVariable"));
+            guardVariable = new Variable(object,
+                    object.uniqueName("guardVariable"));
             String guard = ((Transition) object).guardExpression
                     .getExpression();
             String guardTester = "(" + guard + ") == (" + _guardValue + ")";

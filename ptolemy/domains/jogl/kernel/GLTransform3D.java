@@ -31,7 +31,6 @@ import javax.media.opengl.GL;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-
 /**
  * An interface that transforms 3D objects using Jogl, the
  * Java interface to OpenGL.

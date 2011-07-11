@@ -224,9 +224,8 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
                         // ptolemy/codegen/java/domains/sdf/lib/test/auto/SampleDelay5.xml
                         code.append(super.generateFireFunctionCode());
                     } else {
-                        code
-                                .append(_codeGenerator
-                                        .comment("Skipping creating top level here, thus avoiding duplicated code."));
+                        code.append(_codeGenerator
+                                .comment("Skipping creating top level here, thus avoiding duplicated code."));
                     }
                 }
 

@@ -90,8 +90,8 @@ public class ValueIcon extends XMLIcon {
      *  @return A new CompositeFigure consisting of the label.
      */
     public Figure createFigure() {
-        CompositeFigure background = new CompositeFigure(super
-                .createBackgroundFigure());
+        CompositeFigure background = new CompositeFigure(
+                super.createBackgroundFigure());
         Nameable container = getContainer();
 
         if (container instanceof Settable) {

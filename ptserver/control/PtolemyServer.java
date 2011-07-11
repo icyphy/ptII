@@ -542,25 +542,7 @@ public final class PtolemyServer implements IServerManager {
             response = new RemoteModelResponse();
             response.setTicket(ticket);
 
-            // Export the image of the model to a byte array.
-            BufferedImage bufferedImage = new BufferedImage(500, 500,
-                    BufferedImage.TYPE_INT_ARGB);
-            //
-            //            BasicGraphFrame f = new BasicGraphFrame(simulationTask
-            //                    .getRemoteModel().getTopLevelActor(), new Tableau(
-            //                    new Workspace()));
-            //
-            //            Graphics2D graphics = bufferedImage.createGraphics();
-            //            graphics.addRenderingHints(new RenderingHints(
-            //                    RenderingHints.KEY_ANTIALIASING,
-            //                    RenderingHints.VALUE_ANTIALIAS_ON));
-            //            graphics.setColor(Color.white);
-            //            graphics.fill(new Rectangle2D.Double(0, 0, 500, 500));
-            //
-            //            ByteArrayOutputStream export = new ByteArrayOutputStream(
-            //                    IMAGE_BUFFER_SIZE);
-            //            ImageIO.write(bufferedImage, IMAGE_FORMAT, export);
-            //            graphics.dispose();
+            new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
 
             //response.setModelImage(export.toByteArray());
             response.setModelTypes(resolvedTypes);

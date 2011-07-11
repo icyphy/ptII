@@ -1,6 +1,5 @@
 package ptolemy.domains.jogl.lib;
 
-
 import javax.media.opengl.GL;
 
 import ptolemy.actor.lib.Sink;
@@ -10,7 +9,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 /**
  * An actor that is used for displaying 3D randomly generated points.
  *
@@ -18,7 +16,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
 
-public class RandomPoints extends Sink{
+public class RandomPoints extends Sink {
 
     /**
      *  Construct a RandomPoints object in the given container with the given name.
@@ -35,35 +33,34 @@ public class RandomPoints extends Sink{
      */
 
     public RandomPoints(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
     }
 
-
-    public void fire() throws IllegalActionException{
+    public void fire() throws IllegalActionException {
 
         if (_debugging) {
             _debug("Called fire()");
         }
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof GL)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of GL. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
 
-            GL gl = (GL)inputObject;
+            GL gl = (GL) inputObject;
 
             gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
             /* A random point is generated. Because animator will run display() again and again
              * in its thread, randomly generated points are displayed.
              */
-            double x = Math.random()*480;
-            double y = Math.random()*640;
+            double x = Math.random() * 480;
+            double y = Math.random() * 640;
             // specify to draw a point
             gl.glPointSize(4);
             gl.glBegin(GL.GL_POINTS);
@@ -77,7 +74,6 @@ public class RandomPoints extends Sink{
              */
 
             gl.glFlush();
-
 
         }
 

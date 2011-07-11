@@ -170,15 +170,15 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy implements
 
             if (nodesToRemove.contains(edge.source())) {
                 if (edge.hasWeight()) {
-                    newEdge = new Edge(_superNode, edge.sink(), edge
-                            .getWeight());
+                    newEdge = new Edge(_superNode, edge.sink(),
+                            edge.getWeight());
                 } else {
                     newEdge = new Edge(_superNode, edge.sink());
                 }
             } else if (nodesToRemove.contains(edge.sink())) {
                 if (edge.hasWeight()) {
-                    newEdge = new Edge(edge.source(), _superNode, edge
-                            .getWeight());
+                    newEdge = new Edge(edge.source(), _superNode,
+                            edge.getWeight());
                 } else {
                     newEdge = new Edge(edge.source(), _superNode);
                 }

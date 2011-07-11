@@ -37,6 +37,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.domains.ptides.lib.luminary.GPInputHandler;
 import ptolemy.domains.ptides.lib.luminary.LuminarySensorHandler;
@@ -97,8 +98,8 @@ public class PtidesPreemptiveEDFDirector
         // the EmbeddedCodeActor would also have a Ptides director (in order to
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
-        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
-                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+        if (((CompositeActor) getComponent().getContainer())
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return code;
         }
 
@@ -110,9 +111,8 @@ public class PtidesPreemptiveEDFDirector
                 .getContainer()).deepEntityList()) {
             // If the input is a sensor device, then we need to use interrupts to trigger it.
             if (actor instanceof LuminarySensorHandler) {
-                devices.put((LuminarySensorHandler)actor, "Sensing_"
-                        + NamedProgramCodeGeneratorAdapter
-                                .generateName((NamedObj) actor));
+                devices.put((LuminarySensorHandler) actor, "Sensing_"
+                        + CodeGeneratorAdapter.generateName((NamedObj) actor));
             }
         }
 
@@ -122,7 +122,7 @@ public class PtidesPreemptiveEDFDirector
         // The first element in the args should be the externs. For
         // each device in the set, we need to add an external method.
         StringBuffer externs = new StringBuffer();
-        for (LuminarySensorHandler actor : (Set<LuminarySensorHandler>) devices.keySet()) {
+        for (LuminarySensorHandler actor : devices.keySet()) {
             externs.append("        EXTERN  " + devices.get(actor) + _eol);
         }
         args.add(externs.toString());
@@ -139,14 +139,15 @@ public class PtidesPreemptiveEDFDirector
         boolean foundConfig = false;
         //for (LuminarySensorHandler actor : (Set<LuminarySensorHandler>) devices
         //        .keySet()) {
-        for (Map.Entry<LuminarySensorHandler, String> entry : devices.entrySet()) {
+        for (Map.Entry<LuminarySensorHandler, String> entry : devices
+                .entrySet()) {
             LuminarySensorHandler actor = entry.getKey();
             String actorName = entry.getValue();
             for (int i = 0; i < actor.supportedConfigurations().size(); i++) {
                 if (actor.configuration().compareTo(
                         actor.supportedConfigurations().get(i)) == 0) {
                     GPHandlers[i
-                            + Integer.parseInt(actor.startingConfiguration())] = /*(String) devices.get(actor)*/ actorName;
+                            + Integer.parseInt(actor.startingConfiguration())] = /*(String) devices.get(actor)*/actorName;
                     foundConfig = true;
                     break;
                 }
@@ -183,11 +184,11 @@ public class PtidesPreemptiveEDFDirector
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(getCodeGenerator().comment(
-                        "Create a task for each actor."));
+        code.append(getCodeGenerator().comment("Create a task for each actor."));
 
-        for (Actor actor: (List<Actor>) (((CompositeActor)getComponent().getContainer()).deepEntityList())) {
-            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter((NamedObj) actor);
+        for (Actor actor : (List<Actor>) (((CompositeActor) getComponent()
+                .getContainer()).deepEntityList())) {
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(actor);
             code.append(adapter.generateFireCode());
         }
 
@@ -228,16 +229,16 @@ public class PtidesPreemptiveEDFDirector
         // the EmbeddedCodeActor would also have a Ptides director (in order to
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
-        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
-                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+        if (((CompositeActor) getComponent().getContainer())
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return code.toString();
         }
 
-        code.append(getCodeGenerator().comment(
-                "Platform dependent initializatoin code of the PtidesDirector."));
+        code.append(getCodeGenerator()
+                .comment(
+                        "Platform dependent initializatoin code of the PtidesDirector."));
 
-        code.append(_templateParser.getCodeStream().getCodeBlock(
-                        "initPDBlock"));
+        code.append(_templateParser.getCodeStream().getCodeBlock("initPDBlock"));
 
         return code.toString();
     }
@@ -258,8 +259,8 @@ public class PtidesPreemptiveEDFDirector
         // the EmbeddedCodeActor would also have a Ptides director (in order to
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
-        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
-                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+        if (((CompositeActor) getComponent().getContainer())
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return code.toString();
         }
 
@@ -302,8 +303,8 @@ public class PtidesPreemptiveEDFDirector
         // the EmbeddedCodeActor would also have a Ptides director (in order to
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
-        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
-                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+        if (((CompositeActor) getComponent().getContainer())
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return sharedCode;
         }
 
@@ -312,8 +313,8 @@ public class PtidesPreemptiveEDFDirector
         _templateParser.getCodeStream().clear();
 
         // define the number of actuators in the system as a macro.
-        _templateParser.getCodeStream().append("#define numActuators "
-                + actuators.size() + _eol);
+        _templateParser.getCodeStream().append(
+                "#define numActuators " + actuators.size() + _eol);
 
         _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
         _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");
@@ -329,11 +330,12 @@ public class PtidesPreemptiveEDFDirector
         List args = new LinkedList();
         for (Actor sensor : sensors.keySet()) {
             if (sensor instanceof GPInputHandler) {
-                args.add("IntDisable(INT_GPIO" +
-                        ((GPInputHandler)sensor).pad.stringValue() + ");" + _eol);
+                args.add("IntDisable(INT_GPIO"
+                        + ((GPInputHandler) sensor).pad.stringValue() + ");"
+                        + _eol);
             } else {
-                throw new IllegalActionException("Only GPIO inputs are supported " +
-                                "as sensors.");
+                throw new IllegalActionException(
+                        "Only GPIO inputs are supported " + "as sensors.");
             }
         }
         for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
@@ -341,18 +343,20 @@ public class PtidesPreemptiveEDFDirector
         }
         for (Actor sensor : sensors.keySet()) {
             if (sensor instanceof GPInputHandler) {
-                args.add("IntEnable(INT_GPIO" +
-                        ((GPInputHandler)sensor).pad.stringValue() + ");" + _eol);
+                args.add("IntEnable(INT_GPIO"
+                        + ((GPInputHandler) sensor).pad.stringValue() + ");"
+                        + _eol);
             } else {
-                throw new IllegalActionException("Only GPIO inputs are supported " +
-                                "as sensors.");
+                throw new IllegalActionException(
+                        "Only GPIO inputs are supported " + "as sensors.");
             }
         }
         for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
             args.add("");
         }
-        _templateParser.getCodeStream().append(
-                _templateParser.getCodeStream().getCodeBlock("FuncBlock", args));
+        _templateParser.getCodeStream()
+                .append(_templateParser.getCodeStream().getCodeBlock(
+                        "FuncBlock", args));
 
         if (!_templateParser.getCodeStream().isEmpty()) {
             sharedCode.add(processCode(_templateParser.getCodeStream()
@@ -378,22 +382,20 @@ public class PtidesPreemptiveEDFDirector
         // the EmbeddedCodeActor would also have a Ptides director (in order to
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
-        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
-                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+        if (((CompositeActor) getComponent().getContainer())
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return code.toString();
         }
 
         // FIXME: output initialization always needs to happen before input initialization.
         code.append("void initializeHardware() {" + _eol);
         for (Actor actor : actuators.keySet()) {
-            code
-                    .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) getAdapter(actor))
-                            .generateHardwareInitializationCode());
+            code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) getAdapter(actor))
+                    .generateHardwareInitializationCode());
         }
         for (Actor actor : sensors.keySet()) {
-            code
-                    .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) getAdapter(actor))
-                            .generateHardwareInitializationCode());
+            code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) getAdapter(actor))
+                    .generateHardwareInitializationCode());
         }
 
         code.append("}" + _eol);

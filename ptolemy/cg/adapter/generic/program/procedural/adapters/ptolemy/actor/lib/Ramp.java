@@ -81,8 +81,8 @@ public class Ramp extends NamedProgramCodeGeneratorAdapter {
                 Type elementType = ((ArrayType) actor.output.getType())
                         .getElementType();
 
-                args.set(0, "TYPE_"
-                        + getCodeGenerator().codeGenType(elementType));
+                args.set(0,
+                        "TYPE_" + getCodeGenerator().codeGenType(elementType));
                 if (!actor.step.getType().equals(actor.output.getType())) {
                     codeStream.appendCodeBlock("ArrayConvertStepBlock", args);
                 }

@@ -110,7 +110,7 @@ public class NonLatticeCounterExample {
      *  @return The example type for the given bound type.
      */
     private ExampleType getExampleTypeFromBoundType(BoundType boundType) {
-        switch(boundType) {
+        switch (boundType) {
         case LEASTUPPER:
             return GraphExampleType.LEASTUPPER;
         case GREATESTLOWER:

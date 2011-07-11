@@ -58,7 +58,6 @@ public class CookieList {
         return o;
     }
 
-
     /**
      * Convert a JSONObject into a cookie list. A cookie list is a sequence
      * of name/value pairs. The names are separated from the values by '='.
@@ -69,9 +68,9 @@ public class CookieList {
      * @exception JSONException
      */
     public static String toString(JSONObject o) throws JSONException {
-        boolean      b = false;
-        Iterator     keys = o.keys();
-        String       s;
+        boolean b = false;
+        Iterator keys = o.keys();
+        String s;
         StringBuffer sb = new StringBuffer();
         while (keys.hasNext()) {
             s = keys.next().toString();

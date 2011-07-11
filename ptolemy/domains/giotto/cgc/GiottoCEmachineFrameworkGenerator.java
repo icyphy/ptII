@@ -596,8 +596,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                     String arrayLength = _getArrayLength(port);
 
                     FHfuncVarDeclString
-                            .append(portType
-                                    .substring(0, portType.length() - 5 /* Length of "array" */)
+                            .append(portType.substring(0, portType.length() - 5 /* Length of "array" */)
                                     + " array"
                                     + sanitizedPortName
                                     + "_1"
@@ -606,8 +605,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                                     + "]"
                                     + ";"
                                     + _endLine
-                                    + portType
-                                            .substring(0, portType.length() - 5 /* Length of "array" */)
+                                    + portType.substring(0,
+                                            portType.length() - 5 /* Length of "array" */)
                                     + " array"
                                     + sanitizedPortName
                                     + "_2"
@@ -663,8 +662,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                             .get(0);
                     String arrayLength = _getArrayLength(sport);
 
-                    FHfuncVarDeclString.append(portType.substring(0, portType
-                            .length() - 5 /* Length of "array" */)
+                    FHfuncVarDeclString.append(portType.substring(0,
+                            portType.length() - 5 /* Length of "array" */)
                             + " array"
                             + sanitizedPortName
                             + "["
@@ -839,7 +838,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             FHfuncVarDeclString.append(");" + _endLine + _endLine);
             FCinDriversImplString.append(initStmtString
             // Copy values from the global section to the
-                    // input of the task
+            // input of the task
                     + assgtStmtString.toString() + "}" + _endLine);
         }
 

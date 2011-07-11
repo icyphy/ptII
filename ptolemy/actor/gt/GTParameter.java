@@ -132,8 +132,8 @@ public class GTParameter extends Parameter {
          */
         public Token evaluateParseTree(ASTPtRootNode node, ParserScope scope)
                 throws IllegalActionException {
-            return super.evaluateParseTree(node, _createScope(_pattern,
-                    _matchResult, scope));
+            return super.evaluateParseTree(node,
+                    _createScope(_pattern, _matchResult, scope));
         }
 
         /** Apply a method to the children of the specified node, where the
@@ -318,8 +318,8 @@ public class GTParameter extends Parameter {
          *  it.
          */
         public Set<?> identifierSet() throws IllegalActionException {
-            Set<Object> identifiers = new HashSet<Object>(_superscope
-                    .identifierSet());
+            Set<Object> identifiers = new HashSet<Object>(
+                    _superscope.identifierSet());
             try {
                 _pattern.workspace().getReadAccess();
                 for (Object childObject : GTTools.getChildren(_pattern, true,

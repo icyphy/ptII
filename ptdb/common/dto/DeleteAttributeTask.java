@@ -28,7 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.common.dto;
 
-
 ///////////////////////////////////////////////////////////////////
 //// DeleteAttributeTask
 
@@ -46,9 +45,7 @@ package ptdb.common.dto;
  *
  */
 
-
 public class DeleteAttributeTask {
-
 
     /**
      * Construct an instance of the object and set the attribute to be deleted
@@ -64,12 +61,12 @@ public class DeleteAttributeTask {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /**
-    * Return the attribute to be deleted from the database.
-    *
-    * @return The attribute to be deleted from the database.
-    * @see #setXMLDBAttribute
-    */
+    /**
+     * Return the attribute to be deleted from the database.
+     *
+     * @return The attribute to be deleted from the database.
+     * @see #setXMLDBAttribute
+     */
     public XMLDBAttribute getXMLDBAttribute() {
         return _xmlDBAttribute;
     }
@@ -83,7 +80,6 @@ public class DeleteAttributeTask {
     public void setXMLDBAttribute(XMLDBAttribute attribute) {
         _xmlDBAttribute = attribute;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

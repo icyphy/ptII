@@ -55,10 +55,12 @@ public class ProductLatticeWrapperConceptFunction extends ConceptFunction {
      *  @exception IllegalActionException Thrown if the wrapper concept function
      *   cannot be created.
      */
-    public ProductLatticeWrapperConceptFunction(String name, ProductLatticeOntology inputOutputOntology,
+    public ProductLatticeWrapperConceptFunction(String name,
+            ProductLatticeOntology inputOutputOntology,
             Ontology originalFunctionOntology, ConceptFunction originalFunction)
-                throws IllegalActionException {
-        super(name, originalFunction.getNumberOfArguments(), inputOutputOntology);
+            throws IllegalActionException {
+        super(name, originalFunction.getNumberOfArguments(),
+                inputOutputOntology);
 
         _originalFunctionOntology = originalFunctionOntology;
         _originalFunction = originalFunction;
@@ -85,14 +87,15 @@ public class ProductLatticeWrapperConceptFunction extends ConceptFunction {
             if (arg == null) {
                 return null;
             }
-            originalArgs.add(ProductLatticeOntologyAdapter.
-                    getComponentConceptFromProductLatticeConcept(
-                    arg, _originalFunctionOntology));
+            originalArgs.add(ProductLatticeOntologyAdapter
+                    .getComponentConceptFromProductLatticeConcept(arg,
+                            _originalFunctionOntology));
         }
 
-        Concept originalFunctionValue = _originalFunction.evaluateFunction(originalArgs);
-        return ProductLatticeOntologyAdapter.
-            getDerivedConceptForProductLattice(originalFunctionValue,
+        Concept originalFunctionValue = _originalFunction
+                .evaluateFunction(originalArgs);
+        return ProductLatticeOntologyAdapter
+                .getDerivedConceptForProductLattice(originalFunctionValue,
                         (ProductLatticeOntology) _outputRangeOntology);
     }
 

@@ -717,7 +717,8 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         ListIterator actorIterator = _actorTable.listIterator();
         int repeats = 0;
 
-        foundRepeatValue: while (actorIterator.hasNext()) {
+        foundRepeatValue:
+        while (actorIterator.hasNext()) {
             DTActor currentActor = (DTActor) actorIterator.next();
 
             if (actor.equals(currentActor._actor)) {

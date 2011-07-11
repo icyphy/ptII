@@ -114,7 +114,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     public void actionPerformed(ActionEvent e) {
         // Open a file chooser to select a folder to write to.
         JFileChooser fileDialog = new JFileChooser();
-        fileDialog.addChoosableFileFilter(new BasicGraphFrame.FolderFileFilter());
+        fileDialog
+                .addChoosableFileFilter(new BasicGraphFrame.FolderFileFilter());
         fileDialog.setDialogTitle("Choose a directory to write HTML...");
         fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
@@ -137,14 +138,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             File directory = fileDialog.getSelectedFile();
             if (directory.exists()) {
                 if (directory.isDirectory()) {
-                    if (!MessageHandler.yesNoQuestion(
-                            "Directory exists: " + directory + ". Overwrite contents?")) {
+                    if (!MessageHandler.yesNoQuestion("Directory exists: "
+                            + directory + ". Overwrite contents?")) {
                         MessageHandler.message("HTML export canceled.");
                         return;
                     }
                 } else {
-                    if (!MessageHandler.yesNoQuestion(
-                            "File exists with the same name. Overwrite file?")) {
+                    if (!MessageHandler
+                            .yesNoQuestion("File exists with the same name. Overwrite file?")) {
                         MessageHandler.message("HTML export canceled.");
                         return;
                     }
@@ -219,7 +220,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         // Copy Javascript source files into destination directory,
         // if they are available. The files are under an MIT license,
         // which is compatible with the Ptolemy license.
-        File jsDirectory = FileUtilities.nameToFile("$CLASSPATH/ptolemy/vergil/javascript", null);
+        File jsDirectory = FileUtilities.nameToFile(
+                "$CLASSPATH/ptolemy/vergil/javascript", null);
         boolean warn = true;
         // We assume that if the directory exists, then the files exist.
         if (jsDirectory.isDirectory()) {
@@ -233,49 +235,61 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                 warn = true;
             } else {
                 URL jqueryFile = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/vergil/javascript/js/jquery.js", null, null);
+                        "$CLASSPATH/ptolemy/vergil/javascript/js/jquery.js",
+                        null, null);
                 FileUtilities.binaryCopyURLToFile(jqueryFile, new File(
                         jsTargetDirectory, "jquery.js"));
 
-                URL lightboxFile = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/vergil/javascript/js/jquery.lightbox-0.5.pack.js", null, null);
+                URL lightboxFile = FileUtilities
+                        .nameToURL(
+                                "$CLASSPATH/ptolemy/vergil/javascript/js/jquery.lightbox-0.5.pack.js",
+                                null, null);
                 FileUtilities.binaryCopyURLToFile(lightboxFile, new File(
                         jsTargetDirectory, "jquery.lightbox-0.5.pack.js"));
             }
             // Copy files into the "css" directory.
             File cssTargetDirectory = new File(directory, "css");
-            if (cssTargetDirectory.exists() && !cssTargetDirectory.isDirectory()) {
+            if (cssTargetDirectory.exists()
+                    && !cssTargetDirectory.isDirectory()) {
                 cssTargetDirectory.renameTo(new File(directory, "css.bak"));
             }
             if (!cssTargetDirectory.exists() && !cssTargetDirectory.mkdir()) {
                 warn = true;
             } else {
-                URL jqueryFile = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/vergil/javascript/css/jquery.lightbox-0.5.css", null, null);
+                URL jqueryFile = FileUtilities
+                        .nameToURL(
+                                "$CLASSPATH/ptolemy/vergil/javascript/css/jquery.lightbox-0.5.css",
+                                null, null);
                 FileUtilities.binaryCopyURLToFile(jqueryFile, new File(
                         cssTargetDirectory, "jquery.lightbox-0.5.css"));
             }
             // Copy files into the "images" directory.
             File imagesTargetDirectory = new File(directory, "images");
-            if (imagesTargetDirectory.exists() && !imagesTargetDirectory.isDirectory()) {
-                imagesTargetDirectory.renameTo(new File(directory, "images.bak"));
+            if (imagesTargetDirectory.exists()
+                    && !imagesTargetDirectory.isDirectory()) {
+                imagesTargetDirectory
+                        .renameTo(new File(directory, "images.bak"));
             }
-            if (!imagesTargetDirectory.exists() && !imagesTargetDirectory.mkdir()) {
+            if (!imagesTargetDirectory.exists()
+                    && !imagesTargetDirectory.mkdir()) {
                 warn = true;
             } else {
-                URL jqueryFile = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/vergil/javascript/images/lightbox-btn-close.gif", null, null);
+                URL jqueryFile = FileUtilities
+                        .nameToURL(
+                                "$CLASSPATH/ptolemy/vergil/javascript/images/lightbox-btn-close.gif",
+                                null, null);
                 FileUtilities.binaryCopyURLToFile(jqueryFile, new File(
                         imagesTargetDirectory, "lightbox-btn-close.gif"));
             }
         }
         if (warn) {
-            MessageHandler.message("Warning: Cannot find required Javascript files jquery.js" +
-                            " and jquery.lightbox-0.5.pack.js. Perhaps your Ptolemy II" +
-                            " installation does not include them (because they are GPLd." +
-                            " For the exported HTML to work correctly, you will need to find" +
-                            " and copy these files into a subdirectory called 'js' of the" +
-                            " directory into which the HTML is exported.");
+            MessageHandler
+                    .message("Warning: Cannot find required Javascript files jquery.js"
+                            + " and jquery.lightbox-0.5.pack.js. Perhaps your Ptolemy II"
+                            + " installation does not include them (because they are GPLd."
+                            + " For the exported HTML to work correctly, you will need to find"
+                            + " and copy these files into a subdirectory called 'js' of the"
+                            + " directory into which the HTML is exported.");
         }
 
         // Now write the HTML.
@@ -315,9 +329,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
         // Create a table of effigies associated with any
         // open submodel or plot.
-        Map<NamedObj,PtolemyEffigy> openEffigies = new HashMap<NamedObj,PtolemyEffigy>();
+        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, PtolemyEffigy>();
         Tableau myTableau = _basicGraphFrame.getTableau();
-        Effigy myEffigy = (Effigy)myTableau.getContainer();
+        Effigy myEffigy = (Effigy) myTableau.getContainer();
         List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
         for (PtolemyEffigy effigy : effigies) {
             openEffigies.put(effigy.getModel(), effigy);
@@ -340,12 +354,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     // under the refinements of that state, which have the
                     // same container as the _Controller.
                     try {
-                        TypedActor[] refinements = ((State)location.object).getRefinement();
+                        TypedActor[] refinements = ((State) location.object)
+                                .getRefinement();
                         // FIXME: There may be more
                         // than one refinement. How to open all of them?
                         // We have only one link. For now, just open the first one.
                         if (refinements != null && refinements.length > 0) {
-                            effigy = openEffigies.get((NamedObj)refinements[0]);
+                            effigy = openEffigies
+                                    .get((NamedObj) refinements[0]);
                             if (effigy != null) {
                                 linkTo = _linkToText(effigy, directory);
                             }
@@ -357,11 +373,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     // There is no open effigy, but the object might
                     // be an instance of a class where the class definition
                     // is open. Look for that.
-                    Instantiable parent = ((Instantiable)location.object).getParent();
+                    Instantiable parent = ((Instantiable) location.object)
+                            .getParent();
                     if (parent instanceof NamedObj) {
-                        Effigy classEffigy = Configuration.findEffigy((NamedObj) parent);
+                        Effigy classEffigy = Configuration
+                                .findEffigy((NamedObj) parent);
                         if (classEffigy instanceof PtolemyEffigy) {
-                            linkTo = _linkToText((PtolemyEffigy)classEffigy, directory);
+                            linkTo = _linkToText((PtolemyEffigy) classEffigy,
+                                    directory);
                         }
                     }
                 }
@@ -369,16 +388,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
             // Write the name of the actor followed by the table.
             writer.println("<area shape=\"rect\" coords=\""
-                    + (int)location.topLeftX + ","
-                    + (int)location.topLeftY + ","
-                    + (int)location.bottomRightX + ","
-                    + (int)location.bottomRightY + "\" onmouseover=\"writeText('<h2>"
-                    + location.object.getName()
-                    + "</h2>"
-                    + table.toString()
-                    + "')\""
-                    + linkTo
-                    + "/>");
+                    + (int) location.topLeftX + "," + (int) location.topLeftY
+                    + "," + (int) location.bottomRightX + ","
+                    + (int) location.bottomRightY
+                    + "\" onmouseover=\"writeText('<h2>"
+                    + location.object.getName() + "</h2>" + table.toString()
+                    + "')\"" + linkTo + "/>");
 
         }
         writer.println("</map>");
@@ -409,7 +424,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                 expression = StringUtilities.escapeForXML(expression);
                 expression = expression.replaceAll("'", "\\\\'");
                 if (expression.length() == 0) {
-                    expression="&nbsp;";
+                    expression = "&nbsp;";
                 }
                 table.append(expression);
                 table.append("</td><td>");
@@ -417,17 +432,17 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                 value = StringUtilities.escapeForXML(value);
                 value = value.replaceAll("'", "\\\\'");
                 if (value.length() == 0) {
-                    value="&nbsp;";
+                    value = "&nbsp;";
                 }
                 table.append(value);
                 table.append("</td></tr>");
             }
         }
         if (hasParameter) {
-            table.insert(0, "<table border=&quot;1&quot;>" +
-                            "<tr><td><b>Parameter</b></td>" +
-                            "<td><b>Expression</b></td>" +
-                            "<td><b>Value</b></td></tr>");
+            table.insert(0, "<table border=&quot;1&quot;>"
+                    + "<tr><td><b>Parameter</b></td>"
+                    + "<td><b>Expression</b></td>"
+                    + "<td><b>Value</b></td></tr>");
             table.append("</table>");
         } else {
             table.append("Has no parameters.");
@@ -458,9 +473,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         Rectangle2D viewSize = _basicGraphFrame.getVisibleRectangle();
         // System.out.println("Visible rectangle: " + viewSize);
 
-        JCanvas canvas = _basicGraphFrame.getJGraph().getGraphPane().getCanvas();
-        AffineTransform transform = canvas.getCanvasPane().getTransformContext()
-                .getTransform();
+        JCanvas canvas = _basicGraphFrame.getJGraph().getGraphPane()
+                .getCanvas();
+        AffineTransform transform = canvas.getCanvasPane()
+                .getTransformContext().getTransform();
         double scaleX = transform.getScaleX();
         double scaleY = transform.getScaleY();
         double translateX = transform.getTranslateX();
@@ -468,27 +484,29 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
         NamedObj model = _basicGraphFrame.getModel();
         if (model instanceof CompositeEntity) {
-            List<Entity> entities = ((CompositeEntity)model).entityList();
+            List<Entity> entities = ((CompositeEntity) model).entityList();
             for (Entity entity : entities) {
                 Locatable location = null;
                 try {
-                    location = (Locatable)entity.getAttribute("_location", Locatable.class);
+                    location = (Locatable) entity.getAttribute("_location",
+                            Locatable.class);
                 } catch (IllegalActionException e1) {
                     // NOTE: What to do here? For now, ignoring the node.
                 }
                 if (location != null) {
-                    GraphController controller
-                            = _basicGraphFrame.getJGraph().getGraphPane().getGraphController();
+                    GraphController controller = _basicGraphFrame.getJGraph()
+                            .getGraphPane().getGraphController();
                     Figure figure = controller.getFigure(location);
                     if (figure != null) {
                         Figure mainIcon = figure;
-                        Point2D origin = ((CompositeFigure)figure).getOrigin();
+                        Point2D origin = ((CompositeFigure) figure).getOrigin();
                         double iconOriginX = origin.getX();
                         double iconOriginY = origin.getY();
 
                         if (figure instanceof CompositeFigure) {
-                            mainIcon = ((CompositeFigure)figure).getBackgroundFigure();
-                            origin = ((CompositeFigure)figure).getOrigin();
+                            mainIcon = ((CompositeFigure) figure)
+                                    .getBackgroundFigure();
+                            origin = ((CompositeFigure) figure).getOrigin();
                             iconOriginX = origin.getX();
                             iconOriginY = origin.getY();
                         }
@@ -498,18 +516,19 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                         i.object = entity;
 
                         // Calculate the location of the icon relative to the visible rectangle.
-                        i.topLeftX = (iconOriginX + iconBounds.getX())*scaleX + translateX;
-                        i.topLeftY = (iconOriginY + iconBounds.getY())*scaleY + translateY;
+                        i.topLeftX = (iconOriginX + iconBounds.getX()) * scaleX
+                                + translateX;
+                        i.topLeftY = (iconOriginY + iconBounds.getY()) * scaleY
+                                + translateY;
 
-                        i.bottomRightX
-                                = (iconOriginX + iconBounds.getX() + iconBounds.getWidth())
-                                *scaleX + translateX;
-                        i.bottomRightY
-                                = (iconOriginY + iconBounds.getY() + iconBounds.getHeight())
-                                *scaleY + translateY;
+                        i.bottomRightX = (iconOriginX + iconBounds.getX() + iconBounds
+                                .getWidth()) * scaleX + translateX;
+                        i.bottomRightY = (iconOriginY + iconBounds.getY() + iconBounds
+                                .getHeight()) * scaleY + translateY;
 
                         if (i.bottomRightX < 0.0 || i.bottomRightY < 0.0
-                                || i.topLeftX > viewSize.getWidth() || i.topLeftY > viewSize.getHeight()) {
+                                || i.topLeftX > viewSize.getWidth()
+                                || i.topLeftY > viewSize.getHeight()) {
                             // Icon is out of view.
                             continue;
                         } else {
@@ -552,8 +571,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  @exception PrinterException If unable to create required HTML files.
      *  @exception FileNotFoundException
      */
-    private String _linkToText(PtolemyEffigy effigy, File directory) throws IOException,
-            PrinterException {
+    private String _linkToText(PtolemyEffigy effigy, File directory)
+            throws IOException, PrinterException {
         String linkTo = "";
         NamedObj object = effigy.getModel();
         File gifFile;
@@ -573,22 +592,22 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                         subDirectory.renameTo(backupFile);
                     }
                 } else if (!subDirectory.mkdir()) {
-                    throw new IOException("Unable to create directory " + subDirectory);
+                    throw new IOException("Unable to create directory "
+                            + subDirectory);
                 }
-                ((HTMLExportable)frame).writeHTML(subDirectory);
-                linkTo = "href=\""  + name + "/index.html\"" +
-                        " title=\"" + name + "\"";
+                ((HTMLExportable) frame).writeHTML(subDirectory);
+                linkTo = "href=\"" + name + "/index.html\"" + " title=\""
+                        + name + "\"";
             } else if (frame instanceof ImageExportable) {
                 gifFile = new File(directory, name + ".gif");
                 OutputStream gifOut = new FileOutputStream(gifFile);
                 try {
-                    ((ImageExportable)frame).writeImage(gifOut, "gif");
+                    ((ImageExportable) frame).writeImage(gifOut, "gif");
                 } finally {
                     gifOut.close();
                 }
-                linkTo = "href=\""  + name + ".gif\"" +
-                        " class=\"lightbox\"" +
-                        " title=\"" + name + "\"";
+                linkTo = "href=\"" + name + ".gif\"" + " class=\"lightbox\""
+                        + " title=\"" + name + "\"";
             }
         }
         return linkTo;
@@ -634,9 +653,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
         /** String representation. */
         public String toString() {
-            return (object.getName()
-                    + " from (" + topLeftX + ", " + topLeftY + ") to ("
-                    + bottomRightX + ", " + bottomRightY + ")");
+            return (object.getName() + " from (" + topLeftX + ", " + topLeftY
+                    + ") to (" + bottomRightX + ", " + bottomRightY + ")");
         }
     }
 }

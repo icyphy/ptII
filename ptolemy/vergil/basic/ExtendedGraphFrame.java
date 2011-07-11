@@ -202,7 +202,8 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
      */
     public void dispose() {
         if (_debugClosing) {
-            System.out.println("ExtendedGraphFrame.dispose() : " + this.getName());
+            System.out.println("ExtendedGraphFrame.dispose() : "
+                    + this.getName());
         }
 
         _fullScreenAction = null;
@@ -240,7 +241,8 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
      */
     protected boolean _close() {
         if (_debugClosing) {
-            System.out.println("ExtendedGraphFrame._close() : " + this.getName());
+            System.out.println("ExtendedGraphFrame._close() : "
+                    + this.getName());
         }
 
         return super._close();

@@ -39,6 +39,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
@@ -105,10 +106,10 @@ public class PtidesPreemptiveEDFDirector extends Director {
         // the EmbeddedCodeActor would also have a Ptides director (in order to
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
-        if (!(((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
-                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector)) {
+        if (!(((CompositeActor) getComponent().getContainer())
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector)) {
             code.append(_templateParser.getCodeStream().getCodeBlock(
-                            "initPIBlock"));
+                    "initPIBlock"));
         }
         code.append(super.generateInitializeCode());
 
@@ -124,8 +125,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(_eol + _templateParser.getCodeStream().getCodeBlock(
-                "mainLoopBlock"));
+        code.append(_eol
+                + _templateParser.getCodeStream().getCodeBlock("mainLoopBlock"));
         return code.toString();
     }
 
@@ -152,8 +153,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
         // Notice here we append code from _generatePtrToEventHeadCodeInputs()
         // because ports inside of the EmbeddedCodeActor needs to have pointers
         // to event heads declared, which is done in the previous method.
-        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
-                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+        if (((CompositeActor) getComponent().getContainer())
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return code.toString();
         }
 
@@ -193,15 +194,19 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
         // FIXME: Transfer token to inside actually only needs to run once...
         code.append(CodeStream.indent(getCodeGenerator().comment(
-        "FIXME: Transfer tokens to the inside actually only needs to run once, because" +
-        "we are only setting one pointer to equal another.")));
+                "FIXME: Transfer tokens to the inside actually only needs to run once, because"
+                        + "we are only setting one pointer to equal another.")));
         for (int i = 0; i < inputPort.getWidth(); i++) {
-            String sourcePortString = "Event_Head_" + getAdapter(inputPort).getName() + "[" +
-                    Integer.toString(i) + "]";
-            for (IOPort sinkPort : (List<IOPort>)inputPort.deepInsidePortList()) {
-                String sinkPortString = "Event_Head_" + getAdapter(sinkPort).getName() + "[" +
-                Integer.toString(i) + "]";
-                code.append(sinkPortString + " = " + sourcePortString + ";" + _eol);
+            String sourcePortString = "Event_Head_"
+                    + getAdapter(inputPort).getName() + "["
+                    + Integer.toString(i) + "]";
+            for (IOPort sinkPort : (List<IOPort>) inputPort
+                    .deepInsidePortList()) {
+                String sinkPortString = "Event_Head_"
+                        + getAdapter(sinkPort).getName() + "["
+                        + Integer.toString(i) + "]";
+                code.append(sinkPortString + " = " + sourcePortString + ";"
+                        + _eol);
             }
         }
     }
@@ -225,7 +230,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-    throws IllegalActionException {
+            throws IllegalActionException {
         code.append(getCodeGenerator()
                 .comment("Transfer tokens to the outside"));
     }
@@ -285,8 +290,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
         // the EmbeddedCodeActor would also have a Ptides director (in order to
         // have Ptides receivers). But in this case no shared code needs to be
         // generated.
-        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
-                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+        if (((CompositeActor) getComponent().getContainer())
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             return sharedCode;
         }
 
@@ -295,8 +300,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
         _templateParser.getCodeStream().clear();
 
         // define the number of actuators in the system as a macro.
-        _templateParser.getCodeStream().append("#define numActuators "
-                + actuators.size() + _eol);
+        _templateParser.getCodeStream().append(
+                "#define numActuators " + actuators.size() + _eol);
 
         _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
         _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");
@@ -343,13 +348,11 @@ public class PtidesPreemptiveEDFDirector extends Director {
             Iterator it = actuators.keySet().iterator();
             Actor actor = (Actor) it.next();
             code.append("Actuation_"
-                    + NamedProgramCodeGeneratorAdapter
-                            .generateName((NamedObj) actor));
+                    + CodeGeneratorAdapter.generateName((NamedObj) actor));
             while (it.hasNext()) {
                 actor = (Actor) it.next();
                 code.append(", Actuation_"
-                        + NamedProgramCodeGeneratorAdapter
-                                .generateName((NamedObj) actor));
+                        + CodeGeneratorAdapter.generateName((NamedObj) actor));
             }
             code.append("};" + _eol);
         }
@@ -368,9 +371,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 .getContainer()).deepEntityList()) {
             if (actor instanceof OutputDevice) {
                 code.append("void Actuation_"
-                        + NamedProgramCodeGeneratorAdapter
-                                .generateName((NamedObj) actor) + "(void);"
-                        + _eol);
+                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+                        + "(void);" + _eol);
             }
         }
 
@@ -386,8 +388,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             code.append("void "
-                    + NamedProgramCodeGeneratorAdapter
-                            .generateName((NamedObj) actor) + "(void);" + _eol);
+                    + CodeGeneratorAdapter.generateName((NamedObj) actor)
+                    + "(void);" + _eol);
         }
 
         code.append(_generateActuatorActuationFuncProtoCode());
@@ -402,8 +404,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *   reading parameters throws it.
      */
     protected String _generateDirectorHeader() {
-        return NamedProgramCodeGeneratorAdapter.generateName(_director)
-                + "_controlBlock";
+        return CodeGeneratorAdapter.generateName(_director) + "_controlBlock";
     }
 
     /**
@@ -437,15 +438,17 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
         // The references are associated with their own adapter, so we need
         // to find the associated adapter.
-        String sourcePortChannel = NamedProgramCodeGeneratorAdapter
+        String sourcePortChannel = CodeGeneratorAdapter
                 .generateName(source.port)
-                + "#" + source.channelNumber + ", " + offset;
+                + "#"
+                + source.channelNumber
+                + ", "
+                + offset;
         String sourceRef = ((NamedProgramCodeGeneratorAdapter) (getCodeGenerator()
-                .getAdapter(source.port.getContainer())))
-                .getReference(sourcePortChannel, false);
+                .getAdapter(source.port.getContainer()))).getReference(
+                sourcePortChannel, false);
 
-        String sinkPortChannel = NamedProgramCodeGeneratorAdapter
-                .generateName(sink.port)
+        String sinkPortChannel = CodeGeneratorAdapter.generateName(sink.port)
                 + "#" + sink.channelNumber + ", " + offset;
 
         // For composite actor, generate a variable corresponding to
@@ -465,7 +468,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
         // treat it as output port and this is not correct.
         // FIXME: what about offset?
         if (sink.port.getContainer() instanceof ModalController) {
-            sinkRef = NamedProgramCodeGeneratorAdapter.generateName(sink.port);
+            sinkRef = CodeGeneratorAdapter.generateName(sink.port);
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
             }
@@ -524,32 +527,25 @@ public class PtidesPreemptiveEDFDirector extends Director {
                     .getAdapter(actor);
 
             if (actor instanceof ActuationDevice) {
-                code
-                        .append("void Actuation_"
-                                + NamedProgramCodeGeneratorAdapter
-                                        .generateName((NamedObj) actor)
-                                + "() {" + _eol);
-                code
-                        .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
-                                .generateActuatorActuationFuncCode());
+                code.append("void Actuation_"
+                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+                        + "() {" + _eol);
+                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
+                        .generateActuatorActuationFuncCode());
                 code.append("}" + _eol);
             }
 
             if (actor instanceof SensorHandler) {
-                code
-                        .append("void Sensing_"
-                                + NamedProgramCodeGeneratorAdapter
-                                        .generateName((NamedObj) actor)
-                                + "() {" + _eol);
-                code
-                        .append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) adapter)
-                                .generateSensorSensingFuncCode());
+                code.append("void Sensing_"
+                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+                        + "() {" + _eol);
+                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice) adapter)
+                        .generateSensorSensingFuncCode());
                 code.append("}" + _eol);
             }
             code.append("void "
-                    + NamedProgramCodeGeneratorAdapter
-                            .generateName((NamedObj) actor) + "() " + "{"
-                    + _eol);
+                    + CodeGeneratorAdapter.generateName((NamedObj) actor)
+                    + "() " + "{" + _eol);
             code.append(adapter.generateFireCode());
 
             // After each actor firing, the Event Head ptr needs to point to null
@@ -581,9 +577,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
         for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
             for (int channel = 0; channel < inputPort.getWidth(); channel++) {
                 code.append("Event_Head_"
-                        + NamedProgramCodeGeneratorAdapter
-                                .generateName(inputPort) + "[" + channel
-                        + "] = NULL;" + _eol);
+                        + CodeGeneratorAdapter.generateName(inputPort) + "["
+                        + channel + "] = NULL;" + _eol);
             }
         }
         return code.toString();
@@ -599,18 +594,17 @@ public class PtidesPreemptiveEDFDirector extends Director {
             // receive input from the outside. For this reason, we allocate
             // pointers to events for all actors with input ports. This
             // means there exists declared pointers that are never used.
-                for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
-                    if (inputPort.getWidth() > 0) {
-                        code.append("Event* Event_Head_"
-                                + NamedProgramCodeGeneratorAdapter
-                                        .generateName(inputPort) + "["
-                                + inputPort.getWidth() + "] = {NULL");
-                        for (int channel = 1; channel < inputPort.getWidth(); channel++) {
-                            code.append(", NULL");
-                        }
-                        code.append("};" + _eol);
+            for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
+                if (inputPort.getWidth() > 0) {
+                    code.append("Event* Event_Head_"
+                            + CodeGeneratorAdapter.generateName(inputPort)
+                            + "[" + inputPort.getWidth() + "] = {NULL");
+                    for (int channel = 1; channel < inputPort.getWidth(); channel++) {
+                        code.append(", NULL");
                     }
+                    code.append("};" + _eol);
                 }
+            }
             //}
         }
         return code.toString();

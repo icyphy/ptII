@@ -66,10 +66,9 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.appletWriter", AppletWriter.v(_toplevel),
                 "targetPackage:" + _targetPackage + " modelPath:" + _modelPath
                         + " outputDirectory:" + _outputDirectory
-                        + " ptIIJarsPath:" + _ptIIJarsPath
-                        + " ptIILocalURL:" + _ptIILocalURL
-                        + " ptIIUserDirectory:" + _ptIIUserDirectory
-                        + " targetPath:" + _targetPath);
+                        + " ptIIJarsPath:" + _ptIIJarsPath + " ptIILocalURL:"
+                        + _ptIILocalURL + " ptIIUserDirectory:"
+                        + _ptIIUserDirectory + " targetPath:" + _targetPath);
         System.out.println("applet.Main.addTransforms, targetPath: "
                 + _targetPath);
     }

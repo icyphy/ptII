@@ -182,8 +182,8 @@ public class GeneratorTableau extends Tableau {
                             "../../../doc/codegen.htm");
 
                     try {
-                        configuration.openModel(null, infoURL, infoURL
-                                .toExternalForm());
+                        configuration.openModel(null, infoURL,
+                                infoURL.toExternalForm());
                     } catch (Exception ex) {
                         throw new InternalErrorException(model, ex,
                                 "Failed to open doc/codegen.htm: ");

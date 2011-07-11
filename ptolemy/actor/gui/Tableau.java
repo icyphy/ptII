@@ -387,7 +387,8 @@ public class Tableau extends CompositeEntity {
         // is disposed by the _close() method of Top.
         public void windowClosed(WindowEvent e) {
             if (_debugClosing) {
-                System.out.println("Tableau$WindowClosedAdapter.windowClosed("+e.getWindow().getName()+")");
+                System.out.println("Tableau$WindowClosedAdapter.windowClosed("
+                        + e.getWindow().getName() + ")");
             }
 
             Window frame = e.getWindow();
@@ -400,7 +401,7 @@ public class Tableau extends CompositeEntity {
                 }
             }
             // System.out.println(frame.getWindowListeners().length);
-            /*int removed =*/ MemoryCleaner.removeWindowListeners(frame);
+            /*int removed =*/MemoryCleaner.removeWindowListeners(frame);
             //System.out.println("Window listeners removed: " + removed);
             _windowClosedAdapter = null;
             _frame = null;

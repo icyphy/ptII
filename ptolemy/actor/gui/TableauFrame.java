@@ -511,8 +511,8 @@ public class TableauFrame extends Top {
                     canCreateBlank = true;
 
                     String name = factory.getName();
-                    ActionListener menuListener = new MenuItemListener(
-                            factory,directory,configuration);
+                    ActionListener menuListener = new MenuItemListener(factory,
+                            directory, configuration);
 
                     JMenuItem item = new JMenuItem(name);
                     item.setActionCommand(name);
@@ -692,7 +692,6 @@ public class TableauFrame extends Top {
         return result;
     }
 
-
     /** Dispose of this frame.
      *
      *  <p>Override this dispose() method to unattach any listeners that may keep
@@ -706,13 +705,13 @@ public class TableauFrame extends Top {
         }
 
         // Deal with view menu action listeners
-        /*int c =*/ MemoryCleaner.removeActionListeners(_viewMenu);
+        /*int c =*/MemoryCleaner.removeActionListeners(_viewMenu);
         //System.out.println("_viewMenu: "+c);
 
         // Deal with new menu action listeners
         //int i = 0;
         for (AbstractButton newMenuButton : _newMenuItems) {
-            /*c =*/ MemoryCleaner.removeActionListeners(newMenuButton);
+            /*c =*/MemoryCleaner.removeActionListeners(newMenuButton);
             //System.out.println("newMenuButton["+(i++)+"]: "+c);
         }
 
@@ -1023,8 +1022,8 @@ public class TableauFrame extends Top {
         Nameable configuration = _tableau.toplevel();
 
         if (configuration instanceof Configuration) {
-            ((Configuration) configuration).openModel(url, url, url
-                    .toExternalForm());
+            ((Configuration) configuration).openModel(url, url,
+                    url.toExternalForm());
         } else {
             throw new InternalErrorException(
                     "Expected top-level to be a Configuration: "
@@ -1083,11 +1082,11 @@ public class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs(String extension) {
-            URL result = _saveAsHelper(extension);
-            if (result == null) {
-                    return false;
-            }
-            return true;
+        URL result = _saveAsHelper(extension);
+        if (result == null) {
+            return false;
+        }
+        return true;
     }
 
     /** Query the user for a filename, save the model to that file,
@@ -1264,7 +1263,7 @@ public class TableauFrame extends Top {
                 // the last slash) with new text.  For example, If I do Save As and
                 // the entry widget says "/Users/cxh/ptII/foo", then change it
                 // to say "/Users/cxh/ptII/bar".
-                file = new File(selectedFile.replace(':','/'));
+                file = new File(selectedFile.replace(':', '/'));
             } else {
                 // FIXME: Are there any circumstances under which selectedFile
                 // will contain a colon as a directory separator but not
@@ -1295,8 +1294,11 @@ public class TableauFrame extends Top {
                 // been saved, so we do not change its modified status.
                 // setModified(false);
                 // Open a new window on the model.
-                Tableau newTableau = getConfiguration().openModel(newURL, newURL, newKey);
-                newTableau.getFrame().setTitle(StringUtilities.abbreviate(new File(_directory, file.getName()).toString()));
+                Tableau newTableau = getConfiguration().openModel(newURL,
+                        newURL, newKey);
+                newTableau.getFrame().setTitle(
+                        StringUtilities.abbreviate(new File(_directory, file
+                                .getName()).toString()));
 
                 // If the tableau was unnamed before, then we need
                 // to close this window after doing the save.
@@ -1448,24 +1450,25 @@ public class TableauFrame extends Top {
          * @param configuration The Configuration for this instance
          * of Ptolemy.
          */
-        public MenuItemListener (EffigyFactory factory,
+        public MenuItemListener(EffigyFactory factory,
                 ModelDirectory directory, Configuration configuration) {
             _factory = factory;
             _directory = directory;
             _configuration = configuration;
         }
+
         public void actionPerformed(ActionEvent event) {
             Effigy effigy = null;
 
             try {
                 effigy = _factory.createEffigy(_directory);
             } catch (Exception ex) {
-                MessageHandler.error(
-                        "Could not create new effigy", ex);
+                MessageHandler.error("Could not create new effigy", ex);
             }
 
             _configuration.createPrimaryTableau(effigy);
         }
+
         private EffigyFactory _factory;
         private ModelDirectory _directory;
         private Configuration _configuration;
@@ -1479,7 +1482,8 @@ public class TableauFrame extends Top {
      *
      *  @deprecated Use diva.gui.ExtensionFileFilter or javax.swing.filechooser.FileNameExtensionFilter
      */
-    protected static class ExtensionFileFilter extends diva.gui.ExtensionFileFilter {
+    protected static class ExtensionFileFilter extends
+            diva.gui.ExtensionFileFilter {
         // NetBeans wants this protected.  If it is package visibility,
         // then there are problems accessing it from the same package
         // but a different jar.
@@ -1536,7 +1540,8 @@ public class TableauFrame extends Top {
                         Tableau tableau = factory
                                 .createTableau(tableauContainer);
                         if (tableau == null) {
-                            MessageHandler.warning("Cannot create view. Perhaps the model needs to be saved first?");
+                            MessageHandler
+                                    .warning("Cannot create view. Perhaps the model needs to be saved first?");
                         } else {
                             tableau.show();
                         }

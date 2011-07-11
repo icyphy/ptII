@@ -445,8 +445,8 @@ public class FixType extends StructuredType implements Cloneable, Serializable {
         Precision precision = ((FixType) type).getPrecision();
         int fractionBits = Math.min(precision.getFractionBitLength(),
                 _precision.getFractionBitLength());
-        int integerBits = Math.min(precision.getIntegerBitLength(), _precision
-                .getIntegerBitLength());
+        int integerBits = Math.min(precision.getIntegerBitLength(),
+                _precision.getIntegerBitLength());
         return new FixType(new Precision(fractionBits + integerBits,
                 integerBits));
     }
@@ -467,8 +467,8 @@ public class FixType extends StructuredType implements Cloneable, Serializable {
         Precision precision = ((FixType) type).getPrecision();
         int fractionBits = Math.max(precision.getFractionBitLength(),
                 _precision.getFractionBitLength());
-        int integerBits = Math.max(precision.getIntegerBitLength(), _precision
-                .getIntegerBitLength());
+        int integerBits = Math.max(precision.getIntegerBitLength(),
+                _precision.getIntegerBitLength());
         FixType returnType = new FixType(new Precision(fractionBits
                 + integerBits, integerBits));
         returnType._checkPrecision();

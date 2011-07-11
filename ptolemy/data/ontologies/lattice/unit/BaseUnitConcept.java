@@ -99,17 +99,16 @@ public class BaseUnitConcept extends UnitConcept {
      *  @return The newly created RecordConcept.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public static BaseUnitConcept createBaseUnitConcept(
-            Ontology ontology, BaseDimensionRepresentativeConcept representative,
-            RecordToken unitInfo)
-                throws IllegalActionException {
+    public static BaseUnitConcept createBaseUnitConcept(Ontology ontology,
+            BaseDimensionRepresentativeConcept representative,
+            RecordToken unitInfo) throws IllegalActionException {
         try {
             return new BaseUnitConcept(ontology, representative, unitInfo);
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(
                     "Name conflict with automatically generated infinite concept name.\n"
-                    + "This should never happen."
-                    + "Original exception:" + e.toString());
+                            + "This should never happen."
+                            + "Original exception:" + e.toString());
         }
     }
 
@@ -130,8 +129,8 @@ public class BaseUnitConcept extends UnitConcept {
      */
     protected BaseUnitConcept(Ontology ontology,
             BaseDimensionRepresentativeConcept representative,
-            RecordToken unitInfo)
-                throws IllegalActionException, NameDuplicationException {
+            RecordToken unitInfo) throws IllegalActionException,
+            NameDuplicationException {
         super(ontology, representative, unitInfo);
 
         Token unitFactor = unitInfo.get(UnitConversionInfo.unitFactorLabel);
@@ -139,8 +138,8 @@ public class BaseUnitConcept extends UnitConcept {
             _unitFactor = (ScalarToken) unitFactor;
         } else {
             throw new IllegalActionException(this,
-                    "Invalid unit factor value (must be a scalar value): " +
-                    unitFactor);
+                    "Invalid unit factor value (must be a scalar value): "
+                            + unitFactor);
         }
 
         Token unitOffset = unitInfo.get(UnitConversionInfo.unitOffsetLabel);
@@ -150,8 +149,8 @@ public class BaseUnitConcept extends UnitConcept {
             _unitOffset = (ScalarToken) unitOffset;
         } else {
             throw new IllegalActionException(this,
-                    "Invalid unit offset value (must be a scalar value): " +
-                    unitOffset);
+                    "Invalid unit offset value (must be a scalar value): "
+                            + unitOffset);
         }
     }
 }

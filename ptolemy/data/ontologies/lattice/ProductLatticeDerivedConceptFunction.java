@@ -62,8 +62,9 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
      *  @exception IllegalActionException Thrown if the wrapper concept function
      *   cannot be created.
      */
-    public ProductLatticeDerivedConceptFunction(String name, ProductLatticeOntology inputOutputOntology, Ontology originalConceptOntology)
-        throws IllegalActionException {
+    public ProductLatticeDerivedConceptFunction(String name,
+            ProductLatticeOntology inputOutputOntology,
+            Ontology originalConceptOntology) throws IllegalActionException {
         super(name, 1, inputOutputOntology);
         _originalConceptOntology = originalConceptOntology;
     }
@@ -78,34 +79,40 @@ public class ProductLatticeDerivedConceptFunction extends ConceptFunction {
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
     protected Concept _evaluateFunction(List<Concept> argValues)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Concept inputConcept = argValues.get(0);
 
         if (inputConcept != null) {
-            Concept originalOntologyInputConcept = ProductLatticeOntologyAdapter.
-                getComponentConceptFromProductLatticeConcept(
-                    inputConcept, _originalConceptOntology);
+            Concept originalOntologyInputConcept = ProductLatticeOntologyAdapter
+                    .getComponentConceptFromProductLatticeConcept(inputConcept,
+                            _originalConceptOntology);
 
             if (originalOntologyInputConcept != null) {
-                Concept result = ProductLatticeOntologyAdapter.
-                    getDerivedConceptForProductLattice(originalOntologyInputConcept,
-                            (ProductLatticeOntology) _outputRangeOntology);
+                Concept result = ProductLatticeOntologyAdapter
+                        .getDerivedConceptForProductLattice(
+                                originalOntologyInputConcept,
+                                (ProductLatticeOntology) _outputRangeOntology);
                 if (result == null) {
-                    throw new IllegalActionException("Could not derive product lattice " +
-                                    "concept for " + _outputRangeOntology.getName() +
-                                    " from original concept " + originalOntologyInputConcept +
-                                    " in the ontology " + _originalConceptOntology + ".");
+                    throw new IllegalActionException(
+                            "Could not derive product lattice "
+                                    + "concept for "
+                                    + _outputRangeOntology.getName()
+                                    + " from original concept "
+                                    + originalOntologyInputConcept
+                                    + " in the ontology "
+                                    + _originalConceptOntology + ".");
                 } else {
                     return result;
                 }
             } else {
-                throw new IllegalActionException("Could not get the original " +
-                                "ontology concept from the input concept " +
-                                inputConcept + " for the component ontology " +
-                                _originalConceptOntology.getName() + ".");
+                throw new IllegalActionException("Could not get the original "
+                        + "ontology concept from the input concept "
+                        + inputConcept + " for the component ontology "
+                        + _originalConceptOntology.getName() + ".");
             }
         } else {
-            throw new IllegalActionException("Input concept argument cannot be null.");
+            throw new IllegalActionException(
+                    "Input concept argument cannot be null.");
         }
     }
 

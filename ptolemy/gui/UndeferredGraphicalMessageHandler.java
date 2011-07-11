@@ -121,7 +121,7 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
      *  of the options parameter.  Derived classes may add a new array
      *  with an additional String that labels an additional button.
      */
-    protected Object [] _checkThrowableNameable(Object [] options,
+    protected Object[] _checkThrowableNameable(Object[] options,
             Throwable throwable) {
         return options;
     }
@@ -411,9 +411,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
 
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(getContext(), message,
-                "Stack trace",
-                JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
-                options, options[0]);
+                "Stack trace", JOptionPane.YES_NO_OPTION,
+                JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
         if (selected == 2) {
             // Derived classes

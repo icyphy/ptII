@@ -45,7 +45,6 @@ package ptdb.common.dto;
  */
 public class GetModelTask extends Task {
 
-
     /**
      * Construct an instance of the object and set the model name to be fetched
      * from the database.
@@ -71,7 +70,6 @@ public class GetModelTask extends Task {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /**
      * Return the model Id.
      * @return The model Id.
@@ -92,6 +90,7 @@ public class GetModelTask extends Task {
         return _modelName;
 
     }
+
     /**
      * Return if the model is to be read from cache or not.
      * @return True if the model is being read from cache, false otherwise.
@@ -109,7 +108,6 @@ public class GetModelTask extends Task {
     public void setModelId(String modelId) {
         _modelId = modelId;
     }
-
 
     /**
      * Set the model name to be fetched from the database.
@@ -130,6 +128,7 @@ public class GetModelTask extends Task {
     public void setModelFromCache(boolean isModelFromCache) {
         this.isModelFromCache = isModelFromCache;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

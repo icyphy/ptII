@@ -68,8 +68,7 @@ public class ShortTokenHandler implements TokenHandler<ShortToken> {
      *  @exception IOException If the stream cannot be read.
      */
     public ShortToken convertToToken(DataInputStream inputStream,
-            Class<? extends ShortToken> tokenType)
-            throws IOException {
+            Class<? extends ShortToken> tokenType) throws IOException {
         return new ShortToken(inputStream.readShort());
     }
 }

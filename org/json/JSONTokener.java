@@ -38,14 +38,13 @@ SOFTWARE.
  */
 public class JSONTokener {
 
-    private int         character;
-        private boolean eof;
-    private int         index;
-    private int         line;
-    private char         previous;
-    private Reader         reader;
+    private int character;
+    private boolean eof;
+    private int index;
+    private int line;
+    private char previous;
+    private Reader reader;
     private boolean usePrevious;
-
 
     /**
      * Construct a JSONTokener from a reader.
@@ -53,8 +52,8 @@ public class JSONTokener {
      * @param reader     A reader.
      */
     public JSONTokener(Reader reader) {
-        this.reader = reader.markSupported() ?
-                        reader : new BufferedReader(reader);
+        this.reader = reader.markSupported() ? reader : new BufferedReader(
+                reader);
         this.eof = false;
         this.usePrevious = false;
         this.previous = 0;
@@ -62,7 +61,6 @@ public class JSONTokener {
         this.character = 1;
         this.line = 1;
     }
-
 
     /**
      * Construct a JSONTokener from a string.
@@ -72,7 +70,6 @@ public class JSONTokener {
     public JSONTokener(String s) {
         this(new StringReader(s));
     }
-
 
     /**
      * Back up one character. This provides a sort of lookahead capability,
@@ -88,7 +85,6 @@ public class JSONTokener {
         this.usePrevious = true;
         this.eof = false;
     }
-
 
     /**
      * Get the hex value of a character (base16).
@@ -110,9 +106,8 @@ public class JSONTokener {
     }
 
     public boolean end() {
-            return eof && !usePrevious;
+        return eof && !usePrevious;
     }
-
 
     /**
      * Determine if the source string still contains characters that next()
@@ -128,7 +123,6 @@ public class JSONTokener {
         return true;
     }
 
-
     /**
      * Get the next character in the source string.
      *
@@ -137,34 +131,33 @@ public class JSONTokener {
     public char next() throws JSONException {
         int c;
         if (this.usePrevious) {
-                this.usePrevious = false;
+            this.usePrevious = false;
             c = this.previous;
         } else {
-                try {
-                    c = this.reader.read();
-                } catch (IOException exception) {
-                    throw new JSONException(exception);
-                }
-
-                if (c <= 0) { // End of stream
-                        this.eof = true;
-                        c = 0;
-                }
-        }
-            this.index += 1;
-            if (this.previous == '\r') {
-                    this.line += 1;
-                    this.character = c == '\n' ? 0 : 1;
-            } else if (c == '\n') {
-                    this.line += 1;
-                    this.character = 0;
-            } else {
-                    this.character += 1;
+            try {
+                c = this.reader.read();
+            } catch (IOException exception) {
+                throw new JSONException(exception);
             }
-            this.previous = (char) c;
+
+            if (c <= 0) { // End of stream
+                this.eof = true;
+                c = 0;
+            }
+        }
+        this.index += 1;
+        if (this.previous == '\r') {
+            this.line += 1;
+            this.character = c == '\n' ? 0 : 1;
+        } else if (c == '\n') {
+            this.line += 1;
+            this.character = 0;
+        } else {
+            this.character += 1;
+        }
+        this.previous = (char) c;
         return this.previous;
     }
-
 
     /**
      * Consume the next character, and check that it matches a specified
@@ -176,12 +169,11 @@ public class JSONTokener {
     public char next(char c) throws JSONException {
         char n = next();
         if (n != c) {
-            throw syntaxError("Expected '" + c + "' and instead saw '" +
-                    n + "'");
+            throw syntaxError("Expected '" + c + "' and instead saw '" + n
+                    + "'");
         }
         return n;
     }
-
 
     /**
      * Get the next n characters.
@@ -192,24 +184,23 @@ public class JSONTokener {
      *   Substring bounds error if there are not
      *   n characters remaining in the source string.
      */
-     public String next(int n) throws JSONException {
-         if (n == 0) {
-             return "";
-         }
+    public String next(int n) throws JSONException {
+        if (n == 0) {
+            return "";
+        }
 
-         char[] buffer = new char[n];
-         int pos = 0;
+        char[] buffer = new char[n];
+        int pos = 0;
 
-         while (pos < n) {
-             buffer[pos] = next();
-             if (end()) {
-                 throw syntaxError("Substring bounds error");
-             }
-             pos += 1;
-         }
-         return new String(buffer);
-     }
-
+        while (pos < n) {
+            buffer[pos] = next();
+            if (end()) {
+                throw syntaxError("Substring bounds error");
+            }
+            pos += 1;
+        }
+        return new String(buffer);
+    }
 
     /**
      * Get the next char in the string, skipping whitespace.
@@ -224,7 +215,6 @@ public class JSONTokener {
             }
         }
     }
-
 
     /**
      * Return the characters up to the next close quote character.
@@ -266,14 +256,14 @@ public class JSONTokener {
                     sb.append('\r');
                     break;
                 case 'u':
-                    sb.append((char)Integer.parseInt(next(4), 16));
+                    sb.append((char) Integer.parseInt(next(4), 16));
                     break;
                 case '"':
                 case '\'':
                 case '\\':
                 case '/':
-                        sb.append(c);
-                        break;
+                    sb.append(c);
+                    break;
                 default:
                     throw syntaxError("Illegal escape.");
                 }
@@ -286,7 +276,6 @@ public class JSONTokener {
             }
         }
     }
-
 
     /**
      * Get the text up but not including the specified character or the
@@ -308,7 +297,6 @@ public class JSONTokener {
         }
     }
 
-
     /**
      * Get the text up but not including one of the specified delimiter
      * characters or the end of line, whichever comes first.
@@ -320,8 +308,7 @@ public class JSONTokener {
         StringBuffer sb = new StringBuffer();
         for (;;) {
             c = next();
-            if (delimiters.indexOf(c) >= 0 || c == 0 ||
-                    c == '\n' || c == '\r') {
+            if (delimiters.indexOf(c) >= 0 || c == 0 || c == '\n' || c == '\r') {
                 if (c != 0) {
                     back();
                 }
@@ -330,7 +317,6 @@ public class JSONTokener {
             sb.append(c);
         }
     }
-
 
     /**
      * Get the next value. The value can be a Boolean, Double, Integer,
@@ -344,16 +330,16 @@ public class JSONTokener {
         String s;
 
         switch (c) {
-            case '"':
-            case '\'':
-                return nextString(c);
-            case '{':
-                back();
-                return new JSONObject(this);
-            case '[':
-            case '(':
-                back();
-                return new JSONArray(this);
+        case '"':
+        case '\'':
+            return nextString(c);
+        case '{':
+            back();
+            return new JSONObject(this);
+        case '[':
+        case '(':
+            back();
+            return new JSONArray(this);
         }
 
         /*
@@ -378,7 +364,6 @@ public class JSONTokener {
         }
         return JSONObject.stringToValue(s);
     }
-
 
     /**
      * Skip characters until the next character is the requested character.
@@ -412,7 +397,6 @@ public class JSONTokener {
         return c;
     }
 
-
     /**
      * Make a JSONException to signal a syntax error.
      *
@@ -423,13 +407,13 @@ public class JSONTokener {
         return new JSONException(message + toString());
     }
 
-
     /**
      * Make a printable string of this JSONTokener.
      *
      * @return " at {index} [character {character} line {line}]"
      */
     public String toString() {
-        return " at " + index + " [character " + this.character + " line " + this.line + "]";
+        return " at " + index + " [character " + this.character + " line "
+                + this.line + "]";
     }
 }

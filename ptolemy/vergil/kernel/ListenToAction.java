@@ -105,8 +105,8 @@ public class ListenToAction extends FigureAction {
             // child of the model window.  So, we create a new text
             // effigy inside this one.  Specify model's effigy as
             // a container for this new effigy.
-            Effigy textEffigy = new TextEffigy(effigy, effigy
-                    .uniqueName("debugListener" + object.getName()));
+            Effigy textEffigy = new TextEffigy(effigy,
+                    effigy.uniqueName("debugListener" + object.getName()));
 
             DebugListenerTableau debugTableau = new DebugListenerTableau(
                     textEffigy, textEffigy.uniqueName("debugListener"

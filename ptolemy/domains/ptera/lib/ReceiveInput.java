@@ -199,11 +199,12 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
         Tableau tableau = EventUtils.getTableau(this, referredTableau, null);
         JFrame frame = tableau.getFrame();
 
-        InputListener listener = new InputListener(((DoubleToken) timeAdvance
-                .getToken()).doubleValue(), frame, componentClass,
+        InputListener listener = new InputListener(
+                ((DoubleToken) timeAdvance.getToken()).doubleValue(), frame,
+                componentClass,
                 ((BooleanToken) receiveKeyPress.getToken()).booleanValue(),
-                keyPattern, ((BooleanToken) receiveMousePress.getToken())
-                        .booleanValue());
+                keyPattern,
+                ((BooleanToken) receiveMousePress.getToken()).booleanValue());
         synchronized (this) {
             if (_inputListeners == null) {
                 _inputListeners = new LinkedList<InputListener>();

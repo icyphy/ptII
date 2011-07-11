@@ -575,8 +575,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
                     if ((compare == CPO.HIGHER)
                             || (compare == CPO.INCOMPARABLE)) {
-                        Inequality inequality = new Inequality(sourcePort
-                                .getTypeTerm(), destinationPort.getTypeTerm());
+                        Inequality inequality = new Inequality(
+                                sourcePort.getTypeTerm(),
+                                destinationPort.getTypeTerm());
                         result.add(inequality);
                     }
                 }

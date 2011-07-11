@@ -135,8 +135,10 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             if (attribute instanceof StringParameter) {
 
-                if (!((StringParameter) attribute).getName().equals(XMLDBModel.DB_REFERENCE_ATTR)
-                        && !((StringParameter) attribute).getName().equals(XMLDBModel.DB_MODEL_ID_ATTR)
+                if (!((StringParameter) attribute).getName().equals(
+                        XMLDBModel.DB_REFERENCE_ATTR)
+                        && !((StringParameter) attribute).getName().equals(
+                                XMLDBModel.DB_MODEL_ID_ATTR)
                         && _attributesListPanel
                                 .isDBAttribute(((StringParameter) attribute)
                                         .getName())) {
@@ -194,8 +196,10 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             // reference indication or the model name AND it is one of the
             // attributes configured in the DB, show it in the panel.
             if (stringParameter instanceof StringParameter
-                    && !((StringParameter) stringParameter).getName().equals(XMLDBModel.DB_REFERENCE_ATTR)
-                    && !((StringParameter) stringParameter).getName().equals(XMLDBModel.DB_MODEL_ID_ATTR)
+                    && !((StringParameter) stringParameter).getName().equals(
+                            XMLDBModel.DB_REFERENCE_ATTR)
+                    && !((StringParameter) stringParameter).getName().equals(
+                            XMLDBModel.DB_MODEL_ID_ATTR)
                     && _attributesListPanel
                             .isDBAttribute(((StringParameter) stringParameter)
                                     .getName())) {
@@ -251,11 +255,9 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
         _attributesListPanel.getNameTextField().addKeyListener(
                 new KeyListener() {
 
-
                     public void keyTyped(KeyEvent e) {
                         // Do nothing.
                     }
-
 
                     public void keyReleased(KeyEvent e) {
 
@@ -270,7 +272,6 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                             _setButtons();
                         }
                     }
-
 
                     public void keyPressed(KeyEvent e) {
 
@@ -640,16 +641,16 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
                         // Close the opened parent models first.
                         PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
-                                .getConfiguration().getDirectory().getEffigy(
-                                        openedParentModelName);
+                                .getConfiguration().getDirectory()
+                                .getEffigy(openedParentModelName);
                         parentModelEffigy.closeTableaux();
 
                         parentModelEffigy.setContainer(null);
 
                         // Reload the model from the Database.
                         PtolemyEffigy updatedParentModelEffigy = LoadManager
-                                .loadModel(openedParentModelName, _source
-                                        .getConfiguration());
+                                .loadModel(openedParentModelName,
+                                        _source.getConfiguration());
 
                         if (updatedParentModelEffigy != null) {
 
@@ -661,10 +662,10 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 }
 
                 // Display the saved sub model to the front.
-                if (_source.getConfiguration().getDirectory().getEffigy(
-                        _xmlModel.getModelName()) != null) {
-                    _source.getConfiguration().getDirectory().getEffigy(
-                            _xmlModel.getModelName()).showTableaux();
+                if (_source.getConfiguration().getDirectory()
+                        .getEffigy(_xmlModel.getModelName()) != null) {
+                    _source.getConfiguration().getDirectory()
+                            .getEffigy(_xmlModel.getModelName()).showTableaux();
                 }
 
             } else {
@@ -848,7 +849,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             for (StringParameter attribute : attributesList) {
 
                 if (!attribute.getName().equals(XMLDBModel.DB_REFERENCE_ATTR)
-                        && !attribute.getName().equals(XMLDBModel.DB_MODEL_ID_ATTR)
+                        && !attribute.getName().equals(
+                                XMLDBModel.DB_MODEL_ID_ATTR)
                         && _attributesListPanel.isDBAttribute(attribute
                                 .getName())) {
 
@@ -1062,7 +1064,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             for (StringParameter attribute : attributesList) {
 
                 if (attribute.getName().equals(XMLDBModel.DB_REFERENCE_ATTR)
-                        && attribute.getName().equals(XMLDBModel.DB_MODEL_ID_ATTR)
+                        && attribute.getName().equals(
+                                XMLDBModel.DB_MODEL_ID_ATTR)
                         && _attributesListPanel.isDBAttribute(attribute
                                 .getName())) {
 
@@ -1256,8 +1259,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             for (XMLDBModel parentModel : _firstFrameOfSave._parentModels) {
 
                 ParentModelItemPanel parentModelItemPanel = new ParentModelItemPanel(
-                        parentModel.getModelName(), _firstFrameOfSave._source
-                                .getConfiguration(), this);
+                        parentModel.getModelName(),
+                        _firstFrameOfSave._source.getConfiguration(), this);
 
                 _parentModelsPanels.add(parentModelItemPanel);
                 _parentsPanel.add(parentModelItemPanel);
@@ -1266,7 +1269,6 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             _previousButton = new JButton("<< Previous");
             _previousButton.addActionListener(new ActionListener() {
-
 
                 public void actionPerformed(ActionEvent e) {
                     setVisible(false);
@@ -1281,7 +1283,6 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             _saveButton = new JButton("Save");
 
             _saveButton.addActionListener(new ActionListener() {
-
 
                 public void actionPerformed(ActionEvent e) {
 
@@ -1298,7 +1299,6 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             _cancelButton = new JButton("Cancel");
 
             _cancelButton.addActionListener(new ActionListener() {
-
 
                 public void actionPerformed(ActionEvent e) {
                     // Add the action listener to call the cancel button in the
@@ -1355,8 +1355,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 String parentModelName = parentModelPanel.getParentModelName();
 
                 // If the parent model is opened.
-                if (_source.getConfiguration().getDirectory().getEntity(
-                        parentModelName) != null) {
+                if (_source.getConfiguration().getDirectory()
+                        .getEntity(parentModelName) != null) {
 
                     parents.add(parentModelName);
 
@@ -1424,8 +1424,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             for (String parentModelName : _getOpenedParents()) {
 
                 PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
-                        .getConfiguration().getDirectory().getEffigy(
-                                parentModelName);
+                        .getConfiguration().getDirectory()
+                        .getEffigy(parentModelName);
 
                 // If the parent model is unsaved.
                 if (parentModelEffigy.isModified()) {
@@ -1583,7 +1583,6 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
             _checkBox.addActionListener(new ActionListener() {
 
-
                 public void actionPerformed(ActionEvent e) {
                     _parentFrame._unCheckParentModel();
 
@@ -1593,8 +1592,8 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             layout.setHorizontalGroup(layout.createSequentialGroup()
                     .addComponent(_checkBox).addComponent(_modelNameButton));
 
-            layout.setVerticalGroup(layout.createParallelGroup().addComponent(
-                    _checkBox).addComponent(_modelNameButton));
+            layout.setVerticalGroup(layout.createParallelGroup()
+                    .addComponent(_checkBox).addComponent(_modelNameButton));
 
         }
 

@@ -75,7 +75,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
 */
-public class DerivedDimensionRepresentativeConcept extends DimensionRepresentativeConcept {
+public class DerivedDimensionRepresentativeConcept extends
+        DimensionRepresentativeConcept {
 
     /** Create a new DerivedUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -86,14 +87,14 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public DerivedDimensionRepresentativeConcept(CompositeEntity ontology, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public DerivedDimensionRepresentativeConcept(CompositeEntity ontology,
+            String name) throws NameDuplicationException,
+            IllegalActionException {
         super(ontology, name);
         dimensionArray = new Parameter(this, "dimensionArray");
         dimensionArray.setTypeEquals(new ArrayType(BaseType.RECORD));
 
-        _componentDimensions = new HashMap<DimensionRepresentativeConcept,
-                                            Integer>();
+        _componentDimensions = new HashMap<DimensionRepresentativeConcept, Integer>();
         _componentBaseDimensions = null;
         _dimensionNameToReferenceName = new HashMap<String, String>();
     }
@@ -115,9 +116,11 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      *  @exception IllegalActionException Thrown if there is a problem getting
      *   the component base dimensions map.
      */
-    public Map<BaseDimensionRepresentativeConcept, Integer> getComponentBaseDimensions() throws IllegalActionException {
+    public Map<BaseDimensionRepresentativeConcept, Integer> getComponentBaseDimensions()
+            throws IllegalActionException {
         _updateDimensionInformation();
-        return new HashMap<BaseDimensionRepresentativeConcept, Integer>(_componentBaseDimensions);
+        return new HashMap<BaseDimensionRepresentativeConcept, Integer>(
+                _componentBaseDimensions);
     }
 
     /** Return the component dimensions map for this derived unit dimension.
@@ -129,7 +132,8 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
     public Map<DimensionRepresentativeConcept, Integer> getComponentDimensions()
             throws IllegalActionException {
         _updateDimensionInformation();
-        return new HashMap<DimensionRepresentativeConcept, Integer>(_componentDimensions);
+        return new HashMap<DimensionRepresentativeConcept, Integer>(
+                _componentDimensions);
     }
 
     /** Derive a map of base dimensions to exponents that represents the given
@@ -141,27 +145,28 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      *  @exception IllegalActionException Thrown if an invalid dimension concept
      *   is found.
      */
-    public static Map<BaseDimensionRepresentativeConcept, Integer>
-        deriveComponentBaseDimensionsMap(Map<DimensionRepresentativeConcept, Integer> dimensionMap)
+    public static Map<BaseDimensionRepresentativeConcept, Integer> deriveComponentBaseDimensionsMap(
+            Map<DimensionRepresentativeConcept, Integer> dimensionMap)
             throws IllegalActionException {
 
-        Map<BaseDimensionRepresentativeConcept, Integer> baseComponentDimensions =
-            new HashMap<BaseDimensionRepresentativeConcept, Integer>();
+        Map<BaseDimensionRepresentativeConcept, Integer> baseComponentDimensions = new HashMap<BaseDimensionRepresentativeConcept, Integer>();
 
         for (DimensionRepresentativeConcept dimension : dimensionMap.keySet()) {
-            int exponentValue = _getExponentValueForComponentDimension(dimensionMap, dimension);
+            int exponentValue = _getExponentValueForComponentDimension(
+                    dimensionMap, dimension);
             if (dimension instanceof BaseDimensionRepresentativeConcept) {
                 _incrementBaseDimensionExponent(baseComponentDimensions,
                         (BaseDimensionRepresentativeConcept) dimension,
                         exponentValue);
             } else if (dimension instanceof DerivedDimensionRepresentativeConcept) {
-                _incrementDerivedDimensionExponents(baseComponentDimensions,
-                        ((DerivedDimensionRepresentativeConcept) dimension).
-                            _componentDimensions, exponentValue);
+                _incrementDerivedDimensionExponents(
+                        baseComponentDimensions,
+                        ((DerivedDimensionRepresentativeConcept) dimension)._componentDimensions,
+                        exponentValue);
             } else {
-                throw new IllegalActionException("A unit dimension must be " +
-                                "either a BaseDimensionRepresentativeConcept " +
-                                "or a DerivedDimensionRepresentativeConcept.");
+                throw new IllegalActionException("A unit dimension must be "
+                        + "either a BaseDimensionRepresentativeConcept "
+                        + "or a DerivedDimensionRepresentativeConcept.");
             }
         }
 
@@ -215,10 +220,13 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
             return DerivedUnitConcept.createDerivedUnitConcept(getOntology(),
                     this, _findUnitRecordByName(unitName));
         } else {
-            throw new IllegalActionException(this, "The given string " +
-                        infiniteConceptString + " cannot " +
-                        "be used to derive a valid derived unit concept contained " +
-                        "by this representative.");
+            throw new IllegalActionException(
+                    this,
+                    "The given string "
+                            + infiniteConceptString
+                            + " cannot "
+                            + "be used to derive a valid derived unit concept contained "
+                            + "by this representative.");
         }
     }
 
@@ -232,43 +240,46 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      *  @exception IllegalActionException Thrown if the dimension record token
      *   or the concept object contained in the record token is invalid.
      */
-    private DimensionRepresentativeConcept _getDimensionValue(RecordToken dimensionRecord)
-        throws IllegalActionException {
+    private DimensionRepresentativeConcept _getDimensionValue(
+            RecordToken dimensionRecord) throws IllegalActionException {
         Token dimensionNameToken = dimensionRecord.get(_dimensionLabel);
         if (dimensionNameToken instanceof StringToken) {
-            String dimensionName = ((StringToken) dimensionNameToken).stringValue();
+            String dimensionName = ((StringToken) dimensionNameToken)
+                    .stringValue();
 
             // First see if the name is a reference name that is mapped to a
             // dimension parameter specified in this concept.
             Attribute dimensionAttribute = getAttribute(dimensionName);
-            if (dimensionAttribute instanceof Parameter &&
-                    ((Parameter) dimensionAttribute).getToken() instanceof ObjectToken) {
-                ObjectToken dimensionConceptToken = (ObjectToken) ((Parameter) dimensionAttribute).getToken();
-                Object dimensionConceptObject = dimensionConceptToken.getValue();
+            if (dimensionAttribute instanceof Parameter
+                    && ((Parameter) dimensionAttribute).getToken() instanceof ObjectToken) {
+                ObjectToken dimensionConceptToken = (ObjectToken) ((Parameter) dimensionAttribute)
+                        .getToken();
+                Object dimensionConceptObject = dimensionConceptToken
+                        .getValue();
                 if (dimensionConceptObject instanceof DimensionRepresentativeConcept) {
-                    _dimensionNameToReferenceName.put(
-                            ((DimensionRepresentativeConcept)
-                                    dimensionConceptObject).getName(),
-                                    dimensionName);
+                    _dimensionNameToReferenceName
+                            .put(((DimensionRepresentativeConcept) dimensionConceptObject)
+                                    .getName(), dimensionName);
                     return (DimensionRepresentativeConcept) dimensionConceptObject;
                 } else {
-                    throw new IllegalActionException(this, "Invalid dimension " +
-                            "concept: " + dimensionConceptObject);
+                    throw new IllegalActionException(this, "Invalid dimension "
+                            + "concept: " + dimensionConceptObject);
                 }
 
-            // Next see if the name refers to a dimension name in the ontology.
+                // Next see if the name refers to a dimension name in the ontology.
             } else {
-                Concept dimensionConcept = getOntology().getConceptByString(dimensionName);
+                Concept dimensionConcept = getOntology().getConceptByString(
+                        dimensionName);
                 if (dimensionConcept instanceof DimensionRepresentativeConcept) {
                     return (DimensionRepresentativeConcept) dimensionConcept;
                 } else {
-                    throw new IllegalActionException(this, "Invalid dimension " +
-                            "specification: " + dimensionName);
+                    throw new IllegalActionException(this, "Invalid dimension "
+                            + "specification: " + dimensionName);
                 }
             }
         } else {
-            throw new IllegalActionException(this, "Invalid dimension record " +
-                        "token: " + dimensionRecord);
+            throw new IllegalActionException(this, "Invalid dimension record "
+                    + "token: " + dimensionRecord);
         }
     }
 
@@ -279,20 +290,21 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      *  @exception IllegalActionException Thrown if the dimension record token
      *   or the exponent value in the record token is zero or invalid.
      */
-    private Integer _getExponentValue(RecordToken dimensionRecord) throws IllegalActionException {
+    private Integer _getExponentValue(RecordToken dimensionRecord)
+            throws IllegalActionException {
         Token exponentToken = dimensionRecord.get(_exponentLabel);
         if (exponentToken instanceof IntToken) {
             int exponentValue = (((IntToken) exponentToken).intValue());
             if (exponentValue == 0) {
-                throw new IllegalActionException(this, "Dimension exponent " +
-                                "cannot be zero because that means the derived " +
-                                "dimension is not derived from it.");
+                throw new IllegalActionException(this, "Dimension exponent "
+                        + "cannot be zero because that means the derived "
+                        + "dimension is not derived from it.");
             } else {
                 return Integer.valueOf(exponentValue);
             }
         } else {
-            throw new IllegalActionException(this, "Invalid dimension record " +
-                        "token: " + dimensionRecord);
+            throw new IllegalActionException(this, "Invalid dimension record "
+                    + "token: " + dimensionRecord);
         }
     }
 
@@ -305,13 +317,14 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      *  @exception IllegalActionException Thrown if the returned exponent value is
      *   invalid
      */
-    private static int _getExponentValueForComponentDimension(Map<DimensionRepresentativeConcept, Integer>
-        dimensionMap, DimensionRepresentativeConcept dimension)
+    private static int _getExponentValueForComponentDimension(
+            Map<DimensionRepresentativeConcept, Integer> dimensionMap,
+            DimensionRepresentativeConcept dimension)
             throws IllegalActionException {
         Integer exponent = dimensionMap.get(dimension);
         if (exponent == null) {
-            throw new IllegalActionException("Exponent value for " +
-                            "dimension " + dimension + " was null.");
+            throw new IllegalActionException("Exponent value for "
+                    + "dimension " + dimension + " was null.");
         } else {
             return exponent.intValue();
         }
@@ -328,16 +341,18 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
     private static void _incrementBaseDimensionExponent(
             Map<BaseDimensionRepresentativeConcept, Integer> baseDimensionsMap,
             BaseDimensionRepresentativeConcept dimension, int exponentValue)
-                throws IllegalActionException {
+            throws IllegalActionException {
         Integer currentExponent = baseDimensionsMap.get(dimension);
         if (currentExponent == null) {
             if (exponentValue != 0) {
-                baseDimensionsMap.put(dimension, Integer.valueOf(exponentValue));
+                baseDimensionsMap
+                        .put(dimension, Integer.valueOf(exponentValue));
             }
         } else {
             int newExponentValue = currentExponent.intValue() + exponentValue;
             if (newExponentValue != 0) {
-                baseDimensionsMap.put(dimension, Integer.valueOf(newExponentValue));
+                baseDimensionsMap.put(dimension,
+                        Integer.valueOf(newExponentValue));
             } else {
                 baseDimensionsMap.remove(dimension);
             }
@@ -358,20 +373,22 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
             int exponentValue) throws IllegalActionException {
 
         for (DimensionRepresentativeConcept dimension : dimensionMap.keySet()) {
-            int subDimensionExponentValue = exponentValue *
-                    _getExponentValueForComponentDimension(dimensionMap, dimension);
+            int subDimensionExponentValue = exponentValue
+                    * _getExponentValueForComponentDimension(dimensionMap,
+                            dimension);
             if (dimension instanceof BaseDimensionRepresentativeConcept) {
-                _incrementBaseDimensionExponent(baseDimensionsMap, (BaseDimensionRepresentativeConcept)
-                        dimension, subDimensionExponentValue);
+                _incrementBaseDimensionExponent(baseDimensionsMap,
+                        (BaseDimensionRepresentativeConcept) dimension,
+                        subDimensionExponentValue);
             } else if (dimension instanceof DerivedDimensionRepresentativeConcept) {
-                _incrementDerivedDimensionExponents(baseDimensionsMap,
-                        ((DerivedDimensionRepresentativeConcept) dimension).
-                        _componentDimensions,
+                _incrementDerivedDimensionExponents(
+                        baseDimensionsMap,
+                        ((DerivedDimensionRepresentativeConcept) dimension)._componentDimensions,
                         subDimensionExponentValue);
             } else {
-                throw new IllegalActionException("A unit dimension must be " +
-                                "either a BaseDimensionRepresentativeConcept " +
-                                "or a DerivedDimensionRepresentativeConcept.");
+                throw new IllegalActionException("A unit dimension must be "
+                        + "either a BaseDimensionRepresentativeConcept "
+                        + "or a DerivedDimensionRepresentativeConcept.");
             }
         }
     }
@@ -383,20 +400,19 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      *   an array of record tokens.
      */
     private void _setUnitDimensions(ArrayToken dimensionArrayToken)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _componentDimensions.clear();
         _dimensionNameToReferenceName.clear();
 
         Token[] dimensions = dimensionArrayToken.arrayValue();
         for (Token dimensionRecord : dimensions) {
             if (dimensionRecord instanceof RecordToken) {
-                DimensionRepresentativeConcept dimension =
-                    _getDimensionValue((RecordToken) dimensionRecord);
+                DimensionRepresentativeConcept dimension = _getDimensionValue((RecordToken) dimensionRecord);
                 Integer exponent = _getExponentValue((RecordToken) dimensionRecord);
                 _componentDimensions.put(dimension, exponent);
             } else {
-                throw new IllegalActionException(this, "Dimension array token " +
-                                "must be an array of record tokens.");
+                throw new IllegalActionException(this, "Dimension array token "
+                        + "must be an array of record tokens.");
             }
         }
     }
@@ -411,11 +427,11 @@ public class DerivedDimensionRepresentativeConcept extends DimensionRepresentati
      */
     private void _updateDimensionInformation() throws IllegalActionException {
         if (workspace().getVersion() != _dimensionVersion) {
-            ArrayToken dimensionArrayToken = (ArrayToken) dimensionArray.getToken();
+            ArrayToken dimensionArrayToken = (ArrayToken) dimensionArray
+                    .getToken();
             if (dimensionArrayToken != null) {
                 _setUnitDimensions(dimensionArrayToken);
-                _componentBaseDimensions =
-                    deriveComponentBaseDimensionsMap(_componentDimensions);
+                _componentBaseDimensions = deriveComponentBaseDimensionsMap(_componentDimensions);
                 _dimensionVersion = workspace().getVersion();
             }
         }

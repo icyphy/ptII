@@ -79,7 +79,8 @@ public class SequencePlotter extends NamedProgramCodeGeneratorAdapter {
         args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(1, Integer.toString(i));
-            code.append(_templateParser.generateBlockCode(type + "PrintBlock", args));
+            code.append(_templateParser.generateBlockCode(type + "PrintBlock",
+                    args));
         }
 
         return code.toString();

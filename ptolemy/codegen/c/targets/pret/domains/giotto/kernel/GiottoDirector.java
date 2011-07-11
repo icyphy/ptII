@@ -487,10 +487,9 @@ public class GiottoDirector extends
             if (actor instanceof CompositeActor
                     && (dir.getFullName().contains("modal") || dir
                             .getFullName().contains("_Director"))) {
-                code
-                        .append(_eol
-                                + "// should transfer from my outputs to my output ports"
-                                + _eol);
+                code.append(_eol
+                        + "// should transfer from my outputs to my output ports"
+                        + _eol);
                 actorDriverCode.append(_eol + "// in first if" + _eol);
                 while (outputPorts.hasNext()) {
                     IOPort sourcePort = (IOPort) outputPorts.next();
@@ -787,16 +786,15 @@ public class GiottoDirector extends
                 Iterator inputPorts = actor.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                    code
-                            .append("volatile "
-                                    + targetType(inputPort.getType())
-                                    + " * "
-                                    + generateName(inputPort)
-                                    + "_PORT = ("
-                                    + targetType(inputPort.getType())
-                                    + " * ) 0x"
-                                    + Integer
-                                            .toHexString(_getThenIncrementCurrentSharedMemoryAddress(inputPort)));
+                    code.append("volatile "
+                            + targetType(inputPort.getType())
+                            + " * "
+                            + generateName(inputPort)
+                            + "_PORT = ("
+                            + targetType(inputPort.getType())
+                            + " * ) 0x"
+                            + Integer
+                                    .toHexString(_getThenIncrementCurrentSharedMemoryAddress(inputPort)));
                     if (inputPort.isMultiport()) {
                         code.append("[" + inputPort.getWidthInside() + "]");
                     }
@@ -824,16 +822,15 @@ public class GiottoDirector extends
                 //not sure how this will work for multiports yet
 
                 //code.append("/*"+_getActorName(actor)+ "'s PORT variable declarations.*/"+_eol);
-                code
-                        .append("volatile "
-                                + targetType(outputPort.getType())
-                                + " * "
-                                + generateName(outputPort)
-                                + "_PORT = ("
-                                + targetType(outputPort.getType())
-                                + " * ) 0x"
-                                + Integer
-                                        .toHexString(_getThenIncrementCurrentSharedMemoryAddress(outputPort)));
+                code.append("volatile "
+                        + targetType(outputPort.getType())
+                        + " * "
+                        + generateName(outputPort)
+                        + "_PORT = ("
+                        + targetType(outputPort.getType())
+                        + " * ) 0x"
+                        + Integer
+                                .toHexString(_getThenIncrementCurrentSharedMemoryAddress(outputPort)));
 
                 if (outputPort.isMultiport()) {
                     code.append("[" + outputPort.getWidthInside() + "]");
@@ -952,8 +949,7 @@ public class GiottoDirector extends
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
             // generate methods with fire code for the actors inside a composite actor with an sdf director
-            code
-                    .append("//before appending fire code for the contents of the composite actor");
+            code.append("//before appending fire code for the contents of the composite actor");
             if (actor instanceof CompositeActor) {
 
                 if (actor.getDirector() instanceof ptolemy.domains.sdf.kernel.SDFDirector) {
@@ -970,8 +966,7 @@ public class GiottoDirector extends
 
                 }
             }
-            code
-                    .append("//after appending fire code for the contents of the composite actor");
+            code.append("//after appending fire code for the contents of the composite actor");
 
             String actorFullName = _getActorName(actor);
             String methodSignature = _eol + "void " + actorFullName
@@ -997,19 +992,20 @@ public class GiottoDirector extends
                         }
                         super.generateTransferInputsCode(inputPort, code);
                         super.generateTransferOutputsCode(inputPort, code);
-                        code
-                                .append(_eol
-                                        + "//just did the transfer in and out of this composite actor with a call to super methods"
-                                        + _eol);
+                        code.append(_eol
+                                + "//just did the transfer in and out of this composite actor with a call to super methods"
+                                + _eol);
                         // else do nothing
                     }
                     code.append("}" + _eol);
-                } else if (dir.getClassName().equals("ptolemy.domains.fsm.kernel.FSMDirector")
-                        || dir.getClassName().equals("ptolemy.domains.sdf.kernel.SDFDirector")) {
+                } else if (dir.getClassName().equals(
+                        "ptolemy.domains.fsm.kernel.FSMDirector")
+                        || dir.getClassName().equals(
+                                "ptolemy.domains.sdf.kernel.SDFDirector")) {
                     // code.append("//second if"+_eol);
 
-                    if (actor.getClass().getName().contains(
-                            "ptolemy.actor.lib.jni.EmbeddedCActor")) {
+                    if (actor.getClass().getName()
+                            .contains("ptolemy.actor.lib.jni.EmbeddedCActor")) {
                         //code.append("//transfer inputs in"+_eol);
                         CodeGeneratorHelper myHelper;
                         StringBuffer actorTransferCode = new StringBuffer(" ");

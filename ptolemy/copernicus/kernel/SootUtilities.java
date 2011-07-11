@@ -262,8 +262,8 @@ public class SootUtilities {
             if (theClass.declaresMethodByName("<clinit>")) {
                 method = theClass.getMethodByName("<clinit>");
             } else {
-                method = new SootMethod("<clinit>", new LinkedList(), NullType
-                        .v(), Modifier.PUBLIC);
+                method = new SootMethod("<clinit>", new LinkedList(),
+                        NullType.v(), Modifier.PUBLIC);
                 theClass.addMethod(method);
             }
 
@@ -312,8 +312,8 @@ public class SootUtilities {
         //System.out.println("SootClass.copyClass(" + oldClass + ", "
         //                   + newClassName + ")");
         // Create the new Class
-        SootClass newClass = new SootClass(newClassName, oldClass
-                .getModifiers());
+        SootClass newClass = new SootClass(newClassName,
+                oldClass.getModifiers());
 
         try {
             Scene.v().addClass(newClass);
@@ -502,9 +502,9 @@ public class SootUtilities {
                             r.setFieldRef(changeClass.getFieldByName(
                                     r.getField().getName()).makeRef());
                         }//  else if (r.getField().getDeclaringClass() == oldClass) {
-                        //                             r.setFieldRef(
-                        //                                     newClass.getFieldByName(
-                        //                                             r.getField().getName()).makeRef());
+                         //                             r.setFieldRef(
+                         //                                     newClass.getFieldByName(
+                         //                                             r.getField().getName()).makeRef());
 
                         //                             //   System.out.println("fieldRef = " +
                         //                             //              box.getValue());
@@ -573,8 +573,9 @@ public class SootUtilities {
                                 System.out.println("matchedParameter = "
                                         + newClass);
                                 SootClass changeClass = _getInnerClassCopy(
-                                        oldClass, ((RefType) type)
-                                                .getSootClass(), newClass);
+                                        oldClass,
+                                        ((RefType) type).getSootClass(),
+                                        newClass);
                                 newParameterTypes.add(RefType.v(changeClass));
                             } else {
                                 newParameterTypes.add(type);
@@ -738,8 +739,9 @@ public class SootUtilities {
             body.getLocals().add(castLocal);
 
             // Cast the local to the type of the field.
-            units.insertAfter(Jimple.v().newAssignStmt(castLocal,
-                    Jimple.v().newCastExpr(local, type)), insertPoint);
+            units.insertAfter(
+                    Jimple.v().newAssignStmt(castLocal,
+                            Jimple.v().newCastExpr(local, type)), insertPoint);
             insertPoint = (Unit) body.getUnits().getSuccOf(insertPoint);
         }
 
@@ -754,9 +756,10 @@ public class SootUtilities {
         }
 
         // Set the field.
-        units.insertAfter(Jimple.v().newAssignStmt(
-                Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef()),
-                castLocal), insertPoint);
+        units.insertAfter(
+                Jimple.v().newAssignStmt(
+                        Jimple.v().newInstanceFieldRef(thisLocal,
+                                field.makeRef()), castLocal), insertPoint);
         return field;
     }
 
@@ -1137,8 +1140,7 @@ public class SootUtilities {
             if (superClass.declaresFieldByName(field.getName())) {
                 // SootField superField = superClass.getFieldByName(field.getName());
                 String newName = StringUtilities.sanitizeName(superClass
-                        .getName())
-                        + field.getName();
+                        .getName()) + field.getName();
                 System.out.println("Renaming field " + field + " to " + newName
                         + " to avoid collision with superClass field "
                         + superClass.getFieldByName(field.getName()));
@@ -1623,8 +1625,8 @@ public class SootUtilities {
                                 continue;
                             }
 
-                            inlineMethod = searchForMethodByName(theClass
-                                    .getSuperclass(), method.getName());
+                            inlineMethod = searchForMethodByName(
+                                    theClass.getSuperclass(), method.getName());
                         }
 
                         // Don't inline a recursive method call.
@@ -1936,8 +1938,8 @@ public class SootUtilities {
 
                 if (!(iteratorDefinition.getRightOp() instanceof InterfaceInvokeExpr)
                         || !((InterfaceInvokeExpr) iteratorDefinition
-                                .getRightOp()).getMethod().getName().equals(
-                                "iterator")) {
+                                .getRightOp()).getMethod().getName()
+                                .equals("iterator")) {
                     continue;
                 }
 
@@ -1992,8 +1994,8 @@ public class SootUtilities {
                 }
 
                 // Remove the jump that should be the final statement.
-                blockStmtList.remove(blockStmtList
-                        .get(blockStmtList.size() - 1));
+                blockStmtList
+                        .remove(blockStmtList.get(blockStmtList.size() - 1));
 
                 // Loop through and unroll the loop body once for
                 // every element of the field list.
@@ -2101,8 +2103,8 @@ public class SootUtilities {
                         + newClass.getFieldByName(oldField.getName()));
             }
 
-            SootField newField = new SootField(oldField.getName(), oldField
-                    .getType(), oldField.getModifiers());
+            SootField newField = new SootField(oldField.getName(),
+                    oldField.getType(), oldField.getModifiers());
             newClass.addField(newField);
         }
 

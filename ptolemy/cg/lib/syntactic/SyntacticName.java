@@ -95,7 +95,9 @@ public class SyntacticName implements SyntacticTerm {
      *  @return rank of term.
      */
     public SyntacticRank rank() {
-        if (_term == null) return null;
+        if (_term == null) {
+            return null;
+        }
 
         SyntacticRank rank = _term.rank();
         return rank == null ? null : rank.copy();
@@ -135,7 +137,9 @@ public class SyntacticName implements SyntacticTerm {
         String boundary = SyntacticRank.noCode();
         if (_term != null) {
             SyntacticRank rank = _term.rank();
-            if (rank != null) boundary = rank.generateCode();
+            if (rank != null) {
+                boundary = rank.generateCode();
+            }
         }
         return _name + boundary;
     }
@@ -148,8 +152,8 @@ public class SyntacticName implements SyntacticTerm {
      *  @return definition statement for the named term.
      */
     public String generateDefinitionCode() {
-        return generateCode() + " = " +
-            (_term == null ? "null" : _term.generateCode());
+        return generateCode() + " = "
+                + (_term == null ? "null" : _term.generateCode());
     }
 
     /** Get the sort order of the term.
@@ -207,5 +211,3 @@ public class SyntacticName implements SyntacticTerm {
     private SyntacticTerm _term;
 
 }
-
-

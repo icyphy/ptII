@@ -62,8 +62,8 @@ public class BooleanSelect extends CCodeGeneratorHelper {
     public String sendTrueInputs() throws IllegalActionException {
         ptolemy.actor.lib.BooleanSelect actor = (ptolemy.actor.lib.BooleanSelect) getComponent();
 
-        int width = Math.min(actor.output.getWidth(), actor.trueInput
-                .getWidth());
+        int width = Math.min(actor.output.getWidth(),
+                actor.trueInput.getWidth());
 
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();
@@ -87,8 +87,8 @@ public class BooleanSelect extends CCodeGeneratorHelper {
     public String sendFalseInputs() throws IllegalActionException {
         ptolemy.actor.lib.BooleanSelect actor = (ptolemy.actor.lib.BooleanSelect) getComponent();
 
-        int width = Math.min(actor.output.getWidth(), actor.trueInput
-                .getWidth());
+        int width = Math.min(actor.output.getWidth(),
+                actor.trueInput.getWidth());
 
         StringBuffer code = new StringBuffer();
         ArrayList args = new ArrayList();

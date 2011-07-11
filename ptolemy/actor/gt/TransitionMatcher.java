@@ -157,8 +157,8 @@ public class TransitionMatcher extends Transition implements GTEntity,
      */
     public boolean match(NamedObj object) {
         return object instanceof Transition
-                || object.getClass().getName().equals(
-                        "ptolemy.domains.fsm.kernel.Transition");
+                || object.getClass().getName()
+                        .equals("ptolemy.domains.fsm.kernel.Transition");
     }
 
     /** Update appearance of this entity.

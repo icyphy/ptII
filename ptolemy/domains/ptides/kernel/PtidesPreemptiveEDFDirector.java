@@ -290,10 +290,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                 // queue). Since the SensorHandler and NetworkReceiver simulates
                 // interrupt handling, these must execute with the highest
                 // priority in order to correctly simulate execute time.
-                if (port.getContainer() instanceof SensorHandler ||
-                        port.getContainer() instanceof NetworkReceiver) {
-                    _setDeadline(port, SuperdenseDependency
-                            .valueOf(Double.NEGATIVE_INFINITY, 0));
+                if (port.getContainer() instanceof SensorHandler
+                        || port.getContainer() instanceof NetworkReceiver) {
+                    _setDeadline(port, SuperdenseDependency.valueOf(
+                            Double.NEGATIVE_INFINITY, 0));
                 } else {
                     _setDeadline(port, dependency);
                 }
@@ -307,7 +307,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      */
     protected boolean _currentlyFiring(Actor actor) {
         for (int index = 0; index < _currentlyExecutingStack.size(); index++) {
-            ExecutionTimedEvent doubleTimedEvent = _currentlyExecutingStack.get(0);
+            ExecutionTimedEvent doubleTimedEvent = _currentlyExecutingStack
+                    .get(0);
             List<PtidesEvent> executingEvents = (List<PtidesEvent>) doubleTimedEvent.contents;
             if (actor == executingEvents.get(0).actor()) {
                 return true;
@@ -465,8 +466,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
             if (_debugging) {
                 _debug("We decided not to do preemption in this round, "
                         + "but to keep executing " + executingEvent.actor()
-                        + " at physical time " + getPlatformPhysicalTag(executionTimeClock).timestamp
-                        + "." + getPlatformPhysicalTag(executionTimeClock).microstep);
+                        + " at physical time "
+                        + getPlatformPhysicalTag(executionTimeClock).timestamp
+                        + "."
+                        + getPlatformPhysicalTag(executionTimeClock).microstep);
             }
             return false;
         } else {
@@ -477,7 +480,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                         + " with another event at actor: "
                         + _eventToProcess.actor()
                         + ". This preemption happened at physical time "
-                        + getPlatformPhysicalTag(executionTimeClock).timestamp + "."
+                        + getPlatformPhysicalTag(executionTimeClock).timestamp
+                        + "."
                         + getPlatformPhysicalTag(executionTimeClock).microstep);
             }
 

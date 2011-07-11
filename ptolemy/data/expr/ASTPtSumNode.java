@@ -98,9 +98,11 @@ public class ASTPtSumNode extends ASTPtRootNode {
         }
 
         // The operators must be the same.
-        Iterator<Token> nodeTokens = ((ASTPtSumNode) node)._lexicalTokens.iterator();
+        Iterator<Token> nodeTokens = ((ASTPtSumNode) node)._lexicalTokens
+                .iterator();
 
-        for (Iterator<Token> tokens = _lexicalTokens.iterator(); tokens.hasNext();) {
+        for (Iterator<Token> tokens = _lexicalTokens.iterator(); tokens
+                .hasNext();) {
             Token token = tokens.next();
             Token nodeToken = nodeTokens.next();
 

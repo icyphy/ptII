@@ -174,21 +174,24 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
             _dbMenu.addSeparator();
 
-            _simpleSearchAction.putValue(Action.ACCELERATOR_KEY, KeyStroke
-                    .getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK));
+            _simpleSearchAction
+                    .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                            KeyEvent.VK_F, InputEvent.CTRL_MASK));
 
             GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
             GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
 
-            _saveModelToDBAction.putValue(Action.ACCELERATOR_KEY, KeyStroke
-                    .getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK
+            _saveModelToDBAction.putValue(
+                    Action.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK
                             | InputEvent.SHIFT_MASK));
 
             GUIUtilities.addHotKey(_getRightComponent(), _saveModelToDBAction);
             GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
 
-            _renameModelAction.putValue(Action.ACCELERATOR_KEY, KeyStroke
-                    .getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
+            _renameModelAction
+                    .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                            KeyEvent.VK_R, InputEvent.CTRL_MASK));
 
             GUIUtilities.addHotKey(_getRightComponent(), _renameModelAction);
             GUIUtilities.addMenuItem(_dbMenu, _renameModelAction);
@@ -252,7 +255,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
 
     }
-
 
     protected boolean _close() {
         boolean closeResult = super._close();
@@ -345,6 +347,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     /** The action to view all models in the database. */
     protected Action _openAllModelListAction;
+
     ///////////////////////////////////////////////////////////////////
     ////                private inner classes                      ////
 
@@ -460,15 +463,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         public void actionPerformed(ActionEvent e) {
 
+            _saveModelToDBFrame = new SaveModelToDBFrame(getModel(), _source);
 
-                _saveModelToDBFrame = new SaveModelToDBFrame(getModel(),
-                        _source);
+            _containedFramesManager.addContainedFrame(_saveModelToDBFrame);
 
-                _containedFramesManager.addContainedFrame(_saveModelToDBFrame);
-
-                _saveModelToDBFrame.pack();
-                _saveModelToDBFrame.setLocationRelativeTo(_source);
-
+            _saveModelToDBFrame.pack();
+            _saveModelToDBFrame.setLocationRelativeTo(_source);
 
             _saveModelToDBFrame.setVisible(true);
 
@@ -584,12 +584,13 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
 
     }
+
     ///////////////////////////////////////////////////////////////////
     //// AllModelsListAction
     /**
      * Open list of all models in the database.
      */
-    private class AllModelsListAction extends AbstractAction{
+    private class AllModelsListAction extends AbstractAction {
 
         /**
          * Create an instance of AllModelsListAction.
@@ -614,6 +615,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
          */
         private Configuration _configuration;
     }
+
     ///////////////////////////////////////////////////////////////////
     //// SimpleSearchAction
 
@@ -680,8 +682,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
             try {
 
-                PtolemyEffigy effigy = LoadManager.loadModel(((JMenuItem) e
-                        .getSource()).getText(), getConfiguration());
+                PtolemyEffigy effigy = LoadManager.loadModel(
+                        ((JMenuItem) e.getSource()).getText(),
+                        getConfiguration());
 
                 if (effigy != null) {
 

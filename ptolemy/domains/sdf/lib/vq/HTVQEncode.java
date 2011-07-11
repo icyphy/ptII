@@ -201,9 +201,10 @@ public class HTVQEncode extends Transformer {
         _blocks = input.get(0, _blockCount);
 
         for (j = 0; j < _blockCount; j++) {
-            _codewords[j] = new IntToken(_encode(IntegerMatrixMath
-                    .fromMatrixToArray(((IntMatrixToken) _blocks[j])
-                            .intMatrix()), _blockWidth * _blockHeight));
+            _codewords[j] = new IntToken(
+                    _encode(IntegerMatrixMath
+                            .fromMatrixToArray(((IntMatrixToken) _blocks[j])
+                                    .intMatrix()), _blockWidth * _blockHeight));
         }
 
         output.send(0, _codewords, _blockCount);

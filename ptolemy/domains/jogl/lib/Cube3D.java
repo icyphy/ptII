@@ -83,7 +83,7 @@ public class Cube3D extends TypedAtomicActor implements GLActor3D {
         lineStart = new Parameter(this, "lineStart");
         lineStart.setExpression("{0.0, 0.0, 0.0}");
 
-        lineEnd= new Parameter(this, "lineEnd");
+        lineEnd = new Parameter(this, "lineEnd");
         lineEnd.setExpression("{1.0, 0.0, 0.0}");
     }
 
@@ -121,12 +121,10 @@ public class Cube3D extends TypedAtomicActor implements GLActor3D {
         ArrayToken rgbColorValue = ((ArrayToken) rgbColor.getToken());
         DoubleToken widthValue = (DoubleToken) width.getToken();
 
-
         gl.glLineWidth((float) widthValue.doubleValue());
         gl.glBegin(GL.GL_LINES);
 
-        gl.glColor3d(
-                ((DoubleToken) rgbColorValue.getElement(0)).doubleValue(),
+        gl.glColor3d(((DoubleToken) rgbColorValue.getElement(0)).doubleValue(),
                 ((DoubleToken) rgbColorValue.getElement(1)).doubleValue(),
                 ((DoubleToken) rgbColorValue.getElement(2)).doubleValue());
 
@@ -137,11 +135,10 @@ public class Cube3D extends TypedAtomicActor implements GLActor3D {
                 ((DoubleToken) lineStartToken.getElement(2)).doubleValue());
 
         // End point of the cube.
-        gl.glVertex3d(
-                ((DoubleToken) lineEndToken.getElement(0)).doubleValue(),
+        gl.glVertex3d(((DoubleToken) lineEndToken.getElement(0)).doubleValue(),
                 ((DoubleToken) lineEndToken.getElement(1)).doubleValue(),
                 ((DoubleToken) lineEndToken.getElement(2)).doubleValue());
 
-        gl.glEnd( );
+        gl.glEnd();
     }
 }

@@ -847,8 +847,7 @@ public class Port extends NamedObj {
 
                     if (relation != null) {
                         result.append(relation._description(detail, indent + 1,
-                                2)
-                                + "\n");
+                                2) + "\n");
                     } else {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.

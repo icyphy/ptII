@@ -26,7 +26,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-
 package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.Actor;
@@ -48,8 +47,7 @@ public interface ExecutionTimeListener {
      *  @param time The physical time when the event happened.
      *  @param event The type of the event.
      */
-    public void event(Actor actor, double time,
-            ExecutionEventType event);
+    public void event(Actor actor, double time, ExecutionEventType event);
 
     /** Execution time event type. */
     public static enum ExecutionEventType {

@@ -66,8 +66,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
      *   throws it.
      */
     public ASTPtSumNode(LatticeOntologySolver solver,
-            ptolemy.data.expr.ASTPtSumNode node)
-            throws IllegalActionException {
+            ptolemy.data.expr.ASTPtSumNode node) throws IllegalActionException {
         super(solver, node, false);
     }
 
@@ -99,7 +98,8 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
         }
 
         InequalityTerm[] childNodeTerms = _getChildNodeTerms();
-        List<Ontology> argumentDomainOntologies = new ArrayList<Ontology>(childNodeTerms.length);
+        List<Ontology> argumentDomainOntologies = new ArrayList<Ontology>(
+                childNodeTerms.length);
         for (int i = 0; i < childNodeTerms.length; i++) {
             argumentDomainOntologies.add(getSolver().getOntology());
         }
@@ -108,9 +108,8 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
                 .getLexicalTokenList();
 
         ASTPtSumNodeFunction astSumFunction = new ASTPtSumNodeFunction(
-                argumentDomainOntologies, getSolver()
-                        .getOntology(), addFunction, subtractFunction,
-                operatorTokenList);
+                argumentDomainOntologies, getSolver().getOntology(),
+                addFunction, subtractFunction, operatorTokenList);
 
         if (!astSumFunction.isMonotonic()) {
             throw new IllegalActionException(
@@ -185,11 +184,12 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
             Concept result = inputConceptValues.get(0);
 
             // Iterate through the operator tokens
-            Iterator<Token> lexicalTokenIterator = _operatorTokenList.iterator();
+            Iterator<Token> lexicalTokenIterator = _operatorTokenList
+                    .iterator();
 
             for (int i = 1; i < inputConceptValues.size(); i++) {
                 if (lexicalTokenIterator.hasNext()) {
-                    Token lexicalToken = (Token) lexicalTokenIterator.next();
+                    Token lexicalToken = lexicalTokenIterator.next();
                     Concept nodeChildConcept = inputConceptValues.get(i);
                     List<Concept> conceptInputs = new ArrayList<Concept>(2);
                     conceptInputs.add(result);
@@ -202,7 +202,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
                                     .evaluateFunction(conceptInputs);
                         } else {
                             // FIXME: Implement LUB and change this
-                            result = (Concept) _outputRangeOntology.getConceptGraph()
+                            result = _outputRangeOntology.getConceptGraph()
                                     .leastUpperBound(result, nodeChildConcept);
                         }
 
@@ -213,7 +213,7 @@ public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
                                     .evaluateFunction(conceptInputs);
                         } else {
                             // FIXME: Implement LUB and change this
-                            result = (Concept) _outputRangeOntology.getConceptGraph()
+                            result = _outputRangeOntology.getConceptGraph()
                                     .leastUpperBound(result, nodeChildConcept);
                         }
                     }

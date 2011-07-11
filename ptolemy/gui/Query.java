@@ -1936,7 +1936,8 @@ public class Query extends JPanel {
     /** Panel containing an entry box and file chooser.
      *
      */
-    public /*static*/ class QueryFileChooser extends Box implements ActionListener {
+    public/*static*/class QueryFileChooser extends Box implements
+            ActionListener {
         // This class cannot be static because the FileDialog needs to be owned
         // by the parent Query.
 
@@ -2043,7 +2044,6 @@ public class Query extends JPanel {
             _entryBox.setText(name);
         }
 
-
         /** Create a java.awt.FileDialog and get the user input.  If
          *  {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns
          *  true, then {@link #actionPerformed(ActionEvent)} uses this method.
@@ -2058,8 +2058,9 @@ public class Query extends JPanel {
          *  </pre>
          */
         private void _actionPerformedFileDialog(ActionEvent e) {
-            FileDialog fileDialog = new FileDialog(JOptionPane.getFrameForComponent(Query.this),
-                    "Select", FileDialog.LOAD);
+            FileDialog fileDialog = new FileDialog(
+                    JOptionPane.getFrameForComponent(Query.this), "Select",
+                    FileDialog.LOAD);
             if (_startingDirectory != null) {
                 fileDialog.setDirectory(_startingDirectory.toString());
             }
@@ -2070,7 +2071,7 @@ public class Query extends JPanel {
             }
 
             if (_allowDirectories) {
-                System.setProperty( "apple.awt.fileDialogForDirectories", "true" );
+                System.setProperty("apple.awt.fileDialogForDirectories", "true");
             }
 
             fileDialog.show();
@@ -2090,7 +2091,8 @@ public class Query extends JPanel {
                     // Ignore, we are probably in an applet.
                 }
                 if (currentWorkingDirectory != null) {
-                    file = new File(currentWorkingDirectory, fileDialog.getFile());
+                    file = new File(currentWorkingDirectory,
+                            fileDialog.getFile());
                 } else {
                     file = new File(fileDialog.getFile());
                 }
@@ -2099,12 +2101,10 @@ public class Query extends JPanel {
             if (file.exists() && fileDialog.getMode() == FileDialog.SAVE) {
                 // Ask for confirmation before overwriting a file.
                 String queryString = file.getName()
-                    + " already exists. Overwrite?";
-                int selected = JOptionPane.showOptionDialog(null,
-                        queryString, "Confirm save",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE, null, null,
-                        null);
+                        + " already exists. Overwrite?";
+                int selected = JOptionPane.showOptionDialog(null, queryString,
+                        "Confirm save", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, null, null);
                 if (selected == 1) {
                     return;
                 }
@@ -2115,14 +2115,16 @@ public class Query extends JPanel {
             if (_base == null) {
                 // Absolute file name.
                 try {
-                    _entryBox.setText(new File(fileDialog.getFile()).getCanonicalPath());
+                    _entryBox.setText(new File(fileDialog.getFile())
+                            .getCanonicalPath());
                 } catch (IOException ex) {
                     // If we can't get a path, then just use the name.
                     _entryBox.setText(fileDialog.getFile());
                 }
             } else {
                 // Relative file name.
-                File selectedFile = new File(fileDialog.getDirectory(), fileDialog.getFile());
+                File selectedFile = new File(fileDialog.getDirectory(),
+                        fileDialog.getFile());
 
                 // FIXME: There is a bug here under Windows XP
                 // at least... Sometimes, the drive ID (like c:)
@@ -2140,10 +2142,8 @@ public class Query extends JPanel {
                     // Ignore, since we can't do much about it anyway.
                 }
 
-                URI relativeURI = _base
-                    .relativize(selectedFile.toURI());
-                if (relativeURI != null
-                        && relativeURI.getScheme() != null
+                URI relativeURI = _base.relativize(selectedFile.toURI());
+                if (relativeURI != null && relativeURI.getScheme() != null
                         && relativeURI.getScheme().equals("file")) {
                     // Fix for "undesired file:\ prefix added by FileParameter"
                     // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4022
@@ -2151,8 +2151,8 @@ public class Query extends JPanel {
                     // Sigh.  Under Windows, getPath() returns a leading /
                     file = new File(pathName.replace("%20", " "));
                     try {
-                        _entryBox.setText(file.getCanonicalPath()
-                                .replace('\\', '/'));
+                        _entryBox.setText(file.getCanonicalPath().replace('\\',
+                                '/'));
                     } catch (IOException ex) {
                         _entryBox.setText(file.toString());
                     }
@@ -2162,7 +2162,6 @@ public class Query extends JPanel {
             }
             _owner._notifyListeners(_name);
         }
-
 
         /** Create a javax.swing.JFileChooser and get the user input.
          *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false,

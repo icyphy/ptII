@@ -159,8 +159,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
 
                         _assignedPtalonParametersCopy.put(p.getName(),
                                 (PtalonParameter) p.clone(null));
-                        _assignedPtalonParametersCopyValues.put(p.getName(), p
-                                .getToken());
+                        _assignedPtalonParametersCopyValues.put(p.getName(),
+                                p.getToken());
                     } else {
                         // The value of the parameter was previously
                         // assigned, and therefore the parameter value
@@ -171,8 +171,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         // token value.
                         _assignedPtalonParametersCopy.put(p.getName(),
                                 (PtalonParameter) p.clone(null));
-                        _assignedPtalonParametersCopyValues.put(p.getName(), p
-                                .getToken());
+                        _assignedPtalonParametersCopyValues.put(p.getName(),
+                                p.getToken());
 
                         _removeContents();
 

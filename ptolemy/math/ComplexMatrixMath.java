@@ -1390,9 +1390,13 @@ public class ComplexMatrixMath {
 
                 dotProductMatrix[j][i] = dotProduct;
 
-                rowArray = ComplexArrayMath.subtract(rowArray, ComplexArrayMath
-                        .scale(orthogonalMatrix[j], dotProduct
-                                .multiply(oneOverNormSquaredArray[j])));
+                rowArray = ComplexArrayMath
+                        .subtract(
+                                rowArray,
+                                ComplexArrayMath.scale(
+                                        orthogonalMatrix[j],
+                                        dotProduct
+                                                .multiply(oneOverNormSquaredArray[j])));
             }
 
             // Compute the dot product between the input and output vector

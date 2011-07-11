@@ -444,8 +444,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                             }
                         } else if (destination instanceof Variable) {
                             codeBuffer.append(_codeGenerator
-                                    .generateVariableName(destination)
-                                    + " = ");
+                                    .generateVariableName(destination) + " = ");
                         }
 
                         ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
@@ -617,8 +616,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                 } else {
                     for (int i = 0; i < inputPort.getWidth(); i++) {
                         // try the format: inputPortName_channelNumber
-                        if (name
-                                .equals(generateSimpleName(inputPort) + "_" + i)) {
+                        if (name.equals(generateSimpleName(inputPort) + "_" + i)) {
                             found = true;
                             channelNumber = i;
                             code.append(generateName(inputPort));

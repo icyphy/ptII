@@ -8,9 +8,11 @@ public class CvCapture extends PointerType {
     public CvCapture() {
         super();
     }
+
     public CvCapture(Pointer p) {
         super(p);
     }
+
     public PointerByReference getPointerByReference() {
         return new PointerByReference(this.getPointer());
     }

@@ -93,8 +93,7 @@ public class NameIcon extends EditorIcon {
         // in Vergil, and giving a reasonable rendition.
         TextIcon icon = new TextIcon(this, "_icon");
         icon.setIconText("-N-");
-        icon
-                .setText("NameIcon attribute: This sets the icon to be a box with the name.");
+        icon.setText("NameIcon attribute: This sets the icon to be a box with the name.");
         icon.setPersistent(false);
 
         // Hide the name.

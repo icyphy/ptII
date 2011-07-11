@@ -87,113 +87,120 @@ public class LoadManager {
      * @exception CircularDependencyException
      *          Thrown if an import would result in a circular dependency.
     */
-   public  static Entity importModel(String name, boolean byReference
-           , NamedObj container)
-           throws DBConnectionException, DBExecutionException, Exception,
-           CircularDependencyException {
+    public static Entity importModel(String name, boolean byReference,
+            NamedObj container) throws DBConnectionException,
+            DBExecutionException, Exception, CircularDependencyException {
 
-       XMLDBModel dbModel = DBModelFetcher.load(name);
+        XMLDBModel dbModel = DBModelFetcher.load(name);
 
-       if (dbModel == null) return null;
+        if (dbModel == null) {
+            return null;
+        }
 
+        // Make sure that all references in the model are by value.
+        if (!byReference) {
 
-       // Make sure that all references in the model are by value.
-       if (!byReference) {
+            String modelContent = dbModel.getModel();
 
-           String modelContent = dbModel.getModel();
+            String trueReference = "property name=\""
+                    + XMLDBModel.DB_REFERENCE_ATTR + "\" "
+                    + "class=\"ptolemy.data.expr.StringConstantParameter\" "
+                    + "value=\"TRUE\"";
 
-           String trueReference = "property name=\""
-                   + XMLDBModel.DB_REFERENCE_ATTR + "\" "
-                   + "class=\"ptolemy.data.expr.StringConstantParameter\" "
-                   + "value=\"TRUE\"";
+            String falseReference = "property name=\""
+                    + XMLDBModel.DB_REFERENCE_ATTR + "\" "
+                    + "class=\"ptolemy.data.expr.StringConstantParameter\" "
+                    + "value=\"FALSE\"";
 
+            modelContent = modelContent.replaceAll(trueReference,
+                    falseReference);
 
-           String falseReference = "property name=\""
-                   + XMLDBModel.DB_REFERENCE_ATTR + "\" "
-                   + "class=\"ptolemy.data.expr.StringConstantParameter\" "
-                   + "value=\"FALSE\"";
+            trueReference = "property class=\"ptolemy.data.expr.StringConstantParameter\" "
+                    + "name=\""
+                    + XMLDBModel.DB_REFERENCE_ATTR
+                    + "\" "
+                    + "value=\"TRUE\"";
 
-           modelContent = modelContent.replaceAll(trueReference, falseReference);
+            falseReference = "property class=\"ptolemy.data.expr.StringConstantParameter\" "
+                    + "name=\""
+                    + XMLDBModel.DB_REFERENCE_ATTR
+                    + "\" "
+                    + "value=\"FALSE\"";
 
+            modelContent = modelContent.replaceAll(trueReference,
+                    falseReference);
 
-           trueReference = "property class=\"ptolemy.data.expr.StringConstantParameter\" "
-               + "name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" "
-               + "value=\"TRUE\"";
+            dbModel.setModel(modelContent);
 
-           falseReference = "property class=\"ptolemy.data.expr.StringConstantParameter\" "
-               + "name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" "
-               + "value=\"FALSE\"";
+        }
 
-           modelContent = modelContent.replaceAll(trueReference, falseReference);
+        Entity returnEntity = _getEntity(dbModel);
 
-           dbModel.setModel(modelContent);
+        if (byReference) {
 
-       }
+            if (_circularDepenencyExists(name, container.getName())) {
 
+                throw new CircularDependencyException("This import would "
+                        + "result in a circular dependency.");
 
-       Entity returnEntity = _getEntity(dbModel);
+            } else {
 
-       if (byReference) {
+                if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
-           if (_circularDepenencyExists(name, container.getName())) {
+                    String referenceTag = "<property name=\""
+                            + XMLDBModel.DB_REFERENCE_ATTR
+                            + "\" "
+                            + "class=\"ptolemy.data.expr.StringConstantParameter\" "
+                            + "value=\"TRUE\"></property>";
 
-               throw new CircularDependencyException("This import would " +
-                                           "result in a circular dependency.");
+                    MoMLChangeRequest change = new MoMLChangeRequest(null,
+                            returnEntity, referenceTag);
 
-           }
-           else {
+                    change.setUndoable(true);
+                    returnEntity.requestChange(change);
 
-               if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
+                } else {
 
-                   String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
-                                   "class=\"ptolemy.data.expr.StringConstantParameter\" " +
-                                   "value=\"TRUE\"></property>";
+                    ((StringConstantParameter) returnEntity
+                            .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                            .setExpression("TRUE");
 
-                   MoMLChangeRequest change = new MoMLChangeRequest(null,
-                           returnEntity, referenceTag);
+                }
 
-                   change.setUndoable(true);
-                   returnEntity.requestChange(change);
+            }
 
-               } else {
+        } else {
 
-                   ((StringConstantParameter) returnEntity
-                       .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("TRUE");
+            if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
-               }
+                String referenceTag = "<property name=\""
+                        + XMLDBModel.DB_REFERENCE_ATTR
+                        + "\" "
+                        + "class=\"ptolemy.data.expr.StringConstantParameter\" "
+                        + "value=\"FALSE\"></property>";
 
-           }
+                MoMLChangeRequest change = new MoMLChangeRequest(null,
+                        returnEntity, referenceTag);
 
-       } else {
+                change.setUndoable(true);
+                returnEntity.requestChange(change);
 
-           if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
+            } else {
 
-               String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
-                        "class=\"ptolemy.data.expr.StringConstantParameter\" " +
-                        "value=\"FALSE\"></property>";
+                ((StringConstantParameter) returnEntity
+                        .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                        .setExpression("FALSE");
 
-               MoMLChangeRequest change = new MoMLChangeRequest(null,
-                       returnEntity, referenceTag);
+            }
 
-               change.setUndoable(true);
-               returnEntity.requestChange(change);
+        }
 
-           } else {
+        // Make the entity name unique within container.
+        returnEntity.setName(container.uniqueName(returnEntity.getName()));
 
-               ((StringConstantParameter) returnEntity
-                   .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("FALSE");
+        return returnEntity;
 
-           }
-
-       }
-
-       // Make the entity name unique within container.
-       returnEntity.setName(container.uniqueName(returnEntity.getName()));
-
-       return returnEntity;
-
-   }
-
+    }
 
     /** Given a model name, return a PtolemyEffigy objects.
      *
@@ -215,8 +222,9 @@ public class LoadManager {
      * @exception Exception
      *          Thrown if a problem occurs creating an effigy from the MoML.
      */
-    public  static PtolemyEffigy loadModel(String name, Configuration configuration)
-            throws DBConnectionException, DBExecutionException, Exception {
+    public static PtolemyEffigy loadModel(String name,
+            Configuration configuration) throws DBConnectionException,
+            DBExecutionException, Exception {
 
         XMLDBModel dbModel = DBModelFetcher.load(name);
 
@@ -244,14 +252,15 @@ public class LoadManager {
     * @exception Exception
     *          Thrown if a problem occurs creating an effigy from the MoML.
     */
-   public  static PtolemyEffigy loadModelUsingId(String id, Configuration configuration)
-           throws DBConnectionException, DBExecutionException, Exception {
+    public static PtolemyEffigy loadModelUsingId(String id,
+            Configuration configuration) throws DBConnectionException,
+            DBExecutionException, Exception {
 
-       XMLDBModel dbModel = DBModelFetcher.loadUsingId(id);
+        XMLDBModel dbModel = DBModelFetcher.loadUsingId(id);
 
-       return createEffigy(dbModel, configuration);
+        return createEffigy(dbModel, configuration);
 
-   }
+    }
 
     /**
      * Get the list of models for the given page number.
@@ -297,8 +306,9 @@ public class LoadManager {
         _allModelsList = conn.executeGetListOfAllModels();
         if (_allModelsList != null) {
             _numberOfPages = _allModelsList.size() / NO_OF_ITEMS_PER_PAGE + 1;
-        } else
+        } else {
             _numberOfPages = 0;
+        }
         _isFetched = true;
     }
 
@@ -347,8 +357,9 @@ public class LoadManager {
     private static PtolemyEffigy createEffigy(XMLDBModel dbModel,
             Configuration configuration) throws Exception {
 
-        if (dbModel == null)
+        if (dbModel == null) {
             return null;
+        }
 
         PtolemyEffigy returnEffigy = _getEffigy(dbModel, configuration);
         return returnEffigy;
@@ -371,8 +382,8 @@ public class LoadManager {
      *          Thrown if a problem occurs getting the reference string for
      *          modelName.
      */
-    private static boolean _circularDepenencyExists(String modelName
-            , String containerName) throws DBConnectionException,
+    private static boolean _circularDepenencyExists(String modelName,
+            String containerName) throws DBConnectionException,
             DBExecutionException {
 
         boolean returnValue = false;
@@ -381,18 +392,17 @@ public class LoadManager {
 
         try {
 
-            GetReferenceStringTask getReferenceStringTask =
-                new GetReferenceStringTask(modelName);
-            String referenceString = connection.
-                executeGetReferenceStringTask(getReferenceStringTask);
+            GetReferenceStringTask getReferenceStringTask = new GetReferenceStringTask(
+                    modelName);
+            String referenceString = connection
+                    .executeGetReferenceStringTask(getReferenceStringTask);
 
             if (referenceString == null) {
 
-                throw new DBExecutionException("Model References could not " +
-                        "be retrieved in the database.  " +
-                        "Rebuild the Reference file.");
+                throw new DBExecutionException("Model References could not "
+                        + "be retrieved in the database.  "
+                        + "Rebuild the Reference file.");
             }
-
 
             if (Utilities.modelReferenceExists(containerName, referenceString)) {
 
@@ -408,7 +418,6 @@ public class LoadManager {
                 connection = null;
             }
         }
-
 
         return returnValue;
 
@@ -436,7 +445,8 @@ public class LoadManager {
         // Otherwise, a new PtolemyEffigy is created.
         if (configuration.getDirectory().getEntity(entity.getName()) != null) {
 
-            return (PtolemyEffigy) configuration.getDirectory().getEffigy(entity.getName());
+            return (PtolemyEffigy) configuration.getDirectory().getEffigy(
+                    entity.getName());
 
         }
 
@@ -475,6 +485,7 @@ public class LoadManager {
         return entity;
 
     }
+
     /** List of all the XMLDBModel names in the database. */
     private List<XMLDBModel> _allModelsList;
 

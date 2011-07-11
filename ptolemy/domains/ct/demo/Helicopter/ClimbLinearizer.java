@@ -149,8 +149,8 @@ public class ClimbLinearizer extends TypedAtomicActor {
             sV.append(_alphaV[i] + " ");
         }
 
-        paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV
-                .toString()));
+        paramAlphaV = new Parameter(this, "AlphaV", new StringToken(
+                sV.toString()));
 
         _cVx = 4.7;
         paramCVx = new Parameter(this, "CVx", new DoubleToken(_cVx));

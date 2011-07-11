@@ -59,7 +59,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Red (cshelton)
 @Pt.AcceptedRating Red (cshelton)
 */
-public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeConcept {
+public class BaseDimensionRepresentativeConcept extends
+        DimensionRepresentativeConcept {
 
     /** Create a new BaseUnitRepresentativeConcept with the specified name and
      *  ontology.
@@ -70,8 +71,9 @@ public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeC
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public BaseDimensionRepresentativeConcept(CompositeEntity ontology, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public BaseDimensionRepresentativeConcept(CompositeEntity ontology,
+            String name) throws NameDuplicationException,
+            IllegalActionException {
         super(ontology, name);
     }
 
@@ -111,9 +113,9 @@ public class BaseDimensionRepresentativeConcept extends DimensionRepresentativeC
             return BaseUnitConcept.createBaseUnitConcept(getOntology(), this,
                     _findUnitRecordByName(unitName));
         } else {
-            throw new IllegalActionException(this, "The given string cannot " +
-                        "be used to derive a valid infinite concept contained " +
-                        "by this representative.");
+            throw new IllegalActionException(this, "The given string cannot "
+                    + "be used to derive a valid infinite concept contained "
+                    + "by this representative.");
         }
     }
 }

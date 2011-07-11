@@ -80,8 +80,9 @@ public class Memory extends NamedObj {
      * If not or index is exceeding the memory capacity, then null is returned.
      */
     public Token read(int index) {
-        if (_buffer.size() <= index)
+        if (_buffer.size() <= index) {
             return null;
+        }
         _debug("reading token from address " + index);
         return _buffer.get(index);
     }
@@ -94,8 +95,9 @@ public class Memory extends NamedObj {
      * @param token The token to be written.
      */
     public void write(int index, Token token) {
-        if (_buffer.size() - 1 < index)
+        if (_buffer.size() - 1 < index) {
             _buffer.setSize(index + 1);
+        }
         _debug("writing token to address " + index);
         _buffer.set(index, token);
     }

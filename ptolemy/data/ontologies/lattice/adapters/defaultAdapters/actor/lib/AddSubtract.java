@@ -62,8 +62,7 @@ public class AddSubtract extends LatticeOntologyAdapter {
      *  @exception IllegalActionException If the adapter cannot be initialized.
      */
     public AddSubtract(LatticeOntologySolver solver,
-            ptolemy.actor.lib.AddSubtract actor)
-            throws IllegalActionException {
+            ptolemy.actor.lib.AddSubtract actor) throws IllegalActionException {
         super(solver, actor, false);
 
         _addDefinition = (AddConceptFunctionDefinition) (_solver
@@ -78,8 +77,8 @@ public class AddSubtract extends LatticeOntologyAdapter {
 
         // If definitions for addition, subtraction, and negation concept
         // functions cannot be found, just use the default constraints.
-        if (_addDefinition == null || _negateDefinition == null ||
-                _subtractDefinition == null) {
+        if (_addDefinition == null || _negateDefinition == null
+                || _subtractDefinition == null) {
             _useDefaultConstraints = true;
         }
     }
@@ -110,37 +109,39 @@ public class AddSubtract extends LatticeOntologyAdapter {
             subtractFunction = _subtractDefinition.createConceptFunction();
         }
 
-        if (addFunction != null && negateFunction != null &&
-                subtractFunction != null) {
-            if (interconnectConstraintType == ConstraintType.EQUALS ||
-                    interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
+        if (addFunction != null && negateFunction != null
+                && subtractFunction != null) {
+            if (interconnectConstraintType == ConstraintType.EQUALS
+                    || interconnectConstraintType == ConstraintType.SINK_GE_SOURCE) {
 
                 // If the plus input is a multiport with multiple input ports,
                 // set up the constraint to be the sum of the inputs.
                 List<IOPort> plusInputs = _getSourcePortList(actor.plus);
                 if (plusInputs.size() > 1) {
-                    InequalityTerm[] plusTerms = new InequalityTerm[plusInputs.size()];
+                    InequalityTerm[] plusTerms = new InequalityTerm[plusInputs
+                            .size()];
                     for (int i = 0; i < plusTerms.length; i++) {
                         plusTerms[i] = getPropertyTerm(plusInputs.get(i));
                     }
                     setAtLeast(actor.plus, new ConceptFunctionInequalityTerm(
-                            new ApplyBinaryFunctionToMultipleArguments("sumPlusInputs",
-                                    _solver.getOntology(), addFunction),
-                                    plusTerms));
+                            new ApplyBinaryFunctionToMultipleArguments(
+                                    "sumPlusInputs", _solver.getOntology(),
+                                    addFunction), plusTerms));
                 }
 
                 // If the minus input is a multiport with multiple input ports,
                 // set up the constraint to be the sum of the inputs.
                 List<IOPort> minusInputs = _getSourcePortList(actor.minus);
                 if (minusInputs.size() > 1) {
-                    InequalityTerm[] minusTerms = new InequalityTerm[minusInputs.size()];
+                    InequalityTerm[] minusTerms = new InequalityTerm[minusInputs
+                            .size()];
                     for (int i = 0; i < minusTerms.length; i++) {
                         minusTerms[i] = getPropertyTerm(plusInputs.get(i));
                     }
                     setAtLeast(actor.minus, new ConceptFunctionInequalityTerm(
-                            new ApplyBinaryFunctionToMultipleArguments("sumMinusInputs",
-                                    _solver.getOntology(), addFunction),
-                                    minusTerms));
+                            new ApplyBinaryFunctionToMultipleArguments(
+                                    "sumMinusInputs", _solver.getOntology(),
+                                    addFunction), minusTerms));
                 }
 
                 // If the minus input port is unconnected, then the output
@@ -148,26 +149,28 @@ public class AddSubtract extends LatticeOntologyAdapter {
                 if (minusInputs.size() == 0) {
                     setAtLeast(actor.output, actor.plus);
 
-                // If the plus input port is unconnected, then the output
-                // is >= negation of the minus input.
+                    // If the plus input port is unconnected, then the output
+                    // is >= negation of the minus input.
                 } else if (plusInputs.size() == 0) {
-                    setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
-                            negateFunction,
-                            new InequalityTerm[]{ getPropertyTerm(actor.minus) }));
+                    setAtLeast(
+                            actor.output,
+                            new ConceptFunctionInequalityTerm(
+                                    negateFunction,
+                                    new InequalityTerm[] { getPropertyTerm(actor.minus) }));
 
-                // Otherwise the output is >= multiply input / divide input.
+                    // Otherwise the output is >= multiply input / divide input.
                 } else {
                     setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
-                            subtractFunction,
-                            new InequalityTerm[]{ getPropertyTerm(actor.plus),
-                                                  getPropertyTerm(actor.minus) }));
+                            subtractFunction, new InequalityTerm[] {
+                                    getPropertyTerm(actor.plus),
+                                    getPropertyTerm(actor.minus) }));
                 }
             }
         }
 
         // Add back in default constraints for the output to input relationship.
-        if (!_useDefaultConstraints && (interconnectConstraintType == ConstraintType.EQUALS ||
-                interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
+        if (!_useDefaultConstraints
+                && (interconnectConstraintType == ConstraintType.EQUALS || interconnectConstraintType == ConstraintType.SOURCE_GE_SINK)) {
             setAtLeast(actor.plus, actor.output);
             setAtLeast(actor.minus, actor.output);
         }

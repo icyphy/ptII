@@ -186,8 +186,8 @@ public class PlotTableau extends Tableau {
                 _toRead = url;
             }
         } catch (Exception ex) {
-            MessageHandler.error("Failed to read plot data: "
-                    + url.toExternalForm(), ex);
+            MessageHandler.error(
+                    "Failed to read plot data: " + url.toExternalForm(), ex);
         }
     }
 

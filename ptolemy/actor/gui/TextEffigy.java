@@ -103,8 +103,8 @@ public class TextEffigy extends Effigy {
     public static TextEffigy newTextEffigy(CompositeEntity container,
             String text) throws Exception {
         // Create a new effigy.
-        TextEffigy effigy = new TextEffigy(container, container
-                .uniqueName("effigy"));
+        TextEffigy effigy = new TextEffigy(container,
+                container.uniqueName("effigy"));
         Document doc = new DefaultStyledDocument();
         effigy.setDocument(doc);
 
@@ -132,8 +132,8 @@ public class TextEffigy extends Effigy {
     public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
             URL in) throws Exception {
         // Create a new effigy.
-        TextEffigy effigy = new TextEffigy(container, container
-                .uniqueName("effigy"));
+        TextEffigy effigy = new TextEffigy(container,
+                container.uniqueName("effigy"));
         Document doc = new DefaultStyledDocument();
         effigy.setDocument(doc);
 

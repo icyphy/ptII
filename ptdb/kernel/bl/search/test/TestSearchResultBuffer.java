@@ -64,7 +64,7 @@ import ptdb.kernel.bl.search.SearchResultBuffer;
  *
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest( { SearchResultBuffer.class, Observable.class })
+@PrepareForTest({ SearchResultBuffer.class, Observable.class })
 public class TestSearchResultBuffer {
 
     ///////////////////////////////////////////////////////////////////

@@ -192,43 +192,47 @@ public class KeplerDocumentationAttribute extends Attribute implements
      */
     public void createInstanceFromExisting(
             KeplerDocumentationAttribute documentationAttribute) {
-        if (documentationAttribute != null && documentationAttribute.attributeList() != null ) {
-          Iterator attributes = documentationAttribute.attributeList().iterator();
-          while (attributes.hasNext()) {
-              ConfigurableAttribute attribute = (ConfigurableAttribute) attributes
-                      .next();
-              String attributeName = attribute.getName();
-              if (attributeName.equals("description")) {
-                  _description = attribute.getConfigureText();
-              } else if (attributeName.equals("author")) {
-                  _author = attribute.getConfigureText();
-              } else if (attributeName.equals("version")) {
-                  _version = attribute.getConfigureText();
-              } else if (attributeName.equals("userLevelDocumentation")) {
-                  _userLevelDocumentation = attribute.getConfigureText();
-              } else if (attributeName.indexOf("port:") != -1) { //add to the port hash
-                  String portName = attributeName.substring(attributeName
-                          .indexOf(":") + 1, attributeName.length());
-                  String portDescription = attribute.getConfigureText();
-                  if (portName != null) {
-                      if (portDescription == null) {
-                          portDescription = "";
-                      }
-                      _portHash.put(portName, portDescription);
-                  }
+        if (documentationAttribute != null
+                && documentationAttribute.attributeList() != null) {
+            Iterator attributes = documentationAttribute.attributeList()
+                    .iterator();
+            while (attributes.hasNext()) {
+                ConfigurableAttribute attribute = (ConfigurableAttribute) attributes
+                        .next();
+                String attributeName = attribute.getName();
+                if (attributeName.equals("description")) {
+                    _description = attribute.getConfigureText();
+                } else if (attributeName.equals("author")) {
+                    _author = attribute.getConfigureText();
+                } else if (attributeName.equals("version")) {
+                    _version = attribute.getConfigureText();
+                } else if (attributeName.equals("userLevelDocumentation")) {
+                    _userLevelDocumentation = attribute.getConfigureText();
+                } else if (attributeName.indexOf("port:") != -1) { //add to the port hash
+                    String portName = attributeName.substring(
+                            attributeName.indexOf(":") + 1,
+                            attributeName.length());
+                    String portDescription = attribute.getConfigureText();
+                    if (portName != null) {
+                        if (portDescription == null) {
+                            portDescription = "";
+                        }
+                        _portHash.put(portName, portDescription);
+                    }
 
-              } else if (attributeName.indexOf("prop:") != -1) { //add to the prop hash
-                  String propertyName = attributeName.substring(attributeName
-                          .indexOf(":") + 1, attributeName.length());
-                  String propertyDescription = attribute.getConfigureText();
-                  if (propertyName != null) {
-                      if (propertyDescription == null) {
-                          propertyDescription = "";
-                      }
-                      _propertyHash.put(propertyName, propertyDescription);
-                  }
-              }
-          }
+                } else if (attributeName.indexOf("prop:") != -1) { //add to the prop hash
+                    String propertyName = attributeName.substring(
+                            attributeName.indexOf(":") + 1,
+                            attributeName.length());
+                    String propertyDescription = attribute.getConfigureText();
+                    if (propertyName != null) {
+                        if (propertyDescription == null) {
+                            propertyDescription = "";
+                        }
+                        _propertyHash.put(propertyName, propertyDescription);
+                    }
+                }
+            }
         }
 
     }
@@ -350,8 +354,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public DocAttribute getDocAttribute(NamedObj target) {
         createInstanceFromExisting(this);
         try {
-            DocAttribute documentationAttribute = new DocAttribute(target
-                    .workspace());
+            DocAttribute documentationAttribute = new DocAttribute(
+                    target.workspace());
             documentationAttribute.setContainer(target);
             //documentationAttribute.setName("keplerFormattedPTIIDocumentation");
             documentationAttribute.author = new StringAttribute(

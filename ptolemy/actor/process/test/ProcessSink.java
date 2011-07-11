@@ -70,7 +70,7 @@ public class ProcessSink extends Sink {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        /*Token token =*/ input.get(0);
+        /*Token token =*/input.get(0);
 
         System.out.println(_name + ": Just finished getting a token");
     }

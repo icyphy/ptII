@@ -33,7 +33,6 @@ package ptolemy.actor.lib.qm;
 import ptolemy.actor.Actor;
 import ptolemy.actor.QuantityManager;
 
-
 /** This interface defines a listener for quantity managers.
  *
  *  @author Patricia Derler
@@ -56,9 +55,8 @@ public interface QuantityManagerListener {
      *  @param eventType The type of the event.
      *  @param time The timestamp of the event.
      */
-    public void event(QuantityManager quantityManager, Actor source, int messageId,
-            int messageCnt, double time,
-            EventType eventType);
+    public void event(QuantityManager quantityManager, Actor source,
+            int messageId, int messageCnt, double time, EventType eventType);
 
     /** Type of the event. */
     public static enum EventType {

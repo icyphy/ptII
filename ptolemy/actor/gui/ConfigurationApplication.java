@@ -339,8 +339,9 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @exception NameDuplicationException If the model cannot be closed.
      *  @see #openModel(String)
      */
-    public static void closeModelWithoutSavingOrExiting(TypedCompositeActor model)
-            throws IllegalActionException, NameDuplicationException {
+    public static void closeModelWithoutSavingOrExiting(
+            TypedCompositeActor model) throws IllegalActionException,
+            NameDuplicationException {
         Effigy effigy = Configuration.findEffigy(model.toplevel());
         // Avoid being prompted for save.
         effigy.setModified(false);
@@ -428,8 +429,8 @@ public class ConfigurationApplication implements ExecutionListener {
                 .getEntity(Configuration._DIRECTORY_NAME);
         if (directory == null) {
             throw new InternalErrorException("Failed to get the "
-                                             + "model directory? This can happen"
-                                             + " in a headless environment?");
+                    + "model directory? This can happen"
+                    + " in a headless environment?");
         }
         Iterator effigies = directory.entityList().iterator();
 
@@ -476,7 +477,8 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @return The model that was opened.
      *  @exception Throwable If the model cannot be opened.
      */
-    public static TypedCompositeActor openModel(String modelFileName) throws Throwable {
+    public static TypedCompositeActor openModel(String modelFileName)
+            throws Throwable {
         TypedCompositeActor result = null;
         try {
             // We set the list of MoMLFilters to handle Backward Compatibility.
@@ -509,8 +511,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
             // The basename of the model.
             String baseName = modelFileName.substring(
-                    modelFileName.lastIndexOf(File.separator) + 1,
-                    indexOfDot);
+                    modelFileName.lastIndexOf(File.separator) + 1, indexOfDot);
             StringBuffer names = new StringBuffer();
             NamedObj model = null;
             Iterator models = application.models().iterator();
@@ -521,7 +522,7 @@ public class ConfigurationApplication implements ExecutionListener {
                 }
                 names.append(model.getFullName());
                 if (model instanceof TypedCompositeActor) {
-                    result = (TypedCompositeActor)model;
+                    result = (TypedCompositeActor) model;
                     if (model.getName().equals(baseName)) {
                         break;
                     }
@@ -576,8 +577,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
         if (configuration == null) {
             NullPointerException exception = new NullPointerException(
-                    "Failed to find configuration in "
-                    + specificationURL);
+                    "Failed to find configuration in " + specificationURL);
             if (cause != null) {
                 exception.initCause(cause);
             }
@@ -1416,12 +1416,10 @@ public class ConfigurationApplication implements ExecutionListener {
                     // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
                     if (!tableau
                             .getFullName()
-                            .equals(
-                                    ".configuration.directory.configuration.graphTableau")
+                            .equals(".configuration.directory.configuration.graphTableau")
                             && !tableau
                                     .getFullName()
-                                    .equals(
-                                            ".configuration.directory.UserLibrary.graphTableau")) {
+                                    .equals(".configuration.directory.UserLibrary.graphTableau")) {
                         try {
                             // Set the background to white
 

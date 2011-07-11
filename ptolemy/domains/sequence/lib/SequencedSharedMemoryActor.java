@@ -71,7 +71,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      *  the actor.
      */
     public SequencedSharedMemoryActor(CompositeEntity container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set delayed to false (changes take place immediately)
@@ -93,13 +93,11 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
 
         int underscore = name.lastIndexOf('_');
 
-        if (underscore > 0 && name.substring(underscore).matches("_\\d+"))
-        {
+        if (underscore > 0 && name.substring(underscore).matches("_\\d+")) {
             _sharedName = name.substring(0, underscore);
         }
 
-        else
-        {
+        else {
             _sharedName = name;
         }
 
@@ -126,10 +124,11 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
         // If so, the new value will overwrite the old value, so there is no problem.
         // Want to check in the constructor, so that they will be created if needed so that
         // the user can enter values for the variables.
-        try
-        {
+        try {
             checkForAttributes();
-        } catch (IllegalActionException e){};
+        } catch (IllegalActionException e) {
+        }
+        ;
 
         // Beth added 01/21/09
         // Set up Ptolemy type constraints
@@ -195,101 +194,97 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      *
      *  @exception IllegalActionException If there is a problem with the attributes.
      */
-     public void checkForAttributes() throws IllegalActionException {
-         checkForAttributes(null, null);
-     }
+    public void checkForAttributes() throws IllegalActionException {
+        checkForAttributes(null, null);
+    }
 
-     /** Check to see if both the variable and initial value variable exist.
-      *  If not, create them, and set their tokens to the arguments.
-      *
-      * @param value1  The value to assign to the variable.
-      * @param value2  The value to assign to the initial value variable.
-      * @exception IllegalActionException If the attributes cannot be created.
-      */
-     public void checkForAttributes(Token value1, Token value2) throws IllegalActionException {
+    /** Check to see if both the variable and initial value variable exist.
+     *  If not, create them, and set their tokens to the arguments.
+     *
+     * @param value1  The value to assign to the variable.
+     * @param value2  The value to assign to the initial value variable.
+     * @exception IllegalActionException If the attributes cannot be created.
+     */
+    public void checkForAttributes(Token value1, Token value2)
+            throws IllegalActionException {
 
-         // Look for variables.  If not present, create them.
-         NamedObj container = getContainer();
+        // Look for variables.  If not present, create them.
+        NamedObj container = getContainer();
 
-         if (container == null) {
-             throw new IllegalActionException(this, "No container.");
-         }
+        if (container == null) {
+            throw new IllegalActionException(this, "No container.");
+        }
 
-         // FIXME:  Check for null or invalid names here?  Throw exception?
+        // FIXME:  Check for null or invalid names here?  Throw exception?
 
-         // Look for the variable holding the value
-         // If a model is imported from ASCET2Ptolemy, this parameter will be created already,
-         // and will hold the appropriate value
-         _checkSingleAttribute(variableName.getExpression(), container, value1);
+        // Look for the variable holding the value
+        // If a model is imported from ASCET2Ptolemy, this parameter will be created already,
+        // and will hold the appropriate value
+        _checkSingleAttribute(variableName.getExpression(), container, value1);
 
-         // Look for the variable holding the initial value
-         // Beth added 10/24/08 - Pass in value of the variable as a token
-         // here, so that we set the initial value to the value of the parameter
-         // if a new initial value variable was created
-         // Note, this assumes that the variable exists - which it should since
-         // the previous function call should have created it
-         // (except if the name was null or invalid)
-         _checkSingleAttribute(initialVariableName.getExpression(), container, value2);
-     }
+        // Look for the variable holding the initial value
+        // Beth added 10/24/08 - Pass in value of the variable as a token
+        // here, so that we set the initial value to the value of the parameter
+        // if a new initial value variable was created
+        // Note, this assumes that the variable exists - which it should since
+        // the previous function call should have created it
+        // (except if the name was null or invalid)
+        _checkSingleAttribute(initialVariableName.getExpression(), container,
+                value2);
+    }
 
-     /** Fire the SequencedSharedMemoryActor.
-      *  If the input is not connected, do not try to read a value
-      *  from it.
-      *
-      *  It is OK not to read any value, since SequencedSharedMemoryActors always have
-      *  an initial value.
-      *
-      *  @exception IllegalActionException If the actor cannot be fired.
-      */
-     public void fire() throws IllegalActionException {
-         if (input.isOutsideConnected())
-         {
-             // If input is connected, use the function from
-             // the superclass to read a value from the input,
-             // store it to the variable, and send to the output
-             // (if the output is connected)
-             super.fire();
-         }
+    /** Fire the SequencedSharedMemoryActor.
+     *  If the input is not connected, do not try to read a value
+     *  from it.
+     *
+     *  It is OK not to read any value, since SequencedSharedMemoryActors always have
+     *  an initial value.
+     *
+     *  @exception IllegalActionException If the actor cannot be fired.
+     */
+    public void fire() throws IllegalActionException {
+        if (input.isOutsideConnected()) {
+            // If input is connected, use the function from
+            // the superclass to read a value from the input,
+            // store it to the variable, and send to the output
+            // (if the output is connected)
+            super.fire();
+        }
 
-         else
-         {
-             // Otherwise, just send the stored value
-             // to the output.  Attribute a should always be
-             // a variable.
-             // Beth 09/14/09 Changed this to !output.isOutsideConnected() to be consistent
-             // with superclass
-             // if (output.getWidth() > 0) {
-             if (output.isOutsideConnected()) {
-                 output.send(0, ((Variable) getVariable()).getToken());
-             }
-         }
-     }
+        else {
+            // Otherwise, just send the stored value
+            // to the output.  Attribute a should always be
+            // a variable.
+            // Beth 09/14/09 Changed this to !output.isOutsideConnected() to be consistent
+            // with superclass
+            // if (output.getWidth() > 0) {
+            if (output.isOutsideConnected()) {
+                output.send(0, (getVariable()).getToken());
+            }
+        }
+    }
 
-
-     /** Return the initial variable.  Create it if it's not present.
-      *
-      *  @return  The initial variable.  Returns null if the variable name is not assigned
-      *   or is the empty string.
-      *  @exception IllegalActionException If the variable cannot be found.
-      */
-     public Variable getInitialVariable() throws IllegalActionException
-     {
-         if (initialVariableName != null && !initialVariableName.getExpression().equals(""))
-         {
-             return getModifiedVariable(initialVariableName.getExpression());
-         } else
-         {
-             return null;
-         }
-     }
+    /** Return the initial variable.  Create it if it's not present.
+     *
+     *  @return  The initial variable.  Returns null if the variable name is not assigned
+     *   or is the empty string.
+     *  @exception IllegalActionException If the variable cannot be found.
+     */
+    public Variable getInitialVariable() throws IllegalActionException {
+        if (initialVariableName != null
+                && !initialVariableName.getExpression().equals("")) {
+            return getModifiedVariable(initialVariableName.getExpression());
+        } else {
+            return null;
+        }
+    }
 
     /** Returns the initial variable's name.
      *  @return The initial variable name.
      */
-     public String getInitialVariableName()
-     {
-         return initialVariableName.getExpression();
-     }
+    public String getInitialVariableName() {
+        return initialVariableName.getExpression();
+    }
 
     /** From superclass. Overridden to return checkSingleVariable for the variable
      *  (i.e. not the initial value variable). This will create the variable if
@@ -298,20 +293,21 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      *  @return The attribute that was found or created.
      *  @exception IllegalActionException If the container is null, or the name is invalid (from checkSingleAttribute).
      */
-     public Attribute getModifiedVariable() throws IllegalActionException {
+    public Attribute getModifiedVariable() throws IllegalActionException {
 
-         // Look for variable.  If not present, create it.
-         NamedObj container = getContainer();
+        // Look for variable.  If not present, create it.
+        NamedObj container = getContainer();
 
-         if (container == null) {
-             throw new IllegalActionException(this, "No container.");
-         }
+        if (container == null) {
+            throw new IllegalActionException(this, "No container.");
+        }
 
-         // Look for the variable holding the value
-         // If a model is imported from ASCET2Ptolemy, this parameter will be created already,
-         // and will hold the appropriate value
-         return _checkSingleAttribute(variableName.getExpression(), container, new Token());
-     }
+        // Look for the variable holding the value
+        // If a model is imported from ASCET2Ptolemy, this parameter will be created already,
+        // and will hold the appropriate value
+        return _checkSingleAttribute(variableName.getExpression(), container,
+                new Token());
+    }
 
     /** Similar to superclass getModifiedVariable(), but takes a
      *  name as an argument and does not used cached variables, and
@@ -324,110 +320,111 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      *  @return The attribute that was found or created
      *  @exception IllegalActionException   If the container is null, or the name is invalid (from checkSingleAttribute)
      */
-     public Variable getModifiedVariable(String name) throws IllegalActionException {
+    public Variable getModifiedVariable(String name)
+            throws IllegalActionException {
 
-             // Look for variable.  If not present, create it.
-             NamedObj container = getContainer();
+        // Look for variable.  If not present, create it.
+        NamedObj container = getContainer();
 
-             if (container == null) {
-                 throw new IllegalActionException(this, "No container.");
-             }
+        if (container == null) {
+            throw new IllegalActionException(this, "No container.");
+        }
 
-             // Beth 11/18/09 - Changed to create a null token here, instead of new Token()
-             // which will assign the value "present"
-             Attribute a = _checkSingleAttribute(name, container, null);
-             if (a instanceof Variable)
-             {
-                 return ((Variable) a);
-             }
-             else
-             {
-                 throw new IllegalActionException(this, "Actor " + getName() + " does not have a variable to store its state and/or initial value in.");
-             }
-         }
+        // Beth 11/18/09 - Changed to create a null token here, instead of new Token()
+        // which will assign the value "present"
+        Attribute a = _checkSingleAttribute(name, container, null);
+        if (a instanceof Variable) {
+            return ((Variable) a);
+        } else {
+            throw new IllegalActionException(
+                    this,
+                    "Actor "
+                            + getName()
+                            + " does not have a variable to store its state and/or initial value in.");
+        }
+    }
 
     /** Return the sharedName.
      *  @return Name shared by set of messages
      */
-     public String getSharedName()
-     {
-             return _sharedName;
-     }
+    public String getSharedName() {
+        return _sharedName;
+    }
 
-     /** Return the modified variable.  Create it if it's not present.
-      *  Different from getModifiedVariable, in that it returns a Variable, not an attribute.
-      *
-      *  @return  The modified variable.  Returns null if the variable name is not assigned
-      *   or is the empty string.
-      *  @exception IllegalActionException If there is a problem with the variable
-      *   referenced by this actor.
-      */
-     public Variable getVariable() throws IllegalActionException
-     {
-         if (variableName.getExpression() != null &&  !variableName.getExpression().equals(""))
-         {
-             return getModifiedVariable(variableName.getExpression());
-         }
-         else
-         {
-             return null;
-         }
-     }
+    /** Return the modified variable.  Create it if it's not present.
+     *  Different from getModifiedVariable, in that it returns a Variable, not an attribute.
+     *
+     *  @return  The modified variable.  Returns null if the variable name is not assigned
+     *   or is the empty string.
+     *  @exception IllegalActionException If there is a problem with the variable
+     *   referenced by this actor.
+     */
+    public Variable getVariable() throws IllegalActionException {
+        if (variableName.getExpression() != null
+                && !variableName.getExpression().equals("")) {
+            return getModifiedVariable(variableName.getExpression());
+        } else {
+            return null;
+        }
+    }
 
     /** Returns the variable's name.
      *  @return  The variable name.
      */
-     public String getVariableName()
-     {
-         return variableName.getExpression();
-     }
+    public String getVariableName() {
+        return variableName.getExpression();
+    }
 
-     /** Set up the type constraint between the output and the variable
-      *  and the output and the initial value variable.
-      *  @exception IllegalActionException If the actor cannot be preinitialized.
-      */
-     public void preinitialize() throws IllegalActionException {
-         super.preinitialize();
+    /** Set up the type constraint between the output and the variable
+     *  and the output and the initial value variable.
+     *  @exception IllegalActionException If the actor cannot be preinitialized.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
 
-         // Check that parameter names have been entered.
-         if (variableName.getExpression() == null || variableName.getExpression().equals("")
-                 || initialVariableName.getExpression() == null || initialVariableName.getExpression().equals(""))
-         {
-             throw new IllegalActionException(this, "Actor " + getName() + " has a null or empty string for its parameter or its inital value parameter.  Please enter a valid name.");
-         }
+        // Check that parameter names have been entered.
+        if (variableName.getExpression() == null
+                || variableName.getExpression().equals("")
+                || initialVariableName.getExpression() == null
+                || initialVariableName.getExpression().equals("")) {
+            throw new IllegalActionException(
+                    this,
+                    "Actor "
+                            + getName()
+                            + " has a null or empty string for its parameter or its inital value parameter.  Please enter a valid name.");
+        }
 
-         // Add a new type constraint relating the output to the modified variable
-         // Preinitialize from the super class already adds the
-         // constraint that the modified variable is at least
-         // equal to the input
-         // These functions will create the variable if not already present (as long as each expression contains
-         // a valid value, which they do, since we just checked for null and empty names above).
+        // Add a new type constraint relating the output to the modified variable
+        // Preinitialize from the super class already adds the
+        // constraint that the modified variable is at least
+        // equal to the input
+        // These functions will create the variable if not already present (as long as each expression contains
+        // a valid value, which they do, since we just checked for null and empty names above).
 
-         Variable var = getVariable();
-         Variable initialVar = getInitialVariable();
+        Variable var = getVariable();
+        Variable initialVar = getInitialVariable();
 
-         // If initial variable does not have a value, then assign a default value
-         // Subclasses should override getDefaultValue()
-         if (initialVar == null || initialVar.getToken() == null || initialVar.getToken().isNil()) {
-             _setValue(initialVar, _getDefaultValue());
-         }
+        // If initial variable does not have a value, then assign a default value
+        // Subclasses should override getDefaultValue()
+        if (initialVar == null || initialVar.getToken() == null
+                || initialVar.getToken().isNil()) {
+            _setValue(initialVar, _getDefaultValue());
+        }
 
+        // Set the variable type to at least the input (if connected)
+        // Set the variable type to at least the initial value type
+        // Set the output type to at least the variable
+        if (input.isOutsideConnected()) {
+            var.setTypeAtLeast(input);
+        }
+        var.setTypeAtLeast(initialVar);
+        output.setTypeAtLeast(var);
 
-         // Set the variable type to at least the input (if connected)
-         // Set the variable type to at least the initial value type
-         // Set the output type to at least the variable
-         if (input.isOutsideConnected())
-         {
-             var.setTypeAtLeast(input);
-         }
-         var.setTypeAtLeast(initialVar);
-         output.setTypeAtLeast(var);
+        // Set value of parameter equal to the initial value
+        // Note that if a default value has been assigned to the initial value, it will be overwritten
+        _setValue(var, initialVar.getToken());
 
-         // Set value of parameter equal to the initial value
-         // Note that if a default value has been assigned to the initial value, it will be overwritten
-         _setValue(var, initialVar.getToken());
-
-     }
+    }
 
     /** When the actor name is changed, update the referenced variables
       * to point to the new parameters and check to see if these parameters
@@ -442,110 +439,106 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
       * @exception NameDuplicationException If there is another actor with the same
       *  name in the actor's container
       */
-     public void setName(String name) throws IllegalActionException,
-         NameDuplicationException
-     {
-         super.setName(name);
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
+        super.setName(name);
 
-         // Set up strings for moml change requests
-         // FIXME:  In the future, use this to manage parameter deletion for parameters
-         // that are no longer needed when actors are deleted
-         //ArrayList<String> momlChangeRequests = new ArrayList<String>();
+        // Set up strings for moml change requests
+        // FIXME:  In the future, use this to manage parameter deletion for parameters
+        // that are no longer needed when actors are deleted
+        //ArrayList<String> momlChangeRequests = new ArrayList<String>();
 
-         // Don't run this code the first time - the constructor has
-         // its own code that needs to be executed before super.setName(name)
-         // FIXME:  Refactor same code in constructor into a function
+        // Don't run this code the first time - the constructor has
+        // its own code that needs to be executed before super.setName(name)
+        // FIXME:  Refactor same code in constructor into a function
 
-         if (variableName != null)
-         {
-                 // Beth added 08/24/09
-                 // Fixed this to ensure that the underscore must be followed by all numbers
-                 // Otherwise, this part of the name should not be removed
-                 // lastIndexOf returns -1 if not found
+        if (variableName != null) {
+            // Beth added 08/24/09
+            // Fixed this to ensure that the underscore must be followed by all numbers
+            // Otherwise, this part of the name should not be removed
+            // lastIndexOf returns -1 if not found
 
-                 int underscore = name.lastIndexOf('_');
+            int underscore = name.lastIndexOf('_');
 
-                 if (underscore > 0 && name.substring(underscore).matches("_\\d+"))
-                 {
-                     _sharedName = name.substring(0, underscore);
-                 }
+            if (underscore > 0 && name.substring(underscore).matches("_\\d+")) {
+                _sharedName = name.substring(0, underscore);
+            }
 
-                 else
-                 {
-                     _sharedName = name;
-                 }
+            else {
+                _sharedName = name;
+            }
 
-                 String compareName = _sharedName + "_parameter";
-                 String compareInitialName = _sharedName + "_initialValue";
+            String compareName = _sharedName + "_parameter";
+            String compareInitialName = _sharedName + "_initialValue";
 
-                 // If the new shared name is equal to the old shared name,
-                 // and the initial value is also equal, then no changes are needed
-                 if (variableName.getExpression() != null && compareName.equals(variableName.getExpression())
-                        && initialVariableName.getExpression() != null && compareInitialName.equals(initialVariableName.getExpression()))
-                 {
-                     return; }
+            // If the new shared name is equal to the old shared name,
+            // and the initial value is also equal, then no changes are needed
+            if (variableName.getExpression() != null
+                    && compareName.equals(variableName.getExpression())
+                    && initialVariableName.getExpression() != null
+                    && compareInitialName.equals(initialVariableName
+                            .getExpression())) {
+                return;
+            }
 
+            // Otherwise, the name is different
+            // Get and save the current value, initial value, and number of instances
+            // for the old parameter
+            Variable value = getVariable();
+            Variable initialValue = getInitialVariable();
 
-                 // Otherwise, the name is different
-                 // Get and save the current value, initial value, and number of instances
-                 // for the old parameter
-                 Variable value = getVariable();
-                 Variable initialValue = getInitialVariable();
+            // This should always be true
+            // FIXME throw an exception if it's not?
+            // Possible if something else that's not a variable
+            // already exists in container when message is created
 
-                 // This should always be true
-                 // FIXME throw an exception if it's not?
-                 // Possible if something else that's not a variable
-                 // already exists in container when message is created
+            // Next, store the new names and check to see if these
+            // variables already exist
+            // If so, checkForVariables will use old values
+            // Otherwise, create new variables that use the values (tokens)
+            // of the current variables
+            // numInstances is set to zero by checkForVariables
+            // Then, increment numInstances
 
+            variableName.setExpression(_sharedName + "_parameter");
+            initialVariableName.setExpression(_sharedName + "_initialValue");
 
+            // This should always be true
+            // Beth 10/24/08 - Changed to always set the initial value to the same as the parameter value
+            // when new parameters are created
+            checkForAttributes((value).getToken(), (initialValue).getToken());
 
-                 // Next, store the new names and check to see if these
-                 // variables already exist
-                 // If so, checkForVariables will use old values
-                 // Otherwise, create new variables that use the values (tokens)
-                 // of the current variables
-                 // numInstances is set to zero by checkForVariables
-                 // Then, increment numInstances
+            // If there are parameters to delete, then issue a change request to delete them
+            // They should be in the top level container.
+            // FIXME:  Future enhancement:  Track number of actors and issue a change
+            // request to delete the variables if no actor uses them any more
 
-                 variableName.setExpression(_sharedName + "_parameter");
-                 initialVariableName.setExpression(_sharedName + "_initialValue");
+            /*
+            if (!momlChangeRequests.isEmpty())
+            {
+                            NamedObj container = getContainer();
+                            while (container.getContainer() != null)
+                            {
+                                    container = container.getContainer();
+                            }
 
-                 // This should always be true
-                 // Beth 10/24/08 - Changed to always set the initial value to the same as the parameter value
-                 // when new parameters are created
-                 checkForAttributes(((Variable) value).getToken(), ((Variable) initialValue).getToken());
+                            for (int i = 0; i < momlChangeRequests.size(); i++)
+                            {
+                                    container.addChangeListener(this);
+                                    MoMLChangeRequest request = new MoMLChangeRequest(this, container, momlChangeRequests.get(i));
+                                    request.setUndoable(true);
+                                    container.requestChange(request);
+                            }
 
-                 // If there are parameters to delete, then issue a change request to delete them
-                 // They should be in the top level container.
-                 // FIXME:  Future enhancement:  Track number of actors and issue a change
-                 // request to delete the variables if no actor uses them any more
+            }
+            */
 
-                 /*
-                 if (!momlChangeRequests.isEmpty())
-                 {
-                                 NamedObj container = getContainer();
-                                 while (container.getContainer() != null)
-                                 {
-                                         container = container.getContainer();
-                                 }
+        }
 
-                                 for (int i = 0; i < momlChangeRequests.size(); i++)
-                                 {
-                                         container.addChangeListener(this);
-                                         MoMLChangeRequest request = new MoMLChangeRequest(this, container, momlChangeRequests.get(i));
-                                         request.setUndoable(true);
-                                         container.requestChange(request);
-                                 }
-
-                 }
-                 */
-
-         }
-
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
-     ////                         private methods                   ////
+    ////                         private methods                   ////
 
     /** Supplies a default value for the variable, in the case that there
      *  is no initial value.
@@ -558,8 +551,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      *  @exception IllegalActionException  Subclasses should throw an exception if
      *   an explicit initial value is required.
      */
-    protected Token _getDefaultValue() throws IllegalActionException
-    {
+    protected Token _getDefaultValue() throws IllegalActionException {
         return Token.NIL;
     }
 
@@ -574,178 +566,184 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      *  @param value The new value as a string.
      *  @exception IllegalActionException If the variable cannot be set.
      */
-     protected void _setValue(Attribute variable, String value) throws IllegalActionException {
+    protected void _setValue(Attribute variable, String value)
+            throws IllegalActionException {
 
-         //Attribute variable = getModifiedVariable(name);
-
-         if (variable instanceof Variable) {
-             ((Settable) variable).setExpression(value);
-
-             // NOTE: If we don't call validate(), then the
-             // change will not propagate to dependents.
-             ((Settable) variable).validate();
-         }
-
-         else {
-             throw new IllegalActionException(this,
-                     "Cannot set the value of the variable named: "
-                     + variableName.getExpression());
-         }
-
-         // FIXME:  ALternatively - call superclass _setValue function?
-         // Instead of throwing the exception?
-     }
-
-     /** Set the value of the associated container's variable.
-      *  Added a name here, to set the variable with this name.
-      *
-      *  Override base class function, since the base class function
-      *  does not set the value if the tokens are equal.  This causes
-      *  problems for the token solver.
-      *
-      *  @param variable The variable whose value will be set.
-      *  @param value The new value as a token.
-      *  @exception IllegalActionException If the variable cannot be set.
-      */
-     protected void _setValue(Attribute variable, Token value) throws IllegalActionException {
-
-         if (variable instanceof Variable) {
-             ((Variable) variable).setToken(value);
-
-             // NOTE: If we don't call validate(), then the
-             // change will not propagate to dependents.
-             ((Settable) variable).validate();
-         }
-
-         else {
-             throw new IllegalActionException(this,
-                     "Cannot set the value of the variable named: "
-                     + variableName.getExpression());
-         }
-
-         // FIXME:  ALternatively - call superclass _setValue function?
-         // Instead of throwing the exception?
-     }
-
-     /*
-      *     protected void _setValue(Token value) throws IllegalActionException {
-        Attribute variable = getModifiedVariable();
+        //Attribute variable = getModifiedVariable(name);
 
         if (variable instanceof Variable) {
-            Token oldToken = ((Variable) variable).getToken();
-
-            if (oldToken == null || !oldToken.equals(value)) {
-                ((Variable) variable).setToken(value);
-
-             // Beth 09/23/09 validate() used to be here
-            }
-            // Beth 09/23/09
-            // Moved this statement outside of the if (!oldToken.equals(value))
-            // Need to call validate() to notify token solvers of a change
-            // so that they will record the correct value in the case
-            // where the old token equals the new (otherwise token solvers don't see it)
-            // NOTE: If we don't call validate(), then the
-            // change will not propagate to dependents.
-            ((Variable) variable).validate();
-        } else if (variable instanceof Settable) {
-            ((Settable) variable).setExpression(value.toString());
+            ((Settable) variable).setExpression(value);
 
             // NOTE: If we don't call validate(), then the
             // change will not propagate to dependents.
             ((Settable) variable).validate();
-        } else {
-            throw new IllegalActionException(SetVariable.this,
-                    "Cannot set the value of the variable " + "named: "
+        }
+
+        else {
+            throw new IllegalActionException(this,
+                    "Cannot set the value of the variable named: "
                             + variableName.getExpression());
         }
+
+        // FIXME:  ALternatively - call superclass _setValue function?
+        // Instead of throwing the exception?
     }
-      */
 
-     ///////////////////////////////////////////////////////////////////
-     ////                         protected variables               ////
+    /** Set the value of the associated container's variable.
+     *  Added a name here, to set the variable with this name.
+     *
+     *  Override base class function, since the base class function
+     *  does not set the value if the tokens are equal.  This causes
+     *  problems for the token solver.
+     *
+     *  @param variable The variable whose value will be set.
+     *  @param value The new value as a token.
+     *  @exception IllegalActionException If the variable cannot be set.
+     */
+    protected void _setValue(Attribute variable, Token value)
+            throws IllegalActionException {
 
-     /** The name shared by a set of messages.
-         This is not directly settable by the user; rather, it is derived from
-         the actor name. */
-     protected String _sharedName;
+        if (variable instanceof Variable) {
+            ((Variable) variable).setToken(value);
 
-     /** The scope of the actor.  See enumeration above.  Global by default. */
-     protected Scope _scope = Scope.GLOBAL;
+            // NOTE: If we don't call validate(), then the
+            // change will not propagate to dependents.
+            ((Settable) variable).validate();
+        }
 
-     ///////////////////////////////////////////////////////////////////
-     ////                         private methods                   ////
+        else {
+            throw new IllegalActionException(this,
+                    "Cannot set the value of the variable named: "
+                            + variableName.getExpression());
+        }
 
-     /** Execute check for a single variable and create that variable if it does not exist
-      *  within the scope of the actor that is looking
-      *  Returns the attribute
-      *
-      * @param name  The name of the variable to look for (and create if not found)
-      * @param container  The original container of the actor that is looking for the variable
-      * @param value  The token to assign to the variable if it is created
-      * @return   True if the variable is created; false otherwise
-      * @exception IllegalActionException If the attribute cannot be created.
-      */
-     private Attribute _checkSingleAttribute(String name, NamedObj container, Token value) throws IllegalActionException {
+        // FIXME:  ALternatively - call superclass _setValue function?
+        // Instead of throwing the exception?
+    }
 
-         Attribute a = null;
-         NamedObj lastContainer = null;
-         NamedObj curContainer = container;
+    /*
+     *     protected void _setValue(Token value) throws IllegalActionException {
+       Attribute variable = getModifiedVariable();
 
-         // Ensure that a valid name was given.
-         // FIXME:  Throw exception otherwise?
+       if (variable instanceof Variable) {
+           Token oldToken = ((Variable) variable).getToken();
 
-         if (name != null && !name.equals(""))
-         {
+           if (oldToken == null || !oldToken.equals(value)) {
+               ((Variable) variable).setToken(value);
 
-             // Look for an attribute with this name
-             // If the scope is global (including imported or exported), look anywhere in
-             // the hierarchy
-             // If the scope is local, stop at the boundary of an opaque composite actor
-             while ((a == null) && (curContainer != null)) {
-                 // Keep track of the last (top-level) container
-                 lastContainer = curContainer;
-                 a = curContainer.getAttribute(name);
+            // Beth 09/23/09 validate() used to be here
+           }
+           // Beth 09/23/09
+           // Moved this statement outside of the if (!oldToken.equals(value))
+           // Need to call validate() to notify token solvers of a change
+           // so that they will record the correct value in the case
+           // where the old token equals the new (otherwise token solvers don't see it)
+           // NOTE: If we don't call validate(), then the
+           // change will not propagate to dependents.
+           ((Variable) variable).validate();
+       } else if (variable instanceof Settable) {
+           ((Settable) variable).setExpression(value.toString());
 
-                 // For local scope, if the container is opaque (i.e. has a local director), stop the search
-                 if (_scope == Scope.LOCAL && curContainer instanceof CompositeActor && ((CompositeActor) curContainer).isOpaque())
-                 {
-                     break;
-                 }
+           // NOTE: If we don't call validate(), then the
+           // change will not propagate to dependents.
+           ((Settable) variable).validate();
+       } else {
+           throw new IllegalActionException(SetVariable.this,
+                   "Cannot set the value of the variable " + "named: "
+                           + variableName.getExpression());
+       }
+    }
+     */
 
-                 curContainer = curContainer.getContainer();
-             }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-             if (a == null) {
+    /** The name shared by a set of messages.
+        This is not directly settable by the user; rather, it is derived from
+        the actor name. */
+    protected String _sharedName;
 
-                 try {
-                     workspace().getWriteAccess();
+    /** The scope of the actor.  See enumeration above.  Global by default. */
+    protected Scope _scope = Scope.GLOBAL;
 
-                     // container might be null, so create the variable
-                     // in the container of this actor.
-                     // The search above ensures that lastContainer will be the correct
-                     // location we want to create this variable in (local for local
-                     // scope, top-most level for global scope)
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-                     a = new Parameter(lastContainer, name, value);
-                     // wasCreated = true;
+    /** Execute check for a single variable and create that variable if it does not exist
+     *  within the scope of the actor that is looking
+     *  Returns the attribute
+     *
+     * @param name  The name of the variable to look for (and create if not found)
+     * @param container  The original container of the actor that is looking for the variable
+     * @param value  The token to assign to the variable if it is created
+     * @return   True if the variable is created; false otherwise
+     * @exception IllegalActionException If the attribute cannot be created.
+     */
+    private Attribute _checkSingleAttribute(String name, NamedObj container,
+            Token value) throws IllegalActionException {
 
-                 } catch (NameDuplicationException ex) {
-                     throw new InternalErrorException(ex);
-                 } finally {
-                     workspace().doneWriting();
-                 }
-             }
-         }
+        Attribute a = null;
+        NamedObj lastContainer = null;
+        NamedObj curContainer = container;
 
-         // Throw an exception if the name is null or the empty string.
-         // Note this should not happen, if the user cannot set this directly, since
-         // the actor's name is checked and must be valid, and the variable names are
-         // based on the actor's name
-         else
-         {
-             throw new IllegalActionException(this, "Actor " + getName() + " has an empty of null string for the parameter that holds its state or initial value.  Please enter a non-empty string.");
-         }
+        // Ensure that a valid name was given.
+        // FIXME:  Throw exception otherwise?
 
-         return a;
-     }
- }
+        if (name != null && !name.equals("")) {
+
+            // Look for an attribute with this name
+            // If the scope is global (including imported or exported), look anywhere in
+            // the hierarchy
+            // If the scope is local, stop at the boundary of an opaque composite actor
+            while ((a == null) && (curContainer != null)) {
+                // Keep track of the last (top-level) container
+                lastContainer = curContainer;
+                a = curContainer.getAttribute(name);
+
+                // For local scope, if the container is opaque (i.e. has a local director), stop the search
+                if (_scope == Scope.LOCAL
+                        && curContainer instanceof CompositeActor
+                        && ((CompositeActor) curContainer).isOpaque()) {
+                    break;
+                }
+
+                curContainer = curContainer.getContainer();
+            }
+
+            if (a == null) {
+
+                try {
+                    workspace().getWriteAccess();
+
+                    // container might be null, so create the variable
+                    // in the container of this actor.
+                    // The search above ensures that lastContainer will be the correct
+                    // location we want to create this variable in (local for local
+                    // scope, top-most level for global scope)
+
+                    a = new Parameter(lastContainer, name, value);
+                    // wasCreated = true;
+
+                } catch (NameDuplicationException ex) {
+                    throw new InternalErrorException(ex);
+                } finally {
+                    workspace().doneWriting();
+                }
+            }
+        }
+
+        // Throw an exception if the name is null or the empty string.
+        // Note this should not happen, if the user cannot set this directly, since
+        // the actor's name is checked and must be valid, and the variable names are
+        // based on the actor's name
+        else {
+            throw new IllegalActionException(
+                    this,
+                    "Actor "
+                            + getName()
+                            + " has an empty of null string for the parameter that holds its state or initial value.  Please enter a non-empty string.");
+        }
+
+        return a;
+    }
+}

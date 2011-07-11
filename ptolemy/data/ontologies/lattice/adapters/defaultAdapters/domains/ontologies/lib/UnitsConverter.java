@@ -55,7 +55,8 @@ public class UnitsConverter extends LatticeOntologyAdapter {
      *  @param actor The given UnitsConverter actor.
      *  @exception IllegalActionException If the adapter cannot be initialized.
      */
-    public UnitsConverter(LatticeOntologySolver solver, ptolemy.domains.ontologies.lib.UnitsConverter actor)
+    public UnitsConverter(LatticeOntologySolver solver,
+            ptolemy.domains.ontologies.lib.UnitsConverter actor)
             throws IllegalActionException {
         super(solver, actor, false);
 

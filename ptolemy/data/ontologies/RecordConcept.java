@@ -74,13 +74,13 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
         } catch (NameDuplicationException e) {
             throw new InternalErrorException(
                     "Name conflict with automatically generated infinite concept name.\n"
-                  + "This should never happen.\n"
-                  + "Original exception:" + e.toString());
+                            + "This should never happen.\n"
+                            + "Original exception:" + e.toString());
         } catch (IllegalActionException e) {
             throw new InternalErrorException(
                     "There was an error creating a new RecordConcept"
-                  + "in the " + ontology + "ontology\n."
-                  + "Original exception:" + e.toString());
+                            + "in the " + ontology + "ontology\n."
+                            + "Original exception:" + e.toString());
         }
     }
 
@@ -101,7 +101,8 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
     public int compare(Concept concept) throws IllegalActionException {
-        if (concept.getOntology() == null || !(concept.getOntology().equals(getOntology()))) {
+        if (concept.getOntology() == null
+                || !(concept.getOntology().equals(getOntology()))) {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
         }
@@ -133,21 +134,29 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
             int result = graph.compare(getConcept(field),
                     righthandSide.getConcept(field));
             switch (result) {
-            case CPO.HIGHER:       seenHigher = true; break;
-            case CPO.LOWER:        seenLower = true; break;
-            case CPO.INCOMPARABLE: seenIncomparable = true; break;
-            case CPO.SAME:         break;
+            case CPO.HIGHER:
+                seenHigher = true;
+                break;
+            case CPO.LOWER:
+                seenLower = true;
+                break;
+            case CPO.INCOMPARABLE:
+                seenIncomparable = true;
+                break;
+            case CPO.SAME:
+                break;
             default:
-                throw new IllegalActionException(this, "ConceptGraph compare " +
-                                "did not return one of the defined CPO values. " +
-                                "Return value was " + result + ". This should " +
-                                "never happen.");
+                throw new IllegalActionException(this, "ConceptGraph compare "
+                        + "did not return one of the defined CPO values. "
+                        + "Return value was " + result + ". This should "
+                        + "never happen.");
             }
         }
         // Following the Ptolemy type system conventions, a record that has a superset
         // of fields is lower in the lattice, and a record that has a subset of fields
         // is higher in the lattice.
-        if (!seenHigher && !seenLower && !seenIncomparable && isSubset && isSuperset) {
+        if (!seenHigher && !seenLower && !seenIncomparable && isSubset
+                && isSuperset) {
             return CPO.SAME;
         } else if (!seenLower && !seenIncomparable && isSubset) {
             return CPO.HIGHER;
@@ -176,7 +185,6 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
         return _getBoundWithOtherConcept(concept, BoundType.LEASTUPPER);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -189,8 +197,8 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      *  @return The concept that is either the least upper bound or greatest
      *   lower bound of the two concepts.
      */
-    private Concept _getBoundFromConceptGraph(Concept concept1, Concept concept2,
-            BoundType boundType) {
+    private Concept _getBoundFromConceptGraph(Concept concept1,
+            Concept concept2, BoundType boundType) {
         ConceptGraph conceptGraph = getOntology().getConceptGraph();
         switch (boundType) {
         case GREATESTLOWER:
@@ -199,8 +207,8 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
             return conceptGraph.leastUpperBound(concept1, concept2);
         default:
             throw new IllegalArgumentException("Unrecognized bound type: "
-                    + boundType + ". Expected either GREATESTLOWER or " +
-                                    "LEASTUPPER");
+                    + boundType + ". Expected either GREATESTLOWER or "
+                    + "LEASTUPPER");
         }
     }
 
@@ -212,10 +220,11 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      *   GREATESTLOWER or LEASTUPPER.
      *  @return The concept that is the bound of this and the given concept.
      */
-    private Concept _getBoundWithOtherConcept(Concept concept, BoundType boundType) {
+    private Concept _getBoundWithOtherConcept(Concept concept,
+            BoundType boundType) {
         if (concept instanceof RecordConcept) {
-            return _getBoundWithOtherRecordConcept(
-                                (RecordConcept) concept, boundType);
+            return _getBoundWithOtherRecordConcept((RecordConcept) concept,
+                    boundType);
         } else {
             Concept latticeEnd = null;
             Concept otherLatticeEnd = null;
@@ -231,8 +240,8 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized bound type: "
-                        + boundType + ". Expected either GREATESTLOWER or " +
-                                        "LEASTUPPER");
+                        + boundType + ". Expected either GREATESTLOWER or "
+                        + "LEASTUPPER");
             }
 
             if (concept.equals(otherLatticeEnd)) {
@@ -251,8 +260,8 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      *   GREATESTLOWER or LEASTUPPER.
      *  @return The concept that is the bound of this and the given concept.
      */
-    private Concept _getBoundWithOtherRecordConcept(
-                RecordConcept concept, BoundType boundType) {
+    private Concept _getBoundWithOtherRecordConcept(RecordConcept concept,
+            BoundType boundType) {
         RecordConcept result = createRecordConcept(getOntology());
         Set<String> commonFields = _commonKeys(concept);
 
@@ -262,7 +271,7 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
         for (String field : commonFields) {
             Concept fieldConcept = _getBoundFromConceptGraph(
                     this.getConcept(field), concept.getConcept(field),
-                        boundType);
+                    boundType);
             result.putConcept(field, fieldConcept);
         }
 
@@ -296,9 +305,9 @@ public class RecordConcept extends MapTypeInfiniteConcept<Concept> {
      *  @exception NameDuplicationException Should never be thrown.
      *  @exception IllegalActionException If the base class throws it.
      */
-    protected RecordConcept(Ontology ontology)
-            throws IllegalActionException, NameDuplicationException {
-          super(ontology);
+    protected RecordConcept(Ontology ontology) throws IllegalActionException,
+            NameDuplicationException {
+        super(ontology);
     }
 
 }

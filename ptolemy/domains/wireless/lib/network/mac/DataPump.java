@@ -174,7 +174,7 @@ public class DataPump extends MACActorBase {
         _declareDelayDependency(TXTXRequest, RXTXConfirm, 0.0);
         _declareDelayDependency(RXTXRequest, TXTXConfirm, 0.0);
     }
-    
+
     /** The main function
      *  @exception IllegalActionException If an error occurs reading
      *   or writing inputs or outputs.

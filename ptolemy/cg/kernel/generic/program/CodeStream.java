@@ -340,28 +340,34 @@ public class CodeStream {
             _constructCodeTable(mayNotExist);
         }
 
-        Signature signature = new Signature(blockName, (arguments == null ? 0 : arguments.size()));
+        Signature signature = new Signature(blockName, (arguments == null ? 0
+                : arguments.size()));
 
         StringBuffer codeBlock = null;
         try {
             codeBlock = _declarations.getCode(signature, arguments);
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(_adapter, ex,
-                        "Failed to get code block: \"" + signature + "\" in \""
-                                + _filePath + "\", the initial path was \""
-                                + _originalFilePath + "\".");
+                    "Failed to get code block: \"" + signature + "\" in \""
+                            + _filePath + "\", the initial path was \""
+                            + _originalFilePath + "\".");
         }
         // Cannot find a code block with the matching signature.
         if (codeBlock == null) {
             if (mayNotExist) {
                 return "";
             } else {
-                throw new IllegalActionException(_adapter,
-                        "Cannot find code block: \"" + signature + "\" in \""
-                        + _filePath + "\", the initial path was \""
-                        + _originalFilePath + "\". Try setting debugging to "
-                        + "true on the code generator or running with ptcg "
-                        + "with \"-verbosity 1\"");
+                throw new IllegalActionException(
+                        _adapter,
+                        "Cannot find code block: \""
+                                + signature
+                                + "\" in \""
+                                + _filePath
+                                + "\", the initial path was \""
+                                + _originalFilePath
+                                + "\". Try setting debugging to "
+                                + "true on the code generator or running with ptcg "
+                                + "with \"-verbosity 1\"");
             }
         }
 
@@ -533,8 +539,8 @@ public class CodeStream {
                 + indent);
         if (tmpString.endsWith(_eol + indent)) {
             // Chop off the last indent
-            tmpString = tmpString.substring(0, tmpString.length()
-                    - indent.length());
+            tmpString = tmpString.substring(0,
+                    tmpString.length() - indent.length());
         }
         // Insert the initial indent.
         return indent + tmpString;
@@ -862,7 +868,9 @@ public class CodeStream {
                 reader = FileUtilities.openForReading(_filePath, null, null);
 
                 if (reader == null) {
-                    System.out.println("CodeStream._constructCodeTableAdapter(): Could not open " + _filePath);
+                    System.out
+                            .println("CodeStream._constructCodeTableAdapter(): Could not open "
+                                    + _filePath);
                     return;
                 }
                 //System.out.println("CodeStream._constructCodeTableAdapter(): opened " + _filePath);
@@ -881,8 +889,7 @@ public class CodeStream {
 
                     if (_needLineInfo()) {
                         codeToBeParsed.append(_codeGenerator.generateLineInfo(
-                                lineNumber, filename)
-                                + _eol);
+                                lineNumber, filename) + _eol);
                     }
                     codeToBeParsed.append(line + _eol);
                 }
@@ -1236,13 +1243,19 @@ public class CodeStream {
             String replaceString = "";
             try {
                 if (arguments.get(i) == null) {
-                    throw new IllegalActionException("The argument " + i
-                            + " from the list of " + arguments.size()
-                            + " arguments was null? One common cause is that the model uses"
-                            + " a type that is not supported.\nParameters:\n"
-                            + java.util.Arrays.toString(parameters.toArray()) + "\nArguments:\n"
-                            + java.util.Arrays.toString(arguments.toArray()) + "\nStringBuffer:\n"
-                            + codeBlock);
+                    throw new IllegalActionException(
+                            "The argument "
+                                    + i
+                                    + " from the list of "
+                                    + arguments.size()
+                                    + " arguments was null? One common cause is that the model uses"
+                                    + " a type that is not supported.\nParameters:\n"
+                                    + java.util.Arrays.toString(parameters
+                                            .toArray())
+                                    + "\nArguments:\n"
+                                    + java.util.Arrays.toString(arguments
+                                            .toArray()) + "\nStringBuffer:\n"
+                                    + codeBlock);
                 }
                 replaceString = _checkArgumentName(arguments.get(i));
             } catch (ClassCastException ex) {
@@ -1251,14 +1264,15 @@ public class CodeStream {
                 String errorMessage = "";
                 try {
                     errorMessage = "Failed to cast " + arguments.get(i)
-                        + " which is a \""
-                        + arguments.get(i).getClass().getName()
-                        + "\" to a String.";
+                            + " which is a \""
+                            + arguments.get(i).getClass().getName()
+                            + "\" to a String.";
                 } catch (ClassCastException ex2) {
-                    errorMessage = "ClassCastException from arguments.get(" + i
-                        + "), perhaps an element of the wrong type was added to "
-                        + "the list of arguments?  Check the actor definition and "
-                        + "make sure that the argument list is a List of Strings";
+                    errorMessage = "ClassCastException from arguments.get("
+                            + i
+                            + "), perhaps an element of the wrong type was added to "
+                            + "the list of arguments?  Check the actor definition and "
+                            + "make sure that the argument list is a List of Strings";
                 }
                 throw new IllegalActionException(null, ex, errorMessage);
 
@@ -1435,8 +1449,8 @@ public class CodeStream {
             LinkedHashMap<Signature, Object[]> table = scopeList.get(0);
 
             if (!table.containsKey(signature)) {
-                return _getCode(signature, arguments, scopeList
-                        .subList(1, size));
+                return _getCode(signature, arguments,
+                        scopeList.subList(1, size));
             } else {
                 Object[] codeObject = (Object[]) table.get(signature);
                 StringBuffer codeBlock = (StringBuffer) codeObject[1];
@@ -1501,14 +1515,12 @@ public class CodeStream {
                 int macroIndex = _indexOfMacro(codeBlock, macro, 0, true);
 
                 while (macroIndex >= 0) {
-                    result
-                            .append(codeBlock.substring(lastMacroEnd,
-                                    macroIndex));
+                    result.append(codeBlock.substring(lastMacroEnd, macroIndex));
 
                     int dotIndex = codeBlock.indexOf(".", macroIndex);
                     int openIndex = codeBlock.indexOf("(", macroIndex);
-                    int closeParen = TemplateParser._findClosedParen(codeBlock
-                            .toString(), openIndex);
+                    int closeParen = TemplateParser._findClosedParen(
+                            codeBlock.toString(), openIndex);
 
                     boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
 
@@ -1547,8 +1559,8 @@ public class CodeStream {
 
                     StringBuffer callCodeBlock = (!isSuper) ? getCode(
                             callSignature, callArguments) : _getCode(
-                            callSignature, callArguments, scopeList.subList(1,
-                                    scopeList.size()));
+                            callSignature, callArguments,
+                            scopeList.subList(1, scopeList.size()));
 
                     if (callCodeBlock == null) {
                         throw new IllegalActionException(_adapter,
@@ -1562,8 +1574,8 @@ public class CodeStream {
                     macroIndex = _indexOfMacro(codeBlock, macro, lastMacroEnd,
                             true);
                 }
-                result.append(codeBlock.substring(lastMacroEnd, codeBlock
-                        .length()));
+                result.append(codeBlock.substring(lastMacroEnd,
+                        codeBlock.length()));
 
                 codeBlock = result;
             }
@@ -1610,8 +1622,8 @@ public class CodeStream {
                 return (List<Object>) (currentScope.get(signature))[2];
 
             } else {
-                return _getParameters(signature, scopeList.subList(1, scopeList
-                        .size()));
+                return _getParameters(signature,
+                        scopeList.subList(1, scopeList.size()));
             }
         }
 

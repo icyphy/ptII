@@ -192,8 +192,7 @@ public class ClassUtilities {
         // and actor.lib.python.PythonScript.  We moved it here
         // to avoid dependencies.
         String necessaryResource = StringUtilities.substitute(necessaryClass,
-                ".", "/")
-                + ".class";
+                ".", "/") + ".class";
 
         URL necessaryURL = Thread.currentThread().getContextClassLoader()
                 .getResource(necessaryResource);
@@ -209,14 +208,13 @@ public class ClassUtilities {
             // Strip off the name of the resource we were looking for
             // so that we are left with the directory or jar file
             // it is in
-            resourceResults = resourceResults.substring(0, resourceResults
-                    .length()
-                    - necessaryResource.length());
+            resourceResults = resourceResults.substring(0,
+                    resourceResults.length() - necessaryResource.length());
 
             // Strip off the trailing !/
             if (resourceResults.endsWith("!/")) {
-                resourceResults = resourceResults.substring(0, resourceResults
-                        .length() - 2);
+                resourceResults = resourceResults.substring(0,
+                        resourceResults.length() - 2);
             }
 
             // Unfortunately, under Windows, URL.getFile() may

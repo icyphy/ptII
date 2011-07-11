@@ -112,9 +112,8 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
      *  @exception IllegalActionException If thrown by the superclass.
      *  @exception NameDuplicationException If thrown by the superclass.
      */
-    public void setContainer(NamedObj container)
-        throws IllegalActionException,
-               NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         NamedObj oldContainer = getContainer();
         try {
             if (oldContainer != null && _lastUndoStack != null) {
@@ -149,8 +148,8 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
                 if (parameter == designPatternFile) {
                     value = ((StringToken) token).stringValue();
                 } else {
-                    action.overrideParameter(parameter.getName(), parameter
-                            .getExpression());
+                    action.overrideParameter(parameter.getName(),
+                            parameter.getExpression());
                 }
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(this, e, "Unable to obtain "
@@ -183,8 +182,9 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
         try {
             Reader reader = designPatternFile.openForReading();
             URI baseDirectory = designPatternFile.getBaseDirectory();
-            model = parser.parse(baseDirectory == null ? null : baseDirectory
-                    .toURL(), value, reader);
+            model = parser.parse(
+                    baseDirectory == null ? null : baseDirectory.toURL(),
+                    value, reader);
         } catch (Exception e) {
             throw new InternalErrorException(this, e, "Unable to read design "
                     + "pattern from file \"" + value + "\".");
@@ -197,8 +197,8 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
         final NamedObj container = getContainer();
         final UndoStackAttribute undoStack;
         try {
-            undoStack = new UndoStackAttribute(container, container
-                    .uniqueName("_undoStack"));
+            undoStack = new UndoStackAttribute(container,
+                    container.uniqueName("_undoStack"));
             undoStack.moveToFirst();
         } catch (KernelException e) {
             // This should not happen.
@@ -315,10 +315,8 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
          *  @param xmlFile The file currently being parsed.
          *  @return The value of the attribute.
          */
-        public String filterAttributeValue(NamedObj container,
-                String element,
-                String attributeName, String attributeValue,
-                String xmlFile) {
+        public String filterAttributeValue(NamedObj container, String element,
+                String attributeName, String attributeValue, String xmlFile) {
             return attributeValue;
         }
 
@@ -333,8 +331,7 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
          *  @exception Exception Not thrown in this class.
          */
         public void filterEndElement(NamedObj container, String elementName,
-                StringBuffer currentCharData, String xmlFile)
-                 throws Exception {
+                StringBuffer currentCharData, String xmlFile) throws Exception {
             if (container != null && !"group".equals(elementName)) {
                 NamedObj context = getContainer();
                 NamedObj parent = container;
@@ -348,8 +345,8 @@ public class DesignPatternImporter extends Attribute implements GTAttribute,
                     //   saving.  container.setDerivedLevel(1);
                     if (container.attributeList(PersistenceAttribute.class)
                             .isEmpty()) {
-                      new PersistenceAttribute(container,
-                          container.uniqueName("persistenceAttribute"));
+                        new PersistenceAttribute(container,
+                                container.uniqueName("persistenceAttribute"));
                     }
                 }
             }

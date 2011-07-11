@@ -122,7 +122,7 @@ import ptolemy.kernel.util.Workspace;
  @see FSMActor
  */
 public class FSMDirector extends Director implements ExplicitChangeContext,
-QuasiTransparentDirector {
+        QuasiTransparentDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -155,7 +155,7 @@ QuasiTransparentDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public FSMDirector(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _createAttribute();
     }
@@ -182,7 +182,7 @@ QuasiTransparentDirector {
      *  attributeChanged() method.
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         super.attributeChanged(attribute);
 
         if (attribute == controllerName) {
@@ -219,7 +219,7 @@ QuasiTransparentDirector {
      */
     public Dependency defaultDependency() {
         Director executiveDirector = ((Actor) getContainer())
-        .getExecutiveDirector();
+                .getExecutiveDirector();
         if (executiveDirector != null) {
             return executiveDirector.defaultDependency();
         }
@@ -256,8 +256,8 @@ QuasiTransparentDirector {
 
         if (chosenTransition != null) {
             if (_debugging) {
-                _debug("Preemptive transition enabled:", chosenTransition
-                        .getName());
+                _debug("Preemptive transition enabled:",
+                        chosenTransition.getName());
             }
             // First execute the refinements of the transition.
             Actor[] actors = chosenTransition.getRefinement();
@@ -268,8 +268,8 @@ QuasiTransparentDirector {
                         break;
                     }
                     if (_debugging) {
-                        _debug("Fire transition refinement:", actors[i]
-                                                                     .getName());
+                        _debug("Fire transition refinement:",
+                                actors[i].getName());
                     }
                     if (actors[i].prefire()) {
                         actors[i].fire();
@@ -306,8 +306,8 @@ QuasiTransparentDirector {
         _enabledTransition = chosenTransition;
         if (chosenTransition != null) {
             if (_debugging) {
-                _debug("Nonpreemptive transition enabled:", chosenTransition
-                        .getName());
+                _debug("Nonpreemptive transition enabled:",
+                        chosenTransition.getName());
             }
             actors = chosenTransition.getRefinement();
             if (actors != null) {
@@ -317,8 +317,8 @@ QuasiTransparentDirector {
                     }
                     if (actors[i].prefire()) {
                         if (_debugging) {
-                            _debug("Fire transition refinement:", actors[i]
-                                                                         .getName());
+                            _debug("Fire transition refinement:",
+                                    actors[i].getName());
                         }
                         actors[i].fire();
                         _transitionRefinementsToPostfire.add(actors[i]);
@@ -351,7 +351,8 @@ QuasiTransparentDirector {
      *   will be fired.
      *  @exception IllegalActionException If thrown by the executive director.
      */
-    public Time fireAt(Actor actor, Time time, int microstep) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         Nameable container = getContainer();
@@ -405,7 +406,7 @@ QuasiTransparentDirector {
 
             if (!(entity instanceof FSMActor)) {
                 throw new IllegalActionException(this, entity,
-                "mode controller must be an instance of FSMActor.");
+                        "mode controller must be an instance of FSMActor.");
             }
 
             _controller = (FSMActor) entity;
@@ -433,9 +434,9 @@ QuasiTransparentDirector {
         try {
             FSMActor controller = getController();
             List transitionList = controller.currentState().outgoingPort
-            .linkedRelationList();
+                    .linkedRelationList();
             List enabledTransitions = controller
-            .enabledTransitions(transitionList);
+                    .enabledTransitions(transitionList);
             if (enabledTransitions.size() > 0) {
                 return _currentTime;
             }
@@ -459,7 +460,7 @@ QuasiTransparentDirector {
 
         // Collect assignments from FSM transitions
         for (Iterator states = getController().entityList().iterator(); states
-        .hasNext();) {
+                .hasNext();) {
             State state = (State) states.next();
 
             for (Iterator transitions = state.outgoingPort.linkedRelationList()
@@ -469,7 +470,7 @@ QuasiTransparentDirector {
                 for (Iterator actions = transition.choiceActionList()
                         .iterator(); actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                    .next();
+                            .next();
 
                     for (Iterator names = action.getDestinationNameList()
                             .iterator(); names.hasNext();) {
@@ -485,7 +486,7 @@ QuasiTransparentDirector {
                 for (Iterator actions = transition.commitActionList()
                         .iterator(); actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                    .next();
+                            .next();
 
                     for (Iterator names = action.getDestinationNameList()
                             .iterator(); names.hasNext();) {
@@ -730,8 +731,8 @@ QuasiTransparentDirector {
 
         for (Actor transitionRefinement : _transitionRefinementsToPostfire) {
             if (_debugging) {
-                _debug("Postfiring transition refinment:", transitionRefinement
-                        .getName());
+                _debug("Postfiring transition refinment:",
+                        transitionRefinement.getName());
             }
             result &= transitionRefinement.postfire();
         }
@@ -816,7 +817,7 @@ QuasiTransparentDirector {
      *  collides with a name already in the container.
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super.setContainer(container);
 
         if (container != null) {
@@ -854,7 +855,7 @@ QuasiTransparentDirector {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque"
-                    + "input port.");
+                            + "input port.");
         }
 
         boolean transferredToken = false;
@@ -883,11 +884,11 @@ QuasiTransparentDirector {
                                 if (_debugging) {
                                     _debug(getFullName(),
                                             "transferring input from "
-                                            + port.getFullName()
-                                            + " to "
-                                            + (insideReceivers[i][j])
-                                            .getContainer()
-                                            .getFullName());
+                                                    + port.getFullName()
+                                                    + " to "
+                                                    + (insideReceivers[i][j])
+                                                            .getContainer()
+                                                            .getFullName());
                                 }
                             }
 
@@ -908,7 +909,7 @@ QuasiTransparentDirector {
                 // this shouldn't happen.
                 throw new InternalErrorException(
                         "Director.transferInputs: Internal error: "
-                        + ex.getMessage());
+                                + ex.getMessage());
             }
         }
 
@@ -964,45 +965,45 @@ QuasiTransparentDirector {
                         for (int j = 0; j < allReceivers[i].length; ++j) {
                             Receiver receiver = allReceivers[i][j];
                             Nameable cont = receiver.getContainer()
-                            .getContainer();
+                                    .getContainer();
 
                             if (cont == controller) {
                                 resultsList.add(receiver);
                             } else {
                                 // check transitions
                                 Iterator transitions = state
-                                .nonpreemptiveTransitionList()
-                                .iterator();
+                                        .nonpreemptiveTransitionList()
+                                        .iterator();
 
                                 while (transitions.hasNext()) {
                                     Transition transition = (Transition) transitions
-                                    .next();
-                                    _checkActorsForReceiver(transition
-                                            .getRefinement(), cont, receiver,
-                                            resultsList);
+                                            .next();
+                                    _checkActorsForReceiver(
+                                            transition.getRefinement(), cont,
+                                            receiver, resultsList);
                                 }
 
                                 // check refinements
                                 List stateList = new LinkedList();
                                 stateList.add(state);
                                 transitions = state.preemptiveTransitionList()
-                                .iterator();
+                                        .iterator();
 
                                 while (transitions.hasNext()) {
                                     Transition transition = (Transition) transitions
-                                    .next();
+                                            .next();
                                     stateList
-                                    .add(transition.destinationState());
-                                    _checkActorsForReceiver(transition
-                                            .getRefinement(), cont, receiver,
-                                            resultsList);
+                                            .add(transition.destinationState());
+                                    _checkActorsForReceiver(
+                                            transition.getRefinement(), cont,
+                                            receiver, resultsList);
                                 }
 
                                 Iterator nextStates = stateList.iterator();
 
                                 while (nextStates.hasNext()) {
                                     actors = ((State) nextStates.next())
-                                    .getRefinement();
+                                            .getRefinement();
                                     _checkActorsForReceiver(actors, cont,
                                             receiver, resultsList);
                                 }
@@ -1040,7 +1041,7 @@ QuasiTransparentDirector {
      *  transition can not be evaluated.
      */
     protected List _checkTransition(List transitionList)
-    throws IllegalActionException {
+            throws IllegalActionException {
         FSMActor controller = getController();
 
         if (controller != null) {
@@ -1061,7 +1062,7 @@ QuasiTransparentDirector {
      *   by the enabled transition, or if there is no controller.
      */
     protected Transition _chooseTransition(List transitionList)
-    throws IllegalActionException {
+            throws IllegalActionException {
         FSMActor controller = getController();
 
         if (controller != null) {
@@ -1080,7 +1081,7 @@ QuasiTransparentDirector {
      *  @exception IllegalActionException If there is no controller.
      */
     protected Receiver[][] _currentLocalReceivers(IOPort port)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (_localReceiverMapsVersion != workspace().getVersion()) {
             _buildLocalReceiverMaps();
         }
@@ -1093,7 +1094,7 @@ QuasiTransparentDirector {
      *  @exception IllegalActionException If there is no controller.
      */
     protected Transition _getLastChosenTransition()
-    throws IllegalActionException {
+            throws IllegalActionException {
         FSMActor controller = getController();
 
         if (controller != null) {

@@ -137,8 +137,8 @@ public class RTMaudeUtility {
                             do {
                                 line = template.readLine();
                                 if (line == null
-                                        || line.replace("-", "").trim().equals(
-                                                "")) {
+                                        || line.replace("-", "").trim()
+                                                .equals("")) {
                                     break;
                                 }
                             } while (true);
@@ -297,18 +297,22 @@ public class RTMaudeUtility {
 
         if (act instanceof Clock) {
             ret.setClass("Clock");
-            ret.addStrAttr("period", (new RTMPtExp(((Clock) act).period
-                    .getExpression(), true)).getValue());
+            ret.addStrAttr("period",
+                    (new RTMPtExp(((Clock) act).period.getExpression(), true))
+                            .getValue());
         } else if (act instanceof TimedDelay) {
             ret.setClass("Delay");
             // BoundedBufferNondeterministicDelay did not PROPERLY override "delay"
             if (act instanceof BoundedBufferNondeterministicDelay) {
-                ret.addStrAttr("delay", (new RTMPtExp(
-                        ((BoundedBufferNondeterministicDelay) act).delay
-                                .getExpression(), true)).getValue());
+                ret.addStrAttr(
+                        "delay",
+                        (new RTMPtExp(
+                                ((BoundedBufferNondeterministicDelay) act).delay
+                                        .getExpression(), true)).getValue());
             } else {
-                ret.addStrAttr("delay", (new RTMPtExp(((TimedDelay) act).delay
-                        .getExpression(), true)).getValue());
+                ret.addStrAttr("delay",
+                        (new RTMPtExp(((TimedDelay) act).delay.getExpression(),
+                                true)).getValue());
             }
         } else if (act instanceof FSMActor || act instanceof ModalModel) {
             ret.setClass("FSM-Actor");
@@ -318,10 +322,10 @@ public class RTMaudeUtility {
                 processedActs.add(((ModalModel) act).getController());
             }
 
-            ret.addStrAttr("currState", RTMTerm.transId(target
-                    .getInitialState().getName()));
-            ret.addStrAttr("initState", RTMTerm.transId(target
-                    .getInitialState().getName()));
+            ret.addStrAttr("currState",
+                    RTMTerm.transId(target.getInitialState().getName()));
+            ret.addStrAttr("initState",
+                    RTMTerm.transId(target.getInitialState().getName()));
 
             // Transition & Refinement
             RTMList rtrans = new RTMList(";", "emptyTransitionSet");
@@ -336,8 +340,8 @@ public class RTMaudeUtility {
                         .linkedRelationList()) {
                     rtrans.add(_translateTransition(t));
                     if (t.getRefinement() != null) {
-                        rrefines.add(procRefinements(t.getName(), t
-                                .getRefinement(), "Transition", processedActs));
+                        rrefines.add(procRefinements(t.getName(),
+                                t.getRefinement(), "Transition", processedActs));
                     }
                 }
             }
@@ -479,10 +483,11 @@ public class RTMaudeUtility {
                     tr.outputActions.getParseTree(ot))));
         }
 
-        return retTr.get(new RTMFragment(RTMTerm.transId(tr.sourceState()
-                .getName())), new RTMFragment(RTMTerm.transId(tr
-                .destinationState().getName())), new RTMPtExp(tr
-                .getGuardExpression(), false), os, ss);
+        return retTr.get(
+                new RTMFragment(RTMTerm.transId(tr.sourceState().getName())),
+                new RTMFragment(RTMTerm
+                        .transId(tr.destinationState().getName())),
+                new RTMPtExp(tr.getGuardExpression(), false), os, ss);
     }
 
     private static RTMTerm portName(NamedObj upper, Port p) {
@@ -491,8 +496,8 @@ public class RTMaudeUtility {
         if (upper != null) {
             ipname = RTMTerm.transId(upper.getName()) + " . " + ipname;
         }
-        return rport.get(new RTMFragment(ipname), new RTMFragment(RTMTerm
-                .transId(p.getName())));
+        return rport.get(new RTMFragment(ipname),
+                new RTMFragment(RTMTerm.transId(p.getName())));
     }
 
     private static RTMTerm procRefinements(String name, Actor[] rfs,

@@ -167,7 +167,8 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
      *   input port.
      *  @see IOPort#transferInputs
      */
-    protected boolean _transferInputs(IOPort port) throws IllegalActionException {
+    protected boolean _transferInputs(IOPort port)
+            throws IllegalActionException {
         // FIXME: Currently also PtrTokens are directly transferred. This
         // will lead to an error as this director has its own memory. If
         // the address specified in the passed PtrToken is read or written inside,
@@ -189,7 +190,8 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
      *  @exception IllegalActionException Thrown, if the port is not an opaque
      *   output port.
      */
-    protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
+    protected boolean _transferOutputs(IOPort port)
+            throws IllegalActionException {
         // FIXME: Currently also PtrTokens are directly transferred. This
         // will lead to an error as this director has its own memory. If
         // the address specified in the passed PtrToken is read or written outside,
@@ -199,7 +201,7 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
         // Token of type PtrToken, transfer the Tokens this PtrToken is pointing to
         // instead. If the port is an input/output port and PtrTokens are
         // present from outside, write data to the memory of the higher level director.
-         return super._transferOutputs(port);
+        return super._transferOutputs(port);
     }
 
     /** Set the initial Tokens present on the inputs of the actors. In

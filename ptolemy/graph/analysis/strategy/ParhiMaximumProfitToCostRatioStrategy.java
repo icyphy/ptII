@@ -176,11 +176,11 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
 
                 Edge lastAddedEdge = graphPlusDelaysAsNodes.addEdge(source,
                         sink);
-                edgeProfitsMap.put(lastAddedEdge, Double.valueOf(_edgeProfits
-                        .toDouble(edge)));
+                edgeProfitsMap.put(lastAddedEdge,
+                        Double.valueOf(_edgeProfits.toDouble(edge)));
             } else {
-                edgeProfitsMap.put(edge, Double.valueOf(_edgeProfits
-                        .toDouble(edge)));
+                edgeProfitsMap.put(edge,
+                        Double.valueOf(_edgeProfits.toDouble(edge)));
             }
         }
 
@@ -220,8 +220,8 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                         if (_delayNodeList.contains(source)) {
                             thisRoundGraph.removeEdge(edge);
                         } else {
-                            delayGraphProfitMap.put(edge, edgeProfitsMap
-                                    .get(edge));
+                            delayGraphProfitMap.put(edge,
+                                    edgeProfitsMap.get(edge));
                         }
                     }
                 } else {

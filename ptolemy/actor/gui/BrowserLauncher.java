@@ -248,14 +248,12 @@ public class BrowserLauncher {
         }
 
         if (!StringUtilities.getProperty("ptolemy.ptII.browser").equals("")) {
-            Runtime
-                    .getRuntime()
-                    .exec(
-                            new String[] {
-                                    "\""
-                                            + StringUtilities
-                                                    .getProperty("ptolemy.ptII.browser")
-                                            + "\"", url });
+            Runtime.getRuntime()
+                    .exec(new String[] {
+                            "\""
+                                    + StringUtilities
+                                            .getProperty("ptolemy.ptII.browser")
+                                    + "\"", url });
             return;
         }
 

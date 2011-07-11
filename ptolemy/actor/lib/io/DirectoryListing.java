@@ -116,7 +116,6 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         new Parameter(directoryOrURL, "allowFiles", BooleanToken.FALSE);
         new Parameter(directoryOrURL, "allowDirectories", BooleanToken.TRUE);
 
-
         output.setTypeEquals(new ArrayType(BaseType.STRING));
 
         pattern = new StringParameter(this, "pattern");
@@ -129,7 +128,6 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         listOnlyFiles = new Parameter(this, "listOnlyFiles");
         listOnlyFiles.setTypeEquals(BaseType.BOOLEAN);
         listOnlyFiles.setExpression("false");
-
 
         allowEmptyDirectory = new Parameter(this, "allowEmptyDirectory");
         allowEmptyDirectory.setTypeEquals(BaseType.BOOLEAN);
@@ -246,8 +244,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         boolean filesOnly = ((BooleanToken) listOnlyFiles.getToken())
                 .booleanValue();
 
-        boolean emptyDirectoryAllow = ((BooleanToken) allowEmptyDirectory.getToken())
-        .booleanValue();
+        boolean emptyDirectoryAllow = ((BooleanToken) allowEmptyDirectory
+                .getToken()).booleanValue();
 
         if (sourceURL.getProtocol().equals("file")) {
             File sourceFile = directoryOrURL.asFile();
@@ -281,10 +279,10 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 }
 
                 if (!emptyDirectoryAllow) {
-                        if (result.size() == 0) {
-                            throw new IllegalActionException(this,
-                                    "No files or directories that match the pattern.");
-                        }
+                    if (result.size() == 0) {
+                        throw new IllegalActionException(this,
+                                "No files or directories that match the pattern.");
+                    }
                 }
 
                 StringToken[] resultArray = new StringToken[result.size()];
@@ -347,8 +345,8 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         BufferedReader in = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(urlConnection
-                    .getInputStream()));
+            in = new BufferedReader(new InputStreamReader(
+                    urlConnection.getInputStream()));
 
             if (!contentType.startsWith("text/plain")
                     && !urlConnection.getURL().toString().endsWith("/")) {

@@ -113,30 +113,36 @@ public class SendMail extends TypedAtomicActor {
         to = new PortParameter(this, "to");
         to.setStringMode(true);
         to.setExpression("nobody1@nowhere.com, nobody2@nowhere.com");
-        new SingletonParameter(to.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(to.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         cc = new PortParameter(this, "cc");
         cc.setStringMode(true);
         cc.setExpression("nobody1@nowhere.com, nobody2@nowhere.com");
-        new SingletonParameter(cc.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(cc.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         from = new PortParameter(this, "from");
         from.setStringMode(true);
         from.setExpression("noreply@noreply.com");
-        new SingletonParameter(from.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(from.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         replyTo = new PortParameter(this, "replyTo");
         replyTo.setStringMode(true);
         replyTo.setExpression("");
-        new SingletonParameter(replyTo.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(replyTo.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         subject = new PortParameter(this, "subject");
         subject.setStringMode(true);
-        new SingletonParameter(subject.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(subject.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
 
         message = new PortParameter(this, "message");
         message.setStringMode(true);
-        new SingletonParameter(message.getPort(), "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(message.getPort(), "_showName")
+                .setToken(BooleanToken.TRUE);
         TextStyle style = new TextStyle(message, "style");
         style.height.setExpression("30");
 
@@ -239,7 +245,7 @@ public class SendMail extends TypedAtomicActor {
         _props.put("mail.smtp.auth", "true");
         // The following is needed to prevent the message
         // Relaying denied. Proper authentication required.
-        _props.put("mail.smtp.starttls.enable","true");
+        _props.put("mail.smtp.starttls.enable", "true");
     }
 
     /** Update the parameters based on any available inputs
@@ -260,12 +266,13 @@ public class SendMail extends TypedAtomicActor {
         // First construct the string to send to the output.
         StringBuffer result = new StringBuffer();
 
-        String toValue = ((StringToken)to.getToken()).stringValue();
-        String fromValue = ((StringToken)from.getToken()).stringValue();
-        String replyToValue = ((StringToken)replyTo.getToken()).stringValue().trim();
-        String ccValue = ((StringToken)cc.getToken()).stringValue();
-        String subjectValue = ((StringToken)subject.getToken()).stringValue();
-        String messageValue = ((StringToken)message.getToken()).stringValue();
+        String toValue = ((StringToken) to.getToken()).stringValue();
+        String fromValue = ((StringToken) from.getToken()).stringValue();
+        String replyToValue = ((StringToken) replyTo.getToken()).stringValue()
+                .trim();
+        String ccValue = ((StringToken) cc.getToken()).stringValue();
+        String subjectValue = ((StringToken) subject.getToken()).stringValue();
+        String messageValue = ((StringToken) message.getToken()).stringValue();
 
         StringTokenizer tokenizer = new StringTokenizer(toValue, ",");
         while (tokenizer.hasMoreTokens()) {
@@ -293,7 +300,7 @@ public class SendMail extends TypedAtomicActor {
 
         output.send(0, new StringToken(result.toString()));
 
-        if (!((BooleanToken)reallySendMail.getToken()).booleanValue()) {
+        if (!((BooleanToken) reallySendMail.getToken()).booleanValue()) {
             // Don't want to actually send email, so we just return now.
             return true;
         }
@@ -327,9 +334,11 @@ public class SendMail extends TypedAtomicActor {
                 ArrayList<Address> replyToAddresses = new ArrayList();
                 tokenizer = new StringTokenizer(replyToValue, ",");
                 while (tokenizer.hasMoreTokens()) {
-                    replyToAddresses.add(new InternetAddress(tokenizer.nextToken().trim()));
+                    replyToAddresses.add(new InternetAddress(tokenizer
+                            .nextToken().trim()));
                 }
-                mimeMessage.setReplyTo(replyToAddresses.toArray(new Address[replyToAddresses.size()]));
+                mimeMessage.setReplyTo(replyToAddresses
+                        .toArray(new Address[replyToAddresses.size()]));
             }
 
             mimeMessage.setSubject(subjectValue);
@@ -352,10 +361,11 @@ public class SendMail extends TypedAtomicActor {
                         new InternetAddress(nextToken));
             }
             if (!atLeastOneToAddress) {
-                if (MessageHandler.yesNoQuestion("Message has no destination address. "
-                        + " Skip this one?\n"
-                        + "Clicking NO will abort execution. Message:\n"
-                        + messageValue)) {
+                if (MessageHandler
+                        .yesNoQuestion("Message has no destination address. "
+                                + " Skip this one?\n"
+                                + "Clicking NO will abort execution. Message:\n"
+                                + messageValue)) {
                     return true;
                 }
                 throw new IllegalActionException(this, "Aborted send.");
@@ -366,16 +376,15 @@ public class SendMail extends TypedAtomicActor {
                     mimeMessage.getRecipients(Message.RecipientType.TO));
             transport.close();
         } catch (MessagingException e) {
-            if (MessageHandler.yesNoQuestion("Message to "
-                    + toValue
+            if (MessageHandler.yesNoQuestion("Message to " + toValue
                     + " failed. Skip this one?\n"
-                    + "Clicking NO will abort execution. Exception:\n"
-                    + e)) {
+                    + "Clicking NO will abort execution. Exception:\n" + e)) {
                 return true;
             }
             throw new IllegalActionException(this, e, "Send mail failed.");
         } catch (IOException e) {
-            throw new IllegalActionException(this, e, "Failed to open attachment file.");
+            throw new IllegalActionException(this, e,
+                    "Failed to open attachment file.");
         }
 
         return true;
@@ -386,7 +395,7 @@ public class SendMail extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if (((BooleanToken)reallySendMail.getToken()).booleanValue()) {
+        if (((BooleanToken) reallySendMail.getToken()).booleanValue()) {
             reallySendMail.setToken(BooleanToken.FALSE);
         }
     }
@@ -405,52 +414,51 @@ public class SendMail extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-
     private class SMTPAuthenticator extends javax.mail.Authenticator {
         public PasswordAuthentication getPasswordAuthentication() {
-           String username;
-           try {
-               username = SMTPUserName.stringValue();
-           } catch (IllegalActionException e) {
-               // This should not occur, since bwfore constructing this
-               // class, the user name was checked.
-               throw new InternalErrorException(e);
-           }
-           if (_password == null) {
-               // Open a dialog to get the password.
-               // First find a frame to "own" the dialog.
-               // Note that if we run in an applet, there may
-               // not be an effigy.
-               Effigy effigy = Configuration.findEffigy(toplevel());
-               JFrame frame = null;
-               if (effigy != null) {
-                   Tableau tableau = effigy.showTableaux();
-                   if (tableau != null) {
-                       frame = tableau.getFrame();
-                   }
-               }
+            String username;
+            try {
+                username = SMTPUserName.stringValue();
+            } catch (IllegalActionException e) {
+                // This should not occur, since bwfore constructing this
+                // class, the user name was checked.
+                throw new InternalErrorException(e);
+            }
+            if (_password == null) {
+                // Open a dialog to get the password.
+                // First find a frame to "own" the dialog.
+                // Note that if we run in an applet, there may
+                // not be an effigy.
+                Effigy effigy = Configuration.findEffigy(toplevel());
+                JFrame frame = null;
+                if (effigy != null) {
+                    Tableau tableau = effigy.showTableaux();
+                    if (tableau != null) {
+                        frame = tableau.getFrame();
+                    }
+                }
 
-               // Next construct a query for user name and password.
-               Query query = new Query();
-               query.setTextWidth(60);
-               query.addLine("SMTPuser", "SMTP user name", username);
-               query.addPassword("password", "Password", "");
-               ComponentDialog dialog = new ComponentDialog(frame,
-                       "Send Mail Password", query);
+                // Next construct a query for user name and password.
+                Query query = new Query();
+                query.setTextWidth(60);
+                query.addLine("SMTPuser", "SMTP user name", username);
+                query.addPassword("password", "Password", "");
+                ComponentDialog dialog = new ComponentDialog(frame,
+                        "Send Mail Password", query);
 
-               if (dialog.buttonPressed().equals("OK")) {
-                   // Update the parameter values.
-                   String newUserName = query.getStringValue("SMTPuser");
-                   if (!(username.equals(newUserName))) {
-                       SMTPUserName.setExpression(newUserName);
-                   }
-                   // The password is not stored as a parameter.
-                   _password = query.getCharArrayValue("password");
-               } else {
-                   return null;
-               }
-           }
-           return new PasswordAuthentication(username, new String(_password));
+                if (dialog.buttonPressed().equals("OK")) {
+                    // Update the parameter values.
+                    String newUserName = query.getStringValue("SMTPuser");
+                    if (!(username.equals(newUserName))) {
+                        SMTPUserName.setExpression(newUserName);
+                    }
+                    // The password is not stored as a parameter.
+                    _password = query.getCharArrayValue("password");
+                } else {
+                    return null;
+                }
+            }
+            return new PasswordAuthentication(username, new String(_password));
         }
     }
 }

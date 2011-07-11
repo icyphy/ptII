@@ -81,12 +81,9 @@ public class CheckModelSize {
                     String checkSizeOutput = _checkSize(
                             (TypedCompositeActor) entity, false);
                     if (!checkSizeOutput.equals("")) {
-                        results
-                                .append("<tr>\n  <td>"
-                                        + ((TypedCompositeActor) entity)
-                                                .getFullName()
-                                        + "</td>\n  <td>" + checkSizeOutput
-                                        + "</td>\n");
+                        results.append("<tr>\n  <td>"
+                                + ((TypedCompositeActor) entity).getFullName()
+                                + "</td>\n  <td>" + checkSizeOutput + "</td>\n");
                     }
                     sizeProblemSet.add(entity);
                 }
@@ -103,12 +100,9 @@ public class CheckModelSize {
                     String checkSizeOutput = _checkSize(
                             (TypedCompositeActor) entity, false);
                     if (!checkSizeOutput.equals("")) {
-                        results
-                                .append("<tr>\n  <td><b>Class</b> "
-                                        + ((TypedCompositeActor) entity)
-                                                .getFullName()
-                                        + "</td>\n  <td>" + checkSizeOutput
-                                        + "</td>\n");
+                        results.append("<tr>\n  <td><b>Class</b> "
+                                + ((TypedCompositeActor) entity).getFullName()
+                                + "</td>\n  <td>" + checkSizeOutput + "</td>\n");
                     }
                     sizeProblemSet.add(entity);
                 }

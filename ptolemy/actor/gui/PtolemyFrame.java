@@ -405,7 +405,8 @@ public abstract class PtolemyFrame extends TableauFrame {
             // The problem here is that with FileDialog, we can't add the
             // query as an accessory like we can with JFileChooser.  So, we
             // pop up a check box dialog before bringing up the FileDialog.
-            ComponentDialog dialog = new ComponentDialog(this, "Save Submodel?", _query);
+            ComponentDialog dialog = new ComponentDialog(this,
+                    "Save Submodel?", _query);
             String button = dialog.buttonPressed();
 
             if (button.equals("Cancel")) {
@@ -459,9 +460,9 @@ public abstract class PtolemyFrame extends TableauFrame {
                 if (_model == null) {
                     effigy = effigy.topEffigy();
                 } else if ((_query == null)
-                        || ((_model.getContainer() != null)
-                        && (_query.hasEntry("submodel")
-                                && !_query.getBooleanValue("submodel")))) {
+                        || ((_model.getContainer() != null) && (_query
+                                .hasEntry("submodel") && !_query
+                                .getBooleanValue("submodel")))) {
                     effigy = effigy.masterEffigy();
                 }
 
@@ -476,20 +477,19 @@ public abstract class PtolemyFrame extends TableauFrame {
     /** The query used to specify save as options. */
     protected Query _query;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** A ChangeRequest for calling the _print() method. */
     class PrintChangeRequest extends ChangeRequest {
         public PrintChangeRequest(Object source, String description) {
-            super(source,description);
+            super(source, description);
         }
+
         protected void _execute() throws Exception {
             PtolemyFrame.super._print();
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

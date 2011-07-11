@@ -95,9 +95,7 @@ public class GiottoDirector extends
         if (_isTopDirectorFSM()) {
             code.append(_eol
                     + "//should append fire code for Giotto inside fsm" + _eol);
-            code
-                    .append(_eol + "//should take the other mode semaphores"
-                            + _eol);
+            code.append(_eol + "//should take the other mode semaphores" + _eol);
             code.append("xSemaphoreGive($actorSymbol()_scheduler_start);"
                     + _eol);
             //code.append(_eol+""+_eol);
@@ -606,9 +604,8 @@ public class GiottoDirector extends
             outerActorFrequency = _getFrequency(myOuterActor);
         }
         if (_isTopGiottoDirector()) {
-            code
-                    .append("static void $actorSymbol()_scheduler(void * pvParameters){"
-                            + _eol);
+            code.append("static void $actorSymbol()_scheduler(void * pvParameters){"
+                    + _eol);
         }
         code.append("portTickType xLastWakeTime;" + _eol);
         code.append("int schedTick;" + _eol);
@@ -913,8 +910,7 @@ public class GiottoDirector extends
         if (_debugging) {
             _debug("generateFireCode from openRTOS giotto director called here");
         }
-        code
-                .append("//Beginning of generateFireCode inside OpenRTOS GiottoDirector***************");
+        code.append("//Beginning of generateFireCode inside OpenRTOS GiottoDirector***************");
         //code.append("scheduler()");
 
         if (_isTopGiottoDirector()) {//if (!_isTopDirectorFSM()) {
@@ -1087,8 +1083,8 @@ public class GiottoDirector extends
                             + " so doing stuff for that from actor code");
                 }
 
-                if (actor.getClass().getName().contains(
-                        "ptolemy.actor.lib.jni.EmbeddedCActor")) {
+                if (actor.getClass().getName()
+                        .contains("ptolemy.actor.lib.jni.EmbeddedCActor")) {
                     List<IOPort> myInputs = actor.inputPortList();
                     Iterator myItr = myInputs.iterator();
                     IOPort port;
@@ -1536,14 +1532,13 @@ public class GiottoDirector extends
                     for (int j = 0; j < i; j++) {
                         channelOffset[0] = Integer.valueOf(j).toString();
                         if (sourcePort.isMultiport()) {
-                            code
-                                    .append("//multiport so need to transfer over the info");
+                            code.append("//multiport so need to transfer over the info");
                         }
                         sinkReference = this.getReference(
                                 (TypedIOPort) sourcePort, channelOffset, false,
                                 true, myHelper);
-                        srcReference = sinkReference.replace(((Integer) j)
-                                .toString(), "PORT_" + j);
+                        srcReference = sinkReference.replace(
+                                ((Integer) j).toString(), "PORT_" + j);
                         ArrayList args = new ArrayList();
                         args.add(sinkReference);
                         args.add(srcReference);

@@ -301,11 +301,10 @@ public class Configuration extends CompositeEntity implements
                 try {
                     results.append(_checkCloneFields(containedObject));
                 } catch (Throwable throwable) {
-                    throw new InternalErrorException((TypedAtomicActor)containedObject,
-                                                     null, throwable,
-                                                     "The check for "
-                                                     + "clone methods properly setting "
-                                                     + "the fields failed.");
+                    throw new InternalErrorException(containedObject, null,
+                            throwable, "The check for "
+                                    + "clone methods properly setting "
+                                    + "the fields failed.");
                 }
             }
         }
@@ -320,10 +319,10 @@ public class Configuration extends CompositeEntity implements
                 try {
                     results.append(_checkCloneFields((TypedAtomicActor) entity));
                 } catch (Throwable throwable) {
-                    throw new InternalErrorException((TypedAtomicActor)entity, null, throwable,
-                                                     "The check for "
-                                                     + "clone methods properly setting "
-                                                     + "the fields failed.");
+                    throw new InternalErrorException((TypedAtomicActor) entity,
+                            null, throwable, "The check for "
+                                    + "clone methods properly setting "
+                                    + "the fields failed.");
                 }
                 TypedAtomicActor actor = (TypedAtomicActor) entity;
                 String fullName = actor.getName(this);
@@ -447,25 +446,23 @@ public class Configuration extends CompositeEntity implements
                                     && lesserNamedObj != null
                                     && (greaterNamedObj.getContainer() != lesserNamedObj
                                             .getContainer())) {
-                                results
-                                        .append(clone.getFullName()
-                                                + " has type constraints with "
-                                                + "associated objects that don't have "
-                                                + "the same container:\n"
-                                                + greaterNamedObj.getFullName()
-                                                + " has a container:\n"
-                                                + greaterNamedObj
-                                                        .getContainer()
-                                                + "\n"
-                                                + lesserNamedObj.getFullName()
-                                                + " has a container:\n"
-                                                + lesserNamedObj.getContainer()
-                                                + "\n"
-                                                + "This can occur if the clone(Workspace) "
-                                                + "method is not present or does not set "
-                                                + "the constraints like the constructor "
-                                                + "does or if a Parameter or Port is not "
-                                                + "declared public.\n");
+                                results.append(clone.getFullName()
+                                        + " has type constraints with "
+                                        + "associated objects that don't have "
+                                        + "the same container:\n"
+                                        + greaterNamedObj.getFullName()
+                                        + " has a container:\n"
+                                        + greaterNamedObj.getContainer()
+                                        + "\n"
+                                        + lesserNamedObj.getFullName()
+                                        + " has a container:\n"
+                                        + lesserNamedObj.getContainer()
+                                        + "\n"
+                                        + "This can occur if the clone(Workspace) "
+                                        + "method is not present or does not set "
+                                        + "the constraints like the constructor "
+                                        + "does or if a Parameter or Port is not "
+                                        + "declared public.\n");
                             }
                         }
                     }
@@ -616,13 +613,13 @@ public class Configuration extends CompositeEntity implements
                         // throws an NullPointerException when starting
                         // vergil.
                         if (effigy instanceof PtolemyEffigy) {
-                            if (((PtolemyEffigy)effigy).getModel() != null) {
+                            if (((PtolemyEffigy) effigy).getModel() != null) {
                                 MessageHandler.error("Failed to open "
                                         + ((PtolemyEffigy) effigy).getModel()
-                                        .getFullName(), ex);
+                                                .getFullName(), ex);
                             } else {
-                                MessageHandler.error("Failed to open "
-                                        + effigy, ex);
+                                MessageHandler.error(
+                                        "Failed to open " + effigy, ex);
                             }
                             calledMessageHandler = true;
                         } else {
@@ -666,8 +663,8 @@ public class Configuration extends CompositeEntity implements
                                 filename);
 
                         if (toRead != null) {
-                            return openModel(null, toRead, toRead
-                                    .toExternalForm());
+                            return openModel(null, toRead,
+                                    toRead.toExternalForm());
                         } else {
                             MessageHandler
                                     .error("Cannot find a tableau or the source code for "

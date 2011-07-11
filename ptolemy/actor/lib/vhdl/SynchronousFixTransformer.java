@@ -130,9 +130,9 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
                     .getName(((Parameter) getAttribute("outputRounding"))
                             .getExpression().toLowerCase());
 
-            FixPoint result = new FixPoint(((ScalarToken) initialValue
-                    .getToken()).doubleValue(), new FixPointQuantization(
-                    precision, overflow, rounding));
+            FixPoint result = new FixPoint(
+                    ((ScalarToken) initialValue.getToken()).doubleValue(),
+                    new FixPointQuantization(precision, overflow, rounding));
             output.setInitToken(new FixToken(result));
         }
         if (attribute == initialValue) {
@@ -148,9 +148,9 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
                     .getName(((Parameter) getAttribute("outputRounding"))
                             .getExpression().toLowerCase());
 
-            FixPoint result = new FixPoint(((ScalarToken) initialValue
-                    .getToken()).doubleValue(), new FixPointQuantization(
-                    precision, overflow, rounding));
+            FixPoint result = new FixPoint(
+                    ((ScalarToken) initialValue.getToken()).doubleValue(),
+                    new FixPointQuantization(precision, overflow, rounding));
             output.setInitToken(new FixToken(result));
         }
     }
@@ -170,9 +170,9 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
                 .getName(((Parameter) getAttribute("outputRounding"))
                         .getExpression().toLowerCase());
 
-        FixPoint result = new FixPoint(((ScalarToken) initialValue.getToken())
-                .doubleValue(), new FixPointQuantization(precision, overflow,
-                rounding));
+        FixPoint result = new FixPoint(
+                ((ScalarToken) initialValue.getToken()).doubleValue(),
+                new FixPointQuantization(precision, overflow, rounding));
         int latencyValue = ((ScalarToken) latency.getToken()).intValue();
         output.setSize(latencyValue, new FixToken(result));
     }

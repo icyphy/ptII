@@ -92,10 +92,8 @@ public abstract class KernelMain {
             HasPhaseOptions options = (HasPhaseOptions) transformer;
 
             // Note: First appearance of an option has precendence
-            t
-                    .setDefaultOptions(defaultOptions + " "
-                            + options.getDefaultOptions() + " "
-                            + t.getDefaultOptions());
+            t.setDefaultOptions(defaultOptions + " "
+                    + options.getDefaultOptions() + " " + t.getDefaultOptions());
             t.setDeclaredOptions(options.getDeclaredOptions() + " "
                     + t.getDeclaredOptions());
         } else {

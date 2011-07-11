@@ -51,8 +51,8 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActor
-    implements MultipleFireMethodsInterface {
+public abstract class BaseMultipleMethodsActor extends
+        SequencedSharedMemoryActor implements MultipleFireMethodsInterface {
 
     /** Create a new instance of an ASCETClassActor with the given
      *  name and container.
@@ -63,7 +63,8 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
      *  @exception NameDuplicationException If there is already a NamedObj with
      *   the same name in the container model.
      */
-    public BaseMultipleMethodsActor(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+    public BaseMultipleMethodsActor(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Remove the inherited SetVariable input and output ports.
@@ -133,10 +134,11 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
     public IOPort getMethodOutputPort(String methodName) {
         if (numFireMethods() > 1) {
             for (Object outputPort : outputPortList()) {
-                StringAttribute methodNameAttribute =
-                    (StringAttribute) ((IOPort) outputPort).getAttribute(methodName);
+                StringAttribute methodNameAttribute = (StringAttribute) ((IOPort) outputPort)
+                        .getAttribute(methodName);
                 if (methodNameAttribute != null) {
-                    if (methodNameAttribute.getValueAsString().equals(methodName)) {
+                    if (methodNameAttribute.getValueAsString().equals(
+                            methodName)) {
                         return (IOPort) outputPort;
                     }
                 }
@@ -163,9 +165,9 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
      */
     public void setFireMethod(String methodName) throws IllegalActionException {
         if (!_methodList.contains(methodName)) {
-            throw new IllegalActionException(this, "Unrecognized fire method name: " +
-                    methodName +
-                    " for actor " + getName() + ".");
+            throw new IllegalActionException(this,
+                    "Unrecognized fire method name: " + methodName
+                            + " for actor " + getName() + ".");
         } else {
             _fireMethodName = methodName;
         }
@@ -189,38 +191,45 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
      *  @exception NameDuplicationException If there is already another method with the same
      *   name specified for this actor.
      */
-    protected void _addFireMethod(String methodName,
-            IOPort outputPort, List<IOPort> inputPorts)
-                throws IllegalActionException, NameDuplicationException {
+    protected void _addFireMethod(String methodName, IOPort outputPort,
+            List<IOPort> inputPorts) throws IllegalActionException,
+            NameDuplicationException {
 
         if (methodName == null) {
-            throw new IllegalActionException(this, "Cannot have a null method name.");
+            throw new IllegalActionException(this,
+                    "Cannot have a null method name.");
         } else if (_methodList.contains(methodName)) {
-            throw new NameDuplicationException(this, "Method name already exists for this actor.");
+            throw new NameDuplicationException(this,
+                    "Method name already exists for this actor.");
         } else {
             if (outputPort != null) {
-                StringAttribute methodAttribute =
-                    (StringAttribute) outputPort.getAttribute(methodName);
+                StringAttribute methodAttribute = (StringAttribute) outputPort
+                        .getAttribute(methodName);
                 if (methodAttribute != null) {
-                    throw new IllegalActionException(this, "Output port " +
-                            outputPort.getName() +
-                            " already has a method name set: " +
-                            methodAttribute.getValueAsString());
+                    throw new IllegalActionException(this, "Output port "
+                            + outputPort.getName()
+                            + " already has a method name set: "
+                            + methodAttribute.getValueAsString());
                 } else {
-                    methodAttribute = new StringAttribute(outputPort, "methodName");
+                    methodAttribute = new StringAttribute(outputPort,
+                            "methodName");
                     methodAttribute.setExpression(methodName);
                     methodAttribute.setVisibility(Settable.NOT_EDITABLE);
                 }
             }
             if (inputPorts != null) {
                 for (IOPort inputPort : inputPorts) {
-                    Enumeration methodInputPortsIter = _fireMethodNameToInputPortList.elements();
+                    Enumeration methodInputPortsIter = _fireMethodNameToInputPortList
+                            .elements();
                     while (methodInputPortsIter.hasMoreElements()) {
-                        List<IOPort> methodInputs = (List<IOPort>) methodInputPortsIter.nextElement();
+                        List<IOPort> methodInputs = (List<IOPort>) methodInputPortsIter
+                                .nextElement();
                         if (methodInputs.contains(inputPort)) {
-                            throw new IllegalActionException(this, "Input port " +
-                                    inputPort.getName() +
-                                    " is already used by another method in this actor.");
+                            throw new IllegalActionException(
+                                    this,
+                                    "Input port "
+                                            + inputPort.getName()
+                                            + " is already used by another method in this actor.");
                         }
                     }
                 }

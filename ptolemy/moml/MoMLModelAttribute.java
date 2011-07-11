@@ -120,7 +120,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *   modelURL attribute is not valid.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         if (attribute.equals(modelURL)) {
             if (modelURL != null && !modelURL.stringValue().equals("")) {
@@ -134,9 +134,9 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
                 try {
                     configure(null, modelURLString, null);
                 } catch (Exception ex) {
-                    throw new IllegalActionException(this, ex, "Could not " +
-                                "configure the model contents of the " +
-                                "MoMLModelAttribute with the given URL.");
+                    throw new IllegalActionException(this, ex, "Could not "
+                            + "configure the model contents of the "
+                            + "MoMLModelAttribute with the given URL.");
                 }
             }
         } else {
@@ -171,13 +171,13 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      */
     public void configure(URL base, String source, String text)
             throws Exception {
-            _source = null;
-            MoMLParser parser = new MoMLParser(workspace());
+        _source = null;
+        MoMLParser parser = new MoMLParser(workspace());
 
-            if (source != null && !source.trim().equals("")) {
-                _source = source;
+        if (source != null && !source.trim().equals("")) {
+            _source = source;
             _model = parser.parse(base, new URL(source));
-            } else if (!text.trim().equals("")) {
+        } else if (!text.trim().equals("")) {
             _model = parser.parse(base, null, new StringReader(text));
         }
     }
@@ -257,7 +257,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  @exception IllegalActionException Thrown if the model URL string is invalid.
      */
     private String _createAbsoluteModelURLString(String modelURLString)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             // If the given string is a correctly formed URL, this constructor
             // will not throw an exception.
@@ -271,8 +271,8 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
                 return modelURLObject.toString();
             } catch (IOException ioe) {
                 throw new IllegalActionException(this, ioe,
-                        "Invalid MoMLModelAttribute model URL: " +
-                        modelURLString);
+                        "Invalid MoMLModelAttribute model URL: "
+                                + modelURLString);
             }
         }
     }

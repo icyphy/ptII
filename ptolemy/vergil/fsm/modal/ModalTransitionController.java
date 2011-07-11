@@ -158,9 +158,7 @@ public class ModalTransitionController extends TransitionController {
                 }
             }
 
-            query
-                    .addChoice("Class", "Class", choiceNames, choiceNames[0],
-                            true);
+            query.addChoice("Class", "Class", choiceNames, choiceNames[0], true);
 
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController

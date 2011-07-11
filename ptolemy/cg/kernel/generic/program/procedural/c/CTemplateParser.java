@@ -30,6 +30,7 @@ package ptolemy.cg.kernel.generic.program.procedural.c;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
@@ -117,8 +118,8 @@ public class CTemplateParser extends ProceduralTemplateParser {
 
         if (alternativeSourceRef == null) {
             sourceRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator
-                    .getAdapter(source.port.getContainer()))
-                    .getReference(sourcePortChannel, false);
+                    .getAdapter(source.port.getContainer())).getReference(
+                    sourcePortChannel, false);
         } else {
             sourceRef = alternativeSourceRef;
         }
@@ -143,7 +144,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
         // treat it as output port and this is not correct.
         // FIXME: what about offset?
         if (sink.port.getContainer() instanceof ModalController) {
-            sinkRef = NamedProgramCodeGeneratorAdapter.generateName(sink.port);
+            sinkRef = CodeGeneratorAdapter.generateName(sink.port);
             if (sink.port.isMultiport()) {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
             }

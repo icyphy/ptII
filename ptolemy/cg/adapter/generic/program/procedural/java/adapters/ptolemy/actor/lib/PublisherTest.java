@@ -80,7 +80,8 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
                 // this publisher.
                 args.set(0, Integer.valueOf(i).toString());
                 // _codeStream.appendCodeBlock("fireBlock", args);
-                _templateParser.getCodeStream().appendCodeBlock("fireBlock", args);
+                _templateParser.getCodeStream().appendCodeBlock("fireBlock",
+                        args);
             } else {
                 System.out.println("Warning, no one is listening to "
                         + actor.getFullName());
@@ -98,13 +99,14 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i).toString());
             if (getCodeGenerator().isPrimitive(actor.input.getType())) {
-                inputType = getCodeGenerator().codeGenType(actor.input.getType());
+                inputType = getCodeGenerator().codeGenType(
+                        actor.input.getType());
             } else {
                 inputType = "Token";
             }
             // _codeStream.appendCodeBlock(inputType + "Block" + multiChannel,
-            _templateParser.getCodeStream().appendCodeBlock(inputType + "Block" + multiChannel,
-                    args);
+            _templateParser.getCodeStream().appendCodeBlock(
+                    inputType + "Block" + multiChannel, args);
         }
         return processCode(_templateParser.getCodeStream().toString());
     }
@@ -122,7 +124,8 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
                 // One of the channels is not primitive, so we will
                 // later call TokenBlock($channel), so we define
                 // toleranceToken for our use.
-                _templateParser.getCodeStream().appendCodeBlock("toleranceTokenInitBlock");
+                _templateParser.getCodeStream().appendCodeBlock(
+                        "toleranceTokenInitBlock");
                 break;
             }
         }
@@ -146,7 +149,8 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
             args.add(Integer.valueOf(0).toString());
             for (int i = 0; i < actor.input.getWidth(); i++) {
                 args.set(0, Integer.valueOf(i).toString());
-                _templateParser.getCodeStream().appendCodeBlock("TokenPreinitBlock", args);
+                _templateParser.getCodeStream().appendCodeBlock(
+                        "TokenPreinitBlock", args);
             }
         }
 
@@ -155,7 +159,8 @@ public class PublisherTest extends NamedProgramCodeGeneratorAdapter {
                 // One of the channels is not primitive, so we will
                 // later call TokenBlock($channel), so we define
                 // toleranceToken for our use.
-                _templateParser.getCodeStream().appendCodeBlock("toleranceTokenPreinitBlock");
+                _templateParser.getCodeStream().appendCodeBlock(
+                        "toleranceTokenPreinitBlock");
                 break;
             }
         }

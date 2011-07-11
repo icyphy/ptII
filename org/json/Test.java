@@ -23,16 +23,16 @@ public class Test {
         Object o;
         String s;
 
-/**
- *  Obj is a typical class that implements JSONString. It also
- *  provides some beanie methods that can be used to
- *  construct a JSONObject. It also demonstrates constructing
- *  a JSONObject with an array of names.
- */
+        /**
+         *  Obj is a typical class that implements JSONString. It also
+         *  provides some beanie methods that can be used to
+         *  construct a JSONObject. It also demonstrates constructing
+         *  a JSONObject with an array of names.
+         */
         class Obj implements JSONString {
-                public String aString;
-                public double aNumber;
-                public boolean aBoolean;
+            public String aString;
+            public double aNumber;
+            public boolean aBoolean;
 
             public Obj(String string, double n, boolean b) {
                 this.aString = string;
@@ -41,37 +41,38 @@ public class Test {
             }
 
             public double getNumber() {
-                    return this.aNumber;
+                return this.aNumber;
             }
 
             public String getString() {
-                    return this.aString;
+                return this.aString;
             }
 
             public boolean isBoolean() {
-                    return this.aBoolean;
+                return this.aBoolean;
             }
 
             public String getBENT() {
-                    return "All uppercase key";
+                return "All uppercase key";
             }
 
             public String getX() {
-                    return "x";
+                return "x";
             }
 
             public String toJSONString() {
-                    return "{" + JSONObject.quote(this.aString) + ":" +
-                    JSONObject.doubleToString(this.aNumber) + "}";
+                return "{" + JSONObject.quote(this.aString) + ":"
+                        + JSONObject.doubleToString(this.aNumber) + "}";
             }
+
             public String toString() {
-                    return this.getString() + " " + this.getNumber() + " " +
-                                    this.isBoolean() + "." + this.getBENT() + " " + this.getX();
+                return this.getString() + " " + this.getNumber() + " "
+                        + this.isBoolean() + "." + this.getBENT() + " "
+                        + this.getX();
             }
         }
 
-
-            Obj obj = new Obj("A beany object", 42, true);
+        Obj obj = new Obj("A beany object", 42, true);
 
         try {
             s = "[0.1]";
@@ -95,7 +96,6 @@ public class Test {
             j.increment("two");
             System.out.println(j.toString());
             System.out.println("");
-
 
             s = "<test><blank></blank><empty/></test>";
             j = XML.toJSONObject(s);
@@ -146,39 +146,16 @@ public class Test {
             System.out.println(j.toString(2));
 
             jj = new JSONStringer();
-            s = jj
-                    .object()
-                        .key("single")
-                        .value("MARIE HAA'S")
-                        .key("Johnny")
-                        .value("MARIE HAA\\'S")
-                        .key("foo")
-                        .value("bar")
-                        .key("baz")
-                        .array()
-                            .object()
-                                .key("quux")
-                                .value("Thanks, Josh!")
-                            .endObject()
-                        .endArray()
-                        .key("obj keys")
-                        .value(JSONObject.getNames(obj))
-                    .endObject()
-            .toString();
+            s = jj.object().key("single").value("MARIE HAA'S").key("Johnny")
+                    .value("MARIE HAA\\'S").key("foo").value("bar").key("baz")
+                    .array().object().key("quux").value("Thanks, Josh!")
+                    .endObject().endArray().key("obj keys")
+                    .value(JSONObject.getNames(obj)).endObject().toString();
             System.out.println(s);
 
-            System.out.println(new JSONStringer()
-                .object()
-                        .key("a")
-                        .array()
-                                .array()
-                                        .array()
-                                                .value("b")
-                            .endArray()
-                        .endArray()
-                    .endArray()
-                .endObject()
-                .toString());
+            System.out.println(new JSONStringer().object().key("a").array()
+                    .array().array().value("b").endArray().endArray()
+                    .endArray().endObject().toString());
 
             jj = new JSONStringer();
             jj.array();
@@ -216,25 +193,26 @@ public class Test {
 
             System.out.println(new JSONArray(jj.toString()).toString(4));
 
-                int ar[] = {1, 2, 3};
-                JSONArray ja = new JSONArray(ar);
-                System.out.println(ja.toString());
+            int ar[] = { 1, 2, 3 };
+            JSONArray ja = new JSONArray(ar);
+            System.out.println(ja.toString());
 
-                String sa[] = {"aString", "aNumber", "aBoolean"};
+            String sa[] = { "aString", "aNumber", "aBoolean" };
             j = new JSONObject(obj, sa);
             j.put("Testing JSONString interface", obj);
             System.out.println(j.toString(4));
 
-            j = new JSONObject("{slashes: '///', closetag: '</script>', backslash:'\\\\', ei: {quotes: '\"\\''},eo: {a: '\"quoted\"', b:\"don't\"}, quotes: [\"'\", '\"']}");
+            j = new JSONObject(
+                    "{slashes: '///', closetag: '</script>', backslash:'\\\\', ei: {quotes: '\"\\''},eo: {a: '\"quoted\"', b:\"don't\"}, quotes: [\"'\", '\"']}");
             System.out.println(j.toString(2));
             System.out.println(XML.toString(j));
             System.out.println("");
 
             j = new JSONObject(
-                "{foo: [true, false,9876543210,    0.0, 1.00000001,  1.000000000001, 1.00000000000000001," +
-                " .00000000000000001, 2.00, 0.1, 2e100, -32,[],{}, \"string\"], " +
-                "  to   : null, op : 'Good'," +
-                "ten:10} postfix comment");
+                    "{foo: [true, false,9876543210,    0.0, 1.00000001,  1.000000000001, 1.00000000000000001,"
+                            + " .00000000000000001, 2.00, 0.1, 2e100, -32,[],{}, \"string\"], "
+                            + "  to   : null, op : 'Good',"
+                            + "ten:10} postfix comment");
             j.put("String", "98.6");
             j.put("JSONObject", new JSONObject());
             j.put("JSONArray", new JSONArray());
@@ -332,7 +310,8 @@ public class Test {
             System.out.println(HTTP.toString(j));
             System.out.println("");
 
-            j = new JSONObject("{nix: null, nux: false, null: 'null', 'Request-URI': '/', Method: 'GET', 'HTTP-Version': 'HTTP/1.0'}");
+            j = new JSONObject(
+                    "{nix: null, nux: false, null: 'null', 'Request-URI': '/', Method: 'GET', 'HTTP-Version': 'HTTP/1.0'}");
             System.out.println(j.toString(2));
             System.out.println("isNull: " + j.isNull("nix"));
             System.out.println("   has: " + j.has("nix"));
@@ -340,30 +319,33 @@ public class Test {
             System.out.println(HTTP.toString(j));
             System.out.println("");
 
-            j = XML.toJSONObject("<?xml version='1.0' encoding='UTF-8'?>"+"\n\n"+"<SOAP-ENV:Envelope"+
-              " xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\""+
-              " xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\""+
-              " xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\">"+
-              "<SOAP-ENV:Body><ns1:doGoogleSearch"+
-              " xmlns:ns1=\"urn:GoogleSearch\""+
-              " SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"+
-              "<key xsi:type=\"xsd:string\">GOOGLEKEY</key> <q"+
-              " xsi:type=\"xsd:string\">'+search+'</q> <start"+
-              " xsi:type=\"xsd:int\">0</start> <maxResults"+
-              " xsi:type=\"xsd:int\">10</maxResults> <filter"+
-              " xsi:type=\"xsd:boolean\">true</filter> <restrict"+
-              " xsi:type=\"xsd:string\"></restrict> <safeSearch"+
-              " xsi:type=\"xsd:boolean\">false</safeSearch> <lr"+
-              " xsi:type=\"xsd:string\"></lr> <ie"+
-              " xsi:type=\"xsd:string\">latin1</ie> <oe"+
-              " xsi:type=\"xsd:string\">latin1</oe>"+
-              "</ns1:doGoogleSearch>"+
-              "</SOAP-ENV:Body></SOAP-ENV:Envelope>");
+            j = XML.toJSONObject("<?xml version='1.0' encoding='UTF-8'?>"
+                    + "\n\n"
+                    + "<SOAP-ENV:Envelope"
+                    + " xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\""
+                    + " xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\""
+                    + " xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\">"
+                    + "<SOAP-ENV:Body><ns1:doGoogleSearch"
+                    + " xmlns:ns1=\"urn:GoogleSearch\""
+                    + " SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
+                    + "<key xsi:type=\"xsd:string\">GOOGLEKEY</key> <q"
+                    + " xsi:type=\"xsd:string\">'+search+'</q> <start"
+                    + " xsi:type=\"xsd:int\">0</start> <maxResults"
+                    + " xsi:type=\"xsd:int\">10</maxResults> <filter"
+                    + " xsi:type=\"xsd:boolean\">true</filter> <restrict"
+                    + " xsi:type=\"xsd:string\"></restrict> <safeSearch"
+                    + " xsi:type=\"xsd:boolean\">false</safeSearch> <lr"
+                    + " xsi:type=\"xsd:string\"></lr> <ie"
+                    + " xsi:type=\"xsd:string\">latin1</ie> <oe"
+                    + " xsi:type=\"xsd:string\">latin1</oe>"
+                    + "</ns1:doGoogleSearch>"
+                    + "</SOAP-ENV:Body></SOAP-ENV:Envelope>");
             System.out.println(j.toString(2));
             System.out.println(XML.toString(j));
             System.out.println("");
 
-            j = new JSONObject("{Envelope: {Body: {\"ns1:doGoogleSearch\": {oe: \"latin1\", filter: true, q: \"'+search+'\", key: \"GOOGLEKEY\", maxResults: 10, \"SOAP-ENV:encodingStyle\": \"http://schemas.xmlsoap.org/soap/encoding/\", start: 0, ie: \"latin1\", safeSearch:false, \"xmlns:ns1\": \"urn:GoogleSearch\"}}}}");
+            j = new JSONObject(
+                    "{Envelope: {Body: {\"ns1:doGoogleSearch\": {oe: \"latin1\", filter: true, q: \"'+search+'\", key: \"GOOGLEKEY\", maxResults: 10, \"SOAP-ENV:encodingStyle\": \"http://schemas.xmlsoap.org/soap/encoding/\", start: 0, ie: \"latin1\", safeSearch:false, \"xmlns:ns1\": \"urn:GoogleSearch\"}}}}");
             System.out.println(j.toString(2));
             System.out.println(XML.toString(j));
             System.out.println("");
@@ -373,16 +355,19 @@ public class Test {
             System.out.println(CookieList.toString(j));
             System.out.println("");
 
-            j = Cookie.toJSONObject("f%oo=blah; secure ;expires = April 24, 2002");
+            j = Cookie
+                    .toJSONObject("f%oo=blah; secure ;expires = April 24, 2002");
             System.out.println(j.toString(2));
             System.out.println(Cookie.toString(j));
             System.out.println("");
 
-            j = new JSONObject("{script: 'It is not allowed in HTML to send a close script tag in a string<script>because it confuses browsers</script>so we insert a backslash before the /'}");
+            j = new JSONObject(
+                    "{script: 'It is not allowed in HTML to send a close script tag in a string<script>because it confuses browsers</script>so we insert a backslash before the /'}");
             System.out.println(j.toString());
             System.out.println("");
 
-            JSONTokener jt = new JSONTokener("{op:'test', to:'session', pre:1}{op:'test', to:'session', pre:2}");
+            JSONTokener jt = new JSONTokener(
+                    "{op:'test', to:'session', pre:1}{op:'test', to:'session', pre:2}");
             j = new JSONObject(jt);
             System.out.println(j.toString());
             System.out.println("pre: " + j.optInt("pre"));
@@ -403,13 +388,15 @@ public class Test {
             System.out.println(a.toString(4));
             System.out.println("");
 
-            a = new JSONArray(" [\"<escape>\", next is an implied null , , ok,] ");
+            a = new JSONArray(
+                    " [\"<escape>\", next is an implied null , , ok,] ");
             System.out.println(a.toString());
             System.out.println("");
             System.out.println(XML.toString(a));
             System.out.println("");
 
-            j = new JSONObject("{ fun => with non-standard forms ; forgiving => This package can be used to parse formats that are similar to but not stricting conforming to JSON; why=To make it easier to migrate existing data to JSON,one = [[1.00]]; uno=[[{1=>1}]];'+':+6e66 ;pluses=+++;empty = '' , 'double':0.666,true: TRUE, false: FALSE, null=NULL;[true] = [[!,@;*]]; string=>  o. k. ; \r oct=0666; hex=0x666; dec=666; o=0999; noh=0x0x}");
+            j = new JSONObject(
+                    "{ fun => with non-standard forms ; forgiving => This package can be used to parse formats that are similar to but not stricting conforming to JSON; why=To make it easier to migrate existing data to JSON,one = [[1.00]]; uno=[[{1=>1}]];'+':+6e66 ;pluses=+++;empty = '' , 'double':0.666,true: TRUE, false: FALSE, null=NULL;[true] = [[!,@;*]]; string=>  o. k. ; \r oct=0666; hex=0x666; dec=666; o=0999; noh=0x0x}");
             System.out.println(j.toString(4));
             System.out.println("");
             if (j.getBoolean("true") && !j.getBoolean("false")) {
@@ -417,13 +404,16 @@ public class Test {
             }
 
             System.out.println("");
-            j = new JSONObject(j, new String[]{"dec", "oct", "hex", "missing"});
+            j = new JSONObject(j,
+                    new String[] { "dec", "oct", "hex", "missing" });
             System.out.println(j.toString(4));
 
             System.out.println("");
-            System.out.println(new JSONStringer().array().value(a).value(j).endArray());
+            System.out.println(new JSONStringer().array().value(a).value(j)
+                    .endArray());
 
-            j = new JSONObject("{string: \"98.6\", long: 2147483648, int: 2147483647, longer: 9223372036854775807, double: 9223372036854775808}");
+            j = new JSONObject(
+                    "{string: \"98.6\", long: 2147483648, int: 2147483647, longer: 9223372036854775807, double: 9223372036854775808}");
             System.out.println(j.toString(4));
 
             System.out.println("\ngetInt");
@@ -450,16 +440,16 @@ public class Test {
             j.put("good sized", 9223372036854775807L);
             System.out.println(j.toString(4));
 
-            a = new JSONArray("[2147483647, 2147483648, 9223372036854775807, 9223372036854775808]");
+            a = new JSONArray(
+                    "[2147483647, 2147483648, 9223372036854775807, 9223372036854775808]");
             System.out.println(a.toString(4));
 
             System.out.println("\nKeys: ");
             it = j.keys();
             while (it.hasNext()) {
-                s = (String)it.next();
+                s = (String) it.next();
                 System.out.println(s + ": " + j.getString(s));
             }
-
 
             System.out.println("\naccumulate: ");
             j = new JSONObject();
@@ -530,7 +520,6 @@ public class Test {
             ja = JSONML.toJSONArray(s);
             System.out.println(ja);
 
-
             System.out.println("\nTesting Exceptions: ");
 
             System.out.print("Exception: ");
@@ -596,37 +585,37 @@ public class Test {
             }
             System.out.print("Exception: ");
             try {
-                    j = XML.toJSONObject("<a><b>    ");
+                j = XML.toJSONObject("<a><b>    ");
             } catch (Exception e) {
-                    System.out.println(e);
+                System.out.println(e);
             }
             System.out.print("Exception: ");
             try {
-                    j = XML.toJSONObject("<a></b>    ");
+                j = XML.toJSONObject("<a></b>    ");
             } catch (Exception e) {
-                    System.out.println(e);
+                System.out.println(e);
             }
             System.out.print("Exception: ");
             try {
-                    j = XML.toJSONObject("<a></a    ");
+                j = XML.toJSONObject("<a></a    ");
             } catch (Exception e) {
-                    System.out.println(e);
+                System.out.println(e);
             }
             System.out.print("Exception: ");
             try {
-                    ja = new JSONArray(new Object());
-                    System.out.println(ja.toString());
+                ja = new JSONArray(new Object());
+                System.out.println(ja.toString());
             } catch (Exception e) {
-                    System.out.println(e);
+                System.out.println(e);
             }
 
             System.out.print("Exception: ");
             try {
-                    s = "[)";
-                    a = new JSONArray(s);
-                    System.out.println(a.toString());
+                s = "[)";
+                a = new JSONArray(s);
+                System.out.println(a.toString());
             } catch (Exception e) {
-                    System.out.println(e);
+                System.out.println(e);
             }
 
             System.out.print("Exception: ");
@@ -635,7 +624,7 @@ public class Test {
                 ja = JSONML.toJSONArray(s);
                 System.out.println(ja.toString(4));
             } catch (Exception e) {
-                    System.out.println(e);
+                System.out.println(e);
             }
 
             System.out.print("Exception: ");
@@ -644,7 +633,7 @@ public class Test {
                 ja = JSONML.toJSONArray(s);
                 System.out.println(ja.toString(4));
             } catch (Exception e) {
-                    System.out.println(e);
+                System.out.println(e);
             }
 
             System.out.print("Exception: ");
@@ -653,23 +642,18 @@ public class Test {
                 j = new JSONObject(s);
                 System.out.println(j.toString(4));
             } catch (Exception e) {
-                    System.out.println(e);
+                System.out.println(e);
             }
 
             System.out.print("Exception: ");
             try {
                 jj = new JSONStringer();
-                s = jj
-                        .object()
-                            .key("bosanda")
-                            .value("MARIE HAA'S")
-                            .key("bosanda")
-                            .value("MARIE HAA\\'S")
-                        .endObject()
+                s = jj.object().key("bosanda").value("MARIE HAA'S")
+                        .key("bosanda").value("MARIE HAA\\'S").endObject()
                         .toString();
                 System.out.println(j.toString(4));
             } catch (Exception e) {
-                    System.out.println(e);
+                System.out.println(e);
             }
         } catch (Exception e) {
             System.out.println(e.toString());

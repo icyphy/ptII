@@ -361,8 +361,8 @@ public class Bus extends MonitoredQuantityManager {
             } else {
                 _tokens.put(new Object[] { receiver, token });
                 _tokenCount++;
-                sendQMTokenEvent((Actor) source.getContainer()
-                        .getContainer(), 0, _tokenCount, EventType.RECEIVED);
+                sendQMTokenEvent((Actor) source.getContainer().getContainer(),
+                        0, _tokenCount, EventType.RECEIVED);
                 if (_tokens.size() == 1) { // no refiring has been scheduled
                     _scheduleRefire();
                 }

@@ -71,8 +71,8 @@ public class ShortestPathFinderTest {
         Assert.assertEquals(Integer.MAX_VALUE, result);
 
         // Modify the model by disconnecting c.cIn2.
-        AtomicActor c = (AtomicActor)testModel.getEntity("c");
-        IOPort cIn2 = (IOPort)c.getPort("cIn2");
+        AtomicActor c = (AtomicActor) testModel.getEntity("c");
+        IOPort cIn2 = (IOPort) c.getPort("cIn2");
         cIn2.unlinkAll();
 
         // Check distance again. Should be 2 now.

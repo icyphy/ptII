@@ -114,8 +114,8 @@ public class TupleType extends StructuredType implements Cloneable {
      */
     public Token convert(Token token) throws IllegalActionException {
         if (!(token instanceof TupleToken)) {
-            throw new IllegalArgumentException(Token
-                    .notSupportedIncomparableConversionMessage(token,
+            throw new IllegalArgumentException(
+                    Token.notSupportedIncomparableConversionMessage(token,
                             toString()));
         }
 
@@ -131,8 +131,8 @@ public class TupleType extends StructuredType implements Cloneable {
                             .convert(argumentTuple[i]);
                 }
             } catch (IllegalActionException ex) {
-                throw new IllegalActionException(null, ex, Token
-                        .notSupportedConversionMessage(token, "int"));
+                throw new IllegalActionException(null, ex,
+                        Token.notSupportedConversionMessage(token, "int"));
             }
         }
 

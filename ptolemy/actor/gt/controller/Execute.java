@@ -124,8 +124,8 @@ public class Execute extends GTEvent {
                         return data;
                     }
                     try {
-                        _effigy = new PtolemyEffigy(parentEffigy, parentEffigy
-                                .uniqueName("_executeEffigy"));
+                        _effigy = new PtolemyEffigy(parentEffigy,
+                                parentEffigy.uniqueName("_executeEffigy"));
                     } catch (NameDuplicationException e) {
                         throw new IllegalActionException(this, e,
                                 "Unexpected name duplication exception.");

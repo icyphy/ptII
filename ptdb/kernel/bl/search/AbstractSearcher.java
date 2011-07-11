@@ -105,13 +105,11 @@ public abstract class AbstractSearcher implements ResultHandler {
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException, DBExecutionException {
 
-
         // Check whether searching is canceled, and stop the search is it is
         // canceled.
         if (isSearchCancelled()) {
             return;
         }
-
 
         // Store the passed results in the previous found results field.
         _previousResults = modelResults;
@@ -120,7 +118,6 @@ public abstract class AbstractSearcher implements ResultHandler {
         if (_previousResults != null && _previousResults.size() > 0) {
             Collections.sort(_previousResults);
         }
-
 
         // Check whether there is no match in the previous searchers
         // to decide to stop here or not.

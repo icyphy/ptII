@@ -50,7 +50,8 @@ public class RecordFromIndividualConcepts extends ConceptFunction {
      *  @param ontology The domain and range ontology for this concept function.
      *  @exception IllegalActionException Thrown if the concept function cannot be created.
      */
-    public RecordFromIndividualConcepts(String name, SortedSet<String> fieldLabels, Ontology ontology)
+    public RecordFromIndividualConcepts(String name,
+            SortedSet<String> fieldLabels, Ontology ontology)
             throws IllegalActionException {
         super(name, fieldLabels.size(), ontology);
         _fieldLabels = new TreeSet<String>(fieldLabels);
@@ -67,8 +68,9 @@ public class RecordFromIndividualConcepts extends ConceptFunction {
      *   the output RecordConcept.
      */
     protected RecordConcept _evaluateFunction(List<Concept> argValues)
-        throws IllegalActionException {
-        RecordConcept returnRecord = RecordConcept.createRecordConcept(_outputRangeOntology);
+            throws IllegalActionException {
+        RecordConcept returnRecord = RecordConcept
+                .createRecordConcept(_outputRangeOntology);
 
         Object[] fieldArray = _fieldLabels.toArray();
         for (int i = 0; i < fieldArray.length; i++) {

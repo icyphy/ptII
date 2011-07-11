@@ -71,7 +71,8 @@ public class ImageSobel extends Transformer {
 
         xorderParam = new Parameter(this, "xorder", new IntToken(1));
         yorderParam = new Parameter(this, "yorder", new IntToken(1));
-        apertureSizeParam = new Parameter(this, "aperture size (must be 1, 3, 5 or 7)", new IntToken(3));
+        apertureSizeParam = new Parameter(this,
+                "aperture size (must be 1, 3, 5 or 7)", new IntToken(3));
         xorderParam.setTypeEquals(BaseType.INT);
         yorderParam.setTypeEquals(BaseType.INT);
         apertureSizeParam.setTypeEquals(BaseType.INT);
@@ -94,20 +95,22 @@ public class ImageSobel extends Transformer {
     public void fire() throws IllegalActionException {
         int xorder = ((IntToken) (xorderParam.getToken())).intValue();
         int yorder = ((IntToken) (yorderParam.getToken())).intValue();
-        int apertureSize = ((IntToken) (apertureSizeParam.getToken())).intValue();
-        if (!(apertureSize == 1 || apertureSize==3 || apertureSize==5 || apertureSize==7)) {
-            throw new IllegalActionException(this, "apertureSize must be 1, 3, 5, or 7.");
+        int apertureSize = ((IntToken) (apertureSizeParam.getToken()))
+                .intValue();
+        if (!(apertureSize == 1 || apertureSize == 3 || apertureSize == 5 || apertureSize == 7)) {
+            throw new IllegalActionException(this,
+                    "apertureSize must be 1, 3, 5, or 7.");
         }
 
         if (input.hasToken(0)) {
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof IplImage)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of IplImage. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
-            _frame = (IplImage)inputObject;
+            _frame = (IplImage) inputObject;
             //_frame = cvCloneImage((IplImage)inputObject);
             cvSobel(_frame, _frame, xorder, yorder, apertureSize);
             output.send(0, new ObjectToken(_frame));

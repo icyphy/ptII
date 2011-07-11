@@ -382,7 +382,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
             StringParameter actorInteractionAddon;
             actorInteractionAddon = (StringParameter) this.getConfiguration()
-                .getAttribute("_actorInteractionAddon", Parameter.class);
+                    .getAttribute("_actorInteractionAddon", Parameter.class);
 
             if (actorInteractionAddon != null) {
                 _addonActorController.addHotKeys(getFrame().getJGraph());
@@ -415,20 +415,19 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
                 StringParameter actorInteractionAddonParameter;
                 actorInteractionAddonParameter = (StringParameter) _config
-                    .getAttribute("_actorInteractionAddon", Parameter.class);
+                        .getAttribute("_actorInteractionAddon", Parameter.class);
 
                 if (actorInteractionAddonParameter != null) {
-                    String actorInteractionAddonClassName =
-                        actorInteractionAddonParameter.stringValue();
+                    String actorInteractionAddonClassName = actorInteractionAddonParameter
+                            .stringValue();
                     Class actorInteractionAddonClass = Class
-                        .forName(actorInteractionAddonClassName);
+                            .forName(actorInteractionAddonClassName);
 
-                    ActorInteractionAddon actorInteractionAddon =
-                        (ActorInteractionAddon) actorInteractionAddonClass
-                        .newInstance();
+                    ActorInteractionAddon actorInteractionAddon = (ActorInteractionAddon) actorInteractionAddonClass
+                            .newInstance();
 
-                    _addonActorController =
-                        actorInteractionAddon.getControllerInstance(this);
+                    _addonActorController = actorInteractionAddon
+                            .getControllerInstance(this);
 
                 }
             } catch (Exception e) {
@@ -735,7 +734,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     { "/ptolemy/vergil/actor/img/single_out_on.gif",
                             GUIUtilities.SELECTED_ICON } });
 
-
     /** The port dialog factory. */
     private PortDialogAction _portDialogAction;
 
@@ -754,7 +752,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             InputEvent.BUTTON1_MASK, Toolkit.getDefaultToolkit()
                     .getMenuShortcutKeyMask(), Toolkit.getDefaultToolkit()
                     .getMenuShortcutKeyMask());
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

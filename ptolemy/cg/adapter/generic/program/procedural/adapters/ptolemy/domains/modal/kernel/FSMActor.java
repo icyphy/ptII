@@ -72,7 +72,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
      *  an IllegalActionException.
      */
     public FSMActor(ptolemy.domains.modal.kernel.FSMActor component)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
 
         super(component);
 
@@ -148,7 +148,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
-                return processCode(code.toString());
+        return processCode(code.toString());
     }
 
     private Object _generateStateConstantLabel(State state) {
@@ -451,8 +451,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                             }
                         } else if (destination instanceof Variable) {
                             codeBuffer.append(getCodeGenerator()
-                                    .generateVariableName(destination)
-                                    + " = ");
+                                    .generateVariableName(destination) + " = ");
 
                         }
 
@@ -495,9 +494,9 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
                 //Director director = fsmActor.getExecutiveDirector();
                 //if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
-                    //         MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
-                    //        directorHelper._updateConfigurationNumber(codeBuffer,
-                    //              destinationState);
+                //         MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
+                //        directorHelper._updateConfigurationNumber(codeBuffer,
+                //              destinationState);
                 //}
                 codeBuffer.append("} ");
             }
@@ -524,9 +523,9 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
                 //Director director = fsmActor.getExecutiveDirector();
                 //if (director instanceof ptolemy.domains.modal.kernel.MultirateFSMDirector) {
-                    //     MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
-                    //   directorHelper
-                    //         ._updateConfigurationNumber(codeBuffer, state);
+                //     MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
+                //   directorHelper
+                //         ._updateConfigurationNumber(codeBuffer, state);
                 //}
 
                 if (transitionCount > 0) {
@@ -634,8 +633,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 } else {
                     for (int i = 0; i < inputPort.getWidth(); i++) {
                         // try the format: inputPortName_channelNumber
-                        if (name
-                                .equals(generateSimpleName(inputPort) + "_" + i)) {
+                        if (name.equals(generateSimpleName(inputPort) + "_" + i)) {
                             found = true;
                             code.append(generateName(inputPort));
                             code.append("[" + i + "]");

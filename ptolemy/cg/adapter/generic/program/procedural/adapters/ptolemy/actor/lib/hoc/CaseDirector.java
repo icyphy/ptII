@@ -76,7 +76,7 @@ public class CaseDirector extends Director {
         //new Exception("CaseDirector.generateFireCode()").printStackTrace();
         StringBuffer code = new StringBuffer();
 
-        ProgramCodeGenerator codeGenerator = ((ProgramCodeGenerator)getCodeGenerator());
+        ProgramCodeGenerator codeGenerator = (getCodeGenerator());
         ((BooleanToken) codeGenerator.inline.getToken()).booleanValue();
 
         ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
@@ -109,7 +109,8 @@ public class CaseDirector extends Director {
             boolean fireRefinement = true;
             refinementCount++;
             CompositeActor refinement = (CompositeActor) refinements.next();
-            NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter)codeGenerator.getAdapter(refinement);
+            NamedProgramCodeGeneratorAdapter refinementAdapter = (NamedProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(refinement);
 
             // FIXME: the refinement name may contain '$' signs.
             String refinementName = refinement.getName();
@@ -160,7 +161,8 @@ public class CaseDirector extends Director {
 
         if (defaultRefinement != null) {
             code.append(INDENT2 + "} else {" + _eol);
-            NamedProgramCodeGeneratorAdapter defaultAdapter = (NamedProgramCodeGeneratorAdapter)codeGenerator.getAdapter(defaultRefinement);
+            NamedProgramCodeGeneratorAdapter defaultAdapter = (NamedProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(defaultRefinement);
             code.append(defaultAdapter.generateFireCode());
         }
 
@@ -175,8 +177,8 @@ public class CaseDirector extends Director {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
-    final public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-            throws IllegalActionException {
+    final public void generateTransferInputsCode(IOPort inputPort,
+            StringBuffer code) throws IllegalActionException {
         generateTransferInputsCode(inputPort, code, true);
     }
 
@@ -191,74 +193,74 @@ public class CaseDirector extends Director {
         generateTransferOutputsCode(outputPort, code, true);
     }
 
-//     /** Generate code for transferring enough tokens to complete an internal
-//      *  iteration.
-//      *  @param inputPort The port to transfer tokens.
-//      *  @param code The string buffer that the generated code is appended to.
-//      *  @exception IllegalActionException If thrown while transferring tokens.
-//      */
-//     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-//             throws IllegalActionException {
-//         code.append(CodeStream.indent(getCodeGenerator().comment(
-//                 "Transfer tokens to the inside")));
+    //     /** Generate code for transferring enough tokens to complete an internal
+    //      *  iteration.
+    //      *  @param inputPort The port to transfer tokens.
+    //      *  @param code The string buffer that the generated code is appended to.
+    //      *  @exception IllegalActionException If thrown while transferring tokens.
+    //      */
+    //     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
+    //             throws IllegalActionException {
+    //         code.append(CodeStream.indent(getCodeGenerator().comment(
+    //                 "Transfer tokens to the inside")));
 
-//         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-//                 .getAdapter(_director.getContainer());
+    //         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+    //                 .getAdapter(_director.getContainer());
 
-//         for (int i = 0; i < inputPort.getWidth(); i++) {
-//             if (i < inputPort.getWidthInside()) {
-//                 String name = inputPort.getName();
+    //         for (int i = 0; i < inputPort.getWidth(); i++) {
+    //             if (i < inputPort.getWidthInside()) {
+    //                 String name = inputPort.getName();
 
-//                 if (inputPort.isMultiport()) {
-//                     name = name + '#' + i;
-//                 }
+    //                 if (inputPort.isMultiport()) {
+    //                     name = name + '#' + i;
+    //                 }
 
-//                 //FIXME: What should be the director? Executive or local?
-//                 code.append(CodeStream.indent(_compositeActorAdapter
-//                                 .getReference("@" + name, false, true)));
-//                 code.append(" = ");
-//                 code.append(_compositeActorAdapter.getReference(name, false, true));
-//                 code.append(";" + _eol);
-//             }
-//         }
+    //                 //FIXME: What should be the director? Executive or local?
+    //                 code.append(CodeStream.indent(_compositeActorAdapter
+    //                                 .getReference("@" + name, false, true)));
+    //                 code.append(" = ");
+    //                 code.append(_compositeActorAdapter.getReference(name, false, true));
+    //                 code.append(";" + _eol);
+    //             }
+    //         }
 
-//         // Generate the type conversion code before fire code.
-//         code.append(_compositeActorAdapter.generateTypeConvertFireCode(true));
-//     }
+    //         // Generate the type conversion code before fire code.
+    //         code.append(_compositeActorAdapter.generateTypeConvertFireCode(true));
+    //     }
 
-//     /** Generate code for transferring enough tokens to fulfill the output
-//      *  production rate.
-//      *  @param outputPort The port to transfer tokens.
-//      *  @param code The string buffer that the generated code is appended to.
-//      *  @exception IllegalActionException If thrown while transferring tokens.
-//      */
-//     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-//             throws IllegalActionException {
-//         // FIXME: This is like Director.generatePortName(),
-//         // except the left hand side reference is obtained from the container.
+    //     /** Generate code for transferring enough tokens to fulfill the output
+    //      *  production rate.
+    //      *  @param outputPort The port to transfer tokens.
+    //      *  @param code The string buffer that the generated code is appended to.
+    //      *  @exception IllegalActionException If thrown while transferring tokens.
+    //      */
+    //     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+    //             throws IllegalActionException {
+    //         // FIXME: This is like Director.generatePortName(),
+    //         // except the left hand side reference is obtained from the container.
 
-//         code.append(getCodeGenerator()
-//                 .comment("Case Director Transfer tokens to the outside"));
+    //         code.append(getCodeGenerator()
+    //                 .comment("Case Director Transfer tokens to the outside"));
 
-//         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-//                 .getAdapter(_director.getContainer());
+    //         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+    //                 .getAdapter(_director.getContainer());
 
-//         for (int i = 0; i < outputPort.getWidthInside(); i++) {
-//             if (i < outputPort.getWidth()) {
-//                 String name = outputPort.getName();
+    //         for (int i = 0; i < outputPort.getWidthInside(); i++) {
+    //             if (i < outputPort.getWidth()) {
+    //                 String name = outputPort.getName();
 
-//                 if (outputPort.isMultiport()) {
-//                     name = name + '#' + i;
-//                 }
-//                 System.out.println("-->CaseDirector.generateTransferOutputsCode(" + outputPort +",\n<<<<" + code + "\n>>>>");
-//                 // Get the references from the Executive Director.
-//                 code.append(_compositeActorAdapter.getReference(name, false, true)
-//                         + " = ");
-//                 code.append(_compositeActorAdapter.getReference("@" + name,
-//                                 false, true));
-//                 code.append(";" + _eol);
-//             }
-//         }
-//     }
+    //                 if (outputPort.isMultiport()) {
+    //                     name = name + '#' + i;
+    //                 }
+    //                 System.out.println("-->CaseDirector.generateTransferOutputsCode(" + outputPort +",\n<<<<" + code + "\n>>>>");
+    //                 // Get the references from the Executive Director.
+    //                 code.append(_compositeActorAdapter.getReference(name, false, true)
+    //                         + " = ");
+    //                 code.append(_compositeActorAdapter.getReference("@" + name,
+    //                                 false, true));
+    //                 code.append(";" + _eol);
+    //             }
+    //         }
+    //     }
 
 }

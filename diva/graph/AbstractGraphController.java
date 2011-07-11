@@ -292,8 +292,8 @@ public abstract class AbstractGraphController implements GraphController {
             Object object = figure.getUserObject();
 
             if (_model.isEdge(object)) {
-                if (!GraphUtilities.isPartiallyContainedEdge(object, _model
-                        .getRoot(), _model)) {
+                if (!GraphUtilities.isPartiallyContainedEdge(object,
+                        _model.getRoot(), _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }

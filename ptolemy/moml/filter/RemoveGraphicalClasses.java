@@ -264,8 +264,7 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses
-                .put(
-                        "ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory",
+                .put("ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory",
                         "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
@@ -424,10 +423,9 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put(
                 "ptolemy.vergil.actor.lib.MonitorReceiverContents", null);
 
-        _graphicalClasses.put(
-                "ptolemy.vergil.ontologies.ConceptIcon", null);
-        _graphicalClasses.put(
-                "ptolemy.vergil.ontologies.MultipleConceptIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.ontologies.ConceptIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.ontologies.MultipleConceptIcon",
+                null);
 
         _graphicalClasses.put(
                 "ptolemy.domains.petrinet.lib.gui.PetriNetDisplay",

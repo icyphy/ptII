@@ -67,8 +67,8 @@ public class Quantizer extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Quantizer actor = (ptolemy.actor.lib.Quantizer) getComponent();
 
         ArrayList arguments = new ArrayList();
-        StringTokenizer tokenizer = new StringTokenizer(actor.levels
-                .getExpression(), ",");
+        StringTokenizer tokenizer = new StringTokenizer(
+                actor.levels.getExpression(), ",");
         arguments.add(Integer.valueOf(tokenizer.countTokens()));
 
         _codeStream.appendCodeBlock("fireBlock", arguments);
@@ -89,8 +89,8 @@ public class Quantizer extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Quantizer actor = (ptolemy.actor.lib.Quantizer) getComponent();
 
         ArrayList arguments = new ArrayList();
-        StringTokenizer tokenizer = new StringTokenizer(actor.levels
-                .getExpression(), ",");
+        StringTokenizer tokenizer = new StringTokenizer(
+                actor.levels.getExpression(), ",");
         arguments.add(Integer.valueOf(tokenizer.countTokens()));
 
         _codeStream.appendCodeBlock("initBlock", arguments);

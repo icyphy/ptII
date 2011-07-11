@@ -97,14 +97,13 @@ public class ModelLoader extends Sink {
             // In this case, the thrid parameter cannot be null,
             // it is eventually dereferenced in OBJModel.drawToList().
             new OBJModel(name, maxSize, gl, true);
-            ObjectToken inputToken = (ObjectToken)input.get(0);
+            ObjectToken inputToken = (ObjectToken) input.get(0);
             Object inputObject = inputToken.getValue();
             if (!(inputObject instanceof GL)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of GL. Got "
-                        + inputObject.getClass());
+                                + inputObject.getClass());
             }
         }
     }
 }
-

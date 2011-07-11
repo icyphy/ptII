@@ -138,12 +138,12 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                     // Use Thread.currentThread() so that this code will
                     // work under WebStart.
                     URL infoURL = Thread.currentThread()
-                            .getContextClassLoader().getResource(
-                                    "ptolemy/verification/README.html");
+                            .getContextClassLoader()
+                            .getResource("ptolemy/verification/README.html");
 
                     if (configuration != null) {
-                        configuration.openModel(null, infoURL, infoURL
-                                .toExternalForm());
+                        configuration.openModel(null, infoURL,
+                                infoURL.toExternalForm());
                     }
                 } catch (Exception ex) {
                     throw new InternalErrorException(modelConverter, ex,
@@ -239,8 +239,8 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                         // Use Thread.currentThread() so that this code will
                         // work under WebStart.
                         if (configuration != null) {
-                            configuration.openModel(null, codeURL, codeURL
-                                    .toExternalForm());
+                            configuration.openModel(null, codeURL,
+                                    codeURL.toExternalForm());
                         }
                     }
 

@@ -192,8 +192,8 @@ public class XSLTransformer extends Transformer {
                                         + out.toString() + "\n");
                             }
 
-                            StringToken outputToken = new StringToken(out
-                                    .toString());
+                            StringToken outputToken = new StringToken(
+                                    out.toString());
                             output.broadcast(outputToken);
 
                             if (_debugging) {

@@ -310,8 +310,7 @@ public class PtidesPreemptiveUserEDFDirector extends
                                 .timeValue()) {
                             // If they are equal, and these two events do not reside at the same
                             // equivalence class, then the event of interest is not safe.
-                            if (!_sameInputPortGroup(earlierEvent,
-                                    event)) {
+                            if (!_sameInputPortGroup(earlierEvent, event)) {
                                 return false;
                             }
                         }

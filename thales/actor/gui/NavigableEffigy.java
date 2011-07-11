@@ -204,8 +204,8 @@ public class NavigableEffigy extends PtolemyEffigy {
                 // Create a blank effigy.
                 // Use the strategy pattern so derived classes can
                 // override this.
-                PtolemyEffigy effigy = _newEffigy(container, container
-                        .uniqueName("effigy"));
+                PtolemyEffigy effigy = _newEffigy(container,
+                        container.uniqueName("effigy"));
 
                 // If this factory contains an entity called "blank", then
                 // clone that.
@@ -283,8 +283,8 @@ public class NavigableEffigy extends PtolemyEffigy {
                 // THALES MODIF
                 if (checkFile(input)) {
                     // Create a blank effigy.
-                    PtolemyEffigy effigy = _newEffigy(container, container
-                            .uniqueName("effigy"));
+                    PtolemyEffigy effigy = _newEffigy(container,
+                            container.uniqueName("effigy"));
 
                     MoMLParser parser = new MoMLParser();
 
@@ -358,8 +358,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                                         throw new Exception(
                                                 "Failed to generate "
                                                         + "a URI from '"
-                                                        + input
-                                                                .toExternalForm()
+                                                        + input.toExternalForm()
                                                         + "' and from '"
                                                         + inputExternalFormFixed
                                                         + "'", ex);
@@ -479,8 +478,8 @@ public class NavigableEffigy extends PtolemyEffigy {
             BufferedReader reader = null;
 
             try {
-                reader = new BufferedReader(new InputStreamReader(url
-                        .openStream()));
+                reader = new BufferedReader(new InputStreamReader(
+                        url.openStream()));
 
                 String aLine = "";
 

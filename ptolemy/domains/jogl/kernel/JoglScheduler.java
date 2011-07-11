@@ -154,7 +154,6 @@ public class JoglScheduler extends Scheduler {
         List entities = castContainer.deepEntityList();
         Iterator actors = entities.iterator();
 
-
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             dag.addNodeWeight(actor);
@@ -213,8 +212,8 @@ public class JoglScheduler extends Scheduler {
                 }
             }
 
-            throw new NotSchedulableException(this, "GRO graph is not acyclic: "
-                    + names.toString());
+            throw new NotSchedulableException(this,
+                    "GRO graph is not acyclic: " + names.toString());
         }
 
         if (dag.top() == null) {
@@ -223,7 +222,7 @@ public class JoglScheduler extends Scheduler {
 
         Schedule schedule = new Schedule();
 
-        _constructDepthFirstSchedule(schedule, dag, (Actor) dag.bottom());
+        _constructDepthFirstSchedule(schedule, dag, dag.bottom());
 
         if (_debugging) {
             _debug("Schedule is:");
@@ -254,16 +253,14 @@ public class JoglScheduler extends Scheduler {
             return;
         }
 
-
-
         Firing firing = new Firing();
         firing.setActor((Actor) actorToAdd);
         schedule.add(firing);
 
         for (Object node : dag.successors(dag.node(actorToAdd))) {
-            _constructDepthFirstSchedule(schedule, dag, ((Node) node).getWeight());
+            _constructDepthFirstSchedule(schedule, dag,
+                    ((Node) node).getWeight());
         }
-
 
     }
 

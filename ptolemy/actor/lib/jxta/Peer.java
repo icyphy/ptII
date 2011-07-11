@@ -272,8 +272,8 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
                 }
 
                 _actorQueryResponse = new ResolverResponse(
-                        _ACTOR_QUERY_HANDLER_NAME, null, 0, actorListText
-                                .toString());
+                        _ACTOR_QUERY_HANDLER_NAME, null, 0,
+                        actorListText.toString());
             } catch (IOException ex) {
                 System.out.println("Warning: error reading actor list file.\n"
                         + ex.getMessage());
@@ -412,7 +412,8 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
 
                 // create an advertisement object from each element
                 newAdv = (PeerAdvertisement) AdvertisementFactory
-                        .newAdvertisement(XML_MIME_TYPE,
+                        .newAdvertisement(
+                                XML_MIME_TYPE,
                                 new ByteArrayInputStream(responseString
                                         .getBytes()));
                 System.out.println(" Peer name = " + newAdv.getName());

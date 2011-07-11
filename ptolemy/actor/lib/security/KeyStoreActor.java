@@ -587,8 +587,8 @@ public class KeyStoreActor extends TypedAtomicActor {
                 }
             } else {
                 try {
-                    _keyStore.load(keyStoreInputStream, _storePassword
-                            .toCharArray());
+                    _keyStore.load(keyStoreInputStream,
+                            _storePassword.toCharArray());
                     alias.removeAllChoices();
 
                     // Add all the aliases as possible choices.

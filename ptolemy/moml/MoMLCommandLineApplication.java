@@ -172,9 +172,9 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
                         // Use a MoMLChangeRequest so that visual rendition (if
                         // any) is updated and listeners are notified.
                         String moml = "<property name=\"" + parameterName
-                            + "\" value=\"" + parameterValue + "\"/>";
-                        MoMLChangeRequest request = new MoMLChangeRequest(
-                                this, director, moml);
+                                + "\" value=\"" + parameterValue + "\"/>";
+                        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                director, moml);
                         director.requestChange(request);
                     }
                 }

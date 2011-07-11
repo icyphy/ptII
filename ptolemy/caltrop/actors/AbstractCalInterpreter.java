@@ -240,17 +240,18 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      *  _iconDescription attribute.
      */
     protected void _attachActorIcon(String name) throws IllegalActionException {
-        String iconText = "<svg>\n"
-            + "<rect x=\"-20\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-            + "style=\"fill:white\"/>\n" + "<text x=\"-3\" y=\"5\" "
-            + "style=\"font-size:18\">\n" + "CAL\n" + "</text>\n"
-            + "<text x=\"-16\" y=\"17\" " + "style=\"font-size:10\">\n"
-            + name + "\n" + "</text>\n" + "</svg>\n";
-        ConfigurableAttribute iconDescription = ((ConfigurableAttribute)getAttribute("_iconDescription", ConfigurableAttribute.class));
+        String iconText = "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-3\" y=\"5\" " + "style=\"font-size:18\">\n"
+                + "CAL\n" + "</text>\n" + "<text x=\"-16\" y=\"17\" "
+                + "style=\"font-size:10\">\n" + name + "\n" + "</text>\n"
+                + "</svg>\n";
+        ConfigurableAttribute iconDescription = ((ConfigurableAttribute) getAttribute(
+                "_iconDescription", ConfigurableAttribute.class));
         // Only update the parameter if the new value is different from the
         // old value.  This avoids a ConcurrentModificationException in
         // ptolemy/configs/test/allConfigs.tcl
-        if ( iconDescription == null
+        if (iconDescription == null
                 || !iconDescription.getConfigureText().equals(iconText)) {
             //System.out.println("AbstractCalInterpreter: iconText:\n " + iconText
             //        + "\n------\n" + (iconDescription == null ? "null" : iconDescription.getConfigureText()));

@@ -108,9 +108,9 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
         public ComposeWithAction() {
             super("Compose With");
             putValue("tooltip", "Compose with another interface automaton");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_C));
-         }
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_C));
+        }
 
         /** Compose with another interface automaton by first opening a file
          *  chooser dialog and then composing with the specified model.
@@ -128,7 +128,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                 background = jFileChooserBugFix.saveBackground();
                 JFileChooser fileDialog = new JFileChooser();
                 fileDialog
-                    .setDialogTitle("Select an interface automaton to compose with.");
+                        .setDialogTitle("Select an interface automaton to compose with.");
 
                 if (_directory != null) {
                     fileDialog.setCurrentDirectory(_directory);
@@ -154,23 +154,24 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                         // a URL in the file chooser, but Java's file chooser does
                         // not permit this, regrettably.  So we have a separate
                         // menu item for this.
-                        File file = fileDialog.getSelectedFile().getCanonicalFile();
+                        File file = fileDialog.getSelectedFile()
+                                .getCanonicalFile();
                         URL url = file.toURI().toURL();
 
                         // NOTE: Used to use for the first argument the following,
                         // but it seems to not work for relative file references:
                         // new URL("file", null, _directory.getAbsolutePath()
                         Configuration configuration = getConfiguration();
-                        Tableau newAutomatonTableau = configuration.openModel(url,
-                            url, url.toExternalForm());
+                        Tableau newAutomatonTableau = configuration.openModel(
+                                url, url, url.toExternalForm());
 
                         // compose the two interface automata and show result
                         InterfaceAutomaton model1 = (InterfaceAutomaton) getFrame()
-                            .getModel();
+                                .getModel();
                         InterfaceAutomatonGraphFrame graphFrame2 = (InterfaceAutomatonGraphFrame) newAutomatonTableau
-                            .getFrame();
+                                .getFrame();
                         InterfaceAutomaton model2 = (InterfaceAutomaton) graphFrame2
-                            .getModel();
+                                .getModel();
 
                         InterfaceAutomaton composition = model1.compose(model2);
                         configuration.openModel(composition);

@@ -229,8 +229,8 @@ public class InterfaceAutomaton extends FSMActor {
                 State sourceState = incomingTransition.sourceState();
                 State destinationState = outgoingTransition.destinationState();
                 String incomingLabel = incomingTransition.getLabel();
-                String incomingName = incomingLabel.substring(0, incomingLabel
-                        .length() - 1);
+                String incomingName = incomingLabel.substring(0,
+                        incomingLabel.length() - 1);
                 String outgoingLabel = outgoingTransition.getLabel();
                 String newLabel = incomingName + NAME_CONNECTOR + outgoingLabel;
 
@@ -1410,9 +1410,9 @@ public class InterfaceAutomaton extends FSMActor {
                                         State destinationInProduct = _addState(
                                                 product, destinationInThis,
                                                 destinationInArgument, frontier);
-                                        _addTransition(product, this.getName()
-                                                + NAME_CONNECTOR
-                                                + automaton.getName(),
+                                        _addTransition(product,
+                                                this.getName() + NAME_CONNECTOR
+                                                        + automaton.getName(),
                                                 stateInProduct,
                                                 destinationInProduct,
                                                 transitionName + ";");
@@ -1518,9 +1518,9 @@ public class InterfaceAutomaton extends FSMActor {
                                         State destinationInProduct = _addState(
                                                 product, destinationInThis,
                                                 destinationInArgument, frontier);
-                                        _addTransition(product, this.getName()
-                                                + NAME_CONNECTOR
-                                                + automaton.getName(),
+                                        _addTransition(product,
+                                                this.getName() + NAME_CONNECTOR
+                                                        + automaton.getName(),
                                                 stateInProduct,
                                                 destinationInProduct,
                                                 transitionName + ";");
@@ -1648,10 +1648,12 @@ public class InterfaceAutomaton extends FSMActor {
                                                     product, destinationInThis,
                                                     destinationInArgument,
                                                     frontier);
-                                            _addTransition(product, this
-                                                    .getName()
-                                                    + NAME_CONNECTOR
-                                                    + automaton.getName(),
+                                            _addTransition(
+                                                    product,
+                                                    this.getName()
+                                                            + NAME_CONNECTOR
+                                                            + automaton
+                                                                    .getName(),
                                                     stateInProduct,
                                                     destinationInProduct,
                                                     transitionName + ";");
@@ -1741,10 +1743,12 @@ public class InterfaceAutomaton extends FSMActor {
                                                     product, destinationInThis,
                                                     destinationInArgument,
                                                     frontier);
-                                            _addTransition(product, this
-                                                    .getName()
-                                                    + NAME_CONNECTOR
-                                                    + automaton.getName(),
+                                            _addTransition(
+                                                    product,
+                                                    this.getName()
+                                                            + NAME_CONNECTOR
+                                                            + automaton
+                                                                    .getName(),
                                                     stateInProduct,
                                                     destinationInProduct,
                                                     transitionName + ";");

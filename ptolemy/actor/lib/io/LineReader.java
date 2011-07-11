@@ -316,7 +316,8 @@ public class LineReader extends Source {
      */
     protected void _openAndReadFirstTwoLines() throws IllegalActionException {
         if (_debugging) {
-            _debug("Opening file: " + ((StringToken)fileOrURL.getToken()).stringValue());
+            _debug("Opening file: "
+                    + ((StringToken) fileOrURL.getToken()).stringValue());
         }
         _reader = fileOrURL.openForReading();
 
@@ -349,7 +350,8 @@ public class LineReader extends Source {
                 _debug("Read line: " + _nextLine);
             }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "Failed to read file in preinitialize().");
+            throw new IllegalActionException(this, ex,
+                    "Failed to read file in preinitialize().");
         }
     }
 

@@ -224,9 +224,8 @@ public class PNDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code
-                .append(((CodeGeneratorHelper) _getHelper(_director
-                        .getContainer())).generateFireCode());
+        code.append(((CodeGeneratorHelper) _getHelper(_director.getContainer()))
+                .generateFireCode());
 
         return code.toString();
     }
@@ -433,10 +432,9 @@ public class PNDirector extends Director {
     protected String _createDynamicOffsetVariables(IOPort port)
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code
-                .append(_eol
-                        + _codeGenerator
-                                .comment("PN Director's offset variable declarations."));
+        code.append(_eol
+                + _codeGenerator
+                        .comment("PN Director's offset variable declarations."));
 
         int width;
         if (port.isInput()) {

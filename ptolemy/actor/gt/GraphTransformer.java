@@ -281,8 +281,8 @@ public class GraphTransformer extends ChangeRequest {
             if (host instanceof Port) {
                 replacementLinkedList = new LinkedList<NamedObj>(
                         ((Port) replacement).linkedRelationList());
-                hostLinkdList = new LinkedList<NamedObj>(((Port) host)
-                        .linkedRelationList());
+                hostLinkdList = new LinkedList<NamedObj>(
+                        ((Port) host).linkedRelationList());
             } else if (host instanceof Relation) {
                 replacementLinkedList = new LinkedList<NamedObj>();
                 for (Object relation : ((Relation) replacement)
@@ -317,8 +317,7 @@ public class GraphTransformer extends ChangeRequest {
                     NamedObj hostContainer = relation.getContainer();
                     // FIXME: Do not create the link because MirrorComposite creates it
                     // automatically. There should be a more general solution for this.
-                    if (!(hostContainer instanceof MirrorComposite))
-                    {
+                    if (!(hostContainer instanceof MirrorComposite)) {
                         String moml;
                         if (relation == hostLinkedObject) {
                             moml = _getLinkMoML(host, relation);
@@ -346,9 +345,9 @@ public class GraphTransformer extends ChangeRequest {
                         NamedObj hostContainer = host.getContainer();
                         // FIXME: Do not create the link because MirrorComposite creates it
                         // automatically. There should be a more general solution for this.
-                        if (!(hostContainer instanceof MirrorComposite) &&
-                            !hostComponentPort.insideRelationList().contains(
-                                    hostRelation)) {
+                        if (!(hostContainer instanceof MirrorComposite)
+                                && !hostComponentPort.insideRelationList()
+                                        .contains(hostRelation)) {
                             // There is no link between hostPort and
                             // hostRelation, so create a new link.
                             String moml = _getLinkMoML(host, hostRelation);
@@ -590,8 +589,8 @@ public class GraphTransformer extends ChangeRequest {
             // Copy entities and relations.
             Collection<?> children = GTTools.getChildren(replacement, false,
                     true, true, true);
-            children = new CombinedCollection<Object>(replacement
-                    .attributeList(AttributeMatcher.class), children);
+            children = new CombinedCollection<Object>(
+                    replacement.attributeList(AttributeMatcher.class), children);
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
                 if (GTTools.isIgnored(child)) {
@@ -847,8 +846,8 @@ public class GraphTransformer extends ChangeRequest {
             Set<NamedObj> objectsChanged = new HashSet<NamedObj>();
             Collection<?> children = GTTools.getChildren(host, false, false,
                     true, true);
-            children = new CombinedCollection<Object>(host
-                    .attributeList(AttributeMatcher.class), children);
+            children = new CombinedCollection<Object>(
+                    host.attributeList(AttributeMatcher.class), children);
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
                 if (child.isPersistent()) {
@@ -900,8 +899,8 @@ public class GraphTransformer extends ChangeRequest {
                 if (linkedObjects.size() == 1) {
                     String moml = "<deleteRelation name=\""
                             + relation.getName() + "\"/>";
-                    MoMLChangeRequest request = _createChangeRequest(relation
-                            .getContainer(), moml);
+                    MoMLChangeRequest request = _createChangeRequest(
+                            relation.getContainer(), moml);
                     request.execute();
                 }
             }
@@ -952,13 +951,13 @@ public class GraphTransformer extends ChangeRequest {
 
                             if (tail instanceof Relation) {
                                 moml = _getLinkMoML(head, (Relation) tail);
-                                request = _createChangeRequest(tail
-                                        .getContainer(), moml);
+                                request = _createChangeRequest(
+                                        tail.getContainer(), moml);
                                 request.execute();
                             } else {
                                 moml = _getLinkMoML(tail, (Relation) head);
-                                request = _createChangeRequest(head
-                                        .getContainer(), moml);
+                                request = _createChangeRequest(
+                                        head.getContainer(), moml);
                                 request.execute();
                             }
                         }
@@ -1079,8 +1078,8 @@ public class GraphTransformer extends ChangeRequest {
      */
     private void _initReplacementObjectAttributes(NamedObj replacement)
             throws TransformationException {
-        _setReplacementObjectAttribute(replacement, GTTools.getCodeFromObject(
-                replacement, _replacement));
+        _setReplacementObjectAttribute(replacement,
+                GTTools.getCodeFromObject(replacement, _replacement));
 
         try {
             replacement.workspace().getReadAccess();
@@ -1110,8 +1109,8 @@ public class GraphTransformer extends ChangeRequest {
             NamedObj host = (NamedObj) _matchResult.get(pattern);
             if (host != null) {
                 _replacementToHost.put(replacement, host);
-                _setReplacementObjectAttribute(host, GTTools.getCodeFromObject(
-                        replacement, _replacement));
+                _setReplacementObjectAttribute(host,
+                        GTTools.getCodeFromObject(replacement, _replacement));
             }
         }
         for (Map.Entry<Object, Object> entry : _matchResult.entrySet()) {
@@ -1214,8 +1213,8 @@ public class GraphTransformer extends ChangeRequest {
         // FIXME: Because we can't find a nice way to preserve the channel index
         // of the ports, the "removed" relation won't be removed if it is
         // connected to a port that is connected to more than one relations.
-        List<?> removedLinkedObjects = new LinkedList<Object>(removed
-                .linkedObjectsList());
+        List<?> removedLinkedObjects = new LinkedList<Object>(
+                removed.linkedObjectsList());
         for (Object removedLinkedObject : removedLinkedObjects) {
             if (removedLinkedObject instanceof Port) {
                 if (((Port) removedLinkedObject).linkedRelationList().size() > 1) {
@@ -1316,8 +1315,8 @@ public class GraphTransformer extends ChangeRequest {
 
             String moml = "<unlink port=\"" + name + "\" relation=\""
                     + hostRelation.getName() + "\"/>";
-            MoMLChangeRequest request = _createChangeRequest(hostRelation
-                    .getContainer(), moml);
+            MoMLChangeRequest request = _createChangeRequest(
+                    hostRelation.getContainer(), moml);
             request.execute();
         }
 
@@ -1782,8 +1781,8 @@ public class GraphTransformer extends ChangeRequest {
         protected void _postParse(MoMLParser parser) {
             super._postParse(parser);
 
-            _createdObjects = new LinkedList<NamedObj>(parser
-                    .topObjectsCreated());
+            _createdObjects = new LinkedList<NamedObj>(
+                    parser.topObjectsCreated());
             parser.clearTopObjectsList();
         }
 

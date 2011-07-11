@@ -121,8 +121,9 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
             return; // actor is not being monitored
         }
         if (scheduleEvent == null) {
-            if (_previousY.get(actor) == null)
+            if (_previousY.get(actor) == null) {
                 _previousY.put(actor, (double) actorDataset);
+            }
             plot.addPoint(actorDataset, x, _previousY.get(actor), true);
             _previousY.put(actor, (double) actorDataset);
         } else if (scheduleEvent == ExecutionEventType.START) {
@@ -156,7 +157,8 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
      *  @return A new Bus.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ExecutionTimeMonitor newObject = (ExecutionTimeMonitor) super.clone(workspace);
+        ExecutionTimeMonitor newObject = (ExecutionTimeMonitor) super
+                .clone(workspace);
         newObject._actors = new ArrayList<Actor>();
         newObject._previousY = new HashMap<Actor, Double>();
         return newObject;
@@ -291,7 +293,8 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
                 PlotEffigy schedulePlotterEffigy = new PlotEffigy(effigy,
                         container.uniqueName("schedulePlotterEffigy"));
                 schedulePlotterEffigy.setPlot(plot);
-                schedulePlotterEffigy.identifier.setExpression("Execution Time Monitor");
+                schedulePlotterEffigy.identifier
+                        .setExpression("Execution Time Monitor");
 
                 configuration.createPrimaryTableau(schedulePlotterEffigy);
 

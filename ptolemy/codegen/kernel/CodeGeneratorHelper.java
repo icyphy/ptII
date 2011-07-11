@@ -873,9 +873,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public Set getModifiedVariables() throws IllegalActionException {
         Set set = new HashSet();
         if (_object instanceof ExplicitChangeContext) {
-            set
-                    .addAll(((ExplicitChangeContext) _object)
-                            .getModifiedVariables());
+            set.addAll(((ExplicitChangeContext) _object).getModifiedVariables());
         }
 
         Iterator inputPorts = ((Actor) _object).inputPortList().iterator();
@@ -1016,9 +1014,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
                 ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                 if (variable.isStringMode()) {
-                    return _generateTypeConvertMethod("\""
-                            + parseTreeCodeGenerator
-                                    .escapeForTargetLanguage(variable
+                    return _generateTypeConvertMethod(
+                            "\""
+                                    + parseTreeCodeGenerator.escapeForTargetLanguage(variable
                                             .getExpression()) + "\"", castType,
                             "String");
                 }
@@ -1993,9 +1991,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                             }
                         } else {
                             int rate = Math
-                                    .max(
-                                            DFUtilities
-                                                    .getTokenProductionRate(sourceChannel.port),
+                                    .max(DFUtilities
+                                            .getTokenProductionRate(sourceChannel.port),
                                             DFUtilities
                                                     .getTokenConsumptionRate(sourceChannel.port));
                             if (rate > 1
@@ -2161,8 +2158,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         for (TypedIOPort sourcePort : (List<TypedIOPort>) sourcePorts) {
             try {
-                Channel source = new Channel(sourcePort, sourcePort
-                        .getChannelForReceiver(receivers[channelNumber][0]));
+                Channel source = new Channel(
+                        sourcePort,
+                        sourcePort
+                                .getChannelForReceiver(receivers[channelNumber][0]));
 
                 if (source != null) {
                     return source;
@@ -2283,15 +2282,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 // variable is declared in the target language and should be
                 // referenced by the name anywhere it is used.
                 if (_codeGenerator._modifiedVariables.contains(result)) {
-                    return new ObjectToken(_codeGenerator
-                            .generateVariableName(result));
+                    return new ObjectToken(
+                            _codeGenerator.generateVariableName(result));
                 } else {
                     // This will lead to recursive call until a variable found
                     // is either directly specified by a constant or it is a
                     // modified variable.
                     PtParser parser = new PtParser();
-                    String parameterValue = getParameterValue(name, result
-                            .getContainer());
+                    String parameterValue = getParameterValue(name,
+                            result.getContainer());
                     try {
                         ASTPtRootNode parseTree = parser
                                 .generateParseTree(parameterValue);
@@ -2836,8 +2835,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         int indexOfDollarSign = macro.indexOf('$');
         if (indexOfDollarSign >= 0) {
             String result = "$" + macro.substring(0, indexOfDollarSign);
-            String innerMacro = macro.substring(indexOfDollarSign + 1, macro
-                    .length());
+            String innerMacro = macro.substring(indexOfDollarSign + 1,
+                    macro.length());
             result += _replaceMacro(innerMacro, parameter);
             return result;
         }
@@ -2944,9 +2943,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             }
 
             try {
-                checker
-                        .invoke(userMacro,
-                                new Object[] { parseList(parameter) });
+                checker.invoke(userMacro, new Object[] { parseList(parameter) });
                 return (String) handler.invoke(userMacro,
                         new Object[] { parseList(parameter) });
             } catch (Exception ex) {
@@ -3123,9 +3120,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             } else {
                 shortBlockName = blockName;
             }
-            _codeStream.insert(0, _eol
-                    + _codeGenerator.comment(shortBlockName
-                            + generateSimpleName(getComponent())));
+            _codeStream.insert(
+                    0,
+                    _eol
+                            + _codeGenerator.comment(shortBlockName
+                                    + generateSimpleName(getComponent())));
         }
         return processCode(_codeStream.toString());
 

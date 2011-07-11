@@ -259,8 +259,8 @@ public class MatchResultViewer extends GTFrame {
             List<?> factoryList = entity.attributeList(tableauFactoryClass);
             if (factoryList.isEmpty()) {
                 try {
-                    new MatchResultTableau.Factory(entity, entity
-                            .uniqueName("_tableauFactory"))
+                    new MatchResultTableau.Factory(entity,
+                            entity.uniqueName("_tableauFactory"))
                             .setPersistent(false);
                 } catch (KernelException e) {
                     throw new KernelRuntimeException(e, "Unexpected exception");
@@ -584,8 +584,7 @@ public class MatchResultViewer extends GTFrame {
         }
         if (_transformUntilFixpointItem != null && _results != null) {
             _transformUntilFixpointItem.setEnabled(_currentPosition < _results
-                    .size()
-                    && _rule != null);
+                    .size() && _rule != null);
         }
         if (_transformUntilFixpointButton != null && _results != null) {
             _transformUntilFixpointButton

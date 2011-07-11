@@ -49,8 +49,8 @@ public class ConceptFromRecordField extends ConceptFunction {
      *  @param ontology The domain and range ontology for this concept function.
      *  @exception IllegalActionException Thrown if the concept function cannot be created.
      */
-    public ConceptFromRecordField(String name, String fieldLabel, Ontology ontology)
-            throws IllegalActionException {
+    public ConceptFromRecordField(String name, String fieldLabel,
+            Ontology ontology) throws IllegalActionException {
         super(name, 1, ontology);
         _fieldLabel = fieldLabel;
     }
@@ -66,17 +66,20 @@ public class ConceptFromRecordField extends ConceptFunction {
      *   the output Concept or if the input is not a RecordConcept.
      */
     protected Concept _evaluateFunction(List<Concept> argValues)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Concept inputRecord = argValues.get(0);
         if (!(inputRecord instanceof RecordConcept)) {
             // If the input is not a RecordConcept, then it should be top, bottom or null.
-            if (inputRecord == null || inputRecord.getOntology().getConceptGraph().bottom().equals(inputRecord) ||
-                    inputRecord.getOntology().getConceptGraph().top().equals(inputRecord)) {
+            if (inputRecord == null
+                    || inputRecord.getOntology().getConceptGraph().bottom()
+                            .equals(inputRecord)
+                    || inputRecord.getOntology().getConceptGraph().top()
+                            .equals(inputRecord)) {
                 return inputRecord;
             } else {
-                throw new IllegalActionException("The input concept for the " +
-                        "ConceptFromRecordField concept function must be a " +
-                        "RecordConcept. The input was: " + inputRecord);
+                throw new IllegalActionException("The input concept for the "
+                        + "ConceptFromRecordField concept function must be a "
+                        + "RecordConcept. The input was: " + inputRecord);
             }
         }
 

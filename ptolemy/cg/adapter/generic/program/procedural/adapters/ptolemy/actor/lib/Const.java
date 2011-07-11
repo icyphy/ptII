@@ -28,7 +28,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Const
 

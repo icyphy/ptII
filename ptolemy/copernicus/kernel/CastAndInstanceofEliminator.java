@@ -255,8 +255,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     boolean foundOne = false;
 
                     for (Iterator implementors = implementorList.iterator(); implementors
-                            .hasNext()
-                            && !foundOne;) {
+                            .hasNext() && !foundOne;) {
                         SootClass implementor = (SootClass) implementors.next();
 
                         if (hierarchy.getSuperclassesOf(implementor).contains(

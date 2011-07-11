@@ -36,6 +36,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -128,10 +129,10 @@ public class PtidesBasicReceiver
             // we should put to the sink receivers (e.g., for SDF receivers,
             // we indeed want to put to this receiver, and generate transfer
             // output code to transfer tokens to the outside.
-            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter =
-                (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(sinkPort);
+            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(sinkPort);
             for (int channel = 0; channel < sinkPort.getWidth(); channel++) {
-                code.append(portAdapter.generatePutCode(Integer.toString(channel), offset, token));
+                code.append(portAdapter.generatePutCode(
+                        Integer.toString(channel), offset, token));
             }
             return code.toString();
         }
@@ -189,8 +190,8 @@ public class PtidesBasicReceiver
         // FIXME: not sure whether we should check if we are putting into an input port or
         // output port.
         // Generate a new event.
-        String sinkName = NamedProgramCodeGeneratorAdapter
-                .generateName(sinkPort.getContainer());
+        String sinkName = CodeGeneratorAdapter.generateName(sinkPort
+                .getContainer());
         List args = new ArrayList();
         args.add(sinkPort.getType().toString());
         args.add(token);

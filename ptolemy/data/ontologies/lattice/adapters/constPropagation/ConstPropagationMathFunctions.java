@@ -57,16 +57,17 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
      *  @exception IllegalActionException Thrown if the concept function cannot be created.
      */
     public ConstPropagationMathFunctions(Ontology ontology, String mathOperation)
-                throws IllegalActionException {
+            throws IllegalActionException {
         super("ConstPropagationMathFunction_" + mathOperation, 2, ontology);
 
         _mathOperation = mathOperation;
         _constPropagationOntology = ontology;
 
-        ConceptGraph ontologyGraph = _constPropagationOntology.getConceptGraph();
+        ConceptGraph ontologyGraph = _constPropagationOntology
+                .getConceptGraph();
         if (ontologyGraph == null) {
-            throw new IllegalActionException("The Ontology " +
-                    _constPropagationOntology + " has a null concept graph.");
+            throw new IllegalActionException("The Ontology "
+                    + _constPropagationOntology + " has a null concept graph.");
         } else {
             _topOfTheLattice = ontologyGraph.top();
             _bottomOfTheLattice = ontologyGraph.bottom();
@@ -86,31 +87,34 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
      *   the output FlatTokenInfiniteConcept.
      */
     protected Concept _evaluateFunction(List<Concept> argValues)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         Concept arg1 = argValues.get(0);
         Concept arg2 = argValues.get(1);
 
         // If either concept is the bottom of the lattice, return bottom.
-        if (arg1.equals(_bottomOfTheLattice) || arg2.equals(_bottomOfTheLattice)) {
+        if (arg1.equals(_bottomOfTheLattice)
+                || arg2.equals(_bottomOfTheLattice)) {
             return _bottomOfTheLattice;
 
-        // If either concept is the top of the lattice, return top.
-        } else if (arg1.equals(_topOfTheLattice) || arg2.equals(_topOfTheLattice)) {
+            // If either concept is the top of the lattice, return top.
+        } else if (arg1.equals(_topOfTheLattice)
+                || arg2.equals(_topOfTheLattice)) {
             return _topOfTheLattice;
 
-        } else if (arg1 instanceof FlatTokenInfiniteConcept &&
-                    arg2 instanceof FlatTokenInfiniteConcept) {
+        } else if (arg1 instanceof FlatTokenInfiniteConcept
+                && arg2 instanceof FlatTokenInfiniteConcept) {
             if (_isDivisionAndSecondArgumentIsZero((FlatTokenInfiniteConcept) arg2)) {
                 return _bottomOfTheLattice;
             } else {
-                return _getMathOperationResultConcept((FlatTokenInfiniteConcept) arg1,
+                return _getMathOperationResultConcept(
+                        (FlatTokenInfiniteConcept) arg1,
                         (FlatTokenInfiniteConcept) arg2);
             }
         } else {
-            throw new IllegalActionException("Concept inputs must be" +
-                            " FlatTokenInfiniteConcepts. Input" +
-                            " Concepts were: " + arg1 + " and " + arg2 + ".");
+            throw new IllegalActionException("Concept inputs must be"
+                    + " FlatTokenInfiniteConcepts. Input" + " Concepts were: "
+                    + arg1 + " and " + arg2 + ".");
         }
     }
 
@@ -128,18 +132,20 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
      */
     private FlatTokenInfiniteConcept _getMathOperationResultConcept(
             FlatTokenInfiniteConcept concept1, FlatTokenInfiniteConcept concept2)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         if (concept1.getRepresentative().equals(concept2.getRepresentative())) {
             Token token1 = concept1.getTokenValue();
             Token token2 = concept2.getTokenValue();
             Token resultToken = _getMathOperationResultToken(token1, token2);
-            FlatTokenRepresentativeConcept representative = concept1.getRepresentative();
-            return representative.getFlatTokenInfiniteConceptByToken(resultToken);
+            FlatTokenRepresentativeConcept representative = concept1
+                    .getRepresentative();
+            return representative
+                    .getFlatTokenInfiniteConceptByToken(resultToken);
         } else {
-            throw new IllegalActionException("Cannot perform a math " +
-                            "operation on two FlatTokenInfiniteConcepts with " +
-                            "different representatives.");
+            throw new IllegalActionException("Cannot perform a math "
+                    + "operation on two FlatTokenInfiniteConcepts with "
+                    + "different representatives.");
         }
     }
 
@@ -152,7 +158,7 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
      *   unrecognized.
      */
     private Token _getMathOperationResultToken(Token token1, Token token2)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_mathOperation.equals("+")) {
             return token1.add(token2);
         } else if (_mathOperation.equals("-")) {
@@ -178,8 +184,8 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
     private boolean _isDivisionAndSecondArgumentIsZero(
             FlatTokenInfiniteConcept concept2) throws IllegalActionException {
         Token tokenValue = concept2.getTokenValue();
-        if (_mathOperation.equals("/") && tokenValue.isEqualTo(
-                tokenValue.zero()).booleanValue()) {
+        if (_mathOperation.equals("/")
+                && tokenValue.isEqualTo(tokenValue.zero()).booleanValue()) {
             return true;
         } else {
             return false;

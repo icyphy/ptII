@@ -585,8 +585,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         ASTPtRootNode cloneTree;
 
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
-        cloneTree = specializer.specialize(node.getExpressionTree(), node
-                .getArgumentNameList(), _scope);
+        cloneTree = specializer.specialize(node.getExpressionTree(),
+                node.getArgumentNameList(), _scope);
 
         // Infer the return type.
         if (_typeInference == null) {
@@ -596,8 +596,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         _typeInference.inferTypes(node, _scope);
 
         FunctionType type = (FunctionType) node.getType();
-        ExpressionFunction definedFunction = new ExpressionFunction(node
-                .getArgumentNameList(), node.getArgumentTypes(), cloneTree);
+        ExpressionFunction definedFunction = new ExpressionFunction(
+                node.getArgumentNameList(), node.getArgumentTypes(), cloneTree);
         FunctionToken result = new FunctionToken(definedFunction, type);
         _evaluatedChildToken = (result);
 
@@ -951,8 +951,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 }
 
                 ptolemy.data.Token[] matrixTokens = new ptolemy.data.Token[node
-                        .getRowCount()
-                        * columnCount];
+                        .getRowCount() * columnCount];
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
@@ -962,8 +961,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                             * i, columnCount);
                 }
 
-                childToken = MatrixToken.arrayToMatrix(matrixTokens, node
-                        .getRowCount(), columnCount);
+                childToken = MatrixToken.arrayToMatrix(matrixTokens,
+                        node.getRowCount(), columnCount);
             } catch (IllegalActionException ex) {
                 // FIXME: better detail message that includes the thing
                 // we were parsing.
@@ -1596,9 +1595,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         Type elementType = ((ArrayType) type).getElementType();
 
         //_fireCode.append("Array_get(");
-        StringBuffer result = new StringBuffer(_generator
-                .codeGenType(elementType)
-                + "Array_get(");
+        StringBuffer result = new StringBuffer(
+                _generator.codeGenType(elementType) + "Array_get(");
 
         String name = value.toString();
         if (name.startsWith("object(")) {

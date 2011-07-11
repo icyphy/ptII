@@ -32,8 +32,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.InputDevice;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -56,7 +56,8 @@ public class GPInputHandler extends InputDevice {
      *  @exception IllegalActionException
      * @exception NameDuplicationException
      */
-    public GPInputHandler(ptolemy.domains.ptides.lib.luminary.GPInputHandler actor)
+    public GPInputHandler(
+            ptolemy.domains.ptides.lib.luminary.GPInputHandler actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
 
@@ -94,36 +95,47 @@ public class GPInputHandler extends InputDevice {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
 
-        args.add(NamedProgramCodeGeneratorAdapter.generateName(getComponent()));
+        args.add(CodeGeneratorAdapter.generateName(getComponent()));
         args.add(_padID);
         args.add(_pinID);
 
         _codeStream.clear();
-        _codeStream.append("Event* temp;" +_eol);
-        _codeStream.append("saveState();" +_eol);
-        _codeStream.append("stackedModelTagIndex++;" +_eol);
-        _codeStream.append("if (stackedModelTagIndex > MAX_EVENTS) {" +_eol);
-        _codeStream.append("die(\"MAX_EVENTS too small for stackedModelTagIndex\");" +_eol);
-        _codeStream.append("}" +_eol);
-        _codeStream.append("executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;" +_eol);
-        _codeStream.append("executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;" +_eol);
-        _codeStream.append("getRealTime(&currentModelTime);" +_eol);
-        _codeStream.append("currentMicrostep = 0;" +_eol);
+        _codeStream.append("Event* temp;" + _eol);
+        _codeStream.append("saveState();" + _eol);
+        _codeStream.append("stackedModelTagIndex++;" + _eol);
+        _codeStream.append("if (stackedModelTagIndex > MAX_EVENTS) {" + _eol);
+        _codeStream
+                .append("die(\"MAX_EVENTS too small for stackedModelTagIndex\");"
+                        + _eol);
+        _codeStream.append("}" + _eol);
+        _codeStream
+                .append("executingModelTag[stackedModelTagIndex].microstep = currentMicrostep;"
+                        + _eol);
+        _codeStream
+                .append("executingModelTag[stackedModelTagIndex].timestamp = currentModelTime;"
+                        + _eol);
+        _codeStream.append("getRealTime(&currentModelTime);" + _eol);
+        _codeStream.append("currentMicrostep = 0;" + _eol);
 
         _codeStream.appendCodeBlock("sensingBlock", args);
 
-        _codeStream.append("GPIOPinIntClear(GPIO_PORT" + _padID + "_BASE, GPIO_PIN_" + _pinID + ");" +_eol);
+        _codeStream.append("GPIOPinIntClear(GPIO_PORT" + _padID
+                + "_BASE, GPIO_PIN_" + _pinID + ");" + _eol);
 
-        _codeStream.append("temp = FREE_EVENT_LIST;" +_eol);
-        _codeStream.append(args.get(0) + "();" +_eol);
-        _codeStream.append("if (temp != FREE_EVENT_LIST) {" +_eol);
-        _codeStream.append("addStack();" +_eol);
-        _codeStream.append("} else {" +_eol);
-        _codeStream.append("currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;" +_eol);
-        _codeStream.append("currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;" +_eol);
-        _codeStream.append("stackedModelTagIndex--;" +_eol);
-        _codeStream.append("loadState();" +_eol);
-        _codeStream.append("}" +_eol);
+        _codeStream.append("temp = FREE_EVENT_LIST;" + _eol);
+        _codeStream.append(args.get(0) + "();" + _eol);
+        _codeStream.append("if (temp != FREE_EVENT_LIST) {" + _eol);
+        _codeStream.append("addStack();" + _eol);
+        _codeStream.append("} else {" + _eol);
+        _codeStream
+                .append("currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;"
+                        + _eol);
+        _codeStream
+                .append("currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;"
+                        + _eol);
+        _codeStream.append("stackedModelTagIndex--;" + _eol);
+        _codeStream.append("loadState();" + _eol);
+        _codeStream.append("}" + _eol);
 
         return processCode(_codeStream.toString());
     }

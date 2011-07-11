@@ -199,8 +199,8 @@ public class TDLCodeGenerator extends Attribute {
 
                 manager.preinitializeAndResolveTypes();
 
-                TextEffigy codeEffigy = TextEffigy.newTextEffigy(configuration
-                        .getDirectory(), generateTDLCode(model));
+                TextEffigy codeEffigy = TextEffigy.newTextEffigy(
+                        configuration.getDirectory(), generateTDLCode(model));
                 codeEffigy.setModified(true);
                 configuration.createPrimaryTableau(codeEffigy);
 

@@ -62,12 +62,13 @@ public class SyntacticColumn extends SyntacticTermList {
         boolean isAny = false;
         for (SyntacticPort iport : node.getInputs()) {
             SyntacticPort rport = iport.getConnectedPort();
-            if (rport == null) continue;
+            if (rport == null) {
+                continue;
+            }
 
             if (outputIndex(rport) != null) {
                 isAny = true;
-            }
-            else {
+            } else {
                 doesFollow = false;
             }
         }
@@ -91,7 +92,9 @@ public class SyntacticColumn extends SyntacticTermList {
     public String generateCode() {
         LinkedList<String> termStrs = new LinkedList();
         for (SyntacticTerm node : this) {
-            if (node.hasCode()) termStrs.add(node.generateCode());
+            if (node.hasCode()) {
+                termStrs.add(node.generateCode());
+            }
         }
 
         return SyntacticGraph.stringJoin(termStrs, " | ");
@@ -100,6 +103,5 @@ public class SyntacticColumn extends SyntacticTermList {
     public boolean hasCode() {
         return !isEmpty();
     }
-
 
 }

@@ -47,7 +47,6 @@ import ptolemy.kernel.Entity;
 
 public class TestImportByReferenceRequirementsIntegration {
 
-
     /**
      * Test importing a model by reference.  No DBReference tag is present.
      * @exception Exception
@@ -59,125 +58,7 @@ public class TestImportByReferenceRequirementsIntegration {
 
         java.util.Date time = new java.util.Date();
 
-        String modelName=String.valueOf(time.getTime()) + "model";
-
-        Entity entity = null;
-
-        XMLDBModel dbModel = new XMLDBModel(modelName);
-        dbModel.setIsNew(true);
-        dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"" + modelName + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
-
-            SaveModelManager saveManager = new SaveModelManager();
-            /*String modelID =*/ saveManager.save(dbModel);
-
-            entity = LoadManager.importModel(modelName, true, container);
-            assertEquals(entity.getName(), modelName);
-
-            assertEquals(
-                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(),
-                    "TRUE");
-
-            removeModel(new XMLDBModel(dbModel.getModelName()));
-
-
-        }
-
-    /**
-     * Test importing a model by value.  No DBReference tag is present.
-     * @exception Exception
-     */
-    @Test
-    public void testImportModelByRefWithTag() throws Exception {
-
-        Entity container = new Entity("container");
-
-        java.util.Date time = new java.util.Date();
-
-        String modelName=String.valueOf(time.getTime()) + "model";
-
-        Entity entity = null;
-
-        XMLDBModel dbModel = new XMLDBModel(modelName);
-        dbModel.setIsNew(true);
-        dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"" + modelName + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
-
-            SaveModelManager saveManager = new SaveModelManager();
-            /*String modelID =*/ saveManager.save(dbModel);
-
-            entity = LoadManager.importModel(modelName, true, container);
-            assertEquals(entity.getName(), modelName);
-
-            assertEquals(
-                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(),
-                    "TRUE");
-
-
-            removeModel(new XMLDBModel(dbModel.getModelName()));
-
-
-
-        }
-
-    /**
-     * Test importing a model by reference.  No DBReference tag is present.
-     * @exception Exception
-     */
-    @Test
-    public void testImportModelByValueNoTag() throws Exception {
-
-
-        Entity container = new Entity("container");
-
-        java.util.Date time = new java.util.Date();
-
-        String modelName=String.valueOf(time.getTime()) + "model";
+        String modelName = String.valueOf(time.getTime()) + "model";
 
         Entity entity = null;
 
@@ -185,7 +66,9 @@ public class TestImportByReferenceRequirementsIntegration {
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
                 + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                + "<entity name=\"" + modelName + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<entity name=\""
+                + modelName
+                + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
                 + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                 + "</property>"
                 + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
@@ -207,22 +90,136 @@ public class TestImportByReferenceRequirementsIntegration {
                 + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                 + "</property>" + "</entity>" + "</entity>");
 
-            SaveModelManager saveManager = new SaveModelManager();
-            /*String modelID =*/ saveManager.save(dbModel);
+        SaveModelManager saveManager = new SaveModelManager();
+        /*String modelID =*/saveManager.save(dbModel);
 
-            entity = LoadManager.importModel(modelName, false, container);
-            assertEquals(entity.getName(), modelName);
+        entity = LoadManager.importModel(modelName, true, container);
+        assertEquals(entity.getName(), modelName);
 
-            assertEquals(
-                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(),
-                    "FALSE");
+        assertEquals(
+                ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                        .getExpression(), "TRUE");
 
+        removeModel(new XMLDBModel(dbModel.getModelName()));
 
-            removeModel(new XMLDBModel(dbModel.getModelName()));
+    }
 
+    /**
+     * Test importing a model by value.  No DBReference tag is present.
+     * @exception Exception
+     */
+    @Test
+    public void testImportModelByRefWithTag() throws Exception {
 
-        }
+        Entity container = new Entity("container");
+
+        java.util.Date time = new java.util.Date();
+
+        String modelName = String.valueOf(time.getTime()) + "model";
+
+        Entity entity = null;
+
+        XMLDBModel dbModel = new XMLDBModel(modelName);
+        dbModel.setIsNew(true);
+        dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\""
+                + modelName
+                + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\""
+                + XMLDBModel.DB_REFERENCE_ATTR
+                + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
+
+        SaveModelManager saveManager = new SaveModelManager();
+        /*String modelID =*/saveManager.save(dbModel);
+
+        entity = LoadManager.importModel(modelName, true, container);
+        assertEquals(entity.getName(), modelName);
+
+        assertEquals(
+                ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                        .getExpression(), "TRUE");
+
+        removeModel(new XMLDBModel(dbModel.getModelName()));
+
+    }
+
+    /**
+     * Test importing a model by reference.  No DBReference tag is present.
+     * @exception Exception
+     */
+    @Test
+    public void testImportModelByValueNoTag() throws Exception {
+
+        Entity container = new Entity("container");
+
+        java.util.Date time = new java.util.Date();
+
+        String modelName = String.valueOf(time.getTime()) + "model";
+
+        Entity entity = null;
+
+        XMLDBModel dbModel = new XMLDBModel(modelName);
+        dbModel.setIsNew(true);
+        dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\""
+                + modelName
+                + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
+
+        SaveModelManager saveManager = new SaveModelManager();
+        /*String modelID =*/saveManager.save(dbModel);
+
+        entity = LoadManager.importModel(modelName, false, container);
+        assertEquals(entity.getName(), modelName);
+
+        assertEquals(
+                ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                        .getExpression(), "FALSE");
+
+        removeModel(new XMLDBModel(dbModel.getModelName()));
+
+    }
 
     /**
      * Test importing a model by reference.  No DBReference tag is present.
@@ -235,53 +232,54 @@ public class TestImportByReferenceRequirementsIntegration {
 
         java.util.Date time = new java.util.Date();
 
-        String modelName=String.valueOf(time.getTime()) + "model";
+        String modelName = String.valueOf(time.getTime()) + "model";
 
         Entity entity = null;
 
         XMLDBModel dbModel = new XMLDBModel(modelName);
         dbModel.setIsNew(true);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"" + modelName + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
-                        + "</property>"
-                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
-                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
-                        + "</property>"
-                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
-                        + "</property>"
-                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
-                        + "</property>"
-                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
-                        + "</property>"
-                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
-                        + "<doc>Create a constant sequence.</doc>"
-                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
-                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
-                        + "</property>"
-                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
-                        + "</property>"
-                        + "</property>"
-                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
-                        + "</property>" + "</entity>" + "</entity>");
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + "<entity name=\""
+                + modelName
+                + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + "</property>"
+                + "<property name=\""
+                + XMLDBModel.DB_REFERENCE_ATTR
+                + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
+                + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                + "</property>"
+                + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + "</property>"
+                + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + "</property>"
+                + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + "</property>"
+                + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                + "<doc>Create a constant sequence.</doc>"
+                + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                + "</property>"
+                + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                + "</property>"
+                + "</property>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                + "</property>" + "</entity>" + "</entity>");
 
-            SaveModelManager saveManager = new SaveModelManager();
-            /*String modelID =*/ saveManager.save(dbModel);
+        SaveModelManager saveManager = new SaveModelManager();
+        /*String modelID =*/saveManager.save(dbModel);
 
-            entity = LoadManager.importModel(modelName, false, container);
-            assertEquals(entity.getName(), modelName);
+        entity = LoadManager.importModel(modelName, false, container);
+        assertEquals(entity.getName(), modelName);
 
-            assertEquals(
-                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression(),
-                    "FALSE");
+        assertEquals(
+                ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                        .getExpression(), "FALSE");
 
+        removeModel(new XMLDBModel(dbModel.getModelName()));
 
-            removeModel(new XMLDBModel(dbModel.getModelName()));
-
-
-        }
+    }
 
     /**
      * Test attempting to import a model with a null model name.
@@ -292,7 +290,7 @@ public class TestImportByReferenceRequirementsIntegration {
 
         Entity container = new Entity("container");
 
-        String inputString=null;
+        String inputString = null;
 
         //Entity entity = null;
 
@@ -300,7 +298,7 @@ public class TestImportByReferenceRequirementsIntegration {
 
         try {
 
-            /*entity =*/ LoadManager.importModel(inputString, false, container);
+            /*entity =*/LoadManager.importModel(inputString, false, container);
 
         } catch (Exception e) {
 
@@ -310,10 +308,9 @@ public class TestImportByReferenceRequirementsIntegration {
 
         assertTrue(isSuccess);
 
+    }
 
-        }
-
-    private void removeModel(XMLDBModel dbModel) throws Exception{
+    private void removeModel(XMLDBModel dbModel) throws Exception {
 
         DBConnection dbConnection = null;
 

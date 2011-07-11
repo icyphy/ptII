@@ -130,7 +130,8 @@ public class CSVReader extends LineReader {
         trimSpaces.setTypeEquals(BaseType.BOOLEAN);
         trimSpaces.setExpression("true");
 
-        new SingletonParameter(endOfFile, "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(endOfFile, "_showName")
+                .setToken(BooleanToken.TRUE);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
@@ -139,8 +140,7 @@ public class CSVReader extends LineReader {
                 + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
                 + "<text x=\"-11\" y=\"4\""
                 + "style=\"font-size:11; fill:white; font-family:SansSerif\">"
-                + "CSV</text>\n"
-                + "</svg>\n");
+                + "CSV</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -214,7 +214,8 @@ public class CSVReader extends LineReader {
             }
         }
         if (_currentLine != null) {
-            StringTokenizer tokenizer = new StringTokenizer(_currentLine, _delimiter);
+            StringTokenizer tokenizer = new StringTokenizer(_currentLine,
+                    _delimiter);
             int i = 0;
             StringToken[] fieldValues = new StringToken[_fieldNames.length];
             while (tokenizer.hasMoreTokens()) {
@@ -223,7 +224,7 @@ public class CSVReader extends LineReader {
                     break;
                 }
                 String nextToken = tokenizer.nextToken();
-                if (((BooleanToken)trimSpaces.getToken()).booleanValue()) {
+                if (((BooleanToken) trimSpaces.getToken()).booleanValue()) {
                     nextToken = nextToken.trim();
                 }
                 fieldValues[i] = new StringToken(nextToken);
@@ -233,7 +234,8 @@ public class CSVReader extends LineReader {
                 fieldValues[i] = new StringToken("");
                 i++;
             }
-            RecordToken outputValue = new OrderedRecordToken(_fieldNames, fieldValues);
+            RecordToken outputValue = new OrderedRecordToken(_fieldNames,
+                    fieldValues);
             output.broadcast(outputValue);
         }
         if (_nextLine == null) {
@@ -292,11 +294,12 @@ public class CSVReader extends LineReader {
         if (_currentLine == null) {
             throw new IllegalActionException("File has no data.");
         }
-        StringTokenizer tokenizer = new StringTokenizer(_currentLine, _delimiter);
+        StringTokenizer tokenizer = new StringTokenizer(_currentLine,
+                _delimiter);
         ArrayList<String> fieldNames = new ArrayList<String>();
         while (tokenizer.hasMoreElements()) {
             String nextName = tokenizer.nextToken();
-            if (((BooleanToken)trimSpaces.getToken()).booleanValue()) {
+            if (((BooleanToken) trimSpaces.getToken()).booleanValue()) {
                 nextName = nextName.trim();
             }
             fieldNames.add(nextName);

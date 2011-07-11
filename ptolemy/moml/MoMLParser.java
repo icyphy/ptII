@@ -500,18 +500,22 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         && createIfNecessary.equals("true")) {
                     // Check value against oldValue so that MoMLVariableChecker-2.3.4 passes.
                     // Check for oldValue in _current so that MoMLVariableChecker-3.2 passes.
-                    if (!value.equals(oldValue)  || _current.getAttribute(oldValue) == null ) {
+                    if (!value.equals(oldValue)
+                            || _current.getAttribute(oldValue) == null) {
                         // Needed to find Parameters that are up scope.
                         // FIXME: does this check ScopeExtendingAttributes?
                         Attribute masterAttribute = null;
                         NamedObj searchContainer = _current;
-                        while (searchContainer != null && masterAttribute == null) {
-                            masterAttribute = searchContainer.getAttribute(oldValue);
+                        while (searchContainer != null
+                                && masterAttribute == null) {
+                            masterAttribute = searchContainer
+                                    .getAttribute(oldValue);
                             searchContainer = searchContainer.getContainer();
                         }
                         if (!value.equals(oldValue) || masterAttribute != null) {
                             // There already is something with that name, so we skip.
-                            String currentElement = _xmlParser.getCurrentElement();
+                            String currentElement = _xmlParser
+                                    .getCurrentElement();
 
                             // FIXME: increment _skipElement or set it to 1?
                             _skipElement++;
@@ -555,7 +559,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter) filters.next();
                 filteredValue = filter.filterAttributeValue(_current,
-                        currentElement, name, filteredValue, _xmlFileName, _filterMoMLParser);
+                        currentElement, name, filteredValue, _xmlFileName,
+                        _filterMoMLParser);
             }
 
             // Sometimes the value we pass in is null, so we only
@@ -804,10 +809,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
                 } catch (Exception ex) {
                     if (_handler != null) {
-                        int reply = _handler.handleError("<param name=\""
-                                + param.getName() + "\" value=\""
-                                + param.getExpression() + "\"/>", param
-                                .getContainer(), ex);
+                        int reply = _handler.handleError(
+                                "<param name=\"" + param.getName()
+                                        + "\" value=\"" + param.getExpression()
+                                        + "\"/>", param.getContainer(), ex);
 
                         if (reply == ErrorHandler.CONTINUE) {
                             continue;
@@ -914,8 +919,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 Configurable castCurrent = (Configurable) _current;
                 String previousSource = castCurrent.getConfigureSource();
                 String previousText = castCurrent.getConfigureText();
-                castCurrent.configure(_base, _configureSource, _currentCharData
-                        .toString());
+                castCurrent.configure(_base, _configureSource,
+                        _currentCharData.toString());
 
                 // Propagate to derived classes and instances.
                 try {
@@ -2501,8 +2506,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (container != null && container instanceof Entity) {
                     Port port = ((Entity) container).getPort(propName);
                     if (port != null && port instanceof ParameterPort) {
-                        request = new DeleteRequest(_DELETE_PORT, port
-                                .getName(), container.getFullName());
+                        request = new DeleteRequest(_DELETE_PORT,
+                                port.getName(), container.getFullName());
                         // Only defer if we are in a class, entity, or
                         // model context, which is equivalent to the
                         // _current being an instance of
@@ -3285,8 +3290,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                                     if (last > 0) {
                                         newClassName = previousClassName
-                                                .substring(0, last)
-                                                + newName;
+                                                .substring(0, last) + newName;
                                     }
 
                                     derived.setClassName(newClassName);
@@ -3549,8 +3553,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // triggered an exception.
             if (_handler != null) {
                 int reply = _handler.handleError(
-                        _getCurrentElement(elementName), _current, ex
-                                .getTargetException());
+                        _getCurrentElement(elementName), _current,
+                        ex.getTargetException());
 
                 if (reply == ErrorHandler.CONTINUE) {
                     _attributes.clear();
@@ -4260,8 +4264,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         "Attempt to extend an entity that "
                                 + "is not a class: " + reference.getFullName()
                                 + " className: " + className + " entityName: "
-                                + entityName + " source: " + source, reference
-                                .getFullName(), _currentExternalEntity(),
+                                + entityName + " source: " + source,
+                        reference.getFullName(), _currentExternalEntity(),
                         _getLineNumber(), _getColumnNumber());
             }
 
@@ -5068,8 +5072,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private ComponentPort _getPort(String portspec, CompositeEntity context)
             throws XmlException {
         ComponentPort port = (ComponentPort) context.getPort(portspec);
-        _checkForNull(port, "No port named \"" + portspec + "\" in "
-                + context.getFullName());
+        _checkForNull(
+                port,
+                "No port named \"" + portspec + "\" in "
+                        + context.getFullName());
         return port;
     }
 
@@ -5404,9 +5410,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // If this object is a derived object, then its I/O status
             // cannot be changed.
             if ((_current.getDerivedLevel() < Integer.MAX_VALUE)
-                    // FindBugs reports a problem with the cast, but
-                    // isIOPort is set by checking whether _current is
-                    // an instanceof IOPort, so the warning is superfluous
+            // FindBugs reports a problem with the cast, but
+            // isIOPort is set by checking whether _current is
+            // an instanceof IOPort, so the warning is superfluous
                     && (((IOPort) _current).isMultiport() != newValue)) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is "
@@ -5465,9 +5471,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // If this object is a derived object, then its I/O status
             // cannot be changed.
             if ((_current.getDerivedLevel() < Integer.MAX_VALUE)
-                    // FindBugs reports a problem with the cast, but
-                    // isIOPort is set by checking whether _current is
-                    // an instanceof IOPort, so the warning is superfluous
+            // FindBugs reports a problem with the cast, but
+            // isIOPort is set by checking whether _current is
+            // an instanceof IOPort, so the warning is superfluous
                     && (((IOPort) _current).isOutput() != newValue)) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is "
@@ -5527,9 +5533,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // If this object is a derived object, then its I/O status
             // cannot be changed.
             if ((_current.getDerivedLevel() < Integer.MAX_VALUE)
-                    // FindBugs reports a problem with the cast, but
-                    // isIOPort is set by checking whether _current is
-                    // an instanceof IOPort, so the warning is superfluous
+            // FindBugs reports a problem with the cast, but
+            // isIOPort is set by checking whether _current is
+            // an instanceof IOPort, so the warning is superfluous
                     && (((IOPort) _current).isInput() != newValue)) {
                 throw new IllegalActionException(_current,
                         "Cannot change whether this port is "

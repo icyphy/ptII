@@ -133,9 +133,9 @@ public class PaintedPath extends AbstractPaintedGraphic {
     public void setDashArray(float[] dashArray) {
         if (stroke instanceof BasicStroke) {
             stroke = new BasicStroke(((BasicStroke) stroke).getLineWidth(),
-                    ((BasicStroke) stroke).getEndCap(), ((BasicStroke) stroke)
-                            .getLineJoin(), ((BasicStroke) stroke)
-                            .getMiterLimit(), dashArray, 0.0f);
+                    ((BasicStroke) stroke).getEndCap(),
+                    ((BasicStroke) stroke).getLineJoin(),
+                    ((BasicStroke) stroke).getMiterLimit(), dashArray, 0.0f);
         } else {
             stroke = new BasicStroke(1.0f, BasicStroke.CAP_SQUARE,
                     BasicStroke.JOIN_MITER, 10.0f, dashArray, 0.0f);
@@ -147,8 +147,9 @@ public class PaintedPath extends AbstractPaintedGraphic {
      */
     public void setLineWidth(float lineWidth) {
         if (stroke instanceof BasicStroke) {
-            stroke = new BasicStroke(lineWidth, ((BasicStroke) stroke)
-                    .getEndCap(), ((BasicStroke) stroke).getLineJoin(),
+            stroke = new BasicStroke(lineWidth,
+                    ((BasicStroke) stroke).getEndCap(),
+                    ((BasicStroke) stroke).getLineJoin(),
                     ((BasicStroke) stroke).getMiterLimit(),
                     ((BasicStroke) stroke).getDashArray(), 0.0f);
         } else {

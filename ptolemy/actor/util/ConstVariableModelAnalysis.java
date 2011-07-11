@@ -366,8 +366,8 @@ public class ConstVariableModelAnalysis {
             // Under what conditions is a PortParameter not associated
             // with a port?
             if ((port != null) && (port.isOutsideConnected())) {
-                _updateChangeContext(parameter, (Entity) parameter
-                        .getContainer());
+                _updateChangeContext(parameter,
+                        (Entity) parameter.getContainer());
             }
         }
 

@@ -83,7 +83,8 @@ import ptolemy.vergil.basic.ImageExportable;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class PlotTableauFrame extends TableauFrame implements Printable, ImageExportable {
+public class PlotTableauFrame extends TableauFrame implements Printable,
+        ImageExportable {
     /** Construct a plot frame with a default title and by default contains
      *  an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
@@ -187,7 +188,8 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
      *  @exception IOException If writing to the stream fails.
      *  @exception PrinterException  If the specified format is not supported.
      */
-    public void writeImage(OutputStream stream, String format) throws PrinterException, IOException {
+    public void writeImage(OutputStream stream, String format)
+            throws PrinterException, IOException {
         if (plot == null) {
             throw new IOException("No plot to write image from!");
         }
@@ -293,7 +295,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = super._createFileMenuItems();
 
-        JMenu exportMenu = (JMenu)fileMenuItems[_EXPORT_MENU_INDEX];
+        JMenu exportMenu = (JMenu) fileMenuItems[_EXPORT_MENU_INDEX];
         exportMenu.setEnabled(true);
 
         try {
@@ -305,7 +307,8 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
             // is only one configuration, or that if there are multiple configurations
             // in this execution, that the first one will determine whether PDF
             // export is provided.
-            Configuration configuration = (Configuration)Configuration.configurations().get(0);
+            Configuration configuration = (Configuration) Configuration
+                    .configurations().get(0);
             // NOTE: Configuration should not be null, but just in case:
             if (configuration != null) {
                 // Deal with the PDF Action first.
@@ -318,7 +321,8 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
                         String exportPDFActionClassName = exportPDFActionClassNameParameter
                                 .stringValue();
                         try {
-                            Class exportPDFActionClass = Class.forName(exportPDFActionClassName);
+                            Class exportPDFActionClass = Class
+                                    .forName(exportPDFActionClassName);
                             Constructor exportPDFActionConstructor = exportPDFActionClass
                                     .getDeclaredConstructor(Top.class);
                             _exportPDFAction = (AbstractAction) exportPDFActionConstructor
@@ -328,8 +332,8 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
                                     null,
                                     throwable,
                                     "Failed to construct export PDF class \""
-                                    + exportPDFActionClassName
-                                    + "\", which was read from the configuration.");
+                                            + exportPDFActionClassName
+                                            + "\", which was read from the configuration.");
                         }
                     }
                 }
@@ -338,7 +342,9 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
             // We do not want to abort at this point because the worst
             // case is that we will have no Export PDF in the menu.
             // That is better than preventing the user from opening a model.
-            System.err.println("Warning: Tried to create Export PDF menu item, but failed: " + ex);
+            System.err
+                    .println("Warning: Tried to create Export PDF menu item, but failed: "
+                            + ex);
         }
 
         // Uncomment the next block to have Export PDF *ALWAYS* enabled.
@@ -348,23 +354,23 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
         // NOTE: Comment out the entire block with lines that begin with //
         // so that the test in adm notices that the block is commented out.
 
-//         if (_exportPDFAction == null) {
-//             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
-//             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
-//             try {
-//                 Class exportPDFActionClass = Class
-//                         .forName(exportPDFActionClassName);
-//                 Constructor exportPDFActionConstructor = exportPDFActionClass
-//                         .getDeclaredConstructor(Top.class);
-//                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor
-//                         .newInstance(this);
-//             } catch (Throwable throwable) {
-//                 new InternalErrorException(null, throwable,
-//                         "Failed to construct export PDF class \""
-//                                 + exportPDFActionClassName
-//                                 + "\", which was read from the configuration.");
-//             }
-//         }
+        //         if (_exportPDFAction == null) {
+        //             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+        //             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+        //             try {
+        //                 Class exportPDFActionClass = Class
+        //                         .forName(exportPDFActionClassName);
+        //                 Constructor exportPDFActionConstructor = exportPDFActionClass
+        //                         .getDeclaredConstructor(Top.class);
+        //                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+        //                         .newInstance(this);
+        //             } catch (Throwable throwable) {
+        //                 new InternalErrorException(null, throwable,
+        //                         "Failed to construct export PDF class \""
+        //                                 + exportPDFActionClassName
+        //                                 + "\", which was read from the configuration.");
+        //             }
+        //         }
         // End of block to uncomment.
 
         if (_exportPDFAction != null) {
@@ -510,8 +516,9 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
                 fileDialog.setDialogTitle("Specify a file to write to.");
                 LinkedList extensions = new LinkedList();
                 extensions.add(_formatName);
-                fileDialog.addChoosableFileFilter(new diva.gui.ExtensionFileFilter(
-                        extensions));
+                fileDialog
+                        .addChoosableFileFilter(new diva.gui.ExtensionFileFilter(
+                                extensions));
 
                 if (_directory != null) {
                     fileDialog.setCurrentDirectory(_directory);
@@ -522,14 +529,16 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
                     // This will throw a security exception in an applet.
                     // FIXME: we should support users under applets opening files
                     // on the server.
-                    String currentWorkingDirectory = StringUtilities.getProperty("user.dir");
+                    String currentWorkingDirectory = StringUtilities
+                            .getProperty("user.dir");
                     if (currentWorkingDirectory != null) {
-                        fileDialog.setCurrentDirectory(new File(currentWorkingDirectory));
+                        fileDialog.setCurrentDirectory(new File(
+                                currentWorkingDirectory));
                     }
                 }
 
-                int returnVal = fileDialog.showDialog(PlotTableauFrame.this, "Export "
-                        + _formatName.toUpperCase());
+                int returnVal = fileDialog.showDialog(PlotTableauFrame.this,
+                        "Export " + _formatName.toUpperCase());
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     _directory = fileDialog.getCurrentDirectory();
@@ -537,10 +546,12 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
 
                     if (file.getName().indexOf(".") == -1) {
                         // If the user has not given the file an extension, add it
-                        file = new File(file.getAbsolutePath() + "." + _formatName);
+                        file = new File(file.getAbsolutePath() + "."
+                                + _formatName);
                     }
                     if (file.exists()) {
-                        if (!MessageHandler.yesNoQuestion("Overwrite " + file.getName() + "?")) {
+                        if (!MessageHandler.yesNoQuestion("Overwrite "
+                                + file.getName() + "?")) {
                             return;
                         }
                     }
@@ -558,10 +569,12 @@ public class PlotTableauFrame extends TableauFrame implements Printable, ImageEx
                     // FIXME: We don't do the right thing with PNG files.
                     // It just opens in a text editor.
                     // _read(file.toURI().toURL());
-                    MessageHandler.message("Image file exported to " + file.getName());
+                    MessageHandler.message("Image file exported to "
+                            + file.getName());
                 }
             } catch (Exception ex) {
-                MessageHandler.error("Export to " + _formatName.toUpperCase() + " failed", ex);
+                MessageHandler.error("Export to " + _formatName.toUpperCase()
+                        + " failed", ex);
             } finally {
                 jFileChooserBugFix.restoreBackground(background);
             }

@@ -60,8 +60,8 @@ public class Expression extends TypedAtomicActor {
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         if (name.equals("expressionAttr")) {
-            return getTranslatedExpression(
-                    ((ptolemy.actor.lib.Expression) getComponent()).expression.getExpression());
+            return getTranslatedExpression(((ptolemy.actor.lib.Expression) getComponent()).expression
+                    .getExpression());
         }
 
         return super.getInfo(name, parameters);

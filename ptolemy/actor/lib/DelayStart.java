@@ -110,8 +110,8 @@ public class DelayStart extends TypedAtomicActor {
                     // Assume the date wasn't set.
                     Calendar now = Calendar.getInstance();
                     calendar.set(Calendar.YEAR, now.get(Calendar.YEAR));
-                    calendar.set(Calendar.DAY_OF_MONTH, now
-                            .get(Calendar.DAY_OF_MONTH));
+                    calendar.set(Calendar.DAY_OF_MONTH,
+                            now.get(Calendar.DAY_OF_MONTH));
                     calendar.set(Calendar.MONTH, now.get(Calendar.MONTH));
                     date = calendar.getTime();
                 }

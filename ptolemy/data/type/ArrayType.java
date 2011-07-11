@@ -170,8 +170,8 @@ public class ArrayType extends StructuredType implements Cloneable,
         }
         if (!(token instanceof ArrayToken)) {
             if (hasKnownLength() && length() != 1) {
-                throw new IllegalActionException(null, Token
-                        .notSupportedConversionMessage(token, toString()));
+                throw new IllegalActionException(null,
+                        Token.notSupportedConversionMessage(token, toString()));
             }
             // NOTE: Added 7/17/06 by EAL to support type -> {type} conversion.
             Token[] contents = new Token[1];
@@ -181,8 +181,8 @@ public class ArrayType extends StructuredType implements Cloneable,
 
         ArrayToken argumentArrayToken = (ArrayToken) token;
         if (hasKnownLength() && argumentArrayToken.length() != length()) {
-            throw new IllegalActionException(null, Token
-                    .notSupportedConversionMessage(token, toString()));
+            throw new IllegalActionException(null,
+                    Token.notSupportedConversionMessage(token, toString()));
         }
 
         if (myElementType.equals(argumentArrayToken.getElementType())) {
@@ -197,8 +197,8 @@ public class ArrayType extends StructuredType implements Cloneable,
                 resultArray[i] = myElementType.convert(argumentArray[i]);
             }
         } catch (IllegalActionException ex) {
-            throw new IllegalActionException(null, ex, Token
-                    .notSupportedConversionMessage(token, "int"));
+            throw new IllegalActionException(null, ex,
+                    Token.notSupportedConversionMessage(token, "int"));
         }
 
         if (resultArray.length < 1) {
@@ -560,8 +560,8 @@ public class ArrayType extends StructuredType implements Cloneable,
                     + "The argument " + type + " is not an ArrayType.");
         }
 
-        int retval = TypeLattice.compare(_elementType, ((ArrayType) type)
-                .getElementType());
+        int retval = TypeLattice.compare(_elementType,
+                ((ArrayType) type).getElementType());
 
         ArrayType arrayArgType = (ArrayType) type;
         if (hasKnownLength() && arrayArgType.hasKnownLength()) {

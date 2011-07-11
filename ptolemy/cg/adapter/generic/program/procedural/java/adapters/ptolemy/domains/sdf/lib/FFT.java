@@ -25,6 +25,7 @@
 
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib;
+
 import java.util.Set;
 
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
@@ -40,7 +41,9 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class FFT extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.FFT {
+public class FFT
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.FFT {
 
     /**
      * Construct a FFT adapter.
@@ -56,7 +59,9 @@ public class FFT extends ptolemy.cg.adapter.generic.program.procedural.adapters.
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        ((ProceduralCodeGenerator) getCodeGenerator()).addLibraryIfNecessary(StringUtilities.getProperty("ptolemy.ptII.dir"));
+        ((ProceduralCodeGenerator) getCodeGenerator())
+                .addLibraryIfNecessary(StringUtilities
+                        .getProperty("ptolemy.ptII.dir"));
         Set files = super.getHeaderFiles();
         files.add("ptolemy.math.Complex;");
         files.add("ptolemy.math.SignalProcessing;");

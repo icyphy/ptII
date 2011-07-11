@@ -424,8 +424,8 @@ public class DistributedSDFDirector extends SDFDirector {
                 ClientThread clientThread = (ClientThread) actorsThreadsMap
                         .get(actor);
                 clientThread.setIterationCount(firing.getIterationCount());
-                commandsMap.put(clientThread, Integer
-                        .valueOf(ClientThread.ITERATE));
+                commandsMap.put(clientThread,
+                        Integer.valueOf(ClientThread.ITERATE));
             }
 
             int aux = levelNumber - iterationsValue;
@@ -634,8 +634,8 @@ public class DistributedSDFDirector extends SDFDirector {
         for (Iterator actorsIterator = actorsThreadsMap.keySet().iterator(); actorsIterator
                 .hasNext();) {
             Object auxActor = actorsIterator.next();
-            commands.put(actorsThreadsMap.get(auxActor), Integer
-                    .valueOf(ClientThread.EXIT));
+            commands.put(actorsThreadsMap.get(auxActor),
+                    Integer.valueOf(ClientThread.EXIT));
         }
 
         synchronizer.setCommands(commands);
@@ -761,8 +761,7 @@ public class DistributedSDFDirector extends SDFDirector {
                     .size());
 
             clientServerInteractionManager.init(StringUtilities
-                    .getProperty("ptolemy.ptII.dir")
-                    + configFileName);
+                    .getProperty("ptolemy.ptII.dir") + configFileName);
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to initialize Jini");
@@ -844,8 +843,8 @@ public class DistributedSDFDirector extends SDFDirector {
                 ClientThread clientThread = (ClientThread) actorsThreadsMap
                         .get(actor);
                 clientThread.setIterationCount(firing.getIterationCount());
-                commandsMap.put(clientThread, Integer
-                        .valueOf(ClientThread.ITERATE));
+                commandsMap.put(clientThread,
+                        Integer.valueOf(ClientThread.ITERATE));
             }
 
             synchronizer.setCommands(commandsMap);

@@ -1503,10 +1503,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
 
         if (code.length() > 0) {
-            code.insert(0, _eol
-                    + comment("Generate shared code for "
-                            + CodeGeneratorHelper
-                                    .generateSimpleName(getContainer())));
+            code.insert(
+                    0,
+                    _eol
+                            + comment("Generate shared code for "
+                                    + CodeGeneratorHelper
+                                            .generateSimpleName(getContainer())));
             code.append(comment("Finished generating shared code for "
                     + CodeGeneratorHelper.generateSimpleName(getContainer())));
         }
@@ -2354,10 +2356,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /**
      * A static list of all macros supported by the code generator.
      */
-    protected List<String> _macros = new ArrayList<String>(Arrays
-            .asList(new String[] { "ref", "val", "size", "type", "targetType",
-                    "cgType", "tokenFunc", "typeFunc", "actorSymbol",
-                    "actorClass", "new" }));
+    protected List<String> _macros = new ArrayList<String>(
+            Arrays.asList(new String[] { "ref", "val", "size", "type",
+                    "targetType", "cgType", "tokenFunc", "typeFunc",
+                    "actorSymbol", "actorClass", "new" }));
 
     /** A list of the primitive types supported by the code generator.
      */

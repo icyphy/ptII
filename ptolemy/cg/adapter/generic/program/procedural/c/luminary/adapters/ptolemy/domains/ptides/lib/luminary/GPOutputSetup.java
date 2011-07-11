@@ -55,8 +55,7 @@ public class GPOutputSetup extends ActuatorSetup {
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    public GPOutputSetup(
-            ptolemy.domains.ptides.lib.luminary.GPOutputSetup actor)
+    public GPOutputSetup(ptolemy.domains.ptides.lib.luminary.GPOutputSetup actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
 

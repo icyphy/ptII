@@ -94,7 +94,7 @@ public class HTMLAboutJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-            .main("ptolemy.actor.gui.test.junit.HTMLAboutJUnitTest");
+                .main("ptolemy.actor.gui.test.junit.HTMLAboutJUnitTest");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,7 +126,8 @@ public class HTMLAboutJUnitTest {
             public void run() {
                 try {
                     System.out.print(" " + modelFileName + " ");
-                    model[0] = ConfigurationApplication.openModel(modelFileName);
+                    model[0] = ConfigurationApplication
+                            .openModel(modelFileName);
                 } catch (Throwable throwableCause) {
                     throwable[0] = throwableCause;
                     throw new RuntimeException(throwableCause);
@@ -147,7 +148,8 @@ public class HTMLAboutJUnitTest {
                 try {
                     // FIXME: handle cases where model[0] is null.
                     if (model[0] != null) {
-                        ConfigurationApplication.closeModelWithoutSavingOrExiting(model[0]);
+                        ConfigurationApplication
+                                .closeModelWithoutSavingOrExiting(model[0]);
                     }
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -169,4 +171,3 @@ public class HTMLAboutJUnitTest {
         }
     }
 }
-

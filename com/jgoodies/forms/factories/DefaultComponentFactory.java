@@ -212,8 +212,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
             throw new NullPointerException("The label must not be null.");
         }
 
-        JPanel panel = new JPanel(new TitledSeparatorLayout(!Utilities
-                .isLafAqua()));
+        JPanel panel = new JPanel(new TitledSeparatorLayout(
+                !Utilities.isLafAqua()));
         panel.setOpaque(false);
         panel.add(label);
         panel.add(new JSeparator());

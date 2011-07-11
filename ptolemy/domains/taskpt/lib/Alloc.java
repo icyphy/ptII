@@ -97,8 +97,9 @@ public class Alloc extends MemoryAccess {
     public void fire() throws IllegalActionException {
 
         Memory mem = getMemory();
-        if (mem == null)
+        if (mem == null) {
             throw new IllegalActionException("no memory found.");
+        }
 
         size.update();
         int sizeVal = ((IntToken) size.getToken()).intValue();
@@ -106,7 +107,7 @@ public class Alloc extends MemoryAccess {
         PtrToken ptrTok = mem.allocate(sizeVal);
 
         int numWrites = 0;
-        int addrVal = ((PtrToken) ptrTok).getAddress();
+        int addrVal = (ptrTok).getAddress();
 
         while (numWrites < sizeVal) {
             init.update();

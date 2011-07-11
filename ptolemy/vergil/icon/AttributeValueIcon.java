@@ -161,7 +161,7 @@ public class AttributeValueIcon extends XMLIcon {
                             .getExpression());
                 } else if (container instanceof CompositeEntity) {
                     NamedObj entity = ((CompositeEntity) container)
-                    .getEntity(entityName.stringValue());
+                            .getEntity(entityName.stringValue());
                     if (entity != null) {
                         associatedAttribute = entity.getAttribute(attributeName
                                 .getExpression());
@@ -196,10 +196,9 @@ public class AttributeValueIcon extends XMLIcon {
 
         try {
             int width = ((IntToken) displayWidth.getToken()).intValue();
-            int height = ((IntToken) displayHeight.getToken())
-            .intValue();
-            truncated = StringUtilities.truncateString(truncated, width,
-                    height);
+            int height = ((IntToken) displayHeight.getToken()).intValue();
+            truncated = StringUtilities
+                    .truncateString(truncated, width, height);
         } catch (IllegalActionException ex) {
             // Ignore... use whole string.
         }

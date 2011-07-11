@@ -91,22 +91,22 @@ public class OntologyDisplayActions extends NodeControllerFactory {
 
     /** The controller that adds commands to the context menu.
      */
-    protected static class HighlighterController extends MoMLModelAttributeController {
+    protected static class HighlighterController extends
+            MoMLModelAttributeController {
 
         /** Create a HighlighterController that is associated with a controller.
          *  @param displayActions The OntologyDisplayActions object reference.
          *  @param controller The controller.
          */
-        public HighlighterController(OntologyDisplayActions displayActions, GraphController controller) {
+        public HighlighterController(OntologyDisplayActions displayActions,
+                GraphController controller) {
             super(controller);
 
-            ClearResolution clearResolution =
-                displayActions.new ClearResolution();
-            _menuFactory
-                    .addMenuItemFactory(new MenuActionFactory(clearResolution));
+            ClearResolution clearResolution = displayActions.new ClearResolution();
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    clearResolution));
 
-            ResolveConcepts resolveConcepts =
-                displayActions.new ResolveConcepts();
+            ResolveConcepts resolveConcepts = displayActions.new ResolveConcepts();
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     resolveConcepts));
         }
@@ -142,8 +142,8 @@ public class OntologyDisplayActions extends NodeControllerFactory {
             if (container instanceof OntologySolver) {
                 try {
                     ((OntologySolver) container).reset();
-                    ((OntologySolver) container).getMoMLHandler()
-                    .clearDisplay(true, true);
+                    ((OntologySolver) container).getMoMLHandler().clearDisplay(
+                            true, true);
                 } catch (IllegalActionException e1) {
                     MessageHandler.error("Clearing concepts failed", e1);
                 }

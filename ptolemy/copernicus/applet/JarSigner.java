@@ -120,7 +120,8 @@ public class JarSigner {
 
         String keystorePropertiesFileName = StringUtilities
                 .getProperty("ptolemy.ptII.dir")
-                + File.separator + "ptKeystore.properties";
+                + File.separator
+                + "ptKeystore.properties";
 
         Properties properties = new Properties();
         try {
@@ -153,8 +154,8 @@ public class JarSigner {
                 + args[1] + "\"" + " using keystore: \"" + keystoreFileName
                 + "\"" + " and alias: \"" + alias + "\"");
         try {
-            sign(args[0], args[1], keystoreFileName, alias, storePassword
-                    .toCharArray(), keyPassword.toCharArray());
+            sign(args[0], args[1], keystoreFileName, alias,
+                    storePassword.toCharArray(), keyPassword.toCharArray());
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -198,8 +199,8 @@ public class JarSigner {
 
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             for (int count = 0; count < chain.length; count++) {
-                ByteArrayInputStream certIn = new ByteArrayInputStream(chain[0]
-                        .getEncoded());
+                ByteArrayInputStream certIn = new ByteArrayInputStream(
+                        chain[0].getEncoded());
                 X509Certificate cert = (X509Certificate) cf
                         .generateCertificate(certIn);
                 certChain[count] = cert;
@@ -298,9 +299,10 @@ public class JarSigner {
             Attributes attributes = manifest.getMainAttributes();
             attributes.putValue(Attributes.Name.MANIFEST_VERSION.toString(),
                     "1.0");
-            attributes.putValue("Created-By", System
-                    .getProperty("java.version")
-                    + " (" + System.getProperty("java.vendor") + ")");
+            attributes.putValue(
+                    "Created-By",
+                    System.getProperty("java.version") + " ("
+                            + System.getProperty("java.vendor") + ")");
             entries = manifest.getEntries();
         }
         return entries;
@@ -550,8 +552,10 @@ public class JarSigner {
                 // it into the attribute list
                 Attributes attributes = manifest.getAttributes(jarEntry
                         .getName());
-                attributes.putValue("SHA1-Digest", _updateDigest(messageDigest,
-                        jarFile.getInputStream(jarEntry)));
+                attributes.putValue(
+                        "SHA1-Digest",
+                        _updateDigest(messageDigest,
+                                jarFile.getInputStream(jarEntry)));
 
             } else if (!jarEntry.isDirectory()) {
                 // store away the digest into a new Attribute
@@ -559,8 +563,10 @@ public class JarSigner {
                 // for this entry. we do not store attributes for
                 // directories within the JAR
                 Attributes attributes = new Attributes();
-                attributes.putValue("SHA1-Digest", _updateDigest(messageDigest,
-                        jarFile.getInputStream(jarEntry)));
+                attributes.putValue(
+                        "SHA1-Digest",
+                        _updateDigest(messageDigest,
+                                jarFile.getInputStream(jarEntry)));
                 entries.put(jarEntry.getName(), attributes);
 
             }
@@ -684,8 +690,8 @@ public class JarSigner {
                 Constructor constructor = null;
                 try {
                     // Java 1.5
-                    constructor = _findConstructor(blockClass, sfg
-                            .getJDKSignatureFileClass(), PrivateKey.class,
+                    constructor = _findConstructor(blockClass,
+                            sfg.getJDKSignatureFileClass(), PrivateKey.class,
                             X509Certificate[].class, Boolean.TYPE,
                             String.class, X509Certificate.class,
                             contentSignerClass, String[].class, ZipFile.class);
@@ -704,10 +710,10 @@ public class JarSigner {
                     // and see
                     // http://www.docjar.com/docs/api/sun/security/tools/SignatureFile.html
 
-                    constructor = _findConstructor(blockClass, sfg
-                            .getJDKSignatureFileClass(), PrivateKey.class,
-                    /* Is this the only difference between 1.5 and 1.6?*/
-                    /* signatureAlgorithm */String.class,
+                    constructor = _findConstructor(blockClass,
+                            sfg.getJDKSignatureFileClass(), PrivateKey.class,
+                            /* Is this the only difference between 1.5 and 1.6?*/
+                            /* signatureAlgorithm */String.class,
                             X509Certificate[].class, Boolean.TYPE,
                             String.class, X509Certificate.class,
                             contentSignerClass, String[].class, ZipFile.class);

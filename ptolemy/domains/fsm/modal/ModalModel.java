@@ -140,7 +140,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *   an entity with the specified name.
      */
     public ModalModel(Workspace workspace) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -156,7 +156,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *   an actor already in the container.
      */
     public ModalModel(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -188,7 +188,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
 
     /** React to a change of the director or other property. */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == directorClass) {
             // We should change the director only if the current
             // director is not of the right class.
@@ -203,13 +203,13 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                     Class.forName(className);
                 } catch (ClassNotFoundException e) {
                     throw new IllegalActionException(this, null, e,
-                    "Invalid directorClass.");
+                            "Invalid directorClass.");
                 }
 
                 // NOTE: Creating a new director has to be done in a
                 // change request.
                 ChangeRequest request = new ChangeRequest(this,
-                "Create a new director") {
+                        "Create a new director") {
                     protected void _execute() throws Exception {
                         Director director = getDirector();
 
@@ -217,24 +217,24 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         Class newDirectorClass = Class.forName(directorClass
                                 .stringValue());
                         Constructor newDirectorConstructor = newDirectorClass
-                        .getConstructor(new Class[] {
-                                CompositeEntity.class, String.class });
+                                .getConstructor(new Class[] {
+                                        CompositeEntity.class, String.class });
                         Director newDirector = (Director) newDirectorConstructor
-                        .newInstance(new Object[] { ModalModel.this,
-                                uniqueName("_Director") });
+                                .newInstance(new Object[] { ModalModel.this,
+                                        uniqueName("_Director") });
 
                         // The director should not be persistent.
                         newDirector.setPersistent(false);
                         try {
                             StringAttribute newControllerName = (StringAttribute) newDirector
-                            .getAttribute("controllerName");
+                                    .getAttribute("controllerName");
                             newControllerName.setExpression("_Controller");
                         } catch (Exception e) {
                             throw new IllegalActionException(
                                     "Director class \"" + newDirectorClass
-                                    + "\" cannot be used "
-                                    + "because it does not have a "
-                                    + "\"controllerName\" attribute.");
+                                            + "\" cannot be used "
+                                            + "because it does not have a "
+                                            + "\"controllerName\" attribute.");
                         }
 
                         if ((director != null)
@@ -249,7 +249,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
 
                         if (executiveDirector != null) {
                             boolean supportMultirateFiring = executiveDirector
-                            .supportMultirateFiring();
+                                    .supportMultirateFiring();
 
                             if (supportMultirateFiring) {
                                 getController().setSupportMultirate(true);
@@ -306,7 +306,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException(
                     "Failed to validate the director of the clone of "
-                    + getFullName());
+                            + getFullName());
         }
 
         return newModel;
@@ -345,7 +345,6 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         }
         return result;
     }
-
 
     /** Handle a model error.
      *  @param context The object in which the error occurred.
@@ -395,25 +394,25 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             State currentState = _controller.currentState();
             Long version = _causalityInterfacesVersions.get(currentState);
             MirrorCausalityInterface causality = _causalityInterfaces
-            .get(currentState);
+                    .get(currentState);
             if (version == null || causality == null
                     || version.longValue() != workspace().getVersion()) {
                 // Need to create or update a causality interface for the current state.
                 CausalityInterface controllerCausality = _controller
-                .getCausalityInterface();
+                        .getCausalityInterface();
                 causality = new MirrorCausalityInterface(this,
                         controllerCausality);
                 Actor[] refinements = currentState.getRefinement();
                 if (refinements != null) {
                     for (int i = 0; i < refinements.length; i++) {
                         CausalityInterface refinementCausality = refinements[i]
-                                                                             .getCausalityInterface();
+                                .getCausalityInterface();
                         causality.composeWith(refinementCausality);
                     }
                 }
                 _causalityInterfaces.put(currentState, causality);
-                _causalityInterfacesVersions.put(currentState, Long
-                        .valueOf(workspace().getVersion()));
+                _causalityInterfacesVersions.put(currentState,
+                        Long.valueOf(workspace().getVersion()));
             }
             return causality;
         } catch (IllegalActionException e) {
@@ -510,7 +509,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
     ////                         private methods                   ////
     // Initialize the model.
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.domains.fsm.modal.ModalModel");
@@ -527,7 +526,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         // Whether the controller does conservative analysis or not should
         // depend on the parameter of this actor.
         _controller.stateDependentCausality
-        .setExpression("stateDependentCausality");
+                .setExpression("stateDependentCausality");
 
         // configure the directorClass parameter
         directorClass = new StringParameter(this, "directorClass");
@@ -552,7 +551,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             // FIXME: Better solution is to override the returned
             // list of choices in the parameter class.
             String[] suggestions = executiveDirector
-            .suggestedModalModelDirectors();
+                    .suggestedModalModelDirectors();
 
             for (int i = 0; i < suggestions.length; i++) {
                 directorClass.addChoice(suggestions[i]);
@@ -567,7 +566,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             // dropped into a blank editor. Model designers need to configure
             // it if FSMDirector is not the desired director.
             directorClass
-            .setExpression("ptolemy.domains.fsm.kernel.FSMDirector");
+                    .setExpression("ptolemy.domains.fsm.kernel.FSMDirector");
         }
 
         // Create a more reasonable default icon.
