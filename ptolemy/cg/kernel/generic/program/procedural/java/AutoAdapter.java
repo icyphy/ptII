@@ -1616,7 +1616,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private static NamedObj _toplevelTypesResolved = null;
 
-    /** If {@link #isAutoAdaptered(NamedObj)} is called, then
+    /** If {@link #_isAutoAdaptered(NamedObj)} is called, then
      *  {@link #getAutoAdapter(GenericCodeGenerator, Object)} sets
      *  this variable to true if the Object would use an AutoAdapter
      *  for code generation.  This is used to put two or more
