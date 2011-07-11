@@ -989,7 +989,7 @@ public class TDLActionsGraph {
     }
 
     /**
-     * Return true if the character at position i in the string slotSeleciton is
+     * Return true if the character at position i in the string slotSelection is
      * a number.
      *
      * @param slotSelection

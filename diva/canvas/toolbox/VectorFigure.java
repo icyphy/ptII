@@ -57,7 +57,7 @@ import diva.util.java2d.ShapeUtilities;
  * <li> Figure: Any other Figure can be drawn as well, thus allowing
  *      hierarchical drawing. Note, however, that figures drawn inside
  *      are NOT able to detect events. After the figure is drawn, the
- *      style, stroke, etc, will be reser to the default
+ *      style, stroke, etc, will be revert to the default
  * </ul>
  *
  * Strings are not currently supported, but will be soon. Transforms

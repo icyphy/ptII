@@ -51,7 +51,7 @@ public class NamedObjClassesSeen extends MoMLFilterSimple {
      *  @param classesToBeIndexed A HashMap, where the key is a fully
      *  qualified dot separated String naming the class; and the key
      *  is a Set where each element is a String that is a relative
-     *  path that refres to the model.
+     *  path that refresh to the model.
      */
 
     public NamedObjClassesSeen(HashMap classesToBeIndexed) {
@@ -174,7 +174,7 @@ public class NamedObjClassesSeen extends MoMLFilterSimple {
     /**  A HashMap, where the key is a fully
      *  qualified dot separated String naming the class; and the key
      *  is a Set where each element is a String that is a relative
-     *  path that refres to the model.
+     *  path that refresh to the model.
      */
     private HashMap _classesToBeIndexed;
 

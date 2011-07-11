@@ -66,7 +66,7 @@ package.
 By editing the ASTFunctionNode file it is also relatively 
 easy to allow references to other functions. This provides an easy mechanism 
 to extend the range to the parser e.g. have a tcl(...) function 
-that passes the string to a Tcl interpreter and retuns the result.
+that passes the string to a Tcl interpreter and returns the result.
 <p>
 Functional if is supported via the following syntax:
         (boolean) ? (value1) : (value2)

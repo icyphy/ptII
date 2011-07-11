@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Workspace;
  transmission.  It register itself and its connected wireless
  output port with the channel that the wireless output port uses.
  The channel will call its transformProperties() method for each
- transmission from the registed output port.
+ transmission from the registered output port.
  <p>
  When transformProperties() is called, this actor sets the value
  of three variables and then performs a complete execution of the

@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  "1050" is the port for name service.
 
  Specify the name of the supplier with <i>SupplierName<i>, which is
- registed on the name server.
+ registered on the name server.
 
  This actor can only be used in the CI domain currently. It is an
  active actor, and has an seperate thread to guard its execution.

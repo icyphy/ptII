@@ -40,7 +40,7 @@ added by another NamedObj, called a decorator to this NamedObj.
 An example is for example a code generator. This one has specific attributes
 for for example the generated code of the director in a model. These attributes
 are added by the Decorator (the code generator), to the director ("this" object).
-These attributes are stored seperately and can be retrieved by using
+These attributes are stored separately and can be retrieved by using
 {@link NamedObj#getDecoratorAttributes(Decorator)} or
 {@link NamedObj#getDecoratorAttributes(Decorator)}.
 

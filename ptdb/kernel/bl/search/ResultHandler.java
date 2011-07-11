@@ -62,7 +62,7 @@ public interface ResultHandler {
      *
      * @param intermediateResults The intermediate results set to be handled
      * in this ResultHandler.
-     * @param resultHandler The ResutHandler instance that gets the passed
+     * @param resultHandler The ResultHandler instance that gets the passed
      * intermediate results.
      */
     public void handleIntermediateResults(List<XMLDBModel> intermediateResults,

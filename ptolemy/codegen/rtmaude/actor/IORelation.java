@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NamedObj;
 //// IORelation
 
 /**
- * Generate RTMaude code for an IORelationt in DE domain.
+ * Generate RTMaude code for an IORelation in DE domain.
  *
  * @see ptolemy.actor.IORelation
  * @author Kyungmin Bae

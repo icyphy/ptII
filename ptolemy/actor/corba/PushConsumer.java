@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  "1050" is the port for name service.
 
  Specify the name of the consumer with <i>ConsumerName<i>, which is
- registed on the name server.
+ registered on the name server.
 
  If the <i>blocking<i> paremerter is true, then wait until there is
  token received, otherwise, send a default value specified by the

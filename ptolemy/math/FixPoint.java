@@ -867,7 +867,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  BigDecimal value is rounded using the appropriate
      *  rounding mode. The third and final step
      *  is to apply the appropriate Overflow strategy to
-     *  the resuling BigInteger object.
+     *  the resulting BigInteger object.
      *
      *  After completing this method, the _value and _precision
      *  are set.

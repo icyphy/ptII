@@ -66,7 +66,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  "1050" is the port for name service.
 
  Specify the name of the coordinator with <i>coordinatorName<i>, which is
- registed on the name server.
+ registered on the name server.
 
  Specify whether the actor blocks when it haven't receive data with
  the <i>blocking<i> parameter.

@@ -1000,7 +1000,7 @@ public class REDUtility {
                                     }
                                     if (isTrue == false) {
                                         if (Pattern.matches("^-?\\d+$", rValue) == true) {
-                                            int numberRetrival = Integer
+                                            int numberRetrieval = Integer
                                                     .parseInt(rValue);
                                             // add it into the _variableInfo
                                             returnVariableSet
@@ -1014,8 +1014,8 @@ public class REDUtility {
                                                 // insert all info.
                                                 VariableInfo newVariable = new VariableInfo(
 
-                                                        Integer.toString(numberRetrival),
-                                                        Integer.toString(numberRetrival));
+                                                        Integer.toString(numberRetrieval),
+                                                        Integer.toString(numberRetrieval));
                                                 _variableInfo.put(
                                                         characterOfSubGuard[0]
                                                                 .trim(),
@@ -1024,14 +1024,14 @@ public class REDUtility {
                                             } else {
                                                 // modify the existing one
                                                 if (Integer
-                                                        .parseInt(variable._maxValue) < numberRetrival) {
+                                                        .parseInt(variable._maxValue) < numberRetrieval) {
                                                     variable._maxValue = Integer
-                                                            .toString(numberRetrival);
+                                                            .toString(numberRetrieval);
                                                 }
                                                 if (Integer
-                                                        .parseInt(variable._minValue) > numberRetrival) {
+                                                        .parseInt(variable._minValue) > numberRetrieval) {
                                                     variable._minValue = Integer
-                                                            .toString(numberRetrival);
+                                                            .toString(numberRetrieval);
                                                 }
                                                 _variableInfo
                                                         .remove(characterOfSubGuard[0]
@@ -1063,7 +1063,7 @@ public class REDUtility {
                             String lValue = characters[0].trim();
                             if (Pattern.matches("^-?\\d+$",
                                     characters[1].trim()) == true) {
-                                int numberRetrival = Integer
+                                int numberRetrieval = Integer
                                         .parseInt(characters[1].trim());
                                 // add it into the _variableInfo
 
@@ -1072,19 +1072,19 @@ public class REDUtility {
                                 if (variable == null) {
                                     // Create a new one and insert all info.
                                     VariableInfo newVariable = new VariableInfo(
-                                            Integer.toString(numberRetrival),
-                                            Integer.toString(numberRetrival));
+                                            Integer.toString(numberRetrieval),
+                                            Integer.toString(numberRetrieval));
                                     _variableInfo.put(lValue, newVariable);
 
                                 } else {
                                     // modify the existing one
-                                    if (Integer.parseInt(variable._maxValue) < numberRetrival) {
+                                    if (Integer.parseInt(variable._maxValue) < numberRetrieval) {
                                         variable._maxValue = Integer
-                                                .toString(numberRetrival);
+                                                .toString(numberRetrieval);
                                     }
-                                    if (Integer.parseInt(variable._minValue) > numberRetrival) {
+                                    if (Integer.parseInt(variable._minValue) > numberRetrieval) {
                                         variable._minValue = Integer
-                                                .toString(numberRetrival);
+                                                .toString(numberRetrieval);
                                     }
                                     _variableInfo.remove(lValue);
                                     _variableInfo.put(lValue, variable);

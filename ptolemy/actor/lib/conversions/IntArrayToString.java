@@ -95,7 +95,7 @@ public class IntArrayToString extends TypedAtomicActor {
      *  and output a new string token on the output port.  The least
      *  significant byte of the first integer generates the first
      *  character in the string, etc.  NOTE: Java has many options
-     *  regarding its character set.  This actor relys on the default
+     *  regarding its character set.  This actor relies on the default
      *  setting on the platform on which it is run.  However, it
      *  assumes that this character set is an 8-bit character set.
      *

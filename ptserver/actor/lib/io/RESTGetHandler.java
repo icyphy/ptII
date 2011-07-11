@@ -283,7 +283,7 @@ public class RESTGetHandler extends TypedAtomicActor {
                 } else {
                     throw new IllegalActionException(this, "The resource "
                             + expression + " is not properly "
-                            + "formatted.  Please enter a valid resouce.");
+                            + "formatted.  Please enter a valid resource.");
                 }
             }
         }

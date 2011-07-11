@@ -394,7 +394,7 @@ public class FmvAutomaton extends FSMActor {
                                     }
                                     if (isTrue == false) {
                                         if (Pattern.matches("^-?\\d+$", rValue) == true) {
-                                            int numberRetrival = Integer
+                                            int numberRetrieval = Integer
                                                     .parseInt(rValue);
                                             // add it into the _variableInfo
                                             returnVariableSet
@@ -408,8 +408,8 @@ public class FmvAutomaton extends FSMActor {
                                                 // Create a new one and
                                                 // insert all info.
                                                 VariableInfo newVariable = new VariableInfo(
-                                                        Integer.toString(numberRetrival),
-                                                        Integer.toString(numberRetrival));
+                                                        Integer.toString(numberRetrieval),
+                                                        Integer.toString(numberRetrieval));
                                                 _variableInfo.put(
                                                         characterOfSubGuard[0]
                                                                 .trim(),
@@ -418,14 +418,14 @@ public class FmvAutomaton extends FSMActor {
                                             } else {
                                                 // modify the existing one
                                                 if (Integer
-                                                        .parseInt(variable._maxValue) < numberRetrival) {
+                                                        .parseInt(variable._maxValue) < numberRetrieval) {
                                                     variable._maxValue = Integer
-                                                            .toString(numberRetrival);
+                                                            .toString(numberRetrieval);
                                                 }
                                                 if (Integer
-                                                        .parseInt(variable._minValue) > numberRetrival) {
+                                                        .parseInt(variable._minValue) > numberRetrieval) {
                                                     variable._minValue = Integer
-                                                            .toString(numberRetrival);
+                                                            .toString(numberRetrieval);
                                                 }
                                                 _variableInfo
                                                         .remove(characterOfSubGuard[0]
@@ -460,26 +460,26 @@ public class FmvAutomaton extends FSMActor {
                             if (Pattern.matches("^-?\\d+$",
                                     characters[1].trim()) == true) {
 
-                                int numberRetrival = Integer.parseInt(rValue);
+                                int numberRetrieval = Integer.parseInt(rValue);
                                 // add it into the _variableInfo
                                 VariableInfo variable = _variableInfo
                                         .get(lValue);
                                 if (variable == null) {
                                     // Create a new one and insert all info.
                                     VariableInfo newVariable = new VariableInfo(
-                                            Integer.toString(numberRetrival),
-                                            Integer.toString(numberRetrival));
+                                            Integer.toString(numberRetrieval),
+                                            Integer.toString(numberRetrieval));
                                     _variableInfo.put(lValue, newVariable);
 
                                 } else {
                                     // modify the existing one
-                                    if (Integer.parseInt(variable._maxValue) < numberRetrival) {
+                                    if (Integer.parseInt(variable._maxValue) < numberRetrieval) {
                                         variable._maxValue = Integer
-                                                .toString(numberRetrival);
+                                                .toString(numberRetrieval);
                                     }
-                                    if (Integer.parseInt(variable._minValue) > numberRetrival) {
+                                    if (Integer.parseInt(variable._minValue) > numberRetrieval) {
                                         variable._minValue = Integer
-                                                .toString(numberRetrival);
+                                                .toString(numberRetrieval);
                                     }
                                     _variableInfo.remove(lValue);
                                     _variableInfo.put(lValue, variable);
@@ -862,7 +862,7 @@ public class FmvAutomaton extends FSMActor {
 
                                             if (Pattern.matches("^-?\\d+$",
                                                     rValue) == true) {
-                                                int numberRetrival = Integer
+                                                int numberRetrieval = Integer
                                                         .parseInt(rValue);
                                                 // We need to understand what is
                                                 // the operator of the value in
@@ -889,7 +889,7 @@ public class FmvAutomaton extends FSMActor {
 
                                                     for (int j = domain.size() - 1; j >= 0; j--) {
                                                         if (domain.get(j)
-                                                                .intValue() != numberRetrival) {
+                                                                .intValue() != numberRetrieval) {
                                                             domain.remove(j);
                                                         }
                                                     }
@@ -912,7 +912,7 @@ public class FmvAutomaton extends FSMActor {
 
                                                     for (int j = domain.size() - 1; j >= 0; j--) {
                                                         if (domain.get(j)
-                                                                .intValue() == numberRetrival) {
+                                                                .intValue() == numberRetrieval) {
                                                             domain.remove(j);
                                                         }
                                                     }
@@ -935,7 +935,7 @@ public class FmvAutomaton extends FSMActor {
 
                                                     for (int j = domain.size() - 1; j >= 0; j--) {
                                                         if (domain.get(j)
-                                                                .intValue() > numberRetrival) {
+                                                                .intValue() > numberRetrieval) {
                                                             domain.remove(j);
                                                         }
                                                     }
@@ -958,7 +958,7 @@ public class FmvAutomaton extends FSMActor {
 
                                                     for (int j = domain.size() - 1; j >= 0; j--) {
                                                         if (domain.get(j)
-                                                                .intValue() < numberRetrival) {
+                                                                .intValue() < numberRetrieval) {
                                                             domain.remove(j);
                                                         }
                                                     }
@@ -981,7 +981,7 @@ public class FmvAutomaton extends FSMActor {
 
                                                     for (int j = domain.size() - 1; j >= 0; j--) {
                                                         if (domain.get(j)
-                                                                .intValue() <= numberRetrival) {
+                                                                .intValue() <= numberRetrieval) {
                                                             domain.remove(j);
                                                         }
                                                     }
@@ -1004,7 +1004,7 @@ public class FmvAutomaton extends FSMActor {
 
                                                     for (int j = domain.size() - 1; j >= 0; j--) {
                                                         if (domain.get(j)
-                                                                .intValue() >= numberRetrival) {
+                                                                .intValue() >= numberRetrieval) {
                                                             domain.remove(j);
                                                         }
                                                     }

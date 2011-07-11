@@ -153,8 +153,8 @@ public class SMVUtility {
         // Initialization of some global variable storages.
         // See definition for description of these variables.
         _globalSignalDistributionInfo = new HashMap<String, ArrayList<String>>();
-        _globalSignalRetrivalInfo = new HashMap<String, HashSet<String>>();
-        _globalSignalNestedRetrivalInfo = new HashMap<String, HashSet<String>>();
+        _globalSignalRetrievalInfo = new HashMap<String, HashSet<String>>();
+        _globalSignalNestedRetrievalInfo = new HashMap<String, HashSet<String>>();
         _variableInfo = new HashMap<String, VariableInfo>();
 
         StringBuffer returnSMVFormat = new StringBuffer("");
@@ -235,12 +235,12 @@ public class SMVUtility {
                         String signalName = signalInfo.get(i);
                         boolean contain = false;
                         String location = "";
-                        Iterator<String> it = _globalSignalRetrivalInfo
+                        Iterator<String> it = _globalSignalRetrievalInfo
                                 .keySet().iterator();
                         while (it.hasNext()) {
                             String place = it.next();
-                            if (_globalSignalRetrivalInfo.get(place) != null) {
-                                if (_globalSignalRetrivalInfo.get(place)
+                            if (_globalSignalRetrievalInfo.get(place) != null) {
+                                if (_globalSignalRetrievalInfo.get(place)
                                         .contains(signalName)) {
                                     location = place;
                                     contain = true;
@@ -281,12 +281,12 @@ public class SMVUtility {
                     String signalPresent = signal + "_isPresent";
                     boolean containPresent = false;
                     String locationPresent = "";
-                    Iterator<String> itPresent = _globalSignalRetrivalInfo
+                    Iterator<String> itPresent = _globalSignalRetrievalInfo
                             .keySet().iterator();
                     while (itPresent.hasNext()) {
                         String place = itPresent.next();
-                        if (_globalSignalRetrivalInfo.get(place) != null) {
-                            if (_globalSignalRetrivalInfo.get(place).contains(
+                        if (_globalSignalRetrievalInfo.get(place) != null) {
+                            if (_globalSignalRetrievalInfo.get(place).contains(
                                     signalPresent)) {
                                 locationPresent = place;
                                 containPresent = true;
@@ -305,12 +305,12 @@ public class SMVUtility {
                     String signalValue = signal + "_value";
                     boolean containValue = false;
                     String locationValue = "";
-                    Iterator<String> itValue = _globalSignalRetrivalInfo
+                    Iterator<String> itValue = _globalSignalRetrievalInfo
                             .keySet().iterator();
                     while (itValue.hasNext()) {
                         String place = itValue.next();
-                        if (_globalSignalRetrivalInfo.get(place) != null) {
-                            if (_globalSignalRetrivalInfo.get(place).contains(
+                        if (_globalSignalRetrievalInfo.get(place) != null) {
+                            if (_globalSignalRetrievalInfo.get(place).contains(
                                     signalValue)) {
                                 locationValue = place;
                                 containValue = true;
@@ -758,7 +758,7 @@ public class SMVUtility {
                                         if (isTrue == false) {
                                             if (Pattern.matches("^-?\\d+$",
                                                     rValue) == true) {
-                                                int numberRetrival = Integer
+                                                int numberRetrieval = Integer
                                                         .parseInt(rValue);
                                                 // add it into the _variableInfo
                                                 returnVariableSet
@@ -774,14 +774,14 @@ public class SMVUtility {
                                                         // modify the existing
                                                         // one
                                                         if (Integer
-                                                                .parseInt(variable._maxValue) < numberRetrival) {
+                                                                .parseInt(variable._maxValue) < numberRetrieval) {
                                                             variable._maxValue = Integer
-                                                                    .toString(numberRetrival);
+                                                                    .toString(numberRetrieval);
                                                         }
                                                         if (Integer
-                                                                .parseInt(variable._minValue) > numberRetrival) {
+                                                                .parseInt(variable._minValue) > numberRetrieval) {
                                                             variable._minValue = Integer
-                                                                    .toString(numberRetrival);
+                                                                    .toString(numberRetrieval);
                                                         }
                                                         _variableInfo
                                                                 .remove(characterOfSubGuard[0]
@@ -796,8 +796,8 @@ public class SMVUtility {
                                                     // insert all info.
                                                     VariableInfo newVariable = new VariableInfo(
 
-                                                            Integer.toString(numberRetrival),
-                                                            Integer.toString(numberRetrival));
+                                                            Integer.toString(numberRetrieval),
+                                                            Integer.toString(numberRetrieval));
                                                     _variableInfo
                                                             .put(characterOfSubGuard[0]
                                                                     .trim(),
@@ -827,7 +827,7 @@ public class SMVUtility {
                             String lValue = characters[0].trim();
                             if (Pattern.matches("^-?\\d+$",
                                     characters[1].trim()) == true) {
-                                int numberRetrival = Integer
+                                int numberRetrieval = Integer
                                         .parseInt(characters[1].trim());
                                 // add it into the _variableInfo
                                 VariableInfo variable = (VariableInfo) _variableInfo
@@ -835,19 +835,19 @@ public class SMVUtility {
                                 if (variable == null) {
                                     // Create a new one and insert all info.
                                     VariableInfo newVariable = new VariableInfo(
-                                            Integer.toString(numberRetrival),
-                                            Integer.toString(numberRetrival));
+                                            Integer.toString(numberRetrieval),
+                                            Integer.toString(numberRetrieval));
                                     _variableInfo.put(lValue, newVariable);
 
                                 } else {
                                     // modify the existing one
-                                    if (Integer.parseInt(variable._maxValue) < numberRetrival) {
+                                    if (Integer.parseInt(variable._maxValue) < numberRetrieval) {
                                         variable._maxValue = Integer
-                                                .toString(numberRetrival);
+                                                .toString(numberRetrieval);
                                     }
-                                    if (Integer.parseInt(variable._minValue) > numberRetrival) {
+                                    if (Integer.parseInt(variable._minValue) > numberRetrieval) {
                                         variable._minValue = Integer
-                                                .toString(numberRetrival);
+                                                .toString(numberRetrieval);
                                     }
                                     _variableInfo.remove(lValue);
                                     _variableInfo.put(lValue, variable);
@@ -1363,7 +1363,7 @@ public class SMVUtility {
                                             isSignalVariable = true;
                                         }
                                         if (Pattern.matches("^-?\\d+$", rValue) == true) {
-                                            int numberRetrival = Integer
+                                            int numberRetrieval = Integer
                                                     .parseInt(rValue);
 
                                             // We need to understand what is
@@ -1395,7 +1395,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domainIsPresent
                                                                     .get(j)
-                                                                    .intValue() != numberRetrival) {
+                                                                    .intValue() != numberRetrieval) {
                                                                 domainIsPresent
                                                                         .remove(j);
                                                             }
@@ -1421,7 +1421,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domainValue
                                                                     .get(j)
-                                                                    .intValue() != numberRetrival) {
+                                                                    .intValue() != numberRetrieval) {
                                                                 domainValue
                                                                         .remove(j);
                                                             }
@@ -1445,7 +1445,7 @@ public class SMVUtility {
                                                         for (int j = domain
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domain.get(j)
-                                                                    .intValue() != numberRetrival) {
+                                                                    .intValue() != numberRetrieval) {
                                                                 domain.remove(j);
                                                             }
                                                         }
@@ -1475,7 +1475,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domainIsPresent
                                                                     .get(j)
-                                                                    .intValue() == numberRetrival) {
+                                                                    .intValue() == numberRetrieval) {
                                                                 domainIsPresent
                                                                         .remove(j);
                                                             }
@@ -1501,7 +1501,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domainValue
                                                                     .get(j)
-                                                                    .intValue() == numberRetrival) {
+                                                                    .intValue() == numberRetrieval) {
                                                                 domainValue
                                                                         .remove(j);
                                                             }
@@ -1525,7 +1525,7 @@ public class SMVUtility {
                                                         for (int j = domain
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domain.get(j)
-                                                                    .intValue() == numberRetrival) {
+                                                                    .intValue() == numberRetrieval) {
                                                                 domain.remove(j);
                                                             }
                                                         }
@@ -1555,7 +1555,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domainIsPresent
                                                                     .get(j)
-                                                                    .intValue() > numberRetrival) {
+                                                                    .intValue() > numberRetrieval) {
                                                                 domainIsPresent
                                                                         .remove(j);
                                                             }
@@ -1581,7 +1581,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domainValue
                                                                     .get(j)
-                                                                    .intValue() > numberRetrival) {
+                                                                    .intValue() > numberRetrieval) {
                                                                 domainValue
                                                                         .remove(j);
                                                             }
@@ -1605,7 +1605,7 @@ public class SMVUtility {
                                                         for (int j = domain
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domain.get(j)
-                                                                    .intValue() > numberRetrival) {
+                                                                    .intValue() > numberRetrieval) {
                                                                 domain.remove(j);
                                                             }
                                                         }
@@ -1640,7 +1640,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domainIsPresent
                                                                     .get(j)
-                                                                    .intValue() < numberRetrival) {
+                                                                    .intValue() < numberRetrieval) {
                                                                 domainIsPresent
                                                                         .remove(j);
                                                             }
@@ -1666,7 +1666,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domainValue
                                                                     .get(j)
-                                                                    .intValue() < numberRetrival) {
+                                                                    .intValue() < numberRetrieval) {
                                                                 domainValue
                                                                         .remove(j);
                                                             }
@@ -1690,7 +1690,7 @@ public class SMVUtility {
                                                         for (int j = domain
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domain.get(j)
-                                                                    .intValue() < numberRetrival) {
+                                                                    .intValue() < numberRetrieval) {
                                                                 domain.remove(j);
                                                             }
                                                         }
@@ -1723,7 +1723,7 @@ public class SMVUtility {
                                                             .size() - 1; j >= 0; j--) {
                                                         if (domainIsPresent
                                                                 .get(j)
-                                                                .intValue() <= numberRetrival) {
+                                                                .intValue() <= numberRetrieval) {
                                                             domainIsPresent
                                                                     .remove(j);
                                                         }
@@ -1748,7 +1748,7 @@ public class SMVUtility {
                                                     for (int j = domainValue
                                                             .size() - 1; j >= 0; j--) {
                                                         if (domainValue.get(j)
-                                                                .intValue() <= numberRetrival) {
+                                                                .intValue() <= numberRetrieval) {
                                                             domainValue
                                                                     .remove(j);
                                                         }
@@ -1770,7 +1770,7 @@ public class SMVUtility {
 
                                                     for (int j = domain.size() - 1; j >= 0; j--) {
                                                         if (domain.get(j)
-                                                                .intValue() <= numberRetrival) {
+                                                                .intValue() <= numberRetrieval) {
                                                             domain.remove(j);
                                                         }
                                                     }
@@ -1800,7 +1800,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domainIsPresent
                                                                     .get(j)
-                                                                    .intValue() >= numberRetrival) {
+                                                                    .intValue() >= numberRetrieval) {
                                                                 domainIsPresent
                                                                         .remove(j);
                                                             }
@@ -1826,7 +1826,7 @@ public class SMVUtility {
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domainValue
                                                                     .get(j)
-                                                                    .intValue() >= numberRetrival) {
+                                                                    .intValue() >= numberRetrieval) {
                                                                 domainValue
                                                                         .remove(j);
                                                             }
@@ -1851,7 +1851,7 @@ public class SMVUtility {
                                                         for (int j = domain
                                                                 .size() - 1; j >= 0; j--) {
                                                             if (domain.get(j)
-                                                                    .intValue() >= numberRetrival) {
+                                                                    .intValue() >= numberRetrieval) {
                                                                 domain.remove(j);
                                                             }
                                                         }
@@ -4024,7 +4024,7 @@ public class SMVUtility {
          * to S'' during the instantiation process of S''.
          *
          * In the description of _globalSignalDistributionInfo and
-         *  _globalSignalRetrivalInfo, it only tells you the signal needed for
+         *  _globalSignalRetrievalInfo, it only tells you the signal needed for
          * this component, and the signal generated by this component. Thus
          * additional work must be done.
          *
@@ -4226,11 +4226,11 @@ public class SMVUtility {
         // It tells you for a certain component, the set of signals
         // used in its guard expression.
         //
-        // (2)HashMap<String, HashSet<String>> _globalSignalRetrivalInfo:
+        // (2)HashMap<String, HashSet<String>> _globalSignalRetrievalInfo:
         // It tells you for a certain component, the set of signals emitted
         // from that component.
         //
-        // (3) HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo:
+        // (3) HashMap<String, HashSet<String>> _globalSignalNestedRetrievalInfo:
         // It tells you for a certain component, the set of signals emitted
         // from that component and from subsystems below that component in
         // the overall hierarchy.
@@ -4286,9 +4286,9 @@ public class SMVUtility {
                     }
                 }
 
-                _globalSignalRetrivalInfo.put(innerFSMActor.getName(),
+                _globalSignalRetrievalInfo.put(innerFSMActor.getName(),
                         signalOfferedSet);
-                _globalSignalNestedRetrivalInfo.put(innerFSMActor.getName(),
+                _globalSignalNestedRetrievalInfo.put(innerFSMActor.getName(),
                         signalOfferedSet);
                 subSystemNameList.add(innerFSMActor.getName());
 
@@ -4392,10 +4392,10 @@ public class SMVUtility {
                                             }
                                         }
 
-                                        _globalSignalRetrivalInfo.put(
+                                        _globalSignalRetrievalInfo.put(
                                                 innerFSMActor.getName().trim(),
                                                 signalOfferedSet);
-                                        _globalSignalNestedRetrivalInfo.put(
+                                        _globalSignalNestedRetrievalInfo.put(
                                                 innerFSMActor.getName().trim(),
                                                 signalOfferedSet);
                                         subsubSystemNameList.add(innerFSMActor
@@ -4511,16 +4511,16 @@ public class SMVUtility {
                 if (signalOfferedSet != null) {
                     newSignalOfferedSet.addAll(signalOfferedSet);
                 }
-                _globalSignalRetrivalInfo.put(controller.getName(),
+                _globalSignalRetrievalInfo.put(controller.getName(),
                         newSignalOfferedSet);
 
                 // Now retrieve every subComponent s' of s from
                 // subsubSystemNameList,
-                // retrieve the signal from _globalSignalRetrivalInfo(s')
-                // and add them to _globalSignalNestedRetrivalInfo(s)
+                // retrieve the signal from _globalSignalRetrievalInfo(s')
+                // and add them to _globalSignalNestedRetrievalInfo(s)
                 for (int i = 0; i < subsubSystemNameList.size(); i++) {
                     String component = subsubSystemNameList.get(i);
-                    HashSet<String> componentSignalSet = _globalSignalNestedRetrivalInfo
+                    HashSet<String> componentSignalSet = _globalSignalNestedRetrievalInfo
                             .get(component);
 
                     if (componentSignalSet != null) {
@@ -4529,12 +4529,12 @@ public class SMVUtility {
                     subSystemNameList.add(component);
                 }
 
-                if (_globalSignalNestedRetrivalInfo.get(controller.getName()) != null) {
-                    _globalSignalNestedRetrivalInfo.get(controller.getName())
+                if (_globalSignalNestedRetrievalInfo.get(controller.getName()) != null) {
+                    _globalSignalNestedRetrievalInfo.get(controller.getName())
                             .addAll(signalOfferedSet);
 
                 } else {
-                    _globalSignalNestedRetrivalInfo.put(controller.getName(),
+                    _globalSignalNestedRetrievalInfo.put(controller.getName(),
                             signalOfferedSet);
 
                 }
@@ -4567,11 +4567,11 @@ public class SMVUtility {
                     signalOfferedSet.add(portName.trim() + "_value");
                 }
 
-                if (_globalSignalNestedRetrivalInfo.get(innerEntity.getName()) != null) {
-                    _globalSignalNestedRetrivalInfo.get(innerEntity.getName())
+                if (_globalSignalNestedRetrievalInfo.get(innerEntity.getName()) != null) {
+                    _globalSignalNestedRetrievalInfo.get(innerEntity.getName())
                             .addAll(signalOfferedSet);
                 } else {
-                    _globalSignalNestedRetrivalInfo.put(innerEntity.getName(),
+                    _globalSignalNestedRetrievalInfo.put(innerEntity.getName(),
                             signalOfferedSet);
                 }
 
@@ -4665,14 +4665,14 @@ public class SMVUtility {
                                         boolean containInTheSystem = false;
                                         boolean containInTheModule = false;
                                         String location = "";
-                                        Iterator<String> it = _globalSignalRetrivalInfo
+                                        Iterator<String> it = _globalSignalRetrievalInfo
                                                 .keySet().iterator();
                                         while (it.hasNext()) {
                                             String place = it.next();
 
-                                            if (_globalSignalRetrivalInfo
+                                            if (_globalSignalRetrievalInfo
                                                     .get(place) != null) {
-                                                if (_globalSignalRetrivalInfo
+                                                if (_globalSignalRetrievalInfo
                                                         .get(place).contains(
                                                                 signalName)) {
                                                     location = place;
@@ -4690,9 +4690,9 @@ public class SMVUtility {
                                         // If the signal is not in the module,
                                         // we set the variable
                                         // containInTheModule=false
-                                        if (_globalSignalNestedRetrivalInfo
+                                        if (_globalSignalNestedRetrievalInfo
                                                 .get(controller.getName()) != null) {
-                                            if (_globalSignalNestedRetrivalInfo
+                                            if (_globalSignalNestedRetrievalInfo
                                                     .get(controller.getName())
                                                     .contains(signalName)) {
                                                 containInTheModule = true;
@@ -4813,15 +4813,15 @@ public class SMVUtility {
                                                     boolean containInTheSystem = false;
                                                     boolean containInTheModule = false;
                                                     String location = "";
-                                                    Iterator<String> it = _globalSignalRetrivalInfo
+                                                    Iterator<String> it = _globalSignalRetrievalInfo
                                                             .keySet()
                                                             .iterator();
                                                     while (it.hasNext()) {
                                                         String place = it
                                                                 .next();
-                                                        if (_globalSignalRetrivalInfo
+                                                        if (_globalSignalRetrievalInfo
                                                                 .get(place) != null) {
-                                                            if (_globalSignalRetrivalInfo
+                                                            if (_globalSignalRetrievalInfo
                                                                     .get(place)
                                                                     .contains(
                                                                             signalName)) {
@@ -4832,10 +4832,10 @@ public class SMVUtility {
                                                         }
 
                                                     }
-                                                    if (_globalSignalNestedRetrivalInfo
+                                                    if (_globalSignalNestedRetrievalInfo
                                                             .get(controller
                                                                     .getName()) != null) {
-                                                        if (_globalSignalNestedRetrivalInfo
+                                                        if (_globalSignalNestedRetrievalInfo
                                                                 .get(controller
                                                                         .getName())
                                                                 .contains(
@@ -4937,13 +4937,13 @@ public class SMVUtility {
                                                     boolean containInTheSystem = false;
                                                     boolean containInTheModule = false;
                                                     String location = "";
-                                                    Iterator<String> it = _globalSignalRetrivalInfo
+                                                    Iterator<String> it = _globalSignalRetrievalInfo
                                                             .keySet()
                                                             .iterator();
                                                     while (it.hasNext()) {
                                                         String place = it
                                                                 .next();
-                                                        if (_globalSignalRetrivalInfo
+                                                        if (_globalSignalRetrievalInfo
                                                                 .get(place)
                                                                 .contains(
                                                                         signalName)) {
@@ -4952,10 +4952,10 @@ public class SMVUtility {
                                                             break;
                                                         }
                                                     }
-                                                    if (_globalSignalNestedRetrivalInfo
+                                                    if (_globalSignalNestedRetrievalInfo
                                                             .get(controller
                                                                     .getName()) != null) {
-                                                        if (_globalSignalNestedRetrivalInfo
+                                                        if (_globalSignalNestedRetrievalInfo
                                                                 .get(controller
                                                                         .getName())
                                                                 .contains(
@@ -5484,8 +5484,8 @@ public class SMVUtility {
     }
 
     private static HashMap<String, ArrayList<String>> _globalSignalDistributionInfo;
-    private static HashMap<String, HashSet<String>> _globalSignalRetrivalInfo;
-    private static HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo;
+    private static HashMap<String, HashSet<String>> _globalSignalRetrievalInfo;
+    private static HashMap<String, HashSet<String>> _globalSignalNestedRetrievalInfo;
 
     private static HashMap<String, VariableInfo> _variableInfo;
     private static HashMap<String, LinkedList<VariableTransitionInfo>> _variableTransitionInfo;

@@ -1525,7 +1525,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return result;
     }
 
-    /** Parse the list of comma separted parameters.
+    /** Parse the list of comma separated parameters.
      *  @param parameters A comma separate list of parameters.
      *  @return A list of parameters.
      */

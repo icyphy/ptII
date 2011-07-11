@@ -44,16 +44,16 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class RTMList extends RTMTerm {
 
-    private String saperator;
+    private String separator;
     private String empty;
     private LinkedList<RTMTerm> items;
 
-    public RTMList(String saperator, String emptyrepr) {
+    public RTMList(String separator, String emptyrepr) {
         super();
-        if (saperator.trim().equals("")) {
-            this.saperator = " ";
+        if (separator.trim().equals("")) {
+            this.separator = " ";
         } else {
-            this.saperator = " " + saperator.trim() + " ";
+            this.separator = " " + separator.trim() + " ";
         }
         this.empty = emptyrepr;
         this.items = new LinkedList<RTMTerm>();
@@ -86,7 +86,7 @@ public class RTMList extends RTMTerm {
             for (Iterator<RTMTerm> ti = items.iterator(); ti.hasNext();) {
                 rs.append("\n" + ti.next().print(indent + indentWidth, true));
                 if (ti.hasNext()) {
-                    rs.append(saperator);
+                    rs.append(separator);
                 }
             }
             rs.append(")");

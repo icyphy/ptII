@@ -2107,7 +2107,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  makefile.in in the package named by the
      *  <i>generatorPackage</i> parameter.  Thus, if the
      *  <i>generatorPackage</i> has the value "ptolemy.codegen.c",
-     *  then we look for the resouce "ptolemy.codegen.c.makefile.in", which
+     *  then we look for the resource "ptolemy.codegen.c.makefile.in", which
      *  is usually found as <code>$PTII/ptolemy/codegen/c/makefile.in</code>.
      *
      *  <p>The makefile is written to a directory named by the

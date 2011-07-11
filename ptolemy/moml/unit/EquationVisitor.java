@@ -67,7 +67,7 @@ public abstract class EquationVisitor {
         return null;
     }
 
-    /** Visit a UnitExpr by visiting the UnitRerms.
+    /** Visit a UnitExpr by visiting the UnitTerms.
      * @param unitExpr The UnitExpr to visit.
      * @return Null, can be overridden in a concrete visitor.
      * @exception IllegalActionException Not thrown in this base class.

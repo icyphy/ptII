@@ -59,7 +59,7 @@ import ptolemy.kernel.util.InvalidStateException;
  called. For a CONTINUOUS CTReceiver, hasToken() will always return true
  after the first put() has been called. For a DISCRETE
  CTReceiver, get() will return and destroy the token, thus the token
- can only be retrived once. Therefore after the consumption, the hasToken()
+ can only be retrieved once. Therefore after the consumption, the hasToken()
  method will return false, until a token is put into this receiver.
 
  @author  Jie Liu
