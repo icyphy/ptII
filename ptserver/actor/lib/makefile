@@ -31,7 +31,7 @@
 
 ME =		ptserver/actor/lib
 
-DIRS =
+DIRS =		io
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -44,11 +44,13 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSJAR =	$(PTPACKAGE).jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
-#PTCLASSALLJARS =
-#PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJARS = \
+	io/io.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -59,7 +61,7 @@ JSRCS =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 
+MISC_FILES = $(DIRS)
 
 OPTIONAL_FILES =
 

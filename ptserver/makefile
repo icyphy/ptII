@@ -57,11 +57,14 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
+	PtolemyServerUsers.properties \
+	PtolemyServerUsers.properties.default \
 	PtolemyServerConfig.properties.default
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED) \
 	findbugs-excludes.xml \
-	findbugs-includes.xml
+	findbugs-includes.xml \
+	checkstyle-ptserver.xml
 
 # Keep this list alphabetized.
 JSRCS = \

@@ -63,6 +63,7 @@ JSRCS = \
 	CommunicationToken.java \
 	PingToken.java \
 	PongToken.java \
+	ServerEventToken.java \
 	TokenParser.java \
 	Tokenizer.java
 
@@ -72,7 +73,8 @@ MISC_FILES = \
 	handler
 
 OPTIONAL_FILES = \
-	'TokenParser$$HandlerData.class'
+	'TokenParser$$HandlerData.class' \
+	'ServerEventToken$$EventType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -43,7 +43,7 @@ include $(CONFIG)
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
 
 # Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	io
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
@@ -60,9 +60,10 @@ JSRCS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES = test
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -1,4 +1,4 @@
-# Makefile for the JUnit Vergil basic tests
+# Makefile for the Java classes used to test the ptserver io actors
 #
 # @Authors: Christopher Brooks
 #
@@ -30,35 +30,32 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptserver/tests/junit
+ME =		ptserver/actor/lib/io/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../../..
 
-# JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)$(CLASSPATHSEPARATOR)$(JUNIT_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = \
-	AllTests.java \
-	FileDownloadTest.java \
-	RemoteModelTest.java \
-	RESTGetHandlerTest.java \
-	ServletTest.java \
-	TokenParserTest.java \
-	TypeParserTest.java
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
+
+JSRCS =
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
 	dummy.tcl
 
-# Graphical Java tests that use Tcl.
+
+# Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
@@ -69,45 +66,30 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
-	HelloWorld.xml \
-	NoisySinewave.xml \
-	NoisySinewave_layout.layout.xml \
-	SoundSpectrum.xml \
-	SoundSpectrum2.xml \
-	SoundSpectrum2_layout.layout.xml \
-	SoundSpectrum_layout.layout.xml \
-	addermodel_test.layout.xml \
-	addermodel.xml
+MISC_FILES =	alljtests.tcl \
+	auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	PtolemyLog.log \
-	'RemoteModelTest$$1.class' \
-	'RemoteModelTest$$2.class' \
-	'RemoteModelTest$$3.class'
+OPTIONAL_FILES =
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-# JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
-tests:: $(EXTRA_SRCS) jclass test_java ../../PtolemyServerConfig.properties #test_jsimple
-	CLASSPATH="$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptserver.test.junit.AllTests
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
-
-../../PtolemyServerConfig.properties: ../../PtolemyServerConfig.properties.default
-	cp $^ $@
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 	$(JTCLSH) alljtests.tcl
+
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -48,11 +48,13 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	JavaSESysOutActor.java \
 	PtolemyTestClient.java \
 	PtolemyTestServer.java \
 	QMTest.java \
 	StringAttributeWidget.java \
-	SysOutActor.java
+	SysOutActor.java \
+	SysOutActorInterface.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
@@ -73,6 +75,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 MISC_FILES =	\
 	alljtests.tcl \
 	alljsimpletests.tcl \
+	helper \
 	junit
 
 # make checkjunk will not report OPTIONAL_FILES as trash
