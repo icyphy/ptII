@@ -235,7 +235,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
         }
 
         boolean constrainPortConnectionSources = isConstraintSource();
-        for (TypedIOPort port : (List<TypedIOPort>) _getConstraintedPorts(constrainPortConnectionSources)) {
+        for (TypedIOPort port : (List<TypedIOPort>) _getConstrainedPorts(constrainPortConnectionSources)) {
 
             // Add default constraints for multiports with more than one channel.
             if ((port).isMultiport() && (port).getWidth() > 1) {
@@ -359,7 +359,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * ports are constrained.
      * @return The list of constrained ports.
      */
-    protected List _getConstraintedPorts(boolean constraintSource) {
+    protected List _getConstrainedPorts(boolean constraintSource) {
         Actor actor = (Actor) getComponent();
         return constraintSource ? actor.outputPortList() : actor
                 .inputPortList();
@@ -367,11 +367,11 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
 
     /**
      * Return the list of constraining ports on a given port, given whether
-     * source or sink ports should be constrainted.
+     * source or sink ports should be constrained.
      * @param constraintSource The flag that indicates whether source or sink
-     * ports are constrainted.
+     * ports are constrained.
      * @param port The given port.
-     * @return The list of constrainting ports.
+     * @return The list of constraining ports.
      */
     protected static List _getConstraintingPorts(boolean constraintSource,
             TypedIOPort port) {

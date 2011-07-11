@@ -131,7 +131,7 @@ public abstract class SequencedModelDirector extends Director {
      */
     public Parameter iterations;
 
-    /** If true, enable user defined output initial vaues.  The default value
+    /** If true, enable user defined output initial values.  The default value
      *  is a boolean true.
      */
     public Parameter userDefinedOutputInitialValue;

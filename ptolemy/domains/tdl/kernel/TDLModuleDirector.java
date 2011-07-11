@@ -130,7 +130,7 @@ public class TDLModuleDirector extends ModalDirector {
         while (iterate) {
             iterate = false;
             System.out.println(_nextEventsTimeStamps.size() + " "
-                    + _nodesDependentoOnPreviousActions.size());
+                    + _nodesDependentOnPreviousActions.size());
             _currentWCET = 0;
 
             List<Node> eventsToFire = _getEventsToFire(scheduleTime, modePeriod);
@@ -175,7 +175,7 @@ public class TDLModuleDirector extends ModalDirector {
                             iterate = true;
                         }
                         _nextEventsTimeStamps.clear();
-                        _nodesDependentoOnPreviousActions.clear();
+                        _nodesDependentOnPreviousActions.clear();
                         Node startNode = _graph.getNode(new TDLAction(new Time(
                                 this, 0.0), TDLAction.AFTERMODESWITCH,
                                 targetState));
@@ -191,23 +191,23 @@ public class TDLModuleDirector extends ModalDirector {
                 }
                 if (doneAction) {
                     if (_nextEventsTimeStamps.size() == 1
-                            && _nodesDependentoOnPreviousActions.size() == 0) {
+                            && _nodesDependentOnPreviousActions.size() == 0) {
                         _fireAt(node, getModelTime());
                         scheduleEventsAfterAction(node);
                         iterate = true;
                     }
                     _nextEventsTimeStamps.remove(node);
 
-                    if (_nodesDependentoOnPreviousActions != null
-                            && _nodesDependentoOnPreviousActions.size() != 0) {
+                    if (_nodesDependentOnPreviousActions != null
+                            && _nodesDependentOnPreviousActions.size() != 0) {
                         Set<Node> s = new HashSet();
-                        s.addAll(_nodesDependentoOnPreviousActions.keySet());
+                        s.addAll(_nodesDependentOnPreviousActions.keySet());
                         for (Node n : s) {
                             List<TDLAction> actionsToRemove = new ArrayList();
 
-                            if (_nodesDependentoOnPreviousActions.get(n) != null
-                                    && _nodesDependentoOnPreviousActions.size() > 0) {
-                                for (TDLAction waitForAction : _nodesDependentoOnPreviousActions
+                            if (_nodesDependentOnPreviousActions.get(n) != null
+                                    && _nodesDependentOnPreviousActions.size() > 0) {
+                                for (TDLAction waitForAction : _nodesDependentOnPreviousActions
                                         .get(n)) {
                                     if (waitForAction.sameActionAs(action,
                                             modePeriod)) {
@@ -215,12 +215,12 @@ public class TDLModuleDirector extends ModalDirector {
                                     }
                                 }
                                 for (TDLAction actionToRemove : actionsToRemove) {
-                                    _nodesDependentoOnPreviousActions.get(n)
+                                    _nodesDependentOnPreviousActions.get(n)
                                             .remove(actionToRemove);
                                 }
                             }
-                            if (_nodesDependentoOnPreviousActions.get(n) == null
-                                    || _nodesDependentoOnPreviousActions.get(n)
+                            if (_nodesDependentOnPreviousActions.get(n) == null
+                                    || _nodesDependentOnPreviousActions.get(n)
                                             .size() == 0) {
                                 if (!_nextEventsTimeStamps.keySet().contains(n)) {
                                     _fireAt(n, getModelTime());
@@ -336,7 +336,7 @@ public class TDLModuleDirector extends ModalDirector {
         _graph.buildGraph(getController().currentState());
         _initializeOutputPorts();
         fireAt((TDLModule) getContainer(), getModelTime());
-        _nodesDependentoOnPreviousActions = new HashMap();
+        _nodesDependentOnPreviousActions = new HashMap();
         _nextEventsTimeStamps = new HashMap();
         //nextEvents.add(new TDLAction(0, TDLAction.AFTERMODESWITCH, getController().currentState()));
 
@@ -528,13 +528,13 @@ public class TDLModuleDirector extends ModalDirector {
      */
     public void scheduleEventsAfterAction(Node node)
             throws IllegalActionException {
-        _nodesDependentoOnPreviousActions.remove(node);
+        _nodesDependentOnPreviousActions.remove(node);
         List<Node> events = _graph.getEventsFollowingAction(node);
         HashMap<Node, List<TDLAction>> table = _graph.getNextJoinNodes(node,
                 node, new ArrayList());
         for (Node n : table.keySet()) {
-            if (!_nodesDependentoOnPreviousActions.keySet().contains(n)) {
-                _nodesDependentoOnPreviousActions.put(n, table.get(n));
+            if (!_nodesDependentOnPreviousActions.keySet().contains(n)) {
+                _nodesDependentOnPreviousActions.put(n, table.get(n));
             }
         }
         for (Node n : events) {
@@ -1008,7 +1008,7 @@ public class TDLModuleDirector extends ModalDirector {
     private HashMap<Node, Time> _nextEventsTimeStamps;
 
     /** Nodes containing actions that depend on previous actions. */
-    private HashMap<Node, List<TDLAction>> _nodesDependentoOnPreviousActions;
+    private HashMap<Node, List<TDLAction>> _nodesDependentOnPreviousActions;
 
     /**
      * The minimum time to be added to schedule the next action in the _fireAt()

@@ -173,7 +173,7 @@ public class MatrixPane extends JScrollPane {
          *  @param row The row number.
          *  @param column The column number.
          *  @return An instance of Token representing the matrix value
-         *   at the specified row and columun.
+         *   at the specified row and column.
          */
         public Object getValueAt(int row, int column) {
             // There is a bug in JTable, where it happily tries to access
@@ -219,7 +219,7 @@ public class MatrixPane extends JScrollPane {
          *  @param row The row number.
          *  @param column The column number.
          *  @return An instance of Token representing the matrix value
-         *   at the specified row and columun.
+         *   at the specified row and column.
          */
         public Object getValueAt(int row, int column) {
             return (_emptyStringToken);

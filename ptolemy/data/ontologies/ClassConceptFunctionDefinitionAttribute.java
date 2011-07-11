@@ -142,7 +142,7 @@ public class ClassConceptFunctionDefinitionAttribute extends
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return true if the array of classes in the argumentClases variable is
+    /** Return true if the array of classes in the argumentClasses variable is
      *  compatible with the constructor argument list types in the
      *  constructorArgumentClasses variable.
      *  @param argumentClasses The array of classes to be tested against the

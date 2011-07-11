@@ -222,7 +222,7 @@ public class DBConnectorFactory {
      * @param containerName Container to connect to.
      * @param isTransactionRequired True if transaction is needed, false otherwise.
      * @return Required connection object
-     * @exception DBConnectionException When there is an error in connecting to the databse.
+     * @exception DBConnectionException When there is an error in connecting to the database.
      */
     private static DBConnection _createConnection(String containerName,
             boolean isTransactionRequired) throws DBConnectionException {

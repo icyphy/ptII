@@ -331,7 +331,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Create a typed composite actor that contains the selected actors
      *  and connections. The created typed composite actor is transparent.
      *  The resulting topology is the same in the sense
-     *  of deep connectivities.
+     *  of deep connections.
      */
     public void createHierarchy() {
         GraphController controller = _getGraphController();

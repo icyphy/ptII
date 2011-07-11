@@ -2806,7 +2806,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Generate a variable reference for the given channel. This varaible
+     * Generate a variable reference for the given channel. This variable
      * reference is needed for type conversion. The source helper get this
      * reference instead of using the sink reference directly. This method
      * assumes the given channel is a source (output) channel.

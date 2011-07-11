@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A TypedActor is an actor whose ports have types.
  This interface defines the method to get type constraints from
- an actor.  The ports on a TypedActor are constrainted to be TypedIOPorts.
+ an actor.  The ports on a TypedActor are constrained to be TypedIOPorts.
 
  @author Yuhong Xiong
  @version $Id$

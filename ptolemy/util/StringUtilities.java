@@ -222,7 +222,7 @@ public class StringUtilities {
      *  x\y"z becomes x\\y\"z;
      *  x\\y\"z becomes x\\\\y\\\"
      *  </pre>
-     *  Similarly, this method replaces the following charaters
+     *  Similarly, this method replaces the following characters
      *  exactly as defined in Java strings: \n, \t, \b, \r, and \f.
      *  @param string The string to escape.
      *  @return A new string with that can be put between quotation marks.

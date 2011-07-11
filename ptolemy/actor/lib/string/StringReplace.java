@@ -70,7 +70,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  If <i>replacement</i> is "p$$0" then "this is a test" becomes
  "pthis is a ptest".
  <p>
- If the <i>pattern</i> containes parenthesized subpatterns, such
+ If the <i>pattern</i> contains parenthesized subpatterns, such
  as "(t[a-z]+)|(T([a-z]+))", then the value of <i>replacement</i>
  can reference the match of each parenthesized subpattern with
  the syntax "$$n", where "n" is an integer between 1 and 9.

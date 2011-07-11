@@ -272,8 +272,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * {@link BasicManhattanRouter#routeManhattan(diva.canvas.connector.ManhattanConnector)}.
      * @param c the corresponding connector
      * @param bendPoints a list of bendpoints to determine the anchor point on the site
-     * @return the anchor points at the start and end of the connectior, i.e. a Point2D array of size 2
-     *
+     * @return the anchor points at the start and end of the
+     * connection, i.e. a Point2D array of size 2
      */
     private Point2D[] _getHeadTailPoints(Connector c, List<Point2D> bendPoints) {
         TransformContext currentContext = c.getTransformContext();

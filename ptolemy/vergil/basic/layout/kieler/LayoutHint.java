@@ -714,7 +714,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * { head={"CompositeActor.port",20.0,200.0,2}, tail={"Discard.input",70.0,25.0}, points={135.0,25.0,135.0,125.0} }
      * </pre>
      *
-     * The head contains the object's name, its coordiantes in x and y and the
+     * The head contains the object's name, its coordinates in x and y and the
      * width, because the port is a multiport. The width defaults to 1 as can be
      * seen at the tail where it is omitted.
      */

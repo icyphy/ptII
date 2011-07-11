@@ -102,7 +102,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
                 .getDirector();
         if (director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
-            _writeCode(directorAdapter.generateAsseblyFile());
+            _writeCode(directorAdapter.generateAssemblyFile());
         } else if (director instanceof ptolemy.domains.ptides.kernel.PtidesTopLevelDirector) {
             // If the PtidyOSCodeGenerator is used on the top level, then one assembly file
             // should be generated for each platform.
@@ -111,7 +111,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
                 Director insideDirector = actor.getDirector();
                 if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
                     directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
-                    _writeCode(directorAdapter.generateAsseblyFile());
+                    _writeCode(directorAdapter.generateAssemblyFile());
                 }
             }
         } else {

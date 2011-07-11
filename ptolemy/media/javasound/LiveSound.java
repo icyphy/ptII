@@ -1183,7 +1183,7 @@ public class LiveSound {
     /** true is audio capture is currently active. */
     private static boolean _captureIsActive = false;
 
-    /** The number of channels. Deafult is 1. */
+    /** The number of channels. Default is 1. */
     private static int _channels = 1;
 
     /** Array of audio samples in byte format. */

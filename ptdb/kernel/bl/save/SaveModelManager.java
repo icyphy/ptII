@@ -785,14 +785,14 @@ public class SaveModelManager {
 
     /**
      * Remove the DTD from the model content.
-     * @param modelConetnet The model content.
+     * @param modelContent The model content.
      * @return The model content after the DTD part is removed.
      */
-    private String removeDTD(String modelConetnet) {
+    private String removeDTD(String modelContent) {
 
         String newModelContent = "";
 
-        newModelContent = modelConetnet;
+        newModelContent = modelContent;
 
         if (newModelContent.indexOf("<?xml") == 0) {
 

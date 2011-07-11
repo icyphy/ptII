@@ -785,7 +785,7 @@ public class CodeStream {
     /**
      * Type check the parameter name.
      * Check if the given string starts with '$'. Insert '\' before '$'.
-     * '$' is a special charater in regular expression, and we are using this
+     * '$' is a special character in regular expression, and we are using this
      * name string as regular expression to do text substitution. Requires the
      * rest of the characters to be within the set [a-zA-Z_0-9].
      * Returns a well-formed parameter name, otherwise, throws an

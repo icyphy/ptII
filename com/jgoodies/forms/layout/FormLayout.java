@@ -1011,7 +1011,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Lays out the specified container using this form layout.  This method
      * reshapes components in the specified container in order to satisfy the
-     * contraints of this <code>FormLayout</code> object.<p>
+     * constraints of this <code>FormLayout</code> object.<p>
      *
      * Most applications do not call this method directly.<p>
      *
@@ -1063,7 +1063,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      *
      * As of the Forms version 1.0.x invisible components are not taken
      * into account when the container is layed out. See the TODO in the
-     * JavaDoc class commment for details on this issue.
+     * JavaDoc class comment for details on this issue.
      */
     private void initializeColAndRowComponentLists() {
         colComponents = new LinkedList[getColumnCount()];
@@ -1310,8 +1310,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * and rows iff the available space is less than the total preferred size
      * but more than the total minimum size.<p>
      *
-     * Only columns and row that are specified to be compressable will be
-     * affected. You can specify a column and row as compressable by
+     * Only columns and row that are specified to be compressible will be
+     * affected. You can specify a column and row as compressible by
      * giving it the component size <tt>default</tt>.
      *
      * @param formSpecs      the column or row specs to use

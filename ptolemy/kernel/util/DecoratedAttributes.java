@@ -47,7 +47,7 @@ These attributes are stored separately and can be retrieved by using
 {@link NamedObj#getDecoratorAttributes(Decorator)}.</p>
 
 <p>A DecoratedAttributes instance has a decorator and
-decoratored attributes.
+decorated attributes.
 The container of this class is the object that is being decorated.</p>
 
 <p>The implementation class is {@link ptolemy.kernel.DecoratedAttributesImplementation},

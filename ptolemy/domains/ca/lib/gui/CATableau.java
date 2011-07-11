@@ -179,7 +179,7 @@ class CAMatrixViewer extends Component {
     ////                         public methods                    ////
 
     /**
-     * Return the minimum size of this commponent.
+     * Return the minimum size of this component.
      * @return The minimum size.
      */
     public Dimension getMinimumSize() {

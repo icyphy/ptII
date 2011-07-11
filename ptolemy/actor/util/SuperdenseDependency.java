@@ -102,7 +102,7 @@ public class SuperdenseDependency implements Dependency {
 
     /** Return true if the value of this dependency equals that
      *  of the specified one, and the specified one is an instance
-     *  of RealDepedency.
+     *  of RealDependency.
      *  <p>
      *  In the case where both dependencies have _time value equal to
      *  Double.POSITIVE_INFINITY, these two dependencies are equal, even

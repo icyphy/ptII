@@ -83,7 +83,7 @@ public class IntToBits extends SDFConverter {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The number of Boolean tokens that the input integer is coverted to.
+    /** The number of Boolean tokens that the input integer is converted to.
      */
     public Parameter numberOfBits;
 

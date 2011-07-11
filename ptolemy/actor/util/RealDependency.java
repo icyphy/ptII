@@ -84,7 +84,7 @@ public class RealDependency implements Dependency {
 
     /** Return true if the value of this dependency equals that
      *  of the specified one, and the specified one is an instance
-     *  of RealDepedency.
+     *  of RealDependency.
      *  @param object The object to compare against.
      *  @return true if this object is the same as the object argument.
      */

@@ -45,7 +45,7 @@ import ptdb.kernel.bl.setup.SetupManager;
 //// DatabaseSetupFrame
 
 /**
- * Database setup frame to modify and test the datadase connection.
+ * Database setup frame to modify and test the database connection.
  *
  * @author Ashwini Bijwe
  * @version $Id$

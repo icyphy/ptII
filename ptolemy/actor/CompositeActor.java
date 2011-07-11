@@ -2718,7 +2718,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Fill in the piggybacks in the containted transparent CompositeActors.
+    /** Fill in the piggybacks in the contained transparent CompositeActors.
      *  If addPiggyBackAtThisLevel equals to True, the piggybacks directly in
      *  this composite actor will also be included.
      *  @param piggybacks The piggybacks that will be filled it.
@@ -2781,13 +2781,13 @@ public class CompositeActor extends CompositeEntity implements Actor,
     /** Flag that is true if there are actor firing listeners. */
     protected boolean _notifyingActorFiring = false;
 
-    /** Keep track of all published ports accessable in this container.*/
+    /** Keep track of all published ports accessible in this container.*/
     protected Map<String, List<IOPort>> _publishedPorts;
 
-    /** Keep track of all published ports accessable in this container.*/
+    /** Keep track of all published ports accessible in this container.*/
     protected Map<String, List<IOPort>> _subscribedPorts;
 
-    /** Keep track of all relations with published ports accessable in this container.*/
+    /** Keep track of all relations with published ports accessible in this container.*/
     protected Map<String, IORelation> _publisherRelations;
 
     /** Indicator that a stop has been requested by a call to stop(). */

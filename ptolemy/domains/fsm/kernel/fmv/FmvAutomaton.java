@@ -241,7 +241,7 @@ public class FmvAutomaton extends FSMActor {
         for (int i = 0; i < infoList.size(); i++) {
             VariableTransitionInfo info = infoList.get(i);
             returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
-                    + info._varibleNewValue + " };\n");
+                    + info._variableNewValue + " };\n");
         }
         returnSmvFormat.append("\t\t\t\t1             : state;\n");
         returnSmvFormat.append("\t\t\tesac;\n\n");
@@ -272,7 +272,7 @@ public class FmvAutomaton extends FSMActor {
             for (int i = 0; i < innerInfoList.size(); i++) {
                 VariableTransitionInfo info = innerInfoList.get(i);
                 returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
-                        + info._varibleNewValue + " };\n");
+                        + info._variableNewValue + " };\n");
 
             }
             returnSmvFormat
@@ -1381,7 +1381,7 @@ public class FmvAutomaton extends FSMActor {
 
                 VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
                 newTransitionInfo._preCondition = currentPremise;
-                newTransitionInfo._varibleNewValue = newVariableValue;
+                newTransitionInfo._variableNewValue = newVariableValue;
                 LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
                         .remove(lValue);
                 if (temp == null) {
@@ -2835,7 +2835,7 @@ public class FmvAutomaton extends FSMActor {
         private String _preCondition;
         // Record set of conditions that leads to the change of variable
         // _variableName.
-        private String _varibleNewValue = null;
+        private String _variableNewValue = null;
 
     }
 

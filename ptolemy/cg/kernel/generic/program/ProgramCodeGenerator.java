@@ -918,7 +918,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  each method.
      *  @param prefix The prefix to use when naming functions that
      *  are created
-     *  @param code The variable declarationsto be split.
+     *  @param code The variable declarations to be split.
      *  @return A list of at least two elements.  If the code has less
      *  than the value of the <i>maximumNumberOfLinesPerBLock</i>
      *  parameter lines, then the first element is empty, the second

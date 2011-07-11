@@ -434,7 +434,7 @@ public class PNDirector extends Director {
      * Generating notTerminate instead of terminate saves the negation in
      * checking the flag (e.g. "while (!terminate) ...").
      * 
-     * @return The varaible label of the notTerminate flag.
+     * @return The variable label of the notTerminate flag.
      */
     protected String _generateNotTerminateFlag() {
         return "true";// "director_controlBlock.controlBlock";

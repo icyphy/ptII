@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  Code generator helper associated with the StaticSchedulingDirector class.
- This classis also associated with a code generator.
+ This class is also associated with a code generator.
 
  @author Gang Zhou
  @version $Id$

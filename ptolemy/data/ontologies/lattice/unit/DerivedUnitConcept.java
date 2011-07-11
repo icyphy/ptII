@@ -606,7 +606,7 @@ public class DerivedUnitConcept extends UnitConcept {
      *  @param newUnitFactor The unit conversion factor to match for the
      *   UnitConcepts.
      *  @return The list of matching UnitConcepts.
-     *  @exception IllegalActionException Thrown if there is a problem compating
+     *  @exception IllegalActionException Thrown if there is a problem computing
      *   the unit factor scalar token values.
      */
     private static List<UnitConcept> _findEquivalentUnitConcepts(

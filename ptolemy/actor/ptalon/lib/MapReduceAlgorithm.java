@@ -75,7 +75,7 @@ public abstract class MapReduceAlgorithm extends Thread {
      * this is the case, just discard it.
      * @param key The key to reduce over.
      * @param values The queue of values in reduction.
-     * @return The reduced list of valeus.
+     * @return The reduced list of values
      * @exception InterruptedException If thrown while reducing.
      */
     public abstract List<String> reduce(String key, BlockingQueue<String> values)

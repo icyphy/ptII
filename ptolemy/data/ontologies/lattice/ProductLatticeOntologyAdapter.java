@@ -215,7 +215,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  which requires special handling beyond what is done in
      *  {@link ProductLatticeConcept#getComponentConceptValue(Ontology)}.
      *
-     * @param productLatticeConcept The ProductLatticeConept or RecordConcept
+     * @param productLatticeConcept The ProductLatticeConcept or RecordConcept
      *  of ProductLatticeConcepts from which to get
      * @param componentOntology The component ontology of the product lattice
      *  ontology from which the return concept should be taken.
@@ -260,7 +260,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *  @param concept The given concept that must be from an ontology that comprises
      *   the given product lattice ontology.
      *  @param productOntology The given product lattice ontology.
-     *  @return The deived product lattice concept.
+     *  @return The derived product lattice concept.
      *  @exception IllegalActionException Thrown if the concept's ontology is not
      *   part of the given product lattice ontology.
      */

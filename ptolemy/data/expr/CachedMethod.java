@@ -1126,7 +1126,7 @@ public class CachedMethod {
      *  conversions than higher preferences.
      */
     public static class ArgumentConversion {
-        /** Construct an argument conversino.
+        /** Construct an argument conversion.
          *  @param preference The preference of this conversion.
          *  The preference is n index given an order to the preference of
          *  conversions.  Lower preferences represent less desirable

@@ -583,7 +583,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
     }
 
     /** Check to make sure the class of the component passed in matches the class
-     *  of the actor constraints defintion attribute.
+     *  of the actor constraints definition attribute.
      *  @param component The specified model component for which we want to
      *   generate constraints.
      *  @return true if the class matches, false otherwise.

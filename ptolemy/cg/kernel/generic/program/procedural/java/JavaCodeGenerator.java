@@ -1556,7 +1556,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  each method.
      *  @param prefix The prefix to use when naming functions that
      *  are created
-     *  @param code The variable declarationsto be split.
+     *  @param code The variable declarations to be split.
      *  @return A list of at least two elements.  If the code has less than
      *  _LINES_PER_METHOD lines, then the first element is empty, the
      *  second element contains the contents of the code parameter.  If

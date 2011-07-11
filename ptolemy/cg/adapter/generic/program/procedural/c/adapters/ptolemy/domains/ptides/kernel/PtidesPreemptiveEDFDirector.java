@@ -399,7 +399,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
     /** Generate code for director header.
      *
-     *  @return Code that declaresheader for director
+     *  @return Code that declares the header for director
      *  @exception IllegalActionException If getting the rate or
      *   reading parameters throws it.
      */

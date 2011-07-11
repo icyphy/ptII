@@ -36,7 +36,7 @@ import ptolemy.moml.MoMLParser;
 /** When this class is registered with the MoMLParser.setMoMLFilter()
  method, it will cause MoMLParser to filter so that all
 the TypedCompositeActors except those within actor oriented class
-definitios are changed to LazyTypedCompositeActors.
+definitions are changed to LazyTypedCompositeActors.
 
  @author Christopher Hylands
  @version $Id$

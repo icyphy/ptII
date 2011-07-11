@@ -2427,7 +2427,7 @@ public class SMVUtility {
                 VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
                 newTransitionInfo._preCondition = " !(" + currentPremise + ") ";
                 // newTransitionInfo._variableName = lValue;
-                newTransitionInfo._varibleNewValue = newVariableValue;
+                newTransitionInfo._variableNewValue = newVariableValue;
                 LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
                         .remove(lValue);
                 if (temp == null) {
@@ -2444,7 +2444,7 @@ public class SMVUtility {
                 VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
                 newTransitionInfo._preCondition = currentPremise;
                 // newTransitionInfo._variableName = lValue;
-                newTransitionInfo._varibleNewValue = newVariableValue;
+                newTransitionInfo._variableNewValue = newVariableValue;
                 LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
                         .remove(lValue);
                 if (temp == null) {
@@ -5260,12 +5260,12 @@ public class SMVUtility {
                 // UNDER A REFINEMENT OF A STATE.
                 if (refinementStateName.equalsIgnoreCase("")) {
                     returnSmvFormat.append("\t\t\t\t" + info._preCondition
-                            + " :{ " + info._varibleNewValue + " };\n");
+                            + " :{ " + info._variableNewValue + " };\n");
                 } else {
                     returnSmvFormat.append("\t\t\t\t"
                             + refinementStateActivePremise + " & "
                             + info._preCondition + " :{ "
-                            + info._varibleNewValue + " };\n");
+                            + info._variableNewValue + " };\n");
                 }
             }
         }
@@ -5303,12 +5303,12 @@ public class SMVUtility {
                         if (refinementStateName.equalsIgnoreCase("")) {
                             returnSmvFormat.append("\t\t\t\t"
                                     + info._preCondition + " :{ "
-                                    + info._varibleNewValue + " };\n");
+                                    + info._variableNewValue + " };\n");
                         } else {
                             returnSmvFormat.append("\t\t\t\t"
                                     + refinementStateActivePremise + " & "
                                     + info._preCondition + " :{ "
-                                    + info._varibleNewValue + " };\n");
+                                    + info._variableNewValue + " };\n");
                         }
 
                     }
@@ -5514,7 +5514,7 @@ public class SMVUtility {
 
         private String _preCondition;
         // Record set of conditions that leads to the change of variable.
-        private String _varibleNewValue = null;
+        private String _variableNewValue = null;
     }
 
 }

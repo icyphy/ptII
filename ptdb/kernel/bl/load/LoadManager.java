@@ -138,7 +138,7 @@ public class LoadManager {
 
         if (byReference) {
 
-            if (_circularDepenencyExists(name, container.getName())) {
+            if (_circularDependencyExists(name, container.getName())) {
 
                 throw new CircularDependencyException("This import would "
                         + "result in a circular dependency.");
@@ -382,7 +382,7 @@ public class LoadManager {
      *          Thrown if a problem occurs getting the reference string for
      *          modelName.
      */
-    private static boolean _circularDepenencyExists(String modelName,
+    private static boolean _circularDependencyExists(String modelName,
             String containerName) throws DBConnectionException,
             DBExecutionException {
 

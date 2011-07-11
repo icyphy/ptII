@@ -32,7 +32,7 @@ package ptolemy.actor.gui;
  * This interface is analogous to the {@link Placeable} interface.  However, this
  * interface is platform independent, and it's expected that implementers of the
  * interface are also platform independent.  By platform independent, we mean there is
- * no dependendency to java.awt or java.swing packages.
+ * no dependency to java.awt or java.swing packages.
  *
  * <p>Interface for objects that have UI components that can be placed in containers.
  * These objects can be fairly tricky to write because of the fact that they

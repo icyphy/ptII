@@ -210,7 +210,7 @@ public class PetiteToken extends ScalarToken {
      *  value of this token. If this token contains a non-negative
      *  number, it is returned directly; otherwise, a new token is is
      *  return.  Note that it is explicitly allowable to return this
-     *  token, since the units are the same. The call to the contructor
+     *  token, since the units are the same. The call to the constructor
      *  ensures the value is within the range defined by a PetiteToken.
      *  It thus automatically converts -1 to (1 - Double.MIN_VALUE).
      *  @return An PetiteToken.

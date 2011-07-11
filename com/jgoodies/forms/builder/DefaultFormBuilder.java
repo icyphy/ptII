@@ -98,7 +98,7 @@ import com.jgoodies.forms.layout.RowSpec;
  * <pre>
  * public void build() {
  *     FormLayout layout = new FormLayout(
- *         "right:max(40dlu;pref), 3dlu, 80dlu, 7dlu, " // 1st major colum
+ *         "right:max(40dlu;pref), 3dlu, 80dlu, 7dlu, " // 1st major column
  *       + "right:max(40dlu;pref), 3dlu, 80dlu",        // 2nd major column
  *         "");                                         // add rows dynamically
  *     DefaultFormBuilder builder = new DefaultFormBuilder(layout);

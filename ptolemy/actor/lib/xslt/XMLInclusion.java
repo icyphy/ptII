@@ -114,7 +114,7 @@ public class XMLInclusion extends Transformer {
     ////                     ports and parameters                  ////
 
     /** The template that specifies how the XML tokens will be combined.
-     *  The type of this parameter is not defind, though it is in string mode.
+     *  The type of this parameter is not defined, though it is in string mode.
      *  The initial value is not defined.
      */
     public PortParameter template;
