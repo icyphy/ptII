@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.pthales.JNI;
 
 /**
- * Test float arrays in JNI
+ * Test float arrays in Java Native Interface (JNI).
  *
  * @author rbarrere
  * @version $Id$

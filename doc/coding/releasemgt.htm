@@ -295,7 +295,7 @@ and run make.  See the top of the file for the appropriate make command.
 First, untar the previous source release in ptII/adm/dists.  Then:
 <pre>
 cd $PTII/adm/dists
-diff -r ptII7.0.1 ptII8.1.devel > /tmp/pt.diffs
+diff -r ptII8.0.1 ptII8.1.devel > /tmp/pt.diffs
 grep Copyright `egrep "^Only in ptII8.1.devel" /tmp/pt.diffs | \
    grep.java | sed 's@ptII8.1.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'`
 </pre>

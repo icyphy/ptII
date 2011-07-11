@@ -228,8 +228,14 @@ public class PthalesReceiver extends SDFReceiver {
         return (_getAddress(_positionIn + (numberOfTokens - 1), true) < _buffer.length);
     }
 
-    /**
-     *
+    /** Return true if the receiver is dynamic.
+     *  A dynamic receiver's get() method returns data
+     *  from the current control position, which is is adjusted
+     *  each time get() is called.
+     *  A non-dynamic receiver's get() method merely
+     *  increments the positionIn pointer each time get() is called.
+     *  @return true if this receiver is dynamic.
+     *  @see #setDynamic(boolean)
      */
     public boolean isDynamic() {
         return _dynamic;
@@ -409,6 +415,10 @@ public class PthalesReceiver extends SDFReceiver {
         _positionOut = 0;
     }
 
+    /** Set whether this receiver is dynamic.
+     *  @param dynamic True if this receiver is dynamic.
+     *  @see #isDynamic()
+     */
     public void setDynamic(boolean dynamic) {
         _dynamic = dynamic;
     }
@@ -494,7 +504,9 @@ public class PthalesReceiver extends SDFReceiver {
         fillParameters(actor, port);
     }
 
-    /** Set repetitions of the actor containing the port that contains the receiver
+    /** Set repetitions of the actor containing the port that contains
+     *  the receiver.
+     *  @param repetitions An array of Integer repetitions.
      */
     public void setReadParameters(Integer[] repetitions) {
         if (repetitions != null) {
