@@ -2081,6 +2081,10 @@ public class Query extends JPanel {
             }
 
             File file = null;
+
+            // FIXME: should we set both of these?
+            _startingDirectory = new File(fileDialog.getDirectory());
+            //_base = new File(fileDialog.getDirectory()).toURI();
             if (_startingDirectory != null) {
                 file = new File(_startingDirectory, fileDialog.getFile());
             } else {
@@ -2115,8 +2119,8 @@ public class Query extends JPanel {
             if (_base == null) {
                 // Absolute file name.
                 try {
-                    _entryBox.setText(new File(fileDialog.getFile())
-                            .getCanonicalPath());
+                    _entryBox.setText(new File(fileDialog.getDirectory(),
+                                    fileDialog.getFile()).getCanonicalPath());
                 } catch (IOException ex) {
                     // If we can't get a path, then just use the name.
                     _entryBox.setText(fileDialog.getFile());
