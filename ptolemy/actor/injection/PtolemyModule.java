@@ -66,8 +66,8 @@ public class PtolemyModule extends AbstractModule {
     ////                         public methods                    ////
 
     /**
-     * Configures the module by binding the interfaces in the moduleBundle to their implementations.
-     * @see com.google.inject.AbstractModule#configure()
+     * Configure the module by binding the interfaces in the
+     * moduleBundle to their implementations.
      */
     @Override
     protected void configure() {
