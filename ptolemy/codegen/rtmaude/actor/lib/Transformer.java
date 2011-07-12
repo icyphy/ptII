@@ -35,7 +35,7 @@ import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 /**
  * Generate RTMaude code for a Transformer
  *
- * @see ptolemy.actor.Transformer
+ * @see ptolemy.actor.lib.Transformer
  * @author Christopher Brooks
  * @since Ptolemy II 8.1
  * @version $Id$
