@@ -26,12 +26,16 @@
  */
 package ptolemy.homer.widgets;
 
-import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.JCheckBox;
+import javax.imageio.ImageIO;
 
 import org.netbeans.api.visual.widget.Scene;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
@@ -43,48 +47,21 @@ import ptolemy.kernel.util.NamedObj;
 * @Pt.AcceptedRating Red (ishwinde)
 */
 
-public class CheckBoxWedget extends NamedObjectWidget {
+public class CheckBoxWidget extends NamedObjectImageWidget {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                  constructor                              ////
-
-    /** Create an instance of the CheckBox widget on the 
-     *  @param scene The scene on whci the widget is to be drawn.
-     *  @param namedObject The NamedObj object representing this widget.
-     */
-    public CheckBoxWedget(Scene scene, NamedObj namedObject) {
+    public CheckBoxWidget(Scene scene, NamedObj namedObject)
+            throws NameDuplicationException, IllegalActionException {
         super(scene, namedObject);
+
+        try {
+            BufferedImage img = ImageIO.read(new File(
+                    "/ptII/ptolemy/homer/images/checkbox.png"));
+
+            setImage(img);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                  Public Method                            ////
-
-    /** Returns the Checkbox widget.
-     */
-    public JCheckBox getJCheckBox() {
-        return box;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                  Protected  Method                        ////
-
-    /** Draws the widget on the scene.
-     */
-    protected Rectangle calculateClientArea() {
-        return new Rectangle(box.getPreferredSize());
-    }
-
-    /** Draws the widget on the scene.
-     */
-    protected void paintWidget() {
-        box.setSize(getBounds().getSize());
-        box.paint(getGraphics());
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Contained JCheckBox object
-    private final JCheckBox box = new JCheckBox();
 
 }

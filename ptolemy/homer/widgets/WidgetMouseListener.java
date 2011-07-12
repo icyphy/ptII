@@ -60,8 +60,6 @@ import java.awt.event.MouseListener;
 
 import org.netbeans.api.visual.widget.Widget;
 
-import ptolemy.homer.gui.WidgetPropertiesFrame;
-
 public class WidgetMouseListener implements MouseListener {
 
     ///////////////////////////////////////////////////////////////////
@@ -95,7 +93,7 @@ public class WidgetMouseListener implements MouseListener {
 
             // layeredPane.getParent().repaint();
 
-            new WidgetPropertiesFrame(_widget).setVisible(true);
+            // new WidgetPropertiesFrame(_widget).setVisible(true);
         }
 
     }

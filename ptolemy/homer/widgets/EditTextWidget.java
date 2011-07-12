@@ -25,13 +25,17 @@
  */
 package ptolemy.homer.widgets;
 
-import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-import org.netbeans.api.visual.widget.LabelWidget;
+import javax.imageio.ImageIO;
+
 import org.netbeans.api.visual.widget.Scene;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
 ////EditTextWidget
@@ -44,20 +48,21 @@ import ptolemy.kernel.util.Settable;
 * @Pt.ProposedRating Red (ishwinde)
 * @Pt.AcceptedRating Red (ishwinde)
 */
-public class EditTextWidget extends NamedObjectWidget {
+public class EditTextWidget extends NamedObjectImageWidget {
 
-    public EditTextWidget(Scene scene, NamedObj namedObject) {
+    public EditTextWidget(Scene scene, NamedObj namedObject)
+            throws NameDuplicationException, IllegalActionException {
         super(scene, namedObject);
-        LabelWidget labelWidget = new LabelWidget(scene);
-        labelWidget.setOpaque(true);
-        labelWidget.setBackground(Color.WHITE);
-        labelWidget.setCheckClipping(true);
-        labelWidget.setAlignment(LabelWidget.Alignment.CENTER);
-        labelWidget.setVerticalAlignment(LabelWidget.VerticalAlignment.CENTER);
-        addChild(labelWidget);
-        if (namedObject instanceof Settable) {
-            labelWidget.setLabel(((Settable) namedObject).getExpression());
+
+        try {
+            BufferedImage img = ImageIO.read(new File(
+                    "/ptII/ptolemy/homer/images/edittext.png"));
+
+            setImage(img);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 
 }

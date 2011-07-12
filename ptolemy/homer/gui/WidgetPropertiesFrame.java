@@ -55,14 +55,16 @@
 
 package ptolemy.homer.gui;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
 import org.netbeans.api.visual.widget.Widget;
+
+import ptolemy.homer.widgets.NamedObjectWidgetInterface;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 public class WidgetPropertiesFrame extends javax.swing.JFrame {
 
@@ -74,14 +76,16 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
     ////                         constructor                       ////
 
     public WidgetPropertiesFrame(Widget widget) {
-        initComponents();
-        xTextField.setText(String.valueOf(widget.getPreferredBounds().getX()));
-        yTextField.setText(String.valueOf(widget.getPreferredBounds().getY()));
-        heightTextField.setText(String.valueOf(widget.getPreferredBounds()
-                .getHeight()));
-        widthTextField.setText(String.valueOf(widget.getPreferredBounds()
-                .getWidth()));
         _widget = widget;
+        initComponents();
+        _xTextField.setText(String
+                .valueOf(widget.getPreferredLocation().getX()));
+        _yTextField.setText(String
+                .valueOf(widget.getPreferredLocation().getY()));
+        _heightTextField.setText(String.valueOf(widget.getPreferredBounds()
+                .getHeight()));
+        _widthTextField.setText(String.valueOf(widget.getPreferredBounds()
+                .getWidth()));
 
     }
 
@@ -92,44 +96,51 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
      */
     private void initComponents() {
 
-        okButton = new javax.swing.JButton();
-        cancelButton = new javax.swing.JButton();
-        xLabel = new javax.swing.JLabel();
-        yLabel = new javax.swing.JLabel();
-        heightLabel = new javax.swing.JLabel();
-        widthLabel = new javax.swing.JLabel();
-        xTextField = new javax.swing.JTextField();
-        yTextField = new javax.swing.JTextField();
-        heightTextField = new javax.swing.JTextField();
-        widthTextField = new javax.swing.JTextField();
-        checkbox = new java.awt.Checkbox();
+        _okButton = new javax.swing.JButton();
+        _cancelButton = new javax.swing.JButton();
+        _xLabel = new javax.swing.JLabel();
+        _yLabel = new javax.swing.JLabel();
+        _heightLabel = new javax.swing.JLabel();
+        _widthLabel = new javax.swing.JLabel();
+        _xTextField = new javax.swing.JTextField();
+        _yTextField = new javax.swing.JTextField();
+        _heightTextField = new javax.swing.JTextField();
+        _widthTextField = new javax.swing.JTextField();
+        _checkbox = new java.awt.Checkbox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Widget Properties");
 
-        okButton.setText("Ok");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
+        _okButton.setText("Ok");
+        _okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
-        cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+        _cancelButton.setText("Cancel");
+        _cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
 
-        xLabel.setText("X:");
+        _xLabel.setText("X:");
 
-        yLabel.setText("Y:");
+        _yLabel.setText("Y:");
 
-        heightLabel.setText("Height:");
+        _heightLabel.setText("Height:");
 
-        widthLabel.setText("Width:");
+        _widthLabel.setText("Width:");
 
-        checkbox.setLabel("Disabled");
+        _checkbox.setLabel("Disabled");
+        if (_widget instanceof NamedObjectWidgetInterface) {
+            _namedObj = ((NamedObjectWidgetInterface) _widget).getNamedObject();
+            if (!(_namedObj instanceof Settable)) {
+                _checkbox.disable();
+            }
+
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
                 getContentPane());
@@ -153,9 +164,9 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
                                                                                                         layout.createParallelGroup(
                                                                                                                 javax.swing.GroupLayout.Alignment.TRAILING)
                                                                                                                 .addComponent(
-                                                                                                                        xLabel)
+                                                                                                                        _xLabel)
                                                                                                                 .addComponent(
-                                                                                                                        heightLabel))
+                                                                                                                        _heightLabel))
                                                                                                 .addGap(18,
                                                                                                         18,
                                                                                                         18)
@@ -164,20 +175,20 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
                                                                                                                 javax.swing.GroupLayout.Alignment.LEADING,
                                                                                                                 false)
                                                                                                                 .addComponent(
-                                                                                                                        xTextField)
+                                                                                                                        _xTextField)
                                                                                                                 .addComponent(
-                                                                                                                        heightTextField,
+                                                                                                                        _heightTextField,
                                                                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                                         53,
                                                                                                                         Short.MAX_VALUE)))
                                                                                 .addComponent(
-                                                                                        checkbox,
+                                                                                        _checkbox,
                                                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                 .addPreferredGap(
                                                                         javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                                .addComponent(okButton))
+                                                .addComponent(_okButton))
                                 .addGroup(
                                         layout.createParallelGroup(
                                                 javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +206,7 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
                                                                                                         37,
                                                                                                         37)
                                                                                                 .addComponent(
-                                                                                                        yLabel)
+                                                                                                        _yLabel)
                                                                                                 .addGap(18,
                                                                                                         18,
                                                                                                         18))
@@ -203,7 +214,7 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
                                                                                         javax.swing.GroupLayout.Alignment.TRAILING,
                                                                                         layout.createSequentialGroup()
                                                                                                 .addComponent(
-                                                                                                        widthLabel)
+                                                                                                        _widthLabel)
                                                                                                 .addGap(10,
                                                                                                         10,
                                                                                                         10)))
@@ -211,12 +222,12 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
                                                                         layout.createParallelGroup(
                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                                                 .addComponent(
-                                                                                        widthTextField,
+                                                                                        _widthTextField,
                                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                         56,
                                                                                         Short.MAX_VALUE)
                                                                                 .addComponent(
-                                                                                        yTextField,
+                                                                                        _yTextField,
                                                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                         56,
                                                                                         javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -225,7 +236,7 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
                                                                 .addGap(44, 44,
                                                                         44)
                                                                 .addComponent(
-                                                                        cancelButton)))
+                                                                        _cancelButton)))
                                 .addGap(61, 61, 61)));
         layout.setVerticalGroup(layout
                 .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,14 +247,14 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
                                         layout.createParallelGroup(
                                                 javax.swing.GroupLayout.Alignment.BASELINE)
                                                 .addComponent(
-                                                        xTextField,
+                                                        _xTextField,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(xLabel)
-                                                .addComponent(yLabel)
+                                                .addComponent(_xLabel)
+                                                .addComponent(_yLabel)
                                                 .addComponent(
-                                                        yTextField,
+                                                        _yTextField,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         20,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -253,19 +264,19 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
                                         layout.createParallelGroup(
                                                 javax.swing.GroupLayout.Alignment.BASELINE)
                                                 .addComponent(
-                                                        widthTextField,
+                                                        _widthTextField,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         20,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(widthLabel)
+                                                .addComponent(_widthLabel)
                                                 .addComponent(
-                                                        heightTextField,
+                                                        _heightTextField,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(heightLabel))
+                                                .addComponent(_heightLabel))
                                 .addGap(22, 22, 22)
-                                .addComponent(checkbox,
+                                .addComponent(_checkbox,
                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,8 +284,8 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
                                 .addGroup(
                                         layout.createParallelGroup(
                                                 javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(cancelButton)
-                                                .addComponent(okButton))
+                                                .addComponent(_cancelButton)
+                                                .addComponent(_okButton))
                                 .addContainerGap(33, Short.MAX_VALUE)));
         setLocation(500, 200);
 
@@ -285,21 +296,22 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
      *  @param evt Event object.
      */
     private void okButtonActionPerformed(ActionEvent evt) {
-        int x, y;
+        double x, y;
+        double height, width;
 
         try {
-            x = Integer.parseInt(xTextField.getText());
-
-            y = Integer.parseInt(yTextField.getText());
+            x = Double.parseDouble(_xTextField.getText());
+            y = Double.parseDouble(_yTextField.getText());
+            height = Double.parseDouble(_heightTextField.getText());
+            width = Double.parseDouble(_widthTextField.getText());
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "You Entered Invalid vaules.",
                     "Invalid", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        // _widget.setPreferredLocation(new Point(x, y));
-        _widget.setPreferredBounds(new Rectangle(new Point(x, y),
-                new Dimension(200, 500)));
+        Rectangle rect = new Rectangle();
+        rect.setRect(x, y, width, height);
+        _widget.setPreferredBounds(rect);
 
         dispose();
     }
@@ -315,17 +327,18 @@ public class WidgetPropertiesFrame extends javax.swing.JFrame {
     ////                         private variables                 ////
 
     private final Widget _widget;
-    private java.awt.Checkbox checkbox;
-    private javax.swing.JButton okButton;
-    private javax.swing.JButton cancelButton;
-    private javax.swing.JLabel xLabel;
-    private javax.swing.JLabel yLabel;
-    private javax.swing.JLabel heightLabel;
-    private javax.swing.JLabel widthLabel;
-    private javax.swing.JTextField xTextField;
-    private javax.swing.JTextField yTextField;
-    private javax.swing.JTextField heightTextField;
-    private javax.swing.JTextField widthTextField;
+    private NamedObj _namedObj;
+    private java.awt.Checkbox _checkbox;
+    private javax.swing.JButton _okButton;
+    private javax.swing.JButton _cancelButton;
+    private javax.swing.JLabel _xLabel;
+    private javax.swing.JLabel _yLabel;
+    private javax.swing.JLabel _heightLabel;
+    private javax.swing.JLabel _widthLabel;
+    private javax.swing.JTextField _xTextField;
+    private javax.swing.JTextField _yTextField;
+    private javax.swing.JTextField _heightTextField;
+    private javax.swing.JTextField _widthTextField;
     // End of variables declaration
 
 }

@@ -83,7 +83,7 @@ public class PortablePlaceableWidget extends NamedObjectWidget implements
         glassPane.addKeyListener(new KeyAdapter() {
         });
         glassPane.addMouseMotionListener(mouseAdapter);
-        glassPane.addMouseListener(new WidgetMouseListener(this));
+        glassPane.addMouseListener(mouseAdapter);
         glassPane.addMouseWheelListener(mouseAdapter);
 
         final JPanel containerPanel = new JPanel();

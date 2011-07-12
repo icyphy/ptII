@@ -47,6 +47,7 @@ import javax.swing.JPopupMenu;
 
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.AlignWithMoveDecorator;
+import org.netbeans.api.visual.action.EditProvider;
 import org.netbeans.api.visual.action.MoveStrategy;
 import org.netbeans.api.visual.action.PopupMenuProvider;
 import org.netbeans.api.visual.action.TwoStateHoverProvider;
@@ -125,6 +126,13 @@ public class TabScenePanel {
             }
         };
         _hoverAction = ActionFactory.createHoverAction(_hoverProvider);
+        _clickListener = ActionFactory.createEditAction(new EditProvider() {
+
+            public void edit(Widget widget) {
+                new WidgetPropertiesFrame(widget).setVisible(true);
+            }
+
+        });
         _scene.getActions().addAction(_hoverAction);
         new DropTarget(_scene.getView(), new DropTargetAdapter() {
 
@@ -258,6 +266,7 @@ public class TabScenePanel {
         widget.setPreferredLocation(location);
         widget.getActions().addAction(_resizeAction);
         widget.getActions().addAction(_moveAction);
+        widget.getActions().addAction(_clickListener);
         widget.getActions().addAction(_hoverAction);
         widget.getActions().addAction(_scene.createSelectAction());
         widget.getActions().addAction(_popupMenuAction);
@@ -316,6 +325,7 @@ public class TabScenePanel {
     private final ObjectScene _scene;
     private final WidgetAction _moveAction;
     private final WidgetAction _resizeAction;
+    private final WidgetAction _clickListener;
     private final TwoStateHoverProvider _hoverProvider;
     private WidgetAction _popupMenuAction;
     private WidgetAction _hoverAction;

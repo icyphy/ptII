@@ -44,26 +44,14 @@ public class SpinnerWidget extends NamedObjectImageWidget {
         super(scene, namedObject);
 
         try {
-            BufferedImage img = ImageIO.read(new File("J:/spinner.png"));
+            BufferedImage img = ImageIO.read(new File(
+                    "/ptII/ptolemy/homer/images/spinner.png"));
 
             setImage(img);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        //  ImageWidget spinnerImg = new ImageWidget(scene);
-
-        //        try {
-        //            spinnerImg.setImage(ImageIO.read(new File("J:/spinner.png")));
-        //        } catch (IOException ex) {
-        //
-        //        }
-        //
-        //        addChild(spinnerImg);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
 }
