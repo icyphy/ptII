@@ -714,7 +714,7 @@ public class SignalProcessing {
         return ComplexArrayMath.scale(y, oneOverN);
     }
 
-    /** Return a new array of double's which is the real part of the inverse
+    /** Return a new array of doubles which is the real part of the inverse
      *  FFT of an input array of Complex's.
      *  This is less than half as expensive as computing both the real and
      *  imaginary parts. It is especially useful when it is known that the
@@ -729,13 +729,13 @@ public class SignalProcessing {
         return IFFTRealOut(x, order(x.length));
     }
 
-    /** Return a new array of double's which is the real part of the inverse
+    /** Return a new array of doubles which is the real part of the inverse
      *  FFT of an input array of Complex's.
      *  This method is less than half as expensive as computing both the
      *  real and imaginary parts of an IFFT of an array of Complex's. It is
      *  especially useful when it is known that the output is purely real.
      *  @param x An array of Complex's.
-     *  @return A new array of double's.
+     *  @return A new array of doubles.
      */
     public static final double[] IFFTRealOut(Complex[] x, int order) {
         x = _checkTransformArgs(x, order, _INVERSE_TRANSFORM);
@@ -753,7 +753,7 @@ public class SignalProcessing {
         return DoubleArrayMath.scale(realrealX, oneOverN);
     }
 
-    /** Return a new array of double's which is the real part of the inverse
+    /** Return a new array of doubles which is the real part of the inverse
      *  FFT of an input array of doubles.
      *  This method automatically computes the order of the transform
      *  based on the length of the input array, and calls :
@@ -765,7 +765,7 @@ public class SignalProcessing {
         return IFFTRealOut(x, order(x.length));
     }
 
-    /** Return a new array of double's which is the real part of the inverse
+    /** Return a new array of doubles which is the real part of the inverse
      *  FFT of an input array of doubles. This method is less than half
      *  as expensive as computing the real part of an IFFT of an array of
      *  Complex's. It is especially useful when both the input and output

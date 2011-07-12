@@ -87,7 +87,7 @@ import javax.swing.JOptionPane;
  * continue the simulation. If Ptolemy is run as a console
  * application, this dialog will be destroyed when Ptolemy
  * reaches the final time. However, if Ptolemy is run from vergil,
- * then the dialog box remains diplayed until it is closed by
+ * then the dialog box remains displayed until it is closed by
  * the user.
  *
  * @author Michael Wetter

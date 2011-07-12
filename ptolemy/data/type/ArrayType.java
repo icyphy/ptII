@@ -107,7 +107,7 @@ public class ArrayType extends StructuredType implements Cloneable,
         return new TypeableArrayTypeTerm(typeable);
     }
 
-    /** Return a type constraint that can be used to contrain
+    /** Return a type constraint that can be used to constrain
      *  another typeable object to have a type related to an
      *  array whose element type is the type of the specified
      *  typeable.  A typical usage of this is as follows:

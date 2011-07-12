@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Nameable;
  <P>
  Branches are assigned to a branch controller by the director associated
  with the controller's composite actor via the addBranches() method. This
- method takes an io port and determine's the port's receivers. Branches
+ method takes an io port and determines the port's receivers. Branches
  are then instantiated and assigned to the receivers according to whether
  the receivers are producer or consumer receivers.
 

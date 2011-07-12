@@ -119,7 +119,7 @@ import diva.graph.modular.EdgeModel;
  * <p>
  * Calling the layout() method will create a new Kieler graph datastructure, run
  * Kieler layout algorithms on it and augment it with resulting layout
- * information (locations and sizes of nodes, bendoints of connections). Then
+ * information (locations and sizes of nodes, bendpoints of connections). Then
  * this layout gets applied to the Ptolemy model. Moving of nodes in Ptolemy is
  * done via adding or changing location attributes.
  * </p>

@@ -85,7 +85,7 @@ class DFInputChannel implements InputChannel {
     }
 
     /** Commit reads of this channel.  Any tokens read since the last
-     * invocation of the rollback method are lost andd no longer
+     * invocation of the rollback method are lost and no longer
      * available for reading.
      */
     public void commit() {

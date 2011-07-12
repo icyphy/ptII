@@ -452,7 +452,7 @@ public abstract class FormSpec implements Serializable {
 
         /**
          * Returns a DefaultAlignment that corresponds to the specified
-         * string, null if no such aignment exists.
+         * string, null if no such alignment exists.
          *
          * @param str        the encoded alignment
          * @param isHorizontal   indicates the values orientation

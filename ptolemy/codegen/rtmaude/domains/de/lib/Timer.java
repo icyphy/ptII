@@ -42,7 +42,7 @@ import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  * @deprecated Use VariableDelay instead, which is essentially identical,
- * or ResettableTimer for a more reasonable timer behavio
+ * or ResettableTimer for a more reasonable timer behavior.
  */
 public class Timer extends TypedAtomicActor {
     /**

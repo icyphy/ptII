@@ -261,7 +261,7 @@ public class DotProduct extends TypedAtomicActor {
      *     LUB(elementType(port1), elementType(port2)) if both are matrices
      *     LUB(elementType(port1), elementType(port2)) if both are arrays
      *     UNKNOWN                                     otherwise
-     *  This function's value determinese the output port type.
+     *  This function's value determines the output port type.
      */
     private static class PortFunction extends MonotonicFunction {
         private PortFunction(TypedIOPort port1, TypedIOPort port2) {

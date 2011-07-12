@@ -353,10 +353,10 @@ public class GiottoDecoratedAttributesImplementation2 extends
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The decorater.*/
+    /** The decorator.*/
     private Decorator _decorator = null;
 
-    /** The decorater path. This variable is used for persistence to recreate
+    /** The decorator path. This variable is used for persistence to recreate
      * the code generator after having parsed the model.*/
     private StringAttribute _decoratorPath = null;
 }

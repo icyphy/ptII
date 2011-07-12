@@ -141,7 +141,7 @@ public abstract class AbstractConnector extends AbstractFigure implements
         return _headSite;
     }
 
-    /** Get the figure that display's this connector's label.
+    /** Get the figure that displays this connector's label.
      * This may be null.
      */
     public LabelFigure getLabelFigure() {

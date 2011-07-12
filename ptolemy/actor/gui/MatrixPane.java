@@ -119,7 +119,7 @@ public class MatrixPane extends JScrollPane {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Emtpy string. */
+    /** Empty string. */
     private static Token _emptyStringToken = new StringToken("");
 
     /** Empty table model. */

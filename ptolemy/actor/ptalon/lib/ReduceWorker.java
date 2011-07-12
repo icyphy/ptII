@@ -70,7 +70,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  the queue.  Call the <i>isQueueEmpty</i> of MapReduceAlgorithm to
  test if this actor has stopped putting values on the queue and that
  all values have been taken from the queue.  The last element of the
- queue will allways be the empty string.  Ignore this value.
+ queue will always be the empty string.  Ignore this value.
 
  @author Adam Cataldo
  @version $Id$

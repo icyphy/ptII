@@ -414,7 +414,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
     ////                         private methods                   ////
 
     /**
-     * Check to see if there is an _alternatXMLIcon attribute in the
+     * Check to see if there is an _alternateXMLIcon attribute in the
      * configuration.  This attribute should name a class that
      * is an alternative to XMLIcon.
      * If the attribute is present, return the class, if not, return null.

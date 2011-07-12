@@ -383,7 +383,7 @@ public class MobileModel extends TypedCompositeActor {
      * to the <i>director<i> parameter.
      * @exception IllegalActionException If cannot find the director
      * class with the specified name by the <i>director<i> parameter,
-     *  or if there is name duplicationn for the director.
+     *  or if there is name duplication for the director.
      */
     private void _createDirector() throws IllegalActionException {
         try {

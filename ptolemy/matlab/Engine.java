@@ -596,7 +596,7 @@ public class Engine {
                 if (scalarMatrices) {
                     double tmp = a[0][0];
 
-                    if (_doubleisInteger(tmp)) {
+                    if (_doubleIsInteger(tmp)) {
                         retval = new IntToken((int) tmp);
                     } else {
                         retval = new DoubleToken(tmp);
@@ -606,7 +606,7 @@ public class Engine {
 
                     for (int i = 0; allIntegers && (i < a.length); i++) {
                         for (int j = 0; allIntegers && (j < a[0].length); j++) {
-                            allIntegers &= _doubleisInteger(a[i][j]);
+                            allIntegers &= _doubleIsInteger(a[i][j]);
                         }
                     }
 
@@ -836,7 +836,7 @@ public class Engine {
         return ma;
     }
 
-    private boolean _doubleisInteger(double d) {
+    private boolean _doubleIsInteger(double d) {
         // FindBugs reports "Test for floating point equality", which
         // may be ignored here because we really want to know if
         // the double is equal to the floor of the double.

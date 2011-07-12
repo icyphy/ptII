@@ -158,7 +158,7 @@ public class CodeStream {
     /**
      * Append the code block specified the given block name. This method
      * invokes appendCodeBlock(String, LinkedList) with no arguments by
-     * passing an empty array list of argments. The requested
+     * passing an empty array list of arguments. The requested
      * code block is required to exist.
      * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The given code block name.
@@ -172,7 +172,7 @@ public class CodeStream {
     /**
      * Append the code block specified the given block name. This method
      * invokes appendCodeBlock(String, LinkedList) with no arguments by
-     * passing an empty array list of argments. The requested
+     * passing an empty array list of arguments. The requested
      * code block is required to exist.
      * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The given code block name.
@@ -189,7 +189,7 @@ public class CodeStream {
     /**
      * Append the code block specified the given block name. This method
      * invokes appendCodeBlock(String, LinkedList) with no arguments by
-     * passing an empty array list of argments. The requested
+     * passing an empty array list of arguments. The requested
      * code block is required to exist.
      * @see #appendCodeBlock(String, List, boolean)
      * @param blockName The given code block name.

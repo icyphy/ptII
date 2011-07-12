@@ -111,7 +111,7 @@ public class HSModalDirector extends FSMDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Iterate the enbled refinements to emit the current states of their
+    /** Iterate the enabled refinements to emit the current states of their
      *  dynamic actors.
      *  @exception IllegalActionException If the current states can not
      *  be emitted.

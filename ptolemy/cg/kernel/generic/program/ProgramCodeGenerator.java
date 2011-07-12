@@ -920,7 +920,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  are created
      *  @param code The variable declarations to be split.
      *  @return A list of at least two elements.  If the code has less
-     *  than the value of the <i>maximumNumberOfLinesPerBLock</i>
+     *  than the value of the <i>maximumNumberOfLinesPerBlock</i>
      *  parameter lines, then the first element is empty, the second
      *  element contains the contents of the code parameter.  If the
      *  code has more lines than <i>maximumLinesPerBlock</i>,

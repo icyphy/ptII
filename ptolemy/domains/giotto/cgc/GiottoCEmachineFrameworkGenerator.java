@@ -70,7 +70,7 @@ import ptolemy.util.StringUtilities;
  "selected_directory/model_name/model_name.giotto".</DT>
  <DT>2. Generates the Emachine framework code files and stores them in
  "selected_directory/model_name/c_functionality/fcode". This particular
- direcotry structure is chosen to reflect the Emachine directory
+ directory structure is chosen to reflect the Emachine directory
  structure.</DT>
  <DT>The framework code consists of</DT>
  <DT><DD>f_code.c : This contains the driver code for the model, including the

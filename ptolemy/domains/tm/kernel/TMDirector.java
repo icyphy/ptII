@@ -783,7 +783,7 @@ public class TMDirector extends Director implements TimedDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    /** Disable the specified actor.  All events destinated for this actor
+    /** Disable the specified actor.  All events destined for this actor
      *  will be ignored. If the argument is null, then do nothing.
      *  @param actor The actor to disable.
      */

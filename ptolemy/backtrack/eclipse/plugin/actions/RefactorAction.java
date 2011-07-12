@@ -422,7 +422,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
              */
             public static final int PRINT = 1;
 
-            /** The operation to print a string with a new line charactor.
+            /** The operation to print a string with a new line character.
              */
             public static final int PRINTLN = 2;
 

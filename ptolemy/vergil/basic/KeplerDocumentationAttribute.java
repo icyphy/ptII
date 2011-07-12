@@ -439,7 +439,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
         return _portHash;
     }
 
-    /** Return the property documenation.
+    /** Return the property documentation.
      *  @param name The name of the property.
      *  @return the property docs
      *  @see #addProperty(String, String)

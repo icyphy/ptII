@@ -76,7 +76,7 @@ public class MatlabUtilities {
      *  ptolemy.matlab.Expression}).
      *  @param expression The Matlab expression to be evaluated
      *  @param variableNames The Matlab variables required for evaluating
-     *  the expression.   Each elemement of the Set names a Token that
+     *  the expression.   Each element of the Set names a Token that
      *  is found in the scope.
      *  @param scope The scope to evaluate the expression within.
      *  @return The results of the evaluation

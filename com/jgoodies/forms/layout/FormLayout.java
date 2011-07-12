@@ -1189,8 +1189,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @param offset                     the offset from left or top margin
      * @param formSpecs             the column or row specs, resp.
      * @param componentLists        the components list for each col/row
-     * @param minMeasure                the measure used to determin min sizes
-     * @param prefMeasure                the measure used to determin pre sizes
+     * @param minMeasure                the measure used to determine min sizes
+     * @param prefMeasure                the measure used to determine pre sizes
      * @param groupIndices                the group specification
      * @return an int array with the origins
      */
@@ -1286,9 +1286,9 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @param container         the layout container
      * @param formSpecs         the column or row specs, resp.
      * @param componentLists    the components list for each col/row
-     * @param minMeasure        the measure used to determin min sizes
-     * @param prefMeasure       the measure used to determin pre sizes
-     * @param defaultMeasure    the measure used to determin default sizes
+     * @param minMeasure        the measure used to determine min sizes
+     * @param prefMeasure       the measure used to determine pre sizes
+     * @param defaultMeasure    the measure used to determine default sizes
      * @return the column or row sizes
      */
     private int[] maximumSizes(Container container, List formSpecs,

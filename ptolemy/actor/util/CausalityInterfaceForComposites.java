@@ -622,7 +622,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  same equivalence class with the specified port.
      *  An equivalence class is defined as follows.
      *  If ports X and Y each have a dependency not equal to the
-     *  default depenency's oPlusIdentity(), then they
+     *  default dependency's oPlusIdentity(), then they
      *  are in an equivalence class. That is,
      *  there is a causal dependency. They are also in
      *  the same equivalence class if there is a port Z
