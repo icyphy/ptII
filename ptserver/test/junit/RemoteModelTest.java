@@ -240,8 +240,9 @@ public class RemoteModelTest {
             public void modelConnectionExpired(RemoteModel remoteModel) {
                 synchronized (RemoteModelTest.this) {
                     long diff = System.currentTimeMillis() - time;
-                    assertTrue(timeoutPeriod - 1000 < diff
-                            && diff < timeoutPeriod + 1000);
+                    assertTrue("Difference was " + diff,
+                            timeoutPeriod - 500 < diff
+                                    && diff < timeoutPeriod + 2000);
                     _isWaiting = false;
                     RemoteModelTest.this.notifyAll();
                 }
