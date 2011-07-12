@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * Remove header informations from another actor and act as a flag to
+ * Remove header information from another actor and act as a flag to
  * propagate information from PthalesAddHeaderActor in the
  * preinitialize phase.
  *
@@ -121,7 +121,7 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
 
     /** Read the contents of the array, and extract the header containing
      * the number of dimensions and the size of each dimension
-     * at the beginning of the array then send only the useful informations.
+     * at the beginning of the array then send only the useful information.
      */
     public void fire() throws IllegalActionException {
 

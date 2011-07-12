@@ -684,15 +684,15 @@ public class OracleXMLDBConnection implements DBConnection {
 
                         /*
                          * The _buildCompleteModel() method will put complete models
-                         * extracted from the database into _xmlModelHerarichyMap
+                         * extracted from the database into _xmlModelHierarchyMap
                          * The step below is to put those models in the cache to avoid
                          * building them again.
                          */
 
-                        if (_xmlModelHerarichyMap != null
-                                && _xmlModelHerarichyMap.size() > 0) {
+                        if (_xmlModelHierarchyMap != null
+                                && _xmlModelHierarchyMap.size() > 0) {
 
-                            CacheManager.updateCache(_xmlModelHerarichyMap);
+                            CacheManager.updateCache(_xmlModelHierarchyMap);
                         }
 
                     } catch (Exception e) {
@@ -1547,8 +1547,8 @@ public class OracleXMLDBConnection implements DBConnection {
     private String _buildCompleteModel(Node currentNode)
             throws DBExecutionException, DBConnectionException {
 
-        if (_xmlModelHerarichyMap == null) {
-            _xmlModelHerarichyMap = new HashMap<String, String>();
+        if (_xmlModelHierarchyMap == null) {
+            _xmlModelHierarchyMap = new HashMap<String, String>();
         }
 
         String currentModelName = "";
@@ -1561,9 +1561,9 @@ public class OracleXMLDBConnection implements DBConnection {
 
         if (currentModelId != null && currentModelId.length() > 0) {
 
-            if (_xmlModelHerarichyMap.containsKey(currentModelName)) {
+            if (_xmlModelHierarchyMap.containsKey(currentModelName)) {
 
-                return (String) _xmlModelHerarichyMap.get(currentModelName);
+                return (String) _xmlModelHierarchyMap.get(currentModelName);
             }
 
             if (_xmlContainer == null) {
@@ -1593,7 +1593,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
                     //                    if (currentXMLDBModel != null) {
                     //
-                    //                        _xmlModelHerarichyMap.put(
+                    //                        _xmlModelHierarchyMap.put(
                     //                                currentXMLDBModel.getModelName(),
                     //                                currentXMLDBModel.getModel());
 
@@ -1669,7 +1669,7 @@ public class OracleXMLDBConnection implements DBConnection {
             // Only put models with references in the hashmap.
             if (hasReferences == true) {
 
-                _xmlModelHerarichyMap
+                _xmlModelHierarchyMap
                         .put(currentModelName, currentModelContent);
             }
 
@@ -2854,7 +2854,7 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * This is a hash map to store the complete models without any references.
      */
-    private HashMap<String, String> _xmlModelHerarichyMap;
+    private HashMap<String, String> _xmlModelHierarchyMap;
 
     /**
      * This is the Oracle Berkeley XML DB Transaction that is used to commit or

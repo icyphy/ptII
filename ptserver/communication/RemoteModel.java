@@ -595,7 +595,7 @@ public class RemoteModel {
         close();
     }
 
-    /** Notify the model listeners about the model connection experiation.
+    /** Notify the model listeners about the model connection expiration.
      */
     protected final void _fireModelConnectionExpired() {
         for (RemoteModelListener listener : _modelListeners) {

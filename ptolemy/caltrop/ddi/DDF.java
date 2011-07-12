@@ -162,7 +162,7 @@ public class DDF extends DataflowWithRates {
     }
 
     /**
-     * Select a firable action among the actions of the actor, if possible.
+     * Select a fireable action among the actions of the actor, if possible.
      *
      * @return True, if an action could be selected.
      * @exception IllegalActionException If an error occurred during the

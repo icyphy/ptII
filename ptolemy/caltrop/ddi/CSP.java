@@ -574,16 +574,16 @@ public class CSP extends AbstractDDI {
         for (int i = 0; i < actions.length; i++) {
             Action action = actions[i];
 
-            if (isFirable(action, dataSoFar)) {
+            if (isFireable(action, dataSoFar)) {
                 return action;
             }
         }
 
         throw new DDIException(
-                "selectAction() failed to find a firable action.");
+                "selectAction() failed to find a fireable action.");
     }
 
-    private boolean isFirable(Action action, Map dataSoFar) {
+    private boolean isFireable(Action action, Map dataSoFar) {
         InputPattern[] inputPatterns = action.getInputPatterns();
 
         for (int i = 0; i < inputPatterns.length; i++) {

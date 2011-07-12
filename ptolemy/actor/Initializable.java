@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
  and wrapup. It should be implemented by objects that do not need to invoked
  during runtime, but should be invoked in preinitialize() (exactly once,
  prior to type resolution), in initialize() (which could happen repeatedly during
- execution), or wrapup() (exacty once, at the end of execution).
+ execution), or wrapup() (exactly once, at the end of execution).
 
  @author Edward A. Lee
  @version $Id$

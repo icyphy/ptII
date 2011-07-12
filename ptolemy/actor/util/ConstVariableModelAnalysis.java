@@ -78,7 +78,7 @@ import ptolemy.kernel.util.NamedObj;
  <p> This class also determines the "least change context" of each
  dynamic variable.  The least change context of a variable is
  typically an actor that contains that variable.  During a firing of
- the least change context, the variable's value is guaraunteed to not
+ the least change context, the variable's value is guaranteed to not
  change.  This analysis is important for supporting parameter changes
  in the context of domains that perform scheduling based on parameter
  values, like SDF and PSDF.  The least change context of a

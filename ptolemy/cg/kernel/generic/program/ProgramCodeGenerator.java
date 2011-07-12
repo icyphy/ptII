@@ -819,9 +819,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
 
     /**
-     * Return The extention of the template files.
+     * Return The extension of the template files.
      * (for example c in case of C and j in case of Java)
-     * @return The extention of the template files..
+     * @return The extension of the template files..
      */
     final public String getTemplateExtension() {
         return _templateExtension;

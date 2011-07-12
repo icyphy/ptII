@@ -65,7 +65,7 @@ public class LetTask {
     /**
      * Return the invocation period of the task.
      *
-     * @return the incovationPeriod.
+     * @return the invocationPeriod.
      */
     public long getInvocationPeriod() {
         return _invocationPeriod;

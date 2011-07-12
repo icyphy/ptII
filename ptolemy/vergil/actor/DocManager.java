@@ -1185,7 +1185,7 @@ public class DocManager extends HandlerBase {
 
     /** Return true if the target class has a two argument
      *  constructor compatible with MoML instantiation.
-     *  @return True if the target class can be instanted
+     *  @return True if the target class can be instantiated
      *   by MoML in a CompositeEntity.
      */
     private boolean _hasMoMLConstructor() {

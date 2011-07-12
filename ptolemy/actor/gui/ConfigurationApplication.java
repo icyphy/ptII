@@ -149,7 +149,7 @@ import ptolemy.util.StringUtilities;
  <dl>
  <dt> <code>_applicationInitializer</code>
  <dd> A StringParameter that names a class to be instantiated.
- Kepler uses this parameter to insantiate KeplerInitializer:
+ Kepler uses this parameter to instantiate KeplerInitializer:
  <pre>
  &gt;property name="_applicationInitializer"
          class="ptolemy.data.expr.StringParameter"
@@ -174,7 +174,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
     }
 
-    /** Parse the specified command-line arguments, instanting classes
+    /** Parse the specified command-line arguments, instantiating classes
      *  and reading files that are specified.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
@@ -183,7 +183,7 @@ public class ConfigurationApplication implements ExecutionListener {
         this("ptolemy/configs", args);
     }
 
-    /** Parse the specified command-line arguments, instanting classes
+    /** Parse the specified command-line arguments, instantiating classes
      *  and reading files that are specified.
      *  @param basePath The basePath to look for configurations
      *  in, usually "ptolemy/configs", but other tools might

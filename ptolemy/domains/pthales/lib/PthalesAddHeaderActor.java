@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * Add and/or propagate informations through relations to another
+ * Add and/or propagate information through relations to another
  * actor that can understand and apply modifications.
  *
  * @see ptolemy.domains.pthales.lib.PthalesRemoveHeaderActor

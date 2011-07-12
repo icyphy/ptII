@@ -84,7 +84,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Disconnect an edge from its two enpoints and notify graph
+    /** Disconnect an edge from its two endpoints and notify graph
      *  listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
      *  event whose source is the given source.
      *  @param eventSource The source of the event that will be dispatched,

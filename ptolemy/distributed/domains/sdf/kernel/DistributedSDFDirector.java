@@ -942,7 +942,7 @@ public class DistributedSDFDirector extends SDFDirector {
     private ThreadSynchronizer synchronizer = new ThreadSynchronizer();
 
     /** Map of commands to be executed. This is used by the pipelined parallel
-     *  execution for efficiency. Since new levels are added everytime to the
+     *  execution for efficiency. Since new levels are added every time to the
      *  commands map, after buffering, a sequence of a fully parallel
      *  commandsMap is used several times. There is no point in recalculating
      *  it again and it is reused from the buffering phase.

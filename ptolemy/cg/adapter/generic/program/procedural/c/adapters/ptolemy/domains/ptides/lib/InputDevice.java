@@ -63,7 +63,7 @@ public abstract class InputDevice extends NamedProgramCodeGeneratorAdapter {
 
     /**
      * Return the code for the hardware initialization function.
-     * @return the code for the hardare initialization function, which in this
+     * @return the code for the hardware initialization function, which in this
      * case is the empty string
      * @exception IllegalActionException Not thrown in this base class.
      */

@@ -85,7 +85,7 @@ public class Ontology extends CompositeEntity {
      *  @param conceptString The string of the concept to look for, which would be what
      *   is returned by the concept's toString() method.  This is not necessarily
      *   the Ptolemy {@link ptolemy.kernel.util.NamedObj NamedObj} name of the
-     *   concept. For example, {@link InfiniteConcept InfinteConcepts}
+     *   concept. For example, {@link InfiniteConcept InfiniteConcepts}
      *   have automatically generated unique names that are not the same as
      *   what is returned by their toString() method.
      *  @return The concept that is represented by the given string, or null

@@ -664,7 +664,7 @@ public class PthalesIOPort {
                             }
                             sum += headersize;
 
-                            // If within Pthales domain, update of the port informations
+                            // If within Pthales domain, update of the port information
                             if (((CompositeActor) portIn.getContainer())
                                     .getDirector() instanceof PthalesDirector) {
                                 PthalesIOPort.modifyPattern(portIn, "global",
@@ -679,7 +679,7 @@ public class PthalesIOPort {
         }
     }
 
-    /** Update actor iterations according to pattern and tiling informations.
+    /** Update actor iterations according to pattern and tiling information.
      * @param portIn port used in input for propages
      * @param sizes sizes used to compute iterations
      */

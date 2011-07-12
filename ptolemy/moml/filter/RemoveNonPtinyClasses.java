@@ -111,7 +111,7 @@ public class RemoveNonPtinyClasses extends MoMLFilterSimple {
 
     /** Read in a MoML file, remove graphical classes and
      *  write the results to standard out.
-     *  <p> For example, to remove the graphica classes from
+     *  <p> For example, to remove the graphical classes from
      *  a file called <code>RemoveGraphicalClasses.xml</code>
      *  <pre>
      *  java -classpath "$PTII" ptolemy.moml.filter.RemoveGraphicalClasses test/RemoveGraphicalClasses.xml &gt; output.xml

@@ -273,7 +273,7 @@ public class TDLModuleDirector extends ModalDirector {
     }
 
     /**
-     * Return the current model time which is the model time of the excecutive
+     * Return the current model time which is the model time of the executive
      * director.
      */
     public Time getModelTime() {

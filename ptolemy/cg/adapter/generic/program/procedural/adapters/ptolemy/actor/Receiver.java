@@ -65,7 +65,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     /**
      * Generate code for getting tokens from the receiver.
      * @param offset The offset in the array representation of the port.
-     * @return The code for gettign tokens from the receiver.
+     * @return The code for getting tokens from the receiver.
      * @exception IllegalActionException If the receiver adapter is
      * not found or it encounters an error while generating the
      * get code.

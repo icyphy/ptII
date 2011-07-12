@@ -72,7 +72,7 @@ public interface MutableGraphModel extends GraphModel {
             Object headNode) throws GraphException;
 
     /**
-     * Disconnect an edge from its two enpoints and notify graph
+     * Disconnect an edge from its two endpoints and notify graph
      * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
      * event whose source is the given source.
      *

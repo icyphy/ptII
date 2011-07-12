@@ -1823,9 +1823,9 @@ public class GiottoDirector extends
     }
 
     /**
-     * Determines the frequeny of the actor passed in as a parameter
+     * Determines the frequency of the actor passed in as a parameter
      * @param actor
-     *       * @exception IllegalActionException
+     * @exception IllegalActionException
      */
     private int _getFrequency(Actor actor) throws IllegalActionException {
         Attribute frequency = ((Entity) actor).getAttribute("frequency");

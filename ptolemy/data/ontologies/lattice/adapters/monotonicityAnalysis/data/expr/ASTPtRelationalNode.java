@@ -157,7 +157,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
                 variables.addAll(rhs.keySet());
 
                 for (String v : variables) {
-                    FiniteConcept monotonicity = _evaluateFininteConcept(
+                    FiniteConcept monotonicity = _evaluateFiniteConcept(
                             lhs.getMonotonicity(v), rhs.getMonotonicity(v));
                     result.putMonotonicity(v, monotonicity);
                 }
@@ -183,7 +183,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *    Nonmonotonic</code>, depending on the result of the analysis.
          *  @exception IllegalActionException If there is an error evaluating the function.
          */
-        private FiniteConcept _evaluateFininteConcept(FiniteConcept lhs,
+        private FiniteConcept _evaluateFiniteConcept(FiniteConcept lhs,
                 FiniteConcept rhs) throws IllegalActionException {
             if (_constantConcept.isAboveOrEqualTo(lhs)
                     && _constantConcept.isAboveOrEqualTo(rhs)) {

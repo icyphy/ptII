@@ -142,7 +142,7 @@ public class GPInputHandler extends InputDevice {
 
     /**
      * Return the code for the hardware initialization function.
-     * @return the code for the hardare initialization function.
+     * @return the code for the hardware initialization function.
      * @exception IllegalActionException If thrown while appending the code
      * block or processing the code stream.
      */

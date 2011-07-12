@@ -436,7 +436,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
      * that it depends on.
      * @param inInputConnectedPorts
      * @param inOutputConnectedPorts
-     * @param firingClusters The cluster of frings.
+     * @param firingClusters The cluster of firings.
      * @param clusters
      * @exception IllegalActionException
      */
@@ -1245,7 +1245,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         for (Iterator junctions = port2Junction.values().iterator(); junctions
                 .hasNext();) {
             SimulationJunction junction = (SimulationJunction) junctions.next();
-            if (!junction.isInInitalState()) {
+            if (!junction.isInInitialState()) {
                 throw new IllegalActionException(
                         "Some junction is not in its initial state after one firing iteration");
             }
@@ -2065,7 +2065,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         /** test if the junction has the same number of tokens as its initial state.
          * @return true if currently the junction has the same number of tokens as its initial state.
          */
-        public boolean isInInitalState() {
+        public boolean isInInitialState() {
             return _numInitialTokens == counter;
         }
 

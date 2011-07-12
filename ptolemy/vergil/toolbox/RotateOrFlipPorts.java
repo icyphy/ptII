@@ -70,7 +70,7 @@ public class RotateOrFlipPorts extends FigureAction {
     /** Indicator to rotate counterclockwise. */
     public static final int COUNTERCLOCKWISE = 1;
 
-    /** Indicator to flip ports horizonally. */
+    /** Indicator to flip ports horizontally. */
     public static final int FLIP_HORIZONTAL = 2;
 
     /** Indicator to flip ports vertically. */

@@ -3300,7 +3300,7 @@ public class Plot extends PlotBox {
 
     /**
      * An arraylist of the bins in the plot. A bin is represents a number of points that are all displayed on the same x position.
-     * A bin is meant to avoid superfluous drawings of lines. So instaed of having to draw
+     * A bin is meant to avoid superfluous drawings of lines. So instead of having to draw
      * a line between each point, you can draw a line between the minimum and maximum and maximum
      * position.
      */
@@ -3437,7 +3437,7 @@ public class Plot extends PlotBox {
 
     /**
      * A bin is represents a number of points that are all displayed on the same x position.
-     * A bin is meant to avoid superfluous drawings of lines. So instaed of having to draw
+     * A bin is meant to avoid superfluous drawings of lines. So instead of having to draw
      * a line between each point, you can draw a line between the minimum and maximum and maximum
      * y position.
     */

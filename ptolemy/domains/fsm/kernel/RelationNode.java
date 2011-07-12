@@ -36,7 +36,7 @@ package ptolemy.domains.fsm.kernel;
  For more details of difference, see
  {@link ptolemy.domains.fsm.kernel.ParseTreeEvaluatorForGuardExpression}.
  The instance stores the information of two evaluations of the transition,
- the current evaluation and the previous evaluaiton.
+ the current evaluation and the previous evaluation.
 
  @author  Haiyang Zheng
  @version $Id$

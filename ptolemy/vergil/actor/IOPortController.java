@@ -138,7 +138,7 @@ public class IOPortController extends AttributeController {
      *  named "_cardinal" that specifies a cardinality, and whether the
      *  containing actor has a parameter named "_rotatePorts" that
      *  specifies a rotation of the ports.  In addition, if the
-     *  containing actor has a parameter named "_flipPortsHorizonal"
+     *  containing actor has a parameter named "_flipPortsHorizontal"
      *  or "_flipPortsVertical" with value true, then any ports that end up on the left
      *  or right (top or bottom) will be reversed.
      *  @param port The port.
@@ -269,7 +269,7 @@ public class IOPortController extends AttributeController {
      *  named "_cardinal" that specifies a cardinality, and whether the
      *  containing actor has a parameter named "_rotatePorts" that
      *  specifies a rotation of the ports.  In addition, if the
-     *  containing actor has a parameter named "_flipPortsHorizonal"
+     *  containing actor has a parameter named "_flipPortsHorizontal"
      *  or "_flipPortsVertical" with value true, then any ports that end up on the left
      *  or right (top or bottom) will be reversed.
      *  @deprecated Use public getCardinality() method instead

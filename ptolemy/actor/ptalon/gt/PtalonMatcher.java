@@ -228,7 +228,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
             setPersistent(false);
         }
 
-        /** If we are not initalizing or fixed, then call attributeChanged()
+        /** If we are not initializing or fixed, then call attributeChanged()
          *  in the super class.
          *  @param attribute The attribute that changed.
          *  @exception IllegalActionException If thrown by the superclass.
@@ -240,7 +240,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
             }
         }
 
-        /** Initialze the ptalon actor and the code location.
+        /** Initialize the ptalon actor and the code location.
          *  @exception IllegalActionException If there is problem
          *  initializing the ptalon actor or the ptalon code
          *  location.

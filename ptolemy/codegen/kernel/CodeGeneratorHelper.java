@@ -193,7 +193,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Add a functiom to the Set of functions used thus far.
+     * Add a function to the Set of functions used thus far.
      * @param functionName A string naming a function, for example "new".
      */
     public void addFunctionUsed(String functionName) {

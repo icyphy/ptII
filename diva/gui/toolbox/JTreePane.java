@@ -280,7 +280,7 @@ public class JTreePane extends JSplitPane {
     }
 
     /**
-     * Remove all of the entrys.
+     * Remove all of the entries.
      */
     public void removeAll() {
         DefaultTreeModel model = (DefaultTreeModel) _tree.getModel();

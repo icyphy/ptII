@@ -50,7 +50,7 @@ import com.jgoodies.forms.layout.Sizes;
 import com.jgoodies.forms.util.Utilities;
 
 /**
- * A singleton implementaton of the {@link ComponentFactory} interface
+ * A singleton implementation of the {@link ComponentFactory} interface
  * that creates UI components as required by the
  * {@link com.jgoodies.forms.builder.PanelBuilder}.<p>
  *

@@ -192,7 +192,7 @@ public class KielerLayout extends AbstractGlobalLayout {
     /**
      * Layout the given composite. Main entry point for the layout action.
      * Create a Kieler KGraph datastructure corresponding to the Ptolemy model,
-     * instanciate a Kieler layout algorithm (AbstractLayoutProvider) and run
+     * instantiate a Kieler layout algorithm (AbstractLayoutProvider) and run
      * its doLayout() method on the KGraph. The KGraph gets augmented with
      * layout information (position and sizes of objects and bendpoints for
      * connections). This information is then reapplied to the ptolemy model by

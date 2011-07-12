@@ -138,7 +138,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         return this;
     }
 
-    /** Return an array of variables contained in this InqualityTerm, or in
+    /** Return an array of variables contained in this InequalityTerm, or in
      *  this case, an empty array. A concept is a single constant, so
      *  it has no variables.
      *  @return An empty array.

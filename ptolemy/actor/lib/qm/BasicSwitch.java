@@ -137,7 +137,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
      *  For now, we only support wrapping input ports.
      *  @param receiver The receiver that is being wrapped.
      *  @return A new intermediate receiver.
-     *  @exception IllegalActionException Thrown if the receiver is an
+     *  @exception IllegalActionException If the receiver is an
      *  ouptut port.
      */
     public IntermediateReceiver getReceiver(Receiver receiver)
@@ -156,9 +156,9 @@ public class BasicSwitch extends MonitoredQuantityManager {
     /** Make sure that this quantity manager is only used in the DE domain.
      *  FIXME: this actor should be used in other domains later as well.
      *  @param container The container of this actor.
-     *  @exception IllegalActionException Thrown by the super class or if the
+     *  @exception IllegalActionException If thrown by the super class or if the
      *  director of this actor is not a DEDirector.
-     *  @exception NameDuplicationException Thrown by the super class.
+     *  @exception NameDuplicationException If thrown by the super class.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
@@ -276,7 +276,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
      *  from the switch fabric queue to the output queues and send tokens from the
      *  output queues to the target receivers. When moving tokens between
      *  queues the appropriate delays are considered.
-     *  @exception IllegalActionException Thrown if token cannot be sent to
+     *  @exception IllegalActionException If the token cannot be sent to
      *  target receiver.
      */
     public void fire() throws IllegalActionException {
@@ -352,7 +352,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
 
     /** If there are still tokens in the queue and a token has been
      *  produced in the fire, schedule a refiring.
-     *  @exception IllegalActionExecption Thrown if refiring cannot be scheduled or
+     *  @exception IllegalActionExecption If refiring cannot be scheduled or
      *  by super class.
      */
     public boolean postfire() throws IllegalActionException {
@@ -455,7 +455,7 @@ public class BasicSwitch extends MonitoredQuantityManager {
     }
 
     /** Schedule a refiring of this actor based on the tokens in the queues.
-     *  @exception IllegalActionException Thrown if actor cannot be refired
+     *  @exception IllegalActionException If actor cannot be refired
      *  at the computed time.
      */
     protected void _scheduleRefire() throws IllegalActionException {

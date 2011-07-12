@@ -109,7 +109,7 @@ public class HighlightEntities extends Attribute {
 
     /** List of names of the entities to highlight.
      *  This is an array of strings that defaults to
-     *  null, which is interepreted to mean to clear
+     *  null, which is interpreted to mean to clear
      *  all highlights.
      */
     public Parameter entityNames;

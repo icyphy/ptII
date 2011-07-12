@@ -3728,7 +3728,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  This variable is used primarily for testing configurations.
      *  The value of this variable is a List of Strings, where each
      *  element names a file name that should _not_ be loaded if
-     *  it is encounted in an input statement.
+     *  it is encountered in an input statement.
      */
     public static List inputFileNamesToSkip = null;
 
@@ -4109,7 +4109,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // actor/lib/comm/demo/SerialPort/SerialPort.xml
                         // when the Java Serial Comm API is not installed,
                         // we get
-                        // Error encounted in:
+                        // Error encountered in:
                         // <entity name="SerialComm" class="ptolemy.actor.lib...
                         // -- ptolemy.actor.lib.comm.SerialComm:
                         // javax/comm/SerialPortEventListener
@@ -6983,7 +6983,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param context The context in which to search.
      *  @return An entity with the specified name, or null if none is found.
      *  @exception XmlException If the name refers to an entity in an
-     *   innappropriate context or if the context is not an instance
+     *   inappropriate context or if the context is not an instance
      *   of CompositeEntity.
      * @exception IllegalActionException If the name is ambiguous in that
      *  more than one entity in workspace matches. This will only occur

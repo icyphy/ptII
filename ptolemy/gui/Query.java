@@ -1968,7 +1968,7 @@ public class Query extends JPanel {
          * @param allowDirectories if directories are allowed to be selected.
          * @param save Whether the file is to be saved or opened.
          * @param background The color of the background.
-         * @param foreground The color of the foregriound.
+         * @param foreground The color of the foreground.
          */
         public QueryFileChooser(Query owner, String name, String defaultName,
                 URI base, File startingDirectory, boolean allowFiles,

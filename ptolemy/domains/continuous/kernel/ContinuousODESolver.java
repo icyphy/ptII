@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  <P>
  A round counter is a counter for the number of rounds in one integration.
  It helps the solvers to decide how to behave under different rounds.
- The round counter can be increated by the calling the _incrementRound()
+ The round counter can be increased by the calling the _incrementRound()
  method. The _reset() method always resets the counter to 0. These methods are
  protected because they are only used by Continuous directors.
  <p>

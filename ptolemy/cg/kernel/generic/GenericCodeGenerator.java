@@ -1048,7 +1048,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     }
 
     /** Print the elapsed time since the specified startTime if
-     *  the elpsed time is greater than 10 seconds. Otherwise,
+     *  the elapsed time is greater than 10 seconds. Otherwise,
      *  do nothing.
      *  @param startTime The start time.  Usually set to the value
      *   of <code>(new Date()).getTime()</code>.

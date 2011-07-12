@@ -469,7 +469,7 @@ public class VideoCamera extends Source implements ControllerListener {
         /** Process a individual frame.
          *  @param in The input buffer.
          *  @param out The output buffer.
-         *  @return BUFFER_PROCESSED_OK if no exceptin was thrown.
+         *  @return BUFFER_PROCESSED_OK if no exception was thrown.
          */
         public int process(Buffer in, Buffer out) {
             // This is the "Callback" to access individual frames.

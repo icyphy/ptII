@@ -73,7 +73,7 @@ public abstract class MemoryAccess extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The pointer to the data. Depending on the implemting subclass,
+    /** The pointer to the data. Depending on the implementing subclass,
      * this is either an input or an output. */
     public TypedIOPort ptr;
 

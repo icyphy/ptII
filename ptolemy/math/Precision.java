@@ -899,7 +899,7 @@ public class Precision implements Cloneable, Serializable {
      * of the most significant bit and LSB specifies the location
      * of the least significant bit.
      * Negative values are allowed for both MSB and LSB so long as
-     * the MSB is greather than the LSB. <p>
+     * the MSB is greater than the LSB. <p>
      *
      * This format supports the specification of either signed or
      * unsigned values. The character 'U' must precede the

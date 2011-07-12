@@ -121,7 +121,7 @@ public class ConstPropagationMathFunctions extends ConceptFunction {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return the FlatTokenInfininteConcept that is the result of applying
+    /** Return the FlatTokenInfiniteConcept that is the result of applying
      *  the math operation to the given input arguments.
      *  @param concept1 The first argument of the concept function.
      *  @param concept2 The second argument of the concept function.

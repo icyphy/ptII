@@ -2,7 +2,7 @@
  PtolemyModule loads interface to implementation mappings from the provided
  ResourceBundle and configures Guice AbstractModule to use those mappings.
 
- Copyright (c) 2011-2011 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,7 +53,7 @@ import com.google.inject.AbstractModule;
 public class PtolemyModule extends AbstractModule {
 
     /**
-     * Create a new intance of the PtolemyModule based on the provided moduleBundle.
+     * Create a new instance of the PtolemyModule based on the provided moduleBundle.
      * @param moduleBundle The moduleBundle contains mappings from platform independent
      * interfaces to platform dependent implementations.  The bundle must have key value mappings
      * from the fully specified interface name to the fully specified class name.
@@ -104,7 +104,7 @@ public class PtolemyModule extends AbstractModule {
     ////                         private variables                 ////
 
     /**
-     * The resource bundle holdding the mappings from an interface to its implementations.
+     * The resource bundle holding the mappings from an interface to its implementations.
      */
     private ResourceBundle _moduleBundle;
 }
