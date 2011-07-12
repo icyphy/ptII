@@ -31,6 +31,7 @@ import java.awt.Point;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -40,10 +41,12 @@ import javax.swing.border.TitledBorder;
 
 import org.netbeans.api.visual.widget.Widget;
 
+import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.WidgetLoader;
 import ptolemy.homer.widgets.NamedObjectWidgetInterface;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -100,10 +103,16 @@ public class UIDesignerFrame extends JFrame {
     public void addVisualNamedObject(TabScenePanel panel, NamedObj object,
             Point location) throws IllegalActionException,
             NameDuplicationException {
-
-        // TODO handle attribute styles
+        Class<? extends NamedObj> namedObjectWidgetClass = object.getClass();
+        if (object instanceof Attribute) {
+            List<ParameterEditorStyle> attributeList = object
+                    .attributeList(ParameterEditorStyle.class);
+            if (!attributeList.isEmpty()) {
+                namedObjectWidgetClass = attributeList.get(0).getClass();
+            }
+        }
         NamedObjectWidgetInterface widget = (NamedObjectWidgetInterface) WidgetLoader
-                .loadWidget(panel.getScene(), object, object.getClass());
+                .loadWidget(panel.getScene(), object, namedObjectWidgetClass);
         _widgetMap.put(object, widget);
         _remoteObjectSet.add(object);
         _widgetTabMap.put(widget, panel);
