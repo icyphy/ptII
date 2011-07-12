@@ -52,7 +52,7 @@ public class BooleanDependency implements Dependency {
      *  to create instances.
      *  @param value The value.
      */
-    private BooleanDependency(boolean value) {
+    protected BooleanDependency(boolean value) {
         _value = value;
     }
 
@@ -113,7 +113,7 @@ public class BooleanDependency implements Dependency {
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
     public Dependency oPlus(Dependency d) {
-        // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
+     // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((BooleanDependency) d)._value || _value) {
             return OTIMES_IDENTITY;
         }
@@ -137,8 +137,8 @@ public class BooleanDependency implements Dependency {
      *   this one and the specified one.
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
-    public Dependency oTimes(Dependency d) {
-        // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
+    public Dependency oTimes(Dependency d) { 
+     // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (_value && ((BooleanDependency) d)._value) {
             return OTIMES_IDENTITY;
         }
@@ -205,5 +205,5 @@ public class BooleanDependency implements Dependency {
     ////                         private variables                 ////
 
     /** The value. */
-    private boolean _value;
+    protected boolean _value;
 }

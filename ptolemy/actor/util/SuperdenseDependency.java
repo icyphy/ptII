@@ -50,7 +50,7 @@ package ptolemy.actor.util;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class SuperdenseDependency implements Dependency {
+public class SuperdenseDependency extends BooleanDependency { 
 
     /** Construct a dependency with the specified value.
      *  The constructor is private. Use valueOf() to construct
@@ -59,8 +59,9 @@ public class SuperdenseDependency implements Dependency {
      *  @param index The supersense index part of the dependency.
      */
     private SuperdenseDependency(double time, int index) {
+        super(time != Double.POSITIVE_INFINITY);
         _time = time;
-        _index = index;
+        _index = index; 
     }
 
     ///////////////////////////////////////////////////////////////////
