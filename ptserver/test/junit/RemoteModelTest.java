@@ -224,7 +224,7 @@ public class RemoteModelTest {
     /** Test the timeout functionality of a running model.
      *  @exception Exception If there was an error running the simulation.
      */
-    @Test(timeout = 5000)
+    @Test(timeout = 10000)
     public void testModelTimeout() throws Exception {
         RemoteModelResponse response = _openRemoteModel();
 
@@ -249,10 +249,16 @@ public class RemoteModelTest {
 
             public void modelException(RemoteModel remoteModel, String message,
                     Throwable exception) {
+                exception.printStackTrace();
+                _isWaiting = false;
+                RemoteModelTest.this.notifyAll();
             }
 
             public void modelEvent(RemoteModel remoteModel, String message,
                     EventType type) {
+                System.out.println(type);
+                _isWaiting = false;
+                RemoteModelTest.this.notifyAll();
             }
         });
 
