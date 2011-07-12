@@ -133,7 +133,7 @@ public class MultiContent {
      *  @exception NameDuplicationException If multiple elements exist with the
      *  same name. Element names within a workspace must be unique.
      */
-    private void _initializeContents(ContentPrototype contentPrototype)
+    protected void _initializeContents(ContentPrototype contentPrototype)
             throws IllegalActionException, NameDuplicationException {
         LayoutParser parser = new LayoutParser(_model);
 
@@ -172,13 +172,13 @@ public class MultiContent {
     /** Map of all available identifiers to different contents. Identifiers
      *  should be unique.
      */
-    private HashMap<ContentPrototype, TabDefinition> _contents = new HashMap<ContentPrototype, TabDefinition>();
+    protected HashMap<ContentPrototype, TabDefinition> _contents = new HashMap<ContentPrototype, TabDefinition>();
 
     /** Store the order of the tabs by their identifiers.
      */
-    private ArrayList<String> _order = new ArrayList<String>();
+    protected ArrayList<String> _order = new ArrayList<String>();
 
     /** The model to be parsed and used to create the contents.
      */
-    private CompositeActor _model;
+    protected CompositeActor _model;
 }

@@ -58,7 +58,6 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.util.MessageHandler;
 import ptserver.communication.RemoteModel;
 import ptserver.communication.RemoteModel.RemoteModelType;
 
@@ -84,19 +83,34 @@ public class LayoutFileOperations {
         // TODO
     }
 
-    public static CompositeEntity openModelFile(URL url) {
+    /** Open a MoML file, parse it, and the parsed model.
+     * 
+     *  @param url The url of the model.
+     *  @return The parsed model.
+     *  @exception IllegalActionException If the parsing failed.
+     */
+    public static CompositeEntity openModelFile(URL url)
+            throws IllegalActionException {
         CompositeEntity topLevel = null;
         MoMLParser parser = new MoMLParser(new Workspace());
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         try {
             topLevel = (CompositeEntity) parser.parse(null, url);
-        } catch (Exception e1) {
-            MessageHandler.error("Unable to parse the file", e1);
+        } catch (Exception e) {
+            throw new IllegalActionException(e.getMessage());
         }
 
         return topLevel;
     }
 
+    /** Save a layout to a MoML file. The layout file should contain all the
+     *  information needed to create visual representations of elements and
+     *  to communicate remotely.
+     *  
+     *  @param mainFrame The object containing all the information about the
+     *  elements to create the layout file, such as position information.
+     *  @param layoutFile The file the layout is saved to.
+     */
     public static void saveAs(UIDesignerFrame mainFrame, File layoutFile) {
 
         CompositeActor model = null;
@@ -189,11 +203,10 @@ public class LayoutFileOperations {
         }
 
     }
-
-    private static CompositeEntity loadServerModel(URL modelURL, URL layoutURL)
+    
+    private static CompositeEntity mergeModelWithLayout(CompositeEntity model,
+            CompositeEntity layout, HashSet<Attribute> attributesToMerge)
             throws IllegalActionException, NameDuplicationException {
-        CompositeEntity model = openModelFile(modelURL);
-        CompositeEntity layout = openModelFile(layoutURL);
         HashSet<NamedObj> container = new HashSet<NamedObj>();
 
         // Traverse all elements in the layout.
@@ -214,13 +227,30 @@ public class LayoutFileOperations {
 
         return model;
     }
-
-    private static CompositeEntity loadServerModel(String modelURL,
-            String layoutURL) throws MalformedURLException,
-            IllegalActionException, NameDuplicationException {
-        return loadServerModel(new URL(modelURL), new URL(layoutURL));
+    
+    private static CompositeEntity mergeModelWithLayout(URL modelURL,
+            URL layoutURL, HashSet<Attribute> attributesToMerge)
+            throws IllegalActionException, NameDuplicationException {
+        CompositeEntity model = openModelFile(modelURL);
+        CompositeEntity layout = openModelFile(layoutURL);
+        return mergeModelWithLayout(model, layout, attributesToMerge);
     }
 
+    private static CompositeEntity mergeModelWithLayout(String modelURL,
+            String layoutURL, HashSet<Attribute> attributesToMerge)
+            throws MalformedURLException, IllegalActionException,
+            NameDuplicationException {
+        return mergeModelWithLayout(new URL(modelURL), new URL(layoutURL),
+                attributesToMerge);
+    }
+
+    /** Strips the first part of a compound element name, including the
+     *  "." at the beginning.
+     * 
+     * @param fullName The compound name of an element.
+     * @return The stripped name of the element, where the first part of
+     * the compound name is removed, including the "." at the beginning.
+     */
     private static String stripFullName(String fullName) {
         if (fullName.indexOf(".") == -1 || fullName.length() < 2) {
             return fullName;
@@ -228,6 +258,11 @@ public class LayoutFileOperations {
         return fullName.substring(fullName.substring(1).indexOf(".") + 2);
     }
 
+    /** Get the location from a widget in the form of an IntMatrixToken.
+     * 
+     *  @param widget The widget from where to extract the location from.
+     *  @return The IntMatrixToken representing the location of the widget.
+     */
     public static IntMatrixToken getLocationToken(Widget widget) {
         int[][] location = new int[][] { { widget.getBounds().x,
                 widget.getBounds().y, widget.getBounds().width,
@@ -242,6 +277,13 @@ public class LayoutFileOperations {
         return locationToken;
     }
 
+    /** Check if the entity is a sink or source. It checks based on the ports of
+     *  connected relations.
+     *  
+     *  @param entity The Ptolemy entity to check.
+     *  @return SinkOrSource enumeration indicating whether the entity is a sink, a
+     *  source, both, or none.
+     */
     public static SinkOrSource isSinkOrSource(ComponentEntity entity) {
         boolean isSink = true;
         boolean isSource = true;
@@ -280,6 +322,15 @@ public class LayoutFileOperations {
         return SinkOrSource.NONE;
     }
 
+    /** Get all the elements marked as proxies under the element and add them to
+     *  the container. 
+     * 
+     *  @param element The element to search for proxy attribute and other elements
+     *  that have proxy attributes.
+     *  @param container
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
     private static void _getProxyElements(NamedObj element,
             HashSet<NamedObj> container) throws IllegalActionException,
             NameDuplicationException {
@@ -300,8 +351,21 @@ public class LayoutFileOperations {
         }
     }
 
+    /** Categorization of an entity.
+     */
     public static enum SinkOrSource {
-        SINK, SOURCE, SINK_AND_SOURCE, NONE
+        /** Categorize entity as a sink.
+         */
+        SINK,
+        /** Categorize entity as a source.
+         */
+        SOURCE,
+        /** Categorize entity as both a sink and a source.
+         */
+        SINK_AND_SOURCE,
+        /** Categorize entity as neither a sink or source.
+         */
+        NONE
     }
 
 }
