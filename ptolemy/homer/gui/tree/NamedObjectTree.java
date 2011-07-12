@@ -38,7 +38,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import ptolemy.homer.gui.UIDesignerFrame;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -120,5 +119,4 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
     ////                         private variables                 ////
     private final PTree _tree;
     private final JTextField _currentSelectionField;
-    private UIDesignerFrame _mainFrame;
 }

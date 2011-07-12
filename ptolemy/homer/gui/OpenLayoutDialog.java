@@ -68,7 +68,6 @@ public class OpenLayoutDialog implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                public methods                             ////
 
-    @Override
     public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = _menu.getFileChooser();
 

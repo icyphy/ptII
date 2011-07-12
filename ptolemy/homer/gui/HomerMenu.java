@@ -44,7 +44,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -171,8 +170,6 @@ public class HomerMenu {
                 false);
         portraitItem.setMnemonic(KeyEvent.VK_P);
         portraitItem.addActionListener(new ActionListener() {
-
-            @Override
             public void actionPerformed(ActionEvent e) {
                 TabbedLayoutScene scene = _parent.getTabbedLayoutScene();
                 if (scene != null) {
@@ -194,8 +191,6 @@ public class HomerMenu {
                 true);
         landscapeItem.setMnemonic(KeyEvent.VK_L);
         landscapeItem.addActionListener(new ActionListener() {
-
-            @Override
             public void actionPerformed(ActionEvent e) {
                 TabbedLayoutScene scene = _parent.getTabbedLayoutScene();
                 if (scene != null) {
@@ -295,12 +290,16 @@ public class HomerMenu {
 
     private void _saveMenuActionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-        LayoutFileOperations.save(_parent);
     }
 
     private void _saveAsMenuActionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
+        _fileChooser.setDialogTitle("Select where to save the layout");
+        _fileChooser.setFileFilter(_layoutFilter);
 
+        int returnVal = _fileChooser.showOpenDialog(_parent);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            _parent.saveLayoutAs(_fileChooser.getSelectedFile());
+        }
     }
 
     private void _initializeFileChooser() {

@@ -383,17 +383,16 @@ public class RemoteModel {
     /**
      * Load the model from the specified URL.
      *
-     * @param modelURL the model URL to be loaded
+     * @param topLevel the composite actor at the top of the ptolemy model.
      * @exception Exception If there is a problem parsing the model,
      * connecting to the mqtt broker or replacing actors.
      */
-    public void loadModel(URL modelURL) throws Exception {
-        MoMLParser parser = _createMoMLParser();
+    public void loadModel(CompositeActor topLevel) throws Exception {
         HashSet<ComponentEntity> unneededActors = new HashSet<ComponentEntity>();
         HashSet<ComponentEntity> sinks = new HashSet<ComponentEntity>();
         HashSet<ComponentEntity> sources = new HashSet<ComponentEntity>();
         _resolvedTypes = new HashMap<String, String>();
-        _topLevelActor = (CompositeActor) parser.parse(null, modelURL);
+        _topLevelActor = topLevel;
         for (Object obj : getTopLevelActor().deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
             Attribute remoteAttribute = actor.getAttribute("_remote");
@@ -471,6 +470,19 @@ public class RemoteModel {
             break;
         }
     }
+
+    /**
+     * Load the model from the specified URL.
+     *
+     * @param modelURL the model URL to be loaded
+     * @exception Exception If there is a problem parsing the model,
+     * connecting to the mqtt broker or replacing actors.
+     */
+    public void loadModel(URL modelURL) throws Exception {
+      MoMLParser parser = _createMoMLParser();
+      loadModel((CompositeActor) parser.parse(null, modelURL));
+    }
+
 
     /**
      * Unsubscribe the listener from the model events.
@@ -954,5 +966,4 @@ public class RemoteModel {
      * Model time out period.
      */
     private int timeoutPeriod = 30000;
-
 }

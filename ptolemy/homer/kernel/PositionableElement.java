@@ -28,11 +28,11 @@
 package ptolemy.homer.kernel;
 
 import ptolemy.actor.gui.PortableContainer;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
 //// PositionableElement
@@ -107,7 +107,7 @@ public abstract class PositionableElement {
      *  @return Return the location object of the element.
      */
     public String getTab() {
-        Parameter tag = ((Parameter) _element
+        Settable tag = ((Settable) _element
                 .getAttribute(HomerConstants.TAB_NODE));
 
         // If the tab is not set, return default

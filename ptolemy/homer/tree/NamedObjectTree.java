@@ -30,7 +30,6 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
         setVisible(true);
     }
 
-    @Override
     public void valueChanged(TreeSelectionEvent e) {
         currentSelectionField.setText("Current Selection: "
                 + tree.getLastSelectedPathComponent().toString());

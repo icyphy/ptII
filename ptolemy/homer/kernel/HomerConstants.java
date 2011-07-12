@@ -75,7 +75,24 @@ public final class HomerConstants {
      */
     public static final String POSITION_NODE = "droid_location";
 
+    /** The name of the attribute defining that a node should be run on the client.
+     */
+    public static final String REMOTE_NODE = "_remote";
+
+    /** The value of a remote node indicating that the element is an attribute.
+     */
+    public static final String REMOTE_ATTRIBUTE = "attribute";
+
+    /** The value of a remote node indicating that the element is a source.
+     */
+    public static final String REMOTE_SOURCE = "source";
+
+    /** The value of a remote node indicating that the element is a sink.
+     */
+    public static final String REMOTE_SINK = "sink";
+
     /** The name of the attribute defining the node's style in the layout file.
      */
     public static final String STYLE_NODE = "droid_style";
+
 }

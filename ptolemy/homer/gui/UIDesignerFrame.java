@@ -28,6 +28,7 @@ package ptolemy.homer.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,9 +77,8 @@ public class UIDesignerFrame extends JFrame {
         _initializeFrame();
         setJMenuBar(new HomerMenu(this).getMenuBar());
 
-        _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
-                .openModelFile(this.getClass().getResource(
-                        "/ptserver/test/junit/SoundSpectrum.xml")));
+        newLayout(this.getClass().getResource(
+                "/ptserver/test/junit/SoundSpectrum.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -128,6 +128,14 @@ public class UIDesignerFrame extends JFrame {
         return _remoteObjectSet;
     }
 
+    public void saveLayoutAs(File layoutFile) {
+        LayoutFileOperations.saveAs(this, layoutFile);
+    }
+    
+    public URL getModelURL() {
+        return _modelURL;
+    }
+    
     /** Get the tabbed layout scene.
      *  @return The reference to the tabbed area of the screen.
      */
@@ -151,15 +159,16 @@ public class UIDesignerFrame extends JFrame {
 
     /** Prepare the scene for creating a new layout and prompt the user for
      *  file selection.
-     *  @param model The model file to be opened.
+     *  @param modelURL The url of the model file to be opened.
      */
-    public void newLayout(URL model) {
+    public void newLayout(URL modelURL) {
         _widgetMap.clear();
         _widgetTabMap.clear();
         _remoteObjectSet.clear();
         _pnlScreen.clear();
-        _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
-                .openModelFile(model));
+
+        _modelURL = modelURL;
+        _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations.openModelFile(modelURL));
     }
 
     /** Remove the NamedObj from the widget map and list of remote objects.
@@ -232,4 +241,5 @@ public class UIDesignerFrame extends JFrame {
     private HashMap<NamedObjectWidgetInterface, TabScenePanel> _widgetTabMap = new HashMap<NamedObjectWidgetInterface, TabScenePanel>();
     private HashSet<NamedObj> _remoteObjectSet = new HashSet<NamedObj>();
     private RemoteObjectList _pnlRemoteObjects;
+    private URL _modelURL;
 }

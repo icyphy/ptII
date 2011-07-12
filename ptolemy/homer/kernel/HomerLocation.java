@@ -127,7 +127,7 @@ public class HomerLocation extends Parameter {
         IntMatrixToken token = (IntMatrixToken) getToken();
 
         // Check if the token is not a valid token, if it has the 4 required
-        // parameters (x, y, height, and width), and if the height and width
+        // parameters (x, y, width, and height), and if the height and width
         // make any sense.
         if (token == null || token.getColumnCount() != 4
                 || token.getElementAt(0, 2) < -2
