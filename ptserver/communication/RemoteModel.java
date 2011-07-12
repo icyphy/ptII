@@ -33,12 +33,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Executable;
@@ -171,7 +171,7 @@ public class RemoteModel {
     /** Close the model along with all its connection.
      */
     public void close() {
-        _pingTimer.cancel();
+        _pingPongExecutor.shutdown();
         _tokenPublisher.cancelTimer();
         _executor.shutdown();
         try {
@@ -873,27 +873,28 @@ public class RemoteModel {
      */
     private void _setUpMonitoring() {
         setLastPongToken(new PongToken(System.currentTimeMillis()));
-        _pingTimer = new Timer("Ping-pong Timer " + getTicket());
-        _pingTimer.schedule(new TimerTask() {
+        _pingPongExecutor = Executors.newSingleThreadScheduledExecutor();
 
-            @Override
+        _pingPongExecutor.scheduleAtFixedRate(new Runnable() {
+
             public void run() {
                 long msTime = System.currentTimeMillis();
                 try {
                     _tokenPublisher.sendToken(new PingToken(msTime));
-                } catch (IllegalActionException e) {
-
+                    if (_timeoutPeriod > 0) {
+                        long lastPong = msTime
+                                - _getLastPongToken().getTimestamp();
+                        if (lastPong > _timeoutPeriod) {
+                            _fireModelConnectionExpired();
+                        }
+                    }
+                } catch (Throwable e) {
                     //TODO handle this
                     //_tokenPublisher.sendToken(new ServerEventToken(e));
-                }
-                if (_timeoutPeriod > 0) {
-                    long lastPong = msTime - _getLastPongToken().getTimestamp();
-                    if (lastPong > _timeoutPeriod) {
-                        _fireModelConnectionExpired();
-                    }
+                    e.printStackTrace();
                 }
             }
-        }, 0, 1000);
+        }, 1000, 1000, TimeUnit.MILLISECONDS);
     }
 
     /** Set up remote attribute listeners.
@@ -966,9 +967,11 @@ public class RemoteModel {
      */
     private String _publishingTopic;
 
-    /** The timer used to send periodical pings.
+    /**
+     * Executor used to send ping events, and calculate pong
+     * latency.
      */
-    private Timer _pingTimer;
+    private ScheduledExecutorService _pingPongExecutor;
 
     /** The last pong token received from the remoteModel.
      */

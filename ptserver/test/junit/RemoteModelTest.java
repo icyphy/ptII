@@ -91,7 +91,7 @@ public class RemoteModelTest {
     /** Find the model file on the server and execute the simulation.
      *  @exception Exception If the the setup or shutdown of the simulation fails.
      */
-    @Test(timeout = 3000)
+    @Test(timeout = 10000)
     public void runSimulation() throws Exception {
         // Open the model on the server.
         RemoteModelResponse response = _openRemoteModel();
@@ -224,7 +224,7 @@ public class RemoteModelTest {
     /** Test the timeout functionality of a running model.
      *  @exception Exception If there was an error running the simulation.
      */
-    @Test()
+    @Test(timeout = 5000)
     public void testModelTimeout() throws Exception {
         RemoteModelResponse response = _openRemoteModel();
 
