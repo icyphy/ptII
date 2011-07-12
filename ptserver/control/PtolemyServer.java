@@ -788,15 +788,18 @@ public final class PtolemyServer implements IServerManager {
                 close(remoteModel.getTicket());
             } catch (IllegalActionException e) {
                 // TODO handle exception, note this exception comes from worker thread.
+                e.printStackTrace();
             }
         }
 
         public void modelException(RemoteModel remoteModel, String message,
                 Throwable exception) {
+            exception.printStackTrace();
         }
 
         public void modelEvent(RemoteModel remoteModel, String message,
                 EventType type) {
+            System.out.println(type);
         }
     };
 

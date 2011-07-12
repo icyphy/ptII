@@ -180,6 +180,7 @@ public class RemoteModel {
             _mqttClient.disconnect();
         } catch (MqttException e) {
             // TODO handle exception
+            e.printStackTrace();
         }
     }
 
