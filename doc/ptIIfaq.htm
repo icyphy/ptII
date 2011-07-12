@@ -74,7 +74,8 @@ This FAQ can be found at:
 	<li> <a href="#multiportComposites"><b>4.5 I have a Composite with a Multiport, but it only sees one channel?</b></a>
 	<li> <a href="#powerpoint"><b>4.6 How do I put a model into a PowerPoint Deck?</b></a>
   	<li> <a href="#pdf"><b>4.7 How do I create a PDF of a model?</b></a>
-  	<li> <a href="#multicore"><b>4.8 What about multicore?</b></a>
+  	<li> <a href="#img"><b>4.8 How do I create an image (GIF or PNG) of a model?</b></a>
+  	<li> <a href="#multicore"><b>4.9 What about multicore?</b></a>
 	</menu>
 
 <li> <a href="#ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a>
@@ -1066,8 +1067,26 @@ This method requires that you have PDF printer drivers installed on
     bring up the Crop Pages dialog and hit OK.</p>
 
 </dd>
+<dt> <a name="img"><b>4.8 How do I create an image (GIF or PNG) of a model?</b></a></dt>
+<dd> In the Ptolemy II development tree after Ptolemy II 8.0.1,
+ptolemy/vergil/basic/ExportImage.java will create an image:
 
-<dt> <a name="multicore"><b>4.8 What about multicore?</b></a>
+ <p> To save a gif:</p>
+ <pre>
+ java -classpath $PTII ptolemy.vergil.basic.ExportImage model.xml
+ </pre>
+ <p>or, to save a png:</p>
+ <pre>
+ java -classpath $PTII ptolemy.vergil.basic.ExportImage png model.xml
+ </pre>
+ <p>or, to run the model and then save a png:</p>
+ <pre>
+ java -classpath $PTII ptolemy.vergil.basic.ExportImage -run png model.xml
+ </pre>
+
+</dd>
+
+<dt> <a name="multicore"><b>4.9 What about multicore?</b></a></dt>
 <dd> If you use the Kahn Process Network (PN) model of computation, then each actor
   is a thread and, in principle, each thread will run on a separate
   core.
