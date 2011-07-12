@@ -1428,6 +1428,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Write an image to the specified output stream in the specified format.
      *  Supported formats include at least "gif" and "png", standard image file formats.
      *  The image is a rendition of the current view of the model.
+     *  <p>{@link ptolemy.vergil.basic.ExportImage} is a standalone class
+     *  that exports an image of a model.
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
      *  @see #writeHTML(File)

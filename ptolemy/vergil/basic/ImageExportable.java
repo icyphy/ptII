@@ -41,6 +41,7 @@ import java.io.OutputStream;
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
+ * @see ptolemy.vergil.basic.ExportImage
  */
 public interface ImageExportable {
 
