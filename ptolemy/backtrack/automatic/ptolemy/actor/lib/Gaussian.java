@@ -1,6 +1,6 @@
 /* An actor that outputs a random sequence with a Gaussian distribution.
 
- Copyright (c) 1998-2011 The Regents of the University of California.
+ Copyright (c) 1998-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -38,7 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**
+/** 
  * Produce a random sequence with a Gaussian distribution.  On each
  * iteration, a new random number is produced.  The output port is of
  * type DoubleToken.  The values that are generated are independent
@@ -55,13 +55,13 @@ public class Gaussian extends RandomSource implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The mean of the random number.
      * This has type double, initially with value 0.
      */
     public PortParameter mean;
 
-    /**
+    /**     
      * The standard deviation of the random number.
      * This has type double, initially with value 1.
      */
@@ -73,12 +73,12 @@ public class Gaussian extends RandomSource implements Rollbackable {
     ////                         protected methods                 ////
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    /**
-     * The random number for the current iteration.
+    /**     
+     * The random number for the current iteration. 
      */
     protected double _current;
 
-    /**
+    /**     
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -97,7 +97,7 @@ public class Gaussian extends RandomSource implements Rollbackable {
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
     }
 
-    /**
+    /**     
      * Send a random number with a Gaussian distribution to the output.
      * This number is only changed in the prefire() method, so it will
      * remain constant throughout an iteration.
@@ -110,7 +110,7 @@ public class Gaussian extends RandomSource implements Rollbackable {
         output.send(0, new DoubleToken(_current));
     }
 
-    /**
+    /**     
      * Generate a new random number.
      * @exception IllegalActionException If parameter values are incorrect.
      */

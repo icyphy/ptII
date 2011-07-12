@@ -1,6 +1,6 @@
 /* A polymorphic multiplexor.
 
- Copyright (c) 1997-2011 The Regents of the University of California.
+ Copyright (c) 1997-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,7 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**
+/** 
  * This actor selects from the channels on the
  * <i>input</i> port, copying the input from one channel to the output,
  * based on the most recently received value on the <i>select</i> input.
@@ -72,19 +72,19 @@ public class Multiplexor extends Transformer implements Rollbackable {
     ////                     ports and parameters                  ////
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Input for the index of the port to select. The type is IntToken.
+    /**     
+     * Input for the index of the port to select. The type is IntToken. 
      */
     public TypedIOPort select;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The most recently read select input.
+    /**     
+     * The most recently read select input. 
      */
     private int _channel = 0;
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -101,7 +101,7 @@ public class Multiplexor extends Transformer implements Rollbackable {
         select.setTypeEquals(BaseType.INT);
     }
 
-    /**
+    /**     
      * Read a token from the <i>select</i> port and from each channel
      * of the <i>input</i> port, and output a token on the selected
      * channel.  This method will throw a NoTokenException if any
@@ -129,8 +129,8 @@ public class Multiplexor extends Transformer implements Rollbackable {
         }
     }
 
-    /**
-     * Initialize to the default, which is to use channel zero.
+    /**     
+     * Initialize to the default, which is to use channel zero. 
      */
     public void initialize() {
         $ASSIGN$_channel(0);
