@@ -63,6 +63,8 @@ import org.netbeans.modules.visual.action.AlignWithMoveStrategyProvider;
 import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
 import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.homer.kernel.ContentPrototype;
+import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -82,7 +84,7 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class TabScenePanel {
+public class TabScenePanel implements ContentPrototype {
 
     /**
      * TODO
@@ -189,7 +191,7 @@ public class TabScenePanel {
                                 .getTransferable().getTransferData(
                                         PtolemyTransferable.namedObjFlavor);
                         _mainFrame.addVisualNamedObject(TabScenePanel.this,
-                                (NamedObj) dropObjects.get(0),
+                                (NamedObj) dropObjects.get(0), null,
                                 dropEvent.getLocation());
                     } catch (UnsupportedFlavorException e) {
                         MessageHandler.error(
@@ -283,14 +285,14 @@ public class TabScenePanel {
     }
 
     private void adjustLocation(Widget widget, Point location) {
-        if (location.getX() + widget.getBounds().getWidth() > getView()
+        if (location.getX() + widget.getBounds().getWidth() > getContent()
                 .getWidth()) {
-            location.setLocation(getView().getWidth()
+            location.setLocation(getContent().getWidth()
                     - widget.getBounds().getWidth(), location.getY());
         }
-        if (location.getY() + widget.getBounds().getHeight() > getView()
+        if (location.getY() + widget.getBounds().getHeight() > getContent()
                 .getHeight()) {
-            location.setLocation(location.getX(), getView().getHeight()
+            location.setLocation(location.getX(), getContent().getHeight()
                     - widget.getBounds().getHeight());
         }
         if (location.getX() < 0) {
@@ -304,7 +306,7 @@ public class TabScenePanel {
     /**
      * @return
      */
-    public Component getView() {
+    public Component getContent() {
         return getScene().getView();
     }
 
@@ -340,5 +342,18 @@ public class TabScenePanel {
             return widget;
         }
     };
+    public void add(PositionableElement element) throws IllegalActionException {
+        try {
+            _mainFrame.addVisualNamedObject(TabScenePanel.this,
+                    element.getElement(), element.getLocation());
+        } catch (NameDuplicationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public ContentPrototype getNewInstance() {
+        return new TabScenePanel(_mainFrame);
+    }
 
 }

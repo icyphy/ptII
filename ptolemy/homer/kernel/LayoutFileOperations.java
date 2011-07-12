@@ -31,8 +31,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.netbeans.api.visual.widget.Widget;
@@ -44,10 +47,12 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.homer.gui.TabScenePanel;
 import ptolemy.homer.gui.UIDesignerFrame;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -68,19 +73,23 @@ import ptserver.communication.RemoteModel.RemoteModelType;
 public class LayoutFileOperations {
 
     private LayoutFileOperations() {
-        // TODO Auto-generated constructor stub
     }
 
     public static void save(UIDesignerFrame parent) {
         // TODO
     }
 
-    public static CompositeActor openModelFile(URL url) {
-        CompositeActor topLevel = null;
+    public static void open(UIDesignerFrame parent, URL modelURL, URL layoutURL)
+            throws IllegalActionException, NameDuplicationException {
+        // TODO
+    }
+
+    public static CompositeEntity openModelFile(URL url) {
+        CompositeEntity topLevel = null;
         MoMLParser parser = new MoMLParser(new Workspace());
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         try {
-            topLevel = (CompositeActor) parser.parse(null, url);
+            topLevel = (CompositeEntity) parser.parse(null, url);
         } catch (Exception e1) {
             MessageHandler.error("Unable to parse the file", e1);
         }
@@ -181,8 +190,41 @@ public class LayoutFileOperations {
 
     }
 
+    private static CompositeEntity loadServerModel(URL modelURL, URL layoutURL)
+            throws IllegalActionException, NameDuplicationException {
+        CompositeEntity model = openModelFile(modelURL);
+        CompositeEntity layout = openModelFile(layoutURL);
+        HashSet<NamedObj> container = new HashSet<NamedObj>();
+
+        // Traverse all elements in the layout.
+        _getProxyElements(layout, container);
+
+        for (NamedObj element : container) {
+            Attribute proxyAttribute = element
+                    .getAttribute(HomerConstants.REMOTE_NODE);
+
+            if (element instanceof ComponentEntity) {
+                proxyAttribute.setContainer(model
+                        .getEntity(stripFullName(element.getFullName())));
+            } else if (element instanceof Attribute) {
+                proxyAttribute.setContainer(model
+                        .getAttribute(stripFullName(element.getFullName())));
+            }
+        }
+
+        return model;
+    }
+
+    private static CompositeEntity loadServerModel(String modelURL,
+            String layoutURL) throws MalformedURLException,
+            IllegalActionException, NameDuplicationException {
+        return loadServerModel(new URL(modelURL), new URL(layoutURL));
+    }
+
     private static String stripFullName(String fullName) {
-        // TODO check string.
+        if (fullName.indexOf(".") == -1 || fullName.length() < 2) {
+            return fullName;
+        }
         return fullName.substring(fullName.substring(1).indexOf(".") + 2);
     }
 
@@ -236,6 +278,26 @@ public class LayoutFileOperations {
         }
 
         return SinkOrSource.NONE;
+    }
+
+    private static void _getProxyElements(NamedObj element,
+            HashSet<NamedObj> container) throws IllegalActionException,
+            NameDuplicationException {
+
+        // Found the attribute, find the element in the original model
+        // and add the attribute to it.
+        if (element.getAttribute(HomerConstants.REMOTE_NODE) != null) {
+            // Found proxy attribute, add it to the container
+            container.add(element);
+        } else {
+            // Element did not contain the proxy attribute, let's search the
+            // other named objects within the element.
+            for (Iterator iterator = element.containedObjectsIterator(); iterator
+                    .hasNext();) {
+                NamedObj namedObj = (NamedObj) iterator.next();
+                _getProxyElements(namedObj, container);
+            }
+        }
     }
 
     public static enum SinkOrSource {

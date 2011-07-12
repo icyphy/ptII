@@ -73,7 +73,6 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
             public Component getTreeCellRendererComponent(JTree tree,
                     Object value, boolean sel, boolean expanded, boolean leaf,
                     int row, boolean hasFocus) {
-                // TODO Auto-generated method stub
                 DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super
                         .getTreeCellRendererComponent(tree, value, sel,
                                 expanded, leaf, row, hasFocus);

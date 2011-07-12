@@ -158,11 +158,11 @@ public class TabbedLayoutScene extends JPanel {
 
     public void addTab(String tabName) {
         TabScenePanel tabScenePanel = new TabScenePanel(_mainFrame);
-        Component view = tabScenePanel.getView();
+        Component view = tabScenePanel.getContent();
         _tabScenes.insertTab(tabName, null, view, null,
                 _tabScenes.getTabCount() - 1);
         view.setMaximumSize(view.getPreferredSize());
-        int index = _tabScenes.indexOfComponent(tabScenePanel.getView());
+        int index = _tabScenes.indexOfComponent(tabScenePanel.getContent());
         _tabScenes.setTabComponentAt(index, new TabSceneButton());
         _tabScenes.setSelectedIndex(index);
     }

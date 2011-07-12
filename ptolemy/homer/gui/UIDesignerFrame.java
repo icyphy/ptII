@@ -44,6 +44,7 @@ import org.netbeans.api.visual.widget.Widget;
 
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.homer.gui.tree.NamedObjectTree;
+import ptolemy.homer.kernel.HomerLocation;
 import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.WidgetLoader;
 import ptolemy.homer.widgets.NamedObjectWidgetInterface;
@@ -101,7 +102,7 @@ public class UIDesignerFrame extends JFrame {
      *  an item already on the scene.
      */
     public void addVisualNamedObject(TabScenePanel panel, NamedObj object,
-            Point location) throws IllegalActionException,
+            Dimension dimension, Point location) throws IllegalActionException,
             NameDuplicationException {
         Class<? extends NamedObj> namedObjectWidgetClass = object.getClass();
         if (object instanceof Attribute) {
@@ -118,7 +119,18 @@ public class UIDesignerFrame extends JFrame {
         _widgetTabMap.put(widget, panel);
         _pnlRemoteObjects.addItem(object);
 
+        if (dimension != null && dimension.getWidth() > 0 && dimension.getHeight() > 0) {
+            ((Widget) widget).getBounds().setSize(dimension);
+        }
         panel.addWidget((Widget) widget, location);
+    }
+
+    public void addVisualNamedObject(TabScenePanel panel, NamedObj object,
+            HomerLocation location) throws IllegalActionException,
+            NameDuplicationException {
+        Dimension dimenstion = new Dimension(location.getWidth(), location.getHeight());
+        Point point = new Point(location.getX(), location.getY());
+        addVisualNamedObject(panel, object, dimenstion, point);
     }
 
     /** Get the set of references to on-screen remote objects.
@@ -131,11 +143,11 @@ public class UIDesignerFrame extends JFrame {
     public void saveLayoutAs(File layoutFile) {
         LayoutFileOperations.saveAs(this, layoutFile);
     }
-    
+
     public URL getModelURL() {
         return _modelURL;
     }
-    
+
     /** Get the tabbed layout scene.
      *  @return The reference to the tabbed area of the screen.
      */
@@ -168,7 +180,23 @@ public class UIDesignerFrame extends JFrame {
         _pnlScreen.clear();
 
         _modelURL = modelURL;
-        _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations.openModelFile(modelURL));
+        _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
+                .openModelFile(modelURL));
+    }
+
+    /** Prepare the scene for creating a new layout and prompt the user for
+     *  file selection.
+     *  @param modelURL The url of the model file to be opened.
+     */
+    public void openLayout(URL modelURL, URL layoutURL) {
+        _widgetMap.clear();
+        _widgetTabMap.clear();
+        _remoteObjectSet.clear();
+        _pnlScreen.clear();
+
+        _modelURL = modelURL;
+        _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
+                .openModelFile(modelURL));
     }
 
     /** Remove the NamedObj from the widget map and list of remote objects.
