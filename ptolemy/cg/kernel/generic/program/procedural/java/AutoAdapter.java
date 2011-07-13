@@ -46,6 +46,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
@@ -1376,17 +1377,25 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 .get(0);
         NamedObj remoteActor = remotePort.getContainer();
         String remoteActorSymbol = "";
+        boolean moreThanOneRelation = false;
+        String relationSymbol = "";
         if (_isAutoAdaptered(remoteActor)) {
-            System.out.println(getComponent().getName() + " " + port.getName()
-                    + " is connected to remote actor " + remoteActor.getName()
-                    + " " + remotePort.getName() + " "
-                    + port.linkedRelationList().size() + " "
-                    + relation.linkedPortList(port).size());
-            if (port.linkedRelationList().size() > 1
-                    || relation.linkedPortList(port).size() > 1) {
+            remoteIsAutoAdaptered = true;
+            int verbosityLevel = ((IntToken) getCodeGenerator().verbosity.getToken()).intValue();
+            if (verbosityLevel > 2) {
+                System.out.println(getComponent().getName() + " " + port.getName()
+                        + "#" + channelNumber
+                        + " is connected to remote actor " + remoteActor.getName()
+                        + " " + remotePort.getName() + " via "
+                        + relation.getName() + " "
+                        + port.linkedRelationList().size() + " "
+                        + relation.linkedPortList(port).size());
+            }
+            if (/*port.linkedRelationList().size() > 1
+                  ||*/ relation.linkedPortList(port).size() > 1) {
                 StringBuffer message = new StringBuffer(
-                        "Cannot handle  custom actors "
-                                + " connected to more than one port at the same level.\n");
+                        "Warning: custom actors that are "
+                                + "connected to more than one port at the same level. Msg #1\n");
                 Iterator relations = port.linkedRelationList().iterator();
                 while (relations.hasNext()) {
                     Relation r = (Relation) relations.next();
@@ -1396,16 +1405,28 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     while (ports.hasNext()) {
                         Port p = (TypedIOPort) ports.next();
                         message.append("    " + p + _eol);
+                        if (!_isAutoAdaptered(p.getContainer())) {
+                            // If one of the remote actors is not auto
+                            // adapatered, then mark this connection as
+                            // not being autoadaptered.  This is probably
+                            // a mistake, we should just handle this.
+                            // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/test/auto/UnaryMathFunction.xml
+                            message.append("\nPort " + p.getFullName() + " is contained by an actor that is not an auto adapter.\n");
+                            remoteIsAutoAdaptered = false;
+                        }
                     }
                 }
-                System.out.println(message
-                        + "\nDefaulting to separate containers.");
-            } else {
-                remoteIsAutoAdaptered = true;
-                // If the remote actor has not yet been created, then create it.
-                remoteActorSymbol = getCodeGenerator().generateVariableName(
-                        remoteActor)
-                        + "_actor";
+                moreThanOneRelation = true;
+                relationSymbol = "$actorSymbol(" + relation.getName() + ")";
+                if (verbosityLevel > 1) {
+                    System.out.println(message);
+                }
+            }
+            // If the remote actor has not yet been created, then create it.
+            remoteActorSymbol = getCodeGenerator().generateVariableName(
+                    remoteActor) + "_actor";
+
+            if (!moreThanOneRelation) {
                 code.append("if (" + remoteActorSymbol + " == null) {" + _eol
                         + remoteActorSymbol + " = new "
                         + remoteActor.getClass().getName()
@@ -1462,27 +1483,65 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 if (port.isOutput()) {
                     String relationAssignment = "";
                     String relationSetWidth = "";
-                    if (port.isMultiport()) {
-                        // Needed for
-                        // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml
-                        _headerFiles.add("ptolemy.actor.IORelation;");
-                        relationAssignment = "IORelation relation = (IORelation)";
-                        relationSetWidth = "relation.setWidth("
-                                + port.getWidth() + "); " + _eol;
-                    }
+                    if (moreThanOneRelation) {
+                        _headerFiles.add("ptolemy.actor.TypedIORelation;");
+                        code.append("TypedIORelation " + relationSymbol 
+                                + " = null;" + _eol
+                                + portOrParameter + ".link(" + relationSymbol + ");" + _eol);
+                        // FIXME: What about multiple relations?
+                        Iterator multiplePorts = relation.linkedPortList(port).iterator();
+                        while (multiplePorts.hasNext()) {
+                            TypedIOPort multipleRemotePort = (TypedIOPort) multiplePorts.next();
+                            NamedObj multipleRemoteActor = multipleRemotePort.getContainer();
+                            String multipleRemoteActorSymbol = getCodeGenerator().generateVariableName(
+                                    multipleRemoteActor) + "_actor";
+                            Field multipleRemoteFoundPortField = _findFieldByPortName(multipleRemoteActor,
+                                    multipleRemotePort.getName());                            
+                            PortParameter multiplePortParameter = (PortParameter) multipleRemoteActor
+                                .getAttribute(multipleRemotePort.getName(), PortParameter.class);
+                            code.append("if (" + multipleRemoteActorSymbol + " == null) {" + _eol
+                                    + multipleRemoteActorSymbol + " = new "
+                                    + multipleRemoteActor.getClass().getName()
+                                    + "($containerSymbol() , \""
+                                    + multipleRemoteActorSymbol
+                                    + "\");"
+                                    + _eol
+                                    // Set the displayName so that actors that call getDisplayName() get the same value.
+                                    // Actors that generate random numbers often call getFullName(), then should call getDisplayName()
+                                    // instead.
+                                    + "        " + multipleRemoteActorSymbol + ".setDisplayName(\""
+                                    + multipleRemoteActor.getName() + "\");" + _eol + "}" + _eol
 
-                    // It is the responsibility of the custom actor
-                    // with the output port to connect to the input
-                    // port of the other custom actor.  This obviates
-                    // the need for checking for the connection at
-                    // runtime.
-                    code.append(relationAssignment
-                            + "$containerSymbol().connect(" + portOrParameter
-                            + ", " + "((" + remoteActor.getClass().getName()
-                            + ")" + remoteActorSymbol + ")."
-                            + remoteFoundPortField.getName()
-                            + (portParameter != null ? ".getPort()" : "")
-                            + ");" + _eol + relationSetWidth);
+                                    + "((" + multipleRemoteActor.getClass().getName()
+                                    + ")" + multipleRemoteActorSymbol + ")."
+                                    + multipleRemoteFoundPortField.getName()
+                                    + (multiplePortParameter != null ? ".getPort()" : "")
+                                    + ".link(" + relationSymbol + ");" + _eol);
+                        } 
+                    } else {
+                        if (port.isMultiport()) {
+                            // Needed for
+                            // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml
+                            _headerFiles.add("ptolemy.actor.IORelation;");
+                            relationAssignment = "IORelation relation = (IORelation)";
+                            relationSetWidth = "relation.setWidth("
+                                + port.getWidth() + "); " + _eol;
+                        }
+
+                        // It is the responsibility of the custom actor
+                        // with the output port to connect to the input
+                        // port of the other custom actor.  This obviates
+                        // the need for checking for the connection at
+                        // runtime.
+                        code.append(relationAssignment
+                                + "$containerSymbol().connect(" + portOrParameter
+                                + ", " + "((" + remoteActor.getClass().getName()
+                                + ")" + remoteActorSymbol + ")."
+                                + remoteFoundPortField.getName()
+                                // FIXME: should portParameter be the remote port?
+                                + (portParameter != null ? ".getPort()" : "")
+                                + ");" + _eol + relationSetWidth);
+                    }
                 }
             } else {
                 if (!readingRemoteParameters) {
@@ -1728,8 +1787,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  @param port The port to check.
      *  @return True if the remote port would be generated using
      *  an auto adapter.
+     *  @exception IllegalActionException If the CodeGenerator verbosity parameter
+     *  cannot be read.
      */
-    private boolean _isAutoAdapteredRemotePort(Port port) {
+    private boolean _isAutoAdapteredRemotePort(Port port) throws IllegalActionException {
         List linkedRelationList = port.linkedRelationList();
         if (linkedRelationList.size() == 0) {
             return false;
@@ -1738,11 +1799,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         TypedIOPort remotePort = (TypedIOPort) relation.linkedPortList(port)
                 .get(0);
         NamedObj remoteActor = remotePort.getContainer();
-        if (port.linkedRelationList().size() > 1
-                || relation.linkedPortList(port).size() > 1) {
+        if (/*port.linkedRelationList().size() > 1
+              || */relation.linkedPortList(port).size() > 1) {
+            // FIXME: this might be superflous, since we loop through below.
+            boolean remoteIsAutoAdaptered = _isAutoAdaptered(remoteActor);
             StringBuffer message = new StringBuffer(
-                    "Cannot handle two custom actors "
-                            + " connected to more than one port the same level.\n");
+                    "Warning: custom actors "
+                            + " connected to more than one port the same level. Msg #2\n");
             Iterator relations = port.linkedRelationList().iterator();
             while (relations.hasNext()) {
                 Relation r = (Relation) relations.next();
@@ -1752,10 +1815,25 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 while (ports.hasNext()) {
                     Port p = (TypedIOPort) ports.next();
                     message.append("    " + p + _eol);
+                    if (!_isAutoAdaptered(p.getContainer())) {
+                        // If one of the remote actors is not auto
+                        // adapatered, then mark this connection as
+                        // not being autoadaptered.  This is probably
+                        // a mistake, we should just handle this.
+                        // This test:
+                        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/test/auto/UnaryMathFunction.xml
+                        // has a bunch of custom actors that share an input relation, but the input
+                        // is a non-autoadapter actor.  We would like to preserve the connectivity.
+                        message.append("\nPort " + p.getFullName() + " is contained by an actor that is not an auto adapter.\n");
+                        remoteIsAutoAdaptered = false;
+                    }
                 }
             }
-            System.out.println(message);
-            return false;
+            int verbosityLevel = ((IntToken) getCodeGenerator().verbosity.getToken()).intValue();
+            if (verbosityLevel > 0) {
+                System.out.println(message);
+            }
+            return remoteIsAutoAdaptered;
         }
         return _isAutoAdaptered(remoteActor);
     }
