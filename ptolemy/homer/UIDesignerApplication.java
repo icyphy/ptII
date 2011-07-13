@@ -28,9 +28,9 @@ package ptolemy.homer;
 
 import javax.swing.SwingUtilities;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.homer.gui.UIDesignerFrame;
 import ptolemy.util.MessageHandler;
-import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 ///////////////////////////////////////////////////////////////////
 //// UIDesignerApplication
@@ -38,7 +38,7 @@ import ptserver.util.PtolemyModuleJavaSEInitializer;
 public class UIDesignerApplication {
 
     static {
-        PtolemyModuleJavaSEInitializer.initializeInjector();
+        ActorModuleInitializer.initializeInjector();
     }
 
     /** 
