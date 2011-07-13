@@ -61,7 +61,7 @@ public class TokenListener implements MqttSimpleCallback {
     /** Initialize the instance by reading needed fields from the remoteModel.
      *  @param remoteModel The remoteModel that created this publisher and controls the state of the simulation.
      */
-    public TokenListener(RemoteModel remoteModel) {
+    public TokenListener(ProxyModelInfrastructure remoteModel) {
         _remoteModel = remoteModel;
     }
 
@@ -96,13 +96,13 @@ public class TokenListener implements MqttSimpleCallback {
             // The listener is only concerned about the following types.
             if (token instanceof CommunicationToken) {
                 CommunicationToken communicationToken = (CommunicationToken) token;
-                RemoteSourceData data = _remoteModel.getRemoteSourceMap().get(
+                ProxySourceData data = _remoteModel.getRemoteSourceMap().get(
                         communicationToken.getTargetActorName());
                 data.getTokenQueue().add(communicationToken);
 
                 //Notify remote sources to read from the queue.
-                synchronized (data.getRemoteSource()) {
-                    data.getRemoteSource().notifyAll();
+                synchronized (data.getProxySource()) {
+                    data.getProxySource().notifyAll();
                 }
             } else if (token instanceof AttributeChangeToken) {
                 AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
@@ -138,7 +138,7 @@ public class TokenListener implements MqttSimpleCallback {
 
     /** The remote model that created the publisher.
      */
-    private final RemoteModel _remoteModel;
+    private final ProxyModelInfrastructure _remoteModel;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -168,6 +168,7 @@ public class TokenListener implements MqttSimpleCallback {
                 _remoteModel.getTokenPublisher().sendToken(_token);
             } catch (IllegalActionException e) {
                 //TODO handle this
+                e.printStackTrace();
             }
         }
 
@@ -178,6 +179,6 @@ public class TokenListener implements MqttSimpleCallback {
          */
         private final PongToken _token;
     }
-    
+
     private int _batchCount;
 }

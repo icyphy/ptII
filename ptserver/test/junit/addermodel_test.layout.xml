@@ -67,7 +67,7 @@
 	<!-- End of static elements example. -->
 
 	<!-- Source example. When a source has been tagged as a source running on 
-		the client using the "_remote" property, a RemoteSource actor is created 
+		the client using the "_remote" property, a ProxySource actor is created 
 		next to it to maintain the original connections. -->
 	<entity name="Ramp" class="ptolemy.actor.lib.Ramp">
 		<doc>Create a sequence of tokens with increasing value</doc>
@@ -77,7 +77,7 @@
 	</entity>
 	<!-- Remote actor created to retain the connections of the original source 
 		and facilitate communication. -->
-	<entity name="Ramp_remote" class="ptserver.actor.RemoteSink">
+	<entity name="Ramp_remote" class="ptserver.actor.ProxySink">
 		<!-- The original actor's name. This is used to identify the target of 
 			the communication. -->
 		<property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute"
@@ -87,7 +87,7 @@
 			<property name="input" />
 			<property name="multiport" />
 			<property name="targetPortName" class="ptolemy.kernel.util.StringAttribute"
-				value=".addermodel.AddSubtract.plus">
+				value=".addermodel.Ramp.input">
 			</property>
 		</port>
 	</entity>
@@ -115,14 +115,14 @@
 	</entity>
 	<!-- Remote actor created to retain the connections of the original source 
 		and facilitate communication. -->
-	<entity name="Display_remote" class="ptserver.actor.RemoteSource">
+	<entity name="Display_remote" class="ptserver.actor.ProxySource">
 		<property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute"
 			value=".addermodel.Display">
 		</property>
 		<port name="input" class="ptolemy.actor.TypedIOPort">
 			<property name="output" />
 			<property name="targetPortName" class="ptolemy.kernel.util.StringAttribute"
-				value=".addermodel.AddSubtract.output">
+				value=".addermodel.Display.input">
 			</property>
 		</port>
 	</entity>
@@ -190,8 +190,8 @@
 	the structure. Most of the classes used in this example are incorrect right 
 	now. For summary, the XML structure is the following: TopLevelEntity Basic 
 	properties (screen size, orientation, version number, etc.) Tabs Static labels 
-	Sources and their RemoteSource counterparts "_remote" / "targetEntityName" 
-	property Behavioral properties Actor defined properties Sinks and their RemoteSink 
+	Sources and their ProxySource counterparts "_remote" / "targetEntityName" 
+	property Behavioral properties Actor defined properties Sinks and their ProxySink 
 	counterparts "_remote" / "targetEntityName" property Behavioral properties 
 	User interface specific properties Actor defined properties Attributes that 
 	are settable remotely User interface specific properties Style Relations 

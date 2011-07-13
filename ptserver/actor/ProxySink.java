@@ -1,5 +1,5 @@
 /*
- RemoteSink that acts as a proxy sink and publishes tokens it receives as
+ ProxySink that acts as a proxy sink and publishes tokens it receives as
  CommunicationToken to its queue.
 
  Copyright (c) 2011 The Regents of the University of California.
@@ -41,7 +41,7 @@ import ptserver.communication.TokenPublisher;
 import ptserver.data.CommunicationToken;
 
 ///////////////////////////////////////////////////////////////////
-////RemoteSink
+////ProxySink
 /**
  * A Remote Sink that acts as a proxy sink and publishes tokens it receives as
  * one CommunicationToken per fire to its queue.
@@ -51,7 +51,7 @@ import ptserver.data.CommunicationToken;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class RemoteSink extends RemoteActor {
+public class ProxySink extends ProxyActor {
 
     /**
      * Create a new instance of the RemoteActor without doing any actor replacement.
@@ -62,13 +62,13 @@ public class RemoteSink extends RemoteActor {
      * @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public RemoteSink(CompositeEntity container, String name)
+    public ProxySink(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     /**
-     * Replace the targetSink with the RemoteSink instance.
+     * Replace the targetSink with the ProxySink instance.
      * @param container The container
      * @param targetSink The target sink
      * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
@@ -79,9 +79,9 @@ public class RemoteSink extends RemoteActor {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      * @exception CloneNotSupportedException If port cloning is not supported
-     * @see RemoteActor
+     * @see ProxyActor
      */
-    public RemoteSink(CompositeEntity container, ComponentEntity targetSink,
+    public ProxySink(CompositeEntity container, ComponentEntity targetSink,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
@@ -168,18 +168,6 @@ public class RemoteSink extends RemoteActor {
      */
     public void setTokenPublisher(TokenPublisher tokenPublisher) {
         _tokenPublisher = tokenPublisher;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /**
-     * Return true if connectingPort is inputPort.
-     * @see ptserver.actor.RemoteActor#_isValidConnectingPort(ptolemy.actor.IOPort)
-     */
-    @Override
-    protected boolean _isValidConnectingPort(IOPort connectingPort) {
-        return connectingPort.isInput();
     }
 
     ///////////////////////////////////////////////////////////////////

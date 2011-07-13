@@ -1,5 +1,7 @@
 /*
- RemoteSource that acts as a proxy source
+ ProxySource that acts as a proxy actor to a set of actors that were replaced.
+ It could replace one source actor or all actors connected to the source actor.
+ 
  Accepts communication token, unpackage as regular tokens
  and send them to the appropriate ports
 
@@ -38,22 +40,24 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptserver.communication.RemoteSourceData;
+import ptserver.communication.ProxySourceData;
+import ptserver.communication.ProxyModelInfrastructure;
 import ptserver.data.CommunicationToken;
 
 ///////////////////////////////////////////////////////////////////
-////RemoteSource
+////ProxySource
 /**
- * RemoteSource that acts as a proxy source.
- * Accepts communication token, unpackages as regular tokens
- * and send them to the appropriate ports.
+ * ProxySource that acts as a proxy actor to a set of actors that were replaced.
+ * It could replace one source actor or all actors connected to the source actor.
+ * Accepts communication token, unpackage as regular tokens
+ * and send them to the appropriate ports
  * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class RemoteSource extends RemoteActor {
+public class ProxySource extends ProxyActor {
 
     /**
      * Create a new instance of the RemoteActor without doing any actor replacement.
@@ -64,13 +68,13 @@ public class RemoteSource extends RemoteActor {
      * @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public RemoteSource(CompositeEntity container, String name)
+    public ProxySource(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     /**
-     * Replace the targetSource with the RemoteSource instance.
+     * Replace the targetSource with the ProxySource instance.
      * @param container The container
      * @param targetSource The target source
      * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
@@ -81,12 +85,12 @@ public class RemoteSource extends RemoteActor {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      * @exception CloneNotSupportedException If port cloning is not supported
-     * @see RemoteActor
+     * @see ProxyActor
      */
-    public RemoteSource(CompositeEntity container,
-            ComponentEntity targetSource, boolean replaceTargetEntity,
-            HashMap<String, String> portTypes) throws IllegalActionException,
-            NameDuplicationException, CloneNotSupportedException {
+    public ProxySource(CompositeEntity container, ComponentEntity targetSource,
+            boolean replaceTargetEntity, HashMap<String, String> portTypes)
+            throws IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException {
         super(container, targetSource, replaceTargetEntity, portTypes);
     }
 
@@ -104,8 +108,8 @@ public class RemoteSource extends RemoteActor {
 
         //Block the thread until either the queue has an element or the model is stopped.
         synchronized (this) {
-            while ((token = getRemoteSourceData().getTokenQueue().poll()) == null
-                    && !getRemoteSourceData().getRemoteModel().isStopped()) {
+            while ((token = getProxySourceData().getTokenQueue().poll()) == null
+                    && !_remoteModel.isStopped()) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
@@ -130,34 +134,30 @@ public class RemoteSource extends RemoteActor {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
     /**
-     * Return true if connectingPort is output port.
-     * @see ptserver.actor.RemoteActor#_isValidConnectingPort(ptolemy.actor.IOPort)
-     */
-    @Override
-    protected boolean _isValidConnectingPort(IOPort connectingPort) {
-        return connectingPort.isOutput();
-    }
-
-    /**
-     * Set the remote source data structure used for synchronization and thread blocking.
+     * Set the ProxySourceData structure used for synchronization and thread blocking.
      * @param remoteSourceData the remoteSourceData containing the instance
-     * @see #getRemoteSourceData()
+     * @see #getProxySourceData()
      */
-    public void setRemoteSourceData(RemoteSourceData remoteSourceData) {
+    public void setProxySourceData(ProxySourceData remoteSourceData) {
         _remoteSourceData = remoteSourceData;
     }
 
     /**
-     * Return the remoteSourceData containing the instance.
-     * @return the remoteSourceData containing the instance.
-     * @see #setRemoteSourceData(RemoteSourceData)
+     * Return the ProxySourceData instance containing the current instance.
+     * @return the ProxySourceData instance containing the current instance.
+     * @see #setProxySourceData(ProxySourceData)
      */
-    public RemoteSourceData getRemoteSourceData() {
+    public ProxySourceData getProxySourceData() {
         return _remoteSourceData;
+    }
+
+    /**
+     * TODO
+     * @param _remoteModel the _remoteModel to set
+     */
+    public void setProxyModelInfrastructure(ProxyModelInfrastructure _remoteModel) {
+        this._remoteModel = _remoteModel;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -165,6 +165,10 @@ public class RemoteSource extends RemoteActor {
     /**
      * RemoteSourceData containing metadata needed for the RemoteSource.
      */
-    private RemoteSourceData _remoteSourceData;
+    private ProxySourceData _remoteSourceData;
+    /**
+     * 
+     */
+    private ProxyModelInfrastructure _remoteModel;
 
 }

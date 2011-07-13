@@ -45,7 +45,7 @@
 			value="{95, 130}">
 		</property>
 	</entity>
-	<entity name="AudioCapture_remote" class="ptserver.actor.RemoteSink">
+	<entity name="AudioCapture_remote" class="ptserver.actor.ProxySink">
 		<property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute"
 			value=".audiorecorder.AudioCapture">
 		</property>

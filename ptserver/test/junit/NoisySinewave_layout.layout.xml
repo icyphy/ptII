@@ -188,7 +188,7 @@
 			</property>
 		</port>
 	</entity>
-	<entity name="InstanceOfNoisySinewave_remote" class="ptserver.actor.RemoteSink">
+	<entity name="InstanceOfNoisySinewave_remote" class="ptserver.actor.ProxySink">
 		<property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute"
 			value=".NoisySinewave.InstanceOfNoisySinewave">
 		</property>
@@ -245,7 +245,7 @@
 			</property>
 		</port>
 	</entity>
-	<entity name="SequencePlotter_remote" class="ptserver.actor.RemoteSource">
+	<entity name="SequencePlotter_remote" class="ptserver.actor.ProxySource">
 		<property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute"
 			value=".NoisySinewave.SequencePlotter">
 		</property>

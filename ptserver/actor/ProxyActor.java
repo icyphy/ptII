@@ -45,10 +45,11 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptserver.util.ProxyModelBuilder;
 import ptserver.util.TypeParser;
 
 ///////////////////////////////////////////////////////////////////
-////RemoteActor
+////ProxyActor
 /**
  * An abstract parent actor that contains logic common to both sink
  * and source remote actors.  This actor is responsible for either
@@ -61,13 +62,16 @@ import ptserver.util.TypeParser;
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
- * @see RemoteSink
- * @see RemoteSource
+ * @see ProxySink
+ * @see ProxySource
  */
-public abstract class RemoteActor extends TypedAtomicActor {
+public abstract class ProxyActor extends TypedAtomicActor {
+
+    public static final boolean REPLACE_TARGET_ENTITY = true;
+    public static final boolean REPLACE_CONNECTING_ENTITIES = false;
 
     /**
-     * Create a new instance of the RemoteActor without doing any
+     * Create a new instance of the ProxyActor without doing any
      * actor replacement.
      * @param container The container.
      * @param name The name of this actor within the container.
@@ -76,7 +80,7 @@ public abstract class RemoteActor extends TypedAtomicActor {
      * @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public RemoteActor(CompositeEntity container, String name)
+    public ProxyActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _targetEntityName = new StringAttribute(this, "targetEntityName");
@@ -102,14 +106,15 @@ public abstract class RemoteActor extends TypedAtomicActor {
      *   actor with this name.
      * @exception CloneNotSupportedException If port cloning is not supported
      */
-    public RemoteActor(CompositeEntity container, ComponentEntity targetEntity,
+    public ProxyActor(CompositeEntity container, ComponentEntity targetEntity,
             boolean replaceTargetEntity, HashMap<String, String> portTypes)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
-        this(container, targetEntity.getName() + "_remote");
+        this(container, targetEntity.getName()
+                + ProxyModelBuilder.PROXY_REMOTE_TAG);
         setTargetEntityName(targetEntity.getFullName());
         _targetEntityName.setExpression(getTargetEntityName());
-        if (replaceTargetEntity) {
+        if (REPLACE_TARGET_ENTITY) {
             _replaceTargetEntity(targetEntity, portTypes);
         } else {
             _replaceConnectingEntities(targetEntity, portTypes);
@@ -141,23 +146,12 @@ public abstract class RemoteActor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /**
-     * Check if the connecting port is valid and could be used
-     * for cloning for the RemoteActor.
-     * @param connectingPort The connecting port to check
-     * @return true if connectingPort is valid, false otherwise
-     */
-    protected abstract boolean _isValidConnectingPort(IOPort connectingPort);
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /**
      * Replace all entities connected to the targetEntity with one
-     * RemoteSource or RemoteSink.  Essentially instead of all
-     * entities connected to it, RemoteSink or RemoteSource would be
+     * ProxySource or ProxySink.  Essentially instead of all
+     * entities connected to it, ProxySource or ProxySink would be
      * used that would redirect all links from those entities to
      * itself and connect them to dynamically added ports derived from
      * the connected entities.
@@ -178,78 +172,85 @@ public abstract class RemoteActor extends TypedAtomicActor {
             HashMap<String, String> portTypes)
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
-
+        // Copy all attributes of the entity whose connected entities are removed.
+        // This is needed in cases when a port references any of the attributes via an expression.
         for (Object attributeObject : targetEntity.attributeList()) {
             Attribute attribute = (Attribute) attributeObject;
-            if (attribute.getName().equals("_remote")) {
-                continue;
-            }
             Attribute clonedAttribute = (Attribute) attribute.clone(attribute
                     .workspace());
             clonedAttribute.setContainer(this);
             clonedAttribute.setPersistent(true);
         }
 
+        // Copy all ports that are connected to any relationship.
         for (Object portObject : targetEntity.portList()) {
+            // Skip non-IO ports.
             if (!(portObject instanceof IOPort)) {
                 continue;
             }
-
             IOPort port = (IOPort) portObject;
             for (Object relationObject : port.linkedRelationList()) {
                 Relation relation = (Relation) relationObject;
                 List<Port> linkedPortList = relation.linkedPortList(port);
-                IOPort remotePort = null;
+                // The port is connected somewhere.
+                if (!linkedPortList.isEmpty()) {
+                    IOPort remotePort = null;
+                    // If the port has a connection, clone it and flip its direction
+                    // and token consumption or production rates.
+                    remotePort = (IOPort) port.clone(port.workspace());
 
-                for (Port connectingPort : linkedPortList) {
-                    if (connectingPort instanceof IOPort
-                            && _isValidConnectingPort((IOPort) connectingPort)) {
-                        remotePort = (IOPort) port.clone(port.workspace());
+                    // FIXME: what if the port is both input and output?
+                    remotePort.setInput(!port.isInput());
+                    remotePort.setOutput(!port.isOutput());
+                    remotePort.setPersistent(true);
+                    remotePort.setContainer(this);
+                    // Since we are linking the targetActor with just proxy actor
+                    // ports don't need to support multi port.
+                    remotePort.setMultiport(false);
 
-                        // FIXME: what if the port is both input and output?
-                        remotePort.setInput(!port.isInput());
-                        remotePort.setOutput(!port.isOutput());
-                        remotePort.setPersistent(true);
-                        remotePort.setContainer(this);
-                        remotePort.setMultiport(false);
-
-                        Attribute productionRate = port
-                                .getAttribute("tokenProductionRate");
-                        Attribute consumptionRate = port
-                                .getAttribute("tokenConsumptionRate");
-                        if (port.isOutput() && productionRate != null) {
-                            remotePort.removeAttribute(remotePort.getAttribute("tokenConsumptionRate"));
-                            Attribute cloned = (Attribute) productionRate
-                                    .clone(productionRate.workspace());
-                            cloned.setPersistent(true);
-                            cloned.setName("tokenConsumptionRate");
-                            cloned.setContainer(remotePort);
-                        }
-                        if (port.isInput() && consumptionRate != null) {
-                            remotePort.removeAttribute(remotePort.getAttribute("tokenProductionRate"));
-                            Attribute cloned = (Attribute) consumptionRate
-                                    .clone(consumptionRate.workspace());
-                            cloned.setPersistent(true);
-                            cloned.setName("tokenProductionRate");
-                            cloned.setContainer(remotePort);
-                        }
-                        if (remotePort instanceof TypedIOPort) {
-                            Type type = TypeParser.parse(portTypes.get(port
-                                    .getFullName()));
-                            ((TypedIOPort) remotePort).setTypeEquals(type);
-                            StringAttribute targetPortName = new StringAttribute(
-                                    remotePort, "targetPortName");
-                            targetPortName.setExpression(port.getFullName());
-                        }
-
-                        break;
+                    // Flip token production rate.
+                    Attribute productionRate = port
+                            .getAttribute("tokenProductionRate");
+                    if (port.isOutput() && productionRate != null) {
+                        remotePort.removeAttribute(remotePort
+                                .getAttribute("tokenConsumptionRate"));
+                        Attribute cloned = (Attribute) productionRate
+                                .clone(productionRate.workspace());
+                        cloned.setPersistent(true);
+                        cloned.setName("tokenConsumptionRate");
+                        cloned.setContainer(remotePort);
                     }
-                }
-
-                relation.unlinkAll();
-                if (remotePort != null) {
-                    port.link(relation);
-                    remotePort.link(relation);
+                    // Flip token consumption rate.
+                    Attribute consumptionRate = port
+                            .getAttribute("tokenConsumptionRate");
+                    if (port.isInput() && consumptionRate != null) {
+                        remotePort.removeAttribute(remotePort
+                                .getAttribute("tokenProductionRate"));
+                        Attribute cloned = (Attribute) consumptionRate
+                                .clone(consumptionRate.workspace());
+                        cloned.setPersistent(true);
+                        cloned.setName("tokenProductionRate");
+                        cloned.setContainer(remotePort);
+                    }
+                    // If the port is typed, save full name of the original port 
+                    // within an attribute.  This is needed for setting port type information
+                    // when the spliced-up model is recreated from the XML.
+                    if (remotePort instanceof TypedIOPort) {
+                        // Set the type information of the port.
+                        Type type = TypeParser.parse(portTypes.get(port
+                                .getFullName()));
+                        ((TypedIOPort) remotePort).setTypeEquals(type);
+                        StringAttribute targetPortName = new StringAttribute(
+                                remotePort, "targetPortName");
+                        targetPortName.setExpression(port.getFullName());
+                    }
+                    // Remove all links of the port and connect the remote and 
+                    // current port via the relation.
+                    relation.unlinkAll();
+                    if (remotePort != null) {
+                        port.link(relation);
+                        remotePort.link(relation);
+                    }
                 }
             }
         }
@@ -270,11 +271,13 @@ public abstract class RemoteActor extends TypedAtomicActor {
             HashMap<String, String> portTypes)
             throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
+        // Copy all attributes of the entity being replaced.
         ArrayList<Attribute> attributes = new ArrayList<Attribute>(
                 targetEntity.attributeList());
         for (Attribute attribute : attributes) {
             attribute.setContainer(this);
         }
+        // Copy all IO ports of the target entity.
         for (Object portObject : targetEntity.portList()) {
             if (!(portObject instanceof IOPort)) {
                 continue;
@@ -284,20 +287,27 @@ public abstract class RemoteActor extends TypedAtomicActor {
             remotePort.setName(port.getName());
             remotePort.setContainer(this);
             remotePort.setPersistent(true);
+            // If the port is typed, save full name of the original port 
+            // within an attribute.  This is needed for setting port type information
+            // when the spliced-up model is recreated from the XML.
             if (remotePort instanceof TypedIOPort) {
+                // Set the type information.
                 Type type = TypeParser.parse(portTypes.get(port.getFullName()));
                 ((TypedIOPort) remotePort).setTypeEquals(type);
                 StringAttribute targetPortName = new StringAttribute(
                         remotePort, "targetPortName");
                 targetPortName.setExpression(port.getFullName());
             }
+            // Disconnect the port from all relationships and connect the remote copy instead.
             for (Object relationObject : port.linkedRelationList()) {
                 Relation relation = (Relation) relationObject;
                 port.unlink(relation);
                 remotePort.link(relation);
             }
+            // Disconnect the port.
             port.unlinkAll();
         }
+        //Remove the entity from the container.
         targetEntity.setContainer(null);
     }
 

@@ -69,13 +69,14 @@ public class OpenLayoutDialog implements ActionListener {
     ////                public methods                             ////
 
     public void actionPerformed(ActionEvent e) {
+
         JFileChooser fileChooser = _menu.getFileChooser();
 
         if (e.getSource() == _chooseModelButton) {
             //Handle model button action.
             fileChooser.setDialogTitle("Choose a Ptolemy model");
             fileChooser.setFileFilter(_menu.getModelFilter());
-            
+
             int returnVal = fileChooser.showOpenDialog(_parent);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 _modelFile = fileChooser.getSelectedFile();
@@ -94,7 +95,7 @@ public class OpenLayoutDialog implements ActionListener {
             }
         }
     }
-    
+
     public Object showDialog() {
         Object[] content = new Object[] { _modelFileField, _chooseModelButton,
                 _layoutFileField, _chooseLayoutButton };
@@ -104,7 +105,7 @@ public class OpenLayoutDialog implements ActionListener {
                 "Open existing layout");
         openLayoutDialog.pack();
         openLayoutDialog.setVisible(true);
-        
+
         return contentPane.getValue();
 
     }

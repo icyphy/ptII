@@ -52,9 +52,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 import ptolemy.actor.Manager.State;
 import ptolemy.kernel.util.IllegalActionException;
-import ptserver.communication.RemoteModel;
-import ptserver.communication.RemoteModel.RemoteModelListener;
-import ptserver.communication.RemoteModel.RemoteModelType;
+import ptserver.communication.ProxyModelInfrastructure;
+import ptserver.communication.ProxyModelInfrastructure.ProxyModelListener;
 import ptserver.communication.RemoteModelResponse;
 import ptserver.data.TokenParser;
 import ptserver.data.TokenParser.HandlerData;
@@ -213,9 +212,11 @@ public final class PtolemyServer implements IServerManager {
             @Override
             public void run() {
                 for (SimulationTask task : _requests.values()) {
-                    System.out.println(task.getRemoteModel().getTicket()
+                    System.out.println(task.getProxyModelInfrastructure()
+                            .getTicket()
                             + " latency "
-                            + task.getRemoteModel().getPingPongLatency());
+                            + task.getProxyModelInfrastructure()
+                                    .getPingPongLatency());
                 }
             }
         }, 1000, 1000);
@@ -531,28 +532,23 @@ public final class PtolemyServer implements IServerManager {
             }
 
             // Save the simulation request.
-            RemoteModel clientModel = new RemoteModel(RemoteModelType.CLIENT);
             SimulationTask simulationTask = new SimulationTask(ticket);
-            simulationTask.getRemoteModel().addRemoteModelListener(
+            simulationTask.getProxyModelInfrastructure().addProxyModelListener(
                     _remoteModelListener);
 
             String modelXML = new String(downloadModel(ticket.getLayoutUrl()));
-            HashMap<String, String> resolvedTypes = simulationTask
-                    .getRemoteModel().getResolvedTypes();
+            HashMap<String, String> modelTypes = simulationTask
+                    .getProxyModelInfrastructure().getModelTypes();
             String brokerUrl = "tcp://"
                     + InetAddress.getLocalHost().getHostAddress() + "@"
                     + getBrokerPort();
-
-            clientModel.initModel(modelXML, resolvedTypes);
-            simulationTask.getRemoteModel().createRemoteAttributes(
-                    clientModel.getSettableAttributesMap().keySet());
-            simulationTask.getRemoteModel().setUpInfrastructure(ticket,
-                    brokerUrl);
+            simulationTask.getProxyModelInfrastructure().setUpInfrastructure(
+                    ticket, brokerUrl);
 
             // Populate the response.
             response = new RemoteModelResponse();
             response.setTicket(ticket);
-            response.setModelTypes(resolvedTypes);
+            response.setModelTypes(modelTypes);
             response.setModelXML(modelXML);
             response.setBrokerUrl(brokerUrl);
 
@@ -606,11 +602,12 @@ public final class PtolemyServer implements IServerManager {
         //TODO: send ShutdownNotifierToken and sleep(5000)
         for (SimulationTask task : _requests.values()) {
             try {
-                this.close(task.getRemoteModel().getTicket());
+                close(task.getProxyModelInfrastructure().getTicket());
             } catch (Throwable error) {
                 PtolemyServer.LOGGER.log(Level.SEVERE,
                         "Failed to close the simulation"
-                                + task.getRemoteModel().getTicket(), error);
+                                + task.getProxyModelInfrastructure()
+                                        .getTicket(), error);
             }
         }
 
@@ -708,9 +705,9 @@ public final class PtolemyServer implements IServerManager {
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
-    private final RemoteModelListener _remoteModelListener = new RemoteModelListener() {
+    private final ProxyModelListener _remoteModelListener = new ProxyModelListener() {
 
-        public void modelConnectionExpired(RemoteModel remoteModel) {
+        public void modelConnectionExpired(ProxyModelInfrastructure remoteModel) {
             System.out.println("Removing model " + remoteModel.getTicket());
             System.out.println("Last pong was "
                     + remoteModel.getPingPongLatency() + " ms ago");
@@ -721,7 +718,8 @@ public final class PtolemyServer implements IServerManager {
             }
         }
 
-        public void modelException(RemoteModel remoteModel, Throwable cause) {
+        public void modelException(ProxyModelInfrastructure remoteModel,
+                Throwable cause) {
         }
     };
 

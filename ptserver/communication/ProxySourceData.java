@@ -1,5 +1,5 @@
 /*
- A helper data structure holding a reference to the remote source and its queue.
+ A helper data structure holding a reference to the proxy source and its queue.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -30,57 +30,47 @@ package ptserver.communication;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import ptserver.actor.RemoteSource;
+import ptserver.actor.ProxySource;
 import ptserver.data.CommunicationToken;
 
 ///////////////////////////////////////////////////////////////////
-//// RemoteSourceData
+//// ProxySourceData
 
 /**
- * A helper data structure holding a reference to the remote source and its queue.
+ * A helper data structure holding a reference to the proxy source and its queue.
  * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class RemoteSourceData {
+public class ProxySourceData {
 
     /**
-     * Creates an instance of the data structure with the specified RemoteSource and
-     * a new token queue of max 100 elements.
-     * @param remoteSource The remote source of the RemoteSourceData
-     * @param remoteModel The remoteModel that created the instance.
+     * Creates an instance of the data structure with the specified ProxySource and
+     * a new token queue.
+     * @param proxySource The remote source of the ProxySourceData
      */
-    public RemoteSourceData(RemoteSource remoteSource, RemoteModel remoteModel) {
-        _remoteSource = remoteSource;
+    public ProxySourceData(ProxySource proxySource) {
+        _proxySource = proxySource;
         _tokenQueue = new ConcurrentLinkedQueue<CommunicationToken>();
-        _remoteModel = remoteModel;
-        remoteSource.setRemoteSourceData(this);
+        proxySource.setProxySourceData(this);
     }
 
     /**
-     * Return the RemoteSource.
-     * @return the RemoteSource
+     * Return the ProxySource.
+     * @return the ProxySource of the instance.
      */
-    public RemoteSource getRemoteSource() {
-        return _remoteSource;
+    public ProxySource getProxySource() {
+        return _proxySource;
     }
 
     /**
-     * Return the token queue that stores tokens sent for the RemoteSource.
+     * Return the token queue that stores tokens sent for the ProxySource.
      * @return the token queue
      */
     public ConcurrentLinkedQueue<CommunicationToken> getTokenQueue() {
         return _tokenQueue;
-    }
-
-    /**
-     * Get the RemoteModel that created this instance.
-     * @return the RemoteModel that created this instance.
-     */
-    public RemoteModel getRemoteModel() {
-        return _remoteModel;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -88,15 +78,9 @@ public class RemoteSourceData {
     /**
      * The remoteSource actor.
      */
-    private final RemoteSource _remoteSource;
+    private final ProxySource _proxySource;
     /**
      * The token queue that collects tokens received for the remoteSource.
      */
     private final ConcurrentLinkedQueue<CommunicationToken> _tokenQueue;
-
-    /**
-     * The remote model that created the RemoteSourceData.
-     */
-    private final RemoteModel _remoteModel;
-
 }

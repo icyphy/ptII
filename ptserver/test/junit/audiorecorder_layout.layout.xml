@@ -45,7 +45,7 @@
 			value="1024">
 		</property>
 	</entity>
-	<entity name="AudioPlayer_remote" class="ptserver.actor.RemoteSource">
+	<entity name="AudioPlayer_remote" class="ptserver.actor.ProxySource">
 		<property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute"
 			value=".audiorecorder.AudioPlayer">
 		</property>

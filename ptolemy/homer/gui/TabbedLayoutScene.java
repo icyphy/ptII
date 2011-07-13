@@ -81,8 +81,8 @@ public class TabbedLayoutScene extends JPanel {
         return _tabScenes;
     }
 
-    public void removeTab(Component component) {
-        _tabScenes.remove(component);
+    public void removeTab(int index) {
+        _tabScenes.removeTabAt(index);
         if (_tabScenes.getTabCount() == 1) {
             addTab("Default");
         }
@@ -93,8 +93,8 @@ public class TabbedLayoutScene extends JPanel {
 
     public void clear() {
         // The last one should be the "add new tab" tab.
-        for (int i = _tabScenes.getTabCount() - 1 ; i >= 1; --i) {
-            removeTab(_tabScenes.getComponent(i));
+        for (int i = _tabScenes.getTabCount() - 1; i >= 1; --i) {
+            removeTab(i);
         }
     }
 
@@ -123,8 +123,8 @@ public class TabbedLayoutScene extends JPanel {
             closeButton.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    removeTab(_tabScenes.getTabComponentAt(_tabScenes
-                            .indexOfTabComponent(TabSceneButton.this)));
+                    removeTab(_tabScenes
+                            .indexOfTabComponent(TabSceneButton.this));
                 }
             });
             _tabScenes.setEnabledAt(_tabScenes.getTabCount() - 1, false);
@@ -167,6 +167,10 @@ public class TabbedLayoutScene extends JPanel {
         _tabScenes.setSelectedIndex(index);
     }
 
+    /**
+     * TODO
+     * @param index
+     */
     public void selectTab(int index) {
         _tabScenes.setSelectedIndex(index);
     }

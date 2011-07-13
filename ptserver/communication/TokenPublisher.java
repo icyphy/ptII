@@ -80,7 +80,7 @@ public class TokenPublisher {
                             byte[] batch = _outputStream.toByteArray();
                             _mqttClient.publish(getTopic(),
                                     batch,
-                                    RemoteModel.QOS_LEVEL, false);
+                                    ProxyModelInfrastructure.QOS_LEVEL, false);
                             // TODO remove this or add proper logging
                             System.out.println("publishing batch " + _batchCount++ + " batch size " + batch.length);
                         } catch (MqttException e) {

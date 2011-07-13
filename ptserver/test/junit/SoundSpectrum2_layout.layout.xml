@@ -110,7 +110,7 @@
 		</configure>
 	</entity>
 	
-	<entity name="ArrayPlotter2_remote" class="ptserver.actor.RemoteSource">
+	<entity name="ArrayPlotter2_remote" class="ptserver.actor.ProxySource">
 		<property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute"
 			value=".SoundSpectrum.ArrayPlotter2">
 		</property>
@@ -141,7 +141,7 @@
 			</property>
 		</port>
 	</entity>
-	<entity name="ArrayPlotter_remote" class="ptserver.actor.RemoteSource">
+	<entity name="ArrayPlotter_remote" class="ptserver.actor.ProxySource">
 		<property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute"
 			value=".SoundSpectrum.ArrayPlotter">
 		</property>

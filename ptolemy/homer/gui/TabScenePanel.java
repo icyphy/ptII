@@ -54,6 +54,7 @@ import org.netbeans.api.visual.action.TwoStateHoverProvider;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.border.Border;
 import org.netbeans.api.visual.border.BorderFactory;
+import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.model.ObjectScene;
 import org.netbeans.api.visual.widget.ConnectionWidget;
 import org.netbeans.api.visual.widget.LayerWidget;
@@ -95,6 +96,7 @@ public class TabScenePanel implements ContentPrototype {
         _mainLayer = new LayerWidget(getScene());
         _interactionLayer = new LayerWidget(getScene());
         _scene.createView();
+        _scene.setLayout(LayoutFactory.createOverlayLayout());
         getScene().addChild(_interactionLayer);
         getScene().addChild(_mainLayer);
         _resizeAction = ActionFactory.createAlignWithResizeAction(_mainLayer,

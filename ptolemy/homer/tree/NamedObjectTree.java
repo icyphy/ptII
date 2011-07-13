@@ -17,7 +17,7 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
     private final JTextField currentSelectionField;
 
     public NamedObjectTree(TreeModel model) {
-        this.setLayout(new BorderLayout());
+        setLayout(new BorderLayout());
         tree = new PTree(model);
         tree.addTreeSelectionListener(this);
         tree.setScrollsOnExpand(true);

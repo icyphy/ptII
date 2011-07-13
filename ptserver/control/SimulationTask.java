@@ -30,11 +30,13 @@ package ptserver.control;
 
 import java.net.URL;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
-import ptserver.communication.RemoteModel;
-import ptserver.communication.RemoteModel.RemoteModelType;
+import ptserver.communication.ProxyModelInfrastructure;
+import ptserver.util.ProxyModelBuilder;
+import ptserver.util.ProxyModelBuilder.ProxyModelType;
 
 ///////////////////////////////////////////////////////////////////
 //// SimulationTask
@@ -57,10 +59,10 @@ public class SimulationTask implements Runnable {
      *  the director or getting workspace access.
      */
     public SimulationTask(Ticket ticket) throws Exception {
-        _remoteModel = new RemoteModel(RemoteModelType.SERVER);
-
-        // Set the MQTT client and load the model specified within the ticket.
-        getRemoteModel().loadModel(new URL(ticket.getModelUrl()));
+        _proxyModelInfrastructure = new ProxyModelInfrastructure(
+                ProxyModelType.SERVER, (CompositeActor) ProxyModelBuilder
+                        .createMoMLParser().parse(null,
+                                new URL(ticket.getModelUrl())));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -69,14 +71,15 @@ public class SimulationTask implements Runnable {
     /** Close the remote model.
      */
     public void close() {
-        getRemoteModel().close();
+        getProxyModelInfrastructure().close();
     }
 
     /** Start the execution of the simulation by kicking off the thread.
      */
     public void run() {
         try {
-            getRemoteModel().getTopLevelActor().getManager().execute();
+            getProxyModelInfrastructure().getTopLevelActor().getManager()
+                    .execute();
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -90,14 +93,14 @@ public class SimulationTask implements Runnable {
      *  @return The Manager used to control the simulation
      */
     public Manager getManager() {
-        return getRemoteModel().getManager();
+        return getProxyModelInfrastructure().getManager();
     }
 
     /** Return the task's remote model.
      *  @return the remoteModel of the instance.
      */
-    public RemoteModel getRemoteModel() {
-        return _remoteModel;
+    public ProxyModelInfrastructure getProxyModelInfrastructure() {
+        return _proxyModelInfrastructure;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,5 +108,5 @@ public class SimulationTask implements Runnable {
 
     /** The remote model that is used to replaced model actors.
      */
-    private final RemoteModel _remoteModel;
+    private final ProxyModelInfrastructure _proxyModelInfrastructure;
 }
