@@ -50,7 +50,7 @@ directors that implement SuperdenseTimeDirector.
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating Red
 */
-public class GetCurrentMicrostep extends TimedSource {
+public class CurrentMicrostep extends TimedSource {
     /** Construct an actor with the given container and name.
     *
     *  @param container The container.
@@ -60,7 +60,7 @@ public class GetCurrentMicrostep extends TimedSource {
     *  @exception NameDuplicationException If the container already has an
     *   actor with this name.
     */
-    public GetCurrentMicrostep(CompositeEntity container, String name)
+    public CurrentMicrostep(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 

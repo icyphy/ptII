@@ -11,6 +11,10 @@
 <doc>Output the current time.</doc>
 </entity>
 
+<entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
+<doc>Output the current microstep.</doc>
+</entity>
+
 <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
 <doc>Create periodic timed events.</doc>
 </entity>
