@@ -61,6 +61,7 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
 //// RemoteObjectList
 
 /** A list of the model components that will be run remotely.
+ * 
  *  @author Justin Killian  
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -178,9 +179,15 @@ public class RemoteObjectList extends JPanel {
         return (NamedObj[]) _listModel.toArray();
     }
 
-    /**
-     * TODO
-     * @param _mainFrame the _mainFrame to set
+    /** Remove the item from the list of named objects.
+     *  @param namedObj Object to be removed from the list.
+     */
+    public void removeItem(NamedObj namedObj) {
+        _listModel.removeElement(namedObj);
+    }
+
+    /** Set the parent frame of the panel.
+     *  @param mainFrame The parent frame reference.
      */
     public void setMainFrame(UIDesignerFrame mainFrame) {
         _mainFrame = mainFrame;
@@ -189,7 +196,10 @@ public class RemoteObjectList extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The reference to the panel's container.
+     */
     private UIDesignerFrame _mainFrame;
+
     /** The window list control that shows all remote items.
      */
     private final JList _list = new JList();

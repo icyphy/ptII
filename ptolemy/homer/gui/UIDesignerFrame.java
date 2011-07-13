@@ -56,13 +56,15 @@ import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// UIDesignerFrame
-/**
- * TODO
- * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
+
+/** The container window for the UI designer that maintains the palette of
+ *  placeable elements of the model, widget references, and the tabs/scene placement.
+ *  
+ *  @author Anar Huseynov
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class UIDesignerFrame extends JFrame {
 
@@ -97,6 +99,7 @@ public class UIDesignerFrame extends JFrame {
     /** Add a visual NamedObj item to the panel.
      *  @param panel The target panel.
      *  @param object The NamedObj to be added to the list.
+     *  @param dimension The size of the widget.
      *  @param location Location on the scene.
      *  @exception IllegalActionException If the appropriate widget cannot be loaded.
      *  @exception NameDuplicationException If the NamedObj duplicates a name of
@@ -120,16 +123,26 @@ public class UIDesignerFrame extends JFrame {
         _widgetTabMap.put(widget, panel);
         _pnlRemoteObjects.addItem(object);
 
-        if (dimension != null && dimension.getWidth() > 0 && dimension.getHeight() > 0) {
+        if (dimension != null && dimension.getWidth() > 0
+                && dimension.getHeight() > 0) {
             ((Widget) widget).getBounds().setSize(dimension);
         }
         panel.addWidget((Widget) widget, location);
     }
 
+    /** Add a visual NamedObj item to the panel.
+     *  @param panel The target panel.
+     *  @param object The NamedObj to be added to the list.
+     *  @param location Location on the scene.
+     *  @exception IllegalActionException If the appropriate widget cannot be loaded.
+     *  @exception NameDuplicationException If the NamedObj duplicates a name of
+     *  an item already on the scene.
+     */
     public void addVisualNamedObject(TabScenePanel panel, NamedObj object,
             HomerLocation location) throws IllegalActionException,
             NameDuplicationException {
-        Dimension dimenstion = new Dimension(location.getWidth(), location.getHeight());
+        Dimension dimenstion = new Dimension(location.getWidth(),
+                location.getHeight());
         Point point = new Point(location.getX(), location.getY());
         addVisualNamedObject(panel, object, dimenstion, point);
     }
@@ -141,10 +154,16 @@ public class UIDesignerFrame extends JFrame {
         return _remoteObjectSet;
     }
 
+    /** Save the layout file.
+     *  @param layoutFile The target file for the "Save As" operation.
+     */
     public void saveLayoutAs(File layoutFile) {
         LayoutFileOperations.saveAs(this, layoutFile);
     }
 
+    /** Get the model URL.
+     *  @return The model URL.
+     */
     public URL getModelURL() {
         return _modelURL;
     }
@@ -179,8 +198,8 @@ public class UIDesignerFrame extends JFrame {
         _widgetTabMap.clear();
         _remoteObjectSet.clear();
         _pnlScreen.clear();
-
         _modelURL = modelURL;
+        
         try {
             _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
                     .openModelFile(modelURL));
@@ -198,8 +217,8 @@ public class UIDesignerFrame extends JFrame {
         _widgetTabMap.clear();
         _remoteObjectSet.clear();
         _pnlScreen.clear();
-
         _modelURL = modelURL;
+        
         try {
             _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
                     .openModelFile(modelURL));
@@ -212,13 +231,20 @@ public class UIDesignerFrame extends JFrame {
      *  @param object The NamedObj item to be removed.
      */
     public void removeNamedObject(NamedObj object) {
+
+        // Remove it from the scene.
         NamedObjectWidgetInterface widget = _widgetMap.get(object);
         if (widget != null) {
+            _widgetTabMap.get(widget).removeWidget((Widget) widget);
             _widgetTabMap.remove(widget);
+            _widgetMap.remove(object);
         }
 
-        _widgetMap.remove(object);
-        _remoteObjectSet.remove(object);
+        // Remove it from remote objects.
+        if (_remoteObjectSet.contains(object)) {
+            _pnlRemoteObjects.removeItem(object);
+            _remoteObjectSet.remove(object);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

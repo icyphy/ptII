@@ -55,10 +55,18 @@
 
 package ptolemy.homer.gui;
 
+import java.awt.Checkbox;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import org.netbeans.api.visual.widget.Widget;
 
@@ -66,279 +74,156 @@ import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
-public class WidgetPropertiesFrame extends javax.swing.JFrame {
+//////////////////////////////////////////////////////////////////////////
+//// WidgetPropertiesFrame 
 
-    /** Creates new form WidgetPropertiesFrame 
-     * @param layeredPane LayerPane containing the widget
-     * @param widget Widget*/
+/** The property window for setting widget position and size.
+ *  @author Ishwinder Singh
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
+ */
+public class WidgetPropertiesFrame extends JPanel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
 
+    /** Create the window with spinners set.
+     *  @param widget Widget whose properties are being displayed.
+     */
     public WidgetPropertiesFrame(Widget widget) {
-        _widget = widget;
-        initComponents();
-        _xTextField.setText(String
-                .valueOf(widget.getPreferredLocation().getX()));
-        _yTextField.setText(String
-                .valueOf(widget.getPreferredLocation().getY()));
-        _heightTextField.setText(String.valueOf(widget.getPreferredBounds()
-                .getHeight()));
-        _widthTextField.setText(String.valueOf(widget.getPreferredBounds()
-                .getWidth()));
+        setLayout(new GridLayout(3, 4, 10, 10));
+        setLocation(500, 200);
 
+        // Set up row #1.
+        add(new JLabel("Height: "));
+        add(_heightSpinner);
+        add(new JLabel("X: "));
+        add(_xSpinner);
+
+        // Set up row #2.
+        add(new JLabel("Width: "));
+        add(_widthSpinner);
+        add(new JLabel("Y: "));
+        add(_ySpinner);
+
+        // Set up row #3.
+        add(new JLabel(""));
+        add(_enabled);
+        add(_required);
+        add(new JLabel(""));
+
+        _widget = widget;
+        if (_widget instanceof NamedObjectWidgetInterface) {
+            NamedObj namedObj = ((NamedObjectWidgetInterface) _widget)
+                    .getNamedObject();
+            if (!(namedObj instanceof Settable)) {
+                _enabled.setEnabled(false);
+            }
+        }
+
+        _heightSpinner.setValue(widget.getPreferredBounds().getHeight());
+        _widthSpinner.setValue(widget.getPreferredBounds().getWidth());
+        _xSpinner.setValue(widget.getPreferredLocation().getX());
+        _ySpinner.setValue(widget.getPreferredLocation().getY());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         Private Methods                   ////
 
-    /** Initialize Swing components.
+    /** Get the specified position and dimension for the widget.
+     *  @return The target size of the widget.
      */
-    private void initComponents() {
-
-        _okButton = new javax.swing.JButton();
-        _cancelButton = new javax.swing.JButton();
-        _xLabel = new javax.swing.JLabel();
-        _yLabel = new javax.swing.JLabel();
-        _heightLabel = new javax.swing.JLabel();
-        _widthLabel = new javax.swing.JLabel();
-        _xTextField = new javax.swing.JTextField();
-        _yTextField = new javax.swing.JTextField();
-        _heightTextField = new javax.swing.JTextField();
-        _widthTextField = new javax.swing.JTextField();
-        _checkbox = new java.awt.Checkbox();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Widget Properties");
-
-        _okButton.setText("Ok");
-        _okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
-            }
-        });
-
-        _cancelButton.setText("Cancel");
-        _cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
-            }
-        });
-
-        _xLabel.setText("X:");
-
-        _yLabel.setText("Y:");
-
-        _heightLabel.setText("Height:");
-
-        _widthLabel.setText("Width:");
-
-        _checkbox.setLabel("Disabled");
-        if (_widget instanceof NamedObjectWidgetInterface) {
-            _namedObj = ((NamedObjectWidgetInterface) _widget).getNamedObject();
-            if (!(_namedObj instanceof Settable)) {
-                _checkbox.disable();
-            }
-
-        }
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
-                getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout
-                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(
-                        layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addGroup(
-                                                        layout.createSequentialGroup()
-                                                                .addGroup(
-                                                                        layout.createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                .addGroup(
-                                                                                        layout.createSequentialGroup()
-                                                                                                .addGroup(
-                                                                                                        layout.createParallelGroup(
-                                                                                                                javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                                                .addComponent(
-                                                                                                                        _xLabel)
-                                                                                                                .addComponent(
-                                                                                                                        _heightLabel))
-                                                                                                .addGap(18,
-                                                                                                        18,
-                                                                                                        18)
-                                                                                                .addGroup(
-                                                                                                        layout.createParallelGroup(
-                                                                                                                javax.swing.GroupLayout.Alignment.LEADING,
-                                                                                                                false)
-                                                                                                                .addComponent(
-                                                                                                                        _xTextField)
-                                                                                                                .addComponent(
-                                                                                                                        _heightTextField,
-                                                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                                                        53,
-                                                                                                                        Short.MAX_VALUE)))
-                                                                                .addComponent(
-                                                                                        _checkbox,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                                .addComponent(_okButton))
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(
-                                                        layout.createSequentialGroup()
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addGroup(
-                                                                        layout.createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.LEADING,
-                                                                                false)
-                                                                                .addGroup(
-                                                                                        layout.createSequentialGroup()
-                                                                                                .addGap(37,
-                                                                                                        37,
-                                                                                                        37)
-                                                                                                .addComponent(
-                                                                                                        _yLabel)
-                                                                                                .addGap(18,
-                                                                                                        18,
-                                                                                                        18))
-                                                                                .addGroup(
-                                                                                        javax.swing.GroupLayout.Alignment.TRAILING,
-                                                                                        layout.createSequentialGroup()
-                                                                                                .addComponent(
-                                                                                                        _widthLabel)
-                                                                                                .addGap(10,
-                                                                                                        10,
-                                                                                                        10)))
-                                                                .addGroup(
-                                                                        layout.createParallelGroup(
-                                                                                javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                .addComponent(
-                                                                                        _widthTextField,
-                                                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                        56,
-                                                                                        Short.MAX_VALUE)
-                                                                                .addComponent(
-                                                                                        _yTextField,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                        56,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGroup(
-                                                        layout.createSequentialGroup()
-                                                                .addGap(44, 44,
-                                                                        44)
-                                                                .addComponent(
-                                                                        _cancelButton)))
-                                .addGap(61, 61, 61)));
-        layout.setVerticalGroup(layout
-                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(
-                        layout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(
-                                                        _xTextField,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(_xLabel)
-                                                .addComponent(_yLabel)
-                                                .addComponent(
-                                                        _yTextField,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        20,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(
-                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(
-                                                        _widthTextField,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        20,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(_widthLabel)
-                                                .addComponent(
-                                                        _heightTextField,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(_heightLabel))
-                                .addGap(22, 22, 22)
-                                .addComponent(_checkbox,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(24, 24, 24)
-                                .addGroup(
-                                        layout.createParallelGroup(
-                                                javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(_cancelButton)
-                                                .addComponent(_okButton))
-                                .addContainerGap(33, Short.MAX_VALUE)));
-        setLocation(500, 200);
-
-        pack();
-    }
-
-    /** Action for OK button. Updated the properties of the widget.
-     *  @param evt Event object.
-     */
-    private void okButtonActionPerformed(ActionEvent evt) {
-        double x, y;
-        double height, width;
-
+    public Rectangle getBounds() {
+        Rectangle bounds = null;
         try {
-            x = Double.parseDouble(_xTextField.getText());
-            y = Double.parseDouble(_yTextField.getText());
-            height = Double.parseDouble(_heightTextField.getText());
-            width = Double.parseDouble(_widthTextField.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "You Entered Invalid vaules.",
-                    "Invalid", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        Rectangle rect = new Rectangle();
-        rect.setRect(x, y, width, height);
-        _widget.setPreferredBounds(rect);
+            Point position = new Point(
+                    ((SpinnerNumberModel) _xSpinner.getModel()).getNumber()
+                            .intValue(),
+                    ((SpinnerNumberModel) _ySpinner.getModel()).getNumber()
+                            .intValue());
 
-        dispose();
+            Dimension size = new Dimension(
+                    ((SpinnerNumberModel) _widthSpinner.getModel()).getNumber()
+                            .intValue(),
+                    ((SpinnerNumberModel) _heightSpinner.getModel())
+                            .getNumber().intValue());
+
+            bounds = new Rectangle(position, size);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null,
+                    "The specified values are invalid.", "Invalid Value(s)",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        return bounds;
     }
 
-    /** Action for cancel button. Close the frame.
-     *  @param evt Event object.
+    /** Get the enabled status of the widget.
+     *  @return The enabled status of the widget.
      */
-    private void cancelButtonActionPerformed(ActionEvent evt) {
-        dispose();
+    public boolean getEnabled() {
+        return _enabled.getState();
+    }
+
+    /** Get the required status of the widget.
+     *  @return The required status of the widget.
+     */
+    public boolean getRequired() {
+        return _required.getState();
+    }
+
+    /** Show the prompt and return the selection.
+     *  @return The return value of the dialog.
+     */
+    public int showPrompt() {
+        JOptionPane optionPane = new JOptionPane(this,
+                JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        JDialog dialog = optionPane.createDialog("Properties");
+        dialog.pack();
+        dialog.setVisible(true);
+        dialog.setModal(true);
+
+        if (optionPane.getValue() == null) {
+            return (int) JOptionPane.CANCEL_OPTION;
+        } else {
+            return (Integer) optionPane.getValue();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private final Widget _widget;
-    private NamedObj _namedObj;
-    private java.awt.Checkbox _checkbox;
-    private javax.swing.JButton _okButton;
-    private javax.swing.JButton _cancelButton;
-    private javax.swing.JLabel _xLabel;
-    private javax.swing.JLabel _yLabel;
-    private javax.swing.JLabel _heightLabel;
-    private javax.swing.JLabel _widthLabel;
-    private javax.swing.JTextField _xTextField;
-    private javax.swing.JTextField _yTextField;
-    private javax.swing.JTextField _heightTextField;
-    private javax.swing.JTextField _widthTextField;
-    // End of variables declaration
+    /** Height spinner UI element.
+     */
+    private final JSpinner _heightSpinner = new JSpinner(
+            new SpinnerNumberModel(100, 1, 9999, 1));
 
+    /** Width spinner UI element.
+     */
+    private final JSpinner _widthSpinner = new JSpinner(new SpinnerNumberModel(
+            100, 1, 9999, 1));
+
+    /** X position spinner UI element.
+     */
+    private final JSpinner _xSpinner = new JSpinner(new SpinnerNumberModel(100,
+            0, 9999, 1));
+
+    /** Y position spinner UI element.
+     */
+    private final JSpinner _ySpinner = new JSpinner(new SpinnerNumberModel(100,
+            0, 9999, 1));
+
+    /** Widget whose properties are being edited.
+     */
+    private final Widget _widget;
+
+    /** Checkbox UI element to tell if the widget will be enabled.
+     */
+    private final Checkbox _enabled = new Checkbox("Enabled", true);
+
+    /** Checkbox UI element to tell if the widget will be required.
+     */
+    private final Checkbox _required = new Checkbox("Required");
 }

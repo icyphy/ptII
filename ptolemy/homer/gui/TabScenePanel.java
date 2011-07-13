@@ -42,7 +42,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.netbeans.api.visual.action.ActionFactory;
@@ -77,18 +79,19 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
 //////////////////////////////////////////////////////////////////////////
 //// TabScenePanel
 
-/**
+/** The tab scene onto which widgets can be dropped, resized, and
+ *  arranged in order to suite the needs of the handheld consumer.
  *
- * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
+ *  @author Anar Huseynov
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class TabScenePanel implements ContentPrototype {
 
-    /**
-     * TODO
+    /** Create a new tab scene onto which widgets can be dropped.
+     *  @param mainFrame The parent frame of the panel.
      */
     public TabScenePanel(UIDesignerFrame mainFrame) {
         _mainFrame = mainFrame;
@@ -97,46 +100,52 @@ public class TabScenePanel implements ContentPrototype {
         _interactionLayer = new LayerWidget(getScene());
         _scene.createView();
         _scene.setLayout(LayoutFactory.createOverlayLayout());
+
         getScene().addChild(_interactionLayer);
         getScene().addChild(_mainLayer);
+
+        final AlignWithMoveStrategyProvider alignWithMoveStrategyProvider = new AlignWithMoveStrategyProvider(
+                new SingleLayerAlignWithWidgetCollector(_mainLayer, false),
+                _interactionLayer, ALIGN_WITH_MOVE_DECORATOR_DEFAULT, false);
+
         _resizeAction = ActionFactory.createAlignWithResizeAction(_mainLayer,
                 _interactionLayer, null, false);
-        //        _moveAction = ActionFactory.createAlignWithMoveAction(_mainLayer,
-        //                _interactionLayer, null, false);
-        SingleLayerAlignWithWidgetCollector collector = new SingleLayerAlignWithWidgetCollector(
-                _mainLayer, false);
-        final AlignWithMoveStrategyProvider alignWithMoveStrategyProvider = new AlignWithMoveStrategyProvider(
-                collector, _interactionLayer,
-                ALIGN_WITH_MOVE_DECORATOR_DEFAULT, false);
         _moveAction = ActionFactory.createMoveAction(new MoveStrategy() {
-
             public Point locationSuggested(Widget widget,
                     Point originalLocation, Point suggestedLocation) {
-                adjustLocation(widget, suggestedLocation);
+                _adjustLocation(widget, suggestedLocation);
+
                 Point locationSuggested = alignWithMoveStrategyProvider
                         .locationSuggested(widget, originalLocation,
                                 suggestedLocation);
+
                 return locationSuggested;
             }
         }, alignWithMoveStrategyProvider);
-        _hoverProvider = new TwoStateHoverProvider() {
+        _hoverAction = ActionFactory
+                .createHoverAction(new TwoStateHoverProvider() {
+                    public void unsetHovering(Widget widget) {
+                        widget.setBorder(DEFAULT_BORDER);
+                    }
 
-            public void unsetHovering(Widget widget) {
-                widget.setBorder(DEFAULT_BORDER);
-            }
-
-            public void setHovering(Widget widget) {
-                widget.setBorder(RESIZE_BORDER);
-            }
-        };
-        _hoverAction = ActionFactory.createHoverAction(_hoverProvider);
-        _clickListener = ActionFactory.createEditAction(new EditProvider() {
-
+                    public void setHovering(Widget widget) {
+                        widget.setBorder(RESIZE_BORDER);
+                    }
+                });
+        _popupMenuAction = ActionFactory
+                .createPopupMenuAction(new PopupMenuProvider() {
+                    public JPopupMenu getPopupMenu(Widget widget,
+                            Point localLocation) {
+                        return new NamedObjectPopupMenu(
+                                (NamedObjectWidgetInterface) widget);
+                    }
+                });
+        _editAction = ActionFactory.createEditAction(new EditProvider() {
             public void edit(Widget widget) {
-                new WidgetPropertiesFrame(widget).setVisible(true);
+                _showWidgetProperties(widget);
             }
-
         });
+
         _scene.getActions().addAction(_hoverAction);
         new DropTarget(_scene.getView(), new DropTargetAdapter() {
 
@@ -148,29 +157,24 @@ public class TabScenePanel implements ContentPrototype {
              *  @param dropEvent The drop event.
              */
             public void dragEnter(DropTargetDragEvent dropEvent) {
-
                 try {
-
                     if (dropEvent
                             .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                         List<?> dropObjects = (java.util.List) dropEvent
                                 .getTransferable().getTransferData(
                                         PtolemyTransferable.namedObjFlavor);
 
-                        Object transfererable = dropObjects.get(0);
-
-                        if (transfererable instanceof PortablePlaceable
-                                || transfererable instanceof Settable) {
+                        Object transferable = dropObjects.get(0);
+                        if ((transferable instanceof PortablePlaceable)
+                                || (transferable instanceof Settable)) {
                             dropEvent
                                     .acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
                         } else {
                             dropEvent.rejectDrag();
                         }
-
                     } else {
                         dropEvent.rejectDrag();
                     }
-
                 } catch (UnsupportedFlavorException e) {
                     MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
@@ -222,71 +226,82 @@ public class TabScenePanel implements ContentPrototype {
                 }
             }
         });
-        _popupMenuAction = ActionFactory
-                .createPopupMenuAction(new PopupMenuProvider() {
-
-                    public JPopupMenu getPopupMenu(Widget widget,
-                            Point localLocation) {
-                        return new NamedObjectPopupMenu(
-                                (NamedObjectWidgetInterface) widget);
-                    }
-
-                });
     }
 
-    private class NamedObjectPopupMenu extends JPopupMenu {
-        public NamedObjectPopupMenu(NamedObjectWidgetInterface widget) {
-            _widget = widget;
-            JMenuItem delete = new JMenuItem("Delete");
-            delete.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent e) {
-                    _mainFrame.removeNamedObject(_widget.getNamedObject());
-                }
-            });
-            JMenuItem edit = new JMenuItem("Edit");
-            edit.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent e) {
-
-                }
-            });
-            add(delete);
-            add(edit);
+    /** Add a positionable element to the scene.
+     *  @param element The element to be added.
+     *  @exception IllegalActionException If the appropriate widget cannot be loaded.
+     */
+    public void add(PositionableElement element) throws IllegalActionException {
+        try {
+            _mainFrame.addVisualNamedObject(TabScenePanel.this,
+                    element.getElement(), element.getLocation());
+        } catch (NameDuplicationException e) {
+            e.printStackTrace();
         }
-
-        private final NamedObjectWidgetInterface _widget;
     }
 
-    /**
-     * TODO
-     * @param widget
-     * @param location
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+    /** Add a widget to the scene at the given location.
+     *  @param widget
+     *  @param location
+     *  @exception NameDuplicationException If the widget name already exists.
+     *  @exception IllegalActionException If the appropriate widget cannot be loaded.
      */
     public void addWidget(Widget widget, Point location)
             throws IllegalActionException, NameDuplicationException {
         widget.setPreferredLocation(location);
         widget.getActions().addAction(_resizeAction);
         widget.getActions().addAction(_moveAction);
-        widget.getActions().addAction(_clickListener);
         widget.getActions().addAction(_hoverAction);
         widget.getActions().addAction(_scene.createSelectAction());
         widget.getActions().addAction(_popupMenuAction);
+        widget.getActions().addAction(_editAction);
         widget.setBorder(DEFAULT_BORDER);
+
         _mainLayer.addChild(widget);
         _scene.validate();
-        adjustLocation(widget, location);
+
+        _adjustLocation(widget, location);
         widget.setPreferredLocation(location);
         _scene.validate();
     }
 
+    /** Get the view associated with the scene.
+     *  @return The view component of the scene.
+     */
+    public Component getContent() {
+        return getScene().getView();
+    }
+
+    /** Get a new tab scene panel instance.
+     *  @return A new TabScenePanel object.
+     */
+    public ContentPrototype getNewInstance() {
+        return new TabScenePanel(_mainFrame);
+    }
+
+    /** Get a reference to the current scene.
+     *  @return The current scene.
+     */
+    public ObjectScene getScene() {
+        return _scene;
+    }
+
+    /** Remove the widget from the scene.
+     *  @param widget The widget to be removed.
+     */
     public void removeWidget(Widget widget) {
         _mainLayer.removeChild(widget);
     }
 
-    private void adjustLocation(Widget widget, Point location) {
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Adjust the screen location of the selected widget.
+     *  @param widget The widget to be moved.
+     *  @param location The target location.
+     */
+    private void _adjustLocation(Widget widget, Point location) {
         if (location.getX() + widget.getBounds().getWidth() > getContent()
                 .getWidth()) {
             location.setLocation(getContent().getWidth()
@@ -305,19 +320,24 @@ public class TabScenePanel implements ContentPrototype {
         }
     }
 
-    /**
-     * @return
+    /** Display the widget properties window for modification.
+     *  @param widget The target widget whose properties should be displayed.
      */
-    public Component getContent() {
-        return getScene().getView();
+    private void _showWidgetProperties(Widget widget) {
+        WidgetPropertiesFrame dialog = new WidgetPropertiesFrame(widget);
+        if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
+            try {
+                widget.setPreferredBounds(dialog.getBounds());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(_mainFrame, new JLabel(ex
+                        .getClass().getName()), "Invalid Size Specified",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        }
     }
 
-    /**
-     * @return the _scene
-     */
-    public ObjectScene getScene() {
-        return _scene;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private static final Border RESIZE_BORDER = BorderFactory
             .createResizeBorder(6, Color.BLACK, true);
@@ -329,10 +349,9 @@ public class TabScenePanel implements ContentPrototype {
     private final ObjectScene _scene;
     private final WidgetAction _moveAction;
     private final WidgetAction _resizeAction;
-    private final WidgetAction _clickListener;
-    private final TwoStateHoverProvider _hoverProvider;
-    private WidgetAction _popupMenuAction;
-    private WidgetAction _hoverAction;
+    private final WidgetAction _popupMenuAction;
+    private final WidgetAction _editAction;
+    private final WidgetAction _hoverAction;
     private static final BasicStroke STROKE = new BasicStroke(1.0f,
             BasicStroke.JOIN_BEVEL, BasicStroke.CAP_BUTT, 5.0f, new float[] {
                     6.0f, 3.0f }, 0.0f);
@@ -344,18 +363,41 @@ public class TabScenePanel implements ContentPrototype {
             return widget;
         }
     };
-    public void add(PositionableElement element) throws IllegalActionException {
-        try {
-            _mainFrame.addVisualNamedObject(TabScenePanel.this,
-                    element.getElement(), element.getLocation());
-        } catch (NameDuplicationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** The popup menu added to each widget loaded on the scene.
+     */
+    private class NamedObjectPopupMenu extends JPopupMenu {
+
+        /** Create a new context menu for the widget.
+         *  @param widget The triggering widget.
+         */
+        public NamedObjectPopupMenu(NamedObjectWidgetInterface widget) {
+            _widget = widget;
+
+            JMenuItem edit = new JMenuItem("Edit");
+            edit.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    _showWidgetProperties((Widget) _widget);
+                }
+            });
+
+            JMenuItem delete = new JMenuItem("Delete");
+            delete.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    _mainFrame.removeNamedObject(_widget.getNamedObject());
+                    _mainFrame.repaint();
+                }
+            });
+
+            add(edit);
+            add(delete);
         }
-    }
 
-    public ContentPrototype getNewInstance() {
-        return new TabScenePanel(_mainFrame);
+        private final NamedObjectWidgetInterface _widget;
     }
-
 }

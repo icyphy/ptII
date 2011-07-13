@@ -79,8 +79,13 @@ public class SizeDialog extends JPanel {
         JDialog dialog = optionPane.createDialog("Screen Size");
         dialog.pack();
         dialog.setVisible(true);
+        dialog.setModal(true);
 
-        return (Integer) optionPane.getValue();
+        if (optionPane.getValue() == null) {
+            return (int) JOptionPane.CANCEL_OPTION;
+        } else {
+            return (Integer) optionPane.getValue();
+        }
     }
 
     /** Get the dimensions from the spinners for use in resizing the scene.

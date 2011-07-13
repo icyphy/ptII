@@ -48,24 +48,31 @@ import javax.swing.plaf.basic.BasicButtonUI;
 
 ///////////////////////////////////////////////////////////////////
 //// TabbedLayoutScene
-/**
- * TODO
- * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
+
+/** The tabbed scene onto which widgets can be dropped by the user
+ *  in order to construct a layout for a particular model file.
+ * 
+ *  @author Anar Huseynov
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public class TabbedLayoutScene extends JPanel {
-    /**
-     * TODO
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Create the default scene with initial tabs.
      */
     public TabbedLayoutScene() {
         _tabScenes = new JTabbedPane(JTabbedPane.TOP);
         add(_tabScenes);
+
         _tabScenes.add("", null);
         TabButton addTabButton = new TabButton();
         addTabButton.setText("+");
+
         _tabScenes.setTabComponentAt(0, addTabButton);
         addTabButton.addActionListener(new ActionListener() {
 
@@ -74,23 +81,30 @@ public class TabbedLayoutScene extends JPanel {
                 selectTab(_tabScenes.getTabCount() - 2);
             }
         });
+
         _tabScenes.setBorder(new LineBorder(Color.BLACK));
     }
 
-    public JTabbedPane getSceneTabs() {
-        return _tabScenes;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Add a tab with the specified name.
+     *  @param tabName The label to put on the new tab.
+     */
+    public void addTab(String tabName) {
+        TabScenePanel tabScenePanel = new TabScenePanel(_mainFrame);
+        Component view = tabScenePanel.getContent();
+        _tabScenes.insertTab(tabName, null, view, null,
+                _tabScenes.getTabCount() - 1);
+        view.setMaximumSize(view.getPreferredSize());
+
+        int index = _tabScenes.indexOfComponent(tabScenePanel.getContent());
+        _tabScenes.setTabComponentAt(index, new TabSceneButton());
+        _tabScenes.setSelectedIndex(index);
     }
 
-    public void removeTab(int index) {
-        _tabScenes.removeTabAt(index);
-        if (_tabScenes.getTabCount() == 1) {
-            addTab("Default");
-        }
-        if (_tabScenes.getSelectedIndex() == _tabScenes.getTabCount() - 1) {
-            _tabScenes.setSelectedIndex(_tabScenes.getTabCount() - 2);
-        }
-    }
-
+    /** Remove all but the default tab.
+     */
     public void clear() {
         // The last one should be the "add new tab" tab.
         for (int i = _tabScenes.getTabCount() - 1; i >= 1; --i) {
@@ -98,27 +112,125 @@ public class TabbedLayoutScene extends JPanel {
         }
     }
 
-    /**
-     * TODO
-     *
+    /** Get the tabs within the container.
+     *  @return The reference to the tabbed pane contained within.
+     */
+    public JTabbedPane getSceneTabs() {
+        return _tabScenes;
+    }
+
+    /** Remove the selected tab and its associated component.
+     *  @param index The tab index to be removed.
+     */
+    public void removeTab(int index) {
+        _tabScenes.removeTabAt(index);
+        if (_tabScenes.getTabCount() == 1) {
+            addTab("Default");
+        }
+
+        if (_tabScenes.getSelectedIndex() == _tabScenes.getTabCount() - 1) {
+            _tabScenes.setSelectedIndex(_tabScenes.getTabCount() - 2);
+        }
+    }
+
+    /** Set the selected tab.
+     *  @param index Index of the tab that should be selected.
+     */
+    public void selectTab(int index) {
+        _tabScenes.setSelectedIndex(index);
+    }
+
+    /** Set the parent frame.
+     *  @param mainFrame The reference to the parent frame.
+     */
+    public void setMainFrame(UIDesignerFrame mainFrame) {
+        _mainFrame = mainFrame;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The JFrame container of the this panel.
+     */
+    private UIDesignerFrame _mainFrame;
+
+    /** The JTabbedPane that is being wrapped.
+     */
+    private JTabbedPane _tabScenes;
+
+    /** The standard mouse adapter to be used on on all buttons.
+     */
+    private static final MouseAdapter _MOUSE_ADAPTER = new MouseAdapter() {
+        public void mouseEntered(MouseEvent e) {
+            Component component = e.getComponent();
+            if (component instanceof AbstractButton) {
+                ((AbstractButton) component).setBorderPainted(true);
+            }
+        }
+
+        public void mouseExited(MouseEvent e) {
+            Component component = e.getComponent();
+            if (component instanceof AbstractButton) {
+                ((AbstractButton) component).setBorderPainted(false);
+            }
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** The tab button that is added to the tab.
+     */
+    private class TabButton extends JButton {
+
+        /** Create the button that will sit within the tab.
+         */
+        public TabButton() {
+            setPreferredSize(new Dimension(17, 17));
+            setToolTipText("Delete");
+
+            // Set the look and feel.
+            setUI(new BasicButtonUI());
+
+            // Make it transparent.
+            setContentAreaFilled(false);
+
+            // Make it non-focusable.
+            setFocusable(false);
+            setBorder(BorderFactory.createEtchedBorder());
+            setBorderPainted(false);
+
+            // Add the nice rollover effect.
+            addMouseListener(_MOUSE_ADAPTER);
+            setRolloverEnabled(true);
+        }
+    }
+
+    /** The panel that contains the label and + button.
      */
     private class TabSceneButton extends JPanel {
 
+        /** Create the panel that will sit within the tab.
+         */
         public TabSceneButton() {
             setOpaque(false);
             setLayout(new BorderLayout(0, 0));
+
             JLabel label = new JLabel() {
                 public String getText() {
                     int i = _tabScenes.indexOfTabComponent(TabSceneButton.this);
                     if (i != -1) {
                         return _tabScenes.getTitleAt(i);
                     }
+
                     return null;
                 };
             };
+
             add(label, BorderLayout.CENTER);
             JButton closeButton = new TabButton();
             closeButton.setText("x");
+
             add(closeButton, BorderLayout.EAST);
             closeButton.addActionListener(new ActionListener() {
 
@@ -127,84 +239,8 @@ public class TabbedLayoutScene extends JPanel {
                             .indexOfTabComponent(TabSceneButton.this));
                 }
             });
+
             _tabScenes.setEnabledAt(_tabScenes.getTabCount() - 1, false);
         }
     }
-
-    /**
-     * TODO
-     *
-     */
-    private class TabButton extends JButton {
-        public TabButton() {
-            int size = 17;
-            setPreferredSize(new Dimension(size, size));
-            setToolTipText("Delete");
-            //Make the button looks the same for all Laf's
-            setUI(new BasicButtonUI());
-            //Make it transparent
-            setContentAreaFilled(false);
-            //No need to be focusable
-            setFocusable(false);
-            setBorder(BorderFactory.createEtchedBorder());
-            setBorderPainted(false);
-            //Making nice rollover effect
-            //we use the same listener for all buttons
-            addMouseListener(_MOUSE_ADAPTER);
-            setRolloverEnabled(true);
-        }
-
-    }
-
-    public void addTab(String tabName) {
-        TabScenePanel tabScenePanel = new TabScenePanel(_mainFrame);
-        Component view = tabScenePanel.getContent();
-        _tabScenes.insertTab(tabName, null, view, null,
-                _tabScenes.getTabCount() - 1);
-        view.setMaximumSize(view.getPreferredSize());
-        int index = _tabScenes.indexOfComponent(tabScenePanel.getContent());
-        _tabScenes.setTabComponentAt(index, new TabSceneButton());
-        _tabScenes.setSelectedIndex(index);
-    }
-
-    /**
-     * TODO
-     * @param index
-     */
-    public void selectTab(int index) {
-        _tabScenes.setSelectedIndex(index);
-    }
-
-    /**
-     * @param _mainFrame the _mainFrame to set
-     */
-    public void setMainFrame(UIDesignerFrame mainFrame) {
-        _mainFrame = mainFrame;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    /**
-     * TODO
-     */
-    private JTabbedPane _tabScenes;
-    private UIDesignerFrame _mainFrame;
-    private static final MouseAdapter _MOUSE_ADAPTER = new MouseAdapter() {
-        public void mouseEntered(MouseEvent e) {
-            Component component = e.getComponent();
-            if (component instanceof AbstractButton) {
-                AbstractButton button = (AbstractButton) component;
-                button.setBorderPainted(true);
-            }
-        }
-
-        public void mouseExited(MouseEvent e) {
-            Component component = e.getComponent();
-            if (component instanceof AbstractButton) {
-                AbstractButton button = (AbstractButton) component;
-                button.setBorderPainted(false);
-            }
-        }
-    };
-
 }
