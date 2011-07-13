@@ -200,6 +200,7 @@
 		<cobertura-instrument todir="${instrumented.dir}">
 			<fileset dir="${basedir}">
 				<include name="ptserver/**/*.class" />
+				<include name="ptolemy/homer/**/*.class" />
 				<exclude name="${ptserver.output}/**/*" />
 				<exclude name="ptserver/test/**/*" />
 			</fileset>
@@ -485,12 +486,14 @@
 			<class location="ptserver/control" />
 			<class location="ptserver/data" />
 			<class location="ptserver/test" />
+			<class location="ptolemy/homer" />
 		</findbugs>
 	</target>
 	<target name="checkstyle" depends="initOutput">
 		<taskdef resource="checkstyletask.properties" classpath="${basedir}/ptserver/lib/checkstyle-5.3-all.jar" />
 		<checkstyle config="${basedir}/ptserver/checkstyle-ptserver.xml" failOnViolation="false">
 			<fileset dir="${basedir}/ptserver" includes="**/*.java" />
+			<fileset dir="${basedir}/ptolemy/homer" includes="**/*.java" />
 			<formatter type="xml" toFile="${ptserver.output}/checkstyle_errors.xml" />
 		</checkstyle>
 		<!-- <xslt in="${ptserver.output}/checkstyle_errors.xml" out="${ptserver.output}/checkstyle_report.html" style="${basedir}/ptserver/checkstyle-simple.xsl"/> -->
