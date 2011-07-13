@@ -28,10 +28,7 @@
  */
 package ptolemy.media.javasound.demo.SoftClip;
 
-import java.util.ResourceBundle;
-
-import ptolemy.actor.injection.PtolemyInjector;
-import ptolemy.actor.injection.PtolemyModule;
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.media.javasound.LiveSound;
 
 ////////////////////////////////////////////////////
@@ -53,10 +50,7 @@ import ptolemy.media.javasound.LiveSound;
  */
 public class SoftClip {
     public static void main(String[] args) {
-
-        PtolemyModule module = new PtolemyModule(
-                ResourceBundle.getBundle("ptolemy.actor.JavaSEActorModule"));
-        PtolemyInjector.createInjector(module);
+        ActorModuleInitializer.initializeInjector();
 
         // Create a sound capture object that captures audio
         // from the computer's audio input port (mic or

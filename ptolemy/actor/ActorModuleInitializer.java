@@ -1,6 +1,6 @@
 /*
- Initializer of the PtolemyModule with Java SE specific interface to
- implementation mappings.
+ This class initialized the PtolemyInjector with Java SE specific interface to
+ implementation mappings that are within Ptolemy package.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -27,17 +27,20 @@
  COPYRIGHTENDKEY
  */
 
-package ptserver.util;
+package ptolemy.actor;
 
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.injection.PtolemyModule;
 
+import com.google.inject.Module;
+
 ///////////////////////////////////////////////////////////////////
-//// PtolemyModuleJavaSEInitializer
+//// ActorModuleInitializer
 /**
- * Initializer of the PtolemyModule with Java SE specific interface to
+ * Initializer of the PtolemyInjector with Java SE specific actor interface to
  * implementation mappings.  The module uses ptolemy.actor.JavaSEActorModule.properties
  * file to initialize the PtolemyModule.
  * @author Anar Huseynov
@@ -46,29 +49,49 @@ import ptolemy.actor.injection.PtolemyModule;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class PtolemyModuleJavaSEInitializer {
+public class ActorModuleInitializer {
 
     /**
      * Create instance that initializes the PtolemyInjector.
      */
-    public PtolemyModuleJavaSEInitializer() {
+    public ActorModuleInitializer() {
         initializeInjector();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /**
+     * Get Modules used by the initializer.
+     * @return get Modules used by the initializer.
+     */
+    public static ArrayList<? extends Module> getModules() {
+        return _PTOLEMY_MODULES;
     }
 
     /**
      * Initialize the PtolemyInjector using module definitions from
      * ptolemy.actor.JavaSEActorModule.properties file.
      */
-    public static void initializeInjector() {
+    public synchronized static void initializeInjector() {
         if (!_isInitialized) {
-            PtolemyInjector.createInjector(new PtolemyModule(ResourceBundle
-                    .getBundle("ptolemy.actor.JavaSEActorModule")));
+            PtolemyInjector.createInjector(_PTOLEMY_MODULES);
             _isInitialized = true;
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     /**
      * Flag indicating whether the injector is initialized.
      */
     private static volatile boolean _isInitialized;
+
+    /**
+     * Modules used by the initializer
+     */
+    private static final ArrayList<Module> _PTOLEMY_MODULES = new ArrayList<Module>();
+    static {
+        _PTOLEMY_MODULES.add(new PtolemyModule(ResourceBundle
+                .getBundle("ptolemy.actor.ActorModule")));
+    }
 }

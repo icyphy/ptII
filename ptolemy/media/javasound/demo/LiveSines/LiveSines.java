@@ -29,10 +29,8 @@
 package ptolemy.media.javasound.demo.LiveSines;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
-import ptolemy.actor.injection.PtolemyInjector;
-import ptolemy.actor.injection.PtolemyModule;
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.media.javasound.LiveSound;
 
 ////////////////////////////////////////////////////
@@ -51,10 +49,7 @@ import ptolemy.media.javasound.LiveSound;
  */
 public class LiveSines {
     public static void main(String[] args) {
-
-        PtolemyModule module = new PtolemyModule(
-                ResourceBundle.getBundle("ptolemy.actor.JavaSEActorModule"));
-        PtolemyInjector.createInjector(module);
+        ActorModuleInitializer.initializeInjector();
 
         // The pitch of the signal to synthesize.
         double fundamental1_Hz = 220;

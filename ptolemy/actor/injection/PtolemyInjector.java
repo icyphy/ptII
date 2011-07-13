@@ -59,6 +59,16 @@ public class PtolemyInjector {
     }
 
     /**
+     * Create an injector for the given set of modules.
+     * @param modules modules that contain binding that Guice Injector
+     * uses to implement dependency injection.
+     */
+    public static synchronized void createInjector(
+            Iterable<? extends Module> modules) {
+        _instance = Guice.createInjector(modules);
+    }
+
+    /**
      * Return the PtolemyInjector.  Note that {@link #createInjector(Module...)} 
      * must be called prior to using this method.
      * @return the PtolemyInjector that was created with the supplied modules.

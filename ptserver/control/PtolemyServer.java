@@ -50,14 +50,18 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.Manager.State;
+import ptolemy.actor.injection.PtolemyInjector;
+import ptolemy.actor.injection.PtolemyModule;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.communication.ProxyModelInfrastructure;
 import ptserver.communication.ProxyModelInfrastructure.ProxyModelListener;
 import ptserver.communication.RemoteModelResponse;
 import ptserver.data.TokenParser;
 import ptserver.data.TokenParser.HandlerData;
-import ptserver.util.PtolemyModuleJavaSEInitializer;
+
+import com.google.inject.Module;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyServer
@@ -116,7 +120,13 @@ public final class PtolemyServer implements IServerManager {
     /** Initialize the logger used for error handling.
      */
     static {
-        PtolemyModuleJavaSEInitializer.initializeInjector();
+        // FIXME remove PTServerModule after SysOutActor is deleted 
+        // or create a proper initializer for it
+        ArrayList<Module> modules = new ArrayList<Module>();
+        modules.addAll(ActorModuleInitializer.getModules());
+        modules.add(new PtolemyModule(ResourceBundle
+                .getBundle("ptserver.util.PTServerModule")));
+        PtolemyInjector.createInjector(modules);
         Logger logger = null;
         FileHandler logFile = null;
 

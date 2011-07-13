@@ -31,13 +31,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.injection.PtolemyInjector;
+import ptolemy.actor.injection.PtolemyModule;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.domains.pn.kernel.PNDirector;
@@ -54,9 +58,9 @@ import ptserver.test.SysOutActor;
 import ptserver.test.SysOutActor.TokenDelegator;
 import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
-import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 import com.caucho.hessian.client.HessianProxyFactory;
+import com.google.inject.Module;
 
 ///////////////////////////////////////////////////////////////////
 //// RemoteModelTest
@@ -72,7 +76,13 @@ import com.caucho.hessian.client.HessianProxyFactory;
  */
 public class RemoteModelTest {
     static {
-        PtolemyModuleJavaSEInitializer.initializeInjector();
+        // FIXME remove PTServerModule after SysOutActor is deleted 
+        // or create a proper initializer for it
+        ArrayList<Module> modules = new ArrayList<Module>();
+        modules.addAll(ActorModuleInitializer.getModules());
+        modules.add(new PtolemyModule(ResourceBundle
+                .getBundle("ptserver.util.PTServerModule")));
+        PtolemyInjector.createInjector(modules);
     }
 
     ///////////////////////////////////////////////////////////////////

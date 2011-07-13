@@ -33,10 +33,10 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javax.swing.SwingUtilities;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.gui.ActorGraphicalMessageHandler;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -46,8 +46,6 @@ import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.UserActorLibrary;
-import ptolemy.actor.injection.PtolemyInjector;
-import ptolemy.actor.injection.PtolemyModule;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -207,9 +205,7 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(final String[] args) {
-        PtolemyModule module = new PtolemyModule(
-                ResourceBundle.getBundle("ptolemy.actor.JavaSEActorModule"));
-        PtolemyInjector.createInjector(module);
+        ActorModuleInitializer.initializeInjector();
 
         // FIXME: Java superstition dictates that if you want something
         // to work, you should invoke it in event thread.  Otherwise,
