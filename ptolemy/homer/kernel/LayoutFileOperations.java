@@ -97,7 +97,8 @@ public class LayoutFileOperations {
         try {
             topLevel = (CompositeEntity) parser.parse(null, url);
         } catch (Exception e) {
-            throw new IllegalActionException(e.getMessage());
+            throw new IllegalActionException(null, e, "Unable to parse url: "
+                    + url);
         }
 
         return topLevel;
@@ -203,7 +204,7 @@ public class LayoutFileOperations {
         }
 
     }
-    
+
     private static CompositeEntity mergeModelWithLayout(CompositeEntity model,
             CompositeEntity layout, HashSet<Attribute> attributesToMerge)
             throws IllegalActionException, NameDuplicationException {
@@ -227,7 +228,7 @@ public class LayoutFileOperations {
 
         return model;
     }
-    
+
     private static CompositeEntity mergeModelWithLayout(URL modelURL,
             URL layoutURL, HashSet<Attribute> attributesToMerge)
             throws IllegalActionException, NameDuplicationException {

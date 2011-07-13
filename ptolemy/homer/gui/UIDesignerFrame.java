@@ -52,6 +52,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// UIDesignerFrame
@@ -180,8 +181,12 @@ public class UIDesignerFrame extends JFrame {
         _pnlScreen.clear();
 
         _modelURL = modelURL;
-        _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
-                .openModelFile(modelURL));
+        try {
+            _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
+                    .openModelFile(modelURL));
+        } catch (IllegalActionException e) {
+            MessageHandler.error(e.getMessage(), e);
+        }
     }
 
     /** Prepare the scene for creating a new layout and prompt the user for
@@ -195,8 +200,12 @@ public class UIDesignerFrame extends JFrame {
         _pnlScreen.clear();
 
         _modelURL = modelURL;
-        _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
-                .openModelFile(modelURL));
+        try {
+            _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
+                    .openModelFile(modelURL));
+        } catch (IllegalActionException e) {
+            MessageHandler.error(e.getMessage(), e);
+        }
     }
 
     /** Remove the NamedObj from the widget map and list of remote objects.
