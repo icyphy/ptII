@@ -58,8 +58,8 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-import ptserver.communication.RemoteModel;
-import ptserver.communication.RemoteModel.RemoteModelType;
+import ptserver.util.ProxyModelBuilder;
+import ptserver.util.ProxyModelBuilder.ProxyModelType;
 
 /** Handle model and layout file operations.
  * 
@@ -183,9 +183,7 @@ public class LayoutFileOperations {
 
             // Create layout model
             System.out.println(model.exportMoML());
-            RemoteModel clientModel = new RemoteModel(RemoteModelType.CLIENT);
-            clientModel.loadModel(model);
-
+            new ProxyModelBuilder(ProxyModelType.CLIENT, model).build();
             // Save in file
             out = new BufferedWriter(new FileWriter(layoutFile));
             model.exportMoML(out);
@@ -289,7 +287,7 @@ public class LayoutFileOperations {
         boolean isSink = true;
         boolean isSource = true;
 
-        for (Object portObject : ((ComponentEntity) entity).portList()) {
+        for (Object portObject : entity.portList()) {
             if (!(portObject instanceof IOPort)) {
                 continue;
             }
