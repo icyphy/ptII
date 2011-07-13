@@ -30,11 +30,15 @@ package ptolemy.homer.widgets;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.widget.ComponentWidget;
@@ -79,6 +83,68 @@ public class PortablePlaceableWidget extends NamedObjectWidget implements
         layeredPane.setLayer(glassPane, JLayeredPane.DRAG_LAYER);
         layeredPane.add(glassPane);
         MouseAdapter mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                redispatchEvent(scene, e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                redispatchEvent(scene, e);
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                redispatchEvent(scene, e);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                redispatchEvent(scene, e);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                redispatchEvent(scene, e);
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                redispatchEvent(scene, e);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                redispatchEvent(scene, e);
+            }
+
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                redispatchEvent(scene, e);
+            }
+
+            private void redispatchEvent(final Scene scene, MouseEvent e) {
+                e.setSource(scene.getView());
+                Component component = scene.getView();
+                Point componentPoint = SwingUtilities.convertPoint(glassPane,
+                        e.getPoint(), component);
+                MouseEvent newEvent;
+                if (e instanceof MouseWheelEvent) {
+                    MouseWheelEvent mwe = (MouseWheelEvent) e;
+                    newEvent = new MouseWheelEvent(component, e.getID(),
+                            e.getWhen(), e.getModifiers(), componentPoint.x,
+                            componentPoint.y, e.getClickCount(),
+                            e.isPopupTrigger(), mwe.getScrollType(),
+                            mwe.getScrollAmount(), mwe.getWheelRotation());
+                } else {
+                    newEvent = new MouseEvent(component, e.getID(),
+                            e.getWhen(), e.getModifiers(), componentPoint.x,
+                            componentPoint.y, e.getClickCount(),
+                            e.isPopupTrigger(), e.getButton());
+                }
+                scene.getView().dispatchEvent(newEvent);
+            }
+
         };
         glassPane.addKeyListener(new KeyAdapter() {
         });
@@ -109,6 +175,9 @@ public class PortablePlaceableWidget extends NamedObjectWidget implements
 
             public void revalidateDependency() {
                 if (!isPreferredBoundsSet() || getPreferredBounds() == null) {
+                    return;
+                }
+                if (getClientArea().getSize().equals(glassPane.getSize())) {
                     return;
                 }
                 glassPane.setSize(_componentWidget.getClientArea().getSize());
