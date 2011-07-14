@@ -176,6 +176,18 @@
 		<property name="numberToWrite" class="ptolemy.data.expr.Parameter"
 			value="2^order">
 		</property>
+		<property name="test" class="ptolemy.data.expr.Parameter"
+			value="true">
+			<property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle" />
+		</property>
+		<property name="test2" class="ptolemy.data.expr.Parameter"
+			value="true">
+			<property name="style" class="ptolemy.actor.gui.style.LineStyle" />
+		</property>
+		<property name="test3" class="ptolemy.data.expr.Parameter"
+			value="true">
+			<property name="style" class="ptolemy.actor.gui.style.NotEditableLineStyle" />
+		</property>
 	</entity>
 	<entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
 		<property name="order" class="ptolemy.data.expr.Parameter"
