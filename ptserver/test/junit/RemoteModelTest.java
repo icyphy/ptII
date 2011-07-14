@@ -56,10 +56,12 @@ import ptserver.control.SimulationTask;
 import ptserver.control.Ticket;
 import ptserver.test.SysOutActor;
 import ptserver.test.SysOutActor.TokenDelegator;
-import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
+import ptserver.util.ServerUtility;
 
 import com.caucho.hessian.client.HessianProxyFactory;
+import com.google.inject.Module;
+y;
 import com.google.inject.Module;
 
 ///////////////////////////////////////////////////////////////////
@@ -198,7 +200,7 @@ public class RemoteModelTest {
             RemoteModelResponse response) throws Exception {
         Ticket ticket = response.getTicket();
         ProxyModelInfrastructure model = new ProxyModelInfrastructure(
-                ProxyModelType.CLIENT, (CompositeActor) ProxyModelBuilder
+                ProxyModelType.CLIENT, (CompositeActor) ServerUtility
                         .createMoMLParser().parse(response.getModelXML()),
                 response.getModelTypes());
         model.setUpInfrastructure(ticket, _brokerUrl);

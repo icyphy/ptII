@@ -35,8 +35,8 @@ import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptserver.communication.ProxyModelInfrastructure;
-import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
+import ptserver.util.ServerUtility;
 
 ///////////////////////////////////////////////////////////////////
 //// SimulationTask
@@ -60,7 +60,7 @@ public class SimulationTask implements Runnable {
      */
     public SimulationTask(Ticket ticket) throws Exception {
         _proxyModelInfrastructure = new ProxyModelInfrastructure(
-                ProxyModelType.SERVER, (CompositeActor) ProxyModelBuilder
+                ProxyModelType.SERVER, (CompositeActor) ServerUtility
                         .createMoMLParser().parse(null,
                                 new URL(ticket.getModelUrl())));
     }

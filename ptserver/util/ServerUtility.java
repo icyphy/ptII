@@ -36,6 +36,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 
 ///////////////////////////////////////////////////////////////////
 //// ServerUtility
@@ -52,6 +56,29 @@ public class ServerUtility {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    /**
+     * Create and initialize a new MoMLParser.
+     * The parser would have BackwardCompatiblity and RemoveGraphicalClasses filters.
+     * The RemoteGraphicalClasses would filter out only classes that are known not to be
+     * portable to be portable to Android.
+     * @return new MoMLParser with BackwardCompatibility and RemoveGraphicalClasses filters.
+     */
+    public static MoMLParser createMoMLParser() {
+        MoMLParser parser = new MoMLParser(new Workspace());
+        parser.resetAll();
+        // TODO: is this thread safe?
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+        // TODO either fork RemoveGraphicalClasses or make its hashmap non-static (?)
+        RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
+        filter.remove("ptolemy.actor.lib.gui.ArrayPlotter");
+        filter.remove("ptolemy.actor.lib.gui.SequencePlotter");
+        filter.remove("ptolemy.actor.lib.gui.Display");
+        filter.remove("ptolemy.actor.gui.style.CheckBoxStyle");
+        filter.remove("ptolemy.actor.gui.style.ChoiceStyle");
+        MoMLParser.addMoMLFilter(filter);
+        return parser;
+    }
+
     /**
      * Return the deep attribute list of the container.
      * @param container the container to process.
