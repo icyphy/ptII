@@ -1,5 +1,7 @@
 /*
- TODO
+ ProxyModelGenerator splices up CompositeActor to support distribution execution.
+ The splicing would be done slightly differently depending where the model runs, client or server.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -27,10 +29,8 @@
 
 package ptserver.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map.Entry;
 
 import ptolemy.actor.CompositeActor;
@@ -39,7 +39,6 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.TypeConflictException;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -51,10 +50,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptserver.actor.ProxyActor;
 import ptserver.actor.ProxySink;
 import ptserver.actor.ProxySource;
@@ -64,7 +59,10 @@ import ptserver.communication.ProxySourceData;
 //// ProxyModelGenerator
 
 /**
- * TODO
+ * ProxyModelGenerator splices up CompositeActor to support distribution execution.
+ * The splicing would be done slightly differently depending where the model runs, client or server.
+ * The builder would modify original model by injecting proxy actors that facilitate distributed communication
+ * with another instance of proxy model running remotely.
  * @author Anar Huseynov
  * @version $Id$ 
  * @since Ptolemy II 8.1
@@ -74,24 +72,43 @@ import ptserver.communication.ProxySourceData;
 public class ProxyModelBuilder {
 
     /**
-     * An enumerations that specifies the remote model type: client or server.
+     * An enumerations that specifies the proxy model type: client or server.
      *
      */
     public enum ProxyModelType {
         /**
-         * Client remote model type.
+         * Client proxy model type.
          */
         CLIENT,
         /**
-         * Server remote model type.
+         * Server proxy model type.
          */
         SERVER;
     }
 
+    /**
+     * Attribute value indicating that the actor is a sink.
+     */
     public static final String PROXY_SINK_ATTRIBUTE = "sink";
-    public static final String PROXY_REMOTE_TAG = "_remote";
+    /**
+     * Attribute value indicating that the actor is a source.
+     */
     public static final String PROXY_SOURCE_ATTRIBUTE = "source";
+    /**
+     * Attribute name indicating that the named object needs to be handled by the ProxyModelBuilder.
+     */
+    public static final String REMOTE_OBJECT_TAG = "_remote";
+    /**
+     * Attribute value indicating that the parent attribute is a remote attribute - 
+     * it's value needs to synchronized between client and server models.
+     */
+    public static final String REMOTE_ATTRIBUTE = "attribute";
 
+    /**
+     * Create a new instance of the builder for the provided model.
+     * @param modelType The type of the model the builder should build.
+     * @param topLevelActor The target model on which builder would perform its operations.
+     */
     public ProxyModelBuilder(ProxyModelType modelType,
             CompositeActor topLevelActor) {
         _modelType = modelType;
@@ -99,10 +116,18 @@ public class ProxyModelBuilder {
     }
 
     /**
-     * @throws IllegalActionException
-     * @throws TypeConflictException
-     * @throws NameDuplicationException
-     * @throws CloneNotSupportedException
+     * Build the ProxyModel that supports distributed execution.  
+     * In the case of the server model type, sinks and sources marked to run on the client
+     * would be replaced with a proxy sinks and sources that facilitate communication with
+     * a remote instance of the proxy model.
+     * In the case of the client model type, all actors directly connected to sinks and sources
+     * marked with a "_remote" attribute would replaced with proxy sources and sinks respectively.
+     * All others actor would be removed.
+     * @exception IllegalActionException if there is a problem setting a manager or
+     * capturing certain type information.
+     * @exception TypeConflictException if there is a problem resolving types on the model.
+     * @exception NameDuplicationException if there is a problem creating proxy sinks or sources.
+     * @exception CloneNotSupportedException if there is a problem cloning ports or attributes.
      */
     public void build() throws IllegalActionException, TypeConflictException,
             NameDuplicationException, CloneNotSupportedException {
@@ -116,10 +141,10 @@ public class ProxyModelBuilder {
         for (Object obj : _topLevelActor.deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
             // find actors that have a remote tag
-            Attribute remoteAttribute = actor.getAttribute(PROXY_REMOTE_TAG);
-            if (isTargetProxySource(remoteAttribute)) {
+            Attribute remoteAttribute = actor.getAttribute(REMOTE_OBJECT_TAG);
+            if (ServerUtility.isTargetProxySource(remoteAttribute)) {
                 sources.add(actor);
-            } else if (isTargetProxySink(remoteAttribute)) {
+            } else if (ServerUtility.isTargetProxySink(remoteAttribute)) {
                 sinks.add(actor);
             } else if (_modelType == ProxyModelType.CLIENT) {
                 // If the model is being created for the client, 
@@ -130,11 +155,13 @@ public class ProxyModelBuilder {
                 unneededActors.add(actor);
             }
             // Locate remote attributes of the actor.
-            findRemoteAttributes(deepAttributeList(actor, null),
+            ServerUtility.findRemoteAttributes(
+                    ServerUtility.deepAttributeList(actor),
                     getRemoteAttributesMap());
         }
         // Locate remote attributes of the top level actor.
-        findRemoteAttributes(deepAttributeList(_topLevelActor, null),
+        ServerUtility.findRemoteAttributes(
+                ServerUtility.deepAttributeList(_topLevelActor),
                 getRemoteAttributesMap());
 
         // The manager must be created because type resolution for some models requires it
@@ -210,12 +237,48 @@ public class ProxyModelBuilder {
     }
 
     /**
-     * Create a new instance of the RemoteSink either by replacing the targetEntity
+     * Return the mapping from the typeable named object's full name to its type string.
+     * The type string is obtained by calling .toString() method on the type instance. 
+     * @return Return the mapping from the typeable named object's full name to its type string.
+     */
+    public HashMap<String, String> getModelTypes() {
+        return _modelTypes;
+    }
+
+    /**
+     * Return the mapping from the target actor's full name to the ProxySink associated with it.
+     * @return Return the mapping from the target actor's full name to the ProxySink associated with it.
+     */
+    public HashMap<String, ProxySink> getProxySinkMap() {
+        return _proxySinkMap;
+    }
+
+    /**
+     * Return the mapping from the target actor's full name to the ProxySource associated with it.
+     * @return Return the mapping from the target actor's full name to the ProxySource associated with it.
+     */
+    public HashMap<String, ProxySourceData> getProxySourceMap() {
+        return _proxySourceMap;
+    }
+
+    /**
+     * Return the mapping from the attribute full name's to the attribute instance.
+     * The mapping only contains attributes that have {@link #REMOTE_OBJECT_TAG} attribute within them.
+     * @return the _remoteAttributesMap
+     */
+    public HashMap<String, Settable> getRemoteAttributesMap() {
+        return _remoteAttributesMap;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                  ////
+    /**
+     * Create a new instance of the ProxySink either by replacing the targetEntity
      * or by replacing all entities connected to it.
      * @param targetEntity The target entity to be processed
-     * @param replaceTargetEntity replaceTargetEntity true to replace
+     * @param replaceTargetEntity if replaceTargetEntity is true, replace
      * the target entity with the proxy, otherwise replace all
-     * entities connecting to it with one proxy
+     * entities connecting to it with one proxy.
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      * @exception NameDuplicationException If the container already has an
@@ -233,12 +296,12 @@ public class ProxyModelBuilder {
     }
 
     /**
-     * Create a new instance of the RemoteSource either by replacing
+     * Create a new instance of the ProxySource either by replacing
      * the targetEntity or by replacing all entities connected to it.
      * @param targetEntity The target entity to be processed
-     * @param replaceTargetEntity replaceTargetEntity true to replace
+     * @param replaceTargetEntity if replaceTargetEntity is true, replace
      * the target entity with the proxy, otherwise replace all
-     * entities connecting to it with one proxy
+     * entities connecting to it with one proxy.
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      * @exception NameDuplicationException If the container already has an
@@ -254,36 +317,6 @@ public class ProxyModelBuilder {
                 replaceTargetEntity, getModelTypes());
         ProxySourceData data = new ProxySourceData(remoteSource);
         _proxySourceMap.put(remoteSource.getTargetEntityName(), data);
-    }
-
-    /**
-     * TODO
-     * @param targetEntityAttribute
-     * @return
-     */
-    public static boolean isTargetProxySource(Attribute targetEntityAttribute) {
-        if (targetEntityAttribute instanceof Settable) {
-            Settable parameter = (Settable) targetEntityAttribute;
-            if (parameter.getExpression().equals(PROXY_SOURCE_ATTRIBUTE)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * TODO
-     * @param targetEntityAttribute
-     * @return
-     */
-    public static boolean isTargetProxySink(Attribute targetEntityAttribute) {
-        if (targetEntityAttribute instanceof Settable) {
-            Settable parameter = (Settable) targetEntityAttribute;
-            if (parameter.getExpression().equals(PROXY_SINK_ATTRIBUTE)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -312,7 +345,7 @@ public class ProxyModelBuilder {
 
             }
             // Also capture type information of all Typeable attributes.
-            for (Attribute attribute : deepAttributeList(entity, null)) {
+            for (Attribute attribute : ServerUtility.deepAttributeList(entity)) {
                 if (attribute instanceof Typeable) {
                     getModelTypes().put(((Nameable) attribute).getFullName(),
                             ((Typeable) attribute).getType().toString());
@@ -321,120 +354,12 @@ public class ProxyModelBuilder {
         }
     }
 
-    public static List<Attribute> deepAttributeList(NamedObj container) {
-        return deepAttributeList(container, null);
-    }
-
     /**
-     * TODO
-     * @param container
-     * @param attributeList
-     * @return
-     */
-    private static List<Attribute> deepAttributeList(NamedObj container,
-            List<Attribute> attributeList) {
-        if (attributeList == null) {
-            attributeList = new ArrayList<Attribute>();
-        }
-        for (Object attributeObject : container.attributeList()) {
-            Attribute attribute = (Attribute) attributeObject;
-            attributeList.add(attribute);
-            deepAttributeList(attribute, attributeList);
-        }
-        return attributeList;
-    }
-
-    /**
-     * Find all remote attributes of the model and add them to the
-     * _settableAttributesMap.
-     * @param attributeList TODO
-     * @return TODO
-     */
-    public static void findRemoteAttributes(List<Attribute> attributeList,
-            HashMap<String, Settable> remoteAttributeMap) {
-        for (Attribute attribute : attributeList) {
-            if (isRemoteAttribute(attribute)) {
-                remoteAttributeMap.put(attribute.getFullName(),
-                        (Settable) attribute);
-            }
-        }
-    }
-
-    /**
-     * Return true if the attribute is marked as remote attribute, false otherwise.
-     * @param attribute the attribute to check.
-     * @return true if the attribute is marked as remote attribute, false otherwise.
-     */
-    public static boolean isRemoteAttribute(Attribute attribute) {
-        if (attribute instanceof Settable) {
-            Attribute isRemoteAttribute = attribute.getAttribute("_remote");
-            if (isRemoteAttribute instanceof Parameter) {
-                if (((Parameter) isRemoteAttribute).getExpression().equals(
-                        "attribute")) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Create and initialize a new MoMLParser.
-     * The parser would have BackwardCompatiblity and RemoveGraphicalClasses filters.
-     * The RemoteGraphicalClasses would filter out only classes that are known not to be
-     * portable to be portable to Android.
-     * @return new MoMLParser with BackwardCompatibility and RemoveGraphicalClasses filters.
-     */
-    public static MoMLParser createMoMLParser() {
-        MoMLParser parser = new MoMLParser(new Workspace());
-        parser.resetAll();
-        // TODO: is this thread safe?
-        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-        // TODO either fork RemoveGraphicalClasses or make its hashmap non-static (?)
-        RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
-        filter.remove("ptolemy.actor.lib.gui.ArrayPlotter");
-        filter.remove("ptolemy.actor.lib.gui.SequencePlotter");
-        filter.remove("ptolemy.actor.lib.gui.Display");
-        filter.remove("ptolemy.actor.gui.style.CheckBoxStyle");
-        filter.remove("ptolemy.actor.gui.style.ChoiceStyle");
-        MoMLParser.addMoMLFilter(filter);
-        return parser;
-    }
-
-    /**
-     * @return the _remoteSourceMap
-     */
-    public HashMap<String, ProxySourceData> getProxySourceMap() {
-        return _proxySourceMap;
-    }
-
-    /**
-     * @return the _remoteSinkMap
-     */
-    public HashMap<String, ProxySink> getProxySinkMap() {
-        return _proxySinkMap;
-    }
-
-    /**
-     * @return the _remoteAttributesMap
-     */
-    public HashMap<String, Settable> getRemoteAttributesMap() {
-        return _remoteAttributesMap;
-    }
-
-    /**
-     * @return the _modelTypes
-     */
-    public HashMap<String, String> getModelTypes() {
-        return _modelTypes;
-    }
-
-    /**
-     * The type of the remote model.
+     * The type of the proxy model.
      */
     private final ProxyModelType _modelType;
     /**
-     * The map from the Typeable's full name to its type
+     * The map from the Typeable's full name to its type.
      */
     private final HashMap<String, String> _modelTypes = new HashMap<String, String>();
 

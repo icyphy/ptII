@@ -1,7 +1,7 @@
 /*
- Parent actor that contains logic common to both sink and source
- remote actors.  This actor is responsible for removing a target actor
- and putting itself as a proxy.
+ Parent actor that contains logic common to both proxy sink and source
+ actors.  This actor is responsible for either removing the target actor
+ and putting itself as a proxy or removing all entities connected to it and putting itself instead.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -52,12 +52,11 @@ import ptserver.util.TypeParser;
 ////ProxyActor
 /**
  * An abstract parent actor that contains logic common to both sink
- * and source remote actors.  This actor is responsible for either
+ * and source proxy actors.  This actor is responsible for either
  * removing the target actor and putting itself as a proxy or removing
  * all actors connected to the target actor and putting itself instead
- * of all of them.  The intent is to allow sinks or sources to run
- * remotely by putting instance of RemoteSink or RemoteSource instead.
- * @author ahuseyno
+ * of all of connected actor connected to the target actor. 
+ * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
@@ -67,13 +66,19 @@ import ptserver.util.TypeParser;
  */
 public abstract class ProxyActor extends TypedAtomicActor {
 
+    /**
+     * Replace target entity with the ProxySink and ProxySource.
+     */
     public static final boolean REPLACE_TARGET_ENTITY = true;
+    /**
+     * Replace entities connected to the target entity with proxy actor.
+     */
     public static final boolean REPLACE_CONNECTING_ENTITIES = false;
 
     /**
      * Create a new instance of the ProxyActor without doing any
      * actor replacement.
-     * @param container The container.
+     * @param container The container of the actor.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException If this actor cannot be contained
      *  by the proposed container (see the setContainer() method).
@@ -89,15 +94,15 @@ public abstract class ProxyActor extends TypedAtomicActor {
     /**
      * Parent constructor that replaces either targetEntity if
      * replaceTargetEntity is true or otherwise all entities connected
-     * to it with a proxy instance (RemoteSink or RemoteSource).  The
+     * to it with a proxy instance (ProxySink or ProxySource).  The
      * proxy actor is named the same as the original with addition of
      * "_remote" suffix.  All links of the targetEntity are
      * removed. The proxy actor dynamically adds ports that were
      * present in the targetEntity (with the same port name) or and
      * connects them to the targetEntity's relations.
-     * @param container The container
+     * @param container The container of the actor.
      * @param targetEntity the targetEntity to be replaced by a proxy
-     * @param replaceTargetEntity true to replace the target entity with the proxy,
+     * @param replaceTargetEntity if true replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
      * @param portTypes Map of ports and their resolved types
      * @exception IllegalActionException If the actor cannot be contained
@@ -111,7 +116,7 @@ public abstract class ProxyActor extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         this(container, targetEntity.getName()
-                + ProxyModelBuilder.PROXY_REMOTE_TAG);
+                + ProxyModelBuilder.REMOTE_OBJECT_TAG);
         setTargetEntityName(targetEntity.getFullName());
         _targetEntityName.setExpression(getTargetEntityName());
         if (REPLACE_TARGET_ENTITY) {

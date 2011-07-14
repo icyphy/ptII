@@ -40,8 +40,8 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptserver.communication.ProxySourceData;
 import ptserver.communication.ProxyModelInfrastructure;
+import ptserver.communication.ProxySourceData;
 import ptserver.data.CommunicationToken;
 
 ///////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ import ptserver.data.CommunicationToken;
 public class ProxySource extends ProxyActor {
 
     /**
-     * Create a new instance of the RemoteActor without doing any actor replacement.
+     * Create a new instance of the ProxySource without doing any actor replacement.
      * @param container The container.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException If this actor cannot be contained
@@ -75,9 +75,9 @@ public class ProxySource extends ProxyActor {
 
     /**
      * Replace the targetSource with the ProxySource instance.
-     * @param container The container
-     * @param targetSource The target source
-     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
+     * @param container The container of the actor
+     * @param targetSource The target source to be processed.
+     * @param replaceTargetEntity if true replace the target entity with the proxy,
      * otherwise replace all entities connecting to it with one proxy
      * @param portTypes Map of ports and their resolved types
      * @exception IllegalActionException If the actor cannot be contained
@@ -156,7 +156,8 @@ public class ProxySource extends ProxyActor {
      * TODO
      * @param _remoteModel the _remoteModel to set
      */
-    public void setProxyModelInfrastructure(ProxyModelInfrastructure _remoteModel) {
+    public void setProxyModelInfrastructure(
+            ProxyModelInfrastructure _remoteModel) {
         this._remoteModel = _remoteModel;
     }
 

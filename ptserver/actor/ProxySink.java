@@ -43,19 +43,21 @@ import ptserver.data.CommunicationToken;
 ///////////////////////////////////////////////////////////////////
 ////ProxySink
 /**
- * A Remote Sink that acts as a proxy sink and publishes tokens it receives as
- * one CommunicationToken per fire to its queue.
- * @author ahuseyno
+ * A ProxySink acts as a proxy to some sink in the original model by publishing tokens it
+ * receives as one CommunicationToken per fire to the queue of communication tokens.  
+ * The tokens are then send to the original sink using ProxyModelInfrastructure for distributed model
+ * execution.
+ * @author Anar Huseynov
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public class ProxySink extends ProxyActor {
 
     /**
-     * Create a new instance of the RemoteActor without doing any actor replacement.
-     * @param container The container.
+     * Create a new instance of the ProxySource without doing any actor replacement.
+     * @param container The container of the actor.
      * @param name The name of this actor within the container.
      * @exception IllegalActionException If this actor cannot be contained
      *  by the proposed container (see the setContainer() method).
@@ -69,11 +71,11 @@ public class ProxySink extends ProxyActor {
 
     /**
      * Replace the targetSink with the ProxySink instance.
-     * @param container The container
-     * @param targetSink The target sink
-     * @param replaceTargetEntity replaceTargetEntity true to replace the target entity with the proxy,
-     * otherwise replace all entities connecting to it with one proxy
-     * @param portTypes Map of ports and their resolved types
+     * @param container The container of the actor.
+     * @param targetSink The target sink to be processed.
+     * @param replaceTargetEntity if true replace the target entity with the proxy,
+     * otherwise replace all entities connecting to it with one proxy.
+     * @param portTypes Map of ports and their resolved types.
      * @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      * @exception NameDuplicationException If the container already has an

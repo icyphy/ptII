@@ -96,7 +96,7 @@ public class TokenListener implements MqttSimpleCallback {
             // The listener is only concerned about the following types.
             if (token instanceof CommunicationToken) {
                 CommunicationToken communicationToken = (CommunicationToken) token;
-                ProxySourceData data = _remoteModel.getRemoteSourceMap().get(
+                ProxySourceData data = _remoteModel.getProxySourceMap().get(
                         communicationToken.getTargetActorName());
                 data.getTokenQueue().add(communicationToken);
 
@@ -107,11 +107,11 @@ public class TokenListener implements MqttSimpleCallback {
             } else if (token instanceof AttributeChangeToken) {
                 AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
                 Settable remoteAttribute = _remoteModel
-                        .getSettableAttributesMap().get(
+                        .getRemoteAttributesMap().get(
                                 attributeChangeToken.getTargetSettableName());
 
                 RemoteValueListener listener = _remoteModel
-                        .getSettableAttributeListenersMap().get(
+                        .getRemoteAttributeListenersMap().get(
                                 attributeChangeToken.getTargetSettableName());
                 synchronized (listener) {
                     try {

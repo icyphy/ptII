@@ -1,5 +1,6 @@
 /*
- ProxyModel initializes by making needed replacement for sinks and sources.
+ ProxyModelInfrastructure set ups infrastructure for executing models
+ in a distributed mode between client and server.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -57,6 +58,7 @@ import ptserver.data.PingToken;
 import ptserver.data.PongToken;
 import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
+import ptserver.util.ServerUtility;
 import ptserver.util.TypeParser;
 
 import com.ibm.mqtt.IMqttClient;
@@ -66,12 +68,8 @@ import com.ibm.mqtt.MqttException;
 ///////////////////////////////////////////////////////////////////
 //// ProxyModel
 /**
- * Initialize the Ptolemy model by making needed replacement for sinks
- * and sources with appropriate proxy actors and set up infrastructure
- * for sending and receiving MQTT messages.
- *
- * The model can set up the infrastructure for client or server
- * which differ slightly in actor replacement mechanisms.
+ * ProxyModelInfrastructure set ups infrastructure for executing models
+ * in a distributed mode between client and server.
  *
  * @author Anar Huseynov
  * @version $Id$
@@ -80,46 +78,6 @@ import com.ibm.mqtt.MqttException;
  * @Pt.AcceptedRating Red (ahuseyno)
  */
 public class ProxyModelInfrastructure {
-
-    private static final int PING_PONG_PERIOD = 1000;
-
-    /**
-     * Create a new instance of the remoteModel with the specified parameters.
-     * @param modelType the type of the model which must be either client or server
-     * @throws CloneNotSupportedException 
-     * @throws NameDuplicationException 
-     * @throws TypeConflictException 
-     * @throws IllegalActionException 
-     */
-    public ProxyModelInfrastructure(ProxyModelType modelType,
-            CompositeActor topLevelActor) throws IllegalActionException,
-            TypeConflictException, NameDuplicationException,
-            CloneNotSupportedException {
-        _tokenPublisher = new TokenPublisher(100, 1000);
-        _executor = Executors.newFixedThreadPool(3);
-        _modelType = modelType;
-        _topLevelActor = topLevelActor;
-        loadPlainModel();
-    }
-
-    /**
-     * Create a new instance of the remoteModel with the specified parameters.
-     * @param modelType the type of the model which must be either client or server
-     * @throws IllegalActionException 
-     */
-    public ProxyModelInfrastructure(ProxyModelType modelType,
-            CompositeActor topLevelActor, HashMap<String, String> modelTypes)
-            throws IllegalActionException {
-        _tokenPublisher = new TokenPublisher(100, 1000);
-        _executor = Executors.newFixedThreadPool(3);
-        _modelType = modelType;
-        _modelTypes.putAll(modelTypes);
-        _topLevelActor = topLevelActor;
-        loadPreprocessedModel();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
 
     /**
      * The listener that notifies about events happening in the RemoteModel.
@@ -141,17 +99,66 @@ public class ProxyModelInfrastructure {
                 Throwable exception);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
     /**
      * The quality of service that would be required from the MQTT broker.
      * All messages must be send or received only once.
      */
     public static final int QOS_LEVEL = 2;
 
+    /**
+     * Create a new instance of the proxy model infrastructure for the specified model type
+     * from the plain model. The model must contain markings indicating which sinks, 
+     * sources or attributes are remote. The infrastructure would use ProxyModelBuilder to 
+     * convert the plain model to the one that supports distributed execution.
+     * @param modelType the type of the model which must be either client or server
+     * @param plainTopLevelActor The topLevelActor that has attributes indicating remote objects
+     * but that was not yet converted to the model supporting distributed execution.
+     * @exception IllegalActionException if there is a problem setting a manager or
+     * capturing certain type information.
+     * @exception TypeConflictException if there is a problem resolving types on the model.
+     * @exception NameDuplicationException if there is a problem creating proxy sinks or sources.
+     * @exception CloneNotSupportedException if there is a problem cloning ports or attributes.
+     */
+    public ProxyModelInfrastructure(ProxyModelType modelType,
+            CompositeActor plainTopLevelActor) throws IllegalActionException,
+            TypeConflictException, NameDuplicationException,
+            CloneNotSupportedException {
+        _tokenPublisher = new TokenPublisher(100, 1000);
+        _executor = Executors.newFixedThreadPool(3);
+        _modelType = modelType;
+        _topLevelActor = plainTopLevelActor;
+        _loadPlainModel();
+    }
+
+    /**
+     * Create a new instance of the ProxyModelInfrastructure of the specified type from the model
+     * that was previously converted to the one supporting distributed execution by replacing certain 
+     * named objects with proxy counterparts.
+     * @param modelType the type of the model which must be either client or server
+     * @param preprocessedTopLevelActor the model that was previosly processed with ProxyModelBuider
+     * and converted to the one supporting distributed execution.
+     * @exception IllegalActionException if there is a problem parsing model types or 
+     * setting types on Typeable objects.
+     */
+    public ProxyModelInfrastructure(ProxyModelType modelType,
+            CompositeActor preprocessedTopLevelActor,
+            HashMap<String, String> modelTypes) throws IllegalActionException {
+        _tokenPublisher = new TokenPublisher(100, 1000);
+        _executor = Executors.newFixedThreadPool(3);
+        _modelType = modelType;
+        _modelTypes.putAll(modelTypes);
+        _topLevelActor = preprocessedTopLevelActor;
+        _loadPreprocessedModel();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
-     * Add RemoteModelListener for notifications about the model events.
+     * Add ProxyModelListener in order to listen for the model events such as
+     * model expiration or exception events.
      * @param listener The listener to add.
      */
     public void addProxyModelListener(ProxyModelListener listener) {
@@ -198,6 +205,15 @@ public class ProxyModelInfrastructure {
     }
 
     /**
+     * Return the model types for certain typeable object's.
+     * The mapping is from the named object's full name to its Type's string representation.
+     * @return the _modelTypes
+     */
+    public HashMap<String, String> getModelTypes() {
+        return _modelTypes;
+    }
+
+    /**
      * Return the roundtrip latency of sending ping/echo requests.
      * @return the roundtrip latency of sending ping/echo requests.
      */
@@ -211,7 +227,7 @@ public class ProxyModelInfrastructure {
      * @return the remoteSourceMap the mappings between full name and
      * RemoteSourceData.
      */
-    public HashMap<String, ProxySourceData> getRemoteSourceMap() {
+    public HashMap<String, ProxySourceData> getProxySourceMap() {
         return _proxySourceMap;
     }
 
@@ -219,7 +235,7 @@ public class ProxyModelInfrastructure {
      * Return the map with RemoteValueListeners of the model's remote attributes.
      * @return the map with RemoteValueListeners of the model's remote attributes.
      */
-    public HashMap<String, RemoteValueListener> getSettableAttributeListenersMap() {
+    public HashMap<String, RemoteValueListener> getRemoteAttributeListenersMap() {
         return _remoteAttributeListenersMap;
     }
 
@@ -229,7 +245,7 @@ public class ProxyModelInfrastructure {
      * @return the settableAttributesMap the mappings from remote
      * attribute full names to their remote Settable instance.
      */
-    public HashMap<String, Settable> getSettableAttributesMap() {
+    public HashMap<String, Settable> getRemoteAttributesMap() {
         return _remoteAttributesMap;
     }
 
@@ -269,109 +285,11 @@ public class ProxyModelInfrastructure {
     }
 
     /**
-     * Return the top level actor after the model was loaded.
-     * @return the topLevelActor of the model
+     * Return the top level actor used for running distributed simulation.
+     * @return the topLevelActor of the model.
      */
     public CompositeActor getTopLevelActor() {
         return _topLevelActor;
-    }
-
-    /**
-     * Load 
-     * @param modelXML
-     * @throws CloneNotSupportedException 
-     * @throws NameDuplicationException 
-     * @throws TypeConflictException 
-     * @throws IllegalActionException 
-     */
-    private void loadPlainModel() throws IllegalActionException,
-            TypeConflictException, NameDuplicationException,
-            CloneNotSupportedException {
-        ProxyModelBuilder builder = new ProxyModelBuilder(_modelType,
-                _topLevelActor);
-        builder.build();
-        _proxySinkMap.putAll(builder.getProxySinkMap());
-        _proxySourceMap.putAll(builder.getProxySourceMap());
-        _remoteAttributesMap.putAll(builder.getRemoteAttributesMap());
-        _modelTypes.putAll(builder.getModelTypes());
-        for (ProxySourceData data : _proxySourceMap.values()) {
-            data.getProxySource().setProxyModelInfrastructure(this);
-        }
-        for (ProxySink proxySink : _proxySinkMap.values()) {
-            proxySink.setTokenPublisher(_tokenPublisher);
-        }
-    }
-
-    /**
-     * Load the model that already has RemoteSinks/Sources from
-     * the supplied xml string and set appropriate model types from
-     * the inferred model mapping.
-     *
-     * <p>This method is indented to be used on the Android to avoid
-     * loading unneeded actors.</p>
-     *
-     * @param modelXML The modelXML file containing or
-     * @param modelTypes The map of ports and their resolved types
-     * @throws IllegalActionException if there is a problem parsing model types or 
-     * setting types on Typeable objects.
-     */
-    private void loadPreprocessedModel() throws IllegalActionException {
-        for (Object obj : getTopLevelActor().deepEntityList()) {
-            ComponentEntity actor = (ComponentEntity) obj;
-            if (actor instanceof ProxySink) {
-                ProxySink remoteSink = (ProxySink) actor;
-                remoteSink.setTokenPublisher(_tokenPublisher);
-                _proxySinkMap.put(remoteSink.getTargetEntityName(), remoteSink);
-            } else if (actor instanceof ProxySource) {
-                ProxySource remoteSource = (ProxySource) actor;
-                ProxySourceData remoteSourceData = new ProxySourceData(
-                        remoteSource);
-                remoteSource.setProxySourceData(remoteSourceData);
-                remoteSource.setProxyModelInfrastructure(this);
-                getRemoteSourceMap().put(remoteSource.getTargetEntityName(),
-                        remoteSourceData);
-
-            }
-            Type type;
-            for (Object portObject : actor.portList()) {
-                if (portObject instanceof TypedIOPort) {
-                    TypedIOPort port = (TypedIOPort) portObject;
-                    if (port.deepConnectedPortList().isEmpty()) {
-                        continue;
-                    }
-                    StringAttribute targetPortName = (StringAttribute) port
-                            .getAttribute("targetPortName");
-
-                    if (targetPortName != null) {
-                        type = TypeParser.parse(_modelTypes.get(targetPortName
-                                .getExpression()));
-                        if (type != null) {
-                            port.setTypeEquals(type);
-                        }
-                        port.typeConstraints().clear();
-                    } else if ((type = TypeParser.parse(_modelTypes.get(port
-                            .getFullName()))) != null) {
-                        port.setTypeEquals(type);
-                        port.typeConstraints().clear();
-                    } else {
-                        //Not sure if this is possible, but just in case.
-                        throw new IllegalActionException(port,
-                                "Type constraint for the port was not found");
-                    }
-                }
-            }
-            for (Typeable attribute : actor.attributeList(Typeable.class)) {
-                //Cast to Nameable is safe because it's an attribute.
-                if ((type = TypeParser.parse(_modelTypes
-                        .get(((Nameable) attribute).getFullName()))) != null) {
-                    attribute.setTypeEquals(type);
-                    attribute.typeConstraints().clear();
-                }
-            }
-        }
-        ProxyModelBuilder.findRemoteAttributes(
-                ProxyModelBuilder.deepAttributeList(_topLevelActor),
-                _remoteAttributesMap);
     }
 
     /**
@@ -490,6 +408,101 @@ public class ProxyModelInfrastructure {
     }
 
     /**
+     * Load plain model into the infrastructure by first converting it using ProxyModelBuilder.
+     * @exception IllegalActionException if there is a problem setting a manager or
+     * capturing certain type information.
+     * @exception TypeConflictException if there is a problem resolving types on the model.
+     * @exception NameDuplicationException if there is a problem creating proxy sinks or sources.
+     * @exception CloneNotSupportedException if there is a problem cloning ports or attributes.
+     */
+    private void _loadPlainModel() throws IllegalActionException,
+            TypeConflictException, NameDuplicationException,
+            CloneNotSupportedException {
+        ProxyModelBuilder builder = new ProxyModelBuilder(_modelType,
+                _topLevelActor);
+        builder.build();
+        _proxySinkMap.putAll(builder.getProxySinkMap());
+        _proxySourceMap.putAll(builder.getProxySourceMap());
+        _remoteAttributesMap.putAll(builder.getRemoteAttributesMap());
+        _modelTypes.putAll(builder.getModelTypes());
+        for (ProxySourceData data : _proxySourceMap.values()) {
+            data.getProxySource().setProxyModelInfrastructure(this);
+        }
+        for (ProxySink proxySink : _proxySinkMap.values()) {
+            proxySink.setTokenPublisher(_tokenPublisher);
+        }
+    }
+
+    /**
+     * Load the model that already has ProxySinks/Sources and set appropriate model types from
+     * the inferred model mapping.
+     *
+     * <p>This method is indented to be used on the Android to avoid
+     * loading unneeded actors.</p>
+     *
+     * @throws IllegalActionException if there is a problem parsing model types or 
+     * setting types on Typeable objects.
+     */
+    private void _loadPreprocessedModel() throws IllegalActionException {
+        for (Object obj : getTopLevelActor().deepEntityList()) {
+            ComponentEntity actor = (ComponentEntity) obj;
+            if (actor instanceof ProxySink) {
+                ProxySink remoteSink = (ProxySink) actor;
+                remoteSink.setTokenPublisher(_tokenPublisher);
+                _proxySinkMap.put(remoteSink.getTargetEntityName(), remoteSink);
+            } else if (actor instanceof ProxySource) {
+                ProxySource remoteSource = (ProxySource) actor;
+                ProxySourceData remoteSourceData = new ProxySourceData(
+                        remoteSource);
+                remoteSource.setProxySourceData(remoteSourceData);
+                remoteSource.setProxyModelInfrastructure(this);
+                getProxySourceMap().put(remoteSource.getTargetEntityName(),
+                        remoteSourceData);
+
+            }
+            Type type;
+            for (Object portObject : actor.portList()) {
+                if (portObject instanceof TypedIOPort) {
+                    TypedIOPort port = (TypedIOPort) portObject;
+                    if (port.deepConnectedPortList().isEmpty()) {
+                        continue;
+                    }
+                    StringAttribute targetPortName = (StringAttribute) port
+                            .getAttribute("targetPortName");
+
+                    if (targetPortName != null) {
+                        type = TypeParser.parse(_modelTypes.get(targetPortName
+                                .getExpression()));
+                        if (type != null) {
+                            port.setTypeEquals(type);
+                        }
+                        port.typeConstraints().clear();
+                    } else if ((type = TypeParser.parse(_modelTypes.get(port
+                            .getFullName()))) != null) {
+                        port.setTypeEquals(type);
+                        port.typeConstraints().clear();
+                    } else {
+                        //Not sure if this is possible, but just in case.
+                        throw new IllegalActionException(port,
+                                "Type constraint for the port was not found");
+                    }
+                }
+            }
+            for (Typeable attribute : actor.attributeList(Typeable.class)) {
+                //Cast to Nameable is safe because it's an attribute.
+                if ((type = TypeParser.parse(_modelTypes
+                        .get(((Nameable) attribute).getFullName()))) != null) {
+                    attribute.setTypeEquals(type);
+                    attribute.typeConstraints().clear();
+                }
+            }
+        }
+        ServerUtility.findRemoteAttributes(
+                ServerUtility.deepAttributeList(_topLevelActor),
+                _remoteAttributesMap);
+    }
+
+    /**
      * Set up MQTT connection.
      * @exception MqttException if there is a problem subscribing to topic.
      */
@@ -553,7 +566,7 @@ public class ProxyModelInfrastructure {
 
             public void stop() {
                 setStopped(true);
-                for (ProxySourceData data : getRemoteSourceMap().values()) {
+                for (ProxySourceData data : getProxySourceMap().values()) {
                     synchronized (data.getProxySource()) {
                         data.getProxySource().notifyAll();
                     }
@@ -589,7 +602,7 @@ public class ProxyModelInfrastructure {
                 }
                 long latency = msTime - _getLastPongToken().getTimestamp();
                 // update ping pong latency if the token was not received roughly within last 2 periods.
-                if (latency > PING_PONG_PERIOD * 2) {
+                if (latency > _PING_PERIOD * 2) {
                     _pingPonglatency = latency;
                 }
                 if (timeoutPeriod > 0) {
@@ -598,7 +611,7 @@ public class ProxyModelInfrastructure {
                     }
                 }
             }
-        }, 0, PING_PONG_PERIOD);
+        }, 0, _PING_PERIOD);
     }
 
     /**
@@ -611,13 +624,6 @@ public class ProxyModelInfrastructure {
             settable.addValueListener(listener);
             _remoteAttributeListenersMap.put(settable.getFullName(), listener);
         }
-    }
-
-    /**
-     * @return the _modelTypes
-     */
-    public HashMap<String, String> getModelTypes() {
-        return _modelTypes;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -716,5 +722,10 @@ public class ProxyModelInfrastructure {
      * Model time out period.
      */
     private int timeoutPeriod = 30000;
+
+    /**
+     * The period between sending ping tokens.
+     */
+    private static final int _PING_PERIOD = 1000;
 
 }
