@@ -109,7 +109,7 @@ public class ProxySource extends ProxyActor {
         //Block the thread until either the queue has an element or the model is stopped.
         synchronized (this) {
             while ((token = getProxySourceData().getTokenQueue().poll()) == null
-                    && !_remoteModel.isStopped()) {
+                    && !_proxyModelInfrastructure.isStopped()) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
@@ -140,7 +140,7 @@ public class ProxySource extends ProxyActor {
      * @see #getProxySourceData()
      */
     public void setProxySourceData(ProxySourceData remoteSourceData) {
-        _remoteSourceData = remoteSourceData;
+        _proxySourceData = remoteSourceData;
     }
 
     /**
@@ -149,16 +149,20 @@ public class ProxySource extends ProxyActor {
      * @see #setProxySourceData(ProxySourceData)
      */
     public ProxySourceData getProxySourceData() {
-        return _remoteSourceData;
+        return _proxySourceData;
     }
 
     /**
-     * TODO
-     * @param _remoteModel the _remoteModel to set
+     * Set the ProxyModelInfrastructure instance controlling distributed model
+     * execution.
+     * @param proxyModelInfrastructure the the ProxyModelInfrastructure instance controlling distributed model
+     * execution.
      */
     public void setProxyModelInfrastructure(
-            ProxyModelInfrastructure _remoteModel) {
-        this._remoteModel = _remoteModel;
+            ProxyModelInfrastructure proxyModelInfrastructure) {
+        // Note: FindBugs reports inconsistent synchronization bug pattern which
+        // does not apply here since this field is set before ProxySource is fired.
+        _proxyModelInfrastructure = proxyModelInfrastructure;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -166,10 +170,10 @@ public class ProxySource extends ProxyActor {
     /**
      * RemoteSourceData containing metadata needed for the RemoteSource.
      */
-    private ProxySourceData _remoteSourceData;
+    private ProxySourceData _proxySourceData;
     /**
      * 
      */
-    private ProxyModelInfrastructure _remoteModel;
+    private ProxyModelInfrastructure _proxyModelInfrastructure;
 
 }
