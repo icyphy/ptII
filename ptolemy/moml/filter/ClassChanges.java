@@ -357,6 +357,9 @@ public class ClassChanges extends MoMLFilterSimple {
         // Renamed the DE Sampler to SampleAndHold.
         _classChanges.put("ptolemy.domains.de.lib.Sampler",
                 "ptolemy.domains.de.lib.SampleAndHold");
+
+        _classChanges.put("ptolemy.actor.lib.GetCurrentMicrostep",
+                "ptolemy.actor.lib.CurrentMicrostep");
     }
 
     // Set of class names that are obsolete and should be simply
@@ -379,5 +382,6 @@ public class ClassChanges extends MoMLFilterSimple {
 
         // SRRandomizedScheduler
         _classesToRemove.add("ptolemy.domains.sr.kernel.SRRandomizedScheduler");
+
     }
 }
