@@ -172,7 +172,6 @@ JSRCS = \
 	FileWriter.java \
 	Gaussian.java \
 	GetCausalityInterface.java \
-	GetCurrentMicrostep.java \
 	GradientAdaptiveLattice.java \
 	IIR.java \
 	Interpolator.java \
