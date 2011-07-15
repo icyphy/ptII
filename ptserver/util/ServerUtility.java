@@ -28,12 +28,19 @@
 
 package ptserver.util;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
@@ -157,6 +164,71 @@ public class ServerUtility {
         return false;
     }
 
+    public static CompositeEntity mergeModelWithLayout(CompositeEntity model,
+            CompositeEntity layout, HashSet<Class<Attribute>> classesToMerge)
+            throws IllegalActionException, NameDuplicationException {
+
+        // Traverse all elements in the layout.
+        for (ComponentEntity entity : (List<ComponentEntity>) layout
+                .deepEntityList()) {
+            _mergeElements(entity, model, classesToMerge);
+        }
+        _mergeElements(layout, model, classesToMerge);
+
+        return model;
+    }
+
+    public static CompositeEntity mergeModelWithLayout(URL modelURL,
+            URL layoutURL, HashSet<Class<Attribute>> classesToMerge)
+            throws IllegalActionException, NameDuplicationException {
+        CompositeEntity model = openModelFile(modelURL);
+        CompositeEntity layout = openModelFile(layoutURL);
+        return mergeModelWithLayout(model, layout, classesToMerge);
+    }
+
+    public static CompositeEntity mergeModelWithLayout(String modelURL,
+            String layoutURL, HashSet<Class<Attribute>> classesToMerge)
+            throws MalformedURLException, IllegalActionException,
+            NameDuplicationException {
+        return mergeModelWithLayout(new URL(modelURL), new URL(layoutURL),
+                classesToMerge);
+    }
+
+    /** Open a MoML file, parse it, and the parsed model.
+     * 
+     *  @param url The url of the model.
+     *  @return The parsed model.
+     *  @exception IllegalActionException If the parsing failed.
+     */
+    public static CompositeEntity openModelFile(URL url)
+            throws IllegalActionException {
+        CompositeEntity topLevel = null;
+        MoMLParser parser = new MoMLParser(new Workspace());
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+        try {
+            topLevel = (CompositeEntity) parser.parse(null, url);
+        } catch (Exception e) {
+            throw new IllegalActionException(null, e, "Unable to parse url: "
+                    + url);
+        }
+
+        return topLevel;
+    }
+
+    /** Strips the first part of a compound element name, including the
+     *  "." at the beginning.
+     * 
+     * @param fullName The compound name of an element.
+     * @return The stripped name of the element, where the first part of
+     * the compound name is removed, including the "." at the beginning.
+     */
+    public static String stripFullName(String fullName) {
+        if (fullName.indexOf(".") == -1 || fullName.length() < 2) {
+            return fullName;
+        }
+        return fullName.substring(fullName.substring(1).indexOf(".") + 2);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /**
@@ -172,4 +244,74 @@ public class ServerUtility {
             _deepAttributeList(attribute, attributeList);
         }
     }
+
+    /** Merge the source object and all its deeply contained attributes with the target model.
+     *  If an entity does not exists in the target model it will not be added, but each
+     *  existing object's attributes that are not in the target model will be added.
+     *  
+     *  @param source The source object will potentially extra attributes that are not contained
+     *  in the target model.
+     *  @param targetModel The target model to be updated.
+     *  @param classesToMerge Contains the classes of attributes to be included when merging. If
+     *  this is null, every attribute not present in the target model will be added.
+     *  @exception IllegalActionException If an attribute could not be added to the target model.
+     */
+    private static void _mergeElements(NamedObj source,
+            CompositeEntity targetModel,
+            HashSet<Class<Attribute>> classesToMerge)
+            throws IllegalActionException {
+        // Check if source and model is available.
+        if (source == null || targetModel == null) {
+            return;
+        }
+
+        // Check if source is either an entity or an attribute. Merging is only done
+        // on those two types.
+        if (!(source instanceof ComponentEntity || source instanceof Attribute)) {
+            return;
+        }
+
+        // If the source is an entity, but is not originally in the target model, the merge
+        // skips it.
+        if (source instanceof ComponentEntity
+                && targetModel.getEntity(stripFullName(source.getFullName())) == null) {
+            return;
+        }
+
+        // At this point the source is either an entity that is also in the target model
+        // or it's an attribute. In both cases the the merge will add all attributes that are
+        // not present in the target model.
+        List<Attribute> attributeList = ServerUtility.deepAttributeList(source);
+        for (Attribute attribute : attributeList) {
+            if (!(classesToMerge == null || classesToMerge.contains(attribute
+                    .getClass()))) {
+                return;
+            }
+
+            // Insert attribute into the target model. The attribute will no longer be
+            // available in the source.
+            try {
+                // Get read and write access from the source to the target.
+                source.workspace().getReadAccess();
+                targetModel.workspace().getWriteAccess();
+
+                if (source instanceof ComponentEntity) {
+                    attribute.setContainer(targetModel
+                            .getEntity(stripFullName(source.getFullName())));
+                } else if (source instanceof Attribute) {
+                    attribute.setContainer(targetModel
+                            .getAttribute(stripFullName(source.getFullName())));
+                }
+            } catch (NameDuplicationException e) {
+                // The attribute already exists. Since deepAttributeList returns all deeply
+                // nested attributes too, the merge will look into attributes in lower levels
+                // of the model. No need to do anything here.
+            } finally {
+                // Remove the accesses from the workspaces.
+                targetModel.workspace().doneWriting();
+                source.workspace().doneReading();
+            }
+        }
+    }
+
 }
