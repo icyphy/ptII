@@ -100,16 +100,15 @@ public class TabScenePanel implements ContentPrototype {
         _interactionLayer = new LayerWidget(getScene());
         _scene.createView();
         _scene.setLayout(LayoutFactory.createOverlayLayout());
+        _scene.getActions().addAction(_hoverAction);
 
         getScene().addChild(_interactionLayer);
         getScene().addChild(_mainLayer);
 
         final AlignWithMoveStrategyProvider alignWithMoveStrategyProvider = new AlignWithMoveStrategyProvider(
                 new SingleLayerAlignWithWidgetCollector(_mainLayer, false),
-                _interactionLayer, ALIGN_WITH_MOVE_DECORATOR_DEFAULT, false);
+                _interactionLayer, MOVE_ALIGN_DECORATOR, false);
 
-        _resizeAction = ActionFactory.createAlignWithResizeAction(_mainLayer,
-                _interactionLayer, null, false);
         _moveAction = ActionFactory.createMoveAction(new MoveStrategy() {
             public Point locationSuggested(Widget widget,
                     Point originalLocation, Point suggestedLocation) {
@@ -122,31 +121,7 @@ public class TabScenePanel implements ContentPrototype {
                 return locationSuggested;
             }
         }, alignWithMoveStrategyProvider);
-        _hoverAction = ActionFactory
-                .createHoverAction(new TwoStateHoverProvider() {
-                    public void unsetHovering(Widget widget) {
-                        widget.setBorder(DEFAULT_BORDER);
-                    }
 
-                    public void setHovering(Widget widget) {
-                        widget.setBorder(RESIZE_BORDER);
-                    }
-                });
-        _popupMenuAction = ActionFactory
-                .createPopupMenuAction(new PopupMenuProvider() {
-                    public JPopupMenu getPopupMenu(Widget widget,
-                            Point localLocation) {
-                        return new NamedObjectPopupMenu(
-                                (NamedObjectWidgetInterface) widget);
-                    }
-                });
-        _editAction = ActionFactory.createEditAction(new EditProvider() {
-            public void edit(Widget widget) {
-                _showWidgetProperties(widget);
-            }
-        });
-
-        _scene.getActions().addAction(_hoverAction);
         new DropTarget(_scene.getView(), new DropTargetAdapter() {
 
             /** Accept the event if the data is a known key.
@@ -167,8 +142,13 @@ public class TabScenePanel implements ContentPrototype {
                         Object transferable = dropObjects.get(0);
                         if ((transferable instanceof PortablePlaceable)
                                 || (transferable instanceof Settable)) {
-                            dropEvent
-                                    .acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+                            if (_mainFrame.getWidgetMap().containsKey(
+                                    transferable)) {
+                                dropEvent.rejectDrag();
+                            } else {
+                                dropEvent
+                                        .acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+                            }
                         } else {
                             dropEvent.rejectDrag();
                         }
@@ -188,6 +168,9 @@ public class TabScenePanel implements ContentPrototype {
                 }
             }
 
+            /** Perform the drop of the item onto the scene and 
+             *  load the appropriate graphical widget.
+             */
             public void drop(DropTargetDropEvent dropEvent) {
 
                 if (dropEvent
@@ -220,6 +203,7 @@ public class TabScenePanel implements ContentPrototype {
                                         + dropEvent, e);
                         return;
                     }
+
                     dropEvent.acceptDrop(DnDConstants.ACTION_LINK);
                 } else {
                     dropEvent.rejectDrop();
@@ -250,19 +234,44 @@ public class TabScenePanel implements ContentPrototype {
     public void addWidget(Widget widget, Point location)
             throws IllegalActionException, NameDuplicationException {
         widget.setPreferredLocation(location);
-        widget.getActions().addAction(_resizeAction);
-        widget.getActions().addAction(_moveAction);
+
+        // Add widget resizing.
+        widget.getActions().addAction(
+                ActionFactory.createAlignWithResizeAction(_mainLayer,
+                        _interactionLayer, null, false));
+
+        // Add widget moving.
         widget.getActions().addAction(_hoverAction);
+
+        // Add widget selection.
         widget.getActions().addAction(_scene.createSelectAction());
-        widget.getActions().addAction(_popupMenuAction);
-        widget.getActions().addAction(_editAction);
+
+        // Add widget movement.
+        widget.getActions().addAction(_moveAction);
+
+        // Add widget double-click editing.
+        widget.getActions().addAction(
+                ActionFactory.createEditAction(new EditProvider() {
+                    public void edit(Widget widget) {
+                        _showWidgetProperties(widget);
+                    }
+                }));
+
+        // Add widget context menu.
+        widget.getActions().addAction(
+                ActionFactory.createPopupMenuAction(new PopupMenuProvider() {
+                    public JPopupMenu getPopupMenu(Widget widget,
+                            Point localLocation) {
+                        return new NamedObjectPopupMenu(
+                                (NamedObjectWidgetInterface) widget);
+                    }
+                }));
+
         widget.setBorder(DEFAULT_BORDER);
+        widget.setPreferredLocation(location);
 
         _mainLayer.addChild(widget);
-        _scene.validate();
-
         _adjustLocation(widget, location);
-        widget.setPreferredLocation(location);
         _scene.validate();
     }
 
@@ -339,23 +348,14 @@ public class TabScenePanel implements ContentPrototype {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private static final Border RESIZE_BORDER = BorderFactory
-            .createResizeBorder(6, Color.BLACK, true);
+    /** The default border to apply to all scenes.
+     */
     private static final Border DEFAULT_BORDER = BorderFactory
             .createEmptyBorder(6);
-    private final UIDesignerFrame _mainFrame;
-    private final LayerWidget _mainLayer;
-    private final LayerWidget _interactionLayer;
-    private final ObjectScene _scene;
-    private final WidgetAction _moveAction;
-    private final WidgetAction _resizeAction;
-    private final WidgetAction _popupMenuAction;
-    private final WidgetAction _editAction;
-    private final WidgetAction _hoverAction;
-    private static final BasicStroke STROKE = new BasicStroke(1.0f,
-            BasicStroke.JOIN_BEVEL, BasicStroke.CAP_BUTT, 5.0f, new float[] {
-                    6.0f, 3.0f }, 0.0f);
-    private static final AlignWithMoveDecorator ALIGN_WITH_MOVE_DECORATOR_DEFAULT = new AlignWithMoveDecorator() {
+
+    /** The default decorator for move alignment actions.
+     */
+    private static final AlignWithMoveDecorator MOVE_ALIGN_DECORATOR = new AlignWithMoveDecorator() {
         public ConnectionWidget createLineWidget(Scene scene) {
             ConnectionWidget widget = new ConnectionWidget(scene);
             widget.setStroke(STROKE);
@@ -363,6 +363,54 @@ public class TabScenePanel implements ContentPrototype {
             return widget;
         }
     };
+
+    /** The default border for resize actions.
+     */
+    private static final Border RESIZE_BORDER = BorderFactory
+            .createResizeBorder(6, Color.BLACK, true);
+
+    /** Default stroke for use in widget connection.
+     */
+    private static final BasicStroke STROKE = new BasicStroke(1.0f,
+            BasicStroke.JOIN_BEVEL, BasicStroke.CAP_BUTT, 5.0f, new float[] {
+                    6.0f, 3.0f }, 0.0f);
+
+    /** Hover action added to new widgets.
+     */
+    private final WidgetAction _hoverAction = ActionFactory
+            .createHoverAction(new TwoStateHoverProvider() {
+                public void unsetHovering(Widget widget) {
+                    if (!widget.getState().isSelected()) {
+                        widget.setBorder(DEFAULT_BORDER);
+                    }
+                }
+
+                public void setHovering(Widget widget) {
+                    if (!widget.getState().isSelected()) {
+                        widget.setBorder(RESIZE_BORDER);
+                    }
+                }
+            });
+
+    /** Layer that user interacts with when dropping widgets.
+     */
+    private final LayerWidget _interactionLayer;
+
+    /** Reference to the parent container frame.
+     */
+    private final UIDesignerFrame _mainFrame;
+
+    /** The main widget layer.
+     */
+    private final LayerWidget _mainLayer;
+
+    /** The move action added to all new widgets.
+     */
+    private final WidgetAction _moveAction;
+
+    /** The object scene.
+     */
+    private final ObjectScene _scene;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
