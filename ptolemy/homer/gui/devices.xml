@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manufacturers>
+	<manufacturer name="HTC">
+		<devices>
+			<device name="Droid Incredible" width="800" height="480"/>
+			<device name="Evo" width="800" height="480"/>			
+			<device name="Flyer" width="1024" height="600"/>
+			<device name="Thunderbolt" width="800" height="480"/>			
+		</devices>
+	</manufacturer>
+	<manufacturer name="Motorola">
+		<devices>
+			<device name="ATRIX 4G" width="960" height="540"/>
+			<device name="DROID" width="854" height="480"/>
+			<device name="DROID 2" width="800" height="480"/>
+			<device name="DROID Pro" width="480" height="320"/>
+			<device name="DROID X" width="854" height="480"/>			
+			<device name="Xoom" width="1200" height="800"/>
+		</devices>
+	</manufacturer>
+	<manufacturer name="Samsung">
+		<devices>
+			<device name="Galaxy S" width="800" height="480"/>
+			<device name="Galaxy Tab" width="1024" height="600"/>
+		</devices>
+	</manufacturer>
+	<manufacturer name="Sony Ericsson">
+		<devices>
+			<device name="Xperia PLAY" width="854" height="480"/>
+			<device name="Xperia X10" width="854" height="480"/>
+		</devices>
+	</manufacturer>
+</manufacturers>

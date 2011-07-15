@@ -37,12 +37,19 @@ import java.net.MalformedURLException;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
 
 import ptolemy.util.MessageHandler;
 
@@ -67,7 +74,6 @@ public class HomerMenu {
      */
     public HomerMenu(UIDesignerFrame parent) {
         _parent = parent;
-
         _initializeFileChooser();
     }
 
@@ -143,28 +149,6 @@ public class HomerMenu {
         });
 
         // Edit menu actions.
-        JMenuItem screenSizeItem = new JMenuItem("Screen Size", KeyEvent.VK_S);
-        screenSizeItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                TabbedLayoutScene scene = _parent.getTabbedLayoutScene();
-                if (scene != null) {
-                    SizeDialog dialog = new SizeDialog(scene.getSceneTabs()
-                            .getHeight(), scene.getSceneTabs().getWidth());
-                    if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
-                        try {
-                            scene.getSceneTabs().setPreferredSize(
-                                    dialog.getDimensions());
-                            scene.revalidate();
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(_parent, new JLabel(
-                                    ex.getClass().getName()),
-                                    "Invalid Size Specified",
-                                    JOptionPane.WARNING_MESSAGE);
-                        }
-                    }
-                }
-            }
-        });
 
         JCheckBoxMenuItem portraitItem = new JCheckBoxMenuItem("Portrait",
                 false);
@@ -220,7 +204,7 @@ public class HomerMenu {
         fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
 
-        editMenu.add(screenSizeItem);
+        editMenu.add(_initializeDeviceMenu());
         editMenu.addSeparator();
         editMenu.add(portraitItem);
         editMenu.add(landscapeItem);
@@ -346,9 +330,84 @@ public class HomerMenu {
         _fileChooser.addChoosableFileFilter(_layoutFilter);
     }
 
+    private JMenu _initializeDeviceMenu() {
+        JMenu screenMenu = new JMenu("Screen Size");
+        screenMenu.setMnemonic(KeyEvent.VK_S);
+
+        try {
+            Document doc = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder().parse(DEVICE_FILE);
+            XPath xpath = XPathFactory.newInstance().newXPath();
+            NodeList manufacturers = (NodeList) xpath.compile("//manufacturer")
+                    .evaluate(doc, XPathConstants.NODESET);
+
+            for (int i = 0; i < manufacturers.getLength(); i++) {
+                NodeList devices = (NodeList) xpath
+                        .compile("devices//device")
+                        .evaluate(manufacturers.item(i), XPathConstants.NODESET);
+
+                JMenu mfgItem = new JMenu(manufacturers.item(i).getAttributes()
+                        .getNamedItem("name").getNodeValue());
+                for (int x = 0; x < devices.getLength(); x++) {
+                    final NamedNodeMap attributes = devices.item(x)
+                            .getAttributes();
+                    final int width = Integer.parseInt(attributes.getNamedItem(
+                            "width").getNodeValue());
+                    final int height = Integer.parseInt(attributes
+                            .getNamedItem("height").getNodeValue());
+
+                    JMenuItem deviceItem = new JMenuItem(attributes
+                            .getNamedItem("name").getNodeValue()
+                            + " ("
+                            + width
+                            + "x" + height + ")");
+                    deviceItem.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            TabbedLayoutScene scene = _parent
+                                    .getTabbedLayoutScene();
+                            if (scene != null) {
+                                scene.getSceneTabs().setPreferredSize(
+                                        new Dimension(width, height));
+                                scene.revalidate();
+                            }
+                        }
+                    });
+
+                    mfgItem.add(deviceItem);
+                }
+
+                screenMenu.add(mfgItem);
+            }
+        } catch (Throwable ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        JMenuItem customSizeItem = new JMenuItem("Custom Size");
+        customSizeItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TabbedLayoutScene scene = _parent.getTabbedLayoutScene();
+                if (scene != null) {
+                    SizeDialog dialog = new SizeDialog(scene.getSceneTabs()
+                            .getHeight(), scene.getSceneTabs().getWidth());
+                    if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
+                        scene.getSceneTabs().setPreferredSize(
+                                dialog.getDimensions());
+                        scene.revalidate();
+                    }
+                }
+            }
+        });
+
+        screenMenu.addSeparator();
+        screenMenu.add(customSizeItem);
+
+        return screenMenu;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
+    private static String DEVICE_FILE = "ptolemy//homer//gui//devices.xml";
     private UIDesignerFrame _parent;
     private JFileChooser _fileChooser;
     private FileFilter _modelFilter;
