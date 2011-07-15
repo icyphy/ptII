@@ -26,6 +26,8 @@
 package ptolemy.homer.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Color;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -76,10 +78,10 @@ public class UIDesignerFrame extends JFrame {
         setTitle("UI Designer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 600);
+        setJMenuBar(new HomerMenu(this).getMenuBar());
+        setFocusable(true);
 
         _initializeFrame();
-        setJMenuBar(new HomerMenu(this).getMenuBar());
-
         newLayout(this.getClass().getResource(
                 "/ptserver/test/junit/SoundSpectrum.xml"));
     }
@@ -92,7 +94,15 @@ public class UIDesignerFrame extends JFrame {
      */
     public void addNonVisualNamedObject(NamedObj object) {
         _remoteObjectSet.add(object);
-        _pnlRemoteObjects.addItem(object);
+        _remoteObjectList.addItem(object);
+    }
+
+    /** Add a new scene panel to the map.
+     *  @param tabScenePanel The panel.
+     *  @param view The panel's scene.
+     */
+    public void addScenePanel(TabScenePanel tabScenePanel, Component view) {
+        _viewSceneMap.put(view, tabScenePanel);
     }
 
     /** Add a visual NamedObj item to the panel.
@@ -116,12 +126,15 @@ public class UIDesignerFrame extends JFrame {
         //                namedObjectWidgetClass = attributeList.get(0).getClass();
         //            }
         //        }
+
         NamedObjectWidgetInterface widget = (NamedObjectWidgetInterface) WidgetLoader
                 .loadWidget(panel.getScene(), object, namedObjectWidgetClass);
+        ((Widget) widget).setToolTipText(object.getFullName());
+
         _widgetMap.put(object, widget);
         _remoteObjectSet.add(object);
         _widgetTabMap.put(widget, panel);
-        _pnlRemoteObjects.addItem(object);
+        _remoteObjectList.addItem(object);
 
         if (dimension != null && dimension.getWidth() > 0
                 && dimension.getHeight() > 0) {
@@ -141,24 +154,9 @@ public class UIDesignerFrame extends JFrame {
     public void addVisualNamedObject(TabScenePanel panel, NamedObj object,
             HomerLocation location) throws IllegalActionException,
             NameDuplicationException {
-        Dimension dimenstion = new Dimension(location.getWidth(),
-                location.getHeight());
-        Point point = new Point(location.getX(), location.getY());
-        addVisualNamedObject(panel, object, dimenstion, point);
-    }
-
-    /** Get the set of references to on-screen remote objects.
-     *  @return The set of remote object references.
-     */
-    public HashSet<NamedObj> getRemoteObjectSet() {
-        return _remoteObjectSet;
-    }
-
-    /** Save the layout file.
-     *  @param layoutFile The target file for the "Save As" operation.
-     */
-    public void saveLayoutAs(File layoutFile) {
-        LayoutFileOperations.saveAs(this, layoutFile);
+        addVisualNamedObject(panel, object, new Dimension(location.getWidth(),
+                location.getHeight()),
+                new Point(location.getX(), location.getY()));
     }
 
     /** Get the model URL.
@@ -168,11 +166,18 @@ public class UIDesignerFrame extends JFrame {
         return _modelURL;
     }
 
+    /** Get the set of references to on-screen remote objects.
+     *  @return The set of remote object references.
+     */
+    public HashSet<NamedObj> getRemoteObjectSet() {
+        return _remoteObjectSet;
+    }
+
     /** Get the tabbed layout scene.
      *  @return The reference to the tabbed area of the screen.
      */
     public TabbedLayoutScene getTabbedLayoutScene() {
-        return _pnlScreen;
+        return _tabPanel;
     }
 
     /** Get the widget-to-NamedObj mapping.
@@ -194,14 +199,14 @@ public class UIDesignerFrame extends JFrame {
      *  @param modelURL The url of the model file to be opened.
      */
     public void newLayout(URL modelURL) {
+        _tabPanel.clear();
         _widgetMap.clear();
         _widgetTabMap.clear();
         _remoteObjectSet.clear();
-        _pnlScreen.clear();
         _modelURL = modelURL;
 
         try {
-            _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
+            _namedObjTree.setCompositeEntity(LayoutFileOperations
                     .openModelFile(modelURL));
         } catch (IllegalActionException e) {
             MessageHandler.error(e.getMessage(), e);
@@ -213,14 +218,14 @@ public class UIDesignerFrame extends JFrame {
      *  @param modelURL The url of the model file to be opened.
      */
     public void openLayout(URL modelURL, URL layoutURL) {
+        _tabPanel.clear();
         _widgetMap.clear();
         _widgetTabMap.clear();
         _remoteObjectSet.clear();
-        _pnlScreen.clear();
         _modelURL = modelURL;
 
         try {
-            _pnlNamedObjectTree.setCompositeEntity(LayoutFileOperations
+            _namedObjTree.setCompositeEntity(LayoutFileOperations
                     .openModelFile(modelURL));
         } catch (IllegalActionException e) {
             MessageHandler.error(e.getMessage(), e);
@@ -242,9 +247,23 @@ public class UIDesignerFrame extends JFrame {
 
         // Remove it from remote objects.
         if (_remoteObjectSet.contains(object)) {
-            _pnlRemoteObjects.removeItem(object);
+            _remoteObjectList.removeItem(object);
             _remoteObjectSet.remove(object);
         }
+    }
+
+    /** Remove a scene from the mapping.
+     *  @param view The view whose parent tab was removed.
+     */
+    public void removeScenePanel(Component view) {
+        _viewSceneMap.remove(view);
+    }
+
+    /** Save the layout file.
+     *  @param layoutFile The target file for the "Save As" operation.
+     */
+    public void saveLayoutAs(File layoutFile) {
+        LayoutFileOperations.saveAs(this, layoutFile);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -257,54 +276,68 @@ public class UIDesignerFrame extends JFrame {
         _contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         _contentPane.setLayout(new BorderLayout(0, 0));
         setContentPane(_contentPane);
-
-        _pnlNamedObjectTree = new NamedObjectTree();
-        _pnlNamedObjectTree.setBorder(new TitledBorder(new EtchedBorder(
-                EtchedBorder.LOWERED, null, null), "Named Object Tree",
-                TitledBorder.LEADING, TitledBorder.TOP, null,
-                new Color(0, 0, 0)));
-        _pnlNamedObjectTree.setPreferredSize(new Dimension(250, 10));
-        _contentPane.add(_pnlNamedObjectTree, BorderLayout.WEST);
+        _contentPane.add(_namedObjTree, BorderLayout.WEST);
 
         JPanel pnlEast = new JPanel();
         pnlEast.setPreferredSize(new Dimension(200, 10));
-        _contentPane.add(pnlEast, BorderLayout.EAST);
         pnlEast.setLayout(new BorderLayout(0, 0));
+        _contentPane.add(pnlEast, BorderLayout.EAST);
 
         JPanel pnlModelImage = new JPanel();
-        pnlModelImage.setBorder(new TitledBorder(null, "Graph Preview",
+        pnlModelImage.setBorder(new TitledBorder(null, "Actor Graph",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));
         pnlModelImage.setPreferredSize(new Dimension(10, 150));
         pnlEast.add(pnlModelImage, BorderLayout.NORTH);
+        pnlEast.add(_remoteObjectList, BorderLayout.CENTER);
 
-        _pnlRemoteObjects = new RemoteObjectList();
-        _pnlRemoteObjects.setMainFrame(this);
-        _pnlRemoteObjects.setBorder(new TitledBorder(null,
-                "Remote Named Objects", TitledBorder.LEADING, TitledBorder.TOP,
-                null, null));
-        pnlEast.add(_pnlRemoteObjects, BorderLayout.CENTER);
+        _tabPanel.addTab("Default");
+        _tabPanel.selectTab(0);
+        _tabPanel.getSceneTabs().setPreferredSize(new Dimension(600, 400));
 
-        _spnScreen = new JScrollPane();
-        _contentPane.add(_spnScreen, BorderLayout.CENTER);
-
-        _pnlScreen = new TabbedLayoutScene();
-        _pnlScreen.setMainFrame(this);
-        _pnlScreen.addTab("Default");
-        _pnlScreen.selectTab(0);
-        _spnScreen.setViewportView(_pnlScreen);
-        _pnlScreen.getSceneTabs().setPreferredSize(new Dimension(600, 400));
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBorder(new TitledBorder(null, "Layout Scene",
+                TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        scrollPane.setViewportView(_tabPanel);
+        _contentPane.add(scrollPane, BorderLayout.CENTER);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The content pane of the main frame.
+     */
     private JPanel _contentPane;
-    private JScrollPane _spnScreen;
-    private NamedObjectTree _pnlNamedObjectTree;
-    private TabbedLayoutScene _pnlScreen;
-    private HashMap<NamedObj, NamedObjectWidgetInterface> _widgetMap = new HashMap<NamedObj, NamedObjectWidgetInterface>();
-    private HashMap<NamedObjectWidgetInterface, TabScenePanel> _widgetTabMap = new HashMap<NamedObjectWidgetInterface, TabScenePanel>();
-    private HashSet<NamedObj> _remoteObjectSet = new HashSet<NamedObj>();
-    private RemoteObjectList _pnlRemoteObjects;
+
+    /** The URL path of the selected model file.
+     */
     private URL _modelURL;
+
+    /** The tree representation of NamedObj items.
+     */
+    private final NamedObjectTree _namedObjTree = new NamedObjectTree();
+
+    /** The list of remote objects.
+     */
+    private final RemoteObjectList _remoteObjectList = new RemoteObjectList(
+            this);
+
+    /** The set of remote objects on the scene.
+     */
+    private final HashSet<NamedObj> _remoteObjectSet = new HashSet<NamedObj>();
+
+    /** The tabbed panel containing the scenes.
+     */
+    private final TabbedLayoutScene _tabPanel = new TabbedLayoutScene(this);
+
+    /** The mapping of NamedObj to its graphical widget type.
+     */
+    private final HashMap<NamedObj, NamedObjectWidgetInterface> _widgetMap = new HashMap<NamedObj, NamedObjectWidgetInterface>();
+
+    /** The mapping of widgets to their panel container.
+     */
+    private final HashMap<NamedObjectWidgetInterface, TabScenePanel> _widgetTabMap = new HashMap<NamedObjectWidgetInterface, TabScenePanel>();
+
+    /** The mapping of panels to their child scene.
+     */
+    private final HashMap<Component, TabScenePanel> _viewSceneMap = new HashMap<Component, TabScenePanel>();
 }
