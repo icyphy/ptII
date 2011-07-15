@@ -29,7 +29,6 @@
 package ptolemy.homer.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -43,7 +42,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 ///////////////////////////////////////////////////////////////////
@@ -65,7 +63,8 @@ public class TabbedLayoutScene extends JPanel {
 
     /** Create the default scene with initial tabs.
      */
-    public TabbedLayoutScene() {
+    public TabbedLayoutScene(UIDesignerFrame mainFrame) {
+        _mainFrame = mainFrame;
         _tabScenes = new JTabbedPane(JTabbedPane.TOP);
         add(_tabScenes);
 
@@ -81,8 +80,6 @@ public class TabbedLayoutScene extends JPanel {
                 selectTab(_tabScenes.getTabCount() - 2);
             }
         });
-
-        _tabScenes.setBorder(new LineBorder(Color.BLACK));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,14 +90,38 @@ public class TabbedLayoutScene extends JPanel {
      */
     public void addTab(String tabName) {
         TabScenePanel tabScenePanel = new TabScenePanel(_mainFrame);
+
         Component view = tabScenePanel.getContent();
+        view.setMaximumSize(view.getPreferredSize());
+
+        //FIXME: somehow never gets key events.  even tried adding to the main frame, but no luck there either.
+        //        view.addKeyListener(new KeyAdapter() {
+        //            public void keyReleased(KeyEvent e) {
+        //                //// Method #1
+        //                for (Map.Entry<NamedObj, NamedObjectWidgetInterface> namedObj : _mainFrame
+        //                        .getWidgetMap().entrySet()) {
+        //                    if (((Widget) namedObj.getValue()).getState().isSelected()) {
+        //                        _mainFrame.removeNamedObject(namedObj.getKey());
+        //                    }
+        //                }
+        //                //// Method #2
+        //                //                for (TabScenePanel scenePanel : _viewSceneMap.values()) {
+        //                //                    for (Object selected : scenePanel.getScene()
+        //                //                            .getSelectedObjects()) {
+        //                //                        removeNamedObject(((NamedObjectWidgetInterface) selected)
+        //                //                                .getNamedObject());
+        //                //                    }
+        //                //                }
+        //            }
+        //        });
+
         _tabScenes.insertTab(tabName, null, view, null,
                 _tabScenes.getTabCount() - 1);
-        view.setMaximumSize(view.getPreferredSize());
 
         int index = _tabScenes.indexOfComponent(tabScenePanel.getContent());
         _tabScenes.setTabComponentAt(index, new TabSceneButton());
         _tabScenes.setSelectedIndex(index);
+        _mainFrame.addScenePanel(tabScenePanel, view);
     }
 
     /** Remove all but the default tab.
@@ -123,7 +144,9 @@ public class TabbedLayoutScene extends JPanel {
      *  @param index The tab index to be removed.
      */
     public void removeTab(int index) {
+        _mainFrame.removeScenePanel(_tabScenes.getComponentAt(index));
         _tabScenes.removeTabAt(index);
+
         if (_tabScenes.getTabCount() == 1) {
             addTab("Default");
         }
@@ -138,13 +161,6 @@ public class TabbedLayoutScene extends JPanel {
      */
     public void selectTab(int index) {
         _tabScenes.setSelectedIndex(index);
-    }
-
-    /** Set the parent frame.
-     *  @param mainFrame The reference to the parent frame.
-     */
-    public void setMainFrame(UIDesignerFrame mainFrame) {
-        _mainFrame = mainFrame;
     }
 
     ///////////////////////////////////////////////////////////////////
