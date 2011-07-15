@@ -50,6 +50,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.TitledBorder;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
@@ -75,7 +76,12 @@ public class RemoteObjectList extends JPanel {
 
     /** Create the listing of remote objects.
      */
-    public RemoteObjectList() {
+    public RemoteObjectList(UIDesignerFrame parent) {
+        setLayout(new BorderLayout(0, 0));
+        setBorder(new TitledBorder(null, "Remote Named Objects",
+                TitledBorder.LEADING, TitledBorder.TOP, null, null));
+
+        _mainFrame = parent;
         _list.setVisibleRowCount(16);
         _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         _list.setLayoutOrientation(JList.VERTICAL_WRAP);
@@ -158,7 +164,7 @@ public class RemoteObjectList extends JPanel {
                 }
             }
         });
-        setLayout(new BorderLayout(0, 0));
+
         add(new JScrollPane(_list));
     }
 
@@ -184,13 +190,6 @@ public class RemoteObjectList extends JPanel {
      */
     public void removeItem(NamedObj namedObj) {
         _listModel.removeElement(namedObj);
-    }
-
-    /** Set the parent frame of the panel.
-     *  @param mainFrame The parent frame reference.
-     */
-    public void setMainFrame(UIDesignerFrame mainFrame) {
-        _mainFrame = mainFrame;
     }
 
     ///////////////////////////////////////////////////////////////////
