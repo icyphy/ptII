@@ -29,10 +29,12 @@ package ptolemy.homer.gui.tree;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.tree.TreePath;
+
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.tree.ClassAndEntityTreeModel;
@@ -54,15 +56,48 @@ number of attributes.
 @Pt.AcceptedRating Red (ishwinde)
 */
 public class AttributeTreeModel extends ClassAndEntityTreeModel {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
     /** Create a new tree model with the specified root.
      *  @param root The root of the tree.
      */
     public AttributeTreeModel(CompositeEntity root) {
         super(root);
+        _filter = null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    public List getAttributes(Object parent) {
+        if (!(parent instanceof NamedObj)) {
+            return Collections.emptyList();
+        }
+
+        List children = new ArrayList();
+        for (Object attribute : ((NamedObj) parent).attributeList()) {
+            if (attribute instanceof Settable) {
+                if (((Settable) attribute).getVisibility()
+                        .equals(Settable.FULL)) {
+                    if (attribute instanceof Nameable) {
+                        if ((_filter != null) && (_filter.length() > 0)) {
+                            if (((Nameable) attribute).getFullName()
+                                    .toLowerCase()
+                                    .contains(_filter.toLowerCase())) {
+                                children.add(attribute);
+                            }
+                        } else {
+                            children.add(attribute);
+                        }
+                    }
+                }
+            }
+        }
+
+        return children;
+    }
 
     /** Get the child of the given parent at the given index.
      *  If the child does not exist, then return null.
@@ -71,32 +106,22 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
      *  @return A node, or null if there is no such child.
      */
     public Object getChild(Object parent, int index) {
-        List attributes = _attributes(parent);
-        int numAttributes = attributes.size();
-
-        if (index >= (numAttributes)) {
-            return super.getChild(parent, index - numAttributes);
-
+        List attributes = getAttributes(parent);
+        if (index > attributes.size() - 1) {
+            return super.getChild(parent, index - attributes.size());
         } else if (index >= 0) {
             return attributes.get(index);
         } else {
             return null;
         }
-
     }
 
     /** Return the number of children of the given parent.
-     *  This is the number attributes filtered by the filter specified by setFilter(),
-     *  if any has been specified.
      *  @param parent A parent node.
      *  @return The number of children.
      */
     public int getChildCount(Object parent) {
-        List attributes = _attributes(parent);
-        int numAttributes = attributes.size();
-
-        return numAttributes + super.getChildCount(parent);
-
+        return getAttributes(parent).size() + super.getChildCount(parent);
     }
 
     /** Return the index of the given child within the given parent.
@@ -106,15 +131,7 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
      *  @return The index of the specified child.
      */
     public int getIndexOfChild(Object parent, Object child) {
-        List attributes = _attributes(parent);
-
-        int index = attributes.indexOf(child);
-
-        if (index >= 0) {
-            return index;
-        }
-
-        return -1;
+        return getAttributes(parent).indexOf(child);
     }
 
     /** Return true if the object is a leaf node.  An object is a leaf
@@ -124,42 +141,27 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
      *  @return True if the node has no children.
      */
     public boolean isLeaf(Object object) {
-        // FIXME: Ignoring setFilter for now.
-        if (_attributes(object).size() > 0) {
+        if (object == null) {
+            return true;
+        } else if (getAttributes(object).size() > 0) {
             return false;
+        } else {
+            return super.isLeaf(object);
         }
-        return super.isLeaf(object);
+    }
+
+    /**  Set the filter applied to the underlying model.
+     *  @param filter The filter to apply to all Nameables.
+     */
+    public void applyFilter(String filter) {
+        _filter = filter;
+        valueForPathChanged(new TreePath(getRoot()), null);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private variables                 ////
 
-    /** Return the list of attributes with full visibility, or an empty list if there are none.
-     *  Override this method if you wish to show only a subset of the
-     *  attributes.
-     *  @param object The object.
-     *  @return A list of attributes.
+    /** The string filter being applied to tree nodes.
      */
-    protected List _attributes(Object object) {
-        if (!(object instanceof NamedObj)) {
-            return Collections.EMPTY_LIST;
-        }
-
-        List allAttributes = ((NamedObj) object).attributeList();
-        Iterator iterator = allAttributes.iterator();
-        List attributes = new ArrayList();
-
-        while (iterator.hasNext()) {
-            NamedObj nobj = (NamedObj) iterator.next();
-
-            if (nobj instanceof Settable) {
-                Settable atr = (Settable) nobj;
-                if (atr.getVisibility().equals(Settable.FULL)) {
-                    attributes.add(atr);
-                }
-            }
-        }
-        return attributes;
-    }
-
+    private String _filter;
 }
