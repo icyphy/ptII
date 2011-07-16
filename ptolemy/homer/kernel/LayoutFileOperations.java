@@ -27,25 +27,18 @@
 
 package ptolemy.homer.kernel;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 import org.netbeans.api.visual.widget.Widget;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.data.IntMatrixToken;
-import ptolemy.data.expr.SingletonParameter;
-import ptolemy.homer.gui.TabScenePanel;
-import ptolemy.homer.gui.UIDesignerFrame;
+import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -54,12 +47,9 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-import ptserver.util.ProxyModelBuilder;
-import ptserver.util.ProxyModelBuilder.ProxyModelType;
 
 /** Handle model and layout file operations.
  * 
@@ -74,11 +64,11 @@ public class LayoutFileOperations {
     private LayoutFileOperations() {
     }
 
-    public static void save(UIDesignerFrame parent) {
+    public static void save(HomerMainFrame parent) {
         // TODO
     }
 
-    public static void open(UIDesignerFrame parent, URL modelURL, URL layoutURL)
+    public static void open(HomerMainFrame parent, URL modelURL, URL layoutURL)
             throws IllegalActionException, NameDuplicationException {
         // TODO
     }
@@ -112,99 +102,99 @@ public class LayoutFileOperations {
      *  elements to create the layout file, such as position information.
      *  @param layoutFile The file the layout is saved to.
      */
-    public static void saveAs(UIDesignerFrame mainFrame, File layoutFile) {
-
-        CompositeActor model = null;
-        BufferedWriter out = null;
-        try {
-            // Get the original model
-            model = (CompositeActor) openModelFile(mainFrame.getModelURL());
-
-            // Add remote attributes to elements
-            for (NamedObj element : mainFrame.getRemoteObjectSet()) {
-                String strippedFullName = stripFullName(element.getFullName());
-
-                // Check if the element is a sink or a source
-                if (element instanceof ComponentEntity) {
-                    SinkOrSource sinkOrSource = isSinkOrSource((ComponentEntity) element);
-
-                    if (sinkOrSource == SinkOrSource.SOURCE
-                            || sinkOrSource == SinkOrSource.SINK_AND_SOURCE) {
-                        SingletonParameter parameter = new SingletonParameter(
-                                model.getEntity(strippedFullName),
-                                HomerConstants.REMOTE_NODE);
-                        parameter.setPersistent(true);
-                        parameter.setExpression(HomerConstants.REMOTE_SOURCE);
-                    } else if (sinkOrSource == SinkOrSource.SINK) {
-                        SingletonParameter parameter = new SingletonParameter(
-                                model.getEntity(strippedFullName),
-                                HomerConstants.REMOTE_NODE);
-                        parameter.setPersistent(true);
-                        parameter.setExpression(HomerConstants.REMOTE_SINK);
-                    }
-                } else if (element instanceof Attribute) {
-                    SingletonParameter parameter = new SingletonParameter(
-                            model.getAttribute(strippedFullName),
-                            HomerConstants.REMOTE_NODE);
-                    parameter.setPersistent(true);
-                    parameter.setExpression(HomerConstants.REMOTE_ATTRIBUTE);
-                }
-            }
-
-            // Add location and tab information to elements
-            Attribute tabs = new Attribute(model, HomerConstants.TABS_NODE);
-
-            HashMap<TabScenePanel, StringAttribute> tabTags = new HashMap<TabScenePanel, StringAttribute>();
-            for (NamedObj element : mainFrame.getWidgetMap().keySet()) {
-                Widget widget = (Widget) mainFrame.getWidgetMap().get(element);
-                String strippedFullName = stripFullName(element.getFullName());
-                // Add location
-                NamedObj elementInModel = null;
-
-                if (element instanceof Attribute) {
-                    elementInModel = model.getAttribute(strippedFullName);
-                } else if (element instanceof ComponentEntity) {
-                    elementInModel = model.getEntity(strippedFullName);
-                } else {
-                    // TODO throw exception
-                }
-
-                new HomerLocation(elementInModel, HomerConstants.POSITION_NODE)
-                        .setToken(getLocationToken(widget));
-
-                StringAttribute tabTag = tabTags.get(mainFrame
-                        .getWidgetTabMap().get(widget));
-                if (tabTag == null) {
-                    tabTag = new StringAttribute(tabs, tabs.uniqueName("tab_"));
-                    // FIXME set correct name
-                    tabTag.setExpression(tabTag.getName());
-                    tabTags.put(mainFrame.getWidgetTabMap().get(widget), tabTag);
-                }
-                // Add tab information
-                new StringAttribute(elementInModel, HomerConstants.TAB_NODE)
-                        .setExpression(tabTag.getName());
-                // Store tag identifier for later
-            }
-
-            // Create layout model
-            System.out.println(model.exportMoML());
-            new ProxyModelBuilder(ProxyModelType.CLIENT, model).build();
-            // Save in file
-            out = new BufferedWriter(new FileWriter(layoutFile));
-            model.exportMoML(out);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
+    public static void saveAs(HomerMainFrame mainFrame, File layoutFile) {
+//
+//        CompositeActor model = null;
+//        BufferedWriter out = null;
+//        try {
+//            // Get the original model
+//            model = (CompositeActor) openModelFile(mainFrame.getModelURL());
+//
+//            // Add remote attributes to elements
+//            for (NamedObj element : mainFrame.getRemoteObjectSet()) {
+//                String strippedFullName = stripFullName(element.getFullName());
+//
+//                // Check if the element is a sink or a source
+//                if (element instanceof ComponentEntity) {
+//                    SinkOrSource sinkOrSource = isSinkOrSource((ComponentEntity) element);
+//
+//                    if (sinkOrSource == SinkOrSource.SOURCE
+//                            || sinkOrSource == SinkOrSource.SINK_AND_SOURCE) {
+//                        SingletonParameter parameter = new SingletonParameter(
+//                                model.getEntity(strippedFullName),
+//                                HomerConstants.REMOTE_NODE);
+//                        parameter.setPersistent(true);
+//                        parameter.setExpression(HomerConstants.REMOTE_SOURCE);
+//                    } else if (sinkOrSource == SinkOrSource.SINK) {
+//                        SingletonParameter parameter = new SingletonParameter(
+//                                model.getEntity(strippedFullName),
+//                                HomerConstants.REMOTE_NODE);
+//                        parameter.setPersistent(true);
+//                        parameter.setExpression(HomerConstants.REMOTE_SINK);
+//                    }
+//                } else if (element instanceof Attribute) {
+//                    SingletonParameter parameter = new SingletonParameter(
+//                            model.getAttribute(strippedFullName),
+//                            HomerConstants.REMOTE_NODE);
+//                    parameter.setPersistent(true);
+//                    parameter.setExpression(HomerConstants.REMOTE_ATTRIBUTE);
+//                }
+//            }
+//
+//            // Add location and tab information to elements
+//            Attribute tabs = new Attribute(model, HomerConstants.TABS_NODE);
+//
+//            HashMap<TabScenePanel, StringAttribute> tabTags = new HashMap<TabScenePanel, StringAttribute>();
+//            for (NamedObj element : mainFrame.getWidgetMap().keySet()) {
+//                Widget widget = (Widget) mainFrame.getWidgetMap().get(element);
+//                String strippedFullName = stripFullName(element.getFullName());
+//                // Add location
+//                NamedObj elementInModel = null;
+//
+//                if (element instanceof Attribute) {
+//                    elementInModel = model.getAttribute(strippedFullName);
+//                } else if (element instanceof ComponentEntity) {
+//                    elementInModel = model.getEntity(strippedFullName);
+//                } else {
+//                    // TODO throw exception
+//                }
+//
+//                new HomerLocation(elementInModel, HomerConstants.POSITION_NODE)
+//                        .setToken(getLocationToken(widget));
+//
+//                StringAttribute tabTag = tabTags.get(mainFrame
+//                        .getWidgetTabMap().get(widget));
+//                if (tabTag == null) {
+//                    tabTag = new StringAttribute(tabs, tabs.uniqueName("tab_"));
+//                    // FIXME set correct name
+//                    tabTag.setExpression(tabTag.getName());
+//                    tabTags.put(mainFrame.getWidgetTabMap().get(widget), tabTag);
+//                }
+//                // Add tab information
+//                new StringAttribute(elementInModel, HomerConstants.TAB_NODE)
+//                        .setExpression(tabTag.getName());
+//                // Store tag identifier for later
+//            }
+//
+//            // Create layout model
+//            System.out.println(model.exportMoML());
+//            new ProxyModelBuilder(ProxyModelType.CLIENT, model).build();
+//            // Save in file
+//            out = new BufferedWriter(new FileWriter(layoutFile));
+//            model.exportMoML(out);
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } finally {
+//            if (out != null) {
+//                try {
+//                    out.close();
+//                } catch (IOException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
 
     }
 

@@ -29,13 +29,13 @@ package ptolemy.homer;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.ActorModuleInitializer;
-import ptolemy.homer.gui.UIDesignerFrame;
+import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
-//// UIDesignerApplication
+//// HomerApplication
 
-public class UIDesignerApplication {
+public class HomerApplication {
 
     static {
         ActorModuleInitializer.initializeInjector();
@@ -44,11 +44,11 @@ public class UIDesignerApplication {
     /** 
      * TODO
      */
-    public UIDesignerApplication() {
+    public HomerApplication() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    UIDesignerFrame frame = new UIDesignerFrame();
+                    HomerMainFrame frame = new HomerMainFrame();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -62,7 +62,7 @@ public class UIDesignerApplication {
      */
     public static void main(String[] args) {
         try {
-            new UIDesignerApplication();
+            new HomerApplication();
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);

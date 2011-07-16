@@ -72,7 +72,7 @@ public class HomerMenu {
     /** Create the menu bar for the window.
      *  @param parent The parent frame in which the menu bar will be shown.
      */
-    public HomerMenu(UIDesignerFrame parent) {
+    public HomerMenu(HomerMainFrame parent) {
         _parent = parent;
         _initializeFileChooser();
     }
@@ -407,8 +407,8 @@ public class HomerMenu {
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
+    private HomerMainFrame _parent;
     private static String DEVICE_FILE = "ptolemy//homer//gui//devices.xml";
-    private UIDesignerFrame _parent;
     private JFileChooser _fileChooser;
     private FileFilter _modelFilter;
     private FileFilter _layoutFilter;

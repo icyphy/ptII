@@ -67,6 +67,7 @@ import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
 import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.homer.kernel.ContentPrototype;
+import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.util.IllegalActionException;
@@ -93,7 +94,7 @@ public class TabScenePanel implements ContentPrototype {
     /** Create a new tab scene onto which widgets can be dropped.
      *  @param mainFrame The parent frame of the panel.
      */
-    public TabScenePanel(UIDesignerFrame mainFrame) {
+    public TabScenePanel(HomerMainFrame mainFrame) {
         _mainFrame = mainFrame;
         _scene = new ObjectScene();
         _mainLayer = new LayerWidget(getScene());
@@ -142,8 +143,7 @@ public class TabScenePanel implements ContentPrototype {
                         Object transferable = dropObjects.get(0);
                         if ((transferable instanceof PortablePlaceable)
                                 || (transferable instanceof Settable)) {
-                            if (_mainFrame.getWidgetMap().containsKey(
-                                    transferable)) {
+                            if (_mainFrame.contains((NamedObj) transferable)) {
                                 dropEvent.rejectDrag();
                             } else {
                                 dropEvent
@@ -212,27 +212,21 @@ public class TabScenePanel implements ContentPrototype {
         });
     }
 
-    /** Add a positionable element to the scene.
+    /** Add an element's representation to the scene
      *  @param element The element to be added.
-     *  @exception IllegalActionException If the appropriate widget cannot be loaded.
+     *  @exception IllegalActionException If the appropriate element's representation
+     *  cannot be loaded.
      */
     public void add(PositionableElement element) throws IllegalActionException {
-        try {
-            _mainFrame.addVisualNamedObject(TabScenePanel.this,
-                    element.getElement(), element.getLocation());
-        } catch (NameDuplicationException e) {
-            e.printStackTrace();
+        if (!(element instanceof HomerWidgetElement)) {
+            throw new IllegalActionException(element.getElement(),
+                    "No representation is available.");
         }
-    }
 
-    /** Add a widget to the scene at the given location.
-     *  @param widget
-     *  @param location
-     *  @exception NameDuplicationException If the widget name already exists.
-     *  @exception IllegalActionException If the appropriate widget cannot be loaded.
-     */
-    public void addWidget(Widget widget, Point location)
-            throws IllegalActionException, NameDuplicationException {
+        Widget widget = ((HomerWidgetElement) element).getWidget();
+        Point location = new Point(element.getLocation().getX(), element
+                .getLocation().getY());
+
         widget.setPreferredLocation(location);
 
         // Add widget resizing.
@@ -268,9 +262,9 @@ public class TabScenePanel implements ContentPrototype {
                 }));
 
         widget.setBorder(DEFAULT_BORDER);
-        widget.setPreferredLocation(location);
 
         _mainLayer.addChild(widget);
+        _scene.validate();
         _adjustLocation(widget, location);
         _scene.validate();
     }
@@ -287,6 +281,22 @@ public class TabScenePanel implements ContentPrototype {
      */
     public ContentPrototype getNewInstance() {
         return new TabScenePanel(_mainFrame);
+    }
+
+    public String getTag() {
+        return _tag;
+    }
+
+    public void setTag(String tag) {
+        _tag = tag;
+    }
+
+    public String getName() {
+        return _name;
+    }
+
+    public void setName(String name) {
+        _name = name;
     }
 
     /** Get a reference to the current scene.
@@ -345,6 +355,12 @@ public class TabScenePanel implements ContentPrototype {
         }
     }
 
+    public void remove(PositionableElement element)
+            throws IllegalActionException {
+        // TODO Auto-generated method stub
+
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -352,6 +368,9 @@ public class TabScenePanel implements ContentPrototype {
      */
     private static final Border DEFAULT_BORDER = BorderFactory
             .createEmptyBorder(6);
+
+    private String _tag;
+    private String _name;
 
     /** The default decorator for move alignment actions.
      */
@@ -398,7 +417,7 @@ public class TabScenePanel implements ContentPrototype {
 
     /** Reference to the parent container frame.
      */
-    private final UIDesignerFrame _mainFrame;
+    private final HomerMainFrame _mainFrame;
 
     /** The main widget layer.
      */
@@ -414,7 +433,6 @@ public class TabScenePanel implements ContentPrototype {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     /** The popup menu added to each widget loaded on the scene.
      */
     private class NamedObjectPopupMenu extends JPopupMenu {
@@ -422,14 +440,12 @@ public class TabScenePanel implements ContentPrototype {
         /** Create a new context menu for the widget.
          *  @param widget The triggering widget.
          */
-        public NamedObjectPopupMenu(NamedObjectWidgetInterface widget) {
-            _widget = widget;
-
+        public NamedObjectPopupMenu(final NamedObjectWidgetInterface widget) {
             JMenuItem edit = new JMenuItem("Edit");
             edit.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    _showWidgetProperties((Widget) _widget);
+                    _showWidgetProperties((Widget) widget);
                 }
             });
 
@@ -437,7 +453,7 @@ public class TabScenePanel implements ContentPrototype {
             delete.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    _mainFrame.removeNamedObject(_widget.getNamedObject());
+                    _mainFrame.removeNamedObject(widget.getNamedObject());
                     _mainFrame.repaint();
                 }
             });
@@ -445,7 +461,5 @@ public class TabScenePanel implements ContentPrototype {
             add(edit);
             add(delete);
         }
-
-        private final NamedObjectWidgetInterface _widget;
     }
 }

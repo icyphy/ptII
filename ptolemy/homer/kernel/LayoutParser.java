@@ -31,8 +31,8 @@ package ptolemy.homer.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -61,7 +61,7 @@ public class LayoutParser {
      *  can be set up according to the user's preferences.
      *  @param topLevelActor Top-level actor of the parsed model file.
      */
-    public LayoutParser(CompositeActor topLevelActor) {
+    public LayoutParser(CompositeEntity topLevelActor) {
         _topLevelActor = topLevelActor;
     }
 
@@ -151,7 +151,7 @@ public class LayoutParser {
         List<ComponentEntity> entities = _topLevelActor.deepEntityList();
         for (ComponentEntity entity : entities) {
             // Add to the list of visualizable elements if the position is defined.
-            if (_isPositionable(entity)) {
+            if (isPositionable(entity)) {
                 entityDefinitions.add(new EntityElement(entity));
             }
         }
@@ -198,12 +198,9 @@ public class LayoutParser {
             ArrayList<AttributeElement> attributeContainer)
             throws IllegalActionException {
         for (Attribute attribute : (List<Attribute>) container.attributeList()) {
-            if (_isPositionable(attribute)) {
+            if (isPositionable(attribute)) {
                 attributeContainer.add(new AttributeElement(attribute));
             } else {
-                // FIXME: what if inner attribute of the positionable attribute is positionable?
-                // I think we need to remove this else statement and execute the statement
-                // no matter what.
                 _initPositionableAttributes(attribute, attributeContainer);
             }
         }
@@ -213,7 +210,7 @@ public class LayoutParser {
      *  @param node The named object to check.
      *  @return True if the node has location defined, false otherwise.
      */
-    private boolean _isPositionable(NamedObj node) {
+    public static boolean isPositionable(NamedObj node) {
         HomerLocation location = (HomerLocation) node
                 .getAttribute(HomerConstants.POSITION_NODE);
 
@@ -230,7 +227,7 @@ public class LayoutParser {
 
     /** The top-level actor of the parsed model file.
      */
-    private final CompositeActor _topLevelActor;
+    private final CompositeEntity _topLevelActor;
 
     /** The default screen orientation for the Android device.
      */

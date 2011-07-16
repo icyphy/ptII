@@ -47,9 +47,32 @@ import ptolemy.kernel.util.Settable;
  */
 public class HomerLocation extends Parameter {
 
+    /** Create a new location parameter that stores x, y, width, and height.
+     * 
+     *  @param container The container.
+     *  @param name The name of the parameter.
+     *  @exception IllegalActionException If the parameter is not of an
+     *  acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with a
+     *  parameter already in the container.
+     */
     public HomerLocation(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setVisibility(Settable.NONE);
+    }
+
+    /** Create a new location parameter that stores x, y, width, and height.
+     * 
+     *  @param container The container.
+     *  @exception IllegalActionException If the parameter is not of an
+     *  acceptable class for the container.
+     *  @exception NameDuplicationException If the location already exist
+     *  in that container.
+     */
+    public HomerLocation(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, HomerConstants.POSITION_NODE);
         setVisibility(Settable.NONE);
     }
 
@@ -102,12 +125,12 @@ public class HomerLocation extends Parameter {
         return ((IntMatrixToken) getToken()).getElementAt(0, 3);
     }
 
-    /**
-     * Set the location parameters of the attribute
-     * @param x x value
-     * @param y y value
-     * @param width width of the element
-     * @param height height of the element
+    /** Set the underlying location based on the given values.
+     * 
+     *  @param x The topleft points horizontal coordinate.
+     *  @param y The topleft points vertical coordinate.
+     *  @param width The width of the area.
+     *  @param height The height of the area.
      */
     public void setLocation(int x, int y, int width, int height) {
         try {

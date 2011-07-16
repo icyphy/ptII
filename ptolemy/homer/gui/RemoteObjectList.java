@@ -52,6 +52,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 
+import ptolemy.homer.events.NonVisualContentEvent;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.icon.EditorIcon;
@@ -69,14 +70,14 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
  */
-public class RemoteObjectList extends JPanel {
+public class RemoteObjectList extends JPanel implements ActionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
 
     /** Create the listing of remote objects.
      */
-    public RemoteObjectList(UIDesignerFrame parent) {
+    public RemoteObjectList(HomerMainFrame parent) {
         setLayout(new BorderLayout(0, 0));
         setBorder(new TitledBorder(null, "Remote Named Objects",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -171,13 +172,6 @@ public class RemoteObjectList extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add an item to the list of named objects.
-     *  @param namedObj Object to be appended to the list.
-     */
-    public void addItem(NamedObj namedObj) {
-        _listModel.addElement(namedObj);
-    }
-
     /** Get the items in the list that have been designated as being remote.
      *  @return The contents of the list.
      */
@@ -185,10 +179,36 @@ public class RemoteObjectList extends JPanel {
         return (NamedObj[]) _listModel.toArray();
     }
 
+    public void actionPerformed(ActionEvent e) {
+        if ((e instanceof NonVisualContentEvent)
+                && (((NonVisualContentEvent) e).getElement() != null)) {
+            if (e.getActionCommand() == "add") {
+                _addItem(((NonVisualContentEvent) e).getElement());
+            }
+            if (e.getActionCommand() == "remove") {
+                _removeItem(((NonVisualContentEvent) e).getElement());
+            }
+        }
+
+        if (e.getActionCommand() == "clear") {
+            _listModel.clear();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Add an item to the list of named objects.
+     *  @param namedObj Object to be appended to the list.
+     */
+    private void _addItem(NamedObj namedObj) {
+        _listModel.addElement(namedObj);
+    }
+
     /** Remove the item from the list of named objects.
      *  @param namedObj Object to be removed from the list.
      */
-    public void removeItem(NamedObj namedObj) {
+    private void _removeItem(NamedObj namedObj) {
         _listModel.removeElement(namedObj);
     }
 
@@ -197,7 +217,7 @@ public class RemoteObjectList extends JPanel {
 
     /** The reference to the panel's container.
      */
-    private UIDesignerFrame _mainFrame;
+    private HomerMainFrame _mainFrame;
 
     /** The window list control that shows all remote items.
      */

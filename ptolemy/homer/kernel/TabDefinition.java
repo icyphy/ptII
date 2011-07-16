@@ -45,7 +45,7 @@ public class TabDefinition {
     ///////////////////////////////////////////////////////////////////
     ////                constructor                                ////
 
-    /** Parse the tab element defined in the Ptolemy attribute.
+    /** Tab element to hold the content for visual representation.
      * 
      *  @param tag The tag used to identify this tab.
      *  @param name The name of the tab. This will used in the user
@@ -95,14 +95,32 @@ public class TabDefinition {
     /** Add an element to the contents of this tab. The element has to have
      *  at least the location defined.
      * 
-     *  @param element Ptolemy element with an Android representation.
+     *  @param element Ptolemy element with location defined.
      *  @throws IllegalActionException If the element cannot be added to the
      *  tab content area, or if the tab content area has not been set.
      */
     public void addContent(PositionableElement element)
             throws IllegalActionException {
+        if (_content == null) {
+            throw new IllegalActionException("Content are must be set first");
+        }
         // Add representation to the tab contents
         _content.add(element);
+    }
+
+    /** Remove an element to the contents of this tab.
+     * 
+     *  @param element Ptolemy element with location defined.
+     *  @throws IllegalActionException If the element cannot be removed from 
+     *  the tab content area, or if the tab content area has not been set.
+     */
+    public void removeContent(PositionableElement element)
+            throws IllegalActionException {
+        if (_content == null) {
+            throw new IllegalActionException("Content are must be set first");
+        }
+        // Add representation to the tab contents
+        _content.remove(element);
     }
 
     ///////////////////////////////////////////////////////////////////
