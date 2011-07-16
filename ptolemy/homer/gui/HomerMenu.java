@@ -280,7 +280,7 @@ public class HomerMenu {
         _fileChooser.setDialogTitle("Select where to save the layout");
         _fileChooser.setFileFilter(_layoutFilter);
 
-        int returnVal = _fileChooser.showOpenDialog(_parent);
+        int returnVal = _fileChooser.showSaveDialog(_parent);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _parent.saveLayoutAs(_fileChooser.getSelectedFile());
         }

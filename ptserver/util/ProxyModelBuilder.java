@@ -228,6 +228,7 @@ public class ProxyModelBuilder {
             for (Entry<NamedObj, StringAttribute> entry : containerToDummyAttributeMap
                     .entrySet()) {
                 entry.getValue().setName(entry.getKey().getName());
+                entry.getValue().setContainer(_topLevelActor);
             }
             break;
         default:
@@ -342,7 +343,6 @@ public class ProxyModelBuilder {
                                 ((TypedIOPort) port).getType().toString());
                     }
                 }
-
             }
             // Also capture type information of all Typeable attributes.
             for (Attribute attribute : ServerUtility.deepAttributeList(entity)) {

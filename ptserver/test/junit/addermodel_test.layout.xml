@@ -71,9 +71,9 @@
 		next to it to maintain the original connections. -->
 	<entity name="Ramp" class="ptolemy.actor.lib.Ramp">
 		<doc>Create a sequence of tokens with increasing value</doc>
-		<!-- Remote property indicate that this entity runs on the client. -->
 		<property name="_remote" class="ptolemy.data.expr.Parameter"
 			value="source"></property>
+		<!-- Remote property indicate that this entity runs on the client. -->
 	</entity>
 	<!-- Remote actor created to retain the connections of the original source 
 		and facilitate communication. -->

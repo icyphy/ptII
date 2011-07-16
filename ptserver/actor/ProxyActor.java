@@ -119,7 +119,7 @@ public abstract class ProxyActor extends TypedAtomicActor {
                 + ProxyModelBuilder.REMOTE_OBJECT_TAG);
         setTargetEntityName(targetEntity.getFullName());
         _targetEntityName.setExpression(getTargetEntityName());
-        if (REPLACE_TARGET_ENTITY) {
+        if (replaceTargetEntity) {
             _replaceTargetEntity(targetEntity, portTypes);
         } else {
             _replaceConnectingEntities(targetEntity, portTypes);

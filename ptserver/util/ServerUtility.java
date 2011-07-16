@@ -38,6 +38,7 @@ import java.util.List;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -165,33 +166,37 @@ public class ServerUtility {
     }
 
     public static CompositeEntity mergeModelWithLayout(CompositeEntity model,
-            CompositeEntity layout, HashSet<Class<Attribute>> classesToMerge)
-            throws IllegalActionException, NameDuplicationException {
+            CompositeEntity layout, HashSet<Class<Attribute>> classesToMerge,
+            HashSet<String> namedObjectsToMerge) throws IllegalActionException,
+            NameDuplicationException, CloneNotSupportedException {
 
         // Traverse all elements in the layout.
         for (ComponentEntity entity : (List<ComponentEntity>) layout
                 .deepEntityList()) {
-            _mergeElements(entity, model, classesToMerge);
+            _mergeElements(entity, model, classesToMerge, namedObjectsToMerge);
         }
-        _mergeElements(layout, model, classesToMerge);
+        _mergeElements(layout, model, classesToMerge, namedObjectsToMerge);
 
         return model;
     }
 
     public static CompositeEntity mergeModelWithLayout(URL modelURL,
-            URL layoutURL, HashSet<Class<Attribute>> classesToMerge)
-            throws IllegalActionException, NameDuplicationException {
+            URL layoutURL, HashSet<Class<Attribute>> classesToMerge,
+            HashSet<String> namedObjectsToMerge) throws IllegalActionException,
+            NameDuplicationException, CloneNotSupportedException {
         CompositeEntity model = openModelFile(modelURL);
         CompositeEntity layout = openModelFile(layoutURL);
-        return mergeModelWithLayout(model, layout, classesToMerge);
+        return mergeModelWithLayout(model, layout, classesToMerge,
+                namedObjectsToMerge);
     }
 
     public static CompositeEntity mergeModelWithLayout(String modelURL,
-            String layoutURL, HashSet<Class<Attribute>> classesToMerge)
-            throws MalformedURLException, IllegalActionException,
-            NameDuplicationException {
+            String layoutURL, HashSet<Class<Attribute>> classesToMerge,
+            HashSet<String> namedObjectsToMerge) throws MalformedURLException,
+            IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException {
         return mergeModelWithLayout(new URL(modelURL), new URL(layoutURL),
-                classesToMerge);
+                classesToMerge, namedObjectsToMerge);
     }
 
     /** Open a MoML file, parse it, and the parsed model.
@@ -251,15 +256,18 @@ public class ServerUtility {
      *  
      *  @param source The source object will potentially extra attributes that are not contained
      *  in the target model.
-     *  @param targetModel The target model to be updated.
-     *  @param classesToMerge Contains the classes of attributes to be included when merging. If
+     * @param targetModel The target model to be updated.
+     * @param classesToMerge Contains the classes of attributes to be included when merging. If
      *  this is null, every attribute not present in the target model will be added.
+     * @param namedObjectsToMerge TODO
      *  @exception IllegalActionException If an attribute could not be added to the target model.
+     * @throws CloneNotSupportedException 
      */
     private static void _mergeElements(NamedObj source,
             CompositeEntity targetModel,
-            HashSet<Class<Attribute>> classesToMerge)
-            throws IllegalActionException {
+            HashSet<Class<Attribute>> classesToMerge,
+            HashSet<String> namedObjectsToMerge) throws IllegalActionException,
+            CloneNotSupportedException {
         // Check if source and model is available.
         if (source == null || targetModel == null) {
             return;
@@ -267,14 +275,17 @@ public class ServerUtility {
 
         // Check if source is either an entity or an attribute. Merging is only done
         // on those two types.
-        if (!(source instanceof ComponentEntity || source instanceof Attribute)) {
+        if (!(source instanceof Entity || source instanceof Attribute)) {
             return;
         }
 
         // If the source is an entity, but is not originally in the target model, the merge
-        // skips it.
-        if (source instanceof ComponentEntity
-                && targetModel.getEntity(stripFullName(source.getFullName())) == null) {
+        // skips it
+        // Note: This holds for any child entity but does not hold for the top level container.
+        // Added a check to allow merging of top level container's attributes. 
+        if (source instanceof Entity
+                && targetModel.getEntity(stripFullName(source.getFullName())) == null
+                && (source.getContainer() != null)) {
             return;
         }
 
@@ -283,35 +294,49 @@ public class ServerUtility {
         // not present in the target model.
         List<Attribute> attributeList = ServerUtility.deepAttributeList(source);
         for (Attribute attribute : attributeList) {
-            if (!(classesToMerge == null || classesToMerge.contains(attribute
-                    .getClass()))) {
-                return;
-            }
+            if ((classesToMerge != null && classesToMerge.contains(attribute
+                    .getClass()))
+                    || (namedObjectsToMerge != null && namedObjectsToMerge
+                            .contains(attribute.getName()))) {
+                // Insert attribute into the target model. The attribute will no longer be
+                // available in the source.
+                try {
+                    // Get read and write access from the source to the target.
+                    source.workspace().getReadAccess();
+                    targetModel.workspace().getWriteAccess();
 
-            // Insert attribute into the target model. The attribute will no longer be
-            // available in the source.
-            try {
-                // Get read and write access from the source to the target.
-                source.workspace().getReadAccess();
-                targetModel.workspace().getWriteAccess();
-
-                if (source instanceof ComponentEntity) {
-                    attribute.setContainer(targetModel
-                            .getEntity(stripFullName(source.getFullName())));
-                } else if (source instanceof Attribute) {
-                    attribute.setContainer(targetModel
-                            .getAttribute(stripFullName(source.getFullName())));
+                    Attribute clonedAttribute = (Attribute) attribute
+                            .clone(targetModel.workspace());
+                    ComponentEntity targetParentEntity = null;
+                    Attribute targetParentAttribute = null;
+                    targetParentEntity = targetModel
+                            .getEntity(stripFullName(attribute.getContainer()
+                                    .getFullName()));
+                    targetParentAttribute = targetModel
+                            .getAttribute(stripFullName(attribute
+                                    .getContainer().getFullName()));
+                    NamedObj parentObject = null;
+                    if (targetParentEntity != null) {
+                        parentObject = targetParentEntity;
+                    } else if (targetParentAttribute != null) {
+                        parentObject = targetParentAttribute;
+                    }
+                    if (parentObject != null) {
+                        clonedAttribute.setPersistent(true);
+                        clonedAttribute.setContainer(parentObject);
+                    } else {
+                        // TODO should we log this or throw an exception?
+                    }
+                } catch (NameDuplicationException e) {
+                    // The attribute already exists. Since deepAttributeList returns all deeply
+                    // nested attributes too, the merge will look into attributes in lower levels
+                    // of the model. No need to do anything here.
+                } finally {
+                    // Remove the accesses from the workspaces.
+                    targetModel.workspace().doneWriting();
+                    source.workspace().doneReading();
                 }
-            } catch (NameDuplicationException e) {
-                // The attribute already exists. Since deepAttributeList returns all deeply
-                // nested attributes too, the merge will look into attributes in lower levels
-                // of the model. No need to do anything here.
-            } finally {
-                // Remove the accesses from the workspaces.
-                targetModel.workspace().doneWriting();
-                source.workspace().doneReading();
             }
         }
     }
-
 }

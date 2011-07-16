@@ -43,7 +43,7 @@ import org.netbeans.api.visual.widget.Widget;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.data.IntMatrixToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.homer.gui.TabScenePanel;
 import ptolemy.homer.gui.UIDesignerFrame;
 import ptolemy.kernel.ComponentEntity;
@@ -130,19 +130,24 @@ public class LayoutFileOperations {
 
                     if (sinkOrSource == SinkOrSource.SOURCE
                             || sinkOrSource == SinkOrSource.SINK_AND_SOURCE) {
-                        new Parameter(model.getEntity(strippedFullName),
-                                HomerConstants.REMOTE_NODE)
-                                .setExpression(HomerConstants.REMOTE_SOURCE);
+                        SingletonParameter parameter = new SingletonParameter(
+                                model.getEntity(strippedFullName),
+                                HomerConstants.REMOTE_NODE);
+                        parameter.setPersistent(true);
+                        parameter.setExpression(HomerConstants.REMOTE_SOURCE);
                     } else if (sinkOrSource == SinkOrSource.SINK) {
-                        new Parameter(model.getEntity(strippedFullName),
-                                HomerConstants.REMOTE_NODE)
-                                .setExpression(HomerConstants.REMOTE_SINK);
+                        SingletonParameter parameter = new SingletonParameter(
+                                model.getEntity(strippedFullName),
+                                HomerConstants.REMOTE_NODE);
+                        parameter.setPersistent(true);
+                        parameter.setExpression(HomerConstants.REMOTE_SINK);
                     }
-
                 } else if (element instanceof Attribute) {
-                    new Parameter(model.getAttribute(strippedFullName),
-                            HomerConstants.REMOTE_NODE)
-                            .setExpression(HomerConstants.REMOTE_ATTRIBUTE);
+                    SingletonParameter parameter = new SingletonParameter(
+                            model.getAttribute(strippedFullName),
+                            HomerConstants.REMOTE_NODE);
+                    parameter.setPersistent(true);
+                    parameter.setExpression(HomerConstants.REMOTE_ATTRIBUTE);
                 }
             }
 
@@ -214,7 +219,6 @@ public class LayoutFileOperations {
         for (NamedObj element : container) {
             Attribute proxyAttribute = element
                     .getAttribute(HomerConstants.REMOTE_NODE);
-
             if (element instanceof ComponentEntity) {
                 proxyAttribute.setContainer(model
                         .getEntity(stripFullName(element.getFullName())));

@@ -29,12 +29,14 @@
 package ptserver.control;
 
 import java.net.URL;
+import java.util.HashSet;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptserver.communication.ProxyModelInfrastructure;
+import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
 import ptserver.util.ServerUtility;
 
@@ -59,10 +61,16 @@ public class SimulationTask implements Runnable {
      *  the director or getting workspace access.
      */
     public SimulationTask(Ticket ticket) throws Exception {
+        CompositeActor model = (CompositeActor) ServerUtility
+                .createMoMLParser().parse(null, new URL(ticket.getModelUrl()));
+        CompositeActor layout = (CompositeActor) ServerUtility
+                .createMoMLParser().parse(null, new URL(ticket.getLayoutUrl()));
+        HashSet<String> remoteAttributes = new HashSet<String>();
+        remoteAttributes.add(ProxyModelBuilder.REMOTE_OBJECT_TAG);
+        ServerUtility.mergeModelWithLayout(model, layout, null,
+                remoteAttributes);
         _proxyModelInfrastructure = new ProxyModelInfrastructure(
-                ProxyModelType.SERVER, (CompositeActor) ServerUtility
-                        .createMoMLParser().parse(null,
-                                new URL(ticket.getModelUrl())));
+                ProxyModelType.SERVER, model);
     }
 
     ///////////////////////////////////////////////////////////////////

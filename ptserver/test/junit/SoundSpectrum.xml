@@ -166,8 +166,6 @@
 		<property name="transferSize" class="ptolemy.actor.parameters.SharedParameter"
 			value="500">
 		</property>
-		<property name="_remote" class="ptolemy.data.expr.Parameter"
-			value="source" />
 	</entity>
 	<entity name="Chop" class="ptolemy.domains.sdf.lib.Chop">
 		<property name="numberToRead" class="ptolemy.data.expr.Parameter"
@@ -242,8 +240,6 @@
 <yRange min="-0.5" max="0.5"/>
 </plot>?>
 		</configure>
-		<property name="_remote" class="ptolemy.data.expr.Parameter"
-			value="sink" />
 	</entity>
 	<entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
 		<property name="arrayLength" class="ptolemy.actor.parameters.PortParameter"
@@ -282,8 +278,6 @@
 <default stems="yes"/>
 </plot>?>
 		</configure>
-		<property name="_remote" class="ptolemy.data.expr.Parameter"
-			value="sink" />
 	</entity>
 	<relation name="relation3" class="ptolemy.actor.TypedIORelation">
 	</relation>
