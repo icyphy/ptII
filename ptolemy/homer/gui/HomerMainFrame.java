@@ -44,6 +44,7 @@ import javax.swing.border.TitledBorder;
 import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.HomerMultiContent;
 import ptolemy.homer.kernel.HomerWidgetElement;
+import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -183,12 +184,26 @@ public class HomerMainFrame extends JFrame {
     /** Remove the NamedObj from the widget map and list of remote objects.
      *  @param object The NamedObj item to be removed.
      */
-    public void removeNamedObject(NamedObj object) {
-        _contents.remove(object);
+    public void remove(NamedObj object) {
+        PositionableElement element = _contents.getElement(object);
+        if (element != null) {
+            _contents.removeElement(element);
+        } else {
+            _contents.remove(object);
+        }
     }
+    
+    public void removeVisualNamedObject(PositionableElement element) {
+        _contents.removeElement(element);
+    }
+    
 
-    public void addTab(String tabName) {
-        _contents.addTab(tabName);
+    public void addTab(String name) {
+        _contents.addTab(name);
+    }
+    
+    public void removeTab(int index) {
+        _contents.removeTab(index);
     }
     
     public Component getTabContent(String tabTag) {

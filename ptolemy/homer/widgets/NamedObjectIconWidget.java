@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.netbeans.api.visual.widget.Scene;
 
+import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -60,10 +61,11 @@ public class NamedObjectIconWidget extends ResizableImageWidget implements
      * @throws IllegalActionException 
      * @throws NameDuplicationException 
      */
-    public NamedObjectIconWidget(Scene scene, NamedObj namedObject)
+    public NamedObjectIconWidget(Scene scene, PositionableElement element)
             throws NameDuplicationException, IllegalActionException {
         super(scene);
-        _namedObject = namedObject;
+        _element = element;
+        NamedObj namedObject = element.getElement();
         List<EditorIcon> attributeList = namedObject
                 .attributeList(EditorIcon.class);
         EditorIcon icon;
@@ -90,8 +92,8 @@ public class NamedObjectIconWidget extends ResizableImageWidget implements
      *  (non-Javadoc)
      * @see ptolemy.homer.widgets.NamedObjectWidgetInterface#getNamedObject()
      */
-    public NamedObj getNamedObject() {
-        return _namedObject;
+    public PositionableElement getPositionableElement() {
+        return _element;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,7 +101,7 @@ public class NamedObjectIconWidget extends ResizableImageWidget implements
     /**
      * TODO
      */
-    private final NamedObj _namedObject;
+    private final PositionableElement _element;
 
     /** Icon window width. */
     private static int _ICON_HEIGHT = 200;

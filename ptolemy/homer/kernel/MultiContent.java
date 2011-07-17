@@ -45,6 +45,7 @@ import java.util.Random;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 public class MultiContent<T extends ContentPrototype> {
 
@@ -167,7 +168,7 @@ public class MultiContent<T extends ContentPrototype> {
             if (tab.getContent() == null) {
                 continue;
             }
-            
+
             try {
                 tab.removeContent(element);
             } catch (IllegalActionException e) {
@@ -175,7 +176,7 @@ public class MultiContent<T extends ContentPrototype> {
             }
         }
     }
-    
+
     /** Get a content area based on a unique tag value.
      * 
      *  @param tabTag The tag that identifies a content area.
@@ -205,16 +206,33 @@ public class MultiContent<T extends ContentPrototype> {
      *  @param tag The identifier of the tab to be removed.
      *  @return Contents of the removed content area.
      */
-    public T removeTab(String tag) {
+    public void removeTab(String tag) {
         _order.remove(tag);
-        return (T) _contents.remove(tag).getContent();
+        _contents.remove(tag);
     }
-    
+
     /** Clear all data.
      */
     public void clear() {
         _contents.clear();
         _order.clear();
+    }
+
+    /** Return a positionable element if the named object is in any of the tabs.
+     * 
+     *  @param object The named object to check.
+     *  @return The positionable element wrapping the named object if it's contained,
+     *  null otherwise.
+     */
+    public PositionableElement getElement(NamedObj object) {
+        for (TabDefinition tab : _contents.values()) {
+            for (PositionableElement element : tab.getElements()) {
+                if (element.getElement() == object) {
+                    return element;
+                }
+            }
+        }
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -277,5 +295,5 @@ public class MultiContent<T extends ContentPrototype> {
 
     /** A prototype to the content area.
      */
-    protected T _contentPrototype;
+    private T _contentPrototype;
 }

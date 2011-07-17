@@ -39,6 +39,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
@@ -53,6 +54,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 
 import ptolemy.homer.events.NonVisualContentEvent;
+import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.icon.EditorIcon;
@@ -95,29 +97,6 @@ public class RemoteObjectList extends JPanel implements ActionListener {
 
                 JLabel label = (JLabel) super.getListCellRendererComponent(
                         list, value, index, isSelected, cellHasFocus);
-                label.addMouseListener(new MouseAdapter() {
-                    public void mouseClicked(final MouseEvent mouseEvt) {
-                        if (mouseEvt.getButton() == MouseEvent.BUTTON2) {
-                            JMenuItem delete = new JMenuItem("Delete");
-                            delete.addActionListener(new ActionListener() {
-                                public void actionPerformed(ActionEvent e) {
-                                    _listModel.removeElement(mouseEvt
-                                            .getComponent());
-                                }
-                            });
-
-                            JPopupMenu menu = new JPopupMenu();
-                            menu.add(delete);
-                            menu.show(mouseEvt.getComponent(), mouseEvt.getX(),
-                                    mouseEvt.getY());
-                        }
-                    }
-
-                    public void mouseEntered(MouseEvent e) {
-                        System.out.printf("Mouse entered %s label%n", e
-                                .getComponent().getName());
-                    }
-                });
 
                 try {
                     NamedObj object = (NamedObj) value;
@@ -139,6 +118,27 @@ public class RemoteObjectList extends JPanel implements ActionListener {
                 return label;
             }
         });
+
+        MouseListener mouseListener = new MouseAdapter() {
+            public void mouseClicked(final MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    JMenuItem delete = new JMenuItem("Delete");
+                    delete.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            int index = _list.locationToIndex(e.getPoint());
+                            NamedObj namedObject = (NamedObj) _listModel
+                                    .get(index);
+                            _mainFrame.remove(namedObject);
+                        }
+                    });
+
+                    JPopupMenu menu = new JPopupMenu();
+                    menu.add(delete);
+                    menu.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        };
+        _list.addMouseListener(mouseListener);
 
         DropTarget target = new DropTarget(this, new DropTargetAdapter() {
             public void drop(DropTargetDropEvent dropEvent) {

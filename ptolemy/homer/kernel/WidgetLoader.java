@@ -38,7 +38,6 @@ import ptolemy.homer.widgets.NamedObjectImageWidget;
 import ptolemy.homer.widgets.NamedObjectWidget;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// WidgetLoader
@@ -64,18 +63,18 @@ public class WidgetLoader {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public static Widget loadWidget(Scene scene, NamedObj namedObject,
+    public static Widget loadWidget(Scene scene, PositionableElement element,
             Class<?> targetType) throws IllegalActionException,
             NameDuplicationException {
-        Widget widget = getObjectWidget(scene, namedObject, targetType);
+        Widget widget = getObjectWidget(scene, element, targetType);
         if (widget != null) {
             return widget;
         }
-        widget = getImageWidget(scene, namedObject, targetType);
+        widget = getImageWidget(scene, element, targetType);
         if (widget != null) {
             return widget;
         }
-        return new NamedObjectIconWidget(scene, namedObject);
+        return new NamedObjectIconWidget(scene, element);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,42 +88,42 @@ public class WidgetLoader {
      * @return
      * @throws IllegalActionException
      */
-    private static Widget getObjectWidget(Scene scene, NamedObj namedObject,
-            Class<?> targetType) throws IllegalActionException {
+    private static Widget getObjectWidget(Scene scene,
+            PositionableElement element, Class<?> targetType)
+            throws IllegalActionException {
         if (targetType == null) {
             return null;
         }
         if (!OBJECT_WIDGET_BUNDLE.containsKey(targetType.getName())) {
-            return getObjectWidget(scene, namedObject,
-                    targetType.getSuperclass());
+            return getObjectWidget(scene, element, targetType.getSuperclass());
         }
         String widgetTypeName = OBJECT_WIDGET_BUNDLE.getString(targetType
                 .getName());
         try {
             Class<NamedObjectWidget> widgetType = (Class<NamedObjectWidget>) WidgetLoader.class
                     .getClassLoader().loadClass(widgetTypeName);
-            return widgetType.getConstructor(Scene.class, NamedObj.class)
-                    .newInstance(scene, namedObject);
+            return widgetType.getConstructor(Scene.class, PositionableElement.class)
+                    .newInstance(scene, element);
         } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(namedObject, e,
+            throw new IllegalActionException(element.getElement(), e,
                     "Problem loading widget " + widgetTypeName);
         } catch (IllegalArgumentException e) {
-            throw new IllegalActionException(namedObject, e,
+            throw new IllegalActionException(element.getElement(), e,
                     "Problem loading widget " + widgetTypeName);
         } catch (SecurityException e) {
-            throw new IllegalActionException(namedObject, e,
+            throw new IllegalActionException(element.getElement(), e,
                     "Problem loading widget " + widgetTypeName);
         } catch (InstantiationException e) {
-            throw new IllegalActionException(namedObject, e,
+            throw new IllegalActionException(element.getElement(), e,
                     "Problem loading widget " + widgetTypeName);
         } catch (IllegalAccessException e) {
-            throw new IllegalActionException(namedObject, e,
+            throw new IllegalActionException(element.getElement(), e,
                     "Problem loading widget " + widgetTypeName);
         } catch (InvocationTargetException e) {
-            throw new IllegalActionException(namedObject, e,
+            throw new IllegalActionException(element.getElement(), e,
                     "Problem loading widget " + widgetTypeName);
         } catch (NoSuchMethodException e) {
-            throw new IllegalActionException(namedObject, e,
+            throw new IllegalActionException(element.getElement(), e,
                     "Problem loading widget " + widgetTypeName);
         }
 
@@ -137,17 +136,17 @@ public class WidgetLoader {
      * @param targetType
      * @return
      */
-    private static Widget getImageWidget(Scene scene, NamedObj namedObject,
+    private static Widget getImageWidget(Scene scene, PositionableElement element,
             Class<?> targetType) {
         if (targetType == null) {
             return null;
         }
         if (!IMAGE_WIDGET_BUNDLE.containsKey(targetType.getName())) {
-            return getImageWidget(scene, namedObject,
+            return getImageWidget(scene, element,
                     targetType.getSuperclass());
         }
         String imageName = IMAGE_WIDGET_BUNDLE.getString(targetType.getName());
-        return new NamedObjectImageWidget(scene, namedObject,
+        return new NamedObjectImageWidget(scene, element,
                 WidgetLoader.class.getResource("../images/" + imageName));
     }
 

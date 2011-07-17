@@ -27,6 +27,8 @@
 
 package ptolemy.homer.kernel;
 
+import java.util.ArrayList;
+
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -104,6 +106,7 @@ public class TabDefinition {
         if (_content == null) {
             throw new IllegalActionException("Content are must be set first");
         }
+        _elements.add(element);
         // Add representation to the tab contents
         _content.add(element);
     }
@@ -119,8 +122,17 @@ public class TabDefinition {
         if (_content == null) {
             throw new IllegalActionException("Content are must be set first");
         }
-        // Add representation to the tab contents
+        _elements.remove(element);
+        // Remove representation to the tab contents
         _content.remove(element);
+    }
+
+    /** Get all the elements on this tab.
+     * 
+     *  @return List of all elements kept on this tab.
+     */
+    public ArrayList<PositionableElement> getElements() {
+        return _elements;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -137,4 +149,8 @@ public class TabDefinition {
     /** The complete content of the tab.
      */
     private ContentPrototype _content = null;
+    
+    /** List of elements on the tab. 
+     */
+    private ArrayList<PositionableElement> _elements = new ArrayList<PositionableElement>();
 }

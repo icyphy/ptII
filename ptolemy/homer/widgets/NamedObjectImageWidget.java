@@ -31,7 +31,7 @@ import javax.swing.ImageIcon;
 
 import org.netbeans.api.visual.widget.Scene;
 
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.homer.kernel.PositionableElement;
 
 ///////////////////////////////////////////////////////////////////
 //// NamedObjectImageWidget
@@ -53,9 +53,9 @@ public class NamedObjectImageWidget extends ResizableImageWidget implements
      * @param namedObject
      * @param imageURL
      */
-    public NamedObjectImageWidget(Scene scene, NamedObj namedObject) {
+    public NamedObjectImageWidget(Scene scene, PositionableElement element) {
         super(scene);
-        _namedObject = namedObject;
+        _element = element;
         setCheckClipping(true);
     }
 
@@ -65,10 +65,10 @@ public class NamedObjectImageWidget extends ResizableImageWidget implements
      * @param namedObject
      * @param imageURL
      */
-    public NamedObjectImageWidget(Scene scene, NamedObj namedObject,
+    public NamedObjectImageWidget(Scene scene, PositionableElement element,
             URL imageURL) {
         super(scene);
-        _namedObject = namedObject;
+        _element = element;
         ImageIcon imageIcon = new ImageIcon(imageURL);
         setImage(imageIcon.getImage());
         setCheckClipping(true);
@@ -81,8 +81,8 @@ public class NamedObjectImageWidget extends ResizableImageWidget implements
      *  (non-Javadoc)
      * @see ptolemy.homer.widgets.NamedObjectWidgetInterface#getNamedObject()
      */
-    public NamedObj getNamedObject() {
-        return _namedObject;
+    public PositionableElement getPositionableElement() {
+        return _element;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -90,5 +90,5 @@ public class NamedObjectImageWidget extends ResizableImageWidget implements
     /**
      * TODO
      */
-    private final NamedObj _namedObject;
+    private final PositionableElement _element;
 }

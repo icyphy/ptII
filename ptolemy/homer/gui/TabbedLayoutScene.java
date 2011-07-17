@@ -46,6 +46,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 
 import ptolemy.homer.events.NonVisualContentEvent;
 import ptolemy.homer.events.TabEvent;
+import ptolemy.homer.events.VisualContentEvent;
 
 ///////////////////////////////////////////////////////////////////
 //// TabbedLayoutScene
@@ -166,13 +167,12 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if ((e instanceof TabEvent)) {
+        if (e instanceof TabEvent) {
             if (e.getActionCommand() == "addTab") {
                 _addTab(((TabEvent) e).getTag(), ((TabEvent) e).getName(),
                         (TabScenePanel) ((TabEvent) e).getContent());
-            }
-            if (e.getActionCommand() == "removeTab") {
-                _removeTab(((TabEvent) e).getPosition() - 1);
+            } else if (e.getActionCommand() == "removeTab") {
+                _removeTab(((TabEvent) e).getPosition());
             }
         }
 
@@ -269,7 +269,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
             closeButton.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    _removeTab(_tabScenes
+                    _mainFrame.removeTab(_tabScenes
                             .indexOfTabComponent(TabSceneButton.this));
                 }
             });

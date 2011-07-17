@@ -34,6 +34,7 @@ import org.netbeans.api.visual.widget.Scene;
 
 import ptolemy.actor.gui.AWTContainer;
 import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
@@ -41,8 +42,9 @@ import ptolemy.kernel.util.NamedObj;
 
 public class PortablePlaceableWidget extends GlassPaneWidget {
 
-    public PortablePlaceableWidget(Scene scene, NamedObj namedObject) {
-        super(scene, namedObject);
+    public PortablePlaceableWidget(Scene scene, PositionableElement element) {
+        super(scene, element);
+        NamedObj namedObject = element.getElement();
         if (!(namedObject instanceof PortablePlaceable)) {
             throw new IllegalArgumentException(
                     "NamedObject must be instance of PortablePlaceable");

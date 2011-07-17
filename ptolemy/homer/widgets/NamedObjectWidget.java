@@ -28,7 +28,7 @@ package ptolemy.homer.widgets;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.homer.kernel.PositionableElement;
 
 ///////////////////////////////////////////////////////////////////
 //// NamedObjectWidget
@@ -49,9 +49,9 @@ public class NamedObjectWidget extends Widget implements
      * @param scene
      * @param namedObject
      */
-    public NamedObjectWidget(Scene scene, NamedObj namedObject) {
+    public NamedObjectWidget(Scene scene, PositionableElement element) {
         super(scene);
-        _namedObject = namedObject;
+        _element = element;
         setCheckClipping(true);
 
     }
@@ -60,13 +60,13 @@ public class NamedObjectWidget extends Widget implements
      * (non-Javadoc)
      * @see ptolemy.homer.widgets.NamedObjectWidgetInterface#getNamedObject()
      */
-    public NamedObj getNamedObject() {
-        return _namedObject;
+    public PositionableElement getPositionableElement() {
+        return _element;
     }
 
     /**
      * TODO
      */
-    private final NamedObj _namedObject;
+    private final PositionableElement _element;
 
 }

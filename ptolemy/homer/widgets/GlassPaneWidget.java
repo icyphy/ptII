@@ -46,7 +46,7 @@ import org.netbeans.api.visual.layout.LayoutFactory;
 import org.netbeans.api.visual.widget.ComponentWidget;
 import org.netbeans.api.visual.widget.Scene;
 
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.homer.kernel.PositionableElement;
 
 ///////////////////////////////////////////////////////////////////
 //// GlassPaneWidget
@@ -66,8 +66,8 @@ public class GlassPaneWidget extends NamedObjectWidget implements
      * @param scene
      * @param namedObject
      */
-    public GlassPaneWidget(final Scene scene, NamedObj namedObject) {
-        super(scene, namedObject);
+    public GlassPaneWidget(final Scene scene, PositionableElement element) {
+        super(scene, element);
         _layeredPane = new JLayeredPane();
         _layeredPane.setLayout(null);
         _glassPane = new JPanel();

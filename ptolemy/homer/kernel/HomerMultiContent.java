@@ -1,19 +1,15 @@
 package ptolemy.homer.kernel;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.netbeans.api.visual.widget.Widget;
-
-import ptolemy.actor.gui.PortableContainer;
 import ptolemy.homer.events.NonVisualContentEvent;
 import ptolemy.homer.events.TabEvent;
 import ptolemy.homer.events.VisualContentEvent;
 import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.homer.gui.TabScenePanel;
-import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -47,10 +43,10 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
         _nofityAllListeners(addEvent);
     }
 
-    public void remove(NamedObj element) {
-        _remoteElements.remove(element);
+    public void remove(NamedObj object) {
+        _remoteElements.remove(object);
         NonVisualContentEvent removeEvent = new NonVisualContentEvent(this,
-                ActionEvent.ACTION_PERFORMED, "remove", element);
+                ActionEvent.ACTION_PERFORMED, "remove", object);
         _nofityAllListeners(removeEvent);
     }
 
@@ -84,13 +80,23 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
     }
 
     @Override
-    public TabScenePanel removeTab(String tag) {
+    public void removeTab(String tag) {
+        ArrayList<PositionableElement> elements = (ArrayList<PositionableElement>) _contents
+                .get(tag).getElements().clone();
+        for (PositionableElement element : elements) {
+            removeElement(element);
+        }
         int position = _order.indexOf(tag);
         TabEvent removeTabEvent = new TabEvent(this,
                 ActionEvent.ACTION_PERFORMED, "removeTab", tag, _contents.get(
                         tag).getName(), position, null);
         _nofityAllListeners(removeTabEvent);
-        return super.removeTab(tag);
+        super.removeTab(tag);
+    }
+
+    public void removeTab(int index) {
+        String tag = _order.get(index);
+        removeTab(tag);
     }
 
     public void addListener(ActionListener listener) {

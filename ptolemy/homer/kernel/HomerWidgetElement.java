@@ -34,7 +34,7 @@ public class HomerWidgetElement extends PositionableElement {
         if (_widget == null) {
             try {
                 _widget = (Widget) WidgetLoader.loadWidget(
-                        _scene, getElement(), getElement().getClass());
+                        _scene, HomerWidgetElement.this, getElement().getClass());
             } catch (IllegalActionException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

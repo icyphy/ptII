@@ -25,7 +25,7 @@
  */
 package ptolemy.homer.widgets;
 
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.homer.kernel.PositionableElement;
 
 ///////////////////////////////////////////////////////////////////
 ////NamedObjectWidgetInterface
@@ -44,6 +44,6 @@ public interface NamedObjectWidgetInterface {
      * TODO
      * @return the _namedObject
      */
-    NamedObj getNamedObject();
+    PositionableElement getPositionableElement();
 
 }

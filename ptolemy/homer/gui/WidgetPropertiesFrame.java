@@ -117,7 +117,7 @@ public class WidgetPropertiesFrame extends JPanel {
         _widget = widget;
         if (_widget instanceof NamedObjectWidgetInterface) {
             NamedObj namedObj = ((NamedObjectWidgetInterface) _widget)
-                    .getNamedObject();
+                    .getPositionableElement().getElement();
             if (!(namedObj instanceof Settable)) {
                 _enabled.setEnabled(false);
             }

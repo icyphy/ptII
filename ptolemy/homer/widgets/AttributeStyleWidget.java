@@ -50,6 +50,7 @@ import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -66,9 +67,10 @@ import ptolemy.kernel.util.Settable;
 
 public class AttributeStyleWidget extends GlassPaneWidget {
 
-    public AttributeStyleWidget(Scene scene, NamedObj namedObject)
+    public AttributeStyleWidget(Scene scene, PositionableElement element)
             throws NameDuplicationException, IllegalActionException {
-        super(scene, namedObject);
+        super(scene, element);
+        NamedObj namedObject = element.getElement();
         List<ParameterEditorStyle> styles = namedObject
                 .attributeList(ParameterEditorStyle.class);
         ParameterEditorStyle style = null;

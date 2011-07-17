@@ -217,7 +217,7 @@ public class TabScenePanel implements ContentPrototype {
      *  @exception IllegalActionException If the appropriate element's representation
      *  cannot be loaded.
      */
-    public void add(PositionableElement element) throws IllegalActionException {
+    public void add(final PositionableElement element) throws IllegalActionException {
         if (!(element instanceof HomerWidgetElement)) {
             throw new IllegalActionException(element.getElement(),
                     "No representation is available.");
@@ -247,7 +247,7 @@ public class TabScenePanel implements ContentPrototype {
         widget.getActions().addAction(
                 ActionFactory.createEditAction(new EditProvider() {
                     public void edit(Widget widget) {
-                        _showWidgetProperties(widget);
+                        _showWidgetProperties(element);
                     }
                 }));
 
@@ -256,8 +256,7 @@ public class TabScenePanel implements ContentPrototype {
                 ActionFactory.createPopupMenuAction(new PopupMenuProvider() {
                     public JPopupMenu getPopupMenu(Widget widget,
                             Point localLocation) {
-                        return new NamedObjectPopupMenu(
-                                (NamedObjectWidgetInterface) widget);
+                        return new NamedObjectPopupMenu(element);
                     }
                 }));
 
@@ -309,8 +308,9 @@ public class TabScenePanel implements ContentPrototype {
     /** Remove the widget from the scene.
      *  @param widget The widget to be removed.
      */
-    public void removeWidget(Widget widget) {
-        _mainLayer.removeChild(widget);
+    public void remove(PositionableElement element) {
+        _mainLayer.removeChild(((HomerWidgetElement) element).getWidget());
+        _mainFrame.repaint();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -342,7 +342,8 @@ public class TabScenePanel implements ContentPrototype {
     /** Display the widget properties window for modification.
      *  @param widget The target widget whose properties should be displayed.
      */
-    private void _showWidgetProperties(Widget widget) {
+    private void _showWidgetProperties(PositionableElement element) {
+        Widget widget = ((HomerWidgetElement) element).getWidget();
         WidgetPropertiesFrame dialog = new WidgetPropertiesFrame(widget);
         if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
             try {
@@ -353,12 +354,6 @@ public class TabScenePanel implements ContentPrototype {
                         JOptionPane.WARNING_MESSAGE);
             }
         }
-    }
-
-    public void remove(PositionableElement element)
-            throws IllegalActionException {
-        // TODO Auto-generated method stub
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -440,12 +435,12 @@ public class TabScenePanel implements ContentPrototype {
         /** Create a new context menu for the widget.
          *  @param widget The triggering widget.
          */
-        public NamedObjectPopupMenu(final NamedObjectWidgetInterface widget) {
+        public NamedObjectPopupMenu(final PositionableElement element) {
             JMenuItem edit = new JMenuItem("Edit");
             edit.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    _showWidgetProperties((Widget) widget);
+                    _showWidgetProperties(element);
                 }
             });
 
@@ -453,8 +448,7 @@ public class TabScenePanel implements ContentPrototype {
             delete.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent e) {
-                    _mainFrame.removeNamedObject(widget.getNamedObject());
-                    _mainFrame.repaint();
+                    _mainFrame.removeVisualNamedObject(element);
                 }
             });
 
