@@ -294,10 +294,12 @@ public class ServerUtility {
         // not present in the target model.
         List<Attribute> attributeList = ServerUtility.deepAttributeList(source);
         for (Attribute attribute : attributeList) {
-            if ((classesToMerge != null && classesToMerge.contains(attribute
-                    .getClass()))
-                    || (namedObjectsToMerge != null && namedObjectsToMerge
-                            .contains(attribute.getName()))) {
+            if (classesToMerge != null
+                    && !classesToMerge.contains(attribute.getClass())) {
+                continue;
+            }
+            if ((namedObjectsToMerge != null && !namedObjectsToMerge
+                    .contains(attribute.getName()))) {
                 continue;
             }
             // Insert attribute into the target model. The attribute will no longer be
