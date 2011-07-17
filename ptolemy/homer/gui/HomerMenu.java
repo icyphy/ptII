@@ -33,6 +33,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
@@ -73,7 +75,7 @@ public class HomerMenu {
      *  @param parent The parent frame in which the menu bar will be shown.
      */
     public HomerMenu(HomerMainFrame parent) {
-        _parent = parent;
+        _mainFrame = parent;
         _initializeFileChooser();
     }
 
@@ -144,7 +146,7 @@ public class HomerMenu {
         JMenuItem exitMenuItem = new JMenuItem("Exit", KeyEvent.VK_X);
         exitMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                _parent.dispose();
+                _mainFrame.dispose();
             }
         });
 
@@ -155,7 +157,7 @@ public class HomerMenu {
         portraitItem.setMnemonic(KeyEvent.VK_P);
         portraitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TabbedLayoutScene scene = _parent.getTabbedLayoutScene();
+                TabbedLayoutScene scene = _mainFrame.getTabbedLayoutScene();
                 if (scene != null) {
                     double height = scene.getSceneTabs().getPreferredSize()
                             .getHeight();
@@ -176,7 +178,7 @@ public class HomerMenu {
         landscapeItem.setMnemonic(KeyEvent.VK_L);
         landscapeItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TabbedLayoutScene scene = _parent.getTabbedLayoutScene();
+                TabbedLayoutScene scene = _mainFrame.getTabbedLayoutScene();
                 if (scene != null) {
                     double height = scene.getSceneTabs().getPreferredSize()
                             .getHeight();
@@ -226,12 +228,12 @@ public class HomerMenu {
         _fileChooser.setDialogTitle("Choose a Ptolemy model");
         _fileChooser.setFileFilter(_modelFilter);
 
-        int returnVal = _fileChooser.showOpenDialog(_parent);
+        int returnVal = _fileChooser.showOpenDialog(_mainFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = _fileChooser.getSelectedFile();
 
             try {
-                _parent.newLayout(file.toURI().toURL());
+                _mainFrame.newLayout(file.toURI().toURL());
             } catch (MalformedURLException e1) {
                 MessageHandler.error("Unable to parse the file", e1);
             }
@@ -239,7 +241,7 @@ public class HomerMenu {
     }
 
     private void _openMenuActionPerformed(ActionEvent e) {
-        OpenLayoutDialog openLayoutDialog = new OpenLayoutDialog(_parent, this);
+        OpenLayoutDialog openLayoutDialog = new OpenLayoutDialog(_mainFrame, this);
         Object result = openLayoutDialog.showDialog();
 
         if ((result == null) || (result == JOptionPane.UNINITIALIZED_VALUE)
@@ -254,35 +256,54 @@ public class HomerMenu {
             File layout = openLayoutDialog.getLayoutFile();
 
             if (model == null || layout == null) {
-                JOptionPane.showMessageDialog(_parent,
+                JOptionPane.showMessageDialog(_mainFrame,
                         "The model or layout file was not selected.",
                         "Unable to open layout.", JOptionPane.PLAIN_MESSAGE);
                 return;
             }
 
             if (!model.exists() || !layout.exists()) {
-                JOptionPane.showMessageDialog(_parent,
+                JOptionPane.showMessageDialog(_mainFrame,
                         "The selected model or layout file does not exist.",
                         "Unable to open layout.", JOptionPane.PLAIN_MESSAGE);
                 return;
             }
+
+            try {
+                _mainFrame.openLayout(model.toURI().toURL(), layout.toURI()
+                        .toURL());
+            } catch (MalformedURLException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
         }
 
-        JOptionPane.showConfirmDialog(_parent, openLayoutDialog.getLayoutFile()
-                .toURI().toString());
     }
 
     private void _saveMenuActionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
+        URL layoutURL = _mainFrame.getLayoutURL();
+
+        if (layoutURL != null) {
+            try {
+                _mainFrame.saveLayoutAs(new File(layoutURL.toURI()));
+            } catch (URISyntaxException ex) {
+                // Can't happen, getLayoutURL already checks for this.
+                return;
+            }
+        } else {
+            // No file was selected before, let's invoke the saveAs used in
+            // the menu.
+            _saveAsMenuActionPerformed(e);
+        }
     }
 
     private void _saveAsMenuActionPerformed(ActionEvent e) {
         _fileChooser.setDialogTitle("Select where to save the layout");
         _fileChooser.setFileFilter(_layoutFilter);
 
-        int returnVal = _fileChooser.showSaveDialog(_parent);
+        int returnVal = _fileChooser.showSaveDialog(_mainFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            _parent.saveLayoutAs(_fileChooser.getSelectedFile());
+            _mainFrame.saveLayoutAs(_fileChooser.getSelectedFile());
         }
     }
 
@@ -363,7 +384,7 @@ public class HomerMenu {
                             + "x" + height + ")");
                     deviceItem.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            TabbedLayoutScene scene = _parent
+                            TabbedLayoutScene scene = _mainFrame
                                     .getTabbedLayoutScene();
                             if (scene != null) {
                                 scene.getSceneTabs().setPreferredSize(
@@ -385,7 +406,7 @@ public class HomerMenu {
         JMenuItem customSizeItem = new JMenuItem("Custom Size");
         customSizeItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TabbedLayoutScene scene = _parent.getTabbedLayoutScene();
+                TabbedLayoutScene scene = _mainFrame.getTabbedLayoutScene();
                 if (scene != null) {
                     SizeDialog dialog = new SizeDialog(scene.getSceneTabs()
                             .getHeight(), scene.getSceneTabs().getWidth());
@@ -407,7 +428,7 @@ public class HomerMenu {
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
-    private HomerMainFrame _parent;
+    private HomerMainFrame _mainFrame;
     private static String DEVICE_FILE = "ptolemy//homer//gui//devices.xml";
     private JFileChooser _fileChooser;
     private FileFilter _modelFilter;

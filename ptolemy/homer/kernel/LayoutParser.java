@@ -29,6 +29,8 @@
 package ptolemy.homer.kernel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.kernel.ComponentEntity;
@@ -39,6 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptserver.util.ProxyModelBuilder;
 
 ///////////////////////////////////////////////////////////////////
 //// LayoutParser
@@ -172,6 +175,78 @@ public class LayoutParser {
         _initPositionableAttributes(_topLevelActor, attributeDefinitions);
 
         return attributeDefinitions;
+    }
+
+    public HashSet<NamedObj> getProxyElements() throws IllegalActionException,
+            NameDuplicationException {
+        HashSet<NamedObj> container = new HashSet<NamedObj>();
+        _getProxyElements(_topLevelActor, container);
+        return container;
+    }
+
+    public HashSet<NamedObj> getPositionableElements() throws IllegalActionException,
+            NameDuplicationException {
+        HashSet<NamedObj> container = new HashSet<NamedObj>();
+        _getPositionableElements(_topLevelActor, container);
+        return container;
+    }
+
+    /** Get all the elements marked as proxies under the element and add them to
+     *  the container. 
+     * 
+     *  @param element The element to search for proxy attribute and other elements
+     *  that have proxy attributes.
+     *  @param container
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
+     */
+    private static void _getProxyElements(NamedObj element,
+            HashSet<NamedObj> container) throws IllegalActionException,
+            NameDuplicationException {
+
+        // Found the attribute, find the element in the original model
+        // and add the attribute to it.
+        if (element.getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG) != null) {
+            // Found proxy attribute, add it to the container
+            container.add(element);
+        } else {
+            // Element did not contain the proxy attribute, let's search the
+            // other named objects within the element.
+            for (Iterator iterator = element.containedObjectsIterator(); iterator
+                    .hasNext();) {
+                NamedObj namedObj = (NamedObj) iterator.next();
+                _getProxyElements(namedObj, container);
+            }
+        }
+    }
+
+    /** Get all the elements that have position defined under the element and add
+     *  them to the container. 
+     * 
+     *  @param element The element to search for location attribute and other elements
+     *  that have location attributes.
+     *  @param container
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
+     */
+    private static void _getPositionableElements(NamedObj element,
+            HashSet<NamedObj> container) throws IllegalActionException,
+            NameDuplicationException {
+
+        // Found the attribute, find the element in the original model
+        // and add the attribute to it.
+        if (element.getAttribute(HomerConstants.POSITION_NODE) != null) {
+            // Found position attribute, add it to the container
+            container.add(element);
+        } else {
+            // Element did not contain the position attribute, let's search the
+            // other named objects within the element.
+            for (Iterator iterator = element.containedObjectsIterator(); iterator
+                    .hasNext();) {
+                NamedObj namedObj = (NamedObj) iterator.next();
+                _getPositionableElements(namedObj, container);
+            }
+        }
     }
 
     /** The different screen orientations possible for the visual

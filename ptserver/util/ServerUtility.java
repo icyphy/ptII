@@ -298,44 +298,46 @@ public class ServerUtility {
                     .getClass()))
                     || (namedObjectsToMerge != null && namedObjectsToMerge
                             .contains(attribute.getName()))) {
-                // Insert attribute into the target model. The attribute will no longer be
-                // available in the source.
-                try {
-                    // Get read and write access from the source to the target.
-                    source.workspace().getReadAccess();
-                    targetModel.workspace().getWriteAccess();
+                continue;
+            }
+            // Insert attribute into the target model. The attribute will no longer be
+            // available in the source.
+            try {
+                // Get read and write access from the source to the target.
+                source.workspace().getReadAccess();
+                targetModel.workspace().getWriteAccess();
 
-                    Attribute clonedAttribute = (Attribute) attribute
-                            .clone(targetModel.workspace());
-                    ComponentEntity targetParentEntity = null;
-                    Attribute targetParentAttribute = null;
-                    targetParentEntity = targetModel
+                Attribute clonedAttribute = (Attribute) attribute
+                        .clone(targetModel.workspace());
+                NamedObj targetParent = null;
+                if (attribute.getContainer() instanceof ComponentEntity) {
+                    targetParent = targetModel
                             .getEntity(stripFullName(attribute.getContainer()
                                     .getFullName()));
-                    targetParentAttribute = targetModel
+                } else if (attribute.getContainer() instanceof Attribute) {
+                    targetParent = targetModel
                             .getAttribute(stripFullName(attribute
                                     .getContainer().getFullName()));
-                    NamedObj parentObject = null;
-                    if (targetParentEntity != null) {
-                        parentObject = targetParentEntity;
-                    } else if (targetParentAttribute != null) {
-                        parentObject = targetParentAttribute;
-                    }
-                    if (parentObject != null) {
-                        clonedAttribute.setPersistent(true);
-                        clonedAttribute.setContainer(parentObject);
-                    } else {
-                        // TODO should we log this or throw an exception?
-                    }
-                } catch (NameDuplicationException e) {
-                    // The attribute already exists. Since deepAttributeList returns all deeply
-                    // nested attributes too, the merge will look into attributes in lower levels
-                    // of the model. No need to do anything here.
-                } finally {
-                    // Remove the accesses from the workspaces.
-                    targetModel.workspace().doneWriting();
-                    source.workspace().doneReading();
                 }
+
+                if (targetParent != null) {
+                    clonedAttribute.setPersistent(true);
+                    clonedAttribute.setContainer(targetParent);
+                } else if (attribute.getContainer().getFullName()
+                        .equals(targetModel.getFullName())) {
+                    clonedAttribute.setPersistent(true);
+                    clonedAttribute.setContainer(targetModel);
+                } else {
+                    // TODO should we log this or throw an exception?
+                }
+            } catch (NameDuplicationException e) {
+                // The attribute already exists. Since deepAttributeList returns all deeply
+                // nested attributes too, the merge will look into attributes in lower levels
+                // of the model. No need to do anything here.
+            } finally {
+                // Remove the accesses from the workspaces.
+                targetModel.workspace().doneWriting();
+                source.workspace().doneReading();
             }
         }
     }

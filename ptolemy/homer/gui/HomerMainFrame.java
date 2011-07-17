@@ -27,10 +27,10 @@ package ptolemy.homer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,6 +41,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
+import org.netbeans.api.visual.widget.Scene;
 
 import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.HomerMultiContent;
@@ -113,7 +115,7 @@ public class HomerMainFrame extends JFrame {
         }
 
         HomerWidgetElement element = new HomerWidgetElement(object,
-                panel.getScene());
+                panel.getContent());
 
         if (dimension == null) {
             dimension = new Dimension(0, 0);
@@ -121,7 +123,12 @@ public class HomerMainFrame extends JFrame {
 
         element.setLocation((int) point.getX(), (int) point.getY(),
                 (int) dimension.getWidth(), (int) dimension.getHeight());
-        _contents.addElement(panel.getTag(), element);
+        addVisualNamedObject(panel.getTag(), element);
+    }
+
+    public void addVisualNamedObject(String tag, HomerWidgetElement element)
+            throws IllegalActionException {
+        _contents.addElement(tag, element);
     }
 
     /** Get the set of references to on-screen remote objects.
@@ -136,13 +143,6 @@ public class HomerMainFrame extends JFrame {
      */
     public void saveLayoutAs(File layoutFile) {
         LayoutFileOperations.saveAs(this, layoutFile);
-    }
-
-    /** Get the model URL.
-     *  @return The model URL.
-     */
-    public URL getModelURL() {
-        return _modelURL;
     }
 
     /** Get the tabbed layout scene.
@@ -175,11 +175,17 @@ public class HomerMainFrame extends JFrame {
     public void openLayout(URL modelURL, URL layoutURL) {
         _contents.clear();
         _modelURL = modelURL;
+        _layoutURL = layoutURL;
 
         try {
-            _namedObjectTreePanel.setCompositeEntity(ServerUtility
-                    .openModelFile(modelURL));
+            _namedObjectTreePanel.setCompositeEntity(LayoutFileOperations.open(
+                    this, modelURL, layoutURL));
         } catch (IllegalActionException e) {
+            MessageHandler.error(e.getMessage(), e);
+        } catch (NameDuplicationException e) {
+            MessageHandler.error(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (CloneNotSupportedException e) {
             MessageHandler.error(e.getMessage(), e);
         }
     }
@@ -204,22 +210,55 @@ public class HomerMainFrame extends JFrame {
         _contents.addTab(name);
     }
 
+    public void addTab(String tag, String name) {
+        try {
+            _contents.addTab(tag, name);
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
     public void removeTab(int index) {
         _contents.removeTab(index);
     }
 
-    public Component getTabContent(String tabTag) {
-        return (Component) _contents.getContent(tabTag);
+    public Scene getTabContent(String tabTag) {
+        return (Scene) _contents.getContent(tabTag);
     }
 
     public boolean contains(NamedObj key) {
         return _contents.contains(key);
     }
-    
+
     public ArrayList<TabDefinition> getAllTabs() {
         return _contents.getAllTabs();
     }
 
+    public URL getLayoutURL() {
+        try {
+            if (! new File(_layoutURL.toURI()).canRead()) {
+                return null;
+            }
+        } catch (URISyntaxException e) {
+            return null;
+        }
+        return _layoutURL;
+    }
+
+    /** Get the model URL.
+     *  @return The model URL.
+     */
+    public URL getModelURL() {
+        try {
+            if (! new File(_modelURL.toURI()).canRead()) {
+                return null;
+            }
+        } catch (URISyntaxException e) {
+            return null;
+        }
+        return _modelURL;
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -281,5 +320,6 @@ public class HomerMainFrame extends JFrame {
     private TabbedLayoutScene _screenPanel;
     private RemoteObjectList _remoteObjectsPanel;
     private URL _modelURL;
+    private URL _layoutURL;
     private HomerMultiContent _contents;
 }

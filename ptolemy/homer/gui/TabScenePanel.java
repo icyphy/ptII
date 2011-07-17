@@ -69,7 +69,6 @@ import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.homer.kernel.ContentPrototype;
 import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.homer.kernel.PositionableElement;
-import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -97,14 +96,14 @@ public class TabScenePanel implements ContentPrototype {
     public TabScenePanel(HomerMainFrame mainFrame) {
         _mainFrame = mainFrame;
         _scene = new ObjectScene();
-        _mainLayer = new LayerWidget(getScene());
-        _interactionLayer = new LayerWidget(getScene());
+        _mainLayer = new LayerWidget(getContent());
+        _interactionLayer = new LayerWidget(getContent());
         _scene.createView();
         _scene.setLayout(LayoutFactory.createOverlayLayout());
         _scene.getActions().addAction(_hoverAction);
 
-        getScene().addChild(_interactionLayer);
-        getScene().addChild(_mainLayer);
+        getContent().addChild(_interactionLayer);
+        getContent().addChild(_mainLayer);
 
         final AlignWithMoveStrategyProvider alignWithMoveStrategyProvider = new AlignWithMoveStrategyProvider(
                 new SingleLayerAlignWithWidgetCollector(_mainLayer, false),
@@ -271,8 +270,8 @@ public class TabScenePanel implements ContentPrototype {
     /** Get the view associated with the scene.
      *  @return The view component of the scene.
      */
-    public Component getContent() {
-        return getScene().getView();
+    public Component getView() {
+        return getContent().getView();
     }
 
     /** Get a new tab scene panel instance.
@@ -301,7 +300,7 @@ public class TabScenePanel implements ContentPrototype {
     /** Get a reference to the current scene.
      *  @return The current scene.
      */
-    public ObjectScene getScene() {
+    public ObjectScene getContent() {
         return _scene;
     }
 
@@ -321,14 +320,14 @@ public class TabScenePanel implements ContentPrototype {
      *  @param location The target location.
      */
     private void _adjustLocation(Widget widget, Point location) {
-        if (location.getX() + widget.getBounds().getWidth() > getContent()
+        if (location.getX() + widget.getBounds().getWidth() > getView()
                 .getWidth()) {
-            location.setLocation(getContent().getWidth()
+            location.setLocation(getView().getWidth()
                     - widget.getBounds().getWidth(), location.getY());
         }
-        if (location.getY() + widget.getBounds().getHeight() > getContent()
+        if (location.getY() + widget.getBounds().getHeight() > getView()
                 .getHeight()) {
-            location.setLocation(location.getX(), getContent().getHeight()
+            location.setLocation(location.getX(), getView().getHeight()
                     - widget.getBounds().getHeight());
         }
         if (location.getX() < 0) {

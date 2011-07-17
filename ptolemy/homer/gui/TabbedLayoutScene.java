@@ -96,7 +96,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     private void _addTab(String tag, String name, TabScenePanel contentPanel) {
         contentPanel.setTag(tag);
         contentPanel.setName(name);
-        Component view = _mainFrame.getTabContent(tag);
+        Component view = _mainFrame.getTabContent(tag).getView();
         _tabScenes.insertTab(name, null, view, null,
                 _tabScenes.getTabCount() - 1);
         view.setMaximumSize(view.getPreferredSize());

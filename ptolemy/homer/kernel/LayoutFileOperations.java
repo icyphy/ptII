@@ -31,12 +31,13 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
+import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
 import ptolemy.actor.CompositeActor;
@@ -52,12 +53,14 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
+import ptserver.util.ServerUtility;
 
 /** Handle model and layout file operations.
  * 
@@ -72,13 +75,44 @@ public class LayoutFileOperations {
     private LayoutFileOperations() {
     }
 
-    public static void save(HomerMainFrame parent) {
-        // TODO
-    }
+    public static CompositeEntity open(HomerMainFrame mainFrame, URL modelURL,
+            URL layoutURL) throws IllegalActionException,
+            NameDuplicationException, CloneNotSupportedException {
+        CompositeEntity mergedModel = ServerUtility.mergeModelWithLayout(
+                modelURL, layoutURL, null, null);
+        System.out.println(mergedModel.exportMoML());
+        LayoutParser parser = new LayoutParser(mergedModel);
+        HashSet<NamedObj> proxyElements = parser.getProxyElements();
+        HashSet<NamedObj> visualElements = parser.getPositionableElements();
+        ArrayList<TabDefinition> tabs = parser.getTabDefinitions();
 
-    public static void open(HomerMainFrame parent, URL modelURL, URL layoutURL)
-            throws IllegalActionException, NameDuplicationException {
-        // TODO
+        // Add tabs to the mainframe
+        for (TabDefinition tab : tabs) {
+            mainFrame.addTab(tab.getTag(), tab.getName());
+        }
+
+        // Add visual elements.
+        for (NamedObj object : visualElements) {
+            Attribute tab = object.getAttribute(HomerConstants.TAB_NODE);
+            if (tab == null || ! (tab instanceof Settable)) {
+                // FIXME Maybe there elements should be added to a default tab.
+                throw new IllegalActionException(object,
+                        "Visual object with no tab defined.");
+            }
+            String tag = ((Settable) tab).getExpression();
+            Scene scene = mainFrame.getTabContent(tag);
+            mainFrame.addVisualNamedObject(tag, new HomerWidgetElement(object,
+                    scene));
+        }
+
+        // Add non-visual elements
+        for (NamedObj object : proxyElements) {
+            if (!visualElements.contains(object)) {
+                mainFrame.addNonVisualNamedObject(object);
+            }
+        }
+
+        return mergedModel;
     }
 
     /** Open a MoML file, parse it, and the parsed model.
@@ -130,13 +164,15 @@ public class LayoutFileOperations {
 
             for (TabDefinition tab : mainFrame.getAllTabs()) {
                 // Add tab to the tabs attribute
-                StringAttribute tabAttribute = new StringAttribute(tabs, tab.getTag());
+                StringAttribute tabAttribute = new StringAttribute(tabs,
+                        tab.getTag());
                 tabAttribute.setExpression(tab.getName());
-                
+
                 // Add location and tab information for each element in the tab.
                 for (PositionableElement element : tab.getElements()) {
                     HomerWidgetElement homerElement = (HomerWidgetElement) element;
-                    String strippedFullName = stripFullName(homerElement.getElement().getFullName());
+                    String strippedFullName = stripFullName(homerElement
+                            .getElement().getFullName());
                     NamedObj elementInModel = null;
 
                     if (homerElement.getElement() instanceof Attribute) {
@@ -148,8 +184,9 @@ public class LayoutFileOperations {
                     }
 
                     // Add location
-                    new HomerLocation(elementInModel, HomerConstants.POSITION_NODE)
-                    .setToken(getLocationToken(homerElement.getWidget()));
+                    new HomerLocation(elementInModel,
+                            HomerConstants.POSITION_NODE)
+                            .setToken(getLocationToken(homerElement.getWidget()));
 
                     // Add tab information
                     new StringAttribute(elementInModel, HomerConstants.TAB_NODE)
@@ -226,7 +263,8 @@ public class LayoutFileOperations {
         } else if (element instanceof Attribute) {
             try {
                 model.workspace().getWriteAccess();
-                Attribute attributeInModel = model.getAttribute(strippedFullName);
+                Attribute attributeInModel = model
+                        .getAttribute(strippedFullName);
                 if (attributeInModel == null) {
                     throw new IllegalActionException(element,
                             "Attribute not found in the model.");
@@ -236,7 +274,7 @@ public class LayoutFileOperations {
                 if (proxy != null) {
                     element.removeAttribute(proxy);
                 }
-                
+
                 SingletonParameter parameter = new SingletonParameter(
                         model.getAttribute(strippedFullName),
                         ProxyModelBuilder.REMOTE_OBJECT_TAG);
@@ -251,45 +289,6 @@ public class LayoutFileOperations {
                 model.workspace().doneWriting();
             }
         }
-    }
-
-    private static CompositeEntity mergeModelWithLayout(CompositeEntity model,
-            CompositeEntity layout, HashSet<Attribute> attributesToMerge)
-            throws IllegalActionException, NameDuplicationException {
-        HashSet<NamedObj> container = new HashSet<NamedObj>();
-
-        // Traverse all elements in the layout.
-        _getProxyElements(layout, container);
-
-        for (NamedObj element : container) {
-            Attribute proxyAttribute = element
-                    .getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG);
-            if (element instanceof ComponentEntity) {
-                proxyAttribute.setContainer(model
-                        .getEntity(stripFullName(element.getFullName())));
-            } else if (element instanceof Attribute) {
-                proxyAttribute.setContainer(model
-                        .getAttribute(stripFullName(element.getFullName())));
-            }
-        }
-
-        return model;
-    }
-
-    private static CompositeEntity mergeModelWithLayout(URL modelURL,
-            URL layoutURL, HashSet<Attribute> attributesToMerge)
-            throws IllegalActionException, NameDuplicationException {
-        CompositeEntity model = openModelFile(modelURL);
-        CompositeEntity layout = openModelFile(layoutURL);
-        return mergeModelWithLayout(model, layout, attributesToMerge);
-    }
-
-    private static CompositeEntity mergeModelWithLayout(String modelURL,
-            String layoutURL, HashSet<Attribute> attributesToMerge)
-            throws MalformedURLException, IllegalActionException,
-            NameDuplicationException {
-        return mergeModelWithLayout(new URL(modelURL), new URL(layoutURL),
-                attributesToMerge);
     }
 
     /** Strips the first part of a compound element name, including the
@@ -368,35 +367,6 @@ public class LayoutFileOperations {
         }
 
         return SinkOrSource.NONE;
-    }
-
-    /** Get all the elements marked as proxies under the element and add them to
-     *  the container. 
-     * 
-     *  @param element The element to search for proxy attribute and other elements
-     *  that have proxy attributes.
-     *  @param container
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
-     */
-    private static void _getProxyElements(NamedObj element,
-            HashSet<NamedObj> container) throws IllegalActionException,
-            NameDuplicationException {
-
-        // Found the attribute, find the element in the original model
-        // and add the attribute to it.
-        if (element.getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG) != null) {
-            // Found proxy attribute, add it to the container
-            container.add(element);
-        } else {
-            // Element did not contain the proxy attribute, let's search the
-            // other named objects within the element.
-            for (Iterator iterator = element.containedObjectsIterator(); iterator
-                    .hasNext();) {
-                NamedObj namedObj = (NamedObj) iterator.next();
-                _getProxyElements(namedObj, container);
-            }
-        }
     }
 
     /** Categorization of an entity.
