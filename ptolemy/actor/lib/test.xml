@@ -6,7 +6,7 @@
     <?moml
       <group>
 			<entity name="GetCausalityInterface" class="ptolemy.actor.lib.GetCausalityInterface"/>
-			<entity name="GetCurrentMicrostep" class="ptolemy.actor.lib.GetCurrentMicrostep"/>
+			<entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep"/>
 			<entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest"/>
 			<entity name="Test" class="ptolemy.actor.lib.Test"/>
 			<property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector"/>
