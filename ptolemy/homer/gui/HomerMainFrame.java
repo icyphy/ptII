@@ -32,6 +32,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.swing.JFrame;
@@ -44,7 +45,9 @@ import javax.swing.border.TitledBorder;
 import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.HomerMultiContent;
 import ptolemy.homer.kernel.HomerWidgetElement;
+import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.PositionableElement;
+import ptolemy.homer.kernel.TabDefinition;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -132,7 +135,7 @@ public class HomerMainFrame extends JFrame {
      *  @param layoutFile The target file for the "Save As" operation.
      */
     public void saveLayoutAs(File layoutFile) {
-        //        LayoutFileOperations.saveAs(this, layoutFile);
+        LayoutFileOperations.saveAs(this, layoutFile);
     }
 
     /** Get the model URL.
@@ -192,28 +195,30 @@ public class HomerMainFrame extends JFrame {
             _contents.remove(object);
         }
     }
-    
+
     public void removeVisualNamedObject(PositionableElement element) {
         _contents.removeElement(element);
     }
-    
 
     public void addTab(String name) {
         _contents.addTab(name);
     }
-    
+
     public void removeTab(int index) {
         _contents.removeTab(index);
     }
-    
+
     public Component getTabContent(String tabTag) {
         return (Component) _contents.getContent(tabTag);
     }
-    
+
     public boolean contains(NamedObj key) {
         return _contents.contains(key);
     }
-
+    
+    public ArrayList<TabDefinition> getAllTabs() {
+        return _contents.getAllTabs();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

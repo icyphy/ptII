@@ -128,7 +128,7 @@ public class MultiContent<T extends ContentPrototype> {
         boolean tagGenerated = false;
         while (!tagGenerated) {
             try {
-                tag = String.valueOf(randomGenerator.nextLong());
+                tag = "tab_" + String.valueOf(randomGenerator.nextInt());
                 addTab(String.valueOf(tag), tabName, content);
                 tagGenerated = true;
             } catch (IllegalActionException e) {

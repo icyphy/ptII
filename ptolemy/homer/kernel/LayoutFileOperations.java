@@ -27,7 +27,10 @@
 
 package ptolemy.homer.kernel;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
@@ -36,8 +39,10 @@ import java.util.List;
 
 import org.netbeans.api.visual.widget.Widget;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.data.IntMatrixToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -47,9 +52,12 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
+import ptserver.util.ProxyModelBuilder;
+import ptserver.util.ProxyModelBuilder.ProxyModelType;
 
 /** Handle model and layout file operations.
  * 
@@ -83,6 +91,7 @@ public class LayoutFileOperations {
             throws IllegalActionException {
         CompositeEntity topLevel = null;
         MoMLParser parser = new MoMLParser(new Workspace());
+        parser.resetAll();
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         try {
             topLevel = (CompositeEntity) parser.parse(null, url);
@@ -103,99 +112,145 @@ public class LayoutFileOperations {
      *  @param layoutFile The file the layout is saved to.
      */
     public static void saveAs(HomerMainFrame mainFrame, File layoutFile) {
-//
-//        CompositeActor model = null;
-//        BufferedWriter out = null;
-//        try {
-//            // Get the original model
-//            model = (CompositeActor) openModelFile(mainFrame.getModelURL());
-//
-//            // Add remote attributes to elements
-//            for (NamedObj element : mainFrame.getRemoteObjectSet()) {
-//                String strippedFullName = stripFullName(element.getFullName());
-//
-//                // Check if the element is a sink or a source
-//                if (element instanceof ComponentEntity) {
-//                    SinkOrSource sinkOrSource = isSinkOrSource((ComponentEntity) element);
-//
-//                    if (sinkOrSource == SinkOrSource.SOURCE
-//                            || sinkOrSource == SinkOrSource.SINK_AND_SOURCE) {
-//                        SingletonParameter parameter = new SingletonParameter(
-//                                model.getEntity(strippedFullName),
-//                                HomerConstants.REMOTE_NODE);
-//                        parameter.setPersistent(true);
-//                        parameter.setExpression(HomerConstants.REMOTE_SOURCE);
-//                    } else if (sinkOrSource == SinkOrSource.SINK) {
-//                        SingletonParameter parameter = new SingletonParameter(
-//                                model.getEntity(strippedFullName),
-//                                HomerConstants.REMOTE_NODE);
-//                        parameter.setPersistent(true);
-//                        parameter.setExpression(HomerConstants.REMOTE_SINK);
-//                    }
-//                } else if (element instanceof Attribute) {
-//                    SingletonParameter parameter = new SingletonParameter(
-//                            model.getAttribute(strippedFullName),
-//                            HomerConstants.REMOTE_NODE);
-//                    parameter.setPersistent(true);
-//                    parameter.setExpression(HomerConstants.REMOTE_ATTRIBUTE);
-//                }
-//            }
-//
-//            // Add location and tab information to elements
-//            Attribute tabs = new Attribute(model, HomerConstants.TABS_NODE);
-//
-//            HashMap<TabScenePanel, StringAttribute> tabTags = new HashMap<TabScenePanel, StringAttribute>();
-//            for (NamedObj element : mainFrame.getWidgetMap().keySet()) {
-//                Widget widget = (Widget) mainFrame.getWidgetMap().get(element);
-//                String strippedFullName = stripFullName(element.getFullName());
-//                // Add location
-//                NamedObj elementInModel = null;
-//
-//                if (element instanceof Attribute) {
-//                    elementInModel = model.getAttribute(strippedFullName);
-//                } else if (element instanceof ComponentEntity) {
-//                    elementInModel = model.getEntity(strippedFullName);
-//                } else {
-//                    // TODO throw exception
-//                }
-//
-//                new HomerLocation(elementInModel, HomerConstants.POSITION_NODE)
-//                        .setToken(getLocationToken(widget));
-//
-//                StringAttribute tabTag = tabTags.get(mainFrame
-//                        .getWidgetTabMap().get(widget));
-//                if (tabTag == null) {
-//                    tabTag = new StringAttribute(tabs, tabs.uniqueName("tab_"));
-//                    // FIXME set correct name
-//                    tabTag.setExpression(tabTag.getName());
-//                    tabTags.put(mainFrame.getWidgetTabMap().get(widget), tabTag);
-//                }
-//                // Add tab information
-//                new StringAttribute(elementInModel, HomerConstants.TAB_NODE)
-//                        .setExpression(tabTag.getName());
-//                // Store tag identifier for later
-//            }
-//
-//            // Create layout model
-//            System.out.println(model.exportMoML());
-//            new ProxyModelBuilder(ProxyModelType.CLIENT, model).build();
-//            // Save in file
-//            out = new BufferedWriter(new FileWriter(layoutFile));
-//            model.exportMoML(out);
-//        } catch (Exception e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } finally {
-//            if (out != null) {
-//                try {
-//                    out.close();
-//                } catch (IOException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
 
+        CompositeActor model = null;
+        BufferedWriter out = null;
+        try {
+            // Get the original model
+            model = (CompositeActor) openModelFile(mainFrame.getModelURL());
+
+            // Add remote attributes to elements
+            for (NamedObj element : mainFrame.getRemoteObjectSet()) {
+                // Add the proxy attributes to all objects in the stored set.
+                _markAsProxy(model, element);
+            }
+
+            // Add location and tab information to elements
+            Attribute tabs = new Attribute(model, HomerConstants.TABS_NODE);
+
+            for (TabDefinition tab : mainFrame.getAllTabs()) {
+                // Add tab to the tabs attribute
+                StringAttribute tabAttribute = new StringAttribute(tabs, tab.getTag());
+                tabAttribute.setExpression(tab.getName());
+                
+                // Add location and tab information for each element in the tab.
+                for (PositionableElement element : tab.getElements()) {
+                    HomerWidgetElement homerElement = (HomerWidgetElement) element;
+                    String strippedFullName = stripFullName(homerElement.getElement().getFullName());
+                    NamedObj elementInModel = null;
+
+                    if (homerElement.getElement() instanceof Attribute) {
+                        elementInModel = model.getAttribute(strippedFullName);
+                    } else if (homerElement.getElement() instanceof ComponentEntity) {
+                        elementInModel = model.getEntity(strippedFullName);
+                    } else {
+                        // TODO throw exception
+                    }
+
+                    // Add location
+                    new HomerLocation(elementInModel, HomerConstants.POSITION_NODE)
+                    .setToken(getLocationToken(homerElement.getWidget()));
+
+                    // Add tab information
+                    new StringAttribute(elementInModel, HomerConstants.TAB_NODE)
+                            .setExpression(tab.getTag());
+                }
+            }
+
+            // Create layout model
+            new ProxyModelBuilder(ProxyModelType.CLIENT, model).build();
+            // Save in file
+            out = new BufferedWriter(new FileWriter(layoutFile));
+            model.exportMoML(out);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private static void _markAsProxy(CompositeActor model, NamedObj element)
+            throws IllegalActionException {
+        String strippedFullName = stripFullName(element.getFullName());
+
+        // Add a new proxy attribute
+        if (element instanceof ComponentEntity) {
+            // Remove the proxy attribute if it's present.
+            ComponentEntity entityInModel = model.getEntity(strippedFullName);
+            if (entityInModel == null) {
+                throw new IllegalActionException(element,
+                        "Entity not found in the model.");
+            }
+            Attribute proxy = entityInModel
+                    .getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG);
+            if (proxy != null) {
+                element.removeAttribute(proxy);
+            }
+
+            SinkOrSource sinkOrSource = isSinkOrSource((ComponentEntity) element);
+
+            try {
+                model.workspace().getWriteAccess();
+
+                if (sinkOrSource == SinkOrSource.SOURCE
+                        || sinkOrSource == SinkOrSource.SINK_AND_SOURCE) {
+                    SingletonParameter parameter;
+                    parameter = new SingletonParameter(entityInModel,
+                            ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                    parameter.setPersistent(true);
+                    parameter
+                            .setExpression(ProxyModelBuilder.PROXY_SOURCE_ATTRIBUTE);
+                } else if (sinkOrSource == SinkOrSource.SINK) {
+                    SingletonParameter parameter = new SingletonParameter(
+                            entityInModel, ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                    parameter.setPersistent(true);
+                    parameter
+                            .setExpression(ProxyModelBuilder.PROXY_SINK_ATTRIBUTE);
+                }
+            } catch (IllegalActionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                // Since the attribute was removed, this case should not happen
+            } finally {
+                model.workspace().doneWriting();
+            }
+        } else if (element instanceof Attribute) {
+            try {
+                model.workspace().getWriteAccess();
+                Attribute attributeInModel = model.getAttribute(strippedFullName);
+                if (attributeInModel == null) {
+                    throw new IllegalActionException(element,
+                            "Attribute not found in the model.");
+                }
+                Attribute proxy = attributeInModel
+                        .getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                if (proxy != null) {
+                    element.removeAttribute(proxy);
+                }
+                
+                SingletonParameter parameter = new SingletonParameter(
+                        model.getAttribute(strippedFullName),
+                        ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                parameter.setPersistent(true);
+                parameter.setExpression(ProxyModelBuilder.REMOTE_ATTRIBUTE);
+            } catch (IllegalActionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                // Since the attribute was removed, this case should not happen
+            } finally {
+                model.workspace().doneWriting();
+            }
+        }
     }
 
     private static CompositeEntity mergeModelWithLayout(CompositeEntity model,
@@ -208,7 +263,7 @@ public class LayoutFileOperations {
 
         for (NamedObj element : container) {
             Attribute proxyAttribute = element
-                    .getAttribute(HomerConstants.REMOTE_NODE);
+                    .getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG);
             if (element instanceof ComponentEntity) {
                 proxyAttribute.setContainer(model
                         .getEntity(stripFullName(element.getFullName())));
@@ -330,7 +385,7 @@ public class LayoutFileOperations {
 
         // Found the attribute, find the element in the original model
         // and add the attribute to it.
-        if (element.getAttribute(HomerConstants.REMOTE_NODE) != null) {
+        if (element.getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG) != null) {
             // Found proxy attribute, add it to the container
             container.add(element);
         } else {
