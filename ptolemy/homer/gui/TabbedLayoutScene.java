@@ -44,9 +44,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicButtonUI;
 
-import ptolemy.homer.events.NonVisualContentEvent;
 import ptolemy.homer.events.TabEvent;
-import ptolemy.homer.events.VisualContentEvent;
 
 ///////////////////////////////////////////////////////////////////
 //// TabbedLayoutScene
@@ -73,13 +71,14 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
         _tabScenes = new JTabbedPane(JTabbedPane.TOP);
         add(_tabScenes);
 
+        // Create the "add tab" tab.
         _tabScenes.add("", null);
         TabButton addTabButton = new TabButton();
         addTabButton.setText("+");
-
+        addTabButton.setToolTipText("Add tab");
         _tabScenes.setTabComponentAt(0, addTabButton);
-        addTabButton.addActionListener(new ActionListener() {
 
+        addTabButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 _mainFrame.addTab("Tab " + _tabScenes.getTabCount());
                 selectTab(_tabScenes.getTabCount() - 2);
@@ -132,7 +131,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
      */
     private void _clear() {
         // The last one should be the "add new tab" tab.
-        for (int i = _tabScenes.getTabCount() - 1; i >= 1; --i) {
+        for (int i = _tabScenes.getTabCount() - 2; i >= 0; --i) {
             _removeTab(i);
         }
     }
@@ -260,6 +259,46 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                     return null;
                 };
             };
+            label.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+
+                    // For simple click, just select the tab
+                    if (e.getClickCount() == 1) {
+                        int selectedIndex = -1;
+                        if (_tabScenes.indexOfTabComponent(TabSceneButton.this) == _tabScenes
+                                .getTabCount() - 1) {
+                            selectedIndex = _tabScenes.getTabCount() - 2;
+                        } else {
+                            selectedIndex = _tabScenes
+                                    .indexOfTabComponent(TabSceneButton.this);
+                        }
+                        _tabScenes.setSelectedIndex(selectedIndex);
+                    } else {
+                        // On double click let user rename the tab.
+                        // TODO Work in progress.
+                        
+//                        final JPopupMenu editTitleMenu = new JPopupMenu();
+//                        editTitleMenu.setOpaque(true);
+//                        final JTextField text = new JTextField(_tabScenes
+//                                .getBoundsAt(1).x);
+//                        editTitleMenu.add(text);
+//                        editTitleMenu.setPreferredSize(new Dimension(_tabScenes
+//                                .getBoundsAt(1).width, _tabScenes
+//                                .getBoundsAt(1).height));
+//                        text.addKeyListener(new KeyAdapter() {
+//                            public void keyPressed(KeyEvent e) {
+//                                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+//                                    _tabScenes.setTitleAt(1, text.getText());
+//                                    editTitleMenu.setVisible(false);
+//                                }
+//                            }
+//                        });
+//                        editTitleMenu.setVisible(true);
+                    }
+                }
+            });
 
             add(label, BorderLayout.CENTER);
             JButton closeButton = new TabButton();
@@ -274,7 +313,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                 }
             });
 
-            _tabScenes.setEnabledAt(_tabScenes.getTabCount() - 1, false);
+            _tabScenes.setEnabledAt(_tabScenes.getTabCount() - 2, false);
         }
     }
 }
