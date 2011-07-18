@@ -33,6 +33,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -41,7 +45,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import ptolemy.homer.events.TabEvent;
@@ -243,13 +249,17 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
      */
     private class TabSceneButton extends JPanel {
 
+        private JLabel label;
+        private JTextField editableLabel;
+
         /** Create the panel that will sit within the tab.
          */
         public TabSceneButton() {
             setOpaque(false);
             setLayout(new BorderLayout(0, 0));
 
-            JLabel label = new JLabel() {
+            label = new JLabel() {
+                @Override
                 public String getText() {
                     int i = _tabScenes.indexOfTabComponent(TabSceneButton.this);
                     if (i != -1) {
@@ -257,6 +267,14 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                     }
 
                     return null;
+                };
+
+                @Override
+                public void setText(String text) {
+                    int i = _tabScenes.indexOfTabComponent(TabSceneButton.this);
+                    if (i != -1) {
+                        _tabScenes.setTitleAt(i, text);
+                    }
                 };
             };
             label.addMouseListener(new MouseAdapter() {
@@ -277,28 +295,35 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                         _tabScenes.setSelectedIndex(selectedIndex);
                     } else {
                         // On double click let user rename the tab.
-                        // TODO Work in progress.
-                        
-//                        final JPopupMenu editTitleMenu = new JPopupMenu();
-//                        editTitleMenu.setOpaque(true);
-//                        final JTextField text = new JTextField(_tabScenes
-//                                .getBoundsAt(1).x);
-//                        editTitleMenu.add(text);
-//                        editTitleMenu.setPreferredSize(new Dimension(_tabScenes
-//                                .getBoundsAt(1).width, _tabScenes
-//                                .getBoundsAt(1).height));
-//                        text.addKeyListener(new KeyAdapter() {
-//                            public void keyPressed(KeyEvent e) {
-//                                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-//                                    _tabScenes.setTitleAt(1, text.getText());
-//                                    editTitleMenu.setVisible(false);
-//                                }
-//                            }
-//                        });
-//                        editTitleMenu.setVisible(true);
+                        TabSceneButton.this.remove(label);
+                        TabSceneButton.this.add(editableLabel,
+                                BorderLayout.CENTER);
+                        editableLabel.setText(label.getText());
+                        editableLabel.setFocusable(true);
+                        editableLabel.requestFocusInWindow();
+                        editableLabel.selectAll();
+                        TabbedLayoutScene.this.repaint();
                     }
                 }
             });
+
+            editableLabel = new JTextField();
+            editableLabel.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER
+                            || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                        setInEditedTitle();
+                    }
+                }
+            });
+            editableLabel.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusLost(FocusEvent e) {
+                    setInEditedTitle();
+                }
+            });
+            editableLabel.setColumns(6);
 
             add(label, BorderLayout.CENTER);
             JButton closeButton = new TabButton();
@@ -314,6 +339,13 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
             });
 
             _tabScenes.setEnabledAt(_tabScenes.getTabCount() - 2, false);
+        }
+
+        private void setInEditedTitle() {
+            TabSceneButton.this.remove(editableLabel);
+            TabSceneButton.this.add(label, BorderLayout.CENTER);
+            label.setText(editableLabel.getText());
+            TabbedLayoutScene.this.repaint();
         }
     }
 }
