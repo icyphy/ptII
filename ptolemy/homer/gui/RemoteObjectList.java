@@ -31,15 +31,18 @@ package ptolemy.homer.gui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetAdapter;
+import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
@@ -53,9 +56,16 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 
+import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.homer.events.NonVisualContentEvent;
 import ptolemy.homer.kernel.HomerWidgetElement;
+import ptolemy.homer.kernel.LayoutFileOperations;
+import ptolemy.homer.kernel.LayoutFileOperations.SinkOrSource;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
@@ -140,29 +150,95 @@ public class RemoteObjectList extends JPanel implements ActionListener {
         };
         _list.addMouseListener(mouseListener);
 
-        DropTarget target = new DropTarget(this, new DropTargetAdapter() {
-            public void drop(DropTargetDropEvent dropEvent) {
-                if (dropEvent
-                        .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
-                    try {
-                        List<?> dropItems = (List) dropEvent.getTransferable()
-                                .getTransferData(
-                                        PtolemyTransferable.namedObjFlavor);
-                        if (dropItems.size() > 0) {
-                            _mainFrame
-                                    .addNonVisualNamedObject((NamedObj) dropItems
-                                            .get(0));
-                        }
-                    } catch (Exception e) {
-                        MessageHandler.error(
-                                "Can't find a supported data flavor for drop in "
-                                        + dropEvent, e);
+        new DropTarget(this, new DropTargetAdapter() {
+
+            /** Accept the event if the data is a known key.
+             *  This is called while a drag operation is ongoing,
+             *  when the mouse pointer enters the operable part of
+             *  the drop site for the DropTarget registered with
+             *  this listener.
+             *  @param dropEvent The drop event.
+             */
+            public void dragEnter(DropTargetDragEvent dropEvent) {
+                try {
+                    // Reject is data flavor is not supported.
+                    if (!dropEvent
+                            .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+                        dropEvent.rejectDrag();
+                        return;
                     }
 
-                    dropEvent.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                } else {
-                    dropEvent.rejectDrop();
+                    List<?> dropObjects = (java.util.List) dropEvent
+                            .getTransferable().getTransferData(
+                                    PtolemyTransferable.namedObjFlavor);
+
+                    // Reject if not PortablePlaceable or Settable.
+                    Object transferable = dropObjects.get(0);
+                    if (!(transferable instanceof ComponentEntity)
+                            && !(transferable instanceof Settable)) {
+                        dropEvent.rejectDrag();
+                        return;
+                    }
+
+                    // Reject if it is already in the contents.
+                    if (_mainFrame.contains((NamedObj) transferable)) {
+                        dropEvent.rejectDrag();
+                        return;
+                    }
+
+                    // Reject if it's an entity, but not a source.
+                    if (transferable instanceof ComponentEntity) {
+                        SinkOrSource isTransferableSinkOrSource = LayoutFileOperations
+                                .isSinkOrSource((ComponentEntity) transferable);
+                        if (isTransferableSinkOrSource == SinkOrSource.NONE) {
+                            dropEvent.rejectDrag();
+                            return;
+                        }
+                    }
+
+                    dropEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+                } catch (UnsupportedFlavorException e) {
+                    MessageHandler.error(
+                            "Can't find a supported data flavor for drop in "
+                                    + dropEvent, e);
+                    return;
+                } catch (IOException e) {
+                    MessageHandler.error(
+                            "Can't find a supported data flavor for drop in "
+                                    + dropEvent, e);
+                    return;
                 }
+            }
+
+            /** Perform the drop of the item onto the scene and 
+             *  load the appropriate graphical widget.
+             */
+            public void drop(DropTargetDropEvent dropEvent) {
+
+                if (!dropEvent
+                        .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+                    dropEvent.rejectDrop();
+                    return;
+                }
+
+                try {
+                    List<?> dropObjects = (java.util.List) dropEvent
+                            .getTransferable().getTransferData(
+                                    PtolemyTransferable.namedObjFlavor);
+                    _mainFrame.addNonVisualNamedObject((NamedObj) dropObjects
+                            .get(0));
+                } catch (UnsupportedFlavorException e) {
+                    MessageHandler.error(
+                            "Can't find a supported data flavor for drop in "
+                                    + dropEvent, e);
+                    return;
+                } catch (IOException e) {
+                    MessageHandler.error(
+                            "Can't find a supported data flavor for drop in "
+                                    + dropEvent, e);
+                    return;
+                }
+                dropEvent.acceptDrop(DnDConstants.ACTION_LINK);
             }
         });
 

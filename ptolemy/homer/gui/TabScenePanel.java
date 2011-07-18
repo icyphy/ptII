@@ -65,10 +65,15 @@ import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.modules.visual.action.AlignWithMoveStrategyProvider;
 import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
+import de.cau.cs.kieler.kiml.options.LayoutDirection;
+
 import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.homer.kernel.ContentPrototype;
 import ptolemy.homer.kernel.HomerWidgetElement;
+import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.PositionableElement;
+import ptolemy.homer.kernel.LayoutFileOperations.SinkOrSource;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -133,27 +138,43 @@ public class TabScenePanel implements ContentPrototype {
              */
             public void dragEnter(DropTargetDragEvent dropEvent) {
                 try {
-                    if (dropEvent
+                    // Reject is data flavor is not supported.
+                    if (!dropEvent
                             .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
-                        List<?> dropObjects = (java.util.List) dropEvent
-                                .getTransferable().getTransferData(
-                                        PtolemyTransferable.namedObjFlavor);
-
-                        Object transferable = dropObjects.get(0);
-                        if ((transferable instanceof PortablePlaceable)
-                                || (transferable instanceof Settable)) {
-                            if (_mainFrame.contains((NamedObj) transferable)) {
-                                dropEvent.rejectDrag();
-                            } else {
-                                dropEvent
-                                        .acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
-                            }
-                        } else {
-                            dropEvent.rejectDrag();
-                        }
-                    } else {
                         dropEvent.rejectDrag();
+                        return;
                     }
+
+                    List<?> dropObjects = (java.util.List) dropEvent
+                            .getTransferable().getTransferData(
+                                    PtolemyTransferable.namedObjFlavor);
+
+                    // Reject if not PortablePlaceable or Settable.
+                    Object transferable = dropObjects.get(0);
+                    if (!(transferable instanceof PortablePlaceable)
+                            && !(transferable instanceof Settable)) {
+                        dropEvent.rejectDrag();
+                        return;
+                    }
+
+                    // Reject if it is already in the contents.
+                    if (_mainFrame.contains((NamedObj) transferable)) {
+                        dropEvent.rejectDrag();
+                        return;
+                    }
+
+                    // Reject if it's an entity, but not a sink.
+                    if (transferable instanceof ComponentEntity) {
+                        SinkOrSource isTransferableSinkOrSource = LayoutFileOperations
+                                .isSinkOrSource((ComponentEntity) transferable);
+                        if (isTransferableSinkOrSource != SinkOrSource.SINK
+                                && isTransferableSinkOrSource != SinkOrSource.SINK_AND_SOURCE) {
+                            dropEvent.rejectDrag();
+                            return;
+                        }
+                    }
+
+                    dropEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
                 } catch (UnsupportedFlavorException e) {
                     MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
@@ -171,42 +192,42 @@ public class TabScenePanel implements ContentPrototype {
              *  load the appropriate graphical widget.
              */
             public void drop(DropTargetDropEvent dropEvent) {
-
-                if (dropEvent
+                if (!dropEvent
                         .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
-                    try {
-                        List<?> dropObjects = (java.util.List) dropEvent
-                                .getTransferable().getTransferData(
-                                        PtolemyTransferable.namedObjFlavor);
-                        _mainFrame.addVisualNamedObject(TabScenePanel.this,
-                                (NamedObj) dropObjects.get(0), null,
-                                dropEvent.getLocation());
-                    } catch (UnsupportedFlavorException e) {
-                        MessageHandler.error(
-                                "Can't find a supported data flavor for drop in "
-                                        + dropEvent, e);
-                        return;
-                    } catch (IOException e) {
-                        MessageHandler.error(
-                                "Can't find a supported data flavor for drop in "
-                                        + dropEvent, e);
-                        return;
-                    } catch (IllegalActionException e) {
-                        MessageHandler.error(
-                                "Can't initialize widget for the selected object "
-                                        + dropEvent, e);
-                        return;
-                    } catch (NameDuplicationException e) {
-                        MessageHandler.error(
-                                "Can't initialize widget for the selected object "
-                                        + dropEvent, e);
-                        return;
-                    }
-
-                    dropEvent.acceptDrop(DnDConstants.ACTION_LINK);
-                } else {
                     dropEvent.rejectDrop();
+                    return;
                 }
+
+                try {
+                    List<?> dropObjects = (java.util.List) dropEvent
+                            .getTransferable().getTransferData(
+                                    PtolemyTransferable.namedObjFlavor);
+                    _mainFrame.addVisualNamedObject(TabScenePanel.this,
+                            (NamedObj) dropObjects.get(0), null,
+                            dropEvent.getLocation());
+                } catch (UnsupportedFlavorException e) {
+                    MessageHandler.error(
+                            "Can't find a supported data flavor for drop in "
+                                    + dropEvent, e);
+                    return;
+                } catch (IOException e) {
+                    MessageHandler.error(
+                            "Can't find a supported data flavor for drop in "
+                                    + dropEvent, e);
+                    return;
+                } catch (IllegalActionException e) {
+                    MessageHandler.error(
+                            "Can't initialize widget for the selected object "
+                                    + dropEvent, e);
+                    return;
+                } catch (NameDuplicationException e) {
+                    MessageHandler.error(
+                            "Can't initialize widget for the selected object "
+                                    + dropEvent, e);
+                    return;
+                }
+
+                dropEvent.acceptDrop(DnDConstants.ACTION_LINK);
             }
         });
     }
@@ -216,7 +237,8 @@ public class TabScenePanel implements ContentPrototype {
      *  @exception IllegalActionException If the appropriate element's representation
      *  cannot be loaded.
      */
-    public void add(final PositionableElement element) throws IllegalActionException {
+    public void add(final PositionableElement element)
+            throws IllegalActionException {
         if (!(element instanceof HomerWidgetElement)) {
             throw new IllegalActionException(element.getElement(),
                     "No representation is available.");
