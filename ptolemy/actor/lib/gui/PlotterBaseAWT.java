@@ -69,7 +69,9 @@ public class PlotterBaseAWT implements PlotterBaseInterface {
             _container = (Container) container.getPlatformContainer();
         }
 
-        if (!(_container instanceof PlotBox)) {
+        // If _container is null, do not try to add the _plotterBase.
+	// This happens when a plot is closed.
+        if (_container != null && !(_container instanceof PlotBox)) {
             _container.add((Component) _plotterBase.plot);
         }
 
