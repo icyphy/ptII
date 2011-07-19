@@ -188,6 +188,9 @@ public class HomerMainFrame extends JFrame {
         } catch (CloneNotSupportedException e) {
             MessageHandler.error(e.getMessage(), e);
         }
+        
+        // Need to remove the first tab, the default tab
+        _contents.removeTab(0);
     }
 
     /** Remove the NamedObj from the widget map and list of remote objects.
@@ -221,6 +224,10 @@ public class HomerMainFrame extends JFrame {
 
     public void removeTab(int index) {
         _contents.removeTab(index);
+    }
+    
+    public void setTabTitleAt(int position, String text) {
+        _contents.setNameAt(position, text);
     }
 
     public Scene getTabContent(String tabTag) {

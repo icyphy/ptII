@@ -75,6 +75,14 @@ public class TabDefinition {
         return _name;
     }
 
+    /** Set the name of the tab.
+     * 
+     *  @param text The new name of the tab.
+     */
+    public void setName(String text) {
+        _name = text;
+    }
+
     /** Return the content area of the tab.
      * 
      * @return The content area of the tab, or null if it has not been set.

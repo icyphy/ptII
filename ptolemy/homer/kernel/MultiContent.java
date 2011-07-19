@@ -201,7 +201,7 @@ public class MultiContent<T extends ContentPrototype> {
         return tabs;
     }
 
-    /** Removes a content area from the contents.
+    /** Remove a content area from the contents.
      * 
      *  @param tag The identifier of the tab to be removed.
      *  @return Contents of the removed content area.
@@ -209,6 +209,17 @@ public class MultiContent<T extends ContentPrototype> {
     public void removeTab(String tag) {
         _order.remove(tag);
         _contents.remove(tag);
+    }
+
+    /** Rename a content area at a given position.
+     * 
+     *  @param position The position of the tab.
+     *  @param text The new title of the tab.
+     */
+    public void setNameAt(int position, String text) {
+        if (position >= 0 && position < _order.size()) {
+            _contents.get(_order.get(position)).setName(text);
+        }
     }
 
     /** Clear all data.

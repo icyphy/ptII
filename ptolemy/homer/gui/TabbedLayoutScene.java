@@ -45,7 +45,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -164,6 +163,14 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
         }
     }
 
+    private void _renameTab(int position, String name) {
+        if (position < 0 || position >= _tabScenes.getTabCount()) {
+            return;
+        }
+
+        _tabScenes.setTitleAt(position, name);
+    }
+
     /** Set the selected tab.
      *  @param index Index of the tab that should be selected.
      */
@@ -173,11 +180,14 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e instanceof TabEvent) {
-            if (e.getActionCommand() == "addTab") {
-                _addTab(((TabEvent) e).getTag(), ((TabEvent) e).getName(),
-                        (TabScenePanel) ((TabEvent) e).getContent());
-            } else if (e.getActionCommand() == "removeTab") {
-                _removeTab(((TabEvent) e).getPosition());
+            TabEvent event = (TabEvent) e;
+            if (event.getActionCommand() == "addTab") {
+                _addTab(event.getTag(), event.getName(),
+                        (TabScenePanel) event.getContent());
+            } else if (event.getActionCommand() == "removeTab") {
+                _removeTab(event.getPosition());
+            } else if (event.getActionCommand() == "renameTab") {
+                _renameTab(event.getPosition(), event.getName());
             }
         }
 
@@ -273,7 +283,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                 public void setText(String text) {
                     int i = _tabScenes.indexOfTabComponent(TabSceneButton.this);
                     if (i != -1) {
-                        _tabScenes.setTitleAt(i, text);
+                        _mainFrame.setTabTitleAt(i, text);
                     }
                 };
             };

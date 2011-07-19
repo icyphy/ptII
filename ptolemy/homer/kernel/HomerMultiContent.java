@@ -98,6 +98,15 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
         String tag = _order.get(index);
         removeTab(tag);
     }
+    
+    @Override
+    public void setNameAt(int position, String text) {
+        super.setNameAt(position, text);
+
+        TabEvent renameTabEvent = new TabEvent(this, ActionEvent.ACTION_PERFORMED,
+                "renameTab", _order.get(position), text, position, null);
+        _nofityAllListeners(renameTabEvent);
+    }
 
     public void addListener(ActionListener listener) {
         _listeners.add(listener);

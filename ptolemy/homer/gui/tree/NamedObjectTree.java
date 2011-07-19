@@ -101,14 +101,14 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
                             .getModel().getChildCount(value) == 0))) {
                         // Disable the item and collapse.
                         setEnabled(false);
-                        tree.collapseRow(row);
+                        //tree.collapseRow(row);
                     } else {
                         // Has children or matches criteria, expand it.
-                        tree.expandRow(row);
+                       // tree.expandRow(row);
                     }
                 } else {
                     // Collapse all rows when not filtering.
-                    tree.collapseRow(row);
+                    //tree.collapseRow(row);
                 }
 
                 setText(((Nameable) value).getName());

@@ -80,7 +80,6 @@ public class LayoutFileOperations {
             NameDuplicationException, CloneNotSupportedException {
         CompositeEntity mergedModel = ServerUtility.mergeModelWithLayout(
                 modelURL, layoutURL, null, null);
-        System.out.println(mergedModel.exportMoML());
         LayoutParser parser = new LayoutParser(mergedModel);
         HashSet<NamedObj> proxyElements = parser.getProxyElements();
         HashSet<NamedObj> visualElements = parser.getPositionableElements();
