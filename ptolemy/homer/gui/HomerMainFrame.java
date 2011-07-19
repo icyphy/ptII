@@ -108,6 +108,35 @@ public class HomerMainFrame extends JFrame {
         _contents.add(object);
     }
 
+    /** Add a tab to the screen with the given name.
+     *  @param tabName The name of the tab.
+     */
+    public void addTab(String tabName) {
+        _contents.addTab(tabName);
+    }
+
+    /** Add a tab to the screen with the given name and tag.
+     *  @param tabTag The tag of the tab.
+     *  @param tabName The name of the tab.
+     */
+    public void addTab(String tabTag, String tabName) {
+        try {
+            _contents.addTab(tabTag, tabName);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /** Add a visual NamedObj item to the panel.
+     *  @param tag The tag associated with the element.
+     *  @param element The NamedObj to be added.
+     *  @exception IllegalActionException If the content area is not set.
+     */
+    public void addVisualNamedObject(String tag, HomerWidgetElement element)
+            throws IllegalActionException {
+        _contents.addElement(tag, element);
+    }
+
     /** Add a visual NamedObj item to the panel.
      *  @param panel The target panel.
      *  @param object The NamedObj to be added to the list.
@@ -134,148 +163,6 @@ public class HomerMainFrame extends JFrame {
         element.setLocation((int) point.getX(), (int) point.getY(),
                 (int) dimension.getWidth(), (int) dimension.getHeight());
         addVisualNamedObject(panel.getTag(), element);
-    }
-
-    public void addVisualNamedObject(String tag, HomerWidgetElement element)
-            throws IllegalActionException {
-        _contents.addElement(tag, element);
-    }
-
-    /** Get the set of references to on-screen remote objects.
-     *  @return The set of remote object references.
-     */
-    public HashSet<NamedObj> getRemoteObjectSet() {
-        return _contents.getRemoteElements();
-    }
-
-    /** Save the layout file.
-     *  @param layoutFile The target file for the "Save As" operation.
-     */
-    public void saveLayoutAs(File layoutFile) {
-        LayoutFileOperations.saveAs(this, layoutFile);
-    }
-
-    /** Get the tabbed layout scene.
-     *  @return The reference to the tabbed area of the screen.
-     */
-    public TabbedLayoutScene getTabbedLayoutScene() {
-        return _screenPanel;
-    }
-
-    /** Prepare the scene for creating a new layout and prompt the user for
-     *  file selection.
-     *  @param modelURL The url of the model file to be opened.
-     */
-    public void newLayout(URL modelURL) {
-        _contents.clear();
-        _modelURL = modelURL;
-
-        try {
-            CompositeEntity topLevelActor = ServerUtility
-                    .openModelFile(modelURL);
-
-            ActorEditorGraphController controller = new ActorEditorGraphController();
-            controller.setConfiguration(_application.getConfiguration());
-
-            BasicGraphPane graphPane = new BasicGraphPane(controller,
-                    new ActorGraphModel(topLevelActor), topLevelActor);
-
-            _namedObjectTreePanel.setCompositeEntity(topLevelActor);
-            _graphPanel.add(new JCanvasPanner(new JGraph(graphPane)),
-                    BorderLayout.CENTER);
-        } catch (IllegalActionException e) {
-            MessageHandler.error(e.getMessage(), e);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /** Prepare the scene for creating a new layout and prompt the user for
-     *  file selection.
-     *  @param modelURL The url of the model file to be opened.
-     */
-    public void openLayout(URL modelURL, URL layoutURL) {
-        _contents.clear();
-        _modelURL = modelURL;
-        _layoutURL = layoutURL;
-
-        try {
-            _namedObjectTreePanel.setCompositeEntity(LayoutFileOperations.open(
-                    this, modelURL, layoutURL));
-        } catch (IllegalActionException e) {
-            MessageHandler.error(e.getMessage(), e);
-        } catch (NameDuplicationException e) {
-            MessageHandler.error(e.getMessage(), e);
-            e.printStackTrace();
-        } catch (CloneNotSupportedException e) {
-            MessageHandler.error(e.getMessage(), e);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Need to remove the first tab, the default tab
-        _contents.removeTab(0);
-    }
-
-    /** Remove the NamedObj from the widget map and list of remote objects.
-     *  @param object The NamedObj item to be removed.
-     */
-    public void remove(NamedObj object) {
-        PositionableElement element = _contents.getElement(object);
-        if (element != null) {
-            _contents.removeElement(element);
-        } else {
-            _contents.remove(object);
-        }
-    }
-
-    /** Remove the visual named object from the scene.
-     *  @param element The screen element to be removed.
-     */
-    public void removeVisualNamedObject(PositionableElement element) {
-        _contents.removeElement(element);
-    }
-
-    /** Add a tab to the screen with the given name.
-     *  @param tabName The name of the tab.
-     */
-    public void addTab(String tabName) {
-        _contents.addTab(tabName);
-    }
-
-    /** Add a tab to the screen with the given name and tag.
-     *  @param tabTag The tag of the tab.
-     *  @param tabName The name of the tab.
-     */
-    public void addTab(String tabTag, String tabName) {
-        try {
-            _contents.addTab(tabTag, tabName);
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /** Remove the tab at the given index.
-     *  @param index The tab index to be removed.
-     */
-    public void removeTab(int index) {
-        _contents.removeTab(index);
-    }
-
-    /** Set the tab title.
-     *  @param position The tab index being changed.
-     *  @param text The new tab text.
-     */
-    public void setTabTitleAt(int position, String text) {
-        _contents.setNameAt(position, text);
-    }
-
-    /** Get the scene on the tab.
-     *  @param tabTag The tag of the tab being retrieved.
-     *  @return The scene on the selected tab.
-     */
-    public Scene getTabContent(String tabTag) {
-        return (Scene) _contents.getContent(tabTag);
     }
 
     /** See if the multi-content already has the NamedObj.
@@ -322,6 +209,124 @@ public class HomerMainFrame extends JFrame {
         return _modelURL;
     }
 
+    /** Get the set of references to on-screen remote objects.
+     *  @return The set of remote object references.
+     */
+    public HashSet<NamedObj> getRemoteObjectSet() {
+        return _contents.getRemoteElements();
+    }
+
+    /** Get the tabbed layout scene.
+     *  @return The reference to the tabbed area of the screen.
+     */
+    public TabbedLayoutScene getTabbedLayoutScene() {
+        return _screenPanel;
+    }
+
+    /** Get the scene on the tab.
+     *  @param tabTag The tag of the tab being retrieved.
+     *  @return The scene on the selected tab.
+     */
+    public Scene getTabContent(String tabTag) {
+        return (Scene) _contents.getContent(tabTag);
+    }
+
+    /** Prepare the scene for creating a new layout and prompt the user for
+     *  file selection.
+     *  @param modelURL The url of the model file to be opened.
+     */
+    public void newLayout(URL modelURL) {
+        _contents.clear();
+        _modelURL = modelURL;
+
+        try {
+            CompositeEntity topLevelActor = ServerUtility
+                    .openModelFile(modelURL);
+
+            ActorEditorGraphController controller = new ActorEditorGraphController();
+            controller.setConfiguration(_application.getConfiguration());
+
+            BasicGraphPane graphPane = new BasicGraphPane(controller,
+                    new ActorGraphModel(topLevelActor), topLevelActor);
+
+            _namedObjectTreePanel.setCompositeEntity(topLevelActor);
+            _graphPanel.add(new JCanvasPanner(new JGraph(graphPane)),
+                    BorderLayout.CENTER);
+        } catch (IllegalActionException e) {
+            MessageHandler.error(e.getMessage(), e);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /** Prepare the scene for creating a new layout and prompt the user for
+    *  file selection.
+    *  @param modelURL The url of the model file to be opened.
+    */
+    public void openLayout(URL modelURL, URL layoutURL) {
+        _contents.clear();
+        _modelURL = modelURL;
+        _layoutURL = layoutURL;
+
+        try {
+            _namedObjectTreePanel.setCompositeEntity(LayoutFileOperations.open(
+                    this, modelURL, layoutURL));
+        } catch (IllegalActionException e) {
+            MessageHandler.error(e.getMessage(), e);
+        } catch (NameDuplicationException e) {
+            MessageHandler.error(e.getMessage(), e);
+            e.printStackTrace();
+        } catch (CloneNotSupportedException e) {
+            MessageHandler.error(e.getMessage(), e);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Need to remove the first tab, the default tab
+        _contents.removeTab(0);
+    }
+
+    /** Remove the NamedObj from the widget map and list of remote objects.
+     *  @param object The NamedObj item to be removed.
+     */
+    public void remove(NamedObj object) {
+        PositionableElement element = _contents.getElement(object);
+        if (element != null) {
+            _contents.removeElement(element);
+        } else {
+            _contents.remove(object);
+        }
+    }
+
+    /** Remove the tab at the given index.
+     *  @param index The tab index to be removed.
+     */
+    public void removeTab(int index) {
+        _contents.removeTab(index);
+    }
+
+    /** Remove the visual named object from the scene.
+     *  @param element The screen element to be removed.
+     */
+    public void removeVisualNamedObject(PositionableElement element) {
+        _contents.removeElement(element);
+    }
+
+    /** Save the layout file.
+     *  @param layoutFile The target file for the "Save As" operation.
+     */
+    public void saveLayoutAs(File layoutFile) {
+        LayoutFileOperations.saveAs(this, layoutFile);
+    }
+
+    /** Set the tab title.
+     *  @param position The tab index being changed.
+     *  @param text The new tab text.
+     */
+    public void setTabTitleAt(int position, String text) {
+        _contents.setNameAt(position, text);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -340,11 +345,12 @@ public class HomerMainFrame extends JFrame {
                 EtchedBorder.LOWERED, null, null), "Named Object Tree",
                 TitledBorder.LEADING, TitledBorder.TOP, null,
                 new Color(0, 0, 0)));
-        _namedObjectTreePanel.setPreferredSize(new Dimension(250, 10));
+        _namedObjectTreePanel.setPreferredSize(new Dimension(SIDEBAR_WIDTH,
+                DUMMY_HEIGHT));
         _contentPane.add(_namedObjectTreePanel, BorderLayout.WEST);
 
         JPanel pnlEast = new JPanel();
-        pnlEast.setPreferredSize(new Dimension(SIDEBAR_WIDTH, 10));
+        pnlEast.setPreferredSize(new Dimension(SIDEBAR_WIDTH, DUMMY_HEIGHT));
         pnlEast.setLayout(new BorderLayout(0, 0));
         _contentPane.add(pnlEast, BorderLayout.EAST);
 
@@ -385,21 +391,13 @@ public class HomerMainFrame extends JFrame {
      */
     private static final int DEFAULT_BOUNDS = 100;
 
-    /** The initial scene width.
-     */
-    private static final int DEFAULT_FRAME_WIDTH = 800;
-
     /** The initial scene height.
      */
     private static final int DEFAULT_FRAME_HEIGHT = 600;
 
-    /** The width of the east screen panel where the image and remote object list reside.
+    /** The initial scene width.
      */
-    private static final int SIDEBAR_WIDTH = 250;
-
-    /** The height of the actor graph image.
-     */
-    private static final int GRAPH_HEIGHT = 150;
+    private static final int DEFAULT_FRAME_WIDTH = 800;
 
     /** The initial height of the scene.
      */
@@ -409,6 +407,18 @@ public class HomerMainFrame extends JFrame {
      */
     private static final int DEFAULT_SCENE_WIDTH = 600;
 
+    /** The dummy initial height parameter for frame sizing.
+     */
+    private static final int DUMMY_HEIGHT = 10;
+
+    /** The height of the actor graph image.
+     */
+    private static final int GRAPH_HEIGHT = 150;
+
+    /** The width of the east screen panel where the image and remote object list reside.
+     */
+    private static final int SIDEBAR_WIDTH = 250;
+
     /** The host application of this frame.
      */
     private HomerApplication _application;
@@ -417,31 +427,31 @@ public class HomerMainFrame extends JFrame {
      */
     private JPanel _contentPane;
 
-    /** The tree containing all elements of the model and sub-models.
+    /** The underlying multicontent of the screen.
      */
-    private NamedObjectTree _namedObjectTreePanel;
-
-    /** The tabbed area onto which the user can drop widgets.
-     */
-    private TabbedLayoutScene _screenPanel;
-
-    /** The list of remote objects included as part of the layout file.
-     */
-    private RemoteObjectList _remoteObjectsPanel;
+    private HomerMultiContent _contents;
 
     /** The actor graph panel that provides a visual representation of the model.
      */
     private JPanel _graphPanel;
 
-    /** The current model file URL.
-     */
-    private URL _modelURL;
-
     /** The current layout file URL.
      */
     private URL _layoutURL;
 
-    /** The underlying multicontent of the screen.
+    /** The current model file URL.
      */
-    private HomerMultiContent _contents;
+    private URL _modelURL;
+
+    /** The tree containing all elements of the model and sub-models.
+     */
+    private NamedObjectTree _namedObjectTreePanel;
+
+    /** The list of remote objects included as part of the layout file.
+     */
+    private RemoteObjectList _remoteObjectsPanel;
+
+    /** The tabbed area onto which the user can drop widgets.
+     */
+    private TabbedLayoutScene _screenPanel;
 }

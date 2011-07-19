@@ -43,7 +43,7 @@ import ptolemy.vergil.VergilErrorHandler;
 //// HomerApplication
 
 /** The UI designer application responsible for handling configuration and
- *  opening the main frame container
+ *  opening the main frame container.
  *  
  *  @author Justin Killian
  *  @version $Id$ 
