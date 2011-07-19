@@ -56,14 +56,10 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 
-import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.homer.events.NonVisualContentEvent;
-import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.LayoutFileOperations.SinkOrSource;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;

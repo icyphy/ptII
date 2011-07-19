@@ -4,7 +4,6 @@ import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
 import ptolemy.actor.gui.PortableContainer;
-import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;

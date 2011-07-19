@@ -65,14 +65,12 @@ import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.modules.visual.action.AlignWithMoveStrategyProvider;
 import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
-import de.cau.cs.kieler.kiml.options.LayoutDirection;
-
 import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.homer.kernel.ContentPrototype;
 import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.homer.kernel.LayoutFileOperations;
-import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.homer.kernel.LayoutFileOperations.SinkOrSource;
+import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

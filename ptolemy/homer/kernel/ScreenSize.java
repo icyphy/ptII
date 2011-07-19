@@ -59,8 +59,8 @@ public class ScreenSize extends Parameter {
             IntMatrixToken token = (IntMatrixToken) getToken();
 
             if (token != null) {
-                int width = token.getElementAt(0, 0);
-                int height = token.getElementAt(0, 1);
+                token.getElementAt(0, 0);
+                token.getElementAt(0, 1);
             }
             
             return true;
