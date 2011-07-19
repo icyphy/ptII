@@ -3263,7 +3263,9 @@ public class IOPort extends ComponentPort {
                 if (container != null) {
                     Director director = ((Actor) container)
                             .getExecutiveDirector();
-                    depthOfDirector = director.depthInHierarchy();
+                    if (director != null) {
+                        depthOfDirector = director.depthInHierarchy();
+                    }
                 }
 
                 _sourcePortList = new LinkedList<IOPort>();
