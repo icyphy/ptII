@@ -14,11 +14,11 @@
 <entity name="AverageOverTime" class="ptolemy.domains.de.lib.AverageOverTime">
 </entity>
 
-<entity name="EventFilter" class="ptolemy.domains.de.lib.EventFilter">
-</entity>
-
 <entity name="Derivative" class="ptolemy.domains.de.lib.Derivative">
 <doc>Discrete derivative.</doc>
+</entity>
+
+<entity name="EventFilter" class="ptolemy.domains.de.lib.EventFilter">
 </entity>
 
 <entity name="Inhibit" class="ptolemy.domains.de.lib.Inhibit">
