@@ -100,7 +100,23 @@ public class GenerateCopyrights {
         Map copyrightsMap = new HashMap();
 
         // Add the classnames and copyrights.
+
+        // Guice, aop and javax.inject
+        _addIfPresent(copyrightsMap,
+                "javax.inject.Provider",
+                "lib/javax.inject-license.htm");
+
+        _addIfPresent(copyrightsMap,
+                "org.aopalliance.intercept.MethodInterceptor",
+                "lib/aopalliance-license.htm");
+
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.injection.PtolemyInjector",
+                "lib/guice-license.htm");
+        
+
         // Alphabetical by className.
+
         _addIfPresent(copyrightsMap,
                 "ptolemy.actor.gui.run.PtolemyFormEditor",
                 "com/jgoodies/jgoodies-copyright.htm");
