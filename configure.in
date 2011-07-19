@@ -3055,6 +3055,8 @@ else
     if test -f "$RXTX_JAR"; then
         PT_MSG_RESULT(ok)
 	RXTX_PRESENT=yes
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$RXTX_JAR\"/>"
     else 
 	AC_MSG_RESULT([Did not find 
 	'$RXTX_JAR'])
