@@ -36,7 +36,8 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../../../../..
 
-CLASSPATH = $(ROOT)
+# This directory might get built before ptolemy.actor.injection, so we include guice
+CLASSPATH = $(ROOT)$(CLASSPATHSEPARATOR)$(PTINJECTION_JARS)
 
 # Get configuration info
 CONFIG =    $(ROOT)/mk/ptII.mk
