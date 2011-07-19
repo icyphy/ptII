@@ -477,7 +477,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // have duplicate variables is because we have two custom actors
                 // in one container and the container has Parameters.
                 containmentCode
-                        .append("if ($containerSymbol().getEntity(\""
+                        .append("if ($containerSymbol().getAttribute(\""
                                 + variable.getName() + "\") == null) {" + _eol
                                 + "   new Variable($containerSymbol(), \""
                                 + variable.getName() + "\").setExpression(\""
@@ -535,7 +535,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 //+ actorPort.getName().replace("\\", "\\\\") + "\", "
                                 + AutoAdapter._externalPortName(
                                         actorPort.getContainer(),
-                                        actorPort.getName()) + "\", "
+                                        actorPort.getName())
+                                + "\", "
                                 + actorPort.isInput() + ", "
                                 + actorPort.isOutput()
                                 + ").setMultiport(true);" + _eol);
@@ -591,7 +592,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             // However, if we don't set the port of the container, then this fails:
                             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
                             + "(TypedIOPort)$containerSymbol().getPort(\""
-                            + insidePort.getName().replace("\\", "\\\\")
+                            //+ insidePort.getName().replace("\\", "\\\\")
+                            + AutoAdapter._externalPortName(
+                                        insidePort.getContainer(),
+                                        insidePort.getName())
                             + "\"), \"inputType\");" + _eol
                             + "_type.setExpression(\""
                             + typeAttribute.getExpression() + "\");" + _eol
@@ -1589,7 +1593,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + ", " + port.isOutput() + ");" + _eol + "}" + _eol);
 
             String portOrParameter = "(TypedIOPort)$actorSymbol(actor).getPort(\""
-                    + unescapedActorPortName.replace("\\", "\\\\") + "\")";
+                //+ unescapedActorPortName.replace("\\", "\\\\") + "\")";
+                    + AutoAdapter._externalPortName(port.getContainer(),
+                            unescapedActorPortName) + "\")";
             if (!readingRemoteParameters) {
                 code.append("    $containerSymbol().connect($actorSymbol("
                         + escapedCodegenPortName + "), " + portOrParameter
