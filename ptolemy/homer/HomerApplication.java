@@ -42,6 +42,15 @@ import ptolemy.vergil.VergilErrorHandler;
 ///////////////////////////////////////////////////////////////////
 //// HomerApplication
 
+/** The UI designer application responsible for handling configuration and
+ *  opening the main frame container
+ *  
+ *  @author Justin Killian
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (jkillian)
+ *  @Pt.AcceptedRating Red (jkillian)
+ */
 public class HomerApplication extends MoMLApplication {
 
     /** Initialize the platform injection framework.

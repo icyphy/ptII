@@ -1,4 +1,5 @@
-/* TODO
+/* The main content frame of the Homer UI designer.
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -81,11 +82,13 @@ public class HomerMainFrame extends JFrame {
     ////                         constructor                       ////
 
     /** Create the UI designer frame.
+     *  @param application The application hosting this frame.
      */
     public HomerMainFrame(HomerApplication application) {
         setTitle("UI Designer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 800, 600);
+        setBounds(DEFAULT_BOUNDS, DEFAULT_BOUNDS, DEFAULT_FRAME_WIDTH,
+                DEFAULT_FRAME_HEIGHT);
 
         _application = application;
         _initializeFrame();
@@ -124,7 +127,6 @@ public class HomerMainFrame extends JFrame {
 
         HomerWidgetElement element = new HomerWidgetElement(object,
                 panel.getContent());
-
         if (dimension == null) {
             dimension = new Dimension(0, 0);
         }
@@ -184,7 +186,6 @@ public class HomerMainFrame extends JFrame {
         } catch (IllegalActionException e) {
             MessageHandler.error(e.getMessage(), e);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -209,10 +210,9 @@ public class HomerMainFrame extends JFrame {
         } catch (CloneNotSupportedException e) {
             MessageHandler.error(e.getMessage(), e);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         // Need to remove the first tab, the default tab
         _contents.removeTab(0);
     }
@@ -229,52 +229,83 @@ public class HomerMainFrame extends JFrame {
         }
     }
 
+    /** Remove the visual named object from the scene.
+     *  @param element The screen element to be removed.
+     */
     public void removeVisualNamedObject(PositionableElement element) {
         _contents.removeElement(element);
     }
 
-    public void addTab(String name) {
-        _contents.addTab(name);
+    /** Add a tab to the screen with the given name.
+     *  @param tabName The name of the tab.
+     */
+    public void addTab(String tabName) {
+        _contents.addTab(tabName);
     }
 
-    public void addTab(String tag, String name) {
+    /** Add a tab to the screen with the given name and tag.
+     *  @param tabTag The tag of the tab.
+     *  @param tabName The name of the tab.
+     */
+    public void addTab(String tabTag, String tabName) {
         try {
-            _contents.addTab(tag, name);
+            _contents.addTab(tabTag, tabName);
         } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    /** Remove the tab at the given index.
+     *  @param index The tab index to be removed.
+     */
     public void removeTab(int index) {
         _contents.removeTab(index);
     }
-    
+
+    /** Set the tab title.
+     *  @param position The tab index being changed.
+     *  @param text The new tab text.
+     */
     public void setTabTitleAt(int position, String text) {
         _contents.setNameAt(position, text);
     }
 
+    /** Get the scene on the tab.
+     *  @param tabTag The tag of the tab being retrieved.
+     *  @return The scene on the selected tab.
+     */
     public Scene getTabContent(String tabTag) {
         return (Scene) _contents.getContent(tabTag);
     }
 
+    /** See if the multi-content already has the NamedObj.
+     *  @param key The NamedObj to check existence.
+     *  @return If the NamedObj is in the content.
+     */
     public boolean contains(NamedObj key) {
         return _contents.contains(key);
     }
 
+    /** Get all tab definitions.
+     *  @return The tab definitions of the window.
+     */
     public ArrayList<TabDefinition> getAllTabs() {
         return _contents.getAllTabs();
     }
 
+    /** Get the current layout file URL.
+     *  @return The current layout file URL.
+     */
     public URL getLayoutURL() {
         try {
             if (!new File(_layoutURL.toURI()).canRead()) {
                 return null;
             }
+
+            return _layoutURL;
         } catch (URISyntaxException e) {
             return null;
         }
-        return _layoutURL;
     }
 
     /** Get the model URL.
@@ -313,15 +344,16 @@ public class HomerMainFrame extends JFrame {
         _contentPane.add(_namedObjectTreePanel, BorderLayout.WEST);
 
         JPanel pnlEast = new JPanel();
-        pnlEast.setPreferredSize(new Dimension(200, 10));
-        _contentPane.add(pnlEast, BorderLayout.EAST);
+        pnlEast.setPreferredSize(new Dimension(SIDEBAR_WIDTH, 10));
         pnlEast.setLayout(new BorderLayout(0, 0));
+        _contentPane.add(pnlEast, BorderLayout.EAST);
 
         _graphPanel = new JPanel();
         _graphPanel.setLayout(new BorderLayout());
         _graphPanel.setBorder(new TitledBorder(null, "Graph Preview",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        _graphPanel.setPreferredSize(new Dimension(10, 150));
+        _graphPanel
+                .setPreferredSize(new Dimension(SIDEBAR_WIDTH, GRAPH_HEIGHT));
         pnlEast.add(_graphPanel, BorderLayout.NORTH);
 
         _remoteObjectsPanel = new RemoteObjectList(this);
@@ -331,7 +363,8 @@ public class HomerMainFrame extends JFrame {
         pnlEast.add(_remoteObjectsPanel, BorderLayout.CENTER);
 
         _screenPanel = new TabbedLayoutScene(this);
-        _screenPanel.getSceneTabs().setPreferredSize(new Dimension(600, 400));
+        _screenPanel.getSceneTabs().setPreferredSize(
+                new Dimension(DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT));
 
         JScrollPane scroller = new JScrollPane();
         scroller.setBorder(new TitledBorder(null, "Screen Layout",
@@ -348,13 +381,67 @@ public class HomerMainFrame extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The default bounds applied to this window.
+     */
+    private static final int DEFAULT_BOUNDS = 100;
+
+    /** The initial scene width.
+     */
+    private static final int DEFAULT_FRAME_WIDTH = 800;
+
+    /** The initial scene height.
+     */
+    private static final int DEFAULT_FRAME_HEIGHT = 600;
+
+    /** The width of the east screen panel where the image and remote object list reside.
+     */
+    private static final int SIDEBAR_WIDTH = 250;
+
+    /** The height of the actor graph image.
+     */
+    private static final int GRAPH_HEIGHT = 150;
+
+    /** The initial height of the scene.
+     */
+    private static final int DEFAULT_SCENE_HEIGHT = 400;
+
+    /** The initial width of the scene.
+     */
+    private static final int DEFAULT_SCENE_WIDTH = 600;
+
+    /** The host application of this frame.
+     */
     private HomerApplication _application;
+
+    /** The main content pane of the frame.
+     */
     private JPanel _contentPane;
+
+    /** The tree containing all elements of the model and sub-models.
+     */
     private NamedObjectTree _namedObjectTreePanel;
+
+    /** The tabbed area onto which the user can drop widgets.
+     */
     private TabbedLayoutScene _screenPanel;
+
+    /** The list of remote objects included as part of the layout file.
+     */
     private RemoteObjectList _remoteObjectsPanel;
+
+    /** The actor graph panel that provides a visual representation of the model.
+     */
     private JPanel _graphPanel;
+
+    /** The current model file URL.
+     */
     private URL _modelURL;
+
+    /** The current layout file URL.
+     */
     private URL _layoutURL;
+
+    /** The underlying multicontent of the screen.
+     */
     private HomerMultiContent _contents;
 }
