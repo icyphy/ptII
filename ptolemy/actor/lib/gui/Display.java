@@ -425,7 +425,10 @@ public class Display extends AbstractPlaceableActor {
         // to 0, then stopping the model by hitting the stop button
         // was taking between 2 and 17 seconds (average over 11 runs, 7.2 seconds)
         // If we have a Thread.yield() here, then the time is between
-        // 1.3 and 3.5 seconds ( average over 10 runs, 2.5 seconds)
+        // 1.3 and 3.5 seconds ( average over 10 runs, 2.5 seconds).
+        // Unfortunately, this doesn't actually work... The textArea object
+        // may clutter the event thread with unprocessed events that delay
+        // response to the stop button.
         Thread.yield();
 
         return super.postfire();
