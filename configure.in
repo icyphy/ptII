@@ -2106,11 +2106,27 @@ else
 
     if test  -f "$PTGUICE_JAR"; then
 	PT_MSG_RESULT([$PTGUICE_JAR])
-	# Set to injection and used in
-	# $PTII/ptolemy/actor/makefile
-	PTINJECTION_DIR=injection
-        # INJECTION_PACKAGES is used in ptII/doc/makefile
-	PTINJECTION_PACKAGES=ptolemy.actor.injection
+        AC_MSG_CHECKING([for javax.inject, used by injection ])
+        AC_ARG_WITH(javaxinject, [  --with-javax-inject=JAR       use javax.inject.jar from JAR,
+                          defaults to \$PTII/lib/javax.inject.jar],
+	PTJAVAX_INJECT_JAR=$withval,
+	PTJAVAX_INJECT_JAR=$PTII/lib/javax.inject.jar)
+
+	if test  -f "$PTJAVAX_INJECT_JAR"; then
+	    PT_MSG_RESULT([$PTJAVAX_INJECT_JAR])
+            AC_ARG_WITH(aopalliance, [  --with-aopalliance=JAR       use aopalliance.jar from JAR,
+                          defaults to \$PTII/lib/aopalliance.jar],
+	    PTAOPALLIANCE_JAR=$withval,
+	    PTAOPALLIANCE_JAR=$PTII/lib/aopalliance.jar)
+
+	    if test  -f "$PTAOPALLIANCE_JAR"; then
+	        # Set to injection and used in
+	        # $PTII/ptolemy/actor/makefile
+	        PTINJECTION_DIR=injection
+                # INJECTION_PACKAGES is used in ptII/doc/makefile
+	        PTINJECTION_PACKAGES=ptolemy.actor.injection
+            fi
+        fi
     fi
 
     if test "$PTINJECTION_DIR" = ""; then
@@ -2118,15 +2134,18 @@ else
     The injection code interface is used to support Ptolemy running on the Android.
     For further instructions, see $PTII/ptolemy/actor/injection/package.html] )
     else
-        PTINJECTION_JARS="${PTGUICE_JAR}${CLASSPATHSEPARATOR}"
+        PTINJECTION_JARS="${PTGUICE_JAR}${CLASSPATHSEPARATOR}${PTJAVAX_INJECT_JAR}${CLASSPATHSEPARATOR}${PTAOPALLIANCE_JAR}${CLASSPATHSEPARATOR}"
     fi
 fi
 
 if test -z "$PTINJECTION_JARS"; then
+   # FIXME: also exclude ptolemy.actor.gui and vergil.
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/injection/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTGUICE_JAR\"/>"
+       <classpathentry kind=\"lib\" path=\"$PTGUICE_JAR\"/> \
+       <classpathentry kind=\"lib\" path=\"$PTJAVA_INJECT_JAR\"/> \
+       <classpathentry kind=\"lib\" path=\"$PTAOPALLIANCE_JAR\"/>"
 fi 
 
 #--------------------------------------------------------------------

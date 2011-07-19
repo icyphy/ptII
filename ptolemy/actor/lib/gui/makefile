@@ -38,8 +38,9 @@ DIRS = 		test
 # Root of the Java directory
 ROOT =		../../../..
 
-# ArrowKeySensor requires this
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# This directory might get built before ptolemy.actor.injection, so we include guice
+# ArrowKeySensor requires diva.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(PTINJECTION_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -55,13 +56,17 @@ JSRCS = \
 	ArrayPlotterXY.java \
 	ArrowKeyProbe.java \
 	ArrowKeySensor.java \
+	AWTDisplay.java \
 	BarGraph.java \
 	Display.java \
+	DisplayInterface.java \
 	HistogramPlotter.java \
 	InteractiveShell.java \
 	MatrixViewer.java \
 	Plotter.java \
 	PlotterBase.java \
+	PlotterBaseAWT.java \
+	PlotterBaseInterface.java \
 	RealTimePlotter.java \
 	SequencePlotter.java \
 	SequenceScope.java \

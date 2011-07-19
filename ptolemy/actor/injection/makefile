@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Javasound actors
+# Makefile for Ptolemy II Guice injection classes
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 57040 2010-01-27 20:52:32Z cxh $
 #
-# @Copyright (c) 1998-2008 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,66 +29,46 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/javasound
+ME =		ptolemy/actor/injection
 
-DIRS = 		test demo
+DIRS =
 
-# Root of the Java directory
-ROOT =		../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../..
 
-# This directory might get built before ptolemy.actor.injection, so we include guice
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTINJECTION_JARS)
+# PTJINJECTION_JARS is set to include guice.jar by configure
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(PTINJECTION_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	javasound
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	injection
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 
 # Keep this list alphabetized.
 JSRCS = \
-	AudioReader.java \
-	AudioWriter.java \
-	AudioCapture.java \
-	AudioPlayer.java \
-	AudioReadBuffer.java \
-	AudioWriteBuffer.java \
-	ClipPlayer.java \
-	LiveSoundActor.java \
-	SoundActor.java \
-	SoundPlayer.java
+	PtolemyInjector.java \
+	PtolemyModule.java
 
-# We include voice.wav so that we can include the voice.wav file in
-# the jar file for use under Web Start.
-OTHER_FILES_TO_BE_JARED = \
-	AudioCaptureIcon.xml \
-	AudioPlayerIcon.xml \
-	gong.wav \
-	javasound.xml \
-	voice.wav
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-

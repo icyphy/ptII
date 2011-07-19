@@ -1504,6 +1504,10 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/itext/iText.jar
   --with-guice=JAR       use guice.jar from JAR,
                           defaults to \$PTII/lib/guice-3.0.jar
+  --with-javax-inject=JAR       use javax.inject.jar from JAR,
+                          defaults to \$PTII/lib/javax.inject.jar
+  --with-aopalliance=JAR       use aopalliance.jar from JAR,
+                          defaults to \$PTII/lib/aopalliance.jar
   --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
                           defaults to \$PTII/vendors/oracle/javamail
   --with-jogl=DIRECTORY       use Java OpenGL interface (jogl) from DIRECTORY,
@@ -5072,7 +5076,7 @@ if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
 else
   ac_cv_header_stdc=no
 fi
-rm -f conftest*
+rm -f -r conftest*
 
 fi
 
@@ -5093,7 +5097,7 @@ if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
 else
   ac_cv_header_stdc=no
 fi
-rm -f conftest*
+rm -f -r conftest*
 
 fi
 
@@ -7795,11 +7799,38 @@ fi
 	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTGUICE_JAR" >&5
 echo "${ECHO_T}$PTGUICE_JAR" >&6; }; fi
-	# Set to injection and used in
-	# $PTII/ptolemy/actor/makefile
-	PTINJECTION_DIR=injection
-        # INJECTION_PACKAGES is used in ptII/doc/makefile
-	PTINJECTION_PACKAGES=ptolemy.actor.injection
+        { echo "$as_me:$LINENO: checking for javax.inject, used by injection " >&5
+echo $ECHO_N "checking for javax.inject, used by injection ... $ECHO_C" >&6; }
+
+# Check whether --with-javaxinject was given.
+if test "${with_javaxinject+set}" = set; then
+  withval=$with_javaxinject; PTJAVAX_INJECT_JAR=$withval
+else
+  PTJAVAX_INJECT_JAR=$PTII/lib/javax.inject.jar
+fi
+
+
+	if test  -f "$PTJAVAX_INJECT_JAR"; then
+	    if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVAX_INJECT_JAR" >&5
+echo "${ECHO_T}$PTJAVAX_INJECT_JAR" >&6; }; fi
+
+# Check whether --with-aopalliance was given.
+if test "${with_aopalliance+set}" = set; then
+  withval=$with_aopalliance; PTAOPALLIANCE_JAR=$withval
+else
+  PTAOPALLIANCE_JAR=$PTII/lib/aopalliance.jar
+fi
+
+
+	    if test  -f "$PTAOPALLIANCE_JAR"; then
+	        # Set to injection and used in
+	        # $PTII/ptolemy/actor/makefile
+	        PTINJECTION_DIR=injection
+                # INJECTION_PACKAGES is used in ptII/doc/makefile
+	        PTINJECTION_PACKAGES=ptolemy.actor.injection
+            fi
+        fi
     fi
 
     if test "$PTINJECTION_DIR" = ""; then
@@ -7810,15 +7841,18 @@ echo "$as_me: WARNING: Failed to find the jar files necessary to compile injecti
     The injection code interface is used to support Ptolemy running on the Android.
     For further instructions, see $PTII/ptolemy/actor/injection/package.html " >&2;}
     else
-        PTINJECTION_JARS="${PTGUICE_JAR}${CLASSPATHSEPARATOR}"
+        PTINJECTION_JARS="${PTGUICE_JAR}${CLASSPATHSEPARATOR}${PTJAVAX_INJECT_JAR}${CLASSPATHSEPARATOR}${PTAOPALLIANCE_JAR}${CLASSPATHSEPARATOR}"
     fi
 fi
 
 if test -z "$PTINJECTION_JARS"; then
+   # FIXME: also exclude ptolemy.actor.gui and vergil.
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/injection/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTGUICE_JAR\"/>"
+       <classpathentry kind=\"lib\" path=\"$PTGUICE_JAR\"/> \
+       <classpathentry kind=\"lib\" path=\"$PTJAVA_INJECT_JAR\"/> \
+       <classpathentry kind=\"lib\" path=\"$PTAOPALLIANCE_JAR\"/>"
 fi
 
 #--------------------------------------------------------------------

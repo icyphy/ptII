@@ -47,12 +47,14 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	LiveSound.java \
+	LiveSoundInterface.java \
 	LiveSoundListener.java \
 	LiveSoundEvent.java \
 	SoundCapture.java \
 	SoundPlayback.java \
 	SoundReader.java \
-	SoundWriter.java
+	SoundWriter.java \
+	VergilLiveSound.java
 
 EXTRA_SRCS =	$(JSRCS)
 
