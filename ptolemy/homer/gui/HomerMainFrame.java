@@ -44,17 +44,24 @@ import javax.swing.border.TitledBorder;
 
 import org.netbeans.api.visual.widget.Scene;
 
+import ptolemy.homer.HomerApplication;
 import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.HomerMultiContent;
 import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.homer.kernel.TabDefinition;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.basic.BasicGraphPane;
 import ptserver.util.ServerUtility;
+import diva.graph.JGraph;
+import diva.gui.toolbox.JCanvasPanner;
 
 //////////////////////////////////////////////////////////////////////////
 //// HomerMainFrame
@@ -75,16 +82,17 @@ public class HomerMainFrame extends JFrame {
 
     /** Create the UI designer frame.
      */
-    public HomerMainFrame() {
+    public HomerMainFrame(HomerApplication application) {
         setTitle("UI Designer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 600);
 
+        _application = application;
         _initializeFrame();
-        setJMenuBar(new HomerMenu(this).getMenuBar());
 
+        setJMenuBar(new HomerMenu(this).getMenuBar());
         newLayout(this.getClass().getResource(
-                "/ptserver/test/junit/SoundSpectrum.xml"));
+                "/ptserver/test/junit/NoisySinewave.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -161,10 +169,23 @@ public class HomerMainFrame extends JFrame {
         _modelURL = modelURL;
 
         try {
-            _namedObjectTreePanel.setCompositeEntity(ServerUtility
-                    .openModelFile(modelURL));
+            CompositeEntity topLevelActor = ServerUtility
+                    .openModelFile(modelURL);
+
+            ActorEditorGraphController controller = new ActorEditorGraphController();
+            controller.setConfiguration(_application.getConfiguration());
+
+            BasicGraphPane graphPane = new BasicGraphPane(controller,
+                    new ActorGraphModel(topLevelActor), topLevelActor);
+
+            _namedObjectTreePanel.setCompositeEntity(topLevelActor);
+            _graphPanel.add(new JCanvasPanner(new JGraph(graphPane)),
+                    BorderLayout.CENTER);
         } catch (IllegalActionException e) {
             MessageHandler.error(e.getMessage(), e);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
@@ -187,6 +208,9 @@ public class HomerMainFrame extends JFrame {
             e.printStackTrace();
         } catch (CloneNotSupportedException e) {
             MessageHandler.error(e.getMessage(), e);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         
         // Need to remove the first tab, the default tab
@@ -244,7 +268,7 @@ public class HomerMainFrame extends JFrame {
 
     public URL getLayoutURL() {
         try {
-            if (! new File(_layoutURL.toURI()).canRead()) {
+            if (!new File(_layoutURL.toURI()).canRead()) {
                 return null;
             }
         } catch (URISyntaxException e) {
@@ -258,7 +282,7 @@ public class HomerMainFrame extends JFrame {
      */
     public URL getModelURL() {
         try {
-            if (! new File(_modelURL.toURI()).canRead()) {
+            if (!new File(_modelURL.toURI()).canRead()) {
                 return null;
             }
         } catch (URISyntaxException e) {
@@ -266,6 +290,7 @@ public class HomerMainFrame extends JFrame {
         }
         return _modelURL;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -292,11 +317,12 @@ public class HomerMainFrame extends JFrame {
         _contentPane.add(pnlEast, BorderLayout.EAST);
         pnlEast.setLayout(new BorderLayout(0, 0));
 
-        JPanel pnlModelImage = new JPanel();
-        pnlModelImage.setBorder(new TitledBorder(null, "Graph Preview",
+        _graphPanel = new JPanel();
+        _graphPanel.setLayout(new BorderLayout());
+        _graphPanel.setBorder(new TitledBorder(null, "Graph Preview",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        pnlModelImage.setPreferredSize(new Dimension(10, 150));
-        pnlEast.add(pnlModelImage, BorderLayout.NORTH);
+        _graphPanel.setPreferredSize(new Dimension(10, 150));
+        pnlEast.add(_graphPanel, BorderLayout.NORTH);
 
         _remoteObjectsPanel = new RemoteObjectList(this);
         _remoteObjectsPanel.setBorder(new TitledBorder(null,
@@ -304,14 +330,15 @@ public class HomerMainFrame extends JFrame {
                 null, null));
         pnlEast.add(_remoteObjectsPanel, BorderLayout.CENTER);
 
-        _spnScreen = new JScrollPane();
-        _contentPane.add(_spnScreen, BorderLayout.CENTER);
-
         _screenPanel = new TabbedLayoutScene(this);
-        _spnScreen.setViewportView(_screenPanel);
-        // TODO is this needed?
         _screenPanel.getSceneTabs().setPreferredSize(new Dimension(600, 400));
 
+        JScrollPane scroller = new JScrollPane();
+        scroller.setBorder(new TitledBorder(null, "Screen Layout",
+                TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        scroller.setViewportView(_screenPanel);
+
+        _contentPane.add(scroller, BorderLayout.CENTER);
         _contents.addListener(_remoteObjectsPanel);
         _contents.addListener(_screenPanel);
 
@@ -321,11 +348,12 @@ public class HomerMainFrame extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private HomerApplication _application;
     private JPanel _contentPane;
-    private JScrollPane _spnScreen;
     private NamedObjectTree _namedObjectTreePanel;
     private TabbedLayoutScene _screenPanel;
     private RemoteObjectList _remoteObjectsPanel;
+    private JPanel _graphPanel;
     private URL _modelURL;
     private URL _layoutURL;
     private HomerMultiContent _contents;

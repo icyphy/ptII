@@ -26,48 +26,107 @@
 
 package ptolemy.homer;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.ActorModuleInitializer;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.homer.gui.HomerMainFrame;
+import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.VergilErrorHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// HomerApplication
 
-public class HomerApplication {
+public class HomerApplication extends MoMLApplication {
 
+    /** Initialize the platform injection framework.
+     */
     static {
         ActorModuleInitializer.initializeInjector();
     }
 
-    /** 
-     * TODO
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Parse the command-line arguments and configuration.
+     *  @param args The command-line arguments.
+     *  @exception Exception If command line arguments have problems.
      */
-    public HomerApplication() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    HomerMainFrame frame = new HomerMainFrame();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    public HomerApplication(String[] args) throws Exception {
+        super("ptolemy/configs", args);
+        MoMLParser.setErrorHandler(new VergilErrorHandler());
+
+        HomerMainFrame frame = new HomerMainFrame(this);
+        frame.setVisible(true);
     }
 
-    /** 
-     * TODO
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Create a new instance of this application, passing it the
+     *  command-line arguments.
+     *  @param args The command-line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
-            new HomerApplication();
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    try {
+                        new HomerApplication(args);
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                }
+            });
+        } catch (Throwable ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);
         }
     }
 
+    /** Get the local configuration of the application.
+     *  @return Get the default configuration.
+     */
+    public Configuration getConfiguration() {
+        return _configuration;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                       ////
+
+    /** Return the full default application configuration.  
+     *  @return The default application configuration.
+     *  @exception Exception If the configuration cannot be opened.
+     */
+    protected Configuration _createDefaultConfiguration() throws Exception {
+        URL configurationURL = null;
+        try {
+            configurationURL = specToURL(_basePath + "/full/configuration.xml");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        Configuration configuration = super._createDefaultConfiguration();
+        try {
+            configuration = readConfiguration(configurationURL);
+        } catch (Exception ex) {
+            throw new Exception("Failed to read configuration '"
+                    + configurationURL + "'", ex);
+        }
+
+        return configuration;
+    }
+
+    /** Return the full default configuration.
+     *  @return The default application configuration.
+     *  @exception Exception If the configuration cannot be opened.
+     */
+    protected Configuration _createEmptyConfiguration() throws Exception {
+        return _createDefaultConfiguration();
+    }
 }
