@@ -105,6 +105,7 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
      *  @param index The index of the desired child.
      *  @return A node, or null if there is no such child.
      */
+    @Override
     public Object getChild(Object parent, int index) {
         List attributes = getAttributes(parent);
         if (index > attributes.size() - 1) {
@@ -120,6 +121,7 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
      *  @param parent A parent node.
      *  @return The number of children.
      */
+    @Override
     public int getChildCount(Object parent) {
         return getAttributes(parent).size() + super.getChildCount(parent);
     }
@@ -130,6 +132,7 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
      *  @param child The child.
      *  @return The index of the specified child.
      */
+    @Override
     public int getIndexOfChild(Object parent, Object child) {
         return getAttributes(parent).indexOf(child);
     }
@@ -140,6 +143,7 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
      *  @param object The object.
      *  @return True if the node has no children.
      */
+    @Override
     public boolean isLeaf(Object object) {
         if (object == null) {
             return true;
@@ -156,6 +160,16 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
     public void applyFilter(String filter) {
         _filter = filter;
         valueForPathChanged(new TreePath(getRoot()), null);
+    }
+
+    /**
+     * Return empty list of classes.  This is done in order to hide class definitions.
+     * @return empty list of classes. 
+     * @see ptolemy.vergil.tree.ClassAndEntityTreeModel#_classes(java.lang.Object)
+     */
+    @Override
+    protected List _classes(Object object) {
+        return Collections.emptyList();
     }
 
     ///////////////////////////////////////////////////////////////////

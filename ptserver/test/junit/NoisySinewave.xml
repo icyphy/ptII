@@ -428,8 +428,6 @@
 		<link port="Gaussian.output" relation="relation5" />
 	</class>
 	<entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-		<property name="_remote" class="ptolemy.data.expr.Parameter"
-			value="sink"></property>
 		<property name="fillOnWrapup" class="ptolemy.data.expr.Parameter"
 			value="false">
 		</property>
@@ -456,8 +454,6 @@
 		</configure>
 	</entity>
 	<entity name="InstanceOfNoisySinewave" class="NoisySinewave">
-		<property name="_remote" class="ptolemy.data.expr.Parameter"
-			value="source"></property>
 		<property name="_location" class="ptolemy.kernel.util.Location"
 			value="175.0, 220.0">
 		</property>
@@ -484,8 +480,6 @@
 		</port>
 	</entity>
 	<entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
-		<property name="_remote" class="ptolemy.data.expr.Parameter"
-			value="source"></property>
 		<property name="_location" class="ptolemy.kernel.util.Location"
 			value="175.0, 290.0">
 		</property>

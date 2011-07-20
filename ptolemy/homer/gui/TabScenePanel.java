@@ -30,6 +30,7 @@ package ptolemy.homer.gui;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -74,6 +75,7 @@ import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
 import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.homer.kernel.ContentPrototype;
+import ptolemy.homer.kernel.HomerLocation;
 import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.LayoutFileOperations.SinkOrSource;
@@ -280,10 +282,16 @@ public class TabScenePanel implements ContentPrototype {
         }
 
         final Widget widget = ((HomerWidgetElement) element).getWidget();
-        Point location = new Point(element.getLocation().getX(), element
-                .getLocation().getY());
+        HomerLocation homerLocation = element.getLocation();
+        Point location = new Point(homerLocation.getX(), homerLocation.getY());
 
         widget.setPreferredLocation(location);
+        if (homerLocation.getWidth() > 0 && homerLocation.getHeight() > 0) {
+            widget.setPreferredSize(new Dimension(homerLocation.getWidth(),
+                    homerLocation.getHeight()));
+            widget.setPreferredBounds(new Rectangle(new Dimension(homerLocation
+                    .getWidth(), homerLocation.getHeight())));
+        }
 
         // Add widget resizing.
         widget.getActions().addAction(_resizeAction);
@@ -427,7 +435,9 @@ public class TabScenePanel implements ContentPrototype {
         WidgetPropertiesFrame dialog = new WidgetPropertiesFrame(widget);
         if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
             try {
-                widget.setPreferredBounds(dialog.getWidgetBounds());
+                Rectangle widgetBounds = dialog.getWidgetBounds();
+                _adjustBounds(widget, widgetBounds);
+                widget.setPreferredBounds(widgetBounds);
                 _scene.validate();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(_mainFrame, new JLabel(ex

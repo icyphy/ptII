@@ -35,6 +35,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ResourceBundle;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
@@ -241,7 +242,8 @@ public class HomerMenu {
     }
 
     private void _openMenuActionPerformed(ActionEvent e) {
-        OpenLayoutDialog openLayoutDialog = new OpenLayoutDialog(_mainFrame, this);
+        OpenLayoutDialog openLayoutDialog = new OpenLayoutDialog(_mainFrame,
+                this);
         Object result = openLayoutDialog.showDialog();
 
         if ((result == null) || (result == JOptionPane.UNINITIALIZED_VALUE)
@@ -309,6 +311,8 @@ public class HomerMenu {
 
     private void _initializeFileChooser() {
         _fileChooser = new JFileChooser();
+        _fileChooser.setCurrentDirectory(new File(ResourceBundle.getBundle(
+                "ptserver.PtolemyServerConfig").getString("MODELS_DIRECTORY")));
 
         _modelFilter = new FileFilter() {
             @Override

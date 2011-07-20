@@ -166,7 +166,8 @@ public class ServerUtility {
     }
 
     public static CompositeEntity mergeModelWithLayout(CompositeEntity model,
-            CompositeEntity layout, HashSet<Class<Attribute>> classesToMerge,
+            CompositeEntity layout,
+            HashSet<Class<? extends Attribute>> classesToMerge,
             HashSet<String> namedObjectsToMerge) throws IllegalActionException,
             NameDuplicationException, CloneNotSupportedException {
 
@@ -181,7 +182,7 @@ public class ServerUtility {
     }
 
     public static CompositeEntity mergeModelWithLayout(URL modelURL,
-            URL layoutURL, HashSet<Class<Attribute>> classesToMerge,
+            URL layoutURL, HashSet<Class<? extends Attribute>> classesToMerge,
             HashSet<String> namedObjectsToMerge) throws IllegalActionException,
             NameDuplicationException, CloneNotSupportedException {
         CompositeEntity model = openModelFile(modelURL);
@@ -191,7 +192,8 @@ public class ServerUtility {
     }
 
     public static CompositeEntity mergeModelWithLayout(String modelURL,
-            String layoutURL, HashSet<Class<Attribute>> classesToMerge,
+            String layoutURL,
+            HashSet<Class<? extends Attribute>> classesToMerge,
             HashSet<String> namedObjectsToMerge) throws MalformedURLException,
             IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
@@ -265,7 +267,7 @@ public class ServerUtility {
      */
     private static void _mergeElements(NamedObj source,
             CompositeEntity targetModel,
-            HashSet<Class<Attribute>> classesToMerge,
+            HashSet<Class<? extends Attribute>> classesToMerge,
             HashSet<String> namedObjectsToMerge) throws IllegalActionException,
             CloneNotSupportedException {
         // Check if source and model is available.
@@ -294,52 +296,51 @@ public class ServerUtility {
         // not present in the target model.
         List<Attribute> attributeList = ServerUtility.deepAttributeList(source);
         for (Attribute attribute : attributeList) {
-            if (classesToMerge != null
-                    && !classesToMerge.contains(attribute.getClass())) {
-                continue;
-            }
-            if ((namedObjectsToMerge != null && !namedObjectsToMerge
-                    .contains(attribute.getName()))) {
-                continue;
-            }
-            // Insert attribute into the target model. The attribute will no longer be
-            // available in the source.
-            try {
-                // Get read and write access from the source to the target.
-                source.workspace().getReadAccess();
-                targetModel.workspace().getWriteAccess();
+            if (classesToMerge == null
+                    || classesToMerge.contains(attribute.getClass())
+                    || namedObjectsToMerge == null
+                    || namedObjectsToMerge.contains(attribute.getName())) {
+                // Insert attribute into the target model. The attribute will no longer be
+                // available in the source.
+                try {
+                    // Get read and write access from the source to the target.
+                    source.workspace().getReadAccess();
+                    targetModel.workspace().getWriteAccess();
 
-                Attribute clonedAttribute = (Attribute) attribute
-                        .clone(targetModel.workspace());
-                NamedObj targetParent = null;
-                if (attribute.getContainer() instanceof ComponentEntity) {
-                    targetParent = targetModel
-                            .getEntity(stripFullName(attribute.getContainer()
-                                    .getFullName()));
-                } else if (attribute.getContainer() instanceof Attribute) {
-                    targetParent = targetModel
-                            .getAttribute(stripFullName(attribute
-                                    .getContainer().getFullName()));
-                }
+                    Attribute clonedAttribute = (Attribute) attribute
+                            .clone(targetModel.workspace());
+                    NamedObj targetParent = null;
+                    if (attribute.getContainer().getContainer() == null) {
+                        targetParent = targetModel;
+                    } else if (attribute.getContainer() instanceof ComponentEntity) {
+                        targetParent = targetModel
+                                .getEntity(stripFullName(attribute
+                                        .getContainer().getFullName()));
+                    } else if (attribute.getContainer() instanceof Attribute) {
+                        targetParent = targetModel
+                                .getAttribute(stripFullName(attribute
+                                        .getContainer().getFullName()));
+                    }
 
-                if (targetParent != null) {
-                    clonedAttribute.setPersistent(true);
-                    clonedAttribute.setContainer(targetParent);
-                } else if (attribute.getContainer().getFullName()
-                        .equals(targetModel.getFullName())) {
-                    clonedAttribute.setPersistent(true);
-                    clonedAttribute.setContainer(targetModel);
-                } else {
-                    // TODO should we log this or throw an exception?
+                    if (targetParent != null) {
+                        clonedAttribute.setPersistent(true);
+                        clonedAttribute.setContainer(targetParent);
+                    } else if (attribute.getContainer().getFullName()
+                            .equals(targetModel.getFullName())) {
+                        clonedAttribute.setPersistent(true);
+                        clonedAttribute.setContainer(targetModel);
+                    } else {
+                        // TODO should we log this or throw an exception?
+                    }
+                } catch (NameDuplicationException e) {
+                    // The attribute already exists. Since deepAttributeList returns all deeply
+                    // nested attributes too, the merge will look into attributes in lower levels
+                    // of the model. No need to do anything here.
+                } finally {
+                    // Remove the accesses from the workspaces.
+                    targetModel.workspace().doneWriting();
+                    source.workspace().doneReading();
                 }
-            } catch (NameDuplicationException e) {
-                // The attribute already exists. Since deepAttributeList returns all deeply
-                // nested attributes too, the merge will look into attributes in lower levels
-                // of the model. No need to do anything here.
-            } finally {
-                // Remove the accesses from the workspaces.
-                targetModel.workspace().doneWriting();
-                source.workspace().doneReading();
             }
         }
     }

@@ -151,7 +151,8 @@ public class GlassPaneWidget extends NamedObjectWidget implements
         addDependency(new Dependency() {
 
             public void revalidateDependency() {
-                if (!isPreferredBoundsSet() || getPreferredBounds() == null) {
+                if (!isPreferredBoundsSet() || getPreferredBounds() == null
+                        || getClientArea() == null) {
                     return;
                 }
                 if (getClientArea().getSize().equals(_glassPane.getSize())) {

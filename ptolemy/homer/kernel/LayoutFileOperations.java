@@ -77,8 +77,15 @@ public class LayoutFileOperations {
     public static CompositeEntity open(HomerMainFrame mainFrame, URL modelURL,
             URL layoutURL) throws IllegalActionException,
             NameDuplicationException, CloneNotSupportedException {
+        HashSet<Class<? extends Attribute>> classesToMerge = new HashSet<Class<? extends Attribute>>();
+        classesToMerge.add(HomerLocation.class);
+        HashSet<String> namedObjectsToMerge = new HashSet<String>();
+        namedObjectsToMerge.add(HomerConstants.TAB_NODE);
+        namedObjectsToMerge.add(HomerConstants.TABS_NODE);
+        namedObjectsToMerge.add(HomerConstants.ORIENTATION_NODE);
+        namedObjectsToMerge.add(ProxyModelBuilder.REMOTE_OBJECT_TAG);
         CompositeEntity mergedModel = ServerUtility.mergeModelWithLayout(
-                modelURL, layoutURL, null, null);
+                modelURL, layoutURL, classesToMerge, namedObjectsToMerge);
         LayoutParser parser = new LayoutParser(mergedModel);
         HashSet<NamedObj> proxyElements = parser.getProxyElements();
         HashSet<NamedObj> visualElements = parser.getPositionableElements();
@@ -92,7 +99,7 @@ public class LayoutFileOperations {
         // Add visual elements.
         for (NamedObj object : visualElements) {
             Attribute tab = object.getAttribute(HomerConstants.TAB_NODE);
-            if (tab == null || ! (tab instanceof Settable)) {
+            if (tab == null || !(tab instanceof Settable)) {
                 // FIXME Maybe there elements should be added to a default tab.
                 throw new IllegalActionException(object,
                         "Visual object with no tab defined.");
@@ -309,9 +316,10 @@ public class LayoutFileOperations {
      *  @return The IntMatrixToken representing the location of the widget.
      */
     public static IntMatrixToken getLocationToken(Widget widget) {
-        int[][] location = new int[][] { { widget.getBounds().x,
-                widget.getBounds().y, widget.getBounds().width,
-                widget.getBounds().height } };
+        int[][] location = new int[][] { {
+                widget.getPreferredBounds().x + widget.getPreferredLocation().x,
+                widget.getPreferredBounds().y + widget.getPreferredLocation().y,
+                widget.getBounds().width, widget.getBounds().height } };
         IntMatrixToken locationToken = null;
         try {
             locationToken = new IntMatrixToken(location);
