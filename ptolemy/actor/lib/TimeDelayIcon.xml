@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+<property name="TimeDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{0, 0}">
         </property>
@@ -14,7 +14,7 @@
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 109, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 109, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -27,17 +27,19 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="delay of">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="delay of:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-23.0, -16.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-31.0, -19.0]">
         </property>
     </property>
     <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="delay">
         </property>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-14.0, -2.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-31.0, -2.0]">
         </property>
     </property>
 </property>
