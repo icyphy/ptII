@@ -248,20 +248,12 @@ public class HomerMainFrame extends JFrame {
         try {
             CompositeEntity topLevelActor = ServerUtility
                     .openModelFile(modelURL);
-
-            ActorEditorGraphController controller = new ActorEditorGraphController();
-            controller.setConfiguration(_application.getConfiguration());
-
-            BasicGraphPane graphPane = new BasicGraphPane(controller,
-                    new ActorGraphModel(topLevelActor), topLevelActor);
-
             _namedObjectTreePanel.setCompositeEntity(topLevelActor);
-            _graphPanel.add(new JCanvasPanner(new JGraph(graphPane)),
-                    BorderLayout.CENTER);
+            _initializeGraphPreview(topLevelActor);
         } catch (IllegalActionException e) {
             MessageHandler.error(e.getMessage(), e);
         } catch (Exception e) {
-            e.printStackTrace();
+            MessageHandler.error(e.getMessage(), e);
         }
     }
 
@@ -275,8 +267,10 @@ public class HomerMainFrame extends JFrame {
         _layoutURL = layoutURL;
 
         try {
-            _namedObjectTreePanel.setCompositeEntity(LayoutFileOperations.open(
-                    this, modelURL, layoutURL));
+            CompositeEntity topLevelActor = LayoutFileOperations.open(this,
+                    modelURL, layoutURL);
+            _namedObjectTreePanel.setCompositeEntity(topLevelActor);
+            _initializeGraphPreview(topLevelActor);
         } catch (IllegalActionException e) {
             MessageHandler.error(e.getMessage(), e);
         } catch (NameDuplicationException e) {
@@ -285,7 +279,7 @@ public class HomerMainFrame extends JFrame {
         } catch (CloneNotSupportedException e) {
             MessageHandler.error(e.getMessage(), e);
         } catch (Exception e) {
-            e.printStackTrace();
+            MessageHandler.error(e.getMessage(), e);
         }
 
         // Need to remove the first tab, the default tab
@@ -388,6 +382,18 @@ public class HomerMainFrame extends JFrame {
         _contents.addListener(_screenPanel);
 
         addTab("Default");
+    }
+
+    private void _initializeGraphPreview(CompositeEntity topLevelActor) {
+        _graphPanel.removeAll();
+        ActorEditorGraphController controller = new ActorEditorGraphController();
+        controller.setConfiguration(_application.getConfiguration());
+
+        BasicGraphPane graphPane = new BasicGraphPane(controller,
+                new ActorGraphModel(topLevelActor), topLevelActor);
+        _graphPanel.add(new JCanvasPanner(new JGraph(graphPane)),
+                BorderLayout.CENTER);
+        _graphPanel.revalidate();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -408,15 +408,15 @@ public class TabScenePanel implements ContentPrototype {
     private void _adjustBounds(Widget widget, Rectangle bounds) {
         Insets insets = widget.getBorder().getInsets();
         Point preferredLocation = widget.getPreferredLocation();
-        if (bounds.x + preferredLocation.x + bounds.getWidth() - insets.left > _scene
+        if (bounds.x + preferredLocation.x + bounds.getWidth() - insets.right > _scene
                 .getView().getWidth()) {
             bounds.width = _scene.getView().getWidth()
-                    - (bounds.x + preferredLocation.x - insets.left);
+                    - (bounds.x + preferredLocation.x - insets.right);
         }
-        if (bounds.y + preferredLocation.y + bounds.getHeight() + insets.top > _scene
+        if (bounds.y + preferredLocation.y + bounds.getHeight() + insets.bottom > _scene
                 .getView().getHeight()) {
             bounds.height = _scene.getView().getHeight()
-                    - (bounds.y + preferredLocation.y + insets.top);
+                    - (bounds.y + preferredLocation.y + insets.bottom);
         }
 
         if (bounds.x + preferredLocation.x + insets.left < 0) {
