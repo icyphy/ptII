@@ -1537,6 +1537,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // port of the other custom actor.  This obviates
                         // the need for checking for the connection at
                         // runtime.
+                        code.append("System.out.println(\"C\");");
                         code.append(relationAssignment
                                 + "$containerSymbol().connect(" + portOrParameter
                                 + ", " + "((" + remoteActor.getClass().getName()
@@ -1549,6 +1550,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 }
             } else {
                 if (!readingRemoteParameters) {
+                    code.append("System.out.println(\"A\");");
                     code.append("    $containerSymbol().connect($actorSymbol("
                             + escapedCodegenPortName + "), " + portOrParameter
                             + ");" + _eol);
@@ -1581,22 +1583,30 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // We check before we create it.  To test, use:
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortParameterActorTest.xml
             code.append("if ($actorSymbol(actor).getPort(\""
-                    //+ unescapedActorPortName.replace("\\", "\\\\") + "\") == null) {" + _eol
-                    + AutoAdapter._externalPortName(port.getContainer(),
-                            unescapedActorPortName)
-                    + "\") == null) {"
-                    + _eol
+                    + unescapedActorPortName.replace("\\", "\\\\") + "\") == null) {" + _eol
+                    //+ AutoAdapter._externalPortName(port.getContainer(),
+                    //        unescapedActorPortName) + "\") == null) {" + _eol
                     + "    new TypedIOPort($actorSymbol(actor), \""
-                    //+ unescapedActorPortName.replace("\\", "\\\\") + "\", "
-                    + AutoAdapter._externalPortName(port.getContainer(),
-                            unescapedActorPortName) + "\", " + port.isInput()
-                    + ", " + port.isOutput() + ");" + _eol + "}" + _eol);
+                    + unescapedActorPortName.replace("\\", "\\\\") + "\", "
+                    //+ AutoAdapter._externalPortName(port.getContainer(),
+                    //        unescapedActorPortName) + "\", "
+                    + port.isInput()
+                    + ", " + port.isOutput() + ");" + _eol
+                    // Maybe only set the type for output ports?
+                    //+ "    port.setTypeEquals("
+                    //+ _typeToBaseType(port.getType()) + ");" + _eol
+                    + "}" + _eol);
 
+            // Use the unescapedActorPortName so that we the actual port name and not
+            // a name with the actor prepended.  When we run
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortParameterActorTest.xml
+            // we should look for "My PortParameter", not "PortParameterActor_My PortParameter".
             String portOrParameter = "(TypedIOPort)$actorSymbol(actor).getPort(\""
-                //+ unescapedActorPortName.replace("\\", "\\\\") + "\")";
-                    + AutoAdapter._externalPortName(port.getContainer(),
-                            unescapedActorPortName) + "\")";
+                    + unescapedActorPortName.replace("\\", "\\\\") + "\")";
+            //+ AutoAdapter._externalPortName(port.getContainer(),
+            //                unescapedActorPortName) + "\")";
             if (!readingRemoteParameters) {
+                    code.append("System.out.println(\"B\");");
                 code.append("    $containerSymbol().connect($actorSymbol("
                         + escapedCodegenPortName + "), " + portOrParameter
                         + ");" + _eol);
