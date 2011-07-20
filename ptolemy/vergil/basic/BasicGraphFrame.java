@@ -795,7 +795,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         MemoryCleaner.removeActionListeners(_toolbar);
         //System.out.println("BasicGraphFrame toolbar action listeners removed: " + removed);
 
-        getModel().removeChangeListener(this);
+        NamedObj model = getModel();
+        if (model != null) {
+            // SaveAs of an ontology solver resulted in a NPE.
+            getModel().removeChangeListener(this);
+        }
+
         _rightComponent.removeMouseWheelListener(this);
         _rightComponent.removeMouseMotionListener(this);
         _rightComponent.removeMouseListener(this);
@@ -2107,23 +2112,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // NOTE: Comment out the entire block with lines that begin with //
         // so that the test in adm notices that the block is commented out.
 
-        //          if (_exportPDFAction == null) {
-        //              //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
-        //              String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
-        //              try {
-        //                  Class exportPDFActionClass = Class
-        //                          .forName(exportPDFActionClassName);
-        //                  Constructor exportPDFActionConstructor = exportPDFActionClass
-        //                          .getDeclaredConstructor(Top.class);
-        //                  _exportPDFAction = (AbstractAction) exportPDFActionConstructor
-        //                          .newInstance(this);
-        //              } catch (Throwable throwable) {
-        //                  new InternalErrorException(null, throwable,
-        //                          "Failed to construct export PDF class \""
-        //                                  + exportPDFActionClassName
-        //                                  + "\", which was read from the configuration.");
-        //              }
-        //          }
+                 if (_exportPDFAction == null) {
+                     //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+                     String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+                     try {
+                         Class exportPDFActionClass = Class
+                                 .forName(exportPDFActionClassName);
+                         Constructor exportPDFActionConstructor = exportPDFActionClass
+                                 .getDeclaredConstructor(Top.class);
+                         _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+                                 .newInstance(this);
+                     } catch (Throwable throwable) {
+                         new InternalErrorException(null, throwable,
+                                 "Failed to construct export PDF class \""
+                                         + exportPDFActionClassName
+                                         + "\", which was read from the configuration.");
+                     }
+                 }
 
         // End of block to uncomment.
 
