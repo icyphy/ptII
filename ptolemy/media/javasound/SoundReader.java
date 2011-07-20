@@ -28,7 +28,9 @@
  */
 package ptolemy.media.javasound;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.sound.sampled.AudioFormat;
@@ -367,8 +369,9 @@ public class SoundReader {
         }
 
         try {
-            _properFormatAudioInputStream = AudioSystem.getAudioInputStream(
-                    format, _audioInputStream);
+            _properFormatAudioInputStream = new FileInputStream(
+                    soundURL.getFile());
+            _properFormatAudioInputStream.read(new byte[44]);
         } catch (IllegalArgumentException e) {
             // Interpret a failed conversion to mean that
             // the input sound file has an unsupported format.
@@ -427,39 +430,59 @@ public class SoundReader {
             maxSampleReciprocal = 0;
         }
 
-        // Check if we need to reallocate.
-        // Note: This test is really not needed since bytesPerSample
-        // is set in the constructor. It should never change.
-        if (bytesPerSample != _b.length) {
-            _b = new byte[bytesPerSample];
-        }
-
         for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
             // For each channel,
-            for (int currChannel = 0; currChannel < channels; currChannel++) {
-                for (int i = 0; i < bytesPerSample; i += 1) {
-                    // Assume we are dealing with big endian.
-                    _b[i] = byteArray[(currSamp * bytesPerSample * channels)
-                            + (bytesPerSample * currChannel) + i];
+            for (int currChannel = 0; currChannel < _channels; currChannel++) {
+                // Starting index of relevant bytes.
+                int j = (currSamp * _bytesPerSample * _channels)
+                        + (_bytesPerSample * currChannel);
+                // Note: preserve sign of high order bits.
+                // Android is little endian so the stream needs to be converted to big endian first.
+                int result = 0;
+
+                // Shift and add in low order bits.
+                // Note that it is ok to fall through the cases here (I think).
+                switch (_bytesPerSample) {
+                case 4:
+                    // Dennis Geurts:
+                    // Use & instead of | here.
+                    // Running ptolemy/actor/lib/javasound/test/auto/testAudioCapture_AudioPlayer.xml 
+                    // results in a much better sound.
+                    // See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=356
+                    result |= (byteArray[j + 3] & 0xff);
+                    result <<= 8;
+                    result |= (byteArray[j + 2] & 0xff);
+                    result <<= 8;
+                    result |= (byteArray[j + 1] & 0xff);
+                    result <<= 8;
+                    result |= (byteArray[j] & 0xff);
+                    break;
+                case 3:
+                    result |= (byteArray[j + 2] & 0xff);
+                    result <<= 8;
+                    result |= (byteArray[j + 1] & 0xff);
+                    result <<= 8;
+                    result |= (byteArray[j] & 0xff);
+                    break;
+                case 2:
+                    result |= (byteArray[j + 1] & 0xff);
+                    result <<= 8;
+                    result += (byteArray[j] & 0xff);
+                    break;
+                case 1:
+                    result |= (byteArray[j] & 0xff);
+                    break;
                 }
-
-                int result = (_b[0] >> 7);
-
-                for (int i = 0; i < bytesPerSample; i += 1) {
-                    result = (result << 8) + (_b[i] & 0xff);
-                }
-
                 _doubleArray[currChannel][currSamp] = result
                         * maxSampleReciprocal;
             }
         }
-
         return _doubleArray;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private AudioInputStream _properFormatAudioInputStream;
+    private InputStream _properFormatAudioInputStream;
 
     private AudioInputStream _audioInputStream;
 

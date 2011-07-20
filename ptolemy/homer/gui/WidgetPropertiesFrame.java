@@ -123,10 +123,12 @@ public class WidgetPropertiesFrame extends JPanel {
             }
         }
 
-        _heightSpinner.setValue(widget.getPreferredBounds().getHeight());
-        _widthSpinner.setValue(widget.getPreferredBounds().getWidth());
-        _xSpinner.setValue(widget.getPreferredLocation().getX());
-        _ySpinner.setValue(widget.getPreferredLocation().getY());
+        _heightSpinner.setValue(widget.getPreferredBounds().height);
+        _widthSpinner.setValue(widget.getPreferredBounds().width);
+        _xSpinner.setValue(widget.getPreferredLocation().x
+                + widget.getPreferredBounds().x);
+        _ySpinner.setValue(widget.getPreferredLocation().y
+                + widget.getPreferredBounds().y);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,7 +137,7 @@ public class WidgetPropertiesFrame extends JPanel {
     /** Get the specified position and dimension for the widget.
      *  @return The target size of the widget.
      */
-    public Rectangle getBounds() {
+    public Rectangle getWidgetBounds() {
         Rectangle bounds = null;
         try {
             Point position = new Point(
@@ -143,7 +145,8 @@ public class WidgetPropertiesFrame extends JPanel {
                             .intValue(),
                     ((SpinnerNumberModel) _ySpinner.getModel()).getNumber()
                             .intValue());
-
+            position.translate(-_widget.getPreferredLocation().x,
+                    -_widget.getPreferredLocation().y);
             Dimension size = new Dimension(
                     ((SpinnerNumberModel) _widthSpinner.getModel()).getNumber()
                             .intValue(),
@@ -186,7 +189,7 @@ public class WidgetPropertiesFrame extends JPanel {
         dialog.setModal(true);
 
         if (optionPane.getValue() == null) {
-            return (int) JOptionPane.CANCEL_OPTION;
+            return JOptionPane.CANCEL_OPTION;
         } else {
             return (Integer) optionPane.getValue();
         }
@@ -198,12 +201,12 @@ public class WidgetPropertiesFrame extends JPanel {
     /** Height spinner UI element.
      */
     private final JSpinner _heightSpinner = new JSpinner(
-            new SpinnerNumberModel(100, 1, 9999, 1));
+            new SpinnerNumberModel(100, 5, 9999, 1));
 
     /** Width spinner UI element.
      */
     private final JSpinner _widthSpinner = new JSpinner(new SpinnerNumberModel(
-            100, 1, 9999, 1));
+            100, 5, 9999, 1));
 
     /** X position spinner UI element.
      */

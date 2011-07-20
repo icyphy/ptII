@@ -30,7 +30,9 @@ package ptolemy.homer.gui;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -39,6 +41,8 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.util.List;
 
@@ -52,6 +56,8 @@ import org.netbeans.api.visual.action.AlignWithMoveDecorator;
 import org.netbeans.api.visual.action.EditProvider;
 import org.netbeans.api.visual.action.MoveStrategy;
 import org.netbeans.api.visual.action.PopupMenuProvider;
+import org.netbeans.api.visual.action.ResizeProvider.ControlPoint;
+import org.netbeans.api.visual.action.ResizeStrategy;
 import org.netbeans.api.visual.action.TwoStateHoverProvider;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.border.Border;
@@ -63,6 +69,7 @@ import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.modules.visual.action.AlignWithMoveStrategyProvider;
+import org.netbeans.modules.visual.action.AlignWithResizeStrategyProvider;
 import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
 import ptolemy.actor.gui.PortablePlaceable;
@@ -102,11 +109,12 @@ public class TabScenePanel implements ContentPrototype {
         _mainLayer = new LayerWidget(getContent());
         _interactionLayer = new LayerWidget(getContent());
         _scene.createView();
-        _scene.setLayout(LayoutFactory.createOverlayLayout());
+        _scene.setLayout(LayoutFactory.createAbsoluteLayout());
         _scene.getActions().addAction(_hoverAction);
 
         getContent().addChild(_interactionLayer);
         getContent().addChild(_mainLayer);
+        _mainLayer.setLayout(LayoutFactory.createAbsoluteLayout());
 
         final AlignWithMoveStrategyProvider alignWithMoveStrategyProvider = new AlignWithMoveStrategyProvider(
                 new SingleLayerAlignWithWidgetCollector(_mainLayer, false),
@@ -116,14 +124,29 @@ public class TabScenePanel implements ContentPrototype {
             public Point locationSuggested(Widget widget,
                     Point originalLocation, Point suggestedLocation) {
                 _adjustLocation(widget, suggestedLocation);
-
                 Point locationSuggested = alignWithMoveStrategyProvider
                         .locationSuggested(widget, originalLocation,
                                 suggestedLocation);
-
                 return locationSuggested;
             }
         }, alignWithMoveStrategyProvider);
+
+        final AlignWithResizeStrategyProvider alignWithResizeStrategyProvider = new AlignWithResizeStrategyProvider(
+                new SingleLayerAlignWithWidgetCollector(_mainLayer, false),
+                _interactionLayer, MOVE_ALIGN_DECORATOR, false);
+
+        _resizeAction = ActionFactory.createResizeAction(new ResizeStrategy() {
+
+            public Rectangle boundsSuggested(Widget widget,
+                    Rectangle originalBounds, Rectangle suggestedBounds,
+                    ControlPoint controlPoint) {
+                _adjustBounds(widget, suggestedBounds);
+                Rectangle boundsSuggested = alignWithResizeStrategyProvider
+                        .boundsSuggested(widget, originalBounds,
+                                suggestedBounds, controlPoint);
+                return boundsSuggested;
+            }
+        }, alignWithResizeStrategyProvider);
 
         new DropTarget(_scene.getView(), new DropTargetAdapter() {
 
@@ -228,6 +251,20 @@ public class TabScenePanel implements ContentPrototype {
                 dropEvent.acceptDrop(DnDConstants.ACTION_LINK);
             }
         });
+        _scene.getView().addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                _scene.setPreferredLocation(new Point(0, 0));
+                _scene.setPreferredSize(_scene.getView().getSize());
+                _mainLayer.setPreferredLocation(new Point(0, 0));
+                _mainLayer.setPreferredSize(_scene.getView().getSize());
+                _interactionLayer.setPreferredLocation(new Point(0, 0));
+                _interactionLayer.setPreferredSize(_scene.getView().getSize());
+                Rectangle bounds = new Rectangle(new Point(0, 0), _scene
+                        .getView().getBounds().getSize());
+                _scene.setMaximumBounds(bounds);
+            }
+        });
     }
 
     /** Add an element's representation to the scene
@@ -242,16 +279,14 @@ public class TabScenePanel implements ContentPrototype {
                     "No representation is available.");
         }
 
-        Widget widget = ((HomerWidgetElement) element).getWidget();
+        final Widget widget = ((HomerWidgetElement) element).getWidget();
         Point location = new Point(element.getLocation().getX(), element
                 .getLocation().getY());
 
         widget.setPreferredLocation(location);
 
         // Add widget resizing.
-        widget.getActions().addAction(
-                ActionFactory.createAlignWithResizeAction(_mainLayer,
-                        _interactionLayer, null, false));
+        widget.getActions().addAction(_resizeAction);
 
         // Add widget moving.
         widget.getActions().addAction(_hoverAction);
@@ -340,21 +375,47 @@ public class TabScenePanel implements ContentPrototype {
      *  @param location The target location.
      */
     private void _adjustLocation(Widget widget, Point location) {
-        if (location.getX() + widget.getBounds().getWidth() > getView()
+        Rectangle clientArea = widget.getClientArea();
+        if (location.getX() + clientArea.getWidth() + clientArea.x > getView()
                 .getWidth()) {
-            location.setLocation(getView().getWidth()
-                    - widget.getBounds().getWidth(), location.getY());
+            location.x = getView().getWidth() - clientArea.width - clientArea.x;
         }
-        if (location.getY() + widget.getBounds().getHeight() > getView()
+        if (location.getY() + clientArea.getHeight() + clientArea.y > getView()
                 .getHeight()) {
-            location.setLocation(location.getX(), getView().getHeight()
-                    - widget.getBounds().getHeight());
+            location.y = getView().getHeight() - clientArea.height
+                    - clientArea.y;
         }
-        if (location.getX() < 0) {
-            location.setLocation(0, location.getY());
+        if (location.getX() + clientArea.x < 0) {
+            location.x = -clientArea.x;
         }
-        if (location.getY() < 0) {
-            location.setLocation(location.getX(), 0);
+        if (location.getY() + clientArea.y < 0) {
+            location.y = -clientArea.y;
+        }
+    }
+
+    private void _adjustBounds(Widget widget, Rectangle bounds) {
+        Insets insets = widget.getBorder().getInsets();
+        Point preferredLocation = widget.getPreferredLocation();
+        if (bounds.x + preferredLocation.x + bounds.getWidth() - insets.left > _scene
+                .getView().getWidth()) {
+            bounds.width = _scene.getView().getWidth()
+                    - (bounds.x + preferredLocation.x - insets.left);
+        }
+        if (bounds.y + preferredLocation.y + bounds.getHeight() + insets.top > _scene
+                .getView().getHeight()) {
+            bounds.height = _scene.getView().getHeight()
+                    - (bounds.y + preferredLocation.y + insets.top);
+        }
+
+        if (bounds.x + preferredLocation.x + insets.left < 0) {
+            int adjustment = bounds.x + preferredLocation.x + insets.left;
+            bounds.x += -adjustment;
+            bounds.width += adjustment;
+        }
+        if (bounds.y + preferredLocation.y + insets.top < 0) {
+            int adjustment = bounds.y + preferredLocation.y + insets.top;
+            bounds.y += -adjustment;
+            bounds.height += adjustment;
         }
     }
 
@@ -366,7 +427,8 @@ public class TabScenePanel implements ContentPrototype {
         WidgetPropertiesFrame dialog = new WidgetPropertiesFrame(widget);
         if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
             try {
-                widget.setPreferredBounds(dialog.getBounds());
+                widget.setPreferredBounds(dialog.getWidgetBounds());
+                _scene.validate();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(_mainFrame, new JLabel(ex
                         .getClass().getName()), "Invalid Size Specified",
@@ -440,7 +502,10 @@ public class TabScenePanel implements ContentPrototype {
     /** The move action added to all new widgets.
      */
     private final WidgetAction _moveAction;
-
+    /**
+     * The resize action added to all new widgets
+     */
+    private WidgetAction _resizeAction;
     /** The object scene.
      */
     private final ObjectScene _scene;
