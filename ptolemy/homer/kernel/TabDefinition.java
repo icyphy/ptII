@@ -29,7 +29,11 @@ package ptolemy.homer.kernel;
 
 import java.util.ArrayList;
 
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// TabDefinition
@@ -51,11 +55,35 @@ public class TabDefinition {
      * 
      *  @param tag The tag used to identify this tab.
      *  @param name The name of the tab. This will used in the user
-     *  interface. 
+     *  interface.
+     *  @param topLevel The container containing all tab definitions. If the
+     *  container does not have the attribute that contains all tab definition
+     *  information, it will be created.
+     *  @exception NameDuplicationException If the name coincides with an
+     *  attribute already in the container.
+     *  @exception IllegalActionException If the attribute is not of an acceptable
+     *  class for the container, or if the name contains a period.
      */
-    public TabDefinition(String tag, String name) {
-        _tag = tag;
-        _name = name;
+    public TabDefinition(ComponentEntity topLevel, String tag, String name)
+            throws IllegalActionException, NameDuplicationException {
+        Attribute tabs = topLevel.getAttribute(HomerConstants.TABS_NODE);
+        if (tabs == null) {
+            tabs = new Attribute(topLevel, HomerConstants.TABS_NODE);
+        }
+        
+        if (tag == null) {
+            tag = tabs.uniqueName("tab_");
+        }
+
+        Attribute tab = tabs.getAttribute(tag);
+        if (tab == null || !(tab instanceof StringAttribute)) {
+            tabs.removeAttribute(tab);
+            _tabElement = new StringAttribute(tabs, tag);
+            _tabElement.setExpression(name);
+        } else {
+            _tabElement = (StringAttribute) tab;
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -65,22 +93,31 @@ public class TabDefinition {
      *  @return The tag of the tab.
      */
     public String getTag() {
-        return _tag;
+        return _tabElement.getName();
     }
 
     /** Get the name of the tab.
      *  @return The name of the tab.
      */
     public String getName() {
-        return _name;
+        return _tabElement.getExpression();
+    }
+
+    /** Get the underlying Ptolemy object representing the tab.
+     * 
+     *  @return The Ptolemy object representing the tab.
+     */
+    public StringAttribute getTabAttribute() {
+        return _tabElement;
     }
 
     /** Set the name of the tab.
      * 
-     *  @param text The new name of the tab.
+     *  @param name The new name of the tab.
+     *  @exception IllegalActionException If the new name is not accepted by the model.
      */
-    public void setName(String text) {
-        _name = text;
+    public void setName(String name) throws IllegalActionException {
+        _tabElement.setExpression(name);
     }
 
     /** Return the content area of the tab.
@@ -146,18 +183,14 @@ public class TabDefinition {
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
-    /** The tag used to identify the tab.
-     */
-    private String _tag;
-
-    /** The name of the tab.
-     */
-    private String _name;
-
     /** The complete content of the tab.
      */
     private ContentPrototype _content = null;
-    
+
+    /** The underlying Ptolemy element representing the tab.
+     */
+    private StringAttribute _tabElement;
+
     /** List of elements on the tab. 
      */
     private ArrayList<PositionableElement> _elements = new ArrayList<PositionableElement>();

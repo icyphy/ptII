@@ -235,6 +235,18 @@ public class ServerUtility {
         }
         return fullName.substring(fullName.substring(1).indexOf(".") + 2);
     }
+    
+    public boolean validateModelAndLayout(String modelURL, String layoutURL) {
+        // Entity or remote attribute in layout that's missing from the model file (except Proxy entities)
+        // Remote entities have proxy entities
+        
+        // Proxy entity's targets are invalid/not in the model.
+        // Proxy entity port target ports are invalid/not in the model
+        
+        // Layout validation: tab node without specified tab.
+        // Layout validation: invalid position or position out of bounds.
+        return true;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

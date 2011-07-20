@@ -111,10 +111,12 @@ public abstract class PositionableElement {
      * @param tabNode
      * @throws IllegalActionException 
      */
-    public void setTab(String tabNode) throws IllegalActionException {
+    public void setTab(String name) throws IllegalActionException {
         Attribute attribute = getElement()
                 .getAttribute(HomerConstants.TAB_NODE);
+        
         StringAttribute tabAttribute;
+        
         if (attribute instanceof StringAttribute) {
             tabAttribute = (StringAttribute) attribute;
         } else {
@@ -125,11 +127,12 @@ public abstract class PositionableElement {
                 tabAttribute = new StringAttribute(getElement(),
                         HomerConstants.TAB_NODE);
             } catch (NameDuplicationException e) {
-                // this can't happen.
+                // This can't happen, because the attribute was removed first.
                 tabAttribute = null;
             }
         }
-        tabAttribute.setExpression(tabNode);
+        
+        tabAttribute.setExpression(name);
     }
 
     /** Get the location of the element.

@@ -40,8 +40,8 @@ package ptolemy.homer.kernel;
  */
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -82,70 +82,93 @@ public class MultiContent<T extends ContentPrototype> {
     /** Add a new content area to the MultiContent with a specific content.
      *  The new content area will be the last in order.
      *
+     *  @param topLevel The container containing all tab definitions. If the
+     *  container does not have the attribute that contains all tab definition
+     *  information, it will be created.
      *  @param tabTag The tag identifier used for the content area.
      *  @param tabName Name of the tab. Can be used for visualization.
-     *  @param content The specific content for the new tab. 
-     *  @exception IllegalActionException If a content area with the same tag
-     *  already exist. 
+     *  @param content The specific content for the new tab.
+     *  @return The tab identifier.
+     *  @exception NameDuplicationException If the name coincides with an
+     *  attribute already in the container.
+     *  @exception IllegalActionException If the attribute is not of an acceptable
+     *  class for the container, if the name contains a period, or if a content
+     *  area with the same tag already exist.
      */
-    public void addTab(String tabTag, String tabName, ContentPrototype content)
-            throws IllegalActionException {
-        if (_contents.containsKey(tabTag)) {
+    public String addTab(ComponentEntity topLevel, String tabTag, String tabName,
+            ContentPrototype content) throws IllegalActionException,
+            NameDuplicationException {
+        if (tabTag != null && _contents.containsKey(tabTag)) {
             throw new IllegalActionException(
                     "A content area with the identifier " + tabTag
                             + " already exists.");
         }
 
-        TabDefinition tabDefinition = new TabDefinition(tabTag, tabName);
+        TabDefinition tabDefinition = new TabDefinition(topLevel, tabTag,
+                tabName);
+        // Since a new tag might have been generated, return the real tag of the tab.
+        String tag = tabDefinition.getTag();
+        
         tabDefinition.setContent(content);
-        _contents.put(tabTag, tabDefinition);
-        _order.add(tabTag);
-    }
-
-    /** Add a new content area to the MultiContent. The new content area will
-     *  be the last in order.
-     *
-     *  @param tabTag The tag identifier used for the content area.
-     *  @param tabName Name of the tab. Can be used for visualization.
-     *  @exception IllegalActionException If a content area with the same tag
-     *  already exist. 
-     */
-    public void addTab(String tabTag, String tabName)
-            throws IllegalActionException {
-        addTab(tabTag, tabName, _contentPrototype.getNewInstance());
-    }
-
-    /** Add a new content area to the MultiContent. The new content area will
-     *  be the last in order.
-     *
-     *  @param tabName Name of the tab. Can be used for visualization.
-     *  @param content The content to use in the new tab.
-     *  @return The newly generated tab identifier.
-     */
-    public String addTab(String tabName, ContentPrototype content) {
-        Random randomGenerator = new Random();
-        String tag = null;
-        boolean tagGenerated = false;
-        while (!tagGenerated) {
-            try {
-                tag = "tab_" + String.valueOf(randomGenerator.nextInt());
-                addTab(String.valueOf(tag), tabName, content);
-                tagGenerated = true;
-            } catch (IllegalActionException e) {
-                // Do nothing, loop will try to generate a new tag.
-            }
-        }
+        _contents.put(tag, tabDefinition);
+        _order.add(tag);
         return tag;
     }
 
     /** Add a new content area to the MultiContent. The new content area will
      *  be the last in order.
      *
+     *  @param topLevel The container containing all tab definitions. If the
+     *  container does not have the attribute that contains all tab definition
+     *  information, it will be created.
+     *  @param tabTag The tag identifier used for the content area.
+     *  @param tabName Name of the tab. Can be used for visualization.
+     *  @return The tab identifier.
+     *  @exception NameDuplicationException If the name coincides with an
+     *  attribute already in the container.
+     *  @exception IllegalActionException If the attribute is not of an acceptable
+     *  class for the container, if the name contains a period, or if a content
+     *  area with the same tag already exist.
+     */
+    public String addTab(ComponentEntity topLevel, String tabTag, String tabName)
+            throws IllegalActionException, NameDuplicationException {
+        return addTab(topLevel, tabTag, tabName, _contentPrototype.getNewInstance());
+    }
+
+    /** Add a new content area to the MultiContent. The new content area will
+     *  be the last in order.
+     *
+     *  @param topLevel The container containing all tab definitions. If the
+     *  container does not have the attribute that contains all tab definition
+     *  information, it will be created.
+     *  @param tabName Name of the tab. Can be used for visualization.
+     *  @param content The content to use in the new tab.
+     *  @return The newly generated tab identifier.
+     *  @exception NameDuplicationException If the name coincides with an
+     *  attribute already in the container.
+     *  @exception IllegalActionException If the tab could not be created in the model. 
+     */
+    public String addTab(ComponentEntity topLevel, String tabName,
+            ContentPrototype content) throws NameDuplicationException,
+            IllegalActionException {
+        return addTab(topLevel, null, tabName, content);
+    }
+
+    /** Add a new content area to the MultiContent. The new content area will
+     *  be the last in order.
+     *
+     *  @param topLevel The container containing all tab definitions. If the
+     *  container does not have the attribute that contains all tab definition
+     *  information, it will be created.
      *  @param tabName Name of the tab. Can be used for visualization.
      *  @return The newly generated tab identifier.
+     *  @exception NameDuplicationException If the name coincides with an
+     *  attribute already in the container.
+     *  @exception IllegalActionException If the tab could not be created in the model. 
      */
-    public String addTab(String tabName) {
-        return addTab(tabName, _contentPrototype.getNewInstance());
+    public String addTab(ComponentEntity topLevel, String tabName)
+            throws NameDuplicationException, IllegalActionException {
+        return addTab(topLevel, tabName, _contentPrototype.getNewInstance());
     }
 
     /** Add an element to a specific content area.
@@ -215,8 +238,10 @@ public class MultiContent<T extends ContentPrototype> {
      * 
      *  @param position The position of the tab.
      *  @param text The new title of the tab.
+     *  @exception IllegalActionException If the new name is not accepted by the model.
      */
-    public void setNameAt(int position, String text) {
+    public void setNameAt(int position, String text)
+            throws IllegalActionException {
         if (position >= 0 && position < _order.size()) {
             _contents.get(_order.get(position)).setName(text);
         }

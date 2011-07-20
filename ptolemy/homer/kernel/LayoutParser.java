@@ -130,7 +130,7 @@ public class LayoutParser {
             }
 
             // Add the new parsed tab to the list.
-            TabDefinition tabDefinition = new TabDefinition(
+            TabDefinition tabDefinition = new TabDefinition(_topLevelActor,
                     ((StringAttribute) tab).getName(),
                     ((StringAttribute) tab).getExpression());
             tabDefinitions.add(tabDefinition);
@@ -184,8 +184,8 @@ public class LayoutParser {
         return container;
     }
 
-    public HashSet<NamedObj> getPositionableElements() throws IllegalActionException,
-            NameDuplicationException {
+    public HashSet<NamedObj> getPositionableElements()
+            throws IllegalActionException, NameDuplicationException {
         HashSet<NamedObj> container = new HashSet<NamedObj>();
         _getPositionableElements(_topLevelActor, container);
         return container;

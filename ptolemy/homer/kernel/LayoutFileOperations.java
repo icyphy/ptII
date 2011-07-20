@@ -86,7 +86,12 @@ public class LayoutFileOperations {
         namedObjectsToMerge.add(ProxyModelBuilder.REMOTE_OBJECT_TAG);
         CompositeEntity mergedModel = ServerUtility.mergeModelWithLayout(
                 modelURL, layoutURL, classesToMerge, namedObjectsToMerge);
-        LayoutParser parser = new LayoutParser(mergedModel);
+        return mergedModel;
+    }
+
+    public static void parseModel(HomerMainFrame mainFrame) throws IllegalActionException,
+            NameDuplicationException {
+        LayoutParser parser = new LayoutParser(mainFrame.getTopLevelActor());
         HashSet<NamedObj> proxyElements = parser.getProxyElements();
         HashSet<NamedObj> visualElements = parser.getPositionableElements();
         ArrayList<TabDefinition> tabs = parser.getTabDefinitions();
@@ -116,8 +121,6 @@ public class LayoutFileOperations {
                 mainFrame.addNonVisualNamedObject(object);
             }
         }
-
-        return mergedModel;
     }
 
     /** Open a MoML file, parse it, and the parsed model.
@@ -157,6 +160,10 @@ public class LayoutFileOperations {
         try {
             // Get the original model
             model = (CompositeActor) openModelFile(mainFrame.getModelURL());
+            
+            // Get access on both workplace
+            mainFrame.getTopLevelActor().workspace().getReadAccess();
+            model.workspace().getWriteAccess();
 
             // Add remote attributes to elements
             for (NamedObj element : mainFrame.getRemoteObjectSet()) {
@@ -166,14 +173,18 @@ public class LayoutFileOperations {
                 }
             }
 
-            // Add location and tab information to elements
-            Attribute tabs = new Attribute(model, HomerConstants.TABS_NODE);
+            // Create layout model
+            new ProxyModelBuilder(ProxyModelType.CLIENT, model).build();
+            
+            // Clone the tabs
+            Attribute tabs = (Attribute) mainFrame.getTopLevelActor()
+                    .getAttribute(HomerConstants.TABS_NODE)
+                    .clone(model.workspace());
+            tabs.setPersistent(true);
+            tabs.setContainer(model);
 
+            // Add location and tab information to elements and labels.
             for (TabDefinition tab : mainFrame.getAllTabs()) {
-                // Add tab to the tabs attribute
-                StringAttribute tabAttribute = new StringAttribute(tabs,
-                        tab.getTag());
-                tabAttribute.setExpression(tab.getName());
 
                 // Add location and tab information for each element in the tab.
                 for (PositionableElement element : tab.getElements()) {
@@ -191,18 +202,24 @@ public class LayoutFileOperations {
                     }
 
                     // Add location
+                    Attribute attribute = elementInModel.getAttribute(HomerConstants.POSITION_NODE);
+                    if (attribute != null) {
+                        elementInModel.removeAttribute(attribute);
+                    }
                     new HomerLocation(elementInModel,
                             HomerConstants.POSITION_NODE)
                             .setToken(getLocationToken(homerElement.getWidget()));
 
                     // Add tab information
+                    attribute = elementInModel.getAttribute(HomerConstants.TAB_NODE);
+                    if (attribute != null) {
+                        elementInModel.removeAttribute(attribute);
+                    }
                     new StringAttribute(elementInModel, HomerConstants.TAB_NODE)
                             .setExpression(tab.getTag());
                 }
             }
 
-            // Create layout model
-            new ProxyModelBuilder(ProxyModelType.CLIENT, model).build();
             // Save in file
             out = new BufferedWriter(new FileWriter(layoutFile));
             model.exportMoML(out);
@@ -210,6 +227,10 @@ public class LayoutFileOperations {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
+            // Release models
+            mainFrame.getTopLevelActor().workspace().doneReading();
+            model.workspace().doneWriting();
+            
             if (out != null) {
                 try {
                     out.close();

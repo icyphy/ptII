@@ -123,7 +123,17 @@ public class HomerMainFrame extends JFrame {
      *  @param tabName The name of the tab.
      */
     public void addTab(String tabName) {
-        _contents.addTab(tabName);
+        if (_topLevelActor == null) {
+            return;
+        }
+        
+        try {
+            _contents.addTab(_topLevelActor, tabName);
+        } catch (NameDuplicationException e) {
+            MessageHandler.error(e.getMessage(), e);
+        } catch (IllegalActionException e) {
+            MessageHandler.error(e.getMessage(), e);
+        }
     }
 
     /** Add a tab to the screen with the given name and tag.
@@ -131,9 +141,15 @@ public class HomerMainFrame extends JFrame {
      *  @param tabName The name of the tab.
      */
     public void addTab(String tabTag, String tabName) {
+        if (_topLevelActor == null) {
+            return;
+        }
+
         try {
-            _contents.addTab(tabTag, tabName);
+            _contents.addTab(_topLevelActor, tabTag, tabName);
         } catch (IllegalActionException e) {
+            MessageHandler.error(e.getMessage(), e);
+        } catch (NameDuplicationException e) {
             MessageHandler.error(e.getMessage(), e);
         }
     }
@@ -291,10 +307,9 @@ public class HomerMainFrame extends JFrame {
         try {
             _topLevelActor = LayoutFileOperations.open(this, modelURL,
                     layoutURL);
+            LayoutFileOperations.parseModel(this);
             _namedObjectTreePanel.setCompositeEntity(_topLevelActor);
             _initializeGraphPreview(_topLevelActor);
-            // Need to remove the first tab, the default tab
-            _contents.removeTab(0);
         } catch (IllegalActionException e) {
             MessageHandler.error(e.getMessage(), e);
         } catch (NameDuplicationException e) {
@@ -359,7 +374,11 @@ public class HomerMainFrame extends JFrame {
      *  @param text The new tab text.
      */
     public void setTabTitleAt(int position, String text) {
-        _contents.setNameAt(position, text);
+        try {
+            _contents.setNameAt(position, text);
+        } catch (IllegalActionException e) {
+            MessageHandler.error(e.getMessage(), e);
+        }
     }
 
     public static boolean isLabelWidget(NamedObj object) {
@@ -371,6 +390,10 @@ public class HomerMainFrame extends JFrame {
             return true;
         }
         return false;
+    }
+    
+    public CompositeEntity getTopLevelActor() {
+        return _topLevelActor;
     }
 
     ///////////////////////////////////////////////////////////////////

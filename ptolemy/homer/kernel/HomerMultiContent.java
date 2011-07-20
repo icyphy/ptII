@@ -10,6 +10,7 @@ import ptolemy.homer.events.TabEvent;
 import ptolemy.homer.events.VisualContentEvent;
 import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.homer.gui.TabScenePanel;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -70,13 +71,14 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
     }
 
     @Override
-    public void addTab(String tag, String name, ContentPrototype content)
-            throws IllegalActionException {
-        super.addTab(tag, name, content);
+    public String addTab(ComponentEntity topLevel, String tag, String name, ContentPrototype content)
+            throws IllegalActionException, NameDuplicationException {
+        String newTag = super.addTab(topLevel, tag, name, content);
 
         TabEvent addTabEvent = new TabEvent(this, ActionEvent.ACTION_PERFORMED,
-                "addTab", tag, name, _order.size(), content);
+                "addTab", newTag, name, _order.size(), content);
         _nofityAllListeners(addTabEvent);
+        return newTag;
     }
 
     @Override
@@ -100,7 +102,7 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
     }
     
     @Override
-    public void setNameAt(int position, String text) {
+    public void setNameAt(int position, String text) throws IllegalActionException {
         super.setNameAt(position, text);
 
         TabEvent renameTabEvent = new TabEvent(this, ActionEvent.ACTION_PERFORMED,

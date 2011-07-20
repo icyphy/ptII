@@ -156,9 +156,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     private void _removeTab(int index) {
         _tabScenes.removeTabAt(index);
 
-        if (_tabScenes.getTabCount() == 1) {
-            _mainFrame.addTab("Default");
-        }
+
 
         if (_tabScenes.getSelectedIndex() == _tabScenes.getTabCount() - 1) {
             _tabScenes.setSelectedIndex(_tabScenes.getTabCount() - 2);
@@ -347,6 +345,10 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                 public void actionPerformed(ActionEvent e) {
                     _mainFrame.removeTab(_tabScenes
                             .indexOfTabComponent(TabSceneButton.this));
+                    
+                    if (_mainFrame.getAllTabs().size() == 0) {
+                        _mainFrame.addTab("Default");
+                    }
                 }
             });
 
