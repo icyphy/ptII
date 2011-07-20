@@ -161,7 +161,9 @@ public class LayoutFileOperations {
             // Add remote attributes to elements
             for (NamedObj element : mainFrame.getRemoteObjectSet()) {
                 // Add the proxy attributes to all objects in the stored set.
-                _markAsProxy(model, element);
+                if (!HomerMainFrame.isLabelWidget(element)) {
+                    _markAsProxy(model, element);
+                }
             }
 
             // Add location and tab information to elements

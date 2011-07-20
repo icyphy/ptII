@@ -30,21 +30,26 @@ package ptolemy.homer.gui.tree;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.TransferHandler;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.tree.TreePath;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
 
@@ -59,7 +64,16 @@ import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
  * @Pt.ProposedRating Red (ishwinde)
  * @Pt.AcceptedRating Red (ishwinde)
  */
-public class NamedObjectTree extends JPanel implements TreeSelectionListener {
+public class NamedObjectTree extends JPanel {
+    public static final DataFlavor LABEL_FLAVOR;
+    static {
+        try {
+            LABEL_FLAVOR = new DataFlavor(
+                    "application/x-java-jvm-local-objectref;class=java.lang.String");
+        } catch (ClassNotFoundException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
 
     /** Create a new NamedObj tree for dragging and dropping into the scene.
      */
@@ -84,7 +98,6 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
         _tree.setRootVisible(false);
         _tree.setShowsRootHandles(true);
         _tree.setScrollsOnExpand(true);
-        _tree.addTreeSelectionListener(this);
         _tree.setCellRenderer(new PtolemyTreeCellRenderer() {
             @Override
             public Component getTreeCellRendererComponent(JTree tree,
@@ -104,7 +117,7 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
                         //tree.collapseRow(row);
                     } else {
                         // Has children or matches criteria, expand it.
-                       // tree.expandRow(row);
+                        // tree.expandRow(row);
                     }
                 } else {
                     // Collapse all rows when not filtering.
@@ -116,29 +129,27 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
             }
         });
 
-        _selection.setEditable(false);
-
         add(_search, BorderLayout.NORTH);
         add(new JScrollPane(_tree), BorderLayout.CENTER);
-        add(_selection, BorderLayout.SOUTH);
+        JButton button = new JButton("Label");
+        button.setTransferHandler(new TransferHandler("text"));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JComponent c = (JComponent) e.getSource();
+                TransferHandler handler = c.getTransferHandler();
+                handler.exportAsDrag(c, e, TransferHandler.COPY);
+            }
+        });
+        button.setUI(new BasicButtonUI());
+        // Make it non-focusable.
+        button.setFocusable(false);
+        button.setBorder(BorderFactory.createEtchedBorder());
+        add(button, BorderLayout.SOUTH);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /* TODO
-     * (non-Javadoc)
-     * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
-     */
-    public void valueChanged(TreeSelectionEvent e) {
-        Object lastSelectedPathComponent = _tree.getLastSelectedPathComponent();
-        if (lastSelectedPathComponent instanceof NamedObj) {
-            _selection.setText("Current Selection: "
-                    + ((NamedObj) lastSelectedPathComponent).getName());
-        } else {
-            _selection.setText("Current Selection:");
-        }
-    }
 
     /**
      * TODO
@@ -166,6 +177,5 @@ public class NamedObjectTree extends JPanel implements TreeSelectionListener {
 
     private final JTextField _search = new JTextField();
     private final PTree _tree;
-    private final JTextField _selection = new JTextField("Current Selection:");
     private CompositeEntity _compositeEntity;
 }

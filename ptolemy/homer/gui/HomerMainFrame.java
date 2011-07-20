@@ -45,17 +45,22 @@ import javax.swing.border.TitledBorder;
 
 import org.netbeans.api.visual.widget.Scene;
 
+import ptolemy.actor.gui.style.NotEditableLineStyle;
+import ptolemy.data.expr.Parameter;
 import ptolemy.homer.HomerApplication;
 import ptolemy.homer.gui.tree.NamedObjectTree;
+import ptolemy.homer.kernel.HomerConstants;
 import ptolemy.homer.kernel.HomerMultiContent;
 import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.homer.kernel.TabDefinition;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
@@ -129,7 +134,7 @@ public class HomerMainFrame extends JFrame {
         try {
             _contents.addTab(tabTag, tabName);
         } catch (IllegalActionException e) {
-            e.printStackTrace();
+            MessageHandler.error(e.getMessage(), e);
         }
     }
 
@@ -168,7 +173,24 @@ public class HomerMainFrame extends JFrame {
 
         element.setLocation((int) point.getX(), (int) point.getY(),
                 (int) dimension.getWidth(), (int) dimension.getHeight());
+        element.setTab(panel.getTag());
         addVisualNamedObject(panel.getTag(), element);
+    }
+
+    public void addLabel(TabScenePanel panel, String label,
+            Dimension dimension, Point point) throws IllegalActionException,
+            NameDuplicationException {
+
+        Attribute tabsNode = _topLevelActor
+                .getAttribute(HomerConstants.TABS_NODE);
+        Attribute tabNode = tabsNode.getAttribute(panel.getTag());
+        Parameter stringAttribute = new Parameter(tabNode,
+                tabNode.uniqueName("label"));
+        new NotEditableLineStyle(stringAttribute, "_style").setPersistent(true);
+        stringAttribute.setVisibility(Settable.EXPERT);
+        stringAttribute.setExpression(label);
+        stringAttribute.setPersistent(true);
+        addVisualNamedObject(panel, stringAttribute, dimension, point);
     }
 
     /** See if the multi-content already has the NamedObj.
@@ -267,10 +289,12 @@ public class HomerMainFrame extends JFrame {
         _layoutURL = layoutURL;
 
         try {
-            CompositeEntity topLevelActor = LayoutFileOperations.open(this,
-                    modelURL, layoutURL);
-            _namedObjectTreePanel.setCompositeEntity(topLevelActor);
-            _initializeGraphPreview(topLevelActor);
+            _topLevelActor = LayoutFileOperations.open(this, modelURL,
+                    layoutURL);
+            _namedObjectTreePanel.setCompositeEntity(_topLevelActor);
+            _initializeGraphPreview(_topLevelActor);
+            // Need to remove the first tab, the default tab
+            _contents.removeTab(0);
         } catch (IllegalActionException e) {
             MessageHandler.error(e.getMessage(), e);
         } catch (NameDuplicationException e) {
@@ -281,9 +305,6 @@ public class HomerMainFrame extends JFrame {
         } catch (Exception e) {
             MessageHandler.error(e.getMessage(), e);
         }
-
-        // Need to remove the first tab, the default tab
-        _contents.removeTab(0);
     }
 
     /** Remove the NamedObj from the widget map and list of remote objects.
@@ -310,6 +331,20 @@ public class HomerMainFrame extends JFrame {
      */
     public void removeVisualNamedObject(PositionableElement element) {
         _contents.removeElement(element);
+        NamedObj object = element.getElement();
+        // Check if this is a label widget contained within a tab.
+        if (isLabelWidget(object)) {
+            // Remove the label from the container.
+            try {
+                ((Attribute) object).setContainer(null);
+            } catch (IllegalActionException e) {
+                // can't happen since we are removing it
+                MessageHandler.error(e.getMessage(), e);
+            } catch (NameDuplicationException e) {
+                // can't happen since we are removing it
+                MessageHandler.error(e.getMessage(), e);
+            }
+        }
     }
 
     /** Save the layout file.
@@ -325,6 +360,17 @@ public class HomerMainFrame extends JFrame {
      */
     public void setTabTitleAt(int position, String text) {
         _contents.setNameAt(position, text);
+    }
+
+    public static boolean isLabelWidget(NamedObj object) {
+        Attribute tab = object.getAttribute(HomerConstants.TAB_NODE);
+        if (object instanceof Attribute
+                && tab instanceof Settable
+                && ((Settable) tab).getExpression().equals(
+                        object.getContainer().getName())) {
+            return true;
+        }
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -409,15 +455,15 @@ public class HomerMainFrame extends JFrame {
 
     /** The initial scene width.
      */
-    private static final int DEFAULT_FRAME_WIDTH = 800;
+    private static final int DEFAULT_FRAME_WIDTH = 950;
 
     /** The initial height of the scene.
      */
-    private static final int DEFAULT_SCENE_HEIGHT = 400;
+    private static final int DEFAULT_SCENE_HEIGHT = 300;
 
     /** The initial width of the scene.
      */
-    private static final int DEFAULT_SCENE_WIDTH = 600;
+    private static final int DEFAULT_SCENE_WIDTH = 400;
 
     /** The dummy initial height parameter for frame sizing.
      */
@@ -466,4 +512,9 @@ public class HomerMainFrame extends JFrame {
     /** The tabbed area onto which the user can drop widgets.
      */
     private TabbedLayoutScene _screenPanel;
+
+    /**
+     * Merged top level actor.
+     */
+    private CompositeEntity _topLevelActor;
 }

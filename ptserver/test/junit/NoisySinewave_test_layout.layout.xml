@@ -55,17 +55,7 @@
         </property>
     </property>
     <property name="droid_tabs" class="ptolemy.kernel.util.Attribute">
-        <property name="tab_225066566" class="ptolemy.kernel.util.StringAttribute" value="Whatever">
-        </property>
-    </property>
-    <property name="InstanceOfNoisySinewave" class="ptolemy.kernel.util.StringAttribute">
-        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
-            </property>
-            <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[96, 18, 70, 40]">
-            </property>
-            <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_225066566">
-            </property>
+        <property name="tab_225066566" class="ptolemy.kernel.util.StringAttribute" value="Amazing Chicken">
         </property>
     </property>
     <class name="NoisySinewave" extends="ptolemy.actor.lib.Sinewave">
@@ -323,7 +313,7 @@
         </property>
         <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
         </property>
-        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[119, 108, 312, 212]">
+        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[65, -6, 312, 212]">
         </property>
         <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_225066566">
         </property>
@@ -374,7 +364,7 @@
         </property>
         <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
         </property>
-        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[119, 108, 312, 212]">
+        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[65, -6, 312, 212]">
         </property>
         <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_225066566">
         </property>

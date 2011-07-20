@@ -33,6 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// PositionableElement
@@ -91,7 +92,9 @@ public abstract class PositionableElement {
         if (attribute instanceof HomerLocation) {
             location = (HomerLocation) attribute;
         } else {
-            getElement().removeAttribute(attribute);
+            if (attribute != null) {
+                getElement().removeAttribute(attribute);
+            }
             try {
                 location = new HomerLocation(getElement(),
                         HomerConstants.POSITION_NODE);
@@ -101,6 +104,32 @@ public abstract class PositionableElement {
             }
         }
         location.setLocation(x, y, width, height);
+    }
+
+    /**
+     * TODO
+     * @param tabNode
+     * @throws IllegalActionException 
+     */
+    public void setTab(String tabNode) throws IllegalActionException {
+        Attribute attribute = getElement()
+                .getAttribute(HomerConstants.TAB_NODE);
+        StringAttribute tabAttribute;
+        if (attribute instanceof StringAttribute) {
+            tabAttribute = (StringAttribute) attribute;
+        } else {
+            if (attribute != null) {
+                getElement().removeAttribute(attribute);
+            }
+            try {
+                tabAttribute = new StringAttribute(getElement(),
+                        HomerConstants.TAB_NODE);
+            } catch (NameDuplicationException e) {
+                // this can't happen.
+                tabAttribute = null;
+            }
+        }
+        tabAttribute.setExpression(tabNode);
     }
 
     /** Get the location of the element.

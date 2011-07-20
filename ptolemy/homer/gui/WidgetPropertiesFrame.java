@@ -66,6 +66,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 import org.netbeans.api.visual.widget.Widget;
@@ -93,26 +94,20 @@ public class WidgetPropertiesFrame extends JPanel {
      *  @param widget Widget whose properties are being displayed.
      */
     public WidgetPropertiesFrame(Widget widget) {
-        setLayout(new GridLayout(3, 4, 10, 10));
+        setLayout(new GridLayout(0, 4, 10, 10));
         setLocation(500, 200);
 
         // Set up row #1.
-        add(new JLabel("Height: "));
-        add(_heightSpinner);
+        add(new JLabel("Width: "));
+        add(_widthSpinner);
         add(new JLabel("X: "));
         add(_xSpinner);
 
         // Set up row #2.
-        add(new JLabel("Width: "));
-        add(_widthSpinner);
+        add(new JLabel("Height: "));
+        add(_heightSpinner);
         add(new JLabel("Y: "));
         add(_ySpinner);
-
-        // Set up row #3.
-        add(new JLabel(""));
-        add(_enabled);
-        add(_required);
-        add(new JLabel(""));
 
         _widget = widget;
         if (_widget instanceof NamedObjectWidgetInterface) {
@@ -121,7 +116,20 @@ public class WidgetPropertiesFrame extends JPanel {
             if (!(namedObj instanceof Settable)) {
                 _enabled.setEnabled(false);
             }
+            if (HomerMainFrame.isLabelWidget(namedObj)) {
+                add(new JLabel("Label: "));
+                add(_label);
+                add(new JLabel(""));
+                add(new JLabel(""));
+                _label.setText(((Settable) namedObj).getExpression());
+            }
         }
+
+        // Set up row #3.
+        add(new JLabel(""));
+        add(_enabled);
+        add(_required);
+        add(new JLabel(""));
 
         _heightSpinner.setValue(widget.getPreferredBounds().height);
         _widthSpinner.setValue(widget.getPreferredBounds().width);
@@ -161,6 +169,10 @@ public class WidgetPropertiesFrame extends JPanel {
         }
 
         return bounds;
+    }
+
+    public String getLabel() {
+        return _label.getText();
     }
 
     /** Get the enabled status of the widget.
@@ -229,4 +241,8 @@ public class WidgetPropertiesFrame extends JPanel {
     /** Checkbox UI element to tell if the widget will be required.
      */
     private final Checkbox _required = new Checkbox("Required");
+
+    /** Checkbox UI element to tell if the widget will be enabled.
+     */
+    private final JTextField _label = new JTextField();
 }

@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -70,27 +71,19 @@ public class AttributeStyleWidget extends GlassPaneWidget {
     public AttributeStyleWidget(Scene scene, PositionableElement element)
             throws NameDuplicationException, IllegalActionException {
         super(scene, element);
-        NamedObj namedObject = element.getElement();
+
+        NamedObj namedObject = getPositionableElement().getElement();
         List<ParameterEditorStyle> styles = namedObject
                 .attributeList(ParameterEditorStyle.class);
         ParameterEditorStyle style = null;
         if (!styles.isEmpty()) {
             style = styles.get(0);
         }
-        JComponent component;
         if (style instanceof CheckBoxStyle) {
             JCheckBox checkBox = new JCheckBox(namedObject.getName());
-            if (namedObject instanceof Parameter) {
-                Token token = ((Parameter) namedObject).getToken();
-                if (token instanceof BooleanToken) {
-                    checkBox.setSelected(((BooleanToken) token).booleanValue());
-                }
-            }
-            component = checkBox;
+            _attributeComponent = checkBox;
         } else if (style instanceof ChoiceStyle) {
-            // Will add combobox elements just to make it conceptually closes to the running UI.
-            List<Settable> attributes = style.attributeList(Settable.class);
-            JComboBox comboBox = new JComboBox(attributes.toArray());
+            JComboBox comboBox = new JComboBox();
             comboBox.setRenderer(new DefaultListCellRenderer() {
                 @Override
                 public Component getListCellRendererComponent(JList list,
@@ -103,30 +96,65 @@ public class AttributeStyleWidget extends GlassPaneWidget {
                             index, isSelected, cellHasFocus);
                 }
             });
-            component = comboBox;
+            _attributeComponent = comboBox;
         } else if (style instanceof NotEditableLineStyle) {
             JLabel label = new JLabel();
-            if (namedObject instanceof Settable) {
-                label.setText(((Settable) namedObject).getExpression());
-            }
-            component = label;
+            _attributeComponent = label;
         } else if (style instanceof LineStyle) {
             JScrollPane panel = new JScrollPane();
             JTextArea textArea = new JTextArea();
             panel.setViewportView(textArea);
+            _attributeComponent = panel;
+        } else {
+            JTextField textField = new JTextField();
+            _attributeComponent = textField;
+        }
+        updateValue();
+        _containerPanel.add(_attributeComponent, BorderLayout.CENTER);
+        setGlassPaneSize(_attributeComponent.getPreferredSize());
+    }
+
+    public void updateValue() throws IllegalActionException {
+        NamedObj namedObject = getPositionableElement().getElement();
+        List<ParameterEditorStyle> styles = namedObject
+                .attributeList(ParameterEditorStyle.class);
+        ParameterEditorStyle style = null;
+        if (!styles.isEmpty()) {
+            style = styles.get(0);
+        }
+        if (style instanceof CheckBoxStyle) {
+            JCheckBox checkBox = (JCheckBox) _attributeComponent;
+            if (namedObject instanceof Parameter) {
+                Token token = ((Parameter) namedObject).getToken();
+                if (token instanceof BooleanToken) {
+                    checkBox.setSelected(((BooleanToken) token).booleanValue());
+                }
+            }
+        } else if (style instanceof ChoiceStyle) {
+            // Will add combobox elements just to make it conceptually closes to the running UI.
+            List<Settable> attributes = style.attributeList(Settable.class);
+            JComboBox comboBox = (JComboBox) _attributeComponent;
+            comboBox.setModel(new DefaultComboBoxModel(attributes.toArray()));
+        } else if (style instanceof NotEditableLineStyle) {
+            JLabel label = (JLabel) _attributeComponent;
+            if (namedObject instanceof Settable) {
+                label.setText(((Settable) namedObject).getExpression());
+            }
+        } else if (style instanceof LineStyle) {
+            JScrollPane panel = (JScrollPane) _attributeComponent;
+            JTextArea textArea = (JTextArea) panel.getViewport().getView();
+            panel.setViewportView(textArea);
             if (namedObject instanceof Settable) {
                 textArea.setText(((Settable) namedObject).getExpression());
             }
-            component = panel;
         } else {
-            JTextField textField = new JTextField();
+            JTextField textField = (JTextField) _attributeComponent;
             if (namedObject instanceof Settable) {
                 textField.setText(((Settable) namedObject).getExpression());
             }
-            component = textField;
         }
-        _containerPanel.add(component, BorderLayout.CENTER);
-        setGlassPaneSize(component.getPreferredSize());
     }
+
+    private JComponent _attributeComponent;
 
 }

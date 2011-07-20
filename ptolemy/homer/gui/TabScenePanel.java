@@ -47,7 +47,6 @@ import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -74,12 +73,14 @@ import org.netbeans.modules.visual.action.AlignWithResizeStrategyProvider;
 import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
 import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.ContentPrototype;
 import ptolemy.homer.kernel.HomerLocation;
 import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.LayoutFileOperations.SinkOrSource;
 import ptolemy.homer.kernel.PositionableElement;
+import ptolemy.homer.widgets.AttributeStyleWidget;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -162,42 +163,45 @@ public class TabScenePanel implements ContentPrototype {
             public void dragEnter(DropTargetDragEvent dropEvent) {
                 try {
                     // Reject is data flavor is not supported.
-                    if (!dropEvent
+                    if (dropEvent
                             .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
-                        dropEvent.rejectDrag();
-                        return;
-                    }
 
-                    List<?> dropObjects = (java.util.List) dropEvent
-                            .getTransferable().getTransferData(
-                                    PtolemyTransferable.namedObjFlavor);
+                        List<?> dropObjects = (java.util.List) dropEvent
+                                .getTransferable().getTransferData(
+                                        PtolemyTransferable.namedObjFlavor);
 
-                    // Reject if not PortablePlaceable or Settable.
-                    Object transferable = dropObjects.get(0);
-                    if (!(transferable instanceof PortablePlaceable)
-                            && !(transferable instanceof Settable)) {
-                        dropEvent.rejectDrag();
-                        return;
-                    }
-
-                    // Reject if it is already in the contents.
-                    if (_mainFrame.contains((NamedObj) transferable)) {
-                        dropEvent.rejectDrag();
-                        return;
-                    }
-
-                    // Reject if it's an entity, but not a sink.
-                    if (transferable instanceof ComponentEntity) {
-                        SinkOrSource isTransferableSinkOrSource = LayoutFileOperations
-                                .isSinkOrSource((ComponentEntity) transferable);
-                        if (isTransferableSinkOrSource != SinkOrSource.SINK
-                                && isTransferableSinkOrSource != SinkOrSource.SINK_AND_SOURCE) {
+                        // Reject if not PortablePlaceable or Settable.
+                        Object transferable = dropObjects.get(0);
+                        if (!(transferable instanceof PortablePlaceable)
+                                && !(transferable instanceof Settable)) {
                             dropEvent.rejectDrag();
                             return;
                         }
-                    }
 
-                    dropEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+                        // Reject if it is already in the contents.
+                        if (_mainFrame.contains((NamedObj) transferable)) {
+                            dropEvent.rejectDrag();
+                            return;
+                        }
+
+                        // Reject if it's an entity, but not a sink.
+                        if (transferable instanceof ComponentEntity) {
+                            SinkOrSource isTransferableSinkOrSource = LayoutFileOperations
+                                    .isSinkOrSource((ComponentEntity) transferable);
+                            if (isTransferableSinkOrSource != SinkOrSource.SINK
+                                    && isTransferableSinkOrSource != SinkOrSource.SINK_AND_SOURCE) {
+                                dropEvent.rejectDrag();
+                                return;
+                            }
+                        }
+
+                        dropEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+                    } else if (dropEvent
+                            .isDataFlavorSupported(NamedObjectTree.LABEL_FLAVOR)) {
+                        dropEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+                    } else {
+                        dropEvent.rejectDrag();
+                    }
                 } catch (UnsupportedFlavorException e) {
                     MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
@@ -215,42 +219,62 @@ public class TabScenePanel implements ContentPrototype {
              *  load the appropriate graphical widget.
              */
             public void drop(DropTargetDropEvent dropEvent) {
-                if (!dropEvent
+                if (dropEvent
                         .isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
+                    try {
+                        List<?> dropObjects = (java.util.List) dropEvent
+                                .getTransferable().getTransferData(
+                                        PtolemyTransferable.namedObjFlavor);
+                        _mainFrame.addVisualNamedObject(TabScenePanel.this,
+                                (NamedObj) dropObjects.get(0), null,
+                                dropEvent.getLocation());
+                        dropEvent.acceptDrop(DnDConstants.ACTION_LINK);
+                    } catch (UnsupportedFlavorException e) {
+                        MessageHandler.error(
+                                "Can't find a supported data flavor for drop in "
+                                        + dropEvent, e);
+                    } catch (IOException e) {
+                        MessageHandler.error(
+                                "Can't find a supported data flavor for drop in "
+                                        + dropEvent, e);
+                    } catch (IllegalActionException e) {
+                        MessageHandler.error(
+                                "Can't initialize widget for the selected object "
+                                        + dropEvent, e);
+                    } catch (NameDuplicationException e) {
+                        MessageHandler.error(
+                                "Can't initialize widget for the selected object "
+                                        + dropEvent, e);
+                    }
+                } else if (dropEvent
+                        .isDataFlavorSupported(NamedObjectTree.LABEL_FLAVOR)) {
+                    try {
+                        Object transferData = dropEvent.getTransferable()
+                                .getTransferData(NamedObjectTree.LABEL_FLAVOR);
+                        _mainFrame.addLabel(TabScenePanel.this,
+                                transferData.toString(), null,
+                                dropEvent.getLocation());
+                        dropEvent.acceptDrop(DnDConstants.ACTION_LINK);
+                    } catch (UnsupportedFlavorException e) {
+                        MessageHandler.error(
+                                "Can't initialize widget for the selected object "
+                                        + dropEvent, e);
+                    } catch (IOException e) {
+                        MessageHandler.error(
+                                "Can't initialize widget for the selected object "
+                                        + dropEvent, e);
+                    } catch (IllegalActionException e) {
+                        MessageHandler.error(
+                                "Can't initialize widget for the selected object "
+                                        + dropEvent, e);
+                    } catch (NameDuplicationException e) {
+                        MessageHandler.error(
+                                "Can't initialize widget for the selected object "
+                                        + dropEvent, e);
+                    }
+                } else {
                     dropEvent.rejectDrop();
-                    return;
                 }
-
-                try {
-                    List<?> dropObjects = (java.util.List) dropEvent
-                            .getTransferable().getTransferData(
-                                    PtolemyTransferable.namedObjFlavor);
-                    _mainFrame.addVisualNamedObject(TabScenePanel.this,
-                            (NamedObj) dropObjects.get(0), null,
-                            dropEvent.getLocation());
-                } catch (UnsupportedFlavorException e) {
-                    MessageHandler.error(
-                            "Can't find a supported data flavor for drop in "
-                                    + dropEvent, e);
-                    return;
-                } catch (IOException e) {
-                    MessageHandler.error(
-                            "Can't find a supported data flavor for drop in "
-                                    + dropEvent, e);
-                    return;
-                } catch (IllegalActionException e) {
-                    MessageHandler.error(
-                            "Can't initialize widget for the selected object "
-                                    + dropEvent, e);
-                    return;
-                } catch (NameDuplicationException e) {
-                    MessageHandler.error(
-                            "Can't initialize widget for the selected object "
-                                    + dropEvent, e);
-                    return;
-                }
-
-                dropEvent.acceptDrop(DnDConstants.ACTION_LINK);
             }
         });
         _scene.getView().addComponentListener(new ComponentAdapter() {
@@ -443,10 +467,15 @@ public class TabScenePanel implements ContentPrototype {
                 _adjustBounds(widget, widgetBounds);
                 widget.setPreferredBounds(widgetBounds);
                 _scene.validate();
+                if (HomerMainFrame.isLabelWidget(element.getElement())
+                        && widget instanceof AttributeStyleWidget) {
+                    AttributeStyleWidget attributeStyleWidget = (AttributeStyleWidget) widget;
+                    ((Settable) element.getElement()).setExpression(dialog
+                            .getLabel());
+                    attributeStyleWidget.updateValue();
+                }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(_mainFrame, new JLabel(ex
-                        .getClass().getName()), "Invalid Size Specified",
-                        JOptionPane.WARNING_MESSAGE);
+                MessageHandler.error("Invalid size specifid", ex);
             }
         }
     }
