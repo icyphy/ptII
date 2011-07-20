@@ -31,10 +31,12 @@ package ptserver.util;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypeConflictException;
 import ptolemy.actor.TypedCompositeActor;
@@ -43,6 +45,7 @@ import ptolemy.data.type.Typeable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -229,6 +232,15 @@ public class ProxyModelBuilder {
                     .entrySet()) {
                 entry.getValue().setName(entry.getKey().getName());
                 entry.getValue().setContainer(_topLevelActor);
+            }
+            List<Relation> relationList = _topLevelActor.relationList();
+            for (Relation relation : relationList) {
+                if (relation instanceof IORelation) {
+                    IORelation ioRelation = (IORelation) relation;
+                    if (ioRelation.linkedPortList().isEmpty()) {
+                        ioRelation.setContainer(null);
+                    }
+                }
             }
             break;
         default:
