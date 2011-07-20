@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="de_inside_sdf" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -35,6 +35,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 50}">
             </property>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
@@ -45,30 +53,18 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 175.0]">
             </property>
         </port>
-        <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
-            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="2.0">
-            </property>
-            <property name="VariableDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 214, 815, 516}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 175}">
+        <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 175.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
         </relation>
-        <link port="port" relation="relation"/>
-        <link port="port2" relation="relation2"/>
-        <link port="VariableDelay.input" relation="relation2"/>
-        <link port="VariableDelay.output" relation="relation"/>
+        <link port="port" relation="relation2"/>
+        <link port="port2" relation="relation3"/>
+        <link port="TimeDelay.input" relation="relation3"/>
+        <link port="TimeDelay.output" relation="relation2"/>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>

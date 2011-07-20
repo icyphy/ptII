@@ -58,8 +58,7 @@ import ptolemy.kernel.util.Workspace;
  If several inputs arrive while the server is busy, then they are
  served on a first-come, first-served basis.
 
- @see ptolemy.domains.de.lib.TimedDelay
- @see ptolemy.domains.de.lib.VariableDelay
+ @see ptolemy.actor.lib.TimeDelay
 
  @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
  @version $Id$

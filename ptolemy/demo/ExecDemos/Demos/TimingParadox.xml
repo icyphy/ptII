@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimingParadox" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -19,152 +19,149 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 2, 963, 761}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 961, 668}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[748, 643]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[748, 558]">
     </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Source process</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 145.0]">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-    </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Sampling Process</text></svg></configure>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Source process">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[127.5, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 85.0}">
         </property>
     </property>
-    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Steve Neuendorffer</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 390.0]">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-    </property>
-    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This example illustrates a paradox that
-arises when merging two event streams
-of the same rate with with random delay.
-It plots a histogram of the time between
-events, which illustrates that when there
-is a small fixed time offset between the
-two periodic events, then a strongly
-bimodal distribution results.  When a
-larger fixed delay is used, then the
-second mode is significantly reduced.</text></svg></configure>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sampling Process">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 380.0]">
         </property>
     </property>
-    <property name="annotation5" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+    <property name="AnnotationUpdated3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This example is illustrative of the
-problems faced by real-time multitasking
-software when interacting with physical
-processes periodically, but with random
-delays.</text></svg></configure>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 370.0]">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Steve Neuendorffer">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 525.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates a paradox that&#10;arises when merging two event streams&#10;of the same rate with with random delay.&#10;It plots a histogram of the time between&#10;events, which illustrates that when there&#10;is a small fixed time offset between the&#10;two periodic events, then a strongly&#10;bimodal distribution results.  When a&#10;larger fixed delay is used, then the&#10;second mode is significantly reduced.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 160.0}">
+        </property>
+    </property>
+    <property name="AnnotationUpdated5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example is illustrative of the&#10;problems faced by real-time multitasking&#10;software when interacting with physical&#10;processes periodically, but with random&#10;delays.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 445.0}">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.0, 321.5}">
-    </property>
-    <property name="annotation6" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:32; font-family:Serif; fill:black">Discrete-Event Systems</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 20.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.0, 279.0}">
     </property>
     <class name="Sampler" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{645.0, 110.0}">
         </property>
         <property name="sampleDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -269,12 +266,12 @@ delays.</text></svg></configure>
     </class>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 40.0">
         </property>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
         <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="107.5, 445.0">
         </property>
     </entity>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
@@ -282,15 +279,15 @@ delays.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="0.0,.05,.1,.2,.3,.4">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 552, 1019, 215}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 94, 1024, 657}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1011, 160]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1024, 613]">
         </property>
         <property name="binWidth" class="ptolemy.data.expr.Parameter" value=".01">
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.005">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 225.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -299,8 +296,8 @@ delays.</text></svg></configure>
 <title>The Delay Paradox</title>
 <xLabel>Delay Between Sample Produced and Sample Observed</xLabel>
 <yLabel>Number of Occurrences</yLabel>
-<xRange min="0.015" max="1.38"/>
-<yRange min="0.0" max="629.0"/>
+<xRange min="0.015" max="1.4"/>
+<yRange min="0.0" max="617.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.01" offset="0.0050"/>
 </plot>?>
@@ -308,7 +305,7 @@ delays.</text></svg></configure>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 40.0">
         </property>
     </entity>
     <entity name="Rician" class="ptolemy.actor.lib.Rician">
@@ -321,7 +318,7 @@ delays.</text></svg></configure>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value=".1">
         </property>
         <doc>Create an array of rician random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 85.0}">
         </property>
     </entity>
     <entity name="Rician2" class="ptolemy.actor.lib.Rician">
@@ -334,84 +331,68 @@ delays.</text></svg></configure>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value=".1">
         </property>
         <doc>Create an array of rician random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[192.5, 515.0]">
-        </property>
-    </entity>
-    <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
-        <property name="VariableDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 214, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 110.0]">
-        </property>
-    </entity>
-    <entity name="VariableDelay2" class="ptolemy.domains.de.lib.VariableDelay">
-        <property name="VariableDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 214, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[277.5, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 495.0]">
         </property>
     </entity>
     <entity name="InstanceOfSampler" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 80.0]">
         </property>
     </entity>
     <entity name="InstanceOfSampler2" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 145.0}">
         </property>
         <property name="sampleDelay" class="ptolemy.data.expr.Parameter" value="0.05">
         </property>
     </entity>
     <entity name="InstanceOfSampler3" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 210.0}">
         </property>
         <property name="sampleDelay" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
     </entity>
     <entity name="InstanceOfSampler4" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 275.0]">
         </property>
         <property name="sampleDelay" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
     </entity>
     <entity name="InstanceOfSampler5" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 335.0]">
         </property>
         <property name="sampleDelay" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
     </entity>
     <entity name="InstanceOfSampler6" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 400.0]">
         </property>
         <property name="sampleDelay" class="ptolemy.data.expr.Parameter" value="0.4">
         </property>
     </entity>
+    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 445.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[155.0, 100.0]">
+        <vertex name="vertex1" value="[150.0, 40.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[142.5, 465.0]">
+        <vertex name="vertex1" value="145.0, 445.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[380.0, 475.0]">
+        <vertex name="vertex1" value="[375.0, 410.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[395.0, 110.0]">
+        <vertex name="vertex1" value="[390.0, 50.0]">
         </vertex>
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -425,6 +406,10 @@ delays.</text></svg></configure>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Clock.output" relation="relation"/>
     <link port="Clock2.output" relation="relation4"/>
     <link port="HistogramPlotter.input" relation="relation5"/>
@@ -435,16 +420,10 @@ delays.</text></svg></configure>
     <link port="HistogramPlotter.input" relation="relation10"/>
     <link port="CurrentTime.output" relation="relation2"/>
     <link port="CurrentTime.trigger" relation="relation"/>
-    <link port="Rician.output" relation="relation13"/>
+    <link port="Rician.output" relation="relation14"/>
     <link port="Rician.trigger" relation="relation2"/>
-    <link port="Rician2.output" relation="relation3"/>
+    <link port="Rician2.output" relation="relation13"/>
     <link port="Rician2.trigger" relation="relation4"/>
-    <link port="VariableDelay.input" relation="relation2"/>
-    <link port="VariableDelay.output" relation="relation12"/>
-    <link port="VariableDelay.delay" relation="relation13"/>
-    <link port="VariableDelay2.input" relation="relation4"/>
-    <link port="VariableDelay2.output" relation="relation11"/>
-    <link port="VariableDelay2.delay" relation="relation3"/>
     <link port="InstanceOfSampler.source" relation="relation12"/>
     <link port="InstanceOfSampler.sample" relation="relation11"/>
     <link port="InstanceOfSampler.output" relation="relation5"/>
@@ -463,4 +442,10 @@ delays.</text></svg></configure>
     <link port="InstanceOfSampler6.source" relation="relation12"/>
     <link port="InstanceOfSampler6.sample" relation="relation11"/>
     <link port="InstanceOfSampler6.output" relation="relation10"/>
+    <link port="TimeDelay.input" relation="relation2"/>
+    <link port="TimeDelay.output" relation="relation12"/>
+    <link port="TimeDelay.delay" relation="relation14"/>
+    <link port="TimeDelay2.input" relation="relation4"/>
+    <link port="TimeDelay2.output" relation="relation11"/>
+    <link port="TimeDelay2.delay" relation="relation13"/>
 </entity>

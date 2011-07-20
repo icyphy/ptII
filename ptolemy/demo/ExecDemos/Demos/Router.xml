@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Router" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -49,10 +49,10 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{254.0, 354.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 205.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 596}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 817, 589}, maximized=false}">
     </property>
     <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -157,18 +157,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[144.0, 334.0]">
         </property>
     </entity>
-    <entity name="Channel Model" class="ptolemy.domains.de.lib.VariableDelay">
-        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
-        </property>
-        <property name="VariableDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 214, 815, 516}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[314.0, 324.0]">
-        </property>
-    </entity>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
         </property>
@@ -244,9 +232,9 @@
         </property>
     </entity>
     <entity name="Display As Received" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={613, 6, 290, 397}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={613, 22, 484, 368}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 324]">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -258,9 +246,9 @@
         </property>
     </entity>
     <entity name="Display Resequenced" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={704, 328, 290, 397}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={704, 328, 484, 368}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 324]">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -271,21 +259,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[489.0, 369.0]">
         </property>
     </entity>
+    <entity name="ChannelModel" class="ptolemy.actor.lib.TimeDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 325.0]">
+        </property>
+    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation43" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation44" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation45" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[89.0, 274.0]">
         </vertex>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[424.0, 324.0]">
@@ -295,22 +281,25 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Record Assembler.output" relation="relation45"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Record Assembler.output" relation="relation"/>
     <link port="Record Assembler.content" relation="relation1"/>
     <link port="Record Assembler.sequence number" relation="relation6"/>
     <link port="Sequence Count.output" relation="relation6"/>
     <link port="Sequence Count.trigger" relation="relation3"/>
-    <link port="Channel Model.input" relation="relation45"/>
-    <link port="Channel Model.output" relation="relation4"/>
-    <link port="Channel Model.delay" relation="relation44"/>
     <link port="Gaussian.output" relation="relation43"/>
     <link port="Gaussian.trigger" relation="relation3"/>
     <link port="Square.firstOperand" relation="relation43"/>
-    <link port="Square.output" relation="relation44"/>
+    <link port="Square.output" relation="relation8"/>
     <link port="Master Clock.output" relation="relation3"/>
     <link port="String Sequence.output" relation="relation1"/>
     <link port="String Sequence.trigger" relation="relation3"/>
-    <link port="Record Disassembler.input" relation="relation4"/>
+    <link port="Record Disassembler.input" relation="relation9"/>
     <link port="Record Disassembler.content" relation="relation2"/>
     <link port="Record Disassembler.sequence number" relation="relation7"/>
     <link port="Sequencer.input" relation="relation2"/>
@@ -318,4 +307,7 @@
     <link port="Sequencer.sequenceNumber" relation="relation7"/>
     <link port="Display As Received.input" relation="relation2"/>
     <link port="Display Resequenced.input" relation="relation5"/>
+    <link port="ChannelModel.input" relation="relation"/>
+    <link port="ChannelModel.output" relation="relation9"/>
+    <link port="ChannelModel.delay" relation="relation8"/>
 </entity>

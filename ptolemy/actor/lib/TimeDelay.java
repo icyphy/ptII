@@ -28,12 +28,15 @@
 package ptolemy.actor.lib;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Set;
 
 import ptolemy.actor.CausalityMarker;
-import ptolemy.actor.util.CalendarQueue;
+import ptolemy.actor.Director;
+import ptolemy.actor.SuperdenseTimeDirector;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -43,69 +46,66 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// TimeDelay
 
 /**
- This actor delays the input by a specified amount of time. It is designed
- to be used in timed domains such as DE. It can also be used
+ This actor delays the input by a specified amount of time given by
+ the <i>delay</i> port or parameter, which defaults to 1.0. It is designed
+ to be used in timed domains, particularly DE. It can also be used
  in other domains, such as SR and SDF, but this will only be useful if the
- delay value is a multiple of the period of those directors. The amount
- of the time is required to be non-negative and has a default value 1.0.
+ delay value is a multiple of the period of those directors. The value
+ of <i>delay</i> is required to be nonnegative. In addition, if the
+ <i>delay</i> port is connected (and hence the delay will be variable
+ at run time), then the values provided at the port are required to be
+ greater than or equal <i>minimumDelay</i>,
+ which defaults to 0.0. Setting the <i>minimumDelay</i> to something greater
+ than 0.0 is helpful in specials domains such as Ptides.
  The input and output types are unconstrained, except that the output type
- must be the same as that of the input. It can be used in the Continuous
- domain, but it is really only useful to delay purely discrete signals.
- Because of the way variable-step-size ODE solvers work, the TimeDelay
- actor has the side effect of forcing the solver to use very small step
- sizes, which slows down a simulation.
+ must be the same as that of the input.
  <p>
- This actor keeps a local FIFO queue to store all received but not processed
- inputs. The behavior of this actor on each firing is to read a token from
- the input, if there is one, store it into the local queue. It will
- also output any previously received token that is scheduled to be produced
- at the current time. If there is no previously received token scheduled
- to be produced, then the output will (implicitly) be absent.
+ For directors that implement {@link SuperdenseTimeDirector}, such as
+ DE, the output microstep of an event will match the input microstep,
+ unless the time delay is 0.0, in which case, the output microstep will
+ be one greater than the input microstep.
+ A time delay of 0.0 is sometimes useful to break
+ causality loops in feedback systems. It is sometimes useful to think
+ of this zero-valued delay as an infinitesimal delay.
  <p>
- If an input is read during the fire() method, then
- during the postfire() method, this actor schedules itself to fire again
+ This actor keeps a local FIFO queue to store all received but not produced
+ inputs. The behavior of this actor on each firing is to
+ output any previously received token that is scheduled to be produced
+ at the current time (and microstep).
+ If there is no previously received token scheduled
+ to be produced, then the output will be absent.
+ <p>
+ Inputs are read only during the postfire() method.
+ If an input is present, then this actor schedules itself to fire again
  to produce the just received token on the corresponding output channel after
  the appropriate time delay. Note that if the value of delay is 0.0, the
- actor schedules itself to fire at the current model time.
+ actor schedules itself to fire at the current model time, resulting in
+ an output with an incremented microstep.
  <p>
- This actor can be used to delay either discrete signals or continuous-time
- signals. However, in the latter case, some odd artifacts will inevitably
+ This actor can also be used in the Continuous
+ domain, but it is only useful to delay purely discrete signals.
+ As a consequence, for directors that implement {@link SuperdenseTimeDirector},
+ this actor insists that input events have microstep 1 or greater.
+ It will throw an exception if it receives an input with microstep 0,
+ which in the Continuous domain, implies a continuous signal.
+ There are two reasons for rejecting continuous inputs.
+ First, because of the way variable-step-size ODE solvers work, the TimeDelay
+ actor has the side effect of forcing the solver to use very small step
+ sizes, which slows down a simulation.
+ Second, and more important, some odd artifacts will
  appear if a variable step-size solver is being used. In particular, the
  output will be absent on any firing where there was no input at exactly
  time <i>t</i> - <i>d</i>, where <i>t</i> is the time of the firing
- and <i>d</i> is the value of the delay parameter.
- <p>
- Occasionally, this actor is useful with the
- delay parameter set to 0.0.  The time stamp of the output will
- equal that of the input, but there is a "microstep" delay.
- Several Ptolemy II domains use a "super dense" model
- of time, meaning that a signal from one actor to another can
- contain multiple events with the same time stamp. These events
- are "simultaneous," but nonetheless
- have a well-defined sequential ordering determined by the order
- in which they are produced.
- If \textit{delay} is 0.0, then the fire() method of this actor
- always produces on its output port the event consumed in the
- \textit{previous iteration} with the same time stamp, if there
- was one. If there wasn't such a previous iteration, then it
- produces no output.  Its postfire() method consumes and
- records the input for use in the next iteration, if there
- is such an input, and also requests a refiring at the current
- time.  This refire request triggers the next iteration (at
- the same time stamp), on which the output is produced.
- <p>
- A consequence of this strategy is that this actor is
- able to produce an output (or assert that there is no output) before the
- input with the same time is known.   Hence, it can be used to break
- causality loops in feedback systems. The Continuous director will leverage this when
- determining the fixed point behavior. It is sometimes useful to think
- of this zero-valued delay as an infinitesimal delay.
+ and <i>d</i> is the value of the delay parameter. Thus, a continuous
+ signal input will have gaps on the output, and will fail to be
+ piecewise continuous.
 
  @author Edward A. Lee
  @version $Id$
@@ -127,10 +127,18 @@ public class TimeDelay extends Transformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        delay = new Parameter(this, "delay");
+        delay = new PortParameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("1.0");
         _delay = 1.0;
+
+        minimumDelay = new Parameter(this, "minimumDelay");
+        minimumDelay.setTypeEquals(BaseType.DOUBLE);
+        minimumDelay.setExpression("0.0");
+
+        // Put the delay input on the bottom of the actor.
+        StringAttribute controlCardinal = new StringAttribute(delay.getPort(), "_cardinal");
+        controlCardinal.setExpression("SOUTH");
 
         output.setTypeSameAs(input);
 
@@ -149,7 +157,12 @@ public class TimeDelay extends Transformer {
      *  with a non-negative value, or an exception will be thrown when
      *  it is set.
      */
-    public Parameter delay;
+    public PortParameter delay;
+    
+    /** Minimum delay to impose if the <i>delay</i>
+     *  port is connected. This is a double that defaults to 0.0.
+     */
+    public Parameter minimumDelay;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -166,10 +179,13 @@ public class TimeDelay extends Transformer {
             throws IllegalActionException {
         if (attribute == delay) {
             double newDelay = ((DoubleToken) (delay.getToken())).doubleValue();
-
-            if (newDelay < 0.0) {
+            double minimumDelayValue = _minimumDelay();
+            if (newDelay < minimumDelayValue) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative delay: " + newDelay);
+                        "Cannot have delay less than "
+                        + minimumDelayValue
+                        + ". Attempt to set it to "
+                        + newDelay);
             } else {
                 _delay = newDelay;
             }
@@ -190,6 +206,7 @@ public class TimeDelay extends Transformer {
         newObject.output.setTypeSameAs(newObject.input);
         newObject._causalityMarker = (CausalityMarker) newObject
                 .getAttribute("causalityMarker");
+        newObject._pendingOutputs = null;
         return newObject;
     }
 
@@ -199,51 +216,37 @@ public class TimeDelay extends Transformer {
      *  @see #getCausalityInterface()
      */
     public void declareDelayDependency() throws IllegalActionException {
-        _declareDelayDependency(input, output, _delay);
+        double minimumDelayValue = _minimumDelay();
+        _declareDelayDependency(delay.getPort(), output, minimumDelayValue);
+        _declareDelayDependency(input, output, minimumDelayValue);
     }
 
     /** Read one token from the input. Send out a token that is scheduled
-     *  to produce at the current time to the output.
+     *  to be produced at the current time.
      *  @exception IllegalActionException If there is no director, or the
      *  input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-
-        // produce output
-        // NOTE: The amount of delay may be zero.
-        // In this case, if there is already some token scheduled to
-        // be produced at the current time before the current input
-        // arrives, that token is produced. While the current input
-        // is delayed to the next available firing at the current time.
-        //
-        // If we observe events in the queue that have expired,
-        // discard them here.
-        Time currentTime = getDirector().getModelTime();
-        _currentOutput = null;
-
-        if (_delayedOutputTokens.size() == 0) {
-            output.send(0, null);
-            return;
-        }
-
-        while (_delayedOutputTokens.size() > 0) {
-            TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens.get();
-            Time eventTime = earliestEvent.timeStamp;
-
-            int comparison = eventTime.compareTo(currentTime);
-            if (comparison == 0) {
-                _currentOutput = (Token) earliestEvent.contents;
-                output.send(0, _currentOutput);
-                break;
-            } else if (comparison > 0) {
-                // It is not yet time to produce an output.
-                output.send(0, null);
-                break;
+        if (_isTime()) {
+            // Time to produce the output.
+            PendingEvent event = _pendingOutputs.getLast();
+            output.send(0, event.token);
+            if (_debugging) {
+                _debug("Sending output. Value = "
+                        + event.token
+                        + ", time = "
+                        + event.timeStamp
+                        + ", microstep = "
+                        + event.microstep);
             }
-            // If we get here, then we have passed the time of the delayed
-            // output. We simply discard it and check the next one in the queue.
-            _delayedOutputTokens.take();
+        } else {
+            // Nothing to send. Assert the output to be absent.
+            output.send(0, null);
+            if (_debugging) {
+                _debug("Nothing to send. Asserting absent output at time "
+                        + getDirector().getModelTime());
+            }
         }
     }
 
@@ -252,9 +255,11 @@ public class TimeDelay extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _currentOutput = null;
-        _delayedOutputTokens = new CalendarQueue(
-                new TimedEvent.TimeComparator());
+        if (_pendingOutputs != null) {
+            _pendingOutputs.clear();
+        } else {
+            _pendingOutputs = new LinkedList<PendingEvent>();
+        }
     }
 
     /** Return false indicating that this actor can be fired even if
@@ -265,57 +270,193 @@ public class TimeDelay extends Transformer {
         return false;
     }
 
-    /** Process the current input if it has not been processed. Schedule
-     *  a firing to produce the earliest output token.
+    /** Read the input, if there is one, and request refiring.
      *  @exception IllegalActionException If scheduling to refire cannot
      *  be performed or the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
-        Time delayToTime = currentTime.add(_delay);
-
-        // Remove the token that is sent at the current time.
-        if (_delayedOutputTokens.size() > 0) {
-            if (_currentOutput != null) {
-                _delayedOutputTokens.take();
+        delay.update();
+        
+        // No point in using the isTime() method here, since we need
+        // all the intermediate values.
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
+        int microstep = 1;
+        if (director instanceof SuperdenseTimeDirector) {
+            microstep = ((SuperdenseTimeDirector)director).getIndex();
+        }
+        
+        if (_pendingOutputs.size() > 0) {
+            PendingEvent event = _pendingOutputs.getLast();
+            int comparison = currentTime.compareTo(event.timeStamp);
+            if (comparison == 0 && microstep >= event.microstep) {
+                // Remove the oldest event in the event queue, since
+                // this will have been produced in fire().
+                _pendingOutputs.removeLast();
             }
         }
-
-        // Handle the refiring of the multiple tokens
-        // that are scheduled to be produced at the same time.
-        if (_delayedOutputTokens.size() > 0) {
-            TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens.get();
-            Time eventTime = earliestEvent.timeStamp;
-
-            if (eventTime.equals(currentTime)) {
+        
+        // Check whether the next oldest event has the same time.
+        if (_pendingOutputs.size() > 0) {
+            // The current time stamp of the next event
+            // may match, but not the microstep.
+            // In this case, we have to request a refiring.
+            PendingEvent nextEvent = _pendingOutputs.getLast();
+            if (currentTime.equals(nextEvent.timeStamp)) {
                 _fireAt(currentTime);
             }
+            if (_debugging) {
+                _debug("Deferring output to a later microstep. Value = "
+                        + nextEvent.token
+                        + ", time = "
+                        + nextEvent.timeStamp
+                        + ", microstep = "
+                        + nextEvent.microstep
+                        + ". Current microstep is "
+                        + microstep);
+            }
         }
-
-        // consume input
+        
         if (input.hasToken(0)) {
-            _delayedOutputTokens.put(new TimedEvent(delayToTime, input.get(0)));
-            _fireAt(delayToTime);
+            Token token = input.get(0);
+            PendingEvent newEvent = new PendingEvent();
+            newEvent.token = token;
+            newEvent.timeStamp = currentTime.add(_delay);
+            newEvent.microstep = microstep;
+            if (_delay == 0.0) {
+                newEvent.microstep++;
+            }
+            _fireAt(newEvent.timeStamp);
+            _addEvent(newEvent);
+            if (_debugging) {
+                _debug("Queueing event for later output. Value = "
+                        + newEvent.token
+                        + ", time = "
+                        + newEvent.timeStamp
+                        + ", microstep = "
+                        + newEvent.microstep);
+            }
         }
-
         return super.postfire();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Insert a new event into the queue of pending events.
+     *  This method ensures that events in the queue are in time-stamp
+     *  and microstep order, and that when time stamps and microsteps match,
+     *  that the order is FIFO. The latest time stamp and largest microstep
+     *  are at the beginning of the list.
+     */
+    protected void _addEvent(PendingEvent newEvent) {
+        if (_pendingOutputs.size() == 0) {
+            // List is empty. This is easy.
+            _pendingOutputs.add(newEvent);
+            return;
+        }
+        // Optimize for the common case, which is that insertions
+        // go at the beginning.
+        PendingEvent newestEvent = _pendingOutputs.getFirst();
+        int comparison = newEvent.timeStamp.compareTo(newestEvent.timeStamp);
+        if (comparison > 0) {
+            // New event has higher time stamp than all in the queue.
+            _pendingOutputs.addFirst(newEvent);
+        } else if (comparison == 0 && newEvent.microstep >= newestEvent.microstep) {
+            // New event has the same time stamp as the newest
+            // in the queue, but microstep is greater or equal.
+            _pendingOutputs.addFirst(newEvent);
+        } else {
+            // Event has to be inserted into the queue.
+            // Here we do a linear search, which is a poor choice if
+            // the delay is highly variable. But that case is rare.
+            ListIterator<PendingEvent> iterator = _pendingOutputs.listIterator();
+            while (iterator.hasNext()) {
+                PendingEvent nextNewestEvent = iterator.next();
+                comparison = newEvent.timeStamp.compareTo(nextNewestEvent.timeStamp);
+                if (comparison > 0 
+                        || (comparison == 0 
+                                && newEvent.microstep >= newestEvent.microstep)) {
+                    // New event is later than or equal to current one.
+                    // First replace the current element, then add the current element back in.
+                    iterator.set(newEvent);
+                    iterator.add(nextNewestEvent);
+                    return;
+                }
+            }
+            // Got to the end of the list without finding an event
+            // that is older than the new event. Put at the end.
+            _pendingOutputs.addLast(newEvent);
+        }
+    }
+    
+    /** Return true if it is time to produce an output. 
+     *  @throws IllegalActionException If current time exceeds the time of
+     *   of the next pending event.
+     */
+    protected boolean _isTime() throws IllegalActionException {
+        if (_pendingOutputs.size() == 0) {
+            // No pending events.
+            return false;
+        }
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
+        int microstep = 1;
+        if (director instanceof SuperdenseTimeDirector) {
+            microstep = ((SuperdenseTimeDirector)director).getIndex();
+        }
+        
+        PendingEvent event = _pendingOutputs.getLast();
+        int comparison = currentTime.compareTo(event.timeStamp);
+        if (comparison > 0) {
+            // Current time exceeds the event time. This should not happen.
+            throw new IllegalActionException(this, "Failed to output event with time stamp "
+                    + event.timeStamp
+                    + " and value "
+                    + event.token
+                    + ". Perhaps the director is incompatible with TimeDelay?");
+        }
+        // If the time is right and the microstep matches or exceeds
+        // the desired microstep, then it is time.
+        return (comparison == 0 && microstep >= event.microstep);
+    }
+    
+    /** Return 0.0 unless the <i>delay</i> port is connected,
+     *  in which case, return the value of <i>minimumDelay</i>.
+     *  @return The minimum delay from the input to the output.
+     *  @throws IllegalActionException If the <i>minimumDelay</i>
+     *   parameter cannot be evaluated.
+     */
+    protected double _minimumDelay() throws IllegalActionException {
+        double minimumDelayValue = 0.0;
+        if (delay.getPort().sourcePortList().size() > 0) {
+            minimumDelayValue
+                    = ((DoubleToken) (minimumDelay.getToken())).doubleValue();
+        }
+        return minimumDelayValue;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Current output. */
-    protected Token _currentOutput;
-
     /** The amount of delay. */
     protected double _delay;
 
-    /** A local event queue to store the delayed output tokens. */
-    protected CalendarQueue _delayedOutputTokens;
+    /** A local queue to store the delayed output tokens. */
+    protected LinkedList<PendingEvent> _pendingOutputs;
 
     /** A causality marker to store information about how pure events are causally
      *  related to trigger events.
      */
     protected CausalityMarker _causalityMarker;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Data structure to store pending events. */
+    public class PendingEvent {
+        public Time timeStamp;
+        public Token token;
+        public int microstep;
+    }
 }

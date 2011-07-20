@@ -57,6 +57,7 @@ import ptolemy.kernel.util.Workspace;
  actor only increments the microstep, not the model time.
  If a negative delay is specified, then an exception is thrown.
 
+ @deprecated Use ptolemy.actor.lib.TimeDelay.
  @see ptolemy.domains.de.lib.TimedDelay
  @author Jie Liu, Haiyang Zheng
  @version $Id$

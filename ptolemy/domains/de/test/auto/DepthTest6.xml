@@ -1,0 +1,163 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DepthTest6" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 743, 750}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[530, 640]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{265.0, 320.0}">
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;.DepthTest6.Test: 4\n   input: 4\n   output: 4\n.DepthTest6.SingleEvent: 0\n   output: 0\n.DepthTest6.TestActorPortDepth: 3\n   trigger: 3\n   output: 3\n.DepthTest6.CurrentTime: 1\n   output: 1\n   trigger: 1\n.DepthTest6.Merge: 1\n   input: 1\n   output: 1\n.DepthTest6.SingleEvent2: 0\n   output: 0\n.DepthTest6.Test2: 2\n   input: 2\n   output: 2\n.DepthTest6.Scale: 1\n   input: 1\n   output: 1\n.DepthTest6.Scale2: 2\n   input: 2\n   output: 2\n.DepthTest6.GetCausalityInterface: 3\n   output: 3\n   trigger: 3\n   dependents: 3\n   equivalences: 3\n.DepthTest6.Test3: 4\n   input: 4\n   output: 4\n.DepthTest6.TimeDelay: 0\n   input: 3\n   output: 0\n   delay: 3\n&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 385.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 540.0]">
+        </property>
+    </entity>
+    <entity name="TestActorPortDepth" class="ptolemy.domains.de.lib.TestActorPortDepth">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 385.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent2" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 540.0]">
+        </property>
+    </entity>
+    <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 540.0]">
+        </property>
+    </entity>
+    <entity name="GetCausalityInterface" class="ptolemy.actor.lib.GetCausalityInterface">
+        <property name="actorName" class="ptolemy.data.expr.StringParameter" value="TimeDelay">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;input has equivalent input ports:\n  delay\n  input\ndelay has equivalent input ports:\n  delay\n  input\n&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 310.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[85.0, 230.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{135.0, 370.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{300.0, 385.0}">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{230.0, 180.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Test.input" relation="relation"/>
+    <link port="SingleEvent.output" relation="relation4"/>
+    <link port="TestActorPortDepth.trigger" relation="relation5"/>
+    <link port="TestActorPortDepth.output" relation="relation"/>
+    <link port="CurrentTime.output" relation="relation6"/>
+    <link port="CurrentTime.trigger" relation="relation2"/>
+    <link port="Merge.input" relation="relation2"/>
+    <link port="Merge.input" relation="relation8"/>
+    <link port="Merge.output" relation="relation10"/>
+    <link port="SingleEvent2.output" relation="relation8"/>
+    <link port="Test2.input" relation="relation6"/>
+    <link port="Scale.input" relation="relation4"/>
+    <link port="Scale.output" relation="relation3"/>
+    <link port="Scale2.input" relation="relation3"/>
+    <link port="Scale2.output" relation="relation5"/>
+    <link port="GetCausalityInterface.trigger" relation="relation5"/>
+    <link port="GetCausalityInterface.equivalences" relation="relation9"/>
+    <link port="Test3.input" relation="relation9"/>
+    <link port="TimeDelay.input" relation="relation10"/>
+    <link port="TimeDelay.output" relation="relation2"/>
+    <link port="TimeDelay.delay" relation="relation5"/>
+</entity>

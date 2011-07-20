@@ -91,9 +91,9 @@ import ptolemy.kernel.util.Workspace;
  determining the precedences of the actors. It is sometimes useful to think
  of this zero-valued delay as an infinitesimal delay.
 
+ @deprecated Use actor.lib.TimeDelay.
  @see ptolemy.domains.de.lib.VariableDelay
  @see ptolemy.domains.de.lib.Server
-
  @author Edward A. Lee, Lukito Muliadi, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 1.0

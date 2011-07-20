@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="VariableDelay3" class="ptolemy.actor.TypedCompositeActor">
+<entity name="VariableDelay7" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -38,18 +38,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 245.0]">
         </property>
     </entity>
-    <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="delay">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="298.0, 235.0">
+    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 180.0]">
         </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[100.0, 235.0]">
+        <vertex name="vertex1" value="[105.0, 240.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -67,7 +63,7 @@
     <link port="Clock.output" relation="relation5"/>
     <link port="Test.input" relation="relation3"/>
     <link port="Test.input" relation="relation2"/>
-    <link port="VariableDelay.input" relation="relation5"/>
-    <link port="VariableDelay.output" relation="relation3"/>
-    <link port="VariableDelay.delay" relation="relation5"/>
+    <link port="TimeDelay.input" relation="relation5"/>
+    <link port="TimeDelay.output" relation="relation3"/>
+    <link port="TimeDelay.delay" relation="relation5"/>
 </entity>

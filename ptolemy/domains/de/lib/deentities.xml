@@ -68,9 +68,6 @@
 <entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
 </entity>
 
-<entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
-</entity>
-
 <entity name="WaitingTime" class="ptolemy.domains.de.lib.WaitingTime">
 </entity>
 
