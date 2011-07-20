@@ -125,7 +125,7 @@ public class RemoteModelTest {
     /** Find the model file on the server and execute the simulation.
      *  @exception Exception If the the setup or shutdown of the simulation fails.
      */
-    @Test(timeout = 3000)
+    @Test(timeout = 5000)
     public void runSimulation() throws Exception {
         // Open the model on the server.
         RemoteModelResponse response = _openRemoteModel();
@@ -210,7 +210,7 @@ public class RemoteModelTest {
         return model;
     }
 
-    @Test
+    @Test(timeout = 5000)
     public void testRemoteAttribute() throws Exception {
         RemoteModelResponse response = _openRemoteModel();
         ProxyModelInfrastructure clientModel = _setUpClientModel(response);
@@ -232,7 +232,7 @@ public class RemoteModelTest {
         clientModel.close();
     }
 
-    @Test(timeout = 3000)
+    @Test(timeout = 5000)
     public void testRemoteAttributeSimulation() throws Exception {
         RemoteModelResponse response = _openRemoteModel();
         ProxyModelInfrastructure clientModel = _setUpClientModel(response);
@@ -281,7 +281,7 @@ public class RemoteModelTest {
         assertEquals(10, counter);
     }
 
-    @Test()
+    @Test(timeout = 10000)
     public void testModelTimeout() throws Exception {
         RemoteModelResponse response = _openRemoteModel();
         // Wait for a roundtrip response from the server.
