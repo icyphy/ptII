@@ -27,6 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.gui.PortableContainer;
+import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -53,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bilung)
  */
-public class Const extends LimitedFiringSource {
+public class Const extends LimitedFiringSource implements PortablePlaceable {
     /** Construct a constant source with the given container and name.
      *  Create the <i>value</i> parameter, initialize its value to
      *  the default value of an IntToken with value 1.
@@ -72,6 +75,7 @@ public class Const extends LimitedFiringSource {
 
         // Set the type constraint.
         output.setTypeAtLeast(value);
+        _implementaion.init();
 
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
                 + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
@@ -114,5 +118,21 @@ public class Const extends LimitedFiringSource {
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, value.getToken());
+        _implementaion.setValue(value);
     }
+
+    /** Place the visual representation of the actor into the specified container.
+     *  @param container The container in which to place the object, or
+     *   null to specify that there is no current container.
+     */
+    public void place(PortableContainer container) {
+        _implementaion.place(container);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Implementation of the ConstInterface
+    private final ConstInterface _implementaion = PtolemyInjector.getInjector()
+            .getInstance(ConstInterface.class);
 }
