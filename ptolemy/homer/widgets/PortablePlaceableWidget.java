@@ -28,7 +28,6 @@ package ptolemy.homer.widgets;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 
 import org.netbeans.api.visual.widget.Scene;
 
@@ -49,12 +48,13 @@ public class PortablePlaceableWidget extends GlassPaneWidget {
             throw new IllegalArgumentException(
                     "NamedObject must be instance of PortablePlaceable");
         }
-        setGlassPaneSize(new Dimension(300, 200));
+        //setGlassPaneSize(new Dimension(300, 200));
         ((PortablePlaceable) namedObject).place(new AWTContainer(
                 _containerPanel) {
             @Override
             public void add(Object object) {
                 Component component = (Component) object;
+                setGlassPaneSize(component.getPreferredSize());
                 _containerPanel.add(component, BorderLayout.CENTER);
             }
         });
