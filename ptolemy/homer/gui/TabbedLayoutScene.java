@@ -89,6 +89,8 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                 selectTab(_tabScenes.getTabCount() - 2);
             }
         });
+        _tabScenes.setEnabledAt(_tabScenes.indexOfTabComponent(addTabButton),
+                false);
     }
 
     ///////////////////////////////////////////////////////////////////

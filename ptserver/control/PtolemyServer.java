@@ -326,7 +326,7 @@ public final class PtolemyServer implements IServerManager {
                         url.lastIndexOf(".xml"));
                 String layoutEnding = ".layout.xml";
 
-                return (filename.startsWith(modelName) && filename
+                return (filename.startsWith(modelName + "_") && filename
                         .endsWith(layoutEnding));
             }
         };

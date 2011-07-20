@@ -254,6 +254,7 @@ public abstract class ProxyActor extends TypedAtomicActor {
                     relation.unlinkAll();
                     port.link(relation);
                     remotePort.link(relation);
+                    break;
                 }
             }
         }

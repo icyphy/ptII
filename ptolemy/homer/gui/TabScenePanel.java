@@ -384,6 +384,10 @@ public class TabScenePanel implements ContentPrototype {
      */
     private void _adjustLocation(Widget widget, Point location) {
         Rectangle clientArea = widget.getClientArea();
+        // This only happens when the file is opened from the file
+        if (clientArea == null) {
+            return;
+        }
         if (location.getX() + clientArea.getWidth() + clientArea.x > getView()
                 .getWidth()) {
             location.x = getView().getWidth() - clientArea.width - clientArea.x;

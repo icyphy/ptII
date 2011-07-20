@@ -88,7 +88,7 @@ public class OpenLayoutDialog implements ActionListener {
             fileChooser.setDialogTitle("Choose a layout");
             fileChooser.setFileFilter(_menu.getLayoutFilter());
 
-            int returnVal = fileChooser.showSaveDialog(_parent);
+            int returnVal = fileChooser.showOpenDialog(_parent);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 _layoutFile = fileChooser.getSelectedFile();
                 _layoutFileField.setText(_layoutFile.getAbsolutePath());
