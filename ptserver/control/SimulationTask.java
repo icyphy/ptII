@@ -33,6 +33,7 @@ import java.util.HashSet;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptserver.communication.ProxyModelInfrastructure;
@@ -67,8 +68,8 @@ public class SimulationTask implements Runnable {
                 .createMoMLParser().parse(null, new URL(ticket.getLayoutUrl()));
         HashSet<String> remoteAttributes = new HashSet<String>();
         remoteAttributes.add(ProxyModelBuilder.REMOTE_OBJECT_TAG);
-        ServerUtility.mergeModelWithLayout(model, layout, null,
-                remoteAttributes);
+        ServerUtility.mergeModelWithLayout(model, layout,
+                new HashSet<Class<? extends Attribute>>(), remoteAttributes);
         _proxyModelInfrastructure = new ProxyModelInfrastructure(
                 ProxyModelType.SERVER, model);
     }
