@@ -10,9 +10,6 @@
 <!--property name="SchedulePlotter" class="ptolemy.domains.ptides.lib.SchedulePlotter"/>
 <property name="GPIOA" class="ptolemy.domains.ptides.lib.targets.luminary.GPIOA_Transmitter"/-->
 
-<entity name="AbsoluteDelay" class="ptolemy.domains.ptides.lib.AbsoluteDelay">
-</entity>
-
 <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
 </entity>
 
@@ -29,9 +26,6 @@
 <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
 </entity>
 <entity name="SlaveClock" class="ptolemy.domains.ptides.lib.SlaveClock">
-</entity>
-
-<entity name="VariableDelayCounter" class="ptolemy.domains.ptides.lib.VariableDelayCounter">
 </entity>
 
 <entity name="ExecutionTimeMonitor" class="ptolemy.domains.ptides.lib.ExecutionTimeMonitor">

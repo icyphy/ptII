@@ -54,7 +54,6 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	AbsoluteDelay.java \
 	ActuationDevice.java \
 	ActuatorSetup.java \
 	InputDevice.java \
@@ -66,7 +65,6 @@ JSRCS = \
 	SensorHandler.java \
 	SimulatedPlatformPhysicalTime.java \
 	SlaveClock.java \
-	VariableDelayCounter.java \
 	ExecutionTimeListener.java \
 	ExecutionTimeMonitor.java
 
