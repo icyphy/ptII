@@ -297,6 +297,17 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    /** Override the base class to make this synchronized to prevent
+     *  a comodification exception.
+     *  @param newFigure A newly manufactured figure.
+     */
+    protected synchronized void _addLiveFigure(Figure newFigure) {
+        super._addLiveFigure(newFigure);
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Update any previously rendered Diva figures that contain
@@ -311,10 +322,13 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             ((ImageFigure) figure).setImage(_scaledImage);
         }
 
-        requestChange(new ChangeRequest(this, "Dummy change request") {
+        ChangeRequest request = new ChangeRequest(this, "Dummy change request") {
             protected void _execute() {
             }
-        });
+        };
+        // Prevent save() being triggered on close just because of this.
+        request.setPersistent(false);
+        requestChange(request);
     }
 
     ///////////////////////////////////////////////////////////////////
