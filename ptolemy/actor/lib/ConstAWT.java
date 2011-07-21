@@ -34,7 +34,7 @@ import ptolemy.actor.gui.PortableContainer;
 import ptolemy.data.expr.Parameter;
 
 ///////////////////////////////////////////////////////////////////
-////AWTConst
+////ConstAWT
 
 /**
 AWT implementation of the ConstInterface 
@@ -46,7 +46,7 @@ AWT implementation of the ConstInterface
 @Pt.AcceptedRating Red (ishwinde)
 */
 
-public class AWTConst implements ConstInterface {
+public class ConstAWT implements ConstInterface {
 
     /** Initialize the text field for the Const
      */

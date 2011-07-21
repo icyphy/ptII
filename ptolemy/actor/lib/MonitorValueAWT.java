@@ -43,7 +43,7 @@ AWT implementation of the MonitorValueInterface
 @Pt.AcceptedRating Red (ishwinde)
 */
 
-public class AWTMonitorValue implements MonitorValueInterface {
+public class MonitorValueAWT implements MonitorValueInterface {
 
     /** Initialize the text field for the MonitorValue
      */

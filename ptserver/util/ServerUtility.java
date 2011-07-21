@@ -36,9 +36,14 @@ import java.util.HashSet;
 import java.util.List;
 
 import ptolemy.data.expr.Parameter;
+import ptolemy.homer.kernel.HomerConstants;
+import ptolemy.homer.kernel.HomerLocation;
+import ptolemy.homer.kernel.LayoutParser;
+import ptolemy.homer.kernel.TabDefinition;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -48,6 +53,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptserver.actor.ProxyActor;
 
 ///////////////////////////////////////////////////////////////////
 //// ServerUtility
@@ -235,17 +241,123 @@ public class ServerUtility {
         }
         return fullName.substring(fullName.substring(1).indexOf(".") + 2);
     }
-    
-    public boolean validateModelAndLayout(String modelURL, String layoutURL) {
+
+    public LayoutValidationErrors validateModelAndLayout(String modelURL,
+            String layoutURL) {
+        // Open the two models
+        CompositeEntity model = null;
+        CompositeEntity layout = null;
+        LayoutValidationErrors validation = new LayoutValidationErrors();
+        try {
+            model = openModelFile(new URL(modelURL));
+            layout = openModelFile(new URL(layoutURL));
+        } catch (IllegalActionException e) {
+            validation.addException(e);
+        } catch (MalformedURLException e) {
+            validation.addException(e);
+        }
+
+        if (validation.haveErrors()) {
+            return validation;
+        }
+
+        LayoutParser layoutParser = new LayoutParser(layout);
+
         // Entity or remote attribute in layout that's missing from the model file (except Proxy entities)
-        // Remote entities have proxy entities
-        
-        // Proxy entity's targets are invalid/not in the model.
-        // Proxy entity port target ports are invalid/not in the model
-        
-        // Layout validation: tab node without specified tab.
-        // Layout validation: invalid position or position out of bounds.
-        return true;
+        for (NamedObj object : (List<NamedObj>) layout.deepNamedObjList()) {
+            if (!model.deepContains(object)) {
+                validation.addObjectMissingFromModel(object);
+            }
+        }
+
+        // Layout validation: Remote entities have proxy entities
+        boolean found = false;
+        for (NamedObj object : layoutParser.getProxyElements()) {
+            found = false;
+            // Only sink and source entities have proxy actors
+            if (!(object instanceof ComponentEntity)) {
+                continue;
+            }
+            ComponentEntity entityToCheck = (ComponentEntity) object;
+            // Check if any of the proxy actors have them as targets and pther proxy
+            // properties.
+            for (ProxyActor proxy : layout.entityList(ProxyActor.class)) {
+                if (proxy.getTargetEntityName().equals(
+                        entityToCheck.getFullName())) {
+                    found = true;
+                    break;
+                } else {
+                    // Proxy entity's targets are invalid/not in the model.
+                    ComponentEntity target = model.getEntity(proxy
+                            .getTargetEntityName());
+                    if (target == null) {
+                        validation.addProxyWithInvalidTarget(proxy);
+                    }
+                }
+
+                // Proxy entity port target ports are invalid/not in the model
+                for (Port port : (List<Port>) proxy.portList()) {
+                    Attribute targetPort = port.getAttribute("targetPortName");
+                    if (targetPort == null || !model.deepContains(targetPort)) {
+                        validation.addPortWithNoOrInvalidTarget(port);
+                    }
+                }
+
+            }
+
+            if (!found) {
+                validation.addEntityWithoutProxy(entityToCheck);
+            }
+        }
+
+        ArrayList<TabDefinition> tabs = null;
+        try {
+            tabs = layoutParser.getTabDefinitions();
+        } catch (IllegalActionException e) {
+            validation.addException(e);
+        } catch (NameDuplicationException e) {
+            validation.addException(e);
+        }
+        for (NamedObj object : layoutParser.getPositionableElements()) {
+            found = false;
+
+            // Layout validation: tab node without specified tab.
+            Attribute tab = object.getAttribute(HomerConstants.TAB_NODE);
+            if (tab == null) {
+                // We accept if tab is undefined. They should be put into a defaut tab.
+                found = true;
+            } else {
+                for (TabDefinition tabDefinition : tabs) {
+                    if (tabDefinition.getTag().equals(
+                            ((Settable) tab).getExpression())) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!found) {
+                validation.addPositionableWithInvalidTab(object);
+            }
+
+            // Layout validation: invalid position or position out of bounds.
+            List<HomerLocation> locations = object
+                    .attributeList(HomerLocation.class);
+            if (locations.isEmpty()) {
+                validation.addPositionableWithInvalidLocation(object);
+            } else {
+                for (HomerLocation location : locations) {
+                    try {
+                        location.validateLocation();
+                    } catch (IllegalActionException e) {
+                        validation.addException(e);
+                        validation.addPositionableWithInvalidLocation(object);
+                        break;
+                    }
+                }
+            }
+        }
+        return validation;
     }
 
     ///////////////////////////////////////////////////////////////////

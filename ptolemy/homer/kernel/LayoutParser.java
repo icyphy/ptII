@@ -112,13 +112,13 @@ public class LayoutParser {
         Attribute tabsAttribute = _topLevelActor
                 .getAttribute(HomerConstants.TABS_NODE);
         if (tabsAttribute == null) {
-            return null;
+            return tabDefinitions;
         }
 
         // Get the tab attributes in the layout file.
         List<Attribute> tabs = tabsAttribute.attributeList();
         if ((tabs == null) || (tabs.size() == 0)) {
-            return null;
+            return tabDefinitions;
         }
 
         // Iterate over each child attribute to get the name of the tab
@@ -177,15 +177,13 @@ public class LayoutParser {
         return attributeDefinitions;
     }
 
-    public HashSet<NamedObj> getProxyElements() throws IllegalActionException,
-            NameDuplicationException {
+    public HashSet<NamedObj> getProxyElements() {
         HashSet<NamedObj> container = new HashSet<NamedObj>();
         _getProxyElements(_topLevelActor, container);
         return container;
     }
 
-    public HashSet<NamedObj> getPositionableElements()
-            throws IllegalActionException, NameDuplicationException {
+    public HashSet<NamedObj> getPositionableElements() {
         HashSet<NamedObj> container = new HashSet<NamedObj>();
         _getPositionableElements(_topLevelActor, container);
         return container;
@@ -197,12 +195,9 @@ public class LayoutParser {
      *  @param element The element to search for proxy attribute and other elements
      *  that have proxy attributes.
      *  @param container
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
      */
     private static void _getProxyElements(NamedObj element,
-            HashSet<NamedObj> container) throws IllegalActionException,
-            NameDuplicationException {
+            HashSet<NamedObj> container) {
 
         // Found the attribute, find the element in the original model
         // and add the attribute to it.
@@ -230,8 +225,7 @@ public class LayoutParser {
      *  @exception NameDuplicationException
      */
     private static void _getPositionableElements(NamedObj element,
-            HashSet<NamedObj> container) throws IllegalActionException,
-            NameDuplicationException {
+            HashSet<NamedObj> container) {
 
         // Found the attribute, find the element in the original model
         // and add the attribute to it.
