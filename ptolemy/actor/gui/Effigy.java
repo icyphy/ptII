@@ -271,7 +271,7 @@ public class Effigy extends CompositeEntity {
         if (fileURI != null) {
             String protocol = fileURI.getScheme();
 
-            if (protocol.equals("file")) {
+            if (protocol == null || protocol.equals("file")) {
                 File tentativeResult = new File(fileURI);
 
                 if (tentativeResult.canWrite()) {
