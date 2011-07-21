@@ -31,7 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
@@ -93,7 +93,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        modelURL = new StringParameter(this, "modelURL");
+        modelURL = new FileParameter(this, "modelURL");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,7 +108,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  system's classpath can also be specified by a string starting with
      *  <code>$CLASSPATH/{relative URL}</code>.
      */
-    StringParameter modelURL;
+    public FileParameter modelURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
