@@ -58,6 +58,16 @@
         <property name="tab_-295546999" class="ptolemy.kernel.util.StringAttribute" value="Default">
         </property>
     </property>
+    <property name="Sinewave" class="ptolemy.kernel.util.StringAttribute">
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            </property>
+            <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[-6, 182, 70, 40]">
+            </property>
+            <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_-295546999">
+            </property>
+        </property>
+    </property>
     <class name="NoisySinewave" extends="ptolemy.actor.lib.Sinewave">
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 450]">
         </property>
@@ -304,8 +314,6 @@
     </class>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
-            </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 514, 817, 250}, maximized = false}">
         </property>
@@ -315,7 +323,7 @@
         </property>
         <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
         </property>
-        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[-6, -6, 391, 200]">
+        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[-6, -6, 300, 200]">
         </property>
         <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_-295546999">
         </property>
@@ -336,8 +344,6 @@
         <property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute" value=".NoisySinewave.SequencePlotter">
         </property>
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
-            </property>
         </property>
         <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
         </property>

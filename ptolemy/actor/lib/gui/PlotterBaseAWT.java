@@ -243,4 +243,8 @@ public class PlotterBaseAWT implements PlotterBaseInterface {
     public PlotBoxInterface newPlot() {
         return new Plot();
     }
+
+    public void setPlatformContainer(Object container) {
+        _container = (Container) container;
+    }
 }

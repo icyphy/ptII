@@ -28,6 +28,8 @@ public interface PlotterBaseInterface extends PortablePlaceable {
 
     public Object getFrame();
 
+    public void setPlatformContainer(Object container);
+
     public Object getPlatformContainer();
 
     public void updateSize();

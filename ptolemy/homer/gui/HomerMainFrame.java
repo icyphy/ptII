@@ -106,7 +106,7 @@ public class HomerMainFrame extends JFrame {
                         "/ptserver/test/junit/NoisySinewave.xml"),
                 this.getClass()
                         .getResource(
-                                "/ptserver/test/junit/NoisySinewave_test_layout.layout.xml"));
+                                "/ptserver/test/junit/NoisySinewave_test2_layout.layout.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////

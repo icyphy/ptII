@@ -309,6 +309,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      */
     public void place(PortableContainer container) {
         getImplementation().removeOldContainer();
+        getImplementation().setPlatformContainer(
+                container.getPlatformContainer());
         if (container != null
                 && container.getPlatformContainer() instanceof PlotBoxInterface) {
             // According to FindBugs the cast is an error:

@@ -37,7 +37,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptserver.communication.ProxyModelInfrastructure;
-import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
 import ptserver.util.ServerUtility;
 
@@ -67,7 +66,7 @@ public class SimulationTask implements Runnable {
         CompositeActor layout = (CompositeActor) ServerUtility
                 .createMoMLParser().parse(null, new URL(ticket.getLayoutUrl()));
         HashSet<String> remoteAttributes = new HashSet<String>();
-        remoteAttributes.add(ProxyModelBuilder.REMOTE_OBJECT_TAG);
+        remoteAttributes.add(ServerUtility.REMOTE_OBJECT_TAG);
         ServerUtility.mergeModelWithLayout(model, layout,
                 new HashSet<Class<? extends Attribute>>(), remoteAttributes);
         _proxyModelInfrastructure = new ProxyModelInfrastructure(

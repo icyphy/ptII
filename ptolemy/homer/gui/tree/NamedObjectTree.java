@@ -145,6 +145,7 @@ public class NamedObjectTree extends JPanel {
         // Make it non-focusable.
         button.setFocusable(false);
         button.setBorder(BorderFactory.createEtchedBorder());
+        button.setRolloverEnabled(true);
         add(button, BorderLayout.SOUTH);
     }
 

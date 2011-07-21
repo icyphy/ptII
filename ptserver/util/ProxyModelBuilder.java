@@ -90,24 +90,6 @@ public class ProxyModelBuilder {
     }
 
     /**
-     * Attribute value indicating that the actor is a sink.
-     */
-    public static final String PROXY_SINK_ATTRIBUTE = "sink";
-    /**
-     * Attribute value indicating that the actor is a source.
-     */
-    public static final String PROXY_SOURCE_ATTRIBUTE = "source";
-    /**
-     * Attribute name indicating that the named object needs to be handled by the ProxyModelBuilder.
-     */
-    public static final String REMOTE_OBJECT_TAG = "_remote";
-    /**
-     * Attribute value indicating that the parent attribute is a remote attribute - 
-     * it's value needs to synchronized between client and server models.
-     */
-    public static final String REMOTE_ATTRIBUTE = "attribute";
-
-    /**
      * Create a new instance of the builder for the provided model.
      * @param modelType The type of the model the builder should build.
      * @param topLevelActor The target model on which builder would perform its operations.
@@ -144,7 +126,7 @@ public class ProxyModelBuilder {
         for (Object obj : _topLevelActor.deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
             // find actors that have a remote tag
-            Attribute remoteAttribute = actor.getAttribute(REMOTE_OBJECT_TAG);
+            Attribute remoteAttribute = actor.getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
             if (ServerUtility.isTargetProxySource(remoteAttribute)) {
                 sources.add(actor);
             } else if (ServerUtility.isTargetProxySink(remoteAttribute)) {
@@ -204,22 +186,26 @@ public class ProxyModelBuilder {
                 Attribute attribute = (Attribute) settable;
                 NamedObj container = attribute.getContainer();
                 Attribute lastAttribute = attribute;
-                // Create dummy parent attribute for each remote attribute and
-                // continue doing that until you reach the top level actor.
-                while (container != _topLevelActor) {
-                    StringAttribute dummyAttribute = containerToDummyAttributeMap
-                            .get(container);
-                    if (dummyAttribute == null) {
-                        dummyAttribute = new StringAttribute(
-                                container.getContainer(), container
-                                        .getContainer().uniqueName("dummy"));
-                        dummyAttribute.setPersistent(true);
-                        containerToDummyAttributeMap.put(container,
-                                dummyAttribute);
+                // First check if the attribute belongs to the remote sink or source.
+                // If it's not, create a dummy parent for it since its parent would be removed.
+                if (!isParentRemote(attribute)) {
+                    // Create dummy parent attribute for each remote attribute and
+                    // continue doing that until you reach the top level actor.
+                    while (container != _topLevelActor) {
+                        StringAttribute dummyAttribute = containerToDummyAttributeMap
+                                .get(container);
+                        if (dummyAttribute == null) {
+                            dummyAttribute = new StringAttribute(
+                                    container.getContainer(), container
+                                            .getContainer().uniqueName("dummy"));
+                            dummyAttribute.setPersistent(true);
+                            containerToDummyAttributeMap.put(container,
+                                    dummyAttribute);
+                        }
+                        container = container.getContainer();
+                        lastAttribute.setContainer(dummyAttribute);
+                        lastAttribute = dummyAttribute;
                     }
-                    container = container.getContainer();
-                    lastAttribute.setContainer(dummyAttribute);
-                    lastAttribute = dummyAttribute;
                 }
             }
             // Remove unneeded actors.
@@ -276,7 +262,7 @@ public class ProxyModelBuilder {
 
     /**
      * Return the mapping from the attribute full name's to the attribute instance.
-     * The mapping only contains attributes that have {@link #REMOTE_OBJECT_TAG} attribute within them.
+     * The mapping only contains attributes that have {@link ServerUtility#REMOTE_OBJECT_TAG} attribute within them.
      * @return the _remoteAttributesMap
      */
     public HashMap<String, Settable> getRemoteAttributesMap() {
@@ -364,6 +350,20 @@ public class ProxyModelBuilder {
                 }
             }
         }
+    }
+
+    private boolean isParentRemote(Attribute attribute) {
+        NamedObj container = attribute.getContainer();
+        while (container != null) {
+            if (_proxySourceMap.containsKey(container.getFullName())
+                    || _proxySinkMap.containsKey(container.getFullName())
+                    || _remoteAttributesMap
+                            .containsKey(container.getFullName())) {
+                return true;
+            }
+            container = container.getContainer();
+        }
+        return false;
     }
 
     /**

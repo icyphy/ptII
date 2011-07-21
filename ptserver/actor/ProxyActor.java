@@ -31,12 +31,14 @@ package ptserver.actor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.type.Type;
+import ptolemy.homer.kernel.HomerConstants;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -44,8 +46,9 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-import ptserver.util.ProxyModelBuilder;
+import ptserver.util.ServerUtility;
 import ptserver.util.TypeParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -116,7 +119,7 @@ public abstract class ProxyActor extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         this(container, targetEntity.getName()
-                + ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                + ServerUtility.REMOTE_OBJECT_TAG);
         setTargetEntityName(targetEntity.getFullName());
         _targetEntityName.setExpression(getTargetEntityName());
         if (replaceTargetEntity) {
@@ -181,10 +184,13 @@ public abstract class ProxyActor extends TypedAtomicActor {
         // This is needed in cases when a port references any of the attributes via an expression.
         for (Object attributeObject : targetEntity.attributeList()) {
             Attribute attribute = (Attribute) attributeObject;
-            Attribute clonedAttribute = (Attribute) attribute.clone(attribute
-                    .workspace());
-            clonedAttribute.setContainer(this);
-            clonedAttribute.setPersistent(true);
+            if (attribute instanceof Settable
+                    && !_BLACK_LISTED_NAMES.contains(attribute.getName())) {
+                Attribute clonedAttribute = (Attribute) attribute
+                        .clone(attribute.workspace());
+                clonedAttribute.setContainer(this);
+                clonedAttribute.setPersistent(true);
+            }
         }
 
         // Copy all ports that are connected to any relationship.
@@ -279,7 +285,11 @@ public abstract class ProxyActor extends TypedAtomicActor {
         ArrayList<Attribute> attributes = new ArrayList<Attribute>(
                 targetEntity.attributeList());
         for (Attribute attribute : attributes) {
-            attribute.setContainer(this);
+            if (attribute instanceof Settable
+                    && !_BLACK_LISTED_NAMES.contains(attribute.getName())) {
+                attribute.setContainer(this);
+                attribute.setPersistent(true);
+            }
         }
         // Copy all IO ports of the target entity.
         for (Object portObject : targetEntity.portList()) {
@@ -320,4 +330,13 @@ public abstract class ProxyActor extends TypedAtomicActor {
 
     /** Full name of the targetEntity. */
     private final StringAttribute _targetEntityName;
+    /**
+     * List of attribute names that don't need to be copied over to the proxy actors.
+     */
+    private final static HashSet<String> _BLACK_LISTED_NAMES = new HashSet<String>();
+    static {
+        _BLACK_LISTED_NAMES.add(ServerUtility.REMOTE_OBJECT_TAG);
+        _BLACK_LISTED_NAMES.add(HomerConstants.POSITION_NODE);
+        _BLACK_LISTED_NAMES.add(HomerConstants.TAB_NODE);
+    }
 }

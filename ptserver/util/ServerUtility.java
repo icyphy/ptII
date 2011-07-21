@@ -94,7 +94,7 @@ public class ServerUtility {
     }
 
     /**
-     * Return the deep attribute list of the container.
+     * Return the deep attribute list of the container in a depth first order.
      * @param container the container to process.
      * @return the deep attribute list of the container.
      */
@@ -128,10 +128,10 @@ public class ServerUtility {
     public static boolean isRemoteAttribute(Attribute attribute) {
         if (attribute instanceof Settable) {
             Attribute isRemoteAttribute = attribute
-                    .getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                    .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
             if (isRemoteAttribute instanceof Parameter) {
                 if (((Parameter) isRemoteAttribute).getExpression().equals(
-                        ProxyModelBuilder.REMOTE_ATTRIBUTE)) {
+                        ServerUtility.REMOTE_ATTRIBUTE)) {
                     return true;
                 }
             }
@@ -148,7 +148,7 @@ public class ServerUtility {
         if (targetEntityAttribute instanceof Settable) {
             Settable parameter = (Settable) targetEntityAttribute;
             if (parameter.getExpression().equals(
-                    ProxyModelBuilder.PROXY_SINK_ATTRIBUTE)) {
+                    ServerUtility.PROXY_SINK_ATTRIBUTE)) {
                 return true;
             }
         }
@@ -164,7 +164,7 @@ public class ServerUtility {
         if (targetEntityAttribute instanceof Settable) {
             Settable parameter = (Settable) targetEntityAttribute;
             if (parameter.getExpression().equals(
-                    ProxyModelBuilder.PROXY_SOURCE_ATTRIBUTE)) {
+                    ServerUtility.PROXY_SOURCE_ATTRIBUTE)) {
                 return true;
             }
         }
@@ -468,4 +468,22 @@ public class ServerUtility {
             }
         }
     }
+
+    /**
+     * Attribute value indicating that the parent attribute is a remote attribute - 
+     * it's value needs to synchronized between client and server models.
+     */
+    public static final String REMOTE_ATTRIBUTE = "attribute";
+    /**
+     * Attribute name indicating that the named object needs to be handled by the ProxyModelBuilder.
+     */
+    public static final String REMOTE_OBJECT_TAG = "_remote";
+    /**
+     * Attribute value indicating that the actor is a source.
+     */
+    public static final String PROXY_SOURCE_ATTRIBUTE = "source";
+    /**
+     * Attribute value indicating that the actor is a sink.
+     */
+    public static final String PROXY_SINK_ATTRIBUTE = "sink";
 }

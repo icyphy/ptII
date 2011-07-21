@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
-import ptserver.util.ProxyModelBuilder;
+import ptserver.util.ServerUtility;
 
 ///////////////////////////////////////////////////////////////////
 //// LayoutParser
@@ -201,7 +201,7 @@ public class LayoutParser {
 
         // Found the attribute, find the element in the original model
         // and add the attribute to it.
-        if (element.getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG) != null) {
+        if (element.getAttribute(ServerUtility.REMOTE_OBJECT_TAG) != null) {
             // Found proxy attribute, add it to the container
             container.add(element);
         } else {

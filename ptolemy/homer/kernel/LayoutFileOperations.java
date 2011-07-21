@@ -83,7 +83,7 @@ public class LayoutFileOperations {
         namedObjectsToMerge.add(HomerConstants.TAB_NODE);
         namedObjectsToMerge.add(HomerConstants.TABS_NODE);
         namedObjectsToMerge.add(HomerConstants.ORIENTATION_NODE);
-        namedObjectsToMerge.add(ProxyModelBuilder.REMOTE_OBJECT_TAG);
+        namedObjectsToMerge.add(ServerUtility.REMOTE_OBJECT_TAG);
         CompositeEntity mergedModel = ServerUtility.mergeModelWithLayout(
                 modelURL, layoutURL, classesToMerge, namedObjectsToMerge);
         return mergedModel;
@@ -255,7 +255,7 @@ public class LayoutFileOperations {
                         "Entity not found in the model.");
             }
             Attribute proxy = entityInModel
-                    .getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                    .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
             if (proxy != null) {
                 element.removeAttribute(proxy);
             }
@@ -267,18 +267,19 @@ public class LayoutFileOperations {
 
                 if (sinkOrSource == SinkOrSource.SOURCE
                         || sinkOrSource == SinkOrSource.SINK_AND_SOURCE) {
-                    SingletonParameter parameter;
-                    parameter = new SingletonParameter(entityInModel,
-                            ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                    SingletonParameter parameter = new SingletonParameter(
+                            entityInModel, ServerUtility.REMOTE_OBJECT_TAG);
+                    parameter.setVisibility(Settable.NONE);
                     parameter.setPersistent(true);
                     parameter
-                            .setExpression(ProxyModelBuilder.PROXY_SOURCE_ATTRIBUTE);
+                            .setExpression(ServerUtility.PROXY_SOURCE_ATTRIBUTE);
                 } else if (sinkOrSource == SinkOrSource.SINK) {
                     SingletonParameter parameter = new SingletonParameter(
-                            entityInModel, ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                            entityInModel, ServerUtility.REMOTE_OBJECT_TAG);
+                    parameter.setVisibility(Settable.NONE);
                     parameter.setPersistent(true);
                     parameter
-                            .setExpression(ProxyModelBuilder.PROXY_SINK_ATTRIBUTE);
+                            .setExpression(ServerUtility.PROXY_SINK_ATTRIBUTE);
                 }
             } catch (IllegalActionException e) {
                 // TODO Auto-generated catch block
@@ -298,16 +299,17 @@ public class LayoutFileOperations {
                             "Attribute not found in the model.");
                 }
                 Attribute proxy = attributeInModel
-                        .getAttribute(ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                        .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
                 if (proxy != null) {
                     element.removeAttribute(proxy);
                 }
 
                 SingletonParameter parameter = new SingletonParameter(
                         model.getAttribute(strippedFullName),
-                        ProxyModelBuilder.REMOTE_OBJECT_TAG);
+                        ServerUtility.REMOTE_OBJECT_TAG);
+                parameter.setVisibility(Settable.NONE);
                 parameter.setPersistent(true);
-                parameter.setExpression(ProxyModelBuilder.REMOTE_ATTRIBUTE);
+                parameter.setExpression(ServerUtility.REMOTE_ATTRIBUTE);
             } catch (IllegalActionException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
