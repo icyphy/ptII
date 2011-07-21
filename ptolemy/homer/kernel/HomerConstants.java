@@ -51,6 +51,28 @@ public final class HomerConstants {
     ///////////////////////////////////////////////////////////////////
     ////                public variables                           ////
 
+    /** The name of the attribute that indicates if a widget is enabled.
+     */
+    public static final String ENABLED_NODE = "droid_enabled";
+
+    /** The name of the attribute containing the screen orientation
+     *  definition in the layout file.
+     */
+    public static final String ORIENTATION_NODE = "droid_orientation";
+
+    /** The name of the attribute containing the position definition in
+     *  the layout file.
+     */
+    public static final String POSITION_NODE = "droid_location";
+
+    /** The name of the attribute that indicates if attributes must be set.
+     */
+    public static final String REQUIRED_NODE = "droid_required";
+
+    /** The name of the attribute defining the node's style in the layout file.
+     */
+    public static final String STYLE_NODE = "droid_style";
+
     /** The name of the attribute that defines which tab to use for the
      *  node.
      */
@@ -64,19 +86,4 @@ public final class HomerConstants {
     /** Name of the default tab where elements should be put.
      */
     public static final String TAG = "Default";
-
-    /** The name of the attribute containing the screen orientation
-     *  definition in the layout file.
-     */
-    public static final String ORIENTATION_NODE = "droid_orientation";
-
-    /** The name of the attribute containing the position definition in
-     *  the layout file.
-     */
-    public static final String POSITION_NODE = "droid_location";
-
-    /** The name of the attribute defining the node's style in the layout file.
-     */
-    public static final String STYLE_NODE = "droid_style";
-
 }

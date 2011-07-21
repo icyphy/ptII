@@ -41,18 +41,6 @@
  * made subject to such option by the copyright holder.
  */
 
-///////////////////////////////////////////////////////////////////
-////WidgetPropertiesFrame
-
-/**
-* Frame to edit properties of widgets.
-* @author Ishwinder Singh
-* @version $Id$ 
-* @since Ptolemy II 8.1
-* @Pt.ProposedRating Red (ishwinde)
-* @Pt.AcceptedRating Red (ishwinde)
-*/
-
 package ptolemy.homer.gui;
 
 import java.awt.Checkbox;
@@ -71,9 +59,16 @@ import javax.swing.SpinnerNumberModel;
 
 import org.netbeans.api.visual.widget.Widget;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
+import ptolemy.homer.kernel.HomerConstants;
 import ptolemy.homer.widgets.NamedObjectWidgetInterface;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// WidgetPropertiesFrame 
@@ -94,8 +89,9 @@ public class WidgetPropertiesFrame extends JPanel {
      *  @param widget Widget whose properties are being displayed.
      */
     public WidgetPropertiesFrame(Widget widget) {
-        setLayout(new GridLayout(0, 4, 10, 10));
-        setLocation(500, 200);
+        setLayout(new GridLayout(LAYOUT_ROWS, LAYOUT_COLS, DEFAULT_GAP,
+                DEFAULT_GAP));
+        setLocation(POSITION_X, POSITION_Y);
 
         // Set up row #1.
         add(new JLabel("Width: "));
@@ -113,23 +109,55 @@ public class WidgetPropertiesFrame extends JPanel {
         if (_widget instanceof NamedObjectWidgetInterface) {
             NamedObj namedObj = ((NamedObjectWidgetInterface) _widget)
                     .getPositionableElement().getElement();
-            if (!(namedObj instanceof Settable)) {
-                _enabled.setEnabled(false);
-            }
+
             if (HomerMainFrame.isLabelWidget(namedObj)) {
+                _label.setText(((Settable) namedObj).getExpression());
+
+                // Set up row #4.
                 add(new JLabel("Label: "));
                 add(_label);
                 add(new JLabel(""));
                 add(new JLabel(""));
-                _label.setText(((Settable) namedObj).getExpression());
+            }
+
+            if (namedObj instanceof Settable) {
+                // Set up row #3.
+                add(new JLabel(""));
+                add(_enabled);
+                add(_required);
+                add(new JLabel(""));
+
+                // If attribute set, mark checkbox accordingly.
+                try {
+                    Attribute enabledAttr = namedObj
+                            .getAttribute(HomerConstants.ENABLED_NODE);
+                    if (enabledAttr instanceof Variable) {
+                        Token token = ((Variable) enabledAttr).getToken();
+                        if (token instanceof BooleanToken) {
+                            _enabled.setState(((BooleanToken) token)
+                                    .booleanValue());
+                        }
+                    }
+                } catch (IllegalActionException e) {
+                    MessageHandler.error(e.getMessage(), e);
+                }
+
+                // If attribute set, mark checkbox accordingly.
+                try {
+                    Attribute requiredAttr = namedObj
+                            .getAttribute(HomerConstants.REQUIRED_NODE);
+                    if (requiredAttr instanceof Variable) {
+                        Token token = ((Variable) requiredAttr).getToken();
+                        if (token instanceof BooleanToken) {
+                            _required.setState(((BooleanToken) token)
+                                    .booleanValue());
+                        }
+                    }
+                } catch (IllegalActionException e) {
+                    MessageHandler.error(e.getMessage(), e);
+                }
             }
         }
-
-        // Set up row #3.
-        add(new JLabel(""));
-        add(_enabled);
-        add(_required);
-        add(new JLabel(""));
 
         _heightSpinner.setValue(widget.getPreferredBounds().height);
         _widthSpinner.setValue(widget.getPreferredBounds().width);
@@ -155,6 +183,7 @@ public class WidgetPropertiesFrame extends JPanel {
                             .intValue());
             position.translate(-_widget.getPreferredLocation().x,
                     -_widget.getPreferredLocation().y);
+
             Dimension size = new Dimension(
                     ((SpinnerNumberModel) _widthSpinner.getModel()).getNumber()
                             .intValue(),
@@ -209,6 +238,26 @@ public class WidgetPropertiesFrame extends JPanel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The default layout gap.
+     */
+    private static final int DEFAULT_GAP = 10;
+
+    /** The number of layout columns.
+     */
+    private static final int LAYOUT_COLS = 4;
+
+    /** The number of layout rows.
+     */
+    private static final int LAYOUT_ROWS = 0;
+
+    /** The horizontal position of the window.
+     */
+    private static final int POSITION_X = 500;
+
+    /** The vertical position of the window.
+     */
+    private static final int POSITION_Y = 200;
 
     /** Height spinner UI element.
      */

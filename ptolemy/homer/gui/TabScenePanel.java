@@ -73,8 +73,11 @@ import org.netbeans.modules.visual.action.AlignWithResizeStrategyProvider;
 import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
 import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Variable;
 import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.ContentPrototype;
+import ptolemy.homer.kernel.HomerConstants;
 import ptolemy.homer.kernel.HomerLocation;
 import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.homer.kernel.LayoutFileOperations;
@@ -460,22 +463,51 @@ public class TabScenePanel implements ContentPrototype {
      */
     private void _showWidgetProperties(PositionableElement element) {
         Widget widget = ((HomerWidgetElement) element).getWidget();
-        WidgetPropertiesFrame dialog = new WidgetPropertiesFrame(widget);
-        if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
-            try {
-                Rectangle widgetBounds = dialog.getWidgetBounds();
-                _adjustBounds(widget, widgetBounds);
-                widget.setPreferredBounds(widgetBounds);
-                _scene.validate();
-                if (HomerMainFrame.isLabelWidget(element.getElement())
-                        && widget instanceof AttributeStyleWidget) {
-                    AttributeStyleWidget attributeStyleWidget = (AttributeStyleWidget) widget;
-                    ((Settable) element.getElement()).setExpression(dialog
-                            .getLabel());
-                    attributeStyleWidget.updateValue();
+        if (widget != null) {
+            WidgetPropertiesFrame dialog = new WidgetPropertiesFrame(widget);
+            if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
+                try {
+                    Rectangle widgetBounds = dialog.getWidgetBounds();
+                    widget.setPreferredBounds(widgetBounds);
+
+                    NamedObj namedObj = ((HomerWidgetElement) element)
+                            .getElement();
+                    if (namedObj != null) {
+                        if (namedObj.getAttribute(HomerConstants.ENABLED_NODE) == null) {
+                            new Variable(namedObj, HomerConstants.ENABLED_NODE,
+                                    new BooleanToken(dialog.getEnabled()));
+                        } else {
+                            ((Variable) namedObj
+                                    .getAttribute(HomerConstants.ENABLED_NODE))
+                                    .setToken(new BooleanToken(dialog
+                                            .getEnabled()));
+                        }
+
+                        if (namedObj.getAttribute(HomerConstants.REQUIRED_NODE) == null) {
+                            new Variable(namedObj,
+                                    HomerConstants.REQUIRED_NODE,
+                                    new BooleanToken(dialog.getRequired()));
+                        } else {
+                            ((Variable) namedObj
+                                    .getAttribute(HomerConstants.REQUIRED_NODE))
+                                    .setToken(new BooleanToken(dialog
+                                            .getRequired()));
+                        }
+                    }
+                    
+                    if (HomerMainFrame.isLabelWidget(element.getElement())
+                            && widget instanceof AttributeStyleWidget) {
+                        AttributeStyleWidget attributeStyleWidget = (AttributeStyleWidget) widget;
+                        ((Settable) element.getElement()).setExpression(dialog
+                                .getLabel());
+                        attributeStyleWidget.updateValue();
+                    }
+
+                    _adjustBounds(widget, widgetBounds);
+                    _scene.validate();
+                } catch (Exception ex) {
+                    MessageHandler.error("Invalid size specifid", ex);
                 }
-            } catch (Exception ex) {
-                MessageHandler.error("Invalid size specifid", ex);
             }
         }
     }
