@@ -1446,16 +1446,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
         }
 
+        boolean connectedAlready = false;
         if (!remoteIsAutoAdaptered) {
             code.append("$actorSymbol("
                     + escapedCodegenPortName
                     + ") = new TypedIOPort($containerSymbol()"
                     // Need to deal with backslashes in port names, see
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
-                    //                + ", \"" + codegenPortName.replace("\\", "\\\\") + "\", "
                     + ", \""
+                    //+ codegenPortName.replace("\\", "\\\\")
                     + AutoAdapter._externalPortName(port.getContainer(),
-                            codegenPortName) + "\", " + port.isInput() + ", "
+                            codegenPortName)
+                    + "\", "
+                    + port.isInput() + ", "
                     + port.isOutput() + ");"
                     + _eol
                     // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
@@ -1463,22 +1466,68 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + ").setTypeEquals(" + _typeToBaseType(port.getType())
                     + ");" + _eol);
         }
+        String portOrParameter = "";
         try {
             Field foundPortField = _findFieldByPortName(getComponent(),
                     unescapedActorPortName);
-
             if (foundPortField == null) {
                 throw new NoSuchFieldException("Could not find port "
                         + unescapedActorPortName);
             }
 
-            String portOrParameter = "((" + getComponent().getClass().getName()
+            portOrParameter = "((" + getComponent().getClass().getName()
                     + ")$actorSymbol(actor))." + foundPortField.getName()
                     + (portParameter != null ? ".getPort()" : "");
 
-            if (remoteIsAutoAdaptered) {
+        } catch (NoSuchFieldException ex) {
+            // The port is not a field, it might be a PortParameter
+            // that whose name is not the same as the declared name.
+            // We check before we create it.  To test, use:
+            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortParameterActorTest.xml
+            String multiport = "";
+            code.append("if ($actorSymbol(actor).getPort(\""
+                    + unescapedActorPortName.replace("\\", "\\\\")
+                    //+ AutoAdapter._externalPortName(port.getContainer(),
+                    //        unescapedActorPortName)
+                    + "\") == null) {" + _eol
+                    + "$actorSymbol(" + escapedCodegenPortName + ") = new TypedIOPort($actorSymbol(actor), \""
+                    + unescapedActorPortName.replace("\\", "\\\\")
+                    //+ AutoAdapter._externalPortName(port.getContainer(),
+                    //        unescapedActorPortName) 
+                    + "\", " + port.isInput()
+                    + ", " + port.isOutput() + ");" + _eol);
+            if (remotePort.isMultiport()) {
+                code.append("$actorSymbol(" + escapedCodegenPortName + ").setMultiport(true);" + _eol);
+            }
+
+            code.append("}" + _eol);
+
+            portOrParameter = "(TypedIOPort)$actorSymbol(actor).getPort(\""
+                + unescapedActorPortName.replace("\\", "\\\\")
+                //+ AutoAdapter._externalPortName(port.getContainer(),
+                //            unescapedActorPortName)
+                + "\")";
+            if (!readingRemoteParameters) {
+                connectedAlready = false;
+                //code.append("    $containerSymbol().connect($actorSymbol("
+                //+ escapedCodegenPortName + "), " + portOrParameter
+                //+ ");" + _eol);
+            } else {
+                code.append("    $containerSymbol().connect(c0PortA,"
+                        + portOrParameter + ");" + _eol
+                        + "    $containerSymbol().connect($actorSymbol("
+                        + escapedCodegenPortName + "), c0PortB);" + _eol);
+            }
+            if (port.isOutput()) {
+                code.append("    (" + portOrParameter + ").setTypeEquals("
+                        + _typeToBaseType(port.getType()) + ");" + _eol);
+            }
+
+        }
+        if (remoteIsAutoAdaptered) {
+            try {
                 Field remoteFoundPortField = _findFieldByPortName(remoteActor,
-                        remotePort.getName());
+                            remotePort.getName());
 
                 if (remoteFoundPortField == null) {
                     throw new NoSuchFieldException("Could not find port "
@@ -1515,7 +1564,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     // instead.
                                     + "        " + multipleRemoteActorSymbol + ".setDisplayName(\""
                                     + multipleRemoteActor.getName() + "\");" + _eol + "}" + _eol
-
                                     + "((" + multipleRemoteActor.getClass().getName()
                                     + ")" + multipleRemoteActorSymbol + ")."
                                     + multipleRemoteFoundPortField.getName()
@@ -1537,7 +1585,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // port of the other custom actor.  This obviates
                         // the need for checking for the connection at
                         // runtime.
-                        code.append("System.out.println(\"C\");");
                         code.append(relationAssignment
                                 + "$containerSymbol().connect(" + portOrParameter
                                 + ", " + "((" + remoteActor.getClass().getName()
@@ -1548,9 +1595,30 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 + ");" + _eol + relationSetWidth);
                     }
                 }
-            } else {
+            } catch (NoSuchFieldException ex) {
+                // The port is not a field, it might be a PortParameter
+                // that whose name is not the same as the declared name.
+                // We check before we create it.  To test, use:
+                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortParameterActorTest.xml
+                code.append("if (" + remoteActorSymbol + ".getPort(\""
+                        + AutoAdapter._externalPortName(remotePort.getContainer(),
+                                remotePort.getName())
+                        + "\") == null) {"
+                        + _eol
+                        + "$actorSymbol(" + escapedCodegenPortName + ") = "
+                        + " new TypedIOPort(" + remoteActorSymbol + ", \""
+                        + AutoAdapter._externalPortName(remotePort.getContainer(),
+                                remotePort.getName()) + "\", " + remotePort.isInput()
+                        + ", " + remotePort.isOutput() + ");" + _eol);
+                if (port.isMultiport()) {
+                    code.append("$actorSymbol(" + escapedCodegenPortName + ").setMultiport(true);" + _eol);
+                }
+                code.append("}" + _eol);
+                    
+                portOrParameter = "(TypedIOPort)" + remoteActorSymbol + ".getPort(\""
+                    + AutoAdapter._externalPortName(remotePort.getContainer(),
+                            remotePort.getName()) + "\")";
                 if (!readingRemoteParameters) {
-                    code.append("System.out.println(\"A\");");
                     code.append("    $containerSymbol().connect($actorSymbol("
                             + escapedCodegenPortName + "), " + portOrParameter
                             + ");" + _eol);
@@ -1560,68 +1628,33 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             + "    $containerSymbol().connect($actorSymbol("
                             + escapedCodegenPortName + "), c0PortB);" + _eol);
                 }
-
                 if (port.isOutput()) {
                     // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
-                    code.append("    " + portOrParameter + ".setTypeEquals("
+                    code.append("    (" + portOrParameter + ").setTypeEquals("
                             + _typeToBaseType(port.getType()) + ");" + _eol);
                 }
             }
-        } catch (NoSuchFieldException ex) {
-            if (remoteIsAutoAdaptered) {
-                throw new IllegalActionException(
-                        getComponent(),
-                        ex,
-                        "While attempting to put two remote actors into a "
-                                + "common composite, could not find field that corresponds with "
-                                + unescapedActorPortName + " or "
-                                + remotePort.getName() + ".");
-            }
-
-            // The port is not a field, it might be a PortParameter
-            // that whose name is not the same as the declared name.
-            // We check before we create it.  To test, use:
-            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortParameterActorTest.xml
-            code.append("if ($actorSymbol(actor).getPort(\""
-                    + unescapedActorPortName.replace("\\", "\\\\") + "\") == null) {" + _eol
-                    //+ AutoAdapter._externalPortName(port.getContainer(),
-                    //        unescapedActorPortName) + "\") == null) {" + _eol
-                    + "    new TypedIOPort($actorSymbol(actor), \""
-                    + unescapedActorPortName.replace("\\", "\\\\") + "\", "
-                    //+ AutoAdapter._externalPortName(port.getContainer(),
-                    //        unescapedActorPortName) + "\", "
-                    + port.isInput()
-                    + ", " + port.isOutput() + ");" + _eol
-                    // Maybe only set the type for output ports?
-                    //+ "    port.setTypeEquals("
-                    //+ _typeToBaseType(port.getType()) + ");" + _eol
-                    + "}" + _eol);
-
-            // Use the unescapedActorPortName so that we the actual port name and not
-            // a name with the actor prepended.  When we run
-            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortParameterActorTest.xml
-            // we should look for "My PortParameter", not "PortParameterActor_My PortParameter".
-            String portOrParameter = "(TypedIOPort)$actorSymbol(actor).getPort(\""
-                    + unescapedActorPortName.replace("\\", "\\\\") + "\")";
-            //+ AutoAdapter._externalPortName(port.getContainer(),
-            //                unescapedActorPortName) + "\")";
+        } else {
             if (!readingRemoteParameters) {
-                    code.append("System.out.println(\"B\");");
-                code.append("    $containerSymbol().connect($actorSymbol("
-                        + escapedCodegenPortName + "), " + portOrParameter
-                        + ");" + _eol);
+                if (!connectedAlready) {
+                    code.append("    $containerSymbol().connect($actorSymbol("
+                            + escapedCodegenPortName + "), " + portOrParameter
+                            + ");" + _eol);
+                }
             } else {
                 code.append("    $containerSymbol().connect(c0PortA,"
                         + portOrParameter + ");" + _eol
                         + "    $containerSymbol().connect($actorSymbol("
                         + escapedCodegenPortName + "), c0PortB);" + _eol);
             }
+
             if (port.isOutput()) {
                 // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
                 code.append("    (" + portOrParameter + ").setTypeEquals("
                         + _typeToBaseType(port.getType()) + ");" + _eol);
             }
         }
+
         code.append("}" + _eol);
 
         return code.toString();
