@@ -31,6 +31,8 @@ package ptolemy.vergil.basic;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.net.URI;
 
 import javax.swing.KeyStroke;
 
@@ -40,7 +42,6 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLModelAttribute;
 import ptolemy.util.MessageHandler;
@@ -157,40 +158,56 @@ public class LookInsideAction extends FigureAction {
         try {
             NamedObj model = momlModelAttribute.getContainedModel();
             Tableau tableau = _configuration.openInstance(model);
-            tableau.setMaster(false);
             Effigy effigy = (Effigy) tableau.getContainer();
 
-            // The effigy returned above has three problems. First,
-            // it's container is the directory is the directory in the
-            // configuration. We want it to be contained by the following
-            // containerEffigy.
-            final Effigy containerEffigy = _configuration
-                    .getEffigy(momlModelAttribute.getContainer());
+            // If the model is contained in a separate file, then we
+            // need to set its uri parameter.
+            // If it is in the same file, we have more work to do.
+            File modelFile = momlModelAttribute.modelURL.asFile();
+            if (modelFile != null) {
+                // Model is in a separate file.
+                effigy.uri.setURL(momlModelAttribute.modelURL.asURL());
+            } else {
+                // Model is in the same file.
+                tableau.setMaster(false);
 
-            // Second, the effigy returned above returns the wrong value in its
-            // masterEffigy() method. That method returns the effigy associated
-            // with the toplevel, which is the same as effigy. We want it to
-            // return whatever the masterEffigy of containerEffigy is.
-            // We accomplish this by substituting a new effigy.
-            // This technique is borrowed from what is done in
-            // PtolemyFrame.getEffigy().
-            PtolemyEffigy newEffigy = new PtolemyEffigy(containerEffigy,
-                    containerEffigy.uniqueName(model.getName())) {
-                public Effigy masterEffigy() {
-                    return containerEffigy.masterEffigy();
-                }
-            };
-            newEffigy.setModel(model);
-            newEffigy.setModified(effigy.isModified());
-            tableau.setContainer(newEffigy);
-            effigy.setContainer(null);
+                // The effigy returned above has three problems. First,
+                // it's container is the directory in the
+                // configuration. We want it to be contained by the following
+                // containerEffigy.
+                final Effigy containerEffigy = _configuration
+                        .getEffigy(momlModelAttribute.getContainer());
 
-            // Third, the uri attribute of the effigy is not set to
-            // refer to the file that will actually save the model.
-            newEffigy.uri.setURI(containerEffigy.uri.getURI());
-        } catch (Exception e) {
-            throw new InternalErrorException(null, e, "Unable to open "
-                    + "the model contained by " + momlModelAttribute.getName());
+                // Second, the effigy returned above returns the wrong value in its
+                // masterEffigy() method. That method returns the effigy associated
+                // with the toplevel, which is the same as effigy. We want it to
+                // return whatever the masterEffigy of containerEffigy is.
+                // We accomplish this by substituting a new effigy.
+                // This technique is borrowed from what is done in
+                // PtolemyFrame.getEffigy().
+                PtolemyEffigy newEffigy = new PtolemyEffigy(containerEffigy,
+                        containerEffigy.uniqueName(model.getName())) {
+                    public Effigy masterEffigy() {
+                        return containerEffigy.masterEffigy();
+                    }
+                };
+                
+                // Third, the uri attribute and file properties
+                // of the effigy are not set to
+                // refer to the file that will actually save the model.
+                // This could be an external file if the modelURL parameter
+                // of the MoMLModelAttribute is set.
+                newEffigy.setModified(effigy.isModified());
+                URI uri = containerEffigy.uri.getURI();
+                newEffigy.uri.setURI(uri);
+                tableau.setContainer(newEffigy);
+                effigy.setContainer(null);
+
+                newEffigy.setModel(model);
+            }
+        } catch (Exception ex) {
+            MessageHandler.error("Unable to open the model contained by "
+                    + momlModelAttribute.getName(), ex);
         }
     }
 
@@ -223,7 +240,8 @@ public class LookInsideAction extends FigureAction {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            MessageHandler.error("Open model element failed.", e);
+            // e.printStackTrace();
         }
 
         // NOTE: Used to open source code here if the object
