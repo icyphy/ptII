@@ -623,7 +623,7 @@ public abstract class Top extends JFrame {
         fileMenuItems[9] = history;
 
         // Exit
-        fileMenuItems[11] = new JMenuItem("Exit", KeyEvent.VK_X);
+        fileMenuItems[11] = new JMenuItem("Exit", KeyEvent.VK_Q);
 
         if (StringUtilities.inApplet()) {
             JMenuItem[] appletFileMenuItems = new JMenuItem[8];
@@ -675,6 +675,11 @@ public abstract class Top extends JFrame {
         fileMenuItems[7].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
+        // Close button = ctrl-q.
+        fileMenuItems[11].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        // Sadly, the above doesn't actually work. Command-Q is not caught.
+        
         return fileMenuItems;
     }
 
@@ -963,6 +968,8 @@ public abstract class Top extends JFrame {
         }
 
         if (selected == 1) {
+            // To prevent the user from being asked again:
+            setModified(false);
             return _DISCARDED;
         }
 
