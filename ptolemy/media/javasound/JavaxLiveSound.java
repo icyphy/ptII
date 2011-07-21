@@ -12,7 +12,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
-public class VergilLiveSound implements LiveSoundInterface {
+public class JavaxLiveSound implements LiveSoundInterface {
     /** Add a live sound listener. The listener will be notified
      *  of all changes in live audio parameters. If the listener
      *  is already listening, then do nothing.
