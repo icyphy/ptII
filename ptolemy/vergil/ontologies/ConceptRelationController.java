@@ -29,13 +29,14 @@ package ptolemy.vergil.ontologies;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.util.List;
 
-import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptRelation;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.PopupMouseFilter;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.ConfigureAction;
@@ -43,6 +44,8 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import diva.canvas.Figure;
 import diva.canvas.Site;
+import diva.canvas.connector.ArcConnector;
+import diva.canvas.connector.ArcManipulator;
 import diva.canvas.connector.Arrowhead;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.ConnectorAdapter;
@@ -50,10 +53,10 @@ import diva.canvas.connector.ConnectorEvent;
 import diva.canvas.connector.ConnectorManipulator;
 import diva.canvas.connector.ConnectorTarget;
 import diva.canvas.connector.PerimeterTarget;
-import diva.canvas.connector.StraightConnector;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.SelectionInteractor;
+import diva.canvas.interactor.SelectionModel;
 import diva.canvas.toolbox.LabelFigure;
 import diva.graph.BasicEdgeController;
 import diva.graph.EdgeRenderer;
@@ -62,7 +65,7 @@ import diva.graph.JGraph;
 import diva.gui.toolbox.MenuCreator;
 
 ///////////////////////////////////////////////////////////////////
-//// RelationController
+//// ConceptRelationController
 
 /** This class provides interaction techniques for relations in an ontology.
 
@@ -80,11 +83,13 @@ public class ConceptRelationController extends BasicEdgeController {
      */
     public ConceptRelationController(final GraphController controller) {
         super(controller);
+        SelectionModel sm = controller.getSelectionModel();
         SelectionInteractor interactor = (SelectionInteractor) getEdgeInteractor();
+        interactor.setSelectionModel(sm);
 
         // Create and set up the manipulator for connectors.
         // This overrides the manipulator created by the base class.
-        ConnectorManipulator manipulator = new ConnectorManipulator();
+        ConnectorManipulator manipulator = new ArcManipulator();
         manipulator.setSnapHalo(4.0);
         manipulator.addConnectorListener(new RelationDropper());
         interactor.setPrototypeDecorator(manipulator);
@@ -189,6 +194,24 @@ public class ConceptRelationController extends BasicEdgeController {
                 throw new IllegalStateException(
                         "Cannot handle both ends of an edge being dragged.");
             }
+            
+            // Make the arc rerender itself so that geometry is preserved
+            Link link = (Link) edge;
+            ConceptRelation transition = (ConceptRelation) link.getRelation();
+
+            if ((transition != null) && c instanceof ArcConnector) {
+                double angle = ((ArcConnector) c).getAngle();
+                double gamma = ((ArcConnector) c).getGamma();
+
+                // Set the new exitAngle and gamma parameter values based
+                // on the current link.
+                String moml = "<group><property name=\"exitAngle\" value=\""
+                        + angle + "\"/>" + "<property name=\"gamma\" value=\""
+                        + gamma + "\"/></group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        transition, moml);
+                transition.requestChange(request);
+            }
 
             // Rerender the edge.  This is necessary for several reasons.
             // First, the edge is only associated with a relation after it
@@ -216,30 +239,61 @@ public class ConceptRelationController extends BasicEdgeController {
          *  @return The connector object to be drawn in the model graph.
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
-            StraightConnector c = new StraightConnector(tailSite, headSite);
+            ArcConnector c = new ArcConnector(tailSite, headSite);
+            // For some reason, setting the angle to 0.0 doesn't work.
+            // The arc doesn't get drawn. Set it small.
+            c.setAngle(Math.PI/999.0);
             Arrowhead arrowhead = new Arrowhead();
             c.setHeadEnd(arrowhead);
             c.setLineWidth((float) 2.0);
             c.setUserObject(edge);
 
-            Link relationLink = (Link) edge;
-            ConceptRelation relation = (ConceptRelation) relationLink
-                    .getRelation();
+            Link link = (Link) edge;
+            ConceptRelation transition = (ConceptRelation) link.getRelation();
 
-            // When first dragging out a relation, the relation
+            // When first dragging out a transition, the relation
             // may still be null.
-            if (relation != null) {
+            if (transition != null) {
+                c.setToolTipText(transition.getName());
+                String labelStr = transition.getLabel();
+                try {
+                    double exitAngle = ((DoubleToken) (transition.exitAngle
+                            .getToken())).doubleValue();
 
-                c.setToolTipText(relation.getName());
+                    // If the angle is too large, then truncate it to
+                    // a reasonable value.
+                    double maximum = 99.0 * Math.PI;
 
-                List<ColorAttribute> colors = relation
-                        .attributeList(ColorAttribute.class);
-                if (colors != null && colors.size() > 0) {
-                    // Use the first color only if there is more than one.
-                    c.setStrokePaint(colors.get(0).asColor());
+                    if (exitAngle > maximum) {
+                        exitAngle = maximum;
+                    } else if (exitAngle < -maximum) {
+                        exitAngle = -maximum;
+                    }
+
+                    // If the angle is zero, then the arc does not get
+                    // drawn.  So we restrict it so that it can't quite
+                    // go to zero.
+                    double minimum = Math.PI / 999.0;
+
+                    if ((exitAngle < minimum) && (exitAngle > -minimum)) {
+                        if (exitAngle > 0.0) {
+                            exitAngle = minimum;
+                        } else {
+                            exitAngle = -minimum;
+                        }
+                    }
+
+                    c.setAngle(exitAngle);
+
+                    // Set the gamma angle
+                    double gamma = ((DoubleToken) (transition.gamma.getToken()))
+                            .doubleValue();
+                    c.setGamma(gamma);
+                } catch (IllegalActionException ex) {
+                    // Ignore, accepting the default.
+                    // This exception should not occur.
                 }
 
-                String labelStr = relation.getLabel();
                 if (!labelStr.equals("")) {
                     // FIXME: get label position modifier, if any.
                     LabelFigure label = new LabelFigure(labelStr, _labelFont);
@@ -247,6 +301,7 @@ public class ConceptRelationController extends BasicEdgeController {
                     c.setLabelFigure(label);
                 }
             }
+
             return c;
         }
     }

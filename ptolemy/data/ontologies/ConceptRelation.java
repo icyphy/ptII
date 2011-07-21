@@ -26,13 +26,16 @@
  */
 package ptolemy.data.ontologies;
 
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -93,6 +96,30 @@ public class ConceptRelation extends ComponentRelation {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** An annotation that describes the transition. If this is non-empty,
+     *  then a visual editor will be expected to put this annotation on
+     *  or near the transition to document its function. This is a string
+     *  that defaults to the empty string. Note that it can reference
+     *  variables in scope using the notation $name.
+     */
+    public StringParameter annotation;
+
+    /** Attribute the exit angle of a visual rendition.
+     *  This parameter contains a DoubleToken, initially with value 0.0.
+     *  It must lie between -PI and PI.  Otherwise, it will be truncated
+     *  to lie within this range.
+     */
+    public Parameter exitAngle;
+
+    /** Attribute giving the orientation of a self-loop. This is equal to
+     * the tangent at the midpoint (more or less).
+     *  This parameter contains a DoubleToken, initially with value 0.0.
+     */
+    public Parameter gamma;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return the value of the {@link #annotation} parameter.
@@ -123,17 +150,6 @@ public class ConceptRelation extends ComponentRelation {
         }
         super.setContainer(container);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** An annotation that describes the relation between concepts. If this is non-empty,
-     *  then a visual editor will be expected to put this annotation on
-     *  or near the relation to document its function. This is a string
-     *  that defaults to the empty string. Note that it can reference
-     *  variables in scope using the notation $name.
-     */
-    public StringParameter annotation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -178,5 +194,15 @@ public class ConceptRelation extends ComponentRelation {
         Variable textHighlightHint = new Variable(annotation, "_textHeightHint");
         textHighlightHint.setExpression("5");
         textHighlightHint.setPersistent(false);
+        
+        exitAngle = new Parameter(this, "exitAngle");
+        exitAngle.setVisibility(Settable.NONE);
+        exitAngle.setExpression("0.0");
+        exitAngle.setTypeEquals(BaseType.DOUBLE);
+        
+        gamma = new Parameter(this, "gamma");
+        gamma.setVisibility(Settable.NONE);
+        gamma.setExpression("0.0");
+        gamma.setTypeEquals(BaseType.DOUBLE);
     }
 }
