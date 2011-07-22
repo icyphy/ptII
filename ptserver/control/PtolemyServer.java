@@ -27,7 +27,6 @@
 
 package ptserver.control;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -802,8 +801,8 @@ public final class PtolemyServer implements IServerManager {
      *  @return The byte array of the PNG image.
      */
     private byte[] _getModelImage(URL modelUrl) {
-        ByteArrayOutputStream output = new ByteArrayOutputStream(
-                IMAGE_BUFFER_SIZE);
+        //ByteArrayOutputStream output = new ByteArrayOutputStream(
+        //        IMAGE_BUFFER_SIZE);
         try {
             //            // Save existing filters.
             //            List filterList = MoMLParser.getMoMLFilters();
@@ -836,7 +835,8 @@ public final class PtolemyServer implements IServerManager {
             MessageHandler.error(e.getMessage(), e);
         }
 
-        return output.toByteArray();
+        return new byte[0];
+        //return output.toByteArray();
     }
 
     /** Log the message and exception into the Ptolemy server log.
