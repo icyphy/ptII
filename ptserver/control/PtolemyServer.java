@@ -57,22 +57,10 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.Manager.State;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.ConfigurationApplication;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.injection.PtolemyModule;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.RecordToken;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.actor.ActorEditorGraphController;
-import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.basic.BasicGraphPane;
 import ptserver.communication.ProxyModelInfrastructure;
 import ptserver.communication.ProxyModelInfrastructure.ProxyModelListener;
 import ptserver.communication.ProxyModelResponse;
@@ -80,11 +68,8 @@ import ptserver.data.ServerEventToken;
 import ptserver.data.ServerEventToken.EventType;
 import ptserver.data.TokenParser;
 import ptserver.data.TokenParser.HandlerData;
-import ptserver.util.ServerUtility;
 
 import com.google.inject.Module;
-
-import diva.graph.JGraph;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyServer
@@ -220,10 +205,10 @@ public final class PtolemyServer implements IServerManager {
                 brokerAddress = InetAddress.getLocalHost().getHostAddress();
             }
 
-            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-            _configuration = ConfigurationApplication
-                    .readConfiguration(ConfigurationApplication
-                            .specToURL("ptolemy/configs/full/configuration.xml"));
+            //MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+            //            _configuration = ConfigurationApplication
+            //                    .readConfiguration(ConfigurationApplication
+            //                            .specToURL("ptolemy/configs/full/configuration.xml"));
             _brokerUrl = String
                     .format("tcp://%s@%s", brokerAddress, brokerPort);
             _servletUrl = String
@@ -584,6 +569,7 @@ public final class PtolemyServer implements IServerManager {
             _handleException((ticket != null ? ticket.getTicketID() : null)
                     + ": " + e.getMessage(), e);
         }
+
         return response;
     }
 
@@ -819,27 +805,33 @@ public final class PtolemyServer implements IServerManager {
         ByteArrayOutputStream output = new ByteArrayOutputStream(
                 IMAGE_BUFFER_SIZE);
         try {
-            // Load the model file.
-            CompositeEntity topLevelActor = ServerUtility
-                    .openModelFile(modelUrl);
-
-            // Get the window properties and sizing.
-            WindowPropertiesAttribute window = (WindowPropertiesAttribute) topLevelActor
-                    .getAttribute("_windowProperties");
-            ArrayToken dimensions = (ArrayToken) ((RecordToken) window
-                    .getToken()).get("bounds");
-
-            // Create the dummy controller.
-            ActorEditorGraphController controller = new ActorEditorGraphController();
-            controller.setConfiguration(_configuration);
-
-            // Configure the graph & export.
-            JGraph graph = new JGraph(new BasicGraphPane(controller,
-                    new ActorGraphModel(topLevelActor), topLevelActor));
-            graph.setVisible(true);
-            graph.setSize(((IntToken) dimensions.getElement(2)).intValue(),
-                    ((IntToken) dimensions.getElement(3)).intValue());
-            graph.exportImage(output, IMAGE_FORMAT);
+            //            // Save existing filters.
+            //            List filterList = MoMLParser.getMoMLFilters();
+            //                        
+            //            // Load the model file.
+            //            CompositeEntity topLevelActor = ServerUtility
+            //                    .openModelFile(modelUrl);
+            //
+            //            // Get the window properties and sizing.
+            //            WindowPropertiesAttribute window = (WindowPropertiesAttribute) topLevelActor
+            //                    .getAttribute("_windowProperties");
+            //            ArrayToken dimensions = (ArrayToken) ((RecordToken) window
+            //                    .getToken()).get("bounds");
+            //
+            //            // Create the dummy controller.
+            //            ActorEditorGraphController controller = new ActorEditorGraphController();
+            //            controller.setConfiguration(_configuration);
+            //
+            //            // Configure the graph & export.
+            //            JGraph graph = new JGraph(new BasicGraphPane(controller,
+            //                    new ActorGraphModel(topLevelActor), topLevelActor));
+            //            graph.setVisible(true);
+            //            graph.setSize(((IntToken) dimensions.getElement(2)).intValue(),
+            //                    ((IntToken) dimensions.getElement(3)).intValue());
+            //            graph.exportImage(output, IMAGE_FORMAT);
+            //            
+            //            // Reset back to previous filters.
+            //            MoMLParser.setMoMLFilters(filterList);
         } catch (Exception e) {
             MessageHandler.error(e.getMessage(), e);
         }
@@ -917,7 +909,9 @@ public final class PtolemyServer implements IServerManager {
      */
     private String _brokerUrl;
 
-    private Configuration _configuration;
+    //    /** The MOML configuration.
+    //     */
+    //    private Configuration _configuration;
 
     /** The service that manages the simulation thread pool.
      */
