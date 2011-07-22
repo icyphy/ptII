@@ -27,7 +27,6 @@
 
 package ptolemy.homer.kernel;
 
-import java.awt.Dimension;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -46,8 +45,8 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -84,11 +83,16 @@ public class LayoutFileOperations {
             NameDuplicationException, CloneNotSupportedException {
         HashSet<Class<? extends Attribute>> classesToMerge = new HashSet<Class<? extends Attribute>>();
         classesToMerge.add(HomerLocation.class);
+
         HashSet<String> namedObjectsToMerge = new HashSet<String>();
+        namedObjectsToMerge.add(HomerConstants.SCREEN_SIZE);
+        namedObjectsToMerge.add(HomerConstants.ENABLED_NODE);
+        namedObjectsToMerge.add(HomerConstants.REQUIRED_NODE);
         namedObjectsToMerge.add(HomerConstants.TAB_NODE);
         namedObjectsToMerge.add(HomerConstants.TABS_NODE);
         namedObjectsToMerge.add(HomerConstants.ORIENTATION_NODE);
         namedObjectsToMerge.add(ServerUtility.REMOTE_OBJECT_TAG);
+
         CompositeEntity mergedModel = ServerUtility.mergeModelWithLayout(
                 modelURL, layoutURL, classesToMerge, namedObjectsToMerge);
         return mergedModel;
@@ -182,21 +186,22 @@ public class LayoutFileOperations {
             new ProxyModelBuilder(ProxyModelType.CLIENT, model).build();
 
             // Add screen dimensions to top level actor.
-            Dimension screenSize = mainFrame.getTabbedLayoutScene()
-                    .getPreferredSize();
-
             ArrayToken token = new ArrayToken(new IntToken[] {
-                    new IntToken(screenSize.width),
-                    new IntToken(screenSize.height) });
+                    new IntToken(mainFrame.getTabbedLayoutScene()
+                            .getPreferredSize().width),
+                    new IntToken(mainFrame.getTabbedLayoutScene()
+                            .getPreferredSize().height) });
 
-            if (mainFrame.getTopLevelActor().getAttribute(
-                    HomerConstants.SCREEN_SIZE) == null) {
-                new Variable(mainFrame.getTopLevelActor(),
-                        HomerConstants.SCREEN_SIZE, token);
-            } else {
-                ((Variable) mainFrame.getTopLevelActor().getAttribute(
-                        HomerConstants.SCREEN_SIZE)).setToken(token);
+            Parameter screenSizeNode = (Parameter) model
+                    .getAttribute(HomerConstants.SCREEN_SIZE);
+            if (screenSizeNode != null) {
+                model.removeAttribute(screenSizeNode);
             }
+
+            screenSizeNode = new Parameter(model, HomerConstants.SCREEN_SIZE);
+            screenSizeNode.setPersistent(true);
+            screenSizeNode.setVisibility(Settable.NONE);
+            screenSizeNode.setToken(token);
 
             // Clone the tabs
             Attribute tabs = (Attribute) mainFrame.getTopLevelActor()
@@ -225,41 +230,43 @@ public class LayoutFileOperations {
                     }
 
                     // Add enabled.
-                    Attribute enabledNode = elementInModel
+                    Parameter enabledNode = (Parameter) elementInModel
                             .getAttribute(HomerConstants.ENABLED_NODE);
                     if (enabledNode != null) {
                         elementInModel.removeAttribute(enabledNode);
                     }
 
-                    Variable tempEnabled = (Variable) elementOnScreen
+                    enabledNode = new Parameter(elementInModel,
+                            HomerConstants.ENABLED_NODE);
+                    enabledNode.setPersistent(true);
+                    enabledNode.setVisibility(Settable.NONE);
+
+                    Parameter enabled = (Parameter) elementOnScreen
                             .getAttribute(HomerConstants.ENABLED_NODE);
-                    if (tempEnabled != null) {
-                        new HomerLocation(elementInModel,
-                                HomerConstants.ENABLED_NODE)
-                                .setToken(tempEnabled.getToken());
+                    if ((enabled != null) && (enabled.getToken() != null)) {
+                        enabledNode.setToken(enabled.getToken());
                     } else {
-                        new HomerLocation(elementInModel,
-                                HomerConstants.ENABLED_NODE)
-                                .setToken(new BooleanToken(true));
+                        enabledNode.setToken(new BooleanToken(true));
                     }
 
                     // Add required
-                    Attribute requiredNode = elementInModel
+                    Parameter requiredNode = (Parameter) elementInModel
                             .getAttribute(HomerConstants.REQUIRED_NODE);
                     if (requiredNode != null) {
                         elementInModel.removeAttribute(requiredNode);
                     }
 
-                    Variable tempRequired = (Variable) elementOnScreen
+                    requiredNode = new Parameter(elementInModel,
+                            HomerConstants.REQUIRED_NODE);
+                    requiredNode.setPersistent(true);
+                    requiredNode.setVisibility(Settable.NONE);
+
+                    Parameter required = (Parameter) elementOnScreen
                             .getAttribute(HomerConstants.REQUIRED_NODE);
-                    if (tempRequired != null) {
-                        new HomerLocation(elementInModel,
-                                HomerConstants.REQUIRED_NODE)
-                                .setToken(tempRequired.getToken());
+                    if ((required != null) && (required.getToken() != null)) {
+                        requiredNode.setToken(required.getToken());
                     } else {
-                        new HomerLocation(elementInModel,
-                                HomerConstants.REQUIRED_NODE)
-                                .setToken(new BooleanToken(false));
+                        requiredNode.setToken(new BooleanToken(false));
                     }
 
                     // Add location

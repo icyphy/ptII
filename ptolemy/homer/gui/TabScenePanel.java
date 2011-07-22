@@ -74,7 +74,7 @@ import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
 import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
 import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.ContentPrototype;
 import ptolemy.homer.kernel.HomerConstants;
@@ -472,25 +472,26 @@ public class TabScenePanel implements ContentPrototype {
                     NamedObj namedObj = ((HomerWidgetElement) element)
                             .getElement();
                     if (namedObj != null) {
-                        if (namedObj.getAttribute(HomerConstants.ENABLED_NODE) == null) {
-                            new Variable(namedObj, HomerConstants.ENABLED_NODE,
+                        Parameter enabled = (Parameter) namedObj
+                                .getAttribute(HomerConstants.ENABLED_NODE);
+                        if (enabled == null) {
+                            new Parameter(namedObj,
+                                    HomerConstants.ENABLED_NODE,
                                     new BooleanToken(dialog.getEnabled()));
-                        } else {
-                            ((Variable) namedObj
-                                    .getAttribute(HomerConstants.ENABLED_NODE))
-                                    .setToken(new BooleanToken(dialog
-                                            .getEnabled()));
+                        } else if (enabled instanceof Parameter) {
+                            enabled.setToken(new BooleanToken(dialog
+                                    .getEnabled()));
                         }
 
-                        if (namedObj.getAttribute(HomerConstants.REQUIRED_NODE) == null) {
-                            new Variable(namedObj,
+                        Parameter required = (Parameter) namedObj
+                                .getAttribute(HomerConstants.REQUIRED_NODE);
+                        if (required == null) {
+                            new Parameter(namedObj,
                                     HomerConstants.REQUIRED_NODE,
                                     new BooleanToken(dialog.getRequired()));
-                        } else {
-                            ((Variable) namedObj
-                                    .getAttribute(HomerConstants.REQUIRED_NODE))
-                                    .setToken(new BooleanToken(dialog
-                                            .getRequired()));
+                        } else if (required instanceof Parameter) {
+                            required.setToken(new BooleanToken(dialog
+                                    .getRequired()));
                         }
                     }
 

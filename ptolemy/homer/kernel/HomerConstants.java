@@ -71,7 +71,7 @@ public final class HomerConstants {
 
     /** The name of the attribute that indicates the screen dimensions.
      */
-    public static final String SCREEN_SIZE = "droid_dimensions";
+    public static final String SCREEN_SIZE = "droid_screensize";
 
     /** The name of the attribute defining the node's style in the layout file.
      */

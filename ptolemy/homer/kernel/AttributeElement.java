@@ -77,15 +77,6 @@ public class AttributeElement extends PositionableElement {
         ((AbstractSettableAttribute) getElement()).addValueListener(listener);
     }
 
-    /** Remove a value listener from the underlying attribute.
-     * 
-     *  @param listener The listener to remove.
-     */
-    public void removeListener(ValueListener listener) {
-        ((AbstractSettableAttribute) getElement())
-                .removeValueListener(listener);
-    }
-
     /** Add the visual representation of the element to the provided
      *  container.
      *  
@@ -94,7 +85,8 @@ public class AttributeElement extends PositionableElement {
      *  to the container. 
      */
     @Override
-    public void addToContainer(PortableContainer container) throws IllegalActionException {
+    public void addToContainer(PortableContainer container)
+            throws IllegalActionException {
         // Place the representation into the given container.
         _representation.placeWidget((Attribute) getElement(), container);
     }
@@ -128,6 +120,15 @@ public class AttributeElement extends PositionableElement {
         }
     }
 
+    /** Remove a value listener from the underlying attribute.
+     * 
+     *  @param listener The listener to remove.
+     */
+    public void removeListener(ValueListener listener) {
+        ((AbstractSettableAttribute) getElement())
+                .removeValueListener(listener);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
@@ -135,5 +136,5 @@ public class AttributeElement extends PositionableElement {
      *  platform.
      */
     private AttributeRepresentation _representation = PtolemyInjector
-    .getInjector().getInstance(AttributeRepresentation.class);
+            .getInjector().getInstance(AttributeRepresentation.class);
 }
