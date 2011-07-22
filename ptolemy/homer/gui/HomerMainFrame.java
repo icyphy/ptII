@@ -46,7 +46,10 @@ import javax.swing.border.TitledBorder;
 import org.netbeans.api.visual.widget.Scene;
 
 import ptolemy.actor.gui.style.NotEditableLineStyle;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.homer.HomerApplication;
 import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.HomerConstants;
@@ -99,12 +102,10 @@ public class HomerMainFrame extends JFrame {
         _initializeFrame();
 
         setJMenuBar(new HomerMenu(this).getMenuBar());
-        //        newLayout(this.getClass().getResource(
-        //                "/ptserver/test/junit/NoisySinewave.xml"));
         openLayout(
-                this.getClass().getResource(
-                        "/ptserver/test/junit/NoisySinewave.xml"),
-                this.getClass()
+                getClass()
+                        .getResource("/ptserver/test/junit/NoisySinewave.xml"),
+                getClass()
                         .getResource(
                                 "/ptserver/test/junit/NoisySinewave_test2_layout.layout.xml"));
     }
@@ -126,7 +127,7 @@ public class HomerMainFrame extends JFrame {
         if (_topLevelActor == null) {
             return;
         }
-        
+
         try {
             _contents.addTab(_topLevelActor, tabName);
         } catch (NameDuplicationException e) {
@@ -308,6 +309,23 @@ public class HomerMainFrame extends JFrame {
             _topLevelActor = LayoutFileOperations.open(this, modelURL,
                     layoutURL);
             LayoutFileOperations.parseModel(this);
+
+            // Get the window properties and sizing.
+            Variable screenSize = ((Variable) _topLevelActor
+                    .getAttribute(HomerConstants.SCREEN_SIZE));
+            if (screenSize != null) {
+                ArrayToken token = (ArrayToken) ((Variable) _topLevelActor
+                        .getAttribute(HomerConstants.SCREEN_SIZE)).getToken();
+                if (token != null) {
+                    Dimension dimensions = new Dimension(
+                            ((IntToken) token.getElement(0)).intValue(),
+                            ((IntToken) token.getElement(1)).intValue());
+
+                    // Set the window size according to attribute.
+                    _screenPanel.getSceneTabs().setPreferredSize(dimensions);
+                }
+            }
+
             _namedObjectTreePanel.setCompositeEntity(_topLevelActor);
             _initializeGraphPreview(_topLevelActor);
         } catch (IllegalActionException e) {
@@ -346,8 +364,9 @@ public class HomerMainFrame extends JFrame {
      */
     public void removeVisualNamedObject(PositionableElement element) {
         _contents.removeElement(element);
-        NamedObj object = element.getElement();
+
         // Check if this is a label widget contained within a tab.
+        NamedObj object = element.getElement();
         if (isLabelWidget(object)) {
             // Remove the label from the container.
             try {
@@ -391,7 +410,7 @@ public class HomerMainFrame extends JFrame {
         }
         return false;
     }
-    
+
     public CompositeEntity getTopLevelActor() {
         return _topLevelActor;
     }
@@ -454,13 +473,13 @@ public class HomerMainFrame extends JFrame {
     }
 
     private void _initializeGraphPreview(CompositeEntity topLevelActor) {
-        _graphPanel.removeAll();
         ActorEditorGraphController controller = new ActorEditorGraphController();
         controller.setConfiguration(_application.getConfiguration());
 
-        BasicGraphPane graphPane = new BasicGraphPane(controller,
-                new ActorGraphModel(topLevelActor), topLevelActor);
-        _graphPanel.add(new JCanvasPanner(new JGraph(graphPane)),
+        _graphPanel.removeAll();
+        _graphPanel.add(
+                new JCanvasPanner(new JGraph(new BasicGraphPane(controller,
+                        new ActorGraphModel(topLevelActor), topLevelActor))),
                 BorderLayout.CENTER);
         _graphPanel.revalidate();
     }
