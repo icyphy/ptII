@@ -148,9 +148,13 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  <p>
      *  This base class presumes (but does not check) that the
      *  argument is a port contained by the associated actor.
-     *  If the actor is an input, then it returns a collection of
+     *  By default,
+     *  if the actor is an input, then it returns a collection of
      *  all the outputs. If the actor is output, then it returns
      *  a collection of all the inputs.
+     *  However, if {@link #removeDependency(IOPort, IOPort)}
+     *  has been called, then it prunes the results to not include
+     *  ports where the dependency has been explicitly removed.
      *  <p>
      *  Derived classes may override this, but they may need to
      *  also override {@link #getDependency(IOPort, IOPort)}
