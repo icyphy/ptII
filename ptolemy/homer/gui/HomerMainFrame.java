@@ -311,11 +311,10 @@ public class HomerMainFrame extends JFrame {
             LayoutFileOperations.parseModel(this);
 
             // Get the window properties and sizing.
-            Variable screenSize = ((Variable) _topLevelActor
+            Parameter screenSize = ((Parameter) _topLevelActor
                     .getAttribute(HomerConstants.SCREEN_SIZE));
             if (screenSize != null) {
-                ArrayToken token = (ArrayToken) ((Variable) _topLevelActor
-                        .getAttribute(HomerConstants.SCREEN_SIZE)).getToken();
+                ArrayToken token = (ArrayToken) screenSize.getToken();
                 if (token != null) {
                     Dimension dimensions = new Dimension(
                             ((IntToken) token.getElement(0)).intValue(),
