@@ -69,6 +69,10 @@ public final class HomerConstants {
      */
     public static final String REQUIRED_NODE = "droid_required";
 
+    /** The name of the attribute that indicates the screen dimensions.
+     */
+    public static final String SCREEN_SIZE = "droid_dimensions";
+
     /** The name of the attribute defining the node's style in the layout file.
      */
     public static final String STYLE_NODE = "droid_style";

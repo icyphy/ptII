@@ -27,6 +27,7 @@
 
 package ptolemy.homer.kernel;
 
+import java.awt.Dimension;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -41,8 +42,11 @@ import org.netbeans.api.visual.widget.Widget;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.IntMatrixToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -89,8 +93,8 @@ public class LayoutFileOperations {
         return mergedModel;
     }
 
-    public static void parseModel(HomerMainFrame mainFrame) throws IllegalActionException,
-            NameDuplicationException {
+    public static void parseModel(HomerMainFrame mainFrame)
+            throws IllegalActionException, NameDuplicationException {
         LayoutParser parser = new LayoutParser(mainFrame.getTopLevelActor());
         HashSet<NamedObj> proxyElements = parser.getProxyElements();
         HashSet<NamedObj> visualElements = parser.getPositionableElements();
@@ -160,7 +164,7 @@ public class LayoutFileOperations {
         try {
             // Get the original model
             model = (CompositeActor) openModelFile(mainFrame.getModelURL());
-            
+
             // Get access on both workplace
             mainFrame.getTopLevelActor().workspace().getReadAccess();
             model.workspace().getWriteAccess();
@@ -175,7 +179,24 @@ public class LayoutFileOperations {
 
             // Create layout model
             new ProxyModelBuilder(ProxyModelType.CLIENT, model).build();
-            
+
+            // Add screen dimensions to top level actor.
+            Dimension screenSize = mainFrame.getTabbedLayoutScene()
+                    .getPreferredSize();
+
+            ArrayToken token = new ArrayToken(new IntToken[] {
+                    new IntToken(screenSize.width),
+                    new IntToken(screenSize.height) });
+
+            if (mainFrame.getTopLevelActor().getAttribute(
+                    HomerConstants.SCREEN_SIZE) == null) {
+                new Variable(mainFrame.getTopLevelActor(),
+                        HomerConstants.SCREEN_SIZE, token);
+            } else {
+                ((Variable) mainFrame.getTopLevelActor().getAttribute(
+                        HomerConstants.SCREEN_SIZE)).setToken(token);
+            }
+
             // Clone the tabs
             Attribute tabs = (Attribute) mainFrame.getTopLevelActor()
                     .getAttribute(HomerConstants.TABS_NODE)
@@ -202,7 +223,8 @@ public class LayoutFileOperations {
                     }
 
                     // Add location
-                    Attribute attribute = elementInModel.getAttribute(HomerConstants.POSITION_NODE);
+                    Attribute attribute = elementInModel
+                            .getAttribute(HomerConstants.POSITION_NODE);
                     if (attribute != null) {
                         elementInModel.removeAttribute(attribute);
                     }
@@ -211,7 +233,8 @@ public class LayoutFileOperations {
                             .setToken(getLocationToken(homerElement.getWidget()));
 
                     // Add tab information
-                    attribute = elementInModel.getAttribute(HomerConstants.TAB_NODE);
+                    attribute = elementInModel
+                            .getAttribute(HomerConstants.TAB_NODE);
                     if (attribute != null) {
                         elementInModel.removeAttribute(attribute);
                     }
@@ -230,7 +253,7 @@ public class LayoutFileOperations {
             // Release models
             mainFrame.getTopLevelActor().workspace().doneReading();
             model.workspace().doneWriting();
-            
+
             if (out != null) {
                 try {
                     out.close();
@@ -278,8 +301,7 @@ public class LayoutFileOperations {
                             entityInModel, ServerUtility.REMOTE_OBJECT_TAG);
                     parameter.setVisibility(Settable.NONE);
                     parameter.setPersistent(true);
-                    parameter
-                            .setExpression(ServerUtility.PROXY_SINK_ATTRIBUTE);
+                    parameter.setExpression(ServerUtility.PROXY_SINK_ATTRIBUTE);
                 }
             } catch (IllegalActionException e) {
                 // TODO Auto-generated catch block
