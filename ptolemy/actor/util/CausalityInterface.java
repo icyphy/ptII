@@ -83,7 +83,7 @@ public interface CausalityInterface {
     /** Return a collection of the ports in this actor that depend on
      *  or are depended on by the specified port. A port Y depends
      *  on a port X if Y is an output and X is an input and
-     *  getDependency(X,Y) return the oTimesIdentity.
+     *  getDependency(X,Y) returns the oTimesIdentity.
      *  The argument port should be contained by the same actor
      *  returned by getActor().
      *  @param port The port to find the dependents of.
