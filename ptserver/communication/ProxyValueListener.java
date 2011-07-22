@@ -42,14 +42,14 @@ import ptserver.data.AttributeChangeToken;
 * @Pt.ProposedRating Red (pdf)
 * @Pt.AcceptedRating Red (pdf)
 */
-public class RemoteValueListener implements ValueListener {
+public class ProxyValueListener implements ValueListener {
 
     /**
      * Initialize the instance with the given token publisher
      *  and enable its listener.
      * @param tokenPublisher the tokenPublisher used for sending value change events.
      */
-    public RemoteValueListener(TokenPublisher tokenPublisher) {
+    public ProxyValueListener(TokenPublisher tokenPublisher) {
         _tokenPublisher = tokenPublisher;
         setEnabled(true);
     }

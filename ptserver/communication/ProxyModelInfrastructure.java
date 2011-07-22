@@ -235,7 +235,7 @@ public class ProxyModelInfrastructure {
      * Return the map with RemoteValueListeners of the model's remote attributes.
      * @return the map with RemoteValueListeners of the model's remote attributes.
      */
-    public HashMap<String, RemoteValueListener> getRemoteAttributeListenersMap() {
+    public HashMap<String, ProxyValueListener> getRemoteAttributeListenersMap() {
         return _remoteAttributeListenersMap;
     }
 
@@ -619,7 +619,7 @@ public class ProxyModelInfrastructure {
      */
     private void _setUpRemoteAttributes() {
         for (Settable settable : _remoteAttributesMap.values()) {
-            RemoteValueListener listener = new RemoteValueListener(
+            ProxyValueListener listener = new ProxyValueListener(
                     _tokenPublisher);
             settable.addValueListener(listener);
             _remoteAttributeListenersMap.put(settable.getFullName(), listener);
@@ -662,7 +662,7 @@ public class ProxyModelInfrastructure {
      * The mapping from the original settable object name to its
      * attribute listener.
      */
-    private final HashMap<String, RemoteValueListener> _remoteAttributeListenersMap = new HashMap<String, RemoteValueListener>();
+    private final HashMap<String, ProxyValueListener> _remoteAttributeListenersMap = new HashMap<String, ProxyValueListener>();
 
     /**
      * The token publisher used to batch tokens sent by the remote sink.

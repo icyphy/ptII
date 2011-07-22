@@ -31,7 +31,7 @@ package ptserver.control;
 import java.util.LinkedHashMap;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptserver.communication.RemoteModelResponse;
+import ptserver.communication.ProxyModelResponse;
 
 ///////////////////////////////////////////////////////////////////
 //// IServerManager
@@ -95,7 +95,7 @@ public interface IServerManager {
      *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.
      */
-    RemoteModelResponse open(String modelUrl, String layoutUrl)
+    ProxyModelResponse open(String modelUrl, String layoutUrl)
             throws IllegalActionException;
 
     /** Pause the execution of the selected simulation.

@@ -110,7 +110,7 @@ public class TokenListener implements MqttSimpleCallback {
                         .getRemoteAttributesMap().get(
                                 attributeChangeToken.getTargetSettableName());
 
-                RemoteValueListener listener = _remoteModel
+                ProxyValueListener listener = _remoteModel
                         .getRemoteAttributeListenersMap().get(
                                 attributeChangeToken.getTargetSettableName());
                 synchronized (listener) {

@@ -42,7 +42,7 @@ import ptserver.control.Ticket;
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
  */
-public class RemoteModelResponse implements Serializable {
+public class ProxyModelResponse implements Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
