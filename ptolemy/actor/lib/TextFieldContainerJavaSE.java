@@ -1,5 +1,4 @@
-/*  Interface for implementing platform dependent representation of
- the Const actor
+/*  JavaSE implementation of the TextFieldContainerInterface. 
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -27,16 +26,15 @@
  */
 package ptolemy.actor.lib;
 
+import javax.swing.JTextField;
+
 import ptolemy.actor.gui.PortableContainer;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.Token;
 
-///////////////////////////////////////////////////////////////////
-////ConstInterface
-
+//////////////////////////////////////////////////////////////////////////
+//// TextFieldContainerJavaSE
 /**
- Interface for implementing platform dependent representation of
- the Const actor
-
+JavaSE implementation of the TextFieldContainerInterface. 
 
 @author Ishwinder Singh
 @version $Id$
@@ -45,20 +43,36 @@ import ptolemy.data.expr.Parameter;
 @Pt.AcceptedRating Red (ishwinde)
 */
 
-public interface ConstInterface {
+public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
 
-    /** Initialize the text field for the Const actor
+    /** Initialize the text field for the MonitorValue
      */
-    void init();
+    public void init() {
+    }
 
     /** Place the visual representation of the actor into the specified container.
      *  @param container The container in which to place the object
      */
-    void place(PortableContainer container);
+    public void place(PortableContainer container) {
+        _textfield = new JTextField();
+        _textfield.setText("\t\t");
+        container.add(_textfield);
+        _textfield.setEditable(false);
+    }
 
     /** Set the text to the value of the parameter
      * @param value The Parameter containing the value
      */
-    void setValue(Parameter value);
+    public void setValue(Token value) {
+        if (_textfield != null) {
+            _textfield.setText(value.toString());
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Text field for displaying the value
+    private JTextField _textfield;
 
 }

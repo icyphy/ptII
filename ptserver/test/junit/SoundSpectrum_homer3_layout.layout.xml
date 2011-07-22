@@ -13,6 +13,12 @@
         </property>
         <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 972, 460}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 350]">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -20,6 +26,8 @@
         <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
         <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
@@ -35,6 +43,8 @@
                 </property>
             </property>
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 190.0}">
+        </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -42,6 +52,8 @@
         <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
         </property>
         <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
@@ -57,6 +69,8 @@
                 </property>
             </property>
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 310.0}">
+        </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -64,6 +78,8 @@
         <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
         <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
         </property>
@@ -79,55 +95,42 @@
                 </property>
             </property>
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 15.0}">
+        </property>
     </property>
     <property name="order" class="ptolemy.data.expr.Parameter" value="7">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 35.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.5, 175.0}">
     </property>
     <property name="droid_tabs" class="ptolemy.kernel.util.Attribute">
-        <property name="tab_" class="ptolemy.kernel.util.StringAttribute" value="tab_">
+        <property name="tab_296875288" class="ptolemy.kernel.util.StringAttribute" value="Amazing chicken">
+        </property>
+        <property name="tab_-1935151587" class="ptolemy.kernel.util.StringAttribute" value="another tab">
         </property>
     </property>
-    <entity name="AudioCapture" class="ptolemy.actor.lib.javasound.AudioCapture">
-        <property name="sampleRate" class="ptolemy.actor.parameters.SharedParameter" value="8000">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="8000" class="ptolemy.kernel.util.StringAttribute" value="8000">
-                </property>
-                <property name="11025" class="ptolemy.kernel.util.StringAttribute" value="11025">
-                </property>
-                <property name="22050" class="ptolemy.kernel.util.StringAttribute" value="22050">
-                </property>
-                <property name="44100" class="ptolemy.kernel.util.StringAttribute" value="44100">
-                </property>
-                <property name="48000" class="ptolemy.kernel.util.StringAttribute" value="48000">
-                </property>
-            </property>
-        </property>
-        <property name="bitsPerSample" class="ptolemy.actor.parameters.SharedParameter" value="16">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="8" class="ptolemy.kernel.util.StringAttribute" value="8">
-                </property>
-                <property name="16" class="ptolemy.kernel.util.StringAttribute" value="16">
-                </property>
-            </property>
-        </property>
-        <property name="channels" class="ptolemy.actor.parameters.SharedParameter" value="1">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="1" class="ptolemy.kernel.util.StringAttribute" value="1">
-                </property>
-                <property name="2" class="ptolemy.kernel.util.StringAttribute" value="2">
-                </property>
-            </property>
-        </property>
-        <property name="transferSize" class="ptolemy.actor.parameters.SharedParameter" value="500">
-        </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="source">
-        </property>
-    </entity>
     <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 378, 508, 348}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -137,11 +140,13 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 65.0">
+        </property>
         <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
         </property>
-        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[0, 0, 377, 270]">
+        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[-6, 382, 1249, 329]">
         </property>
-        <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_">
+        <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_-1935151587">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -158,9 +163,9 @@
     <entity name="ArrayPlotter2" class="ptolemy.actor.lib.gui.ArrayPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {508, 378, 508, 348}, maximized = false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -168,11 +173,13 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/128.0">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 135.0">
+        </property>
         <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
         </property>
-        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[0, 400, 377, 282]">
+        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[-6, -6, 1249, 400]">
         </property>
-        <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_">
+        <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_-1935151587">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -194,62 +201,6 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="AudioCapture_remote" class="ptserver.actor.ProxySink">
-        <property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute" value=".SoundSpectrum.AudioCapture">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg>
-<rect x="-30" y="-20" width="60" height="40" style="fill:white"/>
-<polygon points="-20,-10 20,0 -20,10" style="fill:blue"/>
-</svg>
-</configure>
-        </property>
-        <property name="sampleRate" class="ptolemy.actor.parameters.SharedParameter" value="8000">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="8000" class="ptolemy.kernel.util.StringAttribute" value="8000">
-                </property>
-                <property name="11025" class="ptolemy.kernel.util.StringAttribute" value="11025">
-                </property>
-                <property name="22050" class="ptolemy.kernel.util.StringAttribute" value="22050">
-                </property>
-                <property name="44100" class="ptolemy.kernel.util.StringAttribute" value="44100">
-                </property>
-                <property name="48000" class="ptolemy.kernel.util.StringAttribute" value="48000">
-                </property>
-            </property>
-        </property>
-        <property name="bitsPerSample" class="ptolemy.actor.parameters.SharedParameter" value="16">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="8" class="ptolemy.kernel.util.StringAttribute" value="8">
-                </property>
-                <property name="16" class="ptolemy.kernel.util.StringAttribute" value="16">
-                </property>
-            </property>
-        </property>
-        <property name="channels" class="ptolemy.actor.parameters.SharedParameter" value="1">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="1" class="ptolemy.kernel.util.StringAttribute" value="1">
-                </property>
-                <property name="2" class="ptolemy.kernel.util.StringAttribute" value="2">
-                </property>
-            </property>
-        </property>
-        <property name="transferSize" class="ptolemy.actor.parameters.SharedParameter" value="500">
-        </property>
-        <property name="bufferSize" class="ptolemy.actor.parameters.SharedParameter" value="1024">
-        </property>
-        <property name="AudioCaptureIcon" class="ptolemy.vergil.icon.EditorIcon">
-        </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="source">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="transferSize">
-            </property>
-            <property name="targetPortName" class="ptolemy.kernel.util.StringAttribute" value=".SoundSpectrum.AudioCapture.output">
-            </property>
-        </port>
-    </entity>
     <entity name="ArrayPlotter_remote" class="ptserver.actor.ProxySource">
         <property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute" value=".SoundSpectrum.ArrayPlotter">
         </property>
@@ -259,7 +210,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 378, 508, 348}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -282,13 +233,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
-        </property>
-        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[-6, -6, 377, 270]">
-        </property>
-        <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 65.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -305,9 +250,9 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {508, 378, 508, 348}, maximized = false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg>
@@ -328,13 +273,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/128.0">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
-        </property>
-        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[-6, -6, 377, 282]">
-        </property>
-        <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -342,26 +281,12 @@
             </property>
         </port>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="AudioCapture.output" relation="relation"/>
     <link port="ArrayPlotter.input" relation="relation2"/>
     <link port="ArrayPlotter2.input" relation="relation9"/>
-    <link port="AudioCapture_remote.output" relation="relation"/>
     <link port="ArrayPlotter_remote.input" relation="relation2"/>
     <link port="ArrayPlotter2_remote.input" relation="relation9"/>
 </entity>

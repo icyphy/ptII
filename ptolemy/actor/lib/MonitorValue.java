@@ -103,7 +103,6 @@ public class MonitorValue extends Sink implements PortablePlaceable {
     public void initialize() throws IllegalActionException {
         super.initialize();
         value.setExpression(initial.getExpression());
-        _implementaion.init();
         value.validate();
     }
 
@@ -118,7 +117,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
             if (oldToken == null || !oldToken.equals(newToken)) {
                 value.setToken(newToken);
                 value.validate();
-                _implementaion.setValue(value);
+                _implementaion.setValue(newToken);
             }
         }
 
@@ -137,7 +136,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
     ////                         private variables                 ////
 
     // Implementation of the MonitorValueInterface
-    private final MonitorValueInterface _implementaion = PtolemyInjector
-            .getInjector().getInstance(MonitorValueInterface.class);
+    private final TextFieldContainerInterface _implementaion = PtolemyInjector
+            .getInjector().getInstance(TextFieldContainerInterface.class);
 
 }

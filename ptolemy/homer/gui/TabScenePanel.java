@@ -191,8 +191,7 @@ public class TabScenePanel implements ContentPrototype {
                         if (transferable instanceof ComponentEntity) {
                             SinkOrSource isTransferableSinkOrSource = LayoutFileOperations
                                     .isSinkOrSource((ComponentEntity) transferable);
-                            if (isTransferableSinkOrSource != SinkOrSource.SINK
-                                    && isTransferableSinkOrSource != SinkOrSource.SINK_AND_SOURCE) {
+                            if (isTransferableSinkOrSource == SinkOrSource.NONE) {
                                 dropEvent.rejectDrag();
                                 return;
                             }
@@ -494,7 +493,7 @@ public class TabScenePanel implements ContentPrototype {
                                             .getRequired()));
                         }
                     }
-                    
+
                     if (HomerMainFrame.isLabelWidget(element.getElement())
                             && widget instanceof AttributeStyleWidget) {
                         AttributeStyleWidget attributeStyleWidget = (AttributeStyleWidget) widget;

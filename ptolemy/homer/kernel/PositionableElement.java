@@ -98,6 +98,7 @@ public abstract class PositionableElement {
             try {
                 location = new HomerLocation(getElement(),
                         HomerConstants.POSITION_NODE);
+                location.setVisibility(Settable.NONE);
             } catch (NameDuplicationException e) {
                 // this can't happen.
                 location = null;
@@ -114,9 +115,9 @@ public abstract class PositionableElement {
     public void setTab(String name) throws IllegalActionException {
         Attribute attribute = getElement()
                 .getAttribute(HomerConstants.TAB_NODE);
-        
+
         StringAttribute tabAttribute;
-        
+
         if (attribute instanceof StringAttribute) {
             tabAttribute = (StringAttribute) attribute;
         } else {
@@ -126,12 +127,13 @@ public abstract class PositionableElement {
             try {
                 tabAttribute = new StringAttribute(getElement(),
                         HomerConstants.TAB_NODE);
+                tabAttribute.setVisibility(Settable.NONE);
             } catch (NameDuplicationException e) {
                 // This can't happen, because the attribute was removed first.
                 tabAttribute = null;
             }
         }
-        
+
         tabAttribute.setExpression(name);
     }
 

@@ -48,16 +48,25 @@ public class PortablePlaceableWidget extends GlassPaneWidget {
             throw new IllegalArgumentException(
                     "NamedObject must be instance of PortablePlaceable");
         }
-        //setGlassPaneSize(new Dimension(300, 200));
         ((PortablePlaceable) namedObject).place(new AWTContainer(
                 _containerPanel) {
             @Override
             public void add(Object object) {
-                Component component = (Component) object;
-                setGlassPaneSize(component.getPreferredSize());
-                _containerPanel.add(component, BorderLayout.CENTER);
+                placeComponent(object);
             }
+
         });
+        // Workaround for actors that don't use PortableContainer's add method.
+        if (_containerPanel.getComponentCount() > 0) {
+            Component component = _containerPanel.getComponent(0);
+            _containerPanel.remove(component);
+            placeComponent(component);
+        }
     }
 
+    private void placeComponent(Object object) {
+        Component component = (Component) object;
+        setGlassPaneSize(component.getPreferredSize());
+        _containerPanel.add(component, BorderLayout.CENTER);
+    }
 }

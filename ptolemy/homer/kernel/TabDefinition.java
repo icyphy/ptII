@@ -33,6 +33,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
@@ -70,7 +71,7 @@ public class TabDefinition {
         if (tabs == null) {
             tabs = new Attribute(topLevel, HomerConstants.TABS_NODE);
         }
-        
+
         if (tag == null) {
             tag = tabs.uniqueName("tab_");
         }
@@ -80,6 +81,7 @@ public class TabDefinition {
             tabs.removeAttribute(tab);
             _tabElement = new StringAttribute(tabs, tag);
             _tabElement.setExpression(name);
+            _tabElement.setVisibility(Settable.NONE);
         } else {
             _tabElement = (StringAttribute) tab;
         }

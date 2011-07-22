@@ -75,7 +75,6 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
 
         // Set the type constraint.
         output.setTypeAtLeast(value);
-        _implementaion.init();
 
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
                 + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
@@ -118,7 +117,7 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, value.getToken());
-        _implementaion.setValue(value);
+        _implementaion.setValue(value.getToken());
     }
 
     /** Place the visual representation of the actor into the specified container.
@@ -133,6 +132,6 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
     ////                         private variables                 ////
 
     // Implementation of the ConstInterface
-    private final ConstInterface _implementaion = PtolemyInjector.getInjector()
-            .getInstance(ConstInterface.class);
+    private final TextFieldContainerInterface _implementaion = PtolemyInjector
+            .getInjector().getInstance(TextFieldContainerInterface.class);
 }

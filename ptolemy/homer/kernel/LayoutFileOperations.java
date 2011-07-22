@@ -197,6 +197,7 @@ public class LayoutFileOperations {
                         HomerConstants.SCREEN_SIZE)).setToken(token);
             }
 
+>>>>>>> .r61578
             // Clone the tabs
             Attribute tabs = (Attribute) mainFrame.getTopLevelActor()
                     .getAttribute(HomerConstants.TABS_NODE)
@@ -228,18 +229,20 @@ public class LayoutFileOperations {
                     if (attribute != null) {
                         elementInModel.removeAttribute(attribute);
                     }
-                    new HomerLocation(elementInModel,
-                            HomerConstants.POSITION_NODE)
-                            .setToken(getLocationToken(homerElement.getWidget()));
-
+                    HomerLocation location = new HomerLocation(elementInModel,
+                            HomerConstants.POSITION_NODE);
+                    location.setToken(getLocationToken(homerElement.getWidget()));
+                    location.setVisibility(Settable.NONE);
                     // Add tab information
                     attribute = elementInModel
                             .getAttribute(HomerConstants.TAB_NODE);
                     if (attribute != null) {
                         elementInModel.removeAttribute(attribute);
                     }
-                    new StringAttribute(elementInModel, HomerConstants.TAB_NODE)
-                            .setExpression(tab.getTag());
+                    StringAttribute tabNodeAttribute = new StringAttribute(
+                            elementInModel, HomerConstants.TAB_NODE);
+                    tabNodeAttribute.setExpression(tab.getTag());
+                    tabNodeAttribute.setVisibility(Settable.NONE);
                 }
             }
 
