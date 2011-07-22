@@ -43,6 +43,7 @@ import org.netbeans.api.visual.widget.Widget;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.SingletonParameter;
@@ -197,7 +198,6 @@ public class LayoutFileOperations {
                         HomerConstants.SCREEN_SIZE)).setToken(token);
             }
 
->>>>>>> .r61578
             // Clone the tabs
             Attribute tabs = (Attribute) mainFrame.getTopLevelActor()
                     .getAttribute(HomerConstants.TABS_NODE)
@@ -214,6 +214,7 @@ public class LayoutFileOperations {
                     String strippedFullName = stripFullName(homerElement
                             .getElement().getFullName());
                     NamedObj elementInModel = null;
+                    NamedObj elementOnScreen = element.getElement();
 
                     if (homerElement.getElement() instanceof Attribute) {
                         elementInModel = model.getAttribute(strippedFullName);
@@ -223,26 +224,62 @@ public class LayoutFileOperations {
                         // TODO throw exception
                     }
 
+                    // Add enabled.
+                    Attribute enabledNode = elementInModel
+                            .getAttribute(HomerConstants.ENABLED_NODE);
+                    if (enabledNode != null) {
+                        elementInModel.removeAttribute(enabledNode);
+                    }
+
+                    Variable tempEnabled = (Variable) elementOnScreen
+                            .getAttribute(HomerConstants.ENABLED_NODE);
+                    if (tempEnabled != null) {
+                        new HomerLocation(elementInModel,
+                                HomerConstants.ENABLED_NODE)
+                                .setToken(tempEnabled.getToken());
+                    } else {
+                        new HomerLocation(elementInModel,
+                                HomerConstants.ENABLED_NODE)
+                                .setToken(new BooleanToken(true));
+                    }
+
+                    // Add required
+                    Attribute requiredNode = elementInModel
+                            .getAttribute(HomerConstants.REQUIRED_NODE);
+                    if (requiredNode != null) {
+                        elementInModel.removeAttribute(requiredNode);
+                    }
+
+                    Variable tempRequired = (Variable) elementOnScreen
+                            .getAttribute(HomerConstants.REQUIRED_NODE);
+                    if (tempRequired != null) {
+                        new HomerLocation(elementInModel,
+                                HomerConstants.REQUIRED_NODE)
+                                .setToken(tempRequired.getToken());
+                    } else {
+                        new HomerLocation(elementInModel,
+                                HomerConstants.REQUIRED_NODE)
+                                .setToken(new BooleanToken(false));
+                    }
+
                     // Add location
-                    Attribute attribute = elementInModel
+                    Attribute positionNode = elementInModel
                             .getAttribute(HomerConstants.POSITION_NODE);
-                    if (attribute != null) {
-                        elementInModel.removeAttribute(attribute);
+                    if (positionNode != null) {
+                        elementInModel.removeAttribute(positionNode);
                     }
-                    HomerLocation location = new HomerLocation(elementInModel,
-                            HomerConstants.POSITION_NODE);
-                    location.setToken(getLocationToken(homerElement.getWidget()));
-                    location.setVisibility(Settable.NONE);
+                    new HomerLocation(elementInModel,
+                            HomerConstants.POSITION_NODE)
+                            .setToken(getLocationToken(homerElement.getWidget()));
+
                     // Add tab information
-                    attribute = elementInModel
+                    Attribute tabNode = elementInModel
                             .getAttribute(HomerConstants.TAB_NODE);
-                    if (attribute != null) {
-                        elementInModel.removeAttribute(attribute);
+                    if (tabNode != null) {
+                        elementInModel.removeAttribute(tabNode);
                     }
-                    StringAttribute tabNodeAttribute = new StringAttribute(
-                            elementInModel, HomerConstants.TAB_NODE);
-                    tabNodeAttribute.setExpression(tab.getTag());
-                    tabNodeAttribute.setVisibility(Settable.NONE);
+                    new StringAttribute(elementInModel, HomerConstants.TAB_NODE)
+                            .setExpression(tab.getTag());
                 }
             }
 
@@ -370,6 +407,7 @@ public class LayoutFileOperations {
                 widget.getPreferredBounds().x + widget.getPreferredLocation().x,
                 widget.getPreferredBounds().y + widget.getPreferredLocation().y,
                 widget.getBounds().width, widget.getBounds().height } };
+
         IntMatrixToken locationToken = null;
         try {
             locationToken = new IntMatrixToken(location);
@@ -377,6 +415,7 @@ public class LayoutFileOperations {
             // This is reached only if the location matrix is null.
             e.printStackTrace();
         }
+
         return locationToken;
     }
 
