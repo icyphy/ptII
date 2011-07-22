@@ -12,18 +12,24 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 175.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 79, 994, 565}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 79, 1148, 775}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[780, 450]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[925, 659]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3903544162374">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.0909090909091, 269.9019886363636}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{365.2358867694788, 345.0626806006468}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: Understand why the Test4 values are correct values. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 405.0]">
+        </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 265.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={121, 117, 918, 657}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={121, 117, 927, 658}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 542]">
         </property>
