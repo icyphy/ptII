@@ -49,11 +49,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Settable;
 import ptserver.communication.ProxyModelInfrastructure;
 import ptserver.communication.ProxyModelInfrastructure.ProxyModelListener;
-import ptserver.communication.RemoteModelResponse;
+import ptserver.communication.ProxyModelResponse;
 import ptserver.control.IServerManager;
 import ptserver.control.PtolemyServer;
 import ptserver.control.SimulationTask;
 import ptserver.control.Ticket;
+import ptserver.data.ServerEventToken.EventType;
 import ptserver.test.SysOutActor;
 import ptserver.test.SysOutActor.TokenDelegator;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
@@ -111,13 +112,16 @@ public class RemoteModelTest {
     @Before
     public void setup() throws Exception {
         _server = PtolemyServer.getInstance();
-        _servletUrl = String.format("http://%s:%s%s", "localhost",
-                CONFIG.getString("SERVLET_PORT"),
-                CONFIG.getString("SERVLET_PATH"));
-        _brokerUrl = String.format("tcp://%s@%s", "localhost",
-                CONFIG.getString("BROKER_PORT"));
-        _proxy = (IServerManager) new HessianProxyFactory().create(
-                IServerManager.class, _servletUrl);
+
+        HessianProxyFactory factory = new HessianProxyFactory();
+        factory.setUser("guest");
+        factory.setPassword("guest");
+
+        _proxy = (IServerManager) factory.create(
+                IServerManager.class,
+                String.format("http://%s:%s%s", "localhost",
+                        CONFIG.getString("SERVLET_PORT"), "/"
+                                + PtolemyServer.SERVLET_NAME));
         counter = 0;
         isWaiting = true;
     }
@@ -128,7 +132,7 @@ public class RemoteModelTest {
     @Test(timeout = 5000)
     public void runSimulation() throws Exception {
         // Open the model on the server.
-        RemoteModelResponse response = _openRemoteModel();
+        ProxyModelResponse response = _openRemoteModel();
         ProxyModelInfrastructure model = _setUpClientModel(response);
         // Set the delegate for a returned token.
         SysOutActor actor = (SysOutActor) model.getTopLevelActor().getEntity(
@@ -170,7 +174,7 @@ public class RemoteModelTest {
         assertEquals(10, counter);
     }
 
-    private RemoteModelResponse _openRemoteModel()
+    private ProxyModelResponse _openRemoteModel()
             throws IllegalActionException {
         String[] modelUrls = _proxy.getModelListing();
         assertNotNull(modelUrls);
@@ -184,7 +188,7 @@ public class RemoteModelTest {
         String adderModelLayout = getAdderModelLayout(layoutUrls);
         assertNotNull(adderModelLayout);
 
-        RemoteModelResponse response = _proxy
+        ProxyModelResponse response = _proxy
                 .open(adderModel, adderModelLayout);
         assertNotNull(response);
 
@@ -195,13 +199,13 @@ public class RemoteModelTest {
     }
 
     private ProxyModelInfrastructure _setUpClientModel(
-            RemoteModelResponse response) throws Exception {
+            ProxyModelResponse response) throws Exception {
         Ticket ticket = response.getTicket();
         ProxyModelInfrastructure model = new ProxyModelInfrastructure(
                 ProxyModelType.CLIENT, (CompositeActor) ServerUtility
                         .createMoMLParser().parse(response.getModelXML()),
                 response.getModelTypes());
-        model.setUpInfrastructure(ticket, _brokerUrl);
+        model.setUpInfrastructure(ticket, _server.getBrokerUrl());
 
         CompositeActor topLevelActor = model.getTopLevelActor();
         assertNotNull(topLevelActor);
@@ -212,7 +216,7 @@ public class RemoteModelTest {
 
     @Test(timeout = 5000)
     public void testRemoteAttribute() throws Exception {
-        RemoteModelResponse response = _openRemoteModel();
+        ProxyModelResponse response = _openRemoteModel();
         ProxyModelInfrastructure clientModel = _setUpClientModel(response);
         clientModel.setTimeoutPeriod(0);
         ProxyModelInfrastructure serverModel = PtolemyServer.getInstance()
@@ -234,7 +238,7 @@ public class RemoteModelTest {
 
     @Test(timeout = 5000)
     public void testRemoteAttributeSimulation() throws Exception {
-        RemoteModelResponse response = _openRemoteModel();
+        ProxyModelResponse response = _openRemoteModel();
         ProxyModelInfrastructure clientModel = _setUpClientModel(response);
         clientModel.setTimeoutPeriod(0);
         Settable clientSettable = (Settable) clientModel.getTopLevelActor()
@@ -283,7 +287,7 @@ public class RemoteModelTest {
 
     @Test(timeout = 10000)
     public void testModelTimeout() throws Exception {
-        RemoteModelResponse response = _openRemoteModel();
+        ProxyModelResponse response = _openRemoteModel();
         // Wait for a roundtrip response from the server.
         SimulationTask task = PtolemyServer.getInstance().getSimulationTask(
                 response.getTicket());
@@ -308,6 +312,11 @@ public class RemoteModelTest {
                             isWaiting = false;
                             RemoteModelTest.this.notifyAll();
                         }
+                    }
+
+                    public void modelEvent(
+                            ProxyModelInfrastructure remoteModel,
+                            String message, EventType type) {
                     }
                 });
         _proxy.start(response.getTicket());
@@ -358,12 +367,4 @@ public class RemoteModelTest {
     /** Handle to the Hessian servlet proxy.
      */
     private IServerManager _proxy;
-
-    /** Store the address to the Hessian servlet.
-     */
-    private String _servletUrl;
-
-    /** Store the address to the MQTT broker.
-     */
-    private String _brokerUrl;
 }

@@ -74,13 +74,15 @@ public class FileDownloadTest {
     public void setup() throws Exception {
         _ptolemyServer = PtolemyServer.getInstance();
 
-        HessianProxyFactory proxyFactory = new HessianProxyFactory();
-        String servletUrl = String.format("http://%s:%s%s", "localhost",
-                CONFIG.getString("SERVLET_PORT"),
-                CONFIG.getString("SERVLET_PATH"));
+        HessianProxyFactory factory = new HessianProxyFactory();
+        factory.setUser("guest");
+        factory.setPassword("guest");
 
-        _servletProxy = (IServerManager) proxyFactory.create(
-                IServerManager.class, servletUrl);
+        _servletProxy = (IServerManager) factory.create(
+                IServerManager.class,
+                String.format("http://%s:%s%s", "localhost",
+                        CONFIG.getString("SERVLET_PORT"), "/"
+                                + PtolemyServer.SERVLET_NAME));
     }
 
     /** Get the listing of models available on the server.

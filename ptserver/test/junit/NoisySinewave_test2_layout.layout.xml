@@ -54,18 +54,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 275.0]">
         </property>
     </property>
-    <property name="droid_tabs" class="ptolemy.kernel.util.Attribute">
-        <property name="tab_-295546999" class="ptolemy.kernel.util.StringAttribute" value="Default">
-        </property>
-    </property>
     <property name="Sinewave" class="ptolemy.kernel.util.StringAttribute">
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
             </property>
-            <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[-6, 182, 70, 40]">
+            <property name="droid_enabled" class="ptolemy.homer.kernel.HomerLocation" value="true">
+            </property>
+            <property name="droid_required" class="ptolemy.homer.kernel.HomerLocation" value="true">
+            </property>
+            <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[37, 226, 70, 40]">
             </property>
             <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_-295546999">
             </property>
+        </property>
+    </property>
+    <property name="droid_tabs" class="ptolemy.kernel.util.Attribute">
+        <property name="tab_-295546999" class="ptolemy.kernel.util.StringAttribute" value="Default">
         </property>
     </property>
     <class name="NoisySinewave" extends="ptolemy.actor.lib.Sinewave">
@@ -323,7 +327,11 @@
         </property>
         <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
         </property>
-        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[-6, -6, 300, 200]">
+        <property name="droid_enabled" class="ptolemy.homer.kernel.HomerLocation" value="true">
+        </property>
+        <property name="droid_required" class="ptolemy.homer.kernel.HomerLocation" value="false">
+        </property>
+        <property name="droid_location" class="ptolemy.homer.kernel.HomerLocation" value="[73, 22, 300, 200]">
         </property>
         <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_-295546999">
         </property>

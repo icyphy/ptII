@@ -42,7 +42,7 @@ import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.Manager;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.injection.PtolemyModule;
-import ptserver.communication.RemoteModelResponse;
+import ptserver.communication.ProxyModelResponse;
 import ptserver.control.IServerManager;
 import ptserver.control.PtolemyServer;
 import ptserver.control.Ticket;
@@ -90,13 +90,15 @@ public class ServletTest {
     public void setUp() throws Exception {
         _ptolemyServer = PtolemyServer.getInstance();
 
-        HessianProxyFactory proxyFactory = new HessianProxyFactory();
-        String servletUrl = String.format("http://%s:%s%s", "localhost",
-                CONFIG.getString("SERVLET_PORT"),
-                CONFIG.getString("SERVLET_PATH"));
+        HessianProxyFactory factory = new HessianProxyFactory();
+        factory.setUser("guest");
+        factory.setPassword("guest");
 
-        _servletProxy = (IServerManager) proxyFactory.create(
-                IServerManager.class, servletUrl);
+        _servletProxy = (IServerManager) factory.create(
+                IServerManager.class,
+                String.format("http://%s:%s%s", "localhost",
+                        CONFIG.getString("SERVLET_PORT"), "/"
+                                + PtolemyServer.SERVLET_NAME));
     }
 
     /** Test the ability to create a new simulation request and to ensure that
@@ -125,7 +127,7 @@ public class ServletTest {
      */
     @Test
     public void startSimulation() throws Exception {
-        RemoteModelResponse response = _openRemoteModel();
+        ProxyModelResponse response = _openRemoteModel();
         Ticket ticket = response.getTicket();
         int simulations = _ptolemyServer.numberOfSimulations();
 
@@ -149,7 +151,7 @@ public class ServletTest {
      */
     @Test(expected = AssertionError.class)
     public void pauseAndResumeSimulation() throws Exception {
-        RemoteModelResponse response = _openRemoteModel();
+        ProxyModelResponse response = _openRemoteModel();
         Ticket ticket = response.getTicket();
         int simulations = _ptolemyServer.numberOfSimulations();
 
@@ -182,7 +184,7 @@ public class ServletTest {
      */
     @Test
     public void stopSimulation() throws Exception {
-        RemoteModelResponse response = _openRemoteModel();
+        ProxyModelResponse response = _openRemoteModel();
         Ticket ticket = response.getTicket();
         int simulations = _ptolemyServer.numberOfSimulations();
 
@@ -204,7 +206,7 @@ public class ServletTest {
      */
     @Test
     public void closeSimulation() throws Exception {
-        RemoteModelResponse response = _openRemoteModel();
+        ProxyModelResponse response = _openRemoteModel();
         Ticket ticket = response.getTicket();
         int simulations = _ptolemyServer.numberOfSimulations();
 
@@ -246,12 +248,12 @@ public class ServletTest {
      *  communicating with the command servlet.
      *  @return Ticket The ticket reference to the simulation request.
      */
-    private RemoteModelResponse _openRemoteModel() throws Exception {
+    private ProxyModelResponse _openRemoteModel() throws Exception {
         URL modelUrl = ServletTest.class
                 .getResource("/ptserver/test/junit/addermodel.xml");
         URL layoutUrl = ServletTest.class
                 .getResource("/ptserver/test/junit/addermodel_test.layout.xml");
-        RemoteModelResponse response = _servletProxy.open(
+        ProxyModelResponse response = _servletProxy.open(
                 modelUrl.toExternalForm(), layoutUrl.toExternalForm());
         return response;
     }
@@ -267,5 +269,5 @@ public class ServletTest {
      */
     private IServerManager _servletProxy;
 
-    private RemoteModelResponse _response;
+    private ProxyModelResponse _response;
 }
