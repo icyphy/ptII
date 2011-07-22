@@ -31,7 +31,6 @@ package ptserver.communication;
 import java.util.Date;
 
 import ptolemy.data.Token;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Settable;
 import ptserver.data.AttributeChangeToken;
@@ -117,13 +116,16 @@ public class TokenListener implements MqttSimpleCallback {
                 synchronized (listener) {
                     try {
                         listener.setEnabled(false);
-                        ((Attribute) remoteAttribute).workspace()
-                                .getWriteAccess();
+                        // Note: obtaining the write access breaks this functionality.
+                        // Disabled for now since documentation does not say that 
+                        // write access need to be obtained for setting the expression.
+                        //                        ((Attribute) remoteAttribute).workspace()
+                        //                                .getWriteAccess();
                         remoteAttribute.setExpression(attributeChangeToken
                                 .getExpression());
                         remoteAttribute.validate();
                     } finally {
-                        ((Attribute) remoteAttribute).workspace().doneWriting();
+                        //                        ((Attribute) remoteAttribute).workspace().doneWriting();
                         listener.setEnabled(true);
                     }
                 }

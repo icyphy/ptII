@@ -174,8 +174,7 @@ public class RemoteModelTest {
         assertEquals(10, counter);
     }
 
-    private ProxyModelResponse _openRemoteModel()
-            throws IllegalActionException {
+    private ProxyModelResponse _openRemoteModel() throws IllegalActionException {
         String[] modelUrls = _proxy.getModelListing();
         assertNotNull(modelUrls);
         assertTrue(modelUrls.length > 0);
@@ -188,8 +187,7 @@ public class RemoteModelTest {
         String adderModelLayout = getAdderModelLayout(layoutUrls);
         assertNotNull(adderModelLayout);
 
-        ProxyModelResponse response = _proxy
-                .open(adderModel, adderModelLayout);
+        ProxyModelResponse response = _proxy.open(adderModel, adderModelLayout);
         assertNotNull(response);
 
         // Open the model on the client.
