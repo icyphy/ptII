@@ -125,6 +125,7 @@ import ptolemy.kernel.util.Workspace;
  execution. The fireAt method may also be requested by actors and the
  requested firing time will be inserted into the breakpoint table.
 
+ @deprecated Use ContinuousDirector.
  @author Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2
@@ -371,7 +372,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *  override this method for concrete implementation.
      */
     public abstract void fire() throws IllegalActionException;
-
+    
     /** Handle firing requests from the contained actors.
      *  If the specified time is earlier than the current time, or the
      *  breakpoint table is null, throw an exception. Otherwise, insert
@@ -427,7 +428,9 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *   is no director.
      */
     protected Time _fireContainerAt(Time time) throws IllegalActionException {
-        return _fireContainerAt(time, 0);
+        // Since this director does not really understand microsteps, use microstep
+        // 1 so that it can work with DE.
+        return _fireContainerAt(time, 1);
     }
 
     /** Return the breakpoint table. The result can be null if the breakpoint
