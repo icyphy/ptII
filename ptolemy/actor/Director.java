@@ -403,7 +403,12 @@ public class Director extends Attribute implements Executable {
      *   exception for other reasons.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        return fireAt(actor, time, 0);
+        // Unless the actor specifically requests a particular microstep,
+        // we assume it knows nothing about microsteps. We use microstep 1
+        // as the default, since this is the default for discrete events.
+        // The Continuous domain will specifically request a firing at
+        // microstep 0.
+        return fireAt(actor, time, 1);
     }
 
     /** Request a firing of the given actor at the given model
