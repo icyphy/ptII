@@ -26,6 +26,7 @@
  */
 package ptolemy.domains.de.kernel;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -35,6 +36,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TimedDirector;
@@ -204,8 +206,29 @@ import ptolemy.kernel.util.Workspace;
  invalidateSchedule() is expected to be called, notifying the director
  that the topology it used to calculate the priorities of the actors
  is no longer valid.  This will result in the priorities (depths of actors)
- being recalculated the next time prefire() is invoked.</p>
-
+ being recalculated the next time prefire() is invoked.
+ </p><p>
+ <b>Limitations</b>: According to [1], at each microstep, DE should
+ perform a fixed point iteration. This implementation does not do that,
+ and consequently, this director is not able to execute all correctly
+ constructed DE models. For an example, see 
+ $PTII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml.
+ That example has a DE opaque composite actor in a feedback loop.
+ In principle, there should be no causality loop. The actor output
+ should be able to be produced without knowing the input. However,
+ the inside director has to guarantee that when it fires any of
+ its contained actors, all inputs of a given microstep are available
+ to that actor. As a consequence, the opaque actor also needs to know
+ all of its inputs at the current microstep. Hence, a causality loop
+ is reported. We encourage the reader to make a variant of this director
+ that can handle such models.
+  </p><p>
+ <b>References</b>:
+ <br>
+ [1] Lee, E. A. and H. Zheng (2007). Leveraging Synchronous Language
+ Principles for Heterogeneous Modeling and Design of Embedded Systems.
+ EMSOFT, Salzburg, Austria, October, ACM.
+ 
  @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2
@@ -260,6 +283,15 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  The value defaults to 2.
      */
     public Parameter binCountFactor;
+    
+    /** A flag indicating whether this director should enforce
+     *  microstep semantics, throwing an exception when actors
+     *  deliver events at microstep 0. Such events can arise from
+     *  attempting to deliver to the DE domain a continuous signal
+     *  from the Continuous domain. This is a boolean that defaults
+     *  to false.
+     */
+    public Parameter enforceMicrostepSemantics;
 
     /** Specify whether the calendar queue adjusts its bin number
      *  at run time. This parameter must contain a BooleanToken.
@@ -343,6 +375,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                     .getToken()).booleanValue();
         } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime = ((BooleanToken) synchronizeToRealTime
+                    .getToken()).booleanValue();
+        } else if (attribute == enforceMicrostepSemantics) {
+            _enforceMicrostepSemantics = ((BooleanToken)enforceMicrostepSemantics
                     .getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
@@ -618,6 +653,21 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         fireAt(actor, time.add(getModelTime()));
     }
 
+    /** Return a causality interface for the composite actor that
+     *  contains this director. This base class returns an
+     *  instance of {@link CausalityInterfaceForComposites}, but
+     *  subclasses may override this to return a domain-specific
+     *  causality interface.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports of the container.
+     */
+    /* FIXME: Temporarily revert to default causality interface while examining test failures.
+    public CausalityInterface getCausalityInterface() {
+        return new DECausalityInterface((Actor) getContainer(),
+                defaultDependency());
+    }
+    */
+
     /** Get the current microstep.
      *  @return microstep of the current time.
      *  @see #getIndex()
@@ -866,10 +916,25 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
 
+        // If any output ports still have tokens to transfer,
+        // request a refiring at the current time.
+        CompositeActor container = (CompositeActor)getContainer();
+        Iterator<IOPort> outports = container.outputPortList().iterator();
+        boolean moreOutputsToTransfer = false;
+        while (outports.hasNext() && !moreOutputsToTransfer) {
+            IOPort outport = outports.next();
+            for (int i = 0; i < outport.getWidthInside(); i++) {
+                if (outport.hasTokenInside(i)) {
+                    moreOutputsToTransfer = true;
+                    break;
+                }
+            }
+        }
+
         // Reset the microstep to zero if the next event is
         // in the future.
         synchronized (_eventQueue) {
-            if (!_eventQueue.isEmpty()) {
+            if (!_eventQueue.isEmpty() && !moreOutputsToTransfer) {
                 DEEvent next = _eventQueue.get();
                 if ((next.timeStamp().compareTo(getModelTime()) > 0)) {
                     _microstep = 0;
@@ -879,6 +944,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         boolean stop = ((BooleanToken) stopWhenQueueIsEmpty.getToken())
                 .booleanValue();
 
+        // Request refiring and/or stop the model.
         // There are two conditions to stop the model.
         // 1. There are no more actors to be fired (i.e. event queue is
         // empty), and either of the following conditions is satisfied:
@@ -886,7 +952,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         //     b. the current model time equals the model stop time.
         // 2. The event queue is not empty, but the current time exceeds
         // the stop time.
-        if (_noMoreActorsToFire
+        if (moreOutputsToTransfer) {
+            _fireContainerAt(_currentTime);
+        } else if (_noMoreActorsToFire
                 && (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
             if (_debugging) {
                 _debug("No more actors to fire and time to stop.");
@@ -1231,38 +1299,41 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         return defaultSuggestions;
     }
 
-    // NOTE: Why do we need an overridden transferOutputs method?
-    // This director needs to transfer ALL output tokens at boundary of
-    // hierarchy to outside. Without this overriden method, only one
-    // output token is produced. See de/test/auto/transferInputsandOutputs.xml.
-    // Do we need an overridden transferInputs method?
-    // No. Because the DEDirector will keep firing an actor until it returns
-    // false from its prefire() method, meaning that the actor has not enough
-    // input tokens.
-
-    /** Override the base class method to transfer all the available
-     *  tokens at the boundary output port to outside.
-     *  No data remains at the boundary after the model has been fired.
-     *  This facilitates building multirate DE models.
-     *  The port argument must be an opaque output port. If any channel
-     *  of the output port has no data, then that channel is ignored.
-     *
+    /** Transfer data from an input port of the container to the ports
+     *  it is connected to on the inside.  This transfers at most one token
+     *  on each channel, and overrides the base class to temporarily set
+     *  the microstep to match or exceed that of the enclosing director if
+     *  the enclosing director implements SuperdenseTimeDirector.
+     *  Otherwise, it sets the microstep to match or exceed 1
+     *  to ensure that inputs are interpreted as discrete values.
      *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
+     *   input port.
      *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
+     *  @return True if at least one data token is transferred.
      */
-    public boolean transferOutputs(IOPort port) throws IllegalActionException {
-        boolean anyWereTransferred = false;
-        boolean moreTransfersRemaining = true;
-
-        while (moreTransfersRemaining) {
-            moreTransfersRemaining = super.transferOutputs(port);
-            anyWereTransferred |= moreTransfersRemaining;
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
+        int defaultMicrostep = 1;
+        int previousMicrostep = _microstep;
+        SuperdenseTimeDirector enclosingDirector = _enclosingSuperdenseTimeDirector();
+        if (enclosingDirector != null) {
+            defaultMicrostep = enclosingDirector.getIndex();
         }
-
-        return anyWereTransferred;
+        if (_microstep < defaultMicrostep) {
+            try {
+                _microstep = defaultMicrostep;
+                return super.transferInputs(port);
+            } finally {
+                _microstep = previousMicrostep;
+            }
+        }
+        return super.transferInputs(port);
     }
+
+    // NOTE: We used to override transferOutputs
+    // to transfer ALL output tokens at boundary of
+    // hierarchy to outside. See de/test/auto/transferInputsandOutputs.xml.
+    // However, the right thing to do is to request a refiring at the current
+    // if outputs remain to be transferred. So that's what we do now.
 
     /** Invoke the wrapup method of the super class. Reset the private
      *  state variables.
@@ -1460,7 +1531,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
          * the event originated, since it could have come from arbitrarily
          * deep in the hiearchy. At a minimum, this would create
          * a dependency on domains/modal.
-        if (_microstep < 1) {
+         */
+        if (_microstep < 1 && _enforceMicrostepSemantics) {
             throw new IllegalActionException(this, ioPort.getContainer(),
                     "Received a non-discrete event at port "
                     + ioPort.getName()
@@ -1472,7 +1544,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                     + ". Perhaps a Continuous submodel is sending a continuous rather than"
                     + " discrete signal?");
         }
-         */
 
         int depth = _getDepthOfIOPort(ioPort);
 
@@ -2162,6 +2233,37 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Return the nearest enclosing director that implements
+     *  SuperdenseTimeDirector, or null if there
+     *  is none.  The enclosing SuperdenseTimeDirector director is a director
+     *  above this in the hierarchy, possibly separated by composite
+     *  actors with actors that implement the QuasiTransparentDirector
+     *  interface, such as FSMDirector or CaseDirector.
+     *  @return The enclosing ContinuousDirector, or null if there is none.
+     */
+    private SuperdenseTimeDirector _enclosingSuperdenseTimeDirector() {
+        if (_enclosingSuperdenseTimeDirectorVersion != _workspace.getVersion()) {
+            // Update the cache.
+            _enclosingSuperdenseTimeDirector = null;
+            NamedObj container = getContainer().getContainer();
+            while (container != null) {
+                if (container instanceof Actor) {
+                    Director director = ((Actor) container).getDirector();
+                    if (director instanceof SuperdenseTimeDirector) {
+                        _enclosingSuperdenseTimeDirector = (SuperdenseTimeDirector) director;
+                        break;
+                    }
+                    if (!(director instanceof QuasiTransparentDirector)) {
+                        break;
+                    }
+                }
+                container = container.getContainer();
+            }
+            _enclosingSuperdenseTimeDirectorVersion = _workspace.getVersion();
+        }
+        return _enclosingSuperdenseTimeDirector;
+    }
+
     /** initialize parameters. Set all parameters to their default values.
      */
     private void _initParameters() {
@@ -2200,6 +2302,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
 
             timeResolution.setVisibility(Settable.FULL);
             timeResolution.moveToLast();
+            
+            enforceMicrostepSemantics = new Parameter(this, "enforceMicrostepSemantics");
+            enforceMicrostepSemantics.setExpression("false");
+            enforceMicrostepSemantics.setTypeEquals(BaseType.BOOLEAN);
         } catch (KernelException e) {
             throw new InternalErrorException("Cannot set parameter:\n"
                     + e.getMessage());
@@ -2235,6 +2341,15 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  to the executive director.
      */
     private boolean _delegateFireAt = false;
+    
+    /** Cache for the enclosing superdense time director. */
+    private SuperdenseTimeDirector _enclosingSuperdenseTimeDirector;
+    
+    /** Cache version for the enclosing superdense time director. */
+    private long _enclosingSuperdenseTimeDirectorVersion = -1;
+    
+    /** Cached value of enforceMicrostepSemantics parameter. */
+    private boolean _enforceMicrostepSemantics = false;
 
     /** Set to true when the time stamp of the token to be dequeue
      *  has exceeded the stopTime.
@@ -2262,4 +2377,113 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  catch up with model time.
      */
     private boolean _synchronizeToRealTime;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Causality interface for the DEDirector that reflects the limitations
+     *  from not having an implementation that computes a fixed point.
+     *  Specifically, this causality interface extends CausalityInterfaceForComposites
+     *  so that it can do the depth analysis internally, but for the ports
+     *  of the container, it declares that all outputs depend on all inputs.
+     *  This is necessary to ensure that if a DE opaque composite is fired
+     *  only when all inputs at the current microstep are known. See
+     *  $PTII/ptolemy/domains/de/test/auto/DEFixedPointLimitation.xml. 
+     */
+    private class DECausalityInterface extends CausalityInterfaceForComposites {
+        
+        /** Construct a causality interface for the specified actor.
+         *  @param actor The actor for which this is a causality interface.
+         *   This is required to be an instance of CompositeEntity.
+         *  @param defaultDependency The default dependency of an output
+         *   port on an input port.
+         *  @exception IllegalArgumentException If the actor parameter is not
+         *  an instance of CompositeEntity.
+         */
+        public DECausalityInterface(Actor actor,
+                Dependency defaultDependency) throws IllegalArgumentException {
+            super(actor, defaultDependency);
+        }
+        
+        /** Return a collection of the ports in this actor that depend on
+         *  or are depended on by the specified port. A port X depends
+         *  on a port Y if X is an output and Y is an input and
+         *  getDependency(X,Y) returns oTimesIdentity()
+         *  of the default dependency specified in the constructor.
+         *  <p>
+         *  This class presumes (but does not check) that the
+         *  argument is a port contained by the associated actor.
+         *  If the actor is an input, then it returns a collection of
+         *  all the outputs. If the actor is output, then it returns
+         *  a collection of all the inputs.
+         *  @param port The port to find the dependents of.
+         *  @return a collection of ports that depend on or are depended on
+         *   by the specified port.
+         *  @exception IllegalActionException Not thrown in this base class.
+         */
+        public Collection<IOPort> dependentPorts(IOPort port)
+                throws IllegalActionException {
+            if (port.isOutput()) {
+                if (port.isInput()) {
+                    // Port is both input and output.
+                    HashSet<IOPort> result = new HashSet<IOPort>();
+                    result.addAll(_actor.inputPortList());
+                    result.addAll(_actor.outputPortList());
+                    return result;
+                }
+                // Port is output and not input.
+                return _actor.inputPortList();
+            } else if (port.isInput()) {
+                // Port is input and not output.
+                return _actor.outputPortList();
+            } else {
+                // Port is neither input nor output.
+                return _EMPTY_COLLECTION;
+            }
+        }
+        
+        /** Return a collection of the input ports in this actor that are
+         *  in the same equivalence class with the specified input
+         *  port. This class returns a collection of all
+         *  the input ports of the continer actor.
+         *  @param input The port to find the equivalence class of.
+         *  @return set of the input ports in this actor that are
+         *  in an equivalence class with the specified input.
+         *  @exception IllegalArgumentException If the argument is not
+         *   contained by the associated actor.
+         *  @exception IllegalActionException Not thrown in this base class.
+         */
+        public Collection<IOPort> equivalentPorts(IOPort input)
+                throws IllegalActionException {
+            if (input.getContainer() != _actor || !input.isInput()) {
+                throw new IllegalArgumentException(
+                        "equivalentPort() called with argument "
+                                + input.getFullName()
+                                + " that is not an input port for "
+                                + _actor.getFullName());
+            }
+            return _actor.inputPortList();
+        }
+        
+        /** Return the dependency between the specified input port
+         *  and the specified output port.  This class returns
+         *  the default dependency if the first port is an input
+         *  port owned by this actor and the second one is an output
+         *  port owned by this actor. Otherwise, it returns the
+         *  additive identity of the dependency.
+         *  @param input The input port.
+         *  @param output The output port.
+         *  @return The dependency between the specified input port
+         *   and the specified output port.
+         *  @exception IllegalActionException Not thrown in this base class.
+         */
+        public Dependency getDependency(IOPort input, IOPort output)
+                throws IllegalActionException {
+            if (input.isInput() && input.getContainer() == _actor
+                    && output.isOutput() && output.getContainer() == _actor) {
+                return _defaultDependency;
+            }
+            return _defaultDependency.oPlusIdentity();
+        }
+    }
 }

@@ -47,7 +47,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={365, 169, 709, 562}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={112, 393, 709, 562}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[496, 451]">
             </property>
@@ -224,9 +224,9 @@
         <link port="s1.packetOut" relation="packetOutRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 3, 1, 1, 2, 3, 0, 0, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 3, 1, 1, 2, 3, 0, 0, 1, 0, 0, 1}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{710.0, 190.0}">
         </property>
@@ -236,7 +236,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 190.0]">
         </property>
     </entity>
-    <entity name="GetCurrentMicrostep" class="ptolemy.actor.lib.GetCurrentMicrostep">
+    <entity name="GetCurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 190.0]">
         </property>
     </entity>
@@ -246,9 +246,9 @@
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 1.0, 1.1, 2.0, 2.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 1.0, 1.1, 1.5, 1.5, 1.6, 2.0, 2.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{710.0, 280.0}">
         </property>
@@ -256,19 +256,19 @@
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 370.0]">
         </property>
     </entity>
-    <entity name="GetCurrentMicrostep2" class="ptolemy.actor.lib.GetCurrentMicrostep">
+    <entity name="GetCurrentMicrostep2" class="ptolemy.actor.lib.CurrentMicrostep">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 370.0]">
         </property>
     </entity>
     <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 2.0, 2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 105.0]">
         </property>
