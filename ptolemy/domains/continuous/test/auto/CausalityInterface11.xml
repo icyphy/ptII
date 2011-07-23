@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CausalityInterface12" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+<entity name="CausalityInterface11" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 227, 815, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 227, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -12,7 +12,9 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+    <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
@@ -27,7 +29,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
             </property>
         </property>
@@ -94,7 +96,7 @@
             </property>
         </entity>
         <entity name="Test3" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;in1 has equivalent input ports:\n  in1\n  in2\n  in3\nin2 has equivalent input ports:\n  in1\n  in2\n  in3\nin3 has equivalent input ports:\n  in1\n  in2\n  in3\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;in1 has equivalent input ports:\n  in1\n  in2\nin2 has equivalent input ports:\n  in1\n  in2\nin3 has equivalent input ports:\n  in3\n&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
@@ -103,10 +105,6 @@
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 110.0]">
-            </property>
-        </entity>
-        <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[222.25, 137.755859375]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -130,7 +128,7 @@
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[125.0, 245.0]">
+            <vertex name="vertex1" value="{125.0, 245.0}">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -138,10 +136,6 @@
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
@@ -158,9 +152,6 @@
         <link port="Test3.input" relation="relation12"/>
         <link port="AddSubtract.plus" relation="relation2"/>
         <link port="AddSubtract.plus" relation="relation3"/>
-        <link port="AddSubtract.output" relation="relation4"/>
-        <link port="AddSubtract2.plus" relation="relation4"/>
-        <link port="AddSubtract2.minus" relation="relation8"/>
     </entity>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">

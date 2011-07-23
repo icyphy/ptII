@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 175.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 79, 1079, 706}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 79, 1069, 700}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[856, 590]">
     </property>
@@ -26,10 +26,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 415.0}">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: Output ports are set&#10;to transfer immediately.&#10;Hence, output time depends&#10;on execution time and scheduling&#10;policy.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 325.0}">
+        </property>
+    </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 265.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={443, 483, 927, 658}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={443, 242, 917, 652}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 542]">
         </property>
@@ -39,6 +45,12 @@
         </property>
         <property name="PtidesPreemptiveEDFDirector" class="ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 65.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: Execution time is set&#10;on input port of TimeDelay to 0.1.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 210.0}">
             </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">

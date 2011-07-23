@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CausalityInterfaceFeedback1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+<entity name="CausalityInterfaceFeedback2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={150, 14, 815, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 22, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -12,7 +12,9 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+    <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
         </property>
     </property>
@@ -25,7 +27,7 @@
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 145.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 11, 815, 517}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 9, 815, 517}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -33,7 +35,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 70.0}">
@@ -63,7 +65,7 @@
         </port>
         <port name="xout2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 290.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 350.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -77,23 +79,25 @@
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;xin1 has output dependencies as follows:\n   xout1: BooleanDependency(false)\n   xout2: BooleanDependency(true)\nxin2 has output dependencies as follows:\n   xout1: BooleanDependency(false)\n   xout2: BooleanDependency(false)\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;xin1 has output dependencies as follows:\n   xout1: BooleanDependency(true)\n   xout2: BooleanDependency(true)\nxin2 has output dependencies as follows:\n   xout1: BooleanDependency(false)\n   xout2: BooleanDependency(false)\n&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 45.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 65.0]">
             </property>
         </entity>
         <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 205.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 250.0]">
+            </property>
+            <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
         <entity name="Test2" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;xin1 has output port dependencies:\n  xout2\nxout2 has input port dependencies:\n  xin1\n&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;xin1 has output port dependencies:\n  xout1\n  xout2\nxout1 has input port dependencies:\n  xin1\nxout2 has input port dependencies:\n  xin1\n&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 100.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 120.0]">
             </property>
         </entity>
         <entity name="Test3" class="ptolemy.actor.lib.Test">
@@ -101,7 +105,7 @@
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 155.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 150.0]">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -117,7 +121,7 @@
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[310.0, 50.0]">
+            <vertex name="vertex1" value="[325.0, 70.0]">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -144,11 +148,11 @@
             <vertex name="vertex1" value="{265.0, 205.0}">
             </vertex>
         </relation>
-        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
@@ -161,15 +165,15 @@
         <link port="AddSubtract.output" relation="relation"/>
         <link port="GetCausalityInterface.output" relation="relation4"/>
         <link port="GetCausalityInterface.trigger" relation="relation2"/>
-        <link port="GetCausalityInterface.dependents" relation="relation10"/>
-        <link port="GetCausalityInterface.equivalences" relation="relation8"/>
+        <link port="GetCausalityInterface.dependents" relation="relation8"/>
+        <link port="GetCausalityInterface.equivalences" relation="relation9"/>
         <link port="Test.input" relation="relation4"/>
-        <link port="TimedDelay.input" relation="relation"/>
-        <link port="TimedDelay.output" relation="relation5"/>
-        <link port="Test2.input" relation="relation10"/>
-        <link port="Test3.input" relation="relation8"/>
+        <link port="TimedDelay.input" relation="relation6"/>
+        <link port="TimedDelay.output" relation="relation7"/>
+        <link port="Test2.input" relation="relation8"/>
+        <link port="Test3.input" relation="relation9"/>
         <link relation1="relation5" relation2="relation6"/>
-        <link relation1="relation6" relation2="relation7"/>
+        <link relation1="relation5" relation2="relation"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">

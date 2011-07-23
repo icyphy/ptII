@@ -14,13 +14,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 50.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 271, 814, 513}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 271, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.6399147727273, 219.0909090909091}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: As of July 2011, this now requires&#10;a delay in the feedback loop. Opaque DE&#10;composites became strict at that time.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 345.0]">
+        </property>
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <doc>Create periodic timed events.</doc>
@@ -49,7 +55,7 @@
         </property>
     </entity>
     <entity name="Platform" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 305.0]">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -80,6 +86,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 175.0]">
             </property>
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <port name="networkIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -254,6 +262,8 @@
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
             </port>
         </entity>
         <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
@@ -262,6 +272,8 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.5}">
                 </property>
             </port>
         </entity>
@@ -272,6 +284,8 @@
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.5}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.5}">
+                </property>
             </port>
         </entity>
         <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
@@ -280,6 +294,8 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -293,6 +309,8 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.5}">
                 </property>
             </port>
         </entity>
@@ -339,6 +357,14 @@
         <link port="TimedDelay.input" relation="relation3"/>
         <link port="TimedDelay.output" relation="relation"/>
     </entity>
+    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 305.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -353,13 +379,13 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-        </property>
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
         </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Clock.output" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
@@ -371,5 +397,7 @@
     <link port="Platform2.sensor" relation="relation2"/>
     <link port="Platform2.actuator" relation="relation3"/>
     <link port="Platform2.networkIn" relation="relation5"/>
-    <link port="Platform2.networkOut" relation="relation4"/>
+    <link port="Platform2.networkOut" relation="relation6"/>
+    <link port="TimeDelay.input" relation="relation6"/>
+    <link port="TimeDelay.output" relation="relation4"/>
 </entity>

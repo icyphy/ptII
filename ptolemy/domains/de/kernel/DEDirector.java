@@ -41,6 +41,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
@@ -661,12 +662,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  @return A representation of the dependencies between input ports
      *   and output ports of the container.
      */
-    /* FIXME: Temporarily revert to default causality interface while examining test failures.
     public CausalityInterface getCausalityInterface() {
         return new DECausalityInterface((Actor) getContainer(),
                 defaultDependency());
     }
-    */
 
     /** Get the current microstep.
      *  @return microstep of the current time.
