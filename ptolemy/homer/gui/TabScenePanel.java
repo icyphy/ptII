@@ -414,19 +414,19 @@ public class TabScenePanel implements ContentPrototype {
         if (clientArea == null) {
             return;
         }
-        if (location.getX() + clientArea.getWidth() + clientArea.x > getView()
-                .getWidth()) {
+        if (location.x + clientArea.getWidth() + clientArea.x > getView()
+                .getPreferredSize().getWidth()) {
             location.x = getView().getWidth() - clientArea.width - clientArea.x;
         }
-        if (location.getY() + clientArea.getHeight() + clientArea.y > getView()
-                .getHeight()) {
+        if (location.y + clientArea.getHeight() + clientArea.y > getView()
+                .getPreferredSize().getHeight()) {
             location.y = getView().getHeight() - clientArea.height
                     - clientArea.y;
         }
-        if (location.getX() + clientArea.x < 0) {
+        if (location.x + clientArea.x < 0) {
             location.x = -clientArea.x;
         }
-        if (location.getY() + clientArea.y < 0) {
+        if (location.y + clientArea.y < 0) {
             location.y = -clientArea.y;
         }
     }

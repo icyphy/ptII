@@ -95,9 +95,9 @@ public class MultiContent<T extends ContentPrototype> {
      *  class for the container, if the name contains a period, or if a content
      *  area with the same tag already exist.
      */
-    public String addTab(ComponentEntity topLevel, String tabTag, String tabName,
-            ContentPrototype content) throws IllegalActionException,
-            NameDuplicationException {
+    public String addTab(ComponentEntity topLevel, String tabTag,
+            String tabName, ContentPrototype content)
+            throws IllegalActionException, NameDuplicationException {
         if (tabTag != null && _contents.containsKey(tabTag)) {
             throw new IllegalActionException(
                     "A content area with the identifier " + tabTag
@@ -108,7 +108,7 @@ public class MultiContent<T extends ContentPrototype> {
                 tabName);
         // Since a new tag might have been generated, return the real tag of the tab.
         String tag = tabDefinition.getTag();
-        
+
         tabDefinition.setContent(content);
         _contents.put(tag, tabDefinition);
         _order.add(tag);
@@ -132,7 +132,8 @@ public class MultiContent<T extends ContentPrototype> {
      */
     public String addTab(ComponentEntity topLevel, String tabTag, String tabName)
             throws IllegalActionException, NameDuplicationException {
-        return addTab(topLevel, tabTag, tabName, _contentPrototype.getNewInstance());
+        return addTab(topLevel, tabTag, tabName,
+                _contentPrototype.getNewInstance());
     }
 
     /** Add a new content area to the MultiContent. The new content area will
@@ -230,8 +231,16 @@ public class MultiContent<T extends ContentPrototype> {
      *  @return Contents of the removed content area.
      */
     public void removeTab(String tag) {
+        try {
+            _contents.get(tag).getTabAttribute().setContainer(null);
+        } catch (IllegalActionException e) {
+            // This can't happen since we are removing the tab.
+        } catch (NameDuplicationException e) {
+            // This can't happen since we are removing the tab.            
+        }
         _order.remove(tag);
         _contents.remove(tag);
+
     }
 
     /** Rename a content area at a given position.

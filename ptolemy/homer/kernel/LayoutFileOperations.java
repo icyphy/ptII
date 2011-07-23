@@ -140,10 +140,11 @@ public class LayoutFileOperations {
      */
     public static CompositeEntity openModelFile(URL url)
             throws IllegalActionException {
+        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         CompositeEntity topLevel = null;
         MoMLParser parser = new MoMLParser(new Workspace());
+        MoMLParser.purgeAllModelRecords();
         parser.resetAll();
-        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         try {
             topLevel = (CompositeEntity) parser.parse(null, url);
         } catch (Exception e) {

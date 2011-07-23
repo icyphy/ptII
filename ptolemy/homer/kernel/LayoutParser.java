@@ -171,7 +171,10 @@ public class LayoutParser {
     public ArrayList<AttributeElement> getPositionableAttributes()
             throws IllegalActionException {
         ArrayList<AttributeElement> attributeDefinitions = new ArrayList<AttributeElement>();
-
+        for (EntityElement element : getPositionableEntities()) {
+            _initPositionableAttributes(element.getElement(),
+                    attributeDefinitions);
+        }
         _initPositionableAttributes(_topLevelActor, attributeDefinitions);
 
         return attributeDefinitions;
@@ -232,14 +235,13 @@ public class LayoutParser {
         if (element.getAttribute(HomerConstants.POSITION_NODE) != null) {
             // Found position attribute, add it to the container
             container.add(element);
-        } else {
             // Element did not contain the position attribute, let's search the
             // other named objects within the element.
-            for (Iterator iterator = element.containedObjectsIterator(); iterator
-                    .hasNext();) {
-                NamedObj namedObj = (NamedObj) iterator.next();
-                _getPositionableElements(namedObj, container);
-            }
+        }
+        for (Iterator iterator = element.containedObjectsIterator(); iterator
+                .hasNext();) {
+            NamedObj namedObj = (NamedObj) iterator.next();
+            _getPositionableElements(namedObj, container);
         }
     }
 
@@ -266,11 +268,9 @@ public class LayoutParser {
     private void _initPositionableAttributes(NamedObj container,
             ArrayList<AttributeElement> attributeContainer)
             throws IllegalActionException {
-        for (Attribute attribute : (List<Attribute>) container.attributeList()) {
+        for (Attribute attribute : ServerUtility.deepAttributeList(container)) {
             if (isPositionable(attribute)) {
                 attributeContainer.add(new AttributeElement(attribute));
-            } else {
-                _initPositionableAttributes(attribute, attributeContainer);
             }
         }
     }

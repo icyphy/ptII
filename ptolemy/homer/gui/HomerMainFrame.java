@@ -49,7 +49,6 @@ import ptolemy.actor.gui.style.NotEditableLineStyle;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.homer.HomerApplication;
 import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.HomerConstants;
@@ -68,7 +67,6 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.BasicGraphPane;
-import ptserver.util.ServerUtility;
 import diva.graph.JGraph;
 import diva.gui.toolbox.JCanvasPanner;
 
@@ -102,12 +100,12 @@ public class HomerMainFrame extends JFrame {
         _initializeFrame();
 
         setJMenuBar(new HomerMenu(this).getMenuBar());
-        openLayout(
-                getClass()
-                        .getResource("/ptserver/test/junit/NoisySinewave.xml"),
-                getClass()
-                        .getResource(
-                                "/ptserver/test/junit/NoisySinewave_test2_layout.layout.xml"));
+        //        openLayout(
+        //                getClass()
+        //                        .getResource("/ptserver/test/junit/NoisySinewave.xml"),
+        //                getClass()
+        //                        .getResource(
+        //                                "/ptserver/test/junit/NoisySinewave_test2_layout.layout.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -229,6 +227,9 @@ public class HomerMainFrame extends JFrame {
      *  @return The current layout file URL.
      */
     public URL getLayoutURL() {
+        if (_layoutURL == null) {
+            return null;
+        }
         try {
             if (!new File(_layoutURL.toURI()).canRead()) {
                 return null;
@@ -283,17 +284,18 @@ public class HomerMainFrame extends JFrame {
     public void newLayout(URL modelURL) {
         _contents.clear();
         _modelURL = modelURL;
-
+        _layoutURL = null;
         try {
-            CompositeEntity topLevelActor = ServerUtility
-                    .openModelFile(modelURL);
-            _namedObjectTreePanel.setCompositeEntity(topLevelActor);
-            _initializeGraphPreview(topLevelActor);
+            _topLevelActor = LayoutFileOperations.openModelFile(modelURL);
+            _namedObjectTreePanel.setCompositeEntity(_topLevelActor);
+            _initializeGraphPreview(_topLevelActor);
+            addTab("Default");
         } catch (IllegalActionException e) {
             MessageHandler.error(e.getMessage(), e);
         } catch (Exception e) {
             MessageHandler.error(e.getMessage(), e);
         }
+
     }
 
     /** Prepare the scene for creating a new layout and prompt the user for
@@ -492,19 +494,19 @@ public class HomerMainFrame extends JFrame {
 
     /** The initial scene height.
      */
-    private static final int DEFAULT_FRAME_HEIGHT = 600;
+    private static final int DEFAULT_FRAME_HEIGHT = 700;
 
     /** The initial scene width.
      */
-    private static final int DEFAULT_FRAME_WIDTH = 950;
+    private static final int DEFAULT_FRAME_WIDTH = 1200;
 
     /** The initial height of the scene.
      */
-    private static final int DEFAULT_SCENE_HEIGHT = 300;
+    private static final int DEFAULT_SCENE_HEIGHT = 400;
 
     /** The initial width of the scene.
      */
-    private static final int DEFAULT_SCENE_WIDTH = 400;
+    private static final int DEFAULT_SCENE_WIDTH = 600;
 
     /** The dummy initial height parameter for frame sizing.
      */

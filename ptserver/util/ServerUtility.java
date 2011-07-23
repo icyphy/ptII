@@ -215,17 +215,15 @@ public class ServerUtility {
      */
     public static CompositeEntity openModelFile(URL url)
             throws IllegalActionException {
-        CompositeEntity topLevel = null;
         MoMLParser parser = new MoMLParser(new Workspace());
+        parser.resetAll();
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         try {
-            topLevel = (CompositeEntity) parser.parse(null, url);
+            return (CompositeEntity) parser.parse(null, url);
         } catch (Exception e) {
             throw new IllegalActionException(null, e, "Unable to parse url: "
                     + url);
         }
-
-        return topLevel;
     }
 
     /** Strips the first part of a compound element name, including the

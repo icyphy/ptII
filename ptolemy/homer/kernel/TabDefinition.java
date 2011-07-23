@@ -78,7 +78,9 @@ public class TabDefinition {
 
         Attribute tab = tabs.getAttribute(tag);
         if (tab == null || !(tab instanceof StringAttribute)) {
-            tabs.removeAttribute(tab);
+            if (tab != null) {
+                tabs.removeAttribute(tab);
+            }
             _tabElement = new StringAttribute(tabs, tag);
             _tabElement.setExpression(name);
             _tabElement.setVisibility(Settable.NONE);
