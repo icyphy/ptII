@@ -57,12 +57,12 @@ JSRCS = \
 	Inhibit.java \
 	Integrator.java \
 	Merge.java \
+	MostRecent.java \
 	NonInterruptibleTimer.java \
 	PID.java \
 	Previous.java \
 	Queue.java \
 	Register.java \
-	SampleAndHold.java \
 	Server.java \
 	SharedQueue.java \
 	SingleEvent.java \

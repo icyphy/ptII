@@ -45,7 +45,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// SampleAndHold
+//// MostRecent
 
 /**
  Output the most recent input token when the <i>trigger</i> port
@@ -93,7 +93,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.domains.de.lib.Inhibit
  @see ptolemy.domains.de.lib.Register
  */
-public class SampleAndHold extends Transformer {
+public class MostRecent extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -102,7 +102,7 @@ public class SampleAndHold extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SampleAndHold(CompositeEntity container, String name)
+    public MostRecent(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
@@ -179,7 +179,7 @@ public class SampleAndHold extends Transformer {
      *   has an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SampleAndHold newObject = (SampleAndHold) super.clone(workspace);
+        MostRecent newObject = (MostRecent) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
 
         // Width constraint. Not bidirectional to not break any existing models.

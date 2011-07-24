@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="EvaderAndPursuer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, -1, 1011, 735}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 1009, 727}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[796, 617]">
     </property>
@@ -926,11 +926,11 @@ sensors.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 40.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150, 417]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265, 369]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 200, 928, 518}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 200, 969, 510}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[713, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 400]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -950,6 +950,10 @@ sensors.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 30.0">
             </property>
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.0, 200.0}">
         </property>
         <port name="sound" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
@@ -1017,7 +1021,7 @@ sensors.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="675.0, 95.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 315.0]">
             </property>
         </entity>
         <entity name="Random" class="ptolemy.actor.lib.DiscreteRandomSource">
@@ -1057,8 +1061,6 @@ sensors.</text></svg></configure>
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
@@ -1195,7 +1197,7 @@ to another. Then delete this annotation.</text>
         <entity name="Accumulator2" class="ptolemy.actor.lib.Accumulator">
             <property name="init" class="ptolemy.data.expr.Parameter" value="345">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 230.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 260.0]">
             </property>
         </entity>
         <entity name="Expression2" class="ptolemy.actor.lib.Expression">
@@ -1267,12 +1269,12 @@ to another. Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 120.0">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.SampleAndHold">
+        <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 120.0">
             </property>
         </entity>
-        <entity name="Sampler2" class="ptolemy.domains.de.lib.SampleAndHold">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 180.0">
+        <entity name="MostRecent2" class="ptolemy.domains.de.lib.MostRecent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 250.0]">
             </property>
         </entity>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -1288,7 +1290,7 @@ to another. Then delete this annotation.</text>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="260.0, 190.0">
+            <vertex name="vertex1" value="[230.0, 190.0]">
             </vertex>
         </relation>
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
@@ -1331,12 +1333,12 @@ to another. Then delete this annotation.</text>
         <link port="Expression3.y" relation="relation3"/>
         <link port="Clock.output" relation="relation13"/>
         <link port="Poisson.output" relation="relation7"/>
-        <link port="Sampler.input" relation="relation6"/>
-        <link port="Sampler.output" relation="relation15"/>
-        <link port="Sampler.trigger" relation="relation13"/>
-        <link port="Sampler2.input" relation="relation12"/>
-        <link port="Sampler2.output" relation="relation9"/>
-        <link port="Sampler2.trigger" relation="relation13"/>
+        <link port="MostRecent.input" relation="relation6"/>
+        <link port="MostRecent.output" relation="relation15"/>
+        <link port="MostRecent.trigger" relation="relation13"/>
+        <link port="MostRecent2.input" relation="relation12"/>
+        <link port="MostRecent2.output" relation="relation9"/>
+        <link port="MostRecent2.trigger" relation="relation13"/>
     </entity>
     <entity name="Pursuer" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
@@ -1367,9 +1369,9 @@ to another. Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.789640724189, 489.1468873767419]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[203.5756273008978, 403.8637183556192]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -1495,9 +1497,9 @@ to another. Then delete this annotation.</text>
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={323, 796, 290, 227}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={323, 673, 499, 208}, maximized=false}">
             </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 110.0">
             </property>

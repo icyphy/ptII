@@ -133,7 +133,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Sampler8" class="ptolemy.domains.de.lib.SampleAndHold">
+    <entity name="Sampler8" class="ptolemy.domains.de.lib.MostRecent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="338.0, 314.0">
         </property>
         <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">

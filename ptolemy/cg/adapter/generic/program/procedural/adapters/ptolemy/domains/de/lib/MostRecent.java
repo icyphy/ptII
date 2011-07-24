@@ -41,12 +41,12 @@ import ptolemy.kernel.util.IllegalActionException;
 @version $Id$
 @since Ptolemy II 8.0
  */
-public class SampleAndHold extends NamedProgramCodeGeneratorAdapter {
+public class MostRecent extends NamedProgramCodeGeneratorAdapter {
     /**
      * Construct a Register adapter.
      * @param actor the associated actor
      */
-    public SampleAndHold(ptolemy.domains.de.lib.SampleAndHold actor) {
+    public MostRecent(ptolemy.domains.de.lib.MostRecent actor) {
         super(actor);
     }
 

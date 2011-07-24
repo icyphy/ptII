@@ -354,9 +354,9 @@ public class ClassChanges extends MoMLFilterSimple {
                 "ptolemy.domains.properties.PropertyLatticeComposite",
                 "ptolemy.domains.properties.kernel.PropertyLatticeComposite");
 
-        // Renamed the DE Sampler to SampleAndHold.
+        // Renamed the DE Sampler to MostRecent.
         _classChanges.put("ptolemy.domains.de.lib.Sampler",
-                "ptolemy.domains.de.lib.SampleAndHold");
+                "ptolemy.domains.de.lib.MostRecent");
 
         _classChanges.put("ptolemy.actor.lib.GetCurrentMicrostep",
                 "ptolemy.actor.lib.CurrentMicrostep");

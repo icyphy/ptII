@@ -267,7 +267,7 @@
         </property>
     </entity>
     <entity name="Report Poisson Average" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 345.0}">
         </property>
         <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Poisson busses): &quot;">
         </property>
@@ -301,6 +301,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 45.0}">
             </property>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 170, 813, 560}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
+        </property>
         <port name="data" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 205.0">
@@ -308,31 +314,31 @@
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="67.21065998077393, 341.9994239807129">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 340.0]">
             </property>
         </port>
         <port name="report" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 270.0]">
             </property>
         </port>
         <entity name="Average" class="ptolemy.actor.lib.Average">
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.SampleAndHold">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
+        <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 230.0]">
             </property>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 270.0]">
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 339.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 340.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -346,27 +352,27 @@
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="171.0, 310.0">
+            <vertex name="vertex1" value="[235.0, 340.0]">
             </vertex>
         </relation>
-        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="data" relation="relation1"/>
         <link port="trigger" relation="relation9"/>
         <link port="report" relation="relation15"/>
         <link port="Average.input" relation="relation1"/>
         <link port="Average.output" relation="relation3"/>
-        <link port="Sampler.input" relation="relation3"/>
-        <link port="Sampler.output" relation="relation13"/>
-        <link port="Sampler.trigger" relation="relation9"/>
-        <link port="AddSubtract.plus" relation="relation12"/>
-        <link port="AddSubtract.plus" relation="relation13"/>
+        <link port="MostRecent.input" relation="relation3"/>
+        <link port="MostRecent.output" relation="relation2"/>
+        <link port="MostRecent.trigger" relation="relation9"/>
+        <link port="AddSubtract.plus" relation="relation"/>
+        <link port="AddSubtract.plus" relation="relation2"/>
         <link port="AddSubtract.output" relation="relation15"/>
-        <link port="Const.output" relation="relation12"/>
+        <link port="Const.output" relation="relation"/>
         <link port="Const.trigger" relation="relation9"/>
     </entity>
     <entity name="Display Average Waiting Times" class="ptolemy.actor.lib.gui.Display">
@@ -396,7 +402,7 @@
         </property>
     </entity>
     <entity name="Report Regular Average" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 410.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 410.0}">
         </property>
         <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Regular busses): &quot;">
         </property>
@@ -430,6 +436,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 45.0}">
             </property>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 170, 813, 560}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
+        </property>
         <port name="data" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 205.0">
@@ -437,31 +449,31 @@
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="67.21065998077393, 341.9994239807129">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 340.0}">
             </property>
         </port>
         <port name="report" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 265.0]">
             </property>
         </port>
         <entity name="Average" class="ptolemy.actor.lib.Average">
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 230.0">
             </property>
         </entity>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.SampleAndHold">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 255.0">
+        <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 230.0]">
             </property>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 265.0]">
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 339.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 340.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -475,7 +487,7 @@
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="171.0, 310.0">
+            <vertex name="vertex1" value="[235.0, 340.0]">
             </vertex>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -489,9 +501,9 @@
         <link port="report" relation="relation15"/>
         <link port="Average.input" relation="relation1"/>
         <link port="Average.output" relation="relation3"/>
-        <link port="Sampler.input" relation="relation3"/>
-        <link port="Sampler.output" relation="relation13"/>
-        <link port="Sampler.trigger" relation="relation9"/>
+        <link port="MostRecent.input" relation="relation3"/>
+        <link port="MostRecent.output" relation="relation13"/>
+        <link port="MostRecent.trigger" relation="relation9"/>
         <link port="AddSubtract.plus" relation="relation12"/>
         <link port="AddSubtract.plus" relation="relation13"/>
         <link port="AddSubtract.output" relation="relation15"/>

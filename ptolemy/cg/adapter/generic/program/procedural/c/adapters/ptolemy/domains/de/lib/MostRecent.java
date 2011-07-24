@@ -37,14 +37,14 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
 @version $Id$
 @since Ptolemy II 8.0
  */
-public class SampleAndHold
+public class MostRecent
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.SampleAndHold {
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.MostRecent {
     /**
      *  Construct a Sampler adapter.
      *  @param actor The given ptolemy.actor.lib.Sampler actor.
      */
-    public SampleAndHold(ptolemy.domains.de.lib.SampleAndHold actor) {
+    public MostRecent(ptolemy.domains.de.lib.MostRecent actor) {
         super(actor);
     }
 }

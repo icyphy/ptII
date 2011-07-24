@@ -46,7 +46,7 @@ import ptolemy.domains.continuous.lib.Integrator;
 import ptolemy.domains.continuous.lib.PeriodicSampler;
 import ptolemy.domains.continuous.lib.ZeroOrderHold;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.de.lib.SampleAndHold;
+import ptolemy.domains.de.lib.MostRecent;
 import ptolemy.domains.sdf.lib.FIR;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
@@ -187,7 +187,7 @@ public class SigmaDelta extends TypedCompositeActor {
 
         Quantizer quan = new Quantizer(this, "Quantizer");
         Average accumulator = new Average(this, "accumulator");
-        SampleAndHold sampler = new SampleAndHold(this, "sampler");
+        MostRecent sampler = new MostRecent(this, "sampler");
         Clock clk = new Clock(this, "ADClock");
         clk.offsets.setExpression("{0.0}");
         clk.period.setToken(new DoubleToken(1.0));

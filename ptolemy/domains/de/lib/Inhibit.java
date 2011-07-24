@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
  @since Ptolemy II 2.0
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Yellow (neuendor)
- @see ptolemy.domains.de.lib.SampleAndHold
+ @see ptolemy.domains.de.lib.MostRecent
  */
 public class Inhibit extends Transformer {
     /** Construct an actor with the given container and name.

@@ -182,7 +182,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 30.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={177, 3, 815, 516}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={177, 22, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -229,10 +229,10 @@
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 225.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 235.0]">
             </property>
         </entity>
-        <entity name="SampleAndHold" class="ptolemy.domains.de.lib.SampleAndHold">
+        <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 135.0]">
             </property>
         </entity>
@@ -260,9 +260,9 @@
         <link port="CurrentTime.trigger" relation="relation"/>
         <link port="TimedDelay.input" relation="relation3"/>
         <link port="TimedDelay.output" relation="relation"/>
-        <link port="SampleAndHold.input" relation="relation4"/>
-        <link port="SampleAndHold.output" relation="relation5"/>
-        <link port="SampleAndHold.trigger" relation="relation2"/>
+        <link port="MostRecent.input" relation="relation4"/>
+        <link port="MostRecent.output" relation="relation5"/>
+        <link port="MostRecent.trigger" relation="relation2"/>
     </class>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <doc>Create a set of pulses</doc>

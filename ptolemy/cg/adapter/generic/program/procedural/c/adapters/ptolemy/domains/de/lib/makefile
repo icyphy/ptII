@@ -56,9 +56,9 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
+	MostRecent.java \
 	PID.java \
 	Register.java \
-	SampleAndHold.java \
 	SingleEvent.java \
 	TimeGap.java
 

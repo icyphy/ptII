@@ -373,7 +373,7 @@
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
-    <entity name="SampleAndHold" class="ptolemy.domains.de.lib.SampleAndHold">
+    <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 190.0]">
         </property>
     </entity>
@@ -408,8 +408,8 @@
     <link port="ColtExponential.trigger" relation="relation"/>
     <link port="TimedDelay.input" relation="relation2"/>
     <link port="TimedDelay.output" relation="relation6"/>
-    <link port="SampleAndHold.input" relation="relation5"/>
-    <link port="SampleAndHold.output" relation="relation3"/>
-    <link port="SampleAndHold.trigger" relation="relation2"/>
+    <link port="MostRecent.input" relation="relation5"/>
+    <link port="MostRecent.output" relation="relation3"/>
+    <link port="MostRecent.trigger" relation="relation2"/>
     <link relation1="relation" relation2="relation5"/>
 </entity>
