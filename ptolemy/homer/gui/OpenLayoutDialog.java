@@ -51,6 +51,11 @@ import javax.swing.JTextField;
  */
 public class OpenLayoutDialog implements ActionListener {
 
+    /**
+     * Create a new instance of the open layout dialog.
+     * @param parent The parent of the dialog.
+     * @param menu The homer menu invoking it.
+     */
     public OpenLayoutDialog(JFrame parent, HomerMenu menu) {
         _parent = parent;
         _menu = menu;
@@ -68,6 +73,10 @@ public class OpenLayoutDialog implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                public methods                             ////
 
+    /** 
+     * Proess action event on choose model and layout buttons.
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
 
         JFileChooser fileChooser = _menu.getFileChooser();
@@ -96,6 +105,10 @@ public class OpenLayoutDialog implements ActionListener {
         }
     }
 
+    /**
+     * Shows the open layout dialog.
+     * @return OK/Cancel selection the user made.
+     */
     public Object showDialog() {
         Object[] content = new Object[] { _modelFileField, _chooseModelButton,
                 _layoutFileField, _chooseLayoutButton };
@@ -110,28 +123,56 @@ public class OpenLayoutDialog implements ActionListener {
 
     }
 
+    /**
+     * Return the model file.
+     * @return the model file.
+     */
     public File getModelFile() {
         return _modelFile;
     }
 
+    /**
+     * Return the layout file.
+     * @return the layout file.
+     */
     public File getLayoutFile() {
         return _layoutFile;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private methods                            ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
+    /**
+     * The text field for the model file path.
+     */
     private JTextField _modelFileField;
+    /**
+     * The text field for the layout file path.
+     */
     private JTextField _layoutFileField;
+    /**
+     * The button to choose model file.
+     */
     private JButton _chooseModelButton;
+    /**
+     * The button to choose layout file.
+     */
     private JButton _chooseLayoutButton;
-
+    /**
+     * The parent frame of the dialog.
+     */
     private JFrame _parent;
 
+    /**
+     * The model file selected.
+     */
     private File _modelFile;
+    /**
+     * The layout file selected.
+     */
     private File _layoutFile;
+    /**
+     * The homer menu invoking the dialog.
+     */
     private HomerMenu _menu;
 }

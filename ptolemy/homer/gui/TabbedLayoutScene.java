@@ -1,5 +1,6 @@
 /*
- TODO
+ The tabbed panel that contains the scenes onto which widgets can be dropped by the user
+ in order to construct a layout for a particular model file.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -54,7 +55,7 @@ import ptolemy.homer.events.TabEvent;
 ///////////////////////////////////////////////////////////////////
 //// TabbedLayoutScene
 
-/** The tabbed scene onto which widgets can be dropped by the user
+/** The tabbed panel that contains the scenes onto which widgets can be dropped by the user
  *  in order to construct a layout for a particular model file.
  * 
  *  @author Anar Huseynov
@@ -94,7 +95,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         private methods                  ////
 
     /** Add a tab with the specified name.
      *  @param tabName The label to put on the new tab.
@@ -160,6 +161,11 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Rename the tab at the specified position.
+     * @param position The tab position.
+     * @param name The new name.
+     */
     private void _renameTab(int position, String name) {
         if (position < 0 || position >= _tabScenes.getTabCount()) {
             return;
@@ -174,6 +180,10 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
         _tabScenes.setSelectedIndex(index);
     }
 
+    /** 
+     * Process action performed event.  
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
         if (e instanceof TabEvent) {
             TabEvent event = (TabEvent) e;
@@ -255,16 +265,13 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
      */
     private class TabSceneButton extends JPanel {
 
-        private JLabel label;
-        private JTextField editableLabel;
-
         /** Create the panel that will sit within the tab.
          */
         public TabSceneButton() {
             setOpaque(false);
             setLayout(new BorderLayout(0, 0));
 
-            label = new JLabel() {
+            _label = new JLabel() {
                 @Override
                 public String getText() {
                     int i = _tabScenes.indexOfTabComponent(TabSceneButton.this);
@@ -283,7 +290,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                     }
                 };
             };
-            label.addMouseListener(new MouseAdapter() {
+            _label.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
@@ -301,37 +308,37 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                         _tabScenes.setSelectedIndex(selectedIndex);
                     } else {
                         // On double click let user rename the tab.
-                        TabSceneButton.this.remove(label);
-                        TabSceneButton.this.add(editableLabel,
+                        TabSceneButton.this.remove(_label);
+                        TabSceneButton.this.add(_editableLabel,
                                 BorderLayout.CENTER);
-                        editableLabel.setText(label.getText());
-                        editableLabel.setFocusable(true);
-                        editableLabel.requestFocusInWindow();
-                        editableLabel.selectAll();
+                        _editableLabel.setText(_label.getText());
+                        _editableLabel.setFocusable(true);
+                        _editableLabel.requestFocusInWindow();
+                        _editableLabel.selectAll();
                         TabbedLayoutScene.this.repaint();
                     }
                 }
             });
 
-            editableLabel = new JTextField();
-            editableLabel.addKeyListener(new KeyAdapter() {
+            _editableLabel = new JTextField();
+            _editableLabel.addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyPressed(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_ENTER
                             || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                        setInEditedTitle();
+                        _setInEditedTitle();
                     }
                 }
             });
-            editableLabel.addFocusListener(new FocusAdapter() {
+            _editableLabel.addFocusListener(new FocusAdapter() {
                 @Override
                 public void focusLost(FocusEvent e) {
-                    setInEditedTitle();
+                    _setInEditedTitle();
                 }
             });
-            editableLabel.setColumns(6);
+            _editableLabel.setColumns(6);
 
-            add(label, BorderLayout.CENTER);
+            add(_label, BorderLayout.CENTER);
             JButton closeButton = new TabButton();
             closeButton.setText("x");
 
@@ -351,11 +358,14 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
             _tabScenes.setEnabledAt(_tabScenes.getTabCount() - 2, false);
         }
 
-        private void setInEditedTitle() {
-            TabSceneButton.this.remove(editableLabel);
-            TabSceneButton.this.add(label, BorderLayout.CENTER);
-            label.setText(editableLabel.getText());
+        private void _setInEditedTitle() {
+            TabSceneButton.this.remove(_editableLabel);
+            TabSceneButton.this.add(_label, BorderLayout.CENTER);
+            _label.setText(_editableLabel.getText());
             TabbedLayoutScene.this.repaint();
         }
+
+        private JLabel _label;
+        private JTextField _editableLabel;
     }
 }

@@ -200,6 +200,10 @@ public class WidgetPropertiesFrame extends JPanel {
         return bounds;
     }
 
+    /**
+     * Return the text of the label widget.
+     * @return the text of the label widget.
+     */
     public String getLabel() {
         return _label.getText();
     }

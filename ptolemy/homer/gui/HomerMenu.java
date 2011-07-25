@@ -225,6 +225,10 @@ public class HomerMenu {
     ///////////////////////////////////////////////////////////////////
     ////                private methods                            ////
 
+    /**
+     * Process action on the new menu item.
+     * @param e the action event
+     */
     private void _newMenuActionPerformed(ActionEvent e) {
         _fileChooser.setDialogTitle("Choose a Ptolemy model");
         _fileChooser.setFileFilter(_modelFilter);
@@ -241,6 +245,10 @@ public class HomerMenu {
         }
     }
 
+    /**
+     * Process action on the open menu item.
+     * @param e the action event.
+     */
     private void _openMenuActionPerformed(ActionEvent e) {
         OpenLayoutDialog openLayoutDialog = new OpenLayoutDialog(_mainFrame,
                 this);
@@ -282,6 +290,10 @@ public class HomerMenu {
 
     }
 
+    /**
+     * Process action on the save menu.
+     * @param e The action event.
+     */
     private void _saveMenuActionPerformed(ActionEvent e) {
         URL layoutURL = _mainFrame.getLayoutURL();
 
@@ -299,6 +311,10 @@ public class HomerMenu {
         }
     }
 
+    /**
+     * Process action on the save as menu item.
+     * @param e The action event.
+     */
     private void _saveAsMenuActionPerformed(ActionEvent e) {
         _fileChooser.setDialogTitle("Select where to save the layout");
         _fileChooser.setFileFilter(_layoutFilter);
@@ -309,6 +325,9 @@ public class HomerMenu {
         }
     }
 
+    /**
+     * Initialize file chooser to the default model directory.
+     */
     private void _initializeFileChooser() {
         _fileChooser = new JFileChooser();
         _fileChooser.setCurrentDirectory(new File(ResourceBundle.getBundle(
@@ -355,13 +374,17 @@ public class HomerMenu {
         _fileChooser.addChoosableFileFilter(_layoutFilter);
     }
 
+    /**
+     * Create and initialize menu items for the device screen size selection.
+     * @return The new menu. 
+     */
     private JMenu _initializeDeviceMenu() {
         JMenu screenMenu = new JMenu("Screen Size");
         screenMenu.setMnemonic(KeyEvent.VK_S);
 
         try {
             Document doc = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder().parse(DEVICE_FILE);
+                    .newDocumentBuilder().parse(_DEVICE_FILE);
             XPath xpath = XPathFactory.newInstance().newXPath();
             NodeList manufacturers = (NodeList) xpath.compile("//manufacturer")
                     .evaluate(doc, XPathConstants.NODESET);
@@ -432,9 +455,24 @@ public class HomerMenu {
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
+    /**
+     * The main frame of the application.
+     */
     private HomerMainFrame _mainFrame;
-    private static String DEVICE_FILE = "ptolemy//homer//gui//devices.xml";
+    /**
+     * The file path containing device screen size information.
+     */
+    private static String _DEVICE_FILE = "ptolemy//homer//gui//devices.xml";
+    /**
+     * The file chooser used to open/save files.
+     */
     private JFileChooser _fileChooser;
+    /**
+     * The file filter for model files.
+     */
     private FileFilter _modelFilter;
+    /**
+     * The file filter for layout files.
+     */
     private FileFilter _layoutFilter;
 }

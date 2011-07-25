@@ -67,7 +67,7 @@ public class WidgetLoader {
      * it would try loading a Ptolemy icon for the provided NamedObject.
      *  
      * @param scene The scene where the widget belongs.
-     * @param namedObject The namedObjects for which widget is loaded.
+     * @param element The element for which widget is loaded.
      * @param targetType The targetType used to finding appropriate widget mapped to it.
      * Usually targetType is the same as namedObject's type.
      * @return A new widget instance for the targetType and namedObject.  The 
@@ -78,15 +78,17 @@ public class WidgetLoader {
     public static Widget loadWidget(Scene scene, PositionableElement element,
             Class<?> targetType) throws IllegalActionException,
             NameDuplicationException {
-        Widget widget = getObjectWidget(scene, element, targetType);
+        Widget widget = _getObjectWidget(scene, element, targetType);
         if (widget != null) {
             return widget;
         }
-        widget = getImageWidget(scene, element, targetType);
+        widget = _getImageWidget(scene, element, targetType);
         if (widget != null) {
             return widget;
         }
-        return new NamedObjectIconWidget(scene, element);
+        widget = new NamedObjectIconWidget(scene, element);
+        assert widget instanceof NamedObjectWidgetInterface : "The widget must implement NamedObjectWidgetInterface";
+        return widget;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,23 +97,23 @@ public class WidgetLoader {
     /**
      * Return custom object widget for the provided type if available.  Null otherwise.
      * @param scene The scene where the widget belongs.
-     * @param namedObject The namedObjects for which widget is loaded.
+     * @param element The element for which widget is loaded.
      * @param targetType The targetType used to finding appropriate widget mapped to it.
      * Usually targetType is the same as namedObject's type.
      * @return A new widget instance for the targetType and namedObject.  The 
      * returned instance implements {@link NamedObjectWidgetInterface}.
      * @throws IllegalActionException if there is a problem loading a object widget.
      */
-    private static Widget getObjectWidget(Scene scene,
+    private static Widget _getObjectWidget(Scene scene,
             PositionableElement element, Class<?> targetType)
             throws IllegalActionException {
         if (targetType == null) {
             return null;
         }
-        if (!OBJECT_WIDGET_BUNDLE.containsKey(targetType.getName())) {
-            return getObjectWidget(scene, element, targetType.getSuperclass());
+        if (!_OBJECT_WIDGET_BUNDLE.containsKey(targetType.getName())) {
+            return _getObjectWidget(scene, element, targetType.getSuperclass());
         }
-        String widgetTypeName = OBJECT_WIDGET_BUNDLE.getString(targetType
+        String widgetTypeName = _OBJECT_WIDGET_BUNDLE.getString(targetType
                 .getName());
         try {
             Class<NamedObjectWidget> widgetType = (Class<NamedObjectWidget>) WidgetLoader.class
@@ -146,7 +148,7 @@ public class WidgetLoader {
     /**
      * Return image widget for the provided element if available, null otherwise.
      * @param scene The scene where the widget belongs.
-     * @param namedObject The namedObjects for which widget is loaded.
+     * @param element The element for which widget is loaded.
      * @param targetType The targetType used to finding appropriate widget mapped to it.
      * Usually targetType is the same as namedObject's type.
      * @return A new widget instance for the targetType and namedObject.  The 
@@ -154,15 +156,15 @@ public class WidgetLoader {
      * @throws IllegalActionException if there is a problem loading a object widget or icon.
      * @throws NameDuplicationException if there is a problem loading an icon.
      */
-    private static Widget getImageWidget(Scene scene,
+    private static Widget _getImageWidget(Scene scene,
             PositionableElement element, Class<?> targetType) {
         if (targetType == null) {
             return null;
         }
-        if (!IMAGE_WIDGET_BUNDLE.containsKey(targetType.getName())) {
-            return getImageWidget(scene, element, targetType.getSuperclass());
+        if (!_IMAGE_WIDGET_BUNDLE.containsKey(targetType.getName())) {
+            return _getImageWidget(scene, element, targetType.getSuperclass());
         }
-        String imageName = IMAGE_WIDGET_BUNDLE.getString(targetType.getName());
+        String imageName = _IMAGE_WIDGET_BUNDLE.getString(targetType.getName());
         return new NamedObjectImageWidget(scene, element,
                 WidgetLoader.class.getResource("../images/" + imageName));
     }
@@ -173,11 +175,11 @@ public class WidgetLoader {
     /**
      * The bundle containing mappings from the named object types to widgets visualizing them.
      */
-    private static final ResourceBundle OBJECT_WIDGET_BUNDLE = ResourceBundle
+    private static final ResourceBundle _OBJECT_WIDGET_BUNDLE = ResourceBundle
             .getBundle("ptolemy.homer.widgets.ObjectWidgets");
     /**
      * The bundle containing mappings from the named object types to images depicting them.
      */
-    private static final ResourceBundle IMAGE_WIDGET_BUNDLE = ResourceBundle
+    private static final ResourceBundle _IMAGE_WIDGET_BUNDLE = ResourceBundle
             .getBundle("ptolemy.homer.images.ImageWidgets");
 }

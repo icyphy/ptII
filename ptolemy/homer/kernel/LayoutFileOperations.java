@@ -227,7 +227,9 @@ public class LayoutFileOperations {
                     } else if (homerElement.getElement() instanceof ComponentEntity) {
                         elementInModel = model.getEntity(strippedFullName);
                     } else {
-                        // TODO throw exception
+                        // This should never happen.
+                        throw new IllegalStateException(
+                                "Unrecognized element type");
                     }
 
                     // Add enabled.

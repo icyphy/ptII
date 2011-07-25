@@ -100,12 +100,6 @@ public class HomerMainFrame extends JFrame {
         _initializeFrame();
 
         setJMenuBar(new HomerMenu(this).getMenuBar());
-        //        openLayout(
-        //                getClass()
-        //                        .getResource("/ptserver/test/junit/NoisySinewave.xml"),
-        //                getClass()
-        //                        .getResource(
-        //                                "/ptserver/test/junit/NoisySinewave_test2_layout.layout.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////

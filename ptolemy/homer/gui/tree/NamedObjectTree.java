@@ -57,7 +57,8 @@ import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
 //// NamedObjectTree
 
 /**
- * TODO
+ * A side panel panel containing tree of named objects, filtering text field and
+ * draggable label. 
  * @author Ishwinder Singh
  * @version $Id$ 
  * @since Ptolemy II 8.1
@@ -65,6 +66,9 @@ import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
  * @Pt.AcceptedRating Red (ishwinde)
  */
 public class NamedObjectTree extends JPanel {
+    /**
+     * The data flavor of the label that is dropped onto the scene panel.
+     */
     public static final DataFlavor LABEL_FLAVOR;
     static {
         try {
@@ -158,14 +162,20 @@ public class NamedObjectTree extends JPanel {
     ////                         public methods                    ////
 
     /**
-     * TODO
-     * @param compositeEntity
+     * Set the composite entity of the panel.
+     * This method creates new tree model for the tree.
+     * @param compositeEntity the composite entity to set.
      */
     public void setCompositeEntity(CompositeEntity compositeEntity) {
-        _compositeEntity = compositeEntity;
-        _tree.setModel(new AttributeTreeModel(_compositeEntity));
+        _tree.setModel(new AttributeTreeModel(compositeEntity));
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    /**
+     * Expand all tree nodes.
+     * @param parent The parent path to expand.
+     */
     private void _expandAll(TreePath parent) {
 
         //        TreeNode node = (TreeNode) parent.getLastPathComponent();
@@ -181,7 +191,12 @@ public class NamedObjectTree extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /**
+     * The search filter text field.
+     */
     private final JTextField _search = new JTextField();
+    /**
+     * The tree containing named objects.
+     */
     private final PTree _tree;
-    private CompositeEntity _compositeEntity;
 }

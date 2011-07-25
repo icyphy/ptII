@@ -60,6 +60,8 @@ import ptolemy.homer.events.NonVisualContentEvent;
 import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.LayoutFileOperations.SinkOrSource;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
@@ -104,23 +106,24 @@ public class RemoteObjectList extends JPanel implements ActionListener {
                 JLabel label = (JLabel) super.getListCellRendererComponent(
                         list, value, index, isSelected, cellHasFocus);
 
+                NamedObj object = (NamedObj) value;
+                List iconList = object.attributeList(EditorIcon.class);
                 try {
-                    NamedObj object = (NamedObj) value;
-                    List iconList = object.attributeList(EditorIcon.class);
-
                     if (iconList.size() == 0) {
                         label.setIcon(XMLIcon.getXMLIcon(object, "_icon")
                                 .createIcon());
+
                         label.setText(object.getFullName());
                     } else {
                         label.setIcon(((EditorIcon) iconList.get(iconList
                                 .size() - 1)).createIcon());
                         label.setText(object.getFullName());
                     }
-                } catch (Exception e) {
-                    // Do nothing.
+                } catch (NameDuplicationException e) {
+                    MessageHandler.error(e.getMessage(), e);
+                } catch (IllegalActionException e) {
+                    MessageHandler.error(e.getMessage(), e);
                 }
-
                 return label;
             }
         });

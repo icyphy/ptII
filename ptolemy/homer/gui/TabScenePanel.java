@@ -1,5 +1,6 @@
 /*
- TODO
+ The tab scene onto which widgets can be dropped, resized, and
+ arranged in order to suite the needs of the handheld consumer.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -106,6 +107,45 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
  */
 public class TabScenePanel implements ContentPrototype {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    /** The popup menu added to each widget loaded on the scene.
+     */
+    private class NamedObjectPopupMenu extends JPopupMenu {
+
+        /** Create a new context menu for the widget.
+         *  @param widget The triggering widget.
+         */
+        public NamedObjectPopupMenu(final PositionableElement element) {
+            JMenuItem edit = new JMenuItem("Edit");
+            edit.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    _showWidgetProperties(element);
+                }
+            });
+
+            JMenuItem delete = new JMenuItem("Delete");
+            delete.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    _mainFrame.removeVisualNamedObject(element);
+                }
+            });
+
+            add(edit);
+            add(delete);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** The default border to apply to all scenes.
+     */
+    private static final Border DEFAULT_BORDER = BorderFactory
+            .createEmptyBorder(6);
+
     /** Create a new tab scene onto which widgets can be dropped.
      *  @param mainFrame The parent frame of the panel.
      */
@@ -124,7 +164,7 @@ public class TabScenePanel implements ContentPrototype {
 
         final AlignWithMoveStrategyProvider alignWithMoveStrategyProvider = new AlignWithMoveStrategyProvider(
                 new SingleLayerAlignWithWidgetCollector(_mainLayer, false),
-                _interactionLayer, MOVE_ALIGN_DECORATOR, false);
+                _interactionLayer, _MOVE_ALIGN_DECORATOR, false);
 
         _moveAction = ActionFactory.createMoveAction(new MoveStrategy() {
             public Point locationSuggested(Widget widget,
@@ -139,7 +179,7 @@ public class TabScenePanel implements ContentPrototype {
 
         final AlignWithResizeStrategyProvider alignWithResizeStrategyProvider = new AlignWithResizeStrategyProvider(
                 new SingleLayerAlignWithWidgetCollector(_mainLayer, false),
-                _interactionLayer, MOVE_ALIGN_DECORATOR, false);
+                _interactionLayer, _MOVE_ALIGN_DECORATOR, false);
 
         _resizeAction = ActionFactory.createResizeAction(new ResizeStrategy() {
 
@@ -356,11 +396,20 @@ public class TabScenePanel implements ContentPrototype {
         _scene.validate();
     }
 
-    /** Get the view associated with the scene.
-     *  @return The view component of the scene.
+    /** Get a reference to the current scene.
+     *  @return The current scene.
      */
-    public Component getView() {
-        return getContent().getView();
+    public ObjectScene getContent() {
+        return _scene;
+    }
+
+    /**
+     * Get the name of the tab.
+     * @return The name of the tab.
+     * @see #setName(String)
+     */
+    public String getName() {
+        return _name;
     }
 
     /** Get a new tab scene panel instance.
@@ -370,27 +419,20 @@ public class TabScenePanel implements ContentPrototype {
         return new TabScenePanel(_mainFrame);
     }
 
+    /**
+     * Return the tag of the tab.
+     * @return the tag of the tab.
+     * @see #setTag(String)
+     */
     public String getTag() {
         return _tag;
     }
 
-    public void setTag(String tag) {
-        _tag = tag;
-    }
-
-    public String getName() {
-        return _name;
-    }
-
-    public void setName(String name) {
-        _name = name;
-    }
-
-    /** Get a reference to the current scene.
-     *  @return The current scene.
+    /** Get the view associated with the scene.
+     *  @return The view component of the scene.
      */
-    public ObjectScene getContent() {
-        return _scene;
+    public Component getView() {
+        return getContent().getView();
     }
 
     /** Remove the widget from the scene.
@@ -403,6 +445,58 @@ public class TabScenePanel implements ContentPrototype {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /**
+     * Set the name of the tab.
+     * @param name The name of the tab.
+     * @see #getName()
+     */
+    public void setName(String name) {
+        _name = name;
+    }
+
+    /**
+     * Set the tag of the tab.
+     * @param tag The tag to set.
+     * @see #getTag()
+     */
+    public void setTag(String tag) {
+        _tag = tag;
+    }
+
+    /**
+     * Adjust the bounds of the widget to ensure it fits within the scene.
+     * @param widget The widget whose bounds are adjusted.
+     * @param bounds The bounds to adjust.
+     */
+    private void _adjustBounds(Widget widget, Rectangle bounds) {
+        Insets insets = widget.getBorder().getInsets();
+        Point preferredLocation = widget.getPreferredLocation();
+        if (bounds.x + preferredLocation.x + bounds.getWidth() - insets.right > _scene
+                .getView().getWidth()) {
+            bounds.width = _scene.getView().getWidth()
+                    - (bounds.x + preferredLocation.x - insets.right);
+        }
+        if (bounds.y + preferredLocation.y + bounds.getHeight() + insets.bottom > _scene
+                .getView().getHeight()) {
+            bounds.height = _scene.getView().getHeight()
+                    - (bounds.y + preferredLocation.y + insets.bottom);
+        }
+
+        if (bounds.x + preferredLocation.x + insets.left < 0) {
+            int adjustment = bounds.x + preferredLocation.x + insets.left;
+            bounds.x += -adjustment;
+            bounds.width += adjustment;
+        }
+        if (bounds.y + preferredLocation.y + insets.top < 0) {
+            int adjustment = bounds.y + preferredLocation.y + insets.top;
+            bounds.y += -adjustment;
+            bounds.height += adjustment;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Adjust the screen location of the selected widget.
      *  @param widget The widget to be moved.
@@ -428,32 +522,6 @@ public class TabScenePanel implements ContentPrototype {
         }
         if (location.y + clientArea.y < 0) {
             location.y = -clientArea.y;
-        }
-    }
-
-    private void _adjustBounds(Widget widget, Rectangle bounds) {
-        Insets insets = widget.getBorder().getInsets();
-        Point preferredLocation = widget.getPreferredLocation();
-        if (bounds.x + preferredLocation.x + bounds.getWidth() - insets.right > _scene
-                .getView().getWidth()) {
-            bounds.width = _scene.getView().getWidth()
-                    - (bounds.x + preferredLocation.x - insets.right);
-        }
-        if (bounds.y + preferredLocation.y + bounds.getHeight() + insets.bottom > _scene
-                .getView().getHeight()) {
-            bounds.height = _scene.getView().getHeight()
-                    - (bounds.y + preferredLocation.y + insets.bottom);
-        }
-
-        if (bounds.x + preferredLocation.x + insets.left < 0) {
-            int adjustment = bounds.x + preferredLocation.x + insets.left;
-            bounds.x += -adjustment;
-            bounds.width += adjustment;
-        }
-        if (bounds.y + preferredLocation.y + insets.top < 0) {
-            int adjustment = bounds.y + preferredLocation.y + insets.top;
-            bounds.y += -adjustment;
-            bounds.height += adjustment;
         }
     }
 
@@ -511,24 +579,16 @@ public class TabScenePanel implements ContentPrototype {
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The default border to apply to all scenes.
-     */
-    private static final Border DEFAULT_BORDER = BorderFactory
-            .createEmptyBorder(6);
-
     private String _tag;
+
     private String _name;
 
     /** The default decorator for move alignment actions.
      */
-    private static final AlignWithMoveDecorator MOVE_ALIGN_DECORATOR = new AlignWithMoveDecorator() {
+    private static final AlignWithMoveDecorator _MOVE_ALIGN_DECORATOR = new AlignWithMoveDecorator() {
         public ConnectionWidget createLineWidget(Scene scene) {
             ConnectionWidget widget = new ConnectionWidget(scene);
-            widget.setStroke(STROKE);
+            widget.setStroke(_STROKE);
             widget.setForeground(Color.BLUE);
             return widget;
         }
@@ -536,12 +596,12 @@ public class TabScenePanel implements ContentPrototype {
 
     /** The default border for resize actions.
      */
-    private static final Border RESIZE_BORDER = BorderFactory
+    private static final Border _RESIZE_BORDER = BorderFactory
             .createResizeBorder(6, Color.BLACK, true);
 
     /** Default stroke for use in widget connection.
      */
-    private static final BasicStroke STROKE = new BasicStroke(1.0f,
+    private static final BasicStroke _STROKE = new BasicStroke(1.0f,
             BasicStroke.JOIN_BEVEL, BasicStroke.CAP_BUTT, 5.0f, new float[] {
                     6.0f, 3.0f }, 0.0f);
 
@@ -549,15 +609,15 @@ public class TabScenePanel implements ContentPrototype {
      */
     private final WidgetAction _hoverAction = ActionFactory
             .createHoverAction(new TwoStateHoverProvider() {
-                public void unsetHovering(Widget widget) {
+                public void setHovering(Widget widget) {
                     if (!widget.getState().isSelected()) {
-                        widget.setBorder(DEFAULT_BORDER);
+                        widget.setBorder(_RESIZE_BORDER);
                     }
                 }
 
-                public void setHovering(Widget widget) {
+                public void unsetHovering(Widget widget) {
                     if (!widget.getState().isSelected()) {
-                        widget.setBorder(RESIZE_BORDER);
+                        widget.setBorder(DEFAULT_BORDER);
                     }
                 }
             });
@@ -573,7 +633,6 @@ public class TabScenePanel implements ContentPrototype {
     /** The main widget layer.
      */
     private final LayerWidget _mainLayer;
-
     /** The move action added to all new widgets.
      */
     private final WidgetAction _moveAction;
@@ -581,38 +640,8 @@ public class TabScenePanel implements ContentPrototype {
      * The resize action added to all new widgets
      */
     private WidgetAction _resizeAction;
+
     /** The object scene.
      */
     private final ObjectScene _scene;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    /** The popup menu added to each widget loaded on the scene.
-     */
-    private class NamedObjectPopupMenu extends JPopupMenu {
-
-        /** Create a new context menu for the widget.
-         *  @param widget The triggering widget.
-         */
-        public NamedObjectPopupMenu(final PositionableElement element) {
-            JMenuItem edit = new JMenuItem("Edit");
-            edit.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent e) {
-                    _showWidgetProperties(element);
-                }
-            });
-
-            JMenuItem delete = new JMenuItem("Delete");
-            delete.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent e) {
-                    _mainFrame.removeVisualNamedObject(element);
-                }
-            });
-
-            add(edit);
-            add(delete);
-        }
-    }
 }
