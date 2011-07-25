@@ -149,7 +149,7 @@ public class ServletTest {
      *  @exception Exception If there is an problem opening the model URL, starting, pausing,
      *  or resuming the simulation, or communicating with the command servlet.
      */
-    @Test(expected = AssertionError.class)
+    @Test
     public void pauseAndResumeSimulation() throws Exception {
         ProxyModelResponse response = _openRemoteModel();
         Ticket ticket = response.getTicket();

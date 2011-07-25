@@ -141,11 +141,6 @@ public class TabScenePanel implements ContentPrototype {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** The default border to apply to all scenes.
-     */
-    private static final Border DEFAULT_BORDER = BorderFactory
-            .createEmptyBorder(6);
-
     /** Create a new tab scene onto which widgets can be dropped.
      *  @param mainFrame The parent frame of the panel.
      */
@@ -388,7 +383,7 @@ public class TabScenePanel implements ContentPrototype {
                     }
                 }));
 
-        widget.setBorder(DEFAULT_BORDER);
+        widget.setBorder(_DEFAULT_BORDER);
 
         _mainLayer.addChild(widget);
         _scene.validate();
@@ -443,9 +438,6 @@ public class TabScenePanel implements ContentPrototype {
         _mainFrame.repaint();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /**
      * Set the name of the tab.
      * @param name The name of the tab.
@@ -463,6 +455,9 @@ public class TabScenePanel implements ContentPrototype {
     public void setTag(String tag) {
         _tag = tag;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Adjust the bounds of the widget to ensure it fits within the scene.
@@ -494,9 +489,6 @@ public class TabScenePanel implements ContentPrototype {
             bounds.height += adjustment;
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
     /** Adjust the screen location of the selected widget.
      *  @param widget The widget to be moved.
@@ -580,6 +572,8 @@ public class TabScenePanel implements ContentPrototype {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     /**
      * The tag of the tab.
      */
@@ -624,7 +618,7 @@ public class TabScenePanel implements ContentPrototype {
 
                 public void unsetHovering(Widget widget) {
                     if (!widget.getState().isSelected()) {
-                        widget.setBorder(DEFAULT_BORDER);
+                        widget.setBorder(_DEFAULT_BORDER);
                     }
                 }
             });
@@ -651,4 +645,10 @@ public class TabScenePanel implements ContentPrototype {
     /** The object scene.
      */
     private final ObjectScene _scene;
+
+    /** The default border to apply to all scenes.
+     */
+    private static final Border _DEFAULT_BORDER = BorderFactory
+            .createEmptyBorder(6);
+
 }

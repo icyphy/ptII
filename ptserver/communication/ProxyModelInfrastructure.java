@@ -574,6 +574,12 @@ public class ProxyModelInfrastructure {
             }
 
             public void stopFire() {
+                setStopped(true);
+                for (ProxySourceData data : getProxySourceMap().values()) {
+                    synchronized (data.getProxySource()) {
+                        data.getProxySource().notifyAll();
+                    }
+                }
             }
 
             public void terminate() {
