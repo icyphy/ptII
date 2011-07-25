@@ -89,11 +89,13 @@ public class NamedObjectTree extends JPanel {
         _search.requestFocus();
         _search.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
-                if (_tree.getModel() == null) {
+                AttributeTreeModel attributeTreeModel = (AttributeTreeModel) _tree
+                        .getModel();
+                // Nothing is loaded in the Homer.
+                if (attributeTreeModel.getRoot() == null) {
                     return;
                 }
-                ((AttributeTreeModel) _tree.getModel()).applyFilter(_search
-                        .getText());
+                attributeTreeModel.applyFilter(_search.getText());
             }
         });
 

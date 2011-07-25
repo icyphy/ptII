@@ -1,4 +1,6 @@
 /*
+ The widget visualizes only named objects that implement {@link PortablePlaceable} interface.
+ It requests the named object to place itself into a provided container. 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -26,7 +28,6 @@
 
 package ptolemy.homer.widgets;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 
 import org.netbeans.api.visual.widget.Scene;
@@ -38,9 +39,24 @@ import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// PortablePlaceableWidget
-
+/**
+ * The widget visualizes only named objects that implement {@link PortablePlaceable} interface.
+ * It requests the named object to place itself into a provided container.  The container is then covered
+ * with glass pane in order to prevent event propagation.
+ * @author Anar Huseynov
+ * @version $Id$ 
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class PortablePlaceableWidget extends GlassPaneWidget {
 
+    /**
+     * Create a new instance of the widget by requesting the element to place
+     * itselft into the provided container.
+     * @param scene
+     * @param element
+     */
     public PortablePlaceableWidget(Scene scene, PositionableElement element) {
         super(scene, element);
         NamedObj namedObject = element.getElement();
@@ -52,7 +68,7 @@ public class PortablePlaceableWidget extends GlassPaneWidget {
                 _containerPanel) {
             @Override
             public void add(Object object) {
-                placeComponent(object);
+                placeComponent((Component) object);
             }
 
         });
@@ -64,9 +80,14 @@ public class PortablePlaceableWidget extends GlassPaneWidget {
         }
     }
 
-    private void placeComponent(Object object) {
-        Component component = (Component) object;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    /**
+     * Place the component into container covered by a glasspane.
+     * @param object The object to place.
+     */
+    private void placeComponent(Component component) {
         setGlassPaneSize(component.getPreferredSize());
-        _containerPanel.add(component, BorderLayout.CENTER);
+        super.place(component);
     }
 }

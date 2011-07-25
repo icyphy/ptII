@@ -1,4 +1,6 @@
-/* TODO
+/* 
+ The base named object widget class that implements {@link NamedObjectWidgetInterface}.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -34,20 +36,20 @@ import ptolemy.homer.kernel.PositionableElement;
 //// NamedObjectWidget
 
 /**
- * TODO
+ * The base named object widget class that implements {@link NamedObjectWidgetInterface}.
  * @author Anar Huseynov
  * @version $Id$ 
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class NamedObjectWidget extends Widget implements
+public abstract class NamedObjectWidget extends Widget implements
         NamedObjectWidgetInterface {
 
     /**
-     * TODO
-     * @param scene
-     * @param namedObject
+     * Create new instance of the widget.
+     * @param scene The scene of the widget.
+     * @param namedObject The named object to visualize.
      */
     public NamedObjectWidget(Scene scene, PositionableElement element) {
         super(scene);
@@ -56,16 +58,20 @@ public class NamedObjectWidget extends Widget implements
 
     }
 
-    /* TODO
-     * (non-Javadoc)
-     * @see ptolemy.homer.widgets.NamedObjectWidgetInterface#getNamedObject()
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /**
+     * Return positionable element that the instance is visualizing.
+     * @return the positionable element.
      */
     public PositionableElement getPositionableElement() {
         return _element;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     /**
-     * TODO
+     * The positionable element that the widget is visualizing.
      */
     private final PositionableElement _element;
 

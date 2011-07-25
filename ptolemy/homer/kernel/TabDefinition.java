@@ -169,7 +169,7 @@ public class TabDefinition {
     public void removeContent(PositionableElement element)
             throws IllegalActionException {
         if (_content == null) {
-            throw new IllegalActionException("Content are must be set first");
+            throw new IllegalActionException("Content must be set first");
         }
         _elements.remove(element);
         // Remove representation to the tab contents

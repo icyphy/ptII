@@ -71,31 +71,31 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * Return a filtered listing of attributes within the object based on the filtering criteria.
+     * @param parent The parent object of the attributes.
+     * @return Return filtered list of attributes.
+     */
     public List getAttributes(Object parent) {
         if (!(parent instanceof NamedObj)) {
             return Collections.emptyList();
         }
-
         List children = new ArrayList();
         for (Object attribute : ((NamedObj) parent).attributeList()) {
-            if (attribute instanceof Settable) {
-                if (((Settable) attribute).getVisibility()
-                        .equals(Settable.FULL)) {
-                    if (attribute instanceof Nameable) {
-                        if ((_filter != null) && (_filter.length() > 0)) {
-                            if (((Nameable) attribute).getFullName()
-                                    .toLowerCase()
-                                    .contains(_filter.toLowerCase())) {
-                                children.add(attribute);
-                            }
-                        } else {
-                            children.add(attribute);
-                        }
+            if (attribute instanceof Settable
+                    && ((Settable) attribute).getVisibility().equals(
+                            Settable.FULL)) {
+                if ((_filter != null) && (_filter.length() > 0)) {
+                    if (((Nameable) attribute).getFullName().toLowerCase()
+                            .contains(_filter.toLowerCase())) {
+                        children.add(attribute);
                     }
+                } else {
+                    children.add(attribute);
                 }
+
             }
         }
-
         return children;
     }
 

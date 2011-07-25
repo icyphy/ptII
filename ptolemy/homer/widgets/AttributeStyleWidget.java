@@ -1,4 +1,5 @@
-/*  Represents a widget for attributes that are in the form of checkbox
+/*  
+ This widget visualizes attributes based on their style definition.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -53,23 +54,31 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
+//////////////////////////////////////////////////////////////////////////
+//// AttributeStyleWidget
+
 /**
-* Represents a widget for attributes that are in the form of checkbox
-* @author Ishwinder Singh
+* This widget visualizes attributes based on their style definition.
+* @author Anar Huseynov
 * @version $Id$ 
 * @since Ptolemy II 8.1
-* @Pt.ProposedRating Red (ishwinde)
-* @Pt.AcceptedRating Red (ishwinde)
+* @Pt.ProposedRating Red (ahuseyno)
+* @Pt.AcceptedRating Red (ahuseyno)
 */
-
 public class AttributeStyleWidget extends GlassPaneWidget {
 
+    /**
+     * Create a new instance visualizing the positionable element based on its style definitions.
+     * If there is a no style defined, revert to a text field.
+     * @param scene The scene containing the widget.
+     * @param element The element to visualize.
+     * @throws IllegalActionException if there is a problem parsing attribute's style.
+     */
     public AttributeStyleWidget(Scene scene, PositionableElement element)
-            throws NameDuplicationException, IllegalActionException {
+            throws IllegalActionException {
         super(scene, element);
 
         NamedObj namedObject = getPositionableElement().getElement();
@@ -114,6 +123,12 @@ public class AttributeStyleWidget extends GlassPaneWidget {
         setGlassPaneSize(_attributeComponent.getPreferredSize());
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /**
+     * Update the value of the widget based on the attributes expression (if applicable).
+     * @throws IllegalActionException if there is a problem parsing the attribute's expression.
+     */
     public void updateValue() throws IllegalActionException {
         NamedObj namedObject = getPositionableElement().getElement();
         List<ParameterEditorStyle> styles = namedObject
@@ -155,6 +170,10 @@ public class AttributeStyleWidget extends GlassPaneWidget {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    /**
+     * The component visualizing the positionable element.
+     */
     private JComponent _attributeComponent;
-
 }

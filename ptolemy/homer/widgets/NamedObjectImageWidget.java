@@ -1,4 +1,6 @@
-/* TODO
+/* 
+ This class visualizes a named object using an image.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -37,7 +39,7 @@ import ptolemy.homer.kernel.PositionableElement;
 //// NamedObjectImageWidget
 
 /**
-* TODO
+* This widget visualizes a named object using an image.
 * @author Anar Huseynov
 * @version $Id$ 
 * @since Ptolemy II 8.1
@@ -46,24 +48,11 @@ import ptolemy.homer.kernel.PositionableElement;
 */
 public class NamedObjectImageWidget extends ResizableImageWidget implements
         NamedObjectWidgetInterface {
-
     /**
-     * TODO
-     * @param scene
-     * @param namedObject
-     * @param imageURL
-     */
-    public NamedObjectImageWidget(Scene scene, PositionableElement element) {
-        super(scene);
-        _element = element;
-        setCheckClipping(true);
-    }
-
-    /**
-     * TODO
-     * @param scene
-     * @param namedObject
-     * @param imageURL
+     * Create a new instance of the widget.
+     * @param scene The scene containing the widget.
+     * @param element The element to visualize.
+     * @param imageURL The url of the image.
      */
     public NamedObjectImageWidget(Scene scene, PositionableElement element,
             URL imageURL) {
@@ -77,9 +66,9 @@ public class NamedObjectImageWidget extends ResizableImageWidget implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /* TODO
-     *  (non-Javadoc)
-     * @see ptolemy.homer.widgets.NamedObjectWidgetInterface#getNamedObject()
+    /**
+     * Return positionable element that the instance is visualizing.
+     * @return the positionable element.
      */
     public PositionableElement getPositionableElement() {
         return _element;
@@ -88,7 +77,7 @@ public class NamedObjectImageWidget extends ResizableImageWidget implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     * TODO
+     * The element visualized by the widget.
      */
     private final PositionableElement _element;
 }

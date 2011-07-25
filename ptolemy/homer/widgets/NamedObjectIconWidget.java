@@ -1,4 +1,5 @@
-/* TODO
+/* This widget visualizes a named object by displaying its icon.
+ * 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -43,7 +44,7 @@ import diva.gui.toolbox.FigureIcon;
 //// NamedObjectIconWidget
 
 /**
-* TODO
+* This widget visualizes a named object by displaying its icon.
 * @author Anar Huseynov
 * @version $Id$ 
 * @since Ptolemy II 8.1
@@ -54,12 +55,12 @@ public class NamedObjectIconWidget extends ResizableImageWidget implements
         NamedObjectWidgetInterface {
 
     /**
-     * TODO
-     * @param scene
-     * @param namedObject
-     * @param imageURL
-     * @throws IllegalActionException 
-     * @throws NameDuplicationException 
+     * Create new instance of the widget by finding the element's EditorIcon attribute
+     * and rendering it as an image.
+     * @param scene The scene containing the widget.
+     * @param element The element to visualize.
+     * @throws IllegalActionException If there is problem with creating an icon.
+     * @throws NameDuplicationException If there is a problem hiding the icon's name.
      */
     public NamedObjectIconWidget(Scene scene, PositionableElement element)
             throws NameDuplicationException, IllegalActionException {
@@ -99,7 +100,7 @@ public class NamedObjectIconWidget extends ResizableImageWidget implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     * TODO
+     * The element that is visualized by the widget
      */
     private final PositionableElement _element;
 

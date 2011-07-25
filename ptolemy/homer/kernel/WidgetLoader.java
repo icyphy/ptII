@@ -1,5 +1,6 @@
 /*
- TODO
+ This class loads Netbeans Visual Library widgets for a provided named object
+ and target type.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -36,6 +37,7 @@ import org.netbeans.api.visual.widget.Widget;
 import ptolemy.homer.widgets.NamedObjectIconWidget;
 import ptolemy.homer.widgets.NamedObjectImageWidget;
 import ptolemy.homer.widgets.NamedObjectWidget;
+import ptolemy.homer.widgets.NamedObjectWidgetInterface;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -43,7 +45,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// WidgetLoader
 
 /**
- * TODO
+ * This class loads Netbeans Visual Library widgets for a provided named object
+ * and target type.  It uses three strategies to load widgets for the target type: custom widget class, 
+ *  widget consisting of an image of an actor, or widget consisting of a Ptolemy icon.
  * @author Anar Huseynov
  * @version $Id$ 
  * @since Ptolemy II 8.1
@@ -55,13 +59,21 @@ public class WidgetLoader {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
-     * TODO
-     * @param scene
-     * @param namedObject
-     * @param targetType
-     * @return
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * Load widget of the given PositionableElement and targetType.  If there is no widget mapped for the
+     * the target type, it would look for a widget for the target type's parent recursively.
+     * The method would first try finding custom widget class for the targetType.  The mappings is 
+     * defined in the ObjectWidgets.properties file within widget package. If this fails, it would look for 
+     * image of the targetType based on mapping in ImageWidgets.properties file within images package.  If this fails too,
+     * it would try loading a Ptolemy icon for the provided NamedObject.
+     *  
+     * @param scene The scene where the widget belongs.
+     * @param namedObject The namedObjects for which widget is loaded.
+     * @param targetType The targetType used to finding appropriate widget mapped to it.
+     * Usually targetType is the same as namedObject's type.
+     * @return A new widget instance for the targetType and namedObject.  The 
+     * returned instance implements {@link NamedObjectWidgetInterface}.
+     * @throws IllegalActionException if there is a problem loading a object widget or icon.
+     * @throws NameDuplicationException if there is a problem loading an icon.
      */
     public static Widget loadWidget(Scene scene, PositionableElement element,
             Class<?> targetType) throws IllegalActionException,
@@ -81,12 +93,14 @@ public class WidgetLoader {
     ////                         private methods                   ////
 
     /**
-     * TODO
-     * @param scene
-     * @param namedObject
-     * @param targetType
-     * @return
-     * @throws IllegalActionException
+     * Return custom object widget for the provided type if available.  Null otherwise.
+     * @param scene The scene where the widget belongs.
+     * @param namedObject The namedObjects for which widget is loaded.
+     * @param targetType The targetType used to finding appropriate widget mapped to it.
+     * Usually targetType is the same as namedObject's type.
+     * @return A new widget instance for the targetType and namedObject.  The 
+     * returned instance implements {@link NamedObjectWidgetInterface}.
+     * @throws IllegalActionException if there is a problem loading a object widget.
      */
     private static Widget getObjectWidget(Scene scene,
             PositionableElement element, Class<?> targetType)
@@ -102,8 +116,8 @@ public class WidgetLoader {
         try {
             Class<NamedObjectWidget> widgetType = (Class<NamedObjectWidget>) WidgetLoader.class
                     .getClassLoader().loadClass(widgetTypeName);
-            return widgetType.getConstructor(Scene.class, PositionableElement.class)
-                    .newInstance(scene, element);
+            return widgetType.getConstructor(Scene.class,
+                    PositionableElement.class).newInstance(scene, element);
         } catch (ClassNotFoundException e) {
             throw new IllegalActionException(element.getElement(), e,
                     "Problem loading widget " + widgetTypeName);
@@ -130,20 +144,23 @@ public class WidgetLoader {
     }
 
     /**
-     * TODO
-     * @param scene
-     * @param namedObject
-     * @param targetType
-     * @return
+     * Return image widget for the provided element if available, null otherwise.
+     * @param scene The scene where the widget belongs.
+     * @param namedObject The namedObjects for which widget is loaded.
+     * @param targetType The targetType used to finding appropriate widget mapped to it.
+     * Usually targetType is the same as namedObject's type.
+     * @return A new widget instance for the targetType and namedObject.  The 
+     * returned instance implements {@link NamedObjectWidgetInterface}.
+     * @throws IllegalActionException if there is a problem loading a object widget or icon.
+     * @throws NameDuplicationException if there is a problem loading an icon.
      */
-    private static Widget getImageWidget(Scene scene, PositionableElement element,
-            Class<?> targetType) {
+    private static Widget getImageWidget(Scene scene,
+            PositionableElement element, Class<?> targetType) {
         if (targetType == null) {
             return null;
         }
         if (!IMAGE_WIDGET_BUNDLE.containsKey(targetType.getName())) {
-            return getImageWidget(scene, element,
-                    targetType.getSuperclass());
+            return getImageWidget(scene, element, targetType.getSuperclass());
         }
         String imageName = IMAGE_WIDGET_BUNDLE.getString(targetType.getName());
         return new NamedObjectImageWidget(scene, element,
@@ -154,12 +171,12 @@ public class WidgetLoader {
     ////                         private variables                 ////
 
     /**
-     * TODO
+     * The bundle containing mappings from the named object types to widgets visualizing them.
      */
     private static final ResourceBundle OBJECT_WIDGET_BUNDLE = ResourceBundle
             .getBundle("ptolemy.homer.widgets.ObjectWidgets");
     /**
-     * TODO
+     * The bundle containing mappings from the named object types to images depicting them.
      */
     private static final ResourceBundle IMAGE_WIDGET_BUNDLE = ResourceBundle
             .getBundle("ptolemy.homer.images.ImageWidgets");

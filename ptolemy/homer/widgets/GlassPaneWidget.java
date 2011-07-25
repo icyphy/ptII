@@ -1,5 +1,5 @@
 /*
- TODO
+ Glasspane covers underlying component and blocks any events from propogating to them.
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -51,20 +51,22 @@ import ptolemy.homer.kernel.PositionableElement;
 ///////////////////////////////////////////////////////////////////
 //// GlassPaneWidget
 /**
- * TODO
+ * Glasspane covers underlying awt component and blocks any events from propogating to them.
+ * Instead, it forward all events it receives to the scene's view.  This is done to ensure 
+ * that all widget actions work as intended.  This class is not intented to be used as is
+ * but rather needs to be extended for widgets where glasspane is required.
  * @author Anar Huseynov
  * @version $Id$ 
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class GlassPaneWidget extends NamedObjectWidget implements
-        NamedObjectWidgetInterface {
+public class GlassPaneWidget extends NamedObjectWidget {
 
     /**
-     * TODO
-     * @param scene
-     * @param namedObject
+     * Create new instance of the glasspane for the given positionabe element.
+     * @param scene The scene containing the widget.
+     * @param element The element to visualize.
      */
     public GlassPaneWidget(final Scene scene, PositionableElement element) {
         super(scene, element);
@@ -76,62 +78,63 @@ public class GlassPaneWidget extends NamedObjectWidget implements
         _glassPane.setLocation(0, 0);
         _layeredPane.setLayer(_glassPane, JLayeredPane.DRAG_LAYER);
         _layeredPane.add(_glassPane);
+        // Capture mouse events and forward them to the scene.
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
 
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
 
         };
         _glassPane.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
 
             @Override
             public void keyTyped(KeyEvent e) {
-                redispatchEvent(scene, e, _glassPane);
+                redispatchEvent(scene, e);
             }
         });
         _glassPane.addMouseMotionListener(mouseAdapter);
@@ -140,7 +143,6 @@ public class GlassPaneWidget extends NamedObjectWidget implements
 
         _containerPanel = new JPanel();
         _containerPanel.setLayout(new BorderLayout());
-        //        _containerPanel.setSize(dimension);
         _containerPanel.setLocation(0, 0);
         _layeredPane.setLayer(_containerPanel, JLayeredPane.DEFAULT_LAYER);
         _layeredPane.add(_containerPanel);
@@ -165,6 +167,8 @@ public class GlassPaneWidget extends NamedObjectWidget implements
         });
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
      * Set the dimension of the glass pane and components its covering.
      * This method must be called once to set sizes for all components.  After
@@ -180,18 +184,16 @@ public class GlassPaneWidget extends NamedObjectWidget implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /**
-     * TODO
-     * @param scene
-     * @param awtEvent
-     * @param glassPane
+     * Redispatch the awt event to the scene's view.
+     * @param scene The scene where the event needs to be dispatched.
+     * @param awtEvent The event received by the glasspane.
      */
-    private void redispatchEvent(final Scene scene, AWTEvent awtEvent,
-            Component glassPane) {
+    private void redispatchEvent(final Scene scene, AWTEvent awtEvent) {
         Component component = scene.getView();
         AWTEvent newEvent;
         if (awtEvent instanceof MouseEvent) {
             MouseEvent mouseEvent = (MouseEvent) awtEvent;
-            Point componentPoint = SwingUtilities.convertPoint(glassPane,
+            Point componentPoint = SwingUtilities.convertPoint(_glassPane,
                     mouseEvent.getPoint(), component);
             if (mouseEvent instanceof MouseWheelEvent) {
                 MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) mouseEvent;
@@ -219,22 +221,30 @@ public class GlassPaneWidget extends NamedObjectWidget implements
         scene.getView().dispatchEvent(newEvent);
     }
 
+    /**
+     * Place the component under the glasspane.
+     * @param component
+     */
+    protected void place(Component component) {
+        _containerPanel.add(component, BorderLayout.CENTER);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                 ////
     /**
-     * 
+     * The container panel holding the underlying component.
      */
     protected JPanel _containerPanel;
     /**
-     * 
+     * The layered pane holding both the glasspane and the container panel.
      */
     protected JLayeredPane _layeredPane;
     /**
-     * 
+     * The component widget that wraps the layerer pane.
      */
     protected ComponentWidget _componentWidget;
     /**
-     * 
+     * The glass pane covering the container panel.
      */
     protected JPanel _glassPane;
 }

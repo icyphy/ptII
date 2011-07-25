@@ -445,14 +445,19 @@ public class ServerUtility {
                     }
 
                     if (targetParent != null) {
-                        clonedAttribute.setPersistent(true);
                         clonedAttribute.setContainer(targetParent);
                     } else if (attribute.getContainer().getFullName()
                             .equals(targetModel.getFullName())) {
-                        clonedAttribute.setPersistent(true);
                         clonedAttribute.setContainer(targetModel);
                     } else {
                         // TODO should we log this or throw an exception?
+                        throw new IllegalActionException(clonedAttribute,
+                                "Parent for the object within the targetModel was not found");
+                    }
+                    clonedAttribute.setPersistent(true);
+                    if (clonedAttribute instanceof Settable) {
+                        ((Settable) clonedAttribute)
+                                .setVisibility(Settable.NONE);
                     }
                 } catch (NameDuplicationException e) {
                     // The attribute already exists. Since deepAttributeList returns all deeply
