@@ -74,14 +74,15 @@ public class OpenLayoutDialog implements ActionListener {
     ////                public methods                             ////
 
     /** 
-     * Proess action event on choose model and layout buttons.
+     * Process action event on choose model and layout buttons.
+     * @param event the event object.
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent event) {
 
         JFileChooser fileChooser = _menu.getFileChooser();
 
-        if (e.getSource() == _chooseModelButton) {
+        if (event.getSource() == _chooseModelButton) {
             //Handle model button action.
             fileChooser.setDialogTitle("Choose a Ptolemy model");
             fileChooser.setFileFilter(_menu.getModelFilter());
@@ -92,7 +93,7 @@ public class OpenLayoutDialog implements ActionListener {
                 _modelFileField.setText(_modelFile.getAbsolutePath());
             }
 
-        } else if (e.getSource() == _chooseLayoutButton) {
+        } else if (event.getSource() == _chooseLayoutButton) {
             //Handle layout button action.
             fileChooser.setDialogTitle("Choose a layout");
             fileChooser.setFileFilter(_menu.getLayoutFilter());

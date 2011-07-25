@@ -66,174 +66,6 @@ import ptolemy.homer.events.TabEvent;
  */
 public class TabbedLayoutScene extends JPanel implements ActionListener {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         constructor                       ////
-
-    /** Create the default scene with initial tabs.
-     */
-    public TabbedLayoutScene(HomerMainFrame mainFrame) {
-        _mainFrame = mainFrame;
-
-        _tabScenes = new JTabbedPane(JTabbedPane.TOP);
-        add(_tabScenes);
-
-        // Create the "add tab" tab.
-        _tabScenes.add("", null);
-        TabButton addTabButton = new TabButton();
-        addTabButton.setText("+");
-        addTabButton.setToolTipText("Add tab");
-        _tabScenes.setTabComponentAt(0, addTabButton);
-
-        addTabButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                _mainFrame.addTab("Tab " + _tabScenes.getTabCount());
-                selectTab(_tabScenes.getTabCount() - 2);
-            }
-        });
-        _tabScenes.setEnabledAt(_tabScenes.indexOfTabComponent(addTabButton),
-                false);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
-
-    /** Add a tab with the specified name.
-     *  @param tabName The label to put on the new tab.
-     */
-    private void _addTab(String tag, String name, TabScenePanel contentPanel) {
-        contentPanel.setTag(tag);
-        contentPanel.setName(name);
-        Component view = _mainFrame.getTabContent(tag).getView();
-        _tabScenes.insertTab(name, null, view, null,
-                _tabScenes.getTabCount() - 1);
-        view.setMaximumSize(view.getPreferredSize());
-
-        int index = _tabScenes.indexOfComponent(view);
-        _tabScenes.setTabComponentAt(index, new TabSceneButton());
-        _tabScenes.setSelectedIndex(index);
-
-        //FIXME: somehow never gets key events.  even tried adding to the main frame, but no luck there either.
-        //        view.addKeyListener(new KeyAdapter() {
-        //            public void keyReleased(KeyEvent e) {
-        //                //// Method #1
-        //                for (Map.Entry<NamedObj, NamedObjectWidgetInterface> namedObj : _mainFrame
-        //                        .getWidgetMap().entrySet()) {
-        //                    if (((Widget) namedObj.getValue()).getState().isSelected()) {
-        //                        _mainFrame.removeNamedObject(namedObj.getKey());
-        //                    }
-        //                }
-        //                //// Method #2
-        //                //                for (TabScenePanel scenePanel : _viewSceneMap.values()) {
-        //                //                    for (Object selected : scenePanel.getScene()
-        //                //                            .getSelectedObjects()) {
-        //                //                        removeNamedObject(((NamedObjectWidgetInterface) selected)
-        //                //                                .getNamedObject());
-        //                //                    }
-        //                //                }
-        //            }
-        //        });
-
-    }
-
-    /** Remove all but the default tab.
-     */
-    private void _clear() {
-        // The last one should be the "add new tab" tab.
-        for (int i = _tabScenes.getTabCount() - 2; i >= 0; --i) {
-            _removeTab(i);
-        }
-    }
-
-    /** Get the tabs within the container.
-     *  @return The reference to the tabbed pane contained within.
-     */
-    public JTabbedPane getSceneTabs() {
-        return _tabScenes;
-    }
-
-    /** Remove the selected tab and its associated component.
-     *  @param index The tab index to be removed.
-     */
-    private void _removeTab(int index) {
-        _tabScenes.removeTabAt(index);
-        if (_tabScenes.getSelectedIndex() == _tabScenes.getTabCount() - 1) {
-            _tabScenes.setSelectedIndex(_tabScenes.getTabCount() - 2);
-        }
-    }
-
-    /**
-     * Rename the tab at the specified position.
-     * @param position The tab position.
-     * @param name The new name.
-     */
-    private void _renameTab(int position, String name) {
-        if (position < 0 || position >= _tabScenes.getTabCount()) {
-            return;
-        }
-        _tabScenes.setTitleAt(position, name);
-    }
-
-    /** Set the selected tab.
-     *  @param index Index of the tab that should be selected.
-     */
-    public void selectTab(int index) {
-        _tabScenes.setSelectedIndex(index);
-    }
-
-    /** 
-     * Process action performed event.  
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-        if (e instanceof TabEvent) {
-            TabEvent event = (TabEvent) e;
-            if (event.getActionCommand() == "addTab") {
-                _addTab(event.getTag(), event.getName(),
-                        (TabScenePanel) event.getContent());
-            } else if (event.getActionCommand() == "removeTab") {
-                _removeTab(event.getPosition());
-            } else if (event.getActionCommand() == "renameTab") {
-                _renameTab(event.getPosition(), event.getName());
-            }
-        }
-
-        if (e.getActionCommand() == "clear") {
-            _clear();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The JFrame container of the this panel.
-     */
-    private HomerMainFrame _mainFrame;
-
-    /** The JTabbedPane that is being wrapped.
-     */
-    private JTabbedPane _tabScenes;
-
-    /** The standard mouse adapter to be used on on all buttons.
-     */
-    private static final MouseAdapter _MOUSE_ADAPTER = new MouseAdapter() {
-        public void mouseEntered(MouseEvent e) {
-            Component component = e.getComponent();
-            if (component instanceof AbstractButton) {
-                ((AbstractButton) component).setBorderPainted(true);
-            }
-        }
-
-        public void mouseExited(MouseEvent e) {
-            Component component = e.getComponent();
-            if (component instanceof AbstractButton) {
-                ((AbstractButton) component).setBorderPainted(false);
-            }
-        }
-    };
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
     /** The tab button that is added to the tab.
      */
     private class TabButton extends JButton {
@@ -358,6 +190,9 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
             _tabScenes.setEnabledAt(_tabScenes.getTabCount() - 2, false);
         }
 
+        /**
+         * Removes editable text box with a label from the tab.
+         */
         private void _setInEditedTitle() {
             TabSceneButton.this.remove(_editableLabel);
             TabSceneButton.this.add(_label, BorderLayout.CENTER);
@@ -365,7 +200,182 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
             TabbedLayoutScene.this.repaint();
         }
 
+        /**
+         * The label displaying the tab name.
+         */
         private JLabel _label;
+        /**
+         * The text box used for changing the tab name.
+         */
         private JTextField _editableLabel;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Create the default scene with initial tabs.
+     */
+    public TabbedLayoutScene(HomerMainFrame mainFrame) {
+        _mainFrame = mainFrame;
+
+        _tabScenes = new JTabbedPane(JTabbedPane.TOP);
+        add(_tabScenes);
+
+        // Create the "add tab" tab.
+        _tabScenes.add("", null);
+        TabButton addTabButton = new TabButton();
+        addTabButton.setText("+");
+        addTabButton.setToolTipText("Add tab");
+        _tabScenes.setTabComponentAt(0, addTabButton);
+
+        addTabButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                _mainFrame.addTab("Tab " + _tabScenes.getTabCount());
+                selectTab(_tabScenes.getTabCount() - 2);
+            }
+        });
+        _tabScenes.setEnabledAt(_tabScenes.indexOfTabComponent(addTabButton),
+                false);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** 
+     * Process action performed event.  
+     * @param event the event object.
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent event) {
+        if (event instanceof TabEvent) {
+            TabEvent tabEvent = (TabEvent) event;
+            if (tabEvent.getActionCommand() == "addTab") {
+                _addTab(tabEvent.getTag(), tabEvent.getName(),
+                        (TabScenePanel) tabEvent.getContent());
+            } else if (tabEvent.getActionCommand() == "removeTab") {
+                _removeTab(tabEvent.getPosition());
+            } else if (tabEvent.getActionCommand() == "renameTab") {
+                _renameTab(tabEvent.getPosition(), tabEvent.getName());
+            }
+        }
+
+        if (event.getActionCommand() == "clear") {
+            _clear();
+        }
+    }
+
+    /** Get the tabs within the container.
+     *  @return The reference to the tabbed pane contained within.
+     */
+    public JTabbedPane getSceneTabs() {
+        return _tabScenes;
+    }
+
+    /** Set the selected tab.
+     *  @param index Index of the tab that should be selected.
+     */
+    public void selectTab(int index) {
+        _tabScenes.setSelectedIndex(index);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                  ////
+
+    /** Add a tab with the specified name.
+     *  @param tabName The label to put on the new tab.
+     */
+    private void _addTab(String tag, String name, TabScenePanel contentPanel) {
+        contentPanel.setTag(tag);
+        contentPanel.setName(name);
+        Component view = _mainFrame.getTabContent(tag).getView();
+        _tabScenes.insertTab(name, null, view, null,
+                _tabScenes.getTabCount() - 1);
+        view.setMaximumSize(view.getPreferredSize());
+
+        int index = _tabScenes.indexOfComponent(view);
+        _tabScenes.setTabComponentAt(index, new TabSceneButton());
+        _tabScenes.setSelectedIndex(index);
+
+        //FIXME: somehow never gets key events.  even tried adding to the main frame, but no luck there either.
+        //        view.addKeyListener(new KeyAdapter() {
+        //            public void keyReleased(KeyEvent e) {
+        //                //// Method #1
+        //                for (Map.Entry<NamedObj, NamedObjectWidgetInterface> namedObj : _mainFrame
+        //                        .getWidgetMap().entrySet()) {
+        //                    if (((Widget) namedObj.getValue()).getState().isSelected()) {
+        //                        _mainFrame.removeNamedObject(namedObj.getKey());
+        //                    }
+        //                }
+        //                //// Method #2
+        //                //                for (TabScenePanel scenePanel : _viewSceneMap.values()) {
+        //                //                    for (Object selected : scenePanel.getScene()
+        //                //                            .getSelectedObjects()) {
+        //                //                        removeNamedObject(((NamedObjectWidgetInterface) selected)
+        //                //                                .getNamedObject());
+        //                //                    }
+        //                //                }
+        //            }
+        //        });
+
+    }
+
+    /** Remove all but the default tab.
+     */
+    private void _clear() {
+        // The last one should be the "add new tab" tab.
+        for (int i = _tabScenes.getTabCount() - 2; i >= 0; --i) {
+            _removeTab(i);
+        }
+    }
+
+    /** Remove the selected tab and its associated component.
+     *  @param index The tab index to be removed.
+     */
+    private void _removeTab(int index) {
+        _tabScenes.removeTabAt(index);
+        if (_tabScenes.getSelectedIndex() == _tabScenes.getTabCount() - 1) {
+            _tabScenes.setSelectedIndex(_tabScenes.getTabCount() - 2);
+        }
+    }
+
+    /**
+     * Rename the tab at the specified position.
+     * @param position The tab position.
+     * @param name The new name.
+     */
+    private void _renameTab(int position, String name) {
+        if (position < 0 || position >= _tabScenes.getTabCount()) {
+            return;
+        }
+        _tabScenes.setTitleAt(position, name);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The JFrame container of the this panel.
+     */
+    private HomerMainFrame _mainFrame;
+
+    /** The JTabbedPane that is being wrapped.
+     */
+    private JTabbedPane _tabScenes;
+
+    /** The standard mouse adapter to be used on on all buttons.
+     */
+    private static final MouseAdapter _MOUSE_ADAPTER = new MouseAdapter() {
+        public void mouseEntered(MouseEvent e) {
+            Component component = e.getComponent();
+            if (component instanceof AbstractButton) {
+                ((AbstractButton) component).setBorderPainted(true);
+            }
+        }
+
+        public void mouseExited(MouseEvent e) {
+            Component component = e.getComponent();
+            if (component instanceof AbstractButton) {
+                ((AbstractButton) component).setBorderPainted(false);
+            }
+        }
+    };
 }

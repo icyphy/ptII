@@ -153,8 +153,6 @@ public class WidgetLoader {
      * Usually targetType is the same as namedObject's type.
      * @return A new widget instance for the targetType and namedObject.  The 
      * returned instance implements {@link NamedObjectWidgetInterface}.
-     * @throws IllegalActionException if there is a problem loading a object widget or icon.
-     * @throws NameDuplicationException if there is a problem loading an icon.
      */
     private static Widget _getImageWidget(Scene scene,
             PositionableElement element, Class<?> targetType) {

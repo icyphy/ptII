@@ -579,8 +579,15 @@ public class TabScenePanel implements ContentPrototype {
             }
         }
     }
+
+    /**
+     * The tag of the tab.
+     */
     private String _tag;
 
+    /**
+     * The name of the tab.
+     */
     private String _name;
 
     /** The default decorator for move alignment actions.
@@ -637,7 +644,7 @@ public class TabScenePanel implements ContentPrototype {
      */
     private final WidgetAction _moveAction;
     /**
-     * The resize action added to all new widgets
+     * The resize action added to all new widgets.
      */
     private WidgetAction _resizeAction;
 

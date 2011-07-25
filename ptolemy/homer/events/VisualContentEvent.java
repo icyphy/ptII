@@ -68,5 +68,8 @@ public class VisualContentEvent extends ActionEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    /**
+     * The affected positionable element.
+     */
     private PositionableElement _element;
 }
