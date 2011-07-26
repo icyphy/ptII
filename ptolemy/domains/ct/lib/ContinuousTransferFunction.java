@@ -78,6 +78,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  conditions you have to use the state-space representation, for example,
  use the LinearStateSpace actor.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu
  @version $Id$
  @since Ptolemy II 1.0

@@ -47,6 +47,7 @@ import ptolemy.kernel.util.Workspace;
  signal at the output by holding the value of the discrete
  event until the next discrete event arrives.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu
  @version $Id$
  @since Ptolemy II 0.4

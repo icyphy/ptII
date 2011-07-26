@@ -87,6 +87,7 @@ import ptolemy.kernel.util.Workspace;
  They get these parameters from the director. So the same set of parameters
  are shared by all the solvers in a simulation.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2

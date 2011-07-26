@@ -76,6 +76,8 @@ import ptolemy.plot.Plot;
  <p>
  We use this demo to illustrate the accuracy of detecting events, and the
  ability of simulating hybrid system in Ptolemy II.
+ 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu
  @version $Id$
  @since Ptolemy II 0.3

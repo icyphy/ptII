@@ -72,6 +72,7 @@ import ptolemy.plot.Plot;
  Feedback Control"</I>, doctoral dissertation,  University of California,
  Berkeley, Fall 1997
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu
  @version $Id$
  @since Ptolemy II 1.0

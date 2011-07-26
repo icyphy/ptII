@@ -63,6 +63,7 @@ import ptolemy.kernel.util.Workspace;
  So, this class implements BreakpointODESolver and can only be
  used as a breakpoint solver.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.4

@@ -66,6 +66,7 @@ import ptolemy.kernel.util.Workspace;
  http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics
  ">Operational Semantics of Hybrid Systems</a>.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Xiaojun Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 5.2

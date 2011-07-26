@@ -82,6 +82,7 @@ import ptolemy.kernel.util.Workspace;
  It takes 6 steps for this solver to resolve a state with an integration
  step size. A round counter is used to record which step this solver performs.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author  Haiyang Zheng
  @version $Id$
  @since Ptolemy II 4.1

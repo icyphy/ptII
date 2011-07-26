@@ -57,6 +57,7 @@ import ptolemy.kernel.util.Workspace;
  execution to produce events. During its postfire method, it requests
  further firings to produce more events if necessary.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 2.0

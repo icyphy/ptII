@@ -47,9 +47,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>
  This <i>start</i> and <i>stop</i> ports can are declared DISCRETE, and they
  only accept discrete events as inputs.
- <p>
+ 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @see ptolemy.domains.ct.lib.ContinuousClock
-
  @author Edward A. Lee, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 2.2

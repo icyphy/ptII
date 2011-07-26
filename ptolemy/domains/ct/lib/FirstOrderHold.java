@@ -48,6 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  Convert discrete events at the input to a continuous-time signal at the
  output by projecting the value with the derivative.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu
  @version $Id$
  @since Ptolemy II 2.0

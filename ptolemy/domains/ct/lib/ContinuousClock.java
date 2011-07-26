@@ -61,7 +61,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  stop time is reached. If the numberOfCycles is set to a positive integer,
  the clock will continue outputting the value of the defaultValue parameter
  after the number of cycles are reached if the stop time is not reached.
- <p>
+ 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @see ptolemy.actor.lib.Clock
  @author Edward A. Lee, Haiyang Zheng
  @version $Id$

@@ -51,6 +51,7 @@ import ptolemy.kernel.util.Workspace;
  simplest algorithm for solving an ODE. It is a first order method,
  and has stability problem for some systems.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author  Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2

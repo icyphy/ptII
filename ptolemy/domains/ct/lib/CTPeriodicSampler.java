@@ -53,6 +53,7 @@ import ptolemy.kernel.util.Workspace;
  each input channel are sampled and produced to corresponding output
  channel.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.3

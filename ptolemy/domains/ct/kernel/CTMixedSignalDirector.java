@@ -82,6 +82,7 @@ import ptolemy.kernel.util.Workspace;
  the time when local time is equal to the current time of the executive
  director</p>.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author  Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2

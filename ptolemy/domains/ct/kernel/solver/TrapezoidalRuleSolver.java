@@ -72,7 +72,8 @@ import ptolemy.kernel.util.Workspace;
  abs(x(t+h) - xx(t+h))/(2^2 - 1)
  </pre>
  This is used to adjust the step size.
-
+ 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2

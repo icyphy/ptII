@@ -65,6 +65,7 @@ import ptolemy.plot.Plot;
 /**
  An applet that models a 2-D helicopter control system.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu, Xiaojun Liu
  @version $Id$
  @since Ptolemy II 1.0

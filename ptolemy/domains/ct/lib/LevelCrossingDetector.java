@@ -66,6 +66,7 @@ import ptolemy.kernel.util.Workspace;
  occur during an integration. So, this actor is only used in Continuous-Time
  domain.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 2.0

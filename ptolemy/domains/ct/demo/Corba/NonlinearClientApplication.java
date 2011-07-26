@@ -56,6 +56,8 @@ import ptolemy.kernel.util.Workspace;
  CT system demonstrate the use of CORBA actor solvers over the network.
  The query box allow the users to input the ORB initialization parameter
  and the name of the CORBA actor.
+ 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author  Jie Liu
  @version $Id$
  */

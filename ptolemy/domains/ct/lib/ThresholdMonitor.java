@@ -57,6 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  not accurate and refines the new step size by bisecting the
  old step size.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author  Jie Liu
  @version $Id$
  @since Ptolemy II 0.4

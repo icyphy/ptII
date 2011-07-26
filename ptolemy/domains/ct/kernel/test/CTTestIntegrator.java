@@ -39,6 +39,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  A wrapper of CTBaseIntegrator. The only purpose of this actor is
  that it is in the ct.lib package.
+ 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu
  @version $Id$
  @since Ptolemy II 1.0

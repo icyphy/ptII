@@ -63,6 +63,7 @@ import ptolemy.plot.Plot;
  This class constructs a top-level Ptolemy model containing
  a CT director, which includes a sophisticated ODE numerical solver.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu
  @version $Id$
  @since Ptolemy II 1.0

@@ -41,6 +41,7 @@ import ptolemy.kernel.util.Workspace;
  error control. It provides base implementation for some methods that
  are shared by all fixed-step-size solvers.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2

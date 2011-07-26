@@ -68,6 +68,7 @@ import ptolemy.kernel.util.Workspace;
  This is a second order method, but uses a third order procedure to estimate
  the local truncation error.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author  Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2

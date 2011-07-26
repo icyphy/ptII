@@ -88,6 +88,7 @@ import ptolemy.kernel.util.NamedObj;
  After that, the actor becomes transparent, and the director
  takes over the control of the actors contained by this actor.
 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu
  @version $Id$
  @since Ptolemy II 1.0

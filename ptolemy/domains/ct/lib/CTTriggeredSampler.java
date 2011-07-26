@@ -49,6 +49,8 @@ import ptolemy.kernel.util.Workspace;
  The actor has a multi-input port and a multi-output port. Signals in
  each input channel are sampled and produced to corresponding output
  channel.
+ 
+ @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
  @author Jie Liu
  @version $Id$
  @since Ptolemy II 1.0
