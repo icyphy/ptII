@@ -45,11 +45,6 @@ JavaSE implementation of the TextFieldContainerInterface.
 
 public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
 
-    /** Initialize the text field for the MonitorValue
-     */
-    public void init() {
-    }
-
     /** Place the visual representation of the actor into the specified container.
      *  @param container The container in which to place the object
      */
@@ -60,7 +55,7 @@ public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
         _textfield.setEditable(false);
     }
 
-    /** Set the text to the value of the parameter
+    /** Set the text to the value of the token
      * @param value The Parameter containing the value
      */
     public void setValue(Token value) {

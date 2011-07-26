@@ -76,7 +76,7 @@ Note that this actor internally uses JTextArea, a Java Swing object
 that is known to consume large amounts of memory. It is not advisable
 to use this actor to log large output streams.</p>
 
-@author 
+@author Yuhong Xiong, Edward A. Lee Contributors: Ishwinder Singh
 @version $Id$
 @since Ptolemy II 1.0
 */

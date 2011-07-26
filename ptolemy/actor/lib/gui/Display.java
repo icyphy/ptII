@@ -79,7 +79,7 @@ import ptolemy.kernel.util.Workspace;
  that is known to consume large amounts of memory. It is not advisable
  to use this actor to log large output streams.</p>
 
- @author  Yuhong Xiong, Edward A. Lee
+ @author  Yuhong Xiong, Edward A. Lee Contributors: Ishwinder Singh
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (yuhong)
@@ -397,9 +397,6 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
     protected void _openWindow() throws IllegalActionException {
         _implementation.openWindow();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
