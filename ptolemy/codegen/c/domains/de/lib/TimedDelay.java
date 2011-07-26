@@ -36,8 +36,9 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A helper class for ptolemy.actor.lib.TimedDelay.
+ * A helper class for ptolemy.domains.de.TimedDelay.
  *
+ * @deprecated Use ptolemy.actor.lib.TimeDelay.
  * @author Jia Zou
  * @version $Id$
  * @since Ptolemy II 8.0

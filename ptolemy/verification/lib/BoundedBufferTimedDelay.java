@@ -28,7 +28,7 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.lib.TimedDelay;
+import ptolemy.actor.lib.TimeDelay;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class BoundedBufferTimedDelay extends TimedDelay {
+public class BoundedBufferTimedDelay extends TimeDelay {
 
     /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.

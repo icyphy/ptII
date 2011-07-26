@@ -32,6 +32,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
+ *  @deprecated Use ptolemy.actor.lib.TimeDelay.
  @author Edward A. Lee, Haiyang Zheng
  @version $Id$
  @Pt.ProposedRating Yellow (hyzheng)

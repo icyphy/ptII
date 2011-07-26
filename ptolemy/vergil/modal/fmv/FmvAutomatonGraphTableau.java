@@ -48,6 +48,7 @@ import ptolemy.vergil.modal.FSMGraphTableau;
 /**
  An editor tableau for Fmv automata.
 
+ @deprecated ptolemy.de.lib.TimedDelay is deprecated, use ptolemy.actor.lib.TimeDelay.
  @author  Chihhong Patrick Cheng
  @version $Id$
  @since Ptolemy II 8.0

@@ -40,6 +40,7 @@ import ptolemy.kernel.util.Settable;
  the continuous signal crosses zero. This actor is a syntactic sugar
  for LevelCrossDetector with level to be 0.0.
 
+ @deprecated The CT domain no longer works with DE.  Use the Continuous domain.
  @see LevelCrossingDetector
  @author Jie Liu
  @version $Id$

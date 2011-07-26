@@ -61,6 +61,7 @@ import ptolemy.verification.lib.BoundedBufferNondeterministicDelay;
  * This is an utility function for Ptolemy II models. It performs a systematic
  * traversal of the system and generate Realtime Maude model file
  *
+ * @deprecated Use ptolemy.actor.lib.TimeDelay.
  * @author Kyungmin Bae
  * @version $Id$
  * @since Ptolemy II 8.0

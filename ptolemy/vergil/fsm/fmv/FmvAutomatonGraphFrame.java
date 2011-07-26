@@ -67,6 +67,7 @@ import diva.gui.GUIUtilities;
  * and toolbar. This overrides the base class to associate with the editor an
  * instance of FmvAutomatonGraphController.
  *
+ * @deprecated ptolemy.de.lib.TimedDelay is deprecated, use ptolemy.actor.lib.TimeDelay.
  * @author Chihhong Patrick Cheng Contributor: Edward A. Lee
  * @version $Id: FmvAutomatonGraphFrame.java,v 1.9 2008/01/29 07:51:58 patrickj
  *          Exp $

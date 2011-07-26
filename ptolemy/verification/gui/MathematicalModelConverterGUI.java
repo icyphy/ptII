@@ -70,6 +70,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter.OutputType;
  generator. This UI will be invoked when you double click on the
  code generator.
 
+ @deprecated ptolemy.de.lib.TimedDelay is deprecated, use ptolemy.actor.lib.TimeDelay.
  @author Chih-Hong Cheng, Thomas Huining Feng, Edward A. Lee, Christopher Brooks
  @version $Id$
  @since Ptolemy II 8.0

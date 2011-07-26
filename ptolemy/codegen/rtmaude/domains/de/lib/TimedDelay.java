@@ -35,6 +35,7 @@ import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 /**
  * Generate RTMaude code for a TimedDelay in DE domain.
  *
+ * @deprecated Use ptolemy.actor.lib.TimeDelay.
  * @see ptolemy.domains.de.lib.TimedDelay
  * @author Kyungmin Bae
  * @version $Id$

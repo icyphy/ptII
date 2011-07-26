@@ -35,6 +35,7 @@ import ptolemy.codegen.rtmaude.actor.lib.Transformer;
 /**
  * Generate RTMaude code for a VariableDelay in DE domain.
  *
+ * @deprecated Use ptolemy.actor.lib.TimeDelay.
  * @see ptolemy.domains.de.lib.VariableDelay
  * @author Kyungmin Bae
  * @version $Id$

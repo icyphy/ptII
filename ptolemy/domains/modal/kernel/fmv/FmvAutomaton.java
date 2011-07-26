@@ -55,7 +55,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
  * inserting of FmvState, where these specialized states are able to
  * have property indicating whether it is a risk state.
  *
- *
+ * @deprecated ptolemy.de.lib.TimedDelay is deprecated, use ptolemy.actor.lib.TimeDelay.
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.0

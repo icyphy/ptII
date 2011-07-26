@@ -178,7 +178,7 @@ public class SigmaDelta extends TypedCompositeActor {
         ctPlot.input.link(cr10);
 
         // DE System
-        ptolemy.domains.de.lib.TimedDelay delay = new ptolemy.domains.de.lib.TimedDelay(
+        ptolemy.actor.lib.TimeDelay delay = new ptolemy.actor.lib.TimeDelay(
                 this, "delay");
         delay.delay.setToken(new DoubleToken(0.02));
 

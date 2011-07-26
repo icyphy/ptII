@@ -99,6 +99,7 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * the use of complementary edges, complex guard conditions
  * are currently not supported.
  *
+ * @deprecated ptolemy.de.lib.TimedDelay is deprecated, use ptolemy.actor.lib.TimeDelay.
  * @author Chih-Hong Cheng, Contributor: Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.0
