@@ -125,7 +125,10 @@ import ptolemy.kernel.util.Workspace;
  execution. The fireAt method may also be requested by actors and the
  requested firing time will be inserted into the breakpoint table.
 
- @deprecated Use ContinuousDirector.
+ <p>Note that this director does no longer works with the discrete
+ event director.  Please use the ContinuousDirector instead of the
+ CTDirector.</p>
+
  @author Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2
