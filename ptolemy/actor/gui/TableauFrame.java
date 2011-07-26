@@ -1214,9 +1214,74 @@ public class TableauFrame extends Top {
         return true;
     }
 
+    /** Save a file.  This method is called by {@link #_saveAsHelperFileDialog(String)}
+     *  and {@link #_saveAsHelperJFileChooser(String) so as to avoid code duplication.
+     *  @param file The selected file to be saved.
+     *  @param directory The directory of the file to be saved.
+     *  @return URL of the saved file if the save succeeds, null
+     *  if save fails.
+     */
+    private URL _saveAsHelperCommon(File file, File directory) {
+        try {
+            if (!_confirmFile(null, file)) {
+                return null;
+            }
+
+            URL newURL = file.toURI().toURL();
+            String newKey = newURL.toExternalForm();
+
+            // Only set the directory if the user optionally confirmed the overwrite.
+            _directory = directory;
+            _writeFile(file);
+
+            // The original file will still be open, and has not
+            // been saved, so we do not change its modified status.
+            // setModified(false);
+            // Open a new window on the model.
+            Tableau newTableau = getConfiguration().openModel(newURL, newURL, newKey);
+
+            newTableau.getFrame().setTitle(
+                    StringUtilities.abbreviate(new File(_directory, file
+                                    .getName()).toString()));
+
+            // If the tableau was unnamed before, then we need
+            // to close this window after doing the save.
+            Effigy effigy = getEffigy();
+
+            if (effigy != null) {
+                String id = effigy.identifier.getExpression();
+
+                if (id.equals("Unnamed")) {
+                    // This will have the effect of closing all the
+                    // tableaux associated with the unnamed model.
+                    effigy.setContainer(null);
+                }
+            }
+
+            // Change r61021 "dispose the old frame after opening a new one on call to saveAs"
+            // resulted in vergil exiting if one does
+            // 1. cd $PTII/ptolemy/domains/sdf/demo/Butterfly
+            // 2. $PTII/bin/vergil Butterfly.xml
+            // 3. File -> Save As, select Butterfly.xml, hit OK.
+            // 4. When the "Ok to overwrite" window comes up, hit Yes.
+            // 5. The vergil process exits.
+            // So, we only call dispose if the tableaus are different.
+            if (!_tableau.equals(newTableau)) {
+                dispose();
+            }
+            return newURL;
+        } catch (Exception ex) {
+            report("Error in save as.", ex);
+            return null;
+        }
+    }
+
     /** Query the user for a filename, save the model to that file,
      *  and open a new window to view the model.  This method
      *  uses java.awt.FileDialog and is usually used under Mac OS X.
+     *  See {@ptolemy.gui.PtGUIUtilities#useFileDialog()} for information
+     *  on how to set a Java property to control whether FileDialog or
+     *  JFileChooser is used.
      *
      *  @param extension If non-null, then the extension that is
      *  appended to the file name if there is no extension.
@@ -1279,47 +1344,8 @@ public class TableauFrame extends Top {
                 // if the user has not given the file an extension, add it
                 file = new File(file.getAbsolutePath() + extension);
             }
-            try {
-                if (!_confirmFile(null, file)) {
-                    return null;
-                }
 
-                URL newURL = file.toURI().toURL();
-                String newKey = newURL.toExternalForm();
-
-                _directory = new File(fileDialog.getDirectory());
-                _writeFile(file);
-
-                // The original file will still be open, and has not
-                // been saved, so we do not change its modified status.
-                // setModified(false);
-                // Open a new window on the model.
-                Tableau newTableau = getConfiguration().openModel(newURL,
-                        newURL, newKey);
-                newTableau.getFrame().setTitle(
-                        StringUtilities.abbreviate(new File(_directory, file
-                                .getName()).toString()));
-
-                // If the tableau was unnamed before, then we need
-                // to close this window after doing the save.
-                Effigy effigy = getEffigy();
-
-                if (effigy != null) {
-                    String id = effigy.identifier.getExpression();
-
-                    if (id.equals("Unnamed")) {
-                        // This will have the effect of closing all the
-                        // tableaux associated with the unnamed model.
-                        effigy.setContainer(null);
-                    }
-                }
-
-                dispose();
-                return newURL;
-            } catch (Exception ex) {
-                report("Error in save as.", ex);
-                return null;
-            }
+            return _saveAsHelperCommon(file, new File(fileDialog.getDirectory()));
         }
         // The user hit cancel or there was an error, so we did not
         // successfully save.
@@ -1330,6 +1356,9 @@ public class TableauFrame extends Top {
      *  and open a new window to view the model.  This method uses
      *  javax.swing.JFileChooser and is usually used under
      *  non-Mac OS X platforms such as Windows or Linux.
+     *  See {@ptolemy.gui.PtGUIUtilities#useFileDialog()} for information
+     *  on how to set a Java property to control whether FileDialog or
+     *  JFileChooser is used.
      *
      *  @param extension If non-null, then the extension that is
      *  appended to the file name if there is no extension.
@@ -1340,9 +1369,7 @@ public class TableauFrame extends Top {
     private URL _saveAsHelperJFileChooser(String extension) {
         // This is odd, we need to replicate similar code from
         // Top._saveAsJFileChooserImplementation()?  Why?
-        // _saveAsHelper() is needed as part of Kepler.
-
-        URL newURL = null;
+        // Answer: Because _saveAsHelper() is needed as part of Kepler.
 
         // Swap backgrounds and avoid white boxes in "common places" dialog
         JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
@@ -1366,44 +1393,7 @@ public class TableauFrame extends Top {
                     file = new File(file.getAbsolutePath() + extension);
                 }
 
-                try {
-                    if (!_confirmFile(null, file)) {
-                        return null;
-                    }
-
-                    newURL = file.toURI().toURL();
-                    String newKey = newURL.toExternalForm();
-
-                    _directory = fileDialog.getCurrentDirectory();
-                    _writeFile(file);
-
-                    // The original file will still be open, and has not
-                    // been saved, so we do not change its modified status.
-                    // setModified(false);
-                    // Open a new window on the model.
-                    getConfiguration().openModel(newURL, newURL, newKey);
-
-                    // If the tableau was unnamed before, then we need
-                    // to close this window after doing the save.
-                    Effigy effigy = getEffigy();
-
-                    if (effigy != null) {
-                        String id = effigy.identifier.getExpression();
-
-                        if (id.equals("Unnamed")) {
-                            // This will have the effect of closing all the
-                            // tableaux associated with the unnamed model.
-                            effigy.setContainer(null);
-                        }
-                    }
-
-                    dispose();
-
-                    return newURL;
-                } catch (Exception ex) {
-                    report("Error in save as.", ex);
-                    return null;
-                }
+                return _saveAsHelperCommon(file, fileDialog.getCurrentDirectory());
             }
 
             // The user hit cancel or there was an error, so we did not
