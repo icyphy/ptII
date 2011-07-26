@@ -122,9 +122,11 @@ grep -v "Tag @link: reference not found: ptolemy.vergil.pdfrenderer.PDFRenderer"
 echo "" >> $mailmsg
 
 # The deprecated section works with jdk1.3 and probably won't work with jdk1.2
-echo "The build had the following `egrep 'warning: \[deprecation\]' $ptbuildlog| egrep 'in (diva|ptolemy).' | wc -l ` warnings for using deprecated diva or ptolemy methods" >> $mailmsg
+echo "The build had the following `egrep 'warning: \[deprecation\]' $ptbuildlog| egrep 'in (diva|ptolemy).' | grep -v ptolemy.domains.ct.kernel.CTDirector | grep -v ptolemy.domains.de.lib.TimedDelay | wc -l ` warnings for using deprecated diva or ptolemy methods" >> $mailmsg
 echo "The warnings are broken down as:" >> $mailmsg
-egrep 'warning: \[deprecation\]' $ptbuildlog | egrep 'in (diva|ptolemy).' | $AWK '{printf("%35s in %-35s\n", $3,$5)}'  | sort | uniq -c | sort -nr >> $mailmsg
+egrep 'warning: \[deprecation\]' $ptbuildlog | egrep 'in (diva|ptolemy).' | grep -v ptolemy.domains.ct.kernel.CTDirector | grep -v ptolemy.domains.de.lib.TimedDelay | $AWK '{printf("%35s in %-35s\n", $3,$5)}'  | sort | uniq -c | sort -nr >> $mailmsg
+echo "`egrep 'warning: \[deprecation\]' $ptbuildlog | egrep 'in (diva|ptolemy).' | grep  ptolemy.domains.ct.kernel.CTDirector | wc -l ` CTDirector deprecation warnings" >> $mailmsg
+echo "`egrep 'warning: \[deprecation\]' $ptbuildlog | egrep 'in (diva|ptolemy).' | grep  ptolemy.domains.de.lib.TimeDelay | wc -l ` de TimeDelay deprecation warnings" >> $mailmsg
 
 echo "" >> $mailmsg
 echo "The uniq deprecation warnings themselves are:" >> $mailmsg
