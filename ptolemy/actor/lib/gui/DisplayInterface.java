@@ -31,6 +31,9 @@ import ptolemy.actor.gui.PortableContainer;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+///////////////////////////////////////////////////////////////////
+////DisplayInterface
+
 /**
 Interface for implementing platform dependent parts of the display actor.
 
@@ -40,9 +43,6 @@ Interface for implementing platform dependent parts of the display actor.
 @Pt.ProposedRating Yellow (ishwinde)
 @Pt.AcceptedRating Yellow (ishwinde)
 */
-
-///////////////////////////////////////////////////////////////////
-////DisplayInterface
 
 public interface DisplayInterface {
 
