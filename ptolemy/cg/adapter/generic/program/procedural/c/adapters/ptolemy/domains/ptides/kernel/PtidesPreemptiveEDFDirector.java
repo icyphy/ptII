@@ -143,6 +143,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
 
+        _modelStaticAnalysis();
+
         code.append(_generatePtrToEventHeadCodeInputs());
 
         // if the outside is already a Ptides director (this could only happen if
@@ -295,7 +297,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
             return sharedCode;
         }
 
-        _modelStaticAnalysis();
+        //PD too late, do in preeint _modelStaticAnalysis();
 
         _templateParser.getCodeStream().clear();
 
