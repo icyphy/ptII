@@ -42,15 +42,14 @@ import ptolemy.data.Token;
  */
 public class AttributeChangeToken extends Token {
 
-    /** 
-     * Create a new instance with targetSettable set to null.
+    /** Create a new instance with targetSettable set to null.
      */
     public AttributeChangeToken() {
         super();
     }
 
     /** Create a new instance and set the name of the targetActor.
-     * @param targetSettable The full name of the attribute
+     *  @param targetSettable The full name of the attribute
      */
     public AttributeChangeToken(String targetSettable) {
         setTargetSettableName(targetSettable);
@@ -60,12 +59,11 @@ public class AttributeChangeToken extends Token {
     ////                         public methods                    ////
 
     /** Return true if the object is equal to the instance, false otherwise.
-     *
-     * The method checks if the object has the same target name and
-     * the same expression.
-     * @param object The reference object with which to compare.
-     * @return true if the object is equal to the instance, false otherwise.
-     * @see java.lang.Object#equals(java.lang.Object)
+     *  The method checks if the object has the same target name and
+     *  the same expression.
+     *  @param object The reference object with which to compare.
+     *  @return True if the object is equal to the instance, false otherwise.
+     *  @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object object) {
@@ -76,7 +74,6 @@ public class AttributeChangeToken extends Token {
         if (object.getClass() != getClass()) {
             return false;
         }
-
         if (isNil() || ((AttributeChangeToken) object).isNil()) {
             return false;
         }
@@ -97,11 +94,13 @@ public class AttributeChangeToken extends Token {
         } else if (!_expression.equals(other._expression)) {
             return false;
         }
+
         return true;
     }
 
     /** The hashCode method generates an identifier based on the stored
-     * expression and the target settable object. Used to check equality.  
+     *  expression and the target settable object. Used to check equality. 
+     *  @return The hashcode of the instance. 
      */
     @Override
     public int hashCode() {
@@ -116,48 +115,49 @@ public class AttributeChangeToken extends Token {
         return result;
     }
 
-    /** Return name of the target settable object that received the changes encapsulated by
-     * the AttributeChangeToken.
-     * @return the name of the target settable object that received the changes encapsulated by
-     * the AttributeChangeToken.
-     * @see #setTargetSettableName(String)
-     */
-    public String getTargetSettableName() {
-        return _targetSettableName;
-    }
-
-    /** Set the name of target settable  object that received the changes that the
-     * AttributeChangeToken encapsulates.
-     * @param targetSettableName the name of the target actor
-     * @see #getTargetSettableName()
-     */
-    public void setTargetSettableName(String targetSettableName) {
-        _targetSettableName = targetSettableName;
-    }
-
     /** Return the expression.
-     * @return the expression.
-     * @see #setExpression(String)
+     *  @return The expression.
+     *  @see #setExpression(String)
      */
     public String getExpression() {
         return _expression;
     }
 
+    /** Return name of the target settable object that received the changes encapsulated by
+     *  the AttributeChangeToken.
+     *  @return The name of the target settable object that received the changes encapsulated by
+     *  the AttributeChangeToken.
+     *  @see #setTargetSettableName(String)
+     */
+    public String getTargetSettableName() {
+        return _targetSettableName;
+    }
+
     /** Set the value of the expression carried.
-     * @param newExpression the changed expression
-     * @see #getExpression()
+     *  @param newExpression the changed expression
+     *  @see #getExpression()
      */
     public void setExpression(String newExpression) {
         _expression = newExpression;
     }
 
+    /** Set the name of target settable  object that received the changes that the
+     *  AttributeChangeToken encapsulates.
+     *  @param targetSettableName the name of the target actor
+     *  @see #getTargetSettableName()
+     */
+    public void setTargetSettableName(String targetSettableName) {
+        _targetSettableName = targetSettableName;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** New expression for the target settable object.
+     */
+    private String _expression;
 
     /** Name of the target settable object.
      */
     private String _targetSettableName;
-    /** New expression for the target settable object.
-     */
-    private String _expression;
 }
