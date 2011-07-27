@@ -71,32 +71,12 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Return a filtered listing of attributes within the object based on the filtering criteria.
-     * @param parent The parent object of the attributes.
-     * @return Return filtered list of attributes.
+    /** Set the filter applied to the underlying model.
+     *  @param filter The filter to apply to all Nameables.
      */
-    public List getAttributes(Object parent) {
-        if (!(parent instanceof NamedObj)) {
-            return Collections.emptyList();
-        }
-        List children = new ArrayList();
-        for (Object attribute : ((NamedObj) parent).attributeList()) {
-            if (attribute instanceof Settable
-                    && ((Settable) attribute).getVisibility().equals(
-                            Settable.FULL)) {
-                if ((_filter != null) && (_filter.length() > 0)) {
-                    if (((Nameable) attribute).getFullName().toLowerCase()
-                            .contains(_filter.toLowerCase())) {
-                        children.add(attribute);
-                    }
-                } else {
-                    children.add(attribute);
-                }
-
-            }
-        }
-        return children;
+    public void applyFilter(String filter) {
+        _filter = filter;
+        valueForPathChanged(new TreePath(getRoot()), null);
     }
 
     /** Get the child of the given parent at the given index.
@@ -107,7 +87,7 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
      */
     @Override
     public Object getChild(Object parent, int index) {
-        List attributes = getAttributes(parent);
+        List attributes = _getChildren(parent);
         if (index > attributes.size() - 1) {
             return super.getChild(parent, index - attributes.size());
         } else if (index >= 0) {
@@ -123,7 +103,7 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
      */
     @Override
     public int getChildCount(Object parent) {
-        return getAttributes(parent).size() + super.getChildCount(parent);
+        return _getChildren(parent).size() + super.getChildCount(parent);
     }
 
     /** Return the index of the given child within the given parent.
@@ -134,7 +114,7 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
      */
     @Override
     public int getIndexOfChild(Object parent, Object child) {
-        return getAttributes(parent).indexOf(child);
+        return _getChildren(parent).indexOf(child);
     }
 
     /** Return true if the object is a leaf node.  An object is a leaf
@@ -147,33 +127,46 @@ public class AttributeTreeModel extends ClassAndEntityTreeModel {
     public boolean isLeaf(Object object) {
         if (object == null) {
             return true;
-        } else if (getAttributes(object).size() > 0) {
+        } else if (_getChildren(object).size() > 0) {
             return false;
         } else {
             return super.isLeaf(object);
         }
     }
 
-    /**  Set the filter applied to the underlying model.
-     *  @param filter The filter to apply to all Nameables.
-     */
-    public void applyFilter(String filter) {
-        _filter = filter;
-        valueForPathChanged(new TreePath(getRoot()), null);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-    /**
-     * Return empty list of classes.  This is done in order to hide class definitions.
-     * @return empty list of classes. 
-     * @see ptolemy.vergil.tree.ClassAndEntityTreeModel#_classes(java.lang.Object)
+    /** Return a filtered listing of attributes within the object based on the filtering criteria.
+     *  @param parent The parent object of the attributes.
+     *  @return Return filtered list of attributes.
      */
-    @Override
-    protected List _classes(Object object) {
-        return Collections.emptyList();
+    private List _getChildren(Object parent) {
+        if (!(parent instanceof NamedObj)) {
+            return Collections.emptyList();
+        }
+
+        // Load attributes if any exist at this level.
+        List children = new ArrayList();
+        for (Object attribute : ((NamedObj) parent)
+                .attributeList(Settable.class)) {
+            if (((Settable) attribute).getVisibility().equals(Settable.FULL)) {
+                if ((_filter != null) && (_filter.length() > 0)) {
+                    if (((Nameable) attribute).getFullName().toLowerCase()
+                            .contains(_filter.toLowerCase())) {
+                        children.add(attribute);
+                    }
+                } else {
+                    children.add(attribute);
+                }
+            }
+        }
+
+        return children;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         private variables                 ////    
 
     /** The string filter being applied to tree nodes.
      */
