@@ -37,6 +37,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptserver.communication.ProxyModelInfrastructure;
 import ptserver.communication.TokenPublisher;
 import ptserver.data.CommunicationToken;
 
@@ -123,6 +124,22 @@ public class ProxySink extends ProxyActor {
             }
         }
         getTokenPublisher().sendToken(token);
+        synchronized (this) {
+            long waitTime = _MIN_WAIT;
+            while (!_proxyModelInfrastructure.isStopped()
+                    && _proxyModelInfrastructure.getPingPongLatency() > _proxyModelInfrastructure
+                            .getMaxlatency()) {
+                try {
+                    wait(waitTime);
+                } catch (InterruptedException e) {
+                    break;
+                }
+                if (_proxyModelInfrastructure.getPingPongLatency() > _proxyModelInfrastructure
+                        .getMaxlatency()) {
+                    waitTime *= _WAIT_TIME_INCREASE_FACTOR;
+                }
+            }
+        }
     }
 
     /**
@@ -172,6 +189,17 @@ public class ProxySink extends ProxyActor {
         _tokenPublisher = tokenPublisher;
     }
 
+    /**
+     * Set the ProxyModelInfrastructure instance controlling distributed model
+     * execution.
+     * @param proxyModelInfrastructure the the ProxyModelInfrastructure instance controlling distributed model
+     * execution.
+     */
+    public void setProxyModelInfrastructure(
+            ProxyModelInfrastructure proxyModelInfrastructure) {
+        _proxyModelInfrastructure = proxyModelInfrastructure;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -180,5 +208,20 @@ public class ProxySink extends ProxyActor {
      * into a binary and batching
      */
     private TokenPublisher _tokenPublisher;
+    /**
+     * The proxy model infrastructure that created the sink.  
+     * The reference to it is needed in order to slow down the sink's thread
+     * if the latency is above required number.
+     */
+    private ProxyModelInfrastructure _proxyModelInfrastructure;
 
+    /**
+     * TODO
+     */
+    private static final long _MIN_WAIT = 50;
+
+    /**
+     * 
+     */
+    private static final double _WAIT_TIME_INCREASE_FACTOR = 2;
 }

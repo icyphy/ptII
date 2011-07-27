@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	Injector.java \
 	PtolemyInjector.java \
 	PtolemyModule.java
 

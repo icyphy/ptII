@@ -113,8 +113,7 @@ public class ProxySource extends ProxyActor {
                 try {
                     wait();
                 } catch (InterruptedException e) {
-                    throw new IllegalActionException(this, e,
-                            "The remote source was inturrupted");
+                    break;
                 }
             }
             // If the token is null, then it means that the model was stopped, just return in this case.
@@ -172,7 +171,9 @@ public class ProxySource extends ProxyActor {
      */
     private ProxySourceData _proxySourceData;
     /**
-     * 
+     * The proxy model infrastructure that created the source.  
+     * The reference to it is needed in order to unblock the thread when the 
+     * execution is stopped/paused.
      */
     private ProxyModelInfrastructure _proxyModelInfrastructure;
 

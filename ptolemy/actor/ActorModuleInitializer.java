@@ -35,8 +35,6 @@ import java.util.ResourceBundle;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.injection.PtolemyModule;
 
-import com.google.inject.Module;
-
 ///////////////////////////////////////////////////////////////////
 //// ActorModuleInitializer
 /**
@@ -64,7 +62,7 @@ public class ActorModuleInitializer {
      * Get Modules used by the initializer.
      * @return get Modules used by the initializer.
      */
-    public static ArrayList<? extends Module> getModules() {
+    public static ArrayList<PtolemyModule> getModules() {
         return _PTOLEMY_MODULES;
     }
 
@@ -89,7 +87,7 @@ public class ActorModuleInitializer {
     /**
      * Modules used by the initializer
      */
-    private static final ArrayList<Module> _PTOLEMY_MODULES = new ArrayList<Module>();
+    private static final ArrayList<PtolemyModule> _PTOLEMY_MODULES = new ArrayList<PtolemyModule>();
     static {
         _PTOLEMY_MODULES.add(new PtolemyModule(ResourceBundle
                 .getBundle("ptolemy.actor.ActorModule")));

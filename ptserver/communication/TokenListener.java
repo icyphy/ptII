@@ -31,7 +31,6 @@ package ptserver.communication;
 import java.util.Date;
 
 import ptolemy.data.Token;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Settable;
 import ptserver.data.AttributeChangeToken;
 import ptserver.data.CommunicationToken;
@@ -59,10 +58,10 @@ public class TokenListener implements MqttSimpleCallback {
     ////                         constructor                       ////
 
     /** Initialize the instance by reading needed fields from the remoteModel.
-     *  @param remoteModel The remoteModel that created this publisher and controls the state of the simulation.
+     *  @param proxyModelInfrastructure The infrastructure that created this listener and controls the state of the execution.
      */
-    public TokenListener(ProxyModelInfrastructure remoteModel) {
-        _remoteModel = remoteModel;
+    public TokenListener(ProxyModelInfrastructure proxyModelInfrastructure) {
+        _proxyModelInfrastructure = proxyModelInfrastructure;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,8 +95,9 @@ public class TokenListener implements MqttSimpleCallback {
             // The listener is only concerned about the following types.
             if (token instanceof CommunicationToken) {
                 CommunicationToken communicationToken = (CommunicationToken) token;
-                ProxySourceData data = _remoteModel.getProxySourceMap().get(
-                        communicationToken.getTargetActorName());
+                ProxySourceData data = _proxyModelInfrastructure
+                        .getProxySourceMap().get(
+                                communicationToken.getTargetActorName());
                 data.getTokenQueue().add(communicationToken);
 
                 //Notify remote sources to read from the queue.
@@ -106,11 +106,11 @@ public class TokenListener implements MqttSimpleCallback {
                 }
             } else if (token instanceof AttributeChangeToken) {
                 AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
-                Settable remoteAttribute = _remoteModel
+                Settable remoteAttribute = _proxyModelInfrastructure
                         .getRemoteAttributesMap().get(
                                 attributeChangeToken.getTargetSettableName());
 
-                ProxyValueListener listener = _remoteModel
+                ProxyValueListener listener = _proxyModelInfrastructure
                         .getRemoteAttributeListenersMap().get(
                                 attributeChangeToken.getTargetSettableName());
                 synchronized (listener) {
@@ -130,11 +130,11 @@ public class TokenListener implements MqttSimpleCallback {
                     }
                 }
             } else if (token instanceof PingToken) {
-                _remoteModel.getExecutor().execute(
+                _proxyModelInfrastructure.getExecutor().execute(
                         new PongTask(new PongToken(((PingToken) token)
                                 .getTimestamp())));
             } else if (token instanceof PongToken) {
-                _remoteModel.setLastPongToken((PongToken) token);
+                _proxyModelInfrastructure.setLastPongToken((PongToken) token);
             }
         }
     }
@@ -142,9 +142,14 @@ public class TokenListener implements MqttSimpleCallback {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The remote model that created the publisher.
+    /** The infrastructure that created the listener.
      */
-    private final ProxyModelInfrastructure _remoteModel;
+    private final ProxyModelInfrastructure _proxyModelInfrastructure;
+
+    /**
+     * The batch counter used for logging purposes.
+     */
+    private int _batchCount;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -171,10 +176,10 @@ public class TokenListener implements MqttSimpleCallback {
          */
         public void run() {
             try {
-                _remoteModel.getTokenPublisher().sendToken(_token);
-            } catch (IllegalActionException e) {
-                //TODO handle this
-                e.printStackTrace();
+                _proxyModelInfrastructure.getTokenPublisher().sendToken(_token);
+            } catch (Throwable e) {
+                _proxyModelInfrastructure._fireModelException(
+                        "Unhandled exception in the PongTask", e);
             }
         }
 
@@ -185,6 +190,4 @@ public class TokenListener implements MqttSimpleCallback {
          */
         private final PongToken _token;
     }
-
-    private int _batchCount;
 }

@@ -61,7 +61,6 @@ import ptserver.util.ProxyModelBuilder.ProxyModelType;
 import ptserver.util.ServerUtility;
 
 import com.caucho.hessian.client.HessianProxyFactory;
-import com.google.inject.Module;
 
 ///////////////////////////////////////////////////////////////////
 //// RemoteModelTest
@@ -79,7 +78,7 @@ public class RemoteModelTest {
     static {
         // FIXME remove PTServerModule after SysOutActor is deleted 
         // or create a proper initializer for it
-        ArrayList<Module> modules = new ArrayList<Module>();
+        ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
         modules.addAll(ActorModuleInitializer.getModules());
         modules.add(new PtolemyModule(ResourceBundle
                 .getBundle("ptserver.util.PTServerModule")));

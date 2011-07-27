@@ -38,14 +38,13 @@ import ptserver.control.Ticket;
 import ptserver.data.TokenParser;
 
 import com.ibm.mqtt.IMqttClient;
-import com.ibm.mqtt.MqttException;
 
 ///////////////////////////////////////////////////////////////////
 //// TokenPublisher
 /**
  * TokenPublisher batches tokens, converts to them binary and then publishes the result to the MQTT topic.
  *
- * <p>The batch is sent it out periodically according to the period and tokensPerPeriod parameters
+ * <p>The batch is sent it out periodically according to the period parameter.
  *
  * @author Anar Huseynov
  * @version $Id$
@@ -57,12 +56,13 @@ public class TokenPublisher {
 
     /**
      * Create instance of the TokenPublisher with specified period and tokensPerPeriod
-     * @param period Period in millisecond between batches
-     * @param tokensPerPeriod Expected number of tokens per period
+     * @param period The period in milliseconds between batches
+     * @param proxyModelInfrastructure The infrastructure that created this listener and controls the state of the execution.
      */
-    public TokenPublisher(long period, int tokensPerPeriod) {
+    public TokenPublisher(long period,
+            ProxyModelInfrastructure proxyModelInfrastructure) {
         _period = period;
-        //        _tokensPerPeriod = tokensPerPeriod;
+        _proxyModelInfrastructure = proxyModelInfrastructure;
     }
 
     /**
@@ -74,33 +74,23 @@ public class TokenPublisher {
 
             @Override
             public void run() {
-                synchronized (TokenPublisher.this) {
-                    if (_tokenCount > 0) {
-                        try {
+                try {
+                    synchronized (TokenPublisher.this) {
+                        if (_tokenCount > 0) {
                             byte[] batch = _outputStream.toByteArray();
-                            _mqttClient.publish(getTopic(),
-                                    batch,
+                            _mqttClient.publish(getTopic(), batch,
                                     ProxyModelInfrastructure.QOS_LEVEL, false);
                             // TODO remove this or add proper logging
-                            System.out.println("publishing batch " + _batchCount++ + " batch size " + batch.length);
-                        } catch (MqttException e) {
-                            // TODO handle the exception;
-                            e.printStackTrace();
+                            System.out.println("publishing batch "
+                                    + _batchCount++ + " batch size "
+                                    + batch.length);
+                            _outputStream.reset();
+                            _tokenCount = 0;
                         }
-                        //FIXME: use a proper logger or remove
-                        //System.out.println(_batchCount++);
-                        //                if (_tokenCount > _tokensPerPeriod) {
-                        //                    long waitTime = (long) (1.0
-                        //                            * (_tokenCount - _tokensPerPeriod)
-                        //                            / _tokensPerPeriod * _period);
-                        //                    try {
-                        //                        Thread.sleep(waitTime);
-                        //                    } catch (InterruptedException e) {
-                        //                    }
-                        //                }
-                        _outputStream.reset();
-                        _tokenCount = 0;
                     }
+                } catch (Throwable e) {
+                    _proxyModelInfrastructure._fireModelException(
+                            "Unhandled exception in the TokenPublisher", e);
                 }
             }
         }, _period, _period);
@@ -118,7 +108,7 @@ public class TokenPublisher {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
-     * Return mqtt client that is used to send out MQTT messages.
+     * Return MQTT client that is used to send out MQTT messages.
      * @return the mqttClient instance
      * @see #setMqttClient(IMqttClient)
      */
@@ -195,13 +185,6 @@ public class TokenPublisher {
      * The count of tokens in the batch.
      */
     private int _tokenCount;
-
-    /**
-     * TODO: do we need to throttle the source?
-     * Expected number of tokens per period.
-     *
-     *  private final int _tokensPerPeriod;
-     */
     /**
      * The output stream holding the batch.
      */
@@ -217,5 +200,8 @@ public class TokenPublisher {
      * The timer used for sending batch of tokens.
      */
     private Timer _timer;
+    /** The infrastructure that created the listener.
+     */
+    private final ProxyModelInfrastructure _proxyModelInfrastructure;
 
 }

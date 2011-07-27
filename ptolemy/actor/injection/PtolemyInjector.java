@@ -1,5 +1,6 @@
 /*
- PtolemyInjector contains a static reference to the Guice Injector.
+ PtolemyInjector contains a static reference to the Injector loaded with Ptolemy Modules
+ for the given target platform.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -27,14 +28,11 @@
  */
 package ptolemy.actor.injection;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-
 ///////////////////////////////////////////////////////////////////
 //// PtolemyInjector
 /**
- * PtolemyInjector contains a static reference to the Guice Injector.
+ * PtolemyInjector contains a static reference to the Injector loaded with Ptolemy Modules
+ * for the given target platform.
  * The rationale for having a static reference is to avoid hurdle of passing
  * the injector to all needed parties.
  * 
@@ -51,21 +49,27 @@ public class PtolemyInjector {
 
     /**
      * Create an injector for the given set of modules.
-     * @param modules the array of modules that contain binding that Guice Injector
-     * uses to implement dependency injection.
+     * @param modules the array of modules that contain interface to implementation bindings
+     * used to implement dependency injection.
      */
-    public static synchronized void createInjector(Module... modules) {
-        _instance = Guice.createInjector(modules);
+    public static synchronized void createInjector(PtolemyModule... modules) {
+        _instance = new Injector();
+        for (PtolemyModule ptolemyModule : modules) {
+            _instance.loadMappings(ptolemyModule.getBindings());
+        }
     }
 
     /**
      * Create an injector for the given set of modules.
-     * @param modules modules that contain binding that Guice Injector
-     * uses to implement dependency injection.
+     * @param modules the array of modules that contain interface to implementation bindings
+     * used to implement dependency injection.
      */
     public static synchronized void createInjector(
-            Iterable<? extends Module> modules) {
-        _instance = Guice.createInjector(modules);
+            Iterable<? extends PtolemyModule> modules) {
+        _instance = new Injector();
+        for (PtolemyModule ptolemyModule : modules) {
+            _instance.loadMappings(ptolemyModule.getBindings());
+        }
     }
 
     /**

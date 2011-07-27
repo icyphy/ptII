@@ -68,8 +68,6 @@ import ptserver.data.ServerEventToken.EventType;
 import ptserver.data.TokenParser;
 import ptserver.data.TokenParser.HandlerData;
 
-import com.google.inject.Module;
-
 ///////////////////////////////////////////////////////////////////
 //// PtolemyServer
 
@@ -146,7 +144,7 @@ public final class PtolemyServer implements IServerManager {
         Logger logger = null;
         FileHandler logFile = null;
 
-        ArrayList<Module> modules = new ArrayList<Module>();
+        ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
         modules.addAll(ActorModuleInitializer.getModules());
         modules.add(new PtolemyModule(ResourceBundle
                 .getBundle("ptserver.util.PTServerModule")));
@@ -783,7 +781,7 @@ public final class PtolemyServer implements IServerManager {
         // Define the security context.
         ConstraintSecurityHandler security = new ConstraintSecurityHandler();
         security.setLoginService(new HashLoginService("PtolemyServer", userFile
-                .toURL().toExternalForm()));
+                .toURI().toURL().toExternalForm()));
         security.setConstraintMappings(new ConstraintMapping[] { mapping });
 
         // Assign the servlet container context.

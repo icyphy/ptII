@@ -1,6 +1,6 @@
 /*
- ProxyModelInfrastructure set ups infrastructure for executing models
- in a distributed mode between client and server.
+ ProxyModelInfrastructure sets up infrastructure for executing models
+ in a distributed environment between client and server.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -56,6 +56,7 @@ import ptserver.actor.ProxySource;
 import ptserver.control.Ticket;
 import ptserver.data.PingToken;
 import ptserver.data.PongToken;
+import ptserver.data.ServerEventToken;
 import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
 import ptserver.util.ServerUtility;
@@ -84,19 +85,27 @@ public class ProxyModelInfrastructure {
      *
      */
     public interface ProxyModelListener {
-        /**
-         * Notify listener about the expiration of the model connection to another remote model.
-         * @param remoteModel The remote model whose connection expired.
+        /** Notify listener about the expiration of the model connection to another remote model.
+         *  @param proxyModelInfrastructure The infrastructure whose connection expired.
          */
-        public void modelConnectionExpired(ProxyModelInfrastructure remoteModel);
+        void modelConnectionExpired(
+                ProxyModelInfrastructure proxyModelInfrastructure);
 
-        /**
-         * Notify listener the exception in the given model
-         * @param remoteModel The model where the exception happened.
-         * @param exception The exception that triggered this event.
+        /** Notify all model listeners that the simulation has experienced an exception.
+         *  @param proxyModelInfrastructure The infrastructure where the exception happened.
+         *  @param message The message explaining what has happened.
+         *  @param exception The exception that triggered this event.
          */
-        public void modelException(ProxyModelInfrastructure remoteModel,
-                Throwable exception);
+        void modelException(ProxyModelInfrastructure proxyModelInfrastructure,
+                String message, Throwable exception);
+
+        /** Notify all model listeners that an event has happened.
+         *  @param proxyModelInfrastructure The infrastructure where the event happened.
+         *  @param message The message explaining what has happened.
+         *  @param type The type of event that has occurred.
+         */
+        void modelEvent(ProxyModelInfrastructure proxyModelInfrastructure,
+                String message, ServerEventToken.EventType type);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,7 +134,7 @@ public class ProxyModelInfrastructure {
             CompositeActor plainTopLevelActor) throws IllegalActionException,
             TypeConflictException, NameDuplicationException,
             CloneNotSupportedException {
-        _tokenPublisher = new TokenPublisher(100, 1000);
+        _tokenPublisher = new TokenPublisher(100, this);
         _executor = Executors.newFixedThreadPool(3);
         _modelType = modelType;
         _topLevelActor = plainTopLevelActor;
@@ -181,7 +190,35 @@ public class ProxyModelInfrastructure {
             _mqttClient.registerSimpleHandler(null);
             _mqttClient.disconnect();
         } catch (MqttException e) {
-            // TODO handle exception
+            fireModelException(null, e);
+        }
+    }
+
+    /** Notify the model listeners about the model connection expiration.
+     */
+    public void fireModelConnectionExpired() {
+        for (ProxyModelListener listener : _modelListeners) {
+            listener.modelConnectionExpired(this);
+        }
+    }
+
+    /** Notify all model listeners that the simulation has experienced an exception.
+     *  @param message The message explaining what has happened.
+     *  @param e The exception (if any) that should be propagated.
+     */
+    public void fireModelException(String message, Throwable e) {
+        for (ProxyModelListener listener : _modelListeners) {
+            listener.modelException(this, message, e);
+        }
+    }
+
+    /** Notify all model listeners that an event has happened.
+     *  @param message The message explaining what has happened.
+     *  @param type The type of event that has occurred.
+     */
+    public void fireModelEvent(String message, ServerEventToken.EventType type) {
+        for (ProxyModelListener listener : _modelListeners) {
+            listener.modelEvent(this, message, type);
         }
     }
 
@@ -202,6 +239,15 @@ public class ProxyModelInfrastructure {
      */
     public Manager getManager() {
         return _topLevelActor.getManager();
+    }
+
+    /**
+     * Get maximum latency before the proxy sink threads are forced to sleep.
+     * @return the maximum latency.
+     * @see #setMaxLatency(int)
+     */
+    public int getMaxlatency() {
+        return _maxLatency;
     }
 
     /**
@@ -273,7 +319,7 @@ public class ProxyModelInfrastructure {
      * @see #setTimeoutPeriod(int)
      */
     public int getTimeoutPeriod() {
-        return timeoutPeriod;
+        return _timeoutPeriod;
     }
 
     /**
@@ -318,8 +364,27 @@ public class ProxyModelInfrastructure {
      */
     public synchronized void setLastPongToken(PongToken lastPongToken) {
         _lastPongToken = lastPongToken;
+        long previousPingPongLatency = _pingPonglatency;
         _pingPonglatency = System.currentTimeMillis()
                 - lastPongToken.getTimestamp();
+        if (previousPingPongLatency > getMaxlatency()
+                && _pingPonglatency < getMaxlatency()) {
+            // Latency became acceptable, notify sinks to stop waiting.
+            for (ProxySink sink : _proxySinkMap.values()) {
+                synchronized (sink) {
+                    sink.notifyAll();
+                }
+            }
+        }
+    }
+
+    /**
+     * Set the maximum latency before the proxy sink threads are forced to sleep.
+     * @param maxLatency the maximum latency.
+     * @see #getMaxlatency()
+     */
+    public void setMaxLatency(int maxLatency) {
+        _maxLatency = maxLatency;
     }
 
     /**
@@ -338,7 +403,7 @@ public class ProxyModelInfrastructure {
      * @see #getTimeoutPeriod()
      */
     public void setTimeoutPeriod(int timeoutPeriod) {
-        this.timeoutPeriod = timeoutPeriod;
+        _timeoutPeriod = timeoutPeriod;
     }
 
     /**
@@ -387,15 +452,6 @@ public class ProxyModelInfrastructure {
         close();
     }
 
-    /**
-     * Notify the model listeners about the model connection experiation.
-     */
-    protected final void _fireModelConnectionExpired() {
-        for (ProxyModelListener listener : _modelListeners) {
-            listener.modelConnectionExpired(this);
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -430,6 +486,7 @@ public class ProxyModelInfrastructure {
         }
         for (ProxySink proxySink : _proxySinkMap.values()) {
             proxySink.setTokenPublisher(_tokenPublisher);
+            proxySink.setProxyModelInfrastructure(this);
         }
     }
 
@@ -447,18 +504,18 @@ public class ProxyModelInfrastructure {
         for (Object obj : getTopLevelActor().deepEntityList()) {
             ComponentEntity actor = (ComponentEntity) obj;
             if (actor instanceof ProxySink) {
-                ProxySink remoteSink = (ProxySink) actor;
-                remoteSink.setTokenPublisher(_tokenPublisher);
-                _proxySinkMap.put(remoteSink.getTargetEntityName(), remoteSink);
+                ProxySink proxySink = (ProxySink) actor;
+                proxySink.setTokenPublisher(_tokenPublisher);
+                _proxySinkMap.put(proxySink.getTargetEntityName(), proxySink);
+                proxySink.setProxyModelInfrastructure(this);
             } else if (actor instanceof ProxySource) {
-                ProxySource remoteSource = (ProxySource) actor;
+                ProxySource proxySource = (ProxySource) actor;
                 ProxySourceData remoteSourceData = new ProxySourceData(
-                        remoteSource);
-                remoteSource.setProxySourceData(remoteSourceData);
-                remoteSource.setProxyModelInfrastructure(this);
-                getProxySourceMap().put(remoteSource.getTargetEntityName(),
+                        proxySource);
+                proxySource.setProxySourceData(remoteSourceData);
+                proxySource.setProxyModelInfrastructure(this);
+                getProxySourceMap().put(proxySource.getTargetEntityName(),
                         remoteSourceData);
-
             }
             Type type;
             for (Object portObject : actor.portList()) {
@@ -546,7 +603,7 @@ public class ProxyModelInfrastructure {
             }
 
             public int iterate(int count) throws IllegalActionException {
-                //FIXME: Not sure if this is correct
+                // FIXME: Not sure if this is correct
                 throw new IllegalActionException("Iterating is not supported");
             }
 
@@ -565,27 +622,31 @@ public class ProxyModelInfrastructure {
             }
 
             public void stop() {
-                setStopped(true);
-                for (ProxySourceData data : getProxySourceMap().values()) {
-                    synchronized (data.getProxySource()) {
-                        data.getProxySource().notifyAll();
-                    }
-                }
+                _stopExecution();
             }
 
             public void stopFire() {
-                setStopped(true);
-                for (ProxySourceData data : getProxySourceMap().values()) {
-                    synchronized (data.getProxySource()) {
-                        data.getProxySource().notifyAll();
-                    }
-                }
+                _stopExecution();
             }
 
             public void terminate() {
             }
 
             public void wrapup() throws IllegalActionException {
+            }
+
+            private void _stopExecution() {
+                setStopped(true);
+                for (ProxySourceData data : getProxySourceMap().values()) {
+                    synchronized (data.getProxySource()) {
+                        data.getProxySource().notifyAll();
+                    }
+                }
+                for (ProxySink sink : _proxySinkMap.values()) {
+                    synchronized (sink) {
+                        sink.notifyAll();
+                    }
+                }
             }
         });
     }
@@ -600,21 +661,22 @@ public class ProxyModelInfrastructure {
 
             @Override
             public void run() {
-                long msTime = System.currentTimeMillis();
                 try {
+                    long msTime = System.currentTimeMillis();
                     _tokenPublisher.sendToken(new PingToken(msTime));
-                } catch (IllegalActionException e) {
-                    //TODO handle this
-                }
-                long latency = msTime - _getLastPongToken().getTimestamp();
-                // update ping pong latency if the token was not received roughly within last 2 periods.
-                if (latency > _PING_PERIOD * 2) {
-                    _pingPonglatency = latency;
-                }
-                if (timeoutPeriod > 0) {
-                    if (latency > timeoutPeriod) {
-                        _fireModelConnectionExpired();
+
+                    long latency = msTime - _getLastPongToken().getTimestamp();
+                    // update ping pong latency if the token was not received roughly within last 2 periods.
+                    if (latency > _PING_PERIOD * 2) {
+                        _pingPonglatency = latency;
                     }
+                    if (_timeoutPeriod > 0) {
+                        if (latency > _timeoutPeriod) {
+                            fireModelConnectionExpired();
+                        }
+                    }
+                } catch (Throwable e) {
+                    fireModelException(null, e);
                 }
             }
         }, 0, _PING_PERIOD);
@@ -727,11 +789,15 @@ public class ProxyModelInfrastructure {
     /**
      * Model time out period.
      */
-    private int timeoutPeriod = 30000;
+    private int _timeoutPeriod = 30000;
 
     /**
      * The period between sending ping tokens.
      */
     private static final int _PING_PERIOD = 1000;
+    /**
+     * The maximum latency before forcing the proxy sinks to sleepl.
+     */
+    private int _maxLatency = 500;
 
 }
