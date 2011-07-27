@@ -38,9 +38,6 @@
 		<pathelement location="ptserver/lib/jetty-all-7.4.1.v20110513.jar" />
 		<pathelement location="ptserver/lib/servlet-api-2.5.jar" />
 		<pathelement location="ptserver/lib/wmqtt.jar" />
-		<pathelement location="lib/aopalliance.jar" />
-		<pathelement location="lib/guice-3.0.jar" />
-		<pathelement location="lib/javax.inject.jar" />
 		<pathelement location="lib/org-netbeans-api-visual.jar" />
 		<pathelement location="lib/org-openide-util-lookup.jar" />
 		<pathelement location="lib/org-openide-util.jar" />				
