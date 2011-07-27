@@ -12,7 +12,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-public abstract class AbstactAWTPlaceable {
+public abstract class AbstactPlaceableJavaSE {
 
     public void init(TypedAtomicActor actor) throws IllegalActionException,
             NameDuplicationException {

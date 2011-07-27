@@ -41,7 +41,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
-import ptolemy.actor.gui.AbstactAWTPlaceable;
+import ptolemy.actor.gui.AbstactPlaceableJavaSE;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PortableContainer;
@@ -55,11 +55,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// AWTDisplay
+//// DisplayJavaSE
 
 /**
 <p>
-AWTDisplay is the implementation of the DisplayInterface that uses AWT and Swing 
+DisplayJavaSE is the implementation of the DisplayInterface that uses AWT and Swing 
 classes.  Values of the tokens arriving on the input channels in a
 text area on the screen.  Each input token is written on a
 separate line.  The input type can be of any type.
@@ -81,7 +81,8 @@ to use this actor to log large output streams.</p>
 @since Ptolemy II 1.0
 */
 
-public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface {
+public class DisplayJavaSE extends AbstactPlaceableJavaSE implements
+        DisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
@@ -106,7 +107,7 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
         textArea.append(value);
 
         // Append a newline character.
-        if (value.length() > 0 || !display.isSuppressBlankLines) {
+        if (value.length() > 0 || !_display.isSuppressBlankLines) {
             textArea.append("\n");
         }
 
@@ -161,7 +162,7 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
     public void init(Display displayActor) throws IllegalActionException,
             NameDuplicationException {
 
-        display = displayActor;
+        _display = displayActor;
         super.init(displayActor);
 
     }
@@ -177,13 +178,13 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
             // Place the text area in its own frame.
             // Need an effigy and a tableau so that menu ops work properly.
 
-            Effigy containerEffigy = Configuration.findEffigy(display
+            Effigy containerEffigy = Configuration.findEffigy(_display
                     .toplevel());
 
             if (containerEffigy == null) {
                 throw new IllegalActionException(
                         "Cannot find effigy for top level: "
-                                + (display.toplevel()).getFullName());
+                                + (_display.toplevel()).getFullName());
             }
 
             try {
@@ -194,9 +195,9 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
                 // two reasons: Wrong title bar label, and it causes a save-as
                 // to destroy the original window.
 
-                textEffigy.identifier.setExpression(display.getFullName());
+                textEffigy.identifier.setExpression(_display.getFullName());
 
-                _tableau = new DisplayWindowTableau(display, textEffigy,
+                _tableau = new DisplayWindowTableau(_display, textEffigy,
                         "tableau");
                 _frame = _tableau.frame.get();
             } catch (Exception ex) {
@@ -206,11 +207,11 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
 
             textArea = ((TextEditor) _frame).text;
 
-            int numRows = ((IntToken) display.rowsDisplayed.getToken())
+            int numRows = ((IntToken) _display.rowsDisplayed.getToken())
                     .intValue();
             textArea.setRows(numRows);
 
-            int numColumns = ((IntToken) display.columnsDisplayed.getToken())
+            int numColumns = ((IntToken) _display.columnsDisplayed.getToken())
                     .intValue();
 
             textArea.setColumns(numColumns);
@@ -286,7 +287,7 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
 
         String titleSpec;
         try {
-            titleSpec = display.title.stringValue();
+            titleSpec = _display.title.stringValue();
         } catch (IllegalActionException e) {
             titleSpec = "Error in title: " + e.getMessage();
         }
@@ -296,11 +297,11 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
         }
 
         try {
-            int numRows = ((IntToken) display.rowsDisplayed.getToken())
+            int numRows = ((IntToken) _display.rowsDisplayed.getToken())
                     .intValue();
             textArea.setRows(numRows);
 
-            int numColumns = ((IntToken) display.columnsDisplayed.getToken())
+            int numColumns = ((IntToken) _display.columnsDisplayed.getToken())
                     .intValue();
             textArea.setColumns(numColumns);
 
@@ -310,7 +311,7 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
 
         // Make sure the text is not editable.
         textArea.setEditable(false);
-        AWTContainer = container;
+        _awtContainer = container;
 
     }
 
@@ -321,10 +322,10 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (textArea != null) {
-                    if ((AWTContainer != null) && (_scrollPane != null)) {
-                        AWTContainer.remove(_scrollPane);
-                        AWTContainer.invalidate();
-                        AWTContainer.repaint();
+                    if ((_awtContainer != null) && (_scrollPane != null)) {
+                        _awtContainer.remove(_scrollPane);
+                        _awtContainer.invalidate();
+                        _awtContainer.repaint();
                     } else if (_frame != null) {
                         _frame.dispose();
                     }
@@ -389,7 +390,7 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
     public void setTitle(String stringValue) throws IllegalActionException {
 
         if (_tableau != null) {
-            if (display.title.stringValue().trim().equals("")) {
+            if (_display.title.stringValue().trim().equals("")) {
                 _tableau.setTitle(stringValue);
             }
 
@@ -401,10 +402,10 @@ public class AWTDisplay extends AbstactAWTPlaceable implements DisplayInterface 
     ////                         private members                   ////
 
     /** The AWT Container */
-    private Container AWTContainer;
+    private Container _awtContainer;
 
     /** Reference to the Display actor */
-    private Display display;
+    private Display _display;
 
     /** The version of TextEditorTableau that creates a Display window. */
     private DisplayWindowTableau _tableau;

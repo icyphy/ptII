@@ -1,5 +1,5 @@
 /*
- Implementation of VergilSound actor that in dependent on javax 
+ Implementation of LiveSoundInterface actor that in dependent on javax. 
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -38,10 +38,10 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
 ///////////////////////////////////////////////////////////////////
-////JavaxLiveSound
+//// LiveSoundJavaSE
 
 /**
- Implementation of VergilSound actor that in dependent on javax. 
+ Implementation of LiveSoundInterface that in dependent on javax. 
  This actor sequentially outputs audio samples that are captured
  from the audio input port of the computer. The audio input port
  typically corresponds to either the microphone input, line-in,
@@ -61,8 +61,7 @@ import javax.sound.sampled.TargetDataLine;
  @Pt.ProposedRating Red (ishwinde)
  @Pt.AcceptedRating Red (ishwinde)
  */
-
-public class JavaxLiveSound extends LiveSoundCommon implements
+public class LiveSoundJavaSE extends LiveSoundCommon implements
         LiveSoundInterface {
 
     /** Flush queued data from the capture buffer.  The flushed data is

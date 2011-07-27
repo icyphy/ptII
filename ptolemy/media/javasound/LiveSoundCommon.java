@@ -1,5 +1,5 @@
 /*
-Class containing the platform independent code of LiveSound actor.
+ Class containing the platform independent code of LiveSound.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 ///////////////////////////////////////////////////////////////////
-////LiveSoundCommon
+//// LiveSoundCommon
 
 /**
 Class containing the platform independent code of LiveSound actor.
@@ -44,7 +44,6 @@ Class containing the platform independent code of LiveSound actor.
 @Pt.ProposedRating Red (ishwinde)
 @Pt.AcceptedRating Red (ishwinde)
 */
-
 public class LiveSoundCommon {
 
     /** Add a live sound listener. The listener will be notified

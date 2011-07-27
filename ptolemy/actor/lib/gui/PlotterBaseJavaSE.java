@@ -21,7 +21,7 @@ import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotBoxInterface;
 
-public class PlotterBaseAWT implements PlotterBaseInterface {
+public class PlotterBaseJavaSE implements PlotterBaseInterface {
 
     public void init(PlotterBase plotterBase) {
         _plotterBase = plotterBase;
@@ -217,6 +217,14 @@ public class PlotterBaseAWT implements PlotterBaseInterface {
         }
     }
 
+    public PlotBoxInterface newPlot() {
+        return new Plot();
+    }
+
+    public void setPlatformContainer(Object container) {
+        _container = (Container) container;
+    }
+
     protected SizeAttribute _plotSize;
     protected PlotterBase _plotterBase;
     protected WindowPropertiesAttribute _windowProperties;
@@ -238,13 +246,5 @@ public class PlotterBaseAWT implements PlotterBaseInterface {
         public void windowClosing(WindowEvent e) {
             _plotterBase.cleanUp();
         }
-    }
-
-    public PlotBoxInterface newPlot() {
-        return new Plot();
-    }
-
-    public void setPlatformContainer(Object container) {
-        _container = (Container) container;
     }
 }
