@@ -882,11 +882,9 @@ public final class PtolemyServer implements IServerManager {
          *  @param exception The exception that was thrown.
          */
         public void modelException(ProxyModelInfrastructure remoteModel,
-                Throwable exception) {
+                String message, Throwable exception) {
             PtolemyServer.LOGGER.log(Level.SEVERE, "Ticket: "
                     + remoteModel.getTicket().getTicketID(), exception);
-            throw new IllegalStateException("Ticket: "
-                    + remoteModel.getTicket().getTicketID());
         }
 
         /** React to the simulation event.

@@ -296,7 +296,7 @@ public class RemoteModelTest {
 
                     public void modelException(
                             ProxyModelInfrastructure remoteModel,
-                            Throwable exception) {
+                            String message, Throwable exception) {
 
                     }
 

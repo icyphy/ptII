@@ -154,7 +154,7 @@ public class ProxyModelInfrastructure {
     public ProxyModelInfrastructure(ProxyModelType modelType,
             CompositeActor preprocessedTopLevelActor,
             HashMap<String, String> modelTypes) throws IllegalActionException {
-        _tokenPublisher = new TokenPublisher(100, 1000);
+        _tokenPublisher = new TokenPublisher(100, this);
         _executor = Executors.newFixedThreadPool(3);
         _modelType = modelType;
         _modelTypes.putAll(modelTypes);

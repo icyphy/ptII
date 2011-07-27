@@ -89,7 +89,7 @@ public class TokenPublisher {
                         }
                     }
                 } catch (Throwable e) {
-                    _proxyModelInfrastructure._fireModelException(
+                    _proxyModelInfrastructure.fireModelException(
                             "Unhandled exception in the TokenPublisher", e);
                 }
             }
