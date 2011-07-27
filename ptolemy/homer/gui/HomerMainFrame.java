@@ -91,7 +91,7 @@ public class HomerMainFrame extends JFrame {
      *  @param application The application hosting this frame.
      */
     public HomerMainFrame(HomerApplication application) {
-        setTitle("UI Designer");
+        setTitle("Homer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(DEFAULT_BOUNDS, DEFAULT_BOUNDS, DEFAULT_FRAME_WIDTH,
                 DEFAULT_FRAME_HEIGHT);
