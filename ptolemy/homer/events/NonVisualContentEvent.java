@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
 */
+
 package ptolemy.homer.events;
 
 import java.awt.event.ActionEvent;
@@ -33,24 +33,26 @@ import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// NonVisualContentEvent
-/**
- * Non visual content event notifying about changes in non visual object list.
+
+/** Non-visual content event notifying about changes in non-visual object list.
  * 
- * @author Peter Folder
- * @version $Id$ 
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (pdf)
- * @Pt.AcceptedRating Red (pdf)
+ *  @author Peter Folder
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (pdf)
+ *  @Pt.AcceptedRating Red (pdf)
  */
 public class NonVisualContentEvent extends ActionEvent {
 
-    /**
-     * Create a new instance of the event.
-     * @param source The source producing the event.
-     * @param id The id of the event.
-     * @param command The command of the event.
-     * @param element The affected element.
-     * @see ActionEvent
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Create a new instance of the event.
+     *  @param source The source producing the event.
+     *  @param id The id of the event.
+     *  @param command The command of the event.
+     *  @param element The affected element.
+     *  @see ActionEvent
      */
     public NonVisualContentEvent(Object source, int id, String command,
             NamedObj element) {
@@ -60,9 +62,9 @@ public class NonVisualContentEvent extends ActionEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Get the element affected.
-     * @return the element affected.
+
+    /** Get the element affected.
+     *  @return The element affected.
      */
     public NamedObj getElement() {
         return _element;
@@ -70,9 +72,8 @@ public class NonVisualContentEvent extends ActionEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The element affected.
+
+    /** The element affected.
      */
     private NamedObj _element;
-
 }

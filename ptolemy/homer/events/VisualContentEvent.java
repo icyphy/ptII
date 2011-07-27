@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
 */
+
 package ptolemy.homer.events;
 
 import java.awt.event.ActionEvent;
@@ -33,22 +33,25 @@ import ptolemy.homer.kernel.PositionableElement;
 
 //////////////////////////////////////////////////////////////////////////
 //// VisualContentEvent
-/**
- * An event notifying about changes in the visual content.
- * @author Peter Foldes
- * @version $Id$ 
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (pdf)
- * @Pt.AcceptedRating Red (pdf)
+
+/** An event notifying about changes in the visual content.
+ * 
+ *  @author Peter Foldes
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (pdf)
+ *  @Pt.AcceptedRating Red (pdf)
  */
 public class VisualContentEvent extends ActionEvent {
 
-    /**
-     * Create a new instance of the visual content event.
-     * @param source The source of the event.
-     * @param id The id of the event.
-     * @param command The command of the event.
-     * @param element The affected element.
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Create a new instance of the visual content event.
+     *  @param source The source of the event.
+     *  @param id The id of the event.
+     *  @param command The command of the event.
+     *  @param element The affected element.
      */
     public VisualContentEvent(Object source, int id, String command,
             PositionableElement element) {
@@ -58,9 +61,9 @@ public class VisualContentEvent extends ActionEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Get the affected positionable element.
-     * @return the affected positionable element.
+
+    /** Get the affected positionable element.
+     *  @return The affected positionable element.
      */
     public PositionableElement getElement() {
         return _element;
@@ -68,8 +71,8 @@ public class VisualContentEvent extends ActionEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The affected positionable element.
+
+    /** The affected positionable element.
      */
     private PositionableElement _element;
 }

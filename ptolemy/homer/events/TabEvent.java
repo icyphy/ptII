@@ -1,4 +1,4 @@
-/* An event notifying about changed in the tabs.
+/* An event notifying about changes in the tabs.
 
 Copyright (c) 2000-2010 The Regents of the University of California.
 All rights reserved.
@@ -23,33 +23,35 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
 */
+
 package ptolemy.homer.events;
 
 import java.awt.event.ActionEvent;
 
 import ptolemy.homer.kernel.ContentPrototype;
 
-/**
- * An event notifying about changed in the tabs.
- * @author Peter Foldes
- * @version $Id$ 
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (pdf)
- * @Pt.AcceptedRating Red (pdf)
+/** An event notifying about changed in the tabs.
+ * 
+ *  @author Peter Foldes
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (pdf)
+ *  @Pt.AcceptedRating Red (pdf)
  */
 public class TabEvent extends ActionEvent {
 
-    /**
-     * Create a new instance of the event.
-     * @param source The soruce of the event.
-     * @param id The id of the event.
-     * @param command The command of the event.
-     * @param tag The tag of the tab.
-     * @param name The name of the tab.
-     * @param position The position of the tab
-     * @param content The content of the tab.
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructor                       ////
+
+    /** Create a new instance of the tab event.
+     *  @param source The source of the event.
+     *  @param id The id of the event.
+     *  @param command The command of the event.
+     *  @param tag The tag of the tab.
+     *  @param name The name of the tab.
+     *  @param position The ordinal position of the tab.
+     *  @param content The content of the tab.
      */
     public TabEvent(Object source, int id, String command, String tag,
             String name, int position, ContentPrototype content) {
@@ -62,55 +64,51 @@ public class TabEvent extends ActionEvent {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Return the tag of the tab.
-     * @return the tag of the tab.
-     */
-    public String getTag() {
-        return _tag;
-    }
 
-    /**
-     * Return the name of the tab.
-     * @return The name of the tab.
-     */
-    public String getName() {
-        return _name;
-    }
-
-    /**
-     * Return the position of the tab.
-     * @return the position of the tab.
-     */
-    public int getPosition() {
-        return _position;
-    }
-
-    /**
-     * Return the content of the tab.
-     * @return the content of the tab.
+    /** Return the content of the tab.
+     *  @return The content of the tab.
      */
     public ContentPrototype getContent() {
         return _content;
     }
 
+    /** Return the name of the tab.
+     *  @return The name of the tab.
+     */
+    public String getName() {
+        return _name;
+    }
+
+    /** Return the position of the tab.
+     *  @return The position of the tab.
+     */
+    public int getPosition() {
+        return _position;
+    }
+
+    /** Return the tag of the tab.
+     *  @return The tag of the tab.
+     */
+    public String getTag() {
+        return _tag;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The tag of the tab.
-     */
-    private final String _tag;
-    /**
-     * The name of the tab.
-     */
-    private final String _name;
-    /**
-     * The position of the tab.
-     */
-    private final int _position;
-    /**
-     * The content of the tab.
+
+    /** The content of the tab.
      */
     private final ContentPrototype _content;
 
+    /** The name of the tab.
+     */
+    private final String _name;
+
+    /** The position of the tab.
+     */
+    private final int _position;
+
+    /** The tag of the tab.
+     */
+    private final String _tag;
 }
