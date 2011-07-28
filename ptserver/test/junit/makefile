@@ -46,9 +46,11 @@ JSRCS = \
 	AllTests.java \
 	FileDownloadTest.java \
 	RemoteModelTest.java \
-	ServerManagerTest.java \
+	RESTGetHandlerTest.java \
+	ServerTest.java \
 	ServletTest.java \
 	TokenParserTest.java \
+	TypeParserTest.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
@@ -69,15 +71,29 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = \
+	addermodel_test.layout.xml \
+	addermodel.xml \
+	audiorecorder2.xml \
+	audiorecorder.xml \
+	DisplayModel.xml \
 	HelloWorld.xml \
-	addermodel.xml
+	NoisySinewave_layout.layout.xml \
+	NoisySinewave.xml \
+	sequence_client.layout.xml \
+	sequence.xml \
+	SoundSpectrum2_layout.layout.xml \
+	SoundSpectrum2.xml \
+	SoundSpectrum_layout.layout.xml \
+	SoundSpectrum.xml \
+	SynthesizedVoice.xml
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	PtolemyLog.log \
 	'RemoteModelTest$$1.class' \
-	'RemoteModelTest$$2.class'
+	'RemoteModelTest$$2.class' \
+	'RemoteModelTest$$3.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 

@@ -32,7 +32,7 @@
 ME =		ptserver/test
 
 # PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
-DIRS =		$(PTJUNIT_DIR) helper
+DIRS =		$(PTJUNIT_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -49,8 +49,6 @@ TCL_SRCS = \
 
 JSRCS = \
 	JavaSESysOutActor.java \
-	PtolemyTestClient.java \
-	PtolemyTestServer.java \
 	QMTest.java \
 	StringAttributeWidget.java \
 	SysOutActor.java \
@@ -75,7 +73,6 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 MISC_FILES =	\
 	alljtests.tcl \
 	alljsimpletests.tcl \
-	helper \
 	junit
 
 # make checkjunk will not report OPTIONAL_FILES as trash

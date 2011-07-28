@@ -56,10 +56,10 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Keep this list alphabetized.
 JSRCS = \
-	RemoteModel.java \
-	RemoteModelResponse.java \
-	RemoteSourceData.java \
-	RemoteValueListener.java \
+	ProxyModelInfrastructure.java \
+	ProxyModelResponse.java \
+	ProxySourceData.java \
+	ProxyValueListener.java \
 	TokenListener.java \
 	TokenPublisher.java
 
@@ -68,12 +68,10 @@ JSRCS = \
 MISC_FILES = 
 
 OPTIONAL_FILES = \
-	'PtolemyTestServer$$1.class' \
-	'RemoteModel$$1.class' \
-	'RemoteModel$$2.class' \
-	'RemoteModel$$3.class' \
-	'RemoteModel$$RemoteModelType.class' \
-	'RemoteModel$$RemoteModelListener.class' \
+	'ProxyModelInfrastructure$$1.class' \
+	'ProxyModelInfrastructure$$2.class' \
+	'ProxyModelInfrastructure$$3.class' \
+	'ProxyModelInfrastructure$$ProxyModelListener.class' \
 	'TokenListener$$PongTask.class' \
 	'TokenPublisher$$1.class'
 

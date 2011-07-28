@@ -69,7 +69,8 @@ MISC_FILES =
 OPTIONAL_FILES = \
 	'PtolemyServer$$1.class' \
 	'PtolemyServer$$2.class' \
-	'PtolemyServer$$3.class'
+	'PtolemyServer$$3.class' \
+	'PtolemyServer$$4.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

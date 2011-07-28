@@ -50,19 +50,26 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJARS =
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	PTServerModule.properties
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Keep this list alphabetized.
 JSRCS = \
-	PtolemyModuleJavaSEInitializer.java
+	LayoutValidationErrors.java \
+	ProxyModelBuilder.java \
+	PtolemyModuleJavaSEInitializer.java \
+	ServerUtility.java \
+	TypeParser.java
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = 
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'ProxyModelBuilder$$1.class' \
+	'ProxyModelBuilder$$ProxyModelType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
