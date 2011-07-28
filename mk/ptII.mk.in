@@ -538,16 +538,6 @@ PTGRDOMAIN_JAR =	@PTGRDOMAIN_JAR@
 # PTGR_PACKAGES is used in ptII/doc/makefile
 PTGR_PACKAGES =		@PTGR_PACKAGES@
 
-# PTINJECTION_DIR is set to injection and used in
-# $PTII/ptolemy/actor/makefile if guice is found.
-PTINJECTION_DIR =	@PTINJECTION_DIR@
-
-# Jar files necessary for compilation of injection
-PTINJECTION_JARS =	@PTINJECTION_JARS@
-
-# INJECTION_PACKAGES is used in ptII/doc/makefile
-PTINJECTION_PACKAGES =	@PTINJECTION_PACKAGES@
-
 # Set to itextpdf and used in
 # $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
 PTITEXTPDF_DIR = 	@PTITEXTPDF_DIR@

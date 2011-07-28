@@ -2076,60 +2076,6 @@ if test -z "$PTJAI_DIR"; then
 fi
 
 #--------------------------------------------------------------------
-#       $PTII/ptolemy/actor/injection is used for depdency injection
-#	to support different GUIs
-#	http://chess.eecs.berkeley.edu
-#	
-#--------------------------------------------------------------------
-
-# PTINJECTION_DIR is set to injection and used in
-# $PTII/ptolemy/actor/makefile if guice is found
-PTINJECTION_DIR=
-
-# Jar files used by injection
-PTGUICE_JAR=
-
-# Jar files necessary for compilation of injection
-PTINJECTION_JARS=
-
-# We only need to look for Hessian if $INJECTION_USER_DIR is present
-INJECTION_USER_DIR="$PTII/ptolemy/actor/injection"
-if test ! -d "$INJECTION_USER_DIR"; then
-    PT_MSG_STATUS([$INJECTION_USER_DIR is not present,
-    so we need not find the Guice interface.])
-else
-    AC_MSG_CHECKING([for Guice, used by injection ])
-    AC_ARG_WITH(guice, [  --with-guice=JAR       use guice.jar from JAR,
-                          defaults to \$PTII/lib/guice-3.0.jar],
-	PTGUICE_JAR=$withval,
-	PTGUICE_JAR=$PTII/lib/guice-3.0.jar)
-
-    if test  -f "$PTGUICE_JAR"; then
-	PT_MSG_RESULT([$PTGUICE_JAR])
-	# Set to injection and used in
-	# $PTII/ptolemy/actor/makefile
-	PTINJECTION_DIR=injection
-        # INJECTION_PACKAGES is used in ptII/doc/makefile
-	PTINJECTION_PACKAGES=ptolemy.actor.injection
-    fi
-
-    if test "$PTINJECTION_DIR" = ""; then
-        AC_MSG_WARN([Failed to find the jar files necessary to compile injection.
-    The injection code interface is used to support Ptolemy running on the Android.
-    For further instructions, see $PTII/ptolemy/actor/injection/package.html] )
-    else
-        PTINJECTION_JARS="${PTGUICE_JAR}${CLASSPATHSEPARATOR}"
-    fi
-fi
-
-if test -z "$PTINJECTION_JARS"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/injection/"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTGUICE_JAR\"/>"
-fi 
-
-#--------------------------------------------------------------------
 #       JavaMail is a Java interface that sends email
 #	http://www.oracle.com/technetwork/java/index-138643.html
 #--------------------------------------------------------------------
@@ -4025,7 +3971,6 @@ PTSERVLET_JAR=
 PTWMQTT_JAR=
 
 # Jar files necessary for compilation of ptserver.
-# This also includes guice.jar from above.
 PTSERVER_JARS=
 
 # We only need to look for Hessian if $PTSERVER_USER_DIR is present
@@ -4060,49 +4005,20 @@ else
             if test  -f "$PTSERVLET_JAR"; then
 	        PT_MSG_RESULT([$PTSERVLET_JAR])
 
-		AC_MSG_CHECKING([for Guice, used by injection and ptserver ])
-		AC_ARG_WITH(guice, [  --with-guice=JAR       use guice.jar from JAR,
-                          defaults to \$PTII/lib/guice-3.0.jar],
-			  PTGUICE_JAR=$withval,
-			  PTGUICE_JAR=$PTII/lib/guice-3.0.jar)
-
-                if test  -f "$PTGUICE_JAR"; then
-
-		    AC_MSG_CHECKING([for WMQTT, used by pserver ])
-	    	    AC_ARG_WITH(wmqtt, [  --with-wmqtt=JAR       use wmqtt.jar from JAR,
+	        AC_MSG_CHECKING([for WMQTT, used by pserver ])
+	    	AC_ARG_WITH(wmqtt, [  --with-wmqtt=JAR       use wmqtt.jar from JAR,
                           defaults to \$PTII/ptserver/lib/wmqtt.jar],
-	    	    PTWMQTT_JAR=$withval,
-	            PTWMQTT_JAR=$PTII/ptserver/lib/wmqtt.jar)
+	    	PTWMQTT_JAR=$withval,
+	        PTWMQTT_JAR=$PTII/ptserver/lib/wmqtt.jar)
 
-                    if test  -f "$PTWMQTT_JAR"; then
-	                PT_MSG_RESULT([$PTWMQTT_JAR])
+                if test  -f "$PTWMQTT_JAR"; then
+	            PT_MSG_RESULT([$PTWMQTT_JAR])
 
-		        AC_MSG_CHECKING([for javax.inject, used by ptserver runtime and tests ])
-	    	        AC_ARG_WITH(wmqtt, [  --with-javax-inject=JAR       use javax.inject.jar from JAR,
-                            defaults to \$PTII/lib/javax.inject.jar],
-	    	        PTJAVAX_INJECT_JAR=$withval,
-	                PTJAVAX_INJECT_JAR=$PTII/lib/javax.inject.jar)
-
-                        if test  -f "$PTJAVAX_INJECT_JAR"; then
-	                    PT_MSG_RESULT([$PTJAVAX_INJECT_JAR])
-
-		            AC_MSG_CHECKING([for aopalliance.jar used by ptserver runtime and tests ])
-	    	            AC_ARG_WITH(wmqtt, [  --with-aopalliance=JAR       use aopalliance.jar from JAR,
-                                 defaults to \$PTII/lib/aopalliance.jar],
-	    	            PTAOPALLIANCE_JAR=$withval,
-	                    PTAOPALLIANCE_JAR=$PTII/lib/aopalliance.jar)
-
-                            if test  -f "$PTAOPALLIANCE_JAR"; then
-	                        PT_MSG_RESULT([$PTAOPALLIANCE_JAR])
-
-	                        # Set to ptserver and used in
-	                        # $PTII/makefile
-	                        PTSERVER_DIR=ptserver
-            	                # PTSERVER_PACKAGES is used in ptII/doc/makefile
-		                PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
-                            fi				
-                        fi			    
-                    fi
+	            # Set to ptserver and used in
+	            # $PTII/makefile
+	            PTSERVER_DIR=ptserver
+            	    # PTSERVER_PACKAGES is used in ptII/doc/makefile
+		    PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
                 fi
             fi	
          fi
@@ -4113,7 +4029,7 @@ else
     The ptserver interface is used to support Ptolemy running on the Android.
     For further instructions, see $PTII/ptserver/package.html] )
     else
-        PTSERVER_JARS="${PTAOPALLIANCE_JAR}${CLASSPATHSEPARATOR}${PTGUICE_JAR}${CLASSPATHSEPARATOR}${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}${CLASSPATHSEPARATOR}${PTJAVAX_INJECT_JAR}"
+        PTSERVER_JARS="${CLASSPATHSEPARATOR}${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
     fi
 fi
 
@@ -4121,11 +4037,7 @@ if test -z "$PTSERVER_JARS"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptserver/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTAOPALLIANCE_JAR\"/>"
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
        <classpathentry kind=\"lib\" path=\"$PTHESSIAN_JAR\"/>"
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTJAVAX_INJECT_JAR\"/>"
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
        <classpathentry kind=\"lib\" path=\"$PTJETTY_JAR\"/>"
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
@@ -5483,16 +5395,6 @@ AC_SUBST(PTGR_PACKAGES)
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
 AC_SUBST(PTII)
-
-# PTINJECTION_DIR is set to injection and used in
-# $PTII/ptolemy/actor/makefile if guice is found
-AC_SUBST(PTINJECTION_DIR)
-
-# Jar files necessary for compilation of injection
-AC_SUBST(PTINJECTION_JARS)
-
-# INJECTION_PACKAGES is used in ptII/doc/makefile
-AC_SUBST(PTINJECTION_PACKAGES)
 
 # Set to itextpdf and used in
 # $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
