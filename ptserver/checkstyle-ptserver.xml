@@ -110,14 +110,14 @@
 			<property name="applyToPublic" value="false" />
 		</module>
 		<module name="ConstantName">
-			<property name="format" value="^[A-Z0-9]*$" />
+			<property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$" />
 			<property name="applyToProtected" value="false" />
 			<property name="applyToPrivate" value="false" />
 			<property name="applyToPackage" value="true" />
 			<property name="applyToPublic" value="true" />
 		</module>
 		<module name="ConstantName">
-			<property name="format" value="^[_A-Z0-9]*$" />
+			<property name="format" value="^_[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$" />
 			<property name="applyToProtected" value="true" />
 			<property name="applyToPrivate" value="true" />
 			<property name="applyToPackage" value="false" />
