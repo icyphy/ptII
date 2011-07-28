@@ -39,10 +39,11 @@ import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// PortablePlaceableWidget
-/**
- * The widget visualizes only named objects that implement {@link PortablePlaceable} interface.
+
+/** The widget visualizes only named objects that implement {@link PortablePlaceable} interface.
  * It requests the named object to place itself into a provided container.  The container is then covered
  * with glass pane in order to prevent event propagation.
+ * 
  * @author Anar Huseynov
  * @version $Id$ 
  * @since Ptolemy II 8.1
@@ -51,42 +52,44 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class PortablePlaceableWidget extends GlassPaneWidget {
 
-    /**
-     * Create a new instance of the widget by requesting the element to place
-     * itselft into the provided container.
-     * @param scene
-     * @param element
+    /** Create a new instance of the widget by requesting the element to place
+     *  itselft into the provided container.
+     *  @param scene The scene.
+     *  @param element The positionable element.
      */
     public PortablePlaceableWidget(Scene scene, PositionableElement element) {
         super(scene, element);
+
         NamedObj namedObject = element.getElement();
         if (!(namedObject instanceof PortablePlaceable)) {
             throw new IllegalArgumentException(
                     "NamedObject must be instance of PortablePlaceable");
         }
+
         ((PortablePlaceable) namedObject).place(new AWTContainer(
                 _containerPanel) {
             @Override
             public void add(Object object) {
-                placeComponent((Component) object);
+                _placeComponent((Component) object);
             }
 
         });
+
         // Workaround for actors that don't use PortableContainer's add method.
         if (_containerPanel.getComponentCount() > 0) {
             Component component = _containerPanel.getComponent(0);
             _containerPanel.remove(component);
-            placeComponent(component);
+            _placeComponent(component);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * Place the component into container covered by a glasspane.
-     * @param object The object to place.
+
+    /** Place the component into container covered by a glasspane.
+     *  @param component The object to place.
      */
-    private void placeComponent(Component component) {
+    private void _placeComponent(Component component) {
         setGlassPaneSize(component.getPreferredSize());
         super.place(component);
     }

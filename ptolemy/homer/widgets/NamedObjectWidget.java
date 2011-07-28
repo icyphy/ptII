@@ -35,34 +35,32 @@ import ptolemy.homer.kernel.PositionableElement;
 ///////////////////////////////////////////////////////////////////
 //// NamedObjectWidget
 
-/**
- * The base named object widget class that implements {@link NamedObjectWidgetInterface}.
- * @author Anar Huseynov
- * @version $Id$ 
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (ahuseyno)
- * @Pt.AcceptedRating Red (ahuseyno)
+/** The base named object widget class that implements {@link NamedObjectWidgetInterface}.
+ *  
+ *  @author Anar Huseynov
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
  */
 public abstract class NamedObjectWidget extends Widget implements
         NamedObjectWidgetInterface {
 
-    /**
-     * Create new instance of the widget.
-     * @param scene The scene of the widget.
-     * @param namedObject The named object to visualize.
+    /** Create new instance of the widget.
+     *  @param scene The scene of the widget.
+     *  @param element The named object to visualize.
      */
     public NamedObjectWidget(Scene scene, PositionableElement element) {
         super(scene);
         _element = element;
         setCheckClipping(true);
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Return positionable element that the instance is visualizing.
-     * @return the positionable element.
+
+    /** Return positionable element that the instance is visualizing.
+     *  @return The positionable element.
      */
     public PositionableElement getPositionableElement() {
         return _element;
@@ -70,9 +68,8 @@ public abstract class NamedObjectWidget extends Widget implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The positionable element that the widget is visualizing.
+
+    /** The positionable element that the widget is visualizing.
      */
     private final PositionableElement _element;
-
 }

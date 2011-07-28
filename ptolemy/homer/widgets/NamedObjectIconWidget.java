@@ -43,33 +43,33 @@ import diva.gui.toolbox.FigureIcon;
 ///////////////////////////////////////////////////////////////////
 //// NamedObjectIconWidget
 
-/**
-* This widget visualizes a named object by displaying its icon.
-* @author Anar Huseynov
-* @version $Id$ 
-* @since Ptolemy II 8.1
-* @Pt.ProposedRating Red (ahuseyno)
-* @Pt.AcceptedRating Red (ahuseyno)
-*/
+/** This widget visualizes a named object by displaying its icon.
+ *  @author Anar Huseynov
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class NamedObjectIconWidget extends ResizableImageWidget implements
         NamedObjectWidgetInterface {
 
-    /**
-     * Create new instance of the widget by finding the element's EditorIcon attribute
-     * and rendering it as an image.
-     * @param scene The scene containing the widget.
-     * @param element The element to visualize.
-     * @throws IllegalActionException If there is problem with creating an icon.
-     * @throws NameDuplicationException If there is a problem hiding the icon's name.
+    /** Create new instance of the widget by finding the element's EditorIcon attribute
+     *  and rendering it as an image.
+     *  @param scene The scene containing the widget.
+     *  @param element The element to visualize.
+     *  @exception IllegalActionException If there is problem with creating an icon.
+     *  @exception NameDuplicationException If there is a problem hiding the icon's name.
      */
     public NamedObjectIconWidget(Scene scene, PositionableElement element)
             throws NameDuplicationException, IllegalActionException {
         super(scene);
         _element = element;
+
         NamedObj namedObject = element.getElement();
         List<EditorIcon> attributeList = namedObject
                 .attributeList(EditorIcon.class);
         EditorIcon icon;
+
         if (!attributeList.isEmpty()) {
             icon = attributeList.get(0);
         } else {
@@ -77,11 +77,13 @@ public class NamedObjectIconWidget extends ResizableImageWidget implements
         }
 
         new SingletonAttribute(namedObject, "_hideName");
+
         Figure figure = icon.createFigure();
         double ratio = figure.getBounds().getHeight()
                 / figure.getBounds().getWidth();
         FigureIcon figureIcon = new FigureIcon(figure, _ICON_WIDTH,
                 (int) (_ICON_HEIGHT * ratio));
+
         setImage(figureIcon.getImage());
         setCheckClipping(true);
     }
@@ -89,8 +91,7 @@ public class NamedObjectIconWidget extends ResizableImageWidget implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /* TODO
-     *  (non-Javadoc)
+    /* Get the positionable element.
      * @see ptolemy.homer.widgets.NamedObjectWidgetInterface#getNamedObject()
      */
     public PositionableElement getPositionableElement() {
@@ -99,14 +100,16 @@ public class NamedObjectIconWidget extends ResizableImageWidget implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The element that is visualized by the widget
+
+    /** The element that is visualized by the widget.
      */
     private final PositionableElement _element;
 
-    /** Icon window width. */
+    /** Icon window width. 
+     */
     private static int _ICON_HEIGHT = 200;
 
-    /** Icon window width. */
+    /** Icon window width.
+     */
     private static int _ICON_WIDTH = 200;
 }
