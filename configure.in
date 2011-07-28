@@ -2046,7 +2046,7 @@ else
     The injection code interface is used to support Ptolemy running on the Android.
     For further instructions, see $PTII/ptolemy/actor/injection/package.html] )
     else
-        PTHOMER_JARS="${PTOPENIDEUTIL_JAR}${CLASSPATHSEPARATOR}${PTOPENIDEUTILLOOKUP_JAR}${CLASSPATHSEPARATOR}${PTNETBEANSAPIVISUAL_JAR}${CLASSPATH}"
+        PTHOMER_JARS="${PTOPENIDEUTIL_JAR}${CLASSPATHSEPARATOR}${PTOPENIDEUTILLOOKUP_JAR}${CLASSPATHSEPARATOR}${PTNETBEANSAPIVISUAL_JAR}"
     fi
 fi
 
