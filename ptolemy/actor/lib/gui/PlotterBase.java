@@ -308,31 +308,33 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *   null to specify that a new plot should be created.
      */
     public void place(PortableContainer container) {
-        getImplementation().removeOldContainer();
         getImplementation().setPlatformContainer(
-                container.getPlatformContainer());
-        if (container != null
-                && container.getPlatformContainer() instanceof PlotBoxInterface) {
-            // According to FindBugs the cast is an error:
-            //  [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
-            // However it is checked that _container instanceof PlotBox,
-            // so FindBugs is wrong.
-            plot = (PlotBoxInterface) container.getPlatformContainer();
-            plot.setButtons(true);
-        } else {
-            if (plot == null) {
-                plot = _newPlot();
-                plot.setTitle(getName());
+                container != null ? container.getPlatformContainer() : null);
+        getImplementation().removeNullContainer();
+
+        if (container != null) {
+            if (container.getPlatformContainer() instanceof PlotBoxInterface) {
+                // According to FindBugs the cast is an error:
+                //  [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
+                // However it is checked that _container instanceof PlotBox,
+                // so FindBugs is wrong.
+                plot = (PlotBoxInterface) container.getPlatformContainer();
+                plot.setButtons(true);
+            } else {
+                if (plot == null) {
+                    plot = _newPlot();
+                    plot.setTitle(getName());
+                }
+
+                plot.setButtons(true);
+                container.add(plot);
+                // java.awt.Component.setBackground(color) says that
+                // if the color "parameter is null then this component
+                // will inherit the  background color of its parent."
+                plot.setBackground(null);
             }
-
-            plot.setButtons(true);
-
-            // java.awt.Component.setBackground(color) says that
-            // if the color "parameter is null then this component
-            // will inherit the  background color of its parent."
-            plot.setBackground(null);
         }
-        getImplementation().place(container);
+
         // If configurations have been deferred, implement them now.
         _implementDeferredConfigurations();
     }
@@ -442,6 +444,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
+        getImplementation().updateWindowAndSizeAttributes();
         super._exportMoMLContents(output, depth);
 
         // NOTE: Cannot include xml spec in the header because processing
