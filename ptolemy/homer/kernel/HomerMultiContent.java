@@ -62,7 +62,6 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
     /** Create a content container.
      *  @param contentPrototype A prototype of the content area. This 
      *  prototype is used to create multiple content areas on demand.
-     *  @param mainFrame The reference to the parent frame.
      */
     public HomerMultiContent(TabScenePanel contentPrototype) {
         super(contentPrototype);
@@ -72,7 +71,6 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
      *  @param contentPrototype A prototype of the content area. 
      *  This prototype is used to create multiple content areas on demand.
      *  @param model The model to be parsed. 
-     *  @param mainFrame The reference to the parent frame.
      *  @exception IllegalActionException If any of the elements can't be 
      *  placed into a content area.
      *  @exception NameDuplicationException If multiple elements exist with 
@@ -136,7 +134,7 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
 
         String newTag = super.addTab(topLevel, tag, name, content);
         _nofityAllListeners(new TabEvent(this, ActionEvent.ACTION_PERFORMED,
-                "addTab", newTag, name, getOrder().size(), content));
+                "addTab", newTag, name, _getOrder().size(), content));
 
         return newTag;
     }
@@ -199,7 +197,7 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
      *  @param index The ordinal position of the tab to remove.
      */
     public void removeTab(int index) {
-        removeTab(getOrder().get(index));
+        removeTab(_getOrder().get(index));
     }
 
     /** Remove the tab given its tag.
@@ -207,15 +205,15 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
      */
     @Override
     public void removeTab(String tag) {
-        ArrayList<PositionableElement> elements = (ArrayList<PositionableElement>) getContents()
+        ArrayList<PositionableElement> elements = (ArrayList<PositionableElement>) _getContents()
                 .get(tag).getElements().clone();
         for (PositionableElement element : elements) {
             removeElement(element);
         }
 
-        int position = getOrder().indexOf(tag);
+        int position = _getOrder().indexOf(tag);
         _nofityAllListeners(new TabEvent(this, ActionEvent.ACTION_PERFORMED,
-                "removeTab", tag, getContents().get(tag).getName(), position,
+                "removeTab", tag, _getContents().get(tag).getName(), position,
                 null));
 
         super.removeTab(tag);
@@ -232,7 +230,7 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
         super.setNameAt(position, text);
 
         _nofityAllListeners(new TabEvent(this, ActionEvent.ACTION_PERFORMED,
-                "renameTab", getOrder().get(position), text, position, null));
+                "renameTab", _getOrder().get(position), text, position, null));
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -46,6 +46,9 @@ import ptolemy.kernel.util.NamedObj;
 *  @since Ptolemy II 8.1
 *  @Pt.ProposedRating Red (pdf)
 *  @Pt.AcceptedRating Red (pdf)
+*  
+*  @param <T> The class implementing a ContentPrototype. It represents a tab
+*  that can create one similar to itself using the prototype pattern.
 */
 public class MultiContent<T extends ContentPrototype> {
 
@@ -286,7 +289,7 @@ public class MultiContent<T extends ContentPrototype> {
      * 
      *  @return The mapping of tag identifiers to tab definitions.
      */
-    protected HashMap<String, TabDefinition> getContents() {
+    protected HashMap<String, TabDefinition> _getContents() {
         return _contents;
     }
 
@@ -294,7 +297,7 @@ public class MultiContent<T extends ContentPrototype> {
      * 
      *  @return The ordered list of tag identifiers.
      */
-    protected ArrayList<String> getOrder() {
+    protected ArrayList<String> _getOrder() {
         return _order;
     }
 

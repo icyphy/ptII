@@ -76,7 +76,7 @@ import ptserver.util.ServerUtility;
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)
  */
-public class LayoutFileOperations {
+public final class LayoutFileOperations {
 
     ///////////////////////////////////////////////////////////////////
     ////                constructor                                ////
@@ -250,7 +250,7 @@ public class LayoutFileOperations {
                 // Add location and tab information for each element in the tab.
                 for (PositionableElement element : tab.getElements()) {
                     HomerWidgetElement homerElement = (HomerWidgetElement) element;
-                    String strippedFullName = stripFullName(homerElement
+                    String strippedFullName = _stripFullName(homerElement
                             .getElement().getFullName());
                     NamedObj elementInModel = null;
                     NamedObj elementOnScreen = element.getElement();
@@ -355,7 +355,7 @@ public class LayoutFileOperations {
      * @return The stripped name of the element, where the first part of
      * the compound name is removed, including the "." at the beginning.
      */
-    private static String stripFullName(String fullName) {
+    private static String _stripFullName(String fullName) {
         if (fullName.indexOf(".") == -1 || fullName.length() < 2) {
             return fullName;
         }
@@ -460,7 +460,7 @@ public class LayoutFileOperations {
      */
     private static void _markAsProxy(CompositeActor model, NamedObj element)
             throws IllegalActionException {
-        String strippedFullName = stripFullName(element.getFullName());
+        String strippedFullName = _stripFullName(element.getFullName());
 
         // Add a new proxy attribute
         if (element instanceof ComponentEntity) {

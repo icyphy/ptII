@@ -255,7 +255,15 @@ public class LayoutParser {
      *  representation.
      */
     public enum ScreenOrientation {
-        PORTRAIT, LANDSCAPE, UNSPECIFIED
+        /** Defines portrait orientation.
+         */
+        PORTRAIT,
+        /** Defines landscape orientation.
+         */
+        LANDSCAPE,
+        /** Defines unknown orientation.
+         */
+        UNSPECIFIED
     }
 
     ///////////////////////////////////////////////////////////////////
