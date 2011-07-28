@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (jiazou)
  *
  */
-public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
+public class PtidesBasicPreemptiveDirector extends PtidesBasicDirector {
 
     /** Construct a director with the specified container and name.
      *  @param container The container
@@ -58,7 +58,7 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
-    public PtidesBasicPreemptiveEDFDirector(CompositeEntity container,
+    public PtidesBasicPreemptiveDirector(CompositeEntity container,
             String name) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
