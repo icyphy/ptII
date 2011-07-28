@@ -64,6 +64,7 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Destination;
 import javax.swing.AbstractAction;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -175,10 +176,24 @@ public abstract class Top extends JFrame {
 
         // Make this the default context for modal messages.
         UndeferredGraphicalMessageHandler.setContext(this);
+
+        // If we are on a Mac, initialize the quit menu
+        // so that Command-Q saves data.
+        if (PtGUIUtilities.macOSLookAndFeel()) {
+            _macInitializer();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Open a dialog with basic information about this window.
+     *  Derived classes may override {@link #_about()}.
+     */
+    public final void about() {
+        // Under Mac OS X, the "About" menu choice invokes this method.
+        _about();
+    }
 
     /** Center the window on the screen.  This must be called after the
      *  window is populated with its contents, since it depends on the size
@@ -339,6 +354,18 @@ public abstract class Top extends JFrame {
         _disposed = true;
 
         super.dispose();
+    }
+
+    /** Exit the application after querying the user to save data.
+     *  Derived classes should override {@link #_exit()} to do
+     *  something more reasonable, so that user data is not discarded.
+     */
+    public final void exit() {
+        // Under Mac OS X, Command-q invokes this method.
+        if (_debugClosing) {
+            System.out.println("Top.exit() : " + this.getName());
+        }
+        _exit();
     }
 
     /** Return true if the window is set to be centered when pack() is called.
@@ -1501,6 +1528,20 @@ public abstract class Top extends JFrame {
         }
     }
 
+    /** Initialize the menus and key bindings for Mac OS X. */
+    private void _macInitializer() {
+        try {
+            // To set the about name, set the
+            // com.apple.mrj.application.apple.menu.about.name
+            // property in the main thread, not the event thread.  See
+            // VergilApplication.java
+            MacOSXAdapter.setAboutMethod(this, getClass().getMethod("about", (Class[])null));
+            MacOSXAdapter.setQuitMethod(this, getClass().getMethod("exit", (Class[])null));
+        } catch (NoSuchMethodException ex) {
+            report("Mac OS X specific initializations failed.", ex);
+        }
+    }
+
     /** Get the history from the file that contains names
      * Always return a list, that can be empty
      * @return list of file history
@@ -1891,6 +1932,7 @@ public abstract class Top extends JFrame {
             }
         }
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

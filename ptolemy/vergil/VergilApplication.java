@@ -204,6 +204,13 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(final String[] args) {
+        // Mac OS X: Set the "About" menu name.  These calls must be made outside
+        // the Swing Event Thread.
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Vergil");
+        // Uncomment the next line to use the screen menu bar instead of a per-window
+        // menu bar.
+        //System.setProperty("apple.laf.useScreenMenuBar", "true");
+
         // FIXME: Java superstition dictates that if you want something
         // to work, you should invoke it in event thread.  Otherwise,
         // weird things happens at the user interface level.  This
