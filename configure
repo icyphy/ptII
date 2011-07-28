@@ -777,9 +777,6 @@ PTGMP_LIB
 PTGRDOMAIN_JAR
 PTGR_PACKAGES
 PTII
-PTINJECTION_DIR
-PTINJECTION_JARS
-PTINJECTION_PACKAGES
 PTITEXTPDF_DIR
 PTITEXTPDF_JAR
 PTITEXTPDF_PACKAGES
@@ -1502,8 +1499,6 @@ Optional Packages:
                           defaults to \$PTII/vendors/gc/gc/include
   --with-itextpdf=JARFILE       use iText from JARFILE,
                           defaults to \$PTII/vendors/misc/itext/iText.jar
-  --with-guice=JAR       use guice.jar from JAR,
-                          defaults to \$PTII/lib/guice-3.0.jar
   --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
                           defaults to \$PTII/vendors/oracle/javamail
   --with-jogl=DIRECTORY       use Java OpenGL interface (jogl) from DIRECTORY,
@@ -1550,10 +1545,6 @@ Optional Packages:
                           defaults to \$PTII/ptserver/lib/jservlet-api-2.5.jar
   --with-wmqtt=JAR       use wmqtt.jar from JAR,
                           defaults to \$PTII/ptserver/lib/wmqtt.jar
-  --with-javax-inject=JAR       use javax.inject.jar from JAR,
-                            defaults to \$PTII/lib/javax.inject.jar
-  --with-aopalliance=JAR       use aopalliance.jar from JAR,
-                                 defaults to \$PTII/lib/aopalliance.jar
   --with-mapss=DIR       use mapss.jar from DIR,
                           defaults to \$PTII/lib
   --with-powermock=DIR       use PowerMock test harness from DIR,
@@ -7756,72 +7747,6 @@ if test -z "$PTJAI_DIR"; then
 fi
 
 #--------------------------------------------------------------------
-#       $PTII/ptolemy/actor/injection is used for depdency injection
-#	to support different GUIs
-#	http://chess.eecs.berkeley.edu
-#
-#--------------------------------------------------------------------
-
-# PTINJECTION_DIR is set to injection and used in
-# $PTII/ptolemy/actor/makefile if guice is found
-PTINJECTION_DIR=
-
-# Jar files used by injection
-PTGUICE_JAR=
-
-# Jar files necessary for compilation of injection
-PTINJECTION_JARS=
-
-# We only need to look for Hessian if $INJECTION_USER_DIR is present
-INJECTION_USER_DIR="$PTII/ptolemy/actor/injection"
-if test ! -d "$INJECTION_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $INJECTION_USER_DIR is not present,
-    so we need not find the Guice interface." >&5
-echo "${ECHO_T}$INJECTION_USER_DIR is not present,
-    so we need not find the Guice interface." >&6; }; fi
-else
-    { echo "$as_me:$LINENO: checking for Guice, used by injection " >&5
-echo $ECHO_N "checking for Guice, used by injection ... $ECHO_C" >&6; }
-
-# Check whether --with-guice was given.
-if test "${with_guice+set}" = set; then
-  withval=$with_guice; PTGUICE_JAR=$withval
-else
-  PTGUICE_JAR=$PTII/lib/guice-3.0.jar
-fi
-
-
-    if test  -f "$PTGUICE_JAR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTGUICE_JAR" >&5
-echo "${ECHO_T}$PTGUICE_JAR" >&6; }; fi
-	# Set to injection and used in
-	# $PTII/ptolemy/actor/makefile
-	PTINJECTION_DIR=injection
-        # INJECTION_PACKAGES is used in ptII/doc/makefile
-	PTINJECTION_PACKAGES=ptolemy.actor.injection
-    fi
-
-    if test "$PTINJECTION_DIR" = ""; then
-        { echo "$as_me:$LINENO: WARNING: Failed to find the jar files necessary to compile injection.
-    The injection code interface is used to support Ptolemy running on the Android.
-    For further instructions, see $PTII/ptolemy/actor/injection/package.html " >&5
-echo "$as_me: WARNING: Failed to find the jar files necessary to compile injection.
-    The injection code interface is used to support Ptolemy running on the Android.
-    For further instructions, see $PTII/ptolemy/actor/injection/package.html " >&2;}
-    else
-        PTINJECTION_JARS="${PTGUICE_JAR}${CLASSPATHSEPARATOR}"
-    fi
-fi
-
-if test -z "$PTINJECTION_JARS"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/injection/"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTGUICE_JAR\"/>"
-fi
-
-#--------------------------------------------------------------------
 #       JavaMail is a Java interface that sends email
 #	http://www.oracle.com/technetwork/java/index-138643.html
 #--------------------------------------------------------------------
@@ -10932,7 +10857,6 @@ PTSERVLET_JAR=
 PTWMQTT_JAR=
 
 # Jar files necessary for compilation of ptserver.
-# This also includes guice.jar from above.
 PTSERVER_JARS=
 
 # We only need to look for Hessian if $PTSERVER_USER_DIR is present
@@ -10990,20 +10914,7 @@ fi
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTSERVLET_JAR" >&5
 echo "${ECHO_T}$PTSERVLET_JAR" >&6; }; fi
 
-		{ echo "$as_me:$LINENO: checking for Guice, used by injection and ptserver " >&5
-echo $ECHO_N "checking for Guice, used by injection and ptserver ... $ECHO_C" >&6; }
-
-# Check whether --with-guice was given.
-if test "${with_guice+set}" = set; then
-  withval=$with_guice; PTGUICE_JAR=$withval
-else
-  PTGUICE_JAR=$PTII/lib/guice-3.0.jar
-fi
-
-
-                if test  -f "$PTGUICE_JAR"; then
-
-		    { echo "$as_me:$LINENO: checking for WMQTT, used by pserver " >&5
+	        { echo "$as_me:$LINENO: checking for WMQTT, used by pserver " >&5
 echo $ECHO_N "checking for WMQTT, used by pserver ... $ECHO_C" >&6; }
 
 # Check whether --with-wmqtt was given.
@@ -11014,51 +10925,16 @@ else
 fi
 
 
-                    if test  -f "$PTWMQTT_JAR"; then
-	                if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+                if test  -f "$PTWMQTT_JAR"; then
+	            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTWMQTT_JAR" >&5
 echo "${ECHO_T}$PTWMQTT_JAR" >&6; }; fi
 
-		        { echo "$as_me:$LINENO: checking for javax.inject, used by ptserver runtime and tests " >&5
-echo $ECHO_N "checking for javax.inject, used by ptserver runtime and tests ... $ECHO_C" >&6; }
-
-# Check whether --with-wmqtt was given.
-if test "${with_wmqtt+set}" = set; then
-  withval=$with_wmqtt; PTJAVAX_INJECT_JAR=$withval
-else
-  PTJAVAX_INJECT_JAR=$PTII/lib/javax.inject.jar
-fi
-
-
-                        if test  -f "$PTJAVAX_INJECT_JAR"; then
-	                    if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVAX_INJECT_JAR" >&5
-echo "${ECHO_T}$PTJAVAX_INJECT_JAR" >&6; }; fi
-
-		            { echo "$as_me:$LINENO: checking for aopalliance.jar used by ptserver runtime and tests " >&5
-echo $ECHO_N "checking for aopalliance.jar used by ptserver runtime and tests ... $ECHO_C" >&6; }
-
-# Check whether --with-wmqtt was given.
-if test "${with_wmqtt+set}" = set; then
-  withval=$with_wmqtt; PTAOPALLIANCE_JAR=$withval
-else
-  PTAOPALLIANCE_JAR=$PTII/lib/aopalliance.jar
-fi
-
-
-                            if test  -f "$PTAOPALLIANCE_JAR"; then
-	                        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTAOPALLIANCE_JAR" >&5
-echo "${ECHO_T}$PTAOPALLIANCE_JAR" >&6; }; fi
-
-	                        # Set to ptserver and used in
-	                        # $PTII/makefile
-	                        PTSERVER_DIR=ptserver
-            	                # PTSERVER_PACKAGES is used in ptII/doc/makefile
-		                PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
-                            fi
-                        fi
-                    fi
+	            # Set to ptserver and used in
+	            # $PTII/makefile
+	            PTSERVER_DIR=ptserver
+            	    # PTSERVER_PACKAGES is used in ptII/doc/makefile
+		    PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
                 fi
             fi
          fi
@@ -11072,7 +10948,7 @@ echo "$as_me: WARNING: Failed to find the jar files necessary to compile ptserve
     The ptserver interface is used to support Ptolemy running on the Android.
     For further instructions, see $PTII/ptserver/package.html " >&2;}
     else
-        PTSERVER_JARS="${PTAOPALLIANCE_JAR}${CLASSPATHSEPARATOR}${PTGUICE_JAR}${CLASSPATHSEPARATOR}${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}${CLASSPATHSEPARATOR}${PTJAVAX_INJECT_JAR}"
+        PTSERVER_JARS="${CLASSPATHSEPARATOR}${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
     fi
 fi
 
@@ -11080,11 +10956,7 @@ if test -z "$PTSERVER_JARS"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptserver/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTAOPALLIANCE_JAR\"/>"
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
        <classpathentry kind=\"lib\" path=\"$PTHESSIAN_JAR\"/>"
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTJAVAX_INJECT_JAR\"/>"
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
        <classpathentry kind=\"lib\" path=\"$PTJETTY_JAR\"/>"
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
@@ -12814,16 +12686,6 @@ fi
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
 
 
-# PTINJECTION_DIR is set to injection and used in
-# $PTII/ptolemy/actor/makefile if guice is found
-
-
-# Jar files necessary for compilation of injection
-
-
-# INJECTION_PACKAGES is used in ptII/doc/makefile
-
-
 # Set to itextpdf and used in
 # $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
 
@@ -14029,9 +13891,6 @@ PTGMP_LIB!$PTGMP_LIB$ac_delim
 PTGRDOMAIN_JAR!$PTGRDOMAIN_JAR$ac_delim
 PTGR_PACKAGES!$PTGR_PACKAGES$ac_delim
 PTII!$PTII$ac_delim
-PTINJECTION_DIR!$PTINJECTION_DIR$ac_delim
-PTINJECTION_JARS!$PTINJECTION_JARS$ac_delim
-PTINJECTION_PACKAGES!$PTINJECTION_PACKAGES$ac_delim
 PTITEXTPDF_DIR!$PTITEXTPDF_DIR$ac_delim
 PTITEXTPDF_JAR!$PTITEXTPDF_JAR$ac_delim
 PTITEXTPDF_PACKAGES!$PTITEXTPDF_PACKAGES$ac_delim
@@ -14060,6 +13919,9 @@ PTJNI_SHAREDLIBRARY_CFLAG!$PTJNI_SHAREDLIBRARY_CFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_PREFIX!$PTJNI_SHAREDLIBRARY_PREFIX$ac_delim
 PTJNI_SHAREDLIBRARY_SUFFIX!$PTJNI_SHAREDLIBRARY_SUFFIX$ac_delim
+PTJNI_SHAREDLIBRARY_SUFFIX2!$PTJNI_SHAREDLIBRARY_SUFFIX2$ac_delim
+PTJNI_LIBRARIES!$PTJNI_LIBRARIES$ac_delim
+PTJOGL_DIR!$PTJOGL_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -14101,9 +13963,6 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
-PTJNI_SHAREDLIBRARY_SUFFIX2!$PTJNI_SHAREDLIBRARY_SUFFIX2$ac_delim
-PTJNI_LIBRARIES!$PTJNI_LIBRARIES$ac_delim
-PTJOGL_DIR!$PTJOGL_DIR$ac_delim
 PTJOGL_JARS!$PTJOGL_JARS$ac_delim
 PTJOGL_PACKAGES!$PTJOGL_PACKAGES$ac_delim
 PTJOYSTICK_DIR!$PTJOYSTICK_DIR$ac_delim
@@ -14178,7 +14037,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 75; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 72; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
