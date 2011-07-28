@@ -234,6 +234,8 @@ JSRCS = \
 	Synchronizer.java \
 	Test.java \
 	TestExceptionHandler.java \
+	TextFieldContainerInterface.java \
+	TextFieldContainerJavaSE.java \
 	ThrowException.java \
 	ThrowModelError.java \
 	TimeDelay.java \
