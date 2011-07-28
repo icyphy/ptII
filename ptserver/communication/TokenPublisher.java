@@ -41,9 +41,8 @@ import com.ibm.mqtt.IMqttClient;
 
 ///////////////////////////////////////////////////////////////////
 //// TokenPublisher
-/**
- * TokenPublisher batches tokens, converts to them binary and then publishes the result to the MQTT topic.
- *
+
+/** TokenPublisher batches tokens, converts to them binary and then publishes the result to the MQTT topic.
  * <p>The batch is sent it out periodically according to the period parameter.
  *
  * @author Anar Huseynov
@@ -54,10 +53,9 @@ import com.ibm.mqtt.IMqttClient;
  */
 public class TokenPublisher {
 
-    /**
-     * Create instance of the TokenPublisher with specified period and tokensPerPeriod
-     * @param period The period in milliseconds between batches
-     * @param proxyModelInfrastructure The infrastructure that created this listener and controls the state of the execution.
+    /** Create instance of the TokenPublisher with specified period and tokensPerPeriod.
+     *  @param period The period in milliseconds between batches
+     *  @param proxyModelInfrastructure The infrastructure that created this listener and controls the state of the execution.
      */
     public TokenPublisher(long period,
             ProxyModelInfrastructure proxyModelInfrastructure) {
@@ -65,8 +63,8 @@ public class TokenPublisher {
         _proxyModelInfrastructure = proxyModelInfrastructure;
     }
 
-    /**
-     * Start the timer that sends token batches.
+    /** Start the timer that sends token batches.
+     *  @param ticket Ticket on which to start the publishing timer.
      */
     public void startTimer(Ticket ticket) {
         _timer = new Timer("TokenPublisher timer " + ticket);
@@ -96,8 +94,7 @@ public class TokenPublisher {
         }, _period, _period);
     }
 
-    /**
-     * Cancel the publisher's timer used for sending batch of tokens.
+    /** Cancel the publisher's timer used for sending batch of tokens.
      */
     public void cancelTimer() {
         if (_timer != null) {
@@ -107,30 +104,27 @@ public class TokenPublisher {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**
-     * Return MQTT client that is used to send out MQTT messages.
-     * @return the mqttClient instance
-     * @see #setMqttClient(IMqttClient)
+
+    /** Return MQTT client that is used to send out MQTT messages.
+     *  @return the mqttClient instance
+     *  @see #setMqttClient(IMqttClient)
      */
     public IMqttClient getMqttClient() {
         return _mqttClient;
     }
 
-    /**
-     * Return the topic where the messages are published.
-     * @return the topic where the messages are published
-     * @see #setTopic(String)
+    /** Return the topic where the messages are published.
+     *  @return the topic where the messages are published
+     *  @see #setTopic(String)
      */
     public String getTopic() {
         return _topic;
     }
 
-    /**
-     * Send the token via MQTT protocol.
-     *
-     * <p>The token will not be sent out immediately but would be batched for the specified period.</p>
-     * @param token the token to send
-     * @exception IllegalActionException if there is a problem with MQTT broker.
+    /** Send the token via MQTT protocol.
+     *  <p>The token will not be sent out immediately but would be batched for the specified period.</p>
+     *  @param token The token to send
+     *  @exception IllegalActionException if there is a problem with MQTT broker.
      */
     public synchronized void sendToken(Token token)
             throws IllegalActionException {
@@ -146,19 +140,17 @@ public class TokenPublisher {
         }
     }
 
-    /**
-     * Set the mqttClient to be used to publish the tokens.
-     * @param mqttClient the mqttClient to be used to publish the tokens.
-     * @see #getMqttClient()
+    /** Set the mqttClient to be used to publish the tokens.
+     *  @param mqttClient the mqttClient to be used to publish the tokens.
+     *  @see #getMqttClient()
      */
     public void setMqttClient(IMqttClient mqttClient) {
         _mqttClient = mqttClient;
     }
 
-    /**
-     * Set the topic for the message to publish.
-     * @param topic the topic to publish the MQTT messages.
-     * @see #getTopic()
+    /** Set the topic for the message to publish.
+     *  @param topic the topic to publish the MQTT messages.
+     *  @see #getTopic()
      */
     public void setTopic(String topic) {
         _topic = topic;
@@ -166,42 +158,39 @@ public class TokenPublisher {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The mqtt client instance used to send messages.
-     */
-    private IMqttClient _mqttClient;
 
-    /**
-     * The topic where messages are published.
-     */
-    private String _topic;
-
-    /**
-     * The period in millisecond between batches.
-     */
-    private final long _period;
-
-    /**
-     * The count of tokens in the batch.
-     */
-    private int _tokenCount;
-    /**
-     * The output stream holding the batch.
-     */
-    private final ByteArrayOutputStream _outputStream = new ByteArrayOutputStream(
-            10000);
     /**
      * TODO: either remove this or add proper logging mechanism
      * The count of batches sent.
      */
     private int _batchCount;
 
-    /**
-     * The timer used for sending batch of tokens.
+    /** The mqtt client instance used to send messages.
      */
-    private Timer _timer;
+    private IMqttClient _mqttClient;
+
+    /** The output stream holding the batch.
+     */
+    private final ByteArrayOutputStream _outputStream = new ByteArrayOutputStream(
+            10000);
+
+    /** The period in millisecond between batches.
+     */
+    private final long _period;
+
     /** The infrastructure that created the listener.
      */
     private final ProxyModelInfrastructure _proxyModelInfrastructure;
 
+    /** The timer used for sending batch of tokens.
+     */
+    private Timer _timer;
+
+    /** The count of tokens in the batch.
+     */
+    private int _tokenCount;
+
+    /** The topic where messages are published.
+     */
+    private String _topic;
 }
