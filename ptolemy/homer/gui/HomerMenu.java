@@ -98,6 +98,7 @@ public class HomerMenu {
     }
 
     /** Configure the window menu bar.
+     *  @return The menu bar of the window.
      */
     public JMenuBar getMenuBar() {
         JMenuBar menuBar = new JMenuBar();
@@ -225,9 +226,8 @@ public class HomerMenu {
     ///////////////////////////////////////////////////////////////////
     ////                private methods                            ////
 
-    /**
-     * Process action on the new menu item.
-     * @param e the action event
+    /** Process action on the new menu item.
+     *  @param e the action event
      */
     private void _newMenuActionPerformed(ActionEvent e) {
         _fileChooser.setDialogTitle("Choose a Ptolemy model");
@@ -245,9 +245,8 @@ public class HomerMenu {
         }
     }
 
-    /**
-     * Process action on the open menu item.
-     * @param e the action event.
+    /** Process action on the open menu item.
+     *  @param e the action event.
      */
     private void _openMenuActionPerformed(ActionEvent e) {
         OpenLayoutDialog openLayoutDialog = new OpenLayoutDialog(_mainFrame,
@@ -290,13 +289,11 @@ public class HomerMenu {
 
     }
 
-    /**
-     * Process action on the save menu.
-     * @param e The action event.
+    /** Process action on the save menu.
+     *  @param e The action event.
      */
     private void _saveMenuActionPerformed(ActionEvent e) {
         URL layoutURL = _mainFrame.getLayoutURL();
-
         if (layoutURL != null) {
             try {
                 _mainFrame.saveLayoutAs(new File(layoutURL.toURI()));
@@ -311,9 +308,8 @@ public class HomerMenu {
         }
     }
 
-    /**
-     * Process action on the save as menu item.
-     * @param e The action event.
+    /** Process action on the save as menu item.
+     *  @param e The action event.
      */
     private void _saveAsMenuActionPerformed(ActionEvent e) {
         _fileChooser.setDialogTitle("Select where to save the layout");
@@ -325,8 +321,7 @@ public class HomerMenu {
         }
     }
 
-    /**
-     * Initialize file chooser to the default model directory.
+    /** Initialize file chooser to the default model directory.
      */
     private void _initializeFileChooser() {
         _fileChooser = new JFileChooser();
@@ -374,8 +369,7 @@ public class HomerMenu {
         _fileChooser.addChoosableFileFilter(_layoutFilter);
     }
 
-    /**
-     * Create and initialize menu items for the device screen size selection.
+    /** Create and initialize menu items for the device screen size selection.
      * @return The new menu. 
      */
     private JMenu _initializeDeviceMenu() {
@@ -455,24 +449,23 @@ public class HomerMenu {
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
 
-    /**
-     * The main frame of the application.
+    /** The main frame of the application.
      */
     private HomerMainFrame _mainFrame;
-    /**
-     * The file path containing device screen size information.
+
+    /** The file path containing device screen size information.
      */
     private static String _DEVICE_FILE = "ptolemy//homer//gui//devices.xml";
-    /**
-     * The file chooser used to open/save files.
+
+    /** The file chooser used to open/save files.
      */
     private JFileChooser _fileChooser;
-    /**
-     * The file filter for model files.
+
+    /** The file filter for model files.
      */
     private FileFilter _modelFilter;
-    /**
-     * The file filter for layout files.
+
+    /** The file filter for layout files.
      */
     private FileFilter _layoutFilter;
 }

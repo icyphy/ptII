@@ -88,7 +88,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
             setBorderPainted(false);
 
             // Add the nice rollover effect.
-            addMouseListener(_MOUSE_ADAPTER);
+            addMouseListener(MOUSE_ADAPTER);
             setRolloverEnabled(true);
         }
     }
@@ -190,8 +190,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
             _tabScenes.setEnabledAt(_tabScenes.getTabCount() - 2, false);
         }
 
-        /**
-         * Removes editable text box with a label from the tab.
+        /** Removes editable text box with a label from the tab.
          */
         private void _setInEditedTitle() {
             TabSceneButton.this.remove(_editableLabel);
@@ -200,12 +199,11 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
             TabbedLayoutScene.this.repaint();
         }
 
-        /**
-         * The label displaying the tab name.
+        /** The label displaying the tab name.
          */
         private JLabel _label;
-        /**
-         * The text box used for changing the tab name.
+
+        /** The text box used for changing the tab name.
          */
         private JTextField _editableLabel;
     }
@@ -214,11 +212,12 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     ////                         constructor                       ////
 
     /** Create the default scene with initial tabs.
+     *  @param mainFrame A reference to the parent frame.
      */
     public TabbedLayoutScene(HomerMainFrame mainFrame) {
         _mainFrame = mainFrame;
-
         _tabScenes = new JTabbedPane(JTabbedPane.TOP);
+
         add(_tabScenes);
 
         // Create the "add tab" tab.
@@ -234,6 +233,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
                 selectTab(_tabScenes.getTabCount() - 2);
             }
         });
+
         _tabScenes.setEnabledAt(_tabScenes.indexOfTabComponent(addTabButton),
                 false);
     }
@@ -241,10 +241,9 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
-     * Process action performed event.  
-     * @param event the event object.
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    /** Process action performed event.  
+     *  @param event The event object.
+     *  @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent event) {
         if (event instanceof TabEvent) {
@@ -282,11 +281,14 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     ////                         private methods                  ////
 
     /** Add a tab with the specified name.
-     *  @param tabName The label to put on the new tab.
+     *  @param tag The tag of the content panel.
+     *  @param name The name of the content panel.
+     *  @param contentPanel The content panel.
      */
     private void _addTab(String tag, String name, TabScenePanel contentPanel) {
         contentPanel.setTag(tag);
         contentPanel.setName(name);
+
         Component view = _mainFrame.getTabContent(tag).getView();
         _tabScenes.insertTab(name, null, view, null,
                 _tabScenes.getTabCount() - 1);
@@ -338,10 +340,9 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
         }
     }
 
-    /**
-     * Rename the tab at the specified position.
-     * @param position The tab position.
-     * @param name The new name.
+    /** Rename the tab at the specified position.
+     *  @param position The tab position.
+     *  @param name The new name.
      */
     private void _renameTab(int position, String name) {
         if (position < 0 || position >= _tabScenes.getTabCount()) {
@@ -363,7 +364,7 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
 
     /** The standard mouse adapter to be used on on all buttons.
      */
-    private static final MouseAdapter _MOUSE_ADAPTER = new MouseAdapter() {
+    private static final MouseAdapter MOUSE_ADAPTER = new MouseAdapter() {
         public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {

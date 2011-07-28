@@ -105,6 +105,36 @@ public class HomerMainFrame extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a label to the scene.
+     *  @param panel The panel on which to add the label.
+     *  @param label The label text.
+     *  @param dimension The dimensions of the label.
+     *  @param point The position to place the label.
+     *  @exception IllegalActionException  If the attribute is not of an 
+     *  acceptable attribute for the container, or if the container is not 
+     *  an instance of Settable.
+     *  @exception NameDuplicationException If the name coincides with an 
+     *  attribute already in the container.
+     */
+    public void addLabel(TabScenePanel panel, String label,
+            Dimension dimension, Point point) throws IllegalActionException,
+            NameDuplicationException {
+
+        Attribute tabsNode = _topLevelActor
+                .getAttribute(HomerConstants.TABS_NODE);
+        Attribute tabNode = tabsNode.getAttribute(panel.getTag());
+
+        Parameter stringAttribute = new Parameter(tabNode,
+                tabNode.uniqueName("label"));
+        new NotEditableLineStyle(stringAttribute, "_style").setPersistent(true);
+
+        stringAttribute.setVisibility(Settable.EXPERT);
+        stringAttribute.setExpression(label);
+        stringAttribute.setPersistent(true);
+
+        addVisualNamedObject(panel, stringAttribute, dimension, point);
+    }
+
     /** Add a non-visual NamedObj item to the panel.
      *  @param object The NamedObj to be added to the list.
      */
@@ -161,7 +191,7 @@ public class HomerMainFrame extends JFrame {
      *  @param panel The target panel.
      *  @param object The NamedObj to be added to the list.
      *  @param dimension The size of the widget.
-     *  @param location Location on the scene.
+     *  @param point Location on the scene.
      *  @exception IllegalActionException If the appropriate widget cannot be loaded.
      *  @exception NameDuplicationException If the NamedObj duplicates a name of
      *  an item already on the scene.
@@ -184,22 +214,6 @@ public class HomerMainFrame extends JFrame {
                 (int) dimension.getWidth(), (int) dimension.getHeight());
         element.setTab(panel.getTag());
         addVisualNamedObject(panel.getTag(), element);
-    }
-
-    public void addLabel(TabScenePanel panel, String label,
-            Dimension dimension, Point point) throws IllegalActionException,
-            NameDuplicationException {
-
-        Attribute tabsNode = _topLevelActor
-                .getAttribute(HomerConstants.TABS_NODE);
-        Attribute tabNode = tabsNode.getAttribute(panel.getTag());
-        Parameter stringAttribute = new Parameter(tabNode,
-                tabNode.uniqueName("label"));
-        new NotEditableLineStyle(stringAttribute, "_style").setPersistent(true);
-        stringAttribute.setVisibility(Settable.EXPERT);
-        stringAttribute.setExpression(label);
-        stringAttribute.setPersistent(true);
-        addVisualNamedObject(panel, stringAttribute, dimension, point);
     }
 
     /** See if the multi-content already has the NamedObj.
@@ -295,6 +309,7 @@ public class HomerMainFrame extends JFrame {
     /** Prepare the scene for creating a new layout and prompt the user for
     *  file selection.
     *  @param modelURL The url of the model file to be opened.
+    *  @param layoutURL The url of the layout file to be opened.
     */
     public void openLayout(URL modelURL, URL layoutURL) {
         _contents.clear();
@@ -395,17 +410,25 @@ public class HomerMainFrame extends JFrame {
         }
     }
 
+    /** Return if the NamedObj is a label widget.
+     *  @param object
+     *  @return If the NamedObj is a label widget.
+     */
     public static boolean isLabelWidget(NamedObj object) {
         Attribute tab = object.getAttribute(HomerConstants.TAB_NODE);
-        if (object instanceof Attribute
-                && tab instanceof Settable
-                && ((Settable) tab).getExpression().equals(
-                        object.getContainer().getName())) {
+        if ((object instanceof Attribute)
+                && (tab instanceof Settable)
+                && (((Settable) tab).getExpression().equals(object
+                        .getContainer().getName()))) {
             return true;
         }
+
         return false;
     }
 
+    /** Get the top level actor.
+     *  @return The top level actor.
+     */
     public CompositeEntity getTopLevelActor() {
         return _topLevelActor;
     }
@@ -467,6 +490,9 @@ public class HomerMainFrame extends JFrame {
         addTab("Default");
     }
 
+    /** Initialize the graph preview frame with an image of the actor graph.
+     *  @param topLevelActor The top level actor of the parsed model.
+     */
     private void _initializeGraphPreview(CompositeEntity topLevelActor) {
         ActorEditorGraphController controller = new ActorEditorGraphController();
         controller.setConfiguration(_application.getConfiguration());

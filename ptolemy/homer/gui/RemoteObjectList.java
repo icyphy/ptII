@@ -86,6 +86,7 @@ public class RemoteObjectList extends JPanel implements ActionListener {
     ////                         constructor                       ////
 
     /** Create the listing of remote objects.
+     *  @param parent The reference to the parent frame.
      */
     public RemoteObjectList(HomerMainFrame parent) {
         setLayout(new BorderLayout(0, 0));
@@ -97,7 +98,7 @@ public class RemoteObjectList extends JPanel implements ActionListener {
         _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         _list.setLayoutOrientation(JList.VERTICAL_WRAP);
         _list.setModel(_listModel);
-        _list.setPreferredSize(new Dimension(200, 300));
+        _list.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         _list.setCellRenderer(new DefaultListCellRenderer() {
             public Component getListCellRendererComponent(JList list,
                     Object value, int index, boolean isSelected,
@@ -254,6 +255,9 @@ public class RemoteObjectList extends JPanel implements ActionListener {
         return (NamedObj[]) _listModel.toArray();
     }
 
+    /** Handle the action that was performed.
+     *  @param e The action event details.
+     */
     public void actionPerformed(ActionEvent e) {
         if ((e instanceof NonVisualContentEvent)
                 && (((NonVisualContentEvent) e).getElement() != null)) {
@@ -289,6 +293,14 @@ public class RemoteObjectList extends JPanel implements ActionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The preferred height of the list.
+     */
+    private static final int HEIGHT = 300;
+
+    /** The preferred width of the list.
+     */
+    private static final int WIDTH = 200;
 
     /** The reference to the panel's container.
      */
