@@ -59,6 +59,7 @@ SHELL_FILES = \
 	emachine \
 	giottoc \
 	histogram \
+	homer \
 	jode \
 	mescal \
 	moml \

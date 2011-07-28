@@ -538,6 +538,15 @@ PTGRDOMAIN_JAR =	@PTGRDOMAIN_JAR@
 # PTGR_PACKAGES is used in ptII/doc/makefile
 PTGR_PACKAGES =		@PTGR_PACKAGES@
 
+# Set to homer and used in $PTII/ptolemy/makefile if the netbeans visual gui code is found.
+PTHOMER_DIR =		@PTHOMER_DIR@
+
+# Netbeans Jar files necessary for compilation of homer
+PTHOMER_JARS =		@PTHOMER_JARS@
+
+# Ptolemy II packages that use Netbeans gui code
+PTHOMER_PACKAGES =	@PTHOMER_PACKAGES@
+
 # Set to itextpdf and used in
 # $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
 PTITEXTPDF_DIR = 	@PTITEXTPDF_DIR@

@@ -53,11 +53,14 @@ ME =		ptolemy
 # $PTII/configure looks for Java 1.5 and sets PTBACKTRACK_DIR to backtrack
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTBACKTRACK is empty.
 #
+# $PTII/configure looks for Netbeans gui jars and sets PTHOMER_DIR to homer
+# if it was found.  Otherwise, PTHOMER_DIR is empty.
+#
 DIRS = util math kernel plot graph moml data actor gui media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) verification \
 	vergil hsif $(PTCHIC_DIR) cg codegen component $(PTBACKTRACK_DIR) \
 	configs \
-	$(PTDISTRIBUTED_DIR) ptp $(PTCALTROP_DIR) \
+	$(PTDISTRIBUTED_DIR) $(PTHOMER_DIR) ptp $(PTCALTROP_DIR) \
 	contrib demo
 
 # Root of Ptolemy II directory

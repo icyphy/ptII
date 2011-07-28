@@ -1991,6 +1991,79 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       $PTII/ptolemy/homer is a gui builder used by HandSimDroid
+#	to allow complex models to be run on handheld devices
+#	http://chess.eecs.berkeley.edu/handsimdroid
+#	
+#--------------------------------------------------------------------
+
+# PTHOMER_DIR is set to homer and used in
+# $PTII/ptolemy/makefile if the netbeans visual gui code is found
+PTHOMER_DIR=
+
+# Jar files necessary for compilation of homer
+PTHOMER_JARS=
+
+# We only need to look for Hessian if $HOMER_USER_DIR is present
+HOMER_USER_DIR="$PTII/ptolemy/homer"
+if test ! -d "$HOMER_USER_DIR"; then
+    PT_MSG_STATUS([$HOMER_USER_DIR is not present,
+    so we need not find the Netbeans visual gui interface.])
+else
+    AC_MSG_CHECKING([for org-openide-util.jar, used by homer ])
+    AC_ARG_WITH(openideutil, [  --with-openideutil=JAR       use org-openide-util.jar from JAR,
+                          defaults to \$PTII/lib/org-openide-util.jar],
+	PTOPENIDEUTIL_JAR=$withval,
+	PTOPENIDEUTIL_JAR=$PTII/lib/org-openide-util.jar)
+
+    if test  -f "$PTOPENIDEUTIL_JAR"; then
+	PT_MSG_RESULT([$PTOPENIDEUTIL_JAR])
+        AC_MSG_CHECKING([for org-openide-util-lookup.jar, used by homer ])
+        AC_ARG_WITH(openideutillookup, [  --with-openideutillookup=JAR       use org-openide-util-lookup.jar from JAR,
+                          defaults to \$PTII/lib/org-openide-util-lookup.jar],
+	    PTOPENIDEUTILLOOKUP_JAR=$withval,
+	    PTOPENIDEUTILLOOKUP_JAR=$PTII/lib/org-openide-util-lookup.jar)
+        if test  -f "$PTOPENIDEUTILLOOKUP_JAR"; then
+	    PT_MSG_RESULT([$PTOPENIDEUTILLOOKUP_JAR])
+            AC_MSG_CHECKING([for org-netbeans-api-visual.jar, used by homer ])
+            AC_ARG_WITH(netbeansapivisual, [  --with-netbeansapivisual=JAR       use org-netbeans-api-visual.jar from JAR,
+                              defaults to \$PTII/lib/org-netbeans-api-visual.jar],
+	        PTNETBEANSAPIVISUAL_JAR=$withval,
+	        PTNETBEANSAPIVISUAL_JAR=$PTII/lib/org-netbeans-api-visual.jar)
+            if test  -f "$PTNETBEANSAPIVISUAL_JAR"; then
+	        PT_MSG_RESULT([$PTNETBEANSAPIVISUAL_JAR])
+     
+	        # Set to homer and used in $PTII/ptolemy/makefile
+	        PTHOMER_DIR=homer
+                # PTHOMER_PACKAGES is used in ptII/doc/makefile
+		PTHOMER_PACKAGES="ptolemy.homer.events ptolemy.homer.gui ptolemy.homer.tree ptolemy.homer ptolemy.homer.kernel ptolemy.homer.widgets"
+            fi
+        fi
+    fi
+
+    if test "$PTHOMER_DIR" = ""; then
+        AC_MSG_WARN([Failed to find the jar files necessary to compile injection.
+    The injection code interface is used to support Ptolemy running on the Android.
+    For further instructions, see $PTII/ptolemy/actor/injection/package.html] )
+    else
+        PTHOMER_JARS="${PTOPENIDEUTIL_JAR}${CLASSPATHSEPARATOR}${PTOPENIDEUTILLOOKUP_JAR}${CLASSPATHSEPARATOR}${PTNETBEANSAPIVISUAL_JAR}${CLASSPATH}"
+    fi
+fi
+
+if test -z "$PTHOMER_JARS"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/homer/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$PTOPENIDEUTIL_JAR\"/>"
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$PTOPENIDEUTILLOOKUP_JAR\"/>"
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"lib\" path=\"$PTNETBEANSAPIVISUAL_JAR\"/>"
+fi 
+
+
+
+#--------------------------------------------------------------------
 #       JAI is the Java Advanced Imaging Framework
 #	For more information, 
 #       see https://jai.dev.java.net/
@@ -5391,6 +5464,15 @@ AC_SUBST(PTGRDOMAIN_JAR)
 # Ptolemy II packages that use the Java 3D facility
 # PTGR_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTGR_PACKAGES)
+
+# Set to homer and used in $PTII/ptolemy/makefile if the netbeans visual gui code is found.
+AC_SUBST(PTHOMER_DIR)
+
+# Netbeans Jar files necessary for compilation of homer
+AC_SUBST(PTHOMER_JARS)
+
+# Ptolemy II packages that use Netbeans gui code
+AC_SUBST(PTHOMER_PACKAGES)
 
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
