@@ -180,12 +180,20 @@ public class LayoutParser {
         return attributeDefinitions;
     }
 
+    /** Return all the elements in the model marked as proxies.
+     * 
+     *  @return The set of all named objects marked as proxies.
+     */
     public HashSet<NamedObj> getProxyElements() {
         HashSet<NamedObj> container = new HashSet<NamedObj>();
         _getProxyElements(_topLevelActor, container);
         return container;
     }
 
+    /** Return all elements in the model that has its positions defined.
+     * 
+     *  @return The set of all named objects with position information.
+     */
     public HashSet<NamedObj> getPositionableElements() {
         HashSet<NamedObj> container = new HashSet<NamedObj>();
         _getPositionableElements(_topLevelActor, container);
@@ -197,7 +205,7 @@ public class LayoutParser {
      * 
      *  @param element The element to search for proxy attribute and other elements
      *  that have proxy attributes.
-     *  @param container
+     *  @param container The container to store the elements found.
      */
     private static void _getProxyElements(NamedObj element,
             HashSet<NamedObj> container) {
@@ -223,9 +231,7 @@ public class LayoutParser {
      * 
      *  @param element The element to search for location attribute and other elements
      *  that have location attributes.
-     *  @param container
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @param container The container to store the elements found.
      */
     private static void _getPositionableElements(NamedObj element,
             HashSet<NamedObj> container) {

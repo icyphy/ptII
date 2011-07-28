@@ -439,7 +439,7 @@ public class HomerMainFrame extends JFrame {
     /** Initialize the default look of the frame.
      */
     private void _initializeFrame() {
-        _contents = new HomerMultiContent(new TabScenePanel(this), this);
+        _contents = new HomerMultiContent(new TabScenePanel(this));
 
         _contentPane = new JPanel();
         _contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

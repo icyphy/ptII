@@ -36,7 +36,6 @@ import java.util.HashSet;
 import ptolemy.homer.events.NonVisualContentEvent;
 import ptolemy.homer.events.TabEvent;
 import ptolemy.homer.events.VisualContentEvent;
-import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.homer.gui.TabScenePanel;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -65,10 +64,8 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
      *  prototype is used to create multiple content areas on demand.
      *  @param mainFrame The reference to the parent frame.
      */
-    public HomerMultiContent(TabScenePanel contentPrototype,
-            HomerMainFrame mainFrame) {
+    public HomerMultiContent(TabScenePanel contentPrototype) {
         super(contentPrototype);
-        _mainFrame = mainFrame;
     }
 
     /** Create a content container.
@@ -82,10 +79,9 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
      *  the same name. Element names within a workspace must be unique.
      */
     public HomerMultiContent(TabScenePanel contentPrototype,
-            CompositeEntity model, HomerMainFrame mainFrame)
-            throws IllegalActionException, NameDuplicationException {
+            CompositeEntity model) throws IllegalActionException,
+            NameDuplicationException {
         super(contentPrototype, model);
-        _mainFrame = mainFrame;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,9 +121,10 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
     /** Add a tab with the provided parameters.
      *  @param topLevel The container containing all tab definitions. If the container 
      *  does not have the attribute that contains all tab definition information, it will be created.
-     *  @param tabTag The tag identifier used for the content area.
-     *  @param tabName Name of the tab. Can be used for visualization.
+     *  @param tag The tag identifier used for the content area.
+     *  @param name Name of the tab. Can be used for visualization.
      *  @param content The specific content for the new tab.
+     *  @return The tag identifier of the tab.
      *  @exception IllegalActionException If the name coincides with an attribute already in the container.
      *  @exception NameDuplicationException If the attribute is not of an acceptable class for the 
      *  container, if the name contains a period, or if a content area with the same tag already exist.
@@ -139,7 +136,7 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
 
         String newTag = super.addTab(topLevel, tag, name, content);
         _nofityAllListeners(new TabEvent(this, ActionEvent.ACTION_PERFORMED,
-                "addTab", newTag, name, _order.size(), content));
+                "addTab", newTag, name, getOrder().size(), content));
 
         return newTag;
     }
@@ -202,7 +199,7 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
      *  @param index The ordinal position of the tab to remove.
      */
     public void removeTab(int index) {
-        removeTab(_order.get(index));
+        removeTab(getOrder().get(index));
     }
 
     /** Remove the tab given its tag.
@@ -210,15 +207,16 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
      */
     @Override
     public void removeTab(String tag) {
-        ArrayList<PositionableElement> elements = (ArrayList<PositionableElement>) _contents
+        ArrayList<PositionableElement> elements = (ArrayList<PositionableElement>) getContents()
                 .get(tag).getElements().clone();
         for (PositionableElement element : elements) {
             removeElement(element);
         }
 
-        int position = _order.indexOf(tag);
+        int position = getOrder().indexOf(tag);
         _nofityAllListeners(new TabEvent(this, ActionEvent.ACTION_PERFORMED,
-                "removeTab", tag, _contents.get(tag).getName(), position, null));
+                "removeTab", tag, getContents().get(tag).getName(), position,
+                null));
 
         super.removeTab(tag);
     }
@@ -234,7 +232,7 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
         super.setNameAt(position, text);
 
         _nofityAllListeners(new TabEvent(this, ActionEvent.ACTION_PERFORMED,
-                "renameTab", _order.get(position), text, position, null));
+                "renameTab", getOrder().get(position), text, position, null));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -242,15 +240,11 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
 
     /** The hashset of event listeners.
      */
-    protected HashSet<ActionListener> _listeners = new HashSet<ActionListener>();
-
-    /** The reference to the parent frame.
-     */
-    protected HomerMainFrame _mainFrame;
+    private HashSet<ActionListener> _listeners = new HashSet<ActionListener>();
 
     /** Complete list of all named objects executed remotely.
      */
-    protected HashSet<NamedObj> _remoteElements = new HashSet<NamedObj>();
+    private HashSet<NamedObj> _remoteElements = new HashSet<NamedObj>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

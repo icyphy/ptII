@@ -50,7 +50,10 @@ public interface AttributeRepresentation {
      * 
      * @param element The element to be represented.
      * @param container The container to place the element's representation.
+     * @exception IllegalActionException If the element's representation cannot be
+     * added to the container.
      */
-    void placeWidget(Attribute element, PortableContainer container) throws IllegalActionException;
+    void placeWidget(Attribute element, PortableContainer container)
+            throws IllegalActionException;
 
 }

@@ -27,17 +27,6 @@
 
 package ptolemy.homer.kernel;
 
-///////////////////////////////////////////////////////////////////
-//// MultiContent
-
-/** Store a model's element representations on multiple contents.
- *
- *  @author Peter Foldes
- *  @version $Id$
- *  @since Ptolemy II 8.1
- *  @Pt.ProposedRating Red (pdf)
- *  @Pt.AcceptedRating Red (pdf)
- */
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,6 +36,17 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+///////////////////////////////////////////////////////////////////
+////MultiContent
+
+/** Store a model's element representations on multiple contents.
+*
+*  @author Peter Foldes
+*  @version $Id$
+*  @since Ptolemy II 8.1
+*  @Pt.ProposedRating Red (pdf)
+*  @Pt.AcceptedRating Red (pdf)
+*/
 public class MultiContent<T extends ContentPrototype> {
 
     /** Create a new multi-content frame based on a content prototype.
@@ -228,7 +228,6 @@ public class MultiContent<T extends ContentPrototype> {
     /** Remove a content area from the contents.
      * 
      *  @param tag The identifier of the tab to be removed.
-     *  @return Contents of the removed content area.
      */
     public void removeTab(String tag) {
         try {
@@ -281,6 +280,25 @@ public class MultiContent<T extends ContentPrototype> {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                protected methods                          ////
+
+    /** Return the content mapping.
+     * 
+     *  @return The mapping of tag identifiers to tab definitions.
+     */
+    protected HashMap<String, TabDefinition> getContents() {
+        return _contents;
+    }
+
+    /** Return the order of the contents.
+     * 
+     *  @return The ordered list of tag identifiers.
+     */
+    protected ArrayList<String> getOrder() {
+        return _order;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                private methods                            ////
 
     /** Parse the model and create the multiple content areas. All elements that
@@ -289,6 +307,7 @@ public class MultiContent<T extends ContentPrototype> {
      *   
      *  @param contentPrototype A prototype of the content area. This
      *  prototype is used to create multiple content areas on demand.
+     *  @param model The model to be parsed.
      *  @exception IllegalActionException If any of the elements can't be places
      *  into a content area.
      *  @exception NameDuplicationException If multiple elements exist with the
@@ -332,11 +351,11 @@ public class MultiContent<T extends ContentPrototype> {
     /** Map of all available identifiers to different contents. Identifiers
      *  should be unique.
      */
-    protected HashMap<String, TabDefinition> _contents = new HashMap<String, TabDefinition>();
+    private HashMap<String, TabDefinition> _contents = new HashMap<String, TabDefinition>();
 
     /** Store the order of the tabs by their identifiers.
      */
-    protected ArrayList<String> _order = new ArrayList<String>();
+    private ArrayList<String> _order = new ArrayList<String>();
 
     /** A prototype to the content area.
      */
