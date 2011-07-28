@@ -56,6 +56,11 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class WidgetLoader {
 
+    /** Hide the constructor of the utility class.
+     */
+    private WidgetLoader() {
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**

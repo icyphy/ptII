@@ -76,19 +76,19 @@ public abstract class PositionableElement {
         return location;
     }
 
-    /**
-     * TODO
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @throws IllegalActionException 
+    /** Set the location of this element's representation.
+     * 
+     *  @param x The x position of the top-left corner.
+     *  @param y The y position of the top-left corner.
+     *  @param width The width of the representation.
+     *  @param height The height of the representation.
+     *  @exception IllegalActionException If the location cannot be set.
      */
     public void setLocation(int x, int y, int width, int height)
             throws IllegalActionException {
         Attribute attribute = getElement().getAttribute(
                 HomerConstants.POSITION_NODE);
-        HomerLocation location;
+        HomerLocation location = null;
         if (attribute instanceof HomerLocation) {
             location = (HomerLocation) attribute;
         } else {
@@ -100,19 +100,19 @@ public abstract class PositionableElement {
                         HomerConstants.POSITION_NODE);
                 location.setVisibility(Settable.NONE);
             } catch (NameDuplicationException e) {
-                // this can't happen.
-                location = null;
+                // This can't happen.
+                throw new IllegalActionException(getElement(), e.getMessage());
             }
         }
         location.setLocation(x, y, width, height);
     }
 
-    /**
-     * TODO
-     * @param tabNode
-     * @throws IllegalActionException 
+    /** Set the tab attribute in the underlying named object wrapped by this element.
+     * 
+     *  @param tag The tag identifier of the tab this element belongs to.
+     *  @throws IllegalActionException If the tab cannot be set. 
      */
-    public void setTab(String name) throws IllegalActionException {
+    public void setTab(String tag) throws IllegalActionException {
         Attribute attribute = getElement()
                 .getAttribute(HomerConstants.TAB_NODE);
 
@@ -130,14 +130,15 @@ public abstract class PositionableElement {
                 tabAttribute.setVisibility(Settable.NONE);
             } catch (NameDuplicationException e) {
                 // This can't happen, because the attribute was removed first.
-                tabAttribute = null;
+                throw new IllegalActionException(getElement(), e.getMessage());
             }
         }
 
-        tabAttribute.setExpression(name);
+        tabAttribute.setExpression(tag);
     }
 
     /** Get the location of the element.
+     * 
      *  @return Return the location object of the element.
      */
     public String getTab() {

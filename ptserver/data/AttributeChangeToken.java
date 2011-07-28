@@ -34,16 +34,13 @@ import ptolemy.data.Token;
 
 /** Encapsulate changes made to a settable object.
  *
- *  @author Peter Foldes
- *  @version $Id$
- *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (pdf)
- *  @Pt.AcceptedRating Red (pdf)
+ * @author Peter Foldes
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (pdf)
+ * @Pt.AcceptedRating Red (pdf)
  */
 public class AttributeChangeToken extends Token {
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         constructors                      ////
 
     /** Create a new instance with targetSettable set to null.
      */
@@ -62,12 +59,11 @@ public class AttributeChangeToken extends Token {
     ////                         public methods                    ////
 
     /** Return true if the object is equal to the instance, false otherwise.
-     *
-     * The method checks if the object has the same target name and
-     * the same expression.
-     * @param object The reference object with which to compare.
-     * @return True if the object is equal to the instance, false otherwise.
-     * @see java.lang.Object#equals(java.lang.Object)
+     *  The method checks if the object has the same target name and
+     *  the same expression.
+     *  @param object The reference object with which to compare.
+     *  @return True if the object is equal to the instance, false otherwise.
+     *  @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object object) {
@@ -78,7 +74,6 @@ public class AttributeChangeToken extends Token {
         if (object.getClass() != getClass()) {
             return false;
         }
-
         if (isNil() || ((AttributeChangeToken) object).isNil()) {
             return false;
         }
@@ -103,27 +98,9 @@ public class AttributeChangeToken extends Token {
         return true;
     }
 
-    /** Return the expression.
-     *  @return the expression.
-     *  @see #setExpression(String)
-     */
-    public String getExpression() {
-        return _expression;
-    }
-
-    /** Return name of the target settable object that received the changes encapsulated by
-     *  the AttributeChangeToken.
-     *  @return the name of the target settable object that received the changes encapsulated by
-     *  the AttributeChangeToken.
-     *  @see #setTargetSettableName(String)
-     */
-    public String getTargetSettableName() {
-        return _targetSettableName;
-    }
-
     /** The hashCode method generates an identifier based on the stored
-     *  expression and the target settable object. Used to check equality.
-     *  @return The unique hashcode for the instance.
+     *  expression and the target settable object. Used to check equality. 
+     *  @return The hashcode of the instance. 
      */
     @Override
     public int hashCode() {
@@ -136,6 +113,24 @@ public class AttributeChangeToken extends Token {
                 + ((_targetSettableName == null) ? 0 : _targetSettableName
                         .hashCode());
         return result;
+    }
+
+    /** Return the expression.
+     *  @return The expression.
+     *  @see #setExpression(String)
+     */
+    public String getExpression() {
+        return _expression;
+    }
+
+    /** Return name of the target settable object that received the changes encapsulated by
+     *  the AttributeChangeToken.
+     *  @return The name of the target settable object that received the changes encapsulated by
+     *  the AttributeChangeToken.
+     *  @see #setTargetSettableName(String)
+     */
+    public String getTargetSettableName() {
+        return _targetSettableName;
     }
 
     /** Set the value of the expression carried.
@@ -158,11 +153,11 @@ public class AttributeChangeToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Name of the target settable object.
-     */
-    private String _targetSettableName;
-
     /** New expression for the target settable object.
      */
     private String _expression;
+
+    /** Name of the target settable object.
+     */
+    private String _targetSettableName;
 }

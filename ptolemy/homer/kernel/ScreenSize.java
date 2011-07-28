@@ -29,7 +29,6 @@
  */
 package ptolemy.homer.kernel;
 
-import ptolemy.data.IntMatrixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -48,25 +47,19 @@ import ptolemy.kernel.util.Settable;
  */
 public class ScreenSize extends Parameter {
 
+    /** Create a new screen size parameter in a model.
+     * 
+     *  @param container The model where the screen size is stored.
+     *  @param name The name of the parameter representing the screen size.
+     *  @throws IllegalActionException If the screen size parameter cannot be added
+     *  to the container.
+     *  @throws NameDuplicationException If the container already has an attribute with
+     *  the same name.
+     */
     public ScreenSize(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NONE);
     }
 
-    public boolean SetSize() {
-        try {
-            IntMatrixToken token = (IntMatrixToken) getToken();
-
-            if (token != null) {
-                token.getElementAt(0, 0);
-                token.getElementAt(0, 1);
-            }
-            
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-
-    }
 }

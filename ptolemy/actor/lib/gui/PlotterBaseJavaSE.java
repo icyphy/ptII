@@ -12,7 +12,6 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.actor.gui.PlotTableau;
 import ptolemy.actor.gui.PlotTableauFrame;
-import ptolemy.actor.gui.PortableContainer;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -21,12 +20,31 @@ import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotBoxInterface;
 
+//////////////////////////////////////////////////////////////////////////
+//// PlotterBaseJavaSE
+
+/**
+ * Java SE implementation of PlotterBaseInterface.  The code is largely based on
+ * the original platform dependent version of the PlotterBase but was moved here
+ * in order to support portability of the actor.
+ * @author Edward A. Lee Contributors: Anar Huseynov
+ * @version $Id$ 
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class PlotterBaseJavaSE implements PlotterBaseInterface {
 
+    /** 
+     * {@inheritDoc}
+     */
     public void init(PlotterBase plotterBase) {
         _plotterBase = plotterBase;
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public void initWindowAndSizeProperties() throws IllegalActionException,
             NameDuplicationException {
         _windowProperties = new WindowPropertiesAttribute(_plotterBase,
@@ -42,7 +60,10 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         _plotSize.setPersistent(true);
     }
 
-    public void removeOldContainer() {
+    /** 
+     * {@inheritDoc}
+     */
+    public void removeNullContainer() {
         // NOTE: This actor always shows the plot buttons, even if
         // the plot is in a separate frame.  They are very useful.
         if (_container == null) {
@@ -62,22 +83,10 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         }
     }
 
-    public void place(PortableContainer container) {
-        if (container == null) {
-            _container = null;
-        } else {
-            _container = (Container) container.getPlatformContainer();
-        }
-
-        // If _container is null, do not try to add the _plotterBase.
-        // This happens when a plot is closed.
-        if (_container != null && !(_container instanceof PlotBox)) {
-            container.add(_plotterBase.plot);
-        }
-
-    }
-
-    public void exportWindowAndSizeMoML() {
+    /** 
+     * {@inheritDoc}
+     */
+    public void updateWindowAndSizeAttributes() {
         if (_frame != null) {
             _windowProperties.recordProperties(_frame);
         }
@@ -111,12 +120,18 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         public PlotTableauFrame frame;
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public void setTableauTitle(String title) {
         if (_tableau != null) {
             _tableau.setTitle(title);
         }
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public void setFrame(Object frame) {
         if (_frame != null) {
             _frame.removeWindowListener(_windowClosingAdapter);
@@ -135,10 +150,16 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         _windowProperties.setProperties(_frame);
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public void cleanUp() {
         _tableau = null;
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public void remove() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -155,18 +176,30 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         });
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public Object getTableau() {
         return _tableau;
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public Object getFrame() {
         return _frame;
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public Object getPlatformContainer() {
         return _container;
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public void updateSize() {
         if (_plotSize != null) {
             _plotSize.setSize((Component) _plotterBase.plot);
@@ -175,6 +208,9 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         _frame.pack();
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public void bringToFront() {
         if (_frame != null) {
             // show() used to call pack, which would override any manual
@@ -184,6 +220,9 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         }
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public void initializeEffigy() throws IllegalActionException {
         // Need an effigy and a tableau so that menu ops work properly.
         Effigy containerEffigy = Configuration.findEffigy(_plotterBase
@@ -217,14 +256,22 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         }
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public PlotBoxInterface newPlot() {
         return new Plot();
     }
 
+    /** 
+     * {@inheritDoc}
+     */
     public void setPlatformContainer(Object container) {
         _container = (Container) container;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected variables                 ////
     protected SizeAttribute _plotSize;
     protected PlotterBase _plotterBase;
     protected WindowPropertiesAttribute _windowProperties;

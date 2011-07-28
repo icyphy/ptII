@@ -184,7 +184,7 @@ public final class TokenParser {
     }
 
     /** Set the list of token handlers.
-     *  @param tokenHandlerMap
+     *  @param tokenHandlerMap The populated map of token handlers.
      *  @exception IllegalActionException If the token handler does not map to an
      *  existing class or reflection instantiation of the handler fails.
      */

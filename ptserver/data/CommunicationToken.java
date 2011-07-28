@@ -25,7 +25,6 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-
 package ptserver.data;
 
 import java.util.ArrayList;
@@ -39,18 +38,15 @@ import ptolemy.data.Token;
 //// CommunicationToken
 
 /** Encapsulate tokens that were received within one iteration.
-*
-*  <p>Note: Kahn process networks are not being handled right now.</p>
-*  @author Anar Huseynov
-*  @version $Id$
-*  @since Ptolemy II 8.0
-*  @Pt.ProposedRating Red (ahuseyno)
-*  @Pt.AcceptedRating Red (ahuseyno)
-*/
+ *  <p>Note: Kahn process networks are not being handled right now.</p>
+ *  
+ *  @author Anar Huseynov
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class CommunicationToken extends Token {
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         constructors                      ////
 
     /** Create a new instance with targetActor set to null.
      */
@@ -89,12 +85,10 @@ public class CommunicationToken extends Token {
         if (object == null) {
             return false;
         }
-
         // This test rules out subclasses.
         if (object.getClass() != getClass()) {
             return false;
         }
-
         if (isNil() || ((CommunicationToken) object).isNil()) {
             return false;
         }
@@ -108,8 +102,8 @@ public class CommunicationToken extends Token {
             return false;
         }
 
-        // Calling portChannelTokenMap.equals(other.portChannelTokenMap) would not
-        // work because the maps contain array objects, and equals method on the array
+        // portChannelTokenMap.equals(other.portChannelTokenMap) would not work 
+        // because the maps contain array objects, and equals method on the array 
         // objects checks equality of a reference but in our case we need to check
         // equality of each token within the array objects.
         if (_portChannelTokenMap == null) {
@@ -120,12 +114,10 @@ public class CommunicationToken extends Token {
             if (other._portChannelTokenMap == null) {
                 return false;
             }
-
             if (!_portChannelTokenMap.keySet().equals(
                     other._portChannelTokenMap.keySet())) {
                 return false;
             }
-
             for (Entry<String, ArrayList<Token[]>> entry : _portChannelTokenMap
                     .entrySet()) {
                 ArrayList<Token[]> otherChannelTokens = other._portChannelTokenMap
@@ -147,13 +139,10 @@ public class CommunicationToken extends Token {
         return true;
     }
 
-    /** Return the mapping from ports to their channels with tokens have been
-     *  received within one iteration.
-     *  @return the mapping from ports to their channels with tokens have been
-     *  received within one iteration.
+    /** Return the mapping from ports to their channels with tokens have been received within one iteration.
+     *  @return the mapping from ports to their channels with tokens have been received within one iteration.
      */
     public HashMap<String, ArrayList<Token[]>> getPortChannelTokenMap() {
-        //TODO: decide if we need to wrap this map into a read object
         return _portChannelTokenMap;
     }
 
@@ -184,14 +173,13 @@ public class CommunicationToken extends Token {
     }
 
     /** Compute hash code of the instance based on the targetActorname and portChannelTokenMap.
-     *  @return the hash code based on targetActorName and tokens in the portChannelTokenMap.
+     *  @return the hash code based on targetActorName and tokens in the portChannelTokanMap.
      *  @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-
         //FIXME: check if hashCode works correctly since equals is not using equals method of portChannelTokenMap
         result = prime
                 * result
@@ -200,7 +188,6 @@ public class CommunicationToken extends Token {
         result = prime
                 * result
                 + ((_targetActorName == null) ? 0 : _targetActorName.hashCode());
-
         return result;
     }
 
@@ -212,7 +199,6 @@ public class CommunicationToken extends Token {
     public void putTokens(String port, int channel, Token[] tokens) {
         ArrayList<Token[]> channelTokenList = _portChannelTokenMap.get(port);
         channelTokenList.add(channel, tokens);
-
         _size += tokens.length;
     }
 
@@ -228,17 +214,17 @@ public class CommunicationToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Mapping from port to its channels with tokens.
+     */
+    private final HashMap<String, ArrayList<Token[]>> _portChannelTokenMap = new HashMap<String, ArrayList<Token[]>>(
+            2);
+
+    /** Number of tokens encapsulated by the communication token.
+     *  Its transient to indicate that the size field won't be serialized but is here just for managing size of batching.
+     */
+    private transient int _size = 0;
+
     /** Name of the target actor.
      */
     private String _targetActorName;
-
-    /** Mapping from port to its channels with tokens.
-     */
-    private final HashMap<String, ArrayList<Token[]>> _portChannelTokenMap = new HashMap<String, ArrayList<Token[]>>(2);
-
-    /** Number of tokens encapsulated by the communication token.
-     *  It's transient to indicate that the size field won't be serialized but
-     *  is here just for managing the size of batching.
-     */
-    private transient int _size = 0;
 }

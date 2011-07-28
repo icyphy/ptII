@@ -109,12 +109,13 @@ public class TabScenePanel implements ContentPrototype {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
     /** The popup menu added to each widget loaded on the scene.
      */
     private class NamedObjectPopupMenu extends JPopupMenu {
 
         /** Create a new context menu for the widget.
-         *  @param widget The triggering widget.
+         *  @param element The triggering widget.
          */
         public NamedObjectPopupMenu(final PositionableElement element) {
             JMenuItem edit = new JMenuItem("Edit");
@@ -159,7 +160,7 @@ public class TabScenePanel implements ContentPrototype {
 
         final AlignWithMoveStrategyProvider alignWithMoveStrategyProvider = new AlignWithMoveStrategyProvider(
                 new SingleLayerAlignWithWidgetCollector(_mainLayer, false),
-                _interactionLayer, _MOVE_ALIGN_DECORATOR, false);
+                _interactionLayer, MOVE_ALIGN_DECORATOR, false);
 
         _moveAction = ActionFactory.createMoveAction(new MoveStrategy() {
             public Point locationSuggested(Widget widget,
@@ -174,7 +175,7 @@ public class TabScenePanel implements ContentPrototype {
 
         final AlignWithResizeStrategyProvider alignWithResizeStrategyProvider = new AlignWithResizeStrategyProvider(
                 new SingleLayerAlignWithWidgetCollector(_mainLayer, false),
-                _interactionLayer, _MOVE_ALIGN_DECORATOR, false);
+                _interactionLayer, MOVE_ALIGN_DECORATOR, false);
 
         _resizeAction = ActionFactory.createResizeAction(new ResizeStrategy() {
 
@@ -330,7 +331,7 @@ public class TabScenePanel implements ContentPrototype {
         });
     }
 
-    /** Add an element's representation to the scene
+    /** Add an element's representation to the scene.
      *  @param element The element to be added.
      *  @exception IllegalActionException If the appropriate element's representation
      *  cannot be loaded.
@@ -383,7 +384,7 @@ public class TabScenePanel implements ContentPrototype {
                     }
                 }));
 
-        widget.setBorder(_DEFAULT_BORDER);
+        widget.setBorder(DEFAULT_BORDER);
 
         _mainLayer.addChild(widget);
         _scene.validate();
@@ -398,10 +399,9 @@ public class TabScenePanel implements ContentPrototype {
         return _scene;
     }
 
-    /**
-     * Get the name of the tab.
-     * @return The name of the tab.
-     * @see #setName(String)
+    /** Get the name of the tab.
+     *  @return The name of the tab.
+     *  @see #setName(String)
      */
     public String getName() {
         return _name;
@@ -414,10 +414,9 @@ public class TabScenePanel implements ContentPrototype {
         return new TabScenePanel(_mainFrame);
     }
 
-    /**
-     * Return the tag of the tab.
-     * @return the tag of the tab.
-     * @see #setTag(String)
+    /** Return the tag of the tab.
+     *  @return the tag of the tab.
+     *  @see #setTag(String)
      */
     public String getTag() {
         return _tag;
@@ -431,26 +430,24 @@ public class TabScenePanel implements ContentPrototype {
     }
 
     /** Remove the widget from the scene.
-     *  @param widget The widget to be removed.
+     *  @param element The widget to be removed.
      */
     public void remove(PositionableElement element) {
         _mainLayer.removeChild(((HomerWidgetElement) element).getWidget());
         _mainFrame.repaint();
     }
 
-    /**
-     * Set the name of the tab.
-     * @param name The name of the tab.
-     * @see #getName()
+    /** Set the name of the tab.
+     *  @param name The name of the tab.
+     *  @see #getName()
      */
     public void setName(String name) {
         _name = name;
     }
 
-    /**
-     * Set the tag of the tab.
-     * @param tag The tag to set.
-     * @see #getTag()
+    /** Set the tag of the tab.
+     *  @param tag The tag to set.
+     *  @see #getTag()
      */
     public void setTag(String tag) {
         _tag = tag;
@@ -459,10 +456,9 @@ public class TabScenePanel implements ContentPrototype {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**
-     * Adjust the bounds of the widget to ensure it fits within the scene.
-     * @param widget The widget whose bounds are adjusted.
-     * @param bounds The bounds to adjust.
+    /** Adjust the bounds of the widget to ensure it fits within the scene.
+     *  @param widget The widget whose bounds are adjusted.
+     *  @param bounds The bounds to adjust.
      */
     private void _adjustBounds(Widget widget, Rectangle bounds) {
         Insets insets = widget.getBorder().getInsets();
@@ -518,7 +514,7 @@ public class TabScenePanel implements ContentPrototype {
     }
 
     /** Display the widget properties window for modification.
-     *  @param widget The target widget whose properties should be displayed.
+     *  @param element The target widget whose properties should be displayed.
      */
     private void _showWidgetProperties(PositionableElement element) {
         Widget widget = ((HomerWidgetElement) element).getWidget();
@@ -574,22 +570,18 @@ public class TabScenePanel implements ContentPrototype {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**
-     * The tag of the tab.
-     */
-    private String _tag;
 
-    /**
-     * The name of the tab.
+    /** The default border to apply to all scenes.
      */
-    private String _name;
+    private static final Border DEFAULT_BORDER = BorderFactory
+            .createEmptyBorder(6);
 
     /** The default decorator for move alignment actions.
      */
-    private static final AlignWithMoveDecorator _MOVE_ALIGN_DECORATOR = new AlignWithMoveDecorator() {
+    private static final AlignWithMoveDecorator MOVE_ALIGN_DECORATOR = new AlignWithMoveDecorator() {
         public ConnectionWidget createLineWidget(Scene scene) {
             ConnectionWidget widget = new ConnectionWidget(scene);
-            widget.setStroke(_STROKE);
+            widget.setStroke(STROKE);
             widget.setForeground(Color.BLUE);
             return widget;
         }
@@ -597,12 +589,12 @@ public class TabScenePanel implements ContentPrototype {
 
     /** The default border for resize actions.
      */
-    private static final Border _RESIZE_BORDER = BorderFactory
+    private static final Border RESIZE_BORDER = BorderFactory
             .createResizeBorder(6, Color.BLACK, true);
 
     /** Default stroke for use in widget connection.
      */
-    private static final BasicStroke _STROKE = new BasicStroke(1.0f,
+    private static final BasicStroke STROKE = new BasicStroke(1.0f,
             BasicStroke.JOIN_BEVEL, BasicStroke.CAP_BUTT, 5.0f, new float[] {
                     6.0f, 3.0f }, 0.0f);
 
@@ -612,13 +604,13 @@ public class TabScenePanel implements ContentPrototype {
             .createHoverAction(new TwoStateHoverProvider() {
                 public void setHovering(Widget widget) {
                     if (!widget.getState().isSelected()) {
-                        widget.setBorder(_RESIZE_BORDER);
+                        widget.setBorder(RESIZE_BORDER);
                     }
                 }
 
                 public void unsetHovering(Widget widget) {
                     if (!widget.getState().isSelected()) {
-                        widget.setBorder(_DEFAULT_BORDER);
+                        widget.setBorder(DEFAULT_BORDER);
                     }
                 }
             });
@@ -634,9 +626,15 @@ public class TabScenePanel implements ContentPrototype {
     /** The main widget layer.
      */
     private final LayerWidget _mainLayer;
+
     /** The move action added to all new widgets.
      */
     private final WidgetAction _moveAction;
+
+    /** The name of the tab.
+     */
+    private String _name;
+
     /**
      * The resize action added to all new widgets.
      */
@@ -646,9 +644,7 @@ public class TabScenePanel implements ContentPrototype {
      */
     private final ObjectScene _scene;
 
-    /** The default border to apply to all scenes.
+    /** The tag of the tab.
      */
-    private static final Border _DEFAULT_BORDER = BorderFactory
-            .createEmptyBorder(6);
-
+    private String _tag;
 }

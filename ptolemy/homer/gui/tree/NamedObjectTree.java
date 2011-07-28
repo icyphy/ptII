@@ -1,5 +1,5 @@
-/*
- TODO
+/* The class responsible for display, in a tree, the model elements that
+   can be added to the customized layout.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -46,7 +46,6 @@ import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
-import javax.swing.tree.TreePath;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Nameable;
@@ -56,20 +55,23 @@ import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjectTree
 
-/**
- * A side panel panel containing tree of named objects, filtering text field and
- * draggable label. 
- * @author Ishwinder Singh
- * @version $Id$ 
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (ishwinde)
- * @Pt.AcceptedRating Red (ishwinde)
+/** A side panel panel containing tree of named objects, filtering text field and
+ *  draggable label. 
+ *  
+ *  @author Ishwinder Singh
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ishwinde)
+ *  @Pt.AcceptedRating Red (ishwinde)
  */
 public class NamedObjectTree extends JPanel {
-    /**
-     * The data flavor of the label that is dropped onto the scene panel.
+
+    /** The data flavor of the label that is dropped onto the scene panel.
      */
     public static final DataFlavor LABEL_FLAVOR;
+
+    /** Static block that defines the label flavor.
+     */
     static {
         try {
             LABEL_FLAVOR = new DataFlavor(
@@ -93,13 +95,20 @@ public class NamedObjectTree extends JPanel {
         _search.requestFocus();
         _search.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
-                AttributeTreeModel attributeTreeModel = (AttributeTreeModel) _tree
+                AttributeTreeModel treeModel = (AttributeTreeModel) _tree
                         .getModel();
-                // Nothing is loaded in the Homer.
-                if (attributeTreeModel.getRoot() == null) {
-                    return;
+                if ((_search.getText() != null)
+                        && (_search.getText().length() > 0)) {
+                    treeModel.applyFilter(_search.getText());
+
+                    for (int i = 0; i < _tree.getRowCount(); i++) {
+                        _tree.expandRow(i);
+                    }
+                } else {
+                    for (int i = 0; i < _tree.getRowCount(); i++) {
+                        _tree.collapseRow(i);
+                    }
                 }
-                attributeTreeModel.applyFilter(_search.getText());
             }
         });
 
@@ -115,32 +124,27 @@ public class NamedObjectTree extends JPanel {
                 super.getTreeCellRendererComponent(tree, value, sel, expanded,
                         leaf, row, hasFocus);
 
+                // Set the text of the tree item.
+                setText(((Nameable) value).getName());
+
                 // If filter is applied & no children exist.
                 if ((_search.getText() != null)
                         && (_search.getText().length() > 0)) {
                     if ((!((Nameable) value).getFullName().toLowerCase()
-                            .contains(_search.getText().toLowerCase()) && (tree
-                            .getModel().getChildCount(value) == 0))) {
-                        // Disable the item and collapse.
+                            .contains(_search.getText().toLowerCase()))) {
                         setEnabled(false);
-                        //tree.collapseRow(row);
-                    } else {
-                        // Has children or matches criteria, expand it.
-                        // tree.expandRow(row);
                     }
-                } else {
-                    // Collapse all rows when not filtering.
-                    //tree.collapseRow(row);
                 }
 
-                setText(((Nameable) value).getName());
                 return this;
             }
         });
 
         add(_search, BorderLayout.NORTH);
         add(new JScrollPane(_tree), BorderLayout.CENTER);
+
         JButton button = new JButton("Label");
+        button.setUI(new BasicButtonUI());
         button.setTransferHandler(new TransferHandler("text"));
         button.addMouseListener(new MouseAdapter() {
             @Override
@@ -150,7 +154,7 @@ public class NamedObjectTree extends JPanel {
                 handler.exportAsDrag(c, e, TransferHandler.COPY);
             }
         });
-        button.setUI(new BasicButtonUI());
+
         // Make it non-focusable.
         button.setFocusable(false);
         button.setBorder(BorderFactory.createEtchedBorder());
@@ -161,10 +165,9 @@ public class NamedObjectTree extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Set the composite entity of the panel.
-     * This method creates new tree model for the tree.
-     * @param compositeEntity the composite entity to set.
+    /** Set the composite entity of the panel.
+     *  This method creates new tree model for the tree.
+     *  @param compositeEntity the composite entity to set.
      */
     public void setCompositeEntity(CompositeEntity compositeEntity) {
         _tree.setModel(new AttributeTreeModel(compositeEntity));
@@ -172,21 +175,22 @@ public class NamedObjectTree extends JPanel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    /**
-     * Expand all tree nodes.
-     * @param parent The parent path to expand.
-     */
-    private void _expandAll(TreePath parent) {
 
-        //        TreeNode node = (TreeNode) parent.getLastPathComponent();
-        //        if (_tree.getModel().getChildCount(parent) >= 0) {
-        //            for (Enumeration e = node.children(); e.hasMoreElements();) {
-        //                _expandAll(parent.pathByAddingChild((TreeNode) e.nextElement()));
-        //            }
-        //        }
-        //
-        //        _tree.expandPath(parent);
-    }
+    //    /** Expand all tree nodes.
+    //     *  @param parent The parent path to expand.
+    //     */
+    //    private void _expand(TreePath parent) {
+    //        int childCount = _tree.getModel().getChildCount(parent);
+    //        if (childCount == 0) {
+    //            for (int i = 0; i < childCount; i++) {
+    //                TreePath path = parent.pathByAddingChild(_tree.getModel()
+    //                        .getChild(parent, i));
+    //                _expand(path);
+    //            }
+    //        }
+    //
+    //        _tree.expandPath(parent);
+    //    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

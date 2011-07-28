@@ -55,148 +55,181 @@ import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 import org.openide.ErrorManager;
 
-/**
- * A fork of ImageWidget with a fix to support resize-ability.
- * Based on bug report http://netbeans.org/bugzilla/show_bug.cgi?id=170884
- * and article http://java.dzone.com/news/how-add-resize-functionality-v
- * A widget representing image. The origin of the widget is at its top-left corner.
- * @author David Kaspar
+/** A fork of ImageWidget with a fix to support resize-ability.
+ *  Based on bug report http://netbeans.org/bugzilla/show_bug.cgi?id=170884
+ *  and article http://java.dzone.com/news/how-add-resize-functionality-v
+ *  A widget representing image. The origin of the widget is at its top-left corner.
+ *  @author David Kaspar
  */
-// TODO - alignment
 public class ResizableImageWidget extends Widget {
 
-    private Image image;
-    private Image disabledImage;
-    private int width, height;
-    private boolean paintAsDisabled;
-    protected ImageObserver _observer = new ImageObserver() {
-        public boolean imageUpdate(Image img, int infoflags, int x, int y,
-                int width, int height) {
-            //            System.out.println ("INFO: " + infoflags);
-            setImageCore(image);
-            getScene().validate();
-            return (infoflags & (ImageObserver.ABORT | ImageObserver.ERROR)) == 0;
-        }
-    };
+    ///////////////////////////////////////////////////////////////////
+    ////                         constructors                      ////
 
-    /**
-     * Creates an image widget.
-     * @param scene the scene
+    /** Creates an image widget.
+     *  @param scene The scene.
      */
     public ResizableImageWidget(Scene scene) {
         super(scene);
     }
 
-    /**
-     * Creates an image widget.
-     * @param scene the scene
-     * @param image the image
+    /** Creates an image widget.
+     *  @param scene The scene.
+     *  @param image The image.
      */
     public ResizableImageWidget(Scene scene, Image image) {
         super(scene);
         setImage(image);
     }
 
-    /**
-     * Returns an image.
-     * @return the image
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Returns an image.
+     *  @return The image.
      */
     public Image getImage() {
-        return image;
+        return _image;
     }
 
-    /**
-     * Sets an image
-     * @param image the image
+    /** Returns whether the label is painted as disabled.
+     *  @return True if the label is painted as disabled.
+     */
+    public boolean isPaintAsDisabled() {
+        return _paintAsDisabled;
+    }
+
+    /** Sets an image.
+     *  @param image The image
      */
     public void setImage(Image image) {
-        if (this.image == image) {
+        if (_image == image) {
             return;
         }
+
         setImageCore(image);
     }
 
-    private void setImageCore(Image image) {
-        if (image == this.image) {
-            return;
-        }
-        int oldWidth = width;
-        int oldHeight = height;
-
-        this.image = image;
-        disabledImage = null;
-        width = image != null ? image.getWidth(_observer) : 0;
-        height = image != null ? image.getHeight(_observer) : 0;
-
-        if (oldWidth == width && oldHeight == height) {
-            repaint();
-        } else {
-            revalidate();
-        }
-    }
-
-    /**
-     * Returns whether the label is painted as disabled.
-     * @return true, if the label is painted as disabled
-     */
-    public boolean isPaintAsDisabled() {
-        return paintAsDisabled;
-    }
-
-    /**
-     * Sets whether the label is painted as disabled.
-     * @param paintAsDisabled if true, then the label is painted as disabled
+    /** Sets whether the label is painted as disabled.
+     *  @param paintAsDisabled If true, then the label is painted as disabled.
      */
     public void setPaintAsDisabled(boolean paintAsDisabled) {
-        boolean repaint = this.paintAsDisabled != paintAsDisabled;
-        this.paintAsDisabled = paintAsDisabled;
+        boolean repaint = _paintAsDisabled != paintAsDisabled;
+        _paintAsDisabled = paintAsDisabled;
+
         if (repaint) {
             repaint();
         }
     }
 
-    /**
-     * Calculates a client area of the image
-     * @return the calculated client area
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Calculates a client area of the image.
+     *  @return The calculated client area.
      */
     protected Rectangle calculateClientArea() {
-        if (image != null) {
-            return new Rectangle(0, 0, width, height);
+        if (_image != null) {
+            return new Rectangle(0, 0, _width, _height);
         }
+
         return super.calculateClientArea();
     }
 
-    /**
-     * Paints the image widget.
+    /** Paints the image widget.
      */
     protected void paintWidget() {
-        if (image == null) {
+        if (_image == null) {
             return;
         }
+
         Graphics2D gr = getGraphics();
-        if (image != null) {
+        if (_image != null) {
             Rectangle bounds = getBounds();
-            if (paintAsDisabled) {
-                if (disabledImage == null) {
-                    disabledImage = GrayFilter.createDisabledImage(image);
+            if (_paintAsDisabled) {
+                if (_disabledImage == null) {
+                    _disabledImage = GrayFilter.createDisabledImage(_image);
                     MediaTracker tracker = new MediaTracker(getScene()
                             .getView());
-                    tracker.addImage(disabledImage, 0);
+                    tracker.addImage(_disabledImage, 0);
                     try {
                         tracker.waitForAll();
                     } catch (InterruptedException e) {
                         ErrorManager.getDefault().notify(e);
                     }
                 }
-                gr.drawImage(disabledImage, bounds.x, bounds.y, bounds.x
-                        + bounds.width, bounds.y + bounds.height, 0, 0, width,
-                        height, _observer);
+                gr.drawImage(_disabledImage, bounds.x, bounds.y, bounds.x
+                        + bounds.width, bounds.y + bounds.height, 0, 0, _width,
+                        _height, _observer);
             } else {
-                gr.drawImage(image, bounds.x, bounds.y,
-                        bounds.x + bounds.width, bounds.y + bounds.height, 0,
-                        0, width, height, _observer);
+                gr.drawImage(_image, bounds.x, bounds.y, bounds.x
+                        + bounds.width, bounds.y + bounds.height, 0, 0, _width,
+                        _height, _observer);
             }
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The image observer.
+     */
+    protected ImageObserver _observer = new ImageObserver() {
+        public boolean imageUpdate(Image img, int infoflags, int x, int y,
+                int width, int height) {
+            setImageCore(_image);
+            getScene().validate();
+
+            return (infoflags & (ImageObserver.ABORT | ImageObserver.ERROR)) == 0;
+        }
+    };
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Set the image core.
+     *  @param image
+     */
+    private void setImageCore(Image image) {
+        if (image == _image) {
+            return;
+        }
+
+        int oldWidth = _width;
+        int oldHeight = _height;
+
+        _image = image;
+        _disabledImage = null;
+        _width = image != null ? image.getWidth(_observer) : 0;
+        _height = image != null ? image.getHeight(_observer) : 0;
+
+        if (oldWidth == _width && oldHeight == _height) {
+            repaint();
+        } else {
+            revalidate();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The disabled image.
+     */
+    private Image _disabledImage;
+
+    /** The height of the image.
+     */
+    private int _height;
+
+    /** The image.
+     */
+    private Image _image;
+
+    /** Whether or not the image is painted as disabled.
+     */
+    private boolean _paintAsDisabled;
+
+    /** The width of the image.
+     */
+    private int _width;
 }

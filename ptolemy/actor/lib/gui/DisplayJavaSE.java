@@ -41,7 +41,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
-import ptolemy.actor.gui.AbstactPlaceableJavaSE;
+import ptolemy.actor.gui.AbstractPlaceableJavaSE;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PortableContainer;
@@ -81,7 +81,7 @@ to use this actor to log large output streams.</p>
 @since Ptolemy II 1.0
 */
 
-public class DisplayJavaSE extends AbstactPlaceableJavaSE implements
+public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
         DisplayInterface {
 
     ///////////////////////////////////////////////////////////////////

@@ -38,7 +38,7 @@ import java.io.StringWriter;
 import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////
-//// ExceptionToken
+//// ServerEventToken
 
 /** Encapsulates an informational token raised by the the Ptolemy server.
  *  @author Justin Killian
@@ -52,7 +52,13 @@ public class ServerEventToken extends Token {
     /** Type of notification message being sent to the user.
      */
     public enum EventType {
-        EXCEPTION, SERVER_SHUTDOWN
+        /** An exception was raised.
+         */
+        EXCEPTION,
+
+        /** The server is shutting down.
+         */
+        SERVER_SHUTDOWN
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,6 +121,11 @@ public class ServerEventToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The type of event the token is associated with.
+     */
     private EventType _eventType;
+
+    /** The message explaining the event.
+     */
     private String _message;
 }

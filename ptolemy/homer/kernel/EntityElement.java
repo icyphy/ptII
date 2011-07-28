@@ -71,7 +71,6 @@ public class EntityElement extends PositionableElement {
 
     /** Create a representation and add it to the passed container.
      * 
-     *  @param context The Android context of the application.
      *  @param container The container to place the representation into.
      */
     @Override

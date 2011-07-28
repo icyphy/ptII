@@ -1,4 +1,4 @@
-/* Handle model and layout file operations.
+/* Utility class to handle model and layout file operations.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -65,7 +65,10 @@ import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
 import ptserver.util.ServerUtility;
 
-/** Handle model and layout file operations.
+///////////////////////////////////////////////////////////////////
+//// LayoutFileOperations
+
+/** Utility class to handle model and layout file operations.
  * 
  *  @author Peter Foldes
  *  @version $Id$
@@ -73,11 +76,33 @@ import ptserver.util.ServerUtility;
  *  @Pt.ProposedRating Red (pdf)
  *  @Pt.AcceptedRating Red (pdf)
  */
-public class LayoutFileOperations {
+public final class LayoutFileOperations {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                constructor                                ////
+
+    /** Hide constructor so that class is only used as a utility class.
+     */
     private LayoutFileOperations() {
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                public methods                             ////
+
+    /** Open a model and an existing layout on the given frame. The information from both
+     *  will be merged into one model that is returned.
+     *  
+     *  @param mainFrame The frame containing the contents infrastructure and the visual
+     *  representations.
+     *  @param modelURL The url to the original Ptolemy II model file to use.
+     *  @param layoutURL The url to the layout file associated with the Ptolemy II model.
+     *  @exception IllegalActionException If the model cannot be merged with the layout.
+     *  @exception CloneNotSupportedException If cloning of the Ptolemy II model is not
+     *  supported.
+     *  @exception NameDuplicationException If there is a name duplication when merging the
+     *  model and the layout.
+     *  @return A model that has the merged information from both the model and the layout.
+     */
     public static CompositeEntity open(HomerMainFrame mainFrame, URL modelURL,
             URL layoutURL) throws IllegalActionException,
             NameDuplicationException, CloneNotSupportedException {
@@ -98,6 +123,14 @@ public class LayoutFileOperations {
         return mergedModel;
     }
 
+    /** Given a frame containing a model, this method will parse the model and populate
+     *  the contents defined in the frame.
+     * 
+     *  @param mainFrame The frame containing the model to be parsed and the underlying contents
+     *  infrastructure.
+     *  @throws IllegalActionException If the parsing fails.
+     *  @throws NameDuplicationException If during the parsing a name duplication is found.
+     */
     public static void parseModel(HomerMainFrame mainFrame)
             throws IllegalActionException, NameDuplicationException {
         LayoutParser parser = new LayoutParser(mainFrame.getTopLevelActor());
@@ -132,7 +165,7 @@ public class LayoutFileOperations {
         }
     }
 
-    /** Open a MoML file, parse it, and the parsed model.
+    /** Open a MoML file, parse it, and return the parsed model.
      * 
      *  @param url The url of the model.
      *  @return The parsed model.
@@ -217,7 +250,7 @@ public class LayoutFileOperations {
                 // Add location and tab information for each element in the tab.
                 for (PositionableElement element : tab.getElements()) {
                     HomerWidgetElement homerElement = (HomerWidgetElement) element;
-                    String strippedFullName = stripFullName(homerElement
+                    String strippedFullName = _stripFullName(homerElement
                             .getElement().getFullName());
                     NamedObj elementInModel = null;
                     NamedObj elementOnScreen = element.getElement();
@@ -315,84 +348,6 @@ public class LayoutFileOperations {
         }
     }
 
-    private static void _markAsProxy(CompositeActor model, NamedObj element)
-            throws IllegalActionException {
-        String strippedFullName = stripFullName(element.getFullName());
-
-        // Add a new proxy attribute
-        if (element instanceof ComponentEntity) {
-            // Remove the proxy attribute if it's present.
-            ComponentEntity entityInModel = model.getEntity(strippedFullName);
-            if (entityInModel == null) {
-                throw new IllegalActionException(element,
-                        "Entity not found in the model.");
-            }
-            Attribute proxy = entityInModel
-                    .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
-            if (proxy != null) {
-                element.removeAttribute(proxy);
-            }
-
-            SinkOrSource sinkOrSource = isSinkOrSource((ComponentEntity) element);
-
-            try {
-                model.workspace().getWriteAccess();
-
-                if (sinkOrSource == SinkOrSource.SOURCE
-                        || sinkOrSource == SinkOrSource.SINK_AND_SOURCE) {
-                    SingletonParameter parameter = new SingletonParameter(
-                            entityInModel, ServerUtility.REMOTE_OBJECT_TAG);
-                    parameter.setVisibility(Settable.NONE);
-                    parameter.setPersistent(true);
-                    parameter
-                            .setExpression(ServerUtility.PROXY_SOURCE_ATTRIBUTE);
-                } else if (sinkOrSource == SinkOrSource.SINK) {
-                    SingletonParameter parameter = new SingletonParameter(
-                            entityInModel, ServerUtility.REMOTE_OBJECT_TAG);
-                    parameter.setVisibility(Settable.NONE);
-                    parameter.setPersistent(true);
-                    parameter.setExpression(ServerUtility.PROXY_SINK_ATTRIBUTE);
-                }
-            } catch (IllegalActionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (NameDuplicationException e) {
-                // Since the attribute was removed, this case should not happen
-            } finally {
-                model.workspace().doneWriting();
-            }
-        } else if (element instanceof Attribute) {
-            try {
-                model.workspace().getWriteAccess();
-                Attribute attributeInModel = model
-                        .getAttribute(strippedFullName);
-                if (attributeInModel == null) {
-                    throw new IllegalActionException(element,
-                            "Attribute not found in the model.");
-                }
-                Attribute proxy = attributeInModel
-                        .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
-                if (proxy != null) {
-                    element.removeAttribute(proxy);
-                }
-
-                SingletonParameter parameter = new SingletonParameter(
-                        model.getAttribute(strippedFullName),
-                        ServerUtility.REMOTE_OBJECT_TAG);
-                parameter.setVisibility(Settable.NONE);
-                parameter.setPersistent(true);
-                parameter.setExpression(ServerUtility.REMOTE_ATTRIBUTE);
-            } catch (IllegalActionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (NameDuplicationException e) {
-                // Since the attribute was removed, this case should not happen
-            } finally {
-                model.workspace().doneWriting();
-            }
-        }
-    }
-
     /** Strips the first part of a compound element name, including the
      *  "." at the beginning.
      * 
@@ -400,7 +355,7 @@ public class LayoutFileOperations {
      * @return The stripped name of the element, where the first part of
      * the compound name is removed, including the "." at the beginning.
      */
-    private static String stripFullName(String fullName) {
+    private static String _stripFullName(String fullName) {
         if (fullName.indexOf(".") == -1 || fullName.length() < 2) {
             return fullName;
         }
@@ -489,6 +444,96 @@ public class LayoutFileOperations {
         /** Categorize entity as neither a sink or source.
          */
         NONE
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                private methods                            ////
+
+    /** Mark the given element as a proxy element in the given model.
+     * 
+     *  @param model The model where the similar element to the given element is
+     *  marked as proxy.
+     *  @param element The element defining which element in the model will be marked
+     *  as proxy.
+     *  @exception IllegalActionException If the model does not contain the element,
+     *  or if it cannot be marked as a proxy element.
+     */
+    private static void _markAsProxy(CompositeActor model, NamedObj element)
+            throws IllegalActionException {
+        String strippedFullName = _stripFullName(element.getFullName());
+
+        // Add a new proxy attribute
+        if (element instanceof ComponentEntity) {
+            // Remove the proxy attribute if it's present.
+            ComponentEntity entityInModel = model.getEntity(strippedFullName);
+            if (entityInModel == null) {
+                throw new IllegalActionException(element,
+                        "Entity not found in the model.");
+            }
+            Attribute proxy = entityInModel
+                    .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
+            if (proxy != null) {
+                element.removeAttribute(proxy);
+            }
+
+            SinkOrSource sinkOrSource = isSinkOrSource((ComponentEntity) element);
+
+            try {
+                model.workspace().getWriteAccess();
+
+                if (sinkOrSource == SinkOrSource.SOURCE
+                        || sinkOrSource == SinkOrSource.SINK_AND_SOURCE) {
+                    SingletonParameter parameter = new SingletonParameter(
+                            entityInModel, ServerUtility.REMOTE_OBJECT_TAG);
+                    parameter.setVisibility(Settable.NONE);
+                    parameter.setPersistent(true);
+                    parameter
+                            .setExpression(ServerUtility.PROXY_SOURCE_ATTRIBUTE);
+                } else if (sinkOrSource == SinkOrSource.SINK) {
+                    SingletonParameter parameter = new SingletonParameter(
+                            entityInModel, ServerUtility.REMOTE_OBJECT_TAG);
+                    parameter.setVisibility(Settable.NONE);
+                    parameter.setPersistent(true);
+                    parameter.setExpression(ServerUtility.PROXY_SINK_ATTRIBUTE);
+                }
+            } catch (IllegalActionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                // Since the attribute was removed, this case should not happen
+            } finally {
+                model.workspace().doneWriting();
+            }
+        } else if (element instanceof Attribute) {
+            try {
+                model.workspace().getWriteAccess();
+                Attribute attributeInModel = model
+                        .getAttribute(strippedFullName);
+                if (attributeInModel == null) {
+                    throw new IllegalActionException(element,
+                            "Attribute not found in the model.");
+                }
+                Attribute proxy = attributeInModel
+                        .getAttribute(ServerUtility.REMOTE_OBJECT_TAG);
+                if (proxy != null) {
+                    element.removeAttribute(proxy);
+                }
+
+                SingletonParameter parameter = new SingletonParameter(
+                        model.getAttribute(strippedFullName),
+                        ServerUtility.REMOTE_OBJECT_TAG);
+                parameter.setVisibility(Settable.NONE);
+                parameter.setPersistent(true);
+                parameter.setExpression(ServerUtility.REMOTE_ATTRIBUTE);
+            } catch (IllegalActionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                // Since the attribute was removed, this case should not happen
+            } finally {
+                model.workspace().doneWriting();
+            }
+        }
     }
 
 }

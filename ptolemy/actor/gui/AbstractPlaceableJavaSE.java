@@ -1,3 +1,32 @@
+/* Base class for AWT and Swing implementation of actors the implement
+PortablePlaceable.
+
+ @Copyright (c) 1998-2010 The Regents of the University of California.
+ All rights reserved.
+
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
+
 package ptolemy.actor.gui;
 
 import java.awt.Component;
@@ -12,8 +41,29 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-public abstract class AbstactPlaceableJavaSE {
+///////////////////////////////////////////////////////////////////
+////AbstractAWTPlaceable
 
+/**
+Base class for AWT and Swing implementation of actors the implement
+PortablePlaceable
+
+@author Edward A. Lee, Ishwinder Singh
+@version $Id$
+@since Ptolemy II 8.1
+@Pt.ProposedRating Red (ishwinde)
+@Pt.AcceptedRating Red (ishwinde)
+*/
+
+public abstract class AbstractPlaceableJavaSE {
+
+    /** Construct an actor with the specified container and name.
+     *  @param actor The actor contained in the Window.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public void init(TypedAtomicActor actor) throws IllegalActionException,
             NameDuplicationException {
         _windowProperties = new WindowPropertiesAttribute(actor,
@@ -28,7 +78,6 @@ public abstract class AbstactPlaceableJavaSE {
         _paneSize = new SizeAttribute(actor, "_paneSize");
         _paneSize.setPersistent(true);
     }
-
 
     /** Specify the associated frame and set its properties (size, etc.)
      *  to match those stored in the _windowProperties attribute.
