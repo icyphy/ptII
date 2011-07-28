@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Guice injection classes
+# Makefile for Ptolemy II dependency injection classes
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -36,8 +36,7 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-# PTJINJECTION_JARS is set to include guice.jar by configure
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(PTINJECTION_JARS)
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
