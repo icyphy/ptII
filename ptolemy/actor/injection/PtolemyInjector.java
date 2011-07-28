@@ -1,7 +1,8 @@
 /*
- PtolemyInjector contains a static reference to the Guice Injector.
+ PtolemyInjector contains a static reference to the Injector loaded with Ptolemy Modules
+ for the given target platform.
 
- Copyright (c) 2011-2011 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,17 +28,14 @@
  */
 package ptolemy.actor.injection;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-
 ///////////////////////////////////////////////////////////////////
 //// PtolemyInjector
 /**
- * PtolemyInjector contains a static reference to the Guice Injector.
+ * PtolemyInjector contains a static reference to the Injector loaded with Ptolemy Modules
+ * for the given target platform.
  * The rationale for having a static reference is to avoid hurdle of passing
  * the injector to all needed parties.
- *
+ * 
  * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -51,22 +49,35 @@ public class PtolemyInjector {
 
     /**
      * Create an injector for the given set of modules.
-     * @param modules the array of modules that contain binding that Guice Injector
-     * uses to implement dependency injection.
+     * @param modules the array of modules that contain interface to implementation bindings
+     * used to implement dependency injection.
      */
-    public static synchronized void createInjector(Module... modules) {
-        _instance = Guice.createInjector(modules);
+    public static synchronized void createInjector(PtolemyModule... modules) {
+        _instance = new Injector();
+        for (PtolemyModule ptolemyModule : modules) {
+            _instance.loadMappings(ptolemyModule.getBindings());
+        }
     }
 
     /**
-     * Return the PtolemyInjector.  Note that {@link #createInjector(Module...)}
+     * Create an injector for the given set of modules.
+     * @param modules the array of modules that contain interface to implementation bindings
+     * used to implement dependency injection.
+     */
+    public static synchronized void createInjector(
+            Iterable<? extends PtolemyModule> modules) {
+        _instance = new Injector();
+        for (PtolemyModule ptolemyModule : modules) {
+            _instance.loadMappings(ptolemyModule.getBindings());
+        }
+    }
+
+    /**
+     * Return the PtolemyInjector.  Note that {@link #createInjector(Module...)} 
      * must be called prior to using this method.
      * @return the PtolemyInjector that was created with the supplied modules.
      */
     public static Injector getInjector() {
-        if (_instance == null) {
-            throw new IllegalStateException("The injector is not created.");
-        }
         return _instance;
     }
 

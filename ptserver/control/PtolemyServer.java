@@ -1,4 +1,4 @@
-/* Ptolemy server which manages the servlet container and simulation requests.
+/* Ptolemy server which manages the broker, servlet, and simulations.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -27,17 +27,17 @@
 
 package ptserver.control;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -54,27 +54,29 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.Manager.State;
+import ptolemy.actor.injection.PtolemyInjector;
+import ptolemy.actor.injection.PtolemyModule;
 import ptolemy.kernel.util.IllegalActionException;
-import ptserver.communication.RemoteModel;
-import ptserver.communication.RemoteModel.RemoteModelListener;
-import ptserver.communication.RemoteModel.RemoteModelType;
-import ptserver.communication.RemoteModelResponse;
+import ptolemy.util.MessageHandler;
+import ptserver.communication.ProxyModelInfrastructure;
+import ptserver.communication.ProxyModelInfrastructure.ProxyModelListener;
+import ptserver.communication.ProxyModelResponse;
 import ptserver.data.ServerEventToken;
 import ptserver.data.ServerEventToken.EventType;
 import ptserver.data.TokenParser;
 import ptserver.data.TokenParser.HandlerData;
-import ptserver.util.PtolemyModuleJavaSEInitializer;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyServer
 
 /** The PtolemyServer class is responsible for fulfilling simulation
  *  requests.  To do this, the server hosts a servlet through the Jetty
- *  servlet container that enables clients to administer control commands
- *  for starting, pausing, resuming, and stopping simulations.  The server
- *  relies on an MQTT message broker for transmitting tokens between the
- *  client and server.
+ *  servlet container that enables clients to administer control commands 
+ *  for starting, pausing, resuming, and stopping simulations.  The server 
+ *  also launches a separate process for the MQTT broker which is used
+ *  for transmitting tokens between the client and server.  
  *
  * <p>PtolemyServer uses mosquitto from <a href="http://mosquitto.org/download/#in_browser">http://mosquitto.org/download</a>.</p>
  *
@@ -109,7 +111,7 @@ import ptserver.util.PtolemyModuleJavaSEInitializer;
 public final class PtolemyServer implements IServerManager {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                      public variables                     ////
 
     /** The ResourceBundle containing configuration parameters.
      */
@@ -120,9 +122,13 @@ public final class PtolemyServer implements IServerManager {
      */
     public static final Logger LOGGER;
 
-    /** The file to which the logger records system messages.
+    /** Export format of the model image.
      */
-    public static final String LOG_FILENAME = CONFIG.getString("LOG_FILENAME");
+    public static final String IMAGE_FORMAT = "PNG";
+
+    /** Buffer size to be used when exporting the model image.
+     */
+    public static final int IMAGE_BUFFER_SIZE = 50000;
 
     /** The virtual path of the command servlet.
      */
@@ -132,24 +138,21 @@ public final class PtolemyServer implements IServerManager {
      */
     public static final String SERVLET_ROLE = "user";
 
-    /** Export format of the model image.
-     */
-    public static final String IMAGE_FORMAT = "PNG";
-
-    /** Buffer size to be used when exporting the model image.
-     */
-    public static final int IMAGE_BUFFER_SIZE = 50000;
-
     /** Initialize the logger used for error handling.
      */
     static {
-        PtolemyModuleJavaSEInitializer.initializeInjector();
         Logger logger = null;
         FileHandler logFile = null;
 
+        ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
+        modules.addAll(ActorModuleInitializer.getModules());
+        modules.add(new PtolemyModule(ResourceBundle
+                .getBundle("ptserver.util.PTServerModule")));
+        PtolemyInjector.createInjector(modules);
+
         try {
             logger = Logger.getLogger(PtolemyServer.class.getSimpleName());
-            logFile = new FileHandler(LOG_FILENAME, true);
+            logFile = new FileHandler(CONFIG.getString("LOG_FILENAME"), true);
             logFile.setFormatter(new XMLFormatter());
             logger.addHandler(logFile);
             logger.setLevel(Level.ALL);
@@ -173,13 +176,12 @@ public final class PtolemyServer implements IServerManager {
      *  @param brokerAddress The host address of the MQTT broker.
      *  @param brokerPort The port of the broker.
      *  @param modelDirectory The root directory of where model files are stored.
-     *  @exception IllegalActionException If the server was unable to load the default
+     *  @exception IllegalActionException If the server was unable to load the default 
      *  configuration from the resource file.
      */
     private PtolemyServer(int servletPort, String brokerPath,
             String brokerAddress, int brokerPort, String modelDirectory)
             throws IllegalActionException {
-
         try {
             // If not passed, attempt to pull from configuration.
             brokerPath = (brokerPath != null ? brokerPath : CONFIG
@@ -200,6 +202,10 @@ public final class PtolemyServer implements IServerManager {
                 brokerAddress = InetAddress.getLocalHost().getHostAddress();
             }
 
+            //MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+            //            _configuration = ConfigurationApplication
+            //                    .readConfiguration(ConfigurationApplication
+            //                            .specToURL("ptolemy/configs/full/configuration.xml"));
             _brokerUrl = String
                     .format("tcp://%s@%s", brokerAddress, brokerPort);
             _servletUrl = String
@@ -212,12 +218,28 @@ public final class PtolemyServer implements IServerManager {
             _executor = Executors.newCachedThreadPool();
             _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
         } catch (Exception e) {
+            e.printStackTrace();
             _handleException("Unable to initialize Ptolemy server.", e);
         }
+
+        Timer timer = new Timer("PtolemyServer timer");
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                for (SimulationTask task : _requests.values()) {
+                    System.out.println(task.getProxyModelInfrastructure()
+                            .getTicket()
+                            + " latency "
+                            + task.getProxyModelInfrastructure()
+                                    .getPingPongLatency());
+                }
+            }
+        }, 1000, 1000);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                  public methods                           ////
 
     /** Create the singleton with non-default configuration values.
      *  @param servletPort The port on which the servlet operates.
@@ -234,7 +256,7 @@ public final class PtolemyServer implements IServerManager {
                 brokerPort, modelDirectory);
     }
 
-    /** Shut down the simulation thread by calling the finish() method
+    /** Shut down the simulation thread by calling the finish() method 
      *  on its Manager and removing the task from the server.
      *  @param ticket  Ticket reference to the simulation request.
      *  @exception IllegalActionException If the server was unable to destroy the simulation thread.
@@ -244,8 +266,8 @@ public final class PtolemyServer implements IServerManager {
             _checkTicket(ticket);
             stop(ticket);
 
-            // FindBugs is wrong here since _checkTicket ensures that task is not null
             SimulationTask task = _requests.get(ticket);
+            // FindBugs is wrong here since _checkTicket ensures that task is not null
             task.close();
 
             _requests.remove(ticket);
@@ -310,7 +332,7 @@ public final class PtolemyServer implements IServerManager {
                 String modelName = url.substring(url.lastIndexOf("/") + 1,
                         url.lastIndexOf(".xml"));
 
-                return ((filename.startsWith(modelName)) && (filename
+                return ((filename.startsWith(modelName + "_")) && (filename
                         .endsWith(".layout.xml")));
             }
         };
@@ -392,7 +414,7 @@ public final class PtolemyServer implements IServerManager {
         return task;
     }
 
-    /** Get the current state of a specific simulation based on the simulation manager's state.
+    /** Get the current state of a specific simulation based on the simulation manager's state. 
      *  @param ticket The ticket reference to the simulation request.
      *  @return The state of the queried simulation.
      *  @exception IllegalActionException If the ticket is invalid or the state
@@ -438,15 +460,15 @@ public final class PtolemyServer implements IServerManager {
         return tokenHandlerMap;
     }
 
-    /** Initialize the Ptolemy server, set up the servlet host, and wait for simulation requests.
-     *  The following optional command line switches may be used with their accompanying value:
-     *  -servlet_port, -broker_path (if launching local broker), -broker_address, -broker_port,
-     *  and -model_dir. The port numbers must be integers, the broker path must be the path
+    /** Initialize the Ptolemy server, set up the servlet host, and wait for simulation requests. 
+     *  The following optional command line switches may be used with their accompanying value: 
+     *  -servlet_port, -broker_path (if launching local broker), -broker_address, -broker_port, 
+     *  and -model_dir. The port numbers must be integers, the broker path must be the path 
      *  to the MQTT broker executable, and the broker address must be the host address.
-     *
+     *  
      *  For example: java -classpath ptserver.PtolemyServer -broker_address
      *  192.168.125.169 -broker_port 1883
-     *
+     * 
      *  @param args Optional command line arguments.
      *  @exception IllegalActionException If the server could not be launched.
      */
@@ -489,10 +511,10 @@ public final class PtolemyServer implements IServerManager {
         }
     }
 
-    /** Get the number of simulation on the server.  The current thread pool implementation
+    /** Get the number of simulation on the server.  The current thread pool implementation 
      *  allows for an infinite number of concurrent simulations rather than limiting the server to
      *  finite amount.
-     *  @return The number of active simulations as well as the queued requests that have not
+     *  @return The number of active simulations as well as the queued requests that have not 
      *  yet been fulfilled.
      */
     public synchronized int numberOfSimulations() {
@@ -510,9 +532,9 @@ public final class PtolemyServer implements IServerManager {
      *  @exception IllegalActionException  If the model fails to load from the provided URL.
      *  @return The user's reference to the simulation task
      */
-    public synchronized RemoteModelResponse open(String modelUrl,
+    public synchronized ProxyModelResponse open(String modelUrl,
             String layoutUrl) throws IllegalActionException {
-        RemoteModelResponse response = null;
+        ProxyModelResponse response = null;
         Ticket ticket = null;
 
         try {
@@ -523,30 +545,20 @@ public final class PtolemyServer implements IServerManager {
             }
 
             // Save the simulation request.
-            RemoteModel clientModel = new RemoteModel(RemoteModelType.CLIENT);
             SimulationTask simulationTask = new SimulationTask(ticket);
-            simulationTask.getRemoteModel().addRemoteModelListener(
+            simulationTask.getProxyModelInfrastructure().addProxyModelListener(
                     _remoteModelListener);
-
-            String modelXML = new String(downloadModel(ticket.getLayoutUrl()));
-            HashMap<String, String> resolvedTypes = simulationTask
-                    .getRemoteModel().getResolvedTypes();
-
-            clientModel.initModel(modelXML, resolvedTypes);
-            simulationTask.getRemoteModel().createRemoteAttributes(
-                    clientModel.getSettableAttributesMap().keySet());
-            simulationTask.getRemoteModel().setUpInfrastructure(ticket,
-                    _brokerUrl);
+            simulationTask.getProxyModelInfrastructure().setUpInfrastructure(
+                    ticket, _brokerUrl);
 
             // Populate the response.
-            response = new RemoteModelResponse();
+            response = new ProxyModelResponse();
             response.setTicket(ticket);
-
-            new BufferedImage(500, 500, BufferedImage.TYPE_INT_ARGB);
-
-            //response.setModelImage(export.toByteArray());
-            response.setModelTypes(resolvedTypes);
-            response.setModelXML(modelXML);
+            response.setModelTypes(simulationTask.getProxyModelInfrastructure()
+                    .getModelTypes());
+            response.setModelXML(new String(
+                    downloadModel(ticket.getLayoutUrl())));
+            response.setModelImage(_getModelImage(new URL(modelUrl)));
             response.setBrokerUrl(_brokerUrl);
 
             _requests.put(ticket, simulationTask);
@@ -554,6 +566,7 @@ public final class PtolemyServer implements IServerManager {
             _handleException((ticket != null ? ticket.getTicketID() : null)
                     + ": " + e.getMessage(), e);
         }
+
         return response;
     }
 
@@ -593,7 +606,7 @@ public final class PtolemyServer implements IServerManager {
         }
     }
 
-    /** Shut down the broker process and stop all active simulation
+    /** Shut down the broker process and stop all active simulation 
      *  threads by calling their Managers.
      *  @exception IllegalActionException If the servlet, broker, or thread pool cannot be stopped.
      */
@@ -601,18 +614,19 @@ public final class PtolemyServer implements IServerManager {
         for (SimulationTask task : _requests.values()) {
             try {
                 // Notify the client that the server is shutting down.
-                task.getRemoteModel()
+                task.getProxyModelInfrastructure()
                         .getTokenPublisher()
                         .sendToken(
                                 new ServerEventToken(EventType.SERVER_SHUTDOWN,
                                         "The Ptolemy server you are currently connected is shutting down."));
 
                 // Shut down the locally running simulation.
-                task.getRemoteModel().getManager().finish();
+                close(task.getProxyModelInfrastructure().getTicket());
             } catch (Throwable error) {
                 PtolemyServer.LOGGER.log(Level.SEVERE,
                         "Failed to close the simulation"
-                                + task.getRemoteModel().getTicket(), error);
+                                + task.getProxyModelInfrastructure()
+                                        .getTicket(), error);
             }
         }
 
@@ -680,7 +694,7 @@ public final class PtolemyServer implements IServerManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                   private methods                         ////
 
     /** Check to ensure that the provided ticket is valid and refers to
      *  a current simulation request on the server.
@@ -692,8 +706,7 @@ public final class PtolemyServer implements IServerManager {
         if (ticket == null) {
             throw new IllegalActionException("The ticket was null.");
             // TODO: create InvalidTicketException
-        }
-        if (_requests.get(ticket) == null) {
+        } else if (_requests.get(ticket) == null) {
             throw new IllegalActionException(
                     "The ticket does not reference a simulation: "
                             + ticket.getTicketID());
@@ -730,10 +743,11 @@ public final class PtolemyServer implements IServerManager {
 
     /** Configure the context handler of the servlet.
      *  @return The servlet context handler.
-     *  @exception MalformedURLException If the servlet address is invalid.
+     *  @exception URISyntaxException 
+     *  @exception IOException 
      */
     private ServletContextHandler _configureServlet()
-            throws MalformedURLException {
+            throws URISyntaxException, IOException {
         // Set up the servlet context and security settings.
         // Optional: use com.eclipse.Util.Password for hashing
 
@@ -744,12 +758,30 @@ public final class PtolemyServer implements IServerManager {
         mapping.setPathSpec("/" + SERVLET_NAME);
         mapping.getConstraint().setAuthenticate(true);
 
+        // Find the user file for authentication.
+        String location = ptolemy.util.StringUtilities
+                .getProperty("ptolemy.ptII.dir")
+                + File.separator
+                + "ptserver"
+                + File.separator + "PtolemyServerUsers.properties";
+
+        File userFile = new File(location);
+        if (!userFile.exists()) {
+
+            // Attempt to create it using the supplied default file.
+            URL defaultFile = ptolemy.util.FileUtilities.nameToURL(location
+                    + ".default", null, null);
+            if (!ptolemy.util.FileUtilities.binaryCopyURLToFile(defaultFile,
+                    userFile)) {
+                throw new IllegalStateException(
+                        "The server users file could not be found.");
+            }
+        }
+
         // Define the security context.
         ConstraintSecurityHandler security = new ConstraintSecurityHandler();
-        security.setLoginService(new HashLoginService("PtolemyServer",
-                getClass().getResource(
-                        "/ptserver/PtolemyServerUsers.properties")
-                        .toExternalForm()));
+        security.setLoginService(new HashLoginService("PtolemyServer", userFile
+                .toURI().toURL().toExternalForm()));
         security.setConstraintMappings(new ConstraintMapping[] { mapping });
 
         // Assign the servlet container context.
@@ -760,6 +792,49 @@ public final class PtolemyServer implements IServerManager {
                 + SERVLET_NAME);
 
         return context;
+    }
+
+    /** Get actor graph image in PNG format.
+     *  @param modelUrl The model file to capture an image for.
+     *  @return The byte array of the PNG image.
+     */
+    private byte[] _getModelImage(URL modelUrl) {
+        //ByteArrayOutputStream output = new ByteArrayOutputStream(
+        //        IMAGE_BUFFER_SIZE);
+        try {
+            //            // Save existing filters.
+            //            List filterList = MoMLParser.getMoMLFilters();
+            //                        
+            //            // Load the model file.
+            //            CompositeEntity topLevelActor = ServerUtility
+            //                    .openModelFile(modelUrl);
+            //
+            //            // Get the window properties and sizing.
+            //            WindowPropertiesAttribute window = (WindowPropertiesAttribute) topLevelActor
+            //                    .getAttribute("_windowProperties");
+            //            ArrayToken dimensions = (ArrayToken) ((RecordToken) window
+            //                    .getToken()).get("bounds");
+            //
+            //            // Create the dummy controller.
+            //            ActorEditorGraphController controller = new ActorEditorGraphController();
+            //            controller.setConfiguration(_configuration);
+            //
+            //            // Configure the graph & export.
+            //            JGraph graph = new JGraph(new BasicGraphPane(controller,
+            //                    new ActorGraphModel(topLevelActor), topLevelActor));
+            //            graph.setVisible(true);
+            //            graph.setSize(((IntToken) dimensions.getElement(2)).intValue(),
+            //                    ((IntToken) dimensions.getElement(3)).intValue());
+            //            graph.exportImage(output, IMAGE_FORMAT);
+            //            
+            //            // Reset back to previous filters.
+            //            MoMLParser.setMoMLFilters(filterList);
+        } catch (Exception e) {
+            MessageHandler.error(e.getMessage(), e);
+        }
+
+        return new byte[0];
+        //return output.toByteArray();
     }
 
     /** Log the message and exception into the Ptolemy server log.
@@ -775,41 +850,64 @@ public final class PtolemyServer implements IServerManager {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                private variables                          ////
 
-    private final RemoteModelListener _remoteModelListener = new RemoteModelListener() {
+    /** The proxy model listener that is notified of exceptions within
+     *  the other threads of the application.
+     */
+    private final ProxyModelListener _remoteModelListener = new ProxyModelListener() {
 
-        public void modelConnectionExpired(RemoteModel remoteModel) {
+        /** React to the remote connection expiring.
+         *  @param remoteModel The remote model whose connection has expired.
+         */
+        public void modelConnectionExpired(ProxyModelInfrastructure remoteModel) {
             System.out.println("Removing model " + remoteModel.getTicket());
             System.out.println("Last pong was "
-                    + (System.currentTimeMillis() - remoteModel
-                            .getLastPongToken().getTimestamp()) + " ms ago");
+                    + remoteModel.getPingPongLatency() + " ms ago");
+
             try {
                 close(remoteModel.getTicket());
             } catch (IllegalActionException e) {
-                // TODO handle exception, note this exception comes from worker thread.
-                e.printStackTrace();
+                String message = "The connection expired on ticket "
+                        + remoteModel.getTicket().getTicketID()
+                        + " and the model could not be closed.";
+                PtolemyServer.LOGGER.log(Level.SEVERE, message, e);
+                throw new IllegalStateException(message);
             }
         }
 
-        public void modelException(RemoteModel remoteModel, String message,
-                Throwable exception) {
-            exception.printStackTrace();
+        /** React to the exception within the model.
+         *  @param remoteModel The remote model that experienced the fault. 
+         *  @param message The message explaining where the fault happened.
+         *  @param exception The exception that was thrown.
+         */
+        public void modelException(ProxyModelInfrastructure remoteModel,
+                String message, Throwable exception) {
+            PtolemyServer.LOGGER.log(Level.SEVERE, "Ticket: "
+                    + remoteModel.getTicket().getTicketID(), exception);
         }
 
-        public void modelEvent(RemoteModel remoteModel, String message,
-                EventType type) {
-            System.out.println(type);
+        /** React to the simulation event.
+         *  @param remoteModel The remote model that raised the event.
+         *  @param message The message explaining what happened.
+         *  @param type The type of event being handled.
+         */
+        public void modelEvent(ProxyModelInfrastructure remoteModel,
+                String message, EventType type) {
         }
     };
 
-    /** The broker process should the user choose to launch locally.
+    /** The process reference to the MQTT broker.
      */
     private Process _broker;
 
     /** The full URL of the MQTT message broker.
      */
     private String _brokerUrl;
+
+    //    /** The MOML configuration.
+    //     */
+    //    private Configuration _configuration;
 
     /** The service that manages the simulation thread pool.
      */

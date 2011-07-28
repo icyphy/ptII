@@ -47,6 +47,9 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	LiveSound.java \
+	LiveSoundCommon.java \
+	LiveSoundInterface.java \
+	LiveSoundJavaSE.java \
 	LiveSoundListener.java \
 	LiveSoundEvent.java \
 	SoundCapture.java \

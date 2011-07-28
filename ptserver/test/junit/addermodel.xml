@@ -8,21 +8,17 @@
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-		<property name="_remote" class="ptolemy.data.expr.Parameter" value="source" />
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="step" value="1">
-        	<property name="_remote" class="ptolemy.data.expr.Parameter" value="attribute" /> 
         </property>
         <property name="init" value="0">
-        	<property name="_remote" class="ptolemy.data.expr.Parameter" value="attribute" /> 
         </property>
     </entity>
     <entity name="Display" class="ptserver.test.SysOutActor">
-		<property name="_remote" class="ptolemy.data.expr.Parameter" value="sink" />
     </entity>
     <entity name="Display2" class="ptserver.test.SysOutActor">
     </entity>

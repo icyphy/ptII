@@ -29,55 +29,42 @@
 package ptolemy.actor.injection;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.ResourceBundle;
-
-import com.google.inject.AbstractModule;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyModule
 /**
  * PtolemyModule loads interface to implementation mappings from the provided
- * ResourceBundle and configures Guice AbstractModule to use those mappings.
- *
- * The Guice Module is used for creating a Guice Injector that is responsible for
+ * ResourceBundle.
+ * 
+ * The PtolemyModule is used for creating a PtolemyInjector that is responsible for 
  * dependency injection.  The rationale for this class is to promote portability of
  * the Ptolemy by providing different interface to implementation mappings for different
  * platforms such as Android and Java SE.
- *
+ * 
  * @author Anar Huseynov
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class PtolemyModule extends AbstractModule {
+public class PtolemyModule {
 
     /**
-     * Create a new instance of the PtolemyModule based on the provided moduleBundle.
+     * Create a new intance of the PtolemyModule based on the provided moduleBundle.
      * @param moduleBundle The moduleBundle contains mappings from platform independent
      * interfaces to platform dependent implementations.  The bundle must have key value mappings
-     * from the fully specified interface name to the fully specified class name.
+     * from the fully specified interface name to the fully specified class name. 
      */
     public PtolemyModule(ResourceBundle moduleBundle) {
-        _moduleBundle = moduleBundle;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /**
-     * Configure the module by binding the interfaces in the
-     * moduleBundle to their implementations.
-     */
-    @Override
-    protected void configure() {
         // Key is the interface class name.
         // Value is the interface implementation class name.
         // We have to use ResourceBundle.getKeys() method because Android does not support .keySet() method.
-        Enumeration<String> keys = _moduleBundle.getKeys();
+        Enumeration<String> keys = moduleBundle.getKeys();
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
-            String value = _moduleBundle.getString(key);
+            String value = moduleBundle.getString(key);
             ClassLoader classLoader = getClass().getClassLoader();
             Class<Object> interfaceClass;
             try {
@@ -93,18 +80,26 @@ public class PtolemyModule extends AbstractModule {
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException(
                         "Implementation class was not found for the interface "
-                                + interfaceClass.getName()
-                                + " with the following name: " + value, e);
+                                + interfaceClass + " with the following name: "
+                                + value, e);
             }
-            bind(interfaceClass).to(implementationClass);
+            getBindings().put(interfaceClass, implementationClass);
         }
+    }
+
+    /**
+     * Return the bindings from interfaces to their implementations.
+     * @return the interface to implementations mappings.
+     */
+    public HashMap<Class<?>, Class<?>> getBindings() {
+        return _interfaceToImplementationMap;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /**
-     * The resource bundle holding the mappings from an interface to its implementations.
+     * The mapping from interface to implementation.
      */
-    private ResourceBundle _moduleBundle;
+    private final HashMap<Class<?>, Class<?>> _interfaceToImplementationMap = new HashMap<Class<?>, Class<?>>();
 }

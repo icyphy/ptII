@@ -33,9 +33,9 @@ import org.junit.runners.Suite;
 //// AllTests
 /**
  * Test suite of the ptserver.
- *
+ * 
  * @author Anar Huseynov
- * @version $Id$
+ * @version $Id$ 
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)

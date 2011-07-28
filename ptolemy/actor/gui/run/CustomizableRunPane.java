@@ -52,8 +52,10 @@ import org.w3c.dom.NodeList;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.actor.gui.AWTContainer;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.gui.CloseListener;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
@@ -295,13 +297,17 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             // NAME is the name of the actor relative to the model.
             String actorName = name.substring(10);
             ComponentEntity entity = _model.getEntity(actorName);
-            if (!(entity instanceof Placeable)) {
+            if (!(entity instanceof Placeable || entity instanceof PortablePlaceable)) {
                 throw new IllegalActionException(_model,
                         "Entity that does not implement Placeable is specified in a display.");
             }
             // Regrettably, it seems we need an intermediate JPanel.
             JPanel dummy = new JPanel();
-            ((Placeable) entity).place(dummy);
+            if (entity instanceof Placeable) {
+                ((Placeable) entity).place(dummy);
+            } else if (entity instanceof PortablePlaceable) {
+                ((PortablePlaceable) entity).place(new AWTContainer(dummy));
+            }
             return dummy;
         } else if (name.startsWith("Label")) {
             // Default is the text after the colon in the name, if
@@ -446,6 +452,8 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
 
                 if (object instanceof Placeable) {
                     ((Placeable) object).place(null);
+                } else if (object instanceof PortablePlaceable) {
+                    ((PortablePlaceable) object).place(null);
                 }
             }
         }
@@ -538,7 +546,8 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             int row = 1;
             while (atomicEntities.hasNext()) {
                 Object object = atomicEntities.next();
-                if (object instanceof Placeable) {
+                if (object instanceof Placeable
+                        || object instanceof PortablePlaceable) {
                     if (row > 1) {
                         xml.append(",5dlu,default");
                     }

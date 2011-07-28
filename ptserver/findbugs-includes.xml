@@ -3,4 +3,7 @@
 	<Match>
 		<Package name="~ptserver.*" />
 	</Match>
+	<Match>
+		<Package name="~ptolemy\.homer.*" />
+	</Match>
 </FindBugsFilter>

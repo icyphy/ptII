@@ -111,7 +111,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
      *   an instance of Plot.
      */
     public PlotTableauFrame(Tableau tableau, PlotBox plotBox) {
-        this(tableau, plotBox, null);
+        this(tableau, plotBox, (Placeable)null);
     }
 
     /** Construct a plot frame with the specified title and by default
@@ -124,6 +124,29 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
      */
     public PlotTableauFrame(Tableau tableau, PlotBox plotBox,
             Placeable placeable) {
+        super(tableau, null, placeable);
+        plot = plotBox;
+
+        // We don't define a file name filter here because we are
+        // only supporting PlotML files.  .plt files are not supported
+        // for opening here.
+
+        // Background color is a light grey.
+        plot.setBackground(new Color(0xe5e5e5));
+        getContentPane().add(plot, BorderLayout.CENTER);
+        _initialSaveAsFileName = "plot.plt";
+    }
+    
+    /** Construct a plot frame with the specified title and by default
+     *  contains an instance of Plot. After constructing this, it is necessary
+     *  to call setVisible(true) to make the plot appear.
+     *  @param tableau The tableau where the window is placed.
+     *  @param plotBox the plot object to put in the frame, or null to create
+     *   an instance of Plot.
+     *  @param placeable The associated plot actor, or null if none.
+     */
+    public PlotTableauFrame(Tableau tableau, PlotBox plotBox,
+            PortablePlaceable placeable) {
         super(tableau, null, placeable);
         plot = plotBox;
 

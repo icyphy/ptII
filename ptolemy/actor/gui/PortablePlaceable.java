@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2011-2011 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -26,14 +26,15 @@
 
 package ptolemy.actor.gui;
 
+
 ///////////////////////////////////////////////////////////////////
 //// PortablePlaceable
 /**
  * This interface is analogous to the {@link Placeable} interface.  However, this
  * interface is platform independent, and it's expected that implementers of the
  * interface are also platform independent.  By platform independent, we mean there is
- * no dependency to java.awt or java.swing packages.
- *
+ * no dependendency to java.awt or java.swing packages.
+ * 
  * <p>Interface for objects that have UI components that can be placed in containers.
  * These objects can be fairly tricky to write because of the fact that they
  * might be placed in a control panel, or be expected to create their own
@@ -58,7 +59,7 @@ package ptolemy.actor.gui;
  * </p>
  * @author Anar Huseynov
  * @version $Id$
- * @since Ptolemy II 8.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  * @see Placeable

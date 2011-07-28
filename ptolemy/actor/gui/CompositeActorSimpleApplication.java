@@ -178,7 +178,8 @@ public class CompositeActorSimpleApplication {
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
 
-            if (object instanceof Placeable) {
+            if (object instanceof Placeable
+                    || object instanceof PortablePlaceable) {
                 throw new IllegalActionException(
                         "CompositeActorSimpleApplication does not support "
                                 + "actors that are instances of placeable, "

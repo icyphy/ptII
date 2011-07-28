@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2011-2011 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -57,7 +57,6 @@ DERIVED_FILES =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
-	authors.htm \
 	configuration.xml \
 	intro.htm \
 	welcomeWindow.xml

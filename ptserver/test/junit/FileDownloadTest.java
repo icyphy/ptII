@@ -1,5 +1,5 @@
 /*
- Test cases for the file query and download functionality of the servlet.
+ Test cases for the file query and download functionality of the servlet. 
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -72,17 +72,21 @@ public class FileDownloadTest {
      */
     @Before
     public void setup() throws Exception {
+        _ptolemyServer = PtolemyServer.getInstance();
+
         HessianProxyFactory factory = new HessianProxyFactory();
         factory.setUser("guest");
         factory.setPassword("guest");
 
-        _ptolemyServer = PtolemyServer.getInstance();
-        _servletProxy = (IServerManager) factory.create(IServerManager.class,
-                _ptolemyServer.getServletUrl());
+        _servletProxy = (IServerManager) factory.create(
+                IServerManager.class,
+                String.format("http://%s:%s%s", "localhost",
+                        CONFIG.getString("SERVLET_PORT"), "/"
+                                + PtolemyServer.SERVLET_NAME));
     }
 
     /** Get the listing of models available on the server.
-     *  @exception Exception If there was an error retrieving the
+     *  @exception Exception If there was an error retrieving the 
      *  model files on the server.
      */
     @Test
@@ -97,7 +101,7 @@ public class FileDownloadTest {
     }
 
     /** Download a model from the Ptolemy server.
-     *  @exception Exception If there was an error downloading the
+     *  @exception Exception If there was an error downloading the 
      *  model XML data from the server.
      */
     @Test

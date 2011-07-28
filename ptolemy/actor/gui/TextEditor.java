@@ -88,7 +88,7 @@ public class TextEditor extends TableauFrame implements DocumentListener,
      *  @param document The document containing text, or null if none.
      */
     public TextEditor(String title, Document document) {
-        this(title, document, null);
+        this(title, document, (Placeable) null);
     }
 
     /** Construct an empty text editor with the specified title and
@@ -102,21 +102,22 @@ public class TextEditor extends TableauFrame implements DocumentListener,
     public TextEditor(String title, Document document, Placeable placeable) {
         // NOTE: Create with no status bar, since we have no use for it now.
         super(null, null, placeable);
-        setTitle(title);
+        _init(title, document);
+    }
 
-        text = new JTextArea(document);
-
-        // Since the document may have been null, request it...
-        document = text.getDocument();
-        document.addDocumentListener(this);
-        _scrollPane = new JScrollPane(text);
-
-        getContentPane().add(_scrollPane, BorderLayout.CENTER);
-        _initialSaveAsFileName = "data.txt";
-
-        // Set the undo listener, with default key mappings.
-        text.getDocument().addUndoableEditListener(new UndoListener(text));
-
+    /** Construct an empty text editor with the specified title and
+     *  document and associated poratalbeplaceable.  After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame
+     *  appear.
+     *  @param title The title to put in the title bar.
+     *  @param document The document containing text, or null if none.
+     *  @param portablePlaceable The associated PortablePlaceable.
+     */
+    public TextEditor(String title, Document document,
+            PortablePlaceable portablePlaceable) {
+        // NOTE: Create with no status bar, since we have no use for it now.
+        super(null, null, portablePlaceable);
+        _init(title, document);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -285,6 +286,31 @@ public class TextEditor extends TableauFrame implements DocumentListener,
     protected void _help() {
         // FIXME: Give instructions for the editor here.
         _about();
+    }
+
+    /** Initializes an empty text editor with the specified title and
+     *  document and associated placeable.  After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame
+     *  appear.
+     *  
+     *  @param title The title to put in the title bar.
+     *  @param document The document containing text. 
+     */
+    protected void _init(String title, Document document) {
+        setTitle(title);
+
+        text = new JTextArea(document);
+
+        // Since the document may have been null, request it...
+        document = text.getDocument();
+        document.addDocumentListener(this);
+        _scrollPane = new JScrollPane(text);
+
+        getContentPane().add(_scrollPane, BorderLayout.CENTER);
+        _initialSaveAsFileName = "data.txt";
+
+        // Set the undo listener, with default key mappings.
+        text.getDocument().addUndoableEditListener(new UndoListener(text));
     }
 
     /** Query the user for a filename, save the model to that file,

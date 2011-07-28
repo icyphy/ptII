@@ -248,7 +248,7 @@ public class PlotTableau extends Tableau {
                     tableau = new PlotTableau(effigy, "plotTableau");
                 }
 
-                PlotBox plotBox = ((PlotEffigy) effigy).getPlot();
+                PlotBox plotBox = (PlotBox) ((PlotEffigy) effigy).getPlot();
 
                 if (plotBox != null) {
                     // Hook into the existing plot.

@@ -1,9 +1,9 @@
 /* Token to indicate to the client that an exception has occurred in
-   the running simulation.  The hessian protocol propagates exceptions
+   the running simulation.  The hessian protocol propagates exceptions 
    that happened as a result synchronous calls, but the MQTT protocol
    and broker combination do not.  Should an exception occur during the
    simulation, an ExceptionToken will be sent.
-
+   
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -49,15 +49,10 @@ import ptolemy.data.Token;
  */
 public class ServerEventToken extends Token {
 
-    /** The type of notification message being sent to the user.
+    /** Type of notification message being sent to the user.
      */
     public enum EventType {
-        /** The simulation experienced an exception.
-         */
-        EXCEPTION,
-        /** The server has begun shutting down.
-         */
-        SERVER_SHUTDOWN
+        EXCEPTION, SERVER_SHUTDOWN
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,11 +115,6 @@ public class ServerEventToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The type of event that this token signifies.
-     */
     private EventType _eventType;
-
-    /** The message for the consumer of the token.
-     */
     private String _message;
 }

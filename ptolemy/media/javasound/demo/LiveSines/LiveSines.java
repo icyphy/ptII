@@ -30,6 +30,7 @@ package ptolemy.media.javasound.demo.LiveSines;
 
 import java.io.IOException;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.media.javasound.LiveSound;
 
 ////////////////////////////////////////////////////
@@ -48,6 +49,8 @@ import ptolemy.media.javasound.LiveSound;
  */
 public class LiveSines {
     public static void main(String[] args) {
+        ActorModuleInitializer.initializeInjector();
+
         // The pitch of the signal to synthesize.
         double fundamental1_Hz = 220;
 

@@ -36,6 +36,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.gui.ActorGraphicalMessageHandler;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -204,6 +205,7 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(final String[] args) {
+        ActorModuleInitializer.initializeInjector();
         // Mac OS X: Set the "About" menu name.  These calls must be made outside
         // the Swing Event Thread.
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Vergil");

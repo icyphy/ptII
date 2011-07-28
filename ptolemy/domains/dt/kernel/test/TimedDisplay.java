@@ -28,8 +28,7 @@
  */
 package ptolemy.domains.dt.kernel.test;
 
-import java.awt.Container;
-
+import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.Director;
@@ -47,12 +46,10 @@ public class TimedDisplay extends Display implements SequenceActor {
         rowsDisplayed.setToken(new IntToken(20));
     }
 
-    public void place(Container container) {
-        super.place(container);
-    }
-
+    @Override
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
+        JTextArea textArea = (JTextArea) _getImplementation().getTextArea();
 
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {

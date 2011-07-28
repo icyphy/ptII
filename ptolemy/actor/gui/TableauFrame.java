@@ -130,7 +130,24 @@ public class TableauFrame extends Top {
      *  @param statusBar The status bar, or null to not include one.
      */
     public TableauFrame(Tableau tableau, StatusBar statusBar) {
-        this(tableau, statusBar, null);
+        super(statusBar);
+        // Set this frame in the tableau so that later in the constructor we can
+        // invoke tableau.getFrame() to get back this frame instead of null.
+        // -- tfeng (01/15/2009)
+        try {
+            if (tableau != null) {
+                tableau.setFrame(this);
+            }
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException("This frame of class "
+                    + getClass() + " is not compatible with tableau "
+                    + tableau.getName());
+        }
+
+        setTableau(tableau);
+        setIconImage(_getDefaultIconImage());
+        _newMenuItems = new Vector<AbstractButton>();
+
     }
 
     /** Construct an empty top-level frame managed by the specified
@@ -148,25 +165,27 @@ public class TableauFrame extends Top {
      */
     public TableauFrame(Tableau tableau, StatusBar statusBar,
             Placeable placeable) {
-        super(statusBar);
-
-        // Set this frame in the tableau so that later in the constructor we can
-        // invoke tableau.getFrame() to get back this frame instead of null.
-        // -- tfeng (01/15/2009)
-        try {
-            if (tableau != null) {
-                tableau.setFrame(this);
-            }
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException("This frame of class "
-                    + getClass() + " is not compatible with tableau "
-                    + tableau.getName());
-        }
-
-        setTableau(tableau);
-        setIconImage(_getDefaultIconImage());
+        this(tableau, statusBar);
         _placeable = placeable;
-        _newMenuItems = new Vector<AbstractButton>();
+    }
+
+    /** Construct an empty top-level frame managed by the specified
+     *  tableau with the specified status bar and associated PortablePlaceable
+     *  object. Associating an instance of PortablePlaceable with this
+     *  frame has the effect that when this frame is closed,
+     *  if the portablePlaceable contains instances of WindowSizeAttribute
+     *  and/or SizeAttribute, then the window sizes are recorded.
+     *  After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame appear.
+     *  It may also be desirable to call centerOnScreen().
+     *  @param tableau The managing tableau.
+     *  @param statusBar The status bar, or null to not include one.
+     *  @param portablePlaceable The associated PortablePlaceable.
+     */
+    public TableauFrame(Tableau tableau, StatusBar statusBar,
+            PortablePlaceable portablePlaceable) {
+        this(tableau, statusBar);
+        _portablePlaceable = portablePlaceable;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -584,8 +603,8 @@ public class TableauFrame extends Top {
         }
 
         // Record window properties, if appropriate.
-        if (_placeable instanceof NamedObj) {
-            Iterator properties = ((NamedObj) _placeable).attributeList(
+        if (_getPlaceable() instanceof NamedObj) {
+            Iterator properties = ((NamedObj) _getPlaceable()).attributeList(
                     WindowPropertiesAttribute.class).iterator();
             while (properties.hasNext()) {
                 WindowPropertiesAttribute windowProperties = (WindowPropertiesAttribute) properties
@@ -595,7 +614,7 @@ public class TableauFrame extends Top {
             // Regrettably, have to also record the size of the contents
             // because in Swing, setSize() methods do not set the size.
             // Only the first component size is recorded.
-            properties = ((NamedObj) _placeable).attributeList(
+            properties = ((NamedObj) _getPlaceable()).attributeList(
                     SizeAttribute.class).iterator();
             while (properties.hasNext()) {
                 SizeAttribute size = (SizeAttribute) properties.next();
@@ -630,9 +649,7 @@ public class TableauFrame extends Top {
                         // windowClosed events rather than overriding the
                         // windowClosing behavior given here.
                         dispose();
-                        if (_placeable != null) {
-                            _placeable.place(null);
-                        }
+                        _clearPlaceable();
                         return true;
                     }
                 }
@@ -653,9 +670,7 @@ public class TableauFrame extends Top {
                     // issue a warning that those children will
                     // persist.  Give the user the chance to cancel.
                     if (!_checkForDerivedObjects()) {
-                        if (_placeable != null) {
-                            _placeable.place(null);
-                        }
+                        _clearPlaceable();
                         return false;
                     }
                 }
@@ -686,9 +701,7 @@ public class TableauFrame extends Top {
                 dispose();
             }
         }
-        if (_placeable != null) {
-            _placeable.place(null);
-        }
+        _clearPlaceable();
         return result;
     }
 
@@ -1404,6 +1417,27 @@ public class TableauFrame extends Top {
         }
     }
 
+    /** Clear  placeable or porablePlacable or by passing a null container to it.  
+     *
+     */
+    private void _clearPlaceable() {
+        if (_placeable != null) {
+            _placeable.place(null);
+        }
+        if (_portablePlaceable != null) {
+            _portablePlaceable.place(null);
+        }
+    }
+
+    /** Get the appropriate instance of intance of Placeable or PortablePlaceable,
+     *  depending upon what is initialized.  
+     *
+     *  @return Instance of Placeable or PortablePlaceable 
+     */
+    private Object _getPlaceable() {
+        return _placeable != null ? _placeable : _portablePlaceable;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The container of view factories, if one has been found.
@@ -1417,6 +1451,9 @@ public class TableauFrame extends Top {
 
     /** Associated placeable. */
     private Placeable _placeable;
+
+    /** Associated portablePlaceable. */
+    private PortablePlaceable _portablePlaceable;
 
     /** Set to true when the pack() method is called.  Used by TopPack.pack(). */
     private boolean _packCalled = false;

@@ -28,6 +28,7 @@
  */
 package ptolemy.domains.sr.lib.gui;
 
+import javax.swing.JTextArea;
 import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.lib.gui.Display;
@@ -79,6 +80,7 @@ public class NonStrictDisplay extends Display {
      *
      *  @return False.
      */
+    @Override
     public boolean isStrict() {
         return false;
     }
@@ -88,6 +90,7 @@ public class NonStrictDisplay extends Display {
      *  value is terminated with a newline character.
      *  @exception IllegalActionException If there is no director.
      */
+    @Override
     public boolean postfire() throws IllegalActionException {
         // We don't invoke super.postfire() here, but we should
         // do what Display.super.postfire() does, which is eventually
@@ -96,6 +99,8 @@ public class NonStrictDisplay extends Display {
             _debug("Called postfire()");
         }
 
+        JTextArea textArea = (JTextArea) _getImplementation().getTextArea();
+
         int width = input.getWidth();
 
         boolean currentInputIsBlankLine = true;
@@ -103,8 +108,8 @@ public class NonStrictDisplay extends Display {
         for (int i = 0; i < width; i++) {
             String value;
 
-            if (!_initialized) {
-                _initialized = true;
+            if (!initialized) {
+                initialized = true;
                 _openWindow();
             }
 
@@ -129,6 +134,7 @@ public class NonStrictDisplay extends Display {
 
             // If the window has been deleted, read the
             // rest of the inputs.
+
             if (textArea == null) {
                 continue;
             }
@@ -172,7 +178,7 @@ public class NonStrictDisplay extends Display {
         // If the current input is not a blank line, or the supressBlankLines
         // parameter is configured to false, append a newline character.
         if ((textArea != null)
-                && !(_suppressBlankLines && currentInputIsBlankLine)) {
+                && !(isSuppressBlankLines && currentInputIsBlankLine)) {
             textArea.append("\n");
         }
 

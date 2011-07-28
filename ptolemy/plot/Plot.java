@@ -1,6 +1,6 @@
 /* A signal plotter.
 
- @Copyright (c) 1997-2011 The Regents of the University of California.
+ @Copyright (c) 1997-2010 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -204,7 +204,7 @@ import ptolemy.util.RunnableExceptionCatcher;
  };
  synchronized (plot) {
      plot.deferIfNecessary(doAction);
- }
+ } 
  </pre>
  Note that deferIfNecessary() is not synchronized, but the caller of
  deferIfNecessary() should be synchronized on the Plot object.
@@ -226,7 +226,7 @@ import ptolemy.util.RunnableExceptionCatcher;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class Plot extends PlotBox {
+public class Plot extends PlotBox implements PlotInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -467,7 +467,7 @@ public class Plot extends PlotBox {
     public boolean getLineStyles() {
         // FIXME: should this be syncronized?
         // FindBugs reports "Unsynchronize get method, synchronized
-        // set method".
+        // set method".  
         return _lineStyles;
     }
 
@@ -536,7 +536,7 @@ public class Plot extends PlotBox {
     }
 
     /** Mark the disconnections with a Dot in case value equals true, otherwise these
-     *  points are not marked.
+     *  points are not marked. 
      *  @param value True when disconnections should be marked.
      */
     public void markDisconnections(boolean value) {

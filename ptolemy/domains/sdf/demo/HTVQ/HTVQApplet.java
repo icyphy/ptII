@@ -31,6 +31,7 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ptolemy.actor.gui.AWTContainer;
 import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.lib.gui.SequencePlotter;
 import ptolemy.domains.sdf.lib.vq.ImageDisplay;
@@ -91,7 +92,7 @@ public class HTVQApplet extends MoMLApplet {
                 .getEntity("Signal To Noise Ratio");
 
         JPanel plotPanel = new JPanel();
-        plot.place(plotPanel);
+        plot.place(new AWTContainer(plotPanel));
         plotPanel.setBackground(null);
 
         JPanel appletPanel = new JPanel();

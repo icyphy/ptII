@@ -30,7 +30,7 @@ package ptserver.control;
 import java.util.LinkedHashMap;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptserver.communication.RemoteModelResponse;
+import ptserver.communication.ProxyModelResponse;
 
 import com.caucho.hessian.server.HessianServlet;
 
@@ -107,7 +107,7 @@ public class ServerManager extends HessianServlet implements IServerManager {
      *  @exception IllegalActionException If the model fails to load
      *  from the provided URL.
      */
-    public RemoteModelResponse open(String modelUrl, String layoutUrl)
+    public ProxyModelResponse open(String modelUrl, String layoutUrl)
             throws IllegalActionException {
         return PtolemyServer.getInstance().open(modelUrl, layoutUrl);
     }

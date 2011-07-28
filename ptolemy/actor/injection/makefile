@@ -1,10 +1,10 @@
-# Makefile for dependency injection to support different GUIs
+# Makefile for Ptolemy II Guice injection classes
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2011 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,13 +31,13 @@
 
 ME =		ptolemy/actor/injection
 
-DIRS = 		
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-# PTINJECTION_JARS is set in $PTII/mk/ptII.mk by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTINJECTION_JARS)
+# PTJINJECTION_JARS is set to include guice.jar by configure
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(PTINJECTION_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -45,13 +45,12 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	injection
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
+	Injector.java \
 	PtolemyInjector.java \
 	PtolemyModule.java
 
@@ -59,17 +58,17 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 
 # Get the rest of the rules

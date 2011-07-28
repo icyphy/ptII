@@ -62,7 +62,7 @@
 		<input source="ptolemy/configs/extendedTableauFactories.xml" />
 	</property>
 
-	<property name="_applicationInitializer" class="ptolemy.data.expr.StringParameter" value="ptserver.util.PtolemyModuleJavaSEInitializer" />
+	<property name="_applicationInitializer" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.ActorModuleInitializer" />
 	<!-- Main default library. -->
 	<input source="ptolemy/configs/basicLibrary.xml" />
 </entity>

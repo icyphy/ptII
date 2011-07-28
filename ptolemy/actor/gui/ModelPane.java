@@ -481,6 +481,8 @@ public class ModelPane extends JPanel implements CloseListener {
 
             if (object instanceof Placeable) {
                 ((Placeable) object).place(_displays);
+            } else if (object instanceof PortablePlaceable) {
+                ((PortablePlaceable) object).place(new AWTContainer(_displays));
             }
         }
     }
@@ -636,6 +638,7 @@ public class ModelPane extends JPanel implements CloseListener {
             }
         }
 
+        @Override
         public void keyReleased(KeyEvent e) {
             int keycode = e.getKeyCode();
 

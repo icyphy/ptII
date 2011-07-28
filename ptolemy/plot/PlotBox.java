@@ -1,6 +1,6 @@
 /* A labeled box for signal plots.
 
- @Copyright (c) 1997-2011 The Regents of the University of California.
+ @Copyright (c) 1997-2010 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -248,7 +248,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class PlotBox extends JPanel implements Printable {
+public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         constructor                       ////
 
@@ -312,7 +312,7 @@ public class PlotBox extends JPanel implements Printable {
      *  on the axis at the position given by <i>position</i>. If this
      *  is called once or more, automatic generation of tick marks is
      *  disabled.  The tick mark will appear only if it is within the X
-     *  range.
+     *  range. 
      *  <p>Note that if {@link #setXLog(boolean)} has been called, then
      *  the position value should be in log units.
      *  So, addXTick("1K", 3) will display the string <pre>1K</pre>
@@ -474,7 +474,7 @@ public class PlotBox extends JPanel implements Printable {
         }
     }
 
-    /** Destroy the plotter.  This method is usually
+    /** Destroy the plotter.  This method is usually 
      *  called by PlotApplet.destroy().  It does
      *  various cleanups to reduce memory usage.
      */
@@ -2090,8 +2090,8 @@ out.println("\\begin{document}");
     //     *  to the specified directory.
     //     *  @param filename The name of the file to copy.
     //     *  @param directory The directory into which to copy.
-    //     *  @exception FileNotFoundException If the file cannot be found.
-    //     *  @exception IOException If the file cannot be copied.
+    //     *  @throws FileNotFoundException If the file cannot be found.
+    //     *  @throws IOException If the file cannot be copied.
     //     */
     //    private void _copyFiles(String filename, File directory)
     //            throws FileNotFoundException, IOException {
@@ -4032,7 +4032,7 @@ out.println("\\begin{document}");
                     double a = _xMin + ((_zoomx - _ulx) / _xscale);
                     double b = _xMin + ((x - _ulx) / _xscale);
 
-                    // NOTE: It used to be that it was problematic to set
+                    // NOTE: It used to be that it wasproblematic to set
                     // the X range here because it conflicted with the wrap
                     // mechanism.  But now the wrap mechanism saves the state
                     // of the X range when the setWrap() method is called,
@@ -4812,5 +4812,21 @@ out.println("\\begin{document}");
 
     // True if we have printed the securityExceptionMessage.
     private static boolean _printedSecurityExceptionMessage = false;
+
+    public void setBackground(Object background) {
+        setBackground((Color) background);
+    }
+
+    public void setColors(Object[] colors) {
+        setColors((Color[]) colors);
+    }
+
+    public void setForeground(Object foreground) {
+        setForeground((Color) foreground);
+    }
+
+    public void setPlotRectangle(Object rectangle) {
+        setPlotRectangle((Rectangle) rectangle);
+    }
 
 }

@@ -28,15 +28,14 @@
  */
 package ptserver.communication;
 
+import java.util.Date;
+
 import ptolemy.data.Token;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Settable;
 import ptserver.data.AttributeChangeToken;
 import ptserver.data.CommunicationToken;
 import ptserver.data.PingToken;
 import ptserver.data.PongToken;
-import ptserver.data.ServerEventToken;
-import ptserver.data.ServerEventToken.EventType;
 import ptserver.data.Tokenizer;
 
 import com.ibm.mqtt.MqttSimpleCallback;
@@ -59,21 +58,22 @@ public class TokenListener implements MqttSimpleCallback {
     ////                         constructor                       ////
 
     /** Initialize the instance by reading needed fields from the remoteModel.
-     *  @param remoteModel The remoteModel that created this publisher and
-     *  controls the state of the simulation.
+     *  @param proxyModelInfrastructure The infrastructure that created this listener and controls the state of the execution.
      */
-    public TokenListener(RemoteModel remoteModel) {
-        _owner = remoteModel;
+    public TokenListener(ProxyModelInfrastructure proxyModelInfrastructure) {
+        _proxyModelInfrastructure = proxyModelInfrastructure;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Callback method when the connection with the broker is lost.
+     *  @exception Exception If the connection was lost.
      *  @see com.ibm.mqtt.MqttSimpleCallback#connectionLost()
      */
-    public void connectionLost() {
-        _owner._fireModelException("The token listener has disconnected.", null);
+    public void connectionLost() throws Exception {
+        //TODO: handle connection lost case
+        System.out.println("Connection was lost at " + new Date());
     }
 
     /** Callback method when a message from the topic is received.
@@ -88,54 +88,53 @@ public class TokenListener implements MqttSimpleCallback {
             boolean retained) throws Exception {
         Tokenizer tokenizer = new Tokenizer(payload);
         Token token = null;
-
+        // TODO remove this or change to proper logging
+        System.out.println("received batch " + _batchCount++);
         while ((token = tokenizer.getNextToken()) != null) {
 
             // The listener is only concerned about the following types.
             if (token instanceof CommunicationToken) {
                 CommunicationToken communicationToken = (CommunicationToken) token;
-                RemoteSourceData data = _owner.getRemoteSourceMap().get(
-                        communicationToken.getTargetActorName());
+                ProxySourceData data = _proxyModelInfrastructure
+                        .getProxySourceMap().get(
+                                communicationToken.getTargetActorName());
                 data.getTokenQueue().add(communicationToken);
 
                 //Notify remote sources to read from the queue.
-                synchronized (data.getRemoteSource()) {
-                    data.getRemoteSource().notifyAll();
+                synchronized (data.getProxySource()) {
+                    data.getProxySource().notifyAll();
                 }
             } else if (token instanceof AttributeChangeToken) {
                 AttributeChangeToken attributeChangeToken = (AttributeChangeToken) token;
-                Settable remoteAttribute = _owner.getSettableAttributesMap()
-                        .get(attributeChangeToken.getTargetSettableName());
+                Settable remoteAttribute = _proxyModelInfrastructure
+                        .getRemoteAttributesMap().get(
+                                attributeChangeToken.getTargetSettableName());
 
-                RemoteValueListener listener = _owner
-                        .getSettableAttributeListenersMap().get(
+                ProxyValueListener listener = _proxyModelInfrastructure
+                        .getRemoteAttributeListenersMap().get(
                                 attributeChangeToken.getTargetSettableName());
                 synchronized (listener) {
                     try {
                         listener.setEnabled(false);
+                        // Note: obtaining the write access breaks this functionality.
+                        // Disabled for now since documentation does not say that 
+                        // write access need to be obtained for setting the expression.
+                        //                        ((Attribute) remoteAttribute).workspace()
+                        //                                .getWriteAccess();
                         remoteAttribute.setExpression(attributeChangeToken
                                 .getExpression());
                         remoteAttribute.validate();
                     } finally {
+                        //                        ((Attribute) remoteAttribute).workspace().doneWriting();
                         listener.setEnabled(true);
                     }
                 }
             } else if (token instanceof PingToken) {
-                _owner.getExecutor().execute(
+                _proxyModelInfrastructure.getExecutor().execute(
                         new PongTask(new PongToken(((PingToken) token)
                                 .getTimestamp())));
             } else if (token instanceof PongToken) {
-                _owner.setLastPongToken((PongToken) token);
-            } else if (token instanceof ServerEventToken) {
-                ServerEventToken eventToken = (ServerEventToken) token;
-                if (eventToken.getEventType() == EventType.EXCEPTION) {
-                    // Raise the exception.
-                    throw new IllegalStateException(eventToken.getMessage());
-                } else {
-                    // Notify listeners of the event.
-                    _owner._fireModelEvent(eventToken.getMessage(),
-                            eventToken.getEventType());
-                }
+                _proxyModelInfrastructure.setLastPongToken((PongToken) token);
             }
         }
     }
@@ -143,14 +142,19 @@ public class TokenListener implements MqttSimpleCallback {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The remote model that created the publisher.
+    /** The infrastructure that created the listener.
      */
-    private final RemoteModel _owner;
+    private final ProxyModelInfrastructure _proxyModelInfrastructure;
+
+    /**
+     * The batch counter used for logging purposes.
+     */
+    private int _batchCount;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** The task that sends the pong back.
+    /** The task that sends the pong back. 
      */
     private class PongTask implements Runnable {
 
@@ -172,12 +176,10 @@ public class TokenListener implements MqttSimpleCallback {
          */
         public void run() {
             try {
-                TokenPublisher publisher = _owner.getTokenPublisher();
-                if (publisher != null) {
-                    publisher.sendToken(_token);
-                }
-            } catch (IllegalActionException e) {
-                _owner._fireModelException("The pong token has failed.", e);
+                _proxyModelInfrastructure.getTokenPublisher().sendToken(_token);
+            } catch (Throwable e) {
+                _proxyModelInfrastructure.fireModelException(
+                        "Unhandled exception in the PongTask", e);
             }
         }
 

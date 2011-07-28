@@ -27,6 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.gui.PortableContainer;
+import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -59,11 +62,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.3
+ @since  Ptolemy II 8.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (bilung)
  */
-public class MonitorValue extends Sink {
+public class MonitorValue extends Sink implements PortablePlaceable {
     /** Construct an actor.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -114,9 +117,26 @@ public class MonitorValue extends Sink {
             if (oldToken == null || !oldToken.equals(newToken)) {
                 value.setToken(newToken);
                 value.validate();
+                _implementaion.setValue(newToken);
             }
         }
 
         return true;
     }
+
+    /** Place the visual representation of the actor into the specified container.
+     *  @param container The container in which to place the object, or
+     *   null to specify that there is no current container.
+     */
+    public void place(PortableContainer container) {
+        _implementaion.place(container);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Implementation of the MonitorValueInterface
+    private final TextFieldContainerInterface _implementaion = PtolemyInjector
+            .getInjector().getInstance(TextFieldContainerInterface.class);
+
 }

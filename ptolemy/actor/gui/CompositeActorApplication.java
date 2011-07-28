@@ -184,7 +184,8 @@ public class CompositeActorApplication {
         while (atomicEntities.hasNext()) {
             Object object = atomicEntities.next();
 
-            if (object instanceof Placeable) {
+            if (object instanceof Placeable
+                    || object instanceof PortablePlaceable) {
                 hasPlaceable = true;
                 break;
             }

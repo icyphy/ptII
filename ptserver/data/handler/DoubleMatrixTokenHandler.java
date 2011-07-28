@@ -81,7 +81,6 @@ public class DoubleMatrixTokenHandler implements
      *  @param tokenType The type of token to be parsed.
      *  @return The populated DoubleMatrixToken object.
      *  @exception IOException If the stream cannot be read.
-     *  @exception IllegalActionException If the token handler cannot be found.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public DoubleMatrixToken convertToToken(DataInputStream inputStream,

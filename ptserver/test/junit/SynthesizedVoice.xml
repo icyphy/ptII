@@ -1,0 +1,158 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SynthesizedVoice" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="16000">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 50.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model of a voice analysis/synthesis algorithm.&#10;The GradientAdaptiveLattice filter determines the spectral content of the&#10;input signal using an adaptive linear prediction filter.  &#10;The VariableRecursiveLattice uses this information to create a synthetic&#10;version of the original signal.">
+            <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 225.0}">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 65.0">
+        </property>
+    </entity>
+    <entity name="AudioPlayer" class="ptolemy.actor.lib.javasound.AudioPlayer">
+        <property name="sampleRate" class="ptolemy.actor.parameters.SharedParameter" value="8000">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="8000" class="ptolemy.kernel.util.StringAttribute" value="8000">
+                </property>
+                <property name="11025" class="ptolemy.kernel.util.StringAttribute" value="11025">
+                </property>
+                <property name="22050" class="ptolemy.kernel.util.StringAttribute" value="22050">
+                </property>
+                <property name="44100" class="ptolemy.kernel.util.StringAttribute" value="44100">
+                </property>
+                <property name="48000" class="ptolemy.kernel.util.StringAttribute" value="48000">
+                </property>
+            </property>
+        </property>
+        <property name="bitsPerSample" class="ptolemy.actor.parameters.SharedParameter" value="16">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="8" class="ptolemy.kernel.util.StringAttribute" value="8">
+                </property>
+                <property name="16" class="ptolemy.kernel.util.StringAttribute" value="16">
+                </property>
+            </property>
+        </property>
+        <property name="channels" class="ptolemy.actor.parameters.SharedParameter" value="1">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="1" class="ptolemy.kernel.util.StringAttribute" value="1">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute" value="2">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 190.0">
+        </property>
+    </entity>
+    <entity name="GradientAdaptiveLattice" class="ptolemy.actor.lib.GradientAdaptiveLattice">
+        <property name="reflectionCoefficients" class="ptolemy.data.expr.Parameter" value="{0.0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}">
+        </property>
+        <property name="timeConstant" class="ptolemy.data.expr.Parameter" value="15">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 65.0">
+        </property>
+    </entity>
+    <entity name="VariableRecursiveLattice" class="ptolemy.domains.sdf.lib.VariableRecursiveLattice">
+        <property name="reflectionCoefficients" class="ptolemy.data.expr.Parameter" value="{0.7344360538116, 0.5316902711922, 0.0179006775592, -0.1587960789765, -0.0868957664484, -0.0178849170847, -0.0069393660905, -0.0057340933499, -0.0041905188037, -0.0656922617642, -0.1696562559072, 0.244947303476, -0.6505618651209, 0.6564881004566, -0.0663090073005, 0.1351639517741, -0.0191081940979, 0.0295404748463, -0.0375121511902, 0.0462556897154, -0.0644296950263, 0.1363546972414, 0.2972316036376, -0.0692772384434, 0.0127642124744, 0.2468397613652, -0.2702488406065}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 175.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 165.0">
+        </property>
+    </entity>
+    <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 55.0">
+        </property>
+    </entity>
+    <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0L">
+        </property>
+        <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value=".3">
+        </property>
+        <doc>Create a sequence of gaussian random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 155.0">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="330.0, 165.0">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AudioReader.output" relation="relation2"/>
+    <link port="AudioPlayer.input" relation="relation4"/>
+    <link port="GradientAdaptiveLattice.input" relation="relation2"/>
+    <link port="GradientAdaptiveLattice.output" relation="relation8"/>
+    <link port="GradientAdaptiveLattice.adaptedReflectionCoefficients" relation="relation"/>
+    <link port="VariableRecursiveLattice.input" relation="relation10"/>
+    <link port="VariableRecursiveLattice.output" relation="relation4"/>
+    <link port="VariableRecursiveLattice.newCoefficients" relation="relation"/>
+    <link port="MultiplyDivide.multiply" relation="relation5"/>
+    <link port="MultiplyDivide.multiply" relation="relation3"/>
+    <link port="MultiplyDivide.output" relation="relation10"/>
+    <link port="AbsoluteValue.input" relation="relation8"/>
+    <link port="AbsoluteValue.output" relation="relation5"/>
+    <link port="Gaussian.output" relation="relation3"/>
+</entity>

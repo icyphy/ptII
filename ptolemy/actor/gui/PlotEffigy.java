@@ -35,7 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.plot.PlotBox;
+import ptolemy.plot.PlotBoxInterface;
 
 ///////////////////////////////////////////////////////////////////
 //// PlotEffigy
@@ -80,9 +80,9 @@ public class PlotEffigy extends PtolemyEffigy {
 
     /** Return the plot that this is an effigy of.
      *  @return The plot or null if none has been set.
-     *  @see #setPlot(PlotBox)
+     *  @see #setPlot(PlotBoxInterface)
      */
-    public PlotBox getPlot() {
+    public PlotBoxInterface getPlot() {
         return _plot;
     }
 
@@ -90,7 +90,7 @@ public class PlotEffigy extends PtolemyEffigy {
      *  @param plot The plot.
      *  @see #getPlot()
      */
-    public void setPlot(PlotBox plot) {
+    public void setPlot(PlotBoxInterface plot) {
         _plot = plot;
     }
 
@@ -123,7 +123,7 @@ public class PlotEffigy extends PtolemyEffigy {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // The plot associated with this effigy.
-    private PlotBox _plot;
+    private PlotBoxInterface _plot;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

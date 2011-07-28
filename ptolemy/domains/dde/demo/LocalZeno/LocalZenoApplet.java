@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.AWTContainer;
 import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.gui.TimedPlotter;
@@ -279,14 +280,14 @@ public class LocalZenoApplet extends PtolemyApplet {
         _plotPanel.setBackground(getBackground());
         topPanel.add(_plotPanel);
 
-        _upperPlotter.place(_plotPanel);
+        _upperPlotter.place(new AWTContainer(_plotPanel));
         _upperPlotter.plot.setTitle("Upper Branch");
         _upperPlotter.plot.setXRange(0.0, 90.0);
         _upperPlotter.plot.setYRange(-1.0, 1.0);
         _upperPlotter.plot.setSize(200, 150);
         _upperPlotter.plot.addLegend(0, "Time");
 
-        _lowerPlotter.place(_plotPanel);
+        _lowerPlotter.place(new AWTContainer(_plotPanel));
         _lowerPlotter.plot.setTitle("Lower Branch");
         _lowerPlotter.plot.setXRange(0.0, 90.0);
         _lowerPlotter.plot.setYRange(-1.0, 1.0);

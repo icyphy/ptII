@@ -40,7 +40,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.plot.Plot;
+import ptolemy.plot.PlotInterface;
 
 ///////////////////////////////////////////////////////////////////
 //// ArrayPlotter
@@ -188,12 +188,12 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
                     Token[] currentArray = _tokens[i].arrayValue();
 
                     // NOTE: We assume the superclass ensures this cast is safe.
-                    ((Plot) plot).clear(i + _offset);
+                    ((PlotInterface) plot).clear(i + _offset);
 
                     for (int j = 0; j < currentArray.length; j++) {
                         double currentValue = ((DoubleToken) currentArray[j])
                                 .doubleValue();
-                        ((Plot) plot).addPoint(i + _offset, xValue,
+                        ((PlotInterface) plot).addPoint(i + _offset, xValue,
                                 currentValue, true);
                         xValue += _xUnit;
                     }
@@ -225,12 +225,12 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
                     Token[] currentArray = _tokens[i].arrayValue();
 
                     // NOTE: We assume the superclass ensures this cast is safe.
-                    ((Plot) plot).clear(i + _offset);
+                    ((PlotInterface) plot).clear(i + _offset);
 
                     for (int j = 0; j < currentArray.length; j++) {
                         double currentValue = ((DoubleToken) currentArray[j])
                                 .doubleValue();
-                        ((Plot) plot).addPoint(i + _offset, xValue,
+                        ((PlotInterface) plot).addPoint(i + _offset, xValue,
                                 currentValue, true);
                         xValue += _xUnit;
                     }

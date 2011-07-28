@@ -37,41 +37,67 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptserver.control.Ticket;
 import ptserver.data.TokenParser;
 
-import com.ibm.mqtt.MqttException;
+import com.ibm.mqtt.IMqttClient;
 
 ///////////////////////////////////////////////////////////////////
 //// TokenPublisher
-
-/** TokenPublisher batches tokens, converts to them binary and then publishes the result to the MQTT topic.
- *  <p>The batch is sent it out periodically according to the period and tokensPerPeriod parameters
+/**
+ * TokenPublisher batches tokens, converts to them binary and then publishes the result to the MQTT topic.
  *
- *  @author Anar Huseynov
- *  @version $Id$
- *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (ahuseyno)
- *  @Pt.AcceptedRating Red (ahuseyno)
+ * <p>The batch is sent it out periodically according to the period parameter.
+ *
+ * @author Anar Huseynov
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
  */
 public class TokenPublisher {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         constructor                       ////
-
-    /** Create instance of the TokenPublisher with specified period,
-     *  tokensPerPeriod, and remote model owner.
-     *  @param period Period in millisecond between batches
-     *  @param tokensPerPeriod Expected number of tokens per period
-     *  @param owner Parent remote model of the token publisher.
+    /**
+     * Create instance of the TokenPublisher with specified period and tokensPerPeriod
+     * @param period The period in milliseconds between batches
+     * @param proxyModelInfrastructure The infrastructure that created this listener and controls the state of the execution.
      */
-    public TokenPublisher(long period, int tokensPerPeriod, RemoteModel owner) {
+    public TokenPublisher(long period,
+            ProxyModelInfrastructure proxyModelInfrastructure) {
         _period = period;
-        // _tokensPerPeriod = tokensPerPeriod;
-        _owner = owner;
+        _proxyModelInfrastructure = proxyModelInfrastructure;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    /**
+     * Start the timer that sends token batches.
+     */
+    public void startTimer(Ticket ticket) {
+        _timer = new Timer("TokenPublisher timer " + ticket);
+        _timer.scheduleAtFixedRate(new TimerTask() {
 
-    /** Cancel the publisher's timer used for sending batch of tokens.
+            @Override
+            public void run() {
+                try {
+                    synchronized (TokenPublisher.this) {
+                        if (_tokenCount > 0) {
+                            byte[] batch = _outputStream.toByteArray();
+                            _mqttClient.publish(getTopic(), batch,
+                                    ProxyModelInfrastructure.QOS_LEVEL, false);
+                            // TODO remove this or add proper logging
+                            System.out.println("publishing batch "
+                                    + _batchCount++ + " batch size "
+                                    + batch.length);
+                            _outputStream.reset();
+                            _tokenCount = 0;
+                        }
+                    }
+                } catch (Throwable e) {
+                    _proxyModelInfrastructure.fireModelException(
+                            "Unhandled exception in the TokenPublisher", e);
+                }
+            }
+        }, _period, _period);
+    }
+
+    /**
+     * Cancel the publisher's timer used for sending batch of tokens.
      */
     public void cancelTimer() {
         if (_timer != null) {
@@ -79,29 +105,39 @@ public class TokenPublisher {
         }
     }
 
-    /** Return the topic where the messages are published.
-     *  @return the topic where the messages are published
-     *  @see #setTopic(String)
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /**
+     * Return MQTT client that is used to send out MQTT messages.
+     * @return the mqttClient instance
+     * @see #setMqttClient(IMqttClient)
+     */
+    public IMqttClient getMqttClient() {
+        return _mqttClient;
+    }
+
+    /**
+     * Return the topic where the messages are published.
+     * @return the topic where the messages are published
+     * @see #setTopic(String)
      */
     public String getTopic() {
         return _topic;
     }
 
-    /** Send the token via MQTT protocol.
-     *  <p>The token will not be sent out immediately but would be batched for the specified period.</p>
-     *  @param token the token to send
-     *  @exception IllegalActionException if there is a problem with MQTT broker.
+    /**
+     * Send the token via MQTT protocol.
+     *
+     * <p>The token will not be sent out immediately but would be batched for the specified period.</p>
+     * @param token the token to send
+     * @exception IllegalActionException if there is a problem with MQTT broker.
      */
     public synchronized void sendToken(Token token)
             throws IllegalActionException {
         try {
-            TokenParser parser = TokenParser.getInstance();
-            if (parser != null) {
-                parser.convertToBytes(token, _outputStream);
-                _tokenCount++;
-            }
+            TokenParser.getInstance().convertToBytes(token, _outputStream);
+            _tokenCount++;
         } catch (IllegalActionException e) {
-            // Unable to write the token, rethrow since it can't be handled here.
             throw new IllegalActionException(null, e,
                     "Problem converting a token to a byte stream");
         } catch (IOException e) {
@@ -110,97 +146,62 @@ public class TokenPublisher {
         }
     }
 
-    /** Set the topic for the message to publish.
-     *  @param topic The topic to publish the MQTT messages.
-     *  @see #getTopic()
+    /**
+     * Set the mqttClient to be used to publish the tokens.
+     * @param mqttClient the mqttClient to be used to publish the tokens.
+     * @see #getMqttClient()
+     */
+    public void setMqttClient(IMqttClient mqttClient) {
+        _mqttClient = mqttClient;
+    }
+
+    /**
+     * Set the topic for the message to publish.
+     * @param topic the topic to publish the MQTT messages.
+     * @see #getTopic()
      */
     public void setTopic(String topic) {
         _topic = topic;
     }
 
-    /** Start the timer that sends token batches.
-     *  @param ticket The ticket associated with the simulation.
-     */
-    public void startTimer(Ticket ticket) {
-        _timer = new Timer("TokenPublisher timer " + ticket);
-        _timer.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                synchronized (TokenPublisher.this) {
-
-                    // If tokens are queued up, attempt to publish.
-                    if (_tokenCount > 0) {
-                        try {
-                            _owner.getMqttClient().publish(getTopic(),
-                                    _outputStream.toByteArray(),
-                                    RemoteModel.QOS_LEVEL, false);
-
-                            _outputStream.reset();
-                            _tokenCount = 0;
-                        } catch (MqttException e) {
-                            _owner._fireModelException(
-                                    "The token publisher timer has failed.", e);
-                        }
-
-                        //FIXME: use a proper logger or remove
-                        //System.out.println(_batchCount++);
-                        //                if (_tokenCount > _tokensPerPeriod) {
-                        //                    long waitTime = (long) (1.0
-                        //                            * (_tokenCount - _tokensPerPeriod)
-                        //                            / _tokensPerPeriod * _period);
-                        //                    try {
-                        //                        Thread.sleep(waitTime);
-                        //                    } catch (InterruptedException e) {
-                        //                    }
-                        //                }
-                    }
-                }
-            }
-        }, _period, _period);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** TODO: either remove this or add proper logging mechanism
-     *  The count of batches sent.
-     *  private int _batchCount;
-    */
-
-    /** Maximum size of the output stream.
+    /**
+     * The mqtt client instance used to send messages.
      */
-    private static final int MAX_STREAM_SIZE = 10000;
+    private IMqttClient _mqttClient;
 
-    /** The output stream holding the batch.
+    /**
+     * The topic where messages are published.
      */
-    private final ByteArrayOutputStream _outputStream = new ByteArrayOutputStream(
-            MAX_STREAM_SIZE);
+    private String _topic;
 
-    /** Reference to the owner remote model.
-     */
-    private final RemoteModel _owner;
-
-    /** The period in millisecond between batches.
+    /**
+     * The period in millisecond between batches.
      */
     private final long _period;
+
+    /**
+     * The count of tokens in the batch.
+     */
+    private int _tokenCount;
+    /**
+     * The output stream holding the batch.
+     */
+    private final ByteArrayOutputStream _outputStream = new ByteArrayOutputStream(
+            10000);
+    /**
+     * TODO: either remove this or add proper logging mechanism
+     * The count of batches sent.
+     */
+    private int _batchCount;
 
     /**
      * The timer used for sending batch of tokens.
      */
     private Timer _timer;
-
-    /** The count of tokens in the batch.
+    /** The infrastructure that created the listener.
      */
-    private int _tokenCount;
+    private final ProxyModelInfrastructure _proxyModelInfrastructure;
 
-    /** The topic where messages are published.
-     */
-    private String _topic;
-
-    /** TODO: do we need to throttle the source?
-     *  Expected number of tokens per period.
-     *
-     *  private final int _tokensPerPeriod;
-     */
 }

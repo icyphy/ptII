@@ -65,7 +65,7 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED) \
 	findbugs-excludes.xml \
 	findbugs-includes.xml \
 	checkstyle-ptserver.xml
-
+	
 # Keep this list alphabetized.
 JSRCS = \
 

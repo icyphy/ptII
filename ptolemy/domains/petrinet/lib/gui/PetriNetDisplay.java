@@ -1,6 +1,6 @@
 /* Display the evolution of a Petri net.
-
- Copyright (c) 2010-2011 The University of Florida
+ 
+ Copyright (c) 2010 The University of Florida
 
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -21,13 +21,15 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  FLORIDA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
-
+ 
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
-
+  
  */
 
 package ptolemy.domains.petrinet.lib.gui;
+
+import javax.swing.JTextArea;
 
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.domains.petrinet.kernel.PetriNetDisplayer;
@@ -43,11 +45,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    the Net after execution. Specifically, the token count of each
    place will be printed for each iteration.</p>
 
-   <p>It should be noted that there are alignment issues within the display
+   <p>It should be noted that there are alignment issues within the display 
    on certain operating systems where the font used is not monospaced.</p>
 
    @author  Zach Ezzell
-   @version $Id$
+   @version $Id$ 
    @since Ptolemy II 8.1
    @Pt.ProposedRating Red (yukewang)
    @Pt.AcceptedRating Red (reviewmoderator)
@@ -56,17 +58,17 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
 
     /**
      * Construct a new PetriNetDisplay.
-     *
+     * 
      * @param container
      *           The CompositeEntity.
      * @param name
      *            The name of the PetriNetDisplay.
-     *
+     *            
      * @exception IllegalActionException
      *                If the name has a period in it.
-     *
+     *                
      * @exception NameDuplicationException
-     *                If the container already contains an entity with
+     *                If the container already contains an entity with 
      *                the specified name.
      */
 
@@ -77,24 +79,25 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                      public methods                       ////   
 
     /** Ensure that the text is placed in the textArea.
-     *
-     * @exception IllegalActionException If _openWindow() in the base
+     * 
+     * @exception IllegalActionException If _openWindow() in the base 
      * class throws it.
      */
     public void openDisplay() throws IllegalActionException {
-        if (!_initialized) {
-            _initialized = true;
+        if (!initialized) {
+            initialized = true;
             _openWindow();
         }
+        JTextArea textArea = (JTextArea) _getImplementation().getTextArea();
         textArea.setText(text);
     }
 
-    /** Set the text for the display.  This method is called by the
+    /** Set the text for the display.  This method is called by the 
      * PetriNetDirector.
-     *
+     * 
      * @param text
      *          The text to be shown in the display.
      */
@@ -103,7 +106,7 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                    private variables                      ////   
 
     /** This string represents the evolution of the Petri Net and should
      * be set by the PetriNetDirector.
