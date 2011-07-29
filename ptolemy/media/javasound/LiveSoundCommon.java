@@ -190,7 +190,7 @@ public class LiveSoundCommon {
      * For each channel, m, doubleArray[m] is a single dimensional
      * array containing samples for channel m.
      */
-    protected static void _byteArrayToDoubleArray(double[][] doubleArray,
+    protected void _byteArrayToDoubleArray(double[][] doubleArray,
             byte[] byteArray) {
         int lengthInSamples = byteArray.length / (_bytesPerSample * _channels);
 
@@ -244,7 +244,7 @@ public class LiveSoundCommon {
      *  array representation of <i>doubleArray</i>. The length of
      *  the returned array is (doubleArray[i].length*bytesPerSample*channels).
      */
-    protected static byte[] _doubleArrayToByteArray(double[][] doubleArray)
+    protected byte[] _doubleArrayToByteArray(double[][] doubleArray)
             throws IllegalArgumentException {
         // This method is most efficient if repeated calls pass the same size
         // array. In this case, it does not re-allocate the byte array that
@@ -308,7 +308,7 @@ public class LiveSoundCommon {
      *  @exception Exception If a listener has a problem responding
      *   to the change.
      */
-    protected static void _notifyLiveSoundListeners(int parameter) {
+    protected void _notifyLiveSoundListeners(int parameter) {
         if (_liveSoundListeners.size() > 0) {
             LiveSoundEvent event = new LiveSoundEvent(parameter);
             Iterator listeners = _liveSoundListeners.iterator();
@@ -323,45 +323,45 @@ public class LiveSoundCommon {
     ////                         private variables                 ////
 
     /** Array of audio samples in double format. */
-    protected static double[][] _audioInDoubleArray;
+    protected double[][] _audioInDoubleArray;
 
     /** The number of bits per sample. Default is 16. */
-    protected static int _bitsPerSample = 16;
+    protected int _bitsPerSample = 16;
 
     /** The requested buffer size in samples per channel. */
-    protected static int _bufferSize = 1024;
+    protected int _bufferSize = 1024;
 
     /** The number of bytes per sample, default 2. */
-    protected static int _bytesPerSample = 2;
+    protected int _bytesPerSample = 2;
 
     /** true is audio capture is currently active. */
-    protected static boolean _captureIsActive = false;
+    protected boolean _captureIsActive = false;
 
     /** The number of channels. Deafult is 1. */
-    protected static int _channels = 1;
+    protected int _channels = 1;
 
     /** Array of audio samples in byte format. */
-    protected static byte[] _captureData;
+    protected byte[] _captureData;
 
     /** Byte buffer used for playback data. */
-    protected static byte[] _playbackData;
+    protected byte[] _playbackData;
 
-    protected static List _liveSoundListeners = new LinkedList();
+    protected List _liveSoundListeners = new LinkedList();
 
     // Cashed value of the maximum value scaling factor, default for 16 bits.
-    protected static double _maxSampleReciprocal = 1.0 / 32768;
+    protected double _maxSampleReciprocal = 1.0 / 32768;
 
     // Cashed value of the maximum integer value, default for 16 bits.
-    protected static double _maxSample = 32767;
+    protected double _maxSample = 32767;
 
     // true is audio playback is currently active
-    protected static boolean _playbackIsActive = false;
+    protected boolean _playbackIsActive = false;
 
-    protected static float _sampleRate;
+    protected float _sampleRate;
 
-    protected static List _soundConsumers = new LinkedList();
+    protected List _soundConsumers = new LinkedList();
 
     /** The number of audio samples to transfer per channel when getSamples() is invoked. */
-    protected static int _transferSize = 128;
+    protected int _transferSize = 128;
 
 }

@@ -30,12 +30,12 @@ package ptserver.communication;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Executable;
@@ -133,7 +133,7 @@ public class ProxyModelInfrastructure {
             TypeConflictException, NameDuplicationException,
             CloneNotSupportedException {
         _tokenPublisher = new TokenPublisher(_PERIOD, this);
-        _executor = Executors.newFixedThreadPool(_POOL_SIZE);
+        _executor = Executors.newSingleThreadExecutor();
         _modelType = modelType;
         _topLevelActor = plainTopLevelActor;
         _loadPlainModel();
@@ -178,7 +178,7 @@ public class ProxyModelInfrastructure {
     /** Close the model along with all its connection.
      */
     public void close() {
-        _pingTimer.cancel();
+        _pingPongExecutor.shutdown();
         _tokenPublisher.cancelTimer();
         _executor.shutdown();
         try {
@@ -625,14 +625,12 @@ public class ProxyModelInfrastructure {
      */
     private void _setUpMonitoring() {
         setLastPongToken(new PongToken(System.currentTimeMillis()));
-        _pingTimer = new Timer("Ping-pong Timer " + getTicket());
-        _pingTimer.schedule(new TimerTask() {
-
-            @Override
+        _pingPongExecutor = Executors.newSingleThreadScheduledExecutor();
+        _pingPongExecutor.scheduleAtFixedRate(new Runnable() {
             public void run() {
                 try {
                     long msTime = System.currentTimeMillis();
-                    _tokenPublisher.sendToken(new PingToken(msTime));
+                    _tokenPublisher.sendToken(new PingToken(msTime), null);
 
                     long latency = msTime - _getLastPongToken().getTimestamp();
                     // update ping pong latency if the token was not received roughly within last 2 periods.
@@ -645,10 +643,11 @@ public class ProxyModelInfrastructure {
                         }
                     }
                 } catch (Throwable e) {
-                    fireModelException(null, e);
+                    fireModelException("Exception in the monitoring system", e);
                 }
             }
-        }, 0, _PING_PERIOD);
+        }, 0, _PING_PERIOD, TimeUnit.MILLISECONDS);
+
     }
 
     /** Set up remote attribute listeners.
@@ -716,10 +715,6 @@ public class ProxyModelInfrastructure {
      */
     private String _publishingTopic;
 
-    /** The timer used to send periodical pings.
-     */
-    private Timer _pingTimer;
-
     /** The last pong token received from the remoteModel.
      */
     private volatile PongToken _lastPongToken;
@@ -742,7 +737,7 @@ public class ProxyModelInfrastructure {
 
     /** Model time out period.
      */
-    private int _timeoutPeriod = 30000;
+    private int _timeoutPeriod = 60000;
 
     /** The period between sending ping tokens.
      */
@@ -759,4 +754,9 @@ public class ProxyModelInfrastructure {
     /** The maximum latency before forcing the proxy sinks to sleepl.
      */
     private int _maxLatency = 500;
+
+    /**
+     * The executor that sends periodical ping messages.
+     */
+    private ScheduledExecutorService _pingPongExecutor;
 }

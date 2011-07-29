@@ -28,16 +28,20 @@
 package ptserver.communication;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptserver.actor.ProxySink;
 import ptserver.control.Ticket;
 import ptserver.data.TokenParser;
 
 import com.ibm.mqtt.IMqttClient;
+import com.ibm.mqtt.MqttException;
+import com.ibm.mqtt.MqttNotConnectedException;
+import com.ibm.mqtt.MqttPersistenceException;
 
 ///////////////////////////////////////////////////////////////////
 //// TokenPublisher
@@ -67,38 +71,25 @@ public class TokenPublisher {
      *  @param ticket Ticket on which to start the publishing timer.
      */
     public void startTimer(Ticket ticket) {
-        _timer = new Timer("TokenPublisher timer " + ticket);
-        _timer.scheduleAtFixedRate(new TimerTask() {
+        _executor = Executors.newSingleThreadScheduledExecutor();
+        _executor.scheduleAtFixedRate(new Runnable() {
 
-            @Override
             public void run() {
                 try {
-                    synchronized (TokenPublisher.this) {
-                        if (_tokenCount > 0) {
-                            byte[] batch = _outputStream.toByteArray();
-                            _mqttClient.publish(getTopic(), batch,
-                                    ProxyModelInfrastructure.QOS_LEVEL, false);
-                            // TODO remove this or add proper logging
-                            System.out.println("publishing batch "
-                                    + _batchCount++ + " batch size "
-                                    + batch.length);
-                            _outputStream.reset();
-                            _tokenCount = 0;
-                        }
-                    }
+                    _sendBatch();
                 } catch (Throwable e) {
                     _proxyModelInfrastructure.fireModelException(
                             "Unhandled exception in the TokenPublisher", e);
                 }
             }
-        }, _period, _period);
+        }, 0, _period, TimeUnit.MILLISECONDS);
     }
 
     /** Cancel the publisher's timer used for sending batch of tokens.
      */
     public void cancelTimer() {
-        if (_timer != null) {
-            _timer.cancel();
+        if (_executor != null) {
+            _executor.shutdown();
         }
     }
 
@@ -124,19 +115,29 @@ public class TokenPublisher {
     /** Send the token via MQTT protocol.
      *  <p>The token will not be sent out immediately but would be batched for the specified period.</p>
      *  @param token The token to send
+     * @param sender The sink that produced the token.  If the parameter is null, 
+     * then the token was not produced by the model but programmatically i.e. for monitoring purposes.
      *  @exception IllegalActionException if there is a problem with MQTT broker.
      */
-    public synchronized void sendToken(Token token)
+    public void sendToken(Token token, ProxySink sender)
             throws IllegalActionException {
         try {
-            TokenParser.getInstance().convertToBytes(token, _outputStream);
-            _tokenCount++;
-        } catch (IllegalActionException e) {
+            final int currentTokenCount;
+            synchronized (this) {
+                TokenParser.getInstance().convertToBytes(token, _outputStream);
+                _tokenCount++;
+                currentTokenCount = _tokenCount;
+            }
+            if (sender != null) {
+                if (currentTokenCount > 1000) {
+                    sender.throttle(true);
+                } else {
+                    sender.throttle(false);
+                }
+            }
+        } catch (Throwable e) {
             throw new IllegalActionException(null, e,
                     "Problem converting a token to a byte stream");
-        } catch (IOException e) {
-            throw new IllegalActionException(null, e,
-                    "Can't write to the communication stream");
         }
     }
 
@@ -154,6 +155,21 @@ public class TokenPublisher {
      */
     public void setTopic(String topic) {
         _topic = topic;
+    }
+
+    private synchronized void _sendBatch() throws MqttNotConnectedException,
+            MqttPersistenceException, IllegalArgumentException, MqttException {
+        if (_tokenCount > 0) {
+            byte[] batch = _outputStream.toByteArray();
+            _mqttClient.publish(getTopic(), batch,
+                    ProxyModelInfrastructure.QOS_LEVEL, false);
+            // TODO remove this or add proper logging
+            System.out.println("publishing batch " + _batchCount++
+                    + " batch size " + batch.length + " token count "
+                    + _tokenCount);
+            _outputStream.reset();
+            _tokenCount = 0;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -182,9 +198,9 @@ public class TokenPublisher {
      */
     private final ProxyModelInfrastructure _proxyModelInfrastructure;
 
-    /** The timer used for sending batch of tokens.
+    /** The executor used for sending batch of tokens.
      */
-    private Timer _timer;
+    private ScheduledExecutorService _executor;
 
     /** The count of tokens in the batch.
      */

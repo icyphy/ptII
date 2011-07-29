@@ -645,7 +645,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
      *  @param format The audio format.
      *  @return A string describing the audio formats available.
      */
-    private static String _encodings(AudioFormat format) {
+    private String _encodings(AudioFormat format) {
         // Print out the possible encodings
         AudioFormat.Encoding[] encodings = AudioSystem
                 .getTargetEncodings(format);
@@ -661,17 +661,17 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
         return encodingDescriptions.toString();
     }
 
-    private static void _flushCaptureBuffer() {
+    private void _flushCaptureBuffer() {
         _targetLine.flush();
     }
 
-    private static void _flushPlaybackBuffer() {
+    private void _flushPlaybackBuffer() {
         _sourceLine.flush();
     }
 
     /** Start audio capture.
      */
-    private static void _startCapture() throws IOException {
+    private void _startCapture() throws IOException {
         boolean signed = true;
         boolean bigEndian = true;
         AudioFormat format = new AudioFormat(_sampleRate, _bitsPerSample,
@@ -708,7 +708,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
 
     /** Start audio playback.
      */
-    private static void _startPlayback() throws IOException {
+    private void _startPlayback() throws IOException {
         boolean signed = true;
         boolean bigEndian = true;
 
@@ -745,7 +745,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
 
     /** Stop audio playback.
      */
-    private static void _stopPlayback() {
+    private void _stopPlayback() {
         if (_sourceLine != null) {
             _sourceLine.drain();
             _sourceLine.stop();
@@ -757,7 +757,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
 
     /** Stop audio capture.
      */
-    private static void _stopCapture() {
+    private void _stopCapture() {
         if (_targetLine != null) {
             if (_targetLine.isOpen() == true) {
                 _targetLine.stop();
@@ -771,9 +771,9 @@ public class LiveSoundJavaSE extends LiveSoundCommon implements
     ////                         private variables                 ////
 
     /** Interface to the hardware for reading data. */
-    private static SourceDataLine _sourceLine;
+    private SourceDataLine _sourceLine;
 
     /** Interface to the hardware for producing sound. */
-    private static TargetDataLine _targetLine;
+    private TargetDataLine _targetLine;
 
 }

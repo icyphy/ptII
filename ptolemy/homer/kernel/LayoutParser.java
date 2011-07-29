@@ -215,14 +215,13 @@ public class LayoutParser {
         if (element.getAttribute(ServerUtility.REMOTE_OBJECT_TAG) != null) {
             // Found proxy attribute, add it to the container
             container.add(element);
-        } else {
-            // Element did not contain the proxy attribute, let's search the
-            // other named objects within the element.
-            for (Iterator iterator = element.containedObjectsIterator(); iterator
-                    .hasNext();) {
-                NamedObj namedObj = (NamedObj) iterator.next();
-                _getProxyElements(namedObj, container);
-            }
+        }
+        // Element did not contain the proxy attribute, let's search the
+        // other named objects within the element.
+        for (Iterator iterator = element.containedObjectsIterator(); iterator
+                .hasNext();) {
+            NamedObj namedObj = (NamedObj) iterator.next();
+            _getProxyElements(namedObj, container);
         }
     }
 

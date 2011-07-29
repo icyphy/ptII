@@ -262,19 +262,18 @@ public final class PtolemyServer implements IServerManager {
      *  @exception IllegalActionException If the server was unable to destroy the simulation thread.
      */
     public synchronized void close(Ticket ticket) throws IllegalActionException {
-        try {
-            _checkTicket(ticket);
+        if (ticket == null || _requests.get(ticket) == null) {
+            String message = "Ticket " + ticket + " was not found";
+            PtolemyServer.LOGGER.log(Level.SEVERE, message);
+        } else {
             stop(ticket);
-
             SimulationTask task = _requests.get(ticket);
             // FindBugs is wrong here since _checkTicket ensures that task is not null
             task.close();
 
             _requests.remove(ticket);
-        } catch (Exception e) {
-            _handleException((ticket != null ? ticket.getTicketID() : null)
-                    + ": " + e.getMessage(), e);
         }
+
     }
 
     /** Download the selected model to the client.
@@ -618,7 +617,7 @@ public final class PtolemyServer implements IServerManager {
                         .getTokenPublisher()
                         .sendToken(
                                 new ServerEventToken(EventType.SERVER_SHUTDOWN,
-                                        "The Ptolemy server you are currently connected is shutting down."));
+                                        "The Ptolemy server you are currently connected is shutting down."), null);
 
                 // Shut down the locally running simulation.
                 close(task.getProxyModelInfrastructure().getTicket());
@@ -867,12 +866,11 @@ public final class PtolemyServer implements IServerManager {
 
             try {
                 close(remoteModel.getTicket());
-            } catch (IllegalActionException e) {
+            } catch (Throwable e) {
                 String message = "The connection expired on ticket "
                         + remoteModel.getTicket().getTicketID()
                         + " and the model could not be closed.";
                 PtolemyServer.LOGGER.log(Level.SEVERE, message, e);
-                throw new IllegalStateException(message);
             }
         }
 

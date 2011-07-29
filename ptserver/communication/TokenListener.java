@@ -176,7 +176,7 @@ public class TokenListener implements MqttSimpleCallback {
          */
         public void run() {
             try {
-                _proxyModelInfrastructure.getTokenPublisher().sendToken(_token);
+                _proxyModelInfrastructure.getTokenPublisher().sendToken(_token, null);
             } catch (Throwable e) {
                 _proxyModelInfrastructure.fireModelException(
                         "Unhandled exception in the PongTask", e);
