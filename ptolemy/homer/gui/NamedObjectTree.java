@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.homer.gui.tree;
+package ptolemy.homer.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

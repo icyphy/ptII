@@ -59,8 +59,10 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Keep this list alphabetized.
 JSRCS = \
+	AttributeTreeModel.java \
 	HomerMainFrame.java \
 	HomerMenu.java \
+	NamedObjectTree.java \
 	OpenLayoutDialog.java \
 	RemoteObjectList.java \
 	SizeDialog.java \

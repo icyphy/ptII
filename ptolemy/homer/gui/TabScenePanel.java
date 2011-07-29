@@ -76,7 +76,6 @@ import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.ContentPrototype;
 import ptolemy.homer.kernel.HomerConstants;
 import ptolemy.homer.kernel.HomerLocation;

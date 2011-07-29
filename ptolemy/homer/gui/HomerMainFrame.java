@@ -50,7 +50,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.homer.HomerApplication;
-import ptolemy.homer.gui.tree.NamedObjectTree;
 import ptolemy.homer.kernel.HomerConstants;
 import ptolemy.homer.kernel.HomerMultiContent;
 import ptolemy.homer.kernel.HomerWidgetElement;
@@ -534,7 +533,7 @@ public class HomerMainFrame extends JFrame {
 
         _namedObjectTreePanel = new NamedObjectTree();
         _namedObjectTreePanel.setBorder(new TitledBorder(new EtchedBorder(
-                EtchedBorder.LOWERED, null, null), "Named Object Tree",
+                EtchedBorder.LOWERED, null, null), "Model Elements",
                 TitledBorder.LEADING, TitledBorder.TOP, null,
                 new Color(0, 0, 0)));
         _namedObjectTreePanel.setPreferredSize(new Dimension(_SIDEBAR_WIDTH,
@@ -555,9 +554,8 @@ public class HomerMainFrame extends JFrame {
         pnlEast.add(_graphPanel, BorderLayout.NORTH);
 
         _remoteObjectsPanel = new RemoteObjectList(this);
-        _remoteObjectsPanel.setBorder(new TitledBorder(null,
-                "Remote Named Objects", TitledBorder.LEADING, TitledBorder.TOP,
-                null, null));
+        _remoteObjectsPanel.setBorder(new TitledBorder(null, "Layout Elements",
+                TitledBorder.LEADING, TitledBorder.TOP, null, null));
         pnlEast.add(_remoteObjectsPanel, BorderLayout.CENTER);
 
         _screenPanel = new TabbedLayoutScene(this);
