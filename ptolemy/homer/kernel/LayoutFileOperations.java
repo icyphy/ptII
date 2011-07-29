@@ -219,6 +219,20 @@ public final class LayoutFileOperations {
             // Create layout model
             new ProxyModelBuilder(ProxyModelType.CLIENT, model).build();
 
+            // Add the screen orientation.
+            StringAttribute orientationNode = (StringAttribute) model
+                    .getAttribute(HomerConstants.ORIENTATION_NODE);
+            if (orientationNode != null) {
+                model.removeAttribute(orientationNode);
+            }
+
+            orientationNode = new StringAttribute(model,
+                    HomerConstants.ORIENTATION_NODE);
+            orientationNode.setPersistent(true);
+            orientationNode.setVisibility(Settable.NONE);
+            orientationNode
+                    .setExpression(mainFrame.getOrientation().toString());
+
             // Add screen dimensions to top level actor.
             ArrayToken token = new ArrayToken(new IntToken[] {
                     new IntToken(mainFrame.getTabbedLayoutScene()

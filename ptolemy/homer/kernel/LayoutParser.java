@@ -255,15 +255,25 @@ public class LayoutParser {
      *  representation.
      */
     public enum ScreenOrientation {
+
         /** Defines portrait orientation.
          */
         PORTRAIT,
+
         /** Defines landscape orientation.
          */
         LANDSCAPE,
+
         /** Defines unknown orientation.
          */
-        UNSPECIFIED
+        UNSPECIFIED;
+
+        /** Return the enumeration value in lowercase lettering.
+         *  @return The value in lowercase.
+         */
+        public String toString() {
+            return name().toLowerCase();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

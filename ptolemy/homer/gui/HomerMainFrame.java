@@ -55,6 +55,7 @@ import ptolemy.homer.kernel.HomerConstants;
 import ptolemy.homer.kernel.HomerMultiContent;
 import ptolemy.homer.kernel.HomerWidgetElement;
 import ptolemy.homer.kernel.LayoutFileOperations;
+import ptolemy.homer.kernel.LayoutParser.ScreenOrientation;
 import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.homer.kernel.TabDefinition;
 import ptolemy.kernel.CompositeEntity;
@@ -63,6 +64,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
@@ -93,13 +95,14 @@ public class HomerMainFrame extends JFrame {
     public HomerMainFrame(HomerApplication application) {
         setTitle("Homer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(DEFAULT_BOUNDS, DEFAULT_BOUNDS, DEFAULT_FRAME_WIDTH,
-                DEFAULT_FRAME_HEIGHT);
+        setBounds(_DEFAULT_BOUNDS, _DEFAULT_BOUNDS, _DEFAULT_FRAME_WIDTH,
+                _DEFAULT_FRAME_HEIGHT);
 
         _application = application;
+        _menu = new HomerMenu(this);
         _initializeFrame();
 
-        setJMenuBar(new HomerMenu(this).getMenuBar());
+        setJMenuBar(_menu.getMenuBar());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -263,6 +266,18 @@ public class HomerMainFrame extends JFrame {
         return _modelURL;
     }
 
+    /** Get the selected screen orientation.
+     *  @return The screen orientation.
+     */
+    public ScreenOrientation getOrientation() {
+        if (_screenPanel.getSceneTabs().getPreferredSize().height > _screenPanel
+                .getSceneTabs().getPreferredSize().width) {
+            return ScreenOrientation.PORTRAIT;
+        } else {
+            return ScreenOrientation.LANDSCAPE;
+        }
+    }
+
     /** Get the set of references to on-screen remote objects.
      *  @return The set of remote object references.
      */
@@ -293,6 +308,7 @@ public class HomerMainFrame extends JFrame {
         _contents.clear();
         _modelURL = modelURL;
         _layoutURL = null;
+
         try {
             _topLevelActor = LayoutFileOperations.openModelFile(modelURL);
             _namedObjectTreePanel.setCompositeEntity(_topLevelActor);
@@ -320,6 +336,17 @@ public class HomerMainFrame extends JFrame {
             _topLevelActor = LayoutFileOperations.open(this, modelURL,
                     layoutURL);
             LayoutFileOperations.parseModel(this);
+
+            // Get the screen orientation.
+            StringAttribute orientation = (StringAttribute) _topLevelActor
+                    .getAttribute(HomerConstants.ORIENTATION_NODE);
+            if (orientation != null) {
+                if (orientation.getExpression().equals("landscape")) {
+                    _menu.setOrientation(ScreenOrientation.LANDSCAPE);
+                } else if (orientation.getExpression().equals("portrait")) {
+                    _menu.setOrientation(ScreenOrientation.PORTRAIT);
+                }
+            }
 
             // Get the window properties and sizing.
             Parameter screenSize = ((Parameter) _topLevelActor
@@ -398,6 +425,58 @@ public class HomerMainFrame extends JFrame {
         LayoutFileOperations.saveAs(this, layoutFile);
     }
 
+    /** Set the orientation of the scene.
+     *  @param orientation The orientation of the scene.
+     */
+    public void setOrientation(ScreenOrientation orientation) {
+
+        TabbedLayoutScene scene = getTabbedLayoutScene();
+        if (scene != null) {
+            double height = scene.getSceneTabs().getPreferredSize().getHeight();
+            double width = scene.getSceneTabs().getPreferredSize().getWidth();
+
+            // If in the opposite orientation, invert dimensions.
+            if (orientation == ScreenOrientation.LANDSCAPE) {
+                if (height >= width) {
+                    scene.getSceneTabs().setPreferredSize(
+                            new Dimension((int) height, (int) width));
+                }
+            } else if (orientation == ScreenOrientation.PORTRAIT) {
+                if (width >= height) {
+                    scene.getSceneTabs().setPreferredSize(
+                            new Dimension((int) height, (int) width));
+                }
+            }
+
+            _orientation = orientation;
+            scene.revalidate();
+        }
+    }
+
+    public void setScreenSize(Dimension dimension) {
+        if (dimension != null) {
+            if (getOrientation() == ScreenOrientation.LANDSCAPE) {
+                if (dimension.width > dimension.height) {
+                    _screenPanel.getSceneTabs().setPreferredSize(dimension);
+                } else {
+                    // Invert height and width.
+                    _screenPanel.getSceneTabs().setPreferredSize(
+                            new Dimension(dimension.height, dimension.width));
+                }
+            } else if (getOrientation() == ScreenOrientation.PORTRAIT) {
+                if (dimension.height > dimension.width) {
+                    _screenPanel.getSceneTabs().setPreferredSize(dimension);
+                } else {
+                    // Invert height and width.
+                    _screenPanel.getSceneTabs().setPreferredSize(
+                            new Dimension(dimension.height, dimension.width));
+                }
+            }
+
+            _screenPanel.revalidate();
+        }
+    }
+
     /** Set the tab title.
      *  @param position The tab index being changed.
      *  @param text The new tab text.
@@ -451,12 +530,12 @@ public class HomerMainFrame extends JFrame {
                 EtchedBorder.LOWERED, null, null), "Named Object Tree",
                 TitledBorder.LEADING, TitledBorder.TOP, null,
                 new Color(0, 0, 0)));
-        _namedObjectTreePanel.setPreferredSize(new Dimension(SIDEBAR_WIDTH,
-                DUMMY_HEIGHT));
+        _namedObjectTreePanel.setPreferredSize(new Dimension(_SIDEBAR_WIDTH,
+                _DUMMY_HEIGHT));
         _contentPane.add(_namedObjectTreePanel, BorderLayout.WEST);
 
         JPanel pnlEast = new JPanel();
-        pnlEast.setPreferredSize(new Dimension(SIDEBAR_WIDTH, DUMMY_HEIGHT));
+        pnlEast.setPreferredSize(new Dimension(_SIDEBAR_WIDTH, _DUMMY_HEIGHT));
         pnlEast.setLayout(new BorderLayout(0, 0));
         _contentPane.add(pnlEast, BorderLayout.EAST);
 
@@ -464,8 +543,8 @@ public class HomerMainFrame extends JFrame {
         _graphPanel.setLayout(new BorderLayout());
         _graphPanel.setBorder(new TitledBorder(null, "Graph Preview",
                 TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        _graphPanel
-                .setPreferredSize(new Dimension(SIDEBAR_WIDTH, GRAPH_HEIGHT));
+        _graphPanel.setPreferredSize(new Dimension(_SIDEBAR_WIDTH,
+                _GRAPH_HEIGHT));
         pnlEast.add(_graphPanel, BorderLayout.NORTH);
 
         _remoteObjectsPanel = new RemoteObjectList(this);
@@ -476,7 +555,7 @@ public class HomerMainFrame extends JFrame {
 
         _screenPanel = new TabbedLayoutScene(this);
         _screenPanel.getSceneTabs().setPreferredSize(
-                new Dimension(DEFAULT_SCENE_WIDTH, DEFAULT_SCENE_HEIGHT));
+                new Dimension(_DEFAULT_SCENE_WIDTH, _DEFAULT_SCENE_HEIGHT));
 
         JScrollPane scroller = new JScrollPane();
         scroller.setBorder(new TitledBorder(null, "Screen Layout",
@@ -510,35 +589,35 @@ public class HomerMainFrame extends JFrame {
 
     /** The default bounds applied to this window.
      */
-    private static final int DEFAULT_BOUNDS = 100;
+    private static final int _DEFAULT_BOUNDS = 100;
 
     /** The initial scene height.
      */
-    private static final int DEFAULT_FRAME_HEIGHT = 700;
+    private static final int _DEFAULT_FRAME_HEIGHT = 700;
 
     /** The initial scene width.
      */
-    private static final int DEFAULT_FRAME_WIDTH = 1200;
+    private static final int _DEFAULT_FRAME_WIDTH = 1200;
 
     /** The initial height of the scene.
      */
-    private static final int DEFAULT_SCENE_HEIGHT = 400;
+    private static final int _DEFAULT_SCENE_HEIGHT = 400;
 
     /** The initial width of the scene.
      */
-    private static final int DEFAULT_SCENE_WIDTH = 600;
+    private static final int _DEFAULT_SCENE_WIDTH = 600;
 
     /** The dummy initial height parameter for frame sizing.
      */
-    private static final int DUMMY_HEIGHT = 10;
+    private static final int _DUMMY_HEIGHT = 10;
 
     /** The height of the actor graph image.
      */
-    private static final int GRAPH_HEIGHT = 150;
+    private static final int _GRAPH_HEIGHT = 150;
 
     /** The width of the east screen panel where the image and remote object list reside.
      */
-    private static final int SIDEBAR_WIDTH = 250;
+    private static final int _SIDEBAR_WIDTH = 250;
 
     /** The host application of this frame.
      */
@@ -560,6 +639,10 @@ public class HomerMainFrame extends JFrame {
      */
     private URL _layoutURL;
 
+    /** The Homer menu bar.
+     */
+    private HomerMenu _menu;
+
     /** The current model file URL.
      */
     private URL _modelURL;
@@ -567,6 +650,10 @@ public class HomerMainFrame extends JFrame {
     /** The tree containing all elements of the model and sub-models.
      */
     private NamedObjectTree _namedObjectTreePanel;
+
+    /** The orientation of the scene panels.
+     */
+    private ScreenOrientation _orientation;
 
     /** The list of remote objects included as part of the layout file.
      */

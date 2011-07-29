@@ -54,6 +54,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
+import ptolemy.homer.kernel.LayoutParser.ScreenOrientation;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -153,52 +154,25 @@ public class HomerMenu {
         });
 
         // Edit menu actions.
-
-        JCheckBoxMenuItem portraitItem = new JCheckBoxMenuItem("Portrait",
-                false);
-        portraitItem.setMnemonic(KeyEvent.VK_P);
-        portraitItem.addActionListener(new ActionListener() {
+        _portraitItem = new JCheckBoxMenuItem("Portrait", false);
+        _portraitItem.setMnemonic(KeyEvent.VK_P);
+        _portraitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TabbedLayoutScene scene = _mainFrame.getTabbedLayoutScene();
-                if (scene != null) {
-                    double height = scene.getSceneTabs().getPreferredSize()
-                            .getHeight();
-                    double width = scene.getSceneTabs().getPreferredSize()
-                            .getWidth();
-
-                    if (height < width) {
-                        scene.getSceneTabs().setPreferredSize(
-                                new Dimension((int) height, (int) width));
-                        scene.revalidate();
-                    }
-                }
+                _mainFrame.setOrientation(ScreenOrientation.PORTRAIT);
             }
         });
 
-        JCheckBoxMenuItem landscapeItem = new JCheckBoxMenuItem("Landscape",
-                true);
-        landscapeItem.setMnemonic(KeyEvent.VK_L);
-        landscapeItem.addActionListener(new ActionListener() {
+        _landscapeItem = new JCheckBoxMenuItem("Landscape", true);
+        _landscapeItem.setMnemonic(KeyEvent.VK_L);
+        _landscapeItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TabbedLayoutScene scene = _mainFrame.getTabbedLayoutScene();
-                if (scene != null) {
-                    double height = scene.getSceneTabs().getPreferredSize()
-                            .getHeight();
-                    double width = scene.getSceneTabs().getPreferredSize()
-                            .getWidth();
-
-                    if (height > width) {
-                        scene.getSceneTabs().setPreferredSize(
-                                new Dimension((int) height, (int) width));
-                        scene.revalidate();
-                    }
-                }
+                _mainFrame.setOrientation(ScreenOrientation.LANDSCAPE);
             }
         });
 
         ButtonGroup group = new ButtonGroup();
-        group.add(portraitItem);
-        group.add(landscapeItem);
+        group.add(_portraitItem);
+        group.add(_landscapeItem);
 
         // Add all the items to the appropriate menu.
         fileMenu.add(newMenuItem);
@@ -210,8 +184,8 @@ public class HomerMenu {
 
         editMenu.add(_initializeDeviceMenu());
         editMenu.addSeparator();
-        editMenu.add(portraitItem);
-        editMenu.add(landscapeItem);
+        editMenu.add(_portraitItem);
+        editMenu.add(_landscapeItem);
 
         return menuBar;
     }
@@ -223,8 +197,139 @@ public class HomerMenu {
         return _modelFilter;
     }
 
+    /** Set the orientation selection in the menu.
+     *  @param orientation The proposed screen orientation.
+     */
+    public void setOrientation(ScreenOrientation orientation) {
+        if (orientation == ScreenOrientation.LANDSCAPE) {
+            _landscapeItem.setSelected(true);
+        } else if (orientation == ScreenOrientation.PORTRAIT) {
+            _portraitItem.setSelected(true);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                private methods                            ////
+
+    /** Initialize file chooser to the default model directory.
+     */
+    private void _initializeFileChooser() {
+        _fileChooser = new JFileChooser();
+        _fileChooser.setCurrentDirectory(new File(ResourceBundle.getBundle(
+                "ptserver.PtolemyServerConfig").getString("MODELS_DIRECTORY")));
+
+        _modelFilter = new FileFilter() {
+            @Override
+            public String getDescription() {
+                return "Ptolemy model files";
+            }
+
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                }
+                if (f.getName().endsWith(".xml")
+                        && !f.getName().endsWith(".layout.xml")) {
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        _layoutFilter = new FileFilter() {
+            @Override
+            public String getDescription() {
+                return "Ptolemy layout files";
+            }
+
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                }
+                if (f.getName().endsWith(".layout.xml")) {
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        _fileChooser.addChoosableFileFilter(_modelFilter);
+        _fileChooser.addChoosableFileFilter(_layoutFilter);
+    }
+
+    /** Create and initialize menu items for the device screen size selection.
+     * @return The new menu. 
+     */
+    private JMenu _initializeDeviceMenu() {
+        JMenu screenMenu = new JMenu("Screen Size");
+        screenMenu.setMnemonic(KeyEvent.VK_S);
+
+        try {
+            Document doc = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder().parse(_DEVICE_FILE);
+            XPath xpath = XPathFactory.newInstance().newXPath();
+            NodeList manufacturers = (NodeList) xpath.compile("//manufacturer")
+                    .evaluate(doc, XPathConstants.NODESET);
+
+            for (int i = 0; i < manufacturers.getLength(); i++) {
+                NodeList devices = (NodeList) xpath
+                        .compile("devices//device")
+                        .evaluate(manufacturers.item(i), XPathConstants.NODESET);
+
+                JMenu mfgItem = new JMenu(manufacturers.item(i).getAttributes()
+                        .getNamedItem("name").getNodeValue());
+                for (int x = 0; x < devices.getLength(); x++) {
+                    final NamedNodeMap attributes = devices.item(x)
+                            .getAttributes();
+                    final int width = Integer.parseInt(attributes.getNamedItem(
+                            "width").getNodeValue());
+                    final int height = Integer.parseInt(attributes
+                            .getNamedItem("height").getNodeValue());
+
+                    JMenuItem deviceItem = new JMenuItem(attributes
+                            .getNamedItem("name").getNodeValue()
+                            + " ("
+                            + width
+                            + "x" + height + ")");
+                    deviceItem.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            _mainFrame.setScreenSize(new Dimension(width,
+                                    height));
+                        }
+                    });
+
+                    mfgItem.add(deviceItem);
+                }
+
+                screenMenu.add(mfgItem);
+            }
+        } catch (Throwable ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        JMenuItem customSizeItem = new JMenuItem("Custom Size");
+        customSizeItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TabbedLayoutScene scene = _mainFrame.getTabbedLayoutScene();
+                if (scene != null) {
+                    SizeDialog dialog = new SizeDialog(scene.getSceneTabs()
+                            .getHeight(), scene.getSceneTabs().getWidth());
+                    if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
+                        scene.getSceneTabs().setPreferredSize(
+                                dialog.getDimensions());
+                        scene.revalidate();
+                    }
+                }
+            }
+        });
+
+        screenMenu.addSeparator();
+        screenMenu.add(customSizeItem);
+
+        return screenMenu;
+    }
 
     /** Process action on the new menu item.
      *  @param e the action event
@@ -321,137 +426,8 @@ public class HomerMenu {
         }
     }
 
-    /** Initialize file chooser to the default model directory.
-     */
-    private void _initializeFileChooser() {
-        _fileChooser = new JFileChooser();
-        _fileChooser.setCurrentDirectory(new File(ResourceBundle.getBundle(
-                "ptserver.PtolemyServerConfig").getString("MODELS_DIRECTORY")));
-
-        _modelFilter = new FileFilter() {
-            @Override
-            public String getDescription() {
-                return "Ptolemy model files";
-            }
-
-            @Override
-            public boolean accept(File f) {
-                if (f.isDirectory()) {
-                    return true;
-                }
-                if (f.getName().endsWith(".xml")
-                        && !f.getName().endsWith(".layout.xml")) {
-                    return true;
-                }
-                return false;
-            }
-        };
-
-        _layoutFilter = new FileFilter() {
-            @Override
-            public String getDescription() {
-                return "Ptolemy layout files";
-            }
-
-            @Override
-            public boolean accept(File f) {
-                if (f.isDirectory()) {
-                    return true;
-                }
-                if (f.getName().endsWith(".layout.xml")) {
-                    return true;
-                }
-                return false;
-            }
-        };
-
-        _fileChooser.addChoosableFileFilter(_modelFilter);
-        _fileChooser.addChoosableFileFilter(_layoutFilter);
-    }
-
-    /** Create and initialize menu items for the device screen size selection.
-     * @return The new menu. 
-     */
-    private JMenu _initializeDeviceMenu() {
-        JMenu screenMenu = new JMenu("Screen Size");
-        screenMenu.setMnemonic(KeyEvent.VK_S);
-
-        try {
-            Document doc = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder().parse(_DEVICE_FILE);
-            XPath xpath = XPathFactory.newInstance().newXPath();
-            NodeList manufacturers = (NodeList) xpath.compile("//manufacturer")
-                    .evaluate(doc, XPathConstants.NODESET);
-
-            for (int i = 0; i < manufacturers.getLength(); i++) {
-                NodeList devices = (NodeList) xpath
-                        .compile("devices//device")
-                        .evaluate(manufacturers.item(i), XPathConstants.NODESET);
-
-                JMenu mfgItem = new JMenu(manufacturers.item(i).getAttributes()
-                        .getNamedItem("name").getNodeValue());
-                for (int x = 0; x < devices.getLength(); x++) {
-                    final NamedNodeMap attributes = devices.item(x)
-                            .getAttributes();
-                    final int width = Integer.parseInt(attributes.getNamedItem(
-                            "width").getNodeValue());
-                    final int height = Integer.parseInt(attributes
-                            .getNamedItem("height").getNodeValue());
-
-                    JMenuItem deviceItem = new JMenuItem(attributes
-                            .getNamedItem("name").getNodeValue()
-                            + " ("
-                            + width
-                            + "x" + height + ")");
-                    deviceItem.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            TabbedLayoutScene scene = _mainFrame
-                                    .getTabbedLayoutScene();
-                            if (scene != null) {
-                                scene.getSceneTabs().setPreferredSize(
-                                        new Dimension(width, height));
-                                scene.revalidate();
-                            }
-                        }
-                    });
-
-                    mfgItem.add(deviceItem);
-                }
-
-                screenMenu.add(mfgItem);
-            }
-        } catch (Throwable ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        JMenuItem customSizeItem = new JMenuItem("Custom Size");
-        customSizeItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                TabbedLayoutScene scene = _mainFrame.getTabbedLayoutScene();
-                if (scene != null) {
-                    SizeDialog dialog = new SizeDialog(scene.getSceneTabs()
-                            .getHeight(), scene.getSceneTabs().getWidth());
-                    if (dialog.showPrompt() == JOptionPane.OK_OPTION) {
-                        scene.getSceneTabs().setPreferredSize(
-                                dialog.getDimensions());
-                        scene.revalidate();
-                    }
-                }
-            }
-        });
-
-        screenMenu.addSeparator();
-        screenMenu.add(customSizeItem);
-
-        return screenMenu;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                private variables                          ////
-
-    /** The main frame of the application.
-     */
-    private HomerMainFrame _mainFrame;
 
     /** The file path containing device screen size information.
      */
@@ -461,11 +437,23 @@ public class HomerMenu {
      */
     private JFileChooser _fileChooser;
 
-    /** The file filter for model files.
+    /** Landscape menu item.
      */
-    private FileFilter _modelFilter;
+    private JCheckBoxMenuItem _landscapeItem;
 
     /** The file filter for layout files.
      */
     private FileFilter _layoutFilter;
+
+    /** The main frame of the application.
+     */
+    private HomerMainFrame _mainFrame;
+
+    /** The file filter for model files.
+     */
+    private FileFilter _modelFilter;
+
+    /** Portrait menu item.
+     */
+    private JCheckBoxMenuItem _portraitItem;
 }
