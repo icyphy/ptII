@@ -123,12 +123,21 @@ public class ProxySink extends ProxyActor {
                 }
             }
         }
-        getTokenPublisher().sendToken(token);
+        getTokenPublisher().sendToken(token, this);
+    }
+
+    /**
+     * Throttle the sink's thread if the latency is above maximum threshold.
+     * @param force if force throttling even if the latency is within bounds.
+     */
+    public void throttle(boolean force) {
         synchronized (this) {
             long waitTime = _MIN_WAIT;
-            while (!_proxyModelInfrastructure.isStopped()
-                    && _proxyModelInfrastructure.getPingPongLatency() > _proxyModelInfrastructure
-                            .getMaxlatency()) {
+            while ((!_proxyModelInfrastructure.isStopped() && _proxyModelInfrastructure
+                    .getPingPongLatency() > _proxyModelInfrastructure
+                    .getMaxlatency())
+                    || force) {
+                force = false;
                 try {
                     wait(waitTime);
                 } catch (InterruptedException e) {
@@ -218,10 +227,10 @@ public class ProxySink extends ProxyActor {
     /**
      * TODO
      */
-    private static final long _MIN_WAIT = 50;
+    private static final long _MIN_WAIT = 200;
 
     /**
-     * 
+     * TODO
      */
-    private static final double _WAIT_TIME_INCREASE_FACTOR = 2;
+    private static final double _WAIT_TIME_INCREASE_FACTOR = 1.5;
 }

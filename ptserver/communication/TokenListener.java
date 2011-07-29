@@ -47,7 +47,7 @@ import com.ibm.mqtt.MqttSimpleCallback;
  *  converting back to tokens and putting those tokens into appropriate queues.
  *
  *  @author Anar Huseynov
- *  @version $Id$
+ *  @version $Id: TokenListener.java 61629 2011-07-28 02:17:45Z ahuseyno $
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)
@@ -176,7 +176,7 @@ public class TokenListener implements MqttSimpleCallback {
          */
         public void run() {
             try {
-                _proxyModelInfrastructure.getTokenPublisher().sendToken(_token);
+                _proxyModelInfrastructure.getTokenPublisher().sendToken(_token, null);
             } catch (Throwable e) {
                 _proxyModelInfrastructure.fireModelException(
                         "Unhandled exception in the PongTask", e);

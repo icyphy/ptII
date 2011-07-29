@@ -66,7 +66,7 @@ public class ProxyValueListener implements ValueListener {
             token.setTargetSettableName(settable.getFullName());
             token.setExpression(settable.getExpression());
             try {
-                getTokenPublisher().sendToken(token);
+                getTokenPublisher().sendToken(token, null);
             } catch (IllegalActionException e) {
                 // FIXME Add logging and exception delegation
                 e.printStackTrace();
