@@ -27,6 +27,8 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
 
+import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+
 //////////////////////////////////////////////////////////////////////////
 //// TimeGap
 
@@ -39,7 +41,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
  */
 public class TimeGap
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.TimeGap {
+        NamedProgramCodeGeneratorAdapter {
     /**
      *  Construct a TimeGap adapter.
      *  @param actor The given ptolemy.actor.lib.TimeGap actor.

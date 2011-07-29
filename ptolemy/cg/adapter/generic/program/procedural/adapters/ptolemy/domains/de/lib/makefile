@@ -58,8 +58,7 @@ PTCLASSALLJARS =
 JSRCS = \
 	MostRecent.java \
 	PID.java \
-	Register.java \
-	TimeGap.java
+	Register.java 
 
 OTHER_FILES_TO_BE_JARED = 
 
