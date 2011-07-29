@@ -314,6 +314,120 @@ void SysTickHandler(void) {
  }
 }
 
+/* Event processing */
+void processEvents() {
+    Event* event = NULL;
+    Time processTime;
+    Time platformTime;
+        // Increment the process version.
+        processVersion++;
+        // Get the current platform time. This time is later used to
+        // perform safe-to-process. This function must be called
+        // before interrupts are disabled to ensure DE semantics.
+    getRealTime(&platformTime);
+    disableInterrupts();
+    while (true) {
+        // If event is null, then return the highest priority event
+        // from the queue. Otherwise, return the next event pointed
+        // to by event. Return NULL if there are no more events
+        // in the event queue. The event queue is sorted in
+        // deadline order.
+        event = peekNextEvent(event);
+        // If there are no more events in the event queue, break
+        // out of the while loop.
+                if (!event) {
+            break;
+        }
+        // If this event's priority is higher than the last priority
+        // saved in storePriority(), then continue.
+        // The priority here is the priority of the event,
+        // not the priority of the interrupt.
+        if (higherPriority(event)) {
+            // check if this event is safe to process.
+            safeToProcess(event, &processTime);
+            if (timeCompare(platformTime, processTime) >= 0) {
+                // Store the priority of the previous interrupt.
+                // Stored priority is later used for comparison in
+                // higherPriority().
+                queuePriority(event);
+                // Get all events of the same timestamp, and share
+                // the same destination equivalence class.
+                // Remove these events from the event queue.
+                removeAndPropagateSameTagEvents(event);
+                setCurrentModelTag(event);
+                // Ready to process the next event, so first enable
+                // interrupts.
+                enableInterrupts();
+                // Execute this event by firing the corresponding
+                // actor. During this process more events may
+                // be posted onto the queue
+                fireActor(event);
+                                // Get the current platform time. This time is later used to
+                                // perform safe-to-process. This function must be called
+                                // before interrupts are disabled to ensure DE semantics.
+                            getRealTime(&platformTime);
+                // We are ready to look at the next event in the
+                // event queue. Before doing that interrupts need
+                // to be disabled
+                disableInterrupts();
+                // The executed event can now be freed into the
+                // pool of available events
+                                freeEvent(event);
+                                // This event has finished execution. The priority of
+                                // this event can be forgotten. We forget by decrementing
+                                // the stackedDeadlineIndex.
+                                stackedDeadlineIndex--;
+                                // Reset event to null so the next peekNextEvent()
+                // looks at the top event.
+                event = NULL;
+            } else {
+                // save the current process level
+                uint32 localProcessVersion = processVersion;
+                // This event is not safe to process yet. Set
+                // timed interrupt to run this event when platform
+                // time has passed for it to be safe to process.
+                if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
+                    lastTimerInterruptTime = processTime;
+                    setTimedInterrupt(&processTime);
+                }
+                                // Enables higher priority events to preempt this processEvents().
+                                // This is especially useful if the size of the event queue is
+                                // very large, and takes a long time to traverse through.
+                                enableInterrupts();
+                                disableInterrupts();
+                                if (localProcessVersion != processVersion) {
+                                        // If processEvents ran during the last interrupt enable,
+                                        // then we should traverse the event queue anymore.
+                                        // Instead we simply return.
+                                        break;
+                                }
+                // If processEvents did not run during the last interrupt enable,
+                // then we keep analyze events in the event queue by going back
+                // to the beginning of the loop.
+                }
+        } else {
+            // This event is of lower priority than the one
+            // currently executing, break out of the while loop.
+            break;
+        }//end while().
+    }
+    // restore the last executing stacked model tag.
+    if (stackedModelTagIndex >= 0) {
+        currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;
+        currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;
+        stackedModelTagIndex--;
+    } else {
+        die("cannot restore model tag");
+    }
+        // End of processEvents(), enable interrupts.
+    enableInterrupts();
+    // we do not need to disable interrupts for this routine, because it
+    // is triggered through a SVC call, which has higher priority than
+    // all other external interrupts in the system.
+    restoreStack();
+    die("should never get here");
+}
+
 $super.FuncBlock();
 
 // Actuators use timer1.
@@ -587,6 +701,111 @@ void initializeInterrupts(void) {
 
 /*** wrapupPDBlock() ***/
 /**/
+
+
+/*** mainLoopBlock ***/
+void execute() {
+    Event* event = NULL;
+    Time processTime;
+    Time platformTime;
+        // Get the current platform time. This time is later used to
+        // perform safe-to-process. This function must be called
+        // before interrupts are disabled to ensure DE semantics.
+    getRealTime(&platformTime);
+    disableInterrupts();
+    while (true) {
+        // If event is null, then return the highest priority event
+        // from the queue. Otherwise, return the next event pointed
+        // to by event. Return NULL if there are no more events
+        // in the event queue. The event queue is sorted in
+        // deadline order.
+        event = peekNextEvent(event);
+        // If there are no more events in the event queue, break
+        // out of the while loop.
+                if (!event) {
+            break;
+        }
+        // If this event's priority is higher than the last priority
+        // saved in storePriority(), then continue.
+        // The priority here is the priority of the event,
+        // not the priority of the interrupt.
+        if (higherPriority(event)) {
+            // check if this event is safe to process.
+            safeToProcess(event, &processTime);
+            if (timeCompare(platformTime, processTime) >= 0) {
+                // Store the priority of the previous interrupt.
+                // Stored priority is later used for comparison in
+                // higherPriority().
+                queuePriority(event);
+                // Get all events of the same timestamp, and share
+                // the same destination equivalence class.
+                // Remove these events from the event queue.
+                removeAndPropagateSameTagEvents(event);
+                setCurrentModelTag(event);
+                // Ready to process the next event, so first enable
+                // interrupts.
+                enableInterrupts();
+                // Execute this event by firing the corresponding
+                // actor. During this process more events may
+                // be posted onto the queue
+                fireActor(event);
+                                // Get the current platform time. This time is later used to
+                                // perform safe-to-process. This function must be called
+                                // before interrupts are disabled to ensure DE semantics.
+                            getRealTime(&platformTime);
+                // We are ready to look at the next event in the
+                // event queue. Before doing that interrupts need
+                // to be disabled
+                disableInterrupts();
+                // The executed event can now be freed into the
+                // pool of available events
+                                freeEvent(event);
+                                // This event has finished execution. The priority of
+                                // this event can be forgotten. We forget by decrementing
+                                // the stackedDeadlineIndex.
+                                stackedDeadlineIndex--;
+                                // Reset event to null so the next peekNextEvent()
+                // looks at the top event.
+                event = NULL;
+            } else {
+                // save the current process level
+                uint32 localProcessVersion = processVersion;
+                // This event is not safe to process yet. Set
+                // timed interrupt to run this event when platform
+                // time has passed for it to be safe to process.
+                if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
+                    lastTimerInterruptTime = processTime;
+                    setTimedInterrupt(&processTime);
+                }
+                                // Enables higher priority events to preempt this processEvents().
+                                // This is especially useful if the size of the event queue is
+                                // very large, and takes a long time to traverse through.
+                                enableInterrupts();
+                                disableInterrupts();
+                                if (localProcessVersion != processVersion) {
+                                        // If processEvents ran during the last interrupt enable,
+                                        // then we should traverse the event queue anymore.
+                                        // Instead we simply return.
+                                        break;
+                                }
+                // If processEvents did not run during the last interrupt enable,
+                // then we keep analyze events in the event queue by going back
+                // to the beginning of the loop.
+                }
+        } else {
+            // This event is of lower priority than the one
+            // currently executing, break out of the while loop.
+            break;
+        }//end while().
+    }
+        // End of processEvents(), enable interrupts.
+    enableInterrupts();
+        // Go into an infinite loop to wait for a wakeup signal.
+    while (1);
+}
+/**/
+
+
 
 /*** assemblyFileBlock($externs, $GPIOAHandler, $GPIOBHandler, $GPIOCHandler, $GPIODHandler, $GPIOEHandler, $GPIOFHandler, $GPIOGHandler, $GPIOHHandler) ***/
 ;******************************************************************************
