@@ -235,10 +235,8 @@ public final class LayoutFileOperations {
 
             // Add screen dimensions to top level actor.
             ArrayToken token = new ArrayToken(new IntToken[] {
-                    new IntToken(mainFrame.getTabbedLayoutScene()
-                            .getPreferredSize().width),
-                    new IntToken(mainFrame.getTabbedLayoutScene()
-                            .getPreferredSize().height) });
+                    new IntToken(mainFrame.getScreenSize().width),
+                    new IntToken(mainFrame.getScreenSize().height) });
 
             Parameter screenSizeNode = (Parameter) model
                     .getAttribute(HomerConstants.SCREEN_SIZE);

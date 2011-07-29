@@ -285,6 +285,13 @@ public class HomerMainFrame extends JFrame {
         return _contents.getRemoteElements();
     }
 
+    /** Get the screen size.
+     *  @return The size of the scene.
+     */
+    public Dimension getScreenSize() {
+        return _screenPanel.getPreferredSize();
+    }
+
     /** Get the tabbed layout scene.
      *  @return The reference to the tabbed area of the screen.
      */
