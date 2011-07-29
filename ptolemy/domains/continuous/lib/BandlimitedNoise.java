@@ -66,7 +66,7 @@ of an ideally bandlimited noise frequency, but since this noise process
 is not ideally bandlimited, the solver samples will typically have
 aliasing distortion. If you need to control that aliasing distortion,
 then you can set the <i>maxStepSize</i> parameter to something smaller
-than 1/2b, where c is the <i>bandwidth</i>.
+than 1/2b, where b is the <i>bandwidth</i>.
 <p>
 For some uses, the effect that this actor has on the step size may
 be undesirable because it increases the cost of simulation.
