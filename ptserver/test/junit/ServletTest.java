@@ -172,6 +172,7 @@ public class ServletTest {
         // Wait a bit and restart the simulation.
         Thread.sleep(1000);
         _servletProxy.resume(ticket);
+        Thread.sleep(1000);
         assertEquals(Manager.ITERATING,
                 _ptolemyServer.getStateOfSimulation(ticket));
     }
