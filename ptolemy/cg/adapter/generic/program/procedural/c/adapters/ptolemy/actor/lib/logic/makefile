@@ -50,7 +50,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Comparator.java
+	Comparator.java \
+	TrueGate.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.c)
