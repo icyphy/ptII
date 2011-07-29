@@ -151,6 +151,8 @@ public class TabScenePanel implements ContentPrototype {
         _mainLayer = new LayerWidget(getContent());
         _interactionLayer = new LayerWidget(getContent());
         _scene.createView();
+        _scene.setOpaque(true);
+        _scene.setBackground(Color.BLACK);
         _scene.setLayout(LayoutFactory.createAbsoluteLayout());
         _scene.getActions().addAction(_hoverAction);
 
@@ -590,7 +592,7 @@ public class TabScenePanel implements ContentPrototype {
     /** The default border for resize actions.
      */
     private static final Border RESIZE_BORDER = BorderFactory
-            .createResizeBorder(6, Color.BLACK, true);
+            .createResizeBorder(6, Color.WHITE, true);
 
     /** Default stroke for use in widget connection.
      */
