@@ -2184,7 +2184,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 265.0]">
                 </property>
             </port>
-            <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+            <entity name="Sampler" class="ptolemy.domains.de.lib.MostRecent">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 265.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -3363,7 +3363,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 65.0]">
                 </property>
             </port>
-            <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+            <entity name="Sampler" class="ptolemy.domains.de.lib.MostRecent">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 65.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -3639,7 +3639,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 265.0]">
                 </property>
             </port>
-            <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+            <entity name="Sampler" class="ptolemy.domains.de.lib.MostRecent">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 265.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
