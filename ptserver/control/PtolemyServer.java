@@ -155,7 +155,7 @@ public final class PtolemyServer implements IServerManager {
             logFile = new FileHandler(CONFIG.getString("LOG_FILENAME"), true);
             logFile.setFormatter(new XMLFormatter());
             logger.addHandler(logFile);
-            logger.setLevel(Level.ALL);
+            logger.setLevel(Level.INFO);
         } catch (SecurityException e) {
             throw new ExceptionInInitializerError(e);
         } catch (IOException e) {
@@ -224,7 +224,7 @@ public final class PtolemyServer implements IServerManager {
                 @Override
                 public void run() {
                     for (SimulationTask task : _requests.values()) {
-                        System.out.println(task.getProxyModelInfrastructure()
+                        LOGGER.info(task.getProxyModelInfrastructure()
                                 .getTicket()
                                 + " latency "
                                 + task.getProxyModelInfrastructure()
@@ -865,9 +865,9 @@ public final class PtolemyServer implements IServerManager {
          *  @param remoteModel The remote model whose connection has expired.
          */
         public void modelConnectionExpired(ProxyModelInfrastructure remoteModel) {
-            System.out.println("Removing model " + remoteModel.getTicket());
-            System.out.println("Last pong was "
-                    + remoteModel.getPingPongLatency() + " ms ago");
+            LOGGER.info("Removing model " + remoteModel.getTicket());
+            LOGGER.info("Last pong was " + remoteModel.getPingPongLatency()
+                    + " ms ago");
 
             try {
                 close(remoteModel.getTicket());

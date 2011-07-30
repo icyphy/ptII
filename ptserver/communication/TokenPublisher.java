@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
@@ -163,10 +164,8 @@ public class TokenPublisher {
             byte[] batch = _outputStream.toByteArray();
             _mqttClient.publish(getTopic(), batch,
                     ProxyModelInfrastructure.QOS_LEVEL, false);
-            // TODO remove this or add proper logging
-            System.out.println("publishing batch " + _batchCount++
-                    + " batch size " + batch.length + " token count "
-                    + _tokenCount);
+            _LOGGER.fine("publishing batch " + _batchCount++ + " batch size "
+                    + batch.length + " token count " + _tokenCount);
             _outputStream.reset();
             _tokenCount = 0;
         }
@@ -214,4 +213,9 @@ public class TokenPublisher {
      * Maximum tokens per period before the publisher starts forcing the throttling.
      */
     private static final int _MAX_TOKENS_PER_PERIOD = 1000;
+
+    /**
+     * The logger used by the ptserver. 
+     */
+    private static final Logger _LOGGER = Logger.getLogger("PtolemyServer");
 }

@@ -42,10 +42,14 @@ import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.Manager;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.injection.PtolemyModule;
+import ptolemy.data.Token;
 import ptserver.communication.ProxyModelResponse;
 import ptserver.control.IServerManager;
 import ptserver.control.PtolemyServer;
+import ptserver.control.SimulationTask;
 import ptserver.control.Ticket;
+import ptserver.test.SysOutActor;
+import ptserver.test.SysOutActor.TokenDelegator;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 
@@ -255,6 +259,17 @@ public class ServletTest {
                 .getResource("/ptserver/test/junit/addermodel_test.layout.xml");
         ProxyModelResponse response = _servletProxy.open(
                 modelUrl.toExternalForm(), layoutUrl.toExternalForm());
+        // Just to keep the test output clean.
+        SimulationTask task = PtolemyServer.getInstance().getSimulationTask(
+                response.getTicket());
+        SysOutActor actor2 = (SysOutActor) task.getProxyModelInfrastructure()
+                .getTopLevelActor().getEntity("Display2");
+        actor2.setDelegator(new TokenDelegator() {
+
+            public void getToken(Token token) {
+            }
+        });
+
         return response;
     }
 

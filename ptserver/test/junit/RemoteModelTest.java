@@ -153,7 +153,6 @@ public class RemoteModelTest {
                 }
             }
         });
-
         // Wait for a roundtrip response from the server.
         _proxy.start(response.getTicket());
         model.getManager().startRun();
@@ -192,6 +191,17 @@ public class RemoteModelTest {
         // Open the model on the client.
         Ticket ticket = response.getTicket();
         assertNotNull(ticket);
+        // Just to keep the test output clean.
+        SimulationTask task = PtolemyServer.getInstance().getSimulationTask(
+                response.getTicket());
+        SysOutActor actor2 = (SysOutActor) task.getProxyModelInfrastructure()
+                .getTopLevelActor().getEntity("Display2");
+        actor2.setDelegator(new TokenDelegator() {
+
+            public void getToken(Token token) {
+            }
+        });
+
         return response;
     }
 
@@ -262,6 +272,34 @@ public class RemoteModelTest {
                 }
             }
         });
+        // Just to keep the test output clean.
+        SimulationTask task = PtolemyServer.getInstance().getSimulationTask(
+                response.getTicket());
+        SysOutActor actor2 = (SysOutActor) task.getProxyModelInfrastructure()
+                .getTopLevelActor().getEntity("Display2");
+        actor2.setDelegator(new TokenDelegator() {
+
+            public void getToken(Token token) {
+            }
+        });
+        assertNotNull(actor);
+        actor.setDelegator(new TokenDelegator() {
+
+            public void getToken(Token token) {
+                if (counter < 10) {
+                    if (token instanceof IntToken) {
+                        assertEquals(counter, ((IntToken) token).intValue() / 2);
+                        assertEquals(1, ((IntToken) token).intValue() % 2);
+                        counter++;
+                    }
+                } else {
+                    synchronized (RemoteModelTest.this) {
+                        isWaiting = false;
+                        RemoteModelTest.this.notifyAll();
+                    }
+                }
+            }
+        });
 
         // Wait for a roundtrip response from the server.
         _proxy.start(response.getTicket());
@@ -304,8 +342,10 @@ public class RemoteModelTest {
                             ProxyModelInfrastructure remoteModel) {
                         synchronized (RemoteModelTest.this) {
                             long diff = System.currentTimeMillis() - time;
-                            assertTrue(timeoutPeriod - 1000 < diff
-                                    && diff < timeoutPeriod + 1000);
+                            assertTrue("Timeout period " + timeoutPeriod
+                                    + " diff " + diff,
+                                    timeoutPeriod - 1000 < diff
+                                            && diff < timeoutPeriod + 1000);
                             isWaiting = false;
                             RemoteModelTest.this.notifyAll();
                         }

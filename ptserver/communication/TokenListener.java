@@ -28,7 +28,7 @@
  */
 package ptserver.communication;
 
-import java.util.Date;
+import java.util.logging.Logger;
 
 import ptolemy.data.Token;
 import ptolemy.kernel.util.Settable;
@@ -73,7 +73,7 @@ public class TokenListener implements MqttSimpleCallback {
      */
     public void connectionLost() throws Exception {
         //TODO: handle connection lost case
-        System.out.println("Connection was lost at " + new Date());
+        _LOGGER.info("Connection was lost");
     }
 
     /** Callback method when a message from the topic is received.
@@ -89,7 +89,7 @@ public class TokenListener implements MqttSimpleCallback {
         Tokenizer tokenizer = new Tokenizer(payload);
         Token token = null;
         // TODO remove this or change to proper logging
-        System.out.println("received batch " + _batchCount++);
+        _LOGGER.fine("received batch " + _batchCount++);
         while ((token = tokenizer.getNextToken()) != null) {
 
             // The listener is only concerned about the following types.
@@ -129,12 +129,15 @@ public class TokenListener implements MqttSimpleCallback {
                         listener.setEnabled(true);
                     }
                 }
+                _LOGGER.info("Received attribute change token");
             } else if (token instanceof PingToken) {
                 _proxyModelInfrastructure.getExecutor().execute(
                         new PongTask(new PongToken(((PingToken) token)
                                 .getTimestamp())));
+                _LOGGER.info("Received ping token");
             } else if (token instanceof PongToken) {
                 _proxyModelInfrastructure.setLastPongToken((PongToken) token);
+                _LOGGER.info("Received pong token");
             }
         }
     }
@@ -150,6 +153,10 @@ public class TokenListener implements MqttSimpleCallback {
      * The batch counter used for logging purposes.
      */
     private int _batchCount;
+    /**
+     * The logger used by the ptserver. 
+     */
+    private static final Logger _LOGGER = Logger.getLogger("PtolemyServer");
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -176,7 +183,9 @@ public class TokenListener implements MqttSimpleCallback {
          */
         public void run() {
             try {
-                _proxyModelInfrastructure.getTokenPublisher().sendToken(_token, null);
+                _proxyModelInfrastructure.getTokenPublisher().sendToken(_token,
+                        null);
+                _LOGGER.info("Sent pong token");
             } catch (Throwable e) {
                 _proxyModelInfrastructure.fireModelException(
                         "Unhandled exception in the PongTask", e);
@@ -190,4 +199,5 @@ public class TokenListener implements MqttSimpleCallback {
          */
         private final PongToken _token;
     }
+
 }

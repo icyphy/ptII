@@ -36,6 +36,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Executable;
@@ -182,8 +183,6 @@ public class ProxyModelInfrastructure {
         _tokenPublisher.cancelTimer();
         _executor.shutdown();
         try {
-            _mqttClient.unsubscribe(new String[] { getSubscriptionTopic() });
-            _mqttClient.registerSimpleHandler(null);
             _mqttClient.disconnect();
         } catch (MqttException e) {
             fireModelException(null, e);
@@ -632,6 +631,7 @@ public class ProxyModelInfrastructure {
                     long msTime = System.currentTimeMillis();
                     _tokenPublisher.sendToken(new PingToken(msTime), null);
 
+                    _LOGGER.info("Sent ping token");
                     long latency = msTime - _getLastPongToken().getTimestamp();
                     // update ping pong latency if the token was not received roughly within last 2 periods.
                     if (latency > _PING_PERIOD * 2) {
@@ -759,4 +759,9 @@ public class ProxyModelInfrastructure {
      * The executor that sends periodical ping messages.
      */
     private ScheduledExecutorService _pingPongExecutor;
+
+    /**
+     * The logger used by the ptserver. 
+     */
+    private static final Logger _LOGGER = Logger.getLogger("PtolemyServer");
 }
