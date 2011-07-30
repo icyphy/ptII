@@ -345,15 +345,19 @@ public class TabScenePanel implements ContentPrototype {
         }
 
         final Widget widget = ((HomerWidgetElement) element).getWidget();
+        widget.setBorder(DEFAULT_BORDER);
         HomerLocation homerLocation = element.getLocation();
-        Point location = new Point(homerLocation.getX(), homerLocation.getY());
+        Insets insets = widget.getBorder().getInsets();
+        Point location = new Point(homerLocation.getX() - insets.left,
+                homerLocation.getY() - insets.top);
 
         widget.setPreferredLocation(location);
         if (homerLocation.getWidth() > 0 && homerLocation.getHeight() > 0) {
-            widget.setPreferredSize(new Dimension(homerLocation.getWidth(),
-                    homerLocation.getHeight()));
+            widget.setPreferredSize(new Dimension(homerLocation.getWidth()
+                    + insets.right, homerLocation.getHeight() + insets.bottom));
             widget.setPreferredBounds(new Rectangle(new Dimension(homerLocation
-                    .getWidth(), homerLocation.getHeight())));
+                    .getWidth() + insets.right, homerLocation.getHeight()
+                    + insets.bottom)));
         }
 
         // Add widget resizing.
@@ -384,8 +388,6 @@ public class TabScenePanel implements ContentPrototype {
                         return new NamedObjectPopupMenu(element);
                     }
                 }));
-
-        widget.setBorder(DEFAULT_BORDER);
 
         _mainLayer.addChild(widget);
         _scene.validate();

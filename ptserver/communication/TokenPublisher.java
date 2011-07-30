@@ -129,7 +129,7 @@ public class TokenPublisher {
                 currentTokenCount = _tokenCount;
             }
             if (sender != null) {
-                if (currentTokenCount > 1000) {
+                if (currentTokenCount > _MAX_TOKENS_PER_PERIOD) {
                     sender.throttle(true);
                 } else {
                     sender.throttle(false);
@@ -209,4 +209,9 @@ public class TokenPublisher {
     /** The topic where messages are published.
      */
     private String _topic;
+
+    /**
+     * Maximum tokens per period before the publisher starts forcing the throttling.
+     */
+    private static final int _MAX_TOKENS_PER_PERIOD = 1000;
 }

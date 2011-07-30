@@ -217,25 +217,29 @@ public final class PtolemyServer implements IServerManager {
             _servletHost.start();
             _executor = Executors.newCachedThreadPool();
             _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            Timer timer = new Timer("PtolemyServer timer");
+            timer.scheduleAtFixedRate(new TimerTask() {
+
+                @Override
+                public void run() {
+                    for (SimulationTask task : _requests.values()) {
+                        System.out.println(task.getProxyModelInfrastructure()
+                                .getTicket()
+                                + " latency "
+                                + task.getProxyModelInfrastructure()
+                                        .getPingPongLatency());
+                    }
+                }
+            }, 1000, 1000);
+            File file = new File(_modelsDirectory);
+            if (!file.isDirectory()) {
+                throw new IllegalArgumentException("Models directory "
+                        + _modelsDirectory + " is invalid directory/path");
+            }
+        } catch (Throwable e) {
             _handleException("Unable to initialize Ptolemy server.", e);
         }
-
-        Timer timer = new Timer("PtolemyServer timer");
-        timer.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                for (SimulationTask task : _requests.values()) {
-                    System.out.println(task.getProxyModelInfrastructure()
-                            .getTicket()
-                            + " latency "
-                            + task.getProxyModelInfrastructure()
-                                    .getPingPongLatency());
-                }
-            }
-        }, 1000, 1000);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -617,7 +621,8 @@ public final class PtolemyServer implements IServerManager {
                         .getTokenPublisher()
                         .sendToken(
                                 new ServerEventToken(EventType.SERVER_SHUTDOWN,
-                                        "The Ptolemy server you are currently connected is shutting down."), null);
+                                        "The Ptolemy server you are currently connected is shutting down."),
+                                null);
 
                 // Shut down the locally running simulation.
                 close(task.getProxyModelInfrastructure().getTicket());
@@ -842,7 +847,7 @@ public final class PtolemyServer implements IServerManager {
      *  @exception IllegalActionException Always throws the exception in order to propogate
      *  the error through the Ptolemy hierarchy.
      */
-    private void _handleException(String message, Exception error)
+    private void _handleException(String message, Throwable error)
             throws IllegalActionException {
         PtolemyServer.LOGGER.log(Level.SEVERE, message, error);
         throw new IllegalActionException(null, error, message);

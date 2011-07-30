@@ -41,6 +41,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
 import org.netbeans.api.visual.widget.Scene;
@@ -119,7 +120,8 @@ public class AttributeStyleWidget extends GlassPaneWidget {
             JTextField textField = new JTextField();
             _attributeComponent = textField;
         }
-        _attributeComponent.setBorder(new EmptyBorder(1, 1, 1, 1));
+        _attributeComponent.setBorder(new CompoundBorder(new EmptyBorder(1, 1,
+                1, 1), _attributeComponent.getBorder()));
         updateValue();
         _containerPanel.add(_attributeComponent, BorderLayout.CENTER);
         setGlassPaneSize(_attributeComponent.getPreferredSize());

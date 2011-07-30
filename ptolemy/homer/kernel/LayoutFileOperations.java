@@ -27,6 +27,9 @@
 
 package ptolemy.homer.kernel;
 
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -380,10 +383,13 @@ public final class LayoutFileOperations {
      *  @return The IntMatrixToken representing the location of the widget.
      */
     public static IntMatrixToken getLocationToken(Widget widget) {
+        Point preferredLocation = widget.getPreferredLocation();
+        Rectangle bounds = widget.getPreferredBounds();
+        Insets insets = widget.getBorder().getInsets();
         int[][] location = new int[][] { {
-                widget.getPreferredBounds().x + widget.getPreferredLocation().x,
-                widget.getPreferredBounds().y + widget.getPreferredLocation().y,
-                widget.getBounds().width, widget.getBounds().height } };
+                bounds.x + preferredLocation.x + insets.left,
+                bounds.y + preferredLocation.y + insets.top,
+                bounds.width - insets.right, bounds.height - insets.bottom } };
 
         IntMatrixToken locationToken = null;
         try {
