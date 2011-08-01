@@ -31,7 +31,7 @@
 
 ME =		gui
 
-DIRS =		tree
+DIRS =
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -44,11 +44,10 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTHOMER_JARS)
 
 # Used to build jar files
 PTPACKAGE = 	gui
-#PTCLASSJAR =	$(PTPACKAGE).jarn
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
-PTCLASSALLJARS = \
-	tree/tree.jar
+#PTCLASSALLJARS = \
 
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
