@@ -117,7 +117,7 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, value.getToken());
-        _implementaion.setValue(value.getToken());
+        _implementation.setValue(value.getToken());
     }
 
     /** Place the visual representation of the actor into the specified container.
@@ -125,13 +125,13 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
      *   null to specify that there is no current container.
      */
     public void place(PortableContainer container) {
-        _implementaion.place(container);
+        _implementation.place(container);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Implementation of the ConstInterface
-    private final TextFieldContainerInterface _implementaion = PtolemyInjector
+    private final TextFieldContainerInterface _implementation = PtolemyInjector
             .getInjector().getInstance(TextFieldContainerInterface.class);
 }
