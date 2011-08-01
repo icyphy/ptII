@@ -2,7 +2,7 @@
 $type $actorSymbol(result);
 /**/
 
-/***initProduct()***/
+/***initProduct***/
 $actorSymbol(result) = $one_$cgType(output)();
 /**/
 
