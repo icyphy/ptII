@@ -384,10 +384,10 @@ public class EditorIcon extends Attribute {
                 LabelFigure label = new LabelFigure(parameters.toString(),
                         _parameterFont, 1.0, SwingConstants.NORTH_WEST);
 
-                // Shift the label slightly right so it doesn't
+                // Shift the label slightly right and down so it doesn't
                 // collide with ports.
                 label.translateTo(backBounds.getX() + 5, backBounds.getY()
-                        + backBounds.getHeight());
+                        + backBounds.getHeight() + 5);
                 figure.add(label);
             }
         }
