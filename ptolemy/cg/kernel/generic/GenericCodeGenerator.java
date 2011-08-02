@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.MoMLApplication;
@@ -319,6 +320,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     }
 
     /** Generate code.  This is the main entry point.
+     *
      *  @param code The code buffer into which to generate the code.
      *  @return The return value of the last subprocess that was executed.
      *  or -1 if no commands were executed.
@@ -697,11 +699,19 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  <pre>
      *  $PTII/bin/ptinvoke ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
      *  </pre>
+     *
+     *  <p>The HandSimDroid work in $PTII/ptserver uses dependency
+     *  injection to determine which implementation actors such as
+     *  Const and Display to use.  This method reads the
+     *  ptolemy/actor/ActorModule.properties file.</p>
+     *
      *  @param args An array of Strings, each element names a MoML file
      *  containing a model.
      *  @exception Exception If any error occurs.
      */
     public static void main(String[] args) throws Exception {
+        ActorModuleInitializer.initializeInjector();
+
         generateCode(args);
     }
 
