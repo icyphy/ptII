@@ -40,6 +40,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
@@ -168,10 +169,16 @@ import ptolemy.util.StringUtilities;
 public class ConfigurationApplication implements ExecutionListener {
 
     /**
-     * Empty constructor for subclasses to use.
+     * Instantiate a ConfigurationApplication.  This constructor is probably
+     * not useful by itself, it is for use by subclasses.
+     *
+     * <p>The HandSimDroid work in $PTII/ptserver uses dependency
+     * injection to determine which implementation actors such as
+     * Const and Display to use.  This method reads the
+     * ptolemy/actor/ActorModule.properties file.</p>
      */
     public ConfigurationApplication() {
-
+        ActorModuleInitializer.initializeInjector();
     }
 
     /** Parse the specified command-line arguments, instantiating classes
@@ -193,6 +200,8 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     public ConfigurationApplication(String basePath, String[] args)
             throws Exception {
+        this();
+
         _initializeApplication();
         _basePath = basePath;
 

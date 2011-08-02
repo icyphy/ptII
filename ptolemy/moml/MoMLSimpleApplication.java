@@ -30,6 +30,7 @@ package ptolemy.moml;
 
 import java.io.File;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
@@ -64,11 +65,19 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (eal)
  */
 public class MoMLSimpleApplication implements ChangeListener, ExecutionListener {
-    /** A Nullary constructor is necessary so that we can extends this
-     *  base class with a subclass.
+
+    /** Instantiate a MoMLSimpleApplication.  This constructor is
+     * probably not useful by itself, it is for use by subclasses.
+     *
+     * <p>The HandSimDroid work in $PTII/ptserver uses dependency
+     * injection to determine which implementation actors such as
+     * Const and Display to use.  This method reads the
+     * ptolemy/actor/ActorModule.properties file.</p>
+     *
      *  @exception Exception Not thrown in this base class
      */
     public MoMLSimpleApplication() throws Exception {
+        ActorModuleInitializer.initializeInjector();
     }
 
     /** Parse the xml file and run it.
@@ -79,6 +88,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
      *  or running the model.
      */
     public MoMLSimpleApplication(String xmlFileName) throws Throwable {
+        this();
         _workspace = new Workspace("MoMLSimpleApplicationWorkspace");
         _parser = new MoMLParser();
 
