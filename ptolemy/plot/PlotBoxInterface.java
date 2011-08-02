@@ -218,13 +218,13 @@ public interface PlotBoxInterface {
     //             return super.getMinimumSize();
     //         }
     //     }
-    /** Get the current plot rectangle.
-     *  Note that Rectangle returned by this method is calculated
-     *  from the values of {@link #_ulx}, {@link #_uly},
-     *  {@link #_lrx} and {@link #_lry}.  The value passed in by
+
+    /** Get the current plot rectangle.  Note that in PlotBox, the
+     *  Rectangle returned by this method is calculated from the
+     *  values of _ulx _uly, _lrx and _lry.  The value passed in by
      *  setPlotRectangle() is not directly used, thus calling
-     *  getPlotRectangle() may not return the same rectangle that
-     *  was passed in with setPlotRectangle().
+     *  getPlotRectangle() may not return the same rectangle that was
+     *  passed in with setPlotRectangle().
      *  @return Rectangle
      *  @see #setPlotRectangle(Rectangle)
      */
