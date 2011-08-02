@@ -278,8 +278,11 @@ public class TextEditorTableau extends Tableau {
 
                 TextEditorTableau textTableau = (TextEditorTableau) createTableau(textEffigy);
 
-                textEffigy.identifier.setExpression(url.toExternalForm());
-
+                if (url != null) {
+                    // A NullPointerException was reported here, see
+                    // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5446
+                    textEffigy.identifier.setExpression(url.toExternalForm());
+                }
                 return textTableau;
             }
         }
