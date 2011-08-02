@@ -64,7 +64,7 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
     // FIXME: VariableDelay.delay overrides TimedDelay.delay.
     /** The amount specifying delay. Its default value is 1.0.
      */
-    public PortParameter delay;
+    //public PortParameter delay;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -86,9 +86,9 @@ public class BoundedBufferNondeterministicDelay extends BoundedBufferTimedDelay 
      */
     protected void _init() throws NameDuplicationException,
             IllegalActionException {
-        delay = new PortParameter(this, "delay");
-        delay.setExpression("1.0");
-        delay.setTypeEquals(BaseType.DOUBLE);
+        //delay = new PortParameter(this, "delay");
+        //delay.setExpression("1.0");
+        //delay.setTypeEquals(BaseType.DOUBLE);
         bufferSize = new PortParameter(this, "bufferSize");
         bufferSize.setExpression("1");
         bufferSize.setTypeEquals(BaseType.INT);
