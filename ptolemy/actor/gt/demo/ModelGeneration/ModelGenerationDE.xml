@@ -63,7 +63,7 @@
         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation">
         </property>
     </property>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
@@ -377,7 +377,7 @@
                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Merge">
                 </property>
             </entity>
-            <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+            <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
                 <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">

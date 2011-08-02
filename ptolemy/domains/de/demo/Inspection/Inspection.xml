@@ -387,7 +387,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 350.0]">
         </property>
     </entity>
-    <entity name="SingleEvent0" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent0" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="executionTime">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">

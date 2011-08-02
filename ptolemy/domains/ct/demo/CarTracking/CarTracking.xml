@@ -1942,7 +1942,7 @@ jerky ride.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 80.0]">
             </property>
         </entity>
-        <entity name="SingleEvent: start" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEvent: start" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="faultStartTime">
             </property>
             <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
@@ -2000,7 +2000,7 @@ jerky ride.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 370.0]">
             </property>
         </entity>
-        <entity name="SingleEvent: stop" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEvent: stop" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="faultStopTime">
             </property>
             <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">

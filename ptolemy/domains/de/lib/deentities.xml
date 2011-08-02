@@ -56,7 +56,7 @@
 <entity name="SharedQueue" class="ptolemy.domains.de.lib.SharedQueue">
 </entity>
 
-<entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+<entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
 </entity>
 
 <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">

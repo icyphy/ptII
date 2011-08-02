@@ -43,7 +43,7 @@ import ptolemy.moml.MoMLParser;
  <p>This class will filter moml for simple class changes where
  the context of the class name to be changed does not matter - all
  occurrences of the class name will be changed.  This class
- can be though of as a primitive form of sed.
+ can be thought of as a primitive form of sed.
 
  <p> If a class within an actor is what has changed, use (@see
  PropertyClassChanges) instead.
@@ -357,6 +357,10 @@ public class ClassChanges extends MoMLFilterSimple {
         // Renamed the DE Sampler to MostRecent.
         _classChanges.put("ptolemy.domains.de.lib.Sampler",
                 "ptolemy.domains.de.lib.MostRecent");
+        
+        // Moved SingleEvent.
+        _classChanges.put("ptolemy.domains.de.lib.SingleEvent",
+                "ptolemy.actor.lib.SingleEvent");
 
         _classChanges.put("ptolemy.actor.lib.GetCurrentMicrostep",
                 "ptolemy.actor.lib.CurrentMicrostep");

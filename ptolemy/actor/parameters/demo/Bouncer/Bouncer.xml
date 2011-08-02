@@ -7,7 +7,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
-    </property>
+    </property> 
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -264,7 +264,7 @@
         <link port="Expression.output" relation="relation2"/>
         <link port="Expression.in" relation="relation"/>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="250.0">

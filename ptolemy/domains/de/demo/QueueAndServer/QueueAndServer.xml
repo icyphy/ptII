@@ -310,7 +310,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[313.875, 223.0]">
         </property>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">

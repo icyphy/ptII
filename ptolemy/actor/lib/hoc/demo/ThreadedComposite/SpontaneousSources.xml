@@ -98,7 +98,7 @@
             </property>
         </entity>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Type something:&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{45, 115}">
@@ -146,7 +146,7 @@
             </property>
         </entity>
     </entity>
-    <entity name="SingleEvent2" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Type something:&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 220.0]">

@@ -94,7 +94,7 @@
             <link port="Merge.output" relation="relation"/>
         </entity>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
@@ -198,7 +198,7 @@
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><rect x="0" y="0" width="60" height="40" style="fill:#FF0000"></rect><rect x="2" y="2" width="56" height="36" style="fill:#C0C0C0"></rect><rect x="6" y="17" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><rect x="38" y="25" width="16" height="10" style="fill:#FFFFFF; stroke:#B00000"></rect><line x1="26" y1="22" x2="30" y2="22" style="stroke:#404040"></line><line x1="30" y1="22" x2="30" y2="30" style="stroke:#404040"></line><line x1="30" y1="30" x2="34" y2="30" style="stroke:#404040"></line><text x="16" y="14" style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
             </property>
-            <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+            <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
                 <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">

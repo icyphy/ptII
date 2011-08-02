@@ -316,7 +316,7 @@
         <link port="Const.output" relation="relation12"/>
         <link port="Const.trigger" relation="relation9"/>
     </entity>
-    <entity name="SingleEvent0" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent0" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="executionTime">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">

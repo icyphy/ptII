@@ -25,12 +25,12 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.de.lib;
+package ptolemy.actor.lib;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.DiscreteClock;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -47,10 +47,16 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  This actor produces an event with the specified value at the
- specified time.  In its initialize() method, it queues an event,
- requesting that it be fired at the specified time.  If the <i>time</i>
+ specified time.  In its initialize() method, it requests a firing
+ at the specified time.  If the <i>time</i>
  parameter changes before that time is reached, then the event is
  effectively canceled.  No event will be produced.
+ <p>
+ If used with a director that implements SuperdenseTimeDirector, then
+ this actor will produce its output event at microstep 1.
+ If it is fired at microstep 0 at the specified model time,
+ then it requests a refiring at the current time.
+ This ensures piecewise continuity.
  <p>
  Note that you do not really need this actor. The
  {@link DiscreteClock} actor can produce any finite sequence of
@@ -141,10 +147,22 @@ public class SingleEvent extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         double eventTimeValue = ((DoubleToken) time.getToken()).doubleValue();
-        Time eventTime = new Time(getDirector(), eventTimeValue);
-
-        if (getDirector().getModelTime().equals(eventTime)) {
-            output.send(0, value.getToken());
+        Director director = getDirector();
+        int microstep = 1;
+        if (director instanceof SuperdenseTimeDirector) {
+            microstep = ((SuperdenseTimeDirector)director).getIndex();
+        }
+        Time eventTime = new Time(director, eventTimeValue);
+        Time currentTime = director.getModelTime();
+        if (currentTime.equals(eventTime)) {
+            if (microstep >= 1) {
+                output.send(0, value.getToken());
+            } else {
+                // This doesn't really need to be postponed to postfire()
+                // because it is generally harmless to make this request more
+                // than once.
+                _fireAt(currentTime);
+            }
         }
 
         super.fire();

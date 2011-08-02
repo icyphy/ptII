@@ -221,6 +221,7 @@ JSRCS = \
 	SequenceSource.java \
 	SequentialClock.java \
 	SetVariable.java \
+	SingleEvent.java \
 	SingleTokenCommutator.java \
 	Sink.java \
 	Sleep.java \
@@ -280,6 +281,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Sinewave.gif \
 	Sinewave.xml \
 	SinewaveIcon.xml \
+	SingleEventIcon.xml \
 	SwitchIcon.xml \
 	TimeDelayIcon.xml \
 	TimedSine.xml \

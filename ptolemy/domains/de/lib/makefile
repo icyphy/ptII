@@ -65,7 +65,6 @@ JSRCS = \
 	Register.java \
 	Server.java \
 	SharedQueue.java \
-	SingleEvent.java \
 	SuppressSimultaneousEvents.java \
 	TestActorPortDepth.java \
 	TimeCompare.java \
@@ -90,7 +89,6 @@ OTHER_FILES_TO_BE_JARED = \
 	QueueIcon.xml \
 	ServerIcon.xml \
 	SharedQueueIcon.xml \
-	SingleEventIcon.xml \
 	TimeGapIcon.xml \
 	TimedDelayIcon.xml \
 	TimerIcon.xml \
