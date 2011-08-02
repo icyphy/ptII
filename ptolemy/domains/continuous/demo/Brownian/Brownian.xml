@@ -54,8 +54,8 @@
 <title>Brownian Motion</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-3.3295205021569823" max="0.2146491278705975"/>
-<yRange min="-2.246883006534555" max="0.6435066644410469"/>
+<xRange min="-3.0" max="3.0"/>
+<yRange min="-3.0" max="3.0"/>
 <noGrid/>
 </plot>?>
         </configure>
@@ -79,7 +79,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="-3.3295205021569823" max="0.2146491278705975"/>
+<yRange min="-2.7309091636410536" max="1.0362788158268852"/>
 </plot>?>
         </configure>
     </entity>
@@ -98,7 +98,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="-3.269544224031838" max="3.30089968595319"/>
+<yRange min="-2.9130354662077633" max="4.0425585634909496"/>
 <noGrid/>
 </plot>?>
         </configure>
