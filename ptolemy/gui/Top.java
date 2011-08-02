@@ -357,15 +357,20 @@ public abstract class Top extends JFrame {
     }
 
     /** Exit the application after querying the user to save data.
-     *  Derived classes should override {@link #_exit()} to do
-     *  something more reasonable, so that user data is not discarded.
+     *  Derived classes should override {@link #_exit()}.
+     *  @return False if the use cancelled a saving a modified buffer,
+     *  true otherwise.
      */
-    public final void exit() {
+    public final boolean exit() {
         // Under Mac OS X, Command-q invokes this method.
         if (_debugClosing) {
             System.out.println("Top.exit() : " + this.getName());
         }
         _exit();
+        if (_exitResult == _CANCELED) {
+            return false;
+        }
+        return true;
     }
 
     /** Return true if the window is set to be centered when pack() is called.
@@ -717,7 +722,7 @@ public abstract class Top extends JFrame {
     protected void _exit() {
         if (isModified()) {
             int result = _queryForSave();
-
+            _exitResult = result;
             if ((result == _SAVED) || (result == _DISCARDED)) {
                 System.exit(0);
             }
@@ -1152,7 +1157,13 @@ public abstract class Top extends JFrame {
 
     /** The most recent directory used in a file dialog. */
     protected static File _directory = null;
-
+    
+    /** The return value of the _exit() menu.
+     *  We use a separate variable here for backward compatibility.
+     *  The values of this variable are the values returned by _queryForSave.
+     */
+    protected int _exitResult = _CANCELED;
+    
     /** The FileFilter that determines what files are displayed by
      *  the Open dialog and the Save As dialog
      *  The initial default is null, which causes no FileFilter to be

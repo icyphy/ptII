@@ -701,7 +701,10 @@ public class TableauFrame extends Top {
                 dispose();
             }
         }
-        _clearPlaceable();
+        if (result == true ) {
+        	// If the user hit Cancel, do not clear the placeables.
+        	_clearPlaceable();
+        }
         return result;
     }
 
@@ -870,6 +873,8 @@ public class TableauFrame extends Top {
             Effigy effigy = (Effigy) effigies.next();
 
             if (!effigy.closeTableaux()) {
+            	// This is a hack because we don't want to change add a protected int _exit() method.
+            	_exitResult = _CANCELED;
                 return;
             }
 
