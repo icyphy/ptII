@@ -117,7 +117,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
             if (oldToken == null || !oldToken.equals(newToken)) {
                 value.setToken(newToken);
                 value.validate();
-                _implementaion.setValue(newToken);
+                _implementation.setValue(newToken);
             }
         }
 
@@ -129,14 +129,14 @@ public class MonitorValue extends Sink implements PortablePlaceable {
      *   null to specify that there is no current container.
      */
     public void place(PortableContainer container) {
-        _implementaion.place(container);
+        _implementation.place(container);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Implementation of the MonitorValueInterface
-    private final TextFieldContainerInterface _implementaion = PtolemyInjector
+    private final TextFieldContainerInterface _implementation = PtolemyInjector
             .getInjector().getInstance(TextFieldContainerInterface.class);
 
 }
