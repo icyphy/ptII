@@ -62,6 +62,7 @@ JSRCS = \
 	Ramp.java \
 	Scale.java \
 	SetVariable.java \
+	SingleEvent.java \
 	Transformer.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -74,6 +75,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Ramp.rtmaude \
 	Scale.rtmaude \
 	SetVariable.rtmaude \
+	SingleEvent.rtmaude \
 	Transformer.rtmaude
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)

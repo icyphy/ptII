@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.rtmaude.domains.de.lib;
+package ptolemy.codegen.rtmaude.actor.lib;
 
 import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
@@ -35,7 +35,7 @@ import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 /**
  * Generate RTMaude code for a SingleEvent in DE domain.
  *
- * @see ptolemy.domains.de.lib.SingleEvent
+ * @see ptolemy.actor.lib.SingleEvent
  * @author Kyungmin Bae
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -47,7 +47,7 @@ public class SingleEvent extends TypedAtomicActor {
      * Constructor method for the SingleEvent adapter.
      * @param component The associated SingleEvent
      */
-    public SingleEvent(ptolemy.domains.de.lib.SingleEvent component) {
+    public SingleEvent(ptolemy.actor.lib.SingleEvent component) {
         super(component);
     }
 }

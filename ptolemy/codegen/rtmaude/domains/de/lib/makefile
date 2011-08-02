@@ -48,11 +48,10 @@ PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	NonInterruptibleTimer.java \
-	SingleEvent.java \
 	TimedDelay.java \
 	Timer.java \
 	VariableDelay.java
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	NonInterruptibleTimer.rtmaude \
 	SingleEvent.rtmaude \
