@@ -30,6 +30,7 @@ package ptolemy.moml.filter;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
@@ -127,6 +128,12 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
      */
     public static void main(String[] args) throws Exception {
         try {
+            // The HandSimDroid work in $PTII/ptserver uses dependency
+            // injection to determine which implementation actors such as
+            // Const and Display to use.  This method reads the
+            // ptolemy/actor/ActorModule.properties file.</p>
+            ActorModuleInitializer.initializeInjector();
+
             MoMLParser parser = new MoMLParser();
 
             // The list of filters is static, so we reset it in case there

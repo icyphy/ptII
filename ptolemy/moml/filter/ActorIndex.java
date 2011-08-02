@@ -42,6 +42,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.FileUtilities;
@@ -87,6 +88,12 @@ public class ActorIndex {
         BufferedReader classesReader = null;
         BufferedReader modelReader = null;
         try {
+            // The HandSimDroid work in $PTII/ptserver uses dependency
+            // injection to determine which implementation actors such as
+            // Const and Display to use.  This method reads the
+            // ptolemy/actor/ActorModule.properties file.</p>
+            ActorModuleInitializer.initializeInjector();
+
             // Read classesFileName and populate the classes Set
             classesReader = new BufferedReader(new FileReader(classesFileName));
             String className;
