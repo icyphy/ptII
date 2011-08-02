@@ -66,7 +66,7 @@ public interface DisplayInterface {
 
     /** Place the Actor in the provided container. 
      *
-     *  @param portableContainer The container into which to place the actor, or
+     *  @param container The container into which to place the actor, or
      *   null to specify that there is no current container.
      */
     public void place(PortableContainer container);

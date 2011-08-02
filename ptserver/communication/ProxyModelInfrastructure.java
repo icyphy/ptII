@@ -338,7 +338,6 @@ public class ProxyModelInfrastructure {
 
     /** Set the PongToken instance that was received the last.
      *  @param lastPongToken The last PongToken.
-     *  @see #getLastPongToken()
      */
     public synchronized void setLastPongToken(PongToken lastPongToken) {
         _lastPongToken = lastPongToken;

@@ -72,7 +72,6 @@ public class LiveSoundCommon {
      *
      *  @return The suggested internal buffer size in samples per
      *   channel.
-     *  @see #setBufferSize(int)
      */
     public int getBufferSize() {
         return _bufferSize;
@@ -83,7 +82,6 @@ public class LiveSoundCommon {
      *  parameter is 1 (for mono audio).
      *
      *  @return The number of audio channels.
-     *  @see #setChannels(int)
      */
     public int getChannels() {
         return _channels;
@@ -94,7 +92,6 @@ public class LiveSoundCommon {
      *  this parameter is 8000 Hz.
      *
      *  @return The sample rate in Hz.
-     *  @see #setSampleRate(int)
      */
     public int getSampleRate() {
         return (int) _sampleRate;

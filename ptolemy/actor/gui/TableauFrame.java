@@ -1233,7 +1233,7 @@ public class TableauFrame extends Top {
     }
 
     /** Save a file.  This method is called by {@link #_saveAsHelperFileDialog(String)}
-     *  and {@link #_saveAsHelperJFileChooser(String) so as to avoid code duplication.
+     *  and {@link #_saveAsHelperJFileChooser(String)} so as to avoid code duplication.
      *  @param file The selected file to be saved.
      *  @param directory The directory of the file to be saved.
      *  @return URL of the saved file if the save succeeds, null
@@ -1297,7 +1297,7 @@ public class TableauFrame extends Top {
     /** Query the user for a filename, save the model to that file,
      *  and open a new window to view the model.  This method
      *  uses java.awt.FileDialog and is usually used under Mac OS X.
-     *  See {@ptolemy.gui.PtGUIUtilities#useFileDialog()} for information
+     *  See {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} for information
      *  on how to set a Java property to control whether FileDialog or
      *  JFileChooser is used.
      *
@@ -1374,7 +1374,7 @@ public class TableauFrame extends Top {
      *  and open a new window to view the model.  This method uses
      *  javax.swing.JFileChooser and is usually used under
      *  non-Mac OS X platforms such as Windows or Linux.
-     *  See {@ptolemy.gui.PtGUIUtilities#useFileDialog()} for information
+     *  See {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} for information
      *  on how to set a Java property to control whether FileDialog or
      *  JFileChooser is used.
      *

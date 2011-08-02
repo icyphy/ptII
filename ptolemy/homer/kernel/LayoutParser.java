@@ -142,7 +142,7 @@ public class LayoutParser {
     /** Get the entities with positions defined.
      * 
      *  @return All the entities with positions parsed.
-     *  @exception IllegalActionException If an entity does not implement {@link PortablePlaceabe}
+     *  @exception IllegalActionException If an entity does not implement {@link PortablePlaceable}
      *  or if the location information is invalid for any of the entities.
      */
     public ArrayList<EntityElement> getPositionableEntities()

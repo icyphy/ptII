@@ -321,7 +321,6 @@ public class ProxyModelBuilder {
     /**
      * Capture inferred types of the entities.
      * @param entities The entities whose inferred types are captured
-     * @param portTypes The mapping that stores the types
      * @exception IllegalActionException If there is a problem
      * inferring type of Typeable.
      */

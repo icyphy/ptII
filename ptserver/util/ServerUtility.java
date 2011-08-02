@@ -141,7 +141,8 @@ public class ServerUtility {
 
     /**
      * Return true if the attribute is marked as remote sink, false otherwise.
-     * @param attribute the child attribute the source actor to be checked.
+     * @param targetEntityAttribute the child attribute the source
+     * actor to be checked.
      * @return true if the attribute is marked as remote attribute, false otherwise.
      */
     public static boolean isTargetProxySink(Attribute targetEntityAttribute) {
@@ -157,7 +158,7 @@ public class ServerUtility {
 
     /**
      * Return true if the attribute is marked as remote source, false otherwise.
-     * @param attribute the child attribute of the source actor to be checked.
+     * @param targetEntityAttribute the child attribute of the source actor to be checked.
      * @return true if the attribute is marked as remote attribute, false otherwise.
      */
     public static boolean isTargetProxySource(Attribute targetEntityAttribute) {
