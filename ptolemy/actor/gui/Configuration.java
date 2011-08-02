@@ -1064,6 +1064,8 @@ public class Configuration extends CompositeEntity implements
                     && !(field.getName().indexOf("$RECORD$") != -1)
                     && !(field.getName().indexOf("$RECORDS") != -1)
                     && !(field.getName().indexOf("$CHECKPOINT") != -1)
+		    // Skip dependency injection fields
+		    && !(field.getName().indexOf("_implementation")!= -1) 
                     // Skip immutables
                     && !fieldType.equals(java.net.InetAddress.class)
                     && !fieldType.equals(java.util.regex.Pattern.class)
