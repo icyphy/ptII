@@ -107,6 +107,7 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
 
         // Set the type constraint.
         newObject.output.setTypeAtLeast(newObject.value);
+
         return newObject;
     }
 
@@ -131,7 +132,12 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Implementation of the ConstInterface
+    /** Implementation of the ConstInterface.  This code is used as part
+     *  of the dependency injection needed for the HandSimDroid project, see
+     *  $PTII/ptserver.  Note that if you get a NullPointerException here,
+     *  then the solution is to have your main() method call
+     *  ActorModuleInitializer.initializeInjector().
+     */
     private final TextFieldContainerInterface _implementation = PtolemyInjector
             .getInjector().getInstance(TextFieldContainerInterface.class);
 }
