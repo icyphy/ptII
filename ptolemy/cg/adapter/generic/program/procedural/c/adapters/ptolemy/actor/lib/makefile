@@ -71,6 +71,7 @@ JSRCS = \
 	Ramp.java \
 	Remainder.java \
 	Scale.java \
+	SingleEvent.java \
 	Synchronizer.java \
 	TimeDelay.java \
 	UnaryMathFunction.java

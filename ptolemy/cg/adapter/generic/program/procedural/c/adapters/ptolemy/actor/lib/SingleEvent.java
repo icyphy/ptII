@@ -1,4 +1,4 @@
-/* An adapter class for ptolemy.domains.de.lib.SingleEvent
+/* An adapter class for ptolemy.actor.lib.SingleEvent
 
  Copyright (c) 2006-2011 The Regents of the University of California.
  All rights reserved.
@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
+package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
 import java.util.LinkedList;
 
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// SingleEvent
 
 /**
- A adapter class for ptolemy.domains.de.lib.SingleEvent.
+ A adapter class for ptolemy.actor.lib.SingleEvent.
 
  @author Jia Zou
  @version $Id$
@@ -53,7 +53,7 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
      *  Construct a SingleEvent adapter.
      *  @param actor The given ptolemy.actor.lib.SingleEvent actor.
      */
-    public SingleEvent(ptolemy.domains.de.lib.SingleEvent actor) {
+    public SingleEvent(ptolemy.actor.lib.SingleEvent actor) {
         super(actor);
     }
 
@@ -61,9 +61,9 @@ public class SingleEvent extends NamedProgramCodeGeneratorAdapter {
         CodeStream codeStream = _templateParser.getCodeStream();
         codeStream.clear();
         LinkedList args = new LinkedList();
-        Parameter time = ((ptolemy.domains.de.lib.SingleEvent) getComponent()).time;
+        Parameter time = ((ptolemy.actor.lib.SingleEvent) getComponent()).time;
         double doubleTime = ((DoubleToken) time.getToken()).doubleValue();
-        Parameter valuePar = ((ptolemy.domains.de.lib.SingleEvent) getComponent()).value;
+        Parameter valuePar = ((ptolemy.actor.lib.SingleEvent) getComponent()).value;
         double value;
         Token valueToken = valuePar.getToken();
         if (valueToken instanceof BooleanToken) {

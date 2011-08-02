@@ -59,7 +59,6 @@ JSRCS = \
 	MostRecent.java \
 	PID.java \
 	Register.java \
-	SingleEvent.java \
 	TimeGap.java \
 	VariableDelay.java \
 	Merge.java
@@ -68,7 +67,6 @@ OTHER_FILES_TO_BE_JARED = \
 	PID.c \
 	Register.c \
 	Sampler.c \
-	SingleEvent.c \
 	TimeGap.c \
 	VariableDelay.c \
 	Merge.c
