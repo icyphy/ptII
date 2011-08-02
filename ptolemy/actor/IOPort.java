@@ -4293,6 +4293,15 @@ public class IOPort extends ComponentPort {
                         .sourcePortList().get(0)).getContainer();
             }
         } else {
+            if (isOutput() && this.getContainer() instanceof CompositeActor
+                    && qmList.size() > 0) {
+                throw new IllegalActionException(this, "This quantity manager can" +
+                		" only be used at ports with receivers on the same" +
+                		" hierarchy level as the quantity manager. Specifying" +
+                		" a quantity manager on an output port of a composite" +
+                		" actor means wrapping the inside receiver of the port" +
+                		" and thus mediating the inside connection.");
+            }
             for (int i = 0; i < qmList.size(); i++) {
                 result = qmList.get(i).getReceiver(result);
             }
