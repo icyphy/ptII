@@ -1991,7 +1991,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
             </property>
         </port>
-        <entity name="SingleEventStartup1" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEventStartup1" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="startup1">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -1999,7 +1999,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 60.0}">
             </property>
         </entity>
-        <entity name="SingleEventFault" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEventFault" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="faultCommand">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -2009,7 +2009,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </entity>
-        <entity name="SingleEventShutdown" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEventShutdown" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="shutdown">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -2029,7 +2029,7 @@ actors to enable timed sequencing of a set of power supplies.</text></svg></conf
                 </property>
             </port>
         </entity>
-        <entity name="SingleEventStartup2" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEventStartup2" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="startup2">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">

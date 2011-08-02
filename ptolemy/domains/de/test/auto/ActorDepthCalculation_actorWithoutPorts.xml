@@ -23,7 +23,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 60.0}">
             </property>
         </property>
-        <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="value" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
@@ -57,7 +57,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 70.0}">
             </property>
         </property>
-        <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="value" class="ptolemy.data.expr.Parameter" value="2">
             </property>
             <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
@@ -89,7 +89,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 70.0}">
             </property>
         </property>
-        <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="value" class="ptolemy.data.expr.Parameter" value="3">
             </property>
             <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">

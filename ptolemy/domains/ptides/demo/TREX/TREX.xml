@@ -2084,7 +2084,7 @@
         <link port="CompositeActor3.port" relation="relation37"/>
         <link port="CompositeActor3.port2" relation="relation38"/>
     </entity>
-    <entity name="SingleEvent2" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
         <display name="systemStart"/>
         <property name="time" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -3714,7 +3714,7 @@
         <link port="CompositeActor3.port" relation="relation2"/>
         <link port="CompositeActor3.port2" relation="relation5"/>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <display name="armContact"/>
         <property name="time" class="ptolemy.data.expr.Parameter" value="armContactTime">
         </property>

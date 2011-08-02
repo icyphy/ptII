@@ -162,7 +162,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 270.0">
         </property>
     </entity>
-    <entity name="1:SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="1:SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -179,7 +179,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 270.0">
         </property>
     </entity>
-    <entity name="1:1:SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="1:1:SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.15">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="5.0">

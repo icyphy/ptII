@@ -87,7 +87,7 @@
         <property name="_priority" class="ptolemy.actor.parameters.Priority" value="-1">
         </property>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[97.75, 180.0]">
         </property>
     </entity>

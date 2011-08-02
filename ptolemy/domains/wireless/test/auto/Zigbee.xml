@@ -151,7 +151,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, -70.0]">
         </property>
     </property>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 290.0]">
@@ -2582,7 +2582,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-310.0, 400.0]">
                     </property>
                 </entity>
-                <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+                <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
                     <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-590.0, 275.0]">
@@ -5163,7 +5163,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-310.0, 400.0]">
                     </property>
                 </entity>
-                <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+                <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
                     <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-590.0, 275.0]">
@@ -7746,7 +7746,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-310.0, 400.0]">
                     </property>
                 </entity>
-                <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+                <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
                     <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-590.0, 275.0]">
@@ -10327,7 +10327,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-310.0, 400.0]">
                     </property>
                 </entity>
-                <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+                <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
                     <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-590.0, 275.0]">
@@ -12908,7 +12908,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-310.0, 400.0]">
                     </property>
                 </entity>
-                <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+                <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
                     <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-590.0, 275.0]">
@@ -15507,7 +15507,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-310.0, 400.0]">
                     </property>
                 </entity>
-                <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+                <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
                     <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[-590.0, 275.0]">

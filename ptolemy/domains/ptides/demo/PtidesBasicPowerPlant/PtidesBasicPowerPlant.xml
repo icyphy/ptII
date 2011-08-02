@@ -292,13 +292,13 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="startupTime">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 155.0}">
             </property>
         </entity>
-        <entity name="SingleEvent2" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="(startupTime+0.5)">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="5">

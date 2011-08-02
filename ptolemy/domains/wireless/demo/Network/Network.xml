@@ -833,7 +833,7 @@
                         <link port="_Controller.timeOut" relation="timeOutRelation"/>
                         <link port="_Controller.start" relation="startRelation"/>
                     </entity>
-                    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+                    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
                         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 190.0">
                         </property>
                     </entity>

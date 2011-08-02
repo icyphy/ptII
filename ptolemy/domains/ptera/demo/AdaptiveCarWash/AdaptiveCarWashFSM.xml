@@ -60,7 +60,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 400.0]">
         </property>
     </property>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 175.0]">
         </property>
     </entity>

@@ -114,7 +114,7 @@
         <link port="Test3.input" relation="relation5"/>
         <link port="Test2.input" relation="relation4"/>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
         </property>
     </entity>

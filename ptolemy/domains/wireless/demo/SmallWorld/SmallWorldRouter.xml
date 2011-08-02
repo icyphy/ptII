@@ -1913,7 +1913,7 @@ transmitted by 1 hop.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 390.0">
             </property>
         </entity>
-        <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">

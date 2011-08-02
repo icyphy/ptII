@@ -1020,7 +1020,7 @@ same time stamp as the input event.</text></svg></configure>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="Resume" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="Resume" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="resume">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -1028,7 +1028,7 @@ same time stamp as the input event.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 130.0]">
             </property>
         </entity>
-        <entity name="SingleEventStartup" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEventStartup" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="startup">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -1036,7 +1036,7 @@ same time stamp as the input event.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 60.0]">
             </property>
         </entity>
-        <entity name="Pause" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="Pause" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="pause">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">

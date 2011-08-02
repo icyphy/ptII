@@ -34,7 +34,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 200.0]">
             </property>
         </port>
-        <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
                 </property>

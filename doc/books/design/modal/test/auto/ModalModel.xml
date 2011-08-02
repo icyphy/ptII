@@ -416,7 +416,7 @@
         <link port="TrigFunction.input" relation="relation"/>
         <link port="TrigFunction.output" relation="relation2"/>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.000511">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="0">

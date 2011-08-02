@@ -988,7 +988,7 @@ Then delete this annotation.</text>
         <link port="ModalModel.port" relation="relation8"/>
         <link port="ModalModel.input2" relation="relation5"/>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="v1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 230.0}">

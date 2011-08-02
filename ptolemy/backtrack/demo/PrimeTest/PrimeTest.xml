@@ -114,7 +114,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 120.0}">
         </property>
     </entity>

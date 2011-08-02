@@ -318,7 +318,7 @@
         <link port="modal model.stopOut" relation="relation4"/>
         <link port="modal model.responseTime" relation="relation5"/>
     </entity>
-    <entity name="Start Timer" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="Start Timer" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">

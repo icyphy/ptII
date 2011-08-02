@@ -3129,7 +3129,7 @@ transmitted by 1 hop.</text></svg></configure>
                 <property name="output"/>
             </port>
         </entity>
-        <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">

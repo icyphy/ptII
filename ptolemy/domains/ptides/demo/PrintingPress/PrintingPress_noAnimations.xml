@@ -6326,7 +6326,7 @@
         <link port="CompositeActor2.port" relation="relation"/>
         <link port="CompositeActor2.port2" relation="relation4"/>
     </entity>
-    <entity name="SingleEvent2" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
         <display name="systemStart"/>
         <property name="time" class="ptolemy.data.expr.Parameter" value="systemStart">
         </property>

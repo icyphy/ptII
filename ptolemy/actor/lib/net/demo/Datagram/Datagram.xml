@@ -225,7 +225,7 @@ and Ptolemy models with each other!</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 450.0">
         </property>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
