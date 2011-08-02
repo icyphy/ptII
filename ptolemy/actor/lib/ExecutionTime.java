@@ -135,18 +135,18 @@ public class ExecutionTime extends LimitedFiringSource {
         }
         long executionTimeValue = ((LongToken) executionTime.getToken())
                 .longValue();
-        long granularityValue = ((LongToken) granularity.getToken())
-                .longValue();
+        //long granularityValue = ((LongToken) granularity.getToken())
+        //        .longValue();
         boolean realTimeValue = ((BooleanToken) realTime.getToken())
                 .booleanValue();
         boolean moreToDo = true;
         long count = 0L;
         while (moreToDo) {
             // NOTE: The number here determines the granularity.
-            int dummy = 0;
-            for (int i = 0; i < granularityValue; i++) {
-                dummy++;
-            }
+            //int dummy = 0;
+            //for (int i = 0; i < granularityValue; i++) {
+            //    dummy++;
+            //}
             if (realTimeValue) {
                 moreToDo = System.currentTimeMillis() - start < executionTimeValue;
             } else {

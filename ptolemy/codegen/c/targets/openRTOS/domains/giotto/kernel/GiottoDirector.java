@@ -1792,12 +1792,10 @@ public class GiottoDirector extends
      */
     private HashSet<Integer> _getAllFrequencies() throws IllegalActionException {
         HashSet frequencies = new HashSet();
-        int i = 0;
         for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
                 .getContainer()).deepEntityList()) {
 
             int attributueValue = _getFrequency(actor);
-            i++;
             frequencies.add(attributueValue);
 
             //come back and figure out how to keep a list of all

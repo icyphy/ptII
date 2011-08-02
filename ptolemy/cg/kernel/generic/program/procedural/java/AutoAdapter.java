@@ -123,7 +123,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        String actorClassName = getComponent().getClass().getName();
+        //String actorClassName = getComponent().getClass().getName();
 
         //code = generateParameterCode();
         String[] splitInitializeParameterCode = getCodeGenerator()._splitBody(
@@ -414,7 +414,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 //grandparentContainer = grandparentContainer.getContainer();
             }
 
-            NamedObj container = grandparentContainer;
+            //NamedObj container = grandparentContainer;
             //if (container == null) {
             //    container = parentContainer;
             //}
@@ -1484,7 +1484,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // that whose name is not the same as the declared name.
             // We check before we create it.  To test, use:
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortParameterActorTest.xml
-            String multiport = "";
+            //String multiport = "";
             code.append("if ($actorSymbol(actor).getPort(\""
                     + unescapedActorPortName.replace("\\", "\\\\")
                     //+ AutoAdapter._externalPortName(port.getContainer(),

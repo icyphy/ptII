@@ -36,7 +36,6 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Stack;
 
-import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotBoxInterface;
 
 import com.microstar.xml.HandlerBase;

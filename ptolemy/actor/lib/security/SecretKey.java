@@ -94,7 +94,7 @@ public class SecretKey extends Source {
         Set algorithms = Security.getAlgorithms("KeyGenerator");
         Iterator algorithmsIterator = algorithms.iterator();
 
-        for (int i = 0; algorithmsIterator.hasNext(); i++) {
+        while(algorithmsIterator.hasNext()) {
             String algorithmName = (String) algorithmsIterator.next();
 
             algorithm.addChoice(algorithmName);

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class Merge 

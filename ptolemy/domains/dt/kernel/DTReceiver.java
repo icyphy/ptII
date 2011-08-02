@@ -44,7 +44,6 @@ import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Nameable;
 
 ///////////////////////////////////////////////////////////////////
 //// DTReceiver
@@ -371,24 +370,24 @@ public class DTReceiver extends SDFReceiver {
      *   this receiver.
      */
     void _debugViewReceiverInfo() {
-        String fromString;
-        String toString;
-
-        if (_from == null) {
-            fromString = "0";
-        } else {
-            fromString = ((Nameable) _from).getName();
-        }
-
-        fromString += (" (" + ((TypedIOPort) _fromPort).getType() + ")");
-
-        if (_to == null) {
-            toString = "0";
-        } else {
-            toString = ((Nameable) _to).getName();
-        }
-
-        toString += (" (" + ((TypedIOPort) _toPort).getType() + ")");
+//        String fromString;
+//        String toString;
+//
+//        if (_from == null) {
+//            fromString = "0";
+//        } else {
+//            fromString = ((Nameable) _from).getName();
+//        }
+//
+//        fromString += (" (" + ((TypedIOPort) _fromPort).getType() + ")");
+//
+//        if (_to == null) {
+//            toString = "0";
+//        } else {
+//            toString = ((Nameable) _to).getName();
+//        }
+//
+//        toString += (" (" + ((TypedIOPort) _toPort).getType() + ")");
 
         //    _debug(fromString + " " + toString + " " + _deltaTime);
     }

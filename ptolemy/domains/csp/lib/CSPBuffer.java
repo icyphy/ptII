@@ -168,7 +168,6 @@ public class CSPBuffer extends CSPActor {
             int iDepth = ((IntToken) depth.getToken()).intValue();
             _buffer = new Token[iDepth];
 
-            int count = 0;
             boolean guard = false;
             boolean continueCDO = true;
             ConditionalBranch[] branches = new ConditionalBranch[2];
@@ -201,8 +200,6 @@ public class CSPBuffer extends CSPActor {
                             + "invalid branch id returned during "
                             + "execution of CDO.");
                 }
-
-                count++;
             }
         } catch (NoTokenException ex) {
             throw new IllegalActionException("CSPBuffer: cannot get token.");

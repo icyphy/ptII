@@ -44,7 +44,7 @@ public class TestHarness {
 
     /** The indent level
      */
-    private int _indentLevel = 0;
+    //private int _indentLevel = 0;
 
     /** The indent string
      */
@@ -115,7 +115,7 @@ public class TestHarness {
             println(suiteClass + ": " + suite.getFactory().toString());
         }
 
-        _indentLevel++;
+        //_indentLevel++;
         _indentString = _indentString + "    ";
     }
 
@@ -123,7 +123,7 @@ public class TestHarness {
      * Clean up after running a test suite.
      */
     void doneTestSuite() {
-        _indentLevel--;
+        //_indentLevel--;
         _indentString = _indentString.substring(4);
     }
 

@@ -222,7 +222,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         Iterator ports = sourcePorts.iterator();
 
         // for each output port.
-        for (int i = 0; ports.hasNext(); i++) {
+        while(ports.hasNext()){
             TypedIOPort sourcePort = (TypedIOPort) ports.next();
 
             // for each channel.

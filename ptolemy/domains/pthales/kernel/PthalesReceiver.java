@@ -115,10 +115,10 @@ public class PthalesReceiver extends SDFReceiver {
 
         // FIXME: sizeRepetition is not used?
         // total repetition size
-        int sizeRepetition = 1;
-        for (Integer size : repetitions) {
-            sizeRepetition *= size;
-        }
+        //int sizeRepetition = 1;
+        //for (Integer size : repetitions) {
+        //    sizeRepetition *= size;
+        //}
 
         // origin construction once per port (order is not important)
         int origin = 0;

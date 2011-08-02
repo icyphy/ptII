@@ -86,12 +86,10 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
     public void doAction(NamedObj model) {
         try {
             JFrame frame = null;
-            int tableauxCount = 0;
             Iterator tableaux = Configuration.findEffigy(model)
                     .entityList(Tableau.class).iterator();
             while (tableaux.hasNext()) {
                 Tableau tableau = (Tableau) (tableaux.next());
-                tableauxCount++;
                 if (tableau.getFrame() instanceof ActorGraphFrame) {
                     frame = tableau.getFrame();
                 }

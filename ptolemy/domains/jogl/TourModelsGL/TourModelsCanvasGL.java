@@ -190,7 +190,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable {
 
     // 3D sound
     //private JOALSoundMan soundMan;
-    private double listenerAngle;
+    //private double listenerAngle;
 
     // picking
     private boolean inSelectionMode = false;
@@ -254,7 +254,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable {
         zLookAt = zPlayer + (LOOK_AT_DIST * zStep);
 
         // listener starts by looking along the -z axis by default
-        listenerAngle = 0;
+        //listenerAngle = 0;
     } // end of initViewerPosn()
 
     public void addNotify()
@@ -332,7 +332,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable {
                     viewAngle -= ANGLE_INCR;
                     xStep = Math.cos(Math.toRadians(viewAngle));
                     zStep = Math.sin(Math.toRadians(viewAngle));
-                    listenerAngle += ANGLE_INCR;
+                    //listenerAngle += ANGLE_INCR;
                 }
             } else if (keyCode == KeyEvent.VK_RIGHT) { // right
                 if (e.isControlDown()) { // translate right
@@ -342,7 +342,7 @@ public class TourModelsCanvasGL extends Canvas implements Runnable {
                     viewAngle += ANGLE_INCR;
                     xStep = Math.cos(Math.toRadians(viewAngle));
                     zStep = Math.sin(Math.toRadians(viewAngle));
-                    listenerAngle -= ANGLE_INCR;
+                    //listenerAngle -= ANGLE_INCR;
                 }
             } else if (keyCode == KeyEvent.VK_UP) { // move forward
                 xPlayer += xStep * SPEED;

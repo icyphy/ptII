@@ -410,12 +410,10 @@ public class KielerJUnitTest {
     private static BasicGraphFrame _getBasicGraphFrame(NamedObj model) {
         // See PtolemyLayoutAction for similar code.
         BasicGraphFrame frame = null;
-        int tableauxCount = 0;
         Iterator tableaux = Configuration.findEffigy(model)
                 .entityList(Tableau.class).iterator();
         while (tableaux.hasNext()) {
             Tableau tableau = (Tableau) (tableaux.next());
-            tableauxCount++;
             if (tableau.getFrame() instanceof BasicGraphFrame) {
                 frame = (BasicGraphFrame) tableau.getFrame();
                 break;

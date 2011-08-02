@@ -137,18 +137,18 @@ public class FSMDirector extends
         ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
-        int depth = 1;
+        //int depth = 1;
 
         Iterator states = controller.deepEntityList().iterator();
-        int stateCount = 0;
-        depth++;
+        //int stateCount = 0;
+        //depth++;
         double largestWCET = 0.0;
 
         while (states.hasNext()) {
 
-            stateCount++;
+            //stateCount++;
 
-            depth++;
+            //depth++;
 
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();
@@ -282,19 +282,19 @@ public class FSMDirector extends
         ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
-        int depth = 1;
+        //int depth = 1;
 
         //Iterator states = controller.entityList().iterator();
         Iterator states = controller.deepEntityList().iterator();
-        int stateCount = 0;
-        depth++;
+        //int stateCount = 0;
+        //depth++;
 
         while (states.hasNext()) {
             // code.append(_getIndentPrefix(depth));
             //code.append("case " + stateCount + ":" + _eol);
-            stateCount++;
+            //stateCount++;
 
-            depth++;
+            //depth++;
 
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();

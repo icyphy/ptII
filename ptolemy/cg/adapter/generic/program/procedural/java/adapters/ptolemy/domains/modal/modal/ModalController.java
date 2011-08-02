@@ -469,17 +469,17 @@ public class ModalController
         }
         StringBuffer code = new StringBuffer();
 
-        int depth = 1;
+        //int depth = 1;
         Iterator states = _myController.deepEntityList().iterator();
-        int stateCount = 0;
-        depth++;
+        //int stateCount = 0;
+        //depth++;
 
         while (states.hasNext()) {
             // code.append(_getIndentPrefix(depth));
             //code.append("case " + stateCount + ":" + _eol);
-            stateCount++;
+            //stateCount++;
 
-            depth++;
+            //depth++;
 
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();

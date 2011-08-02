@@ -454,7 +454,7 @@ public class HomerMainFrame extends JFrame {
                 }
             }
 
-            _orientation = orientation;
+            //_orientation = orientation;
             scene.revalidate();
         }
     }
@@ -658,7 +658,7 @@ public class HomerMainFrame extends JFrame {
 
     /** The orientation of the scene panels.
      */
-    private ScreenOrientation _orientation;
+    //private ScreenOrientation _orientation;
 
     /** The list of remote objects included as part of the layout file.
      */

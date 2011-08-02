@@ -64,7 +64,7 @@ import org.w3c.dom.NodeList;
 @since Ptolemy II 8.0
  */
 public class ComponentDef implements Comparable<Object> {
-    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
 
     public String name = "";
 

@@ -80,10 +80,8 @@ public class SDFDirector extends
         double wcet = 0;
         double actorFrequency = 0;
         double actorWCET = 0;
-        int actorCount = 0;
         for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
                 .getContainer()).deepEntityList()) {
-            actorCount++;
             Attribute frequency = ((Entity) actor).getAttribute("frequency");
             Attribute WCET = ((Entity) actor).getAttribute("WCET");
 

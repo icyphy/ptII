@@ -428,7 +428,7 @@ public class XmlParser {
      */
     void error(String message, String textFound, String textExpected)
             throws java.lang.Exception {
-        errorCount++;
+        //errorCount++;
 
         if (textFound != null) {
             message = message + " (found \"" + textFound + "\")";
@@ -4186,7 +4186,7 @@ public class XmlParser {
      */
     void initializeVariables() {
         // No errors; first lineb
-        errorCount = 0;
+        //errorCount = 0;
         line = 1;
         column = 0;
 
@@ -4226,7 +4226,7 @@ public class XmlParser {
      * Leave around anything that might be useful for queries.
      */
     void cleanupVariables() {
-        errorCount = -1;
+        //errorCount = -1;
         line = -1;
         column = -1;
         dataBuffer = null;
@@ -4268,7 +4268,7 @@ public class XmlParser {
     //
     // Maintain a count of errors.
     //
-    private int errorCount;
+    //private int errorCount;
 
     //
     // Buffers for decoded but unparsed character input.
