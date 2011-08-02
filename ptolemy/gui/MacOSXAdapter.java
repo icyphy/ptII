@@ -105,7 +105,7 @@ public class MacOSXAdapter implements InvocationHandler {
     /** Set the quit handler (Command-q) for a Top window.
      *  @param top the Top level window to perform the operation.
      *  @param quitMethod The method to invoke in Top, typically
-     *  {@link ptolemy.gui.Top#quit()}.
+     *  {@link ptolemy.gui.Top#exit()}.
      */
     public static void setQuitMethod(Top top, Method quitMethod) {
         _setHandler(top, new MacOSXAdapter("handleQuit", top, quitMethod));
@@ -120,7 +120,7 @@ public class MacOSXAdapter implements InvocationHandler {
      *  @param proxySignature  A method name from com.apple.eawt.ApplicationListener,
      *  for example "handleQuit".
      *  @param top the Top level window to perform the operation.
-     *  @param method The Method in Top to be called.
+     *  @param topMethod The Method in Top to be called.
      */
     private MacOSXAdapter(String proxySignature, Top top, Method topMethod) {
         _proxySignature = proxySignature;
