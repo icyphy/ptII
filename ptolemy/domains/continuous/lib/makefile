@@ -67,6 +67,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ContinuousClock.xml \
 	ContinuousClockIcon.xml \
 	ContinuousSinewave.xml \
+	ContinuousSinewaveIcon.xml \
 	ContinuousSpectrum.xml \
 	ContinuousTimeDelayIcon.xml \
 	ct2continuous \
