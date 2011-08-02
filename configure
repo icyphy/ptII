@@ -6969,7 +6969,7 @@ echo "${ECHO_T}$PTNETBEANSAPIVISUAL_JAR" >&6; fi
 	        # Set to homer and used in $PTII/ptolemy/makefile
 	        PTHOMER_DIR=homer
                 # PTHOMER_PACKAGES is used in ptII/doc/makefile
-		PTHOMER_PACKAGES="ptolemy.homer.events ptolemy.homer.gui ptolemy.homer.tree ptolemy.homer ptolemy.homer.kernel ptolemy.homer.widgets"
+		PTHOMER_PACKAGES="ptolemy.homer.events ptolemy.homer.gui ptolemy.homer ptolemy.homer.kernel ptolemy.homer.widgets"
             fi
         fi
     fi
