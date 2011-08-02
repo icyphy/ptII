@@ -344,8 +344,7 @@ public class RemoteModelTest {
                             long diff = System.currentTimeMillis() - time;
                             assertTrue("Timeout period " + timeoutPeriod
                                     + " diff " + diff,
-                                    timeoutPeriod - 1000 < diff
-                                            && diff < timeoutPeriod + 1000);
+                                    diff < 2 * timeoutPeriod * 1.05);
                             isWaiting = false;
                             RemoteModelTest.this.notifyAll();
                         }
