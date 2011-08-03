@@ -157,6 +157,7 @@ public class ExplicitRK45Solver extends ODESolver {
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -234,6 +235,7 @@ public class ExplicitRK45Solver extends ODESolver {
      *
      *  @param integrator The integrator of that calls this method.
      *  @return True if the integration is successful.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         try {
@@ -285,6 +287,7 @@ public class ExplicitRK45Solver extends ODESolver {
      *
      *  @param integrator The integrator that calls this method.
      *  @return The next step size suggested by the given integrator.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
         CTDirector director = (CTDirector) getContainer();

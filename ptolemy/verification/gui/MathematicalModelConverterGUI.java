@@ -90,6 +90,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
      *  @exception IllegalActionException If the model rejects the
      *   configuration attribute.
      *  @exception NameDuplicationException If a name collision occurs.
+     * @deprecated ptolemy.de.lib.TimedDelay is deprecated, use ptolemy.actor.lib.TimeDelay.
      */
     public MathematicalModelConverterGUI(
             final MathematicalModelConverter modelConverter, Tableau tableau)

@@ -108,6 +108,7 @@ public abstract class FixedStepSolver extends ODESolver {
     /** Return true always, since no error control is performed.
      *  @param integrator The integrator that wants to do the test.
      *  @return True always.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public final boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         return true;
@@ -117,6 +118,7 @@ public abstract class FixedStepSolver extends ODESolver {
      *  @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#predictedStepSize
      *  @param integrator The integrator that want to predict the step size.
      *  @return The current step size of the director.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public final double integratorPredictedStepSize(CTBaseIntegrator integrator) {
         CTDirector director = (CTDirector) getContainer();

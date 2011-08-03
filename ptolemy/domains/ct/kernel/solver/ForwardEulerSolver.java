@@ -93,6 +93,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
      *  @param integrator The integrator to be fired.
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {

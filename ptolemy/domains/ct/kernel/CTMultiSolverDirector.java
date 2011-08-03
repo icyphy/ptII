@@ -431,6 +431,7 @@ public class CTMultiSolverDirector extends CTDirector {
     /** Return the breakpoint ODE solver.
      *  @return The breakpoint ODE solver.
      *  @see #getNormalODESolver
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public ODESolver getBreakpointSolver() {
         return _breakpointSolver;
@@ -446,6 +447,7 @@ public class CTMultiSolverDirector extends CTDirector {
     /** Return the ODE solver for normal integration.
      *  @return The ODE solver for normal integration.
      *  @see #getBreakpointSolver
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public ODESolver getNormalODESolver() {
         return _normalSolver;

@@ -185,6 +185,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or send output.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -257,6 +258,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  @param integrator The integrator that calls this method.
      *  @return True if the local truncation error is less than the
      *  error tolerance.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         CTDirector director = (CTDirector) getContainer();
@@ -297,6 +299,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  </pre>
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
         CTDirector director = (CTDirector) getContainer();

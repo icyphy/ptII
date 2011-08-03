@@ -448,6 +448,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
 
     /** Return the current ODE solver used to resolve states by the director.
      *  @return The current ODE solver used to resolve states by the director.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public final ODESolver getCurrentODESolver() {
         // This method is final for performance reason.
@@ -895,6 +896,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *  @param className The solver's full class name.
      *  @return a new ODE solver.
      *  @exception IllegalActionException If the solver can not be created.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     protected final ODESolver _instantiateODESolver(String className)
             throws IllegalActionException {
@@ -944,6 +946,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *  @exception  IllegalActionException Not thrown in this base class.
      *  It may be thrown by the derived classes if the solver is not
      *  appropriate.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     protected final void _setCurrentODESolver(ODESolver solver)
             throws IllegalActionException {

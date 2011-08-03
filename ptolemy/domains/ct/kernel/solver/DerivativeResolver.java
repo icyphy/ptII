@@ -134,6 +134,7 @@ public class DerivativeResolver extends ODESolver implements
      *  and _discretePhaseExecution() methods in CTMultiSolverDirector class.
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If can not read input.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -145,6 +146,7 @@ public class DerivativeResolver extends ODESolver implements
     /** Return true, since there is no step size control.
      *  @param integrator The integrator of that calls this method.
      *  @return True always.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         // NOTE: this method is never called because the firing of
@@ -157,6 +159,7 @@ public class DerivativeResolver extends ODESolver implements
      *  step will use the initial step size.
      *  @param integrator The integrator of that calls this method.
      *  @return The initial step size.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
         CTDirector director = (CTDirector) getContainer();

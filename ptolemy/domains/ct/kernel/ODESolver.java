@@ -203,6 +203,7 @@ public abstract class ODESolver extends NamedObj {
      *  the details.
      *  @param integrator The integrator that calls this method.
      *  @exception IllegalActionException Not thrown in this base class.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException;
@@ -213,6 +214,7 @@ public abstract class ODESolver extends NamedObj {
      *  Derived classes need to implement the details.
      *  @param integrator The integrator that calls this method.
      *  @return True if the integrator finds the step accurate.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public abstract boolean integratorIsAccurate(CTBaseIntegrator integrator);
 
@@ -220,6 +222,7 @@ public abstract class ODESolver extends NamedObj {
      *  method. Derived classes need to implement the details.
      *  @param integrator The integrator that calls this method.
      *  @return The suggested next step size by the given integrator.
+     *  @deprecated As of July, 2011, the CTDirector no longer works with DEDirector.
      */
     public abstract double integratorPredictedStepSize(
             CTBaseIntegrator integrator);
