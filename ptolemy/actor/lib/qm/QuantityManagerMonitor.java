@@ -231,6 +231,7 @@ public class QuantityManagerMonitor extends TypedAtomicActor implements
                 PlotEffigy schedulePlotterEffigy = new PlotEffigy(effigy,
                         container.uniqueName("schedulePlotterEffigy"));
                 schedulePlotterEffigy.setPlot(plot);
+                schedulePlotterEffigy.setModel(this.getContainer());
                 schedulePlotterEffigy.identifier.setExpression("Monitor");
 
                 configuration.createPrimaryTableau(schedulePlotterEffigy);

@@ -293,6 +293,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
                 PlotEffigy schedulePlotterEffigy = new PlotEffigy(effigy,
                         container.uniqueName("schedulePlotterEffigy"));
                 schedulePlotterEffigy.setPlot(plot);
+                schedulePlotterEffigy.setModel(this.getContainer());
                 schedulePlotterEffigy.identifier
                         .setExpression("Execution Time Monitor");
 
