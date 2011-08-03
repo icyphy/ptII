@@ -251,10 +251,10 @@ public class HistogramPlotter extends PlotterBase {
             plot.setAutomaticRescale(true);
         }
 
-        if ((getImplementation().getFrame() == null)
-                && (getImplementation().getPlatformContainer() == null)) {
+        if ((_getImplementation().getFrame() == null)
+                && (_getImplementation().getPlatformContainer() == null)) {
             // Need an effigy and a tableau so that menu ops work properly.
-            getImplementation().initializeEffigy();
+            _getImplementation().initializeEffigy();
 
             _implementDeferredConfigurations();
 
@@ -264,14 +264,14 @@ public class HistogramPlotter extends PlotterBase {
             // there appears to be no way to control the size of the
             // Plot from the size of the Frame, which is specified
             // by the WindowPropertiesAttribute.
-            getImplementation().updateSize();
+            _getImplementation().updateSize();
         } else {
             // Clear the histogram without clearing the axes.
             plot.clear(false);
             plot.repaint();
         }
 
-        getImplementation().bringToFront();
+        _getImplementation().bringToFront();
     }
 
     /** Read at most one input token from each input channel

@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.gui.PortableContainer;
 import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.actor.injection.PtolemyInjector;
@@ -118,7 +119,7 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, value.getToken());
-        _implementation.setValue(value.getToken());
+        _getImplementation().setValue(value.getToken());
     }
 
     /** Place the visual representation of the actor into the specified container.
@@ -126,11 +127,42 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
      *   null to specify that there is no current container.
      */
     public void place(PortableContainer container) {
-        _implementation.place(container);
+        _getImplementation().place(container);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Get the right instance of the implementation depending upon the
+     *  of the dependency specified through dependency injection.
+     *  If the instance has not been created, then it is created.
+     *  If the instance already exists then return the same. 
+     *
+     *	<p>This code is used as part of the dependency injection needed for the
+     *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
+     *  inject to determine what implementation to use at runtime.
+     *  This method eventually reads ptolemy/actor/ActorModule.properties.
+     *  {@link ptolemy.actor.ActorModuleInitializer.initializeInjector()}
+     *  should be called before this method is called.  If it is not
+     *  called, then a message is printed and initializeInjector() is called.</p>
+     *  @return the implementation.
+     */
+    private TextFieldContainerInterface _getImplementation() {
+        if (_implementation == null) {
+	    if (PtolemyInjector.getInjector() == null) {
+		System.err.println("Warning: main() did not call "
+			       + "ActorModuleInitializer.initializeInjector(), "
+			       + "so Const is calling it for you.");
+		ActorModuleInitializer.initializeInjector();
+	    }
+            _implementation = PtolemyInjector.getInjector().getInstance(
+                    TextFieldContainerInterface.class);
+        }
+        return _implementation;
+    }
 
     /** Implementation of the ConstInterface.  This code is used as part
      *  of the dependency injection needed for the HandSimDroid project, see
@@ -138,6 +170,5 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
      *  then the solution is to have your main() method call
      *  ActorModuleInitializer.initializeInjector().
      */
-    private final TextFieldContainerInterface _implementation = PtolemyInjector
-            .getInjector().getInstance(TextFieldContainerInterface.class);
+    private TextFieldContainerInterface _implementation;
 }

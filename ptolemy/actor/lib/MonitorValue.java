@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.gui.PortableContainer;
 import ptolemy.actor.gui.PortablePlaceable;
 import ptolemy.actor.injection.PtolemyInjector;
@@ -117,7 +118,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
             if (oldToken == null || !oldToken.equals(newToken)) {
                 value.setToken(newToken);
                 value.validate();
-                _implementation.setValue(newToken);
+                _getImplementation().setValue(newToken);
             }
         }
 
@@ -129,14 +130,45 @@ public class MonitorValue extends Sink implements PortablePlaceable {
      *   null to specify that there is no current container.
      */
     public void place(PortableContainer container) {
-        _implementation.place(container);
+        _getImplementation().place(container);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Get the right instance of the implementation depending upon the
+     *  of the dependency specified through dependency injection.
+     *  If the instance has not been created, then it is created.
+     *  If the instance already exists then return the same. 
+     *
+     *	<p>This code is used as part of the dependency injection needed for the
+     *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
+     *  inject to determine what implementation to use at runtime.
+     *  This method eventually reads ptolemy/actor/ActorModule.properties.
+     *  {@link ptolemy.actor.ActorModuleInitializer.initializeInjector()}
+     *  should be called before this method is called.  If it is not
+     *  called, then a message is printed and initializeInjector() is called.</p>
+     *  @return the implementation.
+     */
+    private TextFieldContainerInterface _getImplementation() {
+        if (_implementation == null) {
+	    if (PtolemyInjector.getInjector() == null) {
+		System.err.println("Warning: main() did not call "
+			       + "ActorModuleInitializer.initializeInjector(), "
+			       + "so Monitor is calling it for you.");
+		ActorModuleInitializer.initializeInjector();
+	    }
+            _implementation = PtolemyInjector.getInjector().getInstance(
+                    TextFieldContainerInterface.class);
+        }
+        return _implementation;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Implementation of the MonitorValueInterface
-    private final TextFieldContainerInterface _implementation = PtolemyInjector
-            .getInjector().getInstance(TextFieldContainerInterface.class);
+    /** Implementation of the MonitorValueInterface. */
+    private TextFieldContainerInterface _implementation;
+}   
 
-}

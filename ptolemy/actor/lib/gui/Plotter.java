@@ -138,10 +138,10 @@ public class Plotter extends PlotterBase {
             plot.setAutomaticRescale(true);
         }
 
-        if ((getImplementation().getFrame() == null) && ((getImplementation().getPlatformContainer() == null))) {
-            getImplementation().initializeEffigy();
+        if ((_getImplementation().getFrame() == null) && ((_getImplementation().getPlatformContainer() == null))) {
+            _getImplementation().initializeEffigy();
             _implementDeferredConfigurations();
-            getImplementation().updateSize();
+            _getImplementation().updateSize();
         } else {
             if (plot instanceof PlotInterface) {
                 int width = ((PlotInterface) plot).getNumDataSets();
@@ -158,6 +158,6 @@ public class Plotter extends PlotterBase {
             }
         }
 
-        getImplementation().bringToFront();
+        _getImplementation().bringToFront();
     }
 }

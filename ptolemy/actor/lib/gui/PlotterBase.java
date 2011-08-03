@@ -38,6 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.PortableContainer;
 import ptolemy.actor.gui.PortablePlaceable;
@@ -104,7 +105,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
         legend = new StringAttribute(this, "legend");
 
-        getImplementation().initWindowAndSizeProperties();
+        _getImplementation().initWindowAndSizeProperties();
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
@@ -170,6 +171,12 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Free up memory when closing. */
+    public void cleanUp() {
+        setFrame(null);
+        _getImplementation().cleanUp();
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -308,9 +315,9 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *   null to specify that a new plot should be created.
      */
     public void place(PortableContainer container) {
-        getImplementation().setPlatformContainer(
+        _getImplementation().setPlatformContainer(
                 container != null ? container.getPlatformContainer() : null);
-        getImplementation().removeNullContainer();
+        _getImplementation().removeNullContainer();
 
         if (container != null) {
             if (container.getPlatformContainer() instanceof PlotBoxInterface) {
@@ -375,6 +382,14 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         }
     }
 
+    /** Specify the associated frame and set its properties (size, etc.)
+     *  to match those stored in the _windowProperties attribute.
+     *  @param frame The associated frame.
+     */
+    public void setFrame(Object frame) {
+        _getImplementation().setFrame(frame);
+    }
+
     /** Set a name to present to the user.
      *  <p>If the Plot window has been rendered, then the title of the
      *  Plot window will be updated to the value of the name parameter.</p>
@@ -384,7 +399,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     public void setDisplayName(String name) {
         super.setDisplayName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
-        getImplementation().setTableauTitle(name);
+        _getImplementation().setTableauTitle(name);
     }
 
     /** Set or change the name.  If a null argument is given the
@@ -407,7 +422,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             NameDuplicationException {
         super.setName(name);
         // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4302
-        getImplementation().setTableauTitle(name);
+        _getImplementation().setTableauTitle(name);
     }
 
     /** If the <i>fillOnWrapup</i> parameter is true, rescale the
@@ -444,7 +459,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
-        getImplementation().updateWindowAndSizeAttributes();
+        _getImplementation().updateWindowAndSizeAttributes();
         super._exportMoMLContents(output, depth);
 
         // NOTE: Cannot include xml spec in the header because processing
@@ -499,6 +514,36 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         }
     }
 
+    /** Get the right instance of the implementation depending upon the
+     *  of the dependency specified through dependency injection.
+     *  If the instance has not been created, then it is created.
+     *  If the instance already exists then return the same. 
+     *
+     *	<p>This code is used as part of the dependency injection needed for the
+     *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
+     *  inject to determine what implementation to use at runtime.
+     *  This method eventually reads ptolemy/actor/ActorModule.properties.
+     *  {@link ptolemy.actor.ActorModuleInitializer.initializeInjector()}
+     *  should be called before this method is called.  If it is not
+     *  called, then a message is printed and initializeInjector() is called.</p>
+     *  @return the implementation.
+     */
+    protected PlotterBaseInterface _getImplementation() {
+        if (_implementation == null) {
+	    if (PtolemyInjector.getInjector() == null) {
+		System.err.println("Warning: main() did not call "
+			       + "ActorModuleInitializer.initializeInjector(), "
+			       + "so PlotterBase is calling it for you.");
+		ActorModuleInitializer.initializeInjector();
+	    }
+            _implementation = PtolemyInjector.getInjector().getInstance(
+                    PlotterBaseInterface.class);
+            _implementation.init(this);
+        }
+        return _implementation;
+    }
+
+
     /** If configurations have been deferred, implement them now.
      *  Also, configure the plot legends, if appropriate.
      */
@@ -539,15 +584,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @return A new plot object.
      */
     protected PlotBoxInterface _newPlot() {
-        return getImplementation().newPlot();
-    }
-
-    /** Specify the associated frame and set its properties (size, etc.)
-     *  to match those stored in the _windowProperties attribute.
-     *  @param frame The associated frame.
-     */
-    public void setFrame(Object frame) {
-        getImplementation().setFrame(frame);
+        return _getImplementation().newPlot();
     }
 
     /** Propagate the value of this object to the
@@ -568,21 +605,6 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         }
     }
 
-    /** Free up memory when closing. */
-    protected void cleanUp() {
-        setFrame(null);
-        getImplementation().cleanUp();
-    }
-
-    protected PlotterBaseInterface getImplementation() {
-        if (_implementation == null) {
-            _implementation = PtolemyInjector.getInjector().getInstance(
-                    PlotterBaseInterface.class);
-            _implementation.init(this);
-        }
-        return _implementation;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
@@ -601,7 +623,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     /** Remove the plot from the current container, if there is one.
      */
     private void _remove() {
-        getImplementation().remove();
+        _getImplementation().remove();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -615,5 +637,9 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
     private String _configureSource;
 
+    /** Implementation of the PlotterBaseInterface.  This code is used as part
+     *  of the dependency injection needed for the HandSimDroid project, see
+     *  $PTII/ptserver.
+     */
     private PlotterBaseInterface _implementation;
 }

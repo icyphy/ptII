@@ -28,6 +28,7 @@
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.PortableContainer;
@@ -213,6 +214,11 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
 
     }
 
+    /** Free up memory when closing. */
+    public void cleanUp() {
+        _implementation.cleanUp();
+    }
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the textArea public variable to null.
      *  @param workspace The workspace for the new object.
@@ -360,18 +366,28 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Free up memory when closing. */
-    protected void cleanUp() {
-        _implementation.cleanUp();
-    }
 
     /** Get the right instance of the implementation depending upon the
-     *  of the dependency specified through google guice if it is not already 
-     *  created. If the instance already exists then return the same. 
-     * 
+     *  of the dependency specified through dependency injection.
+     *  If the instance has not been created, then it is created.
+     *  If the instance already exists then return the same. 
+     *
+     *	<p>This code is used as part of the dependency injection needed for the
+     *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
+     *  inject to determine what implementation to use at runtime.
+     *  This method eventually reads ptolemy/actor/ActorModule.properties.
+     *  {@link ptolemy.actor.ActorModuleInitializer.initializeInjector()}
+     *  should be called before this method is called.  If it is not
+     *  called, then a message is printed and initializeInjector() is called.</p>
      */
     protected DisplayInterface _getImplementation() {
         if (_implementation == null) {
+	    if (PtolemyInjector.getInjector() == null) {
+		System.err.println("Warning: main() did not call "
+			       + "ActorModuleInitializer.initializeInjector(), "
+			       + "so Display is calling it for you.");
+		ActorModuleInitializer.initializeInjector();
+	    }
             _implementation = PtolemyInjector.getInjector().getInstance(
                     DisplayInterface.class);
             try {
