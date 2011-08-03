@@ -226,7 +226,7 @@ public interface PlotBoxInterface {
      *  getPlotRectangle() may not return the same rectangle that was
      *  passed in with setPlotRectangle().
      *  @return Rectangle
-     *  @see #setPlotRectangle(Rectangle)
+     *  @see #setPlotRectangle(Object)
      */
     public Object getPlotRectangle();
 
