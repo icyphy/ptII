@@ -1,0 +1,2390 @@
+making tests in ptolemy/domains/fsm/kernel
+making tests in ptolemy/domains/fsm/kernel/fmv
+making tests in ptolemy/domains/fsm/kernel/fmv/test
+CLASSPATH="../../../../../..:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell alljtests.tcl
+FmvAutomaton.tcl
+dummy.tcl
+08/03/11 12:04:03
+Failed: 0  Total Tests: 9  ((Passed: 9, Newly Passed: 0)  Known Failed: 0) /ptII/ptolemy/domains/fsm/kernel/fmv/test
+making tests in ptolemy/domains/fsm/kernel/ia
+making tests in ptolemy/domains/fsm/kernel/ia/test
+CLASSPATH="../../../../../..:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell alljtests.tcl
+InterfaceAutomaton.tcl
+dummy.tcl
+08/03/11 12:04:04
+Failed: 0  Total Tests: 13  ((Passed: 13, Newly Passed: 0)  Known Failed: 0) /ptII/ptolemy/domains/fsm/kernel/ia/test
+making tests in ptolemy/domains/fsm/kernel/test
+CLASSPATH="../../../../..:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell ../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/CommitActionsAttribute.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:05 PDT 2011
+32 ms. Memory: 83008K Free: 65984K (79%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:05 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:05 PDT 2011
+29 ms. Memory: 83008K Free: 81409K (98%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:05 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/IOPortAsBothInputAndOutput.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+11 ms. Memory: 83008K Free: 77910K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+7 ms. Memory: 83008K Free: 77910K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/OutputActionsAttribute.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+7 ms. Memory: 83008K Free: 78449K (95%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+4 ms. Memory: 83008K Free: 78129K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/OutputActionsAttributeForNewDesign.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+7 ms. Memory: 83008K Free: 78136K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+7 ms. Memory: 83008K Free: 77760K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/OutputActionsAttributeUpdateModalController.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+56 ms. Memory: 83008K Free: 76760K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+7 ms. Memory: 83008K Free: 76440K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/changingParams.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+10 ms. Memory: 83008K Free: 77237K (93%)
+7 ms. Memory: 83008K Free: 76917K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/finalState.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+5 ms. Memory: 83008K Free: 77390K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:06 PDT 2011
+3 ms. Memory: 83008K Free: 77390K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:06 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/finalState2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:07 PDT 2011
+13 ms. Memory: 83008K Free: 77437K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:07 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:07 PDT 2011
+3 ms. Memory: 83008K Free: 77117K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:07 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/matrixSimple.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:07 PDT 2011
+8 ms. Memory: 83008K Free: 75805K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:07 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:07 PDT 2011
+4 ms. Memory: 83008K Free: 75485K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:07 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/multirate.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:07 PDT 2011
+47 ms. Memory: 83008K Free: 75239K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:07 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:07 PDT 2011
+49 ms. Memory: 83008K Free: 74598K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:07 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/typePropagationTest.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:07 PDT 2011
+7 ms. Memory: 83008K Free: 77152K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:07 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:07 PDT 2011
+5 ms. Memory: 83008K Free: 76831K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:07 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/verySimple.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:07 PDT 2011
+5 ms. Memory: 83008K Free: 75923K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:07 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:07 PDT 2011
+4 ms. Memory: 83008K Free: 75603K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:07 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/kernel/test/auto/verySimple2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:08 PDT 2011
+12 ms. Memory: 83008K Free: 75393K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:08 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:08 PDT 2011
+12 ms. Memory: 83008K Free: 75073K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:08 PDT 2011
+08/03/11 12:04:08
+Failed: 0  Total Tests: 26  ((Passed: 26, Newly Passed: 0)  Known Failed: 0) /ptII/ptolemy/domains/fsm/kernel/test
+CLASSPATH="../../../../..:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell alljtests.tcl
+FSMActor.tcl
+22 ms. Memory: 83008K Free: 76270K (92%)
+FSM-ConstVariableModelAnalysis.tcl
+FSMDirector.tcl
+55 ms. Memory: 83008K Free: 67108K (81%)
+####################################################################################
+48 ms. Memory: 83008K Free: 74436K (90%)
+State.tcl
+Transition.tcl
+dummy.tcl
+08/03/11 12:04:10
+Failed: 0  Total Tests: 37  ((Passed: 37, Newly Passed: 0)  Known Failed: 0) /ptII/ptolemy/domains/fsm/kernel/test
+making tests in ptolemy/domains/fsm/modal
+making tests in ptolemy/domains/fsm/modal/test
+CLASSPATH="../../../../..:/ptII/lib/diva.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell alljtests.tcl
+Case.tcl
+ModalModel.tcl
+dummy.tcl
+08/03/11 12:04:11
+Failed: 0  Total Tests: 15  ((Passed: 15, Newly Passed: 0)  Known Failed: 0) /ptII/ptolemy/domains/fsm/modal/test
+making tests in ptolemy/domains/fsm/demo
+making tests in ptolemy/domains/fsm/demo/ABP
+making tests in ptolemy/domains/fsm/demo/ChainedTransitions
+making tests in ptolemy/domains/fsm/demo/Blending
+making tests in ptolemy/domains/fsm/demo/ModalBSC
+making tests in ptolemy/domains/fsm/demo/MultipleRuns
+making tests in ptolemy/domains/fsm/demo/StateTracker
+making tests in ptolemy/domains/fsm/demo/SystemLevelType
+making tests in ptolemy/domains/fsm/demo/SystemLevelType/fmv
+making tests in ptolemy/domains/fsm/doc
+making tests in ptolemy/domains/fsm/test
+CLASSPATH="../../../..:/ptII/lib/diva.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell ../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/ABPTest.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:12 PDT 2011
+302 ms. Memory: 83008K Free: 78186K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:13 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:13 PDT 2011
+63 ms. Memory: 83008K Free: 76915K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:13 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/AMICoderExample.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:13 PDT 2011
+16 ms. Memory: 83008K Free: 76133K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:13 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:13 PDT 2011
+4 ms. Memory: 83008K Free: 75814K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:13 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/Case1.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:13 PDT 2011
+12 ms. Memory: 83008K Free: 76774K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:14 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:14 PDT 2011
+12 ms. Memory: 83008K Free: 76456K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:14 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/Case2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:14 PDT 2011
+49 ms. Memory: 83008K Free: 73269K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:14 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:14 PDT 2011
+75 ms. Memory: 83008K Free: 72316K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:14 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface1.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:14 PDT 2011
+10 ms. Memory: 83008K Free: 78714K (95%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:14 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:14 PDT 2011
+30 ms. Memory: 83008K Free: 78714K (95%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:14 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface11.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:14 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:14 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:14 PDT 2011
+19 ms. Memory: 83008K Free: 72353K (87%)
+6 ms. Memory: 83008K Free: 72051K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:14 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface12.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:14 PDT 2011
+12 ms. Memory: 83008K Free: 72334K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+10 ms. Memory: 83008K Free: 72031K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface13.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+11 ms. Memory: 83008K Free: 72045K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+6 ms. Memory: 83008K Free: 71742K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+16 ms. Memory: 83008K Free: 77791K (94%)
+3 ms. Memory: 83008K Free: 77791K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+17 ms. Memory: 83008K Free: 77946K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+18 ms. Memory: 83008K Free: 77946K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface4.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+7 ms. Memory: 83008K Free: 77961K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+3 ms. Memory: 83008K Free: 77656K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface5.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+11 ms. Memory: 83008K Free: 75850K (91%)
+4 ms. Memory: 83008K Free: 75850K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:15 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface6.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:15 PDT 2011
+7 ms. Memory: 83008K Free: 76367K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:16 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:16 PDT 2011
+3 ms. Memory: 83008K Free: 76062K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:16 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface7.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:16 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:16 PDT 2011
+34 ms. Memory: 83008K Free: 76397K (92%)
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:16 PDT 2011
+3 ms. Memory: 83008K Free: 76093K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:16 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface8.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:16 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:16 PDT 2011
+74 ms. Memory: 83008K Free: 76034K (92%)
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:16 PDT 2011
+3 ms. Memory: 83008K Free: 75730K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:16 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/CausalityInterface9.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:16 PDT 2011
+10 ms. Memory: 83008K Free: 74980K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:16 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:16 PDT 2011
+13 ms. Memory: 83008K Free: 74980K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:16 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/EventDetectionTest.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:16 PDT 2011
+141 ms. Memory: 83008K Free: 68221K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:17 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:17 PDT 2011
+257 ms. Memory: 83008K Free: 66087K (80%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:17 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/FunctionDependencyOfFSMActorTest.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:17 PDT 2011
+13 ms. Memory: 83008K Free: 77836K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:17 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:17 PDT 2011
+6 ms. Memory: 83008K Free: 77836K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:17 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/NonStrictFSM_FeedbackLoop.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:17 PDT 2011
+55 ms. Memory: 83008K Free: 73497K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:17 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:17 PDT 2011
+24 ms. Memory: 83008K Free: 70049K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:17 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/NonStrictFSM_FeedbackLoop_Refinement.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+27 ms. Memory: 83008K Free: 71530K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:18 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+50 ms. Memory: 83008K Free: 67873K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:18 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/NonStrictFSM_FeedbackLoop_preemptive.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+34 ms. Memory: 83008K Free: 70741K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:18 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+40 ms. Memory: 83008K Free: 67156K (81%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:18 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/SDF-FSMComposite.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:18 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+7 ms. Memory: 83008K Free: 77805K (94%)
+5 ms. Memory: 83008K Free: 77606K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:18 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/StateTrackerTest.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+19 ms. Memory: 83008K Free: 70924K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:18 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+12 ms. Memory: 83008K Free: 70526K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:18 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/booleanSelect.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+18 ms. Memory: 83008K Free: 74068K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:18 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+23 ms. Memory: 83008K Free: 71770K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:18 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/modalChangingParams.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:18 PDT 2011
+0
+1
+0
+2
+4
+6
+8
+7
+0
+2
+4
+6
+8
+13
+0
+2
+4
+6
+8
+19
+0
+2
+4
+6
+8
+25
+0
+2
+4
+6
+8
+31
+0
+2
+4
+6
+8
+37
+0
+2
+4
+6
+8
+43
+0
+2
+4
+6
+8
+49
+0
+2
+4
+6
+8
+55
+0
+2
+4
+6
+8
+61
+0
+2
+4
+6
+8
+67
+0
+2
+4
+6
+8
+73
+0
+2
+4
+6
+8
+79
+0
+2
+4
+6
+8
+85
+0
+2
+4
+6
+8
+91
+0
+2
+4
+6
+8
+97
+0
+2
+4
+6
+8
+103
+0
+2
+4
+6
+8
+109
+0
+2
+4
+6
+8
+115
+0
+2
+4
+6
+8
+121
+0
+2
+4
+6
+8
+127
+0
+2
+4
+6
+8
+133
+0
+2
+4
+6
+8
+139
+0
+2
+4
+6
+8
+145
+0
+2
+4
+6
+8
+151
+0
+2
+4
+6
+8
+157
+0
+2
+4
+6
+8
+163
+0
+2
+4
+6
+8
+169
+0
+2
+4
+6
+8
+175
+0
+2
+4
+6
+8
+181
+0
+2
+4
+6
+8
+187
+0
+2
+4
+6
+8
+193
+0
+2
+4
+6
+8
+199
+0
+2
+4
+6
+8
+205
+0
+2
+4
+6
+8
+211
+0
+2
+4
+6
+8
+217
+0
+2
+4
+6
+8
+223
+0
+2
+4
+6
+8
+229
+0
+2
+4
+6
+8
+235
+0
+2
+4
+6
+8
+241
+0
+2
+4
+6
+8
+247
+0
+2
+4
+6
+8
+253
+0
+2
+4
+6
+8
+259
+0
+2
+4
+6
+8
+265
+0
+2
+4
+6
+8
+271
+0
+2
+4
+6
+8
+277
+0
+2
+4
+6
+8
+283
+0
+2
+4
+6
+8
+289
+0
+2
+4
+6
+8
+295
+0
+2
+4
+6
+8
+301
+0
+2
+4
+6
+8
+307
+0
+2
+4
+6
+8
+313
+0
+2
+4
+6
+8
+319
+0
+2
+4
+6
+8
+325
+0
+2
+4
+6
+8
+331
+0
+2
+4
+6
+8
+337
+0
+2
+4
+6
+8
+343
+0
+2
+4
+6
+8
+349
+0
+2
+4
+6
+8
+355
+0
+2
+4
+6
+8
+361
+0
+2
+4
+6
+8
+367
+0
+2
+4
+6
+8
+373
+0
+2
+4
+6
+8
+379
+0
+2
+4
+6
+8
+385
+0
+2
+4
+6
+8
+391
+0
+2
+4
+6
+8
+397
+0
+2
+4
+6
+8
+403
+0
+2
+4
+6
+8
+409
+0
+2
+4
+6
+8
+415
+0
+2
+4
+6
+8
+421
+0
+2
+4
+6
+8
+427
+0
+2
+4
+6
+8
+433
+0
+2
+4
+6
+8
+439
+0
+2
+4
+6
+8
+445
+0
+2
+4
+6
+8
+451
+0
+2
+4
+6
+8
+457
+0
+2
+4
+6
+8
+463
+0
+2
+4
+6
+8
+469
+0
+2
+4
+6
+8
+475
+0
+2
+4
+6
+8
+481
+0
+2
+4
+6
+8
+487
+0
+2
+4
+6
+8
+493
+0
+2
+4
+6
+8
+499
+0
+2
+4
+6
+8
+505
+0
+2
+4
+6
+8
+511
+0
+2
+4
+6
+8
+517
+0
+2
+4
+6
+8
+523
+0
+2
+4
+6
+8
+529
+0
+2
+4
+6
+8
+535
+0
+2
+4
+6
+8
+541
+0
+2
+4
+6
+8
+547
+0
+2
+4
+6
+8
+553
+0
+2
+4
+6
+8
+559
+0
+2
+4
+6
+8
+565
+0
+2
+4
+6
+8
+571
+0
+2
+4
+6
+8
+577
+0
+2
+4
+6
+8
+583
+0
+2
+4
+6
+8
+589
+0
+2
+4
+6
+8
+595
+0
+2
+4
+6
+8
+601
+0
+2
+4
+6
+8
+607
+0
+2
+4
+6
+8
+613
+0
+2
+4
+6
+8
+619
+0
+2
+4
+6
+8
+625
+0
+2
+4
+6
+8
+631
+0
+2
+4
+6
+8
+637
+0
+2
+4
+6
+8
+643
+0
+2
+4
+6
+8
+649
+0
+2
+4
+6
+8
+655
+0
+2
+4
+6
+8
+661
+0
+2
+4
+6
+8
+667
+0
+2
+4
+6
+8
+673
+0
+2
+4
+6
+8
+679
+0
+2
+4
+6
+8
+685
+0
+2
+4
+6
+8
+691
+0
+2
+4
+6
+8
+697
+0
+2
+4
+6
+8
+703
+0
+2
+4
+6
+8
+709
+0
+2
+4
+6
+8
+715
+0
+2
+4
+6
+8
+721
+0
+2
+4
+6
+8
+727
+0
+2
+4
+6
+8
+733
+0
+2
+4
+6
+8
+739
+0
+2
+4
+6
+8
+745
+0
+2
+4
+6
+8
+751
+0
+2
+4
+6
+8
+757
+0
+2
+4
+6
+8
+763
+0
+2
+4
+6
+8
+769
+0
+2
+4
+6
+8
+775
+0
+2
+4
+6
+8
+781
+0
+2
+4
+6
+8
+787
+0
+2
+4
+6
+8
+793
+0
+2
+4
+6
+8
+799
+0
+2
+4
+6
+8
+805
+0
+2
+4
+6
+8
+811
+0
+2
+4
+6
+8
+817
+0
+2
+4
+6
+8
+823
+0
+2
+4
+6
+8
+829
+0
+2
+4
+6
+8
+835
+0
+2
+4
+6
+8
+841
+0
+2
+4
+6
+8
+847
+0
+2
+4
+6
+8
+853
+0
+2
+4
+6
+8
+859
+0
+2
+4
+6
+8
+865
+0
+2
+4
+6
+8
+871
+0
+2
+4
+6
+8
+877
+0
+2
+4
+6
+8
+883
+0
+2
+4
+6
+8
+889
+0
+2
+4
+6
+8
+895
+0
+2
+4
+6
+8
+901
+0
+2
+4
+6
+8
+907
+0
+2
+4
+6
+8
+913
+0
+2
+4
+6
+8
+919
+0
+2
+4
+6
+8
+925
+0
+2
+4
+6
+8
+931
+0
+2
+4
+6
+8
+937
+0
+2
+4
+6
+8
+943
+0
+2
+4
+6
+8
+949
+0
+2
+4
+6
+8
+955
+0
+2
+4
+6
+8
+961
+0
+2
+4
+6
+8
+967
+0
+2
+4
+6
+8
+973
+0
+2
+4
+6
+8
+979
+0
+2
+4
+6
+8
+985
+0
+2
+4
+6
+8
+991
+0
+2
+4
+6
+8
+997
+0
+2
+535 ms. Memory: 83008K Free: 68568K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:19 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:19 PDT 2011
+0
+1
+0
+2
+4
+6
+8
+7
+0
+2
+4
+6
+8
+13
+0
+2
+4
+6
+8
+19
+0
+2
+4
+6
+8
+25
+0
+2
+4
+6
+8
+31
+0
+2
+4
+6
+8
+37
+0
+2
+4
+6
+8
+43
+0
+2
+4
+6
+8
+49
+0
+2
+4
+6
+8
+55
+0
+2
+4
+6
+8
+61
+0
+2
+4
+6
+8
+67
+0
+2
+4
+6
+8
+73
+0
+2
+4
+6
+8
+79
+0
+2
+4
+6
+8
+85
+0
+2
+4
+6
+8
+91
+0
+2
+4
+6
+8
+97
+0
+2
+4
+6
+8
+103
+0
+2
+4
+6
+8
+109
+0
+2
+4
+6
+8
+115
+0
+2
+4
+6
+8
+121
+0
+2
+4
+6
+8
+127
+0
+2
+4
+6
+8
+133
+0
+2
+4
+6
+8
+139
+0
+2
+4
+6
+8
+145
+0
+2
+4
+6
+8
+151
+0
+2
+4
+6
+8
+157
+0
+2
+4
+6
+8
+163
+0
+2
+4
+6
+8
+169
+0
+2
+4
+6
+8
+175
+0
+2
+4
+6
+8
+181
+0
+2
+4
+6
+8
+187
+0
+2
+4
+6
+8
+193
+0
+2
+4
+6
+8
+199
+0
+2
+4
+6
+8
+205
+0
+2
+4
+6
+8
+211
+0
+2
+4
+6
+8
+217
+0
+2
+4
+6
+8
+223
+0
+2
+4
+6
+8
+229
+0
+2
+4
+6
+8
+235
+0
+2
+4
+6
+8
+241
+0
+2
+4
+6
+8
+247
+0
+2
+4
+6
+8
+253
+0
+2
+4
+6
+8
+259
+0
+2
+4
+6
+8
+265
+0
+2
+4
+6
+8
+271
+0
+2
+4
+6
+8
+277
+0
+2
+4
+6
+8
+283
+0
+2
+4
+6
+8
+289
+0
+2
+4
+6
+8
+295
+0
+2
+4
+6
+8
+301
+0
+2
+4
+6
+8
+307
+0
+2
+4
+6
+8
+313
+0
+2
+4
+6
+8
+319
+0
+2
+4
+6
+8
+325
+0
+2
+4
+6
+8
+331
+0
+2
+4
+6
+8
+337
+0
+2
+4
+6
+8
+343
+0
+2
+4
+6
+8
+349
+0
+2
+4
+6
+8
+355
+0
+2
+4
+6
+8
+361
+0
+2
+4
+6
+8
+367
+0
+2
+4
+6
+8
+373
+0
+2
+4
+6
+8
+379
+0
+2
+4
+6
+8
+385
+0
+2
+4
+6
+8
+391
+0
+2
+4
+6
+8
+397
+0
+2
+4
+6
+8
+403
+0
+2
+4
+6
+8
+409
+0
+2
+4
+6
+8
+415
+0
+2
+4
+6
+8
+421
+0
+2
+4
+6
+8
+427
+0
+2
+4
+6
+8
+433
+0
+2
+4
+6
+8
+439
+0
+2
+4
+6
+8
+445
+0
+2
+4
+6
+8
+451
+0
+2
+4
+6
+8
+457
+0
+2
+4
+6
+8
+463
+0
+2
+4
+6
+8
+469
+0
+2
+4
+6
+8
+475
+0
+2
+4
+6
+8
+481
+0
+2
+4
+6
+8
+487
+0
+2
+4
+6
+8
+493
+0
+2
+4
+6
+8
+499
+0
+2
+4
+6
+8
+505
+0
+2
+4
+6
+8
+511
+0
+2
+4
+6
+8
+517
+0
+2
+4
+6
+8
+523
+0
+2
+4
+6
+8
+529
+0
+2
+4
+6
+8
+535
+0
+2
+4
+6
+8
+541
+0
+2
+4
+6
+8
+547
+0
+2
+4
+6
+8
+553
+0
+2
+4
+6
+8
+559
+0
+2
+4
+6
+8
+565
+0
+2
+4
+6
+8
+571
+0
+2
+4
+6
+8
+577
+0
+2
+4
+6
+8
+583
+0
+2
+4
+6
+8
+589
+0
+2
+4
+6
+8
+595
+0
+2
+4
+6
+8
+601
+0
+2
+4
+6
+8
+607
+0
+2
+4
+6
+8
+613
+0
+2
+4
+6
+8
+619
+0
+2
+4
+6
+8
+625
+0
+2
+4
+6
+8
+631
+0
+2
+4
+6
+8
+637
+0
+2
+4
+6
+8
+643
+0
+2
+4
+6
+8
+649
+0
+2
+4
+6
+8
+655
+0
+2
+4
+6
+8
+661
+0
+2
+4
+6
+8
+667
+0
+2
+4
+6
+8
+673
+0
+2
+4
+6
+8
+679
+0
+2
+4
+6
+8
+685
+0
+2
+4
+6
+8
+691
+0
+2
+4
+6
+8
+697
+0
+2
+4
+6
+8
+703
+0
+2
+4
+6
+8
+709
+0
+2
+4
+6
+8
+715
+0
+2
+4
+6
+8
+721
+0
+2
+4
+6
+8
+727
+0
+2
+4
+6
+8
+733
+0
+2
+4
+6
+8
+739
+0
+2
+4
+6
+8
+745
+0
+2
+4
+6
+8
+751
+0
+2
+4
+6
+8
+757
+0
+2
+4
+6
+8
+763
+0
+2
+4
+6
+8
+769
+0
+2
+4
+6
+8
+775
+0
+2
+4
+6
+8
+781
+0
+2
+4
+6
+8
+787
+0
+2
+4
+6
+8
+793
+0
+2
+4
+6
+8
+799
+0
+2
+4
+6
+8
+805
+0
+2
+4
+6
+8
+811
+0
+2
+4
+6
+8
+817
+0
+2
+4
+6
+8
+823
+0
+2
+4
+6
+8
+829
+0
+2
+4
+6
+8
+835
+0
+2
+4
+6
+8
+841
+0
+2
+4
+6
+8
+847
+0
+2
+4
+6
+8
+853
+0
+2
+4
+6
+8
+859
+0
+2
+4
+6
+8
+865
+0
+2
+4
+6
+8
+871
+0
+2
+4
+6
+8
+877
+0
+2
+4
+6
+8
+883
+0
+2
+4
+6
+8
+889
+0
+2
+4
+6
+8
+895
+0
+2
+4
+6
+8
+901
+0
+2
+4
+6
+8
+907
+0
+2
+4
+6
+8
+913
+0
+2
+4
+6
+8
+919
+0
+2
+4
+6
+8
+925
+0
+2
+4
+6
+8
+931
+0
+2
+4
+6
+8
+937
+0
+2
+4
+6
+8
+943
+0
+2
+4
+6
+8
+949
+0
+2
+4
+6
+8
+955
+0
+2
+4
+6
+8
+961
+0
+2
+4
+6
+8
+967
+0
+2
+4
+6
+8
+973
+0
+2
+4
+6
+8
+979
+0
+2
+4
+6
+8
+985
+0
+2
+4
+6
+8
+991
+0
+2
+4
+6
+8
+997
+0
+2
+365 ms. Memory: 83008K Free: 78235K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:19 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/modalModel.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:20 PDT 2011
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:20 PDT 2011
+7 ms. Memory: 83008K Free: 76559K (92%)
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:20 PDT 2011
+6 ms. Memory: 83008K Free: 76340K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:20 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/modalModel2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:20 PDT 2011
+9 ms. Memory: 83008K Free: 75634K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:20 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:20 PDT 2011
+5 ms. Memory: 83008K Free: 75180K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:20 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/modalModel3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:20 PDT 2011
+0	4	0
+1	0	1
+4	2	2
+7	4	3
+10	6	4
+5	0	5
+8	2	6
+11	4	7
+14	6	8
+9	0	9
+12	2	10
+15	4	11
+18	6	12
+13	0	13
+16	2	14
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:20 PDT 2011
+39 ms. Memory: 83008K Free: 74563K (90%)
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:20 PDT 2011
+0	4	0
+1	0	1
+4	2	2
+7	4	3
+10	6	4
+5	0	5
+8	2	6
+11	4	7
+14	6	8
+9	0	9
+12	2	10
+15	4	11
+18	6	12
+13	0	13
+16	2	14
+12 ms. Memory: 83008K Free: 73874K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:20 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/model1.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:20 PDT 2011
+33 ms. Memory: 83008K Free: 78930K (95%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:20 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:20 PDT 2011
+4 ms. Memory: 83008K Free: 78711K (95%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:20 PDT 2011
+------------------ testing $PTII/ptolemy/domains/fsm/test/auto/test-direct-in-out.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:20 PDT 2011
+5 ms. Memory: 83008K Free: 77480K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:20 PDT 2011
+auto.tcl: Setting watchdog for 200 seconds at Wed Aug 03 12:04:21 PDT 2011
+4 ms. Memory: 83008K Free: 77261K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Aug 03 12:04:21 PDT 2011
+08/03/11 12:04:21
+Failed: 0  Total Tests: 60  ((Passed: 60, Newly Passed: 0)  Known Failed: 0) /ptII/ptolemy/domains/fsm/test
+CLASSPATH="../../../..:/ptII/lib/diva.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell alljtests.tcl
+SystemLevelType.tcl
+dummy.tcl
+08/03/11 12:04:24
+Failed: 0  Total Tests: 1  ((Passed: 1, Newly Passed: 0)  Known Failed: 0) /ptII/ptolemy/domains/fsm/test

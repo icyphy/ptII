@@ -145,7 +145,6 @@
     <link port="CompositeActor.in3" relation="relation2"/>
     <link port="SingleEvent.output" relation="relation2"/>
     <link port="GetCausalityInterface.output" relation="relation"/>
-    <link port="GetCausalityInterface.trigger" relation="relation2"/>
     <link port="GetCausalityInterface.dependents" relation="relation3"/>
     <link port="GetCausalityInterface.equivalences" relation="relation4"/>
     <link port="Test.input" relation="relation"/>

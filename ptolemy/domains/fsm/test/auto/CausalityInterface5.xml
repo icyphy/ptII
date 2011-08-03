@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CausalityInterface5" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 245, 815, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 245, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -19,9 +19,9 @@
         </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0,170.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 41, 815, 517}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 41, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -67,7 +67,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 195.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 517}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -116,7 +116,7 @@
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in1_0 == true">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in1 == true">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out1 = 1">
                 </property>
@@ -227,7 +227,6 @@
         <link port="in2" relation="relation7"/>
         <link port="out2" relation="relation6"/>
         <link port="GetCausalityInterface.output" relation="relation"/>
-        <link port="GetCausalityInterface.trigger" relation="relation2"/>
         <link port="GetCausalityInterface.dependents" relation="relation4"/>
         <link port="GetCausalityInterface.equivalences" relation="relation5"/>
         <link port="FSMActor.in1" relation="relation2"/>
@@ -239,19 +238,23 @@
         <link port="Display3.input" relation="relation5"/>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0,135.0}">
         </property>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0,205.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=50.0,y=135.0}, tail={id=&quot;CompositeActor.in1&quot;,x=20.0,y=195.0}, points={100.0,135.0,100.0,160.0} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent2.output&quot;,x=45.0,y=205.0}, tail={id=&quot;CompositeActor.in2&quot;,x=20.0,y=245.0}, points={100.0,205.0,100.0,180.0} } }">
         </property>
     </relation>
     <link port="CompositeActor.in1" relation="relation"/>

@@ -21,7 +21,7 @@
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 145.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 40, 815, 517}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 40, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -152,7 +152,6 @@
         <link port="out3" relation="relation8"/>
         <link port="in3" relation="relation8"/>
         <link port="GetCausalityInterface.output" relation="relation"/>
-        <link port="GetCausalityInterface.trigger" relation="relation8"/>
         <link port="GetCausalityInterface.dependents" relation="relation11"/>
         <link port="GetCausalityInterface.equivalences" relation="relation12"/>
         <link port="Test.input" relation="relation"/>

@@ -318,7 +318,6 @@
         <link port="out3" relation="relation9"/>
         <link port="in3" relation="relation8"/>
         <link port="GetCausalityInterface.output" relation="relation"/>
-        <link port="GetCausalityInterface.trigger" relation="relation8"/>
         <link port="GetCausalityInterface.dependents" relation="relation11"/>
         <link port="GetCausalityInterface.equivalences" relation="relation12"/>
         <link port="Test.input" relation="relation"/>
