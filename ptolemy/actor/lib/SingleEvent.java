@@ -158,11 +158,18 @@ public class SingleEvent extends TypedAtomicActor {
             if (microstep >= 1) {
                 output.send(0, value.getToken());
             } else {
+                // Request a refiring at the next microstep.
+                // This ensures that the output is piecewise continuous.
                 // This doesn't really need to be postponed to postfire()
                 // because it is generally harmless to make this request more
                 // than once.
                 _fireAt(currentTime);
+                // Send clear to the output, since we know it is absent.
+                output.sendClear(0);
             }
+        } else {
+            // Send clear to the output, since we know it is absent.
+            output.sendClear(0);
         }
 
         super.fire();
