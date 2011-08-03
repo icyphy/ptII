@@ -30,6 +30,7 @@ package ptdb.kernel.bl.load.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
 
 import java.util.ArrayList;
 
@@ -42,10 +43,20 @@ import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptdb.kernel.database.DBConnection;
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.kernel.Entity;
 
 public class TestImportByReferenceRequirementsIntegration {
+
+    /** Set up the actor module by injecting dependencies for
+     *  actors like Const.  This is needed for the HandSimDroid project,
+     *  see $PTII/ptserver.
+     */
+    @BeforeClass
+    public static void setUpBeforeClass() {
+	ActorModuleInitializer.initializeInjector();
+    }
 
     /**
      * Test importing a model by reference.  No DBReference tag is present.

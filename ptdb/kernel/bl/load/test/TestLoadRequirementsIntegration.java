@@ -31,15 +31,20 @@ package ptdb.kernel.bl.load.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import org.junit.BeforeClass;
 
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import ptdb.kernel.bl.load.LoadManager;
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.util.Workspace;
+
+///////////////////////////////////////////////////////////////////
+//// TestLoadRequirementsIntegration
 
 /**
  * JUnit test for integration testing of the Load feature.
@@ -56,13 +61,20 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (yalsaeed)
  *
  */
-///////////////////////////////////////////////////////////////////
-//// TestLoadRequirementsIntegration
-
 public class TestLoadRequirementsIntegration {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Set up the actor module by injecting dependencies for
+     *  actors like Const.  This is needed for the HandSimDroid project,
+     *  see $PTII/ptserver.
+     */
+    @BeforeClass
+    public static void setUpBeforeClass() {
+	ActorModuleInitializer.initializeInjector();
+    }
+
 
     /**
      * Test the loadModel() method in LoadManagerInterface class.

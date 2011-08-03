@@ -31,6 +31,7 @@ package ptdb.kernel.bl.load.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
 
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -48,6 +49,7 @@ import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.load.DBModelFetcher;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.database.DBConnection;
+import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -76,6 +78,15 @@ import ptolemy.kernel.util.Workspace;
         DBConnectorFactory.class, Utilities.class })
 @SuppressStaticInitializationFor("ptdb.kernel.bl.load.DBModelFetcher")
 public class TestLoadManager {
+
+    /** Set up the actor module by injecting dependencies for
+     *  actors like Const.  This is needed for the HandSimDroid project,
+     *  see $PTII/ptserver.
+     */
+    @BeforeClass
+    public static void setUpBeforeClass() {
+	ActorModuleInitializer.initializeInjector();
+    }
 
     /**
      * Mock the LoadModelManager.  Create a fake XMLDBModel object and specify
