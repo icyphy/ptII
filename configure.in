@@ -785,7 +785,7 @@ case "`uname -s`" in
       _not_ work on the Mac from within Eclipse. Backtracking will work 
       on the Mac _outside_ of Eclipse.
     For details, see
-    http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac and follow the
+    http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac2008 and follow the
     'Problems with Eclipse and Ptolemy on the Mac' link.])
         if test -d ptolemy/apps/eclipse/awt/; then
 	    AC_MSG_WARN([Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
@@ -2171,7 +2171,7 @@ if test ! -d "$JAVAMAIL_USER_DIR"; then
     so we need not find the JavaMail interface.])
 else
     AC_MSG_CHECKING([for JavaMail directory])
-    AC_ARG_WITH(jogl, [  --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
+    AC_ARG_WITH(javamail, [  --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
                           defaults to \$PTII/vendors/oracle/javamail],
 	JAVAMAIL_DIR=$withval,
 	JAVAMAIL_DIR=$PTII/vendors/oracle/javamail)
@@ -2357,7 +2357,9 @@ else
     You need not download the Jogl interface unless you
     plan on using the Jogl domain with Ptolemy II. 
     The Jogl interface can be downloaded from
-    https://jogl.dev.java.net/
+    http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1a/
+    or
+    http://jogamp.org/deployment/autobuilds/master/
     an untar'd into $PTII/vendors/sun.  Note that configure looks
     for $PTII/vendors/sun/jogl, so either move the Jogl distribution
     or create a symbolic link and then rerun configure.] )
@@ -4225,11 +4227,13 @@ else
     Perhaps PowerMock was not installed?
     You need not download these packages if you would like
     to run the tests.  To install PowerMock, go to
-    http://code.google.com/p/powermock/
-    Download PowerMock for EasyMock and JUnit and unzip it in
+    http://code.google.com/p/powermock/ and download
+    http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
+    (which contains PowerMock for EasyMock and JUnit) and unzip it in
     $PTII/vendors/misc so that 
     $PTII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
-    then rerun configure])
+    then rerun configure.
+    Other versions of PowerMock _may_ work, but are untested.])
     fi
 fi
 
