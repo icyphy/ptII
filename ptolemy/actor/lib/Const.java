@@ -131,9 +131,6 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Get the right instance of the implementation depending upon the
@@ -163,6 +160,9 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
         }
         return _implementation;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Implementation of the ConstInterface.  This code is used as part
      *  of the dependency injection needed for the HandSimDroid project, see
