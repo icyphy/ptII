@@ -30,12 +30,13 @@ see the
 <a href="eclipseSimple.htm">Simple Eclipse Instructions</a>.
 
 <p>
-These instructions assume you are using Eclipse Helios under 
+These instructions assume you are using Eclipse Indigo under 
 Windows or Mac OS X.
 Other ways of setting up and building Ptolemy II are described on the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#in_browser" target="_top">Ptolemy II install page</a>. 
 <p>Contents of this page:
 <menu>
+<li><a href="#Java">Install Java</a>
 <li><a href="#Installing">Install Eclipse</a>
 <li><a href="#Preferences">Eclipse Preferences for Ptolemy II</a>
 <li><a href="#SettingUp">Set up Eclipse for Ptolemy II</a>
@@ -52,12 +53,23 @@ Other local pages:
 <li><a href="performance.htm#Eclipse">Profiling using TPTP</a>
 </menu>
 
+<h2><a name="Java">Install Java</a></h2>
+
+See <a href="../install.htm">Ptolemy II Installation</a> for details, but
+briefly:
+<p>Ptolemy II requires Java 1.6 because ptdb uses javax.swing.GroupLayout.
+Also, Java 1.5 is past its end of life.</p>
+
+<p>The Oracle (formerly Sun) Java Development Kit (JDK) is preferred.</p>  
+<p>The IBM JDK will work under Linux.</p>
+<p>OpenJDK may work with Ptolemy II, but could have problems with Kepler.</p>
+
 <h2><a name="Installing">Install Eclipse</a></h2>
 <ol>
 <li>
 Download the latest version of Eclipse from
 <a href="http://www.eclipse.org#in_browser" target="_top">http://www.eclipse.org</a>.
- <br>In October, 2010, we chose
+ <br>In August, 2011, we chose
  <B>Eclipse for RCP and RAP Developers</B>, which is 190Mb.
 The <B>Eclipse for RCP and RAP Developers</B> version includes the
 plug-in development environment (PDE), which is needed by the backtrack
@@ -77,6 +89,7 @@ it is more likely to work than the 64-bit version.</p>
 </p>
 
 <h3>32-bit or 64-bit?</h3>
+
 <ul>
 <li>(<i>Linux</i>): Run <code>uname -a</code>.  If the result
  contains <code>x64</code>, you are running a 64-bit version of Linux and 
@@ -87,13 +100,16 @@ would select the 64-bit version of Eclipse..  Also,
 -bash-3.2$ uname -a
 Linux sisyphus.eecs.berkeley.edu 2.6.18-164.11.1.el5xen #1 SMP Wed Jan 6 13:43:33 EST 2010 x86_64 x86_64 x86_64 GNU/Linux
 -bash-3.2$ java -version
-java version "1.5.0_22"
-Java(TM) 2 Runtime Environment, Standard Edition (build 1.5.0_22-b03)
-Java HotSpot(TM) 64-Bit Server VM (build 1.5.0_22-b03, mixed mode)
+java version "1.6.0_21"
+Java(TM) SE Runtime Environment (build 1.6.0_21-b06)
+Java HotSpot(TM) 64-Bit Server VM (build 17.0-b16, mixed mode)
+-bash-3.2$ 
 </pre>
 
 <li> (<i>Mac OS X</i>):
-Under Mac OS X 10.5 and 10.6, the default JVM is 1.6, which is 64-bit.  However,
+Under Mac OS X 10.7, the default JVM is 1.6, which is 64-bit.
+ 
+</p>Under Mac OS X 10.5 and 10.6, the default JVM is 1.6, which is 64-bit.  However,
 Java 1.6.0_20 does not work well.  The issue is that
 the following stack trace appears:
 <pre>
@@ -110,18 +126,21 @@ session in Eclipse may become non-responsive.
 <p>For further information, see:
 <a href="http://lists.apple.com/archives/java-dev/2010/May/msg00140.html"><code>http://lists.apple.com/archives/java-dev/2010/May/msg00140.html</code></a>.
 
-<br>So, at this time, we are recommending the 32-bit version with Java 1.5.
+<br>So, at this time, we are recommending the 32-bit version with Java 1.5 and Mac OS X 10.5.
+Below are instructions for using the 32-bit version of Eclipse. 
+<b>These instructions are for Mac OS X 10.5 only.</b>  Mac OS X 10.6 and 10.7
+should <b>use the 64-bit version of Eclipse</b>
 
 <br>Download
-  <code>eclipse-rcp-helios-SR1-macosx-cocoa.tar.gz</code>
+    <code>eclipse-rcp-indigo-macosx-cocoa.tar.gz</code>
   uncompress it and move <code>eclipse/</code> into <code>/Applications</code>, which
   will create <code>/Applications/eclipse/Eclipse.app</code>.
-  <br>Firefox Mac OS X Details:
+  <br>Firefox Mac OS X Details for 32-bit under Mac OS 10.5:
     <ol>
     <li>Firefox will download the file into a directory, which may be
     <code>/Downloads</code>
     <li>Double click on
-    <code>eclipse-rcp-helios-SR1-macosx-cocoa.tar.gz</code>
+    <code>eclipse-rcp-indigo-macosx-cocoa.tar.gz</code>
     which will create the <code>eclipse</code> directory.
     <li> Drag the <code>eclipse</code> directory to your
     <code>Applications</code> directory.
@@ -283,17 +302,12 @@ in the preferences window
  </ol>
 
 <li>
-Ptolemy II 8.0 uses some features of Java 1.5, which is also known as Java 5.0.
-In particular, <CODE>ptolemy/actor/ptalon</CODE> uses generics,
-which require Java 1.5 (aka Java 5.0) or later.
-<p>However, the Ptolemy II development trunk that includes changes after
-Ptolemy II 8.0 uses some features of Java 1.6 (aka Java 6.0).
-
-In particular, <code>ptdb</code> to uses javax.swing.GroupLayout.
- which requires Java 1.6 (also known as 6.0) or later.
+Ptolemy II uses some features of Java 1.6, which is also known as Java 6.0
+In particular, <CODE>ptdb</CODE> uses javax.swing.GroupLayout
+which requires Java 1.6 (aka Java 6.0) or later.
 
 <ul>
-<li>(<i>Mac OS X</i>): It is best to set Eclipse to use Java 1.5 or 5.0
+<li>(<i>Mac OS X</i>): It is best to set Eclipse to use Java 1.5 or 6.0
 or later source code compliance.
 
 <li>(<i>Windows</i>): It is best to set Eclipse to use Java 1.6 or 6.0
@@ -305,15 +319,11 @@ or later source code compliance.
   <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
   <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
   <br> expand <code>Java</code> | <code>Compiler</code>
- <li> Make sure that Set "Compiler compliance level":
-<ul>
-<li>(<i>Mac OS X</i>): "1.5" or "5.0"
-<li>(<i>Windows</i>): "1.6" or "6.0"
+ <li> Make sure that "Compiler compliance level" is set to "1.6" or "6.0":
 </ul>
 
-<i>Note that Java 1.5 is the same as Java 5.0 and Java 1.6 is the same as Java 6.0</i>.  What we don't want
-is "1.4" or "4.0".   If you plan on using the the Ptolemy II development
-tree after Ptolemy II 8.0. then you don't want "1.5" or "5.0".
+<i>Note that Java 1.6 is the same as Java 6.0</i>.  What we don't want
+is "1.5", "5.0", "1.4" or "4.0".
  <li> Click Apply. 
 </ol>
 
@@ -344,7 +354,7 @@ JDK is selected for building, not a JRE.
 <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <ol>
 <li> Select <code>Java</code> | <code>Installed JREs</code>
-<br>(<i>Mac OS X</i>):  select <code>JVM 1.5.0</code>.
+<br>(<i>Mac OS X</i>):  select <code>Java SE 6</code>.
 <br>(<i>Windows</i>):  select <code>JVM 1.6.0</code>.
 
 <li> Verify that the checked line corresponds with a JDK, not
