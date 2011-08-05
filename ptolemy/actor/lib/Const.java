@@ -142,7 +142,7 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
      *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
      *  inject to determine what implementation to use at runtime.
      *  This method eventually reads ptolemy/actor/ActorModule.properties.
-     *  {@link ptolemy.actor.ActorModuleInitializer.initializeInjector()}
+     *  {@link #ptolemy.actor.ActorModuleInitializer.initializeInjector()}
      *  should be called before this method is called.  If it is not
      *  called, then a message is printed and initializeInjector() is called.</p>
      *  @return the implementation.

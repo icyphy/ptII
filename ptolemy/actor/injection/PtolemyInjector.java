@@ -73,7 +73,7 @@ public class PtolemyInjector {
     }
 
     /**
-     * Return the PtolemyInjector.  Note that {@link #createInjector(Module...)} 
+     * Return the PtolemyInjector.  Note that {@link #createInjector(PtolemyModule...)} 
      * must be called prior to using this method.
      * @return the PtolemyInjector that was created with the supplied modules.
      */
