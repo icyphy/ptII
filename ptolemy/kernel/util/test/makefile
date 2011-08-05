@@ -127,7 +127,16 @@ OPTIONAL_FILES = \
 # that don't get compiled when we compile the test .java files
 # in this directory
 JCLASS_DEPENDENCIES = \
+	$(ROOT)/ptolemy/actor/lib/AddSubtract.class \
+	$(ROOT)/ptolemy/actor/lib/Clock.class \
+	$(ROOT)/ptolemy/actor/lib/Const.class \
+	$(ROOT)/ptolemy/actor/lib/Recorder.class \
+	$(ROOT)/ptolemy/actor/lib/SequenceActor.class \
 	$(ROOT)/ptolemy/actor/lib/TextFieldContainerJavaSE.class \
+	$(ROOT)/ptolemy/actor/lib/gui/DisplayInterface.class \
+	$(ROOT)/ptolemy/actor/lib/gui/DisplayJavaSE.class \
+	$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseInterface.class \
+	$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseJavaSE.class \
 	$(ROOT)/ptolemy/data/expr/UtilityFunctions.class \
 	$(ROOT)/ptolemy/data/expr/FixPointFunctions.class \
 	'$(ROOT)/ptolemy/actor/util/DFUtilities$$NamedObjComparator.class'
@@ -149,8 +158,26 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
 				$(JCLASS_DEPENDENCIES)
 	$(JTCLSH) alljtests.tcl
 
+$(ROOT)/ptolemy/actor/lib/AddSubtract.class:
+	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) AddSubtract.class)
+$(ROOT)/ptolemy/actor/lib/Clock.class:
+	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) Clock.class)
+$(ROOT)/ptolemy/actor/lib/Const.class:
+	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) Const.class)
+$(ROOT)/ptolemy/actor/lib/Recorder.class:
+	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) Recorder.class)
+$(ROOT)/ptolemy/actor/lib/SequenceActor.class:
+	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) SequenceActor.class)
 $(ROOT)/ptolemy/actor/lib/TextFieldContainerJavaSE.class:
 	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) TextFieldContainerJavaSE.class)
+$(ROOT)/ptolemy/actor/lib/gui/DisplayInterface.class:
+	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) DisplayInterface.class)
+$(ROOT)/ptolemy/actor/lib/gui/DisplayJavaSE.class:
+	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) DisplayJavaSE.class)
+$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseInterface.class:
+	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) PlotterBaseInterface.class)
+$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseJavaSE.class:
+	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) PlotterBaseJavaSE.class)
 $(ROOT)/ptolemy/data/expr/UtilityFunctions.class:
 	(cd $(ROOT)/ptolemy/data/expr; $(MAKE) UtilityFunctions.class)
 $(ROOT)/ptolemy/data/expr/FixPointFunctions.class:
