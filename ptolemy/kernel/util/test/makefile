@@ -127,6 +127,7 @@ OPTIONAL_FILES = \
 # that don't get compiled when we compile the test .java files
 # in this directory
 JCLASS_DEPENDENCIES = \
+	$(ROOT)/ptolemy/actor/lib/TextFieldContainerJavaSE.class \
 	$(ROOT)/ptolemy/data/expr/UtilityFunctions.class \
 	$(ROOT)/ptolemy/data/expr/FixPointFunctions.class \
 	'$(ROOT)/ptolemy/actor/util/DFUtilities$$NamedObjComparator.class'
@@ -148,6 +149,8 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
 				$(JCLASS_DEPENDENCIES)
 	$(JTCLSH) alljtests.tcl
 
+$(ROOT)/ptolemy/actor/lib/TextFieldContainerJavaSE.class:
+	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) TextFieldContainerJavaSE.class)
 $(ROOT)/ptolemy/data/expr/UtilityFunctions.class:
 	(cd $(ROOT)/ptolemy/data/expr; $(MAKE) UtilityFunctions.class)
 $(ROOT)/ptolemy/data/expr/FixPointFunctions.class:
