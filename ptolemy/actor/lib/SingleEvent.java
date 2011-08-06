@@ -156,7 +156,14 @@ public class SingleEvent extends TypedAtomicActor {
         Time currentTime = director.getModelTime();
         if (currentTime.equals(eventTime)) {
             if (microstep >= 1) {
-                output.send(0, value.getToken());
+                // If an output has been produced previously, then
+                // produce it again only if the microstep matches.
+                if (_outputProduced < 0 || _outputProduced == microstep) {
+                    output.send(0, value.getToken());
+                    _outputProduced = microstep;
+                } else {
+                    output.sendClear(0);
+                }
             } else {
                 // Request a refiring at the next microstep.
                 // This ensures that the output is piecewise continuous.
@@ -181,6 +188,8 @@ public class SingleEvent extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        
+        _outputProduced = -1;
 
         double eventTime = ((DoubleToken) time.getToken()).doubleValue();
 
@@ -188,4 +197,10 @@ public class SingleEvent extends TypedAtomicActor {
             _fireAt(eventTime);
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Indicator that the event has been produced at a microstep. */
+    private int _outputProduced;
 }
