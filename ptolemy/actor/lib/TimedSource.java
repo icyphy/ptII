@@ -153,10 +153,14 @@ public class TimedSource extends Source implements TimedActor {
                         // equals the stop time or exceeds it.
                         director.fireAt(this, newStopTime);
                     } else {
+                        /* Do not throw an exception here because it makes it
+                         * impossible to change the stop time after the model has run.
+                         *
                         throw new IllegalActionException(this, "The stop time "
                                 + newStopTime
-                                + "is earlier than the current time "
+                                + " is earlier than the current time "
                                 + currentTime);
+                         */
                     }
                 }
 
