@@ -363,14 +363,20 @@ public class DiscreteClock extends TimedSource {
             _debug("Called fire() at time (" + currentTime + ", "
                     + currentIndex + ")");
         }
+        if (!_enabled) {
+            if (_debugging) {
+                _debug("Not sending output because start input has not arrived.");
+            }
+            output.sendClear(0);
+            return;
+        }
+
         int comparison = _nextOutputTime.compareTo(currentTime);
         if (comparison > 0) {
             // If it is too early to produce an output.
             // This is safe because we have made a fireAt() call for
             // the next output time.
-            if (_debugging) {
-                _debug("Too early to produce output.");
-            }
+            _produceIntermediateOutput();
             return;
         } else if (comparison == 0) {
             // It is the right time to produce an output. Check
@@ -380,9 +386,7 @@ public class DiscreteClock extends TimedSource {
                     // We have not yet reached the requisite index.
                     // Request another firing at the current time.
                     _fireAt(currentTime);
-                    if (_debugging) {
-                        _debug("Time is right to produce output, but microstep is too early.");
-                    }
+                    _produceIntermediateOutput();
                     return;
                 }
             }
@@ -396,6 +400,7 @@ public class DiscreteClock extends TimedSource {
                 // Pretend we produced an output so that posfire() will
                 // skip to the next phase.
                 _outputProduced = true;
+                output.sendClear(0);
                 return;
             }
             // Ready to fire.
@@ -405,8 +410,6 @@ public class DiscreteClock extends TimedSource {
                 }
                 output.send(0, _getValue(_phase));
                 _outputProduced = true;
-            } else if (_debugging) {
-                _debug("Not sending output because start input has not arrived.");
             }
             return;
         }
@@ -517,7 +520,7 @@ public class DiscreteClock extends TimedSource {
         } else {
             currentTime = getDirector().getGlobalTime();
         }
-        if (currentTime.compareTo(getModelStopTime()) >= 0) {
+        if (currentTime.compareTo(getModelStopTime()) > 0) {
             if (_debugging) {
                 _debug("Called prefire, which returns false because time exceeds stopTime.");
             }
@@ -546,6 +549,40 @@ public class DiscreteClock extends TimedSource {
                     "Index out of range of the values parameter.");
         }
         return val.getElement(index);
+    }
+    
+    /** Produce the output required at times between the specified times.
+     *  This base class makes the output absent, but subclasses may
+     *  interpolate the values.
+     *  @throws IllegalActionException If sending the output fails.
+     */
+    protected void _produceIntermediateOutput() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Too early to produce output.");
+        }
+        output.sendClear(0);
+    }
+
+    /** Skip the current firing phase and request a refiring at the
+     *  time of the next one.
+     *  @exception IllegalActionException If the period cannot be evaluated.
+     */
+    protected void _skipToNextPhase() throws IllegalActionException {
+        _phase++;
+        if (_phase >= _offsets.length) {
+            double periodValue = ((DoubleToken) period.getToken())
+                    .doubleValue();
+            _phase = 0;
+            _cycleStartTime = _cycleStartTime.add(periodValue);
+        }
+        Time nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
+        if (_nextOutputTime.equals(nextOutputTime)) {
+            _nextOutputIndex++;
+        } else {
+            _nextOutputTime = nextOutputTime;
+            _nextOutputIndex = 1;
+        }
+        _fireAt(_nextOutputTime);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -577,31 +614,6 @@ public class DiscreteClock extends TimedSource {
 
     /** The phase of the next output. */
     protected transient int _phase;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Skip the current firing phase and request a refiring at the
-     *  time of the next one.
-     *  @exception IllegalActionException If the period cannot be evaluated.
-     */
-    private void _skipToNextPhase() throws IllegalActionException {
-        _phase++;
-        if (_phase >= _offsets.length) {
-            double periodValue = ((DoubleToken) period.getToken())
-                    .doubleValue();
-            _phase = 0;
-            _cycleStartTime = _cycleStartTime.add(periodValue);
-        }
-        Time nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
-        if (_nextOutputTime.equals(nextOutputTime)) {
-            _nextOutputIndex++;
-        } else {
-            _nextOutputTime = nextOutputTime;
-            _nextOutputIndex = 1;
-        }
-        _fireAt(_nextOutputTime);
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
