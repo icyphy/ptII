@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
  input is continuous or not. That is, if a discontinuity crosses the
  threshold in the right direction, it produces an output at the time
  of the discontinuity.  If the input is continuous,
- then the output is produced when the input is
+ then the output is generated when the input is
  within <i>errorTolerance</i> of the level.
  The value of the output is given by the <i>value</i> parameter,
  which by default has the value of the <i>level</i> parameter.
