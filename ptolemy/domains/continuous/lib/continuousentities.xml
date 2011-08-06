@@ -14,7 +14,10 @@
                 class="ptolemy.domains.continuous.lib.ContinuousSinewave"/>
         <entity name="DiscreteClock"
                 class="ptolemy.actor.lib.DiscreteClock"/>
-		<entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent"/>
+		<entity name="SingleEvent"
+				class="ptolemy.actor.lib.SingleEvent"/>
+		<entity name="Waveform"
+				class="ptolemy.domains.continuous.lib.Waveform"/>
   </entity>
   <entity name="Continuous to Discrete" class="ptolemy.moml.EntityLibrary">
         <entity name="LevelCrossingDetector"
