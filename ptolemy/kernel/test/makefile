@@ -101,7 +101,9 @@ JCLASS_DEPENDENCIES = \
 	$(ROOT)/ptolemy/actor/lib/gui/DisplayInterface.class \
 	$(ROOT)/ptolemy/actor/lib/gui/DisplayJavaSE.class \
 	$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseInterface.class \
-	$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseJavaSE.class
+	$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseJavaSE.class \
+	$(ROOT)/ptolemy/media/javasound/LiveSoundInterface.class \
+	$(ROOT)/ptolemy/media/javasound/LiveSoundJavaSE.class
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
@@ -136,6 +138,10 @@ $(ROOT)/ptolemy/actor/lib/gui/PlotterBaseInterface.class:
 	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) PlotterBaseInterface.class)
 $(ROOT)/ptolemy/actor/lib/gui/PlotterBaseJavaSE.class:
 	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) PlotterBaseJavaSE.class)
+$(ROOT)/ptolemy/media/javasound/LiveSoundInterface.class:
+	(cd $(ROOT)/ptolemy/media/javasound; $(MAKE) LiveSoundInterface.class)
+$(ROOT)/ptolemy/media/javasound/LiveSoundJavaSE.class:
+	(cd $(ROOT)/ptolemy/media/javasound; $(MAKE) LiveSoundJavaSE.class)
 
 
 # Get the rest of the rules
