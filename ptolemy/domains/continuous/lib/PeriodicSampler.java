@@ -27,14 +27,20 @@
  */
 package ptolemy.domains.continuous.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import ptolemy.actor.CausalityMarker;
+import ptolemy.actor.Director;
+import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -95,6 +101,12 @@ public class PeriodicSampler extends Transformer {
         samplePeriod.setExpression("0.1");
         samplePeriod.setTypeEquals(BaseType.DOUBLE);
 
+        // Empty set of dependent ports, indicating that the output
+        // does not depend on the input.
+        Set<Port> dependentPorts = new HashSet<Port>();
+        CausalityMarker causalityMarker = new CausalityMarker(this, "causalityMarker");
+        causalityMarker.addDependentPortSet(dependentPorts);
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
@@ -141,15 +153,15 @@ public class PeriodicSampler extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        ContinuousDirector director = (ContinuousDirector) getDirector();
-        Time currentTime = director.getModelTime();
+        SuperdenseTimeDirector director = (SuperdenseTimeDirector) getDirector();
+        Time currentTime = getDirector().getModelTime();
         int microstep = director.getIndex();
         if (_debugging) {
             _debug("Current time is " + currentTime + " with microstep "
                     + microstep);
         }
+        int width = Math.min(input.getWidth(), output.getWidth());
         if (currentTime.compareTo(_nextSamplingTime) == 0 && microstep == 1) {
-            int width = Math.min(input.getWidth(), output.getWidth());
             for (int i = 0; i < width; i++) {
                 if (_pendingOutputs[i] != null) {
                     // There is a deferred output for this input channel.
@@ -158,7 +170,13 @@ public class PeriodicSampler extends Transformer {
                         _debug("Sending output value " + _pendingOutputs[i]
                                 + " on channel " + i);
                     }
+                } else {
+                    output.sendClear(i);
                 }
+            }
+        } else {
+            for (int i = 0; i < width; i++) {
+                output.sendClear(i);
             }
         }
     }
@@ -182,6 +200,15 @@ public class PeriodicSampler extends Transformer {
         }
     }
 
+    /** Return false. This actor can produce some outputs even the
+     *  inputs are unknown. This actor is usable for breaking feedback
+     *  loops. It does not read inputs in the fire() method.
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
+    }
+
     /** If the current microstep is zero, sample the inputs and request
      *  a refiring at the current time. If it is one, then request a refiring
      *  at the next sample time.
@@ -189,9 +216,9 @@ public class PeriodicSampler extends Transformer {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        ContinuousDirector director = (ContinuousDirector) getDirector();
+        Director director = getDirector();
         Time currentTime = director.getModelTime();
-        int microstep = director.getIndex();
+        int microstep = ((SuperdenseTimeDirector)director).getIndex();
         if (currentTime.compareTo(_nextSamplingTime) == 0) {
             if (microstep == 0) {
                 int width = Math.min(input.getWidth(), output.getWidth());
@@ -217,14 +244,15 @@ public class PeriodicSampler extends Transformer {
         return super.postfire();
     }
 
-    /** Make sure the actor runs inside a Continuous domain.
+    /** Make sure the actor runs inside a domain that understands
+     *  superdense time.
      *  @exception IllegalActionException If the director is not
-     *  a ContinuousDirector or the parent class throws it.
+     *  a SuperdenseTimeDirector or the parent class throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        if (!(getDirector() instanceof ContinuousDirector)) {
+        if (!(getDirector() instanceof SuperdenseTimeDirector)) {
             throw new IllegalActionException("PeriodicSampler can only"
-                    + " be used inside Continuous domain.");
+                    + " be used inside a superdense time domain.");
         }
         super.preinitialize();
     }
