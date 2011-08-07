@@ -44,12 +44,13 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  This actor generates discrete events by periodically sampling the input signal.
- The sampling rate is given by parameter "samplePeriod", which has default value
+ The sampling rate is given by parameter <i>samplePeriod</i>, which has default value
  0.1.  Specifically, if the actor is initialized at time <i>t</i> and the sample
  period is <i>T</i>, then the output will have the value of the input
  at times <i>t</i> + <i>nT</i>, for all natural numbers <i>n</i>.
  This sampler will send to the output the initial value of
- the input (at microstep 0), but will send it one microstep later (at 1).
+ the input (the input value at microstep 0), but will send it one microstep later (at
+ microstep 1).
  This ensures that the output at microstep 0 is always absent, thus
  ensuring continuity from the left. That is, the input is absent prior
  to the sample time, so continuity requires that it be absent at
