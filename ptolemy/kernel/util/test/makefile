@@ -140,7 +140,7 @@ JCLASS_DEPENDENCIES = \
 	$(ROOT)/ptolemy/data/expr/UtilityFunctions.class \
 	$(ROOT)/ptolemy/data/expr/FixPointFunctions.class \
 	$(ROOT)/ptolemy/media/javasound/LiveSoundInterface.class \
-	$(ROOT)/ptolemy/media/javasound/LiveSoundJavaSE.class
+	$(ROOT)/ptolemy/media/javasound/LiveSoundJavaSE.class \
 	'$(ROOT)/ptolemy/actor/util/DFUtilities$$NamedObjComparator.class'
 
 JCLASS=	$(JSRCS:%.java=%.class)
