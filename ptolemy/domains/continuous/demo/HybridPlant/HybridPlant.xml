@@ -755,9 +755,9 @@
         </configure>
     </entity>
     <entity name="BufferLevel" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="buffer level, bottle level">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="buffer level">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 488, 455, 258}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 488, 455, 258}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[455, 214]">
         </property>

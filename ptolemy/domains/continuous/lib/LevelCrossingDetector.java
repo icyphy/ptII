@@ -27,9 +27,12 @@
  */
 package ptolemy.domains.continuous.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -37,6 +40,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.continuous.kernel.ContinuousStepSizeController;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -59,15 +63,16 @@ import ptolemy.kernel.util.Workspace;
  within <i>errorTolerance</i> of the level.
  The value of the output is given by the <i>value</i> parameter,
  which by default has the value of the <i>level</i> parameter.
- <p>
- This actor will not produce an event on its very first firing.
- If you need an output at time zero, then you need generate a
- level crossing discontinuity at time zero.
- <p>
- This actor will also not produce an event if the current microstep is 0.
- In that case, the output is postponed by one microstep. This ensures
- that the output signal, which is discrete, satisfies the piecewise
- continuity constraint, and is absent at microstep 0.
+  <p>
+ This actor has a one microstep delay before it will produce an
+ output. That is, when a level crossing is detected, the actor
+ requests a refiring in the next microstep at the current time,
+ and only in that refiring produces the output.
+ This ensures that the output satisfies the piecewise
+ continuity constraint. It is always absent at microstep 0.
+<p>
+ This actor will not produce an event at the time of the first firing
+ unless there is a level crossing discontinuity at that time.
 
  @author Edward A. Lee, Haiyang Zheng
  @version $Id$
@@ -121,6 +126,12 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         errorTolerance = new Parameter(this, "errorTolerance", new DoubleToken(
                 _errorTolerance));
         errorTolerance.setTypeEquals(BaseType.DOUBLE);
+        
+        // empty set of dependent ports, indicating that the output
+        // does not depend on the input.
+        Set<Port> dependentPorts = new HashSet<Port>();
+        CausalityMarker causalityMarker = new CausalityMarker(this, "causalityMarker");
+        causalityMarker.addDependentPortSet(dependentPorts);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -221,119 +232,93 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         return newObject;
     }
 
-    /** Produce an output event if the current input compared to the input
+    /** Detect whether the current input compared to the input
      *  on the last iteration indicates that a level crossing in the
      *  appropriate direction has occurred, if the time is within
      *  <i>errorTolerance</i> of the time at which the crossing occurs.
-     *  @exception IllegalActionException If can not get token from the trigger
-     *  port or can not send token through the output port.
+     *  If there is such a level crossing, then postfire will request
+     *  a refiring at the current time, and the next invocation of fire()
+     *  will produce the output event.
+     *  @exception IllegalActionException If it cannot get a token from the trigger
+     *   port or cannot send a token through the output port.
      */
     public void fire() throws IllegalActionException {
         ContinuousDirector dir = (ContinuousDirector) getDirector();
         double currentStepSize = dir.getCurrentStepSize();
-        Time currentTime = dir.getModelTime();
         int microstep = dir.getIndex();
+        _postponedOutputProduced = false;
 
         if (_debugging) {
             _debug("Called fire() at time " + dir.getModelTime()
                     + " with microstep " + microstep + " and step size "
                     + currentStepSize);
         }
-        // If the trigger input is not connected, or there is no
-        // token, then produce no output.
-        if (trigger.getWidth() < 1 || !trigger.hasToken(0)) {
-            output.send(0, null);
-            return;
-        }
-        // Record the input.
-        _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
-        if (_debugging) {
-            _debug("-- Consumed a trigger input: " + _thisTrigger);
-            _debug("-- Last trigger is: " + _lastTrigger);
-        }
 
-        // First firing. Do not produce an output.
-        if (_lastTrigger == Double.NEGATIVE_INFINITY) {
-            output.send(0, null);
-            return;
-        }
-        // If there is a postponed output, then produce it
-        // and return. There is nothing more to do.
-        // Make sure it is only produced at the indicated time.
-        if (_postponed != null && currentTime.equals(_postponed)) {
-            if (microstep == 0) {
-                if (_debugging) {
-                    _debug("-- There is a postponed event but the microstep is still zero.");
-                }
-                dir.fireAtCurrentTime(this);
-            } else {
-                if (_debugging) {
-                    _debug("-- Produce postponed output.");
-                }
-                output.send(0, value.getToken());
-                _postponedOutputProduced = true;
+        // If there is a postponed output, then produce it.
+        if (_postponed > 0 && _postponed == microstep) {
+            if (_debugging) {
+                _debug("-- Produce postponed output.");
             }
-            return;
-        }
-
-        boolean inputIsIncreasing = _thisTrigger > _lastTrigger;
-        boolean inputIsDecreasing = _thisTrigger < _lastTrigger;
-
-        // If a crossing has occurred, and either the current step
-        // size is zero or the current input is within error tolerance
-        // of the level, produce an output.
-        // Check whether _lastTrigger and _thisTrigger are on opposite sides
-        // of the level.
-        if (((_lastTrigger - _level) * (_thisTrigger - _level)) < 0.0
-                || _thisTrigger == _level) {
-            // Crossing has occurred. Check whether the direction is right.
-            // Note that we do not produce an output is the input is neither
-            // increasing nor decreasing. Presumably, we already produced
-            // an output in that case.
-            if ((_detectFallingCrossing && inputIsDecreasing)
-                    || (_detectRisingCrossing && inputIsIncreasing)) {
-                // If the step size is 0.0, and the
-                // microstep is zero, then we can produce an output.
-                if (currentStepSize == 0.0) {
-                    if (microstep == 0) {
-                        // Microstep is 0. Postpone the output.
-                        if (_debugging) {
-                            _debug("-- Event is detected, but microstep is 0. Postpone output.");
-                        }
-                        _postponed = currentTime;
-                        _postponedOutputProduced = false;
-                        dir.fireAtCurrentTime(this);
-                    } else {
-                        if (_debugging) {
-                            _debug("-- Event is detected. Produce output.");
-                        }
-                        output.send(0, value.getToken());
-                    }
-                } else if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
-                    // The current time is close enough to when the event happens.
-                    // Request a refiring at the current time so that the output is
-                    // produced when the step size is 0.0.
-                    if (_debugging) {
-                        _debug("-- Event is detected with a non-zero step size. Request a refiring.");
-                    }
-                    _postponed = currentTime;
-                    _postponedOutputProduced = false;
-                    dir.fireAtCurrentTime(this);
-                } else {
-                    // Step size is nonzero and the current input is not
-                    // close enough. We have missed an event.
-                    if (_debugging) {
-                        _debug("-- Missed an event. Step size will be adjusted.");
-                    }
-                    _eventMissed = true;
-                }
-            } else {
-                // Direction is not right.
-                _eventMissed = false;
-            }
+            output.send(0, value.getToken());
+            _postponedOutputProduced = true;
         } else {
-            // Level crossing has not occurred.
-            _eventMissed = false;
+            // There is no postponed output, so send clear.
+            if (_debugging) {
+                _debug("-- Output is absent.");
+            }
+            output.sendClear(0);
+        }
+        
+        // If the trigger input is available, record it.
+        if (trigger.getWidth() > 0 && trigger.isKnown(0) && trigger.hasToken(0)) {
+            _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
+            if (_debugging) {
+                _debug("-- Consumed a trigger input: " + _thisTrigger);
+                _debug("-- Last trigger is: " + _lastTrigger);
+            }
+
+            // If first firing, do not look for a level crossing.
+            if (_lastTrigger == Double.NEGATIVE_INFINITY) {
+                return;
+            }
+
+            boolean inputIsIncreasing = _thisTrigger > _lastTrigger;
+            boolean inputIsDecreasing = _thisTrigger < _lastTrigger;
+
+            // If a crossing has occurred, and either the current step
+            // size is zero or the current input is within error tolerance
+            // of the level, then request a refiring.
+            // Check whether _lastTrigger and _thisTrigger are on opposite sides
+            // of the level.
+            // NOTE: The code below should not set _eventMissed = false because
+            // an event may be missed during any stage of speculative execution.
+            // This should be set to false only in postfire.
+            if (((_lastTrigger - _level) * (_thisTrigger - _level)) < 0.0
+                    || _thisTrigger == _level) {
+                // Crossing has occurred. Check whether the direction is right.
+                // Note that we do not produce an output is the input is neither
+                // increasing nor decreasing. Presumably, we already produced
+                // an output in that case.
+                if ((_detectFallingCrossing && inputIsDecreasing)
+                        || (_detectRisingCrossing && inputIsIncreasing)) {
+                    // If the step size is not 0.0, and the
+                    // current input is not close enough, then we
+                    // have missed an event and the step size will need
+                    // to be adjusted.
+                    if (currentStepSize != 0.0
+                            && Math.abs(_thisTrigger - _level) >= _errorTolerance) {
+                        // Step size is nonzero and the current input is not
+                        // close enough. We have missed an event.
+                        if (_debugging) {
+                            _debug("-- Missed an event. Step size will be adjusted.");
+                        }
+                        _eventMissed = true;
+                    } else {
+                        // Request a refiring.
+                        _postponed = microstep + 1;
+                    }
+                }
+            }
         }
     }
 
@@ -346,7 +331,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         _level = ((DoubleToken) level.getToken()).doubleValue();
         _lastTrigger = Double.NEGATIVE_INFINITY;
         _thisTrigger = _lastTrigger;
-        _postponed = null;
+        _postponed = 0;
         _postponedOutputProduced = false;
     }
 
@@ -354,7 +339,19 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  @return False if the step size needs to be refined.
      */
     public boolean isStepSizeAccurate() {
+        if (_debugging) {
+            _debug("Step size is accurate: " + !_eventMissed);
+        }
         return !_eventMissed;
+    }
+
+    /** Return false. This actor can produce some outputs even the
+     *  inputs are unknown. This actor is usable for breaking feedback
+     *  loops.
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
 
     /** Prepare for the next iteration, by making the current trigger
@@ -363,11 +360,28 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  @exception IllegalActionException If thrown by the super class.
      */
     public boolean postfire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called postfire().");
+        }
+
         _lastTrigger = _thisTrigger;
         _eventMissed = false;
+        if (_postponed > 0) {
+            if (_debugging) {
+                _debug("Requesting refiring at the current time.");
+            }
+            getDirector().fireAtCurrentTime(this);
+        }
         if (_postponedOutputProduced) {
             _postponedOutputProduced = false;
-            _postponed = null;
+            // There might be yet another postponed output requested.
+            // If the current microstep matches _postponed, then there
+            // there is not, and we can reset _postponed.
+            ContinuousDirector dir = (ContinuousDirector) getDirector();
+            int microstep = dir.getIndex();
+            if (microstep == _postponed) {
+                _postponed = 0;
+            }
         }
         return super.postfire();
     }
@@ -405,6 +419,9 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
                 _debug(getFullName() + "-- Event Missed: refine step to "
                         + refinedStep);
             }
+            // Reset this because the iteration will be repeated with a new step size.
+            // The new iteration may not miss the event.
+            _eventMissed = false;
         }
         return refinedStep;
     }
@@ -443,9 +460,8 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
     // Last trigger input.
     private double _lastTrigger;
 
-    // Indicator that the output is postponed by one microstep at
-    // the indicated time.
-    private Time _postponed;
+    // Indicator that the output is postponed to the specified microstep.
+    private int _postponed;
 
     // Indicator that the postponed output was produced.
     private boolean _postponedOutputProduced;
