@@ -59,7 +59,7 @@
     </port>
     <port name="fullIndicator" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 235.0]">
         </property>
     </port>
     <port name="actualOutFlow" class="ptolemy.actor.TypedIOPort">
@@ -69,7 +69,7 @@
     </port>
     <port name="emptyIndicator" class="ptolemy.domains.modal.modal.RefinementPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 295.0]">
         </property>
     </port>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
@@ -178,9 +178,9 @@
     <link port="desiredOutFlow" relation="relation_1_3"/>
     <link port="actualInFlow" relation="relation_1_8"/>
     <link port="availableOutFlow" relation="relation_1_7"/>
-    <link port="fullIndicator" relation="relation_1_9"/>
+    <link port="fullIndicator" relation="relation_1_5"/>
     <link port="actualOutFlow" relation="relation_1_6"/>
-    <link port="emptyIndicator" relation="relation_1_5"/>
+    <link port="emptyIndicator" relation="relation_1_9"/>
     <link port="Integrator.derivative" relation="relation_1_4"/>
     <link port="Expression_1_.output" relation="relation_1_8"/>
     <link port="Expression_1_.desiredFlow" relation="relation_1_2"/>
