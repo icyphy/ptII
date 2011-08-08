@@ -28,6 +28,8 @@
 package ptolemy.component.data;
 
 import ptolemy.component.data.type.TupleType;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -263,6 +265,40 @@ public class TupleToken extends Token {
         for (int i = 0; i < length; i++) {
             _value[i] = value[i];
         }
+    }
+
+    /** Return a true-valued token if the argument is equal to this one.
+     *  The isEqualTo() method of the element tokens is used to make the
+     *         comparison.  It is assumed that the argument is a TupleToken.
+     *  @param token The token to compare to this token.
+     *  @exception IllegalActionException If the element types do not
+     *   support this comparison.
+     *  @return A true-valued token if the argument is equal.
+     */
+    public BooleanToken isEqualTo(Token token)
+            throws IllegalActionException {
+        if (getClass() != (token.getClass())) {
+            throw new IllegalActionException("isEqualTo not supported");
+        }
+
+        if (isNil() || token.isNil()) {
+            return BooleanToken.FALSE;
+        }
+
+        TupleToken rightTuple = (TupleToken) token;
+        if (length() != rightTuple.length()) {
+            return BooleanToken.FALSE;
+        }
+
+        for (int i = 0; i < _value.length; i++) {
+            BooleanToken result = _value[i].isEqualTo(rightTuple.getElement(i));
+
+            if (result.booleanValue() == false) {
+                return BooleanToken.FALSE;
+            }
+        }
+
+        return BooleanToken.TRUE;
     }
 
     ///////////////////////////////////////////////////////////////////

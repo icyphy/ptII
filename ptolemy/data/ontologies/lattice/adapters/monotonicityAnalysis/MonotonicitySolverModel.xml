@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <entity name="monotonicityAnalysis" class="ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.monotonicityAnalysis">
+    <entity name="monotonicityAnalysis" class="ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.extendedMonotonicityLattice">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 75.0]">
         </property>
     </entity>

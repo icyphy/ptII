@@ -28,6 +28,7 @@ import java.util.Set;
 
 import ptolemy.component.data.TupleToken;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptToken;
@@ -83,9 +84,17 @@ public class MonotonicityCounterexamples {
                         "for creating MonotonicityCounterexamples:" +
                         "TupleTokens must be of length 2.");
             }
+            ObjectToken x1 = (ObjectToken) tupleToken.getElement(0);
+            ObjectToken x2 = (ObjectToken) tupleToken.getElement(1);
+            result.add((Concept)x1.getValue(), (Concept)x2.getValue());
+
+            /* Apparently because of the way ArrayTokens work, I need
+             * to create a ConceptType class before the following code will
+             * work.  TODO: Create ConceptType class to mirror ConceptToken.
             ConceptToken x1 = (ConceptToken) tupleToken.getElement(0);
             ConceptToken x2 = (ConceptToken) tupleToken.getElement(1);
             result.add(x1.conceptValue(), x2.conceptValue());
+             */
         }
         return result;
     }
@@ -155,19 +164,20 @@ public class MonotonicityCounterexamples {
      *  @see #fromToken(ArrayToken)
      */
     public ArrayToken toToken() throws IllegalActionException {
-        ArrayToken result = new ArrayToken(TupleToken.NIL.getType());
         
+        TupleToken[] array = new TupleToken[entrySet().size()];
+        int i = 0;
         for (Entry<Concept, Concept> pair : entrySet()) {
             ConceptToken[] conceptArr = {
                     new ConceptToken(pair.getKey()),
                     new ConceptToken(pair.getValue())
             };
             TupleToken pairTuple = new TupleToken(conceptArr);
-            
-            result.add(pairTuple);
+            array[i] = pairTuple;
+            i++;
         }
         
-        return result;
+        return new ArrayToken(array);
     }
     
     /** A multimap to keep track of the mapping of lesser concepts

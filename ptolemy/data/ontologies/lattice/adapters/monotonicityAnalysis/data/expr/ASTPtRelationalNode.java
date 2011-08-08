@@ -168,7 +168,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
             }
         }
 
-        /** Return the finite concept from the monotonicity lattice that
+        /** Return the single variable concept from the monotonicity lattice that
          *  results from analyzing the relational statement with respect
          *  to a given variable.  We again abuse the notation, assuming
          *  a relationship between boolean values of true <= false.
@@ -183,8 +183,8 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *    Nonmonotonic</code>, depending on the result of the analysis.
          *  @exception IllegalActionException If there is an error evaluating the function.
          */
-        private FiniteConcept _evaluateFiniteConcept(FiniteConcept lhs,
-                FiniteConcept rhs) throws IllegalActionException {
+        private FiniteConcept _evaluateFininteConcept(Concept lhs, Concept rhs)
+                throws IllegalActionException {
             if (_constantConcept.isAboveOrEqualTo(lhs)
                     && _constantConcept.isAboveOrEqualTo(rhs)) {
                 return _constantConcept;

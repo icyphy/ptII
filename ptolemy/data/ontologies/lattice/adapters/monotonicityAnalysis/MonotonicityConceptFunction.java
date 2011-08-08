@@ -34,6 +34,7 @@ import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptToken;
 import ptolemy.data.ontologies.FiniteConcept;
+import ptolemy.data.ontologies.FlatTokenRepresentativeConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -145,6 +146,13 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept General not found in monotonicityAnalysis ontology.");
         }
+        
+        _nonMonotonicRepresentative = (FlatTokenRepresentativeConcept) _monotonicityAnalysisOntology.getEntity("NonMonotonic");
+        _nonAntimonotonicRepresentative = (FlatTokenRepresentativeConcept) _monotonicityAnalysisOntology.getEntity("NonAntimonotonic");
+        if (_nonAntimonotonicRepresentative == null || null == _nonMonotonicRepresentative) {
+            throw new IllegalActionException(_monotonicityAnalysisOntology,
+                    "Infinite representatives (NonMonotonic and NonAntimonontonic) not found in monotonicityAnalysis ontology.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -174,4 +182,7 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
 
     /** The "General" Concept from the monotonicityAnalysis ontology. */
     protected FiniteConcept _generalConcept;
+
+    protected FlatTokenRepresentativeConcept _nonMonotonicRepresentative;
+    protected FlatTokenRepresentativeConcept _nonAntimonotonicRepresentative;
 }

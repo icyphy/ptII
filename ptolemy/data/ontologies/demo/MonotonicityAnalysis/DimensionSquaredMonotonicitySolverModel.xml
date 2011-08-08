@@ -856,7 +856,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 310.0]">
         </property>
     </entity>
-    <entity name="monotonicityAnalysis" class="ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.monotonicityAnalysis">
+    <entity name="monotonicityAnalysis" class="ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.extendedMonotonicityLattice">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 140.0]">
         </property>
     </entity>

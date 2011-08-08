@@ -27,6 +27,7 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.FiniteConcept;
+import ptolemy.data.ontologies.FlatTokenInfiniteConcept;
 import ptolemy.data.ontologies.MapTypeInfiniteConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.graph.CPO;
@@ -63,7 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.AcceptedRating Red (blickly)
  *
  */
-public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
+public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
 
     ///////////////////////////////////////////////////////////////////
     ////             public constructors/factories                 ////
@@ -189,13 +190,15 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      *    <li>Monotonic</li>
      *    <li>Antimonotonic</li>
      *    <li>General</li>
+     *    <li>NonMonotonic_{Counterexamples}</li>
+     *    <li>NonAntimonotonic_{Counterexamples}</li>
      *  </ul>
      *  This method returns one these concepts.
      *  @param variableName The variable whose monotonicity we are querying.
      *  @return The monotonicity of this concept with respect to the given
      *    variable; one of Constant, Monotonic, Antimonotonic, or General.
      */
-    public FiniteConcept getMonotonicity(String variableName) {
+    public Concept getMonotonicity(String variableName) {
         return getConcept(variableName);
     }
 
@@ -237,7 +240,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
      *    to the given variable.
      *  @see MonotonicityConcept#getMonotonicity(String)
      */
-    public void putMonotonicity(String variable, FiniteConcept monotonicity) {
+    public void putMonotonicity(String variable, Concept monotonicity) {
         putConcept(variable, monotonicity);
     }
 
@@ -273,7 +276,7 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
         Set<String> allKeys = this._commonKeys(concept);
         for (String variableName : allKeys) {
             CPO graph = this.getOntology().getConceptGraph();
-            FiniteConcept monotonicity = (FiniteConcept) graph.leastUpperBound(
+            Concept monotonicity = (Concept) graph.leastUpperBound(
                     this.getMonotonicity(variableName),
                     concept.getMonotonicity(variableName));
             result.putMonotonicity(variableName, monotonicity);
@@ -302,9 +305,13 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<FiniteConcept> {
         ConceptGraph monotonicityLattice = getOntology().getConceptGraph();
         FiniteConcept result = (FiniteConcept) monotonicityLattice.bottom();
         for (String var : keySet()) {
-            FiniteConcept c = getConcept(var);
-            result = (FiniteConcept) monotonicityLattice.leastUpperBound(
-                    result, c);
+            Concept c = getMonotonicity(var);
+            Concept lub = monotonicityLattice.leastUpperBound(result, c);
+            if (lub instanceof FlatTokenInfiniteConcept) {
+                result = ((FlatTokenInfiniteConcept) lub).getRepresentative();
+            } else {
+                result = (FiniteConcept) lub;
+            }
         }
         return result;
     }
