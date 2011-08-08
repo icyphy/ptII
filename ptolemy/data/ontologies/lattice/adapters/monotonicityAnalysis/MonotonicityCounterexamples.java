@@ -64,12 +64,25 @@ public class MonotonicityCounterexamples {
      *  @param token The Ptolemy Token representing a set of counterexamples
      *   to monotonicity.
      *  @return The counterexample set represented by the given token.
+     *  @throws IllegalActionException If the given Token does not conform to
+     *   the required structure;
      *  @see #toToken()
      */
-    public static MonotonicityCounterexamples fromToken(ArrayToken token) {
+    public static MonotonicityCounterexamples fromToken(ArrayToken token)
+            throws IllegalActionException {
         MonotonicityCounterexamples result = new MonotonicityCounterexamples();
         for (Token insideToken : token.arrayValue()) {
+            if (!(insideToken instanceof TupleToken)) {
+                throw new IllegalActionException("Invalid token structure" +
+                		"for creating MonotonicityCounterexamples:" +
+                		"ArrayToken must contain TupleTokens.");
+            }
             TupleToken tupleToken = (TupleToken) insideToken;
+            if (tupleToken.length() != 2) {
+                throw new IllegalActionException("Invalid token structure" +
+                        "for creating MonotonicityCounterexamples:" +
+                        "TupleTokens must be of length 2.");
+            }
             ConceptToken x1 = (ConceptToken) tupleToken.getElement(0);
             ConceptToken x2 = (ConceptToken) tupleToken.getElement(1);
             result.add(x1.conceptValue(), x2.conceptValue());
