@@ -42,7 +42,7 @@ import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamples;
-import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamplesToken;
+//import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamplesToken;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
