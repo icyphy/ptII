@@ -50,6 +50,11 @@ import ptolemy.plot.Plot;
  May, 1989.  Although users will usually prefer to define models using
  MoML, this class illustrates how to define a model in Java.
 
+ <p>To run this model, use:</p>
+ <pre>
+java -classpath $PTII ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
+ </pre>
+
  @author Christopher Hylands and Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.4
