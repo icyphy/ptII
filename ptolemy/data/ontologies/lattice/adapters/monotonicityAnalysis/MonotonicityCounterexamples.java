@@ -26,7 +26,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import ptolemy.component.data.TupleToken;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.ConceptToken;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.MultiHashMap;
 
 /** Representation of a set of counterexamples to monotonicity.
@@ -51,6 +56,27 @@ public class MonotonicityCounterexamples {
         _counterexamples = new MultiHashMap<Concept, Concept>();
     }
 
+    /** Create a counterexample set from a specific representation as a
+     *  Ptolemy Token.
+     *  This Token must be an ArrayToken whose entries are TupleTokens each of
+     *  length 2, where the lesser concept is on the left hand side and the
+     *  greater concept is on the right hand side.
+     *  @param token The Ptolemy Token representing a set of counterexamples
+     *   to monotonicity.
+     *  @return The counterexample set represented by the given token.
+     *  @see #toToken()
+     */
+    public static MonotonicityCounterexamples fromToken(ArrayToken token) {
+        MonotonicityCounterexamples result = new MonotonicityCounterexamples();
+        for (Token insideToken : token.arrayValue()) {
+            TupleToken tupleToken = (TupleToken) insideToken;
+            ConceptToken x1 = (ConceptToken) tupleToken.getElement(0);
+            ConceptToken x2 = (ConceptToken) tupleToken.getElement(1);
+            result.add(x1.conceptValue(), x2.conceptValue());
+        }
+        return result;
+    }
+    
     /** Add a pair of concepts as a counterexample to this set.
      *  This means that x1 <= x2, but for the (non-monotonic) function in
      *  question, f(x1) \not <= f(x2).
@@ -106,6 +132,31 @@ public class MonotonicityCounterexamples {
         return resultBuffer.toString();
     }
 
+    /** Return a representation of the counterexample set as a Ptolemy Token.
+     *  This Token is an ArrayToken whose entries are TupleTokens each of
+     *  length 2, where the lesser concept is on the left hand side and the
+     *  greater concept is on the right hand side.
+     *
+     *  @return The Token representation of this set.
+     *  @throws IllegalActionException If any of the concepts are null
+     *  @see #fromToken(ArrayToken)
+     */
+    public ArrayToken toToken() throws IllegalActionException {
+        ArrayToken result = new ArrayToken(TupleToken.NIL.getType());
+        
+        for (Entry<Concept, Concept> pair : entrySet()) {
+            ConceptToken[] conceptArr = {
+                    new ConceptToken(pair.getKey()),
+                    new ConceptToken(pair.getValue())
+            };
+            TupleToken pairTuple = new TupleToken(conceptArr);
+            
+            result.add(pairTuple);
+        }
+        
+        return result;
+    }
+    
     /** A multimap to keep track of the mapping of lesser concepts
      *  to greater concepts.  This must be a multimap, because there
      *  could be multiple counterexamples with the same lesser concept.
