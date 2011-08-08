@@ -183,7 +183,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *    Nonmonotonic</code>, depending on the result of the analysis.
          *  @exception IllegalActionException If there is an error evaluating the function.
          */
-        private FiniteConcept _evaluateFininteConcept(Concept lhs, Concept rhs)
+        private FiniteConcept _evaluateFiniteConcept(Concept lhs, Concept rhs)
                 throws IllegalActionException {
             if (_constantConcept.isAboveOrEqualTo(lhs)
                     && _constantConcept.isAboveOrEqualTo(rhs)) {
@@ -217,5 +217,4 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
         private String _operator;
 
     }
-
 }

@@ -42,6 +42,7 @@ import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamples;
+import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamplesToken;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -142,7 +143,6 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             String variable,
             List<Concept> inputConceptValues)
             throws IllegalActionException {
-        _nodeToCounterexamples.remove(_ifNode);
         Concept result = _standardIfAnalysis(variable, inputConceptValues);
         if (result.isAboveOrEqualTo(_generalConcept)) {
             if (_checkConditionalStructure(inputConceptValues)) {
@@ -304,9 +304,12 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         Concept e2Monotonicity = inputConceptValues.get(2);
         MonotonicityCounterexamples toCheck = null;
         if (e2Monotonicity instanceof FlatTokenInfiniteConcept) {
-            toCheck = MonotonicityCounterexamples
-                    .fromToken((ArrayToken) ((FlatTokenInfiniteConcept) e2Monotonicity)
-                            .getTokenValue());
+            /*
+            toCheck = ((MonotonicityCounterexamplesToken) ((FlatTokenInfiniteConcept) e2Monotonicity)
+                    .getTokenValue()).monotonicityCounterexamplesValue();
+                    */
+            toCheck = MonotonicityCounterexamples.fromToken(
+                    ((FlatTokenInfiniteConcept) e2Monotonicity).getTokenValue());
         } else {
             toCheck = new MonotonicityCounterexamples();
         }
@@ -337,6 +340,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         if (counterexamples.containsCounterexamples()) {
             return FlatTokenInfiniteConcept.createFlatTokenInfiniteConcept(
                     _monotonicityAnalysisOntology, _nonMonotonicRepresentative,
+                    //new MonotonicityCounterexamplesToken(counterexamples));
                     counterexamples.toToken());
         } else {
             return _monotonicConcept;
@@ -423,11 +427,4 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  function is defined over.
      */
     private ptolemy.data.expr.ASTPtFunctionalIfNode _ifNode;
-
-    /** A static Map that keeps track of the counterexamples at different
-     *  nodes in the Ptolemy AST.  This doesn't seem like the right way
-     *  to keep track of these things, and should probably be redesigned.
-     *  FIXME: Rethink this approach.
-     */
-    private static Map<ptolemy.data.expr.ASTPtFunctionalIfNode, MonotonicityCounterexamples> _nodeToCounterexamples = new HashMap<ptolemy.data.expr.ASTPtFunctionalIfNode, MonotonicityCounterexamples>();
 }

@@ -69,10 +69,15 @@ public class MonotonicityCounterexamples {
      *   the required structure;
      *  @see #toToken()
      */
-    public static MonotonicityCounterexamples fromToken(ArrayToken token)
+    public static MonotonicityCounterexamples fromToken(Token token)
             throws IllegalActionException {
+        if (!(token instanceof ArrayToken)) {
+            throw new IllegalActionException("Invalid token structure" +
+                    "for creating MonotonicityCounterexamples:" +
+                    "Token must be ArrayToken.");
+        }
         MonotonicityCounterexamples result = new MonotonicityCounterexamples();
-        for (Token insideToken : token.arrayValue()) {
+        for (Token insideToken : ((ArrayToken)token).arrayValue()) {
             if (!(insideToken instanceof TupleToken)) {
                 throw new IllegalActionException("Invalid token structure" +
                 		"for creating MonotonicityCounterexamples:" +
@@ -98,7 +103,10 @@ public class MonotonicityCounterexamples {
         }
         return result;
     }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Add a pair of concepts as a counterexample to this set.
      *  This means that x1 <= x2, but for the (non-monotonic) function in
      *  question, f(x1) \not <= f(x2).
@@ -135,6 +143,11 @@ public class MonotonicityCounterexamples {
             }
         }
         return entrySet;
+    }
+
+    public boolean equals(Object o) {
+        return (o instanceof MonotonicityCounterexamples && _counterexamples
+                .equals(((MonotonicityCounterexamples) o)._counterexamples));
     }
 
     /** Return the string representation of the counterexample set.
@@ -179,6 +192,12 @@ public class MonotonicityCounterexamples {
         
         return new ArrayToken(array);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
     
     /** A multimap to keep track of the mapping of lesser concepts
      *  to greater concepts.  This must be a multimap, because there
@@ -188,6 +207,9 @@ public class MonotonicityCounterexamples {
      *    MultiMap<Concept, Concept>
      */
     private MultiHashMap<Concept, Concept> _counterexamples;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** Encapsulate counterexample pairs.
      *  These are pairs of the form (x1, x2) where x1 <= x2, but

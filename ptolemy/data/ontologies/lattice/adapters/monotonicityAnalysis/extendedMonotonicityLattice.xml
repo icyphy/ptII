@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{250.5000000000001, 190.0038581010102}">
     </property>
     <entity name="Monotonic" class="ptolemy.data.ontologies.FiniteConcept">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 205.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
         </property>
@@ -40,7 +40,7 @@
         </property>
     </entity>
     <entity name="Antimonotonic" class="ptolemy.data.ontologies.FiniteConcept">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 210.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
         </property>
@@ -69,7 +69,7 @@
     <entity name="General" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 125.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
         </property>
@@ -98,7 +98,7 @@
     <entity name="Constant" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 275.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
         </property>
@@ -131,7 +131,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 205.0]">
         </property>
     </entity>
     <entity name="NonAntimonotonic" class="ptolemy.data.ontologies.FlatTokenRepresentativeConcept">
@@ -141,7 +141,17 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Bottom" class="ptolemy.data.ontologies.FiniteConcept">
+        <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 335}">
         </property>
     </entity>
     <relation name="r6" class="ptolemy.data.ontologies.ConceptRelation">
@@ -154,13 +164,15 @@
     </relation>
     <relation name="r4" class="ptolemy.data.ontologies.ConceptRelation">
     </relation>
-    <relation name="relation" class="ptolemy.data.ontologies.ConceptRelation">
-    </relation>
     <relation name="relation2" class="ptolemy.data.ontologies.ConceptRelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.data.ontologies.ConceptRelation">
+    </relation>
+    <relation name="relation" class="ptolemy.data.ontologies.ConceptRelation">
     </relation>
     <relation name="relation3" class="ptolemy.data.ontologies.ConceptRelation">
     </relation>
-    <relation name="relation4" class="ptolemy.data.ontologies.ConceptRelation">
+    <relation name="relation5" class="ptolemy.data.ontologies.ConceptRelation">
     </relation>
     <link port="Monotonic.belowPort" relation="r1"/>
     <link port="Monotonic.abovePort" relation="r6"/>
@@ -170,12 +182,14 @@
     <link port="General.belowPort" relation="r9"/>
     <link port="General.belowPort" relation="relation2"/>
     <link port="General.belowPort" relation="relation4"/>
+    <link port="Constant.belowPort" relation="relation"/>
     <link port="Constant.abovePort" relation="r1"/>
     <link port="Constant.abovePort" relation="r4"/>
-    <link port="Constant.abovePort" relation="relation"/>
-    <link port="Constant.abovePort" relation="relation3"/>
-    <link port="NonMonotonic.belowPort" relation="relation"/>
+    <link port="NonMonotonic.belowPort" relation="relation5"/>
     <link port="NonMonotonic.abovePort" relation="relation2"/>
     <link port="NonAntimonotonic.belowPort" relation="relation3"/>
     <link port="NonAntimonotonic.abovePort" relation="relation4"/>
+    <link port="Bottom.abovePort" relation="relation"/>
+    <link port="Bottom.abovePort" relation="relation3"/>
+    <link port="Bottom.abovePort" relation="relation5"/>
 </class>
