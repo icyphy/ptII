@@ -58,6 +58,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	monotonicityAnalysis.xml \
+	extendedMonotonicityLattice.xml \
 	MonotonicitySolverModel.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
