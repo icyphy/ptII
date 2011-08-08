@@ -60,7 +60,6 @@ JSRCS = \
 	ContinuousTransferFunction.java \
 	Noise.java \
 	PeriodicSampler.java \
-	
 	ZeroOrderHold.java
 
 OTHER_FILES_TO_BE_JARED = \
