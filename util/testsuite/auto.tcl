@@ -58,6 +58,31 @@ if [ file isdirectory auto/knownFailedTests ] {
     }
 }
 
+if [ file isdirectory auto/nonTerminatingTests ] {
+    foreach file [glob -nocomplain auto/nonTerminatingTests/*.xml] {
+	# Get the name of the current directory relative to $PTII
+	set relativeFilename \
+		[java::call ptolemy.util.StringUtilities substituteFilePrefix \
+		$PTII [file join [pwd] $file] {$PTII}]
+	puts "------------------ testing $relativeFilename (Nonterminating) "
+        test "Auto" "Automatic test in file $relativeFilename" {
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	    set timeout 10000
+            puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+                  seconds at [clock format [clock seconds]]"
+	    set watchDog [java::new util.testsuite.WatchDog $timeout]
+            if [catch {set application [java::new ptolemy.moml.MoMLSimpleTimeoutApplication $file]} errMsg] {
+	        $watchDog cancel
+	        error $errMsg
+            } else {
+	        $watchDog cancel
+   	    }
+            list {}
+        } {{}}
+    }
+}
 # IBM JDK 1.4.2 requires the lsort?
 foreach file [lsort [glob auto/*.xml]] {
     set relativeFilename \

@@ -72,6 +72,7 @@ JSRCS =	Documentation.java \
 	MoMLModelAttribute.java \
 	MoMLParser.java \
 	MoMLSimpleApplication.java \
+	MoMLSimpleTimeoutApplication.java \
 	MoMLUndoEntry.java \
 	MoMLVariableChecker.java \
 	ParserAttribute.java \
