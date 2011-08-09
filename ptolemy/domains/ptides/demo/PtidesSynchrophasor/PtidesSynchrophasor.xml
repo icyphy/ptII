@@ -61,6 +61,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, -40.0]">
         </property>
     </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 485.0]">
+        </property>
+    </property>
+    <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+        <property name="description" class="ptolemy.kernel.util.StringAttribute" value="Distributed Platform Synchrophasor Application.  Monitors relative phases of two power signals and outputs a control signal whenever the phase difference for the two platforms exceeds PI/3 radians.">
+        </property>
+        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Ilge Akkaya">
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="control output, phase 1, phase 2">
         </property>
@@ -238,14 +252,7 @@
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the (Mac: command key, Windows: control key)
-and dragging from one state to another.  
-Right click to configure the properties 
-of this model, including setting the final state(s).
-Then delete this annotation.</text>
-    </svg></configure>
+                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">State machine that produces a control output whenever phase difference exceeds a threshold.</text></svg></configure>
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0">
                     </property>
@@ -647,7 +654,7 @@ Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 240.0]">
             </property>
         </port>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="Sampler" class="ptolemy.domains.de.lib.MostRecent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[319.4999465942383, 240.83332061767578]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -658,6 +665,7 @@ Then delete this annotation.</text>
             </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
@@ -819,7 +827,7 @@ Then delete this annotation.</text>
             <link port="IIR2.input" relation="relation2"/>
             <link port="IIR2.output" relation="relation9"/>
         </entity>
-        <entity name="PlatformDelay" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="PlatformDelay" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="platformDelay">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 385.0]">
@@ -897,7 +905,7 @@ Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 240.0]">
             </property>
         </port>
-        <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <entity name="Sampler" class="ptolemy.domains.de.lib.MostRecent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[319.4999465942383, 240.83332061767578]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -908,6 +916,7 @@ Then delete this annotation.</text>
             </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
@@ -1069,7 +1078,7 @@ Then delete this annotation.</text>
             <link port="IIR2.input" relation="relation2"/>
             <link port="IIR2.output" relation="relation9"/>
         </entity>
-        <entity name="PlatformDelay" class="ptolemy.domains.de.lib.SingleEvent">
+        <entity name="PlatformDelay" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="platformDelay">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 385.0]">
