@@ -66,7 +66,8 @@ MISC_FILES =	 $(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'DECQEventQueue$$1.class' \
-	'DECQEventQueue$$DECQComparator.class'
+	'DECQEventQueue$$DECQComparator.class' \
+	'DEDirector$$DECausalityInterface.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
