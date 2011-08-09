@@ -42,36 +42,19 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1, 0.6, 1.6, 2.6, 3.6, 4.6, 5.0, 5.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1, 0.6, 1.05005, 0.0, 0.0, 0.0, 0.1, 0.6, 1.05005, 0.0, 0.0, 0.0, 0.1, 0.6, 1.05005, 0.0, 0.0, 0.0, 0.1, 0.6, 1.05005, 0.0, 0.0, 0.0, 0.1, 0.6, 0.7998, 0.7998}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 40.0}">
         </property>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={717, 114, 500, 344}, maximized=false}">
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 280.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xRange min="0.0" max="5.0"/>
-<yRange min="0.0" max="5.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{465, 150}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 145.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -95,6 +78,5 @@
     <link port="LevelCrossingDetector.trigger" relation="relation5"/>
     <link port="Const2.output" relation="relation4"/>
     <link port="NonStrictTest.input" relation="relation5"/>
-    <link port="TimedPlotter.input" relation="relation5"/>
-    <link port="Display.input" relation="relation6"/>
+    <link port="NonStrictTest2.input" relation="relation6"/>
 </entity>
