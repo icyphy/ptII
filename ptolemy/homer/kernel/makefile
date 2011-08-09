@@ -40,7 +40,8 @@ ROOT =		../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTHOMER_JARS)
+# This package imports from ptserver, which may not be compiled yet.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTHOMER_JARS)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
 
 # Used to build jar files
 PTPACKAGE = 	kernel

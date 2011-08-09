@@ -73,16 +73,8 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 MISC_FILES = \
 	addermodel_test.layout.xml \
 	addermodel.xml \
-	audiorecorder2.xml \
-	audiorecorder.xml \
-	DisplayModel.xml \
 	HelloWorld.xml \
-	NoisySinewave_layout.layout.xml \
 	NoisySinewave.xml \
-	sequence_client.layout.xml \
-	sequence.xml \
-	SoundSpectrum2_layout.layout.xml \
-	SoundSpectrum2.xml \
 	SoundSpectrum_layout.layout.xml \
 	SoundSpectrum.xml \
 	SynthesizedVoice.xml
@@ -91,6 +83,7 @@ MISC_FILES = \
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	PtolemyLog.log \
+	PtolemyServer.log \
 	'RemoteModelTest$$1.class' \
 	'RemoteModelTest$$2.class' \
 	'RemoteModelTest$$3.class'
