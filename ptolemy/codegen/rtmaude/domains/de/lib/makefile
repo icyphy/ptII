@@ -54,7 +54,6 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	NonInterruptibleTimer.rtmaude \
-	SingleEvent.rtmaude \
 	TimedDelay.rtmaude \
 	Timer.rtmaude \
 	VariableDelay.rtmaude
