@@ -26,7 +26,6 @@
 
 package ptolemy.plot;
 
-import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

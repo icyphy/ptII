@@ -28,62 +28,55 @@
  */
 package ptolemy.moml;
 
-import java.io.File;
-
-import ptolemy.actor.ActorModuleInitializer;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.ExecutionListener;
-import ptolemy.actor.Manager;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// MoMLSimpleTimeoutApplication
 
-/** A simple application that reads in a .xml file as a command
- line argument, runs it and terminates the run after a time out.
-
- @author Christopher Brooks
- @version $Id$
- @since Ptolemy II 8.1
- @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (eal)
+/**
+ * A simple application that reads in a .xml file as a command line argument,
+ * runs it and terminates the run after a time out.
+ * 
+ * @author Christopher Brooks
+ * @version $Id: MoMLSimpleTimeoutApplication.java 61755 2011-08-08 20:17:11Z
+ *          cxh $
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (eal)
  */
 public class MoMLSimpleTimeoutApplication extends MoMLSimpleApplication {
 
-    /** Parse the xml file and run it.  After 5 seconds, call wrapup
-     *  on the manager.
-     *  @param xmlFileName A string that refers to an MoML file that
-     *  contains a Ptolemy II model.  The string should be
-     *  a relative pathname.
-     *  @exception Throwable If there was a problem parsing
-     *  or running the model.
-     */
-    public MoMLSimpleTimeoutApplication(String xmlFileName) throws Throwable {
-        super(xmlFileName);
-    }
+	/**
+	 * Parse the xml file and run it. After 5 seconds, call wrapup on the
+	 * manager.
+	 * 
+	 * @param xmlFileName
+	 *            A string that refers to an MoML file that contains a Ptolemy
+	 *            II model. The string should be a relative pathname.
+	 * @exception Throwable
+	 *                If there was a problem parsing or running the model.
+	 */
+	public MoMLSimpleTimeoutApplication(String xmlFileName) throws Throwable {
+		super(xmlFileName);
+	}
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         Public methods                    ////
+	// /////////////////////////////////////////////////////////////////
+	// // Public methods ////
 
-    /** Wait for all executing runs to finish or 5 seconds to pass,
-     *  then return.
-     */
-    public synchronized void waitForFinish() {
-        long timeout = 5000;
-        try {
-            System.out.print("Waiting for " + timeout/1000.0 + " seconds. . .");
-            wait(timeout);
-            _toplevel.getDirector().finish();
-            _toplevel.getDirector().stopFire();
+	/**
+	 * Wait for all executing runs to finish or 5 seconds to pass, then return.
+	 */
+	public synchronized void waitForFinish() {
+		long timeout = 5000;
+		try {
+			System.out.print("Waiting for " + timeout / 1000.0
+					+ " seconds. . .");
+			wait(timeout);
+			_toplevel.getDirector().finish();
+			_toplevel.getDirector().stopFire();
 
-            System.out.println(" Done.");
-        } catch (InterruptedException ex) {
-            // Ignore.
-        }
-    }
+			System.out.println(" Done.");
+		} catch (InterruptedException ex) {
+			// Ignore.
+		}
+	}
 }

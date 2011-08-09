@@ -28,7 +28,6 @@
 package ptolemy.component.data;
 
 import ptolemy.component.data.type.TupleType;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;

@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import ptolemy.component.data.TupleToken;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.ontologies.Concept;
@@ -42,7 +40,6 @@ import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamples;
-//import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamplesToken;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
