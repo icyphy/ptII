@@ -394,6 +394,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *
      *  @param filterList The list of MoMLFilters to add to the
      *  list of MoMLFilters to be used to translate names.
+     *  @param workspace MoMLFilters are passed a MoMLParser that is optionally
+     *  used by a filter.  This parameter determines the Workspace in which
+     *  that MoMLFilter is created.  To avoid memory leaks, typically the
+     *  MoMLFilter that is used to parse a model is created in a new workspace.
+     *  The MoMLFilters are static, so we need to pass in the Workspace from
+     *  the top level MoMLFilter.
      *  @see #addMoMLFilter(MoMLFilter filter)
      *  @see #addMoMLFilter(MoMLFilter filter, Workspace workspace)
      *  @see #addMoMLFilters(List filterList)
@@ -2045,6 +2051,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  </pre>
      *
      *  @param filterList The List of MoMLFilters.
+     *  @param workspace MoMLFilters are passed a MoMLParser that is optionally
+     *  used by a filter.  This parameter determines the Workspace in which
+     *  that MoMLFilter is created.  To avoid memory leaks, typically the
+     *  MoMLFilter that is used to parse a model is created in a new workspace.
+     *  The MoMLFilters are static, so we need to pass in the Workspace from
+     *  the top level MoMLFilter.
      *  @see #addMoMLFilter(MoMLFilter filter)
      *  @see #addMoMLFilter(MoMLFilter filter, Workspace workspace)
      *  @see #getMoMLFilters()

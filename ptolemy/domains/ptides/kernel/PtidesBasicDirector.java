@@ -1314,6 +1314,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  also calculated.
      *  @param actor The actor to be fired.
      *  @param time The timestamp of the event.
+     *  @param defaultMicrostep Ignored in this base class.
      *  @exception IllegalActionException If the time argument is less than
      *  the current model time, or the depth of the actor has not be calculated,
      *  or the new event can not be enqueued.

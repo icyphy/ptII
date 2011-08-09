@@ -253,8 +253,7 @@ public class Waveform extends DiscreteClock {
                 + (coef[2] * index) + coef[3];
     }
     
-    /** Return the interpolation result for the specified time.
-     *  @param time The point of interpolation. Can be negative
+    /** Return the interpolation result for the current model time.
      *  @return A double.
      *  @throws IllegalActionException If the values parameter is malformed.
      *  @exception IllegalStateException If the index and value arrays

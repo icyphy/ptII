@@ -174,7 +174,7 @@ public class MonotonicityCounterexamples {
      *
      *  @return The Token representation of this set.
      *  @throws IllegalActionException If any of the concepts are null
-     *  @see #fromToken(ArrayToken)
+     *  @see #fromToken(Token)
      */
     public ArrayToken toToken() throws IllegalActionException {
         

@@ -213,6 +213,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  @param actor The actor scheduled to be fired.
      *  @param newFiringTime The scheduled time.
      *  @param microstep The microstep (ignored by this director).
+     *  @return the value of the newFiringTime argument.
      *  @exception IllegalActionException If the operation is not
      *  permissible (e.g. the given time is in the past).
      */

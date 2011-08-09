@@ -142,6 +142,13 @@ public interface MoMLFilter {
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
      *  @param xmlFile The file currently being parsed.
+     *  @param parser The MoMLParser that is sometimes used by derived
+     *  classes.  MoMLParser shares a separate MoMLParser between
+     *  the filters.  Each filter should call setContext(container) on
+     *  the passed-in filter.  Since setContext() calls reset(), we
+     *  don't want to pass in the main MoMLParser.  We share one
+     *  MoMLParser so as to avoid the expense of constructing one each
+     *  time we read an attribute.
      *  @return A new value for the attribute, or the same value
      *   to leave it unchanged, or null to cause the current element
      *   to be ignored (unless the attributeValue argument is null).
