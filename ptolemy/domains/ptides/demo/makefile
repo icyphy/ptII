@@ -42,6 +42,7 @@ DIRS =		PtidesBasicDistributedPowerPlant\
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime \
 		PrintingPress \
+		PtidesSynchrophasor \
 		TREX
 # Root of the Java directory
 ROOT =		../../../..
@@ -69,7 +70,8 @@ PTCLASSALLJARS = \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
 	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
 	PrintingPress/PrintingPress.jar \
-	TREX/TREX.jar
+	TREX/TREX.jar \
+	PtidesSynchrophasor/PtidesSynchrophasor.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
