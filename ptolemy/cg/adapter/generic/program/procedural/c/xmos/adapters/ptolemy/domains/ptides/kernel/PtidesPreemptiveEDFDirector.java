@@ -27,16 +27,23 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.ptides.kernel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.domains.ptides.lib.luminary.GPInputHandler;
+import ptolemy.domains.ptides.lib.luminary.LuminarySensorHandler;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// PtidesPreemptiveEDFDirector
@@ -73,12 +80,11 @@ public class PtidesPreemptiveEDFDirector
      *  @return The generated assembly file code.
      *  @exception IllegalActionException
      */
-    public StringBuffer generateAssemblyFile() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
+    public Map<String, StringBuffer> generateAdditionalCodeFiles() throws IllegalActionException {
+        Map<String, StringBuffer> list = new HashMap();
+        
         // FIXME add XMOS assembly code
-
-        return code;
+        return list;
     }
 
     /**

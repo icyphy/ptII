@@ -27,7 +27,10 @@
  */
 package ptolemy.cg.kernel.generic.program.procedural.c.ptidyos;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
@@ -81,10 +84,11 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  is running.
      */
     public int generateCode(StringBuffer code) throws KernelException {
-        _generateFile = SOURCE_FILE;
-        int result = super.generateCode(code);
-        _generateFile = ASSEMBLY_FILE;
-        _generateAssemblyFile();
+        //_generateFile = SOURCE_FILE;
+        fileExtension = ".c";
+        int result = super.generateCode(code); 
+        //_generateFile = ASSEMBLY_FILE;
+        _generateAdditionalCodeFiles();
         return result;
     }
 
@@ -96,13 +100,17 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  PtidyOSCodeGenerator is not used in a Ptides environment.
      *
      */
-    protected void _generateAssemblyFile() throws IllegalActionException {
+    protected void _generateAdditionalCodeFiles() throws IllegalActionException {
         PtidesPreemptiveEDFDirector directorAdapter = null;
         Director director = ((TypedCompositeActor) getContainer())
                 .getDirector();
         if (director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
-            _writeCode(directorAdapter.generateAssemblyFile());
+            Map<String, StringBuffer> map = directorAdapter.generateAdditionalCodeFiles();
+            for (String file : map.keySet()) {
+                fileExtension = "." + file;
+                _writeCode(map.get(file));
+            }
         } else if (director instanceof ptolemy.domains.ptides.kernel.PtidesTopLevelDirector) {
             // If the PtidyOSCodeGenerator is used on the top level, then one assembly file
             // should be generated for each platform.
@@ -111,7 +119,11 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
                 Director insideDirector = actor.getDirector();
                 if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
                     directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
-                    _writeCode(directorAdapter.generateAssemblyFile());
+                    Map<String, StringBuffer> map = directorAdapter.generateAdditionalCodeFiles();
+                    for (String file : map.keySet()) {
+                        fileExtension = "." + file;
+                        _writeCode(map.get(file));
+                    }
                 }
             }
         } else {
@@ -128,12 +140,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  the string value of the generatorPackage parameter.
      */
     protected String _getOutputFilename() throws IllegalActionException {
-        String extension = null;
-        if (_generateFile == SOURCE_FILE) {
-            extension = ".c";
-        } else if (_generateFile == ASSEMBLY_FILE) {
-            extension = ".s";
-        }
+        String extension = fileExtension;
 
         return _sanitizedModelName + extension;
     }
@@ -163,6 +170,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      * The index of the list of code files to generate code for. 0 refers
      * to the c file, and 1 refers to the startup .S code file.
      */
-    protected int _generateFile;
+    //protected int _generateFile;
 
+    protected String fileExtension;
 }

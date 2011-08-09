@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -90,7 +91,10 @@ public class PtidesPreemptiveEDFDirector
      *  @return The generated assembly file code.
      *  @exception IllegalActionException
      */
-    public StringBuffer generateAssemblyFile() throws IllegalActionException {
+    
+    public Map<String, StringBuffer> generateAdditionalCodeFiles() throws IllegalActionException {
+        Map<String, StringBuffer> list = new HashMap();
+        
         StringBuffer code = new StringBuffer();
 
         // if the outside is already a Ptides director (this could only happen if
@@ -100,7 +104,7 @@ public class PtidesPreemptiveEDFDirector
         // generated.
         if (((CompositeActor) getComponent().getContainer())
                 .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
-            return code;
+            return list;
         }
 
         // Get all actors that are interruptDevices. Then for each of
@@ -169,8 +173,9 @@ public class PtidesPreemptiveEDFDirector
         // In the future if we add more devices, then it should be a derivation of the above code.
         code.append(_templateParser.getCodeStream().getCodeBlock(
                 "assemblyFileBlock", args));
-
-        return code;
+        
+        list.put("s", code);
+        return list;
     }
 
     /**

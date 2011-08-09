@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -88,9 +89,9 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @return The generated assembly file code.
      *  @exception IllegalActionException
      */
-    public StringBuffer generateAssemblyFile() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        return code;
+    public Map<String, StringBuffer> generateAdditionalCodeFiles() throws IllegalActionException {
+        Map<String, StringBuffer> list = new HashMap();
+        return list;
     }
 
     /** Generate the initialize code for the associated PtidesBasic director.
