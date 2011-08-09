@@ -50,7 +50,8 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	T-Rex-network-v1.xml \
 	T-Rex-noNetwork-v1.xml \
-	TREX.xml 
+	TREX.xml \
+	T-Rex-noNetworkALLDIG.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
