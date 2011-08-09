@@ -88,7 +88,11 @@ public class Expression extends LatticeOntologyAdapter {
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
 
-        setAtLeast(actor.output, actor.expression);
+        if (((LatticeOntologySolver)_solver).isLeastFixedPoint()) {
+            setAtLeast(actor.output, actor.expression);
+        } else {
+        	setAtMost(actor.output, actor.expression);
+        }
         return super.constraintList();
     }
 

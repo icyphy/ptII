@@ -81,8 +81,14 @@ public class ASTPtLeafNode extends LatticeOntologyASTNodeAdapter {
                 leafNode, getSolver().getOntology(), getSolver()
                         .getAllContainedOntologies());
 
-        setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
-                astRelationFunction, _getChildNodeTerms()));
+        ConceptFunctionInequalityTerm constraint =
+        	new ConceptFunctionInequalityTerm(astRelationFunction,
+        			_getChildNodeTerms());
+        if (((LatticeOntologySolver)_solver).isLeastFixedPoint()) {
+            setAtLeast(_getNode(), constraint);
+        } else {
+        	setAtMost(_getNode(), constraint);
+        }
 
         return super.constraintList();
     }

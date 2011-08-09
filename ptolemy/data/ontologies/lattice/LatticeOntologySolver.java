@@ -400,6 +400,25 @@ public class LatticeOntologySolver extends OntologySolver {
         return _annotatedObjects.contains(object);
     }
 
+    /** Return true if the solver is finding a least fixed point, and
+     *  false if the solver is finding a greatest fixed point.
+     *
+     * @return True, if solver is solving a least fixed point,
+     *    false, if it is solving a greatest fixed point.
+     * @throws IllegalActionException If the solvingFixedPoint parameter
+     *   contains an invalid value.
+     */
+    public boolean isLeastFixedPoint() throws IllegalActionException {
+        if (solvingFixedPoint.stringValue().equals("least")) {
+        	return true;
+        } else if (solvingFixedPoint.stringValue().equals("greatest")) {
+        	return false;
+        } else {
+        	throw new IllegalActionException("Invalid fixed point type.\n" +
+        			"Must be one of 'least' or 'greatest'.");
+        }
+    }
+
     /**
      * Reset the solver. This removes the internal states of the
      * solver (e.g.  previously recorded properties, statistics,
