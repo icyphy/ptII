@@ -509,10 +509,12 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/test/Const.txt \
 		ptolemy/actor/lib/test/ReadFile1Output.txt \
 		ptolemy/component \
+		ptolemy/configs/ptserver \
 		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
 		ptolemy/domains/gr/lib/vr \
 		ptolemy/domains/hs \
+		ptolemy/homer \
 		ptolemy/matlab/ptmatlab.exp \
 		ptolemy/matlab/ptmatlab.lib \
 		ptolemy/matlab/ptmatlab.obj \
