@@ -183,6 +183,8 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
     /** The "General" Concept from the monotonicityAnalysis ontology. */
     protected FiniteConcept _generalConcept;
 
+    /** A set of "Almost Monotonic" Concepts (parameterized by counterexamples). */
     protected FlatTokenRepresentativeConcept _nonMonotonicRepresentative;
+    /** A set of "Almost Antimonotonic" Concepts (parameterized by counterexamples). */
     protected FlatTokenRepresentativeConcept _nonAntimonotonicRepresentative;
 }

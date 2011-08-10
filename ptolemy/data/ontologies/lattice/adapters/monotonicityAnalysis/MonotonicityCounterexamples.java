@@ -150,6 +150,10 @@ public class MonotonicityCounterexamples {
                 .equals(((MonotonicityCounterexamples) o)._counterexamples));
     }
 
+    public int hashCode() {
+		return _counterexamples.hashCode();
+	}
+
     /** Return the string representation of the counterexample set.
      *  @return The string representation of this set.
      *  @see java.lang.Object#toString()
@@ -198,8 +202,8 @@ public class MonotonicityCounterexamples {
     
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-    
-    /** A multimap to keep track of the mapping of lesser concepts
+
+	/** A multimap to keep track of the mapping of lesser concepts
      *  to greater concepts.  This must be a multimap, because there
      *  could be multiple counterexamples with the same lesser concept.
      *

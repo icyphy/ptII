@@ -4,13 +4,13 @@
 <class name="extendedMonotonicityLattice" extends="ptolemy.data.ontologies.Ontology">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 127, 1199, 646}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={240, 87, 1205, 581}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[986, 536]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[992, 471]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5625">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.97002997003">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{250.5000000000001, 190.0038581010102}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{189.2728194726166, 232.0413286004057}">
     </property>
     <entity name="Monotonic" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 205.0]">
