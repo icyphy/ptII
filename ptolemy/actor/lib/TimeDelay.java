@@ -189,6 +189,16 @@ public class TimeDelay extends Transformer {
             } else {
                 _delay = newDelay;
             }
+        } else if (attribute == minimumDelay) {
+            double newMinimumDelay = ((DoubleToken) (minimumDelay.getToken())).doubleValue();  
+            if (newMinimumDelay > _delay) {
+                throw new IllegalActionException(this,
+                        "Cannot have minimumDelay less than "
+                        + _delay
+                        + ". Modify the delay value.");
+            } else {
+                _minimumDelay = newMinimumDelay;
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -216,7 +226,7 @@ public class TimeDelay extends Transformer {
      *  @see #getCausalityInterface()
      */
     public void declareDelayDependency() throws IllegalActionException {
-        double minimumDelayValue = _minimumDelay();
+        double minimumDelayValue = _minimumDelay(); 
         _declareDelayDependency(delay.getPort(), output, minimumDelayValue);
         _declareDelayDependency(input, output, minimumDelayValue);
     }
@@ -428,7 +438,7 @@ public class TimeDelay extends Transformer {
      *   parameter cannot be evaluated.
      */
     protected double _minimumDelay() throws IllegalActionException {
-        double minimumDelayValue = 0.0;
+        double minimumDelayValue = _minimumDelay;
         if (delay.getPort().sourcePortList().size() > 0) {
             minimumDelayValue
                     = ((DoubleToken) (minimumDelay.getToken())).doubleValue();
@@ -441,6 +451,9 @@ public class TimeDelay extends Transformer {
 
     /** The amount of delay. */
     protected double _delay;
+    
+    /** The amount of minimumDelay. */
+    protected double _minimumDelay;
 
     /** A local queue to store the delayed output tokens. */
     protected LinkedList<PendingEvent> _pendingOutputs;
