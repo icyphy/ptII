@@ -2413,6 +2413,8 @@
             <entity name="TimeDelay3" class="ptolemy.actor.lib.TimeDelay">
                 <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.00001">
                 </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.00001">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 210.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -2619,6 +2621,8 @@
             </entity>
             <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
                 <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.00001">
+                </property>
+                <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.00001">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 475.0]">
                 </property>
