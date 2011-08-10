@@ -318,6 +318,7 @@ $CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicMixedSimulator/PtidesBasicMixe
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicOnePlatform/PtidesBasicOnePlatform.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicPowerPlant/PtidesBasicPowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesNetworkLatencyTest/PtidesNetworkLatencyTest.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Sequencing/Sequencing.xml
