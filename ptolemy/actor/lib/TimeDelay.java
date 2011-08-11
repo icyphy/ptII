@@ -65,7 +65,15 @@ import ptolemy.kernel.util.Workspace;
  which defaults to 0.0. Setting the <i>minimumDelay</i> to something greater
  than 0.0 is helpful in specials domains such as Ptides.
  The input and output types are unconstrained, except that the output type
- must be the same as that of the input.
+ must be the same as that of the input. 
+ <p>
+ Note that in Ptides the SuperdenseDependency is used for computing
+ offsets and deadlines. The dependency between the input and the output
+ of this actor is the <i>minimumDelay</i>. A <i>minimumDelay</i> of 
+ values > 0.0 allows for more efficient execution of Ptides models. If
+ this actor is used as a fixed delay actor, i.e. the delay value is not
+ changed during the execution, the <i>minimumDelay</i> should be set to
+ the actual delay. 
  <p>
  For directors that implement {@link SuperdenseTimeDirector}, such as
  DE, the output microstep of an event will match the input microstep,
