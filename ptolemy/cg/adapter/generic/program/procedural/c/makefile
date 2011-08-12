@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c
 
-DIRS =		adapters luminary
+DIRS =		adapters luminary #renesas xmos
 
 # Root of the Java directory
 ROOT =		../../../../../../..
@@ -54,7 +54,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	adapters/adapters.jar \
-	luminary/luminary.jar
+	luminary/luminary.jar \
+
+#	renesas/renesas.jar
+#	xmos/xmos.jar
 
 # Keep this list alphabetized.
 JSRCS = 

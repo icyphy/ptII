@@ -76,7 +76,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	ActorGraphicalMessageHandler.java \
 	AbstractPlaceableActor.java \
+	AbstractPlaceableJavaSE.class \
 	ArrayOfRecordsPane.java \
+	AWTContainer.class \
+	AWTContainer.java \
+	AbstractPlaceableJavaSE.java \
 	BrowserEffigy.java \
 	BrowserLauncher.java \
 	BrowserTableau.java \
@@ -180,6 +184,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'AbstractPlaceableActor$$WindowClosingAdapter.class' \
+	'AbstractPlaceableJavaSE$$WindowClosingAdapter.class' \
 	'ArrayOfRecordsPane$$1.class' \
 	'ArrayOfRecordsPane$$ArrayAsTable.class' \
 	'ArrayOfRecordsPane$$EmptyTableModel.class' \

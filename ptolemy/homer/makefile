@@ -69,7 +69,8 @@ JSRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'HomerApplication$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

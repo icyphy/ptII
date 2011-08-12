@@ -117,6 +117,7 @@ MISC_FILES = util kernel plot graph moml data actor gui math media	\
 	$(PTCALTROP_DIR) \
 	$(PTCOPERNICUS_DIR) \
 	$(PTDISTRIBUTED_DIR) \
+	$(PTHOMER_DIR) \
 	$(PTMATLAB_DIR)	domains vergil configs
 
 OPTIONAL_FILES = apps cal chic cg codegen component demo hsif matlab

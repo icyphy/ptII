@@ -73,7 +73,45 @@ JSRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'HomerMenu$$1.class' \
+	'HomerMenu$$10.class' \
+	'HomerMenu$$11.class' \
+	'HomerMenu$$2.class' \
+	'HomerMenu$$3.class' \
+	'HomerMenu$$4.class' \
+	'HomerMenu$$5.class' \
+	'HomerMenu$$6.class' \
+	'HomerMenu$$7.class' \
+	'HomerMenu$$8.class' \
+	'HomerMenu$$9.class' \
+	'NamedObjectTree$$1.class' \
+	'NamedObjectTree$$2.class' \
+	'NamedObjectTree$$3.class' \
+	'RemoteObjectList$$1.class' \
+	'RemoteObjectList$$2$$1.class' \
+	'RemoteObjectList$$2.class' \
+	'RemoteObjectList$$3.class' \
+	'TabScenePanel$$1.class' \
+	'TabScenePanel$$2.class' \
+	'TabScenePanel$$3.class' \
+	'TabScenePanel$$4.class' \
+	'TabScenePanel$$5.class' \
+	'TabScenePanel$$6.class' \
+	'TabScenePanel$$7.class' \
+	'TabScenePanel$$8.class' \
+	'TabScenePanel$$NamedObjectPopupMenu$$1.class' \
+	'TabScenePanel$$NamedObjectPopupMenu$$2.class' \
+	'TabScenePanel$$NamedObjectPopupMenu.class' \
+	'TabbedLayoutScene$$1.class' \
+	'TabbedLayoutScene$$2.class' \
+	'TabbedLayoutScene$$TabButton.class' \
+	'TabbedLayoutScene$$TabSceneButton$$1.class' \
+	'TabbedLayoutScene$$TabSceneButton$$2.class' \
+	'TabbedLayoutScene$$TabSceneButton$$3.class' \
+	'TabbedLayoutScene$$TabSceneButton$$4.class' \
+	'TabbedLayoutScene$$TabSceneButton$$5.class' \
+	'TabbedLayoutScene$$TabSceneButton.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

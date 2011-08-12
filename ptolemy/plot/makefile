@@ -90,6 +90,8 @@ JSRCS = \
 	PlotApplet.java \
 	PlotApplication.java \
 	PlotBox.java \
+	PlotBoxInterface.java \
+	PlotInterface.java \
 	PlotDataException.java \
 	PlotFormatter.java \
 	PlotFrame.java \

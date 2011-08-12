@@ -70,7 +70,13 @@ JSRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'AttributeStyleWidget$$1.class' \
+	'GlassPaneWidget$$1.class' \
+	'GlassPaneWidget$$2.class' \
+	'GlassPaneWidget$$3.class' \
+	'PortablePlaceableWidget$$1.class' \
+	'ResizableImageWidget$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

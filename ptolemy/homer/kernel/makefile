@@ -77,7 +77,9 @@ JSRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'LayoutFileOperations$$SinkOrSource.class' \
+	'LayoutParser$$ScreenOrientation.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

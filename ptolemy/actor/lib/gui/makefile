@@ -111,6 +111,8 @@ OPTIONAL_FILES = \
 	'Display$$1.class' \
 	'Display$$DisplayWindow.class' \
 	'Display$$DisplayWindowTableau.class' \
+	'DisplayJavaSE$$1.class' \
+	'DisplayJavaSE$$DisplayWindowTableau.class' \
 	'HistogramPlotter$$1.class' \
 	'InteractiveShell$$1.class' \
 	'InteractiveShell$$2.class' \
@@ -124,6 +126,9 @@ OPTIONAL_FILES = \
 	'PlotterBase$$PlotWindowTableau.class' \
 	'PlotterBase$$PlotterPlotFrame.class' \
 	'PlotterBase$$WindowClosingAdapter.class' \
+	'PlotterBaseJavaSE$$1.class' \
+	'PlotterBaseJavaSE$$PlotWindowTableau.class' \
+	'PlotterBaseJavaSE$$WindowClosingAdapter.class' \
 	'SliderSource$$1.class' \
 	'SliderSource$$SliderFrame.class' \
 	'SketchedSource$$1.class'

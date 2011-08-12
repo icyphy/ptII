@@ -72,6 +72,7 @@ JSRCS = \
 	AbstractReceiver.java \
 	Actor.java \
 	ActorFiringListener.java \
+	ActorModuleInitializer.java \
 	ApplicationConfigurer.java \
 	AtomicActor.java \
 	CausalityMarker.java \
@@ -122,6 +123,7 @@ JSRCS = \
 	TypedIORelation.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ActorModule.properties \
 	JavaSEActorModule.properties
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
