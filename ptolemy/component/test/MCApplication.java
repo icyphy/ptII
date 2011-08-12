@@ -32,8 +32,8 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
 
-import ptolemy.component.data.TupleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.TupleToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 

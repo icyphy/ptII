@@ -58,6 +58,7 @@ JSRCS = \
 	ObjectType.java \
 	RecordType.java \
 	StructuredType.java \
+	TupleType.java \
 	Type.java \
 	Typeable.java \
 	TypeConstant.java \

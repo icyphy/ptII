@@ -26,10 +26,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import ptolemy.component.data.TupleToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
+import ptolemy.data.TupleToken;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptToken;
 import ptolemy.kernel.util.IllegalActionException;

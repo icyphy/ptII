@@ -27,7 +27,7 @@
  */
 package ptolemy.component;
 
-import ptolemy.component.data.TupleToken;
+import ptolemy.data.TupleToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////

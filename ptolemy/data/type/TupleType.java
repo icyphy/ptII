@@ -24,17 +24,13 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.component.data.type;
+package ptolemy.data.type;
 
 import java.util.Arrays;
 
-import ptolemy.component.data.TupleToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.StructuredType;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.TypeLattice;
+import ptolemy.data.TupleToken;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;

@@ -29,8 +29,8 @@ package ptolemy.component.test;
 
 import ptolemy.component.AtomicComponent;
 import ptolemy.component.MethodCallPort;
-import ptolemy.component.data.TupleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.TupleToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

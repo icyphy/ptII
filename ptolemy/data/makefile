@@ -90,6 +90,7 @@ JSRCS = \
 	StringToken.java \
 	Token.java \
 	TokenUtilities.java \
+	TupleToken.java \
 	UnionToken.java \
 	UnsignedByteToken.java \
 	UnsizedArrayToken.java \

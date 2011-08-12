@@ -25,11 +25,9 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.component.data;
+package ptolemy.data;
 
-import ptolemy.component.data.type.TupleType;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
+import ptolemy.data.type.TupleType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 

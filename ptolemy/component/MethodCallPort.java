@@ -29,7 +29,7 @@ package ptolemy.component;
 
 import java.util.Iterator;
 
-import ptolemy.component.data.TupleToken;
+import ptolemy.data.TupleToken;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.util.CrossRefList;
