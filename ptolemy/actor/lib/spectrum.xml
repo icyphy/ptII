@@ -11,7 +11,8 @@
 <entity name="IFFT" class="ptolemy.domains.sdf.lib.IFFT"/>
 <entity name="LevinsonDurbin" class="ptolemy.actor.lib.LevinsonDurbin"/>
 <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum"/>
-<entity name="Periodogram" class="ptolemy.domains.sdf.lib.Periodogram"/>
+<!-- Removed Periodogram, which is identical to Spectrum. -->
+<!-- entity name="Periodogram" class="ptolemy.domains.sdf.lib.Periodogram"/-->
 <entity name="PhaseUnwrap" class="ptolemy.actor.lib.PhaseUnwrap"/>
 <entity name="SmoothedPeriodogram" class="ptolemy.domains.sdf.lib.SmoothedPeriodogram"/>
 <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum"/>
