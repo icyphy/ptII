@@ -261,6 +261,7 @@ JSRCS = \
 	Writer.java
 
 OTHER_FILES_TO_BE_JARED = \
+	AbsoluteValueIcon.xml \
         AccumulatorIcon.png \
         AccumulatorIcon.xml \
         BernoulliIcon.xml \
@@ -271,9 +272,11 @@ OTHER_FILES_TO_BE_JARED = \
 	ComputeHistogramIcon.xml \
 	ConfigurationSelectIcon.xml \
 	ConfigurationSwitchIcon.xml \
+	DBIcon.xml \
 	DiscardIcon.xml \
 	DistributorIcon.xml \
 	GaussianIcon.xml \
+	IIRIcon.xml \
 	TriangularIcon.xml \
 	PowerEstimate.xml \
 	ResettableTimerIcon.xml \

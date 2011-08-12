@@ -86,8 +86,11 @@ OTHER_FILES_TO_BE_JARED = \
 	DelayLineIcon.xml \
 	DotProductIcon.xml \
 	DownSampleIcon.xml \
+	FFTIcon.xml \
 	FIRIcon.xml \
+	IFFTIcon.xml \
 	MaximumEntropySpectrum.xml \
+	MaximumEntropySpectrumIcon.xml \
 	MatrixJoinIcon.xml \
 	MatrixSplitIcon.xml \
 	Periodogram.xml \
@@ -95,8 +98,10 @@ OTHER_FILES_TO_BE_JARED = \
 	SequenceToArrayIcon.xml \
 	SmoothedPeriodogram.xml \
 	SmoothedSpectrum.xml \
-	SpectrumPlot.xml \
+	Spectrum.gif \
 	Spectrum.xml \
+	SpectrumIcon.xml \
+	SpectrumPlot.xml \
 	UpSampleIcon.xml \
 	VariableFIRIcon.xml \
 	sdfentities.xml

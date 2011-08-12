@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="SmoothedPeriodogram" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <doc>This composite actor calculates the spectrum of the input.</doc>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -40,39 +40,49 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 5.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[9.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 570}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 817, 564}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 30.0]">
+        </property>
+    </property>
+    <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+        <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This actor estimates the autocorrelation of an input, and&#10;then calculates an FFT. For a random input, this produces a&#10;Blackman-Tukey spectral estimate with a Bartlett window, which is&#10;equivalent to smoothed (averaged) periodogram. The number of inputs&#10;required to produce any output is a parameter, and the number of&#10;outputs produced will be 2^order. The numberOfLags parameter should be&#10;significantly less than the numberOfInputs in order to get a reasonable&#10;amount of averaging. The output represents frequencies from -pi to pi&#10;radians per second, centered at zero frequency.">
+        </property>
+        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+        </property>
+        <property name="order (parameter)" class="ptolemy.data.expr.StringParameter" value="The order of the FFT used.">
+        </property>
+        <property name="numberOfInputs (parameter)" class="ptolemy.data.expr.StringParameter" value="The number of inputs to read.">
+        </property>
+        <property name="numberOfLags (parameter)" class="ptolemy.data.expr.StringParameter" value="The number of autocorrelation lags to calculate.">
+        </property>
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[39.0, 285.0]">
         </property>
     </port>
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[514.0, 390.0]">
         </property>
     </port>
     <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 245.0">
-        </property>
-    </entity>
-    <entity name="Waveform" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, -1}">
-        </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[159.0, 300.0]">
         </property>
     </entity>
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[189.0, 390.0]">
         </property>
     </entity>
     <entity name="DB" class="ptolemy.actor.lib.DB">
@@ -80,11 +90,11 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[419.0, 390.0]">
         </property>
     </entity>
     <entity name="AbsoluteValue0" class="ptolemy.actor.lib.AbsoluteValue">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[304.0, 390.0]">
         </property>
     </entity>
     <entity name="Autocorrelation" class="ptolemy.domains.sdf.lib.Autocorrelation">
@@ -97,7 +107,7 @@ radians per second, centered at zero frequency.</text></svg></configure>
         <property name="symmetricOutput" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Autocorrelation estimator</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[249.0, 300.0]">
         </property>
     </entity>
     <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop">
@@ -105,39 +115,62 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </property>
         <property name="numberToWrite" class="ptolemy.data.expr.Parameter" value="2^order">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[474.0, 300.0]">
         </property>
     </entity>
     <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
         <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="2*numberOfLags+1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[359.0, 300.0]">
         </property>
     </entity>
-    <relation name="_R1" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, -1}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[54.0, 375.0]">
+        </property>
+    </entity>
     <relation name="_R7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="input" relation="relation4"/>
     <link port="output" relation="_R7"/>
-    <link port="Multiply.multiply" relation="_R1"/>
     <link port="Multiply.multiply" relation="relation4"/>
+    <link port="Multiply.multiply" relation="relation3"/>
     <link port="Multiply.output" relation="relation"/>
-    <link port="Waveform.output" relation="_R1"/>
     <link port="FFT.input" relation="relation9"/>
     <link port="FFT.output" relation="relation1"/>
     <link port="DB.input" relation="relation2"/>
@@ -150,4 +183,5 @@ radians per second, centered at zero frequency.</text></svg></configure>
     <link port="Chop.output" relation="relation9"/>
     <link port="ArrayToSequence.input" relation="relation6"/>
     <link port="ArrayToSequence.output" relation="relation7"/>
+    <link port="Sequence.output" relation="relation3"/>
 </class>
