@@ -4,7 +4,7 @@
 <entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[578, 324]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -64,7 +64,7 @@ time.  Open the Ball Model to see how it is implemented.</text></svg></configure
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 0.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 817, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 791, 434}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -110,7 +110,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.0, 162.0}">
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
@@ -130,8 +130,8 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="26.8351706445"/>
-<yRange min="-4.929068266504798E-5" max="10.0"/>
+<xRange min="0.0" max="26.9114852061"/>
+<yRange min="-4.9795207881793424E-5" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -485,9 +485,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-3.2454903792518E-7">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-9.624549675160384E-6">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.1507383810712">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.1128098715085">
             </property>
             <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -534,7 +534,7 @@ falling in a gravitational field.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 20.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 335, 813, 560}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 335, 748, 368}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
