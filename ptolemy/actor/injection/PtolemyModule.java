@@ -65,25 +65,7 @@ public class PtolemyModule {
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
             String value = moduleBundle.getString(key);
-            ClassLoader classLoader = getClass().getClassLoader();
-            Class<Object> interfaceClass;
-            try {
-                interfaceClass = (Class<Object>) classLoader.loadClass(key);
-            } catch (ClassNotFoundException e) {
-                throw new IllegalStateException(
-                        "Interface was not found for key " + key, e);
-            }
-            Class<Object> implementationClass;
-            try {
-                implementationClass = (Class<Object>) classLoader
-                        .loadClass(value);
-            } catch (ClassNotFoundException e) {
-                throw new IllegalStateException(
-                        "Implementation class was not found for the interface "
-                                + interfaceClass + " with the following name: "
-                                + value, e);
-            }
-            getBindings().put(interfaceClass, implementationClass);
+            getBindings().put(key, value);
         }
     }
 
@@ -91,7 +73,7 @@ public class PtolemyModule {
      * Return the bindings from interfaces to their implementations.
      * @return the interface to implementations mappings.
      */
-    public HashMap<Class<?>, Class<?>> getBindings() {
+    public HashMap<String, String> getBindings() {
         return _interfaceToImplementationMap;
     }
 
@@ -101,5 +83,5 @@ public class PtolemyModule {
     /**
      * The mapping from interface to implementation.
      */
-    private final HashMap<Class<?>, Class<?>> _interfaceToImplementationMap = new HashMap<Class<?>, Class<?>>();
+    private final HashMap<String, String> _interfaceToImplementationMap = new HashMap<String, String>();
 }

@@ -72,9 +72,16 @@ public class ActorModuleInitializer {
      */
     public synchronized static void initializeInjector() {
         if (!_isInitialized) {
-            PtolemyInjector.createInjector(_PTOLEMY_MODULES);
+            _initializer.initialize();
             _isInitialized = true;
         }
+    }
+
+    public static void setInitializer(Initializer initializer) {
+        if (initializer == null) {
+            throw new NullPointerException("Initializer must be non-null");
+        }
+        _initializer = initializer;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -91,5 +98,29 @@ public class ActorModuleInitializer {
     static {
         _PTOLEMY_MODULES.add(new PtolemyModule(ResourceBundle
                 .getBundle("ptolemy.actor.ActorModule")));
+    }
+
+    /**
+     * The default initializer used by the PtolemyInjector if one is not provided to 
+     * it.  The default initializer would initialize Java SE specific classes.
+     */
+    protected static Initializer _defaultInitializer = new Initializer() {
+        public void initialize() {
+            PtolemyInjector.createInjector(_PTOLEMY_MODULES);
+        }
+    };
+
+    private static Initializer _initializer = _defaultInitializer;
+
+    /**
+     * Initializer is responsible for initializing the PtolemyInjector with
+     * modules specific to the platform it was developed for.
+     * 
+     */
+    public interface Initializer {
+        /**
+         * Initialize the PtolemyInjector with modules specific to its platform.
+         */
+        public void initialize();
     }
 }

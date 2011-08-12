@@ -55,7 +55,7 @@ public class Injector {
      * @return The implementation of the interface.
      */
     public <T> T getInstance(Class<T> type) {
-        Class<T> implementation = (Class<T>) _interfaceToImplementationMap
+        Class<T> implementation = (Class<T>) _resolvedInterfaceToImplementationMap
                 .get(type);
         if (implementation != null) {
             try {
@@ -67,6 +67,27 @@ public class Injector {
                 throw new IllegalStateException("Problem instantiating type "
                         + implementation, e);
             }
+        } else {
+            String implementationName = _interfaceToImplementationMap.get(type
+                    .getName());
+            if (implementationName != null) {
+                try {
+                    Class<?> implementationClass = getClass().getClassLoader()
+                            .loadClass(implementationName);
+                    _resolvedInterfaceToImplementationMap.put(type,
+                            implementationClass);
+                    return (T) implementationClass.newInstance();
+                } catch (ClassNotFoundException e) {
+                    throw new IllegalStateException("Problem loading type "
+                            + implementation, e);
+                } catch (InstantiationException e) {
+                    throw new IllegalStateException(
+                            "Problem instantiating type " + implementation, e);
+                } catch (IllegalAccessException e) {
+                    throw new IllegalStateException(
+                            "Problem instantiating type " + implementation, e);
+                }
+            }
         }
         throw new IllegalStateException("Implementation for the interface "
                 + type + " was not found");
@@ -76,15 +97,19 @@ public class Injector {
      * Load the interface to implementation mappings into the injector.
      * @param interfaceToImplementationMap The interface to implementation mapping.
      */
-    public void loadMappings(
-            Map<Class<?>, Class<?>> interfaceToImplementationMap) {
+    public void loadMappings(Map<String, String> interfaceToImplementationMap) {
         _interfaceToImplementationMap.putAll(interfaceToImplementationMap);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     * The interface to the implementation mapping.
+     * The resolved interface to the implementation class mappings.
      */
-    private HashMap<Class<?>, Class<?>> _interfaceToImplementationMap = new HashMap<Class<?>, Class<?>>();
+    private HashMap<Class<?>, Class<?>> _resolvedInterfaceToImplementationMap = new HashMap<Class<?>, Class<?>>();
+
+    /**
+    * The resolved interface to the implementation class mappings.
+    */
+    private HashMap<String, String> _interfaceToImplementationMap = new HashMap<String, String>();
 }
