@@ -58,6 +58,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	designs/designs.jar \
 	gui/gui.jar \
+	injection/injection.jar \
 	lib/lib.jar \
 	parameters/parameters.jar \
 	process/process.jar \
