@@ -73,7 +73,7 @@ public class IntermediateReceiver extends AbstractReceiver {
      */
     public void clear() throws IllegalActionException {
         quantityManager.reset();
-        _receiver.reset();
+        //_receiver.reset();
     }
 
     /** Delegate to the internal receiver and return whatever it returns.
