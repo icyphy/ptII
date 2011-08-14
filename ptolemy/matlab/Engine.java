@@ -818,11 +818,15 @@ public class Engine {
 
             if (t instanceof BooleanToken) {
                 a[0] = ((BooleanToken) t).booleanValue() ? 1.0 : 0.0;
-            } else if (t instanceof BooleanToken) {
+            } else if (t instanceof DoubleToken) {
                 a[0] = ((ScalarToken) t).doubleValue();
+            } else if (t instanceof IntToken) {
+                a[0] = ((ScalarToken) t).intValue();
             } else {
                 throw new IllegalActionException("Token " + t + " is of type "
-                        + t.getType());
+                        + t.getType() + ", it should be one of "
+                        + "ArrayToken, RecordToken, StringToken, ComplexMatrixToken, "
+                        + "MatrixToken, ComplexToken, BooleanToken, DoubleToken or IntToken.");
             }
 
             ma = ptmatlabCreateDoubleMatrixOneDim(name, a, 1);

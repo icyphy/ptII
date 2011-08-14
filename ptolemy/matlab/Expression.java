@@ -388,52 +388,62 @@ public class Expression extends TypedAtomicActor {
             throw new IllegalActionException(this, "No director!");
         }
 
-        try {
-            synchronized (Engine.semaphore) {
-                // The following clears variables, but preserves any
-                // persistent storage created by a function (this usually
-                // for speed-up purposes to avoid recalculation on every
-                // function call)
-                matlabEngine
-                        .evalString(engine, "clear variables;clear globals");
+        synchronized (Engine.semaphore) {
+            // The following clears variables, but preserves any
+            // persistent storage created by a function (this usually
+            // for speed-up purposes to avoid recalculation on every
+            // function call)
+            matlabEngine
+                .evalString(engine, "clear variables;clear globals");
 
-                if (_addPathCommand != null) {
-                    matlabEngine.evalString(engine, _addPathCommand);
-                }
+            if (_addPathCommand != null) {
+                matlabEngine.evalString(engine, _addPathCommand);
+            }
 
+            try {
                 matlabEngine.put(engine, "time", new DoubleToken(director
-                        .getModelTime().getDoubleValue()));
+                                .getModelTime().getDoubleValue()));
+            } catch (IllegalActionException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to set the \"time\" variable in the Matlab "
+                        + "engine to "
+                        + new DoubleToken(director
+                                .getModelTime().getDoubleValue()));
+            }
+            try {
                 matlabEngine.put(engine, "iteration", _iteration.getToken());
+            } catch (IllegalActionException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to set the \"iteration\" variable in the Matlab "
+                        + "engine to " + _iteration.getToken());
+            }
 
-                Iterator inputPorts = inputPortList().iterator();
+            Iterator inputPorts = inputPortList().iterator();
 
-                while (inputPorts.hasNext()) {
-                    IOPort port = (IOPort) (inputPorts.next());
-                    matlabEngine.put(engine, port.getName(), port.get(0));
-                }
+            while (inputPorts.hasNext()) {
+                IOPort port = (IOPort) (inputPorts.next());
+                matlabEngine.put(engine, port.getName(), port.get(0));
+            }
 
-                matlabEngine.evalString(engine, expression.stringValue());
+            matlabEngine.evalString(engine, expression.stringValue());
 
-                Iterator outputPorts = outputPortList().iterator();
+            Iterator outputPorts = outputPortList().iterator();
 
-                while (outputPorts.hasNext()) {
-                    IOPort port = (IOPort) (outputPorts.next());
-
-                    // FIXME: Handle multiports
-                    if (port.isOutsideConnected()) {
-                        port.send(0, matlabEngine.get(engine, port.getName(),
-                                _dataParameters));
-                    }
-                }
-
-                // Restore previous path if path was modified above
-                if (_previousPath != null) {
-                    matlabEngine.put(engine, "previousPath_", _previousPath);
-                    matlabEngine.evalString(engine, "path(previousPath_);");
+            while (outputPorts.hasNext()) {
+                IOPort port = (IOPort) (outputPorts.next());
+                
+                // FIXME: Handle multiports
+                if (port.isOutsideConnected()) {
+                    port.send(0, matlabEngine.get(engine, port.getName(),
+                                    _dataParameters));
                 }
             }
-        } catch (IllegalActionException ex) {
-            throw new IllegalActionException(getFullName() + ": " + ex);
+
+            // Restore previous path if path was modified above
+            if (_previousPath != null) {
+                matlabEngine.put(engine, "previousPath_", _previousPath);
+                matlabEngine.evalString(engine, "path(previousPath_);");
+            }
         }
     }
 
