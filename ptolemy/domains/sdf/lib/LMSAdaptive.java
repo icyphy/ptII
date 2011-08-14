@@ -39,6 +39,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -130,6 +131,8 @@ public class LMSAdaptive extends FIR {
         stepSize.setTypeSameAs(input);
         tapValues.setTypeSameAs(taps);
         taps.setTypeAtLeast(initialTaps);
+        
+        new StringAttribute(error, "_cardinal").setExpression("SOUTH");
     }
 
     ///////////////////////////////////////////////////////////////////
