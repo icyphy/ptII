@@ -35,6 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// BooleanMultiplexor
@@ -82,6 +83,8 @@ public class BooleanMultiplexor extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
+        
+        new StringAttribute(select, "_cardinal").setExpression("SOUTH");
     }
 
     ///////////////////////////////////////////////////////////////////
