@@ -27,13 +27,11 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.actor;
+package ptolemy.actor.injection;
 
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import ptolemy.actor.injection.PtolemyInjector;
-import ptolemy.actor.injection.PtolemyModule;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorModuleInitializer

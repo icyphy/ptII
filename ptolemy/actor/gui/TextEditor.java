@@ -44,6 +44,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.gui.UndoListener;
 
 ///////////////////////////////////////////////////////////////////

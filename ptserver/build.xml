@@ -490,7 +490,7 @@
 		<taskdef resource="checkstyletask.properties" classpath="${basedir}/ptserver/lib/checkstyle-5.3-all.jar" />
 		<checkstyle config="${basedir}/ptserver/checkstyle-ptserver.xml" failOnViolation="false">
 			<fileset dir="${basedir}/ptserver" includes="**/*.java" excludes="**/test/*.java" />
-			<fileset dir="${basedir}/ptolemy/homer" includes="**/*.java" excludes="**/test/**/*.java" />
+			<fileset dir="${basedir}/ptolemy/homer" includes="**/*.java" excludes="**/test/*" />
 			<formatter type="xml" toFile="${ptserver.output}/checkstyle_errors.xml" />
 		</checkstyle>
 		<!-- <xslt in="${ptserver.output}/checkstyle_errors.xml" out="${ptserver.output}/checkstyle_report.html" style="${basedir}/ptserver/checkstyle-simple.xsl"/> -->

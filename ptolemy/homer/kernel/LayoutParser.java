@@ -143,7 +143,7 @@ public class LayoutParser {
      * 
      *  @return All the entities with positions parsed.
      *  @exception IllegalActionException If an entity does not
-     *  implement {@link ptolemy.actor.gui.PortablePlaceable} or if
+     *  implement {@link ptolemy.actor.injection.PortablePlaceable} or if
      *  the location information is invalid for any of the entities.
      */
     public ArrayList<EntityElement> getPositionableEntities()

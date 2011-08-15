@@ -38,8 +38,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.injection.PtolemyModule;
 import ptolemy.data.IntToken;

@@ -28,7 +28,7 @@
  */
 package ptolemy.media.javasound.demo.SoftClip;
 
-import ptolemy.actor.ActorModuleInitializer;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.media.javasound.LiveSound;
 
 ////////////////////////////////////////////////////

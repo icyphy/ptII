@@ -27,8 +27,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.homer.kernel;
 
-import ptolemy.actor.gui.PortableContainer;
-import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.PortableContainer;
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 

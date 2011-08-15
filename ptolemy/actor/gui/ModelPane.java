@@ -50,6 +50,7 @@ import javax.swing.JRootPane;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.CloseListener;
 import ptolemy.kernel.util.IllegalActionException;

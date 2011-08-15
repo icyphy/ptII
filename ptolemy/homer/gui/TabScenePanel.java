@@ -73,7 +73,7 @@ import org.netbeans.modules.visual.action.AlignWithMoveStrategyProvider;
 import org.netbeans.modules.visual.action.AlignWithResizeStrategyProvider;
 import org.netbeans.modules.visual.action.SingleLayerAlignWithWidgetCollector;
 
-import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.homer.kernel.ContentPrototype;

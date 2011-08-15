@@ -38,10 +38,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.gui.PortableContainer;
-import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.ActorModuleInitializer;
+import ptolemy.actor.injection.PortableContainer;
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;

@@ -29,7 +29,7 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.gui.PortableContainer;
+import ptolemy.actor.injection.PortableContainer;
 import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////

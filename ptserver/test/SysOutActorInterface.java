@@ -1,6 +1,6 @@
 package ptserver.test;
 
-import ptolemy.actor.gui.PortableContainer;
+import ptolemy.actor.injection.PortableContainer;
 import ptolemy.data.Token;
 
 public interface SysOutActorInterface {

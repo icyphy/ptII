@@ -31,9 +31,9 @@ import java.net.URL;
 
 import javax.swing.SwingUtilities;
 
-import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;

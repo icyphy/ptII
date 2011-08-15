@@ -54,8 +54,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.Manager.State;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.injection.PtolemyModule;
 import ptolemy.kernel.util.IllegalActionException;

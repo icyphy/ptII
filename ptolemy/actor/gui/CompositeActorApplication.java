@@ -38,6 +38,7 @@ import java.util.List;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;

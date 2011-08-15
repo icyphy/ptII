@@ -51,6 +51,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.Top;

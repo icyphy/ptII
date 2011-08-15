@@ -28,7 +28,7 @@ package ptolemy.actor.lib;
 
 import javax.swing.JTextField;
 
-import ptolemy.actor.gui.PortableContainer;
+import ptolemy.actor.injection.PortableContainer;
 import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////

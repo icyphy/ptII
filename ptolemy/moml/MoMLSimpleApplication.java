@@ -30,10 +30,10 @@ package ptolemy.moml;
 
 import java.io.File;
 
-import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Workspace;

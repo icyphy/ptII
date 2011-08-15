@@ -27,8 +27,8 @@
 
 package ptolemy.homer.kernel;
 
-import ptolemy.actor.gui.PortableContainer;
 import ptolemy.actor.gui.style.ParameterEditorStyle;
+import ptolemy.actor.injection.PortableContainer;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;

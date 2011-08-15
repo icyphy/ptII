@@ -55,7 +55,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.gui.AWTContainer;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.gui.CloseListener;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;

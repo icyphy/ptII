@@ -44,10 +44,10 @@ import javax.swing.text.BadLocationException;
 import ptolemy.actor.gui.AbstractPlaceableJavaSE;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PortableContainer;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEditor;
 import ptolemy.actor.gui.TextEffigy;
+import ptolemy.actor.injection.PortableContainer;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.gui.Top;
@@ -77,7 +77,7 @@ that is known to consume large amounts of memory. It is not advisable
 to use this actor to log large output streams.</p>
 
 @author Yuhong Xiong, Edward A. Lee Contributors: Ishwinder Singh
-@version $Id$
+@version $Id: DisplayJavaSE.java 61635 2011-07-28 04:52:41Z ahuseyno $
 @since Ptolemy II 1.0
 */
 

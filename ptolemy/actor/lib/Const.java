@@ -27,9 +27,9 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.actor.ActorModuleInitializer;
-import ptolemy.actor.gui.PortableContainer;
-import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.ActorModuleInitializer;
+import ptolemy.actor.injection.PortableContainer;
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;

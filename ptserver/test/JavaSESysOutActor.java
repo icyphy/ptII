@@ -29,7 +29,7 @@ package ptserver.test;
 import java.awt.Container;
 import java.awt.TextArea;
 
-import ptolemy.actor.gui.PortableContainer;
+import ptolemy.actor.injection.PortableContainer;
 import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////

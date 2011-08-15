@@ -113,7 +113,7 @@ import org.mlc.swing.layout.FormEditor;
 import org.mlc.swing.layout.LayoutConstraintsManager;
 
 import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.NamedObj;

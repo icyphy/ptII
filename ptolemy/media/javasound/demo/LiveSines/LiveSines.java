@@ -30,7 +30,7 @@ package ptolemy.media.javasound.demo.LiveSines;
 
 import java.io.IOException;
 
-import ptolemy.actor.ActorModuleInitializer;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.media.javasound.LiveSound;
 
 ////////////////////////////////////////////////////

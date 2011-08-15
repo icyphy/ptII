@@ -32,8 +32,8 @@ import java.util.HashSet;
 
 import org.junit.Test;
 
-import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;

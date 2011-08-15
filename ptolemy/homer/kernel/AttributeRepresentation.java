@@ -28,7 +28,7 @@
 
 package ptolemy.homer.kernel;
 
-import ptolemy.actor.gui.PortableContainer;
+import ptolemy.actor.injection.PortableContainer;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 

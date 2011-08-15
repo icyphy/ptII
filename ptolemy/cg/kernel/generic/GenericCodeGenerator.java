@@ -42,10 +42,10 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.cg.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;

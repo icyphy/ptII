@@ -29,7 +29,7 @@ package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.PortableContainer;
+import ptolemy.actor.injection.PortableContainer;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;

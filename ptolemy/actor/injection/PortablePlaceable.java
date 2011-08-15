@@ -24,7 +24,9 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.actor.gui;
+package ptolemy.actor.injection;
+
+import ptolemy.actor.gui.Placeable;
 
 ///////////////////////////////////////////////////////////////////
 //// PortablePlaceable
@@ -60,8 +62,8 @@ package ptolemy.actor.gui;
  * @author Edward A. Lee Contributor: Anar Huseynov
  * @version $Id: Placeable.java 57040 2010-01-27 20:52:32Z cxh $
  * @since Ptolemy II 0.3
- * @Pt.ProposedRating Green (eal)
- * @Pt.AcceptedRating Yellow (cxh)
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
  * @see Placeable
  */
 public interface PortablePlaceable {

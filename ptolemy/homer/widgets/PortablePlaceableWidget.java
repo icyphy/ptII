@@ -33,7 +33,7 @@ import java.awt.Component;
 import org.netbeans.api.visual.widget.Scene;
 
 import ptolemy.actor.gui.AWTContainer;
-import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.kernel.util.NamedObj;
 

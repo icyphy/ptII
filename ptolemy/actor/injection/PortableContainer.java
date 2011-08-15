@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.actor.gui;
+package ptolemy.actor.injection;
 
 ///////////////////////////////////////////////////////////////////
 //// PortableContainer
@@ -35,7 +35,7 @@ package ptolemy.actor.gui;
  *  The implementor of this interface would wrap the platform dependent container.
  *  
  *  @author Anar Huseynov
- *  @version $Id$ 
+ *  @version $Id: PortableContainer.java 61629 2011-07-28 02:17:45Z ahuseyno $ 
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (ahuseyno)
  *  @Pt.AcceptedRating Red (ahuseyno)

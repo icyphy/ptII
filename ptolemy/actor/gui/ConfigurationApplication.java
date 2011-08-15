@@ -40,12 +40,12 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import ptolemy.actor.ActorModuleInitializer;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;

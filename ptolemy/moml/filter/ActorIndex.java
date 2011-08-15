@@ -42,7 +42,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import ptolemy.actor.ActorModuleInitializer;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.FileUtilities;

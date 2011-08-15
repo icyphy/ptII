@@ -28,8 +28,8 @@ package ptserver.test;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.PortableContainer;
-import ptolemy.actor.gui.PortablePlaceable;
+import ptolemy.actor.injection.PortableContainer;
+import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;

@@ -30,7 +30,7 @@ package ptolemy.moml.filter;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import ptolemy.actor.ActorModuleInitializer;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
