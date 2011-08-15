@@ -683,6 +683,9 @@ PTCCJNI
 JAVAH
 MATLAB
 PTMATLAB_CC
+ANT_ALWAYS_EXCLUDE
+ANT_CLASSPATH
+ANT_EXCLUDE
 CALTROP_DIR
 CHIC_DIR
 CLASSPATHSEPARATOR
@@ -3552,7 +3555,7 @@ echo "${ECHO_T}'$CLASSPATHSEPARATOR'" >&6; }; fi
 
 
 #--------------------------------------------------------------------
-#	Get ready to accumulate information for Eclipse
+#	Get ready to accumulate information for Eclipse and Ant
 #--------------------------------------------------------------------
 
 # These directories are always excluded from Eclipse
@@ -3562,6 +3565,89 @@ ECLIPSE_EXCLUDING_SRC="ptolemy/actor/lib/reactable/"
 # Jar files to include in the Eclipse library
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
 ECLIPSE_CLASSPATHENTRY_LIBS=''
+
+# Paths to always exclude i Ant's build.xml
+ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
+<exclude name="**/adm/"/>
+<exclude name="**/codeDoc/"/>
+<exclude name="build/"/>
+<exclude name="config/"/>
+<exclude name="doc/coding/templates/"/>
+<exclude name="jni/test/jni/meaningOfLife/"/>
+<exclude name="jni/test/jni/testDeux/"/>
+<exclude name="jni/test/jni/testTrois/"/>
+<exclude name="ptolemy/apps/agilent/"/>
+<exclude name="ptolemy/apps/anytimecontrol/"/>
+<exclude name="ptolemy/apps/apes/"/>
+<exclude name="ptolemy/apps/charon/"/>
+<exclude name="ptolemy/apps/crazyboard/"/>
+<exclude name="ptolemy/apps/etherealSting/"/>
+<exclude name="ptolemy/apps/fullscreen/"/>
+<exclude name="ptolemy/apps/giotto/"/>
+<exclude name="ptolemy/apps/ia/"/>
+<exclude name="ptolemy/apps/interfaces/"/>
+<exclude name="ptolemy/apps/jmf/"/>
+<exclude name="ptolemy/apps/kurt/"/>
+<exclude name="ptolemy/apps/kvm/"/>
+<exclude name="ptolemy/apps/lego/"/>
+<exclude name="ptolemy/apps/lejos/"/>
+<exclude name="ptolemy/apps/midp/"/>
+<exclude name="ptolemy/apps/mobileCoding/"/>
+<exclude name="ptolemy/apps/pendulum/"/>
+<exclude name="ptolemy/apps/rijndael/"/>
+<exclude name="ptolemy/apps/robot/"/>
+<exclude name="ptolemy/apps/security/"/>
+<exclude name="ptolemy/apps/sobel/"/>
+<exclude name="ptolemy/apps/soot/"/>
+<exclude name="ptolemy/apps/throttle/"/>
+<exclude name="ptolemy/apps/tini/"/>
+<exclude name="ptolemy/apps/transmission/"/>
+<exclude name="ptolemy/apps/vergil/"/>
+<exclude name="ptolemy/apps/waba/"/>
+<exclude name="ptolemy/apps/webstart/"/>
+<exclude name="ptolemy/apps/xsl/"/>
+<exclude name="ptolemy/apps/zaurus/"/>
+<exclude name="ptolemy/backtrack/test/"/>
+<exclude name="ptolemy/codegen/c/actor/lib/oldJavaFiles/"/>
+<exclude name="ptolemy/codegen/dsp/lib/"/>
+<exclude name="ptolemy/codegen/kernel/newInterfaces/"/>
+<exclude name="ptolemy/codegen/lib/"/>
+<exclude name="ptolemy/copernicus/kernel/fragment/JavaFragmentParser.java"/>
+<exclude name="ptolemy/domains/ct/demo/Saber/"/>
+<exclude name="ptolemy/domains/giotto/demo/Hierarchy/Hierarchy/"/>
+<exclude name="ptolemy/domains/giotto/demo/Multimode/Multimode/"/>
+<exclude name="ptolemy/domains/giotto/demo/Simple/Simple/"/>
+<exclude name="ptolemy/domains/gr/lib/experimental/"/>
+<exclude name="ptolemy/domains/gro/"/>
+<exclude name="ptolemy/domains/pdf/"/>
+<exclude name="ptolemy/moml/test/NoPackageActor.java"/>
+<exclude name="ptolemy/plot/servlet/"/>
+<exclude name="src/"/>
+<exclude name="target/"/>
+<exclude name="vendors/"/>'
+
+# Jar files to include in Ant's build.xml
+ANT_CLASSPATH=''
+
+# Paths to exclude in Ant's build.xml
+ANT_EXCLUDE=''
+
+# A shell function that adds its argument to the ECLIPSE_CLASSPATH_ENTRY_LIBS
+# and to ANT_CLASSPATH
+updateClasspath () {
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	        <classpathentry kind=\"lib\" path=\"$1\"/> "
+        ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$1\"/> "
+}
+
+# A shell function that adds its argument to ECLIPSE_EXCLUDING_SRC
+# and ANT_EXCLUDE
+updateExcludes () {
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$1"
+   ANT_EXCLUDE="$ANT_EXCLUDE <exclude name=\"$1\" />"
+}
+
+########################################################################
 
 case "`uname -s`" in
      Darwin)
@@ -5432,8 +5518,7 @@ echo "${ECHO_T}$PTII/lib/bsh-2.0b4.jar" >&6; }; fi
 	PTBSH_RUN_DIR=run
 	# PTBSH_PACKAGES is used in ptII/doc/makefile
 	PTBSH_PACKAGES="com.jgoodies.forms.builder com.jgoodies.forms.debug com.jgoodies.forms.factories com.jgoodies.forms.layout com.jgoodies.forms.util org.mlc.swing.example org.mlc.swing.layout ptolemy.actor.gui.run"
-        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	        <classpathentry kind=\"lib\" path=\"$PTBSH_JAR\"/> "
+	updateClasspath $PTBSH_JAR
     else
         { echo "$as_me:$LINENO: WARNING: Failed to find $PTII/lib/bsh-2.0b4.jar,
     BSH is the Java Bean Shell, which is used by the
@@ -5445,7 +5530,7 @@ echo "$as_me: WARNING: Failed to find $PTII/lib/bsh-2.0b4.jar,
 fi
 
 if test -z "$PTBSH_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/gui/run"
+   updateExcludes "ptolemy/actor/gui/run/"
 fi
 
 
@@ -5626,11 +5711,10 @@ if test -z "$PTCALTROP_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/caltrop/"
 else
    # Note that jasminclasses.jar in soot also includes java_cup
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/ptCal.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/java_cup.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon8.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon8-dom.jar\"/> "
+   updateClasspath "$CALTROP_DIR/ptCal.jar"
+   updateClasspath "$CALTROP_DIR/java_cup.jar"
+   updateClasspath "$CALTROP_DIR/saxon8.jar"
+   updateClasspath "$CALTROP_DIR/saxon8-dom.jar"
 fi
 
 #--------------------------------------------------------------------
@@ -5696,8 +5780,7 @@ fi
 if test -z "$PTCHIC_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/chic/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"$CHIC_DIR/chic.jar\"/> "
+   updateClasspath "$CHIC_DIR/chic.jar"
 fi
 
 
@@ -5813,11 +5896,9 @@ fi
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $COLT_DIR/colt.jar" >&5
 echo "${ECHO_T}$COLT_DIR/colt.jar" >&6; }; fi
 	PTCOLT_JARS=$COLT_DIR/colt.jar$CLASSPATHSEPARATOR$PTCOLT_JAR
-	ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"$COLT_DIR/colt.jar\"/> "
+	updateClasspath "$COLT_DIR/colt.jar"
 	if test -z "$PTCOLT_DIR"; then
- 	    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	        <classpathentry kind=\"lib\" path=\"$PTCOLT_JAR\"/> "
+	    updateClasspath "$PTCOLT_JAR"
         fi
 	# We found colt
 	PTCOLT_DIR=colt
@@ -5846,8 +5927,7 @@ echo "$as_me: WARNING: Failed to find $PTII/lib/ptcolt.jar
             if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $COLT_DIR/colt.jar not found, using $PTCOLT_JAR" >&5
 echo "${ECHO_T}$COLT_DIR/colt.jar not found, using $PTCOLT_JAR" >&6; }; fi
- 	    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	        <classpathentry kind=\"lib\" path=\"$PTCOLT_JAR\"/> "
+	    updateClasspath "$PTCOLT_JAR"
         fi
     fi
 fi
@@ -6013,8 +6093,7 @@ echo "$as_me: WARNING: Not including $TOOLS_JAR
    esac
 
     if test "$addToolsJarToEclipse" = "yes" ; then
-       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$TOOLS_JAR\"/>"
+       updateClasspath "$TOOLS_JAR"
     fi
     JDOCTAG="-tag Pt.AcceptedRating -tag Pt.ProposedRating"
     # Use curly brackets so PTII gets expanded in the makefile
@@ -6249,8 +6328,7 @@ echo $ECHO_N "checking for jars used by backtracking in $ECLIPSE_DIR... $ECHO_C"
 		    # NOTE: Eclipse 3.0 has problems if we include these
 		    # jars in the .classpath, instead, .classpath.in includes:
 		    #  <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-		    #ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                    #<classpathentry kind=\"lib\" path=\"$jarpath\"/>"
+                    #updateClasspath "$jarpath"
  	        else
 		    { echo "$as_me:$LINENO: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&5
 echo "$as_me: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&2;}
@@ -6292,8 +6370,7 @@ echo $ECHO_N "checking for Eclipse jars used with javadoc... $ECHO_C" >&6; }
 		        # building with make.
 	                PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
 #			case "`uname -s`" in
-#			Darwin) ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-#           <classpathentry kind=\"lib\" path=\"$jarpath\"/>";;
+#			Darwin) updateClasspath "$jarpath";;
 #	   		esac
  	            else
 		        { echo "$as_me:$LINENO: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&5
@@ -6477,10 +6554,8 @@ fi
 if test -z "$PTDBXML_JARS"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTDBXML_JAR\"/>"
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTDB_JAR\"/>"
+   updateClasspath "$PTDBXML_JAR"
+   updateClasspath "$PTDB_JAR"
 fi
 
 #--------------------------------------------------------------------
@@ -6568,7 +6643,7 @@ else
    shortdir=`echo "$PTFUZZYENGINE_DIR" | sed "s@$PTII/@@"`
    if test -d "$shortdir"; then
       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-           <classpathentry kind=\"src\" path=\"$shortdir\"/>"
+                <classpathentry kind=\"src\" path=\"$shortdir\"/>"
       ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$shortdir/"
    else
       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
@@ -6910,8 +6985,7 @@ fi
 if test -z "$PTITEXTPDF_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/vergil/basic/itextpdf/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$PTITEXTPDF_JAR\"/>"
+   updateClasspath "$PTITEXTPDF_JAR"
 fi
 
 #--------------------------------------------------------------------
@@ -7728,14 +7802,11 @@ echo "$as_me: WARNING: Failed to find the jar files necessary to compile injecti
 fi
 
 if test -z "$PTHOMER_JARS"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/homer/"
+   updateExcludes "ptolemy/homer/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTOPENIDEUTIL_JAR\"/>"
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTOPENIDEUTILLOOKUP_JAR\"/>"
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTNETBEANSAPIVISUAL_JAR\"/>"
+   updateClasspath "$PTOPENIDEUTIL_JAR"
+   updateClasspath "$PTOPENIDEUTILLOOKUP_JAR"
+   updateClasspath "$PTNETBEANSAPIVISUAL_JAR"
 fi
 
 
@@ -7799,9 +7870,8 @@ echo "$as_me: WARNING: Not including
    $JAI_JARS_DIR/{jai_core.jar,jai_codec.jar}
    to the Eclipse classpath under Darwin because it is already present." >&2;};;
                *)
-	           ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	           <classpathentry kind=\"lib\" path=\"$JAI_JARS_DIR/jai_core.jar\"/> \
-		   <classpathentry kind=\"lib\" path=\"$JAI_JARS_DIR/jai_codec.jar\"/>"
+	           updateClasspath "$JAI_JARS_DIR/jai_core.jar"
+		   updateClasspath "$JAI_JARS_DIR/jai_codec.jar"
 		   ;;
                esac
 	    else
@@ -7851,7 +7921,7 @@ echo "$as_me: WARNING: '\"$JAVAC\" JAITest.java' failed.
 fi
 
 if test -z "$PTJAI_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jai/"
+   updateExcludes "ptolemy/actor/lib/jai/"
 fi
 
 #--------------------------------------------------------------------
@@ -7897,8 +7967,7 @@ fi
 	PTJAVAMAIL_PACKAGES="ptolemy.actor.lib.mail"
 
 	PTJAVAMAIL_JARS="${CLASSPATHSEPARATOR}${JAVAMAIL_DIR}/mail.jar"
-        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	           <classpathentry kind=\"lib\" path=\"$JAVAMAIL_DIR/mail.jar\"/>"
+        updateClasspath "$JAVAMAIL_DIR/mail.jar"
 	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JAVAMAIL_DIR" >&5
 echo "${ECHO_T}$JAVAMAIL_DIR" >&6; }; fi
@@ -7931,7 +8000,7 @@ echo "$as_me: WARNING: Failed to find mail.jar
 fi
 
 if test -z "$PTJAVAMAIL_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/mail/"
+   updateExcludes "ptolemy/actor/lib/mail/"
 fi
 
 #--------------------------------------------------------------------
@@ -7987,12 +8056,10 @@ echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JMF_JARS_DIR" >
 echo "${ECHO_T}$JMF_JARS_DIR" >&6; }; fi
 	       # Here, we should not be adding JMF_JAR to Eclipse
 	       # if jmf.jar was in the jre
-	       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	           <classpathentry kind=\"lib\" path=\"$JMF_JAR\"/>"\
+	       updateClasspath "$JMF_JAR"
 	       JMF_JARS="$JMF_JAR"
 	       if test -f "$JMF_JARS_DIR/sound.jar" ; then
-	           ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	       	       <classpathentry kind=\"lib\" path=\"$JMF_JARS_DIR/sound.jar\"/>"
+	       	    updateClasspath "$JMF_JARS_DIR/sound.jar"
                    JMF_JARS="$JMF_JARS$CLASSPATHSEPARATOR$JMF_JARS_DIR/sound.jar"
                fi
 	    else
@@ -8042,7 +8109,7 @@ echo "$as_me: WARNING: '\"$JAVAC\" JMFTest.java' failed.
 fi
 
 if test -z "$PTJMF_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jmf/"
+   updateExcludes "ptolemy/actor/lib/jmf/"
 fi
 
 
@@ -8101,8 +8168,7 @@ fi
             fi
 	    if test -f "$JOGL_DIR/lib/$jar"; then
 	       PTJOGL_JARS="${PTJOGL_JARS}${CLASSPATHSEPARATOR}${JOGL_DIR}/lib/$jar"
-	       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	           <classpathentry kind=\"lib\" path=\"$JOGL_DIR/lib/$jar\"/>"
+	       updateClasspath "$JOGL_DIR/lib/$jar"
 	    fi
         done
 	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
@@ -8141,7 +8207,7 @@ echo "$as_me: WARNING: Failed to find lib/jogl.jar
 fi
 
 if test -z "$PTJOGL_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/jogl/"
+   updateExcludes "ptolemy/domains/jogl/"
 fi
 
 
@@ -8207,10 +8273,9 @@ echo "$as_me: WARNING: Failed to find $JOYSTICK_JAR
 fi
 
 if test -z "$PTJOYSTICK_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/joystick/"
+   updateExcludes "ptolemy/actor/lib/joystick/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$JOYSTICK_JAR\"/>"
+   updateClasspath "$JOYSTICK_JAR"
 fi
 
 #--------------------------------------------------------------------
@@ -8300,10 +8365,9 @@ echo "$as_me: WARNING: The ptjacl.jar file was not found at '$PTJACL_JAR'
 fi
 
 if test -z "$PTJACL_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/gui/ptjacl/"
+   updateExcludes "ptolemy/actor/gui/ptjacl/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$PTJACL_JAR\"/>"
+   updateClasspath "$PTJACL_JAR"
 fi
 
 
@@ -8365,10 +8429,10 @@ echo "$as_me: WARNING: Failed to find junit-4.8.2.jar
 fi
 
 if test -z "$PTJUNIT_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/util/test/junit/|**/junit/"
+   updateExcludes "ptolemy/util/test/junit/"
+   updateExcludes "**/junit/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$JUNIT_JAR\"/>"
+   updateClasspath "$JUNIT_JAR"
 fi
 
 #--------------------------------------------------------------------
@@ -8432,10 +8496,9 @@ echo "$as_me: WARNING: Failed to find jxl.jar
 fi
 
 if test -z "$PTEXCEL_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/excel/"
+   updateExcludes "ptolemy/actor/lib/excel/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$PTJXL_JAR\"/>"
+   updateClasspath "$PTJXL_JAR"
 fi
 
 #--------------------------------------------------------------------
@@ -8643,10 +8706,9 @@ echo "$as_me: WARNING: Failed to find
 fi
 
 if test -z "$PTJYTHON_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jython/"
+   updateExcludes "ptolemy/actor/lib/jython/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$JYTHON_DIR/jython.jar\"/>"
+   updateClasspath "$JYTHON_DIR/jython.jar"
 fi
 
 #--------------------------------------------------------------------
@@ -8712,17 +8774,18 @@ echo "$as_me: WARNING: Failed to find PTII/vendors/sun/jxta/jxta.jar
 fi
 
 if test -z "$PTJXTA_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|vendors/sun/jxta/|ptolemy/actor/lib/jxta/|ptolemy/moml/jxta/"
+   updateExcludes "vendors/sun/jxta/"
+   updateExcludes "ptolemy/actor/lib/jxta/"
+   updateExcludes "ptolemy/moml/jxta/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxta.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/cryptix-asn1.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/cryptix32.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/beepcore.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/minimalBC.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtasecurity.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/log4j.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$JXTA_DIR/jxtaptls.jar\"/>"
+   updateClasspath "$JXTA_DIR/jxta.jar"
+   updateClasspath "$JXTA_DIR/cryptix-asn1.jar"
+   updateClasspath "$JXTA_DIR/cryptix32.jar"
+   updateClasspath "$JXTA_DIR/beepcore.jar"
+   updateClasspath "$JXTA_DIR/minimalBC.jar"
+   updateClasspath "$JXTA_DIR/jxtasecurity.jar"
+   updateClasspath "$JXTA_DIR/log4j.jar"
+   updateClasspath "$JXTA_DIR/jxtaptls.jar"
 fi
 
 
@@ -8785,10 +8848,9 @@ echo "$as_me: WARNING: Failed to find $KIELER_JAR
 fi
 
 if test -z "$PTKIELER_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/vergil/basic/layout/kieler/"
+   updateExcludes "ptolemy/vergil/basic/layout/kieler/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$KIELER_JAR\"/>"
+   updateClasspath "$KIELER_JAR"
 fi
 
 
@@ -8852,8 +8914,7 @@ echo "$as_me: WARNING: Not including
    to the Eclipse classpath under Darwin because it is already present." >&2;}
       	  	   ;;
                *)
-	           ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	           <classpathentry kind=\"lib\" path=\"$OPENCV_JAR\"/>"
+	           updateClasspath "$OPENCV_JAR"
 		   ;;
                esac
 	    else
@@ -8880,7 +8941,7 @@ echo "$as_me: WARNING: Either we could not find
 	       OPENCV_JAR=
                PTOPENCV_DIR=
 	       PTOPENCV_PACKAGES=
-               ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv/"
+               updateExcludes "ptolemy/actor/lib/opencv/javacv/"
             fi
 
 
@@ -8904,8 +8965,7 @@ echo "$as_me: WARNING: Not including
    in the Eclipse classpath under Darwin because it is already present." >&2;}
       	  	        ;;
                	    *)
-		        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-			       <classpathentry kind=\"lib\" path=\"$PROCESSING_CORE_JAR\"/> "
+			updateClasspath "$PROCESSING_CORE_JAR"
 		        ;;
                     esac
                 else
@@ -8940,7 +9000,7 @@ echo "$as_me: WARNING: Either we could not find
     		    PROCESSING_CORE_JAR=
 	            PTOPENCV_DIR=
 		    PTOPENCV_PACKAGES=
-    	            ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv/"
+    	            updateExcludes "ptolemy/actor/lib/opencv/javacv/"
                  fi
     	    fi
 
@@ -8965,8 +9025,7 @@ echo "${ECHO_T}$JAVACV_JAR" >&6; }; fi
 		# Set to javacv and used in
 		# $PTII/ptolemy/actor/lib/opencv/makefile if JavaCV was found
 		PTJAVACV_DIR=javacv
-                ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	           <classpathentry kind=\"lib\" path=\"$JAVACV_JAR\"/>"
+	        updateClasspath "$JAVACV_JAR"
 	    else
 	         { echo "$as_me:$LINENO: WARNING: Failed to find PTII/vendors/misc/javacv-bin/javacv.jar
     perhaps JavaCV is not installed?
@@ -8978,7 +9037,7 @@ echo "$as_me: WARNING: Failed to find PTII/vendors/misc/javacv-bin/javacv.jar
     You need only download JavaCV if you plan on using the actors in
     in ptolemy/actor/lib/opencv/JavaCV
     JavaCV may be downloaded from http://code.google.com/p/javacv/" >&2;}
-    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv/"
+    	         updateExcludes "ptolemy/actor/lib/opencv/javacv/"
   	         # Note that we don't substitute in the ${PTII} here
    	         JAVACV_JAR='${PTII}/vendors/misc/javacv-bin/javacv.jar'
             fi
@@ -8990,8 +9049,7 @@ echo $ECHO_N "checking for Java Native Access (JNA) jar... $ECHO_C" >&6; }
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTII/lib/jna.jar" >&5
 echo "${ECHO_T}$PTII/lib/jna.jar" >&6; }; fi
 		JNA_JAR="$PTII/lib/jna.jar"
-		ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	        <classpathentry kind=\"lib\" path=\"$JNA_JAR\"/> "
+	        updateClasspath "$JNA_JAR"
 	    else
 	        { echo "$as_me:$LINENO: WARNING: Failed to find $PTII/lib/jna.jar,
     JNA is the Java Native Access interfaced, used by the OpenCV
@@ -9003,7 +9061,7 @@ echo "$as_me: WARNING: Failed to find $PTII/lib/jna.jar,
     vision actors in ptolemy/actor/lib/opencv/javacv.
     These actors are optional, but require JNA.
     For more information about JNA, see https://jna.dev.java.net/" >&2;}
-    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv/"
+    	         updateExcludes "ptolemy/actor/lib/opencv/javacv/"
     	    fi
 
 
@@ -9035,7 +9093,7 @@ echo "$as_me: WARNING: '\"$JAVAC\" OpenTest.java' failed.
 fi
 
 if test -z "$PTOPENCV_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/"
+   updateExcludes "ptolemy/actor/lib/opencv/"
 fi
 
 # PTCGOPENCV_DIR is set to OpenCVTracking and used in
@@ -9219,8 +9277,7 @@ fi
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; fi
 	RXTX_PRESENT=yes
-        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$RXTX_JAR\"/>"
+	updateClasspath "$RXTX_JAR"
     else
 	{ echo "$as_me:$LINENO: result: Did not find
 	'$RXTX_JAR'" >&5
@@ -9250,8 +9307,7 @@ echo "$as_me: WARNING: Not including
    $RXTX_JAR
    to the Eclipse classpath under Darwin because it is already present." >&2;};;
                *)
-	           ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$RXTX_JAR\"/>"
+		   updateClasspath "$RXTX_JAR"
 		   ;;
                esac
             else
@@ -9293,7 +9349,7 @@ if test "$RXTX_PRESENT" = "yes"; then
     PTRXTX_PACKAGES=ptolemy.actor.lib.io.comm
 else
     RXTX_JAR="$RXTX_JAR_DEFAULT"
-    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/io/comm/"
+    updateExcludes "ptolemy/actor/lib/io/comm/"
 fi
 
 #--------------------------------------------------------------------
@@ -9605,7 +9661,7 @@ echo "$as_me: WARNING: '\"$JAVAC\" -classpath \"$Java3DClasspath\" java3dTest.ja
 fi
 
 if test -z "$PTJAVA3D_DIR"; then
-    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/"
+    updateExcludes "ptolemy/domains/gr/"
 fi
 
 #--------------------------------------------------------------------
@@ -9662,8 +9718,7 @@ echo $ECHO_N "checking for jars used by jini... $ECHO_C" >&6; }
   	        jinijarpath="$jinijarpath$CLASSPATHSEPARATOR$jarpath"
 		# FIXME: we should not be adding to ECLIPSE_CLASSPATHENTRY_LIBS
 		# unless we are sure that we can find all the jars
-		ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                <classpathentry kind=\"lib\" path=\"$jarpath\"/>"
+                updateClasspath "$jarpath"
  	    else
 		{ echo "$as_me:$LINENO: WARNING: Failed to find $jar in $JINI_DIR: $jarpath" >&5
 echo "$as_me: WARNING: Failed to find $jar in $JINI_DIR: $jarpath" >&2;}
@@ -10926,7 +10981,7 @@ echo "$as_me: WARNING: Failed to find javah at '$JAVAH',
 fi
 
 if test -z "$PTMATLAB_DIR"; then
-    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/matlab/"
+    updateExcludes "ptolemy/matlab/"
 else
     # Set to the matlab jars that need to be signed if matlab was found.
     # Used in jnlp.mk
@@ -10947,8 +11002,12 @@ PTMESCAL_DIR=
 MESCAL_USER_DIR="$PTII/mescal"
 if test -d "$MESCAL_USER_DIR"; then
    PTMESCAL_DIR=mescal
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|**/devel/|mescal/apps/|mescal/totem/domains/meta/codegen/|mescal/views/memory/registerfile/|mescal/views/simulation/model/probe/|mescal/xml2hmdes/"
-
+   updateExcludes "**/devel/"
+   updateExcludes "mescal/apps/"
+   updateExcludes "mescal/totem/domains/meta/codegen/"
+   updateExcludes "mescal/views/memory/registerfile/"
+   updateExcludes "mescal/views/simulation/model/probe/"
+   updateExcludes "mescal/xml2hmdes/"
 fi
 
 
@@ -11065,16 +11124,12 @@ echo "$as_me: WARNING: Failed to find the jar files necessary to compile ptserve
 fi
 
 if test -z "$PTSERVER_JARS"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptserver/"
+   updateExcludes "ptserver/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTHESSIAN_JAR\"/>"
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTJETTY_JAR\"/>"
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTSERVLET_JAR\"/>"
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$PTWMQTT_JAR\"/>"
+   updateClasspath "$PTHESSIAN_JAR"
+   updateClasspath "$PTJETTY_JAR"
+   updateClasspath "$PTSERVLET_JAR"
+   updateClasspath "$PTWMQTT_JAR"
 fi
 
 #--------------------------------------------------------------------
@@ -11125,10 +11180,9 @@ echo "$as_me: WARNING: Failed to find PTII/lib/mapss.jar
 fi
 
 if test -z "$PTPSDF_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/psdf/"
+   updateExcludes "ptolemy/domains/psdf/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$PSDF_DIR/mapss.jar\"/> "
+   updateClasspath "$PSDF_DIR/mapss.jar"
 fi
 
 #--------------------------------------------------------------------
@@ -11184,8 +11238,7 @@ echo $ECHO_N "checking for PowerMock jars... $ECHO_C" >&6; }
 	        # with make.
   	        powermockjarpath="$powermockjarpath$CLASSPATHSEPARATOR$jarpath"
 
-		ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                    <classpathentry kind=\"lib\" path=\"$jarpath\"/>"
+                updateClasspath "$jarpath"
             else
 	        { echo "$as_me:$LINENO: WARNING: Failed to find $jar in $POWERMOCK_DIR: $jarpath" >&5
 echo "$as_me: WARNING: Failed to find $jar in $POWERMOCK_DIR: $jarpath" >&2;}
@@ -11234,7 +11287,7 @@ if test -z "$PTPOWERMOCK_DIR"; then
         ptdbTestDirectories=`find ptdb -name test`
         for ptdbTestDirectory in $ptdbTestDirectories
         do
-            ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$ptdbTestDirectory/"
+            updateExcludes "$ptdbTestDirectory/"
         done
     fi
 fi
@@ -11299,10 +11352,9 @@ echo "$as_me: WARNING: You are running Java $JVERSION, which does not
 fi
 
 if test -z "$PTPTALON_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/ptalon/"
+   updateExcludes "ptolemy/actor/ptalon/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$ANTLR_DIR/antlr.jar\"/> "
+   updateClasspath "$ANTLR_DIR/antlr.jar"
 fi
 
 #--------------------------------------------------------------------
@@ -11425,11 +11477,10 @@ echo "$as_me: WARNING: '\"$JAVAC\" quickTime3dTest.java' failed.
 fi
 
 if test -z "$PTQUICKTIME_DIR"; then
-    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/quicktime/"
+    updateExcludes "ptolemy/domains/gr/lib/quicktime/"
 else
     if test ! -z "$QTJAVA_ZIP"; then
-        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-        <classpathentry kind=\"lib\" path=\"$QTJAVA_ZIP\"/>"
+        updateClasspath "$QTJAVA_ZIP"
     fi
 fi
 
@@ -11571,12 +11622,11 @@ echo "$as_me: WARNING: 'cd \"$srcdir/config\"; \"$JAVAC\" SystemJar.java failed.
 fi
 
 if test -z "$PTCOPERNICUS_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/copernicus/"
+   updateExcludes "ptolemy/copernicus/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/sootclasses.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/polyglotclasses-1.3.2.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/jasminclasses.jar\"/>"
+   updateClasspath "$SOOT_DIR/sootclasses.jar"
+   updateClasspath "$SOOT_DIR/polyglotclasses-1.3.2.jar"
+   updateClasspath "$SOOT_DIR/jasminclasses.jar"
     # What about JAVA_SYSTEM_JAR?
 fi
 
@@ -11696,15 +11746,13 @@ echo "$as_me: WARNING: Failed to find
 fi
 
 if test -z "$MYSQL_JAR" -a -z "$ORACLE_OJDBC_JAR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/database/|ptolemy/domains/space/"
+   updateExcludes "ptolemy/actor/lib/database/|ptolemy/domains/space/"
 else
    if test -f "$MYSQL_JAR"; then
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$MYSQL_JAR\"/> "
+       updateClasspath "$MYSQL_JAR"
    fi
    if test -f "$ORACLE_OJDBC_JAR"; then
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"lib\" path=\"$ORACLE_OJDBC_JAR\"/> "
+      updateClasspath "$ORACLE_OJDBC_JAR"
    fi
 
 fi
@@ -11745,8 +11793,7 @@ fi
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTPDFRENDERER_JAR" >&5
 echo "${ECHO_T}$PTPDFRENDERER_JAR" >&6; }; fi
 	PTPDFRENDERER_DIR=pdfrenderer
-        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-        <classpathentry kind=\"lib\" path=\"$PTPDFRENDERER_JAR\"/>"
+        updateClasspath "$PTPDFRENDERER_JAR"
     fi
     if test "$PTPDFRENDERER_DIR" = ""; then
         { echo "$as_me:$LINENO: WARNING: Failed to find the PDFRenderer Jar file
@@ -11760,7 +11807,7 @@ echo "$as_me: WARNING: Failed to find the PDFRenderer Jar file
 fi
 
 if test -z "$PTPDFRENDERER_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$PDFRENDERER_USER_DIR"
+   updateExcludes "$PDFRENDERER_USER_DIR"
 fi
 
 
@@ -11803,8 +11850,7 @@ fi
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTSVG_JAR" >&5
 echo "${ECHO_T}$PTSVG_JAR" >&6; }; fi
 	PTSVG_DIR=svg
-        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-        <classpathentry kind=\"lib\" path=\"$PTSVG_JAR\"/>"
+        updateClasspath "$PTSVG_JAR"
     fi
     if test "$PTSVG_DIR" = ""; then
         { echo "$as_me:$LINENO: WARNING: Failed to find Batik Jar file
@@ -11820,7 +11866,7 @@ echo "$as_me: WARNING: Failed to find Batik Jar file
 fi
 
 if test -z "$PTSVG_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|diva/util/java2d/svg/"
+   updateExcludes "diva/util/java2d/svg/"
 fi
 
 #--------------------------------------------------------------------
@@ -11913,7 +11959,7 @@ echo "${ECHO_T}$PTINYOS_DIR is not present
     so we need not set up for TinyOS." >&6; }; fi
 
     # Nothing to exclude
-    # ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/nc/"
+    # updateExcludes "ptolemy/domains/nc/"
 else
     { echo "$as_me:$LINENO: checking the for TinyOS" >&5
 echo $ECHO_N "checking the for TinyOS... $ECHO_C" >&6; }
@@ -11986,8 +12032,7 @@ echo "$as_me: WARNING: \$PTINYOS_MOMLROOT is set to '$PTINYOS_MOMLROOT',
 		    retval=$?
 		    if test "$retval" = "0"; then
 		        SHORT_PTINYOS_MOMLROOT_NO_CYGDRIVE=`echo "$PTINYOS_MOMLROOT_NO_CYGDRIVE" | sed "s@$PTII/@@"`
-		        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                            <classpathentry kind=\"lib\" path=\"$SHORT_PTINYOS_MOMLROOT_NO_CYGDRIVE\"/>"
+                        updateClasspath "$SHORT_PTINYOS_MOMLROOT_NO_CYGDRIVE"
 	            else
 		        { echo "$as_me:$LINENO: WARNING: \$PTINYOS_MOMLROOT ($PTINYOS_MOMLROOT)
     is not under \$PTII ($PTII) so we are not
@@ -12010,17 +12055,15 @@ echo "${ECHO_T}$PTINYOS_MOMLROOT" >&6; }; fi
             fi
         fi
         # The jars to the classpath
-        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-        <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/nesc.jar\"/> \
-        <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/jdom.jar\"/>"
+        updateClasspath "$PTINYOS_DIR/lib/nesc.jar"
+        updateClasspath "$PTINYOS_DIR/lib/jdom.jar"
 
 	# If TOSROOT is under $PTII, then add it to the classpat
 	echo "$TOSROOT_NO_CYGDRIVE" | grep "$PTII" > /dev/null
 	retval=$?
 	if test "$retval" = "0"; then
 		SHORT_TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT_NO_CYGDRIVE" | sed "s@$PTII/@@"`
-	    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	        <classpathentry kind=\"lib\" path=\"$SHORT_TOSROOT_NO_CYGDRIVE\"/>"
+	        updateClasspath "$SHORT_TOSROOT_NO_CYGDRIVE"
         else
 	    { echo "$as_me:$LINENO: WARNING: \$TOSROOT ($TOSROOT)is not
     under \$PTII ($PTII) so we are not
@@ -12037,7 +12080,7 @@ echo "$as_me: WARNING: \$TOSROOT ($TOSROOT)is not
 fi
 
 if test ! -d "$TOSROOT"; then
-       ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/ptinyos/"
+       updateExcludes "ptolemy/domains/ptinyos/"
 else
        PTTINYOS_DIR=ptinyos
 fi
@@ -12423,6 +12466,15 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
 fi
 
 # Keep these substitutions alphabetical, with a description
+
+# Paths to always exclude i Ant's build.xml
+
+
+# Jar files to include in Ant's build.xml
+
+
+# Paths to exclude in Ant's build.xml
+
 
 # Directory that contains the Caltrop jar file ptCal.jar
 # used by bin/ptinvoke.in
@@ -13170,7 +13222,7 @@ fi
 
 
 # Files we substitute in
-ac_config_files="$ac_config_files mk/ptII.mk bin/ptinvoke .classpath bin/comm.policy lib/ptII.properties"
+ac_config_files="$ac_config_files mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties"
 
 ac_config_commands="$ac_config_commands default"
 
@@ -13747,6 +13799,7 @@ do
   case $ac_config_target in
     "mk/ptII.mk") CONFIG_FILES="$CONFIG_FILES mk/ptII.mk" ;;
     "bin/ptinvoke") CONFIG_FILES="$CONFIG_FILES bin/ptinvoke" ;;
+    "build.xml") CONFIG_FILES="$CONFIG_FILES build.xml" ;;
     ".classpath") CONFIG_FILES="$CONFIG_FILES .classpath" ;;
     "bin/comm.policy") CONFIG_FILES="$CONFIG_FILES bin/comm.policy" ;;
     "lib/ptII.properties") CONFIG_FILES="$CONFIG_FILES lib/ptII.properties" ;;
@@ -13881,6 +13934,9 @@ PTCCJNI!$PTCCJNI$ac_delim
 JAVAH!$JAVAH$ac_delim
 MATLAB!$MATLAB$ac_delim
 PTMATLAB_CC!$PTMATLAB_CC$ac_delim
+ANT_ALWAYS_EXCLUDE!$ANT_ALWAYS_EXCLUDE$ac_delim
+ANT_CLASSPATH!$ANT_CLASSPATH$ac_delim
+ANT_EXCLUDE!$ANT_EXCLUDE$ac_delim
 CALTROP_DIR!$CALTROP_DIR$ac_delim
 CHIC_DIR!$CHIC_DIR$ac_delim
 CLASSPATHSEPARATOR!$CLASSPATHSEPARATOR$ac_delim
@@ -13906,9 +13962,6 @@ JDOCSOURCEFLAGS!$JDOCSOURCEFLAGS$ac_delim
 JDOCTAG!$JDOCTAG$ac_delim
 JDOCTAGLET!$JDOCTAGLET$ac_delim
 JINI_DIR!$JINI_DIR$ac_delim
-JINI_PRESENT!$JINI_PRESENT$ac_delim
-JOYSTICK_JAR!$JOYSTICK_JAR$ac_delim
-JTCLSH!$JTCLSH$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -13950,6 +14003,9 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+JINI_PRESENT!$JINI_PRESENT$ac_delim
+JOYSTICK_JAR!$JOYSTICK_JAR$ac_delim
+JTCLSH!$JTCLSH$ac_delim
 JTREE!$JTREE$ac_delim
 JVERSION!$JVERSION$ac_delim
 JMF_JARS!$JMF_JARS$ac_delim
@@ -14044,9 +14100,6 @@ PTJNI_LIB_ARCHITECTURE!$PTJNI_LIB_ARCHITECTURE$ac_delim
 PTJNI_NO_CYGWIN!$PTJNI_NO_CYGWIN$ac_delim
 PTJNI_GCC_SHARED_FLAG!$PTJNI_GCC_SHARED_FLAG$ac_delim
 PTJNI_SHAREDLIBRARY_CFLAG!$PTJNI_SHAREDLIBRARY_CFLAG$ac_delim
-PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
-PTJNI_SHAREDLIBRARY_PREFIX!$PTJNI_SHAREDLIBRARY_PREFIX$ac_delim
-PTJNI_SHAREDLIBRARY_SUFFIX!$PTJNI_SHAREDLIBRARY_SUFFIX$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -14088,6 +14141,9 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
+PTJNI_SHAREDLIBRARY_PREFIX!$PTJNI_SHAREDLIBRARY_PREFIX$ac_delim
+PTJNI_SHAREDLIBRARY_SUFFIX!$PTJNI_SHAREDLIBRARY_SUFFIX$ac_delim
 PTJNI_SHAREDLIBRARY_SUFFIX2!$PTJNI_SHAREDLIBRARY_SUFFIX2$ac_delim
 PTJNI_LIBRARIES!$PTJNI_LIBRARIES$ac_delim
 PTJOGL_DIR!$PTJOGL_DIR$ac_delim
@@ -14165,7 +14221,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 75; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 78; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
