@@ -265,6 +265,7 @@ OTHER_FILES_TO_BE_JARED = \
         AccumulatorIcon.png \
         AccumulatorIcon.xml \
         BernoulliIcon.xml \
+        BooleanMultiplexorIcon.xml \
 	BooleanSelectIcon.xml \
 	BooleanSwitchIcon.xml \
 	ChopMultirate.xml \
@@ -277,6 +278,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DistributorIcon.xml \
 	GaussianIcon.xml \
 	IIRIcon.xml \
+    MultiplexorIcon.xml \
 	TriangularIcon.xml \
 	PowerEstimate.xml \
 	ResettableTimerIcon.xml \
