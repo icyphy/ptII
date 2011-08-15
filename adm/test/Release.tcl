@@ -98,8 +98,6 @@ ptolemy.backtrack.util.java.util
 ptolemy.caltrop.ddi.util
 ptolemy.chic
 ptolemy.component
-ptolemy.component.data
-ptolemy.component.data.type
 ptolemy.component.domains.ptinyos
 ptolemy.copernicus.interpreted
 ptolemy.copernicus.kernel.fragment
