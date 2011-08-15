@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Waveform" class="ptolemy.domains.continuous.lib.Waveform">
-        <property name="order" class="ptolemy.data.expr.StringParameter" value="hermite">
+        <property name="interpolation" class="ptolemy.data.expr.StringParameter" value="hermite">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 125.0]">
         </property>

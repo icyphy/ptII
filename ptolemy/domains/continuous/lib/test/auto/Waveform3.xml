@@ -23,7 +23,7 @@
     <entity name="Waveform" class="ptolemy.domains.continuous.lib.Waveform">
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.5, 1.0}">
         </property>
-        <property name="order" class="ptolemy.data.expr.StringParameter" value="hermite">
+        <property name="interpolation" class="ptolemy.data.expr.StringParameter" value="hermite">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 125.0]">
         </property>

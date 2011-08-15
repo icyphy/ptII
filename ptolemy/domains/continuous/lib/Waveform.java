@@ -117,7 +117,7 @@ public class Waveform extends DiscreteClock {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        interpolation = new StringParameter(this, "order");
+        interpolation = new StringParameter(this, "interpolation");
         interpolation.setExpression("linear");
         interpolation.addChoice("linear");
         interpolation.addChoice("hermite");
@@ -168,8 +168,8 @@ public class Waveform extends DiscreteClock {
             throws IllegalActionException {
         if (attribute == interpolation) {
             _interpolation = _LINEAR;
-            String orderValue = interpolation.stringValue();
-            if (orderValue.equals("hermite")) {
+            String interpolationValue = interpolation.stringValue();
+            if (interpolationValue.equals("hermite")) {
                 _interpolation = _HERMITE;
             }
         } else if (attribute == period) {
@@ -404,10 +404,10 @@ public class Waveform extends DiscreteClock {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /** Indicator for third order interpolcation. */
+    /** Indicator for third order interpolation. */
     private static final int _HERMITE = 1;
     
-    /** The value of the order parameter. */
+    /** The value of the interpolation parameter. */
     private int _interpolation = _LINEAR;
 
     /** Indicator for linear interpolation. */
