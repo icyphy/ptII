@@ -55,7 +55,6 @@ public class TupleType extends StructuredType implements Cloneable {
      *  function of no arguments, set the length of the argument array
      *  to 0.
      *  @param types An array of Type.
-     *  @param returnType An type.
      *  @exception IllegalArgumentException If the labels and types do
      *  not have the same size.
      *  @exception NullPointerException If one of the arguments is null.
@@ -618,7 +617,7 @@ public class TupleType extends StructuredType implements Cloneable {
 
         /** Reset the variable part of the element type to the specified
          *  type.
-         *  @parameter e A Type.
+         *  @param e A Type.
          *  @exception IllegalActionException If this type is not settable,
          *   or the argument is not a Type.
          */
