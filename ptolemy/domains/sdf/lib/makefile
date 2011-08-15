@@ -83,12 +83,14 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ArrayToSequenceIcon.xml \
+	ChopIcon.xml \
 	DelayLineIcon.xml \
 	DotProductIcon.xml \
 	DownSampleIcon.xml \
 	FFTIcon.xml \
 	FIRIcon.xml \
 	IFFTIcon.xml \
+	LMSAdaptiveIcon.xml \
 	MaximumEntropySpectrum.xml \
 	MaximumEntropySpectrumIcon.xml \
 	MatrixJoinIcon.xml \
