@@ -133,8 +133,6 @@ JSRCS = \
 	PlotEffigy.java \
 	PlotTableau.java \
 	PlotTableauFrame.java \
-	PortableContainer.java \
-	PortablePlaceable.java \
 	PortConfigurer.java \
 	PortConfigurerDialog.java \
 	PtExecuteApplication.java \

@@ -49,7 +49,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ActorModuleInitializer.java \
 	Injector.java \
+	PortableContainer.java \
+	PortablePlaceable.java \
 	PtolemyInjector.java \
 	PtolemyModule.java
 

@@ -72,7 +72,6 @@ JSRCS = \
 	AbstractReceiver.java \
 	Actor.java \
 	ActorFiringListener.java \
-	ActorModuleInitializer.java \
 	ApplicationConfigurer.java \
 	AtomicActor.java \
 	CausalityMarker.java \
