@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LMSAdaptive" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
@@ -83,14 +83,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 135.0">
         </property>
     </entity>
-    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 135.0">
-        </property>
-    </entity>
     <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 411, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 411, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -98,7 +94,7 @@
         </property>
         <property name="iterationsPerUpdate" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 220.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -121,11 +117,21 @@
         </property>
         <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 50.0]">
         </property>
     </entity>
     <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="297.0, 106.0">
+        </property>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 135.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -134,35 +140,33 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[130.0, 245.0]">
-        </vertex>
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Gaussian.output" relation="relation"/>
     <link port="FIR.input" relation="relation"/>
-    <link port="FIR.output" relation="relation7"/>
+    <link port="FIR.output" relation="relation4"/>
     <link port="LMSAdaptive.input" relation="relation"/>
     <link port="LMSAdaptive.output" relation="relation3"/>
-    <link port="LMSAdaptive.error" relation="relation5"/>
+    <link port="LMSAdaptive.error" relation="relation2"/>
     <link port="LMSAdaptive.tapValues" relation="relation6"/>
     <link port="AddSubtract.plus" relation="relation9"/>
     <link port="AddSubtract.minus" relation="relation3"/>
-    <link port="AddSubtract.output" relation="relation4"/>
-    <link port="SampleDelay.input" relation="relation4"/>
-    <link port="SampleDelay.output" relation="relation5"/>
+    <link port="AddSubtract.output" relation="relation5"/>
     <link port="BarGraph.input" relation="relation6"/>
     <link port="Gaussian2.output" relation="relation8"/>
-    <link port="AddSubtract3.plus" relation="relation7"/>
     <link port="AddSubtract3.plus" relation="relation8"/>
+    <link port="AddSubtract3.plus" relation="relation4"/>
     <link port="AddSubtract3.output" relation="relation9"/>
+    <link port="SampleDelay.input" relation="relation5"/>
+    <link port="SampleDelay.output" relation="relation2"/>
 </entity>
