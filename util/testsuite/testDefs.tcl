@@ -110,7 +110,7 @@ if {"$isRunningNightlyBuild" == "true"} {
 }
 
 # Actors like Const now use Dependency Injection to that we can support Android.
-java::call ptolemy.actor.ActorModuleInitializer initializeInjector
+java::call ptolemy.actor.injection.ActorModuleInitializer initializeInjector
 
 proc print_verbose {test_name test_description contents_of_test code answer {testtype "NORMAL"}} {
     global FAILED KNOWN_FAILED VERBOSE errorInfo

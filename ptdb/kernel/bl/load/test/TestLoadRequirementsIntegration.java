@@ -37,7 +37,7 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import ptdb.kernel.bl.load.LoadManager;
-import ptolemy.actor.ActorModuleInitializer;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;

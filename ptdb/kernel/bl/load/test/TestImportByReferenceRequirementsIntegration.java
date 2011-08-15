@@ -43,7 +43,7 @@ import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptdb.kernel.database.DBConnection;
-import ptolemy.actor.ActorModuleInitializer;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.kernel.Entity;
 

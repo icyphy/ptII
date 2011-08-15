@@ -49,7 +49,7 @@ import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.load.DBModelFetcher;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.database.DBConnection;
-import ptolemy.actor.ActorModuleInitializer;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
