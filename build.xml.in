@@ -5,23 +5,39 @@
 <project basedir="." default="build" name="ptII">
 	<property environment="env" />
 	<property name="debuglevel" value="source,lines,vars" />
-	<property name="target" value="1.5" />
+	<property name="model" value="" />
 	<property name="source" value="1.5" />
 	<property name="ptserver.output" value="${basedir}/tempoutput" />
-	<property name="ptdroid.bin" value="${basedir}/../ptdroid/ptbin" />
+	<property name="target" value="1.5" />
+
 	<path id="ptII.classpath">
 		<pathelement location="${basedir}" />
 		@ANT_CLASSPATH@
 	</path>
+
+	<target name="checkstyle" depends="test.initOutput">
+		<taskdef resource="checkstyletask.properties" classpath="${basedir}/ptserver/lib/checkstyle-5.3-all.jar" />
+		<checkstyle config="${basedir}/ptserver/checkstyle-ptserver.xml" failOnViolation="false">
+			<fileset dir="${basedir}/ptserver" includes="**/*.java" excludes="**/test/*.java" />
+			<fileset dir="${basedir}/ptolemy/homer" includes="**/*.java" excludes="**/test/**/*.java" />
+			<formatter type="xml" toFile="${ptserver.output}/checkstyle_errors.xml" />
+		</checkstyle>
+		<!-- <xslt in="${ptserver.output}/checkstyle_errors.xml" out="${ptserver.output}/checkstyle_report.html" style="${basedir}/ptserver/checkstyle-simple.xsl"/> -->
+	</target>
+
 	<target name="clean">
 		<delete quiet="true">
 			<fileset dir="${basedir}" includes="**/*.class" />
 			<fileset dir="${ptserver.output}" />
 		</delete>
 	</target>
+
 	<target depends="clean" name="cleanall" />
+
 	<target depends="build-subprojects,build-project" name="build" />
+
 	<target name="build-subprojects" />
+
 	<target name="build-project">
 		<echo message="${ant.project.name}: ${ant.file}" />
 		<javac debug="true" debuglevel="${debuglevel}" destdir="." source="${source}" target="${target}" includeAntRuntime="false" fork="true" memoryinitialsize="256m" memorymaximumsize="256m">
@@ -31,12 +47,30 @@
 			<classpath refid="ptII.classpath" />
 		</javac>
 	</target>
-	<target name="initOutput">
+
+	<property name="findbugs.home" value="/usr/share/findbugs/" />
+	<target name="findbugs" depends="build, test.initOutput">
+		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
+		<findbugs home="${findbugs.home}" output="xml" outputFile="${ptserver.output}/ptserver-fb.xml" jvmargs="-Xms256m -Xmx512m" includefilter="${basedir}/ptserver/findbugs-includes.xml" excludefilter="${basedir}/ptserver/findbugs-excludes.xml">
+			<auxclasspath refid="ptII.classpath" />
+			<sourcePath path="${basedir}" />
+			<class location="ptserver/actor" />
+			<class location="ptserver/communication" />
+			<class location="ptserver/control" />
+			<class location="ptserver/data" />
+			<class location="ptserver/test" />
+			<class location="ptolemy/homer" />
+		</findbugs>
+	</target>
+
+	<target name="test.initOutput">
 		<mkdir dir="${junit.output.dir}" />
 	</target>
+
 	<property name="junit.output.dir" value="${ptserver.output}/junit" />
+
 	<!-- Cobertura -->
-	<target name="test" depends="build, initOutput">
+	<target name="test" depends="build, test.initOutput">
 		<property name="instrumented.dir" value="${ptserver.output}/instrumented" />
 		<property name="cobertura.dir" value="ptserver/lib" />
 		<property name="coveragereport.dir" value="${ptserver.output}/coveragereport" />
@@ -73,6 +107,7 @@
 		</junit>
 		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
 	</target>
+
 	<property name="ptdroid.builddir" location="${basedir}/../ptdroid/ptbin" />
 	<target name="ptdroid.build">
 		<copy includeemptydirs="false" todir="${ptdroid.builddir}">
@@ -89,27 +124,22 @@
 			<classpath refid="ptII.classpath" />
 		</javac>
 	</target>
-	<property name="findbugs.home" value="/usr/share/findbugs/" />
-	<target name="findbugs" depends="build, initOutput">
-		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
-		<findbugs home="${findbugs.home}" output="xml" outputFile="${ptserver.output}/ptserver-fb.xml" jvmargs="-Xms256m -Xmx512m" includefilter="${basedir}/ptserver/findbugs-includes.xml" excludefilter="${basedir}/ptserver/findbugs-excludes.xml">
-			<auxclasspath refid="ptII.classpath" />
-			<sourcePath path="${basedir}" />
-			<class location="ptserver/actor" />
-			<class location="ptserver/communication" />
-			<class location="ptserver/control" />
-			<class location="ptserver/data" />
-			<class location="ptserver/test" />
-			<class location="ptolemy/homer" />
-		</findbugs>
-	</target>
-	<target name="checkstyle" depends="initOutput">
-		<taskdef resource="checkstyletask.properties" classpath="${basedir}/ptserver/lib/checkstyle-5.3-all.jar" />
-		<checkstyle config="${basedir}/ptserver/checkstyle-ptserver.xml" failOnViolation="false">
-			<fileset dir="${basedir}/ptserver" includes="**/*.java" excludes="**/test/*.java" />
-			<fileset dir="${basedir}/ptolemy/homer" includes="**/*.java" excludes="**/test/**/*.java" />
-			<formatter type="xml" toFile="${ptserver.output}/checkstyle_errors.xml" />
-		</checkstyle>
-		<!-- <xslt in="${ptserver.output}/checkstyle_errors.xml" out="${ptserver.output}/checkstyle_report.html" style="${basedir}/ptserver/checkstyle-simple.xsl"/> -->
-	</target>
+
+	<target name="run" depends="vergil"
+		description="Invoke the Ptolemy II User Interface (alias for the vergil target)"/>
+
+	<target name="vergil" depends="build-project"
+		description="Invoke the Ptolemy II User Interface.  To run a model, use ant vergil -Dmodel=model.xml"
+		>
+		<java classname="ptolemy.vergil.VergilApplication"
+		      fork="true">
+		      <classpath>
+			<pathelement location="/Users/cxh/ptII" />
+			<path refid="ptII.classpath"/>
+		      </classpath>
+		      <jvmarg value="-Xmx1024"/>
+		      <arg line="${model}"/>
+		</java>
+        </target>
+
 </project>
