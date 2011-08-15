@@ -3581,6 +3581,7 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/apps/apes/"/>
 <exclude name="ptolemy/apps/charon/"/>
 <exclude name="ptolemy/apps/crazyboard/"/>
+<exclude name="ptolemy/apps/eclipse/"/>
 <exclude name="ptolemy/apps/etherealSting/"/>
 <exclude name="ptolemy/apps/fullscreen/"/>
 <exclude name="ptolemy/apps/giotto/"/>
@@ -3682,7 +3683,7 @@ echo "$as_me: WARNING: Under Eclipse on Mac OS X, there are various
     is not supported." >&5
 echo "$as_me: WARNING: Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
     is not supported." >&2;}
-	    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/apps/eclipse/awt/"
+	    updateExcludes "ptolemy/apps/eclipse/awt/"
         fi
      	;;
      *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
@@ -5708,7 +5709,7 @@ echo "$as_me: WARNING: Failed to find PTII/lib/ptCal.jar
 fi
 
 if test -z "$PTCALTROP_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/caltrop/"
+   updateExcludes "ptolemy/caltrop/"
 else
    # Note that jasminclasses.jar in soot also includes java_cup
    updateClasspath "$CALTROP_DIR/ptCal.jar"
@@ -5778,7 +5779,7 @@ echo "$as_me: WARNING: Failed to find PTII/lib/chic.jar
 fi
 
 if test -z "$PTCHIC_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/chic/"
+   updateExcludes "ptolemy/chic/"
 else
    updateClasspath "$CHIC_DIR/chic.jar"
 fi
@@ -5933,7 +5934,7 @@ echo "${ECHO_T}$COLT_DIR/colt.jar not found, using $PTCOLT_JAR" >&6; }; fi
 fi
 
 if test -z "$PTCOLT_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/colt/"
+   updateExcludes "ptolemy/actor/lib/colt/"
 fi
 
 
@@ -6076,7 +6077,7 @@ echo "$as_me: WARNING: Could not find tools.jar or classes.jar in
     fi
 fi
 if test -z "$PTDOCLETS_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|doc/doclets/"
+   updateExcludes "doc/doclets/"
 else
    addToolsJarToEclipse=yes
 
@@ -6239,7 +6240,7 @@ fi
    not building in ptolemy/apps/eclipse and ptolemy/backtrack." >&5
 echo "$as_me: WARNING: configure called with --without-eclipse-plugins,
    not building in ptolemy/apps/eclipse and ptolemy/backtrack." >&2;}
-           ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/apps/eclipse/"
+           updateExcludes "ptolemy/apps/eclipse/"
         else
 	    if test ! -d "$ECLIPSE_DIR"; then
                 { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse in $ECLIPSE_DIR" >&5
@@ -6434,7 +6435,8 @@ echo "$as_me: WARNING: Failed to find Eclipse
 fi
 
 if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/backtrack/|ptolemy/backtrack/ast/"
+   updateExcludes "ptolemy/backtrack/"
+   updateExcludes "ptolemy/backtrack/ast/"
 fi
 
 #--------------------------------------------------------------------
@@ -6552,7 +6554,7 @@ echo "$as_me: WARNING: Failed to find the Oracle Berkeley XML DB (dbxml) in
 fi
 
 if test -z "$PTDBXML_JARS"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
+   updateExcludes "ptdb/"
 else
    updateClasspath "$PTDBXML_JAR"
    updateClasspath "$PTDB_JAR"
@@ -6638,17 +6640,19 @@ echo "$as_me: WARNING: Failed to find fuzzy/FuzzyEngine.class
 fi
 
 if test -z "$PTFUZZY_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/logic/fuzzy/"
+   updateExcludes "ptolemy/actor/lib/logic/fuzzy/"
 else
    shortdir=`echo "$PTFUZZYENGINE_DIR" | sed "s@$PTII/@@"`
    if test -d "$shortdir"; then
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                <classpathentry kind=\"src\" path=\"$shortdir\"/>"
-      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$shortdir/"
+      #ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+      #          <classpathentry kind=\"src\" path=\"$shortdir\"/>"
+      ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$shortdir\"/> "
+      updateExcludes "$shortdir/"
    else
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-           <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
-      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$PTFUZZYENGINE_DIR/"
+      #ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+      #     <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
+      ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$PTFUZZYENGINE_DIR\"/> "
+      updateExcludes "$PTFUZZYENGINE_DIR/"
    fi
 
 fi
@@ -6983,7 +6987,7 @@ echo "$as_me: WARNING: Failed to find iText.jar
 fi
 
 if test -z "$PTITEXTPDF_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/vergil/basic/itextpdf/"
+   updateExcludes "ptolemy/vergil/basic/itextpdf/"
 else
    updateClasspath "$PTITEXTPDF_JAR"
 fi
