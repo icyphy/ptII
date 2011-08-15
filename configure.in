@@ -776,6 +776,15 @@ ECLIPSE_CLASSPATHENTRY_LIBS=''
 ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="**/adm/"/>
 <exclude name="**/codeDoc/"/>
+<exclude name="**/makefile" />
+<exclude name="**/.*" />
+<exclude name="**/*.bat" />
+<exclude name="**/*.class" />
+<exclude name="**/*.html" />
+<exclude name="**/*.in" />
+<exclude name="**/*.png" />
+<exclude name="**/*.tcl" />
+<exclude name="**/*.xml" />
 <exclude name="build/"/>
 <exclude name="config/"/>
 <exclude name="doc/coding/templates/"/>
