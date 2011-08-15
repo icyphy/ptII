@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- $Id$
+     $PTII/configure reads in build.xml.in and creates build.xml.
+     If configure is not available, copy build.xml.default to build.xml. -->
+<project basedir="." default="build" name="ptII">
+	<property environment="env" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="target" value="1.5" />
+	<property name="source" value="1.5" />
+	<property name="ptserver.output" value="${basedir}/tempoutput" />
+	<property name="ptdroid.bin" value="${basedir}/../ptdroid/ptbin" />
+	<path id="ptII.classpath">
+		<pathelement location="${basedir}" />
+		@ANT_CLASSPATH@
+	</path>
+	<target name="clean">
+		<delete quiet="true">
+			<fileset dir="${basedir}" includes="**/*.class" />
+			<fileset dir="${ptserver.output}" />
+		</delete>
+	</target>
+	<target depends="clean" name="cleanall" />
+	<target depends="build-subprojects,build-project" name="build" />
+	<target name="build-subprojects" />
+	<target name="build-project">
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<javac debug="true" debuglevel="${debuglevel}" destdir="." source="${source}" target="${target}" includeAntRuntime="false" fork="true" memoryinitialsize="256m" memorymaximumsize="256m">
+			<src path="${basedir}" />
+			@ANT_ALWAYS_EXCLUDE@
+			@ANT_EXCLUDE@
+			<classpath refid="ptII.classpath" />
+		</javac>
+	</target>
+	<target name="initOutput">
+		<mkdir dir="${junit.output.dir}" />
+	</target>
+	<property name="junit.output.dir" value="${ptserver.output}/junit" />
+	<!-- Cobertura -->
+	<target name="test" depends="build, initOutput">
+		<property name="instrumented.dir" value="${ptserver.output}/instrumented" />
+		<property name="cobertura.dir" value="ptserver/lib" />
+		<property name="coveragereport.dir" value="${ptserver.output}/coveragereport" />
+		<path id="cobertura.classpath">
+			<fileset dir="${cobertura.dir}">
+				<include name="cobertura.jar" />
+				<include name="asm-3.0.jar" />
+				<include name="asm-tree-3.0.jar" />
+				<include name="jakarta-oro-2.0.8.jar" />
+				<include name="log4j-1.2.9.jar" />
+			</fileset>
+		</path>
+		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+		<delete file="cobertura.ser" />
+		<delete dir="${instrumented.dir}" />
+		<cobertura-instrument todir="${instrumented.dir}">
+			<fileset dir="${basedir}">
+				<include name="ptserver/**/*.class" />
+				<include name="ptolemy/homer/**/*.class" />
+				<exclude name="${ptserver.output}/**/*" />
+				<exclude name="ptserver/test/**/*" />
+			</fileset>
+		</cobertura-instrument>
+		<junit printsummary="yes" fork="yes">
+			<classpath>
+				<path location="${instrumented.dir}" />
+				<path refid="ptII.classpath" />
+				<path refid="cobertura.classpath" />
+			</classpath>
+			<formatter type="xml" />
+			<test name="ptserver.test.junit.AllTests" todir="${junit.output.dir}" />
+			<!-- Cobertura -->
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
+		</junit>
+		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
+	</target>
+	<property name="ptdroid.builddir" location="${basedir}/../ptdroid/ptbin" />
+	<target name="ptdroid.build">
+		<copy includeemptydirs="false" todir="${ptdroid.builddir}">
+			<fileset dir="${basedir}">
+			  @ANT_ALWAYS_EXCLUDE@
+			  @ANT_EXCLUDE@
+			</fileset>
+		</copy>
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${ptdroid.builddir}" source="${source}" includeAntRuntime="false" fork="true" memoryinitialsize="256m" memorymaximumsize="256m">
+			<src path="${basedir}" />
+			  @ANT_ALWAYS_EXCLUDE@
+			  @ANT_EXCLUDE@
+			<classpath refid="ptII.classpath" />
+		</javac>
+	</target>
+	<property name="findbugs.home" value="/usr/share/findbugs/" />
+	<target name="findbugs" depends="build, initOutput">
+		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
+		<findbugs home="${findbugs.home}" output="xml" outputFile="${ptserver.output}/ptserver-fb.xml" jvmargs="-Xms256m -Xmx512m" includefilter="${basedir}/ptserver/findbugs-includes.xml" excludefilter="${basedir}/ptserver/findbugs-excludes.xml">
+			<auxclasspath refid="ptII.classpath" />
+			<sourcePath path="${basedir}" />
+			<class location="ptserver/actor" />
+			<class location="ptserver/communication" />
+			<class location="ptserver/control" />
+			<class location="ptserver/data" />
+			<class location="ptserver/test" />
+			<class location="ptolemy/homer" />
+		</findbugs>
+	</target>
+	<target name="checkstyle" depends="initOutput">
+		<taskdef resource="checkstyletask.properties" classpath="${basedir}/ptserver/lib/checkstyle-5.3-all.jar" />
+		<checkstyle config="${basedir}/ptserver/checkstyle-ptserver.xml" failOnViolation="false">
+			<fileset dir="${basedir}/ptserver" includes="**/*.java" excludes="**/test/*.java" />
+			<fileset dir="${basedir}/ptolemy/homer" includes="**/*.java" excludes="**/test/**/*.java" />
+			<formatter type="xml" toFile="${ptserver.output}/checkstyle_errors.xml" />
+		</checkstyle>
+		<!-- <xslt in="${ptserver.output}/checkstyle_errors.xml" out="${ptserver.output}/checkstyle_report.html" style="${basedir}/ptserver/checkstyle-simple.xsl"/> -->
+	</target>
+</project>
