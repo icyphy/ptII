@@ -143,6 +143,7 @@ $(SHELL_FILES): ptinvoke
 makeapp: ptinvoke
 	rm -f makeapp
 	ln -s ptinvoke makeapp
+	chmod a+x ptinvoke makeapp
 
 macapps: $(MAC_APPS)
 
