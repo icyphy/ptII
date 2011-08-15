@@ -5,43 +5,76 @@
 tmpmakefile=/tmp/updateJUnitTclTest$$.mk
 cd $PTII
 
-#testDirs=`adm/bin/ptIItxtfiles | grep testDefs.tcl | sed 's@/testDefs.tcl@@' | grep -v util/testsuite`
+txtFiles=/tmp/updateJUnitTclTest.txtFiles
+if [ ! -f $txtFiles ]; then
+    echo "Creating $txtFiles"
+    adm/bin/ptIItxtfiles | grep testDefs.tcl | sed 's@/testDefs.tcl@@' | grep -v util/testsuite > $txtFiles
 
-testDirs=./ptolemy/kernel/test
+fi
+testDirs=`cat $txtFiles`
+#testDirs=./ptolemy/domains/modal/test
 
 for testDir in $testDirs
 do
     echo $testDir
-    package=`echo $testDir | sed 's@/@.@g' | sed 's@\.\.@@g'`
-    sed "s@/PACKAGE/@$package@" $PTII/util/testsuite/junit/JUnitTclTest.java.in > $testDir/JUnitTclTest.java
-    awk '{
-        if ($1 != "CLASSPATH") {
-            if ($1 == "JSRCS") {
-                jsrcLineNumber = NR
-                print $0
-            } else {
-                if (jsrcLineNumber > 0 && NR == jsrcLineNumber + 1 && $0 !~ /JUnitTclTest.java/) {
-                    jsrcLineNumber = 0;
-                    printf("\tJUnitTclTest.java \\\n");
-                }
-                print $0
-            }
-        } else {
-            if ($0 !~ /JUNIT_JAR/) {
-                print $0 "$(CLASSPATHSEPARATOR)$(JUNIT_JAR)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)"
-            } else {
-                if ($0 !~ /PTJACL_JAR/) {
-                     print $0 "$(CLASSPATHSEPARATOR)$(PTJACL_JAR)"
-                } else {
-                     print $0
-                }
-            }
-        }
-    }' $testDir/makefile > $tmpmakefile
-    diff $testDir/makefile $tmpmakefile
-    status=$?
-    if [ $status == 1 ]; then
-	#echo "Would copy"
-	cp $tmpmakefile $testDir/makefile
-    fi	
+
+    if [ ! -d $testDir/junit ]; then
+	mkdir $testDir/junit
+    fi
+
+    package=`echo $testDir | sed 's@/@.@g' | sed 's@\.\.@@g'`.junit
+    YEAR=`date +%Y`
+
+    javaFile=$testDir/junit/JUnitTclTest.java
+    if [ ! -f $javaFile ]; then
+	sed -e "s/@PACKAGE@/$package/" \
+	    -e "s/@YEAR@/$YEAR/" \
+	    $PTII/ptolemy/util/test/junit/JUnitTclTest.java.in > $javaFile
+	echo "$javaFile"
+    fi
+
+
+    makefile=$testDir/junit/makefile
+    if [ ! -f $makefile ]; then
+	ME=`echo $package | sed 's@\.@/@g'`
+	ROOT=`echo $ME | sed 's@[^/]*@..@g'`
+	sed -e "s/@PACKAGE@/$package/" \
+	    -e "s#@ME@#$ME#" \
+	    -e "s#@ROOT@#$ROOT#" \
+	    -e "s/@YEAR@/$YEAR/" \
+	    $PTII/ptolemy/util/test/junit/makefile.in > $makefile
+	echo "$makefile"
+    fi
+
+#
+#     awk '{
+#         if ($1 != "CLASSPATH") {
+#             if ($1 == "JSRCS") {
+#                 jsrcLineNumber = NR
+#                 print $0
+#             } else {
+#                 if (jsrcLineNumber > 0 && NR == jsrcLineNumber + 1 && $0 !~ /JUnitTclTest.java/) {
+#                     jsrcLineNumber = 0;
+#                     printf("\tJUnitTclTest.java \\\n");
+#                 }
+#                 print $0
+#             }
+#         } else {
+#             if ($0 !~ /JUNIT_JAR/) {
+#                 print $0 "$(CLASSPATHSEPARATOR)$(JUNIT_JAR)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)"
+#             } else {
+#                 if ($0 !~ /PTJACL_JAR/) {
+#                      print $0 "$(CLASSPATHSEPARATOR)$(PTJACL_JAR)"
+#                 } else {
+#                      print $0
+#                 }
+#             }
+#         }
+#     }' $testDir/makefile > $tmpmakefile
+#     diff $testDir/makefile $tmpmakefile
+#     status=$?
+#     if [ $status == 1 ]; then
+# 	echo "Would copy"
+# 	#cp $tmpmakefile $testDir/makefile
+#     fi	
 done

@@ -277,17 +277,29 @@ public class Engine {
             retval[0] = ptmatlabEngOpen(startCmd);
 
             if (retval[0] == 0) {
+                String Path = "";
+                try {
+                    Path = System.getenv("PATH");
+                } catch (Throwable throwable) {
+                    Path = throwable.toString();
+                }
                 throw new IllegalActionException("matlabEngine.open("
                         + startCmd
-                        + ") : can't find Matlab engine. Try starting "
-                        + "Matlab by hand as an application to verify that "
+                        + ") : can't find Matlab engine. "
+                        + "The PATH for this process is \"" + Path
+                        + "\". Try starting "
+                        + "\"matlab\" by hand from a shell to verify that "
                         + "Matlab is set up properly and the license is "
-                        + "correct. "
+                        + "correct.\n"
                         + "Under Windows, try running \"matlab /regserver\", "
                         + "the Matlab C API communicates with Matlab via COM, "
                         + "and apparently the COM interface is not "
                         + "automatically registered when Matlab is "
-                        + "installed. "
+                        + "installed.\n"
+                        + "Under Mac OS X, 'matlab' must be in the PATH, "
+                        + "it may be easiest to create a link from /usr/bin/matlab "
+                        + "to the location of the matlab script:\n "
+                        + "sudo ln -s /Applications/MATLAB_R2011a.app/bin/matlab /usr/bin/matlab\n"
                         + "Under Linux and other types of UNIX, csh must be "
                         + "installed in /bin/csh.");
             }

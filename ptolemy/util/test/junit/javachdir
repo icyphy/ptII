@@ -1,0 +1,30 @@
+#!/bin/sh
+# $Id$
+# Read the arguments, change to a directory and invoke java.
+
+# This script is used by the Ant junit tests in $PTII/build.xml
+
+# This script reads its arguments and looks for an argument
+# "org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner" and
+# the argument after that contains the class to be run, for example
+# "ptolemy.actor.lib.io.test.junit.JUnitTclTest" The script strips off
+# the "junit.JUnitTclTest" changes to the ptolemy.a.ctor.lib.io.test
+# directory and invokes java.
+
+
+for argument in "$@"
+do
+    if [ "$nextArgumentIsClass" = "true" ]; then
+         directory=`echo $argument | awk -F . '{printf("%s", $1); for( i=2; i<(NF-1); i++) { printf("/%s", $i)} printf("\n")}'`
+        break
+    fi
+    if [ "$argument" = "org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner" ]; then
+        nextArgumentIsClass=true
+    fi   
+
+done
+
+cd $directory
+#echo `pwd`
+#echo $@
+java $@

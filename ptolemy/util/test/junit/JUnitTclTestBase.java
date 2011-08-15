@@ -29,6 +29,9 @@
 package ptolemy.util.test.junit;
 
 import java.io.File;
+import java.io.FilenameFilter;
+
+import ptolemy.moml.MoMLSimpleApplication;
 
 import tcl.lang.Interp;
 
@@ -73,22 +76,64 @@ public class JUnitTclTestBase {
      *  @exception Throwable If thrown by the code under test.
      */
     public void run() throws Throwable {
+        //_runFileNameOrTestDefs();
+        _runAutoTests();
+    }
+
+    /** Run the models in the auto directory.
+     */
+    private void _runAutoTests() throws Throwable {
+        File auto = new File("auto/");
+        if (auto.isDirectory()) {
+            String [] modelFiles = new File("auto/").list(
+                    new FilenameFilter() {
+                        /** Return true if the file name ends with .xml or .moml
+                         *  @param directory Ignored
+                         *  @param name The name of the file.
+                         *  @return true if the file name ends with .xml or .moml
+                         */   
+                        public boolean accept(File directory, String name) {
+                            String fileName = name.toLowerCase();
+                            return fileName.endsWith(".xml") || fileName.endsWith(".moml");
+                        }
+                    });
+            for(String modelFile: modelFiles) {
+                System.out.println("----------------- testing auto/" + modelFile);
+                new MoMLSimpleApplication("auto/" + modelFile);
+            }
+        }
+    }
+
+    /**
+     *  If the fileName JVM property is set, then the file named by
+     *  that property is sourced.  Otherwise, the testDefs.tcl file
+     *  is sourced and the doallTests Tcl proc that is defined
+     *  in $PTII/util/testsuite/testDefs.tcl is invoked and then
+     */
+    private void _runFileNameOrTestDefs() throws Throwable {
         String fileName = System.getProperty("fileName");
+        System.err.println("run: fileName: " + fileName);
         Interp interp = new Interp();
         if (fileName != null) {
             interp.evalFile(fileName);
         } else {
             if (!new File("testDefs.tcl").exists()) {
+                System.err.println("testDefs.tcl does not exist in " + System.getProperty("user.dir"));
                 // We might be running from a different directory
                 String directory = getClass().getPackage().getName()
                         .replace('.', '/')
                         + "/..";
+                directory = new File(directory).getCanonicalPath();
+                System.err.println("directory: " + directory);
+                
                 if (new File(directory + "/testDefs.tcl").exists()) {
+                    System.err.println("1: " + directory + "/testDefs.tcl exists.");
                     // This is the code that is run by Eclipse
                     interp.eval("cd " + directory);
                 } else {
                     directory = "..";
                     if (new File(directory + "/testDefs.tcl").exists()) {
+                        System.err.println("2: " + directory + "/testDefs.tcl exists.");
                         // This is run if we run make in the junit directory.
                         interp.eval("cd " + directory);
                     }
@@ -99,3 +144,4 @@ public class JUnitTclTestBase {
         }
     }
 }
+
