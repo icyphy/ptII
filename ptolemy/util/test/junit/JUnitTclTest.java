@@ -45,14 +45,14 @@ import tcl.lang.TclException;
  *
  * <p>To run one test file (NamedObj.tcl):
  * <pre>
- * cd $PTII
- * java -DfileName=NamedObj.tcl -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.kernel.util.test.JUnitTclTest
+ * cd $PTII/ptolemy/kernel/util/test
+ * java -DfileName=NamedObj.tcl -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.util.test.junit.JUnitTclTest
  * </pre></p>
  *
  * <p>To run all the .tcl files:
  * <pre>
- * cd $PTII
- * java -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.kernel.util.test.JUnitTclTest
+ * cd $PTII/ptolemy/kernel/util/test
+ * java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.kernel.util.test.JUnitTclTest
  * </pre></p>
  *
  * <p> A copy of this file appears in each test/ subdirectory

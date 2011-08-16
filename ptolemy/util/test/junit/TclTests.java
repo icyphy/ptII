@@ -127,7 +127,7 @@ public class TclTests {
      */
     @Test
     public void testTclFile() throws Throwable {
-        System.err.println(_tclFile);
+        System.out.println(_tclFile);
         _evalFileMethod.invoke(_interp, new Object [] {_tclFile});
     }
 
