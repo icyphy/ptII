@@ -89,8 +89,8 @@ public interface CausalityInterface {
      *  @param port The port to find the dependents of.
      *  @exception IllegalActionException If the dependency
      *   cannot be determined.
-     *  @return a collection of ports that this actor depends
-     *  on or are depended on by the specified port.
+     *  @return a collection of ports in this actor that depend
+     *   on or are depended on by the specified port.
      */
     public Collection<IOPort> dependentPorts(IOPort port)
             throws IllegalActionException;
