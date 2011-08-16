@@ -75,6 +75,12 @@ import tcl.lang.Interp;
  * @Pt.AcceptedRating Red (cxh)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ptolemy.util.test.junit.TclTests.class, ptolemy.util.test.junit.AutoTests.class})
+@Suite.SuiteClasses(
+        {
+            ptolemy.util.test.junit.TclTests.class,
+                ptolemy.util.test.junit.AutoKnownFailedTests.class,
+                ptolemy.util.test.junit.AutoTests.class
+
+                })
 public class JUnitTclTestBase {
 }

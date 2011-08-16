@@ -124,18 +124,16 @@ public class AutoTests {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     /** The MoMLSimpleApplication class.  We use reflection her
      *  to avoid false dependencies if auto/ does not exist.
      */
-    private static Class _applicationClass;
+    protected static Class _applicationClass;
 
     /** The MoMLSimpleApplication(String) constructor. */
-    private static Constructor _applicationConstructor;
+    protected static Constructor _applicationConstructor;
 
     /** The path to the .xml or .moml file that contains the model. */
-    private String _modelFile;
-
-
+    protected String _modelFile;
 }
