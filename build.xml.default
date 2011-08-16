@@ -93,7 +93,6 @@
     <exclude name="diva/" />
     <exclude name="diva/util/java2d/svg/" />
     <exclude name="doc/coding/templates/" />
-    <exclude name="doc/doclets/" />
     <exclude name="jni/test/jni/meaningOfLife/" />
     <exclude name="jni/test/jni/testDeux/" />
     <exclude name="jni/test/jni/testTrois/" />
@@ -236,6 +235,16 @@
 
   <target name="initReports">
     <mkdir dir="${junit.output.dir}" />
+  </target>
+
+  <target name="javadoc"
+	  depends="build"
+	  description="Generate javadoc."> 
+    <javadoc destdir="doc/codeDoc"
+	     doclet="doc.doclets.PtDoclet"
+	     maxmemory="1000m"
+             sourcepath="${basedir}">
+    </javadoc>
   </target>
 
   <target name="test" depends="build, initReports"

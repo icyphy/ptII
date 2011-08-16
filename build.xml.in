@@ -122,6 +122,15 @@
     <mkdir dir="${junit.output.dir}" />
   </target>
 
+  <target name="javadoc"
+	  depends="build"
+	  description="Generate javadoc."> 
+    <javadoc destdir="doc/codeDoc"
+	     doclet="doc.doclets.PtDoclet"
+	     maxmemory="1000m"
+             sourcepath="${basedir}"/>
+  </target>
+
   <target name="test" depends="build, initReports"
 	  description="Run the junit tests in junit/*.java.  Use -Djunit.formatter=xml|brief|plain|failure, default is plain.  Output is in ${junit.output.dir}">
     <junit fork="yes"
