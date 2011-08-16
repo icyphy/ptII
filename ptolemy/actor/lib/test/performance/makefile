@@ -86,7 +86,7 @@ runModel:
 	@awk 'NR > 1 { sum += $$1} \
 		END {print model ": Average time of 2 through " NR " runs: " (sum+0.0)/(NR-1) " ms."}' model=$(MODEL) $(STATSFILE)
 
-MISC_FILES = \
+MISC_FILES =  junit \
 	AddSubtractPerformance.xml \
 	ExpressionPerformance.xml \
 	plotPerformance \

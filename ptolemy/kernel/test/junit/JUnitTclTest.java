@@ -34,29 +34,19 @@ import ptolemy.util.test.junit.JUnitTclTestBase;
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest
 /**
- * Run the Tcl tests under JUnit.
- * <p>If the fileName JVM property is set, then the file named by
- * that property is sourced.  Otherwise, the testDefs.tcl file
- * is sourced and the doallTests Tcl proc that is defined
- * in $PTII/util/testsuite/testDefs.tcl is invoked and then
- * any models in the auto/ directory are invoked.</p>
- *
- * <p>To run one test file (NamedObj.tcl):
+ * Run the auto/ and Tcl tests under JUnit.
  * <pre>
- * cd $PTII
- * java -DfileName=NamedObj.tcl -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.kernel.util.test.JUnitTclTest
+ * (cd $PTII/ptolemy/kernel/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.domains.test.junit.JUnitTclTest)
  * </pre></p>
  *
- * <p>To run all the .tcl files:
- * <pre>
- * cd $PTII
- * java -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.kernel.util.test.JUnitTclTest
- * </pre></p>
- *
- * <p> A copy of this file appears in each test/ subdirectory
+ * <p> A copy of this file appears in each test/junit subdirectory
  * so that it is easy for developers to run tests.  The master
  * file is in $PTII/util/testsuite/JUnitTclTest.java.in.
  * To update all the files, run
+ * <pre>
+ * cd $PTII
+ * ptolemy/util/test/junit/updateJUnitTclTest
+ * </pre>
  *
  * @author Christopher Brooks
  * @version $Id$
@@ -65,16 +55,5 @@ import ptolemy.util.test.junit.JUnitTclTestBase;
  * @Pt.AcceptedRating Green (cxh)
  */
 public class JUnitTclTest extends JUnitTclTestBase {
-    /** Run a test.
-     *  <p>If the fileName JVM property is set, then the file named by
-     *  that property is sourced.  Otherwise, the testDefs.tcl file
-     *  is sourced and the doallTests Tcl proc that is defined
-     *  in $PTII/util/testsuite/testDefs.tcl is invoked and then
-     *  any models in the auto/ directory are invoked.
-     *  @exception Throwable If thrown by the code under test.
-     */
-    @org.junit.Test
-    public void run() throws Throwable {
-        super.run();
-    }
+    // This class is empty, all the action occurs in the parent.
 }

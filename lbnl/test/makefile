@@ -68,7 +68,7 @@ JGRAPHICAL_TESTS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) auto
+MISC_FILES =	$(DIRS) auto junit
 
 # These files don't exist because testQuatre uses testDeux and testTrois
 #	testQuatre.c

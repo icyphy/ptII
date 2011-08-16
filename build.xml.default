@@ -27,6 +27,10 @@
   <property name="model" value="" />
 
   <property name="source" value="1.5" />
+
+  <!-- The test that is run by the test.auto target. -->
+  <property name="testName" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
+
   <property name="target" value="1.5" />
 
   <!-- Ant paths. Alphabetize, please -->
@@ -132,7 +136,6 @@
     <exclude name="ptolemy/backtrack/eclipse/" />
     <exclude name="ptolemy/backtrack/test/" />
     <exclude name="ptolemy/calltrop/" />
-    <exclude name="ptolemy/cg/" />
     <exclude name="ptolemy/chic/" />
     <exclude name="ptolemy/codegen/newInterfaces/" />
     <exclude name="ptolemy/component/" />
@@ -150,7 +153,6 @@
     <exclude name="ptolemy/domains/jogl/" />
     <exclude name="ptolemy/domains/pdf/" />
     <exclude name="ptolemy/domains/petrinet/" />
-    <exclude name="ptolemy/domains/psdf/" />
     <exclude name="ptolemy/domains/ptinyos/" />
     <exclude name="ptolemy/domains/space/" />
     <exclude name="ptolemy/domains/tdl/" />
@@ -180,7 +182,7 @@
       </fileset>
       <formatter type="${checkstyle.formatter}" toFile="${ptII.reports}/checkstyle_errors.${formatter}" />
     </checkstyle>
-    <!-- <xslt in="${ptserver.output}/checkstyle_errors.xml" out="${ptserver.output}/checkstyle_report.html" style="${basedir}/ptserver/checkstyle-simple.xsl"/> -->
+    <!-- <xslt in="${ptII.reports}/checkstyle_errors.xml" out="${ptII.reports}/checkstyle_report.html" style="${basedir}/ptserver/checkstyle-simple.xsl"/> -->
   </target>
 
   <target name="clean"
@@ -193,8 +195,12 @@
 
   <target depends="clean" name="cleanall" />
 
-  <target depends="build-subprojects,build-project" name="build" 
-	  description="Build Ptolemy II by compiling the .java files"/>
+  <target depends="build-message, build-subprojects,build-project" name="build"
+	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target"/>
+
+  <target name="build-message">
+    <echo message="Use ant -p to see other targets."/>
+  </target>
 
   <target name="build-subprojects" />
   <target name="build-project">
@@ -250,7 +256,7 @@
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
-	   timeout="300000">
+	   timeout="30000">
       <classpath>
 	<path refid="ptII.classpath" />
       </classpath>
@@ -264,20 +270,6 @@
     </junit>
   </target>
 
-  <target name="test.auto" depends="build, initReports"
-	  description="Run the auto tests.  Use -Djunit.formatter=xml|brief|plain|failure, default is plain.  Output is in ${junit.output.dir}">
-    <junit fork="yes"
-	   jvm="ptolemy/util/test/junit/javachdir"
-	   printsummary="withOutAndErr"
-	   showoutput="yes"
-	   timeout="300000">
-      <classpath>
-	<path refid="ptII.classpath" />
-      </classpath>
-      <formatter type="${junit.formatter}" usefile="false"/>
-      <test  name="ptolemy.actor.lib.io.test.junit.JUnitTclTest" />
-    </junit>
-  </target>
 
   <!-- Cobertura -->
   <target name="test.cobertura" depends="build, initReports">

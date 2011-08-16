@@ -12,7 +12,7 @@ if [ ! -f $txtFiles ]; then
 
 fi
 testDirs=`cat $txtFiles`
-#testDirs=./ptolemy/domains/modal/test
+#testDirs=./ptolemy/domains/modal/kernel/test
 
 for testDir in $testDirs
 do
@@ -23,11 +23,14 @@ do
     fi
 
     package=`echo $testDir | sed 's@/@.@g' | sed 's@\.\.@@g'`.junit
+
+    ME=`echo $package | sed 's@\.@/@g'`
     YEAR=`date +%Y`
 
     javaFile=$testDir/junit/JUnitTclTest.java
     if [ ! -f $javaFile ]; then
-	sed -e "s/@PACKAGE@/$package/" \
+	sed -e "s#@ME@#$ME#" \
+	    -e "s/@PACKAGE@/$package/" \
 	    -e "s/@YEAR@/$YEAR/" \
 	    $PTII/ptolemy/util/test/junit/JUnitTclTest.java.in > $javaFile
 	echo "$javaFile"
@@ -36,7 +39,6 @@ do
 
     makefile=$testDir/junit/makefile
     if [ ! -f $makefile ]; then
-	ME=`echo $package | sed 's@\.@/@g'`
 	ROOT=`echo $ME | sed 's@[^/]*@..@g'`
 	sed -e "s/@PACKAGE@/$package/" \
 	    -e "s#@ME@#$ME#" \
@@ -45,6 +47,33 @@ do
 	    $PTII/ptolemy/util/test/junit/makefile.in > $makefile
 	echo "$makefile"
     fi
+
+    # Add junit to test/makefile in DIRS and MISC_FILES
+    awk '{
+#     if ($1 == "DIRS") {
+#        if (substr($0, length($0), 1) == "\\") {
+#             print substr($0, 0, length($0) - 1), "junit \\"
+#        } else {
+#             print $0, "junit"
+#        }
+#        sawDIRS = NR
+#     } else if ($1 == "ROOT" && sawDIRS == 0) {
+#        printf("DIRS =\tjunit\n\n");
+#        print $0
+    if ($1 == "MISC_FILES") {
+        if (substr($0, length($0), 1) == "\\") {
+           print substr($0, 0, length($0) - 1), "junit \\"
+        } else {
+           print $0, "junit"
+        }
+        sawMISC_FILES = NR
+    } else  if ($1 == "OPTIONAL_FILES" && sawMISC_FILES == 0) {
+       printf("MISC_FILES =\tjunit\n\n");
+       print $0
+    } else {
+       print $0
+    } 
+}' $testDir/makefile > $tmpmakefile
 
 #
 #     awk '{
@@ -71,10 +100,10 @@ do
 #             }
 #         }
 #     }' $testDir/makefile > $tmpmakefile
-#     diff $testDir/makefile $tmpmakefile
-#     status=$?
-#     if [ $status == 1 ]; then
-# 	echo "Would copy"
-# 	#cp $tmpmakefile $testDir/makefile
-#     fi	
+     diff $testDir/makefile $tmpmakefile
+     status=$?
+     if [ $status == 1 ]; then
+ 	#echo "Would copy"
+ 	cp $tmpmakefile $testDir/makefile
+     fi	
 done

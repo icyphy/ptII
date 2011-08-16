@@ -64,7 +64,7 @@ EXTRA_SRCS =	$(TCL_SRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
+MISC_FILES =  junit \
 	auto \
 	voice.au
 
