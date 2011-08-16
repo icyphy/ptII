@@ -43,12 +43,13 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  This is a marker that stores list of a sets of dependent ports. Each set
- implies a pure event produced in this actor is causally related to events
- coming into the ports in this set. The reason to have a list of sets is
+ implies that a pure event produced by this actor (a fireAt() call)
+ is causally related to events coming into the ports in this set.
+ The reason to have a list of sets is
  that an actor may produce different pure events which are causally related
  to a subset of the input ports.
  <p>
- The set of ports is very closely related to equivalence class. The current
+ The set of ports is very closely related to an equivalence class. The current
  understanding of this relationship (which may not be correct) is summarized
  as follows:
  <p>
@@ -57,7 +58,7 @@ import ptolemy.kernel.util.NamedObj;
  2. If two ports belong to the same finite equivalence class, they should also
  be in the same set.
  <p>
- From this summarization, it seems the causality marker is exactly the same as
+ From this summary, it seems the causality marker is exactly the same as
  equivalence class. In the future, this class may be integrated as a part of
  the CausalityInterface. This may require ports to be created for pure events.
 
@@ -80,24 +81,23 @@ public class CausalityMarker extends Attribute {
     public CausalityMarker(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        causalityMarker = new ArrayList<Set<Port>>();
+        _causalityMarkers = new ArrayList<Set<Port>>();
     }
 
     /** Add a set of ports into the list.
      *  @param dependentPorts set of ports to be added.
      */
     public void addDependentPortSet(Set<Port> dependentPorts) {
-        causalityMarker.add(dependentPorts);
+        _causalityMarkers.add(dependentPorts);
     }
 
-    /** Check if this port is contained in the list of sets of ports.
-     *  @param port to be checked.
-     *  @return true if this port is contained in causality marker. Else
-     *  return false.
-     *  @exception IllegalActionException
+    /** Check whether the specified port is contained in the list of sets of ports.
+     *  @param port The port to be checked.
+     *  @return True if this port is contained in causality marker, and false otherwise.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     public boolean containsPort(Port port) throws IllegalActionException {
-        for (Set portSet : causalityMarker) {
+        for (Set portSet : _causalityMarkers) {
             if (portSet.contains(port)) {
                 return true;
             }
@@ -107,5 +107,5 @@ public class CausalityMarker extends Attribute {
 
     /** The list of sets of ports in the causality marker.
      */
-    public List<Set<Port>> causalityMarker;
+    private List<Set<Port>> _causalityMarkers;
 }
