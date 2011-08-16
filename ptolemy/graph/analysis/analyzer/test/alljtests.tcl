@@ -16,9 +16,9 @@ if {[info command update] == ""} then {
 #Do an update so that we are sure tycho is done displaying
 update
 set savedir "[pwd]"
-if {"" != ""} {foreach i [list ] {puts $i; cd "$savedir"; if [ file exists $i ] { if [ catch {source $i} msg] {puts "Error: $msg"}}}}
+if {"" != ""} {foreach i [list ] {puts $i; cd "$savedir"; if [ file exists $i ] { if [ catch {source $i} msg] {puts "\nWARNING: Sourcing $i resulted in an error,\nso we are incrementing the error count.\nThe error was: $msg\n"; incr FAILED}}}}
 puts stderr dummy.tcl
 cd "$savedir"
-if [ file exists dummy.tcl ] { if [catch {source dummy.tcl} msg] {puts "Error: $msg"}}
+if [ file exists dummy.tcl ] { if [catch {source dummy.tcl} msg] {puts "\nWARNING: Sourcing dummy.tcl resulted in an error,\nso we are incrementing the error count\nThe error was $msg\n"; incr FAILED}}
 catch {doneTests}
 exit
