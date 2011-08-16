@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 /** 
  * This actor selects from the channels on the
@@ -99,6 +100,7 @@ public class Multiplexor extends Transformer implements Rollbackable {
         input.setMultiport(true);
         select = new TypedIOPort(this, "select", true, false);
         select.setTypeEquals(BaseType.INT);
+        new StringAttribute(select, "_cardinal").setExpression("SOUTH");
     }
 
     /**     
