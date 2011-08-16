@@ -41,6 +41,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  Produce an output token on each firing with a value that is
  the current time. The output is of type double.
+ By default, this uses the local notion of time, which may
+ lag behind the global notion of time if this actor is used
+ inside a modal model. Under the Continuous director, it is
+ essential to use local time, and not global time
+ because of the speculative executions during numerical
+ ODE solving.
 
  @author Jie Liu and Edward A. Lee
  @version $Id$
@@ -67,7 +73,7 @@ public class CurrentTime extends TimedSource {
 
         useLocalTime = new Parameter(this, "useLocalTime");
         useLocalTime.setTypeEquals(BaseType.BOOLEAN);
-        useLocalTime.setExpression("false");
+        useLocalTime.setExpression("true");
 
         // Override the clock to make it look a bit
         // different from the DiscreteClock and PoissonClock.
