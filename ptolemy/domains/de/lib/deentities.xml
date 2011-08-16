@@ -31,6 +31,9 @@
 <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
 </entity>
 
+<entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+</entity>
+
 <entity name="MostRecent" class="ptolemy.domains.de.lib.MostRecent">
 </entity>
 

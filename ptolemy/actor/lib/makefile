@@ -184,6 +184,7 @@ JSRCS = \
 	MathFunction.java \
 	MaxIndex.java \
 	Maximum.java \
+	MicrostepDelay.java \
 	Minimum.java \
 	MonitorValue.java \
 	MovingAverage.java \
@@ -278,6 +279,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DistributorIcon.xml \
 	GaussianIcon.xml \
 	IIRIcon.xml \
+	MicrostepDelayIcon.xml \
     MultiplexorIcon.xml \
 	TriangularIcon.xml \
 	PowerEstimate.xml \

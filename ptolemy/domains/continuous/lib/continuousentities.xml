@@ -54,6 +54,8 @@
              imports colt.xml which means that Continuous would require colt-->
   </entity>
   <entity name="Miscellaneous" class="ptolemy.moml.EntityLibrary">
+		<entity name="MicrostepDelay"
+				class="ptolemy.actor.lib.MicrostepDelay"/>
 		<entity name="ResettableTimer"
 				class="ptolemy.actor.lib.ResettableTimer"/>
 		<entity name="Merge"
