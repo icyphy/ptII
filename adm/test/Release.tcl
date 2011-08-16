@@ -103,14 +103,11 @@ ptolemy.copernicus.interpreted
 ptolemy.copernicus.kernel.fragment
 ptolemy.domains.gr.lib.experimental
 ptolemy.domains.gr.lib.quicktime
-ptolemy.domains.ptides.kernel.test.junit
 ptolemy.domains.wireless.lib.network
 ptolemy.domains.wireless.lib.network.mac
 ptolemy.domains.wireless.lib.tinyOS
-ptolemy.kernel.test.junit
 ptolemy.moml.jxta
-ptolemy.plot.servlet
-ptserver.test.junit}
+ptolemy.plot.servlet}
 
 set currentDirectory [pwd]
 test release-3.1 {Run svn status and look for files that should be checked in.  See ptII/adm/bin/svnignoreupdate for a script to fix this} {
