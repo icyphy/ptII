@@ -79,7 +79,15 @@
 
   <target name="build-project">
     <echo message="${ant.project.name}: ${ant.file}" />
-    <javac debug="true" debuglevel="${debuglevel}" destdir="." source="${source}" target="${target}" includeAntRuntime="false" fork="true" memoryinitialsize="256m" memorymaximumsize="256m">
+    <javac debug="true"
+	   debuglevel="${debuglevel}"
+	   destdir="."
+	   includeAntRuntime="false"
+	   fork="true"
+	   memoryinitialsize="256m"
+	   memorymaximumsize="1500m"
+	   source="${source}"
+	   target="${target}">
       <src path="${basedir}" />
       <patternset refid="ptII.excludes" />
       <classpath refid="ptII.classpath" />
