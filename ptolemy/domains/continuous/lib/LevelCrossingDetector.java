@@ -27,10 +27,6 @@
  */
 package ptolemy.domains.continuous.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -40,7 +36,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.continuous.kernel.ContinuousStepSizeController;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -126,12 +121,6 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         errorTolerance = new Parameter(this, "errorTolerance", new DoubleToken(
                 _errorTolerance));
         errorTolerance.setTypeEquals(BaseType.DOUBLE);
-        
-        // empty set of dependent ports, indicating that the output
-        // does not depend on the input.
-        Set<Port> dependentPorts = new HashSet<Port>();
-        CausalityMarker causalityMarker = new CausalityMarker(this, "causalityMarker");
-        causalityMarker.addDependentPortSet(dependentPorts);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -230,6 +219,15 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         // Set the type constraints.
         newObject.output.setTypeAtLeast(newObject.value);
         return newObject;
+    }
+
+    /** Declare that the output does not depend on the input in a firing.
+     *  @exception IllegalActionException If the causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        _declareDelayDependency(trigger, output, 0.0);
     }
 
     /** Detect whether the current input compared to the input
