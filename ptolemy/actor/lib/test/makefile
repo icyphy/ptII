@@ -151,7 +151,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
 # auto/FileWriter1.xml creates this file, so we remove it before running
 # the tests
 cleanFileWriter:
-	echo 'if [catch {file delete -force [file join [java::call System getProperty java.io.tmpdir] FileWriter1Output.txt]} errMsg ] {puts $$errMsg}; exit ' | $(JTCLSH)
+	echo 'if [catch {file delete -force [file join [java::call System getProperty java.io.tmpdir] "FileWriter1Output-[java::call System getProperty user.name].txt"]} errMsg ] {puts $$errMsg}; exit ' | $(JTCLSH)
 
 # auto/FileWriter1.xml creates this file, so we remove it before running
 # the tests
