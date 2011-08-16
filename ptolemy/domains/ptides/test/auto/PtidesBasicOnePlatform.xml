@@ -30,7 +30,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 220.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 41, 727, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 41, 726, 515}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 405]">
     </property>
@@ -41,7 +41,7 @@
     <entity name="PtidesPlatform" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 130.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 34, 710, 695}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 34, 709, 692}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[496, 582]">
         </property>
@@ -290,6 +290,8 @@
             </port>
         </entity>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <doc>Output the current time.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 70.0]">
             </property>

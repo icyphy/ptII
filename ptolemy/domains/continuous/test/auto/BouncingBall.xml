@@ -93,6 +93,8 @@ time.  Open the Ball Model to see how it is implemented.</text></svg></configure
     <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="microstep" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 240.0]">
         </property>
     </entity>

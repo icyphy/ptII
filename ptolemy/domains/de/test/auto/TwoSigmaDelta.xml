@@ -454,6 +454,8 @@
             </property>
         </port>
         <entity name="Current Time" class="ptolemy.actor.lib.CurrentTime">
+            <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0,125.87577819824219}">
             </property>
         </entity>

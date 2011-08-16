@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PeriodicSamplerIntegrator" class="ptolemy.actor.TypedCompositeActor">
+<entity name="PeriodicSamplerIntegrator2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 307, 770, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={462, 347, 770, 460}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[557, 350]">
     </property>
@@ -25,7 +25,9 @@
     <entity name="PeriodicSampler" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 110.0]">
+        <property name="microstep" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 110.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -64,33 +66,29 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 185.0]">
         </property>
     </entity>
-    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 110.0]">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-    </entity>
+        <vertex name="vertex1" value="[205.0, 110.0]">
+        </vertex>
+    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[380.0, 185.0]">
+        <vertex name="vertex1" value="[345.0, 185.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="Integrator.derivative" relation="relation2"/>
-    <link port="Integrator.state" relation="relation3"/>
+    <link port="Integrator.state" relation="relation5"/>
     <link port="Integrator.initialState" relation="relation"/>
-    <link port="PeriodicSampler.input" relation="relation3"/>
-    <link port="PeriodicSampler.output" relation="relation5"/>
+    <link port="PeriodicSampler.input" relation="relation5"/>
+    <link port="PeriodicSampler.output" relation="relation6"/>
     <link port="Const.output" relation="relation"/>
     <link port="Const.trigger" relation="relation6"/>
     <link port="CurrentTime.output" relation="relation2"/>
     <link port="NonStrictTest.input" relation="relation6"/>
-    <link port="MicrostepDelay.input" relation="relation5"/>
-    <link port="MicrostepDelay.output" relation="relation6"/>
 </entity>
