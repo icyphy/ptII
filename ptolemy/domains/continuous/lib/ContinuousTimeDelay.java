@@ -132,7 +132,8 @@ public class ContinuousTimeDelay extends Transformer {
 
         output.setTypeSameAs(input);
 
-        // empty set of dependent ports.
+        // Empty set of dependent ports.
+        // This declaration is done this way for the benefit of Ptides.
         Set<Port> dependentPorts = new HashSet<Port>();
         _causalityMarker = new CausalityMarker(this, "causalityMarker");
         _causalityMarker.addDependentPortSet(dependentPorts);
