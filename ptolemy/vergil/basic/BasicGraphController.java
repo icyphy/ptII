@@ -128,6 +128,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                     }
                 }
             };
+            request.setPersistent(false);
             ((NamedObj) culprit).requestChange(request);
         }
     }
