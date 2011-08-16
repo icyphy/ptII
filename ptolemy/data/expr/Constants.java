@@ -197,6 +197,8 @@ public class Constants {
             // Note that TMPDIR almost always ends with a \ or /
             // so usually we refer to it as ${TMPDIR}.
             _putProperty("TMPDIR", "java.io.tmpdir");
+
+            _putProperty("USERNAME", "user.name");
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

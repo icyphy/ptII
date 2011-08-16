@@ -38,7 +38,7 @@
         </property>
     </entity>
     <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
-        <property name="filename" class="ptolemy.actor.parameters.FilePortParameter" value="$TMPDIR/FileWriter1Output.txt">
+        <property name="filename" class="ptolemy.actor.parameters.FilePortParameter" value="$TMPDIR/FileWriter1Output-$USERNAME.txt">
         </property>
         <doc>Write out tokens to a file or stdout</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 185.0">

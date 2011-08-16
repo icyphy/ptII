@@ -110,6 +110,11 @@ import ptolemy.util.FileUtilities;
  <td>The temporary directory</td>
  <td><code>java.io.tmpdir</code></td>
  </tr>
+ <tr>
+ <td><code>$USERNAME</code></td>
+ <td>The user's account name</td>
+ <td><code>user.name</code></td>
+ </tr>
  </table>
  <p>The above properties are normally set when a Ptolemy II application starts.</p>
  <p>
