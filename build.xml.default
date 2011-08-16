@@ -242,7 +242,14 @@
   <target name="findbugs" depends="build, initReports"
 	  description="Run FindBugs (http://findbugs.sourceforge.net/)">
     <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
-    <findbugs home="${findbugs.home}" output="xml" outputFile="${ptII.reports}/ptserver-fb.xml" jvmargs="-Xms256m -Xmx512m" includefilter="${basedir}/ptserver/findbugs-includes.xml" excludefilter="${basedir}/ptserver/findbugs-excludes.xml">
+    <findbugs 
+       excludefilter="${basedir}/doc/findbugs-excludes.xml"
+       home="${findbugs.home}"
+       includefilter="${basedir}/doc/findbugs-exclude.xml"
+       jvmargs="-Xms256m -Xmx1500m"
+       output="xml"
+       outputFile="${ptII.reports}/ptII-findbugs.xml"
+       >
       <auxclasspath refid="ptII.classpath" />
       <sourcePath path="${basedir}" />
       <class location="ptserver/actor" />
