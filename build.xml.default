@@ -250,7 +250,7 @@
   </target>
 
   <target name="javadoc"
-	  depends="build, javadoc.actor"
+	  depends="build"
 	  description="Generate javadoc."> 
              <!-- FIXME: can't seem to get the doclet working under Linux -->
 	     <!-- Unfortunately, <fileset> results in a command line that is too long.
@@ -267,6 +267,7 @@
   </target>
 
   <target name="javadoc.actor"
+	  depends="javadoc"
 	  description="Generate actor documentation">
     <java classname="ptolemy.moml.filter.ActorIndex"
 	  fork="true"
