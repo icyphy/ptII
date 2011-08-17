@@ -1486,6 +1486,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/demo \
+	$(REMOTE1PTIIDIST)/ptolemy/domains \
 	$(REMOTE1PTIIDIST)/ptolemy/demo \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/database \
 	$(REMOTE1PTIIDIST)/ptdb/common/dto \
