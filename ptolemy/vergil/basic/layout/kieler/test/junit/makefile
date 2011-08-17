@@ -37,7 +37,7 @@ ROOT =		../../../../../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
 # KIELER_JAR is set in $PTII/mk/ptII.mk to $(PTII)/lib/kieler.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JAR)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(KIELER_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(KIELER_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

@@ -2576,7 +2576,7 @@ fi
 PTJUNIT_DIR=
 
 # Used in many test/makefiles
-JUNIT_JAR=
+JUNITS_JAR=
 
 # We only need to look for JUnit if this directory is present
 # and if Jacl is presnt
@@ -2595,18 +2595,26 @@ else
 
     if test -f "$JUNIT_JAR"; then
 	PT_MSG_RESULT([$PTJUNIT_JAR])
-	PTJUNIT_DIR=junit
-        # PTJUNIT_PACKAGES is used in ptII/doc/makefile
-	PTJUNIT_PACKAGES=ptolemy.util.test.junit
+	AC_MSG_CHECKING([for the JUnitParams, needed by our JUnit tests])
+	AC_ARG_WITH(junitparams, [  --with-junitparams=JARFILE       use JUnitParams Testing Framework from JARFILE,
+                          defaults to \$PTII/lib/JUnitParams-0.3.0.jar],
+	JUNITPARAMS_JAR=$withval,
+	JUNITPARAMS_JAR=$PTII/lib/JUnitParams-0.3.0.jar)
+        if test -f "$JUNITPARAMS_JAR"; then
+	    PT_MSG_RESULT([$PTJUNITPARAMS_JAR])
+            JUNIT_JARS="${JUNIT_JAR}${CLASSPATHSEPARATOR}${JUNITPARAMS_JAR}"
+	    PTJUNIT_DIR=junit
+            # PTJUNIT_PACKAGES is used in ptII/doc/makefile
+	    PTJUNIT_PACKAGES=ptolemy.util.test.junit
+        fi
     fi	
 
     if test "$PTJUNIT_DIR" = ""; then
-        AC_MSG_WARN([Failed to find junit-4.8.2.jar
-    as $PTJUNIT_JAR.
+        AC_MSG_WARN([Failed to find junit-4.8.2.jar and/or JUnitParams-0.3.0.jar
     Perhaps the JUnit Java Unit Testing Framework is not installed?
     You need not download JUnit unless you want to run the unit tests.])
 	# Note that we don't substitute in the ${PTII} here
-	PTJUNIT_JAR='${PTII}/lib/junit-4.8.2.jar'
+	JUNIT_JARS='${PTII}/lib/junit-4.8.2.jar${CLASSPATHSEPARATOR}${PTII}/lib/JUnitParams-0.3.0.jar'
     fi
 fi
 
@@ -2615,6 +2623,7 @@ if test -z "$PTJUNIT_DIR"; then
    updateExcludes "**/junit/"
 else
    updateClasspath "$JUNIT_JAR"
+   updateClasspath "$JUNITPARAMS_JAR"
 fi 
 
 #--------------------------------------------------------------------
@@ -5311,7 +5320,7 @@ AC_SUBST(JODE_CLASSES)
 AC_SUBST(JOGL_DIR)
 
 # Used in many test/makefiles
-AC_SUBST(JUNIT_JAR)
+AC_SUBST(JUNIT_JARS)
 
 # Jython home directory that contains jython.jar, see http://www.jython.org
 AC_SUBST(JYTHON_DIR)

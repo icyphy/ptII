@@ -36,7 +36,7 @@ import ptolemy.util.test.junit.JUnitTclTestBase;
 /**
  * Run the auto/ and Tcl tests under JUnit.
  * <pre>
- * (cd $PTII/ptolemy/actor/lib/python/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.actor.lib.python.test.junit.JUnitTclTest)
+ * (cd $PTII/ptolemy/actor/lib/python/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.actor.lib.python.test.junit.JUnitTclTest)
  * </pre></p>
  *
  * <p> A copy of this file appears in each test/junit subdirectory

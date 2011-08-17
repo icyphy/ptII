@@ -36,7 +36,7 @@ ME =		ptserver/tests/junit
 ROOT =		../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)$(CLASSPATHSEPARATOR)$(JUNIT_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

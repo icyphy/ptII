@@ -59,13 +59,13 @@ import tcl.lang.Interp;
  * To run one test file (Port.tcl):
  * <pre>
  * cd $PTII
- * java -DfileName=Port.tcl -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.kernel.test.junit.JUnitTclTest
+ * java -DfileName=Port.tcl -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.kernel.test.junit.JUnitTclTest
  * </pre></p>
  *
  * <p>To run all the .tcl files in the directory above this directory
  * <pre>
  * cd $PTII
- * java -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.kernel.test.junit.JUnitTclTest
+ * java -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.kernel.test.junit.JUnitTclTest
  * </pre></p>
  *
  * @author Christopher Brooks

@@ -720,7 +720,7 @@ JMF_JARS
 JNA_JAR
 JODE_CLASSES
 JOGL_DIR
-JUNIT_JAR
+JUNIT_JARS
 JYTHON_DIR
 JXTA_DIR
 KIELER_JAR
@@ -1521,6 +1521,8 @@ Optional Packages:
                            used for running the test scripts
   --with-junit=JARFILE       use JUnit Testing Framework from JARFILE,
                           defaults to \$PTII/lib/junit-4.8.2.jar
+  --with-junitparams=JARFILE       use JUnitParams Testing Framework from JARFILE,
+                          defaults to \$PTII/lib/JUnitParams-0.3.0.jar
   --with-jxl=JARFILE       use Java Excel API from JARFILE,
                           defaults to \$PTII/ptolemy/actor/lib/excel/jxl.jar
   --with-jython=DIR       use jython.jar from DIR,
@@ -8393,7 +8395,7 @@ fi
 PTJUNIT_DIR=
 
 # Used in many test/makefiles
-JUNIT_JAR=
+JUNITS_JAR=
 
 # We only need to look for JUnit if this directory is present
 # and if Jacl is presnt
@@ -8422,22 +8424,36 @@ fi
 	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJUNIT_JAR" >&5
 echo "${ECHO_T}$PTJUNIT_JAR" >&6; }; fi
-	PTJUNIT_DIR=junit
-        # PTJUNIT_PACKAGES is used in ptII/doc/makefile
-	PTJUNIT_PACKAGES=ptolemy.util.test.junit
+	{ echo "$as_me:$LINENO: checking for the JUnitParams, needed by our JUnit tests" >&5
+echo $ECHO_N "checking for the JUnitParams, needed by our JUnit tests... $ECHO_C" >&6; }
+
+# Check whether --with-junitparams was given.
+if test "${with_junitparams+set}" = set; then
+  withval=$with_junitparams; JUNITPARAMS_JAR=$withval
+else
+  JUNITPARAMS_JAR=$PTII/lib/JUnitParams-0.3.0.jar
+fi
+
+        if test -f "$JUNITPARAMS_JAR"; then
+	    if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJUNITPARAMS_JAR" >&5
+echo "${ECHO_T}$PTJUNITPARAMS_JAR" >&6; }; fi
+            JUNIT_JARS="${JUNIT_JAR}${CLASSPATHSEPARATOR}${JUNITPARAMS_JAR}"
+	    PTJUNIT_DIR=junit
+            # PTJUNIT_PACKAGES is used in ptII/doc/makefile
+	    PTJUNIT_PACKAGES=ptolemy.util.test.junit
+        fi
     fi
 
     if test "$PTJUNIT_DIR" = ""; then
-        { echo "$as_me:$LINENO: WARNING: Failed to find junit-4.8.2.jar
-    as $PTJUNIT_JAR.
+        { echo "$as_me:$LINENO: WARNING: Failed to find junit-4.8.2.jar and/or JUnitParams-0.3.0.jar
     Perhaps the JUnit Java Unit Testing Framework is not installed?
     You need not download JUnit unless you want to run the unit tests." >&5
-echo "$as_me: WARNING: Failed to find junit-4.8.2.jar
-    as $PTJUNIT_JAR.
+echo "$as_me: WARNING: Failed to find junit-4.8.2.jar and/or JUnitParams-0.3.0.jar
     Perhaps the JUnit Java Unit Testing Framework is not installed?
     You need not download JUnit unless you want to run the unit tests." >&2;}
 	# Note that we don't substitute in the ${PTII} here
-	PTJUNIT_JAR='${PTII}/lib/junit-4.8.2.jar'
+	JUNIT_JARS='${PTII}/lib/junit-4.8.2.jar${CLASSPATHSEPARATOR}${PTII}/lib/JUnitParams-0.3.0.jar'
     fi
 fi
 
@@ -8446,6 +8462,7 @@ if test -z "$PTJUNIT_DIR"; then
    updateExcludes "**/junit/"
 else
    updateClasspath "$JUNIT_JAR"
+   updateClasspath "$JUNITPARAMS_JAR"
 fi
 
 #--------------------------------------------------------------------
@@ -14025,7 +14042,7 @@ JMF_JARS!$JMF_JARS$ac_delim
 JNA_JAR!$JNA_JAR$ac_delim
 JODE_CLASSES!$JODE_CLASSES$ac_delim
 JOGL_DIR!$JOGL_DIR$ac_delim
-JUNIT_JAR!$JUNIT_JAR$ac_delim
+JUNIT_JARS!$JUNIT_JARS$ac_delim
 JYTHON_DIR!$JYTHON_DIR$ac_delim
 JXTA_DIR!$JXTA_DIR$ac_delim
 KIELER_JAR!$KIELER_JAR$ac_delim

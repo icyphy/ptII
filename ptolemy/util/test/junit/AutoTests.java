@@ -128,6 +128,7 @@ public class AutoTests {
             return;
         }
         System.out.println("----------------- testing " + fullPath);
+        System.out.flush();
         _applicationConstructor.newInstance(fullPath);
     }
 
