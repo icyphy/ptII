@@ -237,7 +237,7 @@ public class PeriodicSampler extends Transformer {
                     output.sendClear(i);
                 }
             } else {
-                // In delay mode, but microstep does not match.
+                // Microstep does not match.
                 for (int i = 0; i < outputWidth; i++) {
                     output.sendClear(i);
                 }
@@ -294,12 +294,12 @@ public class PeriodicSampler extends Transformer {
         Director director = getDirector();
         Time currentTime = director.getModelTime();
         int microstep = ((SuperdenseTimeDirector)director).getIndex();
+        int inputWidth = input.getWidth();
         if (currentTime.compareTo(_nextSamplingTime) == 0) {
             // Current time matches. Check microstep.
             if (_microstep == 0) {
                 // In delay mode. Read the input if the microstep is 0.
                 if (microstep == 0) {
-                    int inputWidth = input.getWidth();
                     int outputWidth = output.getWidth();
                     for (int i = 0; i < outputWidth; i++) {
                         if (i < inputWidth && input.hasToken(i)) {
@@ -317,11 +317,19 @@ public class PeriodicSampler extends Transformer {
                         input.get(i);
                     }
                     director.fireAt(this, currentTime, 1);
-                } else if (microstep == 1) {
-                    double samplePeriodValue = ((DoubleToken) samplePeriod
-                            .getToken()).doubleValue();
-                    _nextSamplingTime = currentTime.add(samplePeriodValue);
-                    director.fireAt(this, _nextSamplingTime, 0);
+                } else {
+                    if (microstep == 1) {
+                        double samplePeriodValue = ((DoubleToken) samplePeriod
+                                .getToken()).doubleValue();
+                        _nextSamplingTime = currentTime.add(samplePeriodValue);
+                        director.fireAt(this, _nextSamplingTime, 0);
+                    }
+                    // Consume the inputs.
+                    for (int i = 0; i < inputWidth; i++) {
+                        if (input.hasToken(i)) {
+                            input.get(i);
+                        }
+                    }
                 }
             } else {
                 // Not in delay mode. If the microstep matches,
@@ -331,6 +339,21 @@ public class PeriodicSampler extends Transformer {
                             .getToken()).doubleValue();
                     _nextSamplingTime = currentTime.add(samplePeriodValue);
                     director.fireAt(this, _nextSamplingTime, _microstep);
+                } else {
+                    // Consume the inputs.
+                    for (int i = 0; i < inputWidth; i++) {
+                        if (input.hasToken(i)) {
+                            input.get(i);
+                        }
+                    }
+                }
+            }
+        } else {
+            // Time does not match.
+            // Consume the inputs.
+            for (int i = 0; i < inputWidth; i++) {
+                if (input.hasToken(i)) {
+                    input.get(i);
                 }
             }
         }
