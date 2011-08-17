@@ -145,8 +145,12 @@
 
   <!-- tests that we want to exclude because they don't work -->
   <patternset id="test.excludes">
-    <exclude name="lbnl.test.junit.JUnitTclTest" />
-    <exclude name="ptolemy.actor.lib.javasound.test.junit.JUnitTclTest" />
+    <exclude name="**/HTMLAboutJUnitTest.*" />
+    <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
+    <exclude name="**/KielerJUnitTest.*" />
+    <exclude name="**/lbnl/actor/lib/test/junit/JUnitTclTest.*" />
+
+
   </patternset>
 
   <!-- Ant targets. Alphabetize and add a description, please.  -->
@@ -344,7 +348,18 @@
     </cobertura-instrument>
 
 
+    <!-- About forkmode,
+	 http://cobertura.sourceforge.net/anttaskreference.html says:
+
+	 "For this same reason, if you're using ant 1.6.2 or higher
+	 then you might want to set forkmode="once" This will cause
+	 only one JVM to be started for all your JUnit tests, and will
+	 reduce the overhead of Cobertura reading/writing the coverage
+	 data file each time a JVM starts/stops."
+      -->
+
     <junit fork="yes"
+	   forkmode="perBatch"
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
 	   showoutput="no"
@@ -360,6 +375,7 @@
 		 dir="${basedir}">
 	  <include name="**/junit/*.java" />
 	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.excludes" />
 	</fileset>
       </batchtest>
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
