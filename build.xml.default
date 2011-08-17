@@ -356,11 +356,28 @@
 	 only one JVM to be started for all your JUnit tests, and will
 	 reduce the overhead of Cobertura reading/writing the coverage
 	 data file each time a JVM starts/stops."
+
+	 http://ant.apache.org/manual/Tasks/junit.html says:
+	 "Controls how many Java Virtual Machines get created if you want to
+	 fork some tests. Possible values are "perTest" (the default),
+	 "perBatch" and "once". "once" creates only a single Java VM for all
+	 tests while "perTest" creates a new VM for each TestCase
+	 class. "perBatch" creates a VM for each nested <batchtest> and one
+	 collecting all nested <test>s. Note that only tests with the same
+	 settings of filtertrace, haltonerror, haltonfailure, errorproperty and
+	 failureproperty can share a VM, so even if you set forkmode to "once",
+	 Ant may have to create more than a single Java VM. This attribute is
+	 ignored for tests that don't get forked into a new Java VM. since Ant
+	 1.6.2"
+
+	 However, we have to use "perTest" because javachdir needs to be
+	 run for each test so that we run the test from the test directory.
       -->
 
     <junit fork="yes"
-	   forkmode="perBatch"
+	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
+	   maxmemory="1500m"
 	   printsummary="withOutAndErr"
 	   showoutput="no"
 	   timeout="300000">
