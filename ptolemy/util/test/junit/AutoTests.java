@@ -101,7 +101,7 @@ public class AutoTests {
             }
             return data;
         }
-        return new Object[0][1];
+        return new Object[][] { { THERE_ARE_NO_AUTO_TESTS } };
      }
  
     /** Find the ptolemy.moml.MoMLSimpleApplication class and its constructor that
@@ -114,11 +114,19 @@ public class AutoTests {
     }
 
     /** Execute a model.
+     *  @param fullPath The full path to the model file to be executed.
+     *  If the fullPath ends with the value of the 
+     *  {@link #THERE_ARE_NO_AUTO_TESTS}, then the method returns
+     *  immediately.
      *  @exception Throwable If thrown while executing the model.
      */
     @Test
     @Parameters
     public void RunModel(String fullPath) throws Throwable {
+        if (fullPath.endsWith(THERE_ARE_NO_AUTO_TESTS)) {
+            System.out.println("No auto/*.xml tests in " + System.getProperty("user.dir"));
+            return;
+        }
         System.out.println("----------------- testing " + fullPath);
         _applicationConstructor.newInstance(fullPath);
     }
@@ -136,4 +144,9 @@ public class AutoTests {
 
     /** The path to the .xml or .moml file that contains the model. */
     protected String _modelFile;
+
+    /** A special string that is passed when there are no known failed tests.
+     *  This is necessary to avoid an exception in the JUnitParameters.
+     */
+    protected final static String THERE_ARE_NO_AUTO_TESTS = "ThereAreNoAutoTests";
 }

@@ -101,7 +101,7 @@ public class AutoKnownFailedTests {
             }
             return data;
         }
-        return new Object[0][1];
+        return new Object[][] { { THERE_ARE_NO_KNOWN_FAILED_TESTS } };
      }
  
     /** Find the ptolemy.moml.MoMLSimpleApplication class and its constructor that
@@ -114,12 +114,20 @@ public class AutoKnownFailedTests {
     }
 
     /** Execute a model.
+     *  @param fullPath The full path to the model file to be executed.
+     *  If the fullPath ends with the value of the 
+     *  {@link #THERE_ARE_NO_KNOWN_FAILED_TESTS}, then the method returns
+     *  immediately.
      *  @exception Throwable If thrown while executing the model.
      */
     @Test
     @Parameters
     public void RunModel(String fullPath) throws Throwable {
-       System.out.println("----------------- testing (KnownFailure) " + fullPath);
+        if (fullPath.endsWith(THERE_ARE_NO_KNOWN_FAILED_TESTS)) {
+            System.out.println("No auto/knownFailedTests/*.xml tests in " + System.getProperty("user.dir"));
+            return;
+        }
+        System.out.println("----------------- testing (KnownFailure) " + fullPath);
         try {
             _applicationConstructor.newInstance(fullPath);
         } catch (Throwable throwable) {
@@ -139,6 +147,8 @@ public class AutoKnownFailedTests {
     /** The MoMLSimpleApplication(String) constructor. */
     protected static Constructor _applicationConstructor;
 
-    /** The path to the .xml or .moml file that contains the model. */
-    protected String _modelFile;
+    /** A special string that is passed when there are no known failed tests.
+     *  This is necessary to avoid an exception in the JUnitParameters.
+     */
+    protected final static String THERE_ARE_NO_KNOWN_FAILED_TESTS = "ThereAreNoKnowFailedTests";
 }

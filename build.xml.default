@@ -113,7 +113,6 @@
     <exclude name="ptolemy/actor/lib/opencv/" />
     <exclude name="ptolemy/actor/lib/reactable/" />
     <exclude name="ptolemy/actor/lib/x10/" />
-    <exclude name="ptolemy/actor/lib/xslt/" />
     <exclude name="ptolemy/apps/" />
     <exclude name="ptolemy/backtrack/eclipse/" />
     <exclude name="ptolemy/backtrack/test/" />

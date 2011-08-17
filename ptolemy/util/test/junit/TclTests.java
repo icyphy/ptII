@@ -93,8 +93,8 @@ public class TclTests {
                     public boolean accept(File directory, String name) {
                         String fileName = name.toLowerCase();
                         if (fileName.endsWith(".tcl")) {
-                            if (!fileName.equals("alljtests.tcl") 
-                                    && !fileName.equals("testDefs.tcl")) {
+                            if (!fileName.endsWith("alljtests.tcl") 
+                                    && !fileName.endsWith("testdefs.tcl")) {
                                 return true;
                             }
                         }
@@ -102,12 +102,16 @@ public class TclTests {
                     }
                 });
 
-        int i = 0;
-        Object[][] data = new Object[tclFiles.length][1];
-        for(String tclFile: tclFiles) {
-            data[i++][0] = new File(tclFile).getCanonicalPath();
+        if (tclFiles.length > 0) {
+            int i = 0;
+            Object[][] data = new Object[tclFiles.length][1];
+            for(String tclFile: tclFiles) {
+                data[i++][0] = new File(tclFile).getCanonicalPath();
+            }
+            return data;
+        } else {
+            return new Object[][] { { THERE_ARE_NO_TCL_TESTS } };
         }
-        return data;
      }
  
     /** Find the tcl.lang.Interp class and its interp(String) method.
@@ -123,10 +127,18 @@ public class TclTests {
 
     /** Run a tclFile.
      *  @exception Throwable If thrown while executing the tclFile.
+     *  @param fullPath The full path to the model file to be executed.
+     *  If the fullPath ends with the value of the 
+     *  {@link #THERE_ARE_NO_TCL_TESTS}, then the method returns
+     *  immediately.
      */
     @Test
     @Parameters
     public void RunTclFile(String tclFile) throws Throwable {
+        if (tclFile.endsWith(THERE_ARE_NO_TCL_TESTS)) {
+            System.out.println("No tcl tests in " + System.getProperty("user.dir"));
+            return;
+        }
         System.out.println(tclFile);
         _evalFileMethod.invoke(_interp, new Object [] {tclFile});
     }
@@ -145,6 +157,8 @@ public class TclTests {
 
     private static Method _evalFileMethod;
 
-    /** The path to the .xml or .moml file that contains the tclFile. */
-    private String _tclFile;
+    /** A special string that is passed when there are no tcl tests.
+     *  This is necessary to avoid an exception in the JUnitParameters.
+     */
+    protected final static String THERE_ARE_NO_TCL_TESTS = "ThereAreNoTclTests";
 }
