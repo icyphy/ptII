@@ -54,8 +54,8 @@ test domains.1.1 {} {
     # Sometimes it is port, sometimes port2
     regsub -all {port[^.]*.} $errMsg {portXXX.} r1
     list $r1
-} {{ptolemy.kernel.util.IllegalActionException: Queue size exceeds the maximum capacity in portXXX.PNSDFtest1.Topologia SDF.portXXX. Perhaps you have an unbounded queue?
-  in .PNSDFtest1.PN Director}}
+} {{ptolemy.actor.NoRoomException: Queue is at capacity of 1. Cannot put a token.
+  in .PNSDFtest1.Topologia SDF.AddSubtract.plus}}
 
 #############################################
 ####
@@ -65,7 +65,8 @@ test domains-2.1 {} {
 	catch {createAndExecute "auto/knownFailedTests/PNSRTimedtest.xml"} errMsg
     } out
     list $errMsg
-} {{ptolemy.kernel.util.InternalErrorException: Subtracting a positive infinity from a positive infinity yields a NaN.}}
+} {{ptolemy.kernel.util.IllegalActionException: Queue size 131072 exceeds the maximum capacity in port .PNSRTimedtest.Topologia SR.port. Perhaps you have an unbounded queue?
+  in .PNSRTimedtest.Timed PN}}
 
 #############################################
 ####
@@ -73,8 +74,9 @@ test domains-2.1 {} {
 test domains-3.1 {} {
      catch {createAndExecute "auto/knownFailedTests/PNSRtest3.xml"} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Queue size exceeds the maximum capacity in port .PNSRtest3.AddSubtract.plus. Perhaps you have an unbounded queue?
+} {{ptolemy.kernel.util.IllegalActionException: Queue size 131072 exceeds the maximum capacity in port .PNSRtest3.AddSubtract.plus. Perhaps you have an unbounded queue?
   in .PNSRtest3.PN Director}}
+
 
 #############################################
 ####
@@ -82,8 +84,9 @@ test domains-3.1 {} {
 test domains-4.1 {} {
      catch {createAndExecute "auto/knownFailedTests/SDFSRtest2.xml"} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Actor is not ready to fire.
+} {{ptolemy.kernel.util.IllegalActionException: Actor is not ready to fire.  Perhaps SampleDelay.prefire() returned false? Try debugging the actor by selecting "Listen to Actor".  Also, for SDF check moml for tokenConsumptionRate on input.
   in .SDFSRtest2.SDF Director and .SDFSRtest2.SampleDelay}}
+
 
 #############################################
 ####
@@ -100,5 +103,6 @@ test domains-5.1 {} {
 test domains-6.1 {} {
      catch {createAndExecute "auto/knownFailedTests/SRSDFtest2.xml"} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
+} {{ptolemy.kernel.util.IllegalActionException: The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
   in .SRSDFtest2.NonStrictTest}}
+
