@@ -1,4 +1,4 @@
-/* Run the Ptolemy model tests in the auto/knownFailedTests directory using JUnit.
+/* Run the Ptolemy model tests in the auto/knownFailedTests/ directory using JUnit.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -30,28 +30,38 @@ package ptolemy.util.test.junit;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 import java.lang.reflect.Constructor;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
+import static junitparams.JUnitParamsRunner.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+
 
 ///////////////////////////////////////////////////////////////////
 //// AutoKnownFailedTests
 /**
- * Run the Ptolemy model tests in the auto/knownFailedTests directory using JUnit.
+ * Run the Ptolemy model tests in the auto/knownFailedTest/ directory using JUnit.
  *
- * <p>This test must be run from the directory that contains the auto/ directory,
+ * <p>This test must be run from the directory that contains the auto/knownFailedTests/ directory,
  * for example:</p>
  * <pre>
- * (cd ~/ptII/ptolemy/actor/lib/net/test; java -classpath ${PTII}:${PTII}/lib/junit-4.8.2.jar org.junit.runner.JUnitCore ptolemy.util.test.junit.AutoKnownFailedTests)
+ * (cd ~/ptII/ptolemy/actor/lib/net/test; java -classpath ${PTII}:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.util.test.junit.AutoKnownFailedTests)
  * </pre>
+ *
+ * <p>This test uses JUnitParams from
+ * <a href="http://code.google.com/p/junitparams/#in_browser">http://code.google.com/p/junitparams/</a>,
+ * which is released under <a href="http://www.apache.org/licenses/LICENSE-2.0#in_browser">Apache License 2.0</a>.
+ * </p>
  *
  * @author Christopher Brooks
  * @version $Id$
@@ -59,27 +69,17 @@ import org.junit.runners.Parameterized.Parameters;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-@RunWith(value = Parameterized.class)
+@RunWith(JUnitParamsRunner.class)
 public class AutoKnownFailedTests {
  
-    /** Create an auto test for a model.
-     *  @param model the file path to the model's .xml file.
-     */
-    public AutoKnownFailedTests(String model) {
-        _modelFile = model;
-    }
- 
-    /** Return a List of two dimensional Object Arrays
-     *  where each element of the List is an ObjectArray
-     *  with one element that contains a String that is
-     *  the path of the model in the auto/ directory to be executed
+    /** Return a two dimensional array of arrays of strings
+     *  that name the model to be executed.
      *  If auto/ does not exist, or does not contain files
      *  that end with .xml or .moml, return a list with one
      *  element that is empty.
-     *  @return The List of model names in auto/
+     *  @return The array of arrays of models in auto/knownFailedTests/
      */  
-    @Parameters
-    public static Collection<Object[]> data() {
+    public Object[] parametersForRunModel() throws IOException {
         File auto = new File("auto/knownFailedTests/");
         if (auto.isDirectory()) {
             String [] modelFiles = auto.list(
@@ -97,11 +97,11 @@ public class AutoKnownFailedTests {
             int i = 0;
             Object[][] data = new Object[modelFiles.length][1];
             for(String modelFile: modelFiles) {
-                data[i++][0] = modelFile;
+                data[i++][0] = new File("auto/knownFailedTests/" + modelFile).getCanonicalPath();
             }
-            return Arrays.asList(data);
+            return data;
         }
-        return Arrays.asList(new Object[0][0]);
+        return new Object[0][1];
      }
  
     /** Find the ptolemy.moml.MoMLSimpleApplication class and its constructor that
@@ -111,18 +111,17 @@ public class AutoKnownFailedTests {
     @Before public void setUp() throws Throwable {
         _applicationClass = Class.forName("ptolemy.moml.MoMLSimpleApplication");
         _applicationConstructor = _applicationClass.getConstructor(String.class);
-
     }
 
     /** Execute a model.
      *  @exception Throwable If thrown while executing the model.
      */
     @Test
-    public void testModel() throws Throwable {
-        System.out.println("----------------- testing (KnownFailure) auto/knownFailedTests/"
-                + _modelFile);
+    @Parameters
+    public void RunModel(String fullPath) throws Throwable {
+       System.out.println("----------------- testing (KnownFailure) " + fullPath);
         try {
-            _applicationConstructor.newInstance("auto/knownFailedTests/" + _modelFile);
+            _applicationConstructor.newInstance(fullPath);
         } catch (Throwable throwable) {
             System.out.println("Known Failure: " + throwable);
             throwable.printStackTrace();

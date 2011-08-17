@@ -287,14 +287,16 @@
 
   <target name="test.auto" depends="build, initReports"
 	  description="Run the auto tests in one directory, defaults to ptolemy.actor.lib.test.junit.JUnitTclTest.  To modify, use -DtestName= and -Djunit.formatter=xml|brief|plain|failure">
+    <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
+
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
-	   showoutput="yes"
+	   showoutput="on"
 	   timeout="300000">
       <classpath>
 	<path refid="ptII.classpath" />
-	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
       </classpath>
       <formatter type="${junit.formatter}" usefile="false"/>
       <test  name="${testName}" />
