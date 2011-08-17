@@ -50,7 +50,7 @@ if {[info procs jdkCapture] == "" } then {
 #####
 test ModularCodeGenTypedCompositeActor-1.1 {Run a Modular Code Generator model, verify that it creates the .class files} {
     if {[catch {file delete -force $env(HOME)/cg} errMsg]} {
-	puts "Warning: failed to delete $env(HOME/cg): $errMsg"
+	puts "Warning: failed to delete $env(HOME)/cg: $errMsg"
     }
     set r1 [list \
 		[file exists $env(HOME)/cg/ModularCodeGenPubSub3_A1.class] \
