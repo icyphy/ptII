@@ -113,7 +113,6 @@
     <exclude name="ptolemy/actor/lib/reactable/" />
     <exclude name="ptolemy/actor/lib/x10/" />
     <exclude name="ptolemy/actor/lib/xslt/" />
-    <exclude name="ptolemy/actor/ptalon/" />
     <exclude name="ptolemy/apps/" />
     <exclude name="ptolemy/backtrack/eclipse/" />
     <exclude name="ptolemy/backtrack/test/" />
@@ -136,6 +135,7 @@
     <exclude name="ptolemy/plot/servlet/" />
     <exclude name="ptolemy/vergil/basic/itextpdf/" />
     <exclude name="reports/" />
+    <exclude name="signed/" />
     <exclude name="src/" />
     <exclude name="target/" />
     <exclude name="tmp/" />
@@ -236,7 +236,7 @@
   </target>
 
   <target name="javadoc"
-	  depends="build"
+	  depends="build, javadoc.actor"
 	  description="Generate javadoc."> 
              <!-- FIXME: can't seem to get the doclet working under Linux -->
 	     <!-- Unfortunately, <fileset> results in a command line that is too long.
@@ -250,6 +250,17 @@
 	     sourcepath="${basedir}">
       <classpath refid="ptII.classpath" />
     </javadoc>
+  </target>
+
+  <target name="javadoc.actor"
+	  description="Generate actor documentation">
+    <java classname="ptolemy.moml.filter.ActorIndex"
+	  fork="true"
+	  maxmemory="1000m"
+	  >
+      <arg line="doc/codeDoc/allNamedObjs.txt ptolemy/configs/doc/models.txt doc/codeDoc"/>
+      <classpath refid="ptII.classpath" />
+    </java>
   </target>
 
   <target name="test" depends="build, initReports"
@@ -273,8 +284,23 @@
   </target>
 
 
+  <target name="test.auto" depends="build, initReports"
+	  description="Run the auto tests in one directory, defaults to ptolemy.actor.lib.test.junit.JUnitTclTest.  To modify, use -DtestName= and -Djunit.formatter=xml|brief|plain|failure">
+    <junit fork="yes"
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="300000">
+      <classpath>
+	<path refid="ptII.classpath" />
+      </classpath>
+      <formatter type="${junit.formatter}" usefile="false"/>
+      <test  name="${testName}" />
+    </junit>
+  </target>
+
   <!-- Cobertura: code coverage tool -->
-  <target name="test.cobertura" depends="build, initReports">
+  <target name="test.cobertura" depends="initReports">
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
     <property name="cobertura.dir" value="ptserver/lib" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
@@ -287,28 +313,34 @@
 	<include name="log4j-1.2.9.jar" />
       </fileset>
     </path>
+
     <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+
     <delete file="cobertura.ser" />
     <delete dir="${instrumented.dir}" />
+    <mkdir dir="${instrumented.dir}" />
+
     <cobertura-instrument todir="${instrumented.dir}">
       <fileset dir="${basedir}">
 	<patternset refid="ptII.excludes" />
       </fileset>
     </cobertura-instrument>
-    <junit printsummary="yes" fork="yes">
+
+    <junit fork="yes"
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="300000">
       <classpath>
 	<path location="${instrumented.dir}" />
 	<path refid="ptII.classpath" />
 	<path refid="cobertura.classpath" />
       </classpath>
       <formatter type="${junit.formatter}" />
-      <batchtest fork="yes">
-	<fileset dir="${basedir}">
-	  <include name="**/junit/*.java" />
-	</fileset>
-      </batchtest>
+      <test  name="${testName}" />
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
+
     <cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
   </target>
 
