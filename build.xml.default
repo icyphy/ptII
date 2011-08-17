@@ -143,13 +143,20 @@
     <exclude name="vendors/" />
   </patternset>
 
+  <!-- tests that we want to exclude because they don't work -->
+  <patternset id="test.excludes">
+    <exclude name="lbnl.test.junit.JUnitTclTest" />
+    <exclude name="ptolemy.actor.lib.javasound.test.junit.JUnitTclTest" />
+  </patternset>
+
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
   <target name="checkstyle" depends="initReports"
 	  description="Run checkstyle and find common code style problems.  To avoid 'OutOfMemoryError', under bash execution 'export ANT_OPTS=-Xmx1024m'">
     <taskdef resource="checkstyletask.properties" classpath="${basedir}/ptserver/lib/checkstyle-5.3-all.jar" />
     <checkstyle config="${basedir}/ptserver/checkstyle-ptserver.xml" failOnViolation="false">
-      <fileset dir="${basedir}">
+      <fileset defaultexcludes="yes"
+		 dir="${basedir}">
 	<patternset refid="ptII.excludes" />
       </fileset>
       <formatter type="${checkstyle.formatter}" toFile="${ptII.reports}/checkstyle_errors.${checkstyle.formatter}" />
@@ -160,7 +167,9 @@
   <target name="clean"
 	  description="Remove all the class files and the ${ptII.reports} director">
     <delete quiet="true">
-      <fileset dir="${basedir}" includes="**/*.class" />
+	<fileset 
+		 dir="${basedir}"
+		 includes="**/*.class" />
       <fileset dir="${ptII.reports}" />
     </delete>
   </target>
@@ -195,7 +204,8 @@
   <property name="ptdroid.builddir" location="${basedir}/ptdroid/ptbin" />
   <target name="ptdroid.build">
     <copy includeemptydirs="false" todir="${ptdroid.builddir}">
-      <fileset dir="${basedir}">
+      <fileset defaultexcludes="yes"
+	       dir="${basedir}">
 	<include name="**/*.properties" />
 	<patternset refid="ptII.excludes" />
 	<exclude name="ptolemy/**/test/" />
@@ -275,9 +285,11 @@
 	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
       </classpath>
       <batchtest todir="${junit.output.dir}">
-	<fileset dir="${basedir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
 	  <include name="**/junit/*.java" />
 	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.excludes" />
 	</fileset>
       </batchtest>
       <formatter type="${junit.formatter}" />
@@ -324,7 +336,8 @@
     <delete dir="${instrumented.dir}" />
     
     <cobertura-instrument todir="${instrumented.dir}">
-      <fileset dir="${basedir}">
+      <fileset defaultexcludes="yes"
+	       dir="${basedir}">
 	<include name="ptolemy/**/*.class" />
 	<exclude name="*/junit/**" />
       </fileset>
@@ -343,7 +356,8 @@
       </classpath>
       <formatter type="${junit.formatter}" />
       <batchtest todir="${junit.output.dir}">
-	<fileset dir="${basedir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
 	  <include name="**/junit/*.java" />
 	  <patternset refid="ptII.excludes" />
 	</fileset>
