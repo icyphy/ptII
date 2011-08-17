@@ -219,7 +219,7 @@
        effort="max"
        excludefilter="${basedir}/doc/findbugs-exclude.xml"
        home="${findbugs.home}"
-       includefilter="${basedir}/doc/findbugs-exclude.xml"
+       includefilter="${basedir}/doc/findbugs-include.xml"
        jvmargs="-Xms256m -Xmx2000m"
        output="xml"
        outputFile="${ptII.reports}/ptII-findbugs.xml"
@@ -272,6 +272,7 @@
 	   timeout="30000">
       <classpath>
 	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
       </classpath>
       <batchtest todir="${junit.output.dir}">
 	<fileset dir="${basedir}">
@@ -293,6 +294,7 @@
 	   timeout="300000">
       <classpath>
 	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
       </classpath>
       <formatter type="${junit.formatter}" usefile="false"/>
       <test  name="${testName}" />
