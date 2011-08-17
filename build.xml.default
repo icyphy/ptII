@@ -90,6 +90,7 @@
     <exclude name="contrib/" />
     <exclude name="diva/util/java2d/svg/" />
     <exclude name="doc/coding/templates/" />
+    <exclude name="doc/doclets/" />
     <exclude name="jni/test/jni/meaningOfLife/" />
     <exclude name="jni/test/jni/testDeux/" />
     <exclude name="jni/test/jni/testTrois/" />
