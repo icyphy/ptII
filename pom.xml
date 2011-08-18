@@ -7,7 +7,7 @@ export MAVEN_OPTS="-Xms512m -Xmx512m -XX:PermSize=48m"
 See $PTII/doc/coding/maven.htm
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <version>7.2.devel</version>
+  <version>8.1.devel</version>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.ptolemy</groupId>
   <artifactId>ptII</artifactId>
@@ -58,6 +58,31 @@ See $PTII/doc/coding/maven.htm
       <timezone>-8</timezone>
     </developer>
     <developer>
+      <id>kybae</id>
+      <name>Kyungmin Bae</name>
+      <roles>
+        <role>Verification</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>chad</id>
+      <name>Chad Berkley</name>
+      <roles>
+        <role>Kepler Support</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>dbui</id>
+      <name>Dai Bui</name>
+      <url>http://ptolemy.eecs.berkeley.edu/~cxh</url>
+      <organization>EECS Department, University of California, Berkeley</organization>
+      <organizationUrl>http://www.eecs.berkeley.edu</organizationUrl>
+      <roles>
+	<role>Code Generation</role>
+      </roles>
+      <timezone>-8</timezone>
+    </developer>
+    <developer>
       <name>Elaine Cheong</name>
       <roles>
         <role>Ptolemy II 7.0 Ptalon Updates</role>
@@ -82,6 +107,13 @@ See $PTII/doc/coding/maven.htm
       <name>John Reekie</name>
       <roles>
         <role>Vergil Graphical User Interface</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>rodiers</id>
+      <name>Bert Rodiers</name>
+      <roles>
+        <role>Width Inference</role>
       </roles>
     </developer>
     <developer>
@@ -415,8 +447,7 @@ See $PTII/doc/coding/maven.htm
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+      <version>4.8.2</version>
     </dependency>
     <dependency>
       <groupId>jdom</groupId>
@@ -468,6 +499,12 @@ See $PTII/doc/coding/maven.htm
     <!-- Dependencies that need to be added manually -->
     <!-- See ptII/doc/coding/maven.htm for the commands 
 	 to run to install these dependencies -->
+    <dependency> <!-- $PTII/libJUnitParams-0.3.0.jar -->
+      <groupId>junitparams</groupId>
+      <artifactId>junitparams</artifactId>
+      <version>0.3.0</version>
+    </dependency>
+
     <dependency> <!-- $PTII/vendors/jython/jython.jar -->
       <groupId>jython</groupId>
       <artifactId>jython</artifactId>
@@ -795,7 +832,7 @@ See $PTII/doc/coding/maven.htm
           </archive>
 	  <excludes>
 	    <exclude>**/.svn/**</exclude>
-	    <exclude>ptII-7.2.devel.jar</exclude>
+	    <exclude>ptII-8.1.devel.jar</exclude>
 	  </excludes>
         </configuration>
       </plugin>
@@ -814,14 +851,17 @@ See $PTII/doc/coding/maven.htm
         <dependency>
           <groupId>org.ptolemy</groupId>
           <artifactId>ptII</artifactId>
-          <version>7.2.devel</version>
+          <version>8.1.devel</version>
 	</dependency>
       </dependencies>
 
 
       <configuration>
+	<!-- See http://mojo.codehaus.org/webstart/webstart-maven-plugin/jnlp-mojos-overview.html -->
 	<jnlp>
-	  <outputFile>administration.jnlp</outputFile> <!-- defaults to launch.jnlp -->
+	  <!--inputTemplateResourcePath>${project.basedir}</inputTemplateResourcePath-->
+	  <inputTemplate>ptolemy/actor/gui/jnlp/jnlp-template.vm</inputTemplate> <!-- relative to inputTemplateResourcePath -->
+	  <outputFile>vergil.jnlp</outputFile> <!-- defaults to launch.jnlp -->
 	  <mainClass>ptolemy.vergil.VergilApplication</mainClass>
 	</jnlp>
 
@@ -843,8 +883,8 @@ See $PTII/doc/coding/maven.htm
 	<artifactItems>
 	  <artifactItem>
 	    <groupId>org.ptolemy</groupId>
-	    <artifactId>ptII-7.2.devel.jar</artifactId>
-	    <version>7.2.devel</version>
+	    <artifactId>ptII-8.1.devel.jar</artifactId>
+	    <version>8.1.devel</version>
 	    <type>jar</type>                            
 	  </artifactItem>
 	</artifactItems>

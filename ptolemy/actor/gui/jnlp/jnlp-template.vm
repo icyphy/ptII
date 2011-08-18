@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id$
+     Downloaded from http://mojo.codehaus.org/webstart/webstart-maven-plugin/examples/default-jnlp-template.vm
+     For use with Maven, see $PTII/doc/coding/maven.htm
+ -->
+<jnlp
+    spec="$jnlpspec"
+    codebase="$project.Url"
+    href="$outputFile">
+  <information>
+#if($project.Name)
+    <title>$project.Name</title>
+#end
+#if($project.Organization.Name)
+    <vendor>$project.Organization.Name</vendor>
+#end
+#if($project.Url)
+    <homepage href="$project.Url"/>
+#end
+#if($project.Description)
+    <description>$project.Description</description>
+#end
+#if($offlineAllowed)
+    <offline-allowed/>
+#end
+  </information>
+#if($allPermissions)
+  <security>
+     <all-permissions/>
+  </security>
+#end
+  <resources>
+    <j2se version="$j2seVersion"/>
+     $dependencies
+  </resources>
+  <application-desc main-class="$mainClass"/>
+</jnlp>
+
