@@ -72,6 +72,8 @@ to include support for Eclipse, see below</b>
 <li> Tell Maven about the jar files necessary to compile:
 
 <pre>
+mvn install:install-file -DgroupId=junitparams -DartifactId=junitparams \
+-Dversion=svn -Dpackaging=jar -Dfile=$PTII/lib/JUnitParams-0.3.0.jar
 mvn install:install-file -DgroupId=jython -DartifactId=jython \
 -Dversion=svn -Dpackaging=jar -Dfile=$PTII/vendors/jython/jython.jar
 mvn install:install-file -DgroupId=javajoystick -DartifactId=joystick \
@@ -119,7 +121,7 @@ offline, run: <code>mvn -o exec:exec</code>
 <br><code>run-vergil.sh</code> would look like:
 <pre>
 #!/bin/bash
-java -classpath $PTII/target/ptII-7.1.devel-SNAPSHOT.jar:~/.m2/repository/caltrop/ptCal/unknown/ptCal-unknown.jar:~/.m2/repository/net/jini/jini-core/2.1/jini-core-2.1.jar:~/.m2/repository/antlr/antlr/2.7.6/antlr-2.7.6.jar:~/.m2/repository/javax/jms/jms/1.1/jms-1.1.jar:~/.m2/repository/jdom/jdom/1.0/jdom-1.0.jar:/usr/lib/jvm/java-1.5.0-sun-1.5.0.15/jre/../lib/tools.jar:~/.m2/repository/chic/chic/unknown/chic-unknown.jar:~/.m2/repository/jxta/jxtasecurity/1.0/jxtasecurity-1.0.jar:~/.m2/repository/jxta/jxta/1.0/jxta-1.0.jar:~/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15.jar:~/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:~/.m2/repository/net/jini/jini-ext/2.1/jini-ext-2.1.jar:~/.m2/repository/jython/jython/svn/jython-svn.jar:~/.m2/repository/java3d/j3d-core/1.3.1/j3d-core-1.3.1.jar:~/.m2/repository/jacl/jacl/ptII/jacl-ptII.jar:~/.m2/repository/colt/colt/1.0.3/colt-1.0.3.jar:~/.m2/repository/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar:~/.m2/repository/javajoystick/joystick/0.7/joystick-0.7.jar:~/.m2/repository/mapss/mapss/unknown/mapss-unknown.jar:~/.m2/repository/javax/mail/mail/1.4/mail-1.4.jar:~/.m2/repository/com/sun/jmx/jmxri/1.2.1/jmxri-1.2.1.jar:~/.m2/repository/java3d/vecmath/1.3.1/vecmath-1.3.1.jar:~/.m2/repository/javax/media/jai_core/1.1.2_01/jai_core-1.1.2_01.jar:~/.m2/repository/soot/sootclasses/ptII/sootclasses-ptII.jar:~/.m2/repository/com/sun/jdmk/jmxtools/1.2.1/jmxtools-1.2.1.jar
+.java -classpath $PTII/target/ptII-7.1.devel-SNAPSHOT.jar:~/.m2/repository/caltrop/ptCal/unknown/ptCal-unknown.jar:~/.m2/repository/net/jini/jini-core/2.1/jini-core-2.1.jar:~/.m2/repository/antlr/antlr/2.7.6/antlr-2.7.6.jar:~/.m2/repository/javax/jms/jms/1.1/jms-1.1.jar:~/.m2/repository/jdom/jdom/1.0/jdom-1.0.jar:/usr/lib/jvm/java-1.5.0-sun-1.5.0.15/jre/../lib/tools.jar:~/.m2/repository/chic/chic/unknown/chic-unknown.jar:~/.m2/repository/jxta/jxtasecurity/1.0/jxtasecurity-1.0.jar:~/.m2/repository/jxta/jxta/1.0/jxta-1.0.jar:~/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15.jar:~/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar:~/.m2/repository/net/jini/jini-ext/2.1/jini-ext-2.1.jar:~/.m2/repository/jython/jython/svn/jython-svn.jar:~/.m2/repository/java3d/j3d-core/1.3.1/j3d-core-1.3.1.jar:~/.m2/repository/jacl/jacl/ptII/jacl-ptII.jar:~/.m2/repository/colt/colt/1.0.3/colt-1.0.3.jar:~/.m2/repository/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar:~/.m2/repository/javajoystick/joystick/0.7/joystick-0.7.jar:~/.m2/repository/mapss/mapss/unknown/mapss-unknown.jar:~/.m2/repository/javax/mail/mail/1.4/mail-1.4.jar:~/.m2/repository/com/sun/jmx/jmxri/1.2.1/jmxri-1.2.1.jar:~/.m2/repository/java3d/vecmath/1.3.1/vecmath-1.3.1.jar:~/.m2/repository/javax/media/jai_core/1.1.2_01/jai_core-1.1.2_01.jar:~/.m2/repository/soot/sootclasses/ptII/sootclasses-ptII.jar:~/.m2/repository/com/sun/jdmk/jmxtools/1.2.1/jmxtools-1.2.1.jar
 ptolemy.vergil.VergilApplication
 </pre>
 
