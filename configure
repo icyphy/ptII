@@ -5907,6 +5907,8 @@ fi
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $COLT_DIR/colt.jar" >&5
 echo "${ECHO_T}$COLT_DIR/colt.jar" >&6; }; fi
 	PTCOLT_JARS=$COLT_DIR/colt.jar$CLASSPATHSEPARATOR$PTCOLT_JAR
+	# Put the ptcolt.jar second, after $COLT_DIR/colt.jar
+        updateClasspath "$PTCOLT_JAR"
 	updateClasspath "$COLT_DIR/colt.jar"
 	# We found colt
 	PTCOLT_DIR=colt
@@ -5935,6 +5937,7 @@ echo "$as_me: WARNING: Failed to find $PTII/lib/ptcolt.jar
     using $PTCOLT_JAR" >&5
 echo "$as_me: WARNING: Did not find $COLT_DIR/colt.jar,
     using $PTCOLT_JAR" >&2;}
+    	    PTCOLT_JARS=$PTCOLT_JAR
 	    updateClasspath "$PTCOLT_JAR"
         fi
     fi
