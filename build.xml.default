@@ -71,6 +71,7 @@
     <pathelement location="lib/org-netbeans-api-visual.jar" />
     <pathelement location="lib/org-openide-util-lookup.jar" />
     <pathelement location="lib/org-openide-util.jar" />
+    <pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
   </path>
 
 
@@ -184,7 +185,16 @@
 	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target"/>
 
   <target name="build-message">
-    <echo>Use ant -p to see other targets. JAVA_HOME=${env.JAVA_HOME}</echo>
+    <echo>Use ant -p to see other targets. JAVA_HOME=${env.JAVA_HOME}
+tools.jar is necessary for compilation of doc/doclets/.
+If compilation fails, try setting JAVA_HOME to the location of the JDK.
+For example:
+  [bldmastr@sisyphus ptII]$ which java
+  /usr/bin/java
+  [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
+  lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
+  [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
+    </echo>
   </target>
 
   <target name="build-subprojects" />
@@ -305,16 +315,6 @@
 
   <target name="javadoc.doclets"
 	  description="Compile doc/doclets.">
-    <echo>
-tools.jar is necessary for compilation of doc/doclets/.
-If compilation fails, try setting JAVA_HOME to the location of the JDK.
-For example:
-  [bldmastr@sisyphus ptII]$ which java
-  /usr/bin/java
-  [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
-  lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
-  [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
-    </echo>
     <javac debug="true"
 	   debuglevel="${debuglevel}"
 	   destdir="."
