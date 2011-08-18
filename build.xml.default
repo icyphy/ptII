@@ -397,7 +397,8 @@ For example:
       <fileset defaultexcludes="yes"
 	       dir="${basedir}">
 	<include name="ptolemy/**/*.class" />
-	<exclude name="*/junit/**" />
+	<exclude name="**/test/*.java" />
+	<exclude name="**/junit/*.java" />
       </fileset>
     </cobertura-instrument>
 
