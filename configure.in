@@ -1285,6 +1285,8 @@ else
     if test -f "$COLT_DIR/colt.jar"; then
         PT_MSG_RESULT($COLT_DIR/colt.jar)
 	PTCOLT_JARS=$COLT_DIR/colt.jar$CLASSPATHSEPARATOR$PTCOLT_JAR
+	# Put the ptcolt.jar second, after $COLT_DIR/colt.jar
+        updateClasspath "$PTCOLT_JAR"
 	updateClasspath "$COLT_DIR/colt.jar"
 	# We found colt
 	PTCOLT_DIR=colt
@@ -1304,6 +1306,7 @@ else
         else 
 	    AC_MSG_WARN([Did not find $COLT_DIR/colt.jar,
     using $PTCOLT_JAR])
+    	    PTCOLT_JARS=$PTCOLT_JAR
 	    updateClasspath "$PTCOLT_JAR"
         fi
     fi
