@@ -18,6 +18,16 @@
   <!-- Location of findbugs, which does static analysis on the code.  findbugs-1.3.9 does not terminate, so use 1.3.8 -->
   <property name="findbugs.home" value="${basedir}/vendors/findbugs-1.3.8" />
 
+  <!-- Packages to exclude from targets that call javadoc.
+       Unfortunately, <fileset> results in a command line that is too long.
+       Grab the packages from ptII.excludes, put them in a file called /tmp/e and run
+       awk -F '"' '{print $2}' /tmp/e | sed 's@/$@@' | sed 's@/@.@g' | sort | awk '{printf("%s.*,", $1)}'
+       (Lame) -->
+  <property name="javadoc.excludepackagenames" value="diva.util.java2d.svg,ptolemy.actor.corba,ptolemy.actor.lib.embeddedJava,ptolemy.actor.lib.excel,ptolemy.actor.lib.io.comm,ptolemy.actor.lib.jai,ptolemy.actor.lib.jmf,ptolemy.actor.lib.jni,ptolemy.actor.lib.jopio,ptolemy.actor.lib.joystick,ptolemy.actor.lib.jxta,ptolemy.actor.lib.jxta.*,ptolemy.actor.lib.logic.fuzzy,ptolemy.actor.lib.mail,ptolemy.actor.lib.opencv,ptolemy.actor.lib.opencv.*,ptolemy.actor.lib.reactable,ptolemy.actor.lib.x10,ptolemy.actor.lib.xslt,ptolemy.actor.ptalon,ptolemy.apps.*,ptolemy.backtrack.eclipse.*,ptolemy.backtrack.test,ptolemy.calltrop,ptolemy.chic,ptolemy.codegen.newInterfaces,ptolemy.copernicus,ptolemy.copernicus.kernel.fragment,ptolemy.distributed,ptolemy.domains.ct.demo.Saber,ptolemy.domains.giotto,ptolemy.domains.gr,ptolemy.domains.gr.lib.experimental,ptolemy.domains.gr.lib.quicktime,ptolemy.domains.jogl.*,ptolemy.domains.pdf,ptolemy.domains.space,ptolemy.matlab,ptolemy.moml.jxta,ptolemy.plot.servlet,ptolemy.vergil.basic.itextpdf,reports.*,src.*,target.*,thales.*,tmp.*,vendors.*" />
+
+  <!-- Packages on which doccheck, javadoc and ojdcheck are run. -->
+  <property name="javadoc.packagenames" value="diva.*,ptolemy.*,ptserver.*" />
+
   <!-- junit.formatter defaults to xml and is used by checkstyle and test.  Other values: brief, failure, plain -->
   <property name="junit.formatter" value="xml" />
 
@@ -158,7 +168,8 @@
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
   <target name="checkstyle" depends="initReports"
-	  description="Run checkstyle and find common code style problems.  To avoid 'OutOfMemoryError', under bash execution 'export ANT_OPTS=-Xmx1024m'">
+	  description="Run checkstyle and find common code style problems." >
+    <echo>To avoid an 'OutOfMemoryError' exception, under bash, try 'export ANT_OPTS=-Xmx1024m'</echo>
     <taskdef resource="checkstyletask.properties" classpath="${basedir}/ptserver/lib/checkstyle-5.3-all.jar" />
     <checkstyle config="${basedir}/ptserver/checkstyle-ptserver.xml" failOnViolation="false">
       <fileset defaultexcludes="yes"
@@ -176,13 +187,14 @@
       <fileset dir="${basedir}"
 	       includes="**/*.class" />
       <fileset dir="${ptII.reports}" />
+      <fileset dir="doc/codeDoc" />
     </delete>
   </target>
 
   <target depends="clean" name="cleanall" />
 
   <target depends="build-message, build-subprojects,build-project" name="build"
-	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target"/>
+	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target."/>
 
   <target name="build-message">
     <echo>Use ant -p to see other targets. JAVA_HOME=${env.JAVA_HOME}
@@ -216,10 +228,32 @@ For example:
     </javac>
   </target>
 
+  <target name="doccheck"
+	  depends="initReports"
+	  description="Run Doccheck (http://java.sun.com/j2se/javadoc/doccheck/) to detect JavaDoc bugs." >
+    <javadoc destdir="${ptII.reports}/doccheck"
+	     packagenames="${javadoc.packagenames}"
+	     excludepackagenames="${javadoc.excludepackagenames}"
+	     maxmemory="1000m"
+	     sourcepath="${basedir}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
+      </classpath>
+      <doclet name="com.sun.tools.doclets.doccheck.DocCheck" path="vendors/sun/doccheck1.2b2/doccheck.jar" />
+    </javadoc>
+  </target>
+
   <!-- findbugs.  See http://findbugs.sourceforge.net/manual/anttask.html -->
   <target name="findbugs"
 	  depends="build, initReports"
-	  description="Run FindBugs (http://findbugs.sourceforge.net/) Use findbugs-1.3.8 because 1.3.9 does not terminate.  Install findbugs-1.3.8 in ptII/vendors/findbugs-1.3.8.">
+	  description="Run FindBugs (http://findbugs.sourceforge.net/)">
+    <echo>
+      FindBugs can be found at http://findbugs.sourceforge.net
+      Use findbugs-1.3.8 because 1.3.9 does not terminate.
+      Install findbugs-1.3.8 in ptII/vendors/findbugs-1.3.8.
+      FindBugs takes 4-5 minutes to run . . .
+    </echo>
     <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
     <findbugs 
        effort="max"
@@ -239,27 +273,26 @@ For example:
 
   <target name="initReports">
     <mkdir dir="${junit.output.dir}" />
+    <!-- doccheck and ojdcheck go into separate directories so that we can use
+	 the Hudson HTML Publisher plugin. -->
+    <mkdir dir="${ptII.reports}/doccheck" />
+    <mkdir dir="${ptII.reports}/ojdcheck" />
   </target>
 
   <target name="javadoc"
 	  depends="javadoc.actorIndex, javadoc.base"
-	  description="Generate javadoc including actor documentation and actor/demonstration index." /> 
+	  description="Generate javadoc including actor documentation and actor/demo index." /> 
 
   <target name="javadoc.actor"
-	  depends="build, javadoc.doclets"
-	  description="Generate javadoc .xml files used for actor documentation.">
+	  depends="build, javadoc.doclets">
     <echo>
+     Generate javadoc .xml files used for actor documentation.
      Generate doc/codeDoc/allNamedObjs.txt for use by javadoc.actorIndex
      For details, see $PTII/ptolemy/vergil/basic/docViewerHelp.htm
     </echo>
-             <!-- FIXME: can't seem to get the doclet working under Linux -->
-	     <!-- Unfortunately, <fileset> results in a command line that is too long.
-		  Grab the packages from ptII.excludes, put them in a file called /tmp/e and run
-		  awk -F '"' '{print $2}' /tmp/e | sed 's@/$@@' | sed 's@/@.@g' | sort | awk '{printf("%s.*,", $1)}'
-		  (Lame) -->
     <javadoc destdir="doc/codeDoc"
-	     packagenames="diva.*,ptolemy.*"
-	     excludepackagenames="diva.util.java2d.svg,ptolemy.actor.corba,ptolemy.actor.lib.embeddedJava,ptolemy.actor.lib.excel,ptolemy.actor.lib.io.comm,ptolemy.actor.lib.jai,ptolemy.actor.lib.jmf,ptolemy.actor.lib.jni,ptolemy.actor.lib.jopio,ptolemy.actor.lib.joystick,ptolemy.actor.lib.jxta,ptolemy.actor.lib.jxta.*,ptolemy.actor.lib.logic.fuzzy,ptolemy.actor.lib.mail,ptolemy.actor.lib.opencv,ptolemy.actor.lib.opencv.*,ptolemy.actor.lib.reactable,ptolemy.actor.lib.x10,ptolemy.actor.lib.xslt,ptolemy.actor.ptalon,ptolemy.apps.*,ptolemy.backtrack.eclipse.*,ptolemy.backtrack.test,ptolemy.calltrop,ptolemy.chic,ptolemy.codegen.newInterfaces,ptolemy.copernicus,ptolemy.copernicus.kernel.fragment,ptolemy.distributed,ptolemy.domains.ct.demo.Saber,ptolemy.domains.giotto,ptolemy.domains.gr,ptolemy.domains.gr.lib.experimental,ptolemy.domains.gr.lib.quicktime,ptolemy.domains.jogl.*,ptolemy.domains.pdf,ptolemy.domains.space,ptolemy.matlab,ptolemy.moml.jxta,ptolemy.plot.servlet,ptolemy.vergil.basic.itextpdf,reports.*,src.*,target.*,thales.*,tmp.*,vendors.*"
+	     packagenames="${javadoc.packagenames}"
+	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="1000m"
 	     sourcepath="${basedir}">
       <classpath>
@@ -271,9 +304,9 @@ For example:
   </target>
 
   <target name="javadoc.actorIndex"
-	  depends="javadoc.actor"
-	  description="Generate actor/demonstration index files.">
+	  depends="javadoc.actor">
     <echo>
+     Generate actor/demonstration index files.
      Read the doc/codeDoc/allNamedObjs.txt file created by javadoc.actor.
      Create the actor index.
      For details, see $PTII/ptolemy/vergil/basic/docViewerHelp.htm
@@ -291,17 +324,12 @@ For example:
   </target>
 
   <target name="javadoc.base"
-	  depends="javadoc.doclets"
-	  description="Generate javadoc without building the actor documentation and the actor/demonstration index."> 
-             <!-- FIXME: can't seem to get the doclet working under Linux -->
-	     <!-- Unfortunately, <fileset> results in a command line that is too long.
-		  Grab the packages from ptII.excludes, put them in a file called /tmp/e and run
-		  awk -F '"' '{print $2}' /tmp/e | sed 's@/$@@' | sed 's@/@.@g' | sort | awk '{printf("%s.*,", $1)}'
-		  (Lame) -->
+	  depends="javadoc.doclets">
+    <echo>Generate javadoc without building the actor documentation and the actor/demonstration index</echo>
     <javadoc destdir="doc/codeDoc"
 	     additionalparam="-tag Pt.AcceptedRating -tag Pt.ProposedRating -tag status:a:Status"
-	     packagenames="diva.*,ptolemy.*"
-	     excludepackagenames="diva.util.java2d.svg,ptolemy.actor.corba,ptolemy.actor.lib.embeddedJava,ptolemy.actor.lib.excel,ptolemy.actor.lib.io.comm,ptolemy.actor.lib.jai,ptolemy.actor.lib.jmf,ptolemy.actor.lib.jni,ptolemy.actor.lib.jopio,ptolemy.actor.lib.joystick,ptolemy.actor.lib.jxta,ptolemy.actor.lib.jxta.*,ptolemy.actor.lib.logic.fuzzy,ptolemy.actor.lib.mail,ptolemy.actor.lib.opencv,ptolemy.actor.lib.opencv.*,ptolemy.actor.lib.reactable,ptolemy.actor.lib.x10,ptolemy.actor.lib.xslt,ptolemy.actor.ptalon,ptolemy.apps.*,ptolemy.backtrack.eclipse.*,ptolemy.backtrack.test,ptolemy.calltrop,ptolemy.chic,ptolemy.codegen.newInterfaces,ptolemy.copernicus,ptolemy.copernicus.kernel.fragment,ptolemy.distributed,ptolemy.domains.ct.demo.Saber,ptolemy.domains.giotto,ptolemy.domains.gr,ptolemy.domains.gr.lib.experimental,ptolemy.domains.gr.lib.quicktime,ptolemy.domains.jogl.*,ptolemy.domains.pdf,ptolemy.domains.space,ptolemy.matlab,ptolemy.moml.jxta,ptolemy.plot.servlet,ptolemy.vergil.basic.itextpdf,reports.*,src.*,target.*,thales.*,tmp.*,vendors.*"
+	     packagenames="${javadoc.packagenames}"
+	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="1000m"
 	     sourcepath="${basedir}">
       <classpath>
@@ -313,8 +341,17 @@ For example:
     </javadoc>
   </target>
 
-  <target name="javadoc.doclets"
-	  description="Compile doc/doclets.">
+  <target name="javadoc.doclets">
+    <echo>Compile doc/doclets.
+tools.jar is necessary for compilation of doc/doclets/.
+If compilation fails, try setting JAVA_HOME to the location of the JDK.
+For example:
+  [bldmastr@sisyphus ptII]$ which java
+  /usr/bin/java
+  [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
+  lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
+  [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
+    </echo>
     <javac debug="true"
 	   debuglevel="${debuglevel}"
 	   destdir="."
@@ -333,8 +370,36 @@ For example:
     </javac>    
   </target>
 
+  <!-- Ojdcheck
+       We have a local copy at
+       svn co svn+ssh://source.eecs.berkeley.edu/chess/ojdcheck 
+       The primary difference is that ojdcheck handles enums -->
+  <target name="ojdcheck"
+	  depends="initReports"
+	  description="Ojdcheck - An updated version of DocCheck. See http://github.com/egonw/ojdcheck">
+    <javadoc additionalparam="-xhtml -file ${ptII.reports}/ojdcheck/ojdcheck.htm"
+	     packagenames="${javadoc.packagenames}"
+	     excludepackagenames="${javadoc.excludepackagenames}"
+	     maxmemory="1000m"
+	     sourcepath="${basedir}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
+      </classpath>
+      <doclet name="com.github.ojdcheck.OpenJavaDocCheck" path="lib/ojdcheck.jar" />
+    </javadoc>
+  </target>
+
+  <target name="reports"
+	  description="Generate non-test reports about the Ptolemy II code base."
+	  depends="checkstyle, doccheck, findbugs, ojdcheck" />
+
+  <target name="run" depends="vergil"
+	  description="Invoke the Ptolemy II User Interface (alias for the vergil target)"/>
+
   <target name="test" depends="build, initReports"
-	  description="Run the junit tests in junit/*.java.  Use -Djunit.formatter=xml|brief|plain|failure, default is plain.  Output is in ${junit.output.dir}">
+	  description="Run the junit tests in junit/*.java.">
+    <echo>Use -Djunit.formatter=xml|brief|plain|failure, default is plain.  Output is in ${junit.output.dir}</echo>
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
@@ -357,7 +422,8 @@ For example:
   </target>
 
   <target name="test.auto" depends="build, initReports"
-	  description="Run the auto tests in one directory, defaults to ptolemy.actor.lib.test.junit.JUnitTclTest.  To modify, use -DtestName= and -Djunit.formatter=xml|brief|plain|failure">
+	  description="Run the auto tests in one directory (ptolemy.actor.lib.test.junit.JUnitTclTest.)">
+    <echo>To run a different test, use -DtestName= and -Djunit.formatter=xml|brief|plain|failure</echo>
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -455,9 +521,6 @@ For example:
 
     <cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
   </target>
-
-  <target name="run" depends="vergil"
-	  description="Invoke the Ptolemy II User Interface (alias for the vergil target)"/>
 
   <target name="vergil" depends="build-project"
 	  description="Invoke the Ptolemy II User Interface.  To run a model, use ant vergil -Dmodel=model.xml"

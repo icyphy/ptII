@@ -19,16 +19,30 @@ in <CODE>$PTII/vendors</CODE>, but Ant can be installed anywhere
 <li> Set the appropriate variables.
  <p>Under bash:
 <pre>
-export ANT_HOME=$PTII/vendors/apache-ant-1.6.1
+export ANT_HOME=$PTII/vendors/apache-ant-1.8.2
 export PATH=${PATH}:${ANT_HOME}/bin
 </pre>
+
 You may also need to set JAVA_HOME to the location of your 
-Java installation.  If <CODE>which java</CODE> returns
+Java installation.  
+<p><i>Under Linux:</i> Use <code>which java</code> to find the directory
+that contains the Java Development Kit (JDK):
 <pre>
-/cygdrive/c/j2sdk1.4.2_04/bin/java
+-bash-3.2$ which java
+/usr/bin/java
+-bash-3.2$ ls -l /usr/bin/java
+lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
+-bash-3.2$ export JAVA_HOME=/usr/java/default
 </pre>
+
+
+<p><i>Under Windows with Cygwin:</i> If <CODE>which java</CODE> returns
 <pre>
-export JAVA_HOME=c:/j2sdk1.4.2_04
+/cygdrive/c/Program Files/Java/jdk1.7.0/bin/java
+</pre>
+To temporarily set your path, use:
+<pre>
+export JAVA_HOME=c:/Program\ Files/Java/jdk1.7.0
 </pre>
 
 <h4>Permanently setting Windows Variables</h4>
@@ -46,10 +60,10 @@ when adjusting the path, add
 
 <dl>
 <dt> <CODE>ANT_HOME</CODE>
-<dd> New user variable <CODE>%PTII%/vendors/apache-ant-1.6.1</CODE>
+<dd> New user variable <CODE>%PTII%/vendors/apache-ant-1.8.1</CODE>
 
 <dt> <CODE>JAVA_HOME</CODE>
-<dd> New user variable <CODE>c:/j2sdk1.4.2_04</CODE>
+<dd> New user variable <CODE>c:/Program Files/Java/jdk1.7.0</CODE>
 
 <dt> <CODE>PATH</CODE>
 <dd> Edit the PATH in the user variables section 
@@ -65,6 +79,28 @@ ant -h
 </pre>
 You should see a help message
 
+<li> There are at two ways to configure Ptolemy: Use the simple build.default.xml
+or run configure.  <b>Most users will use <code>build.default.xml</code></b>
+<h3>Use <code>build.default.xml</code></h3>
+The <code>ptII/build.default.xml</code> file is set up for a vanilla installation,
+it excludes third party packages like Java3D and Matlab. 
+<p>To use <code>build.default.xml</code>, merely copy it to <code>build.xml</code>
+<pre>
+cd $PTII
+cp build.default.xml build.xml
+</pre>
+
+<h3>Use configure</h3>
+The <code>$PTII/configure</code> script searches the local machine for
+third party packages and sets up Ant, Eclipse, and make appropriately.
+Under Windows, you must have Cygwin installed to run <code>configure</code>
+<p>To use <code>configure</code>:
+<pre>
+cd $PTII
+./configure
+</pre>
+See <a href="../install.htm">Ptolemy II Installation</a> for details
+</li>
 
 <li> To build Ptolemy:
 <pre>
@@ -76,16 +112,49 @@ This command will read <CODE>$PTII/build.xml</CODE> and build Ptolemy II.
 
 <li> To see what other targets are available:
 <pre>
-ant -projecthelp 
-</pre>
-or
-<pre>
 ant -p
 </pre>
 
+<li> To run Vergil:
+<pre>
+ant run
+</pre>
+
+<li> To generate the actor documentation:
+<pre>
+ant javadoc
+</pre>
 
 </ol>
 
-Many thanks to Dan Higgins for creating an Ant build file for Ptolemy II
+<h2>Ant notes</h2>
+
+<h3>Open issues</h3>
+<h4>Testing</h4>
+
+<code>ant test</code> runs the JUnit tests located in the test/junit
+directories.  Each directory contains <code>JUnitTclTest.java</code>
+that
+imports <code>ptolemy/util/test/junit/JUnitTclTestBase.java</code>.
+The <code>JUnitTclTestBase.java</code> file uses annotations to
+declare what tests should be run.  For the auto tests that run models
+in <code>test/auto/</code>, we use JUnitParams from
+<a href="http://code.google.com/p/junitparams/#in_browser">http://code.google.com/p/junitparams/</a>
+to parameterize the tests so that the model name appears in the JUnit log.
+
+<h5>Tests need to be run in the <code>test/</code> directory</h5>
+Currently, the biggest limitation is that many of the tests need to be run
+in the <code>test/</code> directory.  To hack this in, we tell ant
+to use <code>ptolemy/util/test/junit/javachdir</code> as the jvm for
+the JUnit tests.  The <code>javachdir</code> script reads in the
+ant-specific JUnit command line arguments, determines which directory
+should be used and cds to that directory.
+
+<p>The problem is that this does not work when we run the JUnit
+tests from Eclipse.
+
+<p>The solution is to fix the <code>auto/*</code> and <code>*.tcl</code>
+tests to be able to be run from any directory.
+
 </body>
 </html>
