@@ -28,45 +28,44 @@
 
 package ptolemy.util.test.junit;
 
-import java.io.File;
-import java.io.FilenameFilter;
-
-import java.util.Arrays;
-import java.util.Collection;
-
-import org.junit.Test;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-
-import tcl.lang.Interp;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTestBase
 /**
  * Run the Tcl tests under JUnit.
- * <p>Derived classes should have a method that calls super.run().
- *
- * <p>If the fileName JVM property is set, then the file named by
- * that property is sourced.  Otherwise, the testDefs.tcl file
- * is sourced and the doallTests Tcl proc that is defined
- * in $PTII/util/testsuite/testDefs.tcl is invoked and then
- * any models in the auto/ directory are invoked.</p>
- *
- * <p>For example, ptolemy.kernel.test.junit.JUnitTclTest extends this class.
- * To run one test file (Port.tcl):
+ * <p>
+ * Derived classes should have a method that calls super.run().
+ * 
+ * <p>
+ * If the fileName JVM property is set, then the file named by that property is
+ * sourced. Otherwise, the testDefs.tcl file is sourced and the doallTests Tcl
+ * proc that is defined in $PTII/util/testsuite/testDefs.tcl is invoked and then
+ * any models in the auto/ directory are invoked.
+ * </p>
+ * 
+ * <p>
+ * For example, ptolemy.kernel.test.junit.JUnitTclTest extends this class. To
+ * run one test file (Port.tcl):
+ * 
  * <pre>
  * cd $PTII
  * java -DfileName=Port.tcl -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.kernel.test.junit.JUnitTclTest
- * </pre></p>
- *
- * <p>To run all the .tcl files in the directory above this directory
+ * </pre>
+ * 
+ * </p>
+ * 
+ * <p>
+ * To run all the .tcl files in the directory above this directory
+ * 
  * <pre>
  * cd $PTII
  * java -classpath ${PTII}:${PTII}/bin/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.kernel.test.junit.JUnitTclTest
- * </pre></p>
- *
+ * </pre>
+ * 
+ * </p>
+ * 
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -74,12 +73,10 @@ import tcl.lang.Interp;
  * @Pt.AcceptedRating Red (cxh)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses(
-        {
-            ptolemy.util.test.junit.TclTests.class,
-                ptolemy.util.test.junit.AutoKnownFailedTests.class,
-                ptolemy.util.test.junit.AutoTests.class
+@Suite.SuiteClasses({ ptolemy.util.test.junit.TclTests.class,
+		ptolemy.util.test.junit.AutoKnownFailedTests.class,
+		ptolemy.util.test.junit.AutoTests.class
 
-                })
+})
 public class JUnitTclTestBase {
 }
