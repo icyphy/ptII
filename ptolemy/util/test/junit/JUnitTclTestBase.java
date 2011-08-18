@@ -39,7 +39,6 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import ptolemy.moml.MoMLSimpleApplication;
 
 import tcl.lang.Interp;
 
