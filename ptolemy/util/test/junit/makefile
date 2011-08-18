@@ -43,7 +43,6 @@ include $(CONFIG)
 # Java Sources, keep these alphabetical,
 JSRCS = \
 	AutoTests.java \
-	PersonTest.java \
 	AutoKnownFailedTests.java \
 	JUnitTclTest.java \
 	JUnitTclTestBase.java \
