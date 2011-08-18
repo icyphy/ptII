@@ -1010,7 +1010,7 @@ else
     fi
 fi
 
-if test -z "$PTBSH_DIR"; then
+if test -z "$PTBSH_RUN_DIR"; then
    updateExcludes "ptolemy/actor/gui/run/"
 fi 
 
