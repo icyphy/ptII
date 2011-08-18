@@ -6660,15 +6660,13 @@ if test -z "$PTFUZZY_DIR"; then
 else
    shortdir=`echo "$PTFUZZYENGINE_DIR" | sed "s@$PTII/@@"`
    if test -d "$shortdir"; then
-      #ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-      #          <classpathentry kind=\"src\" path=\"$shortdir\"/>"
+      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                <classpathentry kind=\"src\" path=\"$shortdir\"/>"
       ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$shortdir\"/> "
-      updateExcludes "$shortdir/"
    else
-      #ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-      #     <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
+      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+           <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
       ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$PTFUZZYENGINE_DIR\"/> "
-      updateExcludes "$PTFUZZYENGINE_DIR/"
    fi
 
 fi
