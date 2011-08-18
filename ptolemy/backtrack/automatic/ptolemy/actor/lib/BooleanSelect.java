@@ -225,10 +225,10 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     }
 
     /**     
-     * Read a token from each input port.  If the token from the
-     * <i>control</i> input is true, then output the token consumed from the
-     * <i>trueInput</i> port, otherwise output the token from the
-     * <i>falseInput</i> port.
+     * Read a token from the control port or from the input designated
+     * by the previously read input from the control port.  In the
+     * latter case, send to the token read to the output. In the former
+     * case, send nothing to the output.
      * @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException  {
