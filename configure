@@ -5541,7 +5541,7 @@ echo "$as_me: WARNING: Failed to find $PTII/lib/bsh-2.0b4.jar,
     fi
 fi
 
-if test -z "$PTBSH_DIR"; then
+if test -z "$PTBSH_RUN_DIR"; then
    updateExcludes "ptolemy/actor/gui/run/"
 fi
 
