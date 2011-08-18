@@ -28,12 +28,14 @@
 package ptolemy.vergil.actor;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -813,12 +815,14 @@ public class DocManager extends HandlerBase {
                 result.append("</a></li>");
             }
         } else {
+            URL docURL = null;
             try {
                 // Get the javadoc
                 URL toRead = docClassNameToURL(_configuration, className,
                         false, true, false, false);
 
                 if (toRead != null) {
+                    docURL = toRead;
                     result.append("<li><a href=\"" + toRead.toExternalForm()
                             + "\">Javadoc documentation</a></li>");
                 } else {
@@ -868,8 +872,30 @@ public class DocManager extends HandlerBase {
                 URL toRead = docClassNameToURL(_configuration, className,
                         false, false, true, false);
                 if (toRead != null) {
+                    String modificationMessage = "";
+                    try {
+                        if (toRead.toExternalForm().startsWith("file:/")
+                                && docURL.toExternalForm().startsWith("file:/")) {
+                            // Check the mod times and print a message if the doc file
+                            // it out of date.
+                            File sourceFile = new File(toRead.getFile());
+                            File docFile = new File(docURL.getFile());
+                            if (sourceFile.lastModified() > docFile.lastModified()) {
+                                modificationMessage = "<font color=\"red\">Documentation "
+                                    + "may be out of date when compared to source.</font> "
+                                    + "<br/>The source was last modified on <br/>"
+                                    + new Date(sourceFile.lastModified())
+                                    + ",<br/> documentation was last modified on <br/>"
+                                    + new Date(docFile.lastModified())
+                                    + ".<br/> To rebuild the documentation use the "
+                                    + "Build menu choice.";
+                            } 
+                        }
+                    } catch (Exception ex) {
+                        // Ignore
+                    }                                    
                     result.append("<li><a href=\"" + toRead.toExternalForm()
-                            + "\">Source code</a></li>");
+                            + "\">Source code</a>" + modificationMessage + "</li>");
                 }
             } catch (Exception ex) {
                 // Do not report anything.
