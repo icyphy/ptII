@@ -184,7 +184,7 @@
 	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target"/>
 
   <target name="build-message">
-    <echo message="Use ant -p to see other targets."/>
+    <echo>Use ant -p to see other targets. JAVA_HOME=${env.JAVA_HOME}</echo>
   </target>
 
   <target name="build-subprojects" />
