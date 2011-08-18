@@ -117,7 +117,7 @@ public class TestConstant implements InequalityTerm {
 
     /** Set the name of this constant. If the specified String is null,
      *  Set the name to an empty String.
-     *  @param A String
+     *  @param name The name of this constant.
      */
     public void setName(String name) {
         if (name != null) {

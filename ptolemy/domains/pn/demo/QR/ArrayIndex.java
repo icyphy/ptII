@@ -52,7 +52,7 @@ public class ArrayIndex {
 
     /** Create a key for an 1 dimensional index reference. This key is
      used to store and retrieve values in the associate array.
-     @param in_1 an index value.
+     @param i_1 an index value.
      @return a key representing the index vector.
      */
     public String atKey(int i_1) {
@@ -62,8 +62,8 @@ public class ArrayIndex {
 
     /** Create a key for an 2 dimensional index reference. This key is
      used to store and retrieve values in the associate array.
-     @param in_1 an index value.
-     @param in_2 an index value.
+     @param i_1 an index value.
+     @param i_2 an index value.
      @return a key representing the index vector.
      */
     public String atKey(int i_1, int i_2) {
@@ -73,9 +73,9 @@ public class ArrayIndex {
 
     /** Create a key for an 3 dimensional index reference. This key is
      used to store and retrieve values in the associate array.
-     @param in_1 an index value.
-     @param in_2 an index value.
-     @param in_3 an index value.
+     @param i_1 an index value.
+     @param i_2 an index value.
+     @param i_3 an index value.
      @return a key representing the index vector.
      */
     public String atKey(int i_1, int i_2, int i_3) {
@@ -85,10 +85,10 @@ public class ArrayIndex {
 
     /** Create a key for an 4 dimensional index reference. This key is
      used to store and retrieve values in the associate array.
-     @param in_1 an index value.
-     @param in_2 an index value.
-     @param in_3 an index value.
-     @param in_4 an index value.
+     @param i_1 an index value.
+     @param i_2 an index value.
+     @param i_3 an index value.
+     @param i_4 an index value.
      @return a key representing the index vector.
      */
     public String atKey(int i_1, int i_2, int i_3, int i_4) {
@@ -98,11 +98,11 @@ public class ArrayIndex {
 
     /** Create a key for an 5 dimensional index reference. This key is
      used to store and retrieve values in the associate array.
-     @param in_1 an index value.
-     @param in_2 an index value.
-     @param in_3 an index value.
-     @param in_4 an index value.
-     @param in_5 an index value.
+     @param i_1 an index value.
+     @param i_2 an index value.
+     @param i_3 an index value.
+     @param i_4 an index value.
+     @param i_5 an index value.
      @return a key representing the index vector.
      */
     public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5) {
@@ -113,12 +113,12 @@ public class ArrayIndex {
 
     /** Create a key for an 6 dimensional index reference. This key is
      used to store and retrieve values in the associate array.
-     @param in_1 an index value.
-     @param in_2 an index value.
-     @param in_3 an index value.
-     @param in_4 an index value.
-     @param in_5 an index value.
-     @param in_6 an index value.
+     @param i_1 an index value.
+     @param i_2 an index value.
+     @param i_3 an index value.
+     @param i_4 an index value.
+     @param i_5 an index value.
+     @param i_6 an index value.
      @return a key representing the index vector.
      */
     public String atKey(int i_1, int i_2, int i_3, int i_4, int i_5, int i_6) {
@@ -156,7 +156,7 @@ public class ArrayIndex {
      *  SourceMatrix class. This make the access of the matrix
      *  possible inside a Applet.
      *
-     *  @param file The filename.
+     *  @param filename The filename.
      */
     public void readMatrix(String filename) {
         if (filename.equals("U_1000x16")) {

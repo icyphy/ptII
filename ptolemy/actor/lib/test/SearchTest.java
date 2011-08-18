@@ -109,7 +109,7 @@ public class SearchTest extends TypedAtomicActor {
      * Post fire the actor. Return false to indicate that the process has
      * finished. If it returns true, the process will continue indefinitely.
      *
-     *@return
+     *@return The value returned by the parent method.
      */
     public boolean postfire() throws IllegalActionException {
         return super.postfire();

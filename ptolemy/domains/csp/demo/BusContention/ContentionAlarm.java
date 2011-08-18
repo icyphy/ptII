@@ -76,8 +76,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 0.3
  @Pt.ProposedRating Red (davisj)
  @Pt.AcceptedRating Red (cxh)
- @see ptolemy.actor.gui.ExecEvent
- @see ptolemy.actor.gui.ExecEventListener
  */
 public class ContentionAlarm extends CSPActor {
     /** Construct a ContentionAlarm actor with the specified container

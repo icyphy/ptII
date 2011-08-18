@@ -52,8 +52,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 0.3
  @Pt.ProposedRating Yellow (davisj)
  @Pt.AcceptedRating Red (davisj)
- @see ptolemy.actor.gui.ExecEvent
- @see ptolemy.actor.gui.ExecEventListener
  */
 public class ListenSink extends DDESink {
     /** Construct a ListenSink with the specified container and name.

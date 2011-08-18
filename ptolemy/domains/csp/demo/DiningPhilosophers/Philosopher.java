@@ -92,9 +92,9 @@ public class Philosopher extends CSPActor {
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
-    public Philosopher(TypedCompositeActor cont, String name)
+    public Philosopher(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(cont, name);
+        super(container, name);
         leftIn = new TypedIOPort(this, "leftIn", true, false);
         leftOut = new TypedIOPort(this, "leftOut", false, true);
         rightIn = new TypedIOPort(this, "rightIn", true, false);

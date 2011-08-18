@@ -193,8 +193,7 @@ public class TestSharedParameter extends SharedParameter {
     }
 
     /** Return the current counts.
-     *  @param the count of the number of times different methods
-     *  have been invoked.
+     *  @return The current counts.
      */
     public String getCounts() {
         return "inferValueFromContextCount: " + inferValueFromContextCount

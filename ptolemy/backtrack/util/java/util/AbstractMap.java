@@ -769,7 +769,6 @@ public abstract class AbstractMap implements Map, Rollbackable {
      * Note that this can fail with an exception if underlying keys or
      * values complete abruptly in toString().
      * @return a String representation
-     * @see Map.Entry#toString()
      */
     public String toString() {
         Iterator entries = entrySet().iterator();

@@ -156,7 +156,7 @@ public class ExampleSystem implements Serializable {
     /** Print the linked ports for a given ComponentRelation. The ports
      *  are restricted in the same level of hierarchy
      *  @see ptolemy.kernel.Relation#linkedPortList()
-     *  @param ComponentRelation Print the linked ports for this relation.
+     *  @param r Print the linked ports for this relation.
      */
     public String printLinkedPorts(ComponentRelation r) {
         StringBuffer st = new StringBuffer(r.getName() + ": ");
@@ -174,9 +174,9 @@ public class ExampleSystem implements Serializable {
     /** Print the deeply linked ports for a given
      *  ComponentRelation. Look through all transparent ports and return
      *  only non transparent ports (those with no inside links).
-     *  @see ptolemy.kernel.ComponentRelation#deepLinkedPortList()
-     *  @param ComponentRelation Print the deeply linked ports for this
+     *  @param r Print the deeply linked ports for this
      *  relation.
+     *  @see ptolemy.kernel.ComponentRelation#deepLinkedPortList()
      */
     public String printDeepLinkedPorts(ComponentRelation r) {
         StringBuffer st = new StringBuffer(r.getName() + ": ");
@@ -193,8 +193,8 @@ public class ExampleSystem implements Serializable {
 
     /** Print the connected ports for a given ComponentPort.  Restricted
      *  to the same level of hierarchy.
+     *  @param p Print the connected ports for this Port.
      *  @see ptolemy.kernel.Port#connectedPortList()
-     *  @param ComponentPort Print the connected ports for this Port.
      */
     public String printConnectedPorts(ComponentPort p) {
         StringBuffer st = new StringBuffer(p.getName() + ": ");
@@ -212,8 +212,8 @@ public class ExampleSystem implements Serializable {
     /** Print the deeply connected ports for a given
      *  ComponentPort. Look through all transparent ports and return
      *  only non transparent ports (those with no inside links).
+     *  @param p Print the deeply connected ports for this Port.
      *  @see ptolemy.kernel.ComponentPort#deepConnectedPortList()
-     *  @param ComponentPort Print the deeply connected ports for this Port.
      */
     public String printDeepConnectedPorts(ComponentPort p) {
         StringBuffer st = new StringBuffer(p.getName() + ": ");

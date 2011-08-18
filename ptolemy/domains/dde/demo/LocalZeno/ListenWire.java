@@ -51,8 +51,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 0.3
  @Pt.ProposedRating Red (davisj)
  @Pt.AcceptedRating Yellow (davisj)
- @see ptolemy.actor.gui.ExecEvent
- @see ptolemy.actor.gui.ExecEventListener
  */
 public class ListenWire extends Wire {
     /** Construct a ListenWire actor with the specified container

@@ -25,6 +25,6 @@ do
 done
 
 cd $directory
-#echo `pwd`
+#echo "javachdir: `pwd`"
 #echo $@
 java $@

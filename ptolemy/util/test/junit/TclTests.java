@@ -125,8 +125,8 @@ public class TclTests {
 
     /** Run a tclFile.
      *  @exception Throwable If thrown while executing the tclFile.
-     *  @param fullPath The full path to the model file to be executed.
-     *  If the fullPath ends with the value of the 
+     *  @param tclFile The full path to the .tcl file to be executed.
+     *  If tclFileh ends with the value of the 
      *  {@link #THERE_ARE_NO_TCL_TESTS}, then the method returns
      *  immediately.
      */
@@ -135,9 +135,11 @@ public class TclTests {
     public void RunTclFile(String tclFile) throws Throwable {
         if (tclFile.endsWith(THERE_ARE_NO_TCL_TESTS)) {
             System.out.println("No tcl tests in " + System.getProperty("user.dir"));
+            System.out.flush();
             return;
         }
         System.out.println(tclFile);
+        System.out.flush();
         _evalFileMethod.invoke(_interp, new Object [] {tclFile});
     }
 

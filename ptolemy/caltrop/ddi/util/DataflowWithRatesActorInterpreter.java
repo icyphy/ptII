@@ -58,7 +58,6 @@ import caltrop.interpreter.environment.Environment;
  @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
- @see caltrop.interpreter.ddi.util.DataflowActorInterpreter
  @see caltrop.interpreter.ast.Actor
  @see caltrop.interpreter.ast.Action
  @see #actionSetup

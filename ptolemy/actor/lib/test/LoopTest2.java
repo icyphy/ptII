@@ -127,7 +127,7 @@ public class LoopTest2 extends TypedAtomicActor {
      * Post fire the actor. Return false to indicate that the process has
      * finished. If it returns true, the process will continue indefinitely.
      *
-     *@return
+     *@return the value of the continueLooping flag.
      */
     public boolean postfire() throws IllegalActionException {
         return continueLooping;

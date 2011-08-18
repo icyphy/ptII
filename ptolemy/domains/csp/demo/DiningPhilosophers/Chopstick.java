@@ -106,9 +106,9 @@ public class Chopstick extends CSPActor {
      *  @exception NameDuplicationException If the name argument coincides with
      *   an entity already in the container.
      */
-    public Chopstick(TypedCompositeActor cont, String name)
+    public Chopstick(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(cont, name);
+        super(container, name);
         leftOut = new TypedIOPort(this, "leftOut", false, true);
         leftIn = new TypedIOPort(this, "leftIn", true, false);
         rightOut = new TypedIOPort(this, "rightOut", false, true);

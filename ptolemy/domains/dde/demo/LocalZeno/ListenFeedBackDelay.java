@@ -52,8 +52,6 @@ import ptolemy.kernel.util.Workspace;
  @since Ptolemy II 0.4
  @Pt.ProposedRating Red (davisj)
  @Pt.AcceptedRating Red (yuhong)
- @see ptolemy.actor.gui.ExecEvent
- @see ptolemy.actor.gui.ExecEventListener
  @see ptolemy.domains.dde.kernel.NullToken
  */
 public class ListenFeedBackDelay extends FeedBackDelay {

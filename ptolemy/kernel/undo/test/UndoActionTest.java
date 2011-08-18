@@ -47,7 +47,7 @@ import ptolemy.kernel.undo.UndoStackAttribute;
 public class UndoActionTest implements UndoAction {
 
     /** Create a UndoActionTest.
-     *  @parm name The name of this UndoAction.
+     *  @param name The name of this UndoAction.
      */
     public UndoActionTest(String name) {
         _name = name;

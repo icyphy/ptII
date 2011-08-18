@@ -54,8 +54,8 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class ExecEvent implements DebugEvent {
     /** Create an ExecEvent with the specified actor and state.
-     *  @param actor The actor that generated the event.
-     *  @param actor The state of the actor when the event is
+     *  @param actorSource The actor that generated the event.
+     *  @param state The state of the actor when the event is
      *   is generated.
      */
     public ExecEvent(NamedObj actorSource, ExecEventType state) {

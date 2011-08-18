@@ -38,7 +38,6 @@ import ptolemy.domains.tm.kernel.ScheduleListener;
  buffer.  When getMessage() is called, the internal buffer is returned
  and the internal buffer is reset.
 
- @see ptolemy.actor.test.TestScheduleListener
  @author Christopher Hylands, based on TestScheduleListener by Yuhong Xiong
  @version $Id$
  @since Ptolemy II 2.1

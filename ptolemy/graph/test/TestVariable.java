@@ -135,7 +135,7 @@ public class TestVariable implements InequalityTerm {
 
     /** Set the name of this variable. If the specified String is null,
      *  Set the name to an empty String.
-     *  @param A String
+     *  @param name The name of this variable.
      */
     public void setName(String name) {
         if (name != null) {

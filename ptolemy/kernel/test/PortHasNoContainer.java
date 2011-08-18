@@ -62,8 +62,8 @@ public class PortHasNoContainer extends Entity {
     public Port directoryOrURLPort;
 
     /**
-     * @entity.description This is an optional input port that can be used to
-     * help the scheduling of the actor.
+     * An optional input port that can be used to help the scheduling
+     * of the actor.
      *
      * <P>This port is activated by the hasTrigger parameter. Double-click on
      * the actor to enable. <I>Please enable it <i>ONLY</I> when the actor has

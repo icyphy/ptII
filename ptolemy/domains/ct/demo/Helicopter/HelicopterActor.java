@@ -132,14 +132,14 @@ public class HelicopterActor extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void attributeChanged(Attribute att) throws IllegalActionException {
-        if (att == paramIy) {
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == paramIy) {
             _Iy = ((DoubleToken) paramIy.getToken()).doubleValue();
-        } else if (att == paramHm) {
+        } else if (attribute == paramHm) {
             _hm = ((DoubleToken) paramHm.getToken()).doubleValue();
-        } else if (att == paramMm) {
+        } else if (attribute == paramMm) {
             _Mm = ((DoubleToken) paramMm.getToken()).doubleValue();
-        } else if (att == paramMass) {
+        } else if (attribute == paramMass) {
             _mass = ((DoubleToken) paramMass.getToken()).doubleValue();
         }
     }

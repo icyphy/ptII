@@ -50,8 +50,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 0.3
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
- @see ptolemy.actor.gui.ExecEvent
- @see ptolemy.actor.gui.ExecEventListener
  */
 public class ListenClock extends Clock {
     /** Construct an actor with the specified container and name.

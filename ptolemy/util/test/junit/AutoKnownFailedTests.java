@@ -125,9 +125,11 @@ public class AutoKnownFailedTests {
     public void RunModel(String fullPath) throws Throwable {
         if (fullPath.endsWith(THERE_ARE_NO_KNOWN_FAILED_TESTS)) {
             System.out.println("No auto/knownFailedTests/*.xml tests in " + System.getProperty("user.dir"));
+            System.out.flush();
             return;
         }
         System.out.println("----------------- testing (KnownFailure) " + fullPath);
+        System.out.flush();
         try {
             _applicationConstructor.newInstance(fullPath);
         } catch (Throwable throwable) {

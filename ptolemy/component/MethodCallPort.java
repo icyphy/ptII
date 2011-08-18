@@ -94,8 +94,7 @@ public class MethodCallPort extends ComponentPort {
      *
      *  @param container The container actor.
      *  @param name The name of the port.
-     *  @param isInput True if this is to be an input port.
-     *  @param isOutput True if this is to be an output port.
+     *  @param isProvidedPort True if this port provides the method.
      *  @exception IllegalActionException If the port is not of an acceptable
      *   class for the container, or if the container does not implement the
      *   Actor interface.
@@ -147,7 +146,7 @@ public class MethodCallPort extends ComponentPort {
      *  then this method will return TupleToken.VOID.
      *  @param arguments The arguments to the method.
      *  @see #isProvider()
-     *  @see TupleToken.VOID
+     *  @see ptolemy.data.TupleToken#VOID
      */
     public synchronized TupleToken call(TupleToken arguments) {
         if (!isProvider()) {
@@ -187,7 +186,6 @@ public class MethodCallPort extends ComponentPort {
      *  @see #isProvider()
      *  @see #MethodCallPort(ComponentEntity, String, boolean)
      *  @see #call(TupleToken)
-     *  @return True if this port provides the method.
      */
     public void setProvider(boolean isProvider) {
         _isProvider = isProvider;

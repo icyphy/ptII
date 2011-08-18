@@ -207,8 +207,8 @@ public class HoverLinearizer extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException  Not thrown in this base class.
      */
-    public void attributeChanged(Attribute att) throws IllegalActionException {
-        if (att == paramAlphaP) {
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == paramAlphaP) {
             String taps = ((StringToken) paramAlphaP.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
@@ -217,9 +217,9 @@ public class HoverLinearizer extends TypedAtomicActor {
                 String valueToken = stokens.nextToken();
                 _alphaP[index++] = (Double.valueOf(valueToken)).doubleValue();
             }
-        } else if (att == paramCPx) {
+        } else if (attribute == paramCPx) {
             _cPx = ((DoubleToken) paramCPx.getToken()).doubleValue();
-        } else if (att == paramCPz) {
+        } else if (attribute == paramCPz) {
             _cPz = ((DoubleToken) paramCPz.getToken()).doubleValue();
         }
     }

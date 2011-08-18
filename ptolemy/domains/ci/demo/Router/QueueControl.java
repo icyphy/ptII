@@ -177,10 +177,9 @@ public class QueueControl extends TypedAtomicActor {
         }
     }
 
-    /** preinitialize the private variables _q1Length
+    /** Preinitialize the private variables _q1Length
      *  and _q2Length to zero.
      *  @exception IllegalActionException If the parent class throws it.
-     *  @return Whatever the superclass returns.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();

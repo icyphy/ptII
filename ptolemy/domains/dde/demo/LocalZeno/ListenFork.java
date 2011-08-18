@@ -51,8 +51,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 0.3
  @Pt.ProposedRating Red (davisj)
  @Pt.AcceptedRating Red (davisj)
- @see ptolemy.actor.gui.ExecEvent
- @see ptolemy.actor.gui.ExecEventListener
  */
 public class ListenFork extends DoubleFork {
     /** Construct a ListenFork actor with the specified container

@@ -209,8 +209,8 @@ public class ClimbLinearizer extends TypedAtomicActor {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void attributeChanged(Attribute att) throws IllegalActionException {
-        if (att == paramAlphaV) {
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == paramAlphaV) {
             String taps = ((StringToken) paramAlphaV.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
@@ -224,9 +224,9 @@ public class ClimbLinearizer extends TypedAtomicActor {
                 String valueToken = stokens.nextToken();
                 _alphaV[index++] = (Double.valueOf(valueToken)).doubleValue();
             }
-        } else if (att == paramCVx) {
+        } else if (attribute == paramCVx) {
             _cVx = ((DoubleToken) paramCVx.getToken()).doubleValue();
-        } else if (att == paramCVz) {
+        } else if (attribute == paramCVz) {
             _cVz = ((DoubleToken) paramCVz.getToken()).doubleValue();
         }
     }

@@ -65,9 +65,9 @@ public class ND_1 extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ND_1(CompositeEntity aContainer, String aName)
+    public ND_1(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(aContainer, aName);
+        super(container, name);
 
         WP_2 = new TypedIOPort(this, "WP_2", false, true);
         WP_6 = new TypedIOPort(this, "WP_6", false, true);
