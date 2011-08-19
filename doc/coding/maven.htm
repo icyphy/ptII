@@ -72,34 +72,21 @@ to include support for Eclipse, see below</b>
 <li> Tell Maven about the jar files necessary to compile:
 
 <pre>
-mvn install:install-file -DgroupId=junitparams -DartifactId=junitparams \
--Dversion=svn -Dpackaging=jar -Dfile=$PTII/lib/JUnitParams-0.3.0.jar
-mvn install:install-file -DgroupId=jython -DartifactId=jython \
--Dversion=svn -Dpackaging=jar -Dfile=$PTII/vendors/jython/jython.jar
-mvn install:install-file -DgroupId=javajoystick -DartifactId=joystick \
--Dversion=0.7 -Dpackaging=jar -Dfile=$PTII/vendors/misc/joystick/Joystick.jar 
-mvn install:install-file -DgroupId=jxta -DartifactId=jxta -Dversion=1.0 \
--Dpackaging=jar -Dfile=$PTII/vendors/sun/jxta/jxta.jar
-mvn install:install-file -DgroupId=jxta -DartifactId=jxtasecurity -Dversion=1.0 \
--Dpackaging=jar -Dfile=$PTII/vendors/sun/jxta/jxtasecurity.jar
-mvn install:install-file -DgroupId=soot -DartifactId=sootclasses -Dversion=ptII \
--Dpackaging=jar -Dfile=$PTII/lib/sootclasses.jar
-mvn install:install-file -DgroupId=mapss -DartifactId=mapss -Dversion=ptII \
--Dpackaging=jar -Dfile=$PTII/lib/mapss.jar
-mvn install:install-file -DgroupId=caltrop -DartifactId=ptCal -Dversion=ptII \
--Dpackaging=jar -Dfile=$PTII/lib/ptCal.jar
-mvn install:install-file -DgroupId=chic -DartifactId=chic -Dversion=ptII \
--Dpackaging=jar -Dfile=$PTII/lib/chic.jar
-mvn install:install-file -DgroupId=jacl -DartifactId=jacl -Dversion=ptII \
--Dpackaging=jar -Dfile=$PTII/lib/ptjacl.jar
-mvn install:install-file -DgroupId=dbxml -DartifactId=db -Dversion=ptII \
--Dpackaging=jar -Dfile=$PTII/ptdb/lib/db.jar
-mvn install:install-file -DgroupId=dbxml -DartifactId=dbxml -Dversion=ptII \
--Dpackaging=jar -Dfile=$PTII/ptdb/lib/dbxml.jar
-mvn install:install-file -DgroupId=jogl -DartifactId=jogl -Dversion=ptII \
--Dpackaging=jar -Dfile=$PTII/vendors/sun/jogl/lib/jogl.jar
-mvn install:install-file -DgroupId=jogl -DartifactId=gluegen-rt -Dversion=ptII \
--Dpackaging=jar -Dfile=$PTII/vendors/sun/jogl/lib/gluegen-rt.jar
+mvn install:install-file -DgroupId=PDFRenderer -DartifactId=PDFRenderer -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/PDFRenderer.jar
+mvn install:install-file -DgroupId=caltrop -DartifactId=ptCal -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/ptCal.jar
+mvn install:install-file -DgroupId=chic -DartifactId=chic -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/chic.jar
+mvn install:install-file -DgroupId=dbxml -DartifactId=db -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/ptdb/lib/db.jar
+mvn install:install-file -DgroupId=dbxml -DartifactId=dbxml -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/ptdb/lib/dbxml.jar
+mvn install:install-file -DgroupId=iText -DartifactId=iText -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/vendors/misc/itext/iText.jar
+mvn install:install-file -DgroupId=jacl -DartifactId=jacl -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/ptjacl.jar
+mvn install:install-file -DgroupId=javajoystick -DartifactId=joystick -Dversion=0.7 -Dpackaging=jar -Dfile=$PTII/vendors/misc/joystick/Joystick.jar 
+mvn install:install-file -DgroupId=junitparams -DartifactId=junitparams -Dversion=0.3.0 -Dpackaging=jar -Dfile=$PTII/lib/JUnitParams-0.3.0.jar
+mvn install:install-file -DgroupId=jxta -DartifactId=jxta -Dversion=1.0 -Dpackaging=jar -Dfile=$PTII/vendors/sun/jxta/jxta.jar
+mvn install:install-file -DgroupId=jxta -DartifactId=jxtasecurity -Dversion=1.0 -Dpackaging=jar -Dfile=$PTII/vendors/sun/jxta/jxtasecurity.jar
+mvn install:install-file -DgroupId=jython -DartifactId=jython -Dversion=svn -Dpackaging=jar -Dfile=$PTII/vendors/jython/jython.jar
+mvn install:install-file -DgroupId=kieler -DartifactId=kieler -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/kieler.jar
+mvn install:install-file -DgroupId=mapss -DartifactId=mapss -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/mapss.jar
+mvn install:install-file -DgroupId=soot -DartifactId=sootclasses -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/sootclasses.jar
 </pre>
 
 

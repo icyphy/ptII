@@ -44,7 +44,8 @@ Other ways of setting up and building Ptolemy II are described on the
   <li> <a href="#NoSVN">Eclipse is unaware of the version control aspects of the project.</a>
 <!--eclipseSimple-->
   </ul>
-<li><a href="#simpleDebug">Simple Debugging Session</a></h2>
+<li><a href="#ant">Ant</a>
+<li><a href="#simpleDebug">Simple Debugging Session</a>
 <li><a href="#Optional">Optional Extensions</a>
 <li><a href="#Troubleshooting">Troubleshooting</a>
 </menu>
@@ -588,6 +589,35 @@ install a separate source-only download.
 The Ptolemy II welcome window should appear.
  <p>You may now wish to read the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/design/usingVergil/index.htm#in_browser" target="_top">Using Vergil</a>
 tutorial.
+
+<h2><a name="ant">Ant</a></h2>
+Versions of Ptolemy II after Ptolemy II 8.0.1 include an Ant (<a href="http://ant.apache.org/#in_browser" target="_top"><CODE>http://ant.apache.org/</code></a>)
+script that defines useful targets like building the actor documentation and actor/demonstration index.
+
+<p>See the <a href="ant.htm">Ptolemy II Ant documentation</a> for details, but the overview is
+that there are two ant build files in the tree:
+<ol>
+ <li>The <code>$PTII/build.default.xml</code> file is set up for a vanilla installation,
+it excludes third party packages like Java3D and Matlab. 
+ <li>The <code>$PTII/build.xml</code> file <b>is created if you run ./configure</b>
+</ol>
+
+To access an Ant file in Eclipse:
+<ul>
+ <li> Bring up the Ant view with: <code>Window</code> | <code>Show View</code> | <code>Ant</code>
+  <br/>If the <code>Ant</code> menu choice is not present, find it under <code>Others</code></li>
+ <li>Right click on the Ant pane and select <code>Add Buildfiles</code>
+ <li>In the Buildfile Selection window, open the ptII table and browse to either
+   <code>build.default.xml</code> or the <code>build.xml</code> file.
+   <br/>If both are present, then select the <code>build.xml</code> file, it is more configured for
+   the environment.
+</ul>
+
+To build the Javadocs and the actor documentation
+<ul> 
+ <li>In the Ant pane, expand the ptII task.</li>
+ <li>Double click on the <code>javadoc</code> tab.</li>
+</ul>
 
 <h2><a name="simpleDebug">Simple Debugging Session</a></h2>
 
