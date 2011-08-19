@@ -41,6 +41,7 @@
 		<pathelement location="lib/org-netbeans-api-visual.jar" />
 		<pathelement location="lib/org-openide-util-lookup.jar" />
 		<pathelement location="lib/org-openide-util.jar" />
+		<pathelement location="lib/JUnitParams-0.3.0.jar" />
 	</path>
 	<target name="clean">
 		<delete>
