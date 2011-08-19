@@ -545,11 +545,19 @@ See $PTII/doc/coding/maven.htm
       <artifactId>ptCal</artifactId>
       <version>ptII</version>
     </dependency>
+
     <dependency> <!-- $PTII/lib/chic.jar -->
       <groupId>chic</groupId>
       <artifactId>chic</artifactId>
       <version>ptII</version>
     </dependency>
+
+    <dependency> <!-- $PTII/lib/kieler.jar -->
+      <groupId>kieler</groupId>
+      <artifactId>kieler</artifactId>
+      <version>ptII</version>
+    </dependency>
+
     <dependency> <!-- $PTII/lib/ptjacl.jar -->
       <groupId>jacl</groupId>
       <artifactId>jacl</artifactId>
@@ -563,6 +571,18 @@ See $PTII/doc/coding/maven.htm
     <dependency> <!-- $PTII/ptdb/lib/db.jar -->
       <groupId>dbxml</groupId>
       <artifactId>db</artifactId>
+      <version>ptII</version>
+    </dependency>
+
+    <dependency> <!-- $PTII/lib/PDFRenderer.jar -->
+      <groupId>PDFRenderer</groupId>
+      <artifactId>PDFRenderer</artifactId>
+      <version>ptII</version>
+    </dependency>
+
+    <dependency> <!-- $PTII/vendors/misc/itext/iText.jar -->
+      <groupId>iText</groupId>
+      <artifactId>iText</artifactId>
       <version>ptII</version>
     </dependency>
 
@@ -650,12 +670,13 @@ See $PTII/doc/coding/maven.htm
            <exclude>ptolemy/plot/servlet/**</exclude>
            <exclude>vendors/**</exclude>
            <exclude>ptolemy/copernicus/jhdl/**</exclude>
+           <exclude>ptolemy/actor/lib/excel/**</exclude>
            <exclude>ptolemy/actor/lib/io/comm/**</exclude>
            <exclude>ptolemy/actor/lib/jai/**</exclude>
            <exclude>ptolemy/actor/lib/jmf/**</exclude>
            <exclude>ptolemy/actor/lib/joystick/**</exclude>
            <exclude>ptolemy/actor/lib/jxta/**</exclude>
-           <exclude>ptolemy/actor/lib/logic/FuzzyLogic/**</exclude>
+           <exclude>ptolemy/actor/lib/logic/fuzzy/**</exclude>
            <exclude>ptolemy/actor/lib/mail/**</exclude>
            <exclude>ptolemy/actor/lib/opencv/**</exclude>
            <exclude>ptolemy/domains/gr/lib/quicktime/**</exclude>
