@@ -1,0 +1,116 @@
+#!/bin/sh
+# Update test/junit. directories with copies of
+# JUnitCGJavaTest that has the proper package
+
+tmpmakefile=/tmp/updateJUnitCGJavaTest$$.mk
+cd $PTII
+
+txtFiles=/tmp/updateJUnitCGJavaTest.txtFiles
+echo "Creating $txtFiles"
+# Directories that have a makefile that has "test_java_cg"
+grep test_java_cg `find ptolemy/cg -name auto | awk '{print $1 "/../makefile"}'` | awk '{print $1}' | sed 's@/auto/../makefile:@@' > $txtFiles
+
+testDirs=`cat $txtFiles`
+#testDirs=ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/colt/test
+
+for testDir in $testDirs
+do
+    echo $testDir
+
+    if [ ! -d $testDir/junit ]; then
+	mkdir $testDir/junit
+    fi
+
+    package=`echo $testDir | sed 's@/@.@g' | sed 's@\.\.@@g'`.junit
+
+    ME=`echo $package | sed 's@\.@/@g'`
+    YEAR=`date +%Y`
+
+    javaFile=$testDir/junit/JUnitCGJavaTest.java
+    if [ ! -f $javaFile ]; then
+	sed -e "s#@ME@#$ME#" \
+	    -e "s/@PACKAGE@/$package/" \
+	    -e "s/@YEAR@/$YEAR/" \
+	    $PTII/ptolemy/util/test/junit/JUnitCGJavaTest.java.in > $javaFile
+	echo "$javaFile"
+    fi
+
+
+    makefile=$testDir/junit/makefile
+    if [ ! -f $makefile ]; then
+	ROOT=`echo $ME | sed 's@[^/]*@..@g'`
+	sed -e "s/@PACKAGE@/$package/" \
+	    -e "s#@ME@#$ME#" \
+	    -e "s#@ROOT@#$ROOT#" \
+	    -e "s/@YEAR@/$YEAR/" \
+	    $PTII/ptolemy/util/test/junit/makefile.in > $makefile
+	echo "$makefile"
+    else
+        awk '{
+        if ($1 != "CLASSPATH") {
+            if ($1 == "JSRCS") {
+                jsrcLineNumber = NR
+                print $0
+            } else {
+                if (jsrcLineNumber > 0 && NR == jsrcLineNumber + 1 && $0 !~ /JUnitCGJavaTest.java/) {
+                    jsrcLineNumber = 0;
+                    printf("\tJUnitCGJavaTest.java \\\n");
+                }
+                print $0
+            }
+        } else {
+            if ($0 !~ /JUNIT_JAR/) {
+                print $0 "$(CLASSPATHSEPARATOR)$(JUNIT_JAR)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)"
+            } else {
+                if ($0 !~ /PTJACL_JAR/) {
+                     print $0 "$(CLASSPATHSEPARATOR)$(PTJACL_JAR)"
+                } else {
+                     print $0
+                }
+            }
+        }
+        }' $testDir/junit/makefile > $tmpmakefile
+
+	diff $testDir/junit/makefile $tmpmakefile
+	status=$?
+	if [ $status == 1 ]; then
+ 	    #echo "Would copy"
+ 	    cp $tmpmakefile $testDir/junit/makefile
+	fi	
+    fi
+
+    # Add junit to test/makefile in DIRS and MISC_FILES
+#    awk '{
+#     if ($1 == "DIRS") {
+#        if (substr($0, length($0), 1) == "\\") {
+#             print substr($0, 0, length($0) - 1), "junit \\"
+#        } else {
+#             print $0, "junit"
+#        }
+#        sawDIRS = NR
+#     } else if ($1 == "ROOT" && sawDIRS == 0) {
+#        printf("DIRS =\tjunit\n\n");
+#        print $0
+#     if ($1 == "MISC_FILES") {
+#         if (substr($0, length($0), 1) == "\\") {
+#            print substr($0, 0, length($0) - 1), "junit \\"
+#         } else {
+#            print $0, "junit"
+#         }
+#         sawMISC_FILES = NR
+#     } else  if ($1 == "OPTIONAL_FILES" && sawMISC_FILES == 0) {
+#        printf("MISC_FILES =\tjunit\n\n");
+#        print $0
+#     } else {
+#        print $0
+#     } 
+# }' $testDir/makefile > $tmpmakefile
+
+
+#     diff $testDir/makefile $tmpmakefile
+#     status=$?
+#     if [ $status == 1 ]; then
+# 	echo "Would copy"
+# 	#cp $tmpmakefile $testDir/makefile
+#     fi	
+done

@@ -44,8 +44,11 @@
 
   <property name="source" value="1.5" />
 
+  <!-- The tests that are run by the test target. -->
+  <property name="test.batch" value="**/junit/*.java" />
+
   <!-- The test that is run by the test.auto target. -->
-  <property name="testName" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
+  <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
 
   <property name="target" value="1.5" />
 
@@ -399,7 +402,15 @@ For example:
 
   <target name="test" depends="build, initReports"
 	  description="Run the junit tests in junit/*.java.">
-    <echo>Use -Djunit.formatter=xml|brief|plain|failure, default is plain.  Output is in ${junit.output.dir}</echo>
+    <echo>
+      To run different tests, use -Dtest.batch, for example:
+      ant test -Dtest.batch=ptolemy/domains/continuous/**/junit/*.java
+      To change format Use -Djunit.formatter=xml|brief|plain|failure, default is plain.
+      Output is in ${junit.output.dir}.
+
+      test.batch = ${test.batch}
+
+    </echo>
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
@@ -412,7 +423,7 @@ For example:
       <batchtest todir="${junit.output.dir}">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <include name="**/junit/*.java" />
+	  <include name="${test.batch}" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.excludes" />
 	</fileset>
@@ -423,7 +434,7 @@ For example:
 
   <target name="test.auto" depends="build, initReports"
 	  description="Run the auto tests in one directory (ptolemy.actor.lib.test.junit.JUnitTclTest.)">
-    <echo>To run a different test, use -DtestName= and -Djunit.formatter=xml|brief|plain|failure</echo>
+    <echo>To run a different test, use -Dtest.name= and -Djunit.formatter=xml|brief|plain|failure</echo>
     <!-- printsummary takes one of One of on, off, and withOutAndErr.  Off is the default-->
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -435,7 +446,7 @@ For example:
 	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
       </classpath>
       <formatter type="${junit.formatter}" usefile="false"/>
-      <test  name="${testName}" />
+      <test  name="${test.name}" />
     </junit>
   </target>
 

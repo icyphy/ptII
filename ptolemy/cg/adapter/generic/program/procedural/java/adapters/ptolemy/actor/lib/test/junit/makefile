@@ -44,6 +44,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
+	JUnitCGJavaTest.java \
 	JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl
