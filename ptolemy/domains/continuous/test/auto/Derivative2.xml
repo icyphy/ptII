@@ -57,7 +57,7 @@
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="createSequence(0.0, 0.0, 100)">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-2">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 200.0]">
         </property>
@@ -67,7 +67,9 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 330.0]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 330.0}">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -87,8 +89,6 @@
         </property>
         <vertex name="vertex1" value="[140.0, 340.0]">
         </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -112,7 +112,17 @@
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{345.0, 310.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{455.0, 330.0}">
+        </vertex>
     </relation>
     <link port="ContinuousClock.output" relation="relation8"/>
     <link port="Derivative2.input" relation="relation8"/>
@@ -120,10 +130,10 @@
     <link port="Derivative2.impulse" relation="relation7"/>
     <link port="Integrator2.impulse" relation="relation7"/>
     <link port="Integrator2.derivative" relation="relation6"/>
-    <link port="Integrator2.state" relation="relation3"/>
-    <link port="AddSubtract.plus" relation="relation3"/>
+    <link port="Integrator2.state" relation="relation11"/>
+    <link port="AddSubtract.plus" relation="relation11"/>
     <link port="AddSubtract.minus" relation="relation8"/>
-    <link port="AddSubtract.output" relation="relation9"/>
+    <link port="AddSubtract.output" relation="relation3"/>
     <link port="Derivative.input" relation="relation4"/>
     <link port="Derivative.derivative" relation="relation"/>
     <link port="Derivative.impulse" relation="relation2"/>
@@ -135,5 +145,5 @@
     <link port="AddSubtract2.minus" relation="relation4"/>
     <link port="AddSubtract2.output" relation="relation10"/>
     <link port="NonStrictTest.input" relation="relation10"/>
-    <link port="NonStrictTest2.input" relation="relation9"/>
+    <link port="NonStrictTest2.input" relation="relation3"/>
 </entity>

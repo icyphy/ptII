@@ -32,6 +32,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -41,7 +42,7 @@ import ptolemy.kernel.util.StringAttribute;
 //// Derivative
 
 /**
- The derivative in the continuous domain.
+ A crude approximation to a derivative in the continuous domain.
  In continuous-time modeling, one should generally avoid taking derivatives
  directly. It is better to use an {@link Integrator} actor in a feedback loop.
  The input to the Integrator is the derivative of its output.
@@ -50,7 +51,12 @@ import ptolemy.kernel.util.StringAttribute;
  a derivative actor result in large output fluctuations.
  Since continuous-time simulation involves choosing step sizes,
  the choice of step size will strongly affect the resulting
- output of the derivative.
+ output of the derivative. Derivatives tend to be very noisy,
+ with considerable fluctuations in value. Moreover, if the
+ input to this actor has discontinuities, the output will not
+ be piecewise continuous, and at the discontinuity, the results
+ could be difficult to control. If an Integrator is downstream,
+ then the solver will be forced to use its smallest step size.
  <p>
  That said, if you have read this far, you are probably determined
  to compute a derivative. Hence, we provide this actor, which performs
@@ -168,43 +174,76 @@ public class Derivative extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if (!(input.hasToken(0))) {
-            initialize();
+        if (!(input.isKnown(0))) {
+            if (_debugging) {
+                _debug("fire: Input is not known.");
+            }
             return;
         }
+
+        if (!(input.hasToken(0))) {
+            if (_debugging) {
+                _debug("fire: Input has no token.");
+            }
+            return;
+        }
+        // Have to use the time from the port, not the director,
+        // because if this domain is embedded, then the
+        // director returns global time.
+        Time currentTime = input.getModelTime(0);
         DoubleToken currentInput = (DoubleToken) input.get(0);
 
-        Time currentTime = getDirector().getModelTime();
+        if (_debugging) {
+            _debug("fire at time: " + currentTime
+                    + ", microstep " + ((ContinuousDirector)getDirector()).getIndex()
+                    + "\n-- current input: " + currentInput
+                    + "\n-- _previousOutput: " + _previousOutput
+                    + "\n-- _previousInput: " + _previousInput
+                    + "\n-- _previousTime: " + _previousTime);
+        }
         if (_previousTime == null) {
             // First firing.
-            _previousTime = currentTime;
             derivative.send(0, DoubleToken.ZERO);
-            _previousOutput = DoubleToken.ZERO;
+            
+            if (_debugging) {
+                _debug("fire: first firing. Sending zero.");
+            }
 
-            _previousValue = currentInput.doubleValue();
-            if (_previousValue != 0.0) {
+            if (currentInput.doubleValue() != 0.0) {
                 impulse.send(0, currentInput);
+                if (_debugging) {
+                    _debug("fire: Initial value is not zero. Sending impulse: "
+                            + currentInput);
+                }
             }
         } else {
             // Not the first firing.
             if (currentTime.equals(_previousTime)) {
                 // No time has elapsed.
                 derivative.send(0, _previousOutput);
-                if (_previousValue != currentInput.doubleValue()) {
+                if (_debugging) {
+                    _debug("fire: No time has elapsed. Sending previous output: "
+                            + _previousOutput);
+                }
+                if (_previousInput != currentInput.doubleValue()) {
                     impulse.send(0, new DoubleToken(currentInput.doubleValue()
-                            - _previousValue));
-                    _previousValue = currentInput.doubleValue();
+                            - _previousInput));
+                    if (_debugging) {
+                        _debug("fire: Discontinuity. Sending impulse: "
+                                + (currentInput.doubleValue() - _previousInput));
+                    }
                 }
             } else {
                 // Time has elapsed.
                 double timeGap = currentTime.subtract(_previousTime)
                         .getDoubleValue();
-                double derivativeValue = (currentInput.doubleValue() - _previousValue)
+                double derivativeValue = (currentInput.doubleValue() - _previousInput)
                         / timeGap;
-                _previousOutput = new DoubleToken(derivativeValue);
-                derivative.send(0, _previousOutput);
-                _previousValue = currentInput.doubleValue();
-                _previousTime = currentTime;
+                derivative.send(0, new DoubleToken(derivativeValue));
+                if (_debugging) {
+                    _debug("fire: Time has elapsed. Sending output: "
+                            + derivativeValue);
+                }
             }
         }
     }
@@ -217,7 +256,60 @@ public class Derivative extends TypedAtomicActor {
         super.initialize();
         _previousTime = null;
         _previousOutput = null;
-        _previousValue = 0.0;
+        _previousInput = 0.0;
+    }
+    
+    /** Record the current input and time.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @return Whatever the superclass returns (true).
+     */
+    public boolean postfire() throws IllegalActionException {
+        boolean result = super.postfire();
+
+        if (!(input.hasToken(0))) {
+            initialize();
+            if (_debugging) {
+                _debug("Postfire: Input has no token. Initializing.");
+            }
+            return result;
+        }
+        // Have to completely recalculate the current output
+        // because the last invocation of fire() is not
+        // necessarily at the current time.
+        // Have to use the time from the port, not the director,
+        // because if this domain is embedded, then the
+        // director returns global time.
+        Time currentTime = input.getModelTime(0);
+        DoubleToken currentInput = (DoubleToken) input.get(0);
+        if (_previousTime == null) {
+            // First firing.
+            _previousOutput = DoubleToken.ZERO;
+            if (_debugging) {
+                _debug("First postfire");
+            }
+        } else {
+            // Not the first firing.
+            if (!currentTime.equals(_previousTime)) {
+                // Time has elapsed.
+                double timeGap = currentTime.subtract(_previousTime)
+                        .getDoubleValue();
+                double derivativeValue = (currentInput.doubleValue() - _previousInput)
+                        / timeGap;
+                _previousOutput = new DoubleToken(derivativeValue);
+            }
+        }
+        _previousInput = ((DoubleToken) input.get(0)).doubleValue();
+        _previousTime = getDirector().getModelTime();
+        if (_debugging) {
+            _debug("postfire at time: " + currentTime
+                    + ", microstep " + ((ContinuousDirector)getDirector()).getIndex()
+                    + "\n-- current input: " + currentInput
+                    + "\n-- _previousOutput updated to: " + _previousOutput
+                    + "\n-- _previousInput updated to: " + _previousInput
+                    + "\n-- _previousTime updated to: " + _previousTime
+                    + "\n");
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -230,5 +322,5 @@ public class Derivative extends TypedAtomicActor {
     private DoubleToken _previousOutput;
 
     /** The value of the previous input, or 0.0 on the first firing. */
-    private double _previousValue;
+    private double _previousInput;
 }
