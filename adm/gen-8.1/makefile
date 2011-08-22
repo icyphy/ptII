@@ -111,6 +111,8 @@ PTII_TOPDIR=	.cshrc \
 		.eclipse.epf \
 		README.txt \
 		bin \
+		build.default.xml \
+		build.xml.in \
 		com/JLex \
 		com/jgoodies \
 		com/makefile \
