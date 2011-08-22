@@ -2454,6 +2454,22 @@ $(PTSETUP).jar: $(PTSETUP).xml ../../jar_dist ../../ptiny.exe src/ptII$(VERSION)
 		ls -l $@; \
 	fi
 
+# Build a 64 bit installer.  See http://jira.codehaus.org/browse/IZPACK-506
+$(PTSETUP)_64.xml: $(PTSETUP).xml
+	sed 's/ShellLink.dll/ShellLink_x64.dll/' $^ > $@
+
+setup64_jar: $(PTSETUP)_64.jar
+$(PTSETUP)_64.jar: $(PTSETUP)_64.xml ../../ptiny.exe src/ptII$(VERSION)/bin/vergil cleanSrc
+	@echo "#"
+	@echo "# Building $(PTSETUP)_64.jar"
+	@echo "# `date`"
+	ls -l src/ptII$(VERSION)/bin/vergil
+	sh "$(IZPACK_COMPILE)" $<
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
 
 src/ptII$(VERSION)/bin/vergil:
 	cp $(PTII)/bin/vergil $@
@@ -2521,6 +2537,26 @@ $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
 		ls -l $@; \
 	fi
 
+$(PTSETUP)_64_l4j.xml: $(PTSETUP)_l4j.xml
+	sed 's/setup_windows/setup_windows_64/' $^ > $@
+
+setup_64: $(PTSETUP)_64.exe
+$(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
+			jre \
+			../../lib/matlabWindows.jar \
+			$(PTSETUP)_64_l4j.xml \
+			$(PTSETUP)_64.jar #ExtractJarFile.class
+
+	@echo "#"
+	@echo "# Building $(PTSETUP).exe"
+	@echo "# `date`"
+	"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_64_l4j.xml`
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
+
 ../../ptiny.exe:
 	 $(MAKE) -C ../.. exes
 
@@ -2539,7 +2575,9 @@ jre:
 		mkdir jre; \
 		echo "JRE Directory" > jre/README.txt; \
 	fi
-setup: $(PTSETUP).exe 
+
+setup: $(PTSETUP).exe $(PTSETUP)_64.exe
+
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
 
