@@ -52,7 +52,14 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	create_attributes_file.txt \
+	create_models.txt \
+	create_reference_file.txt \
+	create_script.txt \
+	remove_models.txt \
+	remove.txt \
+	update_script.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -80,7 +87,10 @@ Testing.dbxml:
 		echo "quit" | "$(PTDBXML_LIB)/../bin/dbxml" -s create_script.txt; \
 	fi
 
-KRUFT = Testing.dbxml
+KRUFT = Testing.dbxml \
+	log.* \
+	__db.* \
+	*.dbxml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
