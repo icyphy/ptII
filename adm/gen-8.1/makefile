@@ -86,7 +86,7 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 #gmake USER=bldmastr PTIIHOME=/export/home1/bldmastr/ptII PTIIADM=/export/home1/bldmastr/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar
-#make USER=bldmastr PTIIHOME=/home/bldmastr/ptII PTIIADM=/home/bldmastr/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/bin/jar clean all src.jar setup
+#make USER=bldmastr PTIIHOME=/home/bldmastr/ptII PTIIADM=/home/bldmastr/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/bin/jar clean all src.jar setup setup_mac_app_tar
 # nohup make USER=cxh PTIIHOME=/home/cxh/tmp/ptII PTIIADM=/home/cxh/tmp/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/java/jdk1.6.0_21/bin/jar clean all src.jar setup
 
 USER =		ptII
@@ -2439,10 +2439,22 @@ $(PTII)/vendors/izpack:
 		wget http://download.berlios.de/izpack/$(IZPACK_TAR); \
 		$(TAR) -zxf $(IZPACK_TAR)
 
+# It is necessary to this before create the Windows and Mac setup jar files.
+cleanSrc:
+	@echo "#"
+	@echo "# cleanSrc: removing files created by configure"
+	@echo "# `date`"
+	if [ -f src/ptII$(VERSION)/mk/ptII.mk ]; then \
+		(cd src/ptII$(VERSION)/bin; mv Vergil.app Ptiny.app ..; $(MAKE) clean; mv ../Vergil.app ../Ptiny.app .); \
+	fi
+	rm -f src/ptII$(VERSION)/mk/ptII.mk
+	rm -f src/ptII$(VERSION)/.classpath
+	rm -f src/ptII$(VERSION)/lib/ptII.properties
+
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
-# IzPack installer
+# 32 bit IzPack installer
 setup_jar: $(PTSETUP).jar
-$(PTSETUP).jar: $(PTSETUP).xml ../../jar_dist ../../ptiny.exe src/ptII$(VERSION)/bin/vergil ../../ptolemy/matlab/ptmatlab.dll
+$(PTSETUP).jar: $(PTSETUP).xml ../../jar_dist ../../ptiny.exe src/ptII$(VERSION)/bin/vergil ../../ptolemy/matlab/ptmatlab.dll cleanSrc
 	@echo "#"
 	@echo "# Building $(PTSETUP).jar"
 	@echo "# `date`"
@@ -2630,7 +2642,7 @@ $(PTINY_APP):
         fi
 
 setup_mac_jar: $(PTSETUP_MAC).jar
-$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist $(PTINY_APP) src/ptII$(VERSION)/bin/vergil
+$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist $(PTINY_APP) src/ptII$(VERSION)/bin/vergil cleanSrc
 	@echo "#"
 	@echo "# Building $@"
 	@echo "# `date`"
