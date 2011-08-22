@@ -19,6 +19,7 @@
 RCS
 SCCS
 CVS
+PtolemyServer.log
 .svn
 .cvsignore
 */TAGS
@@ -106,7 +107,9 @@ doc/doccheck
 doc/findbugs.xml
 doc/findbugs.out
 doc/findbugs.htm
+doc/findbugsOut.xml
 doc/img/PtolemyIISplash.psd
+doc/ojdcheck.htm
 doc/uml
 doc/uml/*
 doc/img/*.psd
@@ -282,6 +285,7 @@ ptolemy/vergil/graph
 ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 ptolemy/verification/SystemGeneratedTempFolder*
 ptolemy/verification/demo/SimpleTrafficLight/stl.kripke
+ptserver/test/junit/PtolemyServer.log
 updateMoMLFiles.xml
 socket.cfg
 devel
