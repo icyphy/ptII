@@ -444,7 +444,7 @@ For example:
 	<pathelement location="/Users/cxh/ptII" />
 	<path refid="ptII.classpath"/>
       </classpath>
-      <jvmarg value="-Xmx1024"/>
+      <jvmarg value="-Xmx1024m"/>
       <arg line="${model}"/>
     </java>
   </target>
