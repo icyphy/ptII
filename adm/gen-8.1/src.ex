@@ -130,6 +130,9 @@ make.out
 mems
 mk/ptII.mk
 nsmail
+ptdb/config/database/testdata/log.*
+ptdb/config/database/testdata/__db.*
+ptdb/config/database/testdata/*.dbxml
 ptjar_tmpdir
 ptolemy/PtolemyII.ptml
 ptolemy/actor/corba
