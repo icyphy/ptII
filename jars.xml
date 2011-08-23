@@ -178,6 +178,7 @@
       <fileset dir="${basedir}">
 	<patternset refid="jars"/>
       </fileset>	  
+      <fileset dir="${basedir}/signed"/>
     </delete>
   </target>
 
