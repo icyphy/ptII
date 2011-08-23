@@ -5158,9 +5158,13 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
    fi
 fi
 
+# Packages to exclude from Ant targets that call javadoc
+ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's@<exclude name="@@g' | sed 's@" */>@@g' | sed 's@/@.@g' | awk '{for (i=1;i <= NF; i++) { if ($i !~ /\*\*/) {printf("%s*,", $i)}}}'`
+
+
 # Keep these substitutions alphabetical, with a description
 
-# Paths to always exclude i Ant's build.xml
+# Paths to always exclude in Ant's build.xml
 AC_SUBST(ANT_ALWAYS_EXCLUDE)
 
 # Jar files to include in Ant's build.xml
@@ -5168,6 +5172,9 @@ AC_SUBST(ANT_CLASSPATH)
 
 # Paths to exclude in Ant's build.xml
 AC_SUBST(ANT_EXCLUDE)
+
+# Packages to exclude from Ant targets that call javadoc
+AC_SUBST(ANT_JAVADOC_EXCLUDEPACKAGENAMES)
 
 # Directory that contains the Caltrop jar file ptCal.jar
 # used by bin/ptinvoke.in
