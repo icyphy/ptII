@@ -249,7 +249,9 @@ BASECLASSFILES = \
 		'$(ME)/PlotBox$$TimedRepaint$$1.class' \
 		'$(ME)/PlotBox$$TimedRepaint.class' \
 		'$(ME)/PlotBox$$ZoomListener.class' \
+		$(ME)/PlotBoxInterface.class \
 		$(ME)/PlotDataException.class \
+		$(ME)/PlotInterface.class \
 		$(ME)/PlotPoint.class \
 		'$(ME)/Plot$$Format.class' \
 		'$(ME)/PlotFormatter$$1.class' \
