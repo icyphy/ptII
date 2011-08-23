@@ -184,7 +184,7 @@
 <!-- doc/docConfig.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/docConfig.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="doc/*.css"/>
     </fileset>
@@ -217,7 +217,7 @@
 <!-- ptolemy/vergil/basic/layout/layout.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/basic/layout/layout.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/basic/layout/*.class"/>
     </fileset>
@@ -238,7 +238,7 @@
 <!-- ptolemy/ptsupport.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/ptsupport.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="com/microstar/xml/*.class"/>
     </fileset>
@@ -643,7 +643,7 @@
 <!-- ptolemy/vergil/vergil.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/vergil.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/*.class"/>
     </fileset>
@@ -760,7 +760,7 @@
 <!-- ptolemy/domains/domains.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/domains.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/*.xml"/>
     </fileset>
@@ -922,7 +922,7 @@
 <!-- ptolemy/actor/parameters/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/parameters/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/parameters/demo/Bouncer/*.htm"/>
     </fileset>
@@ -940,7 +940,7 @@
 <!-- ptolemy/matlab/matlab.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/matlab/matlab.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/matlab/*.class"/>
     </fileset>
@@ -955,7 +955,7 @@
 <!-- ptolemy/matlab/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/matlab/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/matlab/demo/MatlabCT/*.xml"/>
     </fileset>
@@ -970,7 +970,7 @@
 <!-- doc/codeDoc.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/codeDoc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
       <include name="doc/codeDoc/**"/>
     </fileset>
@@ -979,7 +979,7 @@
 <!-- ptolemy/codegen/codegen.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/codegen/codegen.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/codegen/*.html"/>
     </fileset>
@@ -1360,7 +1360,7 @@
 <!-- ptolemy/codegen/c/vergil/vergil.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/codegen/c/vergil/vergil.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/codegen/c/vergil/actor/lib/*.c"/>
     </fileset>
@@ -1372,7 +1372,7 @@
 <!-- ptolemy/codegen/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/codegen/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/codegen/demo/Butterfly/*.xml"/>
     </fileset>
@@ -1393,7 +1393,7 @@
 <!-- ptolemy/codegen/c/domains/fsm/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/codegen/c/domains/fsm/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/codegen/c/domains/fsm/demo/Mod4Counter/*.xml"/>
     </fileset>
@@ -1402,7 +1402,7 @@
 <!-- ptolemy/codegen/c/domains/modal/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/codegen/c/domains/modal/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/codegen/c/domains/modal/demo/Mod4Counter/*.xml"/>
     </fileset>
@@ -1411,7 +1411,7 @@
 <!-- ptolemy/codegen/c/domains/pn/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/codegen/c/domains/pn/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/codegen/c/domains/pn/demo/Gravitation/*.xml"/>
     </fileset>
@@ -1423,7 +1423,7 @@
 <!-- ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/*.xml"/>
     </fileset>
@@ -1435,7 +1435,7 @@
 <!-- ptolemy/copernicus/copernicus.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/copernicus/copernicus.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/copernicus/*.xml"/>
     </fileset>
@@ -1489,7 +1489,7 @@
 <!-- doc/design/design.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/design/design.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="doc/design/*.pdf"/>
     </fileset>
@@ -1498,7 +1498,7 @@
 <!-- doc/img/img.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/img/img.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="doc/img/*.gif"/>
     </fileset>
@@ -1513,7 +1513,7 @@
 <!-- ptolemy/actor/gt/gt.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/gt/gt.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/gt/*.class"/>
     </fileset>
@@ -1552,7 +1552,7 @@
 <!-- ptolemy/actor/gt/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/gt/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/gt/demo/BouncingBallX2/*.xml"/>
     </fileset>
@@ -1594,7 +1594,7 @@
 <!-- ptolemy/actor/lib/io/comm/comm.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/io/comm/comm.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/io/comm/*.class"/>
     </fileset>
@@ -1609,7 +1609,7 @@
 <!-- ptolemy/actor/lib/io/comm/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/io/comm/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/io/comm/demo/SerialPort/*.xml"/>
     </fileset>
@@ -1620,7 +1620,7 @@
 <!-- ptolemy/actor/lib/jai/jai.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/jai/jai.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/jai/*.class"/>
     </fileset>
@@ -1635,7 +1635,7 @@
 <!-- ptolemy/actor/lib/jai/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/jai/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/jai/demo/AdaptiveMedian/*.png"/>
     </fileset>
@@ -1656,7 +1656,7 @@
 <!-- ptolemy/actor/lib/jmf/jmf.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/jmf/jmf.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/jmf/*.class"/>
     </fileset>
@@ -1677,7 +1677,7 @@
 <!-- ptolemy/actor/lib/jmf/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/jmf/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/jmf/demo/JMFJAI/*.xml"/>
     </fileset>
@@ -1689,7 +1689,7 @@
 <!-- ptolemy/actor/lib/joystick/joystick.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/joystick/joystick.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/joystick/*.class"/>
     </fileset>
@@ -1706,7 +1706,7 @@
 <!-- ptolemy/actor/lib/jxta/jxta.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/jxta/jxta.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/jxta/*.adv"/>
     </fileset>
@@ -1724,7 +1724,7 @@
 <!-- ptolemy/actor/lib/mail/mail.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/mail/mail.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/mail/*.class"/>
     </fileset>
@@ -1739,7 +1739,7 @@
 <!-- ptolemy/actor/lib/mail/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/mail/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/jai/demo/SendMail/*.txt"/>
     </fileset>
@@ -1753,7 +1753,7 @@
 <!-- ptolemy/actor/ptalon/gt/gt.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/ptalon/gt/gt.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/ptalon/gt/*.class"/>
     </fileset>
@@ -1768,7 +1768,7 @@
 <!-- ptolemy/actor/ptalon/gt/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/ptalon/gt/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/ptalon/gt/demo/Adder/*.htm"/>
     </fileset>
@@ -1783,7 +1783,7 @@
 <!-- ptolemy/codegen/rtmaude/rtmaude.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/codegen/rtmaude/rtmaude.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/codegen/rtmaude/*.maude"/>
     </fileset>
@@ -1867,7 +1867,7 @@
 <!-- ptolemy/backtrack/backtrack.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/backtrack/backtrack.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/backtrack/*.class"/>
     </fileset>
@@ -1930,7 +1930,7 @@
 <!-- ptolemy/backtrack/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/backtrack/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/backtrack/demo/PrimeTest/*.xml"/>
     </fileset>
@@ -1945,7 +1945,7 @@
 <!-- ptolemy/caltrop/caltrop.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/caltrop/caltrop.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/caltrop/*.class"/>
     </fileset>
@@ -1969,7 +1969,7 @@
 <!-- ptolemy/caltrop/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/caltrop/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/caltrop/demo/FunctionClosures/*.xml"/>
     </fileset>
@@ -1987,7 +1987,7 @@
 <!-- ptolemy/distributed/distributed.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/distributed/distributed.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/distributed/actor/*.class"/>
     </fileset>
@@ -2020,7 +2020,7 @@
 <!-- ptolemy/distributed/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/distributed/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/distributed/demo/Sleep/*.bat"/>
     </fileset>
@@ -2038,7 +2038,7 @@
 <!-- ptolemy/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/demo/Demos/*.xml"/>
     </fileset>
@@ -2059,7 +2059,7 @@
 <!-- ptolemy/domains/experimentalDomains.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/experimentalDomains.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/*.xml"/>
     </fileset>
@@ -2263,7 +2263,7 @@
 <!-- ptolemy/domains/ci/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ci/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ci/demo/Router/*.class"/>
     </fileset>
@@ -2278,7 +2278,7 @@
 <!-- ptolemy/domains/ci/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ci/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ci/doc/*.htm"/>
     </fileset>
@@ -2287,7 +2287,7 @@
 <!-- ptolemy/domains/csp/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/csp/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/csp/demo/Barrier/*.xml"/>
     </fileset>
@@ -2308,7 +2308,7 @@
 <!-- ptolemy/domains/csp/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/csp/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/csp/doc/*.htm"/>
     </fileset>
@@ -2317,7 +2317,7 @@
 <!-- ptolemy/domains/curriculum/curriculum.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/curriculum/curriculum.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/curriculum/*.class"/>
     </fileset>
@@ -2332,7 +2332,7 @@
 <!-- ptolemy/domains/dde/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/dde/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/dde/demo/HelloWorld/*.class"/>
     </fileset>
@@ -2347,7 +2347,7 @@
 <!-- ptolemy/domains/dde/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/dde/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/dde/doc/*.htm"/>
     </fileset>
@@ -2356,7 +2356,7 @@
 <!-- ptolemy/domains/dt/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/dt/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/dt/demo/Eye/*.xml"/>
     </fileset>
@@ -2365,7 +2365,7 @@
 <!-- ptolemy/domains/dt/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/dt/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/dt/doc/*.htm"/>
     </fileset>
@@ -2374,7 +2374,7 @@
 <!-- ptolemy/domains/giotto/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/giotto/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/giotto/demo/Composite/*.xml"/>
     </fileset>
@@ -2392,7 +2392,7 @@
 <!-- ptolemy/domains/giotto/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/giotto/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/giotto/doc/*.htm"/>
     </fileset>
@@ -2401,7 +2401,7 @@
 <!-- ptolemy/domains/gr/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/gr/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/gr/demo/FurutaPendulum/*.xml"/>
     </fileset>
@@ -2434,7 +2434,7 @@
 <!-- ptolemy/domains/gr/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/gr/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/gr/doc/*.htm"/>
     </fileset>
@@ -2443,7 +2443,7 @@
 <!-- ptolemy/domains/gr/lib/quicktime/quicktime.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/gr/lib/quicktime/quicktime.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/gr/lib/quicktime/*.class"/>
     </fileset>
@@ -2458,7 +2458,7 @@
 <!-- ptolemy/domains/psdf/psdf.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/psdf/psdf.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/psdf/*.htm"/>
     </fileset>
@@ -2473,7 +2473,7 @@
 <!-- ptolemy/domains/psdf/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/psdf/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/psdf/demo/BlindCommunication/*.wav"/>
     </fileset>
@@ -2488,7 +2488,7 @@
 <!-- ptolemy/domains/psdf/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/psdf/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/doc/*.htm"/>
     </fileset>
@@ -2497,7 +2497,7 @@
 <!-- ptolemy/domains/ptides/ptides.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ptides/ptides.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ptides/kernel/*.class"/>
     </fileset>
@@ -2515,7 +2515,7 @@
 <!-- ptolemy/domains/ptides/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ptides/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime/*.xml"/>
     </fileset>
@@ -2566,7 +2566,7 @@
 <!-- ptolemy/domains/sdf/lib/vq/vq.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/lib/vq/vq.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/lib/vq/*.class"/>
     </fileset>
@@ -2578,7 +2578,7 @@
 <!-- ptolemy/domains/sdf/lib/vq/data/data.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/lib/vq/data/data.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/lib/vq/data/*.dat"/>
     </fileset>
@@ -2590,7 +2590,7 @@
 <!-- ptolemy/domains/tdl/tdl.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/tdl/tdl.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/tdl/*.xml"/>
     </fileset>
@@ -2605,7 +2605,7 @@
 <!-- ptolemy/domains/tdl/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/tdl/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/tdl/demo/ActiveRearSteeringCT/*.xml"/>
     </fileset>
@@ -2623,7 +2623,7 @@
 <!-- ptolemy/domains/tester/tester.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/tester/tester.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/tester/kernel/*.class"/>
     </fileset>
@@ -2635,7 +2635,7 @@
 <!-- ptolemy/domains/tm/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/tm/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/tm/demo/Controllers/*.htm"/>
     </fileset>
@@ -2665,7 +2665,7 @@
 <!-- ptolemy/domains/tm/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/tm/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/tm/doc/*.htm"/>
     </fileset>
@@ -2674,7 +2674,7 @@
 <!-- ptolemy/verification/verification.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/verification/verification.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/verification/*.html"/>
     </fileset>
@@ -2704,7 +2704,7 @@
 <!-- ptolemy/verification/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/verification/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/verification/demo/RailroadControl/*.xml"/>
     </fileset>
@@ -2737,7 +2737,7 @@
 <!-- ptolemy/domains/ptera/ptera.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ptera/ptera.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ptera/kernel/*.class"/>
     </fileset>
@@ -2755,7 +2755,7 @@
 <!-- ptolemy/domains/ptera/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ptera/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ptera/demo/AdaptiveCarWash/*.xml"/>
     </fileset>
@@ -2773,7 +2773,7 @@
 <!-- ptolemy/domains/ptera/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ptera/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ptera/doc/*.htm"/>
     </fileset>
@@ -2782,7 +2782,7 @@
 <!-- ptolemy/vergil/ptera/ptera.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/ptera/ptera.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/ptera/*.class"/>
     </fileset>
@@ -2791,7 +2791,7 @@
 <!-- ptolemy/vergil/pdfrenderer/pdfrenderer.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/pdfrenderer/pdfrenderer.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/pdfrenderer/*.class"/>
     </fileset>
@@ -2809,7 +2809,7 @@
 <!-- ptolemy/vergil/fsm/fmv/fmv.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/fsm/fmv/fmv.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/fsm/fmv/*.class"/>
     </fileset>
@@ -2821,7 +2821,7 @@
 <!-- ptolemy/vergil/modal/fmv/fmv.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/modal/fmv/fmv.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/modal/fmv/*.class"/>
     </fileset>
@@ -2833,7 +2833,7 @@
 <!-- ptolemy/vergil/gt/gt.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/gt/gt.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/gt/*.class"/>
     </fileset>
@@ -2845,7 +2845,7 @@
 <!-- ptolemy/vergil/tdl/tdl.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/tdl/tdl.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/tdl/*.class"/>
     </fileset>
@@ -2854,7 +2854,7 @@
 <!-- ptolemy/cg/cg.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/cg/cg.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/cg/*.html"/>
     </fileset>
@@ -3094,7 +3094,7 @@
 <!-- ptolemy/data/ontologies/ontologies.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/data/ontologies/ontologies.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/data/ontologies/*.class"/>
     </fileset>
@@ -3202,7 +3202,7 @@
 <!-- ptolemy/vergil/ontologies/ontologies.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/ontologies/ontologies.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/ontologies/*.class"/>
     </fileset>
@@ -3211,7 +3211,7 @@
 <!-- ptolemy/domains/sequence/sequence.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sequence/sequence.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sequence/gui/*.class"/>
     </fileset>
@@ -3232,7 +3232,7 @@
 <!-- ptolemy/domains/pthales/pthales.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/pthales/pthales.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/pthales/kernel/*.class"/>
     </fileset>
@@ -3256,7 +3256,7 @@
 <!-- ptolemy/domains/pthales/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/pthales/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/pthales/demo/AdaptiveBeamForming/*.xml"/>
     </fileset>
@@ -3277,7 +3277,7 @@
 <!-- ptolemy/actor/lib/database/database.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/database/database.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/database/*.class"/>
     </fileset>
@@ -3292,7 +3292,7 @@
 <!-- ptolemy/domains/space/space.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/space/space.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/space/*.class"/>
     </fileset>
@@ -3317,7 +3317,7 @@
 <!-- com/jgoodies/jgoodies.jar -->
   <jar defaultexcludes="yes"
        destfile="com/jgoodies/jgoodies.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="com/jgoodies/*.htm"/>
     </fileset>
@@ -3341,7 +3341,7 @@
 <!-- org/mlc/mlc.jar -->
   <jar defaultexcludes="yes"
        destfile="org/mlc/mlc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="org/mlc/*.htm"/>
     </fileset>
@@ -3365,7 +3365,7 @@
 <!-- ptolemy/actor/gui/run/run.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/gui/run/run.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/gui/run/*.class"/>
     </fileset>
@@ -3380,7 +3380,7 @@
 <!-- ptolemy/domains/wireless/wireless.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/wireless/wireless.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/wireless/*.xml"/>
     </fileset>
@@ -3398,7 +3398,7 @@
 <!-- ptolemy/domains/wireless/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/wireless/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/wireless/demo/AntennaPattern/*.xml"/>
     </fileset>
@@ -3455,7 +3455,7 @@
 <!-- ptolemy/domains/wireless/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/wireless/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/wireless/doc/*.htm"/>
     </fileset>
@@ -3464,7 +3464,7 @@
 <!-- doc/design/hyvisual.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/design/hyvisual.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="doc/design/*.pdf"/>
     </fileset>
@@ -3473,7 +3473,7 @@
 <!-- doc/codeDocHyVisual.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/codeDocHyVisual.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
       <include name="doc/codeDocHyVisual/**"/>
     </fileset>
@@ -3482,7 +3482,7 @@
 <!-- ptolemy/hsif/hsif.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/hsif/hsif.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/hsif/*.class"/>
     </fileset>
@@ -3494,7 +3494,7 @@
 <!-- ptolemy/hsif/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/hsif/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/hsif/demo/*.htm"/>
     </fileset>
@@ -3515,7 +3515,7 @@
 <!-- ptolemy/domains/continuous/continuous.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/continuous/continuous.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/continuous/kernel/*.class"/>
     </fileset>
@@ -3542,7 +3542,7 @@
 <!-- ptolemy/domains/ct/ct.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ct/ct.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ct/kernel/*.class"/>
     </fileset>
@@ -3563,7 +3563,7 @@
 <!-- ptolemy/domains/de/de.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/de/de.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/de/kernel/*.class"/>
     </fileset>
@@ -3581,7 +3581,7 @@
 <!-- ptolemy/domains/fsm/fsm.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/fsm/fsm.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/fsm/kernel/*.class"/>
     </fileset>
@@ -3605,7 +3605,7 @@
 <!-- ptolemy/domains/gr/gr.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/gr/gr.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/gr/*.xml"/>
     </fileset>
@@ -3629,7 +3629,7 @@
 <!-- ptolemy/domains/gr/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/gr/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/gr/demo/FurutaPendulum/*.xml"/>
     </fileset>
@@ -3662,7 +3662,7 @@
 <!-- ptolemy/domains/modal/modal.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/modal/modal.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/modal/kernel/*.class"/>
     </fileset>
@@ -3686,7 +3686,7 @@
 <!-- ptolemy/domains/sdf/lib/lib.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/lib/lib.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/lib/*.class"/>
     </fileset>
@@ -3701,7 +3701,7 @@
 <!-- ptolemy/domains/sdf/kernel/kernel.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/kernel/kernel.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/kernel/*.class"/>
     </fileset>
@@ -3710,7 +3710,7 @@
 <!-- ptolemy/domains/sr/sr.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sr/sr.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sr/kernel/*.class"/>
     </fileset>
@@ -3728,7 +3728,7 @@
 <!-- ptolemy/domains/continuous/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/continuous/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/continuous/demo/BouncingBall/*.xml"/>
     </fileset>
@@ -3857,7 +3857,7 @@
 <!-- ptolemy/domains/continuous/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/continuous/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/continuous/doc/*.htm"/>
     </fileset>
@@ -3866,7 +3866,7 @@
 <!-- ptolemy/domains/ct/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ct/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ct/demo/BouncingBall/*.xml"/>
     </fileset>
@@ -3992,7 +3992,7 @@
 <!-- ptolemy/domains/ct/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ct/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ct/doc/*.gif"/>
     </fileset>
@@ -4004,7 +4004,7 @@
 <!-- ptolemy/domains/fsm/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/fsm/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/fsm/doc/*.htm"/>
     </fileset>
@@ -4013,7 +4013,7 @@
 <!-- ptolemy/domains/fsm/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/fsm/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/fsm/demo/ABP/*.class"/>
     </fileset>
@@ -4055,7 +4055,7 @@
 <!-- ptolemy/domains/modal/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/modal/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/modal/doc/*.htm"/>
     </fileset>
@@ -4064,7 +4064,7 @@
 <!-- ptolemy/domains/modal/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/modal/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/modal/demo/ABP/*.xml"/>
     </fileset>
@@ -4106,7 +4106,7 @@
 <!-- ptolemy/domains/sdf/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/demo/Array/*.xml"/>
     </fileset>
@@ -4202,7 +4202,7 @@
 <!-- ptolemy/domains/sdf/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/doc/*.htm"/>
     </fileset>
@@ -4211,7 +4211,7 @@
 <!-- ptolemy/actor/lib/comm/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/comm/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/comm/demo/ConvolutionalCoder/*.xml"/>
     </fileset>
@@ -4232,7 +4232,7 @@
 <!-- ptolemy/actor/lib/hoc/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/hoc/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/hoc/demo/ApplyFFT/*.xml"/>
     </fileset>
@@ -4262,7 +4262,7 @@
 <!-- ptolemy/actor/lib/javasound/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/javasound/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/javasound/demo/KarplusStrong/*.xml"/>
     </fileset>
@@ -4271,7 +4271,7 @@
 <!-- ptolemy/data/type/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/data/type/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/data/type/demo/Objects/*.xml"/>
     </fileset>
@@ -4283,7 +4283,7 @@
 <!-- ptolemy/data/unit/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/data/unit/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/data/unit/demo/StaticUnits/*.gif"/>
     </fileset>
@@ -4301,7 +4301,7 @@
 <!-- ptolemy/moml/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/moml/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/moml/demo/Networked/*.xml"/>
     </fileset>
@@ -4310,7 +4310,7 @@
 <!-- ptolemy/vergil/kernel/attributes/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/kernel/attributes/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/kernel/attributes/demo/AnimateVergil/*.xml"/>
     </fileset>
@@ -4325,7 +4325,7 @@
 <!-- lbnl/lbnl.jar -->
   <jar defaultexcludes="yes"
        destfile="lbnl/lbnl.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="lbnl/actor/lib/*.class"/>
     </fileset>
@@ -4343,7 +4343,7 @@
 <!-- lbnl/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="lbnl/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="lbnl/demo/CRoom/*.c"/>
     </fileset>
@@ -4370,7 +4370,7 @@
 <!-- ptolemy/actor/lib/database/database.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/database/database.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/database/*.class"/>
     </fileset>
@@ -4385,7 +4385,7 @@
 <!-- ptolemy/domains/space/space.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/space/space.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/space/*.class"/>
     </fileset>
@@ -4410,7 +4410,7 @@
 <!-- doc/codeDocViptos.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/codeDocViptos.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
       <include name="doc/codeDocViptos/**"/>
     </fileset>
@@ -4419,7 +4419,7 @@
 <!-- ptolemy/domains/ptinyos/ptinyos.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ptinyos/ptinyos.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ptinyos/gui/*.class"/>
     </fileset>
@@ -4452,7 +4452,7 @@
 <!-- ptolemy/domains/ptinyos/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ptinyos/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ptinyos/demo/CntToLeds/*.xml"/>
     </fileset>
@@ -4476,7 +4476,7 @@
 <!-- ptolemy/domains/ptinyos/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ptinyos/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ptinyos/doc/*.htm"/>
     </fileset>
@@ -4485,7 +4485,7 @@
 <!-- doc/design/visualsense.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/design/visualsense.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="doc/design/*.pdf"/>
     </fileset>
@@ -4494,7 +4494,7 @@
 <!-- doc/codeDocVisualSense.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/codeDocVisualSense.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
       <include name="doc/codeDocVisualSense/**"/>
     </fileset>
@@ -4503,7 +4503,7 @@
 <!-- ptolemy/actor/lib/colt/colt.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/colt/colt.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/colt/*.class"/>
     </fileset>
@@ -4518,7 +4518,7 @@
 <!-- ptolemy/actor/lib/colt/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/colt/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/colt/demo/ColtRandom/*.xml"/>
     </fileset>
@@ -4527,7 +4527,7 @@
 <!-- ptolemy/actor/lib/jni/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/jni/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/jni/demo/Scale/*.c"/>
     </fileset>
@@ -4545,7 +4545,7 @@
 <!-- ptolemy/actor/lib/python/python.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/python/python.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/python/*.class"/>
     </fileset>
@@ -4560,7 +4560,7 @@
 <!-- ptolemy/actor/lib/python/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/python/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/python/demo/Ptolemnizer/*.xml"/>
     </fileset>
@@ -4575,7 +4575,7 @@
 <!-- ptolemy/actor/lib/security/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/security/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/security/demo/Signature/*.ptKeystore"/>
     </fileset>
@@ -4587,7 +4587,7 @@
 <!-- ptolemy/actor/lib/comm/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/comm/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/comm/demo/ConvolutionalCoder/*.xml"/>
     </fileset>
@@ -4608,7 +4608,7 @@
 <!-- ptolemy/actor/lib/hoc/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/hoc/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/hoc/demo/ApplyFFT/*.xml"/>
     </fileset>
@@ -4638,7 +4638,7 @@
 <!-- ptolemy/actor/lib/javasound/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/lib/javasound/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/lib/javasound/demo/KarplusStrong/*.xml"/>
     </fileset>
@@ -4647,7 +4647,7 @@
 <!-- ptolemy/data/type/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/data/type/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/data/type/demo/Objects/*.xml"/>
     </fileset>
@@ -4659,7 +4659,7 @@
 <!-- ptolemy/data/unit/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/data/unit/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/data/unit/demo/StaticUnits/*.gif"/>
     </fileset>
@@ -4677,7 +4677,7 @@
 <!-- ptolemy/moml/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/moml/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/moml/demo/Networked/*.xml"/>
     </fileset>
@@ -4686,7 +4686,7 @@
 <!-- ptolemy/vergil/kernel/attributes/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/kernel/attributes/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/kernel/attributes/demo/AnimateVergil/*.xml"/>
     </fileset>
@@ -4701,7 +4701,7 @@
 <!-- ptolemy/actor/ptalon/antlr/antlr.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/ptalon/antlr/antlr.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="antlr/*.class"/>
     </fileset>
@@ -4743,7 +4743,7 @@
 <!-- ptolemy/actor/ptalon/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/ptalon/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/ptalon/demo/CruiseControl/*.htm"/>
     </fileset>
@@ -4815,7 +4815,7 @@
 <!-- ptolemy/actor/ptalon/ptalon.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/ptalon/ptalon.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/ptalon/*.class"/>
     </fileset>
@@ -4833,7 +4833,7 @@
 <!-- ptolemy/domains/continuous/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/continuous/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/continuous/demo/BouncingBall/*.xml"/>
     </fileset>
@@ -4962,7 +4962,7 @@
 <!-- ptolemy/domains/continuous/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/continuous/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/continuous/doc/*.htm"/>
     </fileset>
@@ -4971,7 +4971,7 @@
 <!-- ptolemy/domains/ct/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ct/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ct/demo/BouncingBall/*.xml"/>
     </fileset>
@@ -5097,7 +5097,7 @@
 <!-- ptolemy/domains/ct/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ct/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ct/doc/*.gif"/>
     </fileset>
@@ -5109,7 +5109,7 @@
 <!-- ptolemy/domains/fsm/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/fsm/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/fsm/doc/*.htm"/>
     </fileset>
@@ -5118,7 +5118,7 @@
 <!-- ptolemy/domains/fsm/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/fsm/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/fsm/demo/ABP/*.class"/>
     </fileset>
@@ -5160,7 +5160,7 @@
 <!-- ptolemy/domains/modal/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/modal/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/modal/doc/*.htm"/>
     </fileset>
@@ -5169,7 +5169,7 @@
 <!-- ptolemy/domains/modal/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/modal/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/modal/demo/ABP/*.xml"/>
     </fileset>
@@ -5211,7 +5211,7 @@
 <!-- ptolemy/domains/sdf/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/demo/Array/*.xml"/>
     </fileset>
@@ -5307,7 +5307,7 @@
 <!-- ptolemy/domains/sdf/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/doc/*.htm"/>
     </fileset>
@@ -5316,7 +5316,7 @@
 <!-- ptolemy/domains/ddf/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ddf/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ddf/demo/Eratosthenes/*.xml"/>
     </fileset>
@@ -5349,7 +5349,7 @@
 <!-- ptolemy/domains/ddf/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ddf/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ddf/doc/*.htm"/>
     </fileset>
@@ -5358,7 +5358,7 @@
 <!-- ptolemy/domains/de/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/de/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/de/demo/AssemblyLine/*.xml"/>
     </fileset>
@@ -5403,7 +5403,7 @@
 <!-- ptolemy/domains/de/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/de/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/de/doc/*.htm"/>
     </fileset>
@@ -5412,7 +5412,7 @@
 <!-- ptolemy/domains/hdf/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/hdf/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/hdf/demo/AdaptiveCoding/*.xml"/>
     </fileset>
@@ -5430,7 +5430,7 @@
 <!-- ptolemy/domains/hdf/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/hdf/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/hdf/doc/*.htm"/>
     </fileset>
@@ -5439,7 +5439,7 @@
 <!-- ptolemy/domains/pn/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/pn/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/pn/demo/BrockAckerman/*.xml"/>
     </fileset>
@@ -5475,7 +5475,7 @@
 <!-- ptolemy/domains/pn/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/pn/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/pn/doc/*.htm"/>
     </fileset>
@@ -5484,7 +5484,7 @@
 <!-- ptolemy/domains/rendezvous/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/rendezvous/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/rendezvous/demo/Barrier/*.xml"/>
     </fileset>
@@ -5502,7 +5502,7 @@
 <!-- ptolemy/domains/rendezvous/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/rendezvous/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/rendezvous/doc/*.htm"/>
     </fileset>
@@ -5511,7 +5511,7 @@
 <!-- ptolemy/domains/sr/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sr/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sr/demo/FeedbackLoop/*.htm"/>
     </fileset>
@@ -5544,7 +5544,7 @@
 <!-- ptolemy/domains/sr/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sr/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sr/doc/*.htm"/>
     </fileset>
@@ -5553,7 +5553,7 @@
 <!-- doc/design/usingVergil/usingVergil.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/design/usingVergil/usingVergil.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="doc/design/usingVergil/*.htm"/>
     </fileset>
@@ -5568,7 +5568,7 @@
 <!-- ptolemy/domains/ci/ci.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ci/ci.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ci/kernel/*.class"/>
     </fileset>
@@ -5583,7 +5583,7 @@
 <!-- ptolemy/domains/continuous/continuous.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/continuous/continuous.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/continuous/kernel/*.class"/>
     </fileset>
@@ -5610,7 +5610,7 @@
 <!-- ptolemy/domains/ct/ct.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ct/ct.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ct/kernel/*.class"/>
     </fileset>
@@ -5631,7 +5631,7 @@
 <!-- ptolemy/domains/ddf/ddf.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ddf/ddf.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ddf/kernel/*.class"/>
     </fileset>
@@ -5646,7 +5646,7 @@
 <!-- ptolemy/domains/de/de.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/de/de.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/de/kernel/*.class"/>
     </fileset>
@@ -5664,7 +5664,7 @@
 <!-- ptolemy/domains/fsm/fsm.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/fsm/fsm.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/fsm/kernel/*.class"/>
     </fileset>
@@ -5688,7 +5688,7 @@
 <!-- ptolemy/domains/gr/gr.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/gr/gr.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/gr/*.xml"/>
     </fileset>
@@ -5712,7 +5712,7 @@
 <!-- ptolemy/domains/hdf/hdf.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/hdf/hdf.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/hdf/kernel/*.class"/>
     </fileset>
@@ -5721,7 +5721,7 @@
 <!-- ptolemy/domains/modal/modal.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/modal/modal.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/modal/kernel/*.class"/>
     </fileset>
@@ -5745,7 +5745,7 @@
 <!-- ptolemy/domains/pn/pn.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/pn/pn.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/pn/*.xml"/>
     </fileset>
@@ -5766,7 +5766,7 @@
 <!-- ptolemy/domains/sdf/sdf.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/sdf.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/kernel/*.class"/>
     </fileset>
@@ -5784,7 +5784,7 @@
 <!-- ptolemy/domains/sr/sr.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sr/sr.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sr/kernel/*.class"/>
     </fileset>
@@ -5802,7 +5802,7 @@
 <!-- ptolemy/domains/wireless/wireless.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/wireless/wireless.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/wireless/*.xml"/>
     </fileset>
@@ -5820,7 +5820,7 @@
 <!-- ptolemy/vergil/vergilApplet.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/vergilApplet.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/*.class"/>
     </fileset>
@@ -5937,7 +5937,7 @@
 <!-- ptolemy/domains/ddf/ddf.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ddf/ddf.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ddf/kernel/*.class"/>
     </fileset>
@@ -5952,7 +5952,7 @@
 <!-- ptolemy/plot/plotapplication.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/plot/plotapplication.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="com/microstar/xml/*.class"/>
     </fileset>
@@ -5979,7 +5979,7 @@
 <!-- ptolemy/actor/gui/jnlp/DSPApplication.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/gui/jnlp/DSPApplication.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/gui/jnlp/*.class"/>
     </fileset>
@@ -5988,7 +5988,7 @@
 <!-- ptolemy/actor/gui/jnlp/HyVisualApplication.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/gui/jnlp/HyVisualApplication.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/gui/jnlp/*.class"/>
     </fileset>
@@ -5997,7 +5997,7 @@
 <!-- doc/design/hyvisual.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/design/hyvisual.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="doc/design/*.pdf"/>
     </fileset>
@@ -6006,7 +6006,7 @@
 <!-- doc/codeDocHyVisual.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/codeDocHyVisual.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
       <include name="doc/codeDocHyVisual/**"/>
     </fileset>
@@ -6015,7 +6015,7 @@
 <!-- ptolemy/hsif/hsif.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/hsif/hsif.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/hsif/*.class"/>
     </fileset>
@@ -6027,7 +6027,7 @@
 <!-- ptolemy/hsif/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/hsif/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/hsif/demo/*.htm"/>
     </fileset>
@@ -6048,7 +6048,7 @@
 <!-- ptolemy/domains/continuous/continuous.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/continuous/continuous.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/continuous/kernel/*.class"/>
     </fileset>
@@ -6075,7 +6075,7 @@
 <!-- ptolemy/domains/ct/ct.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ct/ct.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ct/kernel/*.class"/>
     </fileset>
@@ -6096,7 +6096,7 @@
 <!-- ptolemy/domains/de/de.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/de/de.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/de/kernel/*.class"/>
     </fileset>
@@ -6114,7 +6114,7 @@
 <!-- ptolemy/domains/fsm/fsm.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/fsm/fsm.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/fsm/kernel/*.class"/>
     </fileset>
@@ -6138,7 +6138,7 @@
 <!-- ptolemy/domains/gr/gr.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/gr/gr.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/gr/*.xml"/>
     </fileset>
@@ -6162,7 +6162,7 @@
 <!-- ptolemy/domains/gr/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/gr/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/gr/demo/FurutaPendulum/*.xml"/>
     </fileset>
@@ -6195,7 +6195,7 @@
 <!-- ptolemy/domains/modal/modal.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/modal/modal.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/modal/kernel/*.class"/>
     </fileset>
@@ -6219,7 +6219,7 @@
 <!-- ptolemy/domains/sdf/lib/lib.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/lib/lib.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/lib/*.class"/>
     </fileset>
@@ -6234,7 +6234,7 @@
 <!-- ptolemy/domains/sdf/kernel/kernel.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/kernel/kernel.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/kernel/*.class"/>
     </fileset>
@@ -6243,7 +6243,7 @@
 <!-- ptolemy/domains/sr/sr.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sr/sr.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sr/kernel/*.class"/>
     </fileset>
@@ -6261,7 +6261,7 @@
 <!-- ptolemy/domains/continuous/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/continuous/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/continuous/demo/BouncingBall/*.xml"/>
     </fileset>
@@ -6390,7 +6390,7 @@
 <!-- ptolemy/domains/continuous/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/continuous/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/continuous/doc/*.htm"/>
     </fileset>
@@ -6399,7 +6399,7 @@
 <!-- ptolemy/domains/ct/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ct/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ct/demo/BouncingBall/*.xml"/>
     </fileset>
@@ -6525,7 +6525,7 @@
 <!-- ptolemy/domains/ct/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/ct/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/ct/doc/*.gif"/>
     </fileset>
@@ -6537,7 +6537,7 @@
 <!-- ptolemy/domains/fsm/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/fsm/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/fsm/doc/*.htm"/>
     </fileset>
@@ -6546,7 +6546,7 @@
 <!-- ptolemy/domains/fsm/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/fsm/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/fsm/demo/ABP/*.class"/>
     </fileset>
@@ -6588,7 +6588,7 @@
 <!-- ptolemy/domains/modal/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/modal/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/modal/doc/*.htm"/>
     </fileset>
@@ -6597,7 +6597,7 @@
 <!-- ptolemy/domains/modal/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/modal/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/modal/demo/ABP/*.xml"/>
     </fileset>
@@ -6639,7 +6639,7 @@
 <!-- ptolemy/domains/sdf/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/demo/Array/*.xml"/>
     </fileset>
@@ -6735,7 +6735,7 @@
 <!-- ptolemy/domains/sdf/doc/doc.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/sdf/doc/doc.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/sdf/doc/*.htm"/>
     </fileset>
@@ -6744,7 +6744,7 @@
 <!-- doc/docConfig.jar -->
   <jar defaultexcludes="yes"
        destfile="doc/docConfig.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="doc/*.css"/>
     </fileset>
@@ -6777,7 +6777,7 @@
 <!-- ptolemy/vergil/basic/layout/layout.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/basic/layout/layout.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/basic/layout/*.class"/>
     </fileset>
@@ -6798,7 +6798,7 @@
 <!-- ptolemy/ptsupport.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/ptsupport.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="com/microstar/xml/*.class"/>
     </fileset>
@@ -7203,7 +7203,7 @@
 <!-- ptolemy/vergil/vergil.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/vergil/vergil.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/vergil/*.class"/>
     </fileset>
@@ -7320,7 +7320,7 @@
 <!-- ptolemy/domains/gr/lib/quicktime/quicktime.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/domains/gr/lib/quicktime/quicktime.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/domains/gr/lib/quicktime/*.class"/>
     </fileset>
@@ -7335,7 +7335,7 @@
 <!-- ptolemy/matlab/matlab.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/matlab/matlab.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/matlab/*.class"/>
     </fileset>
@@ -7350,7 +7350,7 @@
 <!-- ptolemy/matlab/demo/demo.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/matlab/demo/demo.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/matlab/demo/MatlabCT/*.xml"/>
     </fileset>
@@ -7365,7 +7365,7 @@
 <!-- ptolemy/actor/gui/jnlp/PtinyApplication.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/gui/jnlp/PtinyApplication.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/gui/jnlp/*.class"/>
     </fileset>
@@ -7374,7 +7374,7 @@
 <!-- ptolemy/actor/gui/jnlp/PtinyApplication.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/gui/jnlp/PtinyApplication.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/gui/jnlp/*.class"/>
     </fileset>
@@ -7383,7 +7383,7 @@
 <!-- ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/gui/jnlp/*.class"/>
     </fileset>
@@ -7392,7 +7392,7 @@
 <!-- ptolemy/actor/gui/jnlp/FullApplication.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/gui/jnlp/FullApplication.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/gui/jnlp/*.class"/>
     </fileset>
@@ -7401,7 +7401,7 @@
 <!-- ptolemy/actor/gui/jnlp/SpaceApplication.jar -->
   <jar defaultexcludes="yes"
        destfile="ptolemy/actor/gui/jnlp/SpaceApplication.jar"
-       index="true">
+       >
     <fileset dir="${basedir}">
        <include name="ptolemy/actor/gui/jnlp/*.class"/>
     </fileset>
