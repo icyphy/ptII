@@ -1,0 +1,41 @@
+
+    <target name="dist">
+        <-- Create a distributable WAR archive of the application using the following attributes:
+         * tofile: the destination WAR file
+         * codebase: where the application will be deployed to
+         * title: the application name
+         * vendor: your company name
+         * pack200: create pack200 archives for quicker client downloads
+         * signStorePass: the password to your Java certificate store (used to sign the jars)
+         * signAlias: the name of the certificate to use (used to sign the jars)
+         -->
+        <jw:jnlpwar
+            tofile="vergilPtiny.war"
+            codebase=""
+            title="Ptolemy II 8.1.devel Ptiny version
+            vendor="Ptolemy Project, UC Berkeley"
+            pack200="true"
+            signStorepass="myJavaCertificationStorePassword"
+            signAlias="myJavaCertificationAlias">
+                <-- Add a normal and a short description -->
+                <jw:description>This is the descriptive text for the product</jw:description>
+                <jw:description kind="short">This is a short descriptive text for the product</jw:description>
+                <-- Add an icon for the application -->
+                <jw:icon file="doc/img/PtolemyIISmall.gif"/>
+                <-- Show a splash screen when the application launches -->
+                <jw:icon kind="splash" file="doc/img/PtolemyIISmall.gif"/>
+                <-- Specify the minimal version of Java required by the app, along with
+                 some command-line arguments -->
+                <jw:j2se minVersion="1.5" args="-Xmx250M">
+                    <jw:j2seProperty name="MyApplicationProperty" value="myApplicationPropertyValue"/>
+                </jw:j2se>
+                <-- Add the libraries used by the application -->
+                <lib dir="path/to/application/lib/folder">
+                    <include name="**/*.jar"/>
+                </lib>
+                <-- Specify the main class for the application,
+                 and the jar it is located in (can be duplicate from the lib element) -->
+                <jw:application mainclass="ptolemy.actor.gui.jnlp.PtinyApplication" jar="ptolemy/actor/gui/jnlp/PtinyApplication.jar"/>
+        </jw:jnlpwar>
+    </target>
+</project>

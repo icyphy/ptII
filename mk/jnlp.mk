@@ -486,6 +486,8 @@ FULL_ONLY_JNLP_JARS = \
 	vendors/misc/joystick/Joystick.jar \
 	ptolemy/actor/lib/jxta/jxta.jar \
 	ptolemy/actor/lib/mail/mail.jar \
+	ptolemy/actor/lib/mail/demo/demo.jar \
+	$(PTJAVAMAIL_JARS) \
 	$(FUZZY_JARS) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
@@ -1814,8 +1816,7 @@ book_dist_update: $(JNLP_FILE_FIXED)
 # Generate ant code to build ALL_JNLP_JARS except for files in lib/
 
 ant.header:
-	@echo "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
-	@echo "<project basedir=\".\" default=\"jars\" name=\"ptII\">"
+	cat adm/ant/jnlpHeader.xml
 
 # Echo the jar files in a format suitable for ant
 # Certain jar files from the doc/ directory are not echoed.
@@ -1843,7 +1844,8 @@ ant.java.ptiny: ant.header ant.jars.ptiny ant.footer
 ant.java.space: ant.header ant.jars.space ant.footer 
 
 
-ant.jars:
+ant.jars: ant.header ant.jars.body ant.footer
+ant.jars.body:
 	@echo "  <target name=\"jars\">"
 	@set $(ALL_JNLP_JARS); \
 	for x do \
