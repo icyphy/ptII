@@ -686,6 +686,7 @@ PTMATLAB_CC
 ANT_ALWAYS_EXCLUDE
 ANT_CLASSPATH
 ANT_EXCLUDE
+ANT_JAVADOC_EXCLUDEPACKAGENAMES
 CALTROP_DIR
 CHIC_DIR
 CLASSPATHSEPARATOR
@@ -12498,15 +12499,22 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
    fi
 fi
 
+# Packages to exclude from Ant targets that call javadoc
+ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's@<exclude name="@@g' | sed 's@" */>@@g' | sed 's@/@.@g' | awk '{for (i=1;i <= NF; i++) { if ($i !~ /\*\*/) {printf("%s*,", $i)}}}'`
+
+
 # Keep these substitutions alphabetical, with a description
 
-# Paths to always exclude i Ant's build.xml
+# Paths to always exclude in Ant's build.xml
 
 
 # Jar files to include in Ant's build.xml
 
 
 # Paths to exclude in Ant's build.xml
+
+
+# Packages to exclude from Ant targets that call javadoc
 
 
 # Directory that contains the Caltrop jar file ptCal.jar
@@ -13970,6 +13978,7 @@ PTMATLAB_CC!$PTMATLAB_CC$ac_delim
 ANT_ALWAYS_EXCLUDE!$ANT_ALWAYS_EXCLUDE$ac_delim
 ANT_CLASSPATH!$ANT_CLASSPATH$ac_delim
 ANT_EXCLUDE!$ANT_EXCLUDE$ac_delim
+ANT_JAVADOC_EXCLUDEPACKAGENAMES!$ANT_JAVADOC_EXCLUDEPACKAGENAMES$ac_delim
 CALTROP_DIR!$CALTROP_DIR$ac_delim
 CHIC_DIR!$CHIC_DIR$ac_delim
 CLASSPATHSEPARATOR!$CLASSPATHSEPARATOR$ac_delim
@@ -13994,7 +14003,6 @@ JDOCBREAKITERATOR!$JDOCBREAKITERATOR$ac_delim
 JDOCSOURCEFLAGS!$JDOCSOURCEFLAGS$ac_delim
 JDOCTAG!$JDOCTAG$ac_delim
 JDOCTAGLET!$JDOCTAGLET$ac_delim
-JINI_DIR!$JINI_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -14036,6 +14044,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+JINI_DIR!$JINI_DIR$ac_delim
 JINI_PRESENT!$JINI_PRESENT$ac_delim
 JOYSTICK_JAR!$JOYSTICK_JAR$ac_delim
 JTCLSH!$JTCLSH$ac_delim
@@ -14132,7 +14141,6 @@ PTJNI_DL_LIBRARY!$PTJNI_DL_LIBRARY$ac_delim
 PTJNI_LIB_ARCHITECTURE!$PTJNI_LIB_ARCHITECTURE$ac_delim
 PTJNI_NO_CYGWIN!$PTJNI_NO_CYGWIN$ac_delim
 PTJNI_GCC_SHARED_FLAG!$PTJNI_GCC_SHARED_FLAG$ac_delim
-PTJNI_SHAREDLIBRARY_CFLAG!$PTJNI_SHAREDLIBRARY_CFLAG$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -14174,6 +14182,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTJNI_SHAREDLIBRARY_CFLAG!$PTJNI_SHAREDLIBRARY_CFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_PREFIX!$PTJNI_SHAREDLIBRARY_PREFIX$ac_delim
 PTJNI_SHAREDLIBRARY_SUFFIX!$PTJNI_SHAREDLIBRARY_SUFFIX$ac_delim
@@ -14254,7 +14263,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 78; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 79; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
