@@ -1809,3 +1809,50 @@ book_dist_update: $(JNLP_FILE_FIXED)
 	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
 	ssh $(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
 	ssh $(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM) $(DIST_DIR)/$(JNLP_VERGIL_HTM)"
+####################################################
+# Generate ant code to build ALL_JNLP_JARS except for files in lib/
+
+ant.header:
+	@echo "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
+	@echo "<project basedir=\".\" default=\"jars\" name=\"ptII\">"
+
+# Echo the jar files in a format suitable for ant
+# Certain jar files from the doc/ directory are not echoed.
+# For example:  make ant.jnlpjar JARS=PTINY_JNLP_JARS
+ant.jnlpjar:
+	@echo $($(JARS)) | $(PTII)/adm/ant/jnlpjars $(JARS)
+
+
+ant.jars.full:
+	make ant.jnlpjar JARS=FULL_JNLP_JARS
+
+ant.jars.ptiny:
+	make ant.jnlpjar JARS=PTINY_JNLP_JARS
+
+ant.jars.space:
+	make ant.jnlpjar JARS=SPACE_JNLP_JARS
+
+# make --quiet ant.java.full  >& full.xml; ant -v -f full.xml full
+ant.java.full: ant.header ant.jars.full ant.footer 
+
+# make --quiet ant.java.ptiny  >& ptiny.xml; ant -v -f ptiny.xml ptiny
+ant.java.ptiny: ant.header ant.jars.ptiny ant.footer 
+
+# make --quiet ant.java.space >& space.xml; ant -v -f space.xml space
+ant.java.space: ant.header ant.jars.space ant.footer 
+
+
+ant.jars:
+	@echo "  <target name=\"jars\">"
+	@set $(ALL_JNLP_JARS); \
+	for x do \
+		if [ -z `echo $$x | grep '^lib/'` ]; then \
+			echo ""; \
+			echo "<!-- $$x -->"; \
+			$(PTII)/adm/ant/jar2ant $$x; \
+		fi; \
+        done
+	@echo "  </target>"
+
+ant.footer:
+	@echo "</project>"

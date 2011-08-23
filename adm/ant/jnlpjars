@@ -1,0 +1,19 @@
+#!/bin/sh
+# $Id$
+target=`echo $1 | tr "[:upper:]"  "[:lower:]" | awk -F _ '{print $1}'`
+
+awk -v JARS=$1 -v target=$target '{
+    print "  <path id=\"" JARS "\">"
+    for(i=1;i<=NF;i++){
+        print "    <pathelement path=\"" $i "\" />"
+    }
+    print "  </path>"
+    print "  <target name=\"" target "\">"
+    print "    <java classname=\"ptolemy.vergil.VergilApplication\""
+    print "          classpathref=\"" JARS "\""
+    print "          fork=\"true\""
+    print "          jvmargs=\"-Xmx1500m\">"
+    print "      <arg value=\"-" target "\"/>"
+    print "    </java>"
+    print "  </target>"
+}'

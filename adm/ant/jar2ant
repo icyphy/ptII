@@ -1,0 +1,28 @@
+#!/bin/sh
+# $Id$
+# Given one or more jar files, output ant jar tasks that will create them.
+
+for jarfile in $@
+do
+    cat <<EOF
+  <jar defaultexcludes="yes"
+       destfile="$jarfile">
+EOF
+
+    jar -tvf $jarfile | grep -v META | grep -v '/$' | 
+    awk '{
+        n = split($NF, f, "/")
+        dir = f[1]
+        for (i = 2; i < n; i++) {
+           dir = dir "/" f[i]
+        }
+        ndots = split(f[n], dots, ".")
+        print dir, dots[ndots]
+    }' | sort | uniq |
+    awk '{
+        print "    <fileset dir=\"${basedir}\">"
+        print "       <include name=\"" $1 "/*." $2 "\"/>"
+        print "    </fileset>"
+    }'
+echo "  </jar>"
+done
