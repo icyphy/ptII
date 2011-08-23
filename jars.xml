@@ -18,12 +18,14 @@
     <include name="org/mlc/mlc.jar" />
     <include name="ptolemy/actor/gt/demo/demo.jar" />
     <include name="ptolemy/actor/gt/gt.jar" />
+    <include name="ptolemy/actor/gui/jnlp/BCVTBApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/DSPApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/FullApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/HyVisualApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/PtinyApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/SpaceApplication.jar" />
+    <include name="ptolemy/actor/gui/jnlp/VisualSenseApplication.jar" />
     <include name="ptolemy/actor/gui/run/run.jar" />
     <include name="ptolemy/actor/lib/colt/colt.jar" />
     <include name="ptolemy/actor/lib/colt/demo/demo.jar" />
@@ -5976,21 +5978,83 @@
     </fileset>
   </jar>
 
+<!-- ptolemy/actor/gui/jnlp/BCVTBApplication.jar -->
+  <jar defaultexcludes="yes"
+       destfile="${basedir}/ptolemy/actor/gui/jnlp/BCVTBApplication.jar"
+       >
+    <fileset dir="${basedir}">
+       <include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+       <include name="ptolemy/actor/gui/jnlp/BCVTBApplication.class"/>
+    </fileset>
+  </jar>
 <!-- ptolemy/actor/gui/jnlp/DSPApplication.jar -->
   <jar defaultexcludes="yes"
        destfile="${basedir}/ptolemy/actor/gui/jnlp/DSPApplication.jar"
        >
     <fileset dir="${basedir}">
-       <include name="ptolemy/actor/gui/jnlp/*.class"/>
+       <include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+       <include name="ptolemy/actor/gui/jnlp/DSPApplication.class"/>
     </fileset>
   </jar>
+
+<!-- ptolemy/actor/gui/jnlp/PtinyApplication.jar -->
+  <jar defaultexcludes="yes"
+       destfile="${basedir}/ptolemy/actor/gui/jnlp/PtinyApplication.jar"
+       >
+    <fileset dir="${basedir}">
+       <include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+       <include name="ptolemy/actor/gui/jnlp/PtinyApplication.class"/>
+    </fileset>
+  </jar>
+
+<!-- ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar -->
+  <jar defaultexcludes="yes"
+       destfile="${basedir}/ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar"
+       >
+    <fileset dir="${basedir}">
+       <include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+       <include name="ptolemy/actor/gui/jnlp/PtinySandboxApplication.class"/>
+    </fileset>
+  </jar>
+
+<!-- ptolemy/actor/gui/jnlp/FullApplication.jar -->
+  <jar defaultexcludes="yes"
+       destfile="${basedir}/ptolemy/actor/gui/jnlp/FullApplication.jar"
+       >
+    <fileset dir="${basedir}">
+       <include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+       <include name="ptolemy/actor/gui/jnlp/FullApplication.class"/>
+    </fileset>
+  </jar>
+
+<!-- ptolemy/actor/gui/jnlp/SpaceApplication.jar -->
+  <jar defaultexcludes="yes"
+       destfile="${basedir}/ptolemy/actor/gui/jnlp/SpaceApplication.jar"
+       >
+    <fileset dir="${basedir}">
+       <include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+       <include name="ptolemy/actor/gui/jnlp/SpaceApplication.class"/>
+    </fileset>
+  </jar>
+  </target>
 
 <!-- ptolemy/actor/gui/jnlp/HyVisualApplication.jar -->
   <jar defaultexcludes="yes"
        destfile="${basedir}/ptolemy/actor/gui/jnlp/HyVisualApplication.jar"
        >
     <fileset dir="${basedir}">
-       <include name="ptolemy/actor/gui/jnlp/*.class"/>
+       <include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+       <include name="ptolemy/actor/gui/jnlp/HyVisualApplication.class"/>
+    </fileset>
+  </jar>
+
+<!-- ptolemy/actor/gui/jnlp/VisualSenseApplication.jar -->
+  <jar defaultexcludes="yes"
+       destfile="${basedir}/ptolemy/actor/gui/jnlp/VisualSenseApplication.jar"
+       >
+    <fileset dir="${basedir}">
+       <include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+       <include name="ptolemy/actor/gui/jnlp/VisualSenseApplication.class"/>
     </fileset>
   </jar>
 
@@ -7362,49 +7426,4 @@
     </fileset>
   </jar>
 
-<!-- ptolemy/actor/gui/jnlp/PtinyApplication.jar -->
-  <jar defaultexcludes="yes"
-       destfile="${basedir}/ptolemy/actor/gui/jnlp/PtinyApplication.jar"
-       >
-    <fileset dir="${basedir}">
-       <include name="ptolemy/actor/gui/jnlp/*.class"/>
-    </fileset>
-  </jar>
-
-<!-- ptolemy/actor/gui/jnlp/PtinyApplication.jar -->
-  <jar defaultexcludes="yes"
-       destfile="${basedir}/ptolemy/actor/gui/jnlp/PtinyApplication.jar"
-       >
-    <fileset dir="${basedir}">
-       <include name="ptolemy/actor/gui/jnlp/*.class"/>
-    </fileset>
-  </jar>
-
-<!-- ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar -->
-  <jar defaultexcludes="yes"
-       destfile="${basedir}/ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar"
-       >
-    <fileset dir="${basedir}">
-       <include name="ptolemy/actor/gui/jnlp/*.class"/>
-    </fileset>
-  </jar>
-
-<!-- ptolemy/actor/gui/jnlp/FullApplication.jar -->
-  <jar defaultexcludes="yes"
-       destfile="${basedir}/ptolemy/actor/gui/jnlp/FullApplication.jar"
-       >
-    <fileset dir="${basedir}">
-       <include name="ptolemy/actor/gui/jnlp/*.class"/>
-    </fileset>
-  </jar>
-
-<!-- ptolemy/actor/gui/jnlp/SpaceApplication.jar -->
-  <jar defaultexcludes="yes"
-       destfile="${basedir}/ptolemy/actor/gui/jnlp/SpaceApplication.jar"
-       >
-    <fileset dir="${basedir}">
-       <include name="ptolemy/actor/gui/jnlp/*.class"/>
-    </fileset>
-  </jar>
-  </target>
 </project>
