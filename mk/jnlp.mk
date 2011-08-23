@@ -767,7 +767,7 @@ vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilBCVTB.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(BCVTB_MAIN_JAR) ]; then \
-		echo "$(SIGNED_DIR)$(BCVTB_MAIN_JAR) does not"; \
+		echo "$(SIGNED_DIR)/$(BCVTB_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
 		echo "   so copy it now and sign it later"; \
 		mkdir -p $(SIGNED_DIR)/`dirname $(BCVTB_MAIN_JAR)`; \
@@ -803,7 +803,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilDSP.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(DSP_MAIN_JAR) ]; then \
-		echo "$(SIGNED_DIR)$(DSP_MAIN_JAR) does not"; \
+		echo "$(SIGNED_DIR)/$(DSP_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
 		echo "   so copy it now and sign it later"; \
 		mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
@@ -840,7 +840,7 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilHyVisual.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR) ]; then \
-		echo "$(SIGNED_DIR)$(HYBRID_SYSTEMS_MAIN_JAR) does not"; \
+		echo "$(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
 		echo "   so we copy it now and sign it later"; \
 		mkdir -p $(SIGNED_DIR)/`dirname $(HYBRID_SYSTEMS_MAIN_JAR)`; \
@@ -875,7 +875,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilPtiny.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(PTINY_MAIN_JAR) ]; then \
-		echo "$(SIGNED_DIR)$(PTINY_MAIN_JAR) does not"; \
+		echo "$(SIGNED_DIR)/$(PTINY_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
 		echo "   so we copy it now and sign it later"; \
 		mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
@@ -909,7 +909,7 @@ vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilPtinyKepler.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(PTINY_MAIN_JAR) ]; then \
-		echo "$(SIGNED_DIR)$(PTINY_MAIN_JAR) does not"; \
+		echo "$(SIGNED_DIR)/$(PTINY_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
 		echo "   so we copy it now and sign it later"; \
 		mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
@@ -944,7 +944,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilPtinySandbox.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR) ]; then \
-		echo "$(SIGNED_DIR)$(PTINY_SANDBOX_MAIN_JAR) does not"; \
+		echo "$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
 		echo "   so we copy it now and sign it later"; \
 		mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_SANDBOX_MAIN_JAR)`; \
@@ -981,7 +981,7 @@ vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilSpace.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(SPACE_MAIN_JAR) ]; then \
-		echo "$(SIGNED_DIR)$(SPACE_MAIN_JAR) does not"; \
+		echo "$(SIGNED_DIR)/$(SPACE_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
 		echo "   so we copy it now and sign it later"; \
 		mkdir -p $(SIGNED_DIR)/`dirname $(SPACE_MAIN_JAR)`; \
@@ -1018,7 +1018,7 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilVisualSense.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR) ]; then \
-		echo "$(SIGNED_DIR)$(VISUAL_SENSE_MAIN_JAR) does not"; \
+		echo "$(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
 		echo "   so we copy it now and sign it later"; \
 		mkdir -p $(SIGNED_DIR)/`dirname $(VISUAL_SENSE_MAIN_JAR)`; \
@@ -1054,7 +1054,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 			vergil.jnlp.in > $@
 	ls -l $@
 	if [ ! -f $(SIGNED_DIR)/$(FULL_MAIN_JAR) ]; then \
-		echo "$(SIGNED_DIR)$(FULL_MAIN_JAR) does not"; \
+		echo "$(SIGNED_DIR)/$(FULL_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
 		echo "   so we copy it now and sign it later"; \
 		mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
@@ -1256,7 +1256,7 @@ jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
 		ssh -l bldmastr $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
-	scp doc/webStartHelp.htm bldmaster@$(WEBSERVER):$(DIST_DIR)
+	scp doc/webStartHelp.htm bldmastr@$(WEBSERVER):$(DIST_DIR)
 
 jnlp_dist_nightly:
 	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
