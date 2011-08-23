@@ -485,6 +485,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/joystick/joystick.jar \
 	vendors/misc/joystick/Joystick.jar \
 	ptolemy/actor/lib/jxta/jxta.jar \
+	ptolemy/actor/lib/mail/mail.jar \
 	$(FUZZY_JARS) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \

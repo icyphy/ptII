@@ -234,16 +234,15 @@ fi
 
 
 #### Serial port stuff
-# If Commapi is present, then set to yes, otherwise set to no
-COMMAPI_PRESENT="@COMMAPI_PRESENT@"
-COMMAPI_JARS=""
+#       RXTX is the Serial Port interface that replaces
+#       Sun's commapi.
+# If rxtx is present, then set to yes, otherwise set to no
+RXTX_PRESENT="@RXTX_PRESENT@"
+RXTX_JARS=""
 #### Serial Port Communications API
-if [ "$COMMAPI_PRESENT" = "yes" ]; then
-    # Directory that contains the Java Serial Comm API, see
-    # http://java.sun.com/products/javacomm/
-    COMMAPI_DIR="@COMMAPI_DIR@"
-
-    COMMAPI_JARS="${CLASSPATHSEPARATOR}${COMMAPI_DIR}/comm.jar"
+if [ "$RXTX_PRESENT" = "yes" ]; then
+    RXTX_JAR="@RXTX_JAR@"
+    RXTX_JARS="${CLASSPATHSEPARATOR}${RXTX_JAR}"
 fi
 
 
@@ -310,7 +309,7 @@ fi
 # The tini jar file.
 TINI_DIR='@TINI_DIR@'
 # Jar file containing tini design tools
-TINI_JAR='@TINI_CLASSES@${COMMAPI_JAR}'
+TINI_JAR='@TINI_CLASSES@${RXTX_JAR}'
 # Jar file containing embedded tini libraries.
 TINICLASSES_JAR='@TINI_DIR@/bin/tiniclasses.jar'
    
@@ -609,7 +608,7 @@ NC2MOML_JARS=${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/jdom.jar${CL
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
 #  and update ptolemy/vergil/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${DBXML_JARS}${FUZZYLOGIC_JARS}${HOMER_JARS}${ITEXTPDF_JAR}${SOOT_JARS}${PTJACL_JARS}${JAVA3D_JARS}${JAVACV_JARS}${JAVAMAIL_JARS}${JNA_JARS}${JOYSTICK_JARS}${JXL_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${JOGL_JARS}${OPENCV_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${PDFRENDERER_JARS}${PROCESSING_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${RXTX_JARS}${DBXML_JARS}${FUZZYLOGIC_JARS}${HOMER_JARS}${ITEXTPDF_JAR}${SOOT_JARS}${PTJACL_JARS}${JAVA3D_JARS}${JAVACV_JARS}${JAVAMAIL_JARS}${JNA_JARS}${JOYSTICK_JARS}${JXL_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${JOGL_JARS}${OPENCV_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${PDFRENDERER_JARS}${PROCESSING_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JYTHON_JFLAG} -Xmx1024M"
 
 #### Sandbox
