@@ -666,12 +666,14 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 ALL_JNLP_JARS = \
 	$(ALL_NON_APPLICATION_JNLP_JARS) \
 	$(DSP_MAIN_JAR) \
-	$(HYBRID_SYSTEMS_JNLP_JARS) \
+	$(BCVTB_MAIN_JAR) \
+	$(HYBRID_SYSTEMS_MAIN_JAR) \
 	$(PTINY_MAIN_JAR) \
-	$(PTINY_MAIN_JAR) \
+	$(PTINY_KEPLER_MAIN_JAR) \
 	$(PTINY_SANDBOX_MAIN_JAR) \
 	$(FULL_MAIN_JAR) \
-	$(SPACE_MAIN_JAR)
+	$(SPACE_MAIN_JAR) \
+	$(VIPTOS_MAIN_JAR)
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
@@ -1253,8 +1255,8 @@ WEBSERVER=bennett
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
-	scp doc/webStartHelp.htm $(WEBSERVER):$(DIST_DIR)
+		ssh -l bldmastr $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
+	scp doc/webStartHelp.htm bldmaster@$(WEBSERVER):$(DIST_DIR)
 
 jnlp_dist_nightly:
 	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
