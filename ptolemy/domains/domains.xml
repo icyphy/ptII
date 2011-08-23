@@ -36,6 +36,7 @@
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	   
 	    <input source="ptolemy/domains/psdf/psdf.xml"/>	   
             <input source="ptolemy/domains/pthales/lib/pthalesentities.xml"/>
+            <input source="ptolemy/domains/ptides/lib/ptidesentities.xml"/>
 	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
 
       </group>

@@ -6,25 +6,29 @@
     <?moml
       <group>
       <doc>Common Domain Specific Actors</doc>
-	    <!-- Only include domains that are shipped with ptiny here--> 
+	    <!-- Only include domains that are shipped with ptiny here. -->
 	    <!-- Do not use relative paths with ../ here, it is safer to use
 	     paths that start with ptolemy/ so that we can find these
 	     files if they are in a jar file besides the jar file that
 	     contains this file. -->
-			<input source="ptolemy/domains/continuous/lib/continuousentities.xml"/>
-		<!-- CT domain has been replaced by continuous.
-            input source="ptolemy/domains/ct/lib/ctentities.xml"/
-        -->
+	    <input source="ptolemy/domains/continuous/lib/continuousentities.xml"/>
+
+	    <!-- CT domain has been replaced by continuous.
+            input source="ptolemy/domains/ct/lib/ctentities.xml"/ -->
+
             <input source="ptolemy/domains/ddf/lib/ddfentities.xml"/>	 
             <input source="ptolemy/domains/de/lib/deentities.xml"/>
             <input source="ptolemy/domains/pn/lib/pnentities.xml"/>
-            <input source="ptolemy/domains/ptides/lib/ptidesentities.xml"/>
+
+	    <!-- Do not include Ptides domain in Ptiny.  Ptides should only be in -full
+            input source="ptolemy/domains/ptides/lib/ptidesentities.xml"/ -->
+
             <input source="ptolemy/domains/rendezvous/lib/rendezvousentities.xml"/>
     	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
     	    
 	    <!-- Do not include pthalesentities.xml here, this file is used by
-                 ptiny, which includes only a subset of domains -->
-            <!-- input source="ptolemy/domains/pthales/lib/pthalesentities.xml"/-->
+                 ptiny, which includes only a subset of domains 
+            input source="ptolemy/domains/pthales/lib/pthalesentities.xml"/ -->
         </group>
     ?>
   </configure>
