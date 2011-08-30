@@ -89,8 +89,8 @@ public class PtidesPreemptiveEDFDirector extends Director {
      *  @return The generated assembly file code.
      *  @exception IllegalActionException
      */
-    public Map<String, StringBuffer> generateAdditionalCodeFiles() throws IllegalActionException {
-        Map<String, StringBuffer> list = new HashMap();
+    public Map<String, String> generateAdditionalCodeFiles() throws IllegalActionException {
+        Map<String, String> list = new HashMap();
         return list;
     }
 
@@ -338,6 +338,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+
     /**
      *  Return the code for the actuatorActuations array.
      *  @return the code for the actuatorActuations array.
@@ -491,8 +492,9 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
     /** Traverse all the entities in the model and place them in the sensors
      *  and actuators variables.
+     * @throws IllegalActionException Thrown in derived classes.
      */
-    protected void _modelStaticAnalysis() {
+    protected void _modelStaticAnalysis() throws IllegalActionException {
 
         int actuatorIndex = 0;
         int sensorIndex = 0;
@@ -518,7 +520,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      * @return fire methods for each actor
      * @exception IllegalActionException If thrown when getting the port's adapter.
      */
-    private String _generateActorFireCode() throws IllegalActionException {
+    protected String _generateActorFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -587,7 +589,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
         return code.toString();
     }
 
-    private String _generatePtrToEventHeadCodeInputs()
+    protected String _generatePtrToEventHeadCodeInputs()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         for (Actor actor : (List<Actor>) (((CompositeActor) _director

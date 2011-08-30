@@ -92,8 +92,8 @@ public class PtidesPreemptiveEDFDirector
      *  @exception IllegalActionException
      */
     
-    public Map<String, StringBuffer> generateAdditionalCodeFiles() throws IllegalActionException {
-        Map<String, StringBuffer> list = new HashMap();
+    public Map<String, String> generateAdditionalCodeFiles() throws IllegalActionException {
+        Map<String, String> list = new HashMap();
         
         StringBuffer code = new StringBuffer();
 
@@ -174,7 +174,7 @@ public class PtidesPreemptiveEDFDirector
         code.append(_templateParser.getCodeStream().getCodeBlock(
                 "assemblyFileBlock", args));
         
-        list.put("s", code);
+        list.put("s", code.toString());
         return list;
     }
 
