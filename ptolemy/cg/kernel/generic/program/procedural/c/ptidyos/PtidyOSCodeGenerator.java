@@ -65,12 +65,8 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
     public PtidyOSCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }
-
-    private final static int SOURCE_FILE = 0;
-
-    private final static int ASSEMBLY_FILE = 1;
-
+    } 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -83,13 +79,16 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  @exception KernelException If a type conflict occurs or the model
      *  is running.
      */
-    public int generateCode(StringBuffer code) throws KernelException {
-        //_generateFile = SOURCE_FILE;
+    public int generateCode(StringBuffer code) throws KernelException { 
         fileExtension = ".c";
-        int result = super.generateCode(code); 
-        //_generateFile = ASSEMBLY_FILE;
+        int result = super.generateCode(code);  
         _generateAdditionalCodeFiles();
         return result;
+    }
+    
+    @Override
+    public String generateTypeConvertCode() throws IllegalActionException {
+        return "";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,26 +105,33 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
                 .getDirector();
         if (director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
             directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
-            Map<String, StringBuffer> map = directorAdapter.generateAdditionalCodeFiles();
+            Map<String, String> map = directorAdapter.generateAdditionalCodeFiles();
             for (String file : map.keySet()) {
-                fileExtension = "." + file;
-                _writeCode(map.get(file));
+                StringBuffer sb = new StringBuffer(); 
+                if (file.contains(".")) { 
+                    fileExtension = file.substring(file.indexOf("."), file.length());
+                    _writeCodeFileName(sb.append(map.get(file)), file, true, false);
+                } else {
+                    fileExtension = "." + file; 
+                    _writeCode(sb.append(map.get(file)));
+                } 
             }
-        } else if (director instanceof ptolemy.domains.ptides.kernel.PtidesTopLevelDirector) {
-            // If the PtidyOSCodeGenerator is used on the top level, then one assembly file
-            // should be generated for each platform.
-            for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
-                    .deepEntityList()) {
-                Director insideDirector = actor.getDirector();
-                if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
-                    directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
-                    Map<String, StringBuffer> map = directorAdapter.generateAdditionalCodeFiles();
-                    for (String file : map.keySet()) {
-                        fileExtension = "." + file;
-                        _writeCode(map.get(file));
-                    }
-                }
-            }
+//        } else if (director instanceof ptolemy.domains.ptides.kernel.PtidesTopLevelDirector) {
+//            // If the PtidyOSCodeGenerator is used on the top level, then one assembly file
+//            // should be generated for each platform.
+//            for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
+//                    .deepEntityList()) {
+//                Director insideDirector = actor.getDirector();
+//                if (insideDirector instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+//                    directorAdapter = (PtidesPreemptiveEDFDirector) getAdapter(director);
+//                    Map<String, String> map = directorAdapter.generateAdditionalCodeFiles();
+//                    for (String file : map.keySet()) {
+//                        fileExtension = "." + file;
+//                        StringBuffer sb = new StringBuffer(); 
+//                        _writeCode(sb.append(map.get(file)));
+//                    }
+//                }
+//            }
         } else {
             throw new IllegalActionException(director,
                     "This PtidyOS code generator should be used "
@@ -143,6 +149,11 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
         String extension = fileExtension;
 
         return _sanitizedModelName + extension;
+    }
+    
+    @Override
+    protected String _generateIncludeFiles() throws IllegalActionException {
+        return "";
     }
 
     /** Overwrite the base class, and use a method from the Ptides director
