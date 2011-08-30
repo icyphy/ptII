@@ -3,6 +3,6 @@
 
 /***mergeBlock($channel)***/
 if ($hasToken(input#$channel)) {
-	$put(output, token);
+	$put(output, $get(input#$channel));
 }
 /**/
