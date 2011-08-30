@@ -64,7 +64,7 @@ public class ActuatorSetup extends OutputDevice {
         _number = ((IntToken) ((Parameter) actor
                 .getAttribute("InterruptHandlerID")).getToken())
                 .intValue();
-        _letter = RenesasUtilities._getLetter(_number); 
+        _letter = RenesasUtilities.interruptHandlerLetters.get(_number); 
         if (_letter == null) {
             throw new IllegalActionException(actor, "The interrupt handler number is not supported.");
         }

@@ -61,7 +61,8 @@ public class SensorHandler extends InputDevice {
         _number = ((IntToken) ((Parameter) actor
                 .getAttribute("InterruptHandlerID")).getToken())
                 .intValue();
-        _letter = RenesasUtilities._getLetter(_number); 
+        _letter = RenesasUtilities.interruptHandlerLetters.get(_number); 
+        _timerNumber = RenesasUtilities.timerNumbers.get(_number); 
         if (_letter == null) {
             throw new IllegalActionException(actor, "The interrupt handler number is not supported.");
         } 
@@ -73,6 +74,7 @@ public class SensorHandler extends InputDevice {
         codeStream.clear();
         List<String> args = new ArrayList<String>();
         args.add(_letter + ""); 
+        args.add(_timerNumber + "");
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
     }
@@ -83,5 +85,6 @@ public class SensorHandler extends InputDevice {
 
     private int _number;
     private Character _letter;
+    private int _timerNumber;
     
 }

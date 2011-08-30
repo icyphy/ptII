@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/domains/ptides/kernel
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/domains/ptides/lib
 
 DIRS =		
 
@@ -45,18 +45,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	PtidesBasicReceiver.java \
-	PtidesPreemptiveEDFDirector.java \
-	RenesasUtilities.java 
+	ActuatorSetup.java \
+	SensorHandler.java \
+	TimeDelay.java 
 
 OTHER_FILES_TO_BE_JARED = \
-	PtidesBasicReceiver.c \
-	PtidesPreemptiveEDFDirector.c 
+	ActuatorSetup.c \
+	SensorHandler.c \
+	TimeDelay.c 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

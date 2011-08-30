@@ -1,16 +1,16 @@
-/*** fireBlock($Letter) ***/
+/*** fireBlock($timerNumber, $Letter) ***/
 	PB.DR.BIT.B9 = 1;
 
-	while(MTU20.TSR.BIT.TGF$Letter != 1)
+	while(MTU2$timerNumber.TSR.BIT.TGF$Letter != 1) // change to MTU23
 		;
 
-	MTU20.TSR.BIT.TGF$Letter = 0;
+	MTU2$timerNumber.TSR.BIT.TGF$Letter = 0;
 
 	set_imask(15);
 
-  	xxx = nanoSeconds + MTU20.TGR$Letter*(4*divideByValue/2);
+  	xxx = nanoSeconds + MTU2$timerNumber.TGR$Letter*(4*divideByValue/2);
 
-	if(MTU20.TGR$Letter > MTU20.TCNT) {
+	if(MTU2$timerNumber.TGR$Letter > MTU2$timerNumber.TCNT) {
 		xxx = xxx - (4*divideByValue/2)<<16;
 	}
 

@@ -1,3 +1,4 @@
+
 /*** StructDefBlock ***/
 
 // ----------------------------------------------------------------
@@ -69,7 +70,7 @@ static Time MAX_TIME = {(uint32)-1, (uint32)-1};
 
 /**/
 
-/*** globalVars($actuatorGlobalVars) ***/
+/*** globalVars($actuatorGlobalVars, $interruptPragmas) ***/
 
 volatile Time currentModelTime;
 volatile int16 currentMicrostep;
@@ -90,6 +91,8 @@ $actuatorGlobalVars
 
 uint32 actWidth = 2000;
 
+
+$interruptPragmas
 /**/
 
 /*** FuncProtoBlock ***/
@@ -144,7 +147,7 @@ Event* newEvent(void) {
 }
 
 void freeEvent(Event* thisEvent) {
-    thisEvent->nextEvent = FREE_EVENT_LIST;
+    thisEvent->prevEvent->nextEvent = FREE_EVENT_LIST;
     FREE_EVENT_LIST = thisEvent;
 }
 
@@ -233,8 +236,27 @@ void removeEvent(Event* event) {
 	        DEADLINE_QUEUE_TAIL = event->prevEvent;
 			DEADLINE_QUEUE_TAIL->nextEvent = NULL;
 	    }
-	    event->nextEvent = NULL;
 	}
+}
+
+// Remove this event from the event queue, as well as all other
+// events that share the same timestamp, as well as destination actor.
+void removeAndPropagateSameTagEvents(Event* thisEvent) {
+    Event* nextEvent = thisEvent->nextEvent;
+    Event* lastEvent = thisEvent;
+    *(thisEvent->sinkEvent) = (Event*)thisEvent;
+    removeEvent(thisEvent);
+    // Now find the next event see we should process it at the same time.
+    while(nextEvent && sameTag(nextEvent, thisEvent) && sameDestination(nextEvent, thisEvent)) {
+    	*(nextEvent->sinkEvent) = (Event*)nextEvent;
+		removeEvent(nextEvent);
+        lastEvent = nextEvent;
+        nextEvent = nextEvent->nextEvent;
+	}
+    // Make this linked list semi-circular by pointing
+    // the prevEvent of thisEvent to the end of the list.
+    // This is used later in freeEvent().
+    thisEvent->prevEvent = lastEvent;
 }
 
 Event* peekEvent(Event* thisEvent) {
@@ -304,7 +326,7 @@ void safeToProcess(const Event* const thisEvent, Time* safeTimestamp) {
 
 void getRealTime(Time * const physicalTime){
 	physicalTime->secs = Seconds;
-	physicalTime->nsecs = nanoSeconds + MTU20.TCNT*(4*divideByValue/2);
+	physicalTime->nsecs = nanoSeconds + MTU23.TCNT*(4*divideByValue/2);
 }
 
 
@@ -331,39 +353,33 @@ void processEvents() {
     Event* event = NULL;
     Time processTime;
     Time platformTime;
-
     getRealTime(&platformTime);
-	set_imask(15);
-
+    set_imask(15);
     event = peekEvent(NULL);
     while (event && higherPriority(event)) {
         safeToProcess(event, &processTime);
-
         if (compareTime(platformTime, processTime) >= 0) {
             queuePriority(event);
-			removeEvent(event);
+            removeAndPropagateSameTagEvents(event);
             setCurrentModelTag(event);
-
-			set_imask(0);
+            set_imask(0);
             fireActor(event);
             getRealTime(&platformTime);
-			set_imask(15);
-
+            set_imask(15);
             freeEvent(event);
             stackedDeadlineIndex--;
             event = NULL;
         }
-		else {
+        else {
             if (compareTime(processTime, lastTimerInterruptTime) == LESS) {
                 lastTimerInterruptTime.secs = processTime.secs;
                 lastTimerInterruptTime.nsecs = processTime.nsecs;
                 setTimedInterrupt(&processTime);
             }
         }
-
-		event = peekEvent(event);
+        event = peekEvent(event);
     }
-/*
+    /*
     if (stackedModelTagIndex >= 0) {
         currentMicrostep = executingModelTag[stackedModelTagIndex].microstep;
         currentModelTime = executingModelTag[stackedModelTagIndex].timestamp;
@@ -371,8 +387,8 @@ void processEvents() {
     } else {
         DBG(("cannot restore model tag\r\n"));
     }
-*/
-	set_imask(0);
+    */
+    set_imask(0);
 }
 
 /**/
@@ -381,11 +397,8 @@ void processEvents() {
 void $actuationFunction(void) {
 	while(MTU20.TSR.BIT.TGF$Letter != 1)
 		;
-
 	MTU20.TSR.BIT.TGF$Letter = 0;
-
 	set_imask(15);
-
 	actRd$Letter = actRd$Letter+1;
 	if (actRd$Letter == 10)
 		actRd$Letter = 0;
@@ -404,20 +417,58 @@ void $actuationFunction(void) {
 
 		if(actSt$Letter == 0) {
 			MTU20.TIOR.BIT.IO$Letter = 2;
+		} else {
+			MTrU20.TIOR.BIT.IO$Letter = 5;
 		}
-		else {
-			MTU20.TIOR.BIT.IO$Letter = 5;
-		}
-	}
-	else {
+	} else {
 		MTU20.TIER.BIT.TGIE$Letter = 0;
 		MTU20.TIOR.BIT.IO$Letter = 0;
 	}
-
 	set_imask(0);
 }
 /**/
 
+void CG_3_T_Rex_noNetwork_v1_ContactController_ContactControllerMicro_ActuatorSetup2(void) {
+/*$P*/
+//void xxxxx(void) {
+    /* Fire CG_3_T_Rex_noNetwork_v1_ContactController_ContactControllerMicro_ActuatorSetup2 */
+    set_imask(15);
+	actSA[actWrA] = currentModelTime.secs - Seconds;
+    if (currentModelTime.nsecs < nanoSeconds) {
+		actSA[actWrA]--;
+		actNsA[actWrA] = currentModelTime.nsecs + 1000000000 - nanoSeconds;
+    } else {
+		actNsA[actWrA] = currentModelTime.nsecs - nanoSeconds;
+    }
+    set_imask(0);
+
+    if((MTU20.TIOR.BIT.IOA == 0) && (actSA[actWrA] == 0) && (actNsA[actWrA] < ((4*divideByValue/2)*(65536 + intDel)))) {
+        MTU20.TGRA = actNsA[actWrA]/(4*divideByValue/2);
+        MTU20.TSR.BIT.TGFA = 0;
+        MTU20.TIER.BIT.TGIEA = 1;
+        if(actStA == 0)
+        MTU20.TIOR.BIT.IOA = 2;
+        else
+        MTU20.TIOR.BIT.IOA = 5;
+    }
+	actWrA = actWrA+1;
+	if(actWrA == 10)
+		actWrA = 0;
+
+	actSA[actWrA] = currentModelTime.secs - Seconds;
+    if (currentModelTime.nsecs + actWidth < nanoSeconds) {
+		actSA[actWrA]--;
+		actNsA[actWrA] = currentModelTime.nsecs + actWidth + 1000000000 - nanoSeconds;
+    } else {
+		actNsA[actWrA] = currentModelTime.nsecs + actWidth - nanoSeconds;
+    }
+	actWrA = actWrA+1;
+	if(actWrA == 10)
+		actWrA = 0;
+
+    /* generate code for clearing Event Head buffer. */
+    Event_Head_CG_3_T_Rex_noNetwork_v1_ContactController_ContactControllerMicro_ActuatorSetup2_input[0] = NULL;
+}
 
 /*** InterruptBlock(
 $emptyFunctions,
@@ -465,6 +516,8 @@ void SysTickHandler(void) {
 	$systick2
 }
 
+
+
 void SafeToProcessInterruptHandler(void) {
 	PB.DR.BIT.B7 = 1;
 
@@ -495,13 +548,18 @@ $InterruptHandler157,
 $InterruptHandler158,
 $InterruptHandler159,
 $InterruptHandler162,
-$InterruptHandler164,
-$InterruptHandler165) ***/
+$InterruptHandler180,
+$InterruptHandler181,
+$InterruptHandler182,
+$InterruptHandler183,
+$externDeclarations) ***/
 
 // ----------------------------------------------------------------
 // ---------- Vector Table ----------------------------------------
 
 #include "vect.h"
+
+$externDeclarations
 
 #pragma section VECTTBL
 void *RESET_Vectors[] = {
@@ -1044,33 +1102,44 @@ void *INT_Vectors[] = {
 // the platform dependent initialization code goes here.
 	eth_init();
 	usb_init();
-	epl_test();
-
-	initEventMemory();
-
 	initTimer();
+	epl_test();
+	initEventMemory();
 /**/
 
 /*** initPDCodeBlock($initInterruptHandlers) ***/
 void initTimer(void) {
 	MTU2.TSTR.BIT.CST0 = 0;
+	MTU2.TSTR.BIT.CST3 = 0;
 
-	MTU20.TMDR.BYTE = 0x00;
-
+	MTU20.TMDR.BYTE = 0x00; /// MTU20 ... timer 0 (actuaotrs), MTU23 ... timer 3 (sensors)
  	MTU20.TCR.BYTE = 0x14;
 
- 	$initInterruptHandlers
-
-	MTU20.TSR.BYTE = 0xC0;
+ 	MTU20.TSR.BYTE = 0xC0;
 	MTU20.TSR2.BYTE = 0xC0;
 
-	MTU20.TIER.BYTE = 0x1E;
-	MTU20.TIER2.BYTE = 0x00;
+	MTU20.TIER.BIT.TGIE$letter = 0x13; // for each actuator
 
+	MTU20.TIER2.BYTE = 0x00;
+	MTU20.TCNT = 0;
 	INTC.IPR09.BIT._MTU20G = 2;
 	INTC.IPR09.BIT._MTU20C = 3;
 
+	MTU23.TMDR.BYTE = 0x00;
+	MTU23.TCR.BYTE = 0x16;
+
+	MTU23.TSR.BYTE = 0xC0;
+
+	MTU23.TCNT = 0;
+	INTC.IPR10.BIT._MTU23G = 2;
+
 	MTU2.TSTR.BIT.CST0 = 1;
+	MTU2.TSTR.BIT.CST3 = 1;
+
+	// set handler MTU2$timerNumber.TIOR.BIT.IO$letter = 0 or 8
+	// activate MTU2$timerNumber.TIER.BIT.TGIEA$letter = 1;
+	$initInterruptHandlers
+	MTU20.TIER.BIT.TCIEV = 1; // systickhandler
 }
 
 void initEventMemory() {
