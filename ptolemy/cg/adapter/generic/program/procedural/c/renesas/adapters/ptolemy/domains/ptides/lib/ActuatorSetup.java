@@ -65,6 +65,7 @@ public class ActuatorSetup extends OutputDevice {
                 .getAttribute("InterruptHandlerID")).getToken())
                 .intValue();
         _letter = RenesasUtilities.interruptHandlerLetters.get(_number); 
+        _timerNumber = RenesasUtilities.timerNumbers.get(_number);
         if (_letter == null) {
             throw new IllegalActionException(actor, "The interrupt handler number is not supported.");
         }
@@ -76,6 +77,7 @@ public class ActuatorSetup extends OutputDevice {
         codeStream.clear();
         List<String> args = new ArrayList<String>();
         args.add(_letter + ""); 
+        args.add(_timerNumber + "");
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
     }
@@ -85,4 +87,5 @@ public class ActuatorSetup extends OutputDevice {
  
     private int _number;
     private Character _letter;
+    private int _timerNumber;
 }

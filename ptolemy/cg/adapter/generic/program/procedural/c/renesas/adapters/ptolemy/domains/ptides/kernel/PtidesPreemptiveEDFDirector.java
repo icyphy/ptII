@@ -336,15 +336,10 @@ public class PtidesPreemptiveEDFDirector
      *  @exception Thrown if parameters of sensors or actuators cannot be read.
      */
     protected void _modelStaticAnalysis() throws IllegalActionException {
-        _interruptHandlerNames = new HashMap();  
-        _interruptHandlerNames.put(156, "");
-        _interruptHandlerNames.put(157, "");
-        _interruptHandlerNames.put(158, "");
-        _interruptHandlerNames.put(159, "");
-        _interruptHandlerNames.put(162, "");
-        _interruptHandlerNames.put(164, "");
-        _interruptHandlerNames.put(165, ""); 
-
+        _interruptHandlerNames = new HashMap(); 
+        for (int key : RenesasUtilities.interruptHandlerLetters.keySet()) {
+            _interruptHandlerNames.put(key, "");
+        } 
         
         int id = -1;
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
@@ -356,7 +351,7 @@ public class PtidesPreemptiveEDFDirector
                 actuators.put(actor, id);
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
-                            "The sensor interrupt handler" + " with id " + id
+                            "The interrupt handler" + " with id " + id
                                     + " cannot be used.");
                 }
                 _interruptHandlerNames.put(id,
@@ -370,7 +365,7 @@ public class PtidesPreemptiveEDFDirector
                 sensors.put(actor, id); 
                 if (_interruptHandlerNames.get(id) == null) {
                     throw new IllegalActionException(actor,
-                            "The sensor interrupt handler" + " with id " + id
+                            "The interrupt handler" + " with id " + id
                                     + " cannot be used.");
                 }
                 _interruptHandlerNames.put(id,
@@ -417,7 +412,7 @@ public class PtidesPreemptiveEDFDirector
         
         String actuatorPublicVariables = "";
         for (Actor actuator : actuators.keySet()) {
-            Character letter = RenesasUtilities._interruptHandlerLetters.get(actuators.get(actuator));
+            Character letter = RenesasUtilities.interruptHandlerLetters.get(actuators.get(actuator));
             actuatorPublicVariables += "uint32 actS" + letter + "[10], actNs" + letter + "[10];\n";
             actuatorPublicVariables += "uint32 actRd" + letter + " = 0, actWr" + letter + " = 0, actSt" + letter + " = 0;\n";
         } 

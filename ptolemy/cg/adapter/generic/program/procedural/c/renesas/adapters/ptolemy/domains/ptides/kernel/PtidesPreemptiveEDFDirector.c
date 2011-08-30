@@ -907,11 +907,9 @@ void *INT_Vectors[] = {
 // 163 Reserved
     (void*) Dummy,
 // 164 MTU2 MTU1 TGI1A
-	// (void*) INT_MTU2_MTU1_TGI1A,
-    (void*) $InterruptHandler164,
+    (void*) INT_MTU2_MTU1_TGI1A,
 // 165 MTU2 MTU1 TGI1B
-	// (void*) INT_MTU2_MTU1_TGI1B,
-    (void*) $InterruptHandler165,
+	(void*) INT_MTU2_MTU1_TGI1B,
 // 166 Reserved
     (void*) Dummy,
 // 167 Reserved
@@ -941,13 +939,17 @@ void *INT_Vectors[] = {
 // 179 Reserved
     (void*) Dummy,
 // 180 MTU2 MTU3 TGI3A
-	(void*) INT_MTU2_MTU3_TGI3A,
+	// (void*) INT_MTU2_MTU3_TGI3A,
+    (void*) $InterruptHandler180,
 // 181 MTU2 MTU3 TGI3B
-	(void*) INT_MTU2_MTU3_TGI3B,
+	// (void*) INT_MTU2_MTU3_TGI3B,
+    (void*) $InterruptHandler181,
 // 182 MTU2 MTU3 TGI3C
-	(void*) INT_MTU2_MTU3_TGI3C,
+	// (void*) INT_MTU2_MTU3_TGI3C,
+    (void*) $InterruptHandler182,
 // 183 MTU2 MTU3 TGI3D
-	(void*) INT_MTU2_MTU3_TGI3D,
+	// (void*) INT_MTU2_MTU3_TGI3D,
+    (void*) $InterruptHandler183,
 // 184 MTU2 MTU3 TGI3V
 	(void*) INT_MTU2_MTU3_TGI3V,
 // 185 Reserved

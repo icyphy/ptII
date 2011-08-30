@@ -1,5 +1,5 @@
 
-/*** fireBlock($timerNumber, $Letter) ***/
+/*** fireBlock($Letter, $timerNumber) ***/
 		actNs$Letter[actWr$Letter] = currentModelTime.nsecs - nanoSeconds;
 	    if((MTU2$timerNumber.TIOR.BIT.IO$Letter == 0) && (actS$Letter[actWr$Letter] == 0) && (actNs$Letter[actWr$Letter] < ((4*divideByValue/2)*(65536 + intDel)))) {
 	        MTU2$timerNumber.TGR$Letter = actNs$Letter[actWr$Letter]/(4*divideByValue/2);
