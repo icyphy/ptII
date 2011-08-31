@@ -294,7 +294,7 @@ public class UserActorLibrary {
             // Note that the library in the configuration is an
             // instance of another model.  We have to go get the
             // original model to make sure that the change propagates
-            // back to the file from which the library is loaded from.
+            // back to the file from which the library is loaded.
             Tableau libraryTableau = configuration.openModel(libraryInstance);
             PtolemyEffigy libraryEffigy = (PtolemyEffigy) libraryTableau
                     .getContainer();
