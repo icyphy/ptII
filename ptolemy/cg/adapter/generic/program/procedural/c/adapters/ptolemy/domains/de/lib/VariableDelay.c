@@ -10,8 +10,8 @@ if ($hasToken(delay)) {
 	delayValue = $get(delay);
 }
 currentModelTime.secs += (int) delayValue; // intPart
-fractPart = delayValue - currentModelTime.secs
-currentModelTime.nsecs += (int) fractPart * 1000000000.0;
+fractPart = delayValue - (int) delayValue;
+currentModelTime.nsecs += (int) (fractPart * 1000000000.0);
 if (currentModelTime.nsecs >= 1000000000) {
     currentModelTime.nsecs -= 1000000000;
     currentModelTime.secs++;

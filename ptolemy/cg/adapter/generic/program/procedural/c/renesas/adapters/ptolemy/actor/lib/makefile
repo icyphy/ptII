@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Codegen sdf kernel
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/actor/lib
 
-DIRS =		actor domains
+DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,33 +45,28 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptolemy
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \ 
-	domains/domains.jar \
-	actor/actor.jar
+PTPACKAGE = 	lib
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+	MultiplyDivide.java 
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	MultiplyDivide.c 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	actor domains
+#MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
