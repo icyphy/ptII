@@ -52,7 +52,6 @@ public class TimeDelay
         super(actor);
     }
     
-    @Override
     public String getAddTimeString() throws IllegalActionException { 
         return getParameterValue("delay", (NamedObj) _component);
     }

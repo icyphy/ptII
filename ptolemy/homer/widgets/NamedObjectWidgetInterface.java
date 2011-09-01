@@ -44,7 +44,7 @@ import ptolemy.homer.kernel.PositionableElement;
 public interface NamedObjectWidgetInterface {
 
     /**
-     * Return positionable element that the instance is visualizing.
+     * Return positionable element that the instance is wrapping.
      * @return the positionable element.
      */
     PositionableElement getPositionableElement();
