@@ -1036,7 +1036,9 @@ public class Query extends JPanel {
      *  values.  If it is called from another thread, there is no
      *  assurance that the value returned will be the current value.
      *  @param name The name of the entry.
-     *  @return The value currently in the entry as a String.
+     *  @return The value currently in the entry as a String, unless
+     *   the entry is a combo box, in which case the selected object
+     *   is returned, or null is returned if no object is selected.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
      *   need not be declared explicitly.
@@ -1122,7 +1124,14 @@ public class Query extends JPanel {
      */
     public String getStringValue(String name) throws NoSuchElementException,
             IllegalArgumentException {
-        return getObjectValue(name).toString();
+        // NOTE: getObjectValue() may return null if the entry
+        // is a combo box and no object is selected. In that case,
+        // return an empty string.
+        Object result = getObjectValue(name);
+        if (result != null) {
+            return result.toString();
+        }
+        return "";
     }
 
     /** Get the preferred number of lines to be used for entry boxes created
