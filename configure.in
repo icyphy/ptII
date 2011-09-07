@@ -2266,7 +2266,7 @@ else
         # PTJAVAMAIL_PACKAGES is used in ptII/doc/makefile
 	PTJAVAMAIL_PACKAGES="ptolemy.actor.lib.mail"
 
-	PTJAVAMAIL_JARS="${CLASSPATHSEPARATOR}${JAVAMAIL_DIR}/mail.jar"
+	PTJAVAMAIL_JARS="${JAVAMAIL_DIR}/mail.jar"
         updateClasspath "$JAVAMAIL_DIR/mail.jar"
 	PT_MSG_RESULT([$JAVAMAIL_DIR])
     fi
