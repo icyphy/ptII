@@ -49,4 +49,8 @@ public class TrueGate
     public TrueGate(ptolemy.actor.lib.logic.TrueGate actor) {
         super(actor);
     }
+    
+    public String getTimeSourcePortName() {
+        return "input";
+    }
 }
