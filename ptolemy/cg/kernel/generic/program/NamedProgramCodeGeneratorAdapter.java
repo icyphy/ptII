@@ -1327,4 +1327,15 @@ public class NamedProgramCodeGeneratorAdapter extends
      */
     private Hashtable<ProgramCodeGeneratorAdapter.Channel, List<ProgramCodeGeneratorAdapter.Channel>> _portConversions = new Hashtable<ProgramCodeGeneratorAdapter.Channel, List<ProgramCodeGeneratorAdapter.Channel>>();
 
+    public String getAddTimeString() throws IllegalActionException {
+        return "";
+    }
+    
+    public String getSourceTimeString(String timeVariable) throws IllegalActionException {
+        return "";
+    }
+
+    public String getTimeSourcePortName() {
+        return "";
+    }
 }
