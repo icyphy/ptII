@@ -27,6 +27,14 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.de.lib;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// TimeGap
@@ -51,5 +59,14 @@ public class TimeGap
     
     public String getTimeSourcePortName() {
         return "input";
+    }
+    
+    public String generateFireCode() throws IllegalActionException {
+        CodeStream codeStream = _templateParser.getCodeStream();
+        codeStream.clear();
+        List<String> args = new ArrayList<String>();
+        args.add(CodeGeneratorAdapter.generateName((NamedObj) _component)); 
+        codeStream.appendCodeBlock("fireBlock", args);
+        return processCode(codeStream.toString());
     }
 }

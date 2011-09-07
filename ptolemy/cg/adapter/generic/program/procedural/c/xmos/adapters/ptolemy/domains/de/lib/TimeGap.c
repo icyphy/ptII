@@ -1,10 +1,8 @@
-/***fireBlock($intPart, $fracPart)***/
+/***fireBlock($name)***/
     static Timestamp lastTimestamp;
     Timestamp* timestamp = &$name_input[0]->tag.timestamp;
     Timestamp timestampGap;
     double timeGap;
-
-    //storeTestTime(3);
 
     timestampSub(timestamp, &lastTimestamp, &timestampGap);
 

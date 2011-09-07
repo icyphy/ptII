@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/xmos/adapters/ptolemy/domains/de/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/domains/de/lib
 
 DIRS =		
 
@@ -50,7 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	TimeGap.java 
+	TimeGap.c 
 
 OTHER_FILES_TO_BE_JARED = \
 	TimeGap.c 
