@@ -155,7 +155,7 @@ public class PtidesBasicReceiver
         addTime = adapter.getAddTimeString();
         sourceTime = adapter.getSourceTimeString("sourceTime");
         if (sourceTime == "") { // use default input output actor 
-            sourceTime = "sourceTime = Event_Head_" + CodeGeneratorAdapter.generateName(sourcePort.getContainer()) + "_" + adapter.getTimeSourcePortName() + "[0]";
+            sourceTime = "sourceTime = &Event_Head_" + CodeGeneratorAdapter.generateName(sourcePort.getContainer()) + "_" + adapter.getTimeSourcePortName() + "[0]->tag.timestamp";
         }
         
         // FIXME: not sure whether we should check if we are putting into an input port or

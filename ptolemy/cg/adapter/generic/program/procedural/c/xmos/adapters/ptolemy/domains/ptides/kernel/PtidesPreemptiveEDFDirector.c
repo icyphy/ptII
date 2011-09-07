@@ -17,6 +17,8 @@ typedef uint8 boolean;
 
 #define TRUE 1
 #define FALSE 0
+#define true TRUE
+#define false FALSE
 #define error(x) debug("Error: %s\n", x);
 
 inline static unsigned streaming_chan_inuint(chanend c)
@@ -63,48 +65,48 @@ inline static void streaming_chan_outuchar(chanend c, unsigned char value)
 //-- PlatformClock.h --//
 
 typedef struct {
-    uint32 s;
-    uint32 ns;
-} Timestamp;
+    uint32 secs;
+    uint32 nsecs;
+} Time;
 
 typedef struct {
-    int32 s;
-    int32 ns;
-} SignedTimestamp;
+    int32 secs;
+    int32 nsecs;
+} SignedTime;
 
 typedef struct {
-    Timestamp timestamp;
+    Time timestamp;
     uint16 microstep;
 } Tag;
 
-uint32 countUntilTimestamp(const Timestamp *timestamp,
+uint32 countUntilTimestamp(const Time *timestamp,
         streaming chanend platformClockChannel);
-void getTimestamp(Timestamp *timestamp,
+void getTimestamp(Time *timestamp,
         streaming chanend platformClockChannel);
-void getTimestampFromCount(Timestamp *timestamp,
+void getTimestampFromCount(Time *timestamp,
         streaming chanend platformClockChannel, uint32 count);
 
 //-- Scheduler.h --//
 
 typedef struct Event {
     union {
-        char booleanValue;
+        char boolean_Value;
         char charValue;
         int16 shortValue;
         uint16 ushortValue;
         int32 intValue;
         uint32 uintValue;
         float floatValue;
-        double doubleValue;
+        double double_Value;
         struct {
             uint32 u;
             uint32 l;
         } dataValue;
-    } value;
+    } Val;
     Tag tag;
     uint32 depth;
-    Timestamp deadline;
-    SignedTimestamp offset;
+    Time deadline;
+    SignedTime offset;
     void (*fire)();
     struct Event** sinkEvent;
     struct Event* nextEvent;
@@ -129,27 +131,27 @@ enum {
 
 typedef struct ActuationEvent {
 
-    Timestamp timestamp;
+    Time timestamp;
     union {
-        char booleanValue;
+        char boolean_Value;
         char charValue;
         int16 shortValue;
         uint16 ushortValue;
         int32 intValue;
         uint32 uintValue;
         float floatValue;
-        double doubleValue;
+        double double_Value;
         struct {
             uint32 u;
             uint32 l;
         } dataValue;
-    } value;
+    } Val;
     void (*fire)();
     struct ActuationEvent* nextEvent;
 
 } ActuationEvent;
 
-/ Maximum number of actuation events on queue. */
+/* Maximum number of actuation events on queue. */
 #define MAX_ACTUATION_EVENTS 10
 
 /**/
@@ -160,7 +162,7 @@ typedef struct ActuationEvent {
 /*** FuncProtoBlock ***/
 uint8 checkChannels(streaming chanend schedulerChannels[], uint8 numChan);
 int8 compareEvents(const Event* a, const Event* b);
-int8 compareTimestamps(const Timestamp* a, const Timestamp* b);
+int8 compareTimestamps(const Time* a, const Time* b);
 Event* getFreeEvent();
 void initalizeFreeEventList();
 Event* peekProcessing();
@@ -170,9 +172,9 @@ void printEvent(const Event* event);
 void processEvent(Event* event,
         streaming chanend eventProcessingChannel);
 void pushProcessing(Event* event);
-uint8 safeToProcess(const Event* event, const Timestamp* platformTime);
-void timestampAdd(const Timestamp* a, const Timestamp* b, Timestamp* result);
-void timestampSub(const Timestamp* a, const Timestamp* b, Timestamp* result);
+uint8 safeToProcess(const Event* event, const Time* platformTime);
+void timestampAdd(const Time* a, const Time* b, Time* result);
+void timestampSub(const Time* a, const Time* b, Time* result);
 
 double multiply_Int_Double(int a1, double a2);
 inline double divide_Double_Double(double a1, double a2);
@@ -254,10 +256,10 @@ void addActuationEvent(streaming chanend actuatorChannel, Event* event,
 
     // Send event information.
     streaming_chan_outuint(actuatorChannel, type);
-    streaming_chan_outuint(actuatorChannel, event->tag.timestamp.s);
-    streaming_chan_outuint(actuatorChannel, event->tag.timestamp.ns);
-    streaming_chan_outuint(actuatorChannel, event->value.dataValue.u);
-    streaming_chan_outuint(actuatorChannel, event->value.dataValue.l);
+    streaming_chan_outuint(actuatorChannel, event->tag.timestamp.secs);
+    streaming_chan_outuint(actuatorChannel, event->tag.timestamp.nsecs);
+    streaming_chan_outuint(actuatorChannel, event->Val.dataValue.u);
+    streaming_chan_outuint(actuatorChannel, event->Val.dataValue.l);
 }
 
 /* Add actuation event to actuation event queue by receiving pertinent
@@ -272,10 +274,10 @@ void processAddActuationEvent(streaming chanend actuatorChannel, uint32 type) {
     ActuationEvent* prevEvent;
 
     // Receive event information.
-    newEvent->timestamp.s = streaming_chan_inuint(actuatorChannel);
-    newEvent->timestamp.ns = streaming_chan_inuint(actuatorChannel);
-    newEvent->value.dataValue.u = streaming_chan_inuint(actuatorChannel);
-    newEvent->value.dataValue.l = streaming_chan_inuint(actuatorChannel);
+    newEvent->timestamp.secs = streaming_chan_inuint(actuatorChannel);
+    newEvent->timestamp.nsecs = streaming_chan_inuint(actuatorChannel);
+    newEvent->Val.dataValue.u = streaming_chan_inuint(actuatorChannel);
+    newEvent->Val.dataValue.l = streaming_chan_inuint(actuatorChannel);
 
     // Assign correct function.
 
@@ -386,7 +388,7 @@ void runScheduler(streaming chanend schedulerChannels[], uint8 numChan,
         streaming chanend platformClockChannel) {
 
     Event* event;
-    Timestamp platformTime;
+    Time platformTime;
 
     // Initialize free event list.
     initalizeFreeEventList();
@@ -473,13 +475,13 @@ int8 compareEvents(const Event* a, const Event* b) {
 }
 
 // a < b -> -1 :: a == b -> 0 :: a > b -> 1
-int8 compareTimestamps(const Timestamp* a, const Timestamp* b) {
+int8 compareTimestamps(const Time* a, const Time* b) {
 
-    if(a->s < b-> s) {
+    if(a->secs < b->secs) {
         return -1;
-    } else if((a->s == b->s) && (a->ns < b->ns)) {
+    } else if((a->secs == b->secs) && (a->nsecs < b->nsecs)) {
         return -1;
-    } else if((a->s == b->s) && (a->ns == b->ns)) {
+    } else if((a->secs == b->secs) && (a->nsecs == b->nsecs)) {
         return 0;
     } else {
         return 1;
@@ -504,16 +506,16 @@ void addEvent(chanend schedulerChannel, const Event* event) {
     //streaming_chan_outuchar(schedulerChannel, CMD_EVENT_ADD);
 
     // Send contents of event.
-    streaming_chan_outuint(schedulerChannel, event->value.dataValue.u);
-    streaming_chan_outuint(schedulerChannel, event->value.dataValue.l);
-    streaming_chan_outuint(schedulerChannel, event->tag.timestamp.s);
-    streaming_chan_outuint(schedulerChannel, event->tag.timestamp.ns);
+    streaming_chan_outuint(schedulerChannel, event->Val.dataValue.u);
+    streaming_chan_outuint(schedulerChannel, event->Val.dataValue.l);
+    streaming_chan_outuint(schedulerChannel, event->tag.timestamp.secs);
+    streaming_chan_outuint(schedulerChannel, event->tag.timestamp.nsecs);
     streaming_chan_outuint(schedulerChannel, (uint32) event->tag.microstep);
     streaming_chan_outuint(schedulerChannel, event->depth);
-    streaming_chan_outuint(schedulerChannel, event->deadline.s);
-    streaming_chan_outuint(schedulerChannel, event->deadline.ns);
-    streaming_chan_outuint(schedulerChannel, (uint32) event->offset.s);
-    streaming_chan_outuint(schedulerChannel, (uint32) event->offset.ns);
+    streaming_chan_outuint(schedulerChannel, event->deadline.secs);
+    streaming_chan_outuint(schedulerChannel, event->deadline.nsecs);
+    streaming_chan_outuint(schedulerChannel, (uint32) event->offset.secs);
+    streaming_chan_outuint(schedulerChannel, (uint32) event->offset.nsecs);
     streaming_chan_outuint(schedulerChannel, (uint32) event->fire);
     streaming_chan_outuint(schedulerChannel, (uint32) event->sinkEvent);
 
@@ -575,16 +577,16 @@ void processAddEvent(chanend schedulerChannel) {
 
     //storeTestTime(4);
     // Get contents of event to add from channel.
-    newEvent->value.dataValue.u = streaming_chan_inuint(schedulerChannel);
-    newEvent->value.dataValue.l = streaming_chan_inuint(schedulerChannel);
-    newEvent->tag.timestamp.s = streaming_chan_inuint(schedulerChannel);
-    newEvent->tag.timestamp.ns = streaming_chan_inuint(schedulerChannel);
+    newEvent->Val.dataValue.u = streaming_chan_inuint(schedulerChannel);
+    newEvent->Val.dataValue.l = streaming_chan_inuint(schedulerChannel);
+    newEvent->tag.timestamp.secs = streaming_chan_inuint(schedulerChannel);
+    newEvent->tag.timestamp.nsecs = streaming_chan_inuint(schedulerChannel);
     newEvent->tag.microstep = (uint16) streaming_chan_inuint(schedulerChannel);
     newEvent->depth = streaming_chan_inuint(schedulerChannel);
-    newEvent->deadline.s = streaming_chan_inuint(schedulerChannel);
-    newEvent->deadline.ns = streaming_chan_inuint(schedulerChannel);
-    newEvent->offset.s = (int32)streaming_chan_inuint(schedulerChannel);
-    newEvent->offset.ns = (int32)streaming_chan_inuint(schedulerChannel);
+    newEvent->deadline.secs = streaming_chan_inuint(schedulerChannel);
+    newEvent->deadline.nsecs = streaming_chan_inuint(schedulerChannel);
+    newEvent->offset.secs = (int32)streaming_chan_inuint(schedulerChannel);
+    newEvent->offset.nsecs = (int32)streaming_chan_inuint(schedulerChannel);
     newEvent->fire = (void*)streaming_chan_inuint(schedulerChannel);
     newEvent->sinkEvent = (Event**)streaming_chan_inuint(schedulerChannel);
 
@@ -634,15 +636,15 @@ void processAddEvent(chanend schedulerChannel) {
 void printEvent(const Event* event) {
 
     debug("Event = %X\n", (uint32)event);
-    debug("\tvalue.uintValue = %u\n", event->value.uintValue);
-    debug("\ttag.timestamp.s = %u\n", event->tag.timestamp.s);
-    debug("\ttag.timestamp.ns = %u\n", event->tag.timestamp.ns);
+    debug("\tvalue.uintValue = %u\n", event->Val.uintValue);
+    debug("\ttag.timestamp.secs = %u\n", event->tag.timestamp.secs);
+    debug("\ttag.timestamp.nsecs = %u\n", event->tag.timestamp.nsecs);
     debug("\ttag.microstep = %u\n", event->tag.microstep);
     debug("\tdepth = %u\n", event->depth);
-    debug("\tdeadline.s = %u\n", event->deadline.s);
-    debug("\tdeadline.ns = %u\n", event->deadline.ns);
-    debug("\toffset.s = %d\n", event->offset.s);
-    debug("\toffset.ns = %d\n", event->offset.ns);
+    debug("\tdeadline.secs = %u\n", event->deadline.secs);
+    debug("\tdeadline.nsecs = %u\n", event->deadline.nsecs);
+    debug("\toffset.secs = %d\n", event->offset.secs);
+    debug("\toffset.nsecs = %d\n", event->offset.nsecs);
     debug("\tfire = %X\n", (uint32)event->fire);
     debug("\tsinkEvent = %X\n", (uint32)event->sinkEvent);
     debug("\tnextEvent = %X\n", (uint32)event->nextEvent);
@@ -682,25 +684,25 @@ void processEvent(Event* event,
 
         // Provide currEvent.
         streaming_chan_outuint(eventProcessingChannel,
-                currEvent->value.dataValue.u);
+                currEvent->Val.dataValue.u);
         streaming_chan_outuint(eventProcessingChannel,
-                currEvent->value.dataValue.l);
+                currEvent->Val.dataValue.l);
         streaming_chan_outuint(eventProcessingChannel,
-                currEvent->tag.timestamp.s);
+                currEvent->tag.timestamp.secs);
         streaming_chan_outuint(eventProcessingChannel,
-                currEvent->tag.timestamp.ns);
+                currEvent->tag.timestamp.nsecs);
         streaming_chan_outuint(eventProcessingChannel,
                 (uint32) currEvent->tag.microstep);
         streaming_chan_outuint(eventProcessingChannel,
                 currEvent->depth);
         streaming_chan_outuint(eventProcessingChannel,
-                currEvent->deadline.s);
+                currEvent->deadline.secs);
         streaming_chan_outuint(eventProcessingChannel,
-                currEvent->deadline.ns);
+                currEvent->deadline.nsecs);
         streaming_chan_outuint(eventProcessingChannel,
-                (uint32) currEvent->offset.s);
+                (uint32) currEvent->offset.secs);
         streaming_chan_outuint(eventProcessingChannel,
-                (uint32) currEvent->offset.ns);
+                (uint32) currEvent->offset.nsecs);
 
         lastEvent = currEvent;
         // Check next event.
@@ -774,20 +776,20 @@ void pushProcessing(Event* event) {
 /* Determine whether an event is safe-to-process at provided platform time.
  * Returns TRUE if (event.tag - offset) <= platform time
  */
-uint8 safeToProcess(const Event* event, const Timestamp* platformTime) {
+uint8 safeToProcess(const Event* event, const Time* platformTime) {
 
-    Timestamp tempTimestamp;
-    Timestamp safeTimestamp;
+    Time tempTimestamp;
+    Time safeTimestamp;
     // addTimestamp and subTimestamp require Timestamp, not SignedTimestamp.
-    if((event->offset.s < 0) ||
-            ((event->offset.s == 0) && (event->offset.ns < 0))) {
-        tempTimestamp.s = (uint32) (-event->offset.s);
-        tempTimestamp.ns = (uint32) (-event->offset.ns);
+    if((event->offset.secs < 0) ||
+            ((event->offset.secs == 0) && (event->offset.nsecs < 0))) {
+        tempTimestamp.secs = (uint32) (-event->offset.secs);
+        tempTimestamp.nsecs = (uint32) (-event->offset.nsecs);
         timestampAdd(&event->tag.timestamp, &tempTimestamp, &safeTimestamp);
 
     } else {
-        tempTimestamp.s = (uint32) (event->offset.s);
-        tempTimestamp.ns = (uint32) (event->offset.ns);
+        tempTimestamp.secs = (uint32) (event->offset.secs);
+        tempTimestamp.nsecs = (uint32) (event->offset.nsecs);
         timestampSub(&event->tag.timestamp, &tempTimestamp, &safeTimestamp);
     }
     if(compareTimestamps(&safeTimestamp, platformTime) <= 0) {
@@ -798,30 +800,30 @@ uint8 safeToProcess(const Event* event, const Timestamp* platformTime) {
 
 }
 
-void timestampAdd(const Timestamp* a, const Timestamp* b, Timestamp* result) {
+void timestampAdd(const Time* a, const Time* b, Time* result) {
 
-    result->s = a->s + b->s;
-    result->ns = a->ns + b->ns;
-    if(result->ns >= 1000000000) {
-        result->ns -= 1000000000;
-        result->s++;
+    result->secs = a->secs + b->secs;
+    result->nsecs = a->nsecs + b->nsecs;
+    if(result->nsecs >= 1000000000) {
+        result->nsecs -= 1000000000;
+        result->secs++;
     }
 
 }
 
 //TODO: negative result?
-void timestampSub(const Timestamp* a, const Timestamp* b, Timestamp* result) {
+void timestampSub(const Time* a, const Time* b, Time* result) {
 
     if(compareTimestamps(a, b) == -1) {
         error("timestampSub(): Negative result.");
-        result->s = 0;
-        result->ns = 0;
+        result->secs = 0;
+        result->nsecs = 0;
     }
-    result->s = a->s - b->s;
-    result->ns = a->ns - b->ns;
-    if(a->ns < b->ns) {
-        result->ns += 1000000000;
-        result->s -= 1;
+    result->secs = a->secs - b->secs;
+    result->nsecs = a->nsecs - b->nsecs;
+    if(a->nsecs < b->nsecs) {
+        result->nsecs += 1000000000;
+        result->secs -= 1;
     }
 
 }
@@ -908,6 +910,8 @@ typedef uint8 boolean;
 
 #define TRUE 1
 #define FALSE 0
+#define true TRUE
+#define false FALSE
 #define error(x) debug("Error: %s\n", x);
 
 void runPtidyOS(streaming chanend debugChannel);
@@ -916,9 +920,9 @@ void runPtidyOS(streaming chanend debugChannel);
 //-- PlatformClock.h --//
 
 typedef struct {
-    uint32 s;
-    uint32 ns;
-} Timestamp;
+    uint32 secs;
+    uint32 nsecs;
+} Time;
 
 /* Clock information for software clock. Since tick rate of hardware timer
  * is driven by an oscillator which cannot be controlled, a rate adjustment
@@ -927,7 +931,7 @@ typedef struct {
  * every 2^32 ticks and when rate adjustment is modified.
  */
 typedef struct {
-    Timestamp lastTimestamp; /*< Reference timestamp. */
+    Time lastTimestamp; /*< Reference timestamp. */
     uint32 lastCount; /*< Timer count value at reference timestamp. */
     uint32 rateAdj; /*< Conversion factor to change timer ticks
     * to time duration. Expressed as fixed point with 31 fractional bits.
@@ -943,20 +947,20 @@ enum {
     CMD_CLOCK_RATEADJ /*< Update rate adjustment (conversion factor). */
 };
 
-void countToTimestamp(Timestamp &timestamp,
+void countToTimestamp(Time &timestamp,
         streaming chanend platformClockChannel,
         uint32 count, uint8 rateAdjFlag);
 void getPlatformClock(streaming chanend platformClockChannel,
         Clock &localClk);
-void getTimestamp(Timestamp &timestamp,
+void getTimestamp(Time &timestamp,
         streaming chanend platformClockChannel);
-void getTimestampFromCount(Timestamp &timestamp,
+void getTimestampFromCount(Time &timestamp,
         streaming chanend platformClockChannel, uint32 count);
 void initPlatformClock();
 void runPlatformClock(streaming chanend platformClockChannels[],
         uint8 numChan);
 void updatePlatformClock(streaming chanend platformClockChannel,
-        const Timestamp &timestamp, uint32 count);
+        const Time &timestamp, uint32 count);
 void updateRateAdj(streaming chanend platformClockChannel, uint32 newRateAdj,
         uint32 newRateAdjInv);
 
@@ -1019,7 +1023,7 @@ int main() {
     streaming chan debugChannels[2];
 
     par {
-        on stdcore[0]: runDebug(debugChannels[0], debugChannels[1]);
+        on stdcore[0]: runDebug(debugChannels, 2);
         on stdcore[1]: runPtidyOS(debugChannels[0]);
         on stdcore[2]: testPtidyOS(debugChannels[1]);
     }
@@ -1104,8 +1108,8 @@ void runPlatformClock(streaming chanend platformClockChannels[],
             // Send clock information.
             case CMD_CLOCK_GET:
 
-                platformClockChannels[i] <: clk.lastTimestamp.s;
-                platformClockChannels[i] <: clk.lastTimestamp.ns;
+                platformClockChannels[i] <: clk.lastTimestamp.secs;
+                platformClockChannels[i] <: clk.lastTimestamp.nsecs;
                 platformClockChannels[i] <: clk.lastCount;
                 platformClockChannels[i] <: clk.rateAdj;
                 platformClockChannels[i] <: clk.rateAdjInv;
@@ -1114,8 +1118,8 @@ void runPlatformClock(streaming chanend platformClockChannels[],
             // Update rate adjustment (receive clock information).
             case CMD_CLOCK_RATEADJ:
 
-                platformClockChannels[i] :> clk.lastTimestamp.s;
-                platformClockChannels[i] :> clk.lastTimestamp.ns;
+                platformClockChannels[i] :> clk.lastTimestamp.secs;
+                platformClockChannels[i] :> clk.lastTimestamp.nsecs;
                 platformClockChannels[i] :> clk.lastCount;
                 platformClockChannels[i] :> clk.rateAdj;
                 platformClockChannels[i] :> clk.rateAdjInv;
@@ -1124,8 +1128,8 @@ void runPlatformClock(streaming chanend platformClockChannels[],
             // Update last timestamp and last count.
             case CMD_CLOCK_UPDATE:
 
-                platformClockChannels[i] :> clk.lastTimestamp.s;
-                platformClockChannels[i] :> clk.lastTimestamp.ns;
+                platformClockChannels[i] :> clk.lastTimestamp.secs;
+                platformClockChannels[i] :> clk.lastTimestamp.nsecs;
                 platformClockChannels[i] :> clk.lastCount;
                 break;
 
@@ -1139,7 +1143,7 @@ void runPlatformClock(streaming chanend platformClockChannels[],
 * If rateAdjFlag is false and too much time has elasped since the last update,
 * the last timestamp and last count are updated.
 */
-void countToTimestamp(Timestamp &timestamp,
+void countToTimestamp(Time &timestamp,
         streaming chanend platformClockChannel,
         uint32 count, uint8 rateAdjFlag) {
 
@@ -1170,17 +1174,17 @@ void countToTimestamp(Timestamp &timestamp,
     ns_h = (ns_h >> 31);
 
     // Add nanoseconds to last timestamp.
-    //timestamp.s = clk.lastTimestamp.s + (ns / 1000000000);
-    //timestamp.ns = clk.lastTimestamp.ns + (ns % 1000000000);
+    //timestamp.secs = clk.lastTimestamp.secs + (ns / 1000000000);
+    //timestamp.nsecs = clk.lastTimestamp.nsecs + (ns % 1000000000);
     asm("ldivu %0,%1,%2,%3,%4" : "=r"(q), "=r"(r) :
             "r"(ns_h), "r"(ns_l), "r"(ns_per_s));
-    timestamp.s = localClk.lastTimestamp.s + q;
-    timestamp.ns = localClk.lastTimestamp.ns + r;
+    timestamp.secs = localClk.lastTimestamp.secs + q;
+    timestamp.nsecs = localClk.lastTimestamp.nsecs + r;
 
     // Check for ns field overflow.
-    if(timestamp.ns >= ns_per_s) {
-        timestamp.s += 1;
-        timestamp.ns -= ns_per_s;
+    if(timestamp.nsecs >= ns_per_s) {
+        timestamp.secs += 1;
+        timestamp.nsecs -= ns_per_s;
     }
 
     // If too much time has passed since last time lastCount and
@@ -1195,7 +1199,7 @@ void countToTimestamp(Timestamp &timestamp,
 }
 
 /* Return timer count value which corresponds to provided future timestamp. */
-uint32 countUntilTimestamp(const Timestamp &timestamp,
+uint32 countUntilTimestamp(const Time &timestamp,
         streaming chanend platformClockChannel) {
 
     Clock localClk;
@@ -1208,10 +1212,10 @@ uint32 countUntilTimestamp(const Timestamp &timestamp,
     getPlatformClock(platformClockChannel, localClk);
 
     // Convert difference between timestamps to nanoseconds.
-    ns_l = timestamp.ns - localClk.lastTimestamp.ns - 514; //FIXME: manual d_n
-    {ns_h, ns_l} = lmul(timestamp.s - localClk.lastTimestamp.s,
+    ns_l = timestamp.nsecs - localClk.lastTimestamp.nsecs - 514; //FIXME: manual d_n
+    {ns_h, ns_l} = lmul(timestamp.secs - localClk.lastTimestamp.secs,
             1000000000, ns_l, 0);
-    if(timestamp.ns < localClk.lastTimestamp.ns) {
+    if(timestamp.nsecs < localClk.lastTimestamp.nsecs) {
         ns_h--;
     }
 
@@ -1247,8 +1251,8 @@ void getPlatformClock(streaming chanend platformClockChannel,
     platformClockChannel <: (uint32) CMD_CLOCK_GET;
 
     // Receive clock information.
-    platformClockChannel :> localClk.lastTimestamp.s;
-    platformClockChannel :> localClk.lastTimestamp.ns;
+    platformClockChannel :> localClk.lastTimestamp.secs;
+    platformClockChannel :> localClk.lastTimestamp.nsecs;
     platformClockChannel :> localClk.lastCount;
     platformClockChannel :> localClk.rateAdj;
     platformClockChannel :> localClk.rateAdjInv;
@@ -1263,7 +1267,7 @@ void getPlatformClock(streaming chanend platformClockChannel,
  * Note: Can be temporarily blocked if other thread is requesting data from
  * platform clock thread.
  */
-void getTimestamp(Timestamp &timestamp,
+void getTimestamp(Time &timestamp,
         streaming chanend platformClockChannel) {
 
     timer time;
@@ -1283,7 +1287,7 @@ void getTimestamp(Timestamp &timestamp,
  * Note: Can be temporarily blocked if other thread is requesting data from
  * platform clock thread.
  */
-void getTimestampFromCount(Timestamp &timestamp,
+void getTimestampFromCount(Time &timestamp,
         streaming chanend platformClockChannel, uint32 count) {
     countToTimestamp(timestamp, platformClockChannel, count, FALSE);
 }
@@ -1295,8 +1299,8 @@ void initPlatformClock() {
     timer time;
 
     //TODO: allow to customize?
-    clk.lastTimestamp.s = 0;
-    clk.lastTimestamp.ns = 0;
+    clk.lastTimestamp.secs = 0;
+    clk.lastTimestamp.nsecs = 0;
     time :> clk.lastCount;
     clk.rateAdj = 0x80000000;
     clk.rateAdjInv = 0x80000000;
@@ -1309,15 +1313,15 @@ void initPlatformClock() {
  * platform clock thread.
  */
 void updatePlatformClock(streaming chanend platformClockChannel,
-        const Timestamp &timestamp, uint32 count) {
+        const Time &timestamp, uint32 count) {
 
     // Send command to update last timestamp and last count.
     platformClockChannel <: (uint32) CMD_CLOCK_UPDATE;
     //    platformClockChannel <: (uint8) CMD_CLOCK_UPDATE;
 
     // Send updated last timestamp and last count.
-    platformClockChannel <: timestamp.s;
-    platformClockChannel <: timestamp.ns;
+    platformClockChannel <: timestamp.secs;
+    platformClockChannel <: timestamp.nsecs;
     platformClockChannel <: count;
 
 }
@@ -1333,7 +1337,7 @@ void updatePlatformClock(streaming chanend platformClockChannel,
 void updateRateAdj(streaming chanend platformClockChannel, uint32 newRateAdj,
         uint32 newRateAdjInv) {
 
-    Timestamp timestamp;
+    Time timestamp;
     timer time;
     uint32 count;
 
@@ -1347,8 +1351,8 @@ void updateRateAdj(streaming chanend platformClockChannel, uint32 newRateAdj,
     platformClockChannel <: (uint32) CMD_CLOCK_RATEADJ;
 
     // Send rate adjustment (clock information).
-    platformClockChannel <: timestamp.s;
-    platformClockChannel <: timestamp.ns;
+    platformClockChannel <: timestamp.secs;
+    platformClockChannel <: timestamp.nsecs;
     platformClockChannel <: count;
     platformClockChannel <: newRateAdj;
     platformClockChannel <: newRateAdjInv;
@@ -1407,7 +1411,7 @@ uint8 checkChannels(streaming chanend schedulerChannels[], uint8 numChan) {
 
 void runSensors(streaming chanend platformClockChannel, streaming chanend schedulerChannel) {
 
-    Timestamp timestamp;
+    Time timestamp;
 
     $sensorReadyFlags
 

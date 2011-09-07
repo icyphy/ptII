@@ -105,7 +105,7 @@ public class PtidesPreemptiveEDFDirector
             if (actor instanceof SensorHandler) {
                 code.append("void "
                         + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "(streaming chanend schedulerChannel, const Timestamp &timestamp);" + _eol); 
+                        + "(streaming chanend schedulerChannel, const Time &timestamp);" + _eol); 
             } 
         }  
 
@@ -122,28 +122,28 @@ public class PtidesPreemptiveEDFDirector
             
             sensorDefinition += "on stdcore[1]: in port " 
                 + deviceName + " = " 
-                + _devicePortIds.get(sensor) + "\n";
+                + _devicePortIds.get(sensor) + ";\n";
             
             sensorReadyFlags += "uint8 " 
                 + deviceName + "Ready = TRUE;\n";
              
             sensorSwitch += "case " + deviceName + " when pinseq(" + deviceName + "Ready) :> void:\n"
-                + "if(" + deviceName + "Ready)\n" 
+                + "if(" + deviceName + "Ready) {\n" 
                 + "getTimestamp(timestamp, platformClockChannel);\n" 
                 + CodeGeneratorAdapter.generateName((NamedObj) sensor) + "(schedulerChannel, timestamp);\n"  
                 + deviceName + "Ready = FALSE;\n"
                 + "} else {\n"
                 + deviceName + "Ready = TRUE;\n" 
-                + "}\n break \n"; 
+                + "}\n break; \n"; 
         }
-        sensorSwitch += "}"; 
+        sensorSwitch += "}\n}\n"; 
         
         String actuatorDefinition = "", doActuation = "", initActuatorString = "";
         for (Actor actuator : actuators.keySet()) {
             String deviceName = CodeGeneratorAdapter.generateName((NamedObj) actuator);
-            actuatorDefinition += "on stdcore[1]: in port " 
+            actuatorDefinition += "on stdcore[1]: out port " 
                 + deviceName + " = " 
-                + _devicePortIds.get(actuator) + "\n";
+                + _devicePortIds.get(actuator) + ";\n";
             
             doActuation += "void " + deviceName + "_Actuation() {\n" 
                 + "timer time;\n uint32 count;\n"

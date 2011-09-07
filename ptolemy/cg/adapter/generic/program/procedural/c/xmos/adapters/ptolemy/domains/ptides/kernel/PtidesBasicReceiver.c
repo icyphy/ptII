@@ -2,13 +2,13 @@
  $depth, $relativeDeadlineSecs, $relativeDeadlineNsecs,
  $offsetTimeSecs, $offsetTimeNsecs) ***/
     {
-    	Timestamp dummyTime, timestamp;
+    	Time dummyTime, timestamp;
     	Event event;
 
-    	Timestamp sourceTime;
+    	Time* sourceTime;
 
     	$sourceTimeString;
-        event.tag.timestamp = sourceTime;
+        event.tag.timestamp = *sourceTime;
         //fixme
         event.tag.microstep = 0;
 
@@ -19,8 +19,8 @@
         dummyTime.secs = $relativeDeadlineSecs;
         dummyTime.nsecs = $relativeDeadlineNsecs;
         timestampAdd(&event.tag.timestamp, &dummyTime, &event.deadline);
-        event.offset.s = $offsetTimeSecs;
-        event.offset.ns = $offsetTimeNsecs;
+        event.offset.secs = $offsetTimeSecs;
+        event.offset.nsecs = $offsetTimeNsecs;
         event.fire = $sinkFireName;
         event.value.$type_Value = $convertedValue;
         event.sinkEvent = &($sinkPortName);
