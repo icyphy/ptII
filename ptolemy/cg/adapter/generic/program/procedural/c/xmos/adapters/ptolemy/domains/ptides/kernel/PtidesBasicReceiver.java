@@ -165,8 +165,7 @@ public class PtidesBasicReceiver
                 .getContainer());
         List<String> args = new ArrayList<String>();
         
-        args.add(sourceTime);
-        args.add(addTime);
+        args.add(sourceTime); 
         args.add(sinkPort.getType().toString());
         args.add(token);
         args.add(sinkName);

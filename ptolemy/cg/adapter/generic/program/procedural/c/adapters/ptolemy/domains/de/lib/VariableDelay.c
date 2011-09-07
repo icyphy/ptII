@@ -18,8 +18,8 @@ if (currentModelTime.nsecs >= 1000000000) {
     currentModelTime.secs++;
 }
 
-//FIXME: this is not necessarily correct
 currentMicrostep = 0;
+
 if ($hasToken(input)) {
 	$put(output#0, $get(input));
 }

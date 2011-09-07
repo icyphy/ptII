@@ -25,8 +25,14 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.ptides.lib;
+package ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.actor.lib;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import ptolemy.cg.kernel.generic.program.CodeStream;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -50,6 +56,17 @@ public class TimeDelay
      */
     public TimeDelay(ptolemy.actor.lib.TimeDelay actor) {
         super(actor);
+    }
+    
+    public String generateFireCode() throws IllegalActionException {
+        CodeStream codeStream = _templateParser.getCodeStream();
+        codeStream.clear();
+        List<String> args = new LinkedList();
+        Parameter delay = ((ptolemy.actor.lib.TimeDelay) getComponent()).delay;
+        double value = ((DoubleToken) delay.getToken()).doubleValue();
+        args.add(Double.toString(value));
+        codeStream.appendCodeBlock("fireBlock", args);
+        return processCode(codeStream.toString());
     }
     
     public String getAddTimeString() throws IllegalActionException { 

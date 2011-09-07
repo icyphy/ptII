@@ -1,4 +1,4 @@
-/*** createEvent($sourceTimeString, $addTime, $type, $convertedValue, $sinkFireName, $sinkPortName,
+/*** createEvent($sourceTimeString, $type, $convertedValue, $sinkFireName, $sinkPortName,
  $depth, $relativeDeadlineSecs, $relativeDeadlineNsecs,
  $offsetTimeSecs, $offsetTimeNsecs) ***/
     {
@@ -12,17 +12,17 @@
         //fixme
         event.tag.microstep = 0;
 
-        timestampAdd(&event.tag.timestamp, &($addTime), &timestamp);
+        timestampAdd(&event.tag.timestamp, &(addTime), &timestamp);
         event.tag.timestamp = timestamp;
 
         event.depth = $depth;
-        dummyTime.secs = $relativeDeadlineSecs; // To TimeDelay.
+        dummyTime.secs = $relativeDeadlineSecs;
         dummyTime.nsecs = $relativeDeadlineNsecs;
         timestampAdd(&event.tag.timestamp, &dummyTime, &event.deadline);
         event.offset.s = $offsetTimeSecs;
         event.offset.ns = $offsetTimeNsecs;
         event.fire = $sinkFireName;
-        event.value.doubleValue = $convertedValue;
+        event.value.$type_Value = $convertedValue;
         event.sinkEvent = &($sinkPortName);
         asm("clrsr 0x2"); addEvent(schedulerChanend, &event); asm("setsr 0x2");
     };
