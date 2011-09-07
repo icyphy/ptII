@@ -7985,7 +7985,7 @@ fi
         # PTJAVAMAIL_PACKAGES is used in ptII/doc/makefile
 	PTJAVAMAIL_PACKAGES="ptolemy.actor.lib.mail"
 
-	PTJAVAMAIL_JARS="${CLASSPATHSEPARATOR}${JAVAMAIL_DIR}/mail.jar"
+	PTJAVAMAIL_JARS="${JAVAMAIL_DIR}/mail.jar"
         updateClasspath "$JAVAMAIL_DIR/mail.jar"
 	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JAVAMAIL_DIR" >&5
