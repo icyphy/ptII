@@ -8,6 +8,7 @@
 #define MAX_EVENTS 50
 #define MAX_ACTUATOR_TIMER_VALUES 10
 
+
 /* structures */
 typedef struct {
     uint32 secs;

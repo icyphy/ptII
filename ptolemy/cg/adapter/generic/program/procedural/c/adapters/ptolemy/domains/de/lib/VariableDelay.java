@@ -27,5 +27,8 @@ public class VariableDelay extends NamedProgramCodeGeneratorAdapter {
         return s;
     }
 
-
+    public String getTimeSourcePortName() {
+        return "input";
+    }
+    
 }

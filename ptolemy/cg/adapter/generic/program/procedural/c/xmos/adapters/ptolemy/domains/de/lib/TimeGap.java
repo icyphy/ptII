@@ -1,4 +1,4 @@
-/* An adapter class for ptolemy.domains.de.lib.Register
+/* An adapter class for ptolemy.domains.de.lib.TimeGap
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -25,30 +25,31 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
+package ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.de.lib;
+
 
 //////////////////////////////////////////////////////////////////////////
-//// Register
+//// TimeGap
 
 /**
- A adapter class for ptolemy.domains.de.lib.Register.
+ A adapter class for ptolemy.domains.de.lib.TimeGap.
 
  @author Jeff C. Jensen
 @version $Id$
 @since Ptolemy II 8.0
  */
-public class Register
+public class TimeGap
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.Register {
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib.TimeGap {
     /**
-     *  Construct a Register adapter.
+     *  Construct a TimeGap adapter.
      *  @param actor The given ptolemy.actor.lib.TimeGap actor.
      */
-    public Register(ptolemy.domains.de.lib.Register actor) {
+    public TimeGap(ptolemy.domains.de.lib.TimeGap actor) {
         super(actor);
     }
     
     public String getTimeSourcePortName() {
-        return "trigger";
+        return "input";
     }
 }

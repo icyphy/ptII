@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.ptides.kernel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -34,11 +35,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import antlr.CodeGenerator;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.ptides.kernel.RenesasUtilities;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ptides.lib.ActuatorSetup;
+import ptolemy.domains.ptides.lib.SensorHandler;
 import ptolemy.domains.ptides.lib.luminary.GPInputHandler;
+import ptolemy.domains.ptides.lib.luminary.LuminarySensorHandler;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// PtidesPreemptiveEDFDirector
@@ -76,12 +90,88 @@ public class PtidesPreemptiveEDFDirector
      *  @exception IllegalActionException
      */
     public Map<String, String> generateAdditionalCodeFiles() throws IllegalActionException {
-        Map<String, String> list = new HashMap();
+        Map<String, String> list = new HashMap<String, String>();
         
-        // FIXME add XMOS assembly code
+        
+        list.put("xc", _generateXCFile());
+        
         return list;
     }
+   
+    
+    protected String _generateSensorFuncProtoCode() {
+        StringBuffer code = new StringBuffer();
 
+        for (Actor actor : (List<Actor>) ((CompositeActor) _director
+                .getContainer()).deepEntityList()) {
+            if (actor instanceof SensorHandler) {
+                code.append("void "
+                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+                        + "(streaming chanend schedulerChannel, const Timestamp &timestamp);" + _eol); 
+            } 
+        }  
+
+        return code.toString();
+    }
+
+    private String _generateXCFile() throws IllegalActionException { 
+        List<String> args = new ArrayList<String>();
+        _templateParser.getCodeStream().clear();
+        
+        String sensorDefinition = "", sensorReadyFlags = "", sensorSwitch = "while (1) {\n    select {\n";
+        for (Actor sensor : sensors.keySet()) {
+            String deviceName = CodeGeneratorAdapter.generateName((NamedObj) sensor) + "_device";
+            
+            sensorDefinition += "on stdcore[1]: in port " 
+                + deviceName + " = " 
+                + _devicePortIds.get(sensor) + "\n";
+            
+            sensorReadyFlags += "uint8 " 
+                + deviceName + "Ready = TRUE;\n";
+             
+            sensorSwitch += "case " + deviceName + " when pinseq(" + deviceName + "Ready) :> void:\n"
+                + "if(" + deviceName + "Ready)\n" 
+                + "getTimestamp(timestamp, platformClockChannel);\n" 
+                + CodeGeneratorAdapter.generateName((NamedObj) sensor) + "(schedulerChannel, timestamp);\n"  
+                + deviceName + "Ready = FALSE;\n"
+                + "} else {\n"
+                + deviceName + "Ready = TRUE;\n" 
+                + "}\n break \n"; 
+        }
+        sensorSwitch += "}"; 
+        
+        String actuatorDefinition = "", doActuation = "", initActuatorString = "";
+        for (Actor actuator : actuators.keySet()) {
+            String deviceName = CodeGeneratorAdapter.generateName((NamedObj) actuator);
+            actuatorDefinition += "on stdcore[1]: in port " 
+                + deviceName + " = " 
+                + _devicePortIds.get(actuator) + "\n";
+            
+            doActuation += "void " + deviceName + "_Actuation() {\n" 
+                + "timer time;\n uint32 count;\n"
+                + deviceName + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
+                + deviceName + " <: 0;\n}\n"; 
+            
+            initActuatorString += deviceName + " <: 0;\n"; 
+        }
+        
+        String sensorProtoCode = _generateSensorFuncProtoCode();
+        args.add(sensorDefinition);  
+        args.add(sensorProtoCode);
+        args.add(actuatorDefinition); 
+        args.add(sensorReadyFlags);  
+        args.add(sensorSwitch);  
+        args.add(doActuation); 
+        args.add(initActuatorString);
+        
+        _templateParser.getCodeStream()
+        .append(_templateParser.getCodeStream().getCodeBlock(
+                "XCCodeBlock", args));
+        
+        return processCode(_templateParser.getCodeStream()
+                .toString());
+    }
+    
     /**
      * Generate the director fire code.
      * The code creates a new task for each actor according to
@@ -147,7 +237,7 @@ public class PtidesPreemptiveEDFDirector
                 .comment(
                         "Platform dependent initializatoin code of the PtidesDirector."));
 
-        code.append(_templateParser.getCodeStream().getCodeBlock("initPDBlock"));
+        //code.append(_templateParser.getCodeStream().getCodeBlock("initPDBlock"));
 
         return code.toString();
     }
@@ -159,9 +249,31 @@ public class PtidesPreemptiveEDFDirector
      *   FIXME: Take care of platform dependent code.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer(); 
 
-        code.append(super.generatePreinitializeCode());
+        _modelStaticAnalysis();
+
+        code.append(_generatePtrToEventHeadCodeInputs());
+
+        // if the outside is already a Ptides director (this could only happen if
+        // we have a EmbeddedCodeActor inside of a Ptides director. This case
+        // the EmbeddedCodeActor would also have a Ptides director (in order to
+        // have Ptides receivers). But in this case no preinit code needs to be
+        // generated.
+        // Notice here we append code from _generatePtrToEventHeadCodeInputs()
+        // because ports inside of the EmbeddedCodeActor needs to have pointers
+        // to event heads declared, which is done in the previous method.
+        if (((CompositeActor) getComponent().getContainer())
+                .getExecutiveDirector() instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            return code.toString();
+        }
+
+        code.append(super._generateActorFireCode());
+
+        CodeStream codestream = _templateParser.getCodeStream();
+
+        codestream.clear();
+
 
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case
@@ -173,11 +285,14 @@ public class PtidesPreemptiveEDFDirector
             return code.toString();
         }
 
-        code.append(_templateParser.getCodeStream().getCodeBlock(
-                "preinitPDBlock"));
+        code.append(_templateParser.getCodeStream().getCodeBlock("preinitPDBlock"));
 
-        code.append(_templateParser.getCodeStream().getCodeBlock(
-                "initPDCodeBlock"));
+        
+//        List args = new ArrayList();
+//
+//        _templateParser.getCodeStream().append(
+//                _templateParser.getCodeStream().getCodeBlock("initPDCodeBlock",
+//                        args)); 
 
         code.append(_generateInitializeHardwareCode());
 
@@ -196,6 +311,8 @@ public class PtidesPreemptiveEDFDirector
         return "";
     }
 
+    Map<Integer, String> _actuatorPins = new HashMap();
+    
     /**
      * Generate the shared code. This is the first generate method invoked out
      * of all, so any initialization of variables of this adapter should be done
@@ -228,6 +345,11 @@ public class PtidesPreemptiveEDFDirector
         _templateParser.getCodeStream().appendCodeBlocks("CommonTypeDefinitions");
         _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
         _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");
+        _templateParser.getCodeStream().appendCodeBlocks("SchedulerBlock");
+        
+        List args = new LinkedList();
+        
+        
 
         // prototypes for actor functions
         _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
@@ -236,42 +358,75 @@ public class PtidesPreemptiveEDFDirector
         _templateParser.getCodeStream().append(
                 _generateActuatorActuationFuncArrayCode());
 
-        // the only supported sensor inputs are GPIO inputs.
-        List args = new LinkedList();
-        for (Actor sensor : sensors.keySet()) {
-            if (sensor instanceof GPInputHandler) {
-                args.add("IntDisable(INT_GPIO"
-                        + ((GPInputHandler) sensor).pad.stringValue() + ");"
-                        + _eol);
-            } else {
-                args.add("IntDisable(INT_OTHER" + 
-                        (sensor)+ ");" + _eol);
-                //throw new IllegalActionException("Only GPIO inputs are supported " +
-                //		"as sensors.");
+        int actuatorIndex = 0;
+        int sensorIndex = 0; 
+        String devicePortId = "";
+        String deviceId = "";
+        String actuatorIds = "";
+        String actuatorFunction = "";  
+        for (Actor actor : (List<Actor>) ((CompositeActor) _director
+                .getContainer()).deepEntityList()) {
+            if (actor instanceof ActuatorSetup) {
+                actuators.put(actor, Integer.valueOf(actuatorIndex));
+                actuatorIndex++;
+                
+                devicePortId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
+                        .getAttribute("devicePortId")).getToken())
+                        .stringValue();
+                _devicePortIds.put(actor, devicePortId);
+                
+                deviceId = ((StringToken) ((Parameter) ((ActuatorSetup) actor)
+                        .getAttribute("deviceId")).getToken())
+                        .stringValue();
+                _deviceIds.put(actor, deviceId);
             }
-        }
-        for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
-            args.add("");
-        }
-        for (Actor sensor : sensors.keySet()) {
-            if (sensor instanceof GPInputHandler) {
-                args.add("IntEnable(INT_GPIO"
-                        + ((GPInputHandler) sensor).pad.stringValue() + ");"
-                        + _eol);
-            } else {
-                args.add("IntEnable(INT_OTHER" + 
-                        (sensor) + ");" + _eol);
-                //throw new IllegalActionException("Only GPIO inputs are supported " +
-                  //              "as sensors.");
 
+            if (actor instanceof SensorHandler) {  
+                sensors.put(actor, Integer.valueOf(sensorIndex));
+                sensorIndex++;
+
+                devicePortId = ((StringToken) ((Parameter) ((SensorHandler) actor)
+                        .getAttribute("devicePortId")).getToken())
+                        .stringValue();
+                _devicePortIds.put(actor, devicePortId);
+                
+                deviceId = ((StringToken) ((Parameter) ((SensorHandler) actor)
+                        .getAttribute("deviceId")).getToken())
+                        .stringValue();
+                _deviceIds.put(actor, deviceId);
+            } 
+        }
+        
+        
+//        for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
+//            args.add("");
+//        }
+//        _templateParser.getCodeStream()
+//                .append(_templateParser.getCodeStream().getCodeBlock(
+//                        "FuncBlock", args));
+        
+        args.clear();
+        
+        String switchstatement = "switch(type) {\n";
+        for (Actor actuator : actuators.keySet()) {
+            String deviceName = CodeGeneratorAdapter.generateName((NamedObj) actuator);
+            switchstatement += "case " + _deviceIds.get(actuator) + ":\n";
+            switchstatement += "    newEvent->fire = " + deviceName + ";\n";
+            switchstatement += "break;\n";
+            if (actuatorIds.length() > 0) {
+                actuatorIds += ", ";
             }
-        }
-        for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
-            args.add("");
-        }
+            actuatorIds += _deviceIds.get(actuator);
+        } 
+        switchstatement += "}";
+        args.add(actuatorIds);
+        args.add(switchstatement);
+        
         _templateParser.getCodeStream()
-                .append(_templateParser.getCodeStream().getCodeBlock(
-                        "FuncBlock", args));
+        .append(_templateParser.getCodeStream().getCodeBlock(
+                "ActuationBlock", args));
+        
+        
 
         if (!_templateParser.getCodeStream().isEmpty()) {
             sharedCode.add(processCode(_templateParser.getCodeStream()
@@ -280,11 +435,14 @@ public class PtidesPreemptiveEDFDirector
 
         return sharedCode;
     }
+    
+    private Map<Actor, String> _devicePortIds = new HashMap();
+    private Map<Actor, String> _deviceIds = new HashMap();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    
+
 
     /** Generate the initialization code for any hardware component that is used.
      *  @return code initialization code for hardware peripherals

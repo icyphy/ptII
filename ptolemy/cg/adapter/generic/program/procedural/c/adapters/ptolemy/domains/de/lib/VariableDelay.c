@@ -1,5 +1,6 @@
 /***fireBlock***/
-int intPart, fractPart;
+int intPart;
+double fractPart;
 int lastMicrostep = currentMicrostep;
 static Time lastModelTime;
 static double delayValue;

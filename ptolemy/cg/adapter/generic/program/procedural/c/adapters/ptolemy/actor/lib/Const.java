@@ -49,4 +49,8 @@ public class Const
     public Const(ptolemy.actor.lib.Const actor) {
         super(actor);
     }
+    
+    public String getTimeSourcePortName() { 
+        return "trigger";
+    }
 }

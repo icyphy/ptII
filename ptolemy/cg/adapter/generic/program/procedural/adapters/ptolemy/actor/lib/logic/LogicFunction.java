@@ -91,4 +91,8 @@ public class LogicFunction extends NamedProgramCodeGeneratorAdapter {
         codeBuffer.append("));" + _eol);
         return processCode(codeBuffer.toString());
     }
+    
+    public String getTimeSourcePortName() {
+        return "input";
+    }
 }

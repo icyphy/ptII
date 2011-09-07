@@ -29,9 +29,11 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
 
 import java.util.ArrayList;
 
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 /**
 A adapter class for ptolemy.domains.de.lib.Merge.
@@ -68,5 +70,15 @@ NamedProgramCodeGeneratorAdapter {
         return processCode(codeStream.toString());
     }
     
+    public String getSourceTimeString(String timeVariable) throws IllegalActionException {
+        String name = CodeGeneratorAdapter.generateName((NamedObj) _component);
+        String s = "";
+        for (int i = 0; i < ((ptolemy.domains.de.lib.Merge)_component).input.getWidth(); i++) {
+            s += "if (Event_Head_" + name + "_input[" + i +"] != NULL) {\n" +
+            timeVariable + " = &Event_Head_" + name + "_input[" + i +"]->tag.timestamp;\n" +
+            "}\n";
+        } 
+        return s;
+    }
     
 }

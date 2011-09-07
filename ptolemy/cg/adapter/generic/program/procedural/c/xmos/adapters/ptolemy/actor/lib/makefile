@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/xmos/adapters/ptolemy/domains/ptides/kernel
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/actor/lib
 
 DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,17 +45,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	PtidesBasicReceiver.java \  
-	PtidesPreemptiveEDFDirector.java
+	MultiplyDivide.java 
 
 OTHER_FILES_TO_BE_JARED = \
-	PtidesBasicReceiver.c \ 
-	PtidesPreemptiveEDFDirector.c  
+	MultiplyDivide.c 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
