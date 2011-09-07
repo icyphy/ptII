@@ -20,6 +20,9 @@
 #define MORE 1
 #define EQUAL 0
 #define MAX_EVENTS 120
+#define false 0
+#define true 1
+#define exit(0) ;
 /**/
 
 /*** CommonTypeDefinitions ***/
@@ -29,7 +32,7 @@ typedef unsigned char	uint8;
 typedef signed long		int32;
 typedef signed int		int16;
 typedef signed char		int8;
-typedef boolean			uint8;
+//typedef boolean			uint8;
 
 typedef struct {
     uint32 secs;
@@ -101,6 +104,12 @@ $interruptPragmas
 
 
 /*** FuncBlock ***/
+double multiply_Int_Double(int a1, double a2) {
+    return a1 * a2;
+}
+double divide_Double_Double(double a1, double a2) {
+    return a1 / a2;
+}
 int16 compareTime(const Time time1, const Time time2) {
     if (time1.secs < time2.secs) {
         return LESS;
@@ -247,7 +256,8 @@ void removeAndPropagateSameTagEvents(Event* thisEvent) {
     *(thisEvent->sinkEvent) = (Event*)thisEvent;
     removeEvent(thisEvent);
     // Now find the next event see we should process it at the same time.
-    while(nextEvent && sameTag(nextEvent, thisEvent) && sameDestination(nextEvent, thisEvent)) {
+    while(nextEvent && (compareTime(nextEvent->tag.timestamp, thisEvent->tag.timestamp) == EQUAL)
+        		&& (nextEvent->tag.microstep == thisEvent->tag.microstep) && nextEvent->fireMethod == thisEvent->fireMethod) {
     	*(nextEvent->sinkEvent) = (Event*)nextEvent;
 		removeEvent(nextEvent);
         lastEvent = nextEvent;
@@ -418,7 +428,7 @@ void $actuationFunction(void) {
 		if(actSt$Letter == 0) {
 			MTU20.TIOR.BIT.IO$Letter = 2;
 		} else {
-			MTrU20.TIOR.BIT.IO$Letter = 5;
+			MTU20.TIOR.BIT.IO$Letter = 5;
 		}
 	} else {
 		MTU20.TIER.BIT.TGIE$Letter = 0;
@@ -478,6 +488,8 @@ $systick2) ***/
 // ----------------------------------------------------------------
 // ---------- Interrupt block -------------------------------------
 
+extern void SysTickHandler(void);
+extern void SafeToProcessInterruptHandler(void);
 $emptyFunctions
 
 
@@ -519,7 +531,6 @@ void SysTickHandler(void) {
 
 
 void SafeToProcessInterruptHandler(void) {
-	PB.DR.BIT.B7 = 1;
 
 	while(MTU20.TSR2.BIT.TGFE != 1)
 		;
@@ -535,7 +546,6 @@ void SafeToProcessInterruptHandler(void) {
 
 	set_imask(0);
 
-	PB.DR.BIT.B7 = 0;
 
 	processEvents();
 }
@@ -1120,8 +1130,6 @@ void initTimer(void) {
  	MTU20.TSR.BYTE = 0xC0;
 	MTU20.TSR2.BYTE = 0xC0;
 
-	MTU20.TIER.BIT.TGIE$letter = 0x13; // for each actuator
-
 	MTU20.TIER2.BYTE = 0x00;
 	MTU20.TCNT = 0;
 	INTC.IPR09.BIT._MTU20G = 2;
@@ -1138,8 +1146,6 @@ void initTimer(void) {
 	MTU2.TSTR.BIT.CST0 = 1;
 	MTU2.TSTR.BIT.CST3 = 1;
 
-	// set handler MTU2$timerNumber.TIOR.BIT.IO$letter = 0 or 8
-	// activate MTU2$timerNumber.TIER.BIT.TGIEA$letter = 1;
 	$initInterruptHandlers
 	MTU20.TIER.BIT.TCIEV = 1; // systickhandler
 }

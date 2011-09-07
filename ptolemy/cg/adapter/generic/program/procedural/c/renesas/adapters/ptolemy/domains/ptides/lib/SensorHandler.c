@@ -1,5 +1,4 @@
 /*** fireBlock($Letter, $timerNumber) ***/
-	PB.DR.BIT.B9 = 1;
 
 	while(MTU2$timerNumber.TSR.BIT.TGF$Letter != 1) // change to MTU23
 		;
@@ -8,7 +7,7 @@
 	set_imask(15);
   	xxx = nanoSeconds + MTU2$timerNumber.TGR$Letter*(4*divideByValue/2);
 	if(MTU2$timerNumber.TGR$Letter > MTU2$timerNumber.TCNT) {
-		xxx = xxx - (4*divideByValue/2)<<16;
+		xxx = xxx - (4*divideByValue/2)*65536;
 	}
 	if(xxx <= 1000000000) {
 		currentModelTime.secs = Seconds;
@@ -20,7 +19,6 @@
 	$put(output#0, 1);
 
 	set_imask(0);
-	PB.DR.BIT.B9 = 0;
 	processEvents();
 /**/
 

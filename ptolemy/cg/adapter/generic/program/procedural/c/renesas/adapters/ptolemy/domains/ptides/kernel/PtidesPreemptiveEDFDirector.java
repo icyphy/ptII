@@ -242,7 +242,7 @@ public class PtidesPreemptiveEDFDirector
                 _templateParser.getCodeStream().getCodeBlock("initPDBlock",
                         args));  
 
-        return code.toString();
+        return _templateParser.getCodeStream().toString();
     }
 
     /** Generate the preinitialize code for the associated Ptides director.
@@ -308,7 +308,7 @@ public class PtidesPreemptiveEDFDirector
         } 
         
         args.add(initIHs);
-        _templateParser.getCodeStream().append(
+        code.append(
                 _templateParser.getCodeStream().getCodeBlock("initPDCodeBlock",
                         args)); 
 
@@ -419,7 +419,7 @@ public class PtidesPreemptiveEDFDirector
         List<String> args = new ArrayList();
         args.add(actuatorPublicVariables);
         String interruptPragmas = "#pragma interrupt SysTickHandler(resbank)\n" 
-            + "#pragma interrupt SafeToProcessInterruptHandler(resbank)";
+            + "#pragma interrupt SafeToProcessInterruptHandler(resbank)\n";
         for (Integer id : _interruptHandlerNames.keySet()) {
             String function = _interruptHandlerNames.get(id);
             if (function == "") { 
