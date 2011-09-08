@@ -318,6 +318,22 @@ public class NamedProgramCodeGeneratorAdapter extends
     public static String[] getDefaultBlocks() {
         return _defaultBlocks;
     }
+    
+    public String getAddTimeString() throws IllegalActionException {
+        return "";
+    }
+    
+    public String getSourceTimeString(String timeVariable) throws IllegalActionException {
+        return "";
+    }
+
+    public String getTimeSourcePortName() {
+        return "";
+    }
+    
+    public String getFireFunctionParameters() {
+        return "";
+    }
 
     /**
      * Get the write offset in the buffer of a given channel to which a token
@@ -1327,15 +1343,5 @@ public class NamedProgramCodeGeneratorAdapter extends
      */
     private Hashtable<ProgramCodeGeneratorAdapter.Channel, List<ProgramCodeGeneratorAdapter.Channel>> _portConversions = new Hashtable<ProgramCodeGeneratorAdapter.Channel, List<ProgramCodeGeneratorAdapter.Channel>>();
 
-    public String getAddTimeString() throws IllegalActionException {
-        return "";
-    }
     
-    public String getSourceTimeString(String timeVariable) throws IllegalActionException {
-        return "";
-    }
-
-    public String getTimeSourcePortName() {
-        return "";
-    }
 }

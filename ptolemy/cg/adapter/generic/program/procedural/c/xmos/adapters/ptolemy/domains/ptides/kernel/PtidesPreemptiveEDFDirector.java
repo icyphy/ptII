@@ -30,6 +30,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.do
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ptides.lib.ActuationDevice;
 import ptolemy.domains.ptides.lib.ActuatorSetup;
 import ptolemy.domains.ptides.lib.SensorHandler;
 import ptolemy.domains.ptides.lib.luminary.GPInputHandler;
@@ -266,7 +268,7 @@ public class PtidesPreemptiveEDFDirector
             return code.toString();
         }
 
-        code.append(super._generateActorFireCode());
+        code.append(_generateActorFireCode());
 
         CodeStream codestream = _templateParser.getCodeStream();
 
@@ -441,7 +443,44 @@ public class PtidesPreemptiveEDFDirector
     ////                         protected methods                 ////
     
 
+    /** Fire methods for each actor.
+     * @return fire methods for each actor
+     * @exception IllegalActionException If thrown when getting the port's adapter.
+     */
+    public String _generateActorFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        Iterator actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
 
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+                    .getAdapter(actor);
+
+            if (actor instanceof ActuationDevice) {
+                code.append("void Actuation_"
+                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+                        + "() {" + _eol);
+                code.append(((ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.OutputDevice) adapter)
+                        .generateActuatorActuationFuncCode());
+                code.append("}" + _eol);
+            }
+
+            String fireFunctionParameters = adapter.getFireFunctionParameters();
+            code.append("void "
+                    + CodeGeneratorAdapter.generateName((NamedObj) actor)
+                    + "(" + fireFunctionParameters +") " + "{" + _eol);
+            code.append(adapter.generateFireCode());
+
+            // After each actor firing, the Event Head ptr needs to point to null
+            code.append(_generateClearEventHeadCode(actor));
+            code.append("}" + _eol);
+        }
+
+        return code.toString();
+    }
+    
     /** Generate the initialization code for any hardware component that is used.
      *  @return code initialization code for hardware peripherals
      *  @exception IllegalActionException

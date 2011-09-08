@@ -149,10 +149,10 @@ public class PtidesBasicReceiver
                     "Cannot get the delayOffset Parameter.");
         }
         
-        String addTime, sourceTime;  
+        String sourceTime;  
         
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(sourcePort.getContainer());
-        addTime = adapter.getAddTimeString();
+
         sourceTime = adapter.getSourceTimeString("sourceTime");
         if (sourceTime == "") { // use default input output actor 
             sourceTime = "sourceTime = &Event_Head_" + CodeGeneratorAdapter.generateName(sourcePort.getContainer()) + "_" + adapter.getTimeSourcePortName() + "[0]->tag.timestamp";

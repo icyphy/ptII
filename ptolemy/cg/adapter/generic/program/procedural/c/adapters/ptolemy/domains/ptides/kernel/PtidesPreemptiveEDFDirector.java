@@ -385,15 +385,22 @@ public class PtidesPreemptiveEDFDirector extends Director {
 
     /** Generate actor function prototypes.
      *  @return actor function prototype methos for each entity.
+     * @throws IllegalActionException 
      */
-    protected String _generateActorFuncProtoCode() {
+    protected String _generateActorFuncProtoCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
+        
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(actor);
+            String fireFunctionParameters = adapter.getFireFunctionParameters();
+            if (fireFunctionParameters == "") {
+                fireFunctionParameters = "void";
+            }
             code.append("void "
                     + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                    + "(void);" + _eol);
+                    + "(" + fireFunctionParameters + ");" + _eol);
         }
 
         code.append(_generateActuatorActuationFuncProtoCode());
@@ -520,7 +527,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      * @return fire methods for each actor
      * @exception IllegalActionException If thrown when getting the port's adapter.
      */
-    protected String _generateActorFireCode() throws IllegalActionException {
+    public String _generateActorFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -566,7 +573,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
      * @return The code that clears the event head.
      * @exception IllegalActionException
      */
-    private String _generateClearEventHeadCode(Actor actor)
+    protected String _generateClearEventHeadCode(Actor actor)
             throws IllegalActionException {
         // FIXME: There exists actors that are both sensor, and also
         // receive input from the outside. For this reason, we allocate

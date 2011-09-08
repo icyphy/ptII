@@ -80,12 +80,17 @@ public class MultiplyDivide
     @Override
     public String getSourceTimeString(String timeVariable) throws IllegalActionException {
         String name = CodeGeneratorAdapter.generateName((NamedObj) _component);
-        String s = "if (Event_Head_" + name + "_divide[0] != NULL) {\n" +
-            timeVariable + " = &Event_Head_" + name + "_divide[0]->tag.timestamp;\n" +
-            "}\n" +
-            "if (Event_Head_" + name + "_multiply[0] != NULL) {\n" +
-            timeVariable + " = &Event_Head_" + name + "_multiply[0]->tag.timestamp;\n" +
+        String s = "";
+        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
+            s += "if (Event_Head_" + name + "_divide[" + i + "] != NULL) {\n" +
+            timeVariable + " = &Event_Head_" + name + "_divide[" + i + "]->tag.timestamp;\n" +
             "}\n";
+        }
+        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
+            s += "if (Event_Head_" + name + "_multiply[" + i + "] != NULL) {\n" +
+            timeVariable + " = &Event_Head_" + name + "_multiply[" + i + "]->tag.timestamp;\n" +
+            "}\n";
+        }
         return s;
     }
     
