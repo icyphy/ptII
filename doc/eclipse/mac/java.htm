@@ -1,0 +1,44 @@
+<!-- $Id$ -->
+<html>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Mac OS X: Installing Java</title>
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>Mac OS X: Installing Java</h1>
+
+    For Mac OS X, Java is already installed, but Ptolemy II requires Java 1.6, so we must
+    check the Java version.
+
+    <h2>Mac OS X 10.7 (Lion)</h2>
+    <p>Mac OS X 10.7 (Lion) has only Java 1.6 and later, so there is nothing further to be done.</p>
+    <p>To determine which version of the operating system is running, click on the apple icon in
+      the upper left and select "About this Mac".</p>
+
+    <p>If you are running "Mac OS X 10.7" or later, then <a href="eclipse.htm">go to the next step</a>.</p>
+
+    <h2>Mac OS X 10.6 (Snow Leopard) and earlier</h2>
+    <p>If you are running Mac OS 10.6 or earlier, then read on and verify that Java 1.6
+      is the default version.
+
+    <p>See <a href="install.htm">Ptolemy II Installation</a> for details, but
+      briefly:</p>
+    <p>Ptolemy II requires Java 1.6 because ptdb uses javax.swing.GroupLayout.
+      Also, Java 1.5 is past its end of life.</p>
+
+    <p>To determine which version of Java is being run, start up a Terminal window
+      by going to Application -> Utilities and clicking on the Terminal icon.</p>
+
+    <p>Then type:</p>
+    <pre>
+      java -version
+    </pre>
+    <p>If you are running Java 1.6 or later, then <a href="eclipse.htm">go to the next step</a>.</p>
+
+    <p>If you are running Java 1.5, then you are probably using Mac OS 10.5.  We recommend
+      using the 32-bit version of Java, which is handled in the
+      <a href="eclipse.htm">next step</a>.</p>
+
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!-- $Id$ -->
+<html>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title></title>
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1><a name="32vs64bit">32-bit or 64-bit</a></h1>    
+
+    <p>The basic idea is that to use a 64-bit version of Eclipse, you
+      must have a 64-bit JVM and an operating system that will support
+      64-bit applications.  When in doubt, choose the 32-bit version
+      of Eclipse, it is more likely to work than the 64-bit
+      version.</p>
+
+    <h3>32-bit or 64-bit?</h3>
+
+    Under Mac OS X 10.7, the default JVM is 1.6, which is 64-bit.
+    
+    <p>Under Mac OS X 10.5 and 10.6, the default JVM is 1.6, which is 64-bit.  However,
+      Java 1.6.0_20 does not work well.  The issue is that
+      the following stack trace appears:</p>
+    <pre>
+      2010-10-10 11:50:02.263 java[7823:613] java.lang.NullPointerException
+      at apple.awt.CToolkit.postEvent(CToolkit.java:1086)
+      at apple.awt.EventFactoryProxy.forwardEvent(EventFactoryProxy.java:53)
+    </pre>
+    <p>The bug happens when running from Eclipse or from the command line.
+      The bug requires UI interactions such as mouse movement or clicking.
+      The bug is probably a threading bug and may only show up on multi-core
+      machines.  The downside is that when the bug occurs, the debugging
+      session in Eclipse may become non-responsive.</p>
+
+    <p>For further information, see:
+      <a href="http://lists.apple.com/archives/java-dev/2010/May/msg00140.html"><code>http://lists.apple.com/archives/java-dev/2010/May/msg00140.html</code></a>.
+
+      <br>So, at this time, we are recommending the 32-bit version with Java 1.5 and Mac OS X 10.5.
+      Below are instructions for using the 32-bit version of Eclipse. 
+      <b>These instructions are for Mac OS X 10.5 only.</b>  Mac OS X 10.6 and 10.7
+      should <b>use the 64-bit version of Eclipse</b>
+
+      <br>Download
+      <code>eclipse-rcp-indigo-macosx-cocoa.tar.gz</code>
+      uncompress it and move <code>eclipse/</code> into <code>/Applications</code>, which
+      will create <code>/Applications/eclipse/Eclipse.app</code>.
+      <br>Firefox Mac OS X Details for 32-bit under Mac OS 10.5:</p>
+    <ol>
+      <li>Firefox will download the file into a directory, which may be
+	<code>/Downloads</code>
+      <li>Double click on
+	<code>eclipse-rcp-indigo-macosx-cocoa.tar.gz</code>
+	which will create the <code>eclipse</code> directory.
+      <li> Drag the <code>eclipse</code> directory to your
+	<code>Applications</code> directory.
+    </ol>
+
+    <br>The next step on the Mac is to force Eclipse to use Java 1.5 by
+    editing <code>eclipse.ini</code>.
+    <ol>
+      <li> In the Finder, go to <code>/Applications/eclipse</code>,
+	find the <code>Eclipse</code> executable and right click (Control + click)
+	and choose "Show Package Contents".
+      </li>
+      <li> Browse to <code>Contents/MacOS</code> and double click on
+	<code>eclipse.ini</code>, which will open up the file in TextEdit
+      </li>
+      <li> Edit the file and insert
+	<pre>
+	  -vm /System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java
+	</pre>
+      </li>
+      <li>Save the file and exit TextEdit.
+      </li>
+      
+    </ol>
+    <p>For details about <code>eclipse.ini</code>, see
+      <a href="http://wiki.eclipse.org/Eclipse.ini#in_browser">http://wiki.eclipse.org/Eclipse.ini</a>
+      <br>When you start up Eclipse, if you want to verify which version
+      of Java you are running
+      <code>Eclipse</code> | <code>About Eclipse</code>
+      | <code>Installation Details</code> | <code>Configuration</code>.
+      <br>For Java 1.5, the <code>java.class.version</code> property should be
+      <code>49.0</code>.
+      <br>For a 64-bit JVM, the <code>java.vm.name</code> property <i>might</i>
+      have the string <code>64</code> in it.</p>
+    
+    <p>Return to the <a href="eclipse.htm" target="main">Installing Eclipse</a> page.
+  </body>
+</html>

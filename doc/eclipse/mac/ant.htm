@@ -1,0 +1,41 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title></title>
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1><a name="ant">Ant</a></h1>
+Versions of Ptolemy II after Ptolemy II 8.0.1 include an Ant (<a href="http://ant.apache.org/#in_browser" target="_top"><CODE>http://ant.apache.org/</code></a>)
+script that defines useful targets like building the actor documentation and actor/demonstration index.
+
+<p>See the <a href="../../coding/ant.htm" target="main">Ptolemy II Ant documentation</a> for details, but the overview is
+that there are two ant build files in the tree:</p>
+<ol>
+ <li>The <code>$PTII/build.default.xml</code> file is set up for a vanilla installation,
+it excludes third party packages like Java3D and Matlab. 
+ <li>The <code>$PTII/build.xml</code> file <b>is created if you run ./configure</b>
+</ol>
+
+<p>To access an Ant file in Eclipse:</p>
+<ul>
+ <li> Bring up the Ant view with: <code>Window</code> | <code>Show View</code> | <code>Ant</code>
+  <br/>If the <code>Ant</code> menu choice is not present, find it under <code>Others</code></li>
+ <li>Right click on the Ant pane and select <code>Add Buildfiles</code>
+ <li>In the Buildfile Selection window, open the ptII table and browse to either
+   <code>build.default.xml</code> or the <code>build.xml</code> file.
+   <br/>If both are present, then select the <code>build.xml</code> file, it is more configured for
+   the environment.
+</ul>
+
+<p>To build the Javadocs and the actor documentation:</p>
+
+<ul> 
+ <li>In the Ant pane, expand the ptII task.</li>
+ <li>Double click on the <code>javadoc</code> tab.</li>
+</ul>
+
+<p>The next step is to use <a href="debug.htm" target="main">Eclipse Debugger</a>
+</body>
+</html>

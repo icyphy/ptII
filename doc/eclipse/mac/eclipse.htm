@@ -1,0 +1,51 @@
+<!-- $Id$ -->
+<html>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Mac OS X: Installing Eclipse</title>
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>Mac OS X: Installing Eclipse</h1>
+
+    Download the latest version of Eclipse from
+    <a href="http://www.eclipse.org/downloads/#in_browser" target="_top">http://www.eclipse.org</a>.
+    <br>In August, 2011, we chose
+    <B>Eclipse for RCP and RAP Developers</B>, which is 190Mb.
+    The <B>Eclipse for RCP and RAP Developers</B> version includes the
+    plug-in development environment (PDE), which is needed by the backtrack
+    facility, which is an optional part of Ptolemy II that allows models to
+    restore their old state.  If the version of Eclipse that you install
+    does not have the PDE, then there will be build errors, which can be fixed by
+    excluding <CODE>ptolemy/backtrack/</CODE> from the build.
+
+    <p>Eclipse is available as both 32-bit and 64-bit binaries.  Deciding
+      which one to download can be complex.</p>
+
+    <dl>
+      <dt>Mac OS X 10.7 (Lion)</dt>
+      <dd>Use the 64-bit Eclipse (Lion does not include a 32-bit JVM)</dd>
+
+      <dt>Mac OS X 10.6 (Snow Leopard)</dt>
+      <dd>Use the 64-bit Eclipse (Snow Leopard <i>might</i> have a 32-bit JVM, see <a href="32bitVs64bit.htm">32-bit or 64-bit</a></dd>
+
+      <dt>Mac OS X 10.5 </dt>
+      <dd>Use the 32-bit Eclipse, see <a href="32bitVs64bit.htm">32-bit or 64-bit</a></dd>
+    </dl>
+
+    <p>Once you have determined whether to use a 32-bit version of
+      Eclipse or a 64-bit version, perform these steps:</p>
+    <ol>
+      <li>Download the Eclipse file, double click on it, which will expand tar file
+	and create <code>eclipse/</code>.</li>
+      <li>Move <code>eclipse/</code> into <code>/Applications</code>,
+      which will
+      create <code>/Applications/eclipse/Eclipse.app</code></li>
+
+      <li>Click on the Eclipse icon, which will start up Eclipse.</li>
+      <li>Go to <a href="preferences.htm" target="main">Setting the Eclipse Preferences</a>.</li>
+    </ol>
+</ul>
+
+</body>
+</html>

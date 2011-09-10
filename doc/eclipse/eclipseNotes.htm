@@ -1,0 +1,161 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Notes about Eclipse and Ptolemy II</title>
+<link href="../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Notes about Eclipse and Ptolemy II</h1>
+
+<h3>Synchronizing with the repository</h3>
+
+<ol>
+<li>In the Navigator view scroll/open until you see the resource
+(directory or file) to be synchronized.
+<li>Right click that resource and select Team->Synchronize With Repository...
+<li>The Synchronize view should then be visible.
+<li>Select the Incoming, Outgoing, or Incoming/Outgoing menu bar icon as appropriate
+</ol>
+
+<h3>Restoring a file from the repository</h3>
+<ol>
+<li>In the Navigator view scroll/open until you see the resource (directory or file) to be restored.
+<li>Right click that resource and select Replace With->Latest From Head.
+</ol>
+
+<h3>Copying Files</h3>
+Usually, it is better to extend Java classes than to copy them, but sometimes copying files
+under Subversion is useful.  To copy files, use the <code>svn cp</code> command.  Do
+not drag and drop directories as the directories contain a <code>.svn</code> directory
+that will have settings for the source location.  Instead, use <code>svn cp</code>.
+See also <code>svn mv</code>.
+
+<h3><a name="#debugTclTests">Debugging Tcl Tests</a></h3>
+See <a href="testing.htm">Testing Ptolemy II</a> for details.
+<ol>
+<li> In Eclipse, go to Run -&gt; Debug Configurations
+<li> Select Java Application and then click the New icon.
+<li> In the Main tab, set the "Name:" to ptjacl, in "Main class:", enter <code>tcl.lang.Shell</code>.
+<li> <i>Optional:</i> In the Arguments tab, under "Program arguments", enter <code>alljtests.tcl</code> or any individual test tcl file. 
+(E.g. </code>SimpleDelay.tcl</code>).
+Or, leave the "Program arguments" field blank and when ptjacl is running (see below), enter text in to the Eclipse console. 
+
+<li> <i>Optional:</i> In the Arguments tab, under "VM arguments", enter <CODE>-Dptolemy.ptII.dir=<I>your PtII directory</I></CODE>
+<br>(E.g. <CODE>-Dptolemy.ptII.dir=c:/hyzheng/ptII</CODE>).<br /> In case your directory path contains
+spaces, you need to use quotes. (E.g. <CODE>-Dptolemy.ptII.dir="c:/my workspace/ptII"</CODE>).
+
+
+<li> In the "Working directory:" pane, select "Other:", browse to the directory containing the tcl 
+tests.
+ <br> (E.g. <CODE>C:\hyzheng\ptII\ptolemy\domains\de\lib\test</CODE>)
+
+<li> Select Debug.
+
+</ol>
+
+The nice thing of using Eclipse is that you can very easily locate where 
+the exception is thrown by clicking the classes listed in the stack trace. 
+You may further register a breakpoint to do more diagnosis.
+<!--eclipseSimple-->
+
+<h2><a name="Troubleshooting">Troubleshooting</a></h2>
+
+<h3>Preferences</h3>
+If you have already used Eclipse and you would like to start over with
+new projects and preferences, remove the <code>workspace</code> directory in the
+Eclipse directory.  The <code>workspace</code> directory will only
+appear if you have already run Eclipse.  <b>Note that removing the
+<code>workspace</code> directory will cause Eclipse to 'forget'
+about any projects that you may have set up</b>
+
+<h3>Build Error: Assert cannot be resolved</h3>
+<p>If, when building, the Problem tab shows "Assert cannot be resolved",
+then the problem is that Junit is not being found.
+
+<h3>Rebuilding Briefly flashes a window</h3> 
+<p>If you have problems where clicking on build briefly flashes up
+a window, look in <code>$PTII/.classpath</code> for and empty
+exclusion that looks like <code>||</code>
+
+<p>If you have problems with the classpath, look in the 
+<code>workspace/.metadata/log</code> file that is in
+the directory where eclipse is installed. For more information
+about the <code>.metadata</code> directory, see
+<a href="#metadata">below</a>.
+
+<h3>Eclipse takes a long time to start up</h3>
+
+If Eclipse takes a long time to start up, then the problem could be 
+a problem in your .metadata file.
+
+ <p>Basically, when eclipse starts up, it might try to update
+<a name="metadata"><CODE>H:/workspace/.metadata</CODE></a>
+.  The solution is covered in
+<a href="http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm#in_browser" target="_top"><CODE>http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm</CODE></a>:
+
+The way I figured this out was by running Norton Antivirus and
+doing View -&gt; File System Realtime Scan Statistics and then I noticed 
+that my machine was updating H:/workspace/.metadata
+
+ <p>I think I introduced the problem by clicking on the Eclipse.exe
+binary and selecting Pin to Start Menu.  My solution was to remove the
+Eclipse bogus entry in the start menu and then create a shortcut,
+change Start in property and then pin that shortcut to my start menu.
+
+<!--/eclipseSimple-->
+
+<h2>Instructions for adding an actor in Eclipse</h2>
+Based on text by Mehran Meschian.
+<p>In this example, we copy <code>ptolemy/actor/lib/Ramp.java</code> and create a new actor
+called <code>Ramp2</code>
+<ol>
+<li> Open Eclipse and choose the work space that you have your Ptolemy project there (mine is PtII 8.1.devel)
+<li> Open the PtII8.1.devel folder in eclipse and then open  Ptolemy -&gt; actor -&gt; lib -&gt; string
+<li> In string folder copy the java class (our simple actor)
+<li> Rename the java file to Bmh and debug the errors that come because of this renaming.
+<li> At the first line of the Java code add:     package ptolemy.actor.lib.string;
+
+<li> When there is no more error Run the java file and you should see a Bmh.class file in the tree as well (In the string branch). For now close the GUI window that opened after running.
+
+<li>	In the same place that Bmh.java and Bmh.class files exist, there is a string.xml file. Open it.
+<li>	At the top of the eclipse console, you should see two options: Design & Source. Click on Source to see the content of the xml
+<li>	Add the following bold and red text to the location in the xml file. Then save and run the xml file:
+<pre>
+&lt;property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon"&gt;
+          &lt;property name="attributeName" value="function"/&gt;
+          &lt;property name="displayWidth" value="11"/&gt;
+        &lt;/property&gt;
+      &lt;/entity&gt;
+
+      &lt;entity name="Bmh" class="ptolemy.actor.lib.string.Bmh"&gt;
+       &lt;doc&gt;Boyer Moore Horspool&lt;/doc&gt;
+      &lt;/entity&gt;
+
+      &lt;entity name="StringIndexOf" class="ptolemy.actor.lib.string.StringIndexOf"&gt;
+       &lt;doc&gt;Output the length of an input string&lt;/doc&gt;
+      &lt;/entity&gt;
+</pre>
+<li>	Again in the same tree there is makefile. Open and add the following bold and red text to the location and save and run:
+<pre>
+PTDIST =        $(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
+# Keep this list alphabetized.
+JSRCS = \
+        Bmh.java \
+	StringCompare.java \
+	StringFunction.java \
+	StringIndexOf.java \
+	StringLength.java \
+	StringMatches.java \
+</pre>
+<li>	Now, back to your Bmh.java and run it again. You should see the welcome window of Vergil.
+<li>	Now in the window, go to file- &gt; New -&gt; Graph editor. You should see a new window of graph editor.
+<li>	Go to Graph -&gt; instantiate Entity. Then type Ptolemy.actor.lib.string.Bmh in the class name and you will see our Bmh actor in the window.
+<li>	Right click on the actor and choose Save Actor in Library. Now if you open the User Library (left side) you can see the Bmh actor there.
+<li>	In the case after all of these steps it doesn't work, restart your eclipse and make sure you have saved your xml file and there are Bmh.java and Bmh.class there. If again it doesn't work, there should be something wrong regarding your Ptolemy installation in eclipse. Hope not!!
+</ol>
+
+</body>
+</html>

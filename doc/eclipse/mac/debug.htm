@@ -1,0 +1,35 @@
+<!-- $Id$ -->
+<html>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Mac OS X: A Simple Ptolemy II Debugging Session Inside Eclipse</title>
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1></h1>
+    <h2><a name="simpleDebug">A Simple Ptolemy II Debugging Session Inside Eclipse</a></h2>
+
+    <ol>
+      <li> Locate ptolemy/vergil/VergilApplication in the Explorer and
+	double click. Place a breakpoint on the first line of main()
+	by using <code>Run</code> | <code>Add/Remove Breakpoint</code>
+      </li>
+
+      <li> Tell Eclipse which class to run with <code>Run</code>
+	| <code>Run</code>.  On the Main tab, select the Ptolemy II package
+	and enter ptolemy.vergil.VergilApplication as Main class.
+      </li>
+
+      <li> Press the Run button
+      </li>
+      <li> To debug, quit Vergil, and place a breakpoint in, say, the fire() method
+	of ptolemy.domains.ct.kernel.CTBaseIntegrator. 
+	</li>
+      <li>Then <code>Run</code> | <code>Debug</code>, and
+	as above. Open the Lorenz CT demo from the Quick Tour and run it.
+      </li>
+    </ol>
+
+    <p>See also <a href="../eclipseNotes.htm" target="main">Eclipse Notes</a></p>
+  </body>
+</html>
