@@ -784,6 +784,7 @@ esac
 
 classpatharg="-classpath "
 error="none"
+iconflag=""
 # Keep these alphabetical
 case $commandname in
     .momllib-util)
@@ -1072,6 +1073,12 @@ and run:
 	applicationflags="-d $TINI_DIR/bin/tini.db"
 	;;
     vergil)
+        case "`uname -s`" in
+            Darwin*) 
+                iconflag="-Xdock:icon=$PTII/doc/img/ptolemyMacIcon.tif"
+                ;;
+        esac
+
 	help="Invoke the Ptolemy II User Interface, for example: \
               $commandname \
               $commandname $PTII_CLEAN/ptolemy/moml/demo/modulation.xml \
@@ -1325,7 +1332,7 @@ if [ "$error" = "none" ]; then
     else
     # If JAVAHOME has spaces in it, we need to jump through hoops
     # Use double quotes around ptflag to handle the case where PTII=c:\\ptII
-	str="\"$javac\" $jdbflags $javaflag $ptflag $localeflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND $classpatharg\"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
+	str="\"$javac\" $jdbflags $javaflag $iconflag $ptflag $localeflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND $classpatharg\"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
     fi 
     if [ "$quiet" = "0" ]; then echo $str; fi
     
