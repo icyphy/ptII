@@ -4,13 +4,13 @@
 <entity name="PtidesSynchrophasor" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 810}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 805}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1227, 700]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1227, 695]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.91322910534">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{518.7919921874992, 332.6890090158922}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{518.7919921874992, 329.9514703354214}">
     </property>
     <property name="f_report" class="ptolemy.data.expr.Parameter" value="100.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -36,7 +36,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If phase difference is &#10;greater than PI/3 radians, &#10;the control output is set &#10;to 1. Otherwise, it is zero.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 280.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -44,7 +44,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Phase difference reporting rate/sec">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 510.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 495.0]">
         </property>
     </property>
     <property name="phase" class="ptolemy.data.expr.Parameter" value="pi/12">
@@ -97,14 +97,14 @@
 <title>PMU Data and Phase Difference</title>
 <xLabel>time(s)</xLabel>
 <yLabel>Angle(rad)</yLabel>
-<xRange min="3.5770123839009287" max="4.581656346749226"/>
-<yRange min="-0.31561670927361685" max="1.1034586167783642"/>
+<xRange min="0.0" max="5.0"/>
+<yRange min="-1.357582151246478" max="1.5707963267948966"/>
 <default connected="no" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="SVP" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 255.0]">
         </property>
         <property name="phase1" class="ptolemy.data.expr.Parameter" value="0.1745336166782">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -145,6 +145,8 @@
             </property>
         </property>
         <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
+            <property name="forceActorsToProcessEventsInTimestampOrder" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{15, -10}">
             </property>
         </property>
@@ -171,7 +173,7 @@
         </port>
         <port name="plant2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 240.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 240.0]">
             </property>
             <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{Infinity}">
             </property>
@@ -184,7 +186,7 @@
         <entity name="SetControlOutput" class="ptolemy.domains.modal.modal.ModalModel">
             <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 240.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 220.0]">
             </property>
             <port name="delta_phase" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
@@ -351,61 +353,40 @@ whenever phase difference exceeds a threshold ( = PI/3 radians).</text></svg></c
             <link port="normal.delta_phase" relation="delta_phaseRelation"/>
             <link port="normal.control_out" relation="control_outRelation"/>
         </entity>
-        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="phase1">
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 220.0]">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 155.0]">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                <property name="multiport"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
-        <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="phase2">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 310.0]">
+        <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 220.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
-        <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="abs(phase2-phase1)">
+        <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="3E-6">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
+            <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1E-6">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 245.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 220.0]">
             </property>
-            <port name="trig" class="ptolemy.actor.TypedIOPort">
+            <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
@@ -413,27 +394,27 @@ whenever phase difference exceeds a threshold ( = PI/3 radians).</text></svg></c
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
-            <vertex name="vertex1" value="[280.0, 155.0]">
-            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="plant1" relation="relation3"/>
-        <link port="plant2" relation="relation4"/>
+        <link port="plant1" relation="relation"/>
+        <link port="plant2" relation="relation2"/>
         <link port="control_out" relation="relation5"/>
-        <link port="SetControlOutput.delta_phase" relation="relation2"/>
+        <link port="SetControlOutput.delta_phase" relation="relation6"/>
         <link port="SetControlOutput.control_out" relation="relation5"/>
-        <link port="SetVariable.input" relation="relation3"/>
-        <link port="SetVariable.output" relation="relation"/>
-        <link port="SetVariable2.input" relation="relation4"/>
-        <link port="Expression.output" relation="relation2"/>
-        <link port="Expression.trig" relation="relation"/>
+        <link port="AddSubtract.plus" relation="relation"/>
+        <link port="AddSubtract.minus" relation="relation2"/>
+        <link port="AddSubtract.output" relation="relation3"/>
+        <link port="AbsoluteValue.input" relation="relation3"/>
+        <link port="AbsoluteValue.output" relation="relation4"/>
+        <link port="TimeDelay.input" relation="relation4"/>
+        <link port="TimeDelay.output" relation="relation6"/>
     </entity>
     <entity name="Power Grid" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 270.0]">
@@ -1017,7 +998,7 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 105.0]">
             </property>
         </property>
-        <property name="platformDelay" class="ptolemy.data.expr.Parameter" value="0.001">
+        <property name="platformDelay" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is the PTIDES implementation &#10;of the phase-measurement platform.&#10;The incoming signals are sampled at &#10;500 samples/sec and the phase &#10;output rate is 100 samples/sec. ">
@@ -1280,13 +1261,13 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <vertex name="vertex1" value="[320.0, 135.0]">
+        <vertex name="vertex1" value="[405.0, 135.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[320.0, 385.0]">
+        <vertex name="vertex1" value="[405.0, 385.0]">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
