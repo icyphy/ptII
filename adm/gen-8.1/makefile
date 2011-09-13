@@ -273,6 +273,7 @@ $(PTIIDIST):
 	#@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
 	#(cd $(PTIIHOME)/ptolemy/actor/lib/javasound; make jars)
 	(cd $(PTIIHOME); \
+		rm -f build.xml; \
 		$(TAR) -c --no-anchored \
 			--exclude="CVS" \
 			--exclude=",svn" \
@@ -332,6 +333,7 @@ $(PTII_FULL): $(PTIIDIST)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
 	(cd $(PTIIDIST)/..; \
+		rm -f $(PTIIDIST)/build.xml build.xml; \
 		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex \
 		 -f $@ \
 		ptII$(VERSION))
@@ -442,6 +444,7 @@ $(PTII_SRC): $(PTII_FULL)
 	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
 	(cd src; \
 		echo "#  Starting tar of $@"; \
+		rm -f ptII$(VERSION)/build.xml; \
 		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex --exclude bin/vergil -f $(PTII_SRC) ptII$(VERSION); \
 		);
 

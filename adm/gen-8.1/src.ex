@@ -87,7 +87,6 @@ bin/tinic
 bin/tinicomm
 bin/tiniconverter
 bin/ptmatlab.dll
-build.xml
 brass
 collections
 com/microstar/xml/driver
