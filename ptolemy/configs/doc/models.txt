@@ -84,6 +84,7 @@ $CLASSPATH/ptolemy/data/type/demo/Objects/Objects.xml
 $CLASSPATH/ptolemy/data/type/demo/Router/Router.xml
 $CLASSPATH/ptolemy/data/unit/demo/StaticUnits/StaticUnits.xml
 $CLASSPATH/ptolemy/data/unit/demo/Units/Units.xml
+$CLASSPATH/ptolemy/demo/Brewery/Brewery.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/ExecDemos.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/RunDemos.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystem.xml
