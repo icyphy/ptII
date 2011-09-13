@@ -1,9 +1,9 @@
-# Makefile for Ptolemy model that executes a suite of other Ptolemy II models.
+# Makefile for Ptolemy model that simulates a brewery.
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2011-2011 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -55,9 +55,10 @@ EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	$(EXAMPLE_MODEL_HTML) \
-	index.htm \
-	toc.htm
+
+#	$(EXAMPLE_MODEL_HTML) \
+#	index.htm \
+#	toc.htm
 
 
 # Sources that may or may not be present, but if they are present, we don't
