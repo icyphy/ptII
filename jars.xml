@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="jars" name="ptII">
+<project basedir="." name="ptII">
   <!-- $Id
        This file is used to generate jar files for Ptolemy II:
        ant -f jars.xml jars
@@ -175,17 +175,12 @@
     <include name="ptolemy/verification/verification.jar" />
   </patternset>
 
-  <target name="jars.clean"
-	  description="Remove all the jar files">
-    <delete quiet="true">
-      <fileset dir="${basedir}">
-	<patternset refid="ptII.jars"/>
-      </fileset>	  
-      <fileset dir="${basedir}/signed"/>
-    </delete>
+  <target name="help">
+    <echo>Used to build jar files.</echo>
   </target>
 
-  <target name="jars">
+  <target name="jars"
+	  description="Build jar files.">
 
     <!-- doc/docConfig.jar -->
     <jar defaultexcludes="yes"
@@ -7429,5 +7424,15 @@
       <include name="ptolemy/matlab/demo/MatlabExpression/*.xml"/>
     </fileset>
   </jar>
+
+  <target name="jars.clean"
+	  description="Remove all the jar files">
+    <delete verbose="true">
+      <fileset dir="${basedir}">
+	<patternset refid="ptII.jars"/>
+      </fileset>	  
+      <fileset dir="${basedir}/signed"/>
+    </delete>
+  </target>
 
 </project>
