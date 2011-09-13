@@ -8,7 +8,7 @@
   <body>
     <h1>Set up the Eclipse ptII project .classpath for Ptolemy II</h1>
 
-    Once you have downloaded the Ptolemy II source files, eclipse uses
+    Once you have downloaded the Ptolemy II source files, Eclipse uses
     the <code>.classpath</code> file to set paths and exclude files.
 
     <br/>There are two choices:
@@ -25,71 +25,101 @@
       </li>
     </ol>
 
-    Choose <b>one</b> of the options below
-    <h4>A. Copy .classpath to .classpath.default</h4>
-    <ul>
-      <li>Unfortunately, by default the Mac OS X Finder hides files whose names
-	begin with a period, such as <code>.classpath</code>.
+    <ol>
+      <li>
+	Choose <b>one</b> of the options below
+	<h4>A. Copy .classpath to .classpath.default</h4>
+	<ul>
+	  <li>Unfortunately, by default the Mac OS X Finder hides files whose names
+	    begin with a period, such as <code>.classpath</code>, so we use
+	    the Terminal application.
+	    <ol>
+	      <li>Start up the Terminal application, which may be found as
+		Applications -> Utilities -> Terminal.app
+	      <li>In the Terminal, change to the directory where the Ptolemy II
+		source code was installed.  
+		<ul>
+		  <li>If you downloaded the source code via the Mac OS X installer or the source tar file (see 
+		    <a href="noSVN.htm" target="main">Eclipse is unaware of the version control aspects of the project</a>), then
+		    your source could would be at <code>/Applications/Ptolemy/ptII8.1.devel</code>.
+		  </li>
+		  <li>If you downloaded the source code via Subversion, then the source could be
+		    inside the Eclipse workspace, which defaults to <code>~/Documents/workspace/ptII/</code>
+		  </li>
+		</ul>
+
+		Assuming that the source was downloaded via the Mac OS X installer or the source tar file:
+		<pre>
+		  cd /Applications/Ptolemy/ptII8.1.devel
+		</pre>  
+	      </li>
+	      <li> Copy the files:
+		<pre>
+		  cp .classpath.default .classpath
+		</pre>
+	      </li>
+	    </ol>
+	</ul>
+	<p><b>OR</b></p>
+	<h4><a name="#runConfigure">B. Run ./configure</a></h4> 
+
+	Ptolemy II includes a number of packages that rely on software that
+	you may or may not have installed, such as MATLAB, the rxtx
+	package (for serial port connections), Java
+	Advanced Imaging (JAI), the Java Media Framework (JMF), and Java
+	3D.  If you wish to use or extend these features, you will need to
+	perform a few extra steps.  These steps require execution of a
+	script called <code>configure</code> in the Ptolemy II home
+	directory.
+
+	<p>The procedure below will modify the <code>.classpath</code> file
+	  that is provided in the version control repository to customize it
+	  for the software that you have installed.</p>
+
+	<p>Using the Terminal to run <code>./configure</code></p>
 	<ol>
 	  <li>Start up the Terminal application, which may be found as
             Applications -> Utilities -> Terminal.app
+	  </li>
 	  <li>In the Terminal, change to the directory where the Ptolemy II
 	    source code was installed.  For example:
 	    <pre>
 	      cd /Applications/Ptolemy/ptII8.1.devel
 	    </pre>  
 	  </li>
-	  <li> Copy the files:
+	  <li> Set <code>$PTII</code> to the location of the source tree:
+	    <pre>
+	      export PTII=`pwd`  
+	    </pre>  
+	  </li>
+	  <li> Make <code>configure</code> executable.
+	    <pre>
+	      chmod a+x configure
+	    </pre>
+	  </li>
+	  <li> Run <code>./configure</code>
             <pre>
-              cp .classpath.default .classpath
+	      ./configure
             </pre>
 	  </li>
 	</ol>
-    </ul>
-    <p><b>OR</b></p>
-    <h4><a name="#runConfigure">B. Run ./configure</a></h4> 
+      </li>
+      <li>Choose <b>one</b> of the choices above.
+      </li>
 
-    Ptolemy II includes a number of packages that rely on software that
-    you may or may not have installed, such as MATLAB, the rxtx
-    package (for serial port connections), joystick support, Java
-    Advanced Imaging (JAI), the Java Media Framework (JMF), and Java
-    3D.  If you wish to use or extend these features, you will need to
-    perform a few extra steps.  These steps require execution of a
-    script called <code>configure</code> in the Ptolemy II home
-    directory.
+      <li>Once you have configured <code>.classpath</code>, go back to Eclipse and
+	do <code>File</code> | <code>Refresh</code> so that Eclipse gets the updated
+	<code>.classpath</code> file.
+      </li>
 
-    <p>The procedure below will modify the <code>.classpath</code> file
-      that is provided in the version control repository to customize it
-      for the software that you have installed.</p>
+      <li> Build Ptolemy II by doing <code>Project</code> | <code>Build All</code>.
+	<br/> Note that you <i>may</i> want to select 
+	<code>Project</code> | <code>Build Automatically.</code>.
+      </li>
 
-    <p>Using the Terminal to run <code>./configure</code></p>
-    <ol>
-      <li>Start up the Terminal application, which may be found as
-        Applications -> Utilities -> Terminal.app
-      </li>
-      <li>In the Terminal, change to the directory where the Ptolemy II
-	source code was installed.  For example:
-	<pre>
-	  cd /Applications/Ptolemy/ptII8.1.devel
-	</pre>  
-      </li>
-      <li> Set <code>$PTII</code> to the location of the source tree:
-	<pre>
-	  export PTII=`pwd`  
-	</pre>  
-      </li>
-      <li> Make <code>configure</code> executable.
-	<pre>
-	  chmod a+x configure
-	  <pre>
-      </li>
-      <li> Run <code>./configure</code>
-        <pre>
-	  ./configure
-        </pre>
+      <li> Go back
+	to <a href="project.htm" target="main">Setting up Eclipse to manage your Ptolemy II development environment</a>.
       </li>
     </ol>
-</li>
-
-</body>
+  </body>
 </html>

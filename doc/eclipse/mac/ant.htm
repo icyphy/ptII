@@ -23,9 +23,17 @@ it excludes third party packages like Java3D and Matlab.
  <li> Bring up the Ant view with: <code>Window</code> | <code>Show View</code> | <code>Ant</code>
   <br/>If the <code>Ant</code> menu choice is not present, find it under <code>Others</code></li>
  <li>Right click on the Ant pane and select <code>Add Buildfiles</code>
- <li>In the Buildfile Selection window, open the ptII table and browse to either
-   <code>build.default.xml</code> or the <code>build.xml</code> file.
-   <br/>If both are present, then select the <code>build.xml</code> file, it is more configured for
+ <li>In the Buildfile Selection window, open the ptII table and browse to either:
+   <ul>
+     <li> <code>build.default.xml</code> - if you <b>did not</b> run <code>./configure</code>
+     </li>
+   <ul>
+   <b>or</b>
+   <ul> 
+     <li> <code>build.xml</code> - if you <b>did</b> run <code>./configure</code>
+     </li>
+   </ul>
+<br/>If both are present, then select the <code>build.xml</code> file, it is more configured for
    the environment.
 </ul>
 
