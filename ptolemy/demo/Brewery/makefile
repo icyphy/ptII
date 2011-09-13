@@ -46,7 +46,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 EXAMPLE_MODELS = \
-	Brewery2Tanks.xml 
+	Brewery.xml
 
 OTHER_FILES_TO_BE_JARED = \
 	ModalTank.xml
