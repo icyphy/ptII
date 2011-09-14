@@ -94,6 +94,7 @@
     <exclude name="**/CVS/" />
     <exclude name="**/adm/" />
     <exclude name="**/codeDoc/" />
+    <exclude name="**/cobertura.ser" />
     <exclude name="**/makefile" />
     <exclude name="**/.*" />
     <exclude name="**/*.bat" />
