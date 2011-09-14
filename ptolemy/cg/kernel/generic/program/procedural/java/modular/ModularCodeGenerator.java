@@ -159,9 +159,17 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
             topDirectory = "..";
         }
+
+        // Be sure to include java.class.path so that if we are running under
+        // a code coverage tool such as Cobertura, we get the Cobertura jars.
+        // To test this, run:
+        // ant -f build.default.xml test.cobertura -Dtest.batch=ptolemy/cg/lib/test/junit/*.java
         commands.add("javac -classpath \"" + topDirectory
                 + StringUtilities.getProperty("path.separator")
+                + StringUtilities.getProperty("java.class.path")
+                + StringUtilities.getProperty("path.separator")
                 + StringUtilities.getProperty("ptolemy.ptII.dir") + "\""
+
                 + profileClassName + ".java");
 
         StringBufferExec executeCommands = new StringBufferExec(true);
