@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Brewery" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Brewery2Tanks" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={77, 109, 808, 467}, maximized=false}">
@@ -325,7 +325,7 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="Tank2" class="ptolemy.demo.Brewery.ModalTank">
+        <entity name="Tank2" class="ptolemy.demo.Brewery.Tank">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 285.0]">
             </property>
             <property name="capacity" class="ptolemy.data.expr.Parameter" value="4.0">
@@ -345,7 +345,7 @@
                 </property>
             </property>
         </entity>
-        <entity name="Reactor" class="ptolemy.demo.Brewery.ModalTank">
+        <entity name="Reactor" class="ptolemy.demo.Brewery.Tank">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 307.5]">
             </property>
             <property name="capacity" class="ptolemy.data.expr.Parameter" value="4.0">
@@ -393,7 +393,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 330.0]">
             </property>
         </entity>
-        <entity name="Tank1" class="ptolemy.demo.Brewery.ModalTank">
+        <entity name="Tank1" class="ptolemy.demo.Brewery.Tank">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 115.0]">
             </property>
             <property name="capacity" class="ptolemy.data.expr.Parameter" value="4.0">

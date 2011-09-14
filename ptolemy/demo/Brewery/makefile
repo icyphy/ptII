@@ -49,7 +49,8 @@ EXAMPLE_MODELS = \
 	Brewery.xml
 
 OTHER_FILES_TO_BE_JARED = \
-	ModalTank.xml
+	AbstractTank.xml \
+	Tank.xml
 
 EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
 
