@@ -4,7 +4,7 @@
 <entity name="RESTGetHandlerTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 491, 966, 597}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 80, 956, 591}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[743, 481]">
     </property>
@@ -296,7 +296,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={633, 471, 342, 262}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 669, 326, 247}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 203]">
         </property>
@@ -317,15 +317,17 @@
         </property>
     </entity>
     <entity name="RESTGetHandler2" class="ptserver.actor.lib.io.RESTGetHandler">
-        <property name="resource" class="ptolemy.data.expr.StringParameter" value="A">
+        <property name="ignoreNamedObjsStartingWithUnderscores" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="outputToFile" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="resource" class="ptolemy.data.expr.StringParameter" value="A">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 320.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={633, 471, 342, 262}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={438, 680, 326, 247}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 203]">
         </property>
@@ -333,15 +335,15 @@
         </property>
     </entity>
     <entity name="RESTGetHandler3" class="ptserver.actor.lib.io.RESTGetHandler">
-        <property name="resource" class="ptolemy.data.expr.StringParameter" value="A/B2/C">
-        </property>
         <property name="outputToFile" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="resource" class="ptolemy.data.expr.StringParameter" value="A/B2/C">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 320.0]">
         </property>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={633, 471, 342, 262}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={777, 675, 326, 247}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 203]">
         </property>
@@ -349,7 +351,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;A&lt;/h1&gt;http://RESTGetHandlerTest/A&lt;br&gt;Has no parameters.&lt;h1&gt; Contained resources &lt;/h1&gt; &lt;ul&gt;&lt;li&gt;http://RESTGetHandlerTest/A/_iconDescription&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/_location&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/_windowProperties&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/_vergilSize&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/_vergilZoomFactor&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/_vergilCenter&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/_icon&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/in&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/out&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B1&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/AddSubtract&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/AddSubtract2&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/Const&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation3&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation4&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation5&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation2&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation6&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;A&lt;/h1&gt;http://RESTGetHandlerTest/A&lt;br/&gt;Has no parameters.&lt;h1&gt; Contained resources &lt;/h1&gt; &lt;ul&gt;&lt;li&gt;http://RESTGetHandlerTest/A/in&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/out&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B1&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/AddSubtract&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/AddSubtract2&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/Const&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation3&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation4&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation5&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation2&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/relation6&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -357,7 +359,7 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;C&lt;/h1&gt;http://RESTGetHandlerTest/A/B2/C&lt;br&gt;&lt;table border=&amp;quot;1&amp;quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ParameterInC&lt;/td&gt;&lt;td&gt;7&lt;/td&gt;&lt;td&gt;7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;h1&gt; Contained resources &lt;/h1&gt; &lt;ul&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/_iconDescription&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/_location&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/ParameterInC&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/differentinputport&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/differentoutputport&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/AddSubtract&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/Expression&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/relation&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/relation2&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/relation3&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;C&lt;/h1&gt;http://RESTGetHandlerTest/A/B2/C&lt;br/&gt;&lt;table border=&amp;quot;1&amp;quot;&gt;&lt;tr&gt;&lt;td&gt;&lt;b&gt;Parameter&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Expression&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Value&lt;/b&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ParameterInC&lt;/td&gt;&lt;td&gt;7&lt;/td&gt;&lt;td&gt;7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;h1&gt; Contained resources &lt;/h1&gt; &lt;ul&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/ParameterInC&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/differentinputport&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/differentoutputport&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/AddSubtract&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/Expression&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/relation&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/relation2&lt;/li&gt;&lt;li&gt;http://RESTGetHandlerTest/A/B2/C/relation3&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;&quot;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 380.0]">
         </property>

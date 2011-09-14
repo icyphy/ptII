@@ -1,7 +1,7 @@
 /* RESTGetHandler receives incoming RESTful get requests and performs
  some action upon being fired.
 
- Copyright (c) 1997-2011 The Regents of the University of California.
+ Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -91,14 +92,18 @@ public class RESTGetHandler extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
 
-        resource = new StringParameter(this, "resource");
+        destinationFileName = new FileParameter(this, "destinationFile");
+
+        ignoreNamedObjsStartingWithUnderscores = new SharedParameter(this,
+                "ignoreNamedObjsStartingWithUnderscores", getClass(), "false");
+        ignoreNamedObjsStartingWithUnderscores.setTypeEquals(BaseType.BOOLEAN);
 
         outputToFile = new Parameter(this, "outputToFile");
         outputToFile.setTypeEquals(BaseType.BOOLEAN);
 
-        destinationFileName = new FileParameter(this, "destinationFile");
         sourceModel = new FileParameter(this, "sourceModel");
 
+        resource = new StringParameter(this, "resource");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,6 +113,13 @@ public class RESTGetHandler extends TypedAtomicActor {
      *  @see FileParameter
      */
     public FileParameter destinationFileName;
+
+    /** True if NamedObjs that start with underscores should be ignored.
+     *  The default is a boolean with value false, indicating that NamedObjs
+     *  such as parameters like _vergilSize should be printed out.
+     *  This parameters is primarily used for testing.
+     */
+    public SharedParameter ignoreNamedObjsStartingWithUnderscores;
 
     /** Output port for the HTML response.
      */
@@ -121,18 +133,18 @@ public class RESTGetHandler extends TypedAtomicActor {
     /** The resource to return.  This can be the whole model, any contained
      * entity, or a set of contained entities.  Please see the find() method
      * for a full explanation of the syntax.  Some examples:
-       modelName  - Returns the top-level entity (the whole model) and a list of
-       resources contained by this entity
-
-       modelName/x  - Returns actor x whose parent is the top-level entity and a
-       list of resources contained by x
-
-       modelName/x/y  - Returns actor y, whose parent is x, whose parent is the
-       top-level entity, and a list of resources contained by y
-
-       modelName/ontology.name=unitSystem&concept=Temperature -  Returns all
-       entities who have a port annotated with the concept "Temperature" from
-       the ontology "unitSystem"
+     * modelName  - Returns the top-level entity (the whole model) and a list of
+     * resources contained by this entity
+     *
+     * modelName/x  - Returns actor x whose parent is the top-level entity and a
+     * list of resources contained by x
+     *
+     * modelName/x/y  - Returns actor y, whose parent is x, whose parent is the
+     * top-level entity, and a list of resources contained by y
+     *
+     * modelName/ontology.name=unitSystem&concept=Temperature -  Returns all
+     * entities who have a port annotated with the concept "Temperature" from
+     * the ontology "unitSystem"
      */
     public StringParameter resource;
 
@@ -317,7 +329,7 @@ public class RESTGetHandler extends TypedAtomicActor {
 
             HTML.append("<h1>" + name + "</h1>");
             HTML.append("http:/" + obj.getFullName().replace(".", "/"));
-            HTML.append("<br>");
+            HTML.append("<br/>");
             HTML.append(_getParameterTable(obj));
 
             HTML.append("<h1> Contained resources </h1> <ul>");
@@ -335,10 +347,15 @@ public class RESTGetHandler extends TypedAtomicActor {
     /** Return a list of URIs for all contained objects.  This allows an agent
      * that knows the URI of the main resource (e.g. the top-level model) to
      * discover contained resources (e.g. actors in the model).
+     * <p>If ignoreNamedObjsStartingWithUnderscores is true and the name of the
+     * containedObject begins with an underscore, then the name is not
+     * added to the list.</p>
      *
      * @return A list of URIs for all contained objects
+     * @exception IllegalActionException If the ignoreNamedObjsStartingWithUnderscores
+     * parmeter cannot be read.
      */
-    protected List<String> listContainedResources(NamedObj obj) {
+    protected List<String> listContainedResources(NamedObj obj) throws IllegalActionException {
         ArrayList<String> containedResources = new ArrayList();
 
         // The URI of an object is its full name with forward slashes instead
@@ -349,8 +366,11 @@ public class RESTGetHandler extends TypedAtomicActor {
         Iterator objIterator = obj.containedObjectsIterator();
         while (objIterator.hasNext()) {
             NamedObj nextObj = (NamedObj) objIterator.next();
-            containedResources.add("http:/"
-                    + nextObj.getFullName().replace(".", "/"));
+            if (! (((BooleanToken) ignoreNamedObjsStartingWithUnderscores.getToken()).booleanValue()
+                            && nextObj.getName().startsWith("_"))) {
+                containedResources.add("http:/"
+                        + nextObj.getFullName().replace(".", "/"));
+            }
         }
 
         return containedResources;
