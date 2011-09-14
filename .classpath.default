@@ -10,6 +10,7 @@
 	<classpathentry kind="lib" path="lib/saxon8-dom.jar"/>
 	<classpathentry kind="lib" path="lib/chic.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.8.2.jar"/>
+	<classpathentry kind="lib" path="lib/JUnitParams-0.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jython.jar"/>
 	<classpathentry kind="lib" path="lib/kieler.jar"/>
 	<classpathentry kind="lib" path="lib/ptcolt.jar"/>
