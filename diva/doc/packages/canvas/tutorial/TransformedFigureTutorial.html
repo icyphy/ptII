@@ -52,7 +52,7 @@ single AffineTransform, and a bunch of methods that deal with it.
         at.scale(width/100, height/100);
         _transformContext.invalidateCache();
 
-	....
+        ....
     } 
 </pre>
 
@@ -105,7 +105,7 @@ before and after painting the figure's contents:
     public void paint (Graphics2D g) {
         _transformContext.push(g);
 
-	....
+        ....
         // Paint the big cloud
         AlphaComposite c = AlphaComposite.getInstance(
                 AlphaComposite.SRC_OVER,0.5f);
@@ -113,7 +113,7 @@ before and after painting the figure's contents:
         g.setPaint(Color.magenta);
         g.fill(_shape);
 
-	....
+        ....
         _transformContext.pop(g);
     }
 </pre>

@@ -35,32 +35,32 @@ differences starting with the constructor.
 
 <pre>
     public MDIApplicationTutorial(AppContext context) {
-	super();
+        super();
 
-	// This is an MDI application that uses a desktop context.
+        // This is an MDI application that uses a desktop context.
         DesktopContext frame = new DesktopContext(context);
         setAppContext(frame);
 
-	initializeApp();
-	
+        initializeApp();
+        
         // Initialize the context.  DesktopContext already has a toolbar
-	// and a menu bar.
+        // and a menu bar.
         initializeMenuBar(frame.getJMenuBar());
-	JPanel toolBarPane = frame.getToolBarPane();
-	toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
+        JPanel toolBarPane = frame.getToolBarPane();
+        toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
         initializeToolBar(frame.getJToolBar());
 
-	// Set the icon in the upper left corner of the context.
-	Image iconImage = getResources().getImage("GraphIconImage");
-	context.setIconImage(iconImage);
-	// Set the icon for the internal frames of the desktop context.
+        // Set the icon in the upper left corner of the context.
+        Image iconImage = getResources().getImage("GraphIconImage");
+        context.setIconImage(iconImage);
+        // Set the icon for the internal frames of the desktop context.
         Icon icon = getResources().getImageIcon("GraphIconImage");
         frame.setFrameIcon(icon);
 
-	// Set the size of the context.
-	context.makeComponent().setSize(800, 600);
-	// and make it visible.
-	context.setVisible(true);
+        // Set the size of the context.
+        context.makeComponent().setSize(800, 600);
+        // and make it visible.
+        context.setVisible(true);
     }
 </pre>
 
@@ -83,26 +83,26 @@ that creates the view for the document, however.
 
 <pre>
     public JComponent createView (Document d) {
-	final TextDocument document = (TextDocument) d;
-		
-	final JEditorPane pane = new JEditorPane();
-	pane.setText(document.getText());
-		
-	pane.getDocument().addDocumentListener(new DocumentListener() {
-	    public void changedUpdate(DocumentEvent e) {
-		document.setText(pane.getText());
-	    }
-	    public void insertUpdate(DocumentEvent e) {
-		document.setText(pane.getText());
-	    }
-	    public void removeUpdate(DocumentEvent e) {
-		document.setText(pane.getText());
-	    }
-	});	
+        final TextDocument document = (TextDocument) d;
+                
+        final JEditorPane pane = new JEditorPane();
+        pane.setText(document.getText());
+                
+        pane.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                document.setText(pane.getText());
+            }
+            public void insertUpdate(DocumentEvent e) {
+                document.setText(pane.getText());
+            }
+            public void removeUpdate(DocumentEvent e) {
+                document.setText(pane.getText());
+            }
+        });        
 
-	d.addPropertyChangeListener(_titleChanger);
+        d.addPropertyChangeListener(_titleChanger);
 
-	return pane;
+        return pane;
     }
 </pre>
 <p> Hopefully you recognize the code for creating a new editor pane, and the
@@ -115,18 +115,18 @@ internal frame.  The code is shown below.
  
 <pre>
     public class TitleChanger implements PropertyChangeListener {
-	public void propertyChange(PropertyChangeEvent e) {
-	    String name = e.getPropertyName();
-	    if (name.equals("file") || 
-		name.equals("url") || 
-		name.equals("title")) {
+        public void propertyChange(PropertyChangeEvent e) {
+            String name = e.getPropertyName();
+            if (name.equals("file") || 
+                name.equals("url") || 
+                name.equals("title")) {
 
-		Document doc = (Document)e.getSource();
-		DesktopContext context = (DesktopContext)getAppContext();
-		JInternalFrame frame = context.getInternalFrame(getView(doc));
-		frame.setTitle(doc.getTitle());
-	    }
-	}
+                Document doc = (Document)e.getSource();
+                DesktopContext context = (DesktopContext)getAppContext();
+                JInternalFrame frame = context.getInternalFrame(getView(doc));
+                frame.setTitle(doc.getTitle());
+            }
+        }
     }
 </pre>
 <p> The getView() method returns the view that was created for the given

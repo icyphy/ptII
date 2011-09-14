@@ -54,7 +54,7 @@ at the menu bar item.
 
 <pre>
     public void initializeMenuBar(JMenuBar menuBar) {
-	Action action;
+        Action action;
         JMenuItem item;
 
         // Create the File menu
@@ -65,9 +65,9 @@ at the menu bar item.
         action = DefaultActions.newAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'N', 
-				 "Create a new graph document");
-	
-	...
+                                 "Create a new graph document");
+        
+        ...
     }
 </pre>
 
@@ -88,8 +88,8 @@ specified later if the same action is used again.
 
         action = getAction("New");
         GUIUtilities.addToolBarButton(tb, action, null,
-				      resources.getImageIcon("NewImage"));
-	...
+                                      resources.getImageIcon("NewImage"));
+        ...
     }
 </pre>
 
@@ -136,30 +136,30 @@ close the document at all, or it could popup a dialog, asking to confirm
 closing the document without saving it.  How do we initialize the storage 
 policy?  The following piece of code is in the initializeApp() method:
 <pre>
-	try {
-	    DefaultStoragePolicy storage = new DefaultStoragePolicy();
-	    setStoragePolicy(storage);
-	
-	    FileFilter ff = new FileFilter() {
-		public boolean accept (File file) {
-		    return GUIUtilities.getFileExtension(file).
-		    toLowerCase().equals("txt");
-		}
-		public String getDescription () {
-		    return "Text files";
-		}
-	    };
-	    JFileChooser fc;      
-	    fc = storage.getOpenFileChooser();
-	    fc.addChoosableFileFilter(ff);
-	    fc.setFileFilter(ff);
-	    
-	    fc = storage.getSaveFileChooser();
-	    fc.addChoosableFileFilter(ff);
-	    fc.setFileFilter(ff);
-	} catch (SecurityException ex) {
-	    // FIXME: create a new "NoStoragePolicy"
-	}
+        try {
+            DefaultStoragePolicy storage = new DefaultStoragePolicy();
+            setStoragePolicy(storage);
+        
+            FileFilter ff = new FileFilter() {
+                public boolean accept (File file) {
+                    return GUIUtilities.getFileExtension(file).
+                    toLowerCase().equals("txt");
+                }
+                public String getDescription () {
+                    return "Text files";
+                }
+            };
+            JFileChooser fc;      
+            fc = storage.getOpenFileChooser();
+            fc.addChoosableFileFilter(ff);
+            fc.setFileFilter(ff);
+            
+            fc = storage.getSaveFileChooser();
+            fc.addChoosableFileFilter(ff);
+            fc.setFileFilter(ff);
+        } catch (SecurityException ex) {
+            // FIXME: create a new "NoStoragePolicy"
+        }
 </pre>
 
 <p> In this case, we are using a DefaultStoragePolicy, which generally uses
@@ -182,10 +182,10 @@ displayed in the view.  These variables are first initialized in the
 constructor:
 
 <pre>
-	_editorPane = new JEditorPane();	
-	context.getContentPane().add(new JScrollPane(_editorPane));
-	_displayedDocument = null;
-	displayDocument(getCurrentDocument());
+        _editorPane = new JEditorPane();        
+        context.getContentPane().add(new JScrollPane(_editorPane));
+        _displayedDocument = null;
+        displayDocument(getCurrentDocument());
 </pre>
 
 The displayDocument method updates the text in the editor pane with the
@@ -200,17 +200,17 @@ by a call to set the current document.  We will detect that call by adding
 a listener to the list of documents, and then displaying the current document.
 
 <pre>
-  	addDocumentListener(new ListDataListener() {
-	    public void contentsChanged(ListDataEvent e) {
-		System.out.println("current document = " +
-				   getCurrentDocument());
-		displayDocument(getCurrentDocument());
-	    }
-	    public void intervalAdded(ListDataEvent e) {
-	    }
-	    public void intervalRemoved(ListDataEvent e) {
-	    }
-	});
+          addDocumentListener(new ListDataListener() {
+            public void contentsChanged(ListDataEvent e) {
+                System.out.println("current document = " +
+                                   getCurrentDocument());
+                displayDocument(getCurrentDocument());
+            }
+            public void intervalAdded(ListDataEvent e) {
+            }
+            public void intervalRemoved(ListDataEvent e) {
+            }
+        });
 </pre>
 
 <p> We also want to be sure to update the text in the document whenever any
@@ -218,14 +218,14 @@ change is made to the view in the editor pane.   To accomplish this we will
 add another listener to the editor pane that will update the text of
 the current document.
 
-<pre>	
-	_editorPane.getDocument().addDocumentListener(new DocumentListener() {
-	    public void changedUpdate(DocumentEvent e) {
-		if(_displayedDocument != null)
-		    _displayedDocument.setText(_editorPane.getText());
-	    }
-	    ...
-	});
+<pre>        
+        _editorPane.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                if(_displayedDocument != null)
+                    _displayedDocument.setText(_editorPane.getText());
+            }
+            ...
+        });
 </pre>
 
 <p>

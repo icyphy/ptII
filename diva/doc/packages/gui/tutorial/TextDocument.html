@@ -42,10 +42,10 @@ interesting:
 
 <pre>
     public void setText(String text) {
-	if(_text != text) {
-	    setDirty(true);
-	    _text = text;
-	}
+        if(_text != text) {
+            setDirty(true);
+            _text = text;
+        }
     }
 </pre>
 
@@ -68,11 +68,11 @@ the document's close method.
 
 <pre>
     public void close () {
-	// DO NOTHING.
+        // DO NOTHING.
     }
 
     public void save () throws Exception {
-	saveAs(getFile());
+        saveAs(getFile());
     }   
 </pre>
 
@@ -87,8 +87,8 @@ of how this is used, look at the DefaultActions.netAction method.)
             TextDocument d = new TextDocument(app);
             return d;
         }
-	...
-    }	
+        ...
+    }        
 
 </pre>
 
