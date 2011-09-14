@@ -3569,10 +3569,11 @@ ECLIPSE_EXCLUDING_SRC="ptolemy/actor/lib/reactable/"
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
 ECLIPSE_CLASSPATHENTRY_LIBS=''
 
-# Paths to always exclude i Ant's build.xml
+# Paths to always exclude in Ant's build.xml
 ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="**/adm/"/>
 <exclude name="**/codeDoc/"/>
+<exclude name="**/cobertura.ser" />
 <exclude name="**/makefile" />
 <exclude name="**/.*" />
 <exclude name="**/*.bat" />
