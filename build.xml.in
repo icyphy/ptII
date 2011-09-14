@@ -331,6 +331,7 @@ For example:
 	</fileset>
       </batchtest>
       <formatter type="${junit.formatter}" />
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
     </junit>
   </target>
 
@@ -348,12 +349,16 @@ For example:
 	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
       </classpath>
       <formatter type="${junit.formatter}" usefile="false"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <test  name="${test.name}" />
     </junit>
   </target>
 
   <!-- Cobertura: code coverage tool -->
   <target name="test.cobertura" depends="build, initReports">
+    <echo>To run different tests, use -Dtest.batch, for example:
+      ant test.cobertura -Dtest.batch=ptolemy/domains/continuous/**/junit/*.java
+    </echo>
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
     <property name="cobertura.dir" value="ptserver/lib" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
@@ -376,8 +381,8 @@ For example:
       <fileset defaultexcludes="yes"
 	       dir="${basedir}">
 	<include name="ptolemy/**/*.class" />
-	<exclude name="**/test/*.java" />
-	<exclude name="**/junit/*.java" />
+	<exclude name="**/test/*.class" />
+	<exclude name="**/junit/*.class" />
       </fileset>
     </cobertura-instrument>
 
@@ -424,11 +429,12 @@ For example:
       <batchtest todir="${junit.output.dir}">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
-	  <include name="**/junit/*.java" />
+	  <include name="${test.batch}" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.excludes" />
 	</fileset>
       </batchtest>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
