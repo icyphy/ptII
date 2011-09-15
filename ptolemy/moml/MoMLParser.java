@@ -2496,62 +2496,44 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         propName, null);
 
                 // We use toDelete to find any PortParameters
-                Attribute toDelete = null;
-                try {
-                    toDelete = _searchForAttribute(propName);
-                } catch (XmlException ex) {
-                    // Ignore, the property may have already been deleted.
-                    // For example, The Kieler layout mechanism sometimes
-                    // optimizes away _layoutHints.
-                    // To replicate:
-                    // $PTII/bin/vergil ~/ptII/ptolemy/moml/demo/modulation.xml
-                    // Graph -> Automatic Layout
-                    // Undo, Redo, Undo
-                    // Formerly, _layoutHints was failing:
-                    // ptolemy.kernel.util.InternalErrorException: ChangeRequest failed (NOTE: there is no ChangeListener):
-                    // <group>
-                    // <deleteProperty name="_layoutHint" />
-                    // </group>
-                    // Tests in ptolemy/vergil/basic/layout/kieler/test/junit test for this.
-                }
-                if (toDelete != null) {
-                    // Only defer if we are in a class, entity, or model context,
-                    // which is equivalent to the _current being an instance of
-                    // InstantiableNamedObj.
-                    if ((_deleteRequests != null)
-                            && _current instanceof InstantiableNamedObj) {
-                        _deleteRequests.add(request);
-                    } else {
-                        // Very likely, the context is null, in which
-                        // case the following will throw an exception.
-                        // We defer to it in case somehow a link request
-                        // is being made at the top level with a non-null
-                        // context (e.g. via a change request).
-                        request.execute();
-                    }
+                Attribute toDelete = _searchForAttribute(propName);
 
-                    // Find the corresponding PortParameter and delete it
-                    NamedObj container = toDelete.getContainer();
-                    if (container != null && container instanceof Entity) {
-                        Port port = ((Entity) container).getPort(propName);
-                        if (port != null && port instanceof ParameterPort) {
-                            request = new DeleteRequest(_DELETE_PORT,
-                                    port.getName(), container.getFullName());
-                            // Only defer if we are in a class, entity, or
-                            // model context, which is equivalent to the
-                            // _current being an instance of
-                            // InstantiableNamedObj.
-                            if ((_deleteRequests != null)
-                                    && _current instanceof InstantiableNamedObj) {
-                                _deleteRequests.add(request);
-                            } else {
-                                // Very likely, the context is null, in which
-                                // case the following will throw an exception.
-                                // We defer to it in case somehow a link request
-                                // is being made at the top level with a non-null
-                                // context (e.g. via a change request).
-                                request.execute();
-                            }
+                // Only defer if we are in a class, entity, or model context,
+                // which is equivalent to the _current being an instance of
+                // InstantiableNamedObj.
+                if ((_deleteRequests != null)
+                        && _current instanceof InstantiableNamedObj) {
+                    _deleteRequests.add(request);
+                } else {
+                    // Very likely, the context is null, in which
+                    // case the following will throw an exception.
+                    // We defer to it in case somehow a link request
+                    // is being made at the top level with a non-null
+                    // context (e.g. via a change request).
+                    request.execute();
+                }
+
+                // Find the corresponding PortParameter and delete it
+                NamedObj container = toDelete.getContainer();
+                if (container != null && container instanceof Entity) {
+                    Port port = ((Entity) container).getPort(propName);
+                    if (port != null && port instanceof ParameterPort) {
+                        request = new DeleteRequest(_DELETE_PORT,
+                                port.getName(), container.getFullName());
+                        // Only defer if we are in a class, entity, or
+                        // model context, which is equivalent to the
+                        // _current being an instance of
+                        // InstantiableNamedObj.
+                        if ((_deleteRequests != null)
+                                && _current instanceof InstantiableNamedObj) {
+                            _deleteRequests.add(request);
+                        } else {
+                            // Very likely, the context is null, in which
+                            // case the following will throw an exception.
+                            // We defer to it in case somehow a link request
+                            // is being made at the top level with a non-null
+                            // context (e.g. via a change request).
+                            request.execute();
                         }
                     }
                 }
