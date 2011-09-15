@@ -80,6 +80,7 @@ JSRCS = \
 	State.java \
 	StateEvent.java \
 	Suspendable.java \
+	TransientState.java \
 	Transition.java
 
 OTHER_FILES_TO_BE_JARED = \

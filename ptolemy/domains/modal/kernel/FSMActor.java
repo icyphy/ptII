@@ -691,12 +691,29 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         readInputs();
         List<Transition> transitionList = _currentState.outgoingPort
                 .linkedRelationList();
-
+        
         Transition chosenTransition = chooseTransition(transitionList);
 
         // If no transition was chosen, then it still might
         // possible to assert that certain outputs are absent.
         if (chosenTransition == null) {
+            
+            // Add to this transition list all the outgoing transitions
+            // of any transient states that are a destination of a transition.
+            /* FIXME: In order to assert that outputs are absent, we also
+             * need to examine all transitions out of transient states
+             * that are destinations of transitions from this state.
+             * Do something like the following to add those transitions
+             * to the list to be examined.
+            for(Transition transition : transitionList) {
+                State destination = transition.destinationState();
+                if (destination instanceof TransientState) {
+                    // FIXME: This needs to be recursive to include transitions out of the transient state.
+                    transitionList.addAll(destination.outgoingPort.linkedRelationList());
+                }
+            }
+            */
+
             // If all relevant inputs (those on guards of outgoing
             // transitions) are known, and the current state has no refinement,
             // then make all outputs absent.
@@ -2170,7 +2187,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
 
-    /** A HashMap of transition-boolean-pairs for each port indicating if the port is contained
+    /** A HashMap of transition-boolean-pairs for each port indicating whether the port is contained
      * in an output action of the specific transition. This information is lazily inserted into
      * the HashMap during the simulation for performance reasons. It is not pre-done because during a run
      * we may never traverse all nodes defined.
