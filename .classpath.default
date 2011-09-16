@@ -13,6 +13,7 @@
 	<classpathentry kind="lib" path="lib/JUnitParams-0.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jython.jar"/>
 	<classpathentry kind="lib" path="lib/kieler.jar"/>
+	<classpathentry kind="lib" path="lib/guava.jar"/>
 	<classpathentry kind="lib" path="lib/ptcolt.jar"/>
 	<classpathentry kind="lib" path="lib/ptjacl.jar"/>
 	<classpathentry kind="lib" path="lib/mapss.jar"/>
