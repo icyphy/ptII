@@ -1362,6 +1362,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
 
             // Create the input and output ports and connect them.
+            //code.append("    System.out.println(\"E1\");" + _eol);
             code.append("TypedIOPort c0PortA = new TypedIOPort(c0, \"c0PortA\", false, true);"
                     + _eol
                     + "TypedIOPort c0PortB = new TypedIOPort(c0, \"c0PortB\", true, false);"
@@ -1513,6 +1514,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 //+ escapedCodegenPortName + "), " + portOrParameter
                 //+ ");" + _eol);
             } else {
+                connectedAlready = true;
+                //code.append("    System.out.println(\"D1\");" + _eol);
                 code.append("    $containerSymbol().connect(c0PortA,"
                         + portOrParameter + ");" + _eol
                         + "    $containerSymbol().connect($actorSymbol("
@@ -1585,6 +1588,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // port of the other custom actor.  This obviates
                         // the need for checking for the connection at
                         // runtime.
+                        //code.append("    System.out.println(\"C1\");" + _eol);
                         code.append(relationAssignment
                                 + "$containerSymbol().connect(" + portOrParameter
                                 + ", " + "((" + remoteActor.getClass().getName()
@@ -1619,10 +1623,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + AutoAdapter._externalPortName(remotePort.getContainer(),
                             remotePort.getName()) + "\")";
                 if (!readingRemoteParameters) {
+                    //code.append("    System.out.println(\"B1\");" + _eol);
                     code.append("    $containerSymbol().connect($actorSymbol("
                             + escapedCodegenPortName + "), " + portOrParameter
                             + ");" + _eol);
                 } else {
+                    //code.append("    System.out.println(\"B2\");" + _eol);
                     code.append("    $containerSymbol().connect(c0PortA,"
                             + portOrParameter + ");" + _eol
                             + "    $containerSymbol().connect($actorSymbol("
@@ -1637,15 +1643,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         } else {
             if (!readingRemoteParameters) {
                 if (!connectedAlready) {
+                    //code.append("    System.out.println(\"A1\");" + _eol);
                     code.append("    $containerSymbol().connect($actorSymbol("
                             + escapedCodegenPortName + "), " + portOrParameter
                             + ");" + _eol);
                 }
             } else {
-                code.append("    $containerSymbol().connect(c0PortA,"
-                        + portOrParameter + ");" + _eol
-                        + "    $containerSymbol().connect($actorSymbol("
-                        + escapedCodegenPortName + "), c0PortB);" + _eol);
+                if (!connectedAlready) {
+                    //code.append("    System.out.println(\"A2\");" + _eol);
+                    code.append("    $containerSymbol().connect(c0PortA,"
+                            + portOrParameter + ");" + _eol
+                            + "    $containerSymbol().connect($actorSymbol("
+                            + escapedCodegenPortName + "), c0PortB);" + _eol);
+                }
             }
 
             if (port.isOutput()) {
