@@ -694,6 +694,7 @@ COLT_DIR
 CMKIT_DIR
 ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS
 ECLIPSE_DIR
+GUAVA_JAR
 GC_INCLUDE_DIR
 GC_LD_DIRECTIVE
 ECLIPSE_EXCLUDING_SRC
@@ -1533,6 +1534,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/sun/jxta
   --with-kieler-jar=JARFILE       use JARFILE,
                           defaults to \$PTII/lib/kieler.jar
+  --with-guava-jar=JARFILE       use JARFILE,
+                              defaults to \$PTII/lib/guava.jar
   --with-javacv=JAR       use the javaCV JAR,
                           defaults to \$PTII/vendors/misc/javacv-bin/javacv.jar
   --with-rxtx=DIR       use Java Serial Port Interfacrxtx from DIR,
@@ -8839,6 +8842,7 @@ PTKIELER_DIR=
 
 # Directory that contains the jxta jar files
 KIELER_JAR='${PTII}/lib/kieler.jar'
+GUAVA_JAR='${PTII}/lib/guava.jar'
 
 if test ! -d "$KIELER_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $KIELER_USER_DIR is not present,
@@ -8849,9 +8853,9 @@ else
     { echo "$as_me:$LINENO: checking for kieler jar file used by layout " >&5
 echo $ECHO_N "checking for kieler jar file used by layout ... $ECHO_C" >&6; }
 
-# Check whether --with-jxta was given.
-if test "${with_jxta+set}" = set; then
-  withval=$with_jxta; KIELER_JAR=$withval
+# Check whether --with-kieler was given.
+if test "${with_kieler+set}" = set; then
+  withval=$with_kieler; KIELER_JAR=$withval
 else
   KIELER_JAR=$PTII/lib/kieler.jar
 fi
@@ -8861,9 +8865,39 @@ fi
 	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $KIELER_JAR" >&5
 echo "${ECHO_T}$KIELER_JAR" >&6; }; fi
-	# Set to kieler and used in
-	# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
-	PTKIELER_DIR=kieler
+	{ echo "$as_me:$LINENO: checking for guava jar file used by Kieler layout " >&5
+echo $ECHO_N "checking for guava jar file used by Kieler layout ... $ECHO_C" >&6; }
+
+# Check whether --with-guava was given.
+if test "${with_guava+set}" = set; then
+  withval=$with_guava; GUAVA_JAR=$withval
+else
+  GUAVA_JAR=$PTII/lib/guava.jar
+fi
+
+	if test -f "$GUAVA_JAR"; then
+	    # Set to kieler and used in
+	    # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+	    PTKIELER_DIR=kieler
+        else
+        { echo "$as_me:$LINENO: WARNING: Failed to find the Guava Jar file.
+    Guava is used by the KIELER Layout tool.
+    Guava is the Google Core Libraries for Java and is available from
+    http://code.google.com/p/guava-libraries/
+    You need not use KIELER unless you plan on using the KIELER layout
+    facility in $KIELER_USER_DIR
+    The Guava jar is usually found at $PTII/lib/guava.jar." >&5
+echo "$as_me: WARNING: Failed to find the Guava Jar file.
+    Guava is used by the KIELER Layout tool.
+    Guava is the Google Core Libraries for Java and is available from
+    http://code.google.com/p/guava-libraries/
+    You need not use KIELER unless you plan on using the KIELER layout
+    facility in $KIELER_USER_DIR
+    The Guava jar is usually found at $PTII/lib/guava.jar." >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	GUAVA_JAR='${PTII}/lib/guava.jar'
+
+        fi
     fi
 
     if test "$PTKIELER_DIR" = ""; then
@@ -8886,6 +8920,7 @@ if test -z "$PTKIELER_DIR"; then
    updateExcludes "ptolemy/vergil/basic/layout/kieler/"
 else
    updateClasspath "$KIELER_JAR"
+   updateClasspath "$GUAVA_JAR"
 fi
 
 
@@ -12552,6 +12587,10 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Location of GNU Awk, used by maven
 
 
+# The Guava Jar file, used by Kieler which is used to layout models.  See
+# http://code.google.com/p/guava-libraries/
+
+
 # Directory that contains gc.h, used in copernicus/c
 
 
@@ -13987,6 +14026,7 @@ COLT_DIR!$COLT_DIR$ac_delim
 CMKIT_DIR!$CMKIT_DIR$ac_delim
 ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS!$ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS$ac_delim
 ECLIPSE_DIR!$ECLIPSE_DIR$ac_delim
+GUAVA_JAR!$GUAVA_JAR$ac_delim
 GC_INCLUDE_DIR!$GC_INCLUDE_DIR$ac_delim
 GC_LD_DIRECTIVE!$GC_LD_DIRECTIVE$ac_delim
 ECLIPSE_EXCLUDING_SRC!$ECLIPSE_EXCLUDING_SRC$ac_delim
@@ -14003,7 +14043,6 @@ JAVAX_CRYPTO_JAR!$JAVAX_CRYPTO_JAR$ac_delim
 JDOCBREAKITERATOR!$JDOCBREAKITERATOR$ac_delim
 JDOCSOURCEFLAGS!$JDOCSOURCEFLAGS$ac_delim
 JDOCTAG!$JDOCTAG$ac_delim
-JDOCTAGLET!$JDOCTAGLET$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -14045,6 +14084,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+JDOCTAGLET!$JDOCTAGLET$ac_delim
 JINI_DIR!$JINI_DIR$ac_delim
 JINI_PRESENT!$JINI_PRESENT$ac_delim
 JOYSTICK_JAR!$JOYSTICK_JAR$ac_delim
@@ -14141,7 +14181,6 @@ PTJNI_INCLUDE!$PTJNI_INCLUDE$ac_delim
 PTJNI_DL_LIBRARY!$PTJNI_DL_LIBRARY$ac_delim
 PTJNI_LIB_ARCHITECTURE!$PTJNI_LIB_ARCHITECTURE$ac_delim
 PTJNI_NO_CYGWIN!$PTJNI_NO_CYGWIN$ac_delim
-PTJNI_GCC_SHARED_FLAG!$PTJNI_GCC_SHARED_FLAG$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -14183,6 +14222,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTJNI_GCC_SHARED_FLAG!$PTJNI_GCC_SHARED_FLAG$ac_delim
 PTJNI_SHAREDLIBRARY_CFLAG!$PTJNI_SHAREDLIBRARY_CFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_PREFIX!$PTJNI_SHAREDLIBRARY_PREFIX$ac_delim
@@ -14264,7 +14304,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 79; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 80; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
