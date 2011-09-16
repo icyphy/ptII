@@ -556,6 +556,12 @@ See $PTII/doc/coding/maven.htm
     </dependency>
 
     <dependency> <!-- $PTII/lib/kieler.jar -->
+      <groupId>guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>ptII</version>
+    </dependency>
+
+    <dependency> <!-- $PTII/lib/kieler.jar -->
       <groupId>kieler</groupId>
       <artifactId>kieler</artifactId>
       <version>ptII</version>
@@ -587,12 +593,6 @@ See $PTII/doc/coding/maven.htm
     <dependency> 
       <groupId>iText</groupId>
       <artifactId>iText</artifactId>
-      <version>ptII</version>
-    </dependency>
-
-    <dependency> 
-      <groupId>kieler</groupId>
-      <artifactId>kieler</artifactId>
       <version>ptII</version>
     </dependency>
 

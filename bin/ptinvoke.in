@@ -413,7 +413,7 @@ if [ "$PTSPACE_DIR" = "space" ]; then
 fi
 
 #### Open Computer Vision
-# OPENCV is set to kieler.jar if configure found kieler.jar
+# OPENCV_DIR is set to opencv if Open Computer Vision was found
 PTOPENCV_DIR=@OPENCV_DIR@
 OPENCV_JAR=@OPENCV_JAR@
 if [ "$PTOPENCV_DIR" = "opencv" ]; then 
@@ -545,11 +545,12 @@ if [ "$PTJXTA_DIR" = "jxta" ]; then
 fi
 
 #### KIELER
-# KIELER is set to kieler.jar if configure found kieler.jar
+# PTKIELER_DIR is set to kieler if configure found kieler.jar and guava.jar
 PTKIELER_DIR=@PTKIELER_DIR@
+GUAVA_JAR=@GUAVA_JAR@
 KIELER_JAR=@KIELER_JAR@
 if [ "$PTKIELER_DIR" = "kieler" ]; then 
-    KIELER_JARS="${CLASSPATHSEPARATOR}${KIELER_JAR}"
+    KIELER_JARS="${CLASSPATHSEPARATOR}${KIELER_JAR}${CLASSPATHSEPARATOR}${GUAVA_JAR}"
 fi
 
 #### PDFRenderer

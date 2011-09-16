@@ -2871,22 +2871,41 @@ PTKIELER_DIR=
 
 # Directory that contains the jxta jar files
 KIELER_JAR='${PTII}/lib/kieler.jar'
+GUAVA_JAR='${PTII}/lib/guava.jar'
 
 if test ! -d "$KIELER_USER_DIR"; then
     PT_MSG_STATUS([$KIELER_USER_DIR is not present,
     so we need not find KIELER.])
 else
     AC_MSG_CHECKING([for kieler jar file used by layout ])
-    AC_ARG_WITH(jxta, [  --with-kieler-jar=JARFILE       use JARFILE,
+    AC_ARG_WITH(kieler, [  --with-kieler-jar=JARFILE       use JARFILE,
                           defaults to \$PTII/lib/kieler.jar],
 	KIELER_JAR=$withval,
 	KIELER_JAR=$PTII/lib/kieler.jar)
 
     if test -f "$KIELER_JAR"; then
 	PT_MSG_RESULT([$KIELER_JAR])
-	# Set to kieler and used in
-	# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
-	PTKIELER_DIR=kieler
+	AC_MSG_CHECKING([for guava jar file used by Kieler layout ])
+	AC_ARG_WITH(guava, [  --with-guava-jar=JARFILE       use JARFILE,
+                              defaults to \$PTII/lib/guava.jar],
+	GUAVA_JAR=$withval,
+	GUAVA_JAR=$PTII/lib/guava.jar)
+	if test -f "$GUAVA_JAR"; then
+	    # Set to kieler and used in
+	    # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+	    PTKIELER_DIR=kieler
+        else
+        AC_MSG_WARN([Failed to find the Guava Jar file.
+    Guava is used by the KIELER Layout tool.	
+    Guava is the Google Core Libraries for Java and is available from
+    http://code.google.com/p/guava-libraries/
+    You need not use KIELER unless you plan on using the KIELER layout
+    facility in $KIELER_USER_DIR
+    The Guava jar is usually found at $PTII/lib/guava.jar.])
+	# Note that we don't substitute in the ${PTII} here
+	GUAVA_JAR='${PTII}/lib/guava.jar'
+
+        fi
     fi	
 
     if test "$PTKIELER_DIR" = ""; then
@@ -2904,6 +2923,7 @@ if test -z "$PTKIELER_DIR"; then
    updateExcludes "ptolemy/vergil/basic/layout/kieler/"
 else
    updateClasspath "$KIELER_JAR"
+   updateClasspath "$GUAVA_JAR"
 fi 
 
 
@@ -5210,6 +5230,10 @@ AC_SUBST(ECLIPSE_DIR)
 
 # Location of GNU Awk, used by maven
 AC_SUBST(GAWK)
+
+# The Guava Jar file, used by Kieler which is used to layout models.  See
+# http://code.google.com/p/guava-libraries/
+AC_SUBST(GUAVA_JAR)
 
 # Directory that contains gc.h, used in copernicus/c
 AC_SUBST(GC_INCLUDE_DIR)
