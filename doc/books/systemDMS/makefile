@@ -1,9 +1,9 @@
-# Makefile for the Ptolemy II books
+# Makefile for the Ptolemy II System Design, Modeling, and Simulation Using Ptolemy II
 #
 # Version: $Id$
 # Makefile Author: Christopher Brooks
 #
-# Copyright (c) 2009 The Regents of the University of California.
+# Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,20 +29,30 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/books
+ME =		doc/books/systemDMS
 
 # Sub directories to run make in.
-DIRS =		design embedded systemDMS
+DIRS =		dataflow intro modal synchronous vergil
+
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	books
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	systemDMS
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	dataflow/dataflow.jar \
+	intro/intro.jar \
+	modal/modal.jar \
+	synchronous/synchronous.jar \
+	vergil/vergil.jar
+
 
 OTHER_FILES_TO_BE_JARED =
 

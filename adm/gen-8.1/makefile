@@ -1481,6 +1481,11 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/lbnl/actor/lib \
 	$(REMOTE1PTIIDIST)/doc/books/design/modal \
 	$(REMOTE1PTIIDIST)/doc/books/design/time \
+	$(REMOTE1PTIIDIST)/doc/books/systemDMS/dataflow \
+	$(REMOTE1PTIIDIST)/doc/books/systemDMS/intro \
+	$(REMOTE1PTIIDIST)/doc/books/systemDMS/modal \
+	$(REMOTE1PTIIDIST)/doc/books/systemDMS/synchronous \
+	$(REMOTE1PTIIDIST)/doc/books/systemDMS/vergil \
 	$(REMOTE1PTIIDIST)/doc/tutorial/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/demo \

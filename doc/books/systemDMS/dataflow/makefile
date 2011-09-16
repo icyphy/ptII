@@ -1,9 +1,9 @@
-# Makefile for the Ptolemy II books
+# Makefile for the Ptolemy II SystemDMS book, dataflow chapter
 #
 # Version: $Id$
 # Makefile Author: Christopher Brooks
 #
-# Copyright (c) 2009 The Regents of the University of California.
+# Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,26 +29,47 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/books
+ME =		doc/books/systemDMS/dataflow
 
 # Sub directories to run make in.
-DIRS =		design embedded systemDMS
+# Don't include src directory, since we don't ship it with the release
+DIRS =		test
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	books
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	dataflow
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
+EXAMPLE_MODELS = \
+	BetterFibonacci.xml \
+	Case.xml \
+	Eratosthenes.xml \
+	Fibonacci.xml \
+	HammingNumbers.xml \
+	IfThenElse.xml \
+	Loop.xml \
+	MaximumEntropySpectrum.xml \
+	MultirateActors.xml \
+	NotSwitchSelect.xml \
+	PetriNet.xml \
+	PetriNetNotation.xml \
+	RunLengthCoder.xml \
+	SampleDelay.xml \
+	SignalProcessing.xml \
+	Spectrum.xml \
+	SpectrumOfNoisySinusoid.xml \
+	SpectrumSupport.xml \
+	SwitchSelect.xml \
+	Unbounded.xml
+
+OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS)
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
-
-KRUFT =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -58,8 +79,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-all: suball
-install: all jars
+all: jclass
+install: jclass jars
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
