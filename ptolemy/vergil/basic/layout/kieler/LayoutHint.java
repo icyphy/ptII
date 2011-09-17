@@ -32,7 +32,6 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -51,6 +50,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
@@ -67,6 +67,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.KielerLayoutConnector;
+import de.cau.cs.kieler.core.math.KVector;
 import diva.canvas.connector.ManhattanConnector;
 
 ///////////////////////////////////////////////////////////////////
@@ -535,29 +536,23 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 RecordToken headToken = ((RecordToken) layoutItem.get("head"));
                 NamedObj head = _findNamedObj(this,
                         ((StringToken) headToken.get("id")).stringValue());
-                double[] headLocation = new double[2];
-                headLocation[0] = ((DoubleToken) headToken.get("x"))
-                        .doubleValue();
-                headLocation[1] = ((DoubleToken) headToken.get("y"))
-                        .doubleValue();
+                KVector headLocation = new KVector();
+                headLocation.x = ((DoubleToken) headToken.get("x")).doubleValue();
+                headLocation.y = ((DoubleToken) headToken.get("y")).doubleValue();
                 int headMultiportWidth = 1;
                 if (headToken.get("index") != null) {
-                    headMultiportWidth = ((IntToken) headToken.get("index"))
-                            .intValue();
+                    headMultiportWidth = ((IntToken) headToken.get("index")).intValue();
                 }
 
                 RecordToken tailToken = ((RecordToken) layoutItem.get("tail"));
                 NamedObj tail = _findNamedObj(this,
                         ((StringToken) tailToken.get("id")).stringValue());
-                double[] tailLocation = new double[2];
-                tailLocation[0] = ((DoubleToken) tailToken.get("x"))
-                        .doubleValue();
-                tailLocation[1] = ((DoubleToken) tailToken.get("y"))
-                        .doubleValue();
+                KVector tailLocation = new KVector();
+                tailLocation.x = ((DoubleToken) tailToken.get("x")).doubleValue();
+                tailLocation.y = ((DoubleToken) tailToken.get("y")).doubleValue();
                 int tailMultiportWidth = 1;
                 if (tailToken.get("index") != null) {
-                    tailMultiportWidth = ((IntToken) tailToken.get("index"))
-                            .intValue();
+                    tailMultiportWidth = ((IntToken) tailToken.get("index")).intValue();
                 }
 
                 // the LayoutHintItem record contains a points entry, containing
@@ -585,9 +580,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 }
             }
         } catch (Exception e) {
-            throw new IllegalActionException(
-                    this,
-                    e,
+            throw new IllegalActionException(this,e,
                     e.getMessage()
                             + "\nExpression is expected to be an Array of layout hint Records. "
                             + "The following expression is of wrong format: \n"
@@ -744,26 +737,19 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          *
          * @param head the head object of the corresponding link
          * @param tail the tail object of the corresponding link
-         * @param locationHead the location of the head, i.e. a double array
-         *            with exactly two entries, x and y coordinate
-         * @param locationTail the location of the tail, i.e. a double array
-         *            with exactly two entries, x and y coordinate
+         * @param locationHead the location of the head as vector
+         * @param locationTail the location of the tail as vector
          * @param multiportWidthHead the width of the head, which is relevant
          *            for multiports, 1, if no multiport
          * @param multiportWidthTail the width of the tail, which is relevant
          *            for multiports, 1, if no multiport
          */
         public LayoutHintItem(NamedObj head, NamedObj tail,
-                double[] locationHead, double[] locationTail,
+                KVector locationHead, KVector locationTail,
                 int multiportWidthHead, int multiportWidthTail) {
-            _head = head;
-            _tail = tail;
-            if (locationHead.length == 2) {
-                _headLocation = locationHead;
-            }
-            if (locationTail.length == 2) {
-                _tailLocation = locationTail;
-            }
+            this(head, tail);
+            this._headLocation = locationHead;
+            this._tailLocation = locationTail;
             _headMultiportIndex[1] = multiportWidthHead;
             _tailMultiportIndex[1] = multiportWidthTail;
             if (DEBUG) {
@@ -812,12 +798,12 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         public String getExpression() {
             StringBuffer buffer = new StringBuffer();
             buffer.append("{ head={id=\"" + _getName(_head) + "\"" + ",x="
-                    + _headLocation[0] + ",y=" + _headLocation[1]);
+                    + _headLocation.x + ",y=" + _headLocation.y);
             if (_headMultiportIndex[1] != 1) {
                 buffer.append(",index=" + _headMultiportIndex[1]);
             }
             buffer.append("}, " + "tail={id=\"" + _getName(_tail) + "\""
-                    + ",x=" + _tailLocation[0] + ",y=" + _tailLocation[1]);
+                    + ",x=" + _tailLocation.x + ",y=" + _tailLocation.y);
             if (_tailMultiportIndex[1] != 1) {
                 buffer.append(",index=" + _tailMultiportIndex[1]);
             }
@@ -868,33 +854,26 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 System.out.println("revalidate: " + this.getExpression());
             }
             if (_bendPoints == null || _bendPoints.length <= 0) {
-                // System.out.println("Kick: no bendpoints");
                 return false;
             }
-            NamedObj head = _head;
-            NamedObj tail = _tail;
-            if (head instanceof Port) {
+            if (_head instanceof Port) {
                 // check if the width of a multiport has changed
-                int width = _getChannelWidth(head);
+                int width = _getChannelWidth(_head);
                 if (width != _headMultiportIndex[1]) {
-                    // System.out.println("Kick: head index");
                     return false;
                 }
-                head = head.getContainer();
             }
-            if (tail instanceof Port) {
-                int width = _getChannelWidth(tail);
+            if (_tail instanceof Port) {
+                int width = _getChannelWidth(_tail);
                 if (width != _tailMultiportIndex[1]) {
-                    // System.out.println("Kick: tail index");
                     return false;
                 }
-                tail = tail.getContainer();
             }
-            double[] newHeadLocation = PtolemyModelUtil._getLocation(_head);
-            double[] newTailLocation = PtolemyModelUtil._getLocation(_tail);
+            KVector newHeadLocation = _getEndpointLocation(_head);
+            KVector newTailLocation = _getEndpointLocation(_tail);
 
-            if (Arrays.equals(newHeadLocation, _headLocation)
-                    && Arrays.equals(newTailLocation, _tailLocation)) {
+            if (newHeadLocation.equals(_headLocation)
+                    && newTailLocation.equals(_tailLocation)) {
                 // nothing has changed, we don't need to update anything
                 if (DEBUG) {
                     System.out.println("the same");
@@ -903,10 +882,10 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 return true;
             }
 
-            double oldDistanceX = _headLocation[0] - _tailLocation[0];
-            double oldDistanceY = _headLocation[1] - _tailLocation[1];
-            double newDistanceX = newHeadLocation[0] - newTailLocation[0];
-            double newDistanceY = newHeadLocation[1] - newTailLocation[1];
+            double oldDistanceX = _headLocation.x - _tailLocation.x;
+            double oldDistanceY = _headLocation.y - _tailLocation.y;
+            double newDistanceX = newHeadLocation.x - newTailLocation.x;
+            double newDistanceY = newHeadLocation.y - newTailLocation.y;
 
             // do an integer compare. This is safe and enough.
             if ((int) oldDistanceX != (int) newDistanceX
@@ -918,8 +897,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             // now we know the head and tail have been moved but the relative
             // location is the same
             // we can safely translate everything
-            _translate((newHeadLocation[0] - _headLocation[0]),
-                    (newHeadLocation[1] - _headLocation[1]));
+            _translate((newHeadLocation.x - _headLocation.x),
+                    (newHeadLocation.y - _headLocation.y));
             return true;
         }
 
@@ -962,7 +941,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             // swap location
             temp = _headLocation;
             _headLocation = _tailLocation;
-            _tailLocation = (double[]) temp;
+            _tailLocation = (KVector) temp;
             // swap multiport stuff
             temp = _headMultiportIndex;
             _headMultiportIndex = _tailMultiportIndex;
@@ -1022,10 +1001,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             if (DEBUG) {
                 System.out.println("translate: " + this.getExpression());
             }
-            _headLocation[0] += x;
-            _headLocation[1] += y;
-            _tailLocation[0] += x;
-            _tailLocation[1] += y;
+            _headLocation.translate(x, y);
+            _tailLocation.translate(x, y);
             // iterate all bend points, make sure that in a faulty odd
             // array, the last entry is ignored
             for (int i = 0; i < (_bendPoints.length - 1); i += 2) {
@@ -1043,13 +1020,30 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             if (DEBUG) {
                 System.out.println("update: " + this.getExpression());
             }
-            _headLocation = PtolemyModelUtil._getLocation(_head);
-            _tailLocation = PtolemyModelUtil._getLocation(_tail);
+            
+            _headLocation = _getEndpointLocation(_head);
+            _tailLocation = _getEndpointLocation(_tail);
             _updateChannelIndex(_head, _headMultiportIndex);
             _updateChannelIndex(_tail, _tailMultiportIndex);
             if (DEBUG) {
                 System.out.println("updated: " + this);
             }
+        }
+        
+        /**
+         * Determine the correct location of a link endpoint.
+         * 
+         * @param obj an endpoint of a link
+         * @return the location for the given endpoint
+         */
+        private KVector _getEndpointLocation(NamedObj obj) {
+            // In case of a component port, the endpoint is the external port of
+            // a composite actor, so take the actor's position instead of the port's
+            // internal position.
+            if (obj instanceof ComponentPort) {
+                return PtolemyModelUtil._getLocation(obj.getContainer());
+            }
+            return PtolemyModelUtil._getLocation(obj);
         }
 
         /**
@@ -1079,7 +1073,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         /** Head object to identify this item. */
         private NamedObj _head = null;
         /** Coordinates for the head at which this item is only valid. */
-        private double[] _headLocation = { 0.0, 0.0 };
+        private KVector _headLocation = new KVector();
         /**
          * Width and index of the multiport, if the head actually is a multiport.
          */
@@ -1087,7 +1081,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         /** Tail object to identify this item. */
         private NamedObj _tail = null;
         /** Coordinates for the tail at which this item is only valid. */
-        private double[] _tailLocation = { 0.0, 0.0 };
+        private KVector _tailLocation = new KVector();
         /**
          * Width and index of the multiport, if the tail actually is a multiport.
          */

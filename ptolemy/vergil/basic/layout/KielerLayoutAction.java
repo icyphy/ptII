@@ -138,8 +138,7 @@ public class KielerLayoutAction extends Object implements IGuiAction {
                 // create Kieler layouter for this layout target
                 KielerLayout layout = new KielerLayout(layoutTarget);
                 layout.setModel((CompositeActor) model);
-                layout.setApplyEdgeLayout(false);
-                layout.setApplyEdgeLayoutBendPointAnnotation(true);
+                layout.setApplyEdgeLayout(true);
                 layout.setBoxLayout(false);
                 layout.setTop(graphFrame);
 

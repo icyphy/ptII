@@ -232,7 +232,7 @@ public class KielerLayoutTableau extends Tableau {
                                 + "must be false.  Also, only one of "
                                 + "removeUnnecessaryRelations and showUnnecessaryRelationsToggle can be true.");
             }
-            _applyEdgeLayout = applyEdgeLayout && !bendPointAnnotation;
+            _applyEdgeLayoutInsertRelations = applyEdgeLayout && !bendPointAnnotation;
             _applyEdgeLayoutBendPointAnnotation = applyEdgeLayout
                     && bendPointAnnotation;
             _boxLayout = boxLayout;
@@ -332,8 +332,8 @@ public class KielerLayoutTableau extends Tableau {
                         // create Kieler layouter for this layout target
                         KielerLayout layout = new KielerLayout(layoutTarget);
                         layout.setModel((CompositeActor) model);
-                        layout.setApplyEdgeLayout(_applyEdgeLayout);
-                        layout.setApplyEdgeLayoutBendPointAnnotation(_applyEdgeLayoutBendPointAnnotation);
+                        layout.setApplyEdgeLayoutInsertRelations(_applyEdgeLayoutInsertRelations);
+                        layout.setApplyEdgeLayout(_applyEdgeLayoutBendPointAnnotation);
                         layout.setBoxLayout(_boxLayout);
                         layout.setTop(graphFrame);
 
@@ -351,7 +351,7 @@ public class KielerLayoutTableau extends Tableau {
             }
         }
 
-        public boolean _applyEdgeLayout;
+        public boolean _applyEdgeLayoutInsertRelations;
         public boolean _applyEdgeLayoutBendPointAnnotation;
         public boolean _boxLayout;
         public boolean _removeUnnecessaryRelations;

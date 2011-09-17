@@ -47,6 +47,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import de.cau.cs.kieler.core.kgraph.KEdge;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
+import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
@@ -57,7 +58,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 /**
  * Static helper class to work with KIELER graph datastructures.
  *
- * @author Hauke Fuhrmann, <haf@informatik.uni-kiel.de>
+ * @author Hauke Fuhrmann (<a href="mailto:haf@informatik.uni-kiel.de">haf</a>)
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (cxh)
@@ -69,17 +70,17 @@ public class KielerGraphUtil {
     ////                         protected methods                 ////
 
     /**
-     * Get the absolute layout of a Kieler KNode, i.e. a layout containing an
+     * Get the absolute layout of a KIELER KNode, i.e. a layout containing an
      * absolute position of the top left corner of the node instead of something
      * relative to only its parent node.
      *
      * @param node The KNode of which to retrieve the absolute layout.
      * @return A shape layout containing the original size of the node and its
      *         location in absolute coordinates (not relative to its parent)
+     * @deprecated Use {@link KimlUtil.toAbsolute(KVector, KNode)} instead.
      */
     protected static KShapeLayout _getAbsoluteLayout(KNode node) {
         KShapeLayout klayout = node.getData(KShapeLayout.class);
-        // System.out.println("Relative Node Layout: "+klayout.getXpos()+" "+klayout.getYpos());
         KShapeLayout absoluteLayout = KLayoutDataFactory.eINSTANCE
                 .createKShapeLayout();
         absoluteLayout.setHeight(klayout.getHeight());
@@ -104,6 +105,7 @@ public class KielerGraphUtil {
      * @param relativeKPoint Point with coordinates relative to its parent node.
      * @param parentNode Parent node of the point coordinates.
      * @return Kieler KPoint with the absolute coordinates.
+     * @deprecated Use {@link KimlUtil.toAbsolute(KVector, KNode)} instead.
      */
     protected static KPoint _getAbsoluteKPoint(KPoint relativeKPoint,
             KNode parentNode) {
@@ -147,22 +149,18 @@ public class KielerGraphUtil {
      * @return The minimal x and y coordinates of all contained nodes. Might be
      *         Float.MAX_VALUE, if the parent does not contain any children.
      */
-    protected static KPoint _getUpperLeftCorner(KNode parent) {
-        float x = Float.MAX_VALUE, y = Float.MAX_VALUE;
+    protected static KVector _getUpperLeftCorner(KNode parent) {
+        KVector v = new KVector(Double.MAX_VALUE, Double.MAX_VALUE);
         for (KNode kNode : parent.getChildren()) {
             KShapeLayout layout = kNode.getData(KShapeLayout.class);
-            if (layout.getXpos() < x) {
-                x = layout.getXpos();
+            if (layout.getXpos() < v.x) {
+                v.x = layout.getXpos();
             }
-            if (layout.getYpos() < y) {
-                y = layout.getYpos();
+            if (layout.getYpos() < v.y) {
+                v.y = layout.getYpos();
             }
         }
-
-        KPoint kPoint = KLayoutDataFactory.eINSTANCE.createKPoint();
-        kPoint.setX(x);
-        kPoint.setY(y);
-        return kPoint;
+        return v;
     }
 
     /**
@@ -205,7 +203,7 @@ public class KielerGraphUtil {
     }
 
     /**
-     * Debug output a KEdge to a String, i.e. will represent all bendpoints in
+     * Debug output a KEdge to a String, i.e. will represent all bend points in
      * the String.
      *
      * @param edge The edge to be toStringed
@@ -269,12 +267,12 @@ public class KielerGraphUtil {
     }
 
     /**
-     * Write a KGraph (Kieler graph datastructure) to a file in its XMI
+     * Write a KGraph (KIELER graph data structure) to a file in its XMI
      * representation. Can be used for debugging (manually look at it) or
      * loading it elsewhere, e.g. a KIELER Graph viewer. The default filename is
      * kgraph.xmi and will be written to the current working directory.
      *
-     * @param kgraph The Kieler Graph datastructure given by its root KNode.
+     * @param kgraph The KIELER graph data structure given by its root KNode.
      */
     protected static void _writeToFile(KNode kgraph) {
         // Create a resource set.

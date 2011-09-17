@@ -29,11 +29,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.vergil.basic.layout.kieler;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import com.google.common.collect.Iterables;
+
+import de.cau.cs.kieler.core.math.KVector;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -55,11 +58,11 @@ import ptolemy.moml.Vertex;
  * Class containing methods for manipulating Ptolemy models for the purpose of
  * layout a graphical Ptolemy diagram. Methods for positioning Actors and
  * creating vertices are available. The changes are performed by
- * MoMLChangeRequests where as long as possible those requests get buffered in
+ * MoMLChangeRequests where as long as possible those requests are buffered in
  * order to perform multiple changes at once for performance.
  *
- * @author Hauke Fuhrmann, <haf@informatik.uni-kiel.de>, Christian Motika
- *         <cmot@informatik.uni-kiel.de>
+ * @author Hauke Fuhrmann (<a href="mailto:haf@informatik.uni-kiel.de">haf</a>),
+ *         Christian Motika (<a href="mailto:cmot@informatik.uni-kiel.de">cmot</a>)
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (cxh)
@@ -71,21 +74,12 @@ public class PtolemyModelUtil {
     ////                         public methods                    ////
 
     /**
-     * Construct an instance and initialize the internal request buffer.
-     */
-    public PtolemyModelUtil() {
-        _momlChangeRequest = new StringBuffer();
-        _uniqueCounter = 0;
-        _nameSet = new HashSet();
-    }
-
-    /**
      * Add an {@link Attribute} to a Ptolemy object by means of a
      * {@link MoMLChangeRequest}. Although this might be inefficient, this will
      * take care about correct updating of all things that require the change,
      * e.g. the GUI.
      *
-     * @param target the target Ptolem object
+     * @param target the target Ptolemy object
      * @param attribute the attribute to add
      */
     public void addProperty(NamedObj target, Attribute attribute) {
@@ -113,7 +107,6 @@ public class PtolemyModelUtil {
         }
         _momlChangeRequest.insert(0, "<group>");
         _momlChangeRequest.append("</group>");
-        // System.out.println(_momlChangeRequest);
         MoMLChangeRequest request = new MoMLChangeRequest(this, actor,
                 _momlChangeRequest.toString());
         request.setUndoable(true);
@@ -122,7 +115,7 @@ public class PtolemyModelUtil {
         }
         actor.requestChange(request);
         // reset the current request
-        _momlChangeRequest = new StringBuffer();
+        _momlChangeRequest = new StringBuilder();
         _anyRequestsSoFar = true;
     }
 
@@ -136,6 +129,7 @@ public class PtolemyModelUtil {
      *
      * @param parent The composite actor in which to look for unnecessary
      *            relations.
+     * @deprecated XXX This option will be removed from the UI.
      */
     public static void removeUnnecessaryRelations(CompositeActor parent) {
         PtolemyModelUtil util = new PtolemyModelUtil();
@@ -219,6 +213,7 @@ public class PtolemyModelUtil {
      *
      * @param parent Composite actor that should be searched for unnecessary
      *            vertices.
+     * @deprecated XXX This option will be removed from the UI.
      */
     public static void showUnnecessaryRelationsToggle(CompositeActor parent) {
         _showUnnecessaryRelations(parent, !_hide);
@@ -238,6 +233,7 @@ public class PtolemyModelUtil {
      *
      * @param relationName Name of the new relation which needs to be unique
      * @return name of newly created relation
+     * @deprecated XXX This option will be removed from the UI.
      */
     protected String _createRelation(String relationName) {
         String moml = "<relation name=\"" + relationName
@@ -261,6 +257,7 @@ public class PtolemyModelUtil {
      * @param x coordinate of new vertex
      * @param y coordinate of new vertex
      * @return name of newly created relation
+     * @deprecated XXX This option will be removed from the UI.
      */
     protected String _createRelationWithVertex(String relationName, double x,
             double y) {
@@ -282,6 +279,7 @@ public class PtolemyModelUtil {
      * @param vertexName Name of the vertex.
      * @param hide True iff the hide attribute should be set. Otherwise if it
      *            should be unset.
+     * @deprecated XXX This option will be removed from the UI.
      */
     protected void _hideVertex(String relationName, String vertexName,
             boolean hide) {
@@ -315,6 +313,7 @@ public class PtolemyModelUtil {
      * @param type2 type of the second item to be linked, e.g. port, relation,
      *            relation1, relation2
      * @param name2 name of the second item to be linked
+     * @deprecated XXX This option will be removed from the UI.
      */
     protected void _link(String type1, String name1, String type2, String name2) {
         String moml = "<link " + type1 + "=\"" + name1 + "\" " + type2 + "=\""
@@ -329,6 +328,7 @@ public class PtolemyModelUtil {
      * @param type2 Type of the second object, i.e. port or relation.
      * @param name2 Name of the second object to be linked.
      * @param index Index of the relation in the channel list of the first port.
+     * @deprecated XXX This option will be removed from the UI.
      */
     protected void _linkPort(String portName, String type2, String name2,
             int index) {
@@ -346,6 +346,7 @@ public class PtolemyModelUtil {
      * @param name2 Name of the second object to be linked.
      * @param insideIndex Index of the relation in the channel list of the first
      *            port.
+     * @deprecated XXX This option will be removed from the UI.
      */
     protected void _linkPortInside(String portName, String type2, String name2,
             int insideIndex) {
@@ -362,22 +363,23 @@ public class PtolemyModelUtil {
      *
      * @param namedObj The Ptolemy object for which the location should be
      *            retrieved.
-     * @return A double array containing two double values corresponding to the
-     *         location (x and y) of the object. Will return double zero if no
-     *         location attribute is set for the object.
+     * @return A vector corresponding to the location (x and y) of the object.
+     *          Will return a zero vector if no location attribute is set for the object.
      */
-    protected static double[] _getLocation(NamedObj namedObj) {
-        double[] location = { 0, 0 };
+    protected static KVector _getLocation(NamedObj namedObj) {
+        KVector location = new KVector();
         Location locationAttribute = null;
         if (namedObj instanceof Location) {
             locationAttribute = (Location) namedObj;
         } else if (namedObj instanceof Vertex) {
-            location = ((Vertex) namedObj).getLocation();
+            double[] coords = ((Vertex) namedObj).getLocation();
+            location.x = coords[0];
+            location.y = coords[1];
         } else {
             NamedObj object = namedObj;
             Attribute attribute = null;
-            // search for the next entity in the hierarchy that has
-            // a location attribute
+            // Search for the next entity in the hierarchy that has
+            // a location attribute.
             while (attribute == null && object != null) {
                 attribute = object.getAttribute("_location");
                 object = object.getContainer();
@@ -386,7 +388,9 @@ public class PtolemyModelUtil {
                 if (attribute instanceof Location) {
                     locationAttribute = ((Location) attribute);
                 } else if (attribute instanceof LocationParameter) {
-                    location = ((LocationParameter) attribute).getLocation();
+                    double[] coords = ((LocationParameter) attribute).getLocation();
+                    location.x = coords[0];
+                    location.y = coords[1];
                 }
             }
         }
@@ -396,21 +400,20 @@ public class PtolemyModelUtil {
              * non trivial values, but it hasn't been validated and therefore
              * the value is still {0,0}
              */
-            location = locationAttribute.getLocation();
-            if (location[0] == 0 && location[1] == 0) {
-                try {
+            double[] coords = locationAttribute.getLocation();
+            try {
+                if (coords[0] == 0 && coords[1] == 0) {
                     locationAttribute.validate();
-                    location = locationAttribute.getLocation();
-                } catch (IllegalActionException e) {
-                    /* nothing, use default value */
+                    coords = locationAttribute.getLocation();
                 }
+                location.x = coords[0];
+                location.y = coords[1];
+            } catch (IllegalActionException e) {
+                /* nothing, use default value */
             }
         }
         // double arrays are used call-by-reference, so we return a copy here
-        double[] locationCopy = { 0, 0 };
-        locationCopy[0] = location[0];
-        locationCopy[1] = location[1];
-        return locationCopy;
+        return location;
     }
 
     /**
@@ -452,6 +455,7 @@ public class PtolemyModelUtil {
      * MoMLChangeRequest.
      *
      * @return An integer where every following call will give a different one.
+     * @deprecated XXX is this used anywhere?
      */
     protected int _getUniqueNumber() {
         _uniqueCounter++;
@@ -474,6 +478,7 @@ public class PtolemyModelUtil {
      * @param actor CompositeActor in which to search for the names.
      * @param prefix Given prefix that shall be suffixed to get a unique name.
      * @return A unique name in the composite actor namespace.
+     * @deprecated XXX This is only used by deprecated methods.
      */
     protected String _getUniqueString(CompositeActor actor, String prefix) {
         // build name cache for the first time
@@ -515,11 +520,10 @@ public class PtolemyModelUtil {
         }
         if (namedObj instanceof Actor) {
             Actor actor = (Actor) namedObj;
-            List<Port> ports = new ArrayList<Port>();
-            ports.addAll(actor.inputPortList());
-            ports.addAll(actor.outputPortList());
-            for (Port port : ports) {
-                // if any port of an actor is conencted to any other
+            for (Object o : Iterables.concat(actor.inputPortList(),
+                    actor.outputPortList())) {
+                Port port = (Port) o;
+                // if any port of an actor is connected to any other
                 // assume that there is also no visible connection
                 if (!port.connectedPortList().isEmpty()
                         || !port.linkedRelationList().isEmpty()) {
@@ -565,6 +569,7 @@ public class PtolemyModelUtil {
      *
      * @param relation Relation to be removed.
      * @param actor Parent actor of the relation.
+     * @deprecated XXX This option will be removed from the UI.
      */
     protected void _removeRelation(Relation relation, CompositeActor actor) {
         StringBuffer moml = new StringBuffer();
@@ -577,6 +582,7 @@ public class PtolemyModelUtil {
      * model object.
      *
      * @param relationSet Set of relation to be removed from the Ptolemy model
+     * @deprecated This option will be removed from the UI.
      */
     protected void _removeRelations(Set<Relation> relationSet) {
         StringBuffer moml = new StringBuffer();
@@ -592,6 +598,7 @@ public class PtolemyModelUtil {
      * Remove a vertex from a relation.
      *
      * @param relation The relation to remove the vertex from.
+     * @deprecated XXX This option will be removed from the UI.
      */
     protected void _removeRelationVertex(Relation relation) {
         List<Vertex> vertices = relation
@@ -620,8 +627,7 @@ public class PtolemyModelUtil {
         String moml = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{"
                 + x + "," + y + "}\"></property>\n";
         // need to request a MoML Change for a particular NamedObj and not the
-        // top level element
-        // so we need multiple requests here
+        // top level element, so we need multiple requests here
         MoMLChangeRequest request = new MoMLChangeRequest(obj, obj, moml);
         request.setUndoable(true);
         if (_anyRequestsSoFar) {
@@ -646,12 +652,9 @@ public class PtolemyModelUtil {
             double y) {
         String moml = "<vertex name=\"" + vertex.getName() + "\" value=\"[" + x
                 + "," + y + "]\"></vertex>\n";
-        // need to request a MoML Change for a particular Vertex
-        // and not the
-        // top level element
-        // so we need multiple requests here
-        MoMLChangeRequest request = new MoMLChangeRequest(vertex, relation,
-                moml);
+        // need to request a MoML Change for a particular Vertex and not the
+        // top level element, so we need multiple requests here
+        MoMLChangeRequest request = new MoMLChangeRequest(vertex, relation, moml);
         request.setUndoable(true);
         if (_anyRequestsSoFar) {
             request.setMergeWithPreviousUndo(true);
@@ -674,6 +677,7 @@ public class PtolemyModelUtil {
      * @param parent Composite actor that should be searched for unnecessary
      *            vertices.
      * @param show True iff the vertices should be shown, false if hidden.
+     * @deprecated XXX This option will be removed from the UI.
      */
     protected static void _showUnnecessaryRelations(CompositeActor parent,
             boolean show) {
@@ -723,6 +727,7 @@ public class PtolemyModelUtil {
      *
      * @param string The string to strip of its numeric suffix.
      * @return A string with no numeric suffix.
+     * @deprecated XXX This is only used by deprecated methods.
      */
     protected static String _stripNumericSuffix(String string) {
         int length = string.length();
@@ -756,6 +761,7 @@ public class PtolemyModelUtil {
      *
      * @param portName Name of the Port.
      * @param index Index of the channel to be unlinked.
+     * @deprecated XXX This is only used by deprecated methods.
      */
     protected void _unlinkPort(String portName, int index) {
         String moml = "<unlink " + "port" + "=\"" + portName + "\" index=\""
@@ -768,6 +774,7 @@ public class PtolemyModelUtil {
      *
      * @param portName Name of the Port.
      * @param insideIndex Index of the channel to be unlinked.
+     * @deprecated XXX This is only used by deprecated methods.
      */
     protected void _unlinkPortInside(String portName, int insideIndex) {
         String moml = "<unlink " + "port" + "=\"" + portName
@@ -780,6 +787,7 @@ public class PtolemyModelUtil {
      *
      * @param relation1 Name of first relation to unlink.
      * @param relation2 Name of second relation to unlink.
+     * @deprecated XXX This is only used by deprecated methods.
      */
     protected void _unlinkRelations(String relation1, String relation2) {
         String moml = "<unlink " + "relation1" + "=\"" + relation1
@@ -800,25 +808,28 @@ public class PtolemyModelUtil {
     /**
      * Toggle variable to set the hidden status of unnecessary relation
      * vertices.
+     * @deprecated XXX This option will be removed from the UI.
      */
     private static boolean _hide = true;
 
     /**
-     * StringBuffer for Requests of Model changes. In Ptolemy the main
+     * String builder for requests of Model changes. In Ptolemy the main
      * infrastructure to do model changes is through XML change requests of the
      * XML representation. This field is used to collect all changes in one
      * String and then carry them out in only one operation whereas possible.
      */
-    private StringBuffer _momlChangeRequest;
+    private StringBuilder _momlChangeRequest = new StringBuilder();
 
     /**
      * Local cache of used names.
+     * @deprecated XXX This is only used by deprecated methods.
      */
-    private Set<String> _nameSet;
+    private Set<String> _nameSet = new HashSet();
 
     /**
      * A unique number that is used to determine unique String names for
      * relations.
+     * @deprecated XXX This is only used by deprecated methods.
      */
     private static int _uniqueCounter = 0;
 
