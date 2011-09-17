@@ -1,9 +1,9 @@
-# Makefile for the Ptolemy II books
+# Makefile for the Ptolemy II SystemDMS book, synchronous chapter
 #
 # Version: $Id$
 # Makefile Author: Christopher Brooks
 #
-# Copyright (c) 2009-2011 The Regents of the University of California.
+# Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,26 +29,33 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/books
+ME =		doc/books/systems/synchronous
 
 # Sub directories to run make in.
-DIRS =		design embedded systems
+# Don't include src directory, since we don't ship it with the release
+DIRS =		test
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	books
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	synchronous
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
+EXAMPLE_MODELS = \
+	CompositionOfProcesses.xml \
+	FeedbackA.xml \
+	FeedbackAComposite.xml \
+	FeedbackC.xml \
+	FeedbackF.xml \
+	FeedbackG.xml
+
+OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS)
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
-
-KRUFT =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -58,8 +65,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-all: suball
-install: all jars
+all: jclass
+install: jclass jars
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
