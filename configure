@@ -687,6 +687,7 @@ ANT_ALWAYS_EXCLUDE
 ANT_CLASSPATH
 ANT_EXCLUDE
 ANT_JAVADOC_EXCLUDEPACKAGENAMES
+ANT_SRC
 CALTROP_DIR
 CHIC_DIR
 CLASSPATHSEPARATOR
@@ -3648,6 +3649,9 @@ ANT_CLASSPATH=''
 
 # Paths to exclude in Ant's build.xml
 ANT_EXCLUDE=''
+
+# Path of directories that contain source, used by the Ant's build rule.
+ANT_SRC=''
 
 # A shell function that adds its argument to the ECLIPSE_CLASSPATH_ENTRY_LIBS
 # and to ANT_CLASSPATH
@@ -6668,10 +6672,12 @@ else
       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
                 <classpathentry kind=\"src\" path=\"$shortdir\"/>"
       ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$shortdir\"/> "
+      ANT_SRC="$ANT_SRC <src path=\"$shortdir\"/>"
    else
       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
            <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
       ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$PTFUZZYENGINE_DIR\"/> "
+      ANT_SRC="$ANT_SRC <src path=\"$PTFUZZYENGINE_DIR\"/>"
    fi
 
 fi
@@ -12553,6 +12559,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Packages to exclude from Ant targets that call javadoc
 
 
+# Path of directories that contain source, used by the Ant's build rule.
+
+
 # Directory that contains the Caltrop jar file ptCal.jar
 # used by bin/ptinvoke.in
 
@@ -14019,6 +14028,7 @@ ANT_ALWAYS_EXCLUDE!$ANT_ALWAYS_EXCLUDE$ac_delim
 ANT_CLASSPATH!$ANT_CLASSPATH$ac_delim
 ANT_EXCLUDE!$ANT_EXCLUDE$ac_delim
 ANT_JAVADOC_EXCLUDEPACKAGENAMES!$ANT_JAVADOC_EXCLUDEPACKAGENAMES$ac_delim
+ANT_SRC!$ANT_SRC$ac_delim
 CALTROP_DIR!$CALTROP_DIR$ac_delim
 CHIC_DIR!$CHIC_DIR$ac_delim
 CLASSPATHSEPARATOR!$CLASSPATHSEPARATOR$ac_delim
@@ -14042,7 +14052,6 @@ JAVACV_JAR!$JAVACV_JAR$ac_delim
 JAVAX_CRYPTO_JAR!$JAVAX_CRYPTO_JAR$ac_delim
 JDOCBREAKITERATOR!$JDOCBREAKITERATOR$ac_delim
 JDOCSOURCEFLAGS!$JDOCSOURCEFLAGS$ac_delim
-JDOCTAG!$JDOCTAG$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -14084,6 +14093,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+JDOCTAG!$JDOCTAG$ac_delim
 JDOCTAGLET!$JDOCTAGLET$ac_delim
 JINI_DIR!$JINI_DIR$ac_delim
 JINI_PRESENT!$JINI_PRESENT$ac_delim
@@ -14180,7 +14190,6 @@ PTJNI_ARCHITECTURE!$PTJNI_ARCHITECTURE$ac_delim
 PTJNI_INCLUDE!$PTJNI_INCLUDE$ac_delim
 PTJNI_DL_LIBRARY!$PTJNI_DL_LIBRARY$ac_delim
 PTJNI_LIB_ARCHITECTURE!$PTJNI_LIB_ARCHITECTURE$ac_delim
-PTJNI_NO_CYGWIN!$PTJNI_NO_CYGWIN$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -14222,6 +14231,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTJNI_NO_CYGWIN!$PTJNI_NO_CYGWIN$ac_delim
 PTJNI_GCC_SHARED_FLAG!$PTJNI_GCC_SHARED_FLAG$ac_delim
 PTJNI_SHAREDLIBRARY_CFLAG!$PTJNI_SHAREDLIBRARY_CFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
@@ -14304,7 +14314,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 80; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 81; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
