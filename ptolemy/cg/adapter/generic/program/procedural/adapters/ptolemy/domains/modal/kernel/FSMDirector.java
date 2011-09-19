@@ -106,7 +106,9 @@ public class FSMDirector extends Director {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-
+        // Needed for:
+        // $PTII/bin/ptcg -verbosity 10 -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/FSMActor.xml
+        super.generateTransferOutputsCode(outputPort, code, true);
     }
 
     /** Return the reference to the specified parameter or port of the

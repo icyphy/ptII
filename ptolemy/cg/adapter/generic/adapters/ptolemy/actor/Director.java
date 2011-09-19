@@ -390,7 +390,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     public void generateTransferOutputsCode(IOPort outputPort,
             StringBuffer code, boolean executive) throws IllegalActionException {
         code.append(getCodeGenerator()
-                .comment("Transfer tokens to the outside"));
+                .comment("Transfer tokens to the outside."));
 
         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
                 .getAdapter(_director.getContainer());

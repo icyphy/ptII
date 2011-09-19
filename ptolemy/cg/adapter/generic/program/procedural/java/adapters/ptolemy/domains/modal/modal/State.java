@@ -66,7 +66,6 @@ public class State extends NamedProgramCodeGeneratorAdapter {
             throws IllegalActionException {
         code.append(getCodeGenerator()
                 .comment("Transfer tokens to the outside"));
-        code.append("//should now transfer outputs ot the outside");
 
         for (int i = 0; i < outputPort.getWidthInside(); i++) {
             if (i < outputPort.getWidth()) {

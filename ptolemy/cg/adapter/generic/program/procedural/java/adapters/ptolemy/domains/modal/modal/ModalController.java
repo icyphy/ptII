@@ -98,38 +98,43 @@ public class ModalController
             throw new IllegalActionException(ndx.toString());
         }
         StringBuffer code = new StringBuffer();
-        code.append(_eol + "/* Transfer tokens to the inside */" + _eol);
+        code.append(getCodeGenerator()
+                .comment("1. Start transfer tokens to the outside."));
 
         List<IOPort> inputPorts = _myController.inputPortList();
         for (int i = 0; i < inputPorts.size(); i++) {
             IOPort inputPort = inputPorts.get(i);
             if (!inputPort.isOutput()) {
-
                 generateTransferInputsCode(inputPort, code);
             }
         }
 
-        // generate code for preemptive transition
-        code.append(_eol + "/* Preemptive Transition */" + _eol + _eol);
+        // Generate code for preemptive transition.
+        code.append(_eol + getCodeGenerator()
+                .comment("2. Preemptive Transition"));
+
         controllerHelper.generateTransitionCode(code,
                 new PreemptiveTransitions());
+
         code.append(_eol);
 
-        // check to see if a preemptive transition is taken
+        // Check to see if a preemptive transition is taken.
         code.append("if ("
                 + controller.processCode("$actorSymbol(transitionFlag)")
                 + " == 0) {" + _eol);
 
-        // generate code for refinements
+        // Generate code for refinements.
         _generateRefinementCode(code);
 
-        // generate code for non-preemptive transition
-        code.append(_eol + "/* Nonpreemptive Transition */" + _eol + _eol);
+        // Generate code for non-preemptive transition
+        code.append(getCodeGenerator()
+                .comment("3. Nonpreemptive Transition"));
         // generateTransitionCode(code);
         controllerHelper.generateTransitionCode(code,
                 new NonPreemptiveTransitions());
         code.append("}" + _eol);
-        code.append(_eol + "/* Transfer tokens to the outside */" + _eol);
+        code.append(getCodeGenerator()
+                .comment("4. Start transfer outputs."));
         List<IOPort> outputPorts = _myController.outputPortList();
         for (int i = 0; i < outputPorts.size(); i++) {
             IOPort outputPort = outputPorts.get(i);
@@ -137,6 +142,8 @@ public class ModalController
             generateTransferOutputsCode(outputPort, code);
 
         }
+        code.append(getCodeGenerator()
+                .comment("5. End transfer outputs."));
         return code.toString();
 
     }
@@ -207,6 +214,14 @@ public class ModalController
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
 
+        NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+            .getAdapter(((ptolemy.domains.modal.modal.ModalController)getComponent()).getDirector().getContainer());
+
+        //executive If true, then look for the reference in the
+        // executive director (the director of the container).  The
+        // CaseDirector calls this with executive == true, most (all?)
+        // other Directors call this with executive == false.
+        boolean executive = true;
         for (int i = 0; i < outputPort.getWidthInside(); i++) {
             if (i < outputPort.getWidth()) {
                 String name = outputPort.getName();
@@ -215,8 +230,14 @@ public class ModalController
                     name = name + '#' + i;
                 }
 
-                code.append(name + " = ");
-                code.append("@" + name);
+                //code.append(name + " = ");
+                //code.append("@" + name);
+                //code.append(getReference(name) + " = ");
+                //code.append(getReference("@" + name));
+                code.append(_compositeActorAdapter.getReference(name, false,
+                        executive) + " = ");
+                code.append(_compositeActorAdapter.getReference("@" + name,
+                        false, executive));
                 code.append(";" + _eol);
 
             }
@@ -400,7 +421,8 @@ public class ModalController
         modalName = modalName.replace('.', '_');
         TypedIOPort inputPort;
         TypedIOPort outputPort;
-        code.append(_eol + "//Begining of create controller variables" + _eol);
+        code.append(getCodeGenerator()
+                .comment("Beginning of create controller variables."));
         for (int i = 0; i < inputPorts.size(); i++) {
 
             inputPort = inputPorts.get(i);
@@ -412,9 +434,13 @@ public class ModalController
                     code.append("[" + width + "]");
                 }
                 code.append(";" + _eol);
-
+                code.append(inputPort.getType() + " " + modalName + "_"
+                        + inputPort.getName());
+                if (width > 1) {
+                    code.append("[" + width + "]");
+                }
+                code.append(";" + _eol);
             }
-
         }
 
         for (int i = 0; i < outputPorts.size(); i++) {
@@ -451,7 +477,8 @@ public class ModalController
 
         }
 
-        code.append(_eol + "//end of create controller variables" + _eol);
+        code.append(getCodeGenerator()
+                .comment("End of create controller variables"));
     }
 
     private String _getName(String name) {
@@ -511,10 +538,8 @@ public class ModalController
                         code.append(actorHelper.generateTypeConvertFireCode());
                         //code.append(_eol+"}"+_eol);
                     } else {
-                        code.append(_eol
-                                + "//modal model contains giotto director"
-                                + _eol);
-
+                        code.append(getCodeGenerator()
+                                .comment("modal model contains giotto director"));
                     }
                 }
             }

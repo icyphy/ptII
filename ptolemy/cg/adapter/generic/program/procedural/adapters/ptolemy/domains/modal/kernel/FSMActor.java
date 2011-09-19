@@ -94,7 +94,6 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
     protected String _generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        code.append(_eol + "//generate fires code for fsm actor called" + _eol);
         code.append(super._generateFireCode());
 
         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
@@ -111,6 +110,10 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
         }
 
         generateTransitionCode(code, new OutgoingRelations());
+
+        code.insert(0, getCodeGenerator()
+                .comment("FSMActor._generateFireCode"));
+        new Exception("FSMActor._generateFireCode(): " + code.toString());
         return processCode(code.toString());
     }
 
