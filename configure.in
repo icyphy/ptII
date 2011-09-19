@@ -849,6 +849,9 @@ ANT_CLASSPATH=''
 # Paths to exclude in Ant's build.xml
 ANT_EXCLUDE=''
 
+# Path of directories that contain source, used by the Ant's build rule.
+ANT_SRC=''
+
 # A shell function that adds its argument to the ECLIPSE_CLASSPATH_ENTRY_LIBS
 # and to ANT_CLASSPATH
 updateClasspath () {
@@ -1822,10 +1825,12 @@ else
       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
                 <classpathentry kind=\"src\" path=\"$shortdir\"/>"
       ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$shortdir\"/> "
+      ANT_SRC="$ANT_SRC <src path=\"$shortdir\"/>"
    else
       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
            <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
       ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$PTFUZZYENGINE_DIR\"/> "
+      ANT_SRC="$ANT_SRC <src path=\"$PTFUZZYENGINE_DIR\"/>"
    fi
 
 fi 
@@ -5196,6 +5201,9 @@ AC_SUBST(ANT_EXCLUDE)
 
 # Packages to exclude from Ant targets that call javadoc
 AC_SUBST(ANT_JAVADOC_EXCLUDEPACKAGENAMES)
+
+# Path of directories that contain source, used by the Ant's build rule.
+AC_SUBST(ANT_SRC)
 
 # Directory that contains the Caltrop jar file ptCal.jar
 # used by bin/ptinvoke.in

@@ -128,6 +128,7 @@ For example:
 	   source="${source}"
 	   target="${target}">
       <src path="${basedir}" />
+      @ANT_SRC@
       <patternset refid="ptII.excludes" />
       <classpath refid="ptII.classpath" />
     </javac>
