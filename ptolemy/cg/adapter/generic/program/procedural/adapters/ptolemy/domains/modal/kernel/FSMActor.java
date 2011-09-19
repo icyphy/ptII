@@ -48,6 +48,7 @@ import ptolemy.domains.modal.kernel.AbstractActionsAttribute;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -242,30 +243,35 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                             .generateParseTree(guard);
 
                     if (getTemplateParser() == null) {
-                        getCodeGenerator().getAdapter(this);
+                        if (getCodeGenerator() == null) {
+                            // The code generator was not being found.
+                            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/Simple01.xml
+                            throw new InternalErrorException(this, null, "Can't find a code generator?, be sure to call setCodeGenerator() after instantiating FSMActor.");
+                        }
+                        getCodeGenerator().getAdapter(fsmActor);
                     }
                     ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
                             .getParseTreeCodeGenerator();
                     parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
                             _scope);
 
-                    // codeBuffer
-                    //       .append(parseTreeCodeGenerator.generateFireCode());
+                    codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
+
                     //FIXME: For some reason a call to evaluateParseTree and generateFireCode appends (false == true)
                     // instead of modelError == true so the code below will temporarily take it's place
                     /** A set that contains all variables in the model whose values can be
                      *  changed during execution.
                      */
 
-                    int index2 = transition.getFullName()
-                            .indexOf("_Controller");
+//                     int index2 = transition.getFullName()
+//                             .indexOf("_Controller");
 
-                    String tempName = transition.getFullName().substring(1,
-                            index2)
-                            + guard.substring(0, index - 1);
-                    tempName = tempName.replace(".", "_");
-                    codeBuffer.append(tempName + "_ == ");
-                    codeBuffer.append("true");
+//                     String tempName = transition.getFullName().substring(1,
+//                             index2)
+//                             + guard.substring(0, index - 1);
+//                     tempName = tempName.replace(".", "_");
+//                     codeBuffer.append(tempName + "_ == ");
+//                     codeBuffer.append("true");
                     codeBuffer.append(") ");
                 }
                 codeBuffer.append("{" + _eol);
@@ -647,8 +653,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                     if (bufferSize > 1) {
                         int bufferSizeOfChannel = getBufferSize(inputPort,
                                 channelNumber);
-                        String writeOffset = getWriteOffset(inputPort,
-                                channelNumber).toString();
+                        String writeOffset = "0"; //getWriteOffset(inputPort, channelNumber).toString();
                         // Note here inputPortNameArray in the original expression
                         // is converted to
                         // inputPortVariable[(writeOffset - 1
@@ -687,8 +692,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                     if (bufferSize > 1) {
                         int bufferSizeOfChannel = getBufferSize(inputPort,
                                 channelNumber);
-                        String writeOffset = (String) getWriteOffset(inputPort,
-                                channelNumber);
+                        String writeOffset = "0"; //(String) getWriteOffset(inputPort, channelNumber);
                         // '@' represents the array index in the parsed expression.
                         // It will be replaced by actual array index in
                         // the method visitFunctionApplicationNode() in
