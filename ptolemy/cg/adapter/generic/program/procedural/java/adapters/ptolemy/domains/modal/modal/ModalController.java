@@ -92,6 +92,8 @@ public class ModalController
         FSMActor controllerHelper;
         try {
             controllerHelper = new FSMActor(_myController);
+            controllerHelper.setCodeGenerator(getCodeGenerator());
+            controllerHelper.setTemplateParser(getTemplateParser());
         } catch (NameDuplicationException ndx) {
             throw new IllegalActionException(ndx.toString());
         }
