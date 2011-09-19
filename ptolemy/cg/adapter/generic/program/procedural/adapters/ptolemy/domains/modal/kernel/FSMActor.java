@@ -95,25 +95,24 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
+        code.append(getCodeGenerator()
+                .comment("FSMActor._generateFireCode()"));
 
-        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
+//        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
-        // FIXME: not handling multirate inputs yet.
-        // FIXME: how should we handle in-out ports?
-        for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
-            for (int channel = 0; !input.isOutput()
-                    && channel < input.getWidth(); channel++) {
+//         // FIXME: not handling multirate inputs yet.
+//         // FIXME: how should we handle in-out ports?
+//         for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
+//             for (int channel = 0; !input.isOutput()
+//                     && channel < input.getWidth(); channel++) {
 
-                code.append("$get(" + generateSimpleName(input) + ", "
-                        + channel + ")" + _eol);
-            }
-        }
+//                 code.append("$get(" + generateSimpleName(input) + ", "
+//                         + channel + ")" + _eol);
+//             }
+//         }
 
         generateTransitionCode(code, new OutgoingRelations());
 
-        code.insert(0, getCodeGenerator()
-                .comment("FSMActor._generateFireCode"));
-        new Exception("FSMActor._generateFireCode(): " + code.toString());
         return processCode(code.toString());
     }
 
@@ -150,9 +149,21 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
      *   size and offset map or processing code.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        return processCode(code.toString());
+        super.generatePreinitializeCode();
+
+        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
+
+        CodeStream codeStream = _templateParser.getCodeStream();
+        ArrayList args = new ArrayList(2);
+        int index = 0;
+        args.add("");
+        args.add("");
+        for (State state : (List<State>) fsmActor.entityList()) {
+            args.set(0, _generateStateConstantLabel(state));
+            args.set(1, Integer.toString(index++));
+            codeStream.appendCodeBlock("defineState", args);
+        }
+        return processCode(codeStream.toString());
     }
 
     private Object _generateStateConstantLabel(State state) {
@@ -174,19 +185,21 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
             TransitionRetriever transitionRetriever)
             throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
+        codeBuffer.append(getCodeGenerator()
+                .comment("Generate Transition Code."));
 
         ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
 
         // The default value 1 of transitionFlag means the transition
         // will be taken. If no transition is actually taken, it will be
         // set to value 0.
-        codeBuffer.append("$actorSymbol(Controller__transitionFlag) = 1;"
+        codeBuffer.append("$actorSymbol(transitionFlag) = 1;"
                 + _eol);
 
         // States are numbered according to the order they are created,
         // i.e., the same order as in list returned by the method entityList().
-        codeBuffer.append("switch ($actorSymbol(Controller__currentState)) {"
-                + _eol);
+        codeBuffer.append("switch ($actorSymbol(currentState))" 
+                + _eol + "{" + _eol);
 
         for (State state : (List<State>) fsmActor.entityList()) {
             // For each state...
@@ -277,7 +290,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 //                     codeBuffer.append("true");
                     codeBuffer.append(") ");
                 }
-                codeBuffer.append("{" + _eol);
+                codeBuffer.append(_eol + "{" + _eol);
 
                 // generate code for choice action
                 for (AbstractActionsAttribute action : (List<AbstractActionsAttribute>) transition
@@ -298,6 +311,16 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                         NamedObj destination = action
                                 .getDestination(destinationName);
 
+                        // String destinationNameWithoutController = destinationName;
+//                         int controllerIndex = -1;
+//                         String controllerString = "_Controller_";
+//                         if ((controllerIndex = destinationName.indexOf(controllerString)) != -1) {
+//                             destinationNameWithoutController = destinationName.substring(0, controllerIndex)
+//                                 + destinationName.substring(controllerIndex + controllerString.length());
+//                         }
+//                         System.out.println("FSMActor: " + destinationNameWithoutController);
+
+                                                
                         int channel = -1;
                         if (channelNumber != null) {
                             channel = channelNumber.intValue();
@@ -308,7 +331,9 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                         // Note in choice action only output can be generated
                         // and no parameter be changed.
                         if (channel >= 0) {
-                            codeBuffer.append("$ref(" + destinationName + "#"
+                            //codeBuffer.append("$ref(" + destinationName + "#"
+                            //        + channel + ") = ");
+                            codeBuffer.append("$put(" + destinationName + "#"
                                     + channel + ") = ");
 
                             // During choice action, an output port
@@ -328,6 +353,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
                                 StringBuffer containerReference = new StringBuffer();
 
+                                codeBuffer.append("System.out.println(\"B\");");
                                 containerReference.append("$ref("
                                         + generateSimpleName(destination));
 
@@ -352,11 +378,14 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                     .getWidth();
 
                             for (int i = 0; i < width; i++) {
-                                codeBuffer.append("$ref(" + destinationName
-                                        + "#" + i + ") = ");
+                                //codeBuffer.append("System.out.println(\"ref" + i + "\");" + _eol);
+                                //codeBuffer.append("$ref(" + destinationName
+                                //        + "#" + i + ") = ");
+                                codeBuffer.append("$put(" + destinationName + "#" + i + ", ");
+                               
 
-                                sendCode.append("$send(" + destinationName
-                                        + ", " + i + ")" + _eol);
+                                //sendCode.append("$send(" + destinationName
+                                //        + ", " + i + ")" + _eol);
 
                                 // During choice action, an output
                                 // port receives token sent by itself
@@ -376,7 +405,9 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
                                     StringBuffer containerReference = new StringBuffer();
 
-                                    containerReference.append("$ref("
+                                    //containerReference.append("$ref("
+                                    //        + generateSimpleName(destination));
+                                    containerReference.append("$get("
                                             + generateSimpleName(destination));
 
                                     if (((IOPort) destination).isMultiport()) {
@@ -390,9 +421,9 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                                     .toString())
                                             + " = ");
 
-                                    sendCode.append("$send("
-                                            + generateSimpleName(destination)
-                                            + ", " + i + ")" + _eol);
+                                    //sendCode.append("$send("
+                                    //        + generateSimpleName(destination)
+                                    //        + ", " + i + ")" + _eol);
                                 }
                             }
                         }
@@ -403,8 +434,8 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                         codeBuffer.append(parseTreeCodeGenerator
                                 .generateFireCode());
 
-                        codeBuffer.append(";" + _eol);
-                        codeBuffer.append(sendCode);
+                        codeBuffer.append(");" + _eol);
+                        //codeBuffer.append(sendCode);
                     }
                 }
 
@@ -443,10 +474,20 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                             channel = channelNumber.intValue();
                         }
 
+
+                        ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
+                                .getParseTreeCodeGenerator();
+                        parseTreeCodeGenerator.evaluateParseTree(parseTree,
+                                _scope);
+                        String scopeFireCode = parseTreeCodeGenerator
+                            .generateFireCode();
+
                         if (destination instanceof IOPort) {
                             if (channel >= 0) {
-                                codeBuffer.append("$ref(" + destinationName
-                                        + "#" + channel + ") = ");
+                                //codeBuffer.append("$ref(" + destinationName
+                                //        + "#" + channel + ") = ");
+                                codeBuffer.append("$put(" + destinationName
+                                        + "#" + channel + ") = " + scopeFireCode + ");");
                             } else { // broadcast
 
                                 int width = ((IOPort) action
@@ -454,23 +495,17 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                                         .getWidth();
 
                                 for (int i = 0; i < width; i++) {
-                                    codeBuffer.append("$ref(" + destinationName
-                                            + "#" + i + ") = ");
+                                    //codeBuffer.append("$ref(" + destinationName
+                                    //        + "#" + i + ") = ");
+                                    codeBuffer.append("$put(" + destinationName
+                                            + "#" + i + ", " + scopeFireCode + ");"); 
                                 }
                             }
                         } else if (destination instanceof Variable) {
                             codeBuffer.append(getCodeGenerator()
-                                    .generateVariableName(destination) + " = ");
-
+                                    .generateVariableName(destination) + " = "
+                                              + scopeFireCode + ";");
                         }
-
-                        ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
-                                .getParseTreeCodeGenerator();
-                        parseTreeCodeGenerator.evaluateParseTree(parseTree,
-                                _scope);
-                        codeBuffer.append(parseTreeCodeGenerator
-                                .generateFireCode());
-                        codeBuffer.append(";" + _eol);
                     }
                 }
 
@@ -507,19 +542,20 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 //        directorHelper._updateConfigurationNumber(codeBuffer,
                 //              destinationState);
                 //}
-                codeBuffer.append("} ");
+                codeBuffer.append(_eol + "}" + _eol);
             }
 
             if (!hasDefaultCase) {
                 if (transitionCount > 0) {
-                    codeBuffer.append("else {" + _eol);
+                    codeBuffer.append("else" + _eol 
+                            + "{" + _eol);
                 } else {
                     codeBuffer.append(_eol);
                 }
 
                 // indicates no transition is taken.
                 codeBuffer
-                        .append("$actorSymbol(Controller__transitionFlag) = 0;"
+                        .append("$actorSymbol(transitionFlag) = 0;"
                                 + _eol);
 
                 // Generate code for updating configuration number of this
@@ -538,14 +574,14 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 //}
 
                 if (transitionCount > 0) {
-                    codeBuffer.append("} " + _eol); // end of if statement
+                    codeBuffer.append(_eol + "}" + _eol); // end of if statement
                 }
             }
             codeBuffer.append(_eol + "break;" + _eol); // end of case statement
         }
 
-        codeBuffer.append("}" + _eol); // end of switch statement
-        code.append(codeBuffer.toString()); // was initially enclosed with processCode()
+        codeBuffer.append(_eol + "}" + _eol); // end of switch statement
+        code.append(processCode(codeBuffer.toString())); // was initially enclosed with processCode()
     }
 
     /** A class implementing this interface implements a method to
