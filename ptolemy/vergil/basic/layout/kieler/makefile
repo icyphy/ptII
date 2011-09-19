@@ -42,7 +42,7 @@ include $(CONFIG)
 DIRS =	test
 
 # KIELER_JAR is set in $PTII/mk/ptII.mk to $(PTII)/lib/kieler.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(KIELER_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(KIELER_JAR)$(CLASSPATHSEPARATOR)$(GUAVA_JAR)
 
 # Used to build zip files
 PTPACKAGE = 	kieler
