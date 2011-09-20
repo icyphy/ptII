@@ -194,7 +194,7 @@ public class ModalController
             IOPort t = connectedPorts.get(i);
             if (t.isInput()) {
                 code.append(_getName(t.getFullName()) + " = ");
-
+                //code.append(getCodeGenerator().generateVariableName(t));
             }
         }
         String name = inputPort.getFullName();
@@ -202,6 +202,8 @@ public class ModalController
         name = name.substring(0, i) + name.substring(i + 12);
         code.append(_getName(inputPort.getFullName()) + " = " + _getName(name)
                 + "; ");
+        //code.append(getCodeGenerator().generateVariableName(inputPort) + " = " + _getName(name)
+        //        + "; ");
 
     }
 
@@ -428,13 +430,18 @@ public class ModalController
             inputPort = inputPorts.get(i);
             if (!outputPorts.contains(inputPort)) {
                 int width = inputPort.getWidth();
-                code.append(inputPort.getType() + " " + name + "_"
+                // FIXME "static" is language-dependent, but we need it 
+                // generating code in small blocks, see:
+                // $PTII/bin/ptcg -language java -generateInSubdirectory true -inline false -maximumLinesPerBlock 1 -variablesAsArrays true $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/Simple01.xml
+                code.append("static " + inputPort.getType() + " " + name + "_"
                         + inputPort.getName());
                 if (width > 1) {
                     code.append("[" + width + "]");
                 }
                 code.append(";" + _eol);
-                code.append(inputPort.getType() + " " + modalName + "_"
+                // FIXME "static" is language-dependent, but we need it 
+                // generating code in small blocks.
+                code.append("static " + inputPort.getType() + " " + modalName + "_"
                         + inputPort.getName());
                 if (width > 1) {
                     code.append("[" + width + "]");
@@ -446,14 +453,18 @@ public class ModalController
         for (int i = 0; i < outputPorts.size(); i++) {
             outputPort = outputPorts.get(i);
             int width = outputPort.getWidth();
-            code.append(outputPort.getType() + " " + name + "_"
+            // FIXME "static" is language-dependent, but we need it 
+            // generating code in small blocks.
+            code.append("static " + outputPort.getType() + " " + name + "_"
                     + outputPort.getName());
             if (width > 1) {
                 code.append("[" + width + "]");
             }
             code.append(";" + _eol);
 
-            code.append(outputPort.getType() + " " + modalName + "_"
+            // FIXME "static" is language-dependent, but we need it 
+            // generating code in small blocks.
+            code.append("static " + outputPort.getType() + " " + modalName + "_"
                     + outputPort.getName());
             if (width > 1) {
                 code.append("[" + width + "]");

@@ -1025,12 +1025,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             Set<String> variableDeclarations = new TreeSet<String>();
 
             // This seems expensive.
-            Iterator<?> actors = ((CompositeActor) getComponent().toplevel())
+            // Could be Actors or States.  For States, see:
+            // $PTII/bin/ptcg -language java  -inline false $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/test/auto/FSMActor.xml
+            Iterator<?> namedObjs = ((CompositeActor) getComponent().toplevel())
                     .allAtomicEntityList().iterator();
-            while (actors.hasNext()) {
-                Actor actor = (Actor) actors.next();
-                variableDeclarations
-                        .add(generateFireFunctionVariableDeclaration((NamedObj) actor));
+            while (namedObjs.hasNext()) {
+                NamedObj namedObj = (NamedObj) namedObjs.next();
+                if (namedObj instanceof Actor) {
+                    variableDeclarations
+                        .add(generateFireFunctionVariableDeclaration(namedObj));
+                }
             }
 
             // Collect all the variable declarations into a StringBuffer.
@@ -1405,6 +1409,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 int commentCount = 0;
                 int ifCount = 0;
                 int openBracketCount = 0;
+                int switchCount = 0;
                 int tryCount = 0;
                 String trimmedLine = line.trim();
                 if (trimmedLine.startsWith("/*")) {
@@ -1418,6 +1423,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 if (trimmedLine.endsWith("{")) {
                     if (ifCount > 0) {
                         ifCount--;
+                    } else if (switchCount > 0) {
+                        switchCount--;
                     }
                     openBracketCount++;
                 }
@@ -1425,6 +1432,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 if (trimmedLine.startsWith("}")) {
                     if (ifCount > 0) {
                         ifCount--;
+                    } else if (switchCount > 0) {
+                        switchCount--;
                     }
                     openBracketCount--;
                     // Don't break up try catch blocks
@@ -1436,6 +1445,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     tryCount++;
                 } else if (line.trim().startsWith("if")) {
                     ifCount++;
+                } else if (line.trim().startsWith("switch")) {
+                    switchCount++;
                 }
 
                 //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " a: " + line);
@@ -1443,7 +1454,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 // or the if, {}, comment or try/catch block ends.
                 for (int i = 0; (i + 1 < linesPerMethod && line != null)
                         || ifCount > 0 || openBracketCount > 0
-                        || commentCount > 0 || tryCount > 0; i++) {
+                        || commentCount > 0 || tryCount > 0
+                        || switchCount > 0 ; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
                     //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " b:" + line);
@@ -1457,7 +1469,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                         + " ifCount: " + ifCount
                                         + " openBracketCount: "
                                         + openBracketCount + " commentCount: "
-                                        + commentCount + " tryCount: "
+                                        + commentCount + " switchCount: "
+                                        + switchCount + " tryCount: "
                                         + tryCount + " line:\n" + line
                                         + " code:\n" + code);
                     }
@@ -1479,6 +1492,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             if (trimmedLine.endsWith("{")) {
                                 if (ifCount > 0) {
                                     ifCount--;
+                                } else if (switchCount > 0) {
+                                    switchCount--;
                                 }
                                 openBracketCount++;
                             }
@@ -1486,6 +1501,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             if (trimmedLine.startsWith("}")) {
                                 if (ifCount > 0) {
                                     ifCount--;
+                                } else if (switchCount > 0) {
+                                    switchCount--;
                                 }
                                 openBracketCount--;
                                 // Don't break up try catch blocks
@@ -1497,6 +1514,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 tryCount++;
                             } else if (line.trim().startsWith("if")) {
                                 ifCount++;
+                            } else if (line.trim().startsWith("switch")) {
+                                switchCount++;
                             }
                         }
                     }
