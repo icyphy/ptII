@@ -36,7 +36,8 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =      ../../../..
 
-CLASSPATH = $(ROOT)
+# KIELER_JAR and GUAVA_JAR are set in $PTII/mk/ptII.mk to $(PTII)/lib/kieler.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(KIELER_JAR)$(CLASSPATHSEPARATOR)$(GUAVA_JAR)
 
 # Get configuration info
 CONFIG =    $(ROOT)/mk/ptII.mk
