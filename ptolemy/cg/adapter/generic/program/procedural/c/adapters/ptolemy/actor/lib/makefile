@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib
 
-DIRS =		logic
+DIRS =		logic test
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..
@@ -74,6 +74,7 @@ JSRCS = \
 	SingleEvent.java \
 	Synchronizer.java \
 	TimeDelay.java \
+	Test.java \
 	UnaryMathFunction.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -84,7 +85,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	logic
+MISC_FILES =	logic test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

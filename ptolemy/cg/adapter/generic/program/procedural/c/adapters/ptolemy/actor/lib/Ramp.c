@@ -14,7 +14,7 @@ $param(step) = $typeFunc(TYPE_Array::convert($param(step), $elementType)));
 $actorSymbol(state) = $val(($type)init);
 /**/
 
-/***IntegerFireBlock***/
+/***IntFireBlock***/
 $put(output, $actorSymbol(state));
 if ($hasToken(step)) {
         $param(step) = $get(step);

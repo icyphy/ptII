@@ -81,6 +81,7 @@ JSRCS = \
 	Sequence.java \
 	StringConst.java \
 	SubscriptionAggregator.java \
+	Test.java \
 	TrigFunction.java \
 	VectorAssembler.java \
 	VectorDisassembler.java
