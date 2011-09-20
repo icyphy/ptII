@@ -221,8 +221,11 @@ public class MonotonicityConcept extends MapTypeInfiniteConcept<Concept> {
     public Concept leastUpperBound(Concept concept) {
         Concept top = getOntology().getConceptGraph().top();
         if (!(concept instanceof MonotonicityConcept)) {
-            if (concept.equals(getOntology().getConceptGraph().bottom())) {
+            Concept bottom = getOntology().getConceptGraph().bottom();
+            if (concept.equals(bottom)) {
                 return this;
+            } else if (this.equals(bottom)) {
+                return concept;
             } else {
                 return top;
             }
