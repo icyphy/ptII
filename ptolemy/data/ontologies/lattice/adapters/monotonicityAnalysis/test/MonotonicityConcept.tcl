@@ -73,3 +73,9 @@ proc simpleSquareOntology {} {
 test OntologyCreation {An ontology with a flat representative is still a lattice} {
     list [[simpleSquareOntology] isLattice]
 } {1}
+
+test MonotonicityConceptCreation {We can create a simple MonotonicityConcept} {
+    set lattice [simpleSquareOntology]
+    set monotonicityConcept [java::call {ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept} createMonotonicityConcept $lattice]
+    $monotonicityConcept toString
+} {{}}
