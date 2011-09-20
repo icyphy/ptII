@@ -931,9 +931,6 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @param knode The parent KNode of the new port
      * @param portType The port Type, either input or output
      * @param port The corresponding Ptolemy port (might be a multiport)
-     * @param rank The rank of the new port which is an ordering index. If this
-     *            is not set, KIELER will try to infer the ranks automatically
-     *            from the port's position.
      * @param index Index of the KPort corresponding to a multiport
      * @param maxIndex Width of the multiport, i.e. the number of connected
      *            edges to that port.

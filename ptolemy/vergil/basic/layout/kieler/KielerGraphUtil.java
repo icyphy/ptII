@@ -77,7 +77,7 @@ public class KielerGraphUtil {
      * @param node The KNode of which to retrieve the absolute layout.
      * @return A shape layout containing the original size of the node and its
      *         location in absolute coordinates (not relative to its parent)
-     * @deprecated Use {@link KimlUtil.toAbsolute(KVector, KNode)} instead.
+     * @deprecated Use {@link de.cau.cs.kieler.kiml.util.KimlUtil#toAbsolute(KVector, KNode)} instead.
      */
     protected static KShapeLayout _getAbsoluteLayout(KNode node) {
         KShapeLayout klayout = node.getData(KShapeLayout.class);
@@ -105,7 +105,7 @@ public class KielerGraphUtil {
      * @param relativeKPoint Point with coordinates relative to its parent node.
      * @param parentNode Parent node of the point coordinates.
      * @return Kieler KPoint with the absolute coordinates.
-     * @deprecated Use {@link KimlUtil.toAbsolute(KVector, KNode)} instead.
+     * @deprecated Use {@link de.cau.cs.kieler.kiml.util.KimlUtil#toAbsolute(KVector, KNode)} instead.
      */
     protected static KPoint _getAbsoluteKPoint(KPoint relativeKPoint,
             KNode parentNode) {
