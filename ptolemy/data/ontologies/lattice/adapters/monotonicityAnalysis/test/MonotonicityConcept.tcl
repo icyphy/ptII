@@ -42,8 +42,8 @@ if {[string compare test [info procs test]] == 1} then {
 
 proc link {ont a b} {
   set link [$ont newRelation [concat [$a toString] " to " [$b toString]]]
-  [java::field $a abovePort] link $link
-  [java::field $b belowPort] link $link
+  [$a getOutgoingPort] link $link
+  [$b getIncomingPort] link $link
 }
 
 proc simpleSquareOntology {} {
@@ -54,6 +54,7 @@ proc simpleSquareOntology {} {
     set top [java::new {ptolemy.data.ontologies.FiniteConcept} $ont "top"]
     set left [java::new {ptolemy.data.ontologies.FiniteConcept} $ont "left"]
     set right [java::new {ptolemy.data.ontologies.FiniteConcept} $ont "right"]
+    set infinite [java::new {ptolemy.data.ontologies.FlatScalarTokenRepresentativeConcept} $ont "infinite"]
 
     # Relations
     link $ont $bot $left
@@ -61,11 +62,14 @@ proc simpleSquareOntology {} {
     link $ont $left $top
     link $ont $right $top
 
+    link $ont $bot $infinite
+    link $ont $infinite $top
+
     return $ont
 }
 ######################################################################
 ####
 #
-test OntologyCreation {An simple square ontology is a lattice} {
+test OntologyCreation {An ontology with a flat representative is still a lattice} {
     list [[simpleSquareOntology] isLattice]
 } {1}
