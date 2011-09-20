@@ -28,10 +28,10 @@
 
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.test.junit;
 
-import ptolemy.util.test.junit.JUnitCGJavaTestBase;
+import ptolemy.util.test.junit.JUnitCGCTestBase;
 
 ///////////////////////////////////////////////////////////////////
-//// JUnitCGJavaTest
+//// JUnitCGCTest
 /**
  *  Run the auto/ tests using java cg. 
  * <pre>
@@ -47,7 +47,7 @@ import ptolemy.util.test.junit.JUnitCGJavaTestBase;
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class JUnitCGJavaTest extends JUnitCGJavaTestBase {
+public class JUnitCGCTest extends JUnitCGCTestBase {
     // This class is empty, all the action occurs in the parent.
 }
 
