@@ -76,6 +76,7 @@ import de.cau.cs.kieler.core.alg.DefaultFactory;
 import de.cau.cs.kieler.core.alg.IKielerProgressMonitor;
 import de.cau.cs.kieler.core.alg.InstancePool;
 import de.cau.cs.kieler.core.kgraph.KEdge;
+import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.math.KVector;
@@ -215,7 +216,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
         parentLayout.setProperty(LayoutOptions.DIRECTION, Direction.RIGHT);
         parentLayout.setProperty(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
-        parentLayout.setProperty(LayoutOptions.BORDER_SPACING, 0.0f);
+        parentLayout.setProperty(LayoutOptions.BORDER_SPACING, 5.0f);
         parentLayout.setProperty(LayoutOptions.SPACING, DEF_SPACING);
         parentLayout.setProperty(Properties.EDGE_SPACING_FACTOR, 1.5f);
 
@@ -234,17 +235,16 @@ public class KielerLayout extends AbstractGlobalLayout {
             // Perform layout on the created graph.
             layoutProvider.doLayout(parentNode, progressMonitor);
             
-            // Set initial position as the bounding box of the hierarchical node.
-            // FIXME: Is setting border space to 0 not enough?
-            KVector offset = KielerGraphUtil._getUpperLeftCorner(parentNode);
-            parentLayout.setXpos(parentLayout.getXpos() - (float) offset.x);
-            parentLayout.setYpos(parentLayout.getYpos() - (float) offset.y);
-
             // Write to XML file for debugging layout (requires XMI resource factory).
             if (DEBUG) {
                 KielerGraphUtil._writeToFile(parentNode);
             }
             
+            // Set initial position as the bounding box of the hierarchical node.
+            KVector offset = KielerGraphUtil._getUpperLeftCorner(parentNode);
+            parentLayout.setXpos(parentLayout.getXpos() - (float) offset.x);
+            parentLayout.setYpos(parentLayout.getYpos() - (float) offset.y);
+
             long momlRequestOverhead = System.currentTimeMillis();
 
             // Apply layout to ptolemy model.
@@ -791,8 +791,6 @@ public class KielerLayout extends AbstractGlobalLayout {
         // Create new node in KIELER graph and apply the initial size and position
         Rectangle2D bounds = this.getLayoutTarget().getBounds(node);
         KNode knode = KimlUtil.createInitializedNode();
-        knode.getLabel().setText(semanticNode.getDisplayName());
-
         KShapeLayout klayout = knode.getData(KShapeLayout.class);
         klayout.setHeight((float) bounds.getHeight());
         klayout.setWidth((float) bounds.getWidth());
@@ -801,6 +799,15 @@ public class KielerLayout extends AbstractGlobalLayout {
         klayout.setProperty(LayoutOptions.FIXED_SIZE, true);
         klayout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
                 PortConstraints.FIXED_POS);
+        
+        // set the node label
+        KLabel label = knode.getLabel();
+        label.setText(semanticNode.getDisplayName());
+        KShapeLayout labelLayout = label.getData(KShapeLayout.class);
+        labelLayout.setWidth((float) bounds.getWidth() - 2.0f);
+        labelLayout.setHeight(10.0f);
+        labelLayout.setXpos(1.0f);
+        labelLayout.setYpos(1.0f);
 
         // Draw the director always as first element.
         if (semanticNode instanceof Director) {
@@ -896,13 +903,13 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @return An initialized KNode
      */
     private KNode _createKNodeForVertex(Vertex vertex) {
+        Rectangle2D bounds = this.getLayoutTarget().getBounds(vertex);
         KNode kNode = KimlUtil.createInitializedNode();
-        // Simulate vertex by node with size 1
         KShapeLayout layout = kNode.getData(KShapeLayout.class);
-        layout.setHeight(1);
-        layout.setWidth(1);
-        layout.setXpos((float) vertex.getLocation()[0]);
-        layout.setYpos((float) vertex.getLocation()[1]);
+        layout.setHeight((float) bounds.getHeight());
+        layout.setWidth((float) bounds.getWidth());
+        layout.setXpos((float) bounds.getMinX());
+        layout.setYpos((float) bounds.getMinY());
         layout.setProperty(LayoutOptions.FIXED_SIZE, true);
         layout.setProperty(LayoutOptions.HYPERNODE, true);
 
@@ -1172,8 +1179,8 @@ public class KielerLayout extends AbstractGlobalLayout {
      * left corner of an item and Ptolemy as the center point of the item.
      *
      * If the original location is not within the bounds of the referenceNode at
-     * all, the location is not updated. (e.g. important distinction between
-     * nodes and vertices).
+     * all, the location updated differently. This is an important distinction between
+     * nodes and vertices.
      *
      * @param pos Position of KIELER graphical node. This object will be altered to
      *            fit the new location.
@@ -1191,11 +1198,14 @@ public class KielerLayout extends AbstractGlobalLayout {
             double offsetX = 0, offsetY = 0;
 
             // Check if we got a valid location inside the diva bounds.
-            // If not, we might have something that has no location attribute
-            // (e.g. a relation vertex) where we don't need any offset.
+            // If not, we might have something that has no location attribute,
+            // such as a relation vertex, where we use the center as offset.
             if (divaBounds.contains(location.x, location.y)) {
                 offsetX = location.x - divaBounds.getMinX();
                 offsetY = location.y - divaBounds.getMinY();
+            } else {
+                offsetX = divaBounds.getWidth() / 2;
+                offsetY = divaBounds.getHeight() / 2;
             }
 
             pos.x += offsetX;
