@@ -35,8 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Iterables;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -519,16 +517,21 @@ public class PtolemyModelUtil {
         }
         if (namedObj instanceof Actor) {
             Actor actor = (Actor) namedObj;
-            for (Object o : Iterables.concat(actor.inputPortList(),
-                    actor.outputPortList())) {
+            // if any port of an actor is connected to any other
+            // assume that there is also no visible connection
+            for (Object o : actor.inputPortList()) {
                 Port port = (Port) o;
-                // if any port of an actor is connected to any other
-                // assume that there is also no visible connection
                 if (!port.connectedPortList().isEmpty()
                         || !port.linkedRelationList().isEmpty()) {
                     return true;
                 }
-
+            }
+            for (Object o : actor.outputPortList()) {
+                Port port = (Port) o;
+                if (!port.connectedPortList().isEmpty()
+                        || !port.linkedRelationList().isEmpty()) {
+                    return true;
+                }
             }
             return false;
         }
