@@ -40,4 +40,32 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+proc link {ont a b} {
+  set link [$ont newRelation [concat [$a toString] " to " [$b toString]]]
+  [java::field $a abovePort] link $link
+  [java::field $b belowPort] link $link
+}
 
+proc simpleSquareOntology {} {
+    set ont [java::new {ptolemy.data.ontologies.Ontology} [java::null]]
+
+    # Concepts
+    set bot [java::new {ptolemy.data.ontologies.FiniteConcept} $ont "bot"]
+    set top [java::new {ptolemy.data.ontologies.FiniteConcept} $ont "top"]
+    set left [java::new {ptolemy.data.ontologies.FiniteConcept} $ont "left"]
+    set right [java::new {ptolemy.data.ontologies.FiniteConcept} $ont "right"]
+
+    # Relations
+    link $ont $bot $left
+    link $ont $bot $right
+    link $ont $left $top
+    link $ont $right $top
+
+    return $ont
+}
+######################################################################
+####
+#
+test OntologyCreation {An simple square ontology is a lattice} {
+    list [[simpleSquareOntology] isLattice]
+} {1}
