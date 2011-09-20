@@ -345,7 +345,7 @@ public class Director extends CodeGeneratorHelper {
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
         code.append(CodeStream.indent(_codeGenerator
-                .comment("Transfer tokens to the inside")));
+                .comment("Director: Transfer tokens to the inside")));
 
         CodeGeneratorHelper _compositeActorHelper = (CodeGeneratorHelper) _getHelper(_director
                 .getContainer());
@@ -381,7 +381,7 @@ public class Director extends CodeGeneratorHelper {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(_codeGenerator.comment("Transfer tokens to the outside"));
+        code.append(_codeGenerator.comment("Director: Transfer tokens to the outside"));
 
         CodeGeneratorHelper _compositeActorHelper = (CodeGeneratorHelper) _getHelper(_director
                 .getContainer());
