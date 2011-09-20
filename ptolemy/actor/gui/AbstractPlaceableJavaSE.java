@@ -66,8 +66,15 @@ public abstract class AbstractPlaceableJavaSE {
      */
     public void init(TypedAtomicActor actor) throws IllegalActionException,
             NameDuplicationException {
-        _windowProperties = new WindowPropertiesAttribute(actor,
-                "_windowProperties");
+        // An actor may already have _windowProperties set.
+        _windowProperties = (WindowPropertiesAttribute) actor.getAttribute(
+                "_windowProperties",
+                WindowPropertiesAttribute.class);
+        if (_windowProperties == null) {
+            _windowProperties = new WindowPropertiesAttribute(actor,
+                    "_windowProperties");
+        }
+
         // Note that we have to force this to be persistent because
         // there is no real mechanism for the value of the properties
         // to be updated when the window is moved or resized. By
@@ -75,7 +82,12 @@ public abstract class AbstractPlaceableJavaSE {
         // attribute will determine the current size and position
         // of the window and save it.
         _windowProperties.setPersistent(true);
-        _paneSize = new SizeAttribute(actor, "_paneSize");
+
+        _paneSize = (SizeAttribute) actor.getAttribute(
+                "_paneSize", SizeAttribute.class);
+        if (_paneSize == null) {
+            _paneSize = new SizeAttribute(actor, "_paneSize");
+        }
         _paneSize.setPersistent(true);
     }
 
