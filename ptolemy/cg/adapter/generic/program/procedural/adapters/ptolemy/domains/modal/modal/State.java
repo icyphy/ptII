@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.modal;
+package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;

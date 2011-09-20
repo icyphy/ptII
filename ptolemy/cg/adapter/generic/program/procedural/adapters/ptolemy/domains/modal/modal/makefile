@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/modal
 
-DIRS =		
+DIRS =		kernel
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..
@@ -52,11 +52,13 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = 
+PTCLASSALLJARS = \
+	kernel/kernel.jar 
 
 # Keep this list alphabetized.
 JSRCS = \
-	ModalController.java
+	ModalController.java \
+	State.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ModalController.j 

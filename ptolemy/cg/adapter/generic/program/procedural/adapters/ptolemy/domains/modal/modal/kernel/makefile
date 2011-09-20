@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/modal/kernel
+ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/modal/kernel
 
 DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 

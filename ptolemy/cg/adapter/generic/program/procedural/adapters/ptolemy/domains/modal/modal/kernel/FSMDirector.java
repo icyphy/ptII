@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.modal.kernel;
+package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.kernel;
 
 import ptolemy.util.StringUtilities;
 
