@@ -46,7 +46,7 @@ proc link {ont a b} {
   [$b getIncomingPort] link $link
 }
 
-proc simpleSquareOntology {} {
+proc setupSimpleSquareOntology {} {
     set ont [java::new {ptolemy.data.ontologies.Ontology} [java::null]]
 
     # Concepts
@@ -64,8 +64,11 @@ proc simpleSquareOntology {} {
 
     link $ont $bot $infinite
     link $ont $infinite $top
+    return [list $ont $bot $top $left $right $infinite]
+}
 
-    return $ont
+proc simpleSquareOntology {} {
+    return [lindex [setupSimpleSquareOntology] 0]
 }
 ######################################################################
 ####
@@ -74,8 +77,17 @@ test OntologyCreation {An ontology with a flat representative is still a lattice
     list [[simpleSquareOntology] isLattice]
 } {1}
 
-test MonotonicityConceptCreation {We can create a simple MonotonicityConcept} {
+test MonotonicityConceptCreation-1.0 {We can create an empty MonotonicityConcept} {
     set lattice [simpleSquareOntology]
     set monotonicityConcept [java::call {ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept} createMonotonicityConcept $lattice]
     $monotonicityConcept toString
 } {{}}
+
+test MonotonicityConceptCreation-2.0 {We can create a single element MonotonicityConcept} {
+    set ont [setupSimpleSquareOntology]
+    set lattice [lindex $ont 0]
+    set left [lindex $ont 3]
+    set monotonicityConcept [java::call {ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept} createMonotonicityConcept $lattice]
+    $monotonicityConcept putMonotonicity {x} $left
+    $monotonicityConcept toString
+} {{x = left}}
