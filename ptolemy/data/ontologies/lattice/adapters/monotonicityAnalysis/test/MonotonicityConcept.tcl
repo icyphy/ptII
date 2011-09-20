@@ -54,7 +54,7 @@ proc setupSimpleSquareOntology {} {
     set top [java::new {ptolemy.data.ontologies.FiniteConcept} $ont "top"]
     set left [java::new {ptolemy.data.ontologies.FiniteConcept} $ont "left"]
     set right [java::new {ptolemy.data.ontologies.FiniteConcept} $ont "right"]
-    set infinite [java::new {ptolemy.data.ontologies.FlatScalarTokenRepresentativeConcept} $ont "infinite"]
+    set infinite [java::new {ptolemy.data.ontologies.FlatTokenRepresentativeConcept} $ont "infinite"]
 
     # Relations
     link $ont $bot $left
@@ -91,3 +91,13 @@ test MonotonicityConceptCreation-2.0 {We can create a single element Monotonicit
     $monotonicityConcept putMonotonicity {x} $left
     $monotonicityConcept toString
 } {{x = left}}
+
+test MonotonicityConceptCreation-3.0 {We can create a single infinite element MonotonicityConcept} {
+    set ont [setupSimpleSquareOntology]
+    set lattice [lindex $ont 0]
+    set infiniteRep [lindex $ont 5]
+    set monotonicityConcept [java::call {ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept} createMonotonicityConcept $lattice]
+    set infinite [java::call {ptolemy.data.ontologies.FlatTokenInfiniteConcept} createFlatTokenInfiniteConcept $lattice $infiniteRep [java::new {ptolemy.data.IntToken} 42]]
+    $monotonicityConcept putMonotonicity {x} $infinite
+    $monotonicityConcept toString
+} {{x = infinite_42}}
