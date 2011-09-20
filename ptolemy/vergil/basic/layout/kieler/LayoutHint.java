@@ -67,7 +67,6 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.KielerLayoutConnector;
-import de.cau.cs.kieler.core.math.KVector;
 import diva.canvas.connector.ManhattanConnector;
 
 ///////////////////////////////////////////////////////////////////
@@ -536,7 +535,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 RecordToken headToken = ((RecordToken) layoutItem.get("head"));
                 NamedObj head = _findNamedObj(this,
                         ((StringToken) headToken.get("id")).stringValue());
-                KVector headLocation = new KVector();
+                Point2D.Double headLocation = new Point2D.Double();
                 headLocation.x = ((DoubleToken) headToken.get("x")).doubleValue();
                 headLocation.y = ((DoubleToken) headToken.get("y")).doubleValue();
                 int headMultiportWidth = 1;
@@ -547,7 +546,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 RecordToken tailToken = ((RecordToken) layoutItem.get("tail"));
                 NamedObj tail = _findNamedObj(this,
                         ((StringToken) tailToken.get("id")).stringValue());
-                KVector tailLocation = new KVector();
+                Point2D.Double tailLocation = new Point2D.Double();
                 tailLocation.x = ((DoubleToken) tailToken.get("x")).doubleValue();
                 tailLocation.y = ((DoubleToken) tailToken.get("y")).doubleValue();
                 int tailMultiportWidth = 1;
@@ -745,7 +744,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          *            for multiports, 1, if no multiport
          */
         public LayoutHintItem(NamedObj head, NamedObj tail,
-                KVector locationHead, KVector locationTail,
+                Point2D.Double locationHead, Point2D.Double locationTail,
                 int multiportWidthHead, int multiportWidthTail) {
             this(head, tail);
             this._headLocation = locationHead;
@@ -869,8 +868,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                     return false;
                 }
             }
-            KVector newHeadLocation = _getEndpointLocation(_head);
-            KVector newTailLocation = _getEndpointLocation(_tail);
+            Point2D.Double newHeadLocation = _getEndpointLocation(_head);
+            Point2D.Double newTailLocation = _getEndpointLocation(_tail);
 
             if (newHeadLocation.equals(_headLocation)
                     && newTailLocation.equals(_tailLocation)) {
@@ -941,7 +940,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             // swap location
             temp = _headLocation;
             _headLocation = _tailLocation;
-            _tailLocation = (KVector) temp;
+            _tailLocation = (Point2D.Double) temp;
             // swap multiport stuff
             temp = _headMultiportIndex;
             _headMultiportIndex = _tailMultiportIndex;
@@ -1001,8 +1000,10 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             if (DEBUG) {
                 System.out.println("translate: " + this.getExpression());
             }
-            _headLocation.translate(x, y);
-            _tailLocation.translate(x, y);
+            _headLocation.x += x;
+            _headLocation.y += y;
+            _tailLocation.x += x;
+            _tailLocation.y += y;
             // iterate all bend points, make sure that in a faulty odd
             // array, the last entry is ignored
             for (int i = 0; i < (_bendPoints.length - 1); i += 2) {
@@ -1036,7 +1037,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * @param obj an endpoint of a link
          * @return the location for the given endpoint
          */
-        private KVector _getEndpointLocation(NamedObj obj) {
+        private Point2D.Double _getEndpointLocation(NamedObj obj) {
             // In case of a component port, the endpoint is the external port of
             // a composite actor, so take the actor's position instead of the port's
             // internal position.
@@ -1073,7 +1074,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         /** Head object to identify this item. */
         private NamedObj _head = null;
         /** Coordinates for the head at which this item is only valid. */
-        private KVector _headLocation = new KVector();
+        private Point2D.Double _headLocation = new Point2D.Double();
         /**
          * Width and index of the multiport, if the head actually is a multiport.
          */
@@ -1081,7 +1082,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         /** Tail object to identify this item. */
         private NamedObj _tail = null;
         /** Coordinates for the tail at which this item is only valid. */
-        private KVector _tailLocation = new KVector();
+        private Point2D.Double _tailLocation = new Point2D.Double();
         /**
          * Width and index of the multiport, if the tail actually is a multiport.
          */

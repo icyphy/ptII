@@ -29,14 +29,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.vergil.basic.layout.kieler;
 
+import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Iterables;
-
-import de.cau.cs.kieler.core.math.KVector;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -366,8 +365,8 @@ public class PtolemyModelUtil {
      * @return A vector corresponding to the location (x and y) of the object.
      *          Will return a zero vector if no location attribute is set for the object.
      */
-    protected static KVector _getLocation(NamedObj namedObj) {
-        KVector location = new KVector();
+    protected static Point2D.Double _getLocation(NamedObj namedObj) {
+        Point2D.Double location = new Point2D.Double();
         Location locationAttribute = null;
         if (namedObj instanceof Location) {
             locationAttribute = (Location) namedObj;

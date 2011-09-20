@@ -1188,7 +1188,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         NamedObj namedObj = _kieler2ptolemyEntityNodes.get(referenceNode);
         Object divaNode = _kieler2ptolemyDivaNodes.get(referenceNode);
 
-        KVector location = PtolemyModelUtil._getLocation(namedObj);
+        Point2D.Double location = PtolemyModelUtil._getLocation(namedObj);
 
         if (namedObj != null && divaNode != null) {
             Rectangle2D divaBounds = this.getLayoutTarget().getBounds(divaNode);
@@ -1197,7 +1197,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             // Check if we got a valid location inside the diva bounds.
             // If not, we might have something that has no location attribute,
             // such as a relation vertex, where we use the center as offset.
-            if (divaBounds.contains(location.x, location.y)) {
+            if (divaBounds.contains(location)) {
                 offsetX = location.x - divaBounds.getMinX();
                 offsetY = location.y - divaBounds.getMinY();
             } else {
