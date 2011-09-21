@@ -884,5 +884,5 @@ jnlps_index: $(ROOT)/mk/ptcommon.mk
 		echo "</ul>" >> index.htm; \
 		echo "<!--#include virtual=\"/ssi/bottom.htm\" -->" >> index.htm; \
 		echo "</div><!-- /#menu -->" >> toc.htm; \
+		chmod a+x index.htm; \
 	fi;
-	chmod a+x index.htm

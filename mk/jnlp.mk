@@ -1183,7 +1183,7 @@ $(UNJAR_DIST_DIR):
 			   cp $$x $(UNJAR_DIST_DIR)/lib;; \
 			doc/codeDoc*) \
 			   echo "  Copying to doc"; \
-			   cp $$x $(UNJAR_DIST_DIR)/doc;; \
+v			   cp $$x $(UNJAR_DIST_DIR)/doc;; \
 			ptolemy/actor/gui/jnlp/jnlp.jar) \
 			   echo "  Copying jar to ptolemy/actor/gui/jnlp"; \
 			   mkdir -p $(UNJAR_DIST_DIR)/ptolemy/actor/gui/jnlp; \
@@ -1255,8 +1255,8 @@ WEBSERVER=bennett
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh -l bldmastr $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
-	scp doc/webStartHelp.htm bldmastr@$(WEBSERVER):$(DIST_DIR)
+		ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
+	scp doc/webStartHelp.htm $(WEBSERVER):$(DIST_DIR)
 
 jnlp_dist_nightly:
 	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
@@ -1269,6 +1269,8 @@ update_gr_codeDoc:
 
 APPLET_FILES_TO_BE_UPDATED = \
 	$(CODEGEN_DOMAIN_JARS) \
+	lib/diva.jar \
+	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergilApplet.jar \
 	ptolemy/gui/demo/*.class
 
@@ -1665,29 +1667,36 @@ osgi_demo_test:
 	ptolemy/domains/domains.jar
 
 ################################################################################
-# Rules used to to create jnlp files for doc/books
+# Rules used to to create jnlp files for doc/books/systems
 #
 # To build the complete set of signed jars, you will need access to
 # our key, which is in /users/ptII/adm/certs/ptkeystore on $(WEBSERVER)
 # 1. To build all the jars and copy them to the webserver:
 #   cd $PTII
 #   rm -rf signed
-#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books jnlp_dist
-# This will create /export/home/pt0/ptweb/ptolemyII/ptII8.0/jnlp-books
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-systems jnlp_dist
+# This will create /export/home/pt0/ptweb/ptolemyII/ptII8.1/jnlp-systems
 #
-# 2. Set up ptII/ptKeystore.properties to contain the path to the keystore,
-# the passwords and the alias.  This file is used by copernicus to create signed jars.
+# 2. Create the jar files for the applets
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-systems update_applet_files DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII8.0/jnlp-systems
 #
-# 3. Clean up any previous work for a model
-#   make book_real_clean JNLP_MODEL=ExtendedFSM
+# 3. Set up ptII/ptKeystore.properties to contain the path to the keystore,
+#    the passwords and the alias.  This file is used by copernicus to create signed jars.
 #
-# 4. To create a JNLP file for one model and upload it
-#   make JNLP_MODEL=ExtendedFSM JNLP_MODEL_DIRECTORY=doc/books/design/modal KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books book_dist_update
+# 4. Clean up any previous work for a model
+#     make book_real_clean JNLP_MODEL_DIRECTORY=doc/books/systems/dataflow JNLP_MODEL=BetterFibonacci
 #
-# 5. To create JNLP files for all the models listed in the $(EXAMPLE_MODELS) makefile variable:
-#   cd $PTII/doc/books/design/modal
-#   make JNLP_MODEL_DIRECTORY=doc/books/design/modal KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books jnlps
-
+# 5. To create a JNLP file for one model and upload it
+#     make JNLP_MODEL_DIRECTORY=doc/books/systems/dataflow JNLP_MODEL=BetterFibonacci KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-systems book_dist_update
+#
+# 6. To create JNLP files for all the models listed in the $(EXAMPLE_MODELS) makefile variable:
+#   cd $PTII/doc/books/systems/dataflow
+#   make JNLP_MODEL_DIRECTORY=doc/books/systems/dataflow KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-systems jnlps
+#
+# 7. To create JNLP files for all the models in $PTII/doc/books/systems
+#   cd $PTII/doc/books/systems
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-systems jnlps
+#
 
 ################################################################################
 # Rules used to to create jnlp files for ptolemy/demo/FuelSystem
@@ -1726,7 +1735,8 @@ JNLP_MODEL =		CapriciousThermostat
 
 # The path, relative from ptII that contains the model.
 #JNLP_MODEL_DIRECTORY =	doc/books/design/modal
-JNLP_MODEL_DIRECTORY =  doc/books/embedded/concurrent/
+#JNLP_MODEL_DIRECTORY =  doc/books/embedded/concurrent/
+JNLP_MODEL_DIRECTORY =  doc/books/system
 
 ################################################################### 
 # For jnlp files, you should not need to modify anything below here

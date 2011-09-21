@@ -71,5 +71,17 @@ OPTIONAL_FILES =
 all: suball
 install: all jars
 
+jnlps:
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making all in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) JNLP_MODEL_DIRECTORY=$(ME)/$$x jnlps ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
