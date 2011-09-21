@@ -32,7 +32,6 @@ package ptolemy.vergil.basic.layout.kieler;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -323,90 +322,6 @@ public class KielerLayout extends AbstractGlobalLayout {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     
-    /**
-     * Apply precomputed routing of edges to the Ptolemy model by insertion of
-     * new relation vertices. Take a Kieler KEdge with layout information (bend
-     * point positions) and create a new relation with a vertex for each bend
-     * point and interconnect them. Then replace the original relation with the
-     * new relation set. Return the original relation if it is safe to delete
-     * it.
-     *
-     * @param kEdge The Kieler KEdge that hold the precomputed layout
-     *            information, i.e. bend point positions
-     * @return The old Relation if it is safe to delete it.
-     * @exception IllegalActionException Exception will be thrown if replacing
-     *                of original relation is not possible, i.e. if unlink() or
-     *                link() methods fail.
-     * @deprecated XXX This option will be removed from the UI.
-     */
-    private Relation _applyEdgeLayoutInsertRelations(KEdge kEdge)
-            throws IllegalActionException {
-        List<NamedObj> removedLinkTargets = new ArrayList<NamedObj>();
-        int count = 0;
-        String previousRelation = null;
-
-        Relation oldRelation = (Relation) this.getLayoutTarget()
-                .getGraphModel()
-                .getSemanticObject(_kieler2PtolemyDivaEdges.get(kEdge));
-        List<KPoint> bendPoints = kEdge.getData(KEdgeLayout.class)
-                .getBendPoints();
-        for (KPoint relativeKPoint : bendPoints) {
-            KPoint kpoint = KielerGraphUtil._getAbsoluteKPoint(relativeKPoint,
-                    KielerGraphUtil._getParent(kEdge));
-            // calculate the snap-to-grid coordinates
-            Point2D bendPoint = new Point2D.Double(kpoint.getX(), kpoint.getY());
-            Point2D snapToGridBendPoint = SnapConstraint
-                    .constrainPoint(bendPoint);
-            // create new relation
-            String relationName = _ptolemyModelUtil._getUniqueString(
-                    _compositeActor, "relation");
-            relationName = _ptolemyModelUtil._createRelationWithVertex(
-                    relationName, snapToGridBendPoint.getX(),
-                    snapToGridBendPoint.getY());
-
-            // we process the first bendpoint
-            if (count == 0) {
-                KPort kSourcePort = kEdge.getSourcePort();
-                KNode kNode = kEdge.getSource();
-                NamedObj removedLink = _replaceRelation(kSourcePort, kNode,
-                        relationName, oldRelation);
-                if (removedLink != null) {
-                    removedLinkTargets.add(removedLink);
-                }
-            }
-
-            // process all other bendpoints
-            else {
-                if (previousRelation != null) {
-                    _ptolemyModelUtil._link("relation1", previousRelation,
-                            "relation2", relationName);
-                }
-            }
-            previousRelation = relationName;
-            count++;
-        }
-
-        // last, process target
-        if (previousRelation != null) {
-            KPort kTargetPort = kEdge.getTargetPort();
-            KNode kNode = kEdge.getTarget();
-            NamedObj removedLink = _replaceRelation(kTargetPort, kNode,
-                    previousRelation, oldRelation);
-            if (removedLink != null) {
-                removedLinkTargets.add(removedLink);
-            }
-        }
-        // remove old relation if it is no longer connected
-        // here we cannot ask the Relation itself as all unlinks are buffered
-        // and haven't been executed yet. So we must do our own bookkeeping.
-        for (Object linkedObject : oldRelation.linkedObjectsList()) {
-            if (!removedLinkTargets.contains(linkedObject)) {
-                return null;
-            }
-        }
-        return oldRelation;
-    }
-
     /**
      * Apply the layout of an KEdge to its corresponding Diva Link. This is done
      * by adding a LayoutHint attribute to the corresponding Relation. Only
@@ -1168,82 +1083,6 @@ public class KielerLayout extends AbstractGlobalLayout {
             pos.x += offsetX;
             pos.y += offsetY;
         }
-    }
-
-    /**
-     * Replace a relation connected to a port of a node with a new relation by
-     * unlinking the old one and linking the new one. Properly handle the index
-     * to what the new relation is inserted for multiports, i.e. the channel
-     * index of the new relation should be the same as before for the old
-     * relation.
-     *
-     * @param kPort KIELER port the relation is connected to. Might be null or
-     *            invalid if the port is an inner port within the composite
-     *            actor.
-     * @param kNode KIELER node the port belongs to or---if it is an inner
-     *            port--- the inner port itself.
-     * @param newRelationName The new relation that should be connected.
-     * @param oldRelation The old relation that should be replaced. It does not
-     *            get deleted at this point.
-     * @return the NamedObj to which a link was removed, i.e. either a port or a
-     *         relation
-     * @exception IllegalActionException Exception may be thrown if unlinking or
-     *                linking of a relation fails.
-     * @deprecated XXX This option will be removed from the UI.
-     */
-    private NamedObj _replaceRelation(KPort kPort, KNode kNode,
-            String newRelationName, Relation oldRelation)
-            throws IllegalActionException {
-        Port port = null;
-        Relation sourceRelation = null;
-        if (kPort != null) {
-            port = _kieler2PtolemyPorts.get(kPort);
-        }
-        if (port == null) { // we might have an inner input port as source
-            NamedObj namedObj = _kieler2ptolemyEntityNodes.get(kNode);
-            if (namedObj instanceof Port) {
-                port = (Port) namedObj;
-            } else if (namedObj instanceof Relation) {
-                sourceRelation = (Relation) namedObj;
-            }
-        }
-        if (port != null) { // now we are safe to proceed
-            boolean outsideLink = true;
-            List<Relation> linkedRelations = port.linkedRelationList();
-            int index = linkedRelations.indexOf(oldRelation);
-            if (index == -1 && port instanceof ComponentPort) {
-                linkedRelations = ((ComponentPort) port).insideRelationList();
-                outsideLink = false;
-                index = linkedRelations.indexOf(oldRelation);
-            }
-            if (outsideLink) {
-                _ptolemyModelUtil._unlinkPort(port.getName(_compositeActor),
-                        index);
-                // _ptolemyModelUtil._performChangeRequest(_compositeActor);
-                _ptolemyModelUtil._linkPort(port.getName(_compositeActor),
-                        "relation", newRelationName, index);
-            } else { // insideLink
-                if (port instanceof ComponentPort) {
-                    _ptolemyModelUtil._unlinkPortInside(
-                            port.getName(_compositeActor), index);
-                    _ptolemyModelUtil._linkPortInside(
-                            port.getName(_compositeActor), "relation",
-                            newRelationName, index);
-                }
-            }
-            return port;
-            // the connection is with an already existing relation
-        } else if (sourceRelation != null) {
-            if (!oldRelation.equals(sourceRelation)) {
-                _ptolemyModelUtil._unlinkRelations(
-                        oldRelation.getName(_compositeActor),
-                        sourceRelation.getName(_compositeActor));
-            }
-            _ptolemyModelUtil._link("relation1", sourceRelation.getName(),
-                    "relation2", newRelationName);
-            return sourceRelation;
-        }
-        return null;
     }
 
     /**

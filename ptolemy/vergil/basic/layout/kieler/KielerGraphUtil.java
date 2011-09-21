@@ -49,7 +49,6 @@ import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
-import de.cau.cs.kieler.kiml.klayoutdata.KLayoutDataFactory;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 
@@ -68,59 +67,6 @@ public class KielerGraphUtil {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /**
-     * Get the absolute layout of a KIELER KNode, i.e. a layout containing an
-     * absolute position of the top left corner of the node instead of something
-     * relative to only its parent node.
-     *
-     * @param node The KNode of which to retrieve the absolute layout.
-     * @return A shape layout containing the original size of the node and its
-     *         location in absolute coordinates (not relative to its parent)
-     * @deprecated Use {@link de.cau.cs.kieler.kiml.util.KimlUtil#toAbsolute(KVector, KNode)} instead.
-     */
-    protected static KShapeLayout _getAbsoluteLayout(KNode node) {
-        KShapeLayout klayout = node.getData(KShapeLayout.class);
-        KShapeLayout absoluteLayout = KLayoutDataFactory.eINSTANCE
-                .createKShapeLayout();
-        absoluteLayout.setHeight(klayout.getHeight());
-        absoluteLayout.setWidth(klayout.getWidth());
-        float offsetX = 0, offsetY = 0;
-        KNode parent = node.getParent();
-        while (parent != null) {
-            KShapeLayout parentLayout = parent.getData(KShapeLayout.class);
-            offsetX += parentLayout.getXpos();
-            offsetY += parentLayout.getYpos();
-            parent = parent.getParent();
-        }
-        absoluteLayout.setXpos(klayout.getXpos() + offsetX);
-        absoluteLayout.setYpos(klayout.getYpos() + offsetY);
-        return absoluteLayout;
-    }
-
-    /**
-     * Get the absolute position of a point, i.e. the absolute position instead
-     * of relative to the top left corner of the parent node.
-     *
-     * @param relativeKPoint Point with coordinates relative to its parent node.
-     * @param parentNode Parent node of the point coordinates.
-     * @return Kieler KPoint with the absolute coordinates.
-     * @deprecated Use {@link de.cau.cs.kieler.kiml.util.KimlUtil#toAbsolute(KVector, KNode)} instead.
-     */
-    protected static KPoint _getAbsoluteKPoint(KPoint relativeKPoint,
-            KNode parentNode) {
-        float offsetX = 0, offsetY = 0;
-        while (parentNode != null) {
-            KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
-            offsetX += parentLayout.getXpos();
-            offsetY += parentLayout.getYpos();
-            parentNode = parentNode.getParent();
-        }
-        KPoint absoluteKPoint = KLayoutDataFactory.eINSTANCE.createKPoint();
-        absoluteKPoint.setX(relativeKPoint.getX() + offsetX);
-        absoluteKPoint.setY(relativeKPoint.getY() + offsetY);
-        return absoluteKPoint;
-    }
 
     /**
      * Get the parent node of an Kieler KEdge. That is the Kieler KNode that
