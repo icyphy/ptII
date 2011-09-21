@@ -109,11 +109,11 @@ public class KielerLayoutTableau extends Tableau {
         // TODO read previously stored configuration
         final IPropertyHolder options = new MapPropertyHolder();
         
-//        container.add(new JLabel("Include decorations"));
-//        final JCheckBox decorCheckBox = new JCheckBox();
-//        decorCheckBox.setSelected(options.getProperty(KielerLayout.Options.DECORATIONS));
-//        decorCheckBox.setToolTipText("Whether to include unconnected nodes such as comments.");
-//        container.add(decorCheckBox);
+        container.add(new JLabel("Include decorations"));
+        final JCheckBox decorCheckBox = new JCheckBox();
+        decorCheckBox.setSelected(options.getProperty(KielerLayout.Options.DECORATIONS));
+        decorCheckBox.setToolTipText("Whether to include unconnected nodes such as comments.");
+        container.add(decorCheckBox);
         
         container.add(new JLabel("Route edges"));
         final JCheckBox edgesCheckBox = new JCheckBox();
@@ -130,8 +130,8 @@ public class KielerLayoutTableau extends Tableau {
         // return an object that can create an options map on demand
         return new LayoutConfiguration() {
             public IPropertyHolder getOptions() {
-//                options.setProperty(KielerLayout.Options.DECORATIONS,
-//                        decorCheckBox.isSelected());
+                options.setProperty(KielerLayout.Options.DECORATIONS,
+                        decorCheckBox.isSelected());
                 options.setProperty(KielerLayout.Options.ROUTE_EDGES,
                         edgesCheckBox.isSelected());
                 options.setProperty(LayoutOptions.SPACING,

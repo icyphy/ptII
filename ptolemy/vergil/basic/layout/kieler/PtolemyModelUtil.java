@@ -141,10 +141,14 @@ public class PtolemyModelUtil {
             Attribute attribute = null;
             // Search for the next entity in the hierarchy that has
             // a location attribute.
-            while (attribute == null && object != null) {
+            do {
                 attribute = object.getAttribute("_location");
-                object = object.getContainer();
-            }
+                if (object instanceof Relation) {
+                    object = null;
+                } else {
+                    object = object.getContainer();
+                }
+            } while (attribute == null && object != null);
             if (attribute != null) {
                 if (attribute instanceof Location) {
                     locationAttribute = ((Location) attribute);
