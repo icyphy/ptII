@@ -101,3 +101,30 @@ test MonotonicityConceptCreation-3.0 {We can create a single infinite element Mo
     $monotonicityConcept putMonotonicity {x} $infinite
     $monotonicityConcept toString
 } {{x = infinite_42}}
+
+test MonotonicityConceptCreation-4.0 {We can create a dual infinite element MonotonicityConcept} {
+    set ont [setupSimpleSquareOntology]
+    set lattice [lindex $ont 0]
+    set infiniteRep [lindex $ont 5]
+    set monotonicityConcept [java::call {ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept} createMonotonicityConcept $lattice]
+    set infinite42 [java::call {ptolemy.data.ontologies.FlatTokenInfiniteConcept} createFlatTokenInfiniteConcept $lattice $infiniteRep [java::new {ptolemy.data.IntToken} 42]]
+    set infinite43 [java::call {ptolemy.data.ontologies.FlatTokenInfiniteConcept} createFlatTokenInfiniteConcept $lattice $infiniteRep [java::new {ptolemy.data.IntToken} 43]]
+    $monotonicityConcept putMonotonicity {x} $infinite42
+    $monotonicityConcept putMonotonicity {y} $infinite43
+    list [$infinite42 toString] [$infinite43 toString] [$monotonicityConcept toString]
+} {infinite_42 infinite_43 {{x = infinite_42, y = infinite_43}}}
+
+test MonotonicityLeastUpperBound-1.0 {We can take the upper bound of two conflicting monotonicity concepts and they will promote to top.} {
+    set ont [setupSimpleSquareOntology]
+    set lattice [lindex $ont 0]
+    set infiniteRep [lindex $ont 5]
+    set monotonicityConcept1 [java::call {ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept} createMonotonicityConcept $lattice]
+    set monotonicityConcept2 [java::call {ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConcept} createMonotonicityConcept $lattice]
+    set infinite42 [java::call {ptolemy.data.ontologies.FlatTokenInfiniteConcept} createFlatTokenInfiniteConcept $lattice $infiniteRep [java::new {ptolemy.data.IntToken} 42]]
+    set infinite43 [java::call {ptolemy.data.ontologies.FlatTokenInfiniteConcept} createFlatTokenInfiniteConcept $lattice $infiniteRep [java::new {ptolemy.data.IntToken} 43]]
+    $monotonicityConcept1 putMonotonicity {x} $infinite42
+    $monotonicityConcept2 putMonotonicity {x} $infinite43
+    set lub [$monotonicityConcept1 leastUpperBound $monotonicityConcept2]
+    list [$monotonicityConcept1 toString] [$monotonicityConcept2 toString] [$lub toString]
+} {{{x = infinite_42}} {{x = infinite_43}} {{x = top}}}
+
