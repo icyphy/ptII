@@ -4,13 +4,13 @@
 <entity name="PtidesSynchrophasor" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 805}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 803}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1227, 695]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1227, 693]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.91322910534">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{518.7919921874992, 329.9514703354214}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{518.7919921874992, 328.8564548632332}">
     </property>
     <property name="f_report" class="ptolemy.data.expr.Parameter" value="100.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -56,7 +56,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates a distributed system that monitors relative phases of two power signals and&#10;outputs a control signal whenever the phase difference exceeds PI/3 radians. Power grid signals&#10;are sampled at 500 samples/second. Platforms 1 and 2 deliver phase values to the Synchrophasor&#10;Vector Processor (SVP) every 10 ms. There is a modelled platform delay for the second platform,&#10;which is set at 4 ms. &#10;&#10;The first power signal has a constant phase of PI/18 radians. The second signal has the same phase&#10;initially, but at t=0.5 s, a phase disturbance occurs.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates a distributed system that monitors relative phases of two power signals and&#10;outputs a control signal whenever the phase difference exceeds PI/3 radians. Power grid signals&#10;are sampled at 500 samples/second. Platforms 1 and 2 deliver phase values to the Synchrophasor&#10;Vector Processor (SVP) every 10 ms. &#10;&#10;The first power signal has a constant phase of PI/18 radians. The second signal has the same phase&#10;initially, but at t=0.5 s, a phase disturbance occurs.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, -40.0]">
         </property>
@@ -78,9 +78,9 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="control output, phase 1, phase 2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 810}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 803}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1440, 766]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1440, 759]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 265.0]">
         </property>
@@ -97,52 +97,14 @@
 <title>PMU Data and Phase Difference</title>
 <xLabel>time(s)</xLabel>
 <yLabel>Angle(rad)</yLabel>
-<xRange min="0.0" max="5.0"/>
-<yRange min="-1.357582151246478" max="1.5707963267948966"/>
+<xRange min="3.8797268137334777" max="3.892691120158345"/>
+<yRange min="-0.06268174301592477" max="1.2295573434561307"/>
 <default connected="no" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="SVP" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 255.0]">
-        </property>
-        <property name="phase1" class="ptolemy.data.expr.Parameter" value="0.1745336166782">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 65.0]">
-            </property>
-        </property>
-        <property name="phase2" class="ptolemy.data.expr.Parameter" value="-1.3505845497109">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 95.0]">
-            </property>
         </property>
         <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="forceActorsToProcessEventsInTimestampOrder" class="ptolemy.data.expr.Parameter" value="false">
@@ -379,7 +341,7 @@ whenever phase difference exceeds a threshold ( = PI/3 radians).</text></svg></c
             </port>
         </entity>
         <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="3E-6">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="100E-6">
             </property>
             <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="1E-6">
             </property>
@@ -735,8 +697,6 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 105.0]">
             </property>
         </property>
-        <property name="platformDelay" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is the PTIDES implementation &#10;of the phase-measurement platform.&#10;The incoming signals are sampled at &#10;500 samples/sec and the phase &#10;output rate is 100 samples/sec. ">
             </property>
@@ -956,12 +916,6 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
             <link port="IIR2.input" relation="relation2"/>
             <link port="IIR2.output" relation="relation9"/>
         </entity>
-        <entity name="PlatformDelay" class="ptolemy.actor.lib.SingleEvent">
-            <property name="time" class="ptolemy.data.expr.Parameter" value="platformDelay">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 385.0]">
-            </property>
-        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -974,8 +928,6 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <link port="signal" relation="relation3"/>
         <link port="Re" relation="relation4"/>
         <link port="Im" relation="relation5"/>
@@ -984,12 +936,10 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
         <link port="Sampler.output" relation="relation6"/>
         <link port="Sampler.trigger" relation="relation"/>
         <link port="DiscreteClock.output" relation="relation"/>
-        <link port="DiscreteClock.start" relation="relation7"/>
         <link port="PMU.in" relation="relation3"/>
         <link port="PMU.nom_Re" relation="relation4"/>
         <link port="PMU.nom_Im" relation="relation5"/>
         <link port="PMU.port" relation="relation2"/>
-        <link port="PlatformDelay.output" relation="relation7"/>
     </entity>
     <entity name="Platform2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 385.0]">
@@ -998,8 +948,6 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 105.0]">
             </property>
         </property>
-        <property name="platformDelay" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is the PTIDES implementation &#10;of the phase-measurement platform.&#10;The incoming signals are sampled at &#10;500 samples/sec and the phase &#10;output rate is 100 samples/sec. ">
             </property>
@@ -1219,12 +1167,6 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
             <link port="IIR2.input" relation="relation2"/>
             <link port="IIR2.output" relation="relation9"/>
         </entity>
-        <entity name="PlatformDelay" class="ptolemy.actor.lib.SingleEvent">
-            <property name="time" class="ptolemy.data.expr.Parameter" value="platformDelay">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 385.0]">
-            </property>
-        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -1237,8 +1179,6 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <link port="signal" relation="relation3"/>
         <link port="Re" relation="relation4"/>
         <link port="Im" relation="relation5"/>
@@ -1247,12 +1187,10 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
         <link port="Sampler.output" relation="relation6"/>
         <link port="Sampler.trigger" relation="relation"/>
         <link port="DiscreteClock.output" relation="relation"/>
-        <link port="DiscreteClock.start" relation="relation7"/>
         <link port="PMU.in" relation="relation3"/>
         <link port="PMU.nom_Re" relation="relation4"/>
         <link port="PMU.nom_Im" relation="relation5"/>
         <link port="PMU.port" relation="relation2"/>
-        <link port="PlatformDelay.output" relation="relation7"/>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -1284,9 +1222,9 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
         <vertex name="vertex1" value="[100.0, 260.0]">
         </vertex>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="TimedPlotter.input" relation="relation4"/>
     <link port="TimedPlotter.input" relation="relation5"/>
@@ -1296,9 +1234,9 @@ At t= 0.5, a phase disturbance occurs as modeled in the 'disturbance' state.</te
     <link port="SVP.control_out" relation="relation4"/>
     <link port="Power Grid.sin" relation="relation13"/>
     <link port="Power Grid.cos" relation="relation8"/>
-    <link port="Power Grid.signal1" relation="relation7"/>
+    <link port="Power Grid.signal1" relation="relation3"/>
     <link port="Power Grid.signal2" relation="relation2"/>
-    <link port="Platform1.signal" relation="relation7"/>
+    <link port="Platform1.signal" relation="relation3"/>
     <link port="Platform1.Re" relation="relation8"/>
     <link port="Platform1.Im" relation="relation13"/>
     <link port="Platform1.port" relation="relation5"/>
