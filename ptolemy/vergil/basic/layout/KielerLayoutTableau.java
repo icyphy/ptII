@@ -27,7 +27,9 @@
 package ptolemy.vergil.basic.layout;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,11 +40,14 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Configuration;
@@ -59,7 +64,9 @@ import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.layout.kieler.KielerLayout;
-import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
+import de.cau.cs.kieler.core.properties.IPropertyHolder;
+import de.cau.cs.kieler.core.properties.MapPropertyHolder;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.basic.BasicLayoutTarget;
@@ -67,15 +74,16 @@ import diva.graph.basic.BasicLayoutTarget;
 /**
  A top-level dialog window for controlling the Kieler graph layout algorithm.
 
- @author Christopher Brooks, based on JVMTableau. Christian Motika <cmot@informatik.uni-kiel.de>
+ @author Christopher Brooks, based on JVMTableau. Christian Motika (<a href="mailto:cmot@informatik.uni-kiel.de">cmot</a>)
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class KielerLayoutTableau extends Tableau {
+    
     /** Construct a frame to control layout of graphical elements
-     *  using the Kieler algorithms for the specified Ptolemy II model.
+     *  using the KIELER algorithms for the specified Ptolemy II model.
      *
      *  @param container The containing effigy.
      *  @param name The name of this tableau within the specified effigy.
@@ -92,6 +100,54 @@ public class KielerLayoutTableau extends Tableau {
         _frame = new KielerLayoutFrame((CompositeEntity) model, this);
         setFrame(_frame);
     }
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    private LayoutConfiguration createOptions(Container container) {
+        // TODO read previously stored configuration
+        final IPropertyHolder options = new MapPropertyHolder();
+        
+//        container.add(new JLabel("Include decorations"));
+//        final JCheckBox decorCheckBox = new JCheckBox();
+//        decorCheckBox.setSelected(options.getProperty(KielerLayout.Options.DECORATIONS));
+//        decorCheckBox.setToolTipText("Whether to include unconnected nodes such as comments.");
+//        container.add(decorCheckBox);
+        
+        container.add(new JLabel("Route edges"));
+        final JCheckBox edgesCheckBox = new JCheckBox();
+        edgesCheckBox.setSelected(options.getProperty(KielerLayout.Options.ROUTE_EDGES));
+        edgesCheckBox.setToolTipText("Whether to apply edge routing or to use the standard router.");
+        container.add(edgesCheckBox);
+        
+        container.add(new JLabel("Object spacing"));
+        final JSlider spacingSlider = new JSlider(SwingConstants.HORIZONTAL, 1, 50,
+                options.getProperty(KielerLayout.Options.SPACING).intValue());
+        spacingSlider.setToolTipText("The overall spacing between graph elements.");
+        container.add(spacingSlider);
+        
+        // return an object that can create an options map on demand
+        return new LayoutConfiguration() {
+            public IPropertyHolder getOptions() {
+//                options.setProperty(KielerLayout.Options.DECORATIONS,
+//                        decorCheckBox.isSelected());
+                options.setProperty(KielerLayout.Options.ROUTE_EDGES,
+                        edgesCheckBox.isSelected());
+                options.setProperty(LayoutOptions.SPACING,
+                        Float.valueOf(spacingSlider.getValue()));
+                return options;
+            }
+        };
+    }
+
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The KIELER Layout Frame, needed so that we can call getModel(). */
+    private KielerLayoutFrame _frame;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -99,7 +155,8 @@ public class KielerLayoutTableau extends Tableau {
     /** The frame that is created by an instance of KielerLayoutTableau.
      */
     public class KielerLayoutFrame extends PtolemyFrame {
-        /** Construct a frame to display Kieler layout controls.
+        
+        /** Construct a frame to display KIELER layout controls.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
          *  This is typically accomplished by calling show() on
@@ -114,22 +171,19 @@ public class KielerLayoutTableau extends Tableau {
                 throws IllegalActionException, NameDuplicationException {
             super(model, tableau);
 
-            setTitle("Layout of " + model.getName());
+            setTitle("Layout Options for " + model.getName());
+            JPanel upperPanel = new JPanel();
+            upperPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            upperPanel.setLayout(new BoxLayout(upperPanel, BoxLayout.Y_AXIS));
 
             // Caveats panel.
             JPanel caveatsPanel = new JPanel();
-            caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-            caveatsPanel
-                    .setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
+            caveatsPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+            caveatsPanel.setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
 
-            JTextArea messageArea = new JTextArea(
-                    "Use the buttons below to control the Kieler automatic layout algorithm",
-                    2, 10);
-            messageArea.setEditable(false);
-            messageArea.setBorder(BorderFactory.createEtchedBorder());
-            messageArea.setLineWrap(true);
-            messageArea.setWrapStyleWord(true);
-            caveatsPanel.add(messageArea);
+            JLabel descriptionLabel = new JLabel("Parameters for the KIELER layout algorithm");
+            descriptionLabel.setFont(descriptionLabel.getFont().deriveFont(Font.BOLD));
+            caveatsPanel.add(descriptionLabel);
 
             JButton moreInfoButton = new JButton("More Info");
             moreInfoButton.addActionListener(new ActionListener() {
@@ -152,92 +206,45 @@ public class KielerLayoutTableau extends Tableau {
                 }
             });
             caveatsPanel.add(moreInfoButton);
-            JPanel upper = new JPanel();
-            upper.setLayout(new BoxLayout(upper, BoxLayout.Y_AXIS));
-            //caveatsPanel.setMaximumSize(new Dimension(500, 100));
-            upper.add(caveatsPanel);
+            upperPanel.add(caveatsPanel);
 
-            // Panel for push buttons.
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new GridLayout(1, 4));
-
-            String[][] buttons = new String[][] {
-                    { "Place All", "placeall.gif",
-                            "Automatic layout. Places all items including attributes. No routing is done." },
-                    { "Place", "place.gif",
-                            "Automatic layout. Only places connected items. No routing is done." },
-                    { "Place and Route", "placeandroute.gif",
-                            "Place and Route! Inserts new Relation Vertices. (EXPERIMENTAL)" },
-                    { "Remove Vertices", "removevertices.gif",
-                            "Remove unnecessary relation vertices." },
-                    { "Hide/Show Vertices", "hidevertices.gif",
-                            "Toggle hide/show unnecessary relation vertices" },
-                    { "Classic Layout", "classic.gif", "Older layout style" } };
-
-            AbstractAction[] actions = new AbstractAction[] {
-                    new PlaceAllAction(), new PlaceAction(),
-                    new PlaceAndRouteAction(), new RemoveVerticesAction(),
-                    new HideVerticesAction(),
-                    new KielerTableauPtolemyLayoutAction() };
-
-            for (int i = 0; i < buttons.length; i++) {
-                JButton button;
-                URL url = getClass().getResource(
-                        "/ptolemy/vergil/basic/layout/img/" + buttons[i][1]);
-                if (url == null) {
-                    button = new JButton(buttons[i][0]);
-                } else {
-                    button = new JButton(new ImageIcon(url));
-                }
-                button.setToolTipText(buttons[i][2]);
-                buttonPanel.add(button);
-                button.addActionListener(actions[i]);
-            }
-
-            //buttonPanel.setMaximumSize(new Dimension(500, 50));
-            upper.add(buttonPanel);
-            upper.setPreferredSize(new Dimension(200, 100));
-            getContentPane().add(upper, BorderLayout.CENTER);
+            // Panel for layout options.
+            JPanel optionsPanel = new JPanel();
+            optionsPanel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+                    BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+            optionsPanel.setLayout(new GridLayout(0, 2, 4, 4));
+            LayoutConfiguration layoutConfig = createOptions(optionsPanel);
+            upperPanel.add(optionsPanel);
+            
+            // Buttons for applying layout.
+            JPanel layoutPanel = new JPanel();
+            layoutPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+            JButton applyButton = new JButton("Apply Layout");
+            applyButton.setToolTipText("Store the current setting in the model and apply automatic layout.");
+            applyButton.addActionListener(new LayoutAction(layoutConfig));
+            layoutPanel.add(applyButton);
+            JButton oldButton = new JButton("Old Ptolemy Layout");
+            oldButton.setToolTipText("Apply the old Ptolemy layout algorithm.");
+            oldButton.addActionListener(new KielerTableauPtolemyLayoutAction());
+            layoutPanel.add(oldButton);
+            upperPanel.add(layoutPanel);
+            
+            getContentPane().add(upperPanel, BorderLayout.CENTER);
+            pack();
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
     /**
-     * Base class for layout actions.
-     * Derived classes vary their constructor calls which allows the derived classes
-     * to avoid duplicated code.
+     * Action for storing options in the model and applying automatic layout.
+     * TODO store options persistently in the model
      */
-    private class BaseLayoutAction extends AbstractAction {
-        /** Construction an action for placing layout.
-         *  @param applyEdgeLayout true if the edge layout should be applied.
-         *  @param bendPointAnnotation true if the new layout hints should be
-         *         annotated instead of adding dummy layout relations
-         *  @param boxLayout true if the box layout should be applied.
-         *  @param removeUnnecessaryRelations true if we are to remove
-         *         unnecessary relation vertices.
-         *  @param showUnnecessaryRelationsToggle true if we are to toggle between showing
-         *  and hiding unnecessary relation vertices.
+    private class LayoutAction extends AbstractAction {
+        
+        /** Constructs an action for applying layout.
          */
-        public BaseLayoutAction(boolean applyEdgeLayout,
-                boolean bendPointAnnotation, boolean boxLayout,
-                boolean removeUnnecessaryRelations,
-                boolean showUnnecessaryRelationsToggle) {
-            if (((applyEdgeLayout || boxLayout) && (removeUnnecessaryRelations || showUnnecessaryRelationsToggle))
-                    || (removeUnnecessaryRelations && showUnnecessaryRelationsToggle)) {
-                throw new InternalErrorException(
-                        "If either applyEdgeLayout or boxLayout "
-                                + "is true, then removeUnnecessaryRelations and showUnnecessaryRelationsToggle"
-                                + "must be false.  Also, only one of "
-                                + "removeUnnecessaryRelations and showUnnecessaryRelationsToggle can be true.");
-            }
-            _applyEdgeLayoutInsertRelations = applyEdgeLayout && !bendPointAnnotation;
-            _applyEdgeLayoutBendPointAnnotation = applyEdgeLayout
-                    && bendPointAnnotation;
-            _boxLayout = boxLayout;
-            _removeUnnecessaryRelations = removeUnnecessaryRelations;
-            _showUnnecessaryRelationsToggle = showUnnecessaryRelationsToggle;
+        LayoutAction(LayoutConfiguration config) {
+            this._layoutConfiguration = config;
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -250,112 +257,87 @@ public class KielerLayoutTableau extends Tableau {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                MessageHandler.error(
-                        "Failed to layout \""
-                                + (model == null ? "name not found" : (model
-                                        .getFullName())) + "\"", ex);
+                MessageHandler.error("Failed to layout \""
+                        + (model == null ? "name not found"
+                                : (model.getFullName())) + "\"", ex);
             }
         }
 
-        public void actionPerformed(ActionEvent e, NamedObj model) {
-            try {
-                if (!(model instanceof CompositeActor)) {
-                    throw new InternalErrorException(
-                            "For now only actor oriented graphs with ports are supported by KIELER layout. "
-                                    + "The model \""
-                                    + model.getFullName()
-                                    + "\" was a "
-                                    + model.getClass().getName()
-                                    + " which is not an instance of CompositeActor.");
+        void actionPerformed(ActionEvent e, NamedObj model) {
+            if (!(model instanceof CompositeActor)) {
+                // TODO extend this for modal models
+                throw new InternalErrorException(
+                        "For now only actor oriented graphs with ports are supported by KIELER layout. "
+                                + "The model \""
+                                + model.getFullName()
+                                + "\" was a "
+                                + model.getClass().getName()
+                                + " which is not an instance of CompositeActor.");
+            }
+            JFrame frame = null;
+            int tableauxCount = 0;
+            Iterator tableaux = Configuration.findEffigy(model)
+                    .entityList(Tableau.class).iterator();
+            while (tableaux.hasNext()) {
+                Tableau tableau = (Tableau) (tableaux.next());
+                tableauxCount++;
+                if (tableau.getFrame() instanceof ActorGraphFrame) {
+                    frame = tableau.getFrame();
                 }
-                JFrame frame = null;
-                int tableauxCount = 0;
-                Iterator tableaux = Configuration.findEffigy(model)
-                        .entityList(Tableau.class).iterator();
-                while (tableaux.hasNext()) {
-                    Tableau tableau = (Tableau) (tableaux.next());
-                    tableauxCount++;
-                    if (tableau.getFrame() instanceof ActorGraphFrame) {
-                        frame = tableau.getFrame();
-                    }
-                }
-                // Check for supported type of editor
-                if (!(frame instanceof ActorGraphFrame)) {
-                    String message = "";
-                    if (tableauxCount == 0) {
-                        message = "findEffigy() found no Tableaux?  There should have been one "
-                                + "ActorGraphFrame.";
-                    } else {
-                        JFrame firstFrame = (Configuration.findEffigy(model)
-                                .entityList(Tableau.class).get(0)).getFrame();
-                        if (firstFrame instanceof KielerLayoutFrame) {
-                            message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
-                                    + "please save the model before running the layout mechanism.";
-                        } else {
-                            message = "The first frame of "
-                                    + tableauxCount
-                                    + " found by findEffigy() is a \""
-                                    + firstFrame.getClass().getName()
-                                    + "\", which is not an instance of ActorGraphFrame."
-                                    + " None of the other frames were ActorGraphFrames either.";
-                        }
-                    }
-                    throw new InternalErrorException(
-                            model,
-                            null,
-                            "For now only actor oriented graphs with ports are supported by KIELER layout. "
-                                    + message
-                                    + (frame != null ? " Details about the frame: "
-                                            + StringUtilities.ellipsis(
-                                                    frame.toString(), 80)
-                                            : ""));
+            }
+            // Check for supported type of editor
+            if (!(frame instanceof ActorGraphFrame)) {
+                String message = "";
+                if (tableauxCount == 0) {
+                    message = "findEffigy() found no Tableaux?  There should have been one "
+                            + "ActorGraphFrame.";
                 } else {
-                    if (_removeUnnecessaryRelations) {
-                        PtolemyModelUtil
-                                .removeUnnecessaryRelations((CompositeActor) model);
-                    } else if (_showUnnecessaryRelationsToggle) {
-                        PtolemyModelUtil
-                                .showUnnecessaryRelationsToggle((CompositeActor) model);
+                    JFrame firstFrame = (Configuration.findEffigy(model)
+                            .entityList(Tableau.class).get(0)).getFrame();
+                    if (firstFrame instanceof KielerLayoutFrame) {
+                        message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
+                                + "please save the model before running the layout mechanism.";
                     } else {
-                        BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
-
-                        // fetch everything needed to build the LayoutTarget
-                        GraphController graphController = graphFrame
-                                .getJGraph().getGraphPane()
-                                .getGraphController();
-                        GraphModel graphModel = graphFrame.getJGraph()
-                                .getGraphPane().getGraphController()
-                                .getGraphModel();
-                        BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
-                                graphController);
-
-                        // create Kieler layouter for this layout target
-                        KielerLayout layout = new KielerLayout(layoutTarget);
-                        layout.setModel((CompositeActor) model);
-                        layout.setApplyEdgeLayoutInsertRelations(_applyEdgeLayoutInsertRelations);
-                        layout.setApplyEdgeLayout(_applyEdgeLayoutBendPointAnnotation);
-                        layout.setBoxLayout(_boxLayout);
-                        layout.setTop(graphFrame);
-
-                        layout.layout(graphModel.getRoot());
+                        message = "The first frame of "
+                                + tableauxCount
+                                + " found by findEffigy() is a \""
+                                + firstFrame.getClass().getName()
+                                + "\", which is not an instance of ActorGraphFrame."
+                                + " None of the other frames were ActorGraphFrames either.";
                     }
                 }
-            } catch (Exception ex) {
-                // If we do not catch exceptions here, then they
-                // disappear to stdout, which is bad if we launched
-                // where there is no stdout visible.
-                MessageHandler.error(
-                        "Failed to layout \""
-                                + (model == null ? "name not found" : (model
-                                        .getFullName())) + "\"", ex);
+                throw new InternalErrorException(model, null,
+                        "For now only actor oriented graphs with ports are supported by KIELER layout. "
+                                + message
+                                + (frame != null ? " Details about the frame: "
+                                        + StringUtilities.ellipsis(
+                                                frame.toString(), 80)
+                                        : ""));
+            } else {
+                BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
+
+                // fetch everything needed to build the LayoutTarget
+                GraphController graphController = graphFrame
+                        .getJGraph().getGraphPane()
+                        .getGraphController();
+                GraphModel graphModel = graphFrame.getJGraph()
+                        .getGraphPane().getGraphController()
+                        .getGraphModel();
+                BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
+                        graphController);
+
+                // create KIELER layouter for this layout target
+                KielerLayout layout = new KielerLayout(layoutTarget);
+                layout.setModel((CompositeActor) model);
+                layout.setTop(graphFrame);
+                IPropertyHolder options = _layoutConfiguration.getOptions();
+                layout.setOptions(options);
+
+                layout.layout(graphModel.getRoot());
             }
         }
 
-        public boolean _applyEdgeLayoutInsertRelations;
-        public boolean _applyEdgeLayoutBendPointAnnotation;
-        public boolean _boxLayout;
-        public boolean _removeUnnecessaryRelations;
-        public boolean _showUnnecessaryRelationsToggle;
+        private LayoutConfiguration _layoutConfiguration;
     }
 
     /** Use the older layout algorithm. */
@@ -370,80 +352,14 @@ public class KielerLayoutTableau extends Tableau {
             graphFrame.layoutGraphWithPtolemyLayout();
         }
     }
-
-    /** New automatic layout option placing all connected nodes and annotating
-     * relations with bend point positions of connected links.
-     */
-    //    private class PlaceAndRouteAnnotationAction extends BaseLayoutAction {
-    //        /** Construct a HideAndRouteAction.
-    //         */
-    //        public PlaceAndRouteAnnotationAction() {
-    //            super(true, true, false, false, false);
-    //        }
-    //    }
-
-    /** Toggle between showing and hiding of unnecessary relation vertices.
-     */
-    private class HideVerticesAction extends BaseLayoutAction {
-        /** Construct a HideAndRouteAction.
+    
+    /** Internally used configuration class for transferring the layout options. */
+    private interface LayoutConfiguration {
+        /**
+         * Create a map of layout options from the user settings.
+         * @return a property holder for mapping layout option identifiers to specific values
          */
-        public HideVerticesAction() {
-            super(false, false, false, false, true);
-        }
+        IPropertyHolder getOptions();
     }
 
-    /** Action to place all items, including attributes.  No routing is done. */
-    private class PlaceAllAction extends BaseLayoutAction {
-        /** Construct a PlaceAllAction that has
-         *  applyEdgeLayout set to false and
-         *  boxLayout set to true.
-         */
-        public PlaceAllAction() {
-            // applyEdgeLayout = false, boxLayout = true
-            super(false, false, true, false, false);
-        }
-    }
-
-    /** Action to do automatic layout. Only places connected items. No
-     * routing is done.
-     */
-    private class PlaceAction extends BaseLayoutAction {
-        /** Construct a PlaceAction that has
-         *  applyEdgeLayout set to false and
-         *  boxLayout set to false.
-         */
-        public PlaceAction() {
-            super(false, false, false, false, false);
-        }
-    }
-
-    /** Place and Route! Inserts new Relation Vertices. (EXPERIMENTAL).
-     */
-    private class PlaceAndRouteAction extends BaseLayoutAction {
-        /** Construct a PlaceAndRouteAction that has
-         *  applyEdgeLayout set to true and
-         *  boxLayout set to false.
-         */
-        public PlaceAndRouteAction() {
-            super(true, false, false, false, false);
-        }
-    }
-
-    /**
-     * An action to remove unnecessary relation vertices. Unnecessary
-     * means they have been introduced just for manual routing of
-     * edges and have only 0, 1 or 2 adjacent links.
-     */
-    private class RemoveVerticesAction extends BaseLayoutAction {
-        /** Construct a PlaceAndRouteAction that has
-         *  applyEdgeLayout set to true and
-         *  boxLayout set to false.
-         */
-        public RemoveVerticesAction() {
-            super(false, false, false, true, false);
-        }
-    }
-
-    /** The Kieler Layout Frame, needed so that we can call getModel(). */
-    private KielerLayoutFrame _frame;
 }

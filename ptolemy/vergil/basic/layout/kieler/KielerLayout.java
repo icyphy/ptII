@@ -34,12 +34,10 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.SwingConstants;
 
@@ -80,6 +78,10 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.math.KVector;
+import de.cau.cs.kieler.core.properties.IProperty;
+import de.cau.cs.kieler.core.properties.IPropertyHolder;
+import de.cau.cs.kieler.core.properties.MapPropertyHolder;
+import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.AbstractLayoutProvider;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
@@ -159,9 +161,6 @@ import diva.graph.modular.EdgeModel;
  */
 public class KielerLayout extends AbstractGlobalLayout {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /**
      * Construct an instance taking a LayoutTarget for specifying some methods
      * for layout handling as given by the standard Ptolemy
@@ -188,6 +187,10 @@ public class KielerLayout extends AbstractGlobalLayout {
         super(target);
         this.setModel(ptolemyContainer);
     }
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Layout the given composite. Main entry point for the layout action.
@@ -214,11 +217,9 @@ public class KielerLayout extends AbstractGlobalLayout {
         // Create a KGraph for the KIELER layout algorithm.
         KNode parentNode = KimlUtil.createInitializedNode();
         KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
-        parentLayout.setProperty(LayoutOptions.DIRECTION, Direction.RIGHT);
-        parentLayout.setProperty(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
-        parentLayout.setProperty(LayoutOptions.BORDER_SPACING, 5.0f);
-        parentLayout.setProperty(LayoutOptions.SPACING, DEF_SPACING);
-        parentLayout.setProperty(Properties.EDGE_SPACING_FACTOR, 1.5f);
+        
+        // Configure the layout algorithm by annotating the graph.
+        Options._configureLayout(parentLayout, _layoutOptions);
 
         // Now read Ptolemy model and fill the KGraph with the model data.
         _createGraph(composite, parentNode);
@@ -269,51 +270,6 @@ public class KielerLayout extends AbstractGlobalLayout {
     }
 
     /**
-     * Configure whether the layout should only place nodes or additionally
-     * route edges. Edge routing would be done by insertion of new relation
-     * vertices which is a real manipulation of a model. Routing is only
-     * supported for standard actor based frames with relations. Different arrow
-     * styles like in Modal Models are not yet supported for routing.
-     *
-     * @param flag True iff edge routing shall be applied by insertion of
-     *            relation vertices.
-     * @deprecated XXX This option will be removed from the UI.
-     */
-    public void setApplyEdgeLayoutInsertRelations(boolean flag) {
-        this._doApplyEdgeLayoutInsertRelations = flag;
-    }
-
-    /**
-     * Configure whether the layout should only place nodes or additionally
-     * route edges. Edge routing would be done by annotating the relations with
-     * bend point information of their connected links. Different arrow styles
-     * like in Modal Models are not yet supported for routing.
-     *
-     * @param flag True iff edge routing shall be applied by adding {@link LayoutHint}s
-     */
-    public void setApplyEdgeLayout(boolean flag) {
-        this._doApplyEdgeLayout = flag;
-    }
-
-    /**
-     * Configure whether all unconnected nodes should also be placed by the
-     * layouter with a simple box layout heuristic. Either only connected nodes
-     * (e.g. actors connected by relations) are placed or all nodes including
-     * unconnected nodes are placed. The rationale behind not placing
-     * unconnected items is that the user might want to manually place text
-     * annotations or parameters at some special locations, e.g. to document
-     * specific parts of the model. In that case the bounding box of all
-     * connected nodes will be located with its upper left corner at the same
-     * position as before.
-     *
-     * @param flag If true, apply layout to all nodes, including unconnected
-     *            ones. Otherwise, apply layout only to connected nodes.
-     */
-    public void setBoxLayout(boolean flag) {
-        this._doBoxLayout = flag;
-    }
-
-    /**
      * Set the Ptolemy Model that contains the graph that is to be layouted. The
      * layouter will require access to the Ptolemy model because the lower level
      * Diva abstraction does not consider certain properties required by the
@@ -335,6 +291,16 @@ public class KielerLayout extends AbstractGlobalLayout {
         this._top = top;
     }
     
+    /**
+     * Set the layout options configuration for configuring the layout algorithm.
+     * 
+     * @param options a property holder for layout options configuration
+     */
+    public void setOptions(IPropertyHolder options) {
+        this._layoutOptions = options;
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -353,9 +319,10 @@ public class KielerLayout extends AbstractGlobalLayout {
         return _layoutProviderPool;
     }
 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
+    
     /**
      * Apply precomputed routing of edges to the Ptolemy model by insertion of
      * new relation vertices. Take a Kieler KEdge with layout information (bend
@@ -555,19 +522,8 @@ public class KielerLayout extends AbstractGlobalLayout {
                 }
             }
 
-            // apply edge layout - extra vertices (haf)
-            if (_doApplyEdgeLayoutInsertRelations) {
-                Set<Relation> relationsToDelete = new HashSet<Relation>();
-                for (KEdge kedge : _kieler2PtolemyDivaEdges.keySet()) {
-                    Relation oldRelation = _applyEdgeLayoutInsertRelations(kedge);
-                    if (oldRelation != null) {
-                        relationsToDelete.add(oldRelation);
-                    }
-                }
-                _ptolemyModelUtil._removeRelations(relationsToDelete);
-            }
             // apply edge layout - bend points (cmot)
-            if (_doApplyEdgeLayout) {
+            if (_layoutOptions.getProperty(Options.ROUTE_EDGES)) {
                 for (KEdge kedge : _kieler2PtolemyDivaEdges.keySet()) {
                     _applyEdgeLayoutBendPointAnnotation(kedge);
                 }
@@ -605,6 +561,9 @@ public class KielerLayout extends AbstractGlobalLayout {
         _kieler2PtolemyPorts = new HashMap<KPort, Port>();
         _divaEdgeSource = new HashMap<Object, Object>();
         _divaEdgeTarget = new HashMap<Object, Object>();
+        
+        // Determine whether to include unconnected nodes.
+        boolean doBoxLayout = _layoutOptions.getProperty(Options.DECORATIONS);
 
         // On-the-fly find upper left corner for bounding box of parent node.
         float globalX = Float.MAX_VALUE, globalY = Float.MAX_VALUE;
@@ -628,7 +587,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                 // and to distinguish actors and relation vertices.
                 NamedObj semanticNode = (NamedObj) aGraph.getSemanticObject(node);
 
-                if (_doBoxLayout || PtolemyModelUtil._isConnected(semanticNode)) {
+                if (doBoxLayout || PtolemyModelUtil._isConnected(semanticNode)) {
                     // Temporary variable for the new KNode corresponding to one of
                     // the following cases depending on what the semantic object is.
                     KNode knode = null;
@@ -1190,7 +1149,8 @@ public class KielerLayout extends AbstractGlobalLayout {
 
         Point2D.Double location = PtolemyModelUtil._getLocation(namedObj);
 
-        if (namedObj != null && divaNode != null) {
+        // FIXME how are attributes placed?
+        if (namedObj != null && divaNode != null && !(namedObj instanceof Attribute)) {
             Rectangle2D divaBounds = this.getLayoutTarget().getBounds(divaNode);
             double offsetX = 0, offsetY = 0;
 
@@ -1400,6 +1360,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
     }
 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1421,12 +1382,6 @@ public class KielerLayout extends AbstractGlobalLayout {
      * The offset height used by KIELER for inner ports to correct connection anchor.
      */
     private static final float INNER_PORT_HEIGHT_OFFSET = 11.0f;
-
-    /**
-     * Minimal distance between nodes. Changing this value will decrease the
-     * overall space consumed by the diagram.
-     */
-    private static final float DEF_SPACING = 10.0f;
 
     /**
      * Offset at the x and y-coordinate of the shape of a Multiport to its figure.
@@ -1461,23 +1416,10 @@ public class KielerLayout extends AbstractGlobalLayout {
     private Map<Object, Object> _divaEdgeTarget;
 
     /**
-     * Flag to indicate whether edge routing shall be applied by insertion of
-     * new relation vertices or not.
-     * @deprecated XXX This option will be removed from the UI.
+     * A map of layout option identifiers to specific values. This is used to configure
+     * how the layout graph is built and to configure the layout algorithm.
      */
-    private boolean _doApplyEdgeLayoutInsertRelations = false;
-
-    /**
-     * Flag to indicate whether edge routing shall be applied by annotating
-     * relations with bend point information of their connected links.
-     */
-    private boolean _doApplyEdgeLayout = true;
-
-    /**
-     * Flag to indicate whether all nodes should be placed including unconnected
-     * nodes such as attributes (e.g. director, text annotations,...).
-     */
-    private boolean _doBoxLayout = false;
+    private IPropertyHolder _layoutOptions = new MapPropertyHolder();
 
     /**
      * A pool of layout provider instances, which are used to perform the actual
@@ -1523,5 +1465,43 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Pointer to Top in order to report the current status.
      */
     private Top _top;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    public static final class Options {
+        
+        /**
+         * Configure the KIELER layout using a property holder.
+         * 
+         * @param parentLayout the layout of the parent node
+         */
+        private static void _configureLayout(KShapeLayout parentLayout,
+                IPropertyHolder options) {
+            // set default values
+            parentLayout.setProperty(LayoutOptions.DIRECTION, Direction.RIGHT);
+            parentLayout.setProperty(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
+            parentLayout.setProperty(LayoutOptions.BORDER_SPACING, 5.0f);
+            parentLayout.setProperty(Properties.EDGE_SPACING_FACTOR, 1.5f);
+            parentLayout.setProperty(LayoutOptions.SPACING, SPACING.getDefault());
+            
+            // copy values specified by user
+            parentLayout.copyProperties(options);
+        }
+        
+        /** Layout option that determines whether decoration nodes are included in layout. */
+        public static final IProperty<Boolean> DECORATIONS = new Property<Boolean>(
+                "ptolemy.vergil.basic.layout.decorations", false);
+        
+        /** Layout option that determines whether edges are routed. */
+        public static final IProperty<Boolean> ROUTE_EDGES = new Property<Boolean>(
+                "ptolemy.vergil.basic.layout.routeEdges", true);
+        
+        /** Layout option for the overall spacing between elements. */
+        public static final IProperty<Float> SPACING = new Property<Float>(
+                LayoutOptions.SPACING, 10.0f);
+
+
+    }
 
 }

@@ -35,15 +35,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- * A factory that creates a control panel to display Kieler layout controls.
+ * A factory that creates a control panel to display KIELER layout controls.
+ * 
  * @author Christopher Brooks
- * @version $Id: KielerLayoutTableauFactory.java 59265 2010-09-26 17:11:58Z cmot
- *          $
+ * @version $Id: KielerLayoutTableauFactory.java 59265 2010-09-26 17:11:58Z cmot$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
 public class KielerLayoutTableauFactory extends TableauFactory {
+    
     /**
      * Create a factory with the given name and container.
      * @param container The container.
@@ -88,4 +89,5 @@ public class KielerLayoutTableauFactory extends TableauFactory {
             return null;
         }
     }
+    
 }
