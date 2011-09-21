@@ -32,7 +32,7 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		doc/books/systems/synchronous/test
 
-DIRS =
+DIRS =		$(PTJUNIT_DIR)
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..

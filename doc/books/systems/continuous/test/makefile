@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test models used in the dataflow chapter
+# Makefile for the Java classes used to test models used in the continuous chapter
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		doc/books/systems/dataflow/test
+ME =		doc/books/systems/continuous/test
 
 DIRS =		$(PTJUNIT_DIR)
 

@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test models used in the dataflow chapter
+# Makefile for the Java classes used to test models used in the plotter chapter
 #
 # @Authors: Christopher Brooks (makefile only)
 #

@@ -1,4 +1,4 @@
-# Makefile for the Ptolemy II System Design, Modeling, and Simulation Using Ptolemy II
+# Makefile for the Ptolemy II SystemDMS book, expressions chapter
 #
 # Version: $Id$
 # Makefile Author: Christopher Brooks
@@ -29,36 +29,32 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		doc/books/systems
+ME =		doc/books/systems/expressions
 
 # Sub directories to run make in.
-DIRS =		continuous dataflow discreteevents expressions intro \
-		modal plotter pn synchronous vergil
+# Don't include src directory, since we don't ship it with the release
+DIRS =		test
 
 # Root of Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-PTPACKAGE = 	systems
-PTCLASSJAR =
+PTPACKAGE = 	expressions
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	dataflow/dataflow.jar \
-	intro/intro.jar \
-	modal/modal.jar \
-	synchronous/synchronous.jar \
-	vergil/vergil.jar
+EXAMPLE_MODELS = \
+	ActorToken.xml \
+	FunctionComplex.xml \
+	FunctionSimple.xml \
+	StringParameter.xml \
+	units.xml
 
-
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS)
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
-
-KRUFT =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -68,20 +64,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-all: suball
-install: all jars
+all: jclass
+install: jclass jars
 
-jnlps:
-	@if [ "x$(DIRS)" != "x" ]; then \
-		set $(DIRS); \
-		for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making all in $(ME)/$$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) JNLP_MODEL_DIRECTORY=$(ME)/$$x jnlps ;\
-			) \
-		    fi ; \
-		done ; \
-	fi
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk

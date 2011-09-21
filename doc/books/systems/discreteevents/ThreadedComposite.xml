@@ -1,0 +1,229 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ThreadedComposite" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 22, 1092, 477}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[879, 367]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4723595391242">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.5004601942754, 195.8173849730365}">
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
+            <display name="Show parameters"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 345.0]">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 105.0]">
+        </property>
+    </property>
+    <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[521.25, 215.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={667, 589, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[586.25, 215.0]">
+        </property>
+    </entity>
+    <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[161.25, 120.0]">
+        </property>
+    </entity>
+    <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="UNDEFINED">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+            <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+            <property name="includeName" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[246.25, 120.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+        </port>
+        <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
+            <property name="prompt" class="ptolemy.actor.parameters.PortParameter" value="&gt;&gt; ">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 654, 388}, maximized=false}">
+            </property>
+            <doc>Produce strings from an interactive shell on the screen</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 145}">
+            </property>
+        </entity>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Type something:&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="Merge3" class="ptolemy.domains.de.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[161.25, 225.0]">
+        </property>
+    </entity>
+    <entity name="ThreadedComposite2" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="UNDEFINED">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+            <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="echoBoxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+            <property name="includeName" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[246.25, 225.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.lib.hoc.MirrorPort">
+            <property name="output"/>
+        </port>
+        <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
+            <property name="prompt" class="ptolemy.actor.parameters.PortParameter" value="&gt;&gt; ">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 405, 654, 388}, maximized=false}">
+            </property>
+            <doc>Produce strings from an interactive shell on the screen</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 145}">
+            </property>
+        </entity>
+    </entity>
+    <entity name="SingleEvent2" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Type something:&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Top types: '&quot;&#10;+ in&#10;+ &quot;' at time &quot;&#10;+ time">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 175.0]">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Bottom types: '&quot;&#10;+ in&#10;+ &quot;' at time &quot;&#10;+ time">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 285.0]">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[310.0, 175.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[315.0, 285.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Merge.input" relation="relation4"/>
+    <link port="Merge.input" relation="relation9"/>
+    <link port="Merge.output" relation="relation3"/>
+    <link port="Display.input" relation="relation3"/>
+    <link port="Merge2.input" relation="relation"/>
+    <link port="Merge2.input" relation="relation2"/>
+    <link port="Merge2.output" relation="relation5"/>
+    <link port="ThreadedComposite.input" relation="relation5"/>
+    <link port="ThreadedComposite.output" relation="relation2"/>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="Merge3.input" relation="relation6"/>
+    <link port="Merge3.input" relation="relation8"/>
+    <link port="Merge3.output" relation="relation7"/>
+    <link port="ThreadedComposite2.input" relation="relation7"/>
+    <link port="ThreadedComposite2.output" relation="relation8"/>
+    <link port="SingleEvent2.output" relation="relation6"/>
+    <link port="Expression.output" relation="relation4"/>
+    <link port="Expression.in" relation="relation2"/>
+    <link port="Expression2.output" relation="relation9"/>
+    <link port="Expression2.in" relation="relation8"/>
+</entity>

@@ -1481,9 +1481,14 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/lbnl/actor/lib \
 	$(REMOTE1PTIIDIST)/doc/books/design/modal \
 	$(REMOTE1PTIIDIST)/doc/books/design/time \
+	$(REMOTE1PTIIDIST)/doc/books/system/continuous \
 	$(REMOTE1PTIIDIST)/doc/books/system/dataflow \
+	$(REMOTE1PTIIDIST)/doc/books/system/discreteevents \
+	$(REMOTE1PTIIDIST)/doc/books/system/expressions \
 	$(REMOTE1PTIIDIST)/doc/books/system/intro \
 	$(REMOTE1PTIIDIST)/doc/books/system/modal \
+	$(REMOTE1PTIIDIST)/doc/books/system/plotter \
+	$(REMOTE1PTIIDIST)/doc/books/system/pn \
 	$(REMOTE1PTIIDIST)/doc/books/system/synchronous \
 	$(REMOTE1PTIIDIST)/doc/books/system/vergil \
 	$(REMOTE1PTIIDIST)/doc/tutorial/graph \
