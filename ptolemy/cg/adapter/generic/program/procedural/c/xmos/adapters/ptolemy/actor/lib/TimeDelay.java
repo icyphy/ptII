@@ -30,12 +30,10 @@ package ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.ac
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////

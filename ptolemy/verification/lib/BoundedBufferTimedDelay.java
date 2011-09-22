@@ -24,11 +24,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.verification.lib;
 
+import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.lib.TimeDelay;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

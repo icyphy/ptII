@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.de.lib;
 
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimeGap

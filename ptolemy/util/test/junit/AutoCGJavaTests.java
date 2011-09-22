@@ -31,10 +31,7 @@ package ptolemy.util.test.junit;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;

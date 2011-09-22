@@ -30,10 +30,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy
 import java.util.ArrayList;
 import java.util.List;
 
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////

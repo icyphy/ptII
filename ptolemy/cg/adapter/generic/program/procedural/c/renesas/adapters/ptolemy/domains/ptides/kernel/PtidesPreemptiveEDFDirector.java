@@ -30,24 +30,19 @@ package ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.ontologies.lattice.ActorProductLatticeConstraintsDefinitionAdapter;
 import ptolemy.domains.ptides.lib.ActuatorSetup;
 import ptolemy.domains.ptides.lib.SensorHandler;
-import ptolemy.domains.ptides.lib.luminary.GPInputHandler;
-import ptolemy.domains.ptides.lib.luminary.LuminarySensorHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
