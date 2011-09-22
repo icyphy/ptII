@@ -179,6 +179,7 @@ public class ComponentEntity extends Entity {
 
         ComponentEntity clone = (ComponentEntity) super.instantiate(container,
                 name);
+        // Derived classes like this one are responsible for setting the container.
         clone.setContainer((CompositeEntity) container);
 
         clone._adjustDeferrals();

@@ -360,7 +360,10 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  therefore required to check whether the workspaces are the same
      *  before propagating changes.
      *  @param container The container for the instance, or null
-     *   to instantiate it at the top level.
+     *   to instantiate it at the top level. Note that this base class
+     *   does not set the container. It uses the container argument to
+     *   get the workspace. Derived classes are responsible for
+     *   setting the container.
      *  @param name The name for the instance.
      *  @return A new instance that is a clone of this object
      *   with adjusted parent-child relationships.
