@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.test.junit;
+package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.modal.test.junit;
 
 import ptolemy.util.test.junit.JUnitCGCTestBase;
 
