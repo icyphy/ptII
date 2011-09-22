@@ -66,7 +66,6 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.layout.kieler.KielerLayout;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.basic.BasicLayoutTarget;
@@ -105,7 +104,14 @@ public class KielerLayoutTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     
-    private LayoutConfiguration createOptions(Container container) {
+    /**
+     * Create controls for manipulating layout options and return a layout configuration that
+     * derives its values from the UI controls.
+     * 
+     * @param container a container where UI controls are added
+     * @return a configuration that derives its values from the UI controls
+     */
+    private LayoutConfiguration _createOptions(Container container) {
         // TODO read previously stored configuration
         final IPropertyHolder options = new MapPropertyHolder();
         
@@ -122,10 +128,19 @@ public class KielerLayoutTableau extends Tableau {
         container.add(edgesCheckBox);
         
         container.add(new JLabel("Object spacing"));
-        final JSlider spacingSlider = new JSlider(SwingConstants.HORIZONTAL, 1, 50,
-                options.getProperty(KielerLayout.Options.SPACING).intValue());
+        float spacing = options.getProperty(KielerLayout.Options.SPACING);
+        final JSlider spacingSlider = new JSlider(SwingConstants.HORIZONTAL, 2, 50,
+                _saturate((int) spacing, 2, 50));
         spacingSlider.setToolTipText("The overall spacing between graph elements.");
         container.add(spacingSlider);
+        
+        container.add(new JLabel("Aspect ratio"));
+        double aspectValue = (Math.log10(options.getProperty(KielerLayout.Options.ASPECT_RATIO)
+                .doubleValue()) + 1) * 50;
+        final JSlider aspectSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 100,
+                _saturate((int) aspectValue, 0, 100));
+        aspectSlider.setToolTipText("The aspect ratio for placement of connected components.");
+        container.add(aspectSlider);
         
         // return an object that can create an options map on demand
         return new LayoutConfiguration() {
@@ -134,11 +149,31 @@ public class KielerLayoutTableau extends Tableau {
                         decorCheckBox.isSelected());
                 options.setProperty(KielerLayout.Options.ROUTE_EDGES,
                         edgesCheckBox.isSelected());
-                options.setProperty(LayoutOptions.SPACING,
+                options.setProperty(KielerLayout.Options.SPACING,
                         Float.valueOf(spacingSlider.getValue()));
+                options.setProperty(KielerLayout.Options.ASPECT_RATIO,
+                        Float.valueOf((float) Math.pow(10, aspectSlider.getValue() / 50.0 - 1)));
                 return options;
             }
         };
+    }
+    
+    /**
+     * Saturate the given number into a given range.
+     * 
+     * @param x an integer number
+     * @param lower the lower bound
+     * @param upper the upper bound
+     * @return {@code max(lower, min(upper, x)) }
+     */
+    private int _saturate(int x, int lower, int upper) {
+        if (x < lower) {
+            return lower;
+        }
+        if (x > upper) {
+            return upper;
+        }
+        return x;
     }
 
     
@@ -214,7 +249,7 @@ public class KielerLayoutTableau extends Tableau {
                     BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
                     BorderFactory.createEmptyBorder(5, 5, 5, 5)));
             optionsPanel.setLayout(new GridLayout(0, 2, 4, 4));
-            LayoutConfiguration layoutConfig = createOptions(optionsPanel);
+            LayoutConfiguration layoutConfig = _createOptions(optionsPanel);
             upperPanel.add(optionsPanel);
             
             // Buttons for applying layout.

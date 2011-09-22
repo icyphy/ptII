@@ -143,6 +143,12 @@ public class PtolemyModelUtil {
             // a location attribute.
             do {
                 attribute = object.getAttribute("_location");
+                if (attribute == null) {
+                    List<Location> locatables = object.attributeList(Location.class);
+                    if (!locatables.isEmpty()) {
+                        attribute = locatables.get(0);
+                    }
+                }
                 if (object instanceof Relation) {
                     object = null;
                 } else {

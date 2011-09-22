@@ -1316,12 +1316,14 @@ public class KielerLayout extends AbstractGlobalLayout {
          */
         private static void _configureLayout(KShapeLayout parentLayout,
                 IPropertyHolder options) {
-            // set default values
+            // set default values of standard layout options
             parentLayout.setProperty(LayoutOptions.DIRECTION, Direction.RIGHT);
             parentLayout.setProperty(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
             parentLayout.setProperty(LayoutOptions.BORDER_SPACING, 5.0f);
-            parentLayout.setProperty(Properties.EDGE_SPACING_FACTOR, 1.5f);
             parentLayout.setProperty(LayoutOptions.SPACING, SPACING.getDefault());
+            parentLayout.setProperty(LayoutOptions.ASPECT_RATIO, ASPECT_RATIO.getDefault());
+            // set default values for special layout options of the 'KLay Layered' algorithm
+            parentLayout.setProperty(Properties.EDGE_SPACING_FACTOR, 1.5f);
             
             // copy values specified by user
             parentLayout.copyProperties(options);
@@ -1339,6 +1341,9 @@ public class KielerLayout extends AbstractGlobalLayout {
         public static final IProperty<Float> SPACING = new Property<Float>(
                 LayoutOptions.SPACING, 10.0f);
 
+        /** Layout option for the aspect ratio of connected components. */
+        public static final IProperty<Float> ASPECT_RATIO = new Property<Float>(
+                LayoutOptions.ASPECT_RATIO, 1.6f);
 
     }
 
