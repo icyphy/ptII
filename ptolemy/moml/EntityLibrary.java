@@ -496,7 +496,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
 
             if (!_configureDone) {
                 // NOTE: If you suspect this is being called prematurely,
-                // the uncomment the following to see who is doing the
+                // then uncomment the following to see who is doing the
                 // calling.
                 // System.out.println("-----------------------");
                 // (new Exception()).printStackTrace();
