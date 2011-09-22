@@ -241,7 +241,7 @@ public class UserActorLibrary {
             finalLibraryEffigy.setSystemEffigy(true);
 
             // Correct old library name, if the loaded library happens
-            // to the user library.
+            // to be user library.
             if (library.getName().equals("user library")) {
                 library.setName(USER_LIBRARY_NAME);
             }
