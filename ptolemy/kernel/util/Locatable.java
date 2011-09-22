@@ -32,6 +32,9 @@ package ptolemy.kernel.util;
 
 /**
  An interface for objects storing a location.
+ Implementations of this interface are attributes that are contained
+ by objects that are rendered visually on the screen at locations
+ given by getLocation() method of this interface.
 
  <p>This interface is generally implemented by attributes of objects
  in a model and is used by the Vergil user interface to store

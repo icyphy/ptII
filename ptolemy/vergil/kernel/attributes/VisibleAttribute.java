@@ -36,6 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.vergil.basic.RelativeLocatable;
 
 ///////////////////////////////////////////////////////////////////
 //// VisibleAttribute
@@ -51,7 +52,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public abstract class VisibleAttribute extends Attribute {
+public abstract class VisibleAttribute extends Attribute implements RelativeLocatable {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the

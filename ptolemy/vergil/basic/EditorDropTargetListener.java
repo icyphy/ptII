@@ -194,15 +194,17 @@ public class EditorDropTargetListener implements DropTargetListener {
         // See whether there is a container under the point.
         Point2D originalPoint = SnapConstraint.constrainPoint(dropEvent
                 .getLocation());
-        NamedObj container = _getObjectUnder(originalPoint);
+        NamedObj targetContainer = _getObjectUnder(originalPoint);
 
+        // Find the root container (the composite entity for the window).
         GraphPane pane = ((JGraph) _dropTarget.getComponent()).getGraphPane();
+        GraphController controller = pane.getGraphController();
+        GraphModel model = controller.getGraphModel();
+        NamedObj rootContainer = (NamedObj) model.getRoot();
 
-        if ((container == null) || !_dropTarget.isDropIntoEnabled()) {
+        if ((targetContainer == null) || !_dropTarget.isDropIntoEnabled()) {
             // Find the default container for the dropped object
-            GraphController controller = pane.getGraphController();
-            GraphModel model = controller.getGraphModel();
-            container = (NamedObj) model.getRoot();
+            targetContainer = rootContainer;
         }
 
         // Find the location for the dropped objects.
@@ -236,17 +238,25 @@ public class EditorDropTargetListener implements DropTargetListener {
             return;
         }
 
-        // Create the MoML change request to instantiate the new objects.
-        StringBuffer moml = new StringBuffer();
-
         while (iterator.hasNext()) {
+            // Create the MoML change request to instantiate the new objects.
+            StringBuffer moml = new StringBuffer();
+
             final NamedObj dropObj = (NamedObj) iterator.next();
+            
+            // Figure out the destination container.
+            NamedObj destinationContainer = targetContainer;
+            boolean relativeLocation = false;
+            if (dropObj instanceof RelativeLocatable && targetContainer != rootContainer) {
+                relativeLocation = true;
+                destinationContainer = rootContainer;
+            }
             final String name;
 
             if (dropObj instanceof Singleton) {
                 name = dropObj.getName();
             } else {
-                name = container.uniqueName(dropObj.getName());
+                name = destinationContainer.uniqueName(dropObj.getName());
             }
 
             // Constrain point to snap to grid.
@@ -272,7 +282,7 @@ public class EditorDropTargetListener implements DropTargetListener {
             }
 
             String result = "";
-            String rootNodeName = dropObj.getElementName();
+            String dropObjElementType = dropObj.getElementName();
             Object object = null;
 
             StringAttribute alternateGetMomlActionAttribute = null;
@@ -318,7 +328,7 @@ public class EditorDropTargetListener implements DropTargetListener {
                                 new Object[] { dropObj });
                         int int1 = 1;
                         int int2 = result.indexOf(" ");
-                        rootNodeName = result.substring(int1, int2);
+                        dropObjElementType = result.substring(int1, int2);
                         // following string substitution is needed to
                         // replace possible name changes when multiple
                         // copies of an actor are added to a workspace
@@ -341,33 +351,46 @@ public class EditorDropTargetListener implements DropTargetListener {
 
             if (appendGroupAuto) {
                 moml.insert(0, "<group name=\"auto\">\n");
-                moml.append("<" + rootNodeName + " name=\"" + name + "\">\n");
-                moml.append("<property name=\"_location\" "
-                        + "class=\"ptolemy.kernel.util.Location\" value=\"{");
-                moml.append((int) newPoint.getX());
-                moml.append(", ");
-                moml.append((int) newPoint.getY());
-                moml.append("}\"/>\n</" + rootNodeName + ">\n");
+                moml.append("<" + dropObjElementType + " name=\"" + name + "\">\n");
+                if (relativeLocation) {
+                    moml.append("<property name=\"_location\" "
+                            + "class=\"ptolemy.kernel.util.RelativeLocation\" value=\"{ 40, 40}\">"
+                            + "<property name=\"relativeTo\" value=\""
+                            + targetContainer.getName()
+                            + "\"/>\n" 
+                            // Need to identify the targetContainer as an
+                            // Entity, Port, Relation, or Attribute.
+                            + "<property name=\"relativeToElementName\" value=\""
+                            + targetContainer.getElementName()
+                            + "\"/></property>\n</" 
+                            + dropObjElementType + ">\n");
+
+                } else {
+                    moml.append("<property name=\"_location\" "
+                            + "class=\"ptolemy.kernel.util.Location\" value=\"{");
+                    moml.append((int) newPoint.getX());
+                    moml.append(", ");
+                    moml.append((int) newPoint.getY());
+                    moml.append("}\"/>\n</" + dropObjElementType + ">\n");
+                }
                 moml.append("</group>\n");
+            }
+            if (destinationContainer instanceof DropTargetHandler) {
+                try {
+                    ((DropTargetHandler) destinationContainer).dropObject(destinationContainer,
+                            dropObjects, moml.toString());
+                } catch (IllegalActionException e) {
+                    MessageHandler.error("Unable to drop the object to "
+                            + destinationContainer.getName() + ".", e);
+                }
+            } else {
+                MoMLChangeRequest request = new MoMLChangeRequest(this, destinationContainer,
+                        moml.toString());
+                request.setUndoable(true);
+                destinationContainer.requestChange(request);
             }
         }
 
-        if (container instanceof DropTargetHandler) {
-            try {
-                ((DropTargetHandler) container).dropObject(container,
-                        dropObjects, moml.toString());
-            } catch (IllegalActionException e) {
-                MessageHandler.error("Unable to drop the object to "
-                        + container.getName() + ".", e);
-            }
-        } else {
-            moml.insert(0, "<group>");
-            moml.append("</group>");
-            MoMLChangeRequest request = new MoMLChangeRequest(this, container,
-                    moml.toString());
-            request.setUndoable(true);
-            container.requestChange(request);
-        }
         dropEvent.dropComplete(true); //success!
 
         //Added by MB 6Apr06 - without this, tooltips don't work

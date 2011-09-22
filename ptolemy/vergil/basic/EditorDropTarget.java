@@ -39,13 +39,17 @@ import diva.graph.JGraph;
 
 /**
  This class provides drag-and-drop support. When this drop target
- receives a transferable object containing a ptolemy entity, it creates
+ receives a transferable object containing a ptolemy object, it creates
  a new instance of the object, and adds it to the given graph.
  If the drop location falls on top of an icon associated with an
- instance of NamedObj, then the object is deposited inside that
- instance (so the instance becomes its container). Otherwise,
+ instance of NamedObj, then the object may be deposited inside that
+ instance (so the instance becomes its container). If the object being
+ dropped implements the {@link RelativeLocatable} marker interface,
+ then instead of dropping it inside the target object, it is dropped
+ into the container of the target object and assigned a location relative
+ to the target object. If the drop location is not on top of any object, then
  the object is deposited inside the model associated with the
- target graph. In either case, if the target container implements
+ target graph. In any case, if the target container implements
  the DropListener interface, then it is informed of the drop by
  calling its dropped() method.
  <p>

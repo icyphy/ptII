@@ -35,6 +35,7 @@ import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.RelativeLocation;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.MessageHandler;
@@ -177,10 +178,18 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
             // Give default values in case the previous locations value
             // has not yet been set
-            double[] newLocation = new double[] { 0, 0 };
+            double[] newLocation = null;
 
-            if (locatable.getLocation() != null) {
+            // If locatable is an instance of RelativeLocation,
+            // then its getLocation() method returns the absolute
+            // location, not the relative location.
+            if (locatable instanceof RelativeLocation) {
+                newLocation = ((RelativeLocation)locatable).getRelativeLocation();
+            } else {
                 newLocation = locatable.getLocation();
+            }
+            if (newLocation == null) {
+                newLocation = new double[] { 0, 0 };
             }
 
             // NOTE: we use the transform worked out for the drag to

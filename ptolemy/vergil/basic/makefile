@@ -87,6 +87,7 @@ JSRCS = \
 	ParameterizedNodeController.java \
 	PopupMouseFilter.java \
 	PtolemyLayoutAction.java \
+	RelativeLocatable.java \
 	RemoveCustomDocumentationAction.java \
 	RunnableGraphController.java \
 	WithIconGraphController.java
