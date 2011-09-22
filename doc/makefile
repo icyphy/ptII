@@ -286,7 +286,6 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.string \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.modal \
-	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.modal.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.modular.adapters.ptolemy.cg.lib \
