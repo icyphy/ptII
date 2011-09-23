@@ -1269,7 +1269,9 @@ update_gr_codeDoc:
 
 APPLET_FILES_TO_BE_UPDATED = \
 	$(CODEGEN_DOMAIN_JARS) \
+	doc/codeDoc.jar \
 	lib/diva.jar \
+	ptolemy/domains/ptides/ptides.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergilApplet.jar \
 	ptolemy/gui/demo/*.class
@@ -1696,6 +1698,37 @@ osgi_demo_test:
 # 7. To create JNLP files for all the models in $PTII/doc/books/systems
 #   cd $PTII/doc/books/systems
 #   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-systems jnlps
+#
+
+################################################################################
+# Rules used to to create jnlp files for ptolemy/domains/ptides/demo
+#
+# To build the complete set of signed jars, you will need access to
+# our key, which is in /users/ptII/adm/certs/ptkeystore on $(WEBSERVER)
+# 1. To build all the jars and copy them to the webserver:
+#   ssh bennett "mkdir ~ptII/ptweb/ptolemyII/ptII8.1/jnlp-ptides"
+#   cd $PTII
+#   ant build javadoc
+#   ant -f jars.xml jars
+#   rm -rf signed
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-ptides jnlp_dist
+#
+# The above will create /export/home/pt0/ptweb/ptolemyII/ptII8.1/jnlp-ptides
+#
+# 2. Create the jar files for the applets
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-ptides update_applet_files DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII8.1/jnlp-ptides
+#
+# 3. Set up ptII/ptKeystore.properties to contain the path to the keystore,
+#    the passwords and the alias.  This file is used by copernicus to create signed jars.
+#
+# 4. Clean up any previous work for a model
+#   make book_real_clean JNLP_MODEL_DIRECTORY=ptolemy/domains/ptides/demo/PrintingPress JNLP_MODEL=PrintingPress
+#   make book_real_clean JNLP_MODEL_DIRECTORY=ptolemy/domains/ptides/demo/PtidesSynchrophasor JNLP_MODEL=PtidesSynchrophasor
+#
+# 5. To create a JNLP file for one model and upload it
+#     make JNLP_MODEL_DIRECTORY=ptolemy/domains/ptides/demo/PrintingPress JNLP_MODEL=PrintingPress KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-ptides book_dist_update
+#     make JNLP_MODEL_DIRECTORY=ptolemy/domains/ptides/demo/PtidesSynchrophasor JNLP_MODEL=PtidesSynchrophasor KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-ptides book_dist_update
+#
 #
 
 ################################################################################
