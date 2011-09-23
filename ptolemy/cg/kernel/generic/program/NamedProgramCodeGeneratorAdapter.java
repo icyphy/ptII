@@ -605,6 +605,10 @@ public class NamedProgramCodeGeneratorAdapter extends
 
     /** Get the files needed by the code generated from this adapter class.
      *  This base class returns an empty set.
+     *  Typically, the "includeFiles" block is used to set list of files
+     *  needed.  See
+     *  {@link ptolemy.cg.kernel.generic.program.TemplateParser#getHeaderFiles()}.
+     *
      *  @return A set of strings that are header files needed by the code
      *  generated from this adapter class.
      *  @exception IllegalActionException Not Thrown in this base class.
