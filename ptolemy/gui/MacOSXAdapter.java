@@ -96,7 +96,6 @@ public class MacOSXAdapter implements InvocationHandler {
             return;
         }
         try {
-            System.out.println("MacOSXAdapter.setAboutMethod(): _macOSXApplication: " + _macOSXApplication);
             Method enableAboutMethod = _macOSXApplication.getClass()
                 .getDeclaredMethod("setEnabledAboutMenu",
                         new Class[] { boolean.class });
