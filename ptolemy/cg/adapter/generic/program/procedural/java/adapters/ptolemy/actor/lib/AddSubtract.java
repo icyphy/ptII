@@ -1,4 +1,4 @@
-/* A adapter class for ptolemy.actor.lib.Scale
+/* A adapter class for ptolemy.actor.lib.AddSubtract
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.

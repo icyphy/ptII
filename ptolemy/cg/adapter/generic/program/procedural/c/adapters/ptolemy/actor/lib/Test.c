@@ -50,7 +50,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $param(tolerance),
-            (Integer)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
+            (int)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
 }
 /**/
 
@@ -58,7 +58,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 $actorSymbol(inputToken) = $get(input#$channel);
 $actorSymbol(numberOfTokensSeen)++;
 
-/* IB $actorSymbol(), IntegerBlock($channel) which has only one channel */
+/* IB $actorSymbol(), intBlock($channel) which has only one channel */
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && abs($actorSymbol(inputToken)
                 - $param(correctValues, $actorSymbol(numberOfTokensSeen)))
@@ -74,7 +74,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 
-/***IntegerBlockMultiChannel($channel)***/
+/***IntBlockMultiChannel($channel)***/
 $actorSymbol(inputToken) = $get(input#$channel);
 if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
@@ -84,13 +84,13 @@ if ($channel == 0) {
 $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && abs($actorSymbol(inputToken)
-                - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
+                - (($lcCgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
         > $param(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $param(tolerance),
-            (Integer)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
+            (int)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
 }
 /**/
 
@@ -297,7 +297,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $param(tolerance),
-            (Integer)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
+            (int)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
 }
 /**/
 

@@ -219,6 +219,12 @@ public class CTemplateParser extends ProceduralTemplateParser {
             } else {
                 return "";
             }
+        } else if (macro.equals("lcCgType")) {
+            String cgType = _replaceMacro("cgType", parameter);
+            if (cgType.equals("Integer")) {
+                return "int";
+            }
+            return cgType.toLowerCase();
         }
 
         // We will assume that it is a call to a polymorphic

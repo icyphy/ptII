@@ -1,4 +1,4 @@
-/* An adapter class for ptolemy.actor.lib.Distributor
+/* An adapter class for ptolemy.actor.lib.string.StringCompare
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -25,26 +25,29 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
+package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.string;
+
 
 //////////////////////////////////////////////////////////////////////////
-//// Distributor
+//// StringCompare
 
 /**
- A adapter class for ptolemy.actor.lib.Distributor.
+ A adapter class for ptolemy.actor.lib.string.StringCompare.
 
 @author Christopher Brooks
 @version $Id$
 @since Ptolemy II 8.1
+@Pt.ProposedRating Red (cxh)
+@Pt.AcceptedRating Red (cxh)
  */
-public class Distributor
+public class StringCompare
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Distributor {
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string.StringCompare {
     /**
-     *  Construct a Distributor adapter.
-     *  @param actor The given ptolemy.actor.lib.Distributor actor.
+     *  Construct a StringCompare adapter.
+     *  @param actor The given ptolemy.actor.lib.string.StringCompare actor.
      */
-    public Distributor(ptolemy.actor.lib.Distributor actor) {
+    public StringCompare(ptolemy.actor.lib.string.StringCompare actor) {
         super(actor);
     }
 }

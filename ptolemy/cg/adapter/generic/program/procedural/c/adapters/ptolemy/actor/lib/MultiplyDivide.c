@@ -2,8 +2,12 @@
 $type $actorSymbol(result);
 /**/
 
-/***initProduct($one, $cgType)***/
-$actorSymbol(result) = $one_$cgType(output)();
+/***initProduct($type1, $type2)***/
+$actorSymbol(result) = $convert_$type1_$type2($get(multiply#0));
+/**/
+
+/***divideOnlyInitProduct($divideType)***/
+$actorSymbol(result) = $divide_one_$divideType($get(divide#0));
 /**/
 
 /***multiplyBlock($channel, $outputType, $multiplyType)***/

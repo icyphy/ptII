@@ -1,9 +1,4 @@
 /*** assignBlock($channel, $type) ***/
-// there is no need for hasToken() because this actor
-// only has one input port, so it should always be able
-// to successfully read from the channel.
-// Also, channel in get(input, channel) is actually
-// used as the offset.
 $put(output#$channel, $get(input, $channel));
 /**/
 
@@ -12,7 +7,7 @@ $put(output#$channel, $new($type, $get(input)));
 /**/
 
 /*** IntToStringBlock($channel, $type) ***/
-$put(output#$channel, InttoString($get(input)));
+$put(output#$channel, IntegertoString($get(input)));
 /**/
 
 /*** DoubleToStringBlock($channel, $type) ***/
