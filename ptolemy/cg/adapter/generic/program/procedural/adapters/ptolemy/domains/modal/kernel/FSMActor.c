@@ -4,7 +4,7 @@ static char $actorSymbol(transitionFlag);
 /**/
 
 /*** defineState($state, $constant) ***/
-final int $state = $constant;
+#define $state $constant
 /**/
 
 /*** updateCurrentState($state) ***/

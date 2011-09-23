@@ -133,6 +133,21 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Generate code that defines a constant.  In C, generate a
+     *  #define
+     *  @param constant The name of the constant to be defined
+     *  @param type A string representing the type.  In C, this
+     *  parameter is ignored.
+     *  @param value The value of the constant.
+     */
+    public String generateConstantDefinition(String constant, 
+            String type, String value) {
+        // Maybe we should keep track of these in a Set?
+        return "#ifndef " + constant + _eol
+            + "#define " + constant + " " + value + _eol
+            + "#endif" + _eol;
+    }
+
     /** Generate the function table.  In this base class return
      *  the empty string.
      *  @param types An array of types.

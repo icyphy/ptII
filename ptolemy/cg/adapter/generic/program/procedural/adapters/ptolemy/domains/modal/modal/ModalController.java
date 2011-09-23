@@ -36,9 +36,11 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
+
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel.FSMActor.TransitionRetriever;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
@@ -51,7 +53,7 @@ import ptolemy.util.StringUtilities;
 /**
  Code generator helper for modal controller.
 
- @author Shanna-Shaye Forbes, based on the code generator helper for modal controllers
+ @author Shanna-Shaye Forbes, based on Gang Zhou's ptolemy/codegen work.  Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating red (sssf)
@@ -474,13 +476,15 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         // code.append("int " + name + "__transitionFlag;" + _eol);
         //add in inputs for all the states
 
+        ProgramCodeGenerator programCodeGenerator = (ProgramCodeGenerator) getCodeGenerator();
         Iterator states = _myController.entityList().iterator();
         int j = 0;
         while (states.hasNext()) {
 
             State state = (State) states.next();
-            code.append("static final int STATE"
-                    + state.getFullName().replace(".", "_") + " = " + j + ";"
+            code.append(programCodeGenerator.generateConstantDefinition(
+                            "STATE" + state.getFullName().replace(".", "_"),
+                            "int", Integer.toString(j))
                     + _eol);
             j++;
 

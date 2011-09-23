@@ -328,6 +328,19 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return result;
     }
 
+    /** Generate code that defines a constant. 
+     *  In Java, generate a static final.
+     *  @param constant The name of the constant to be defined
+     *  @param type A string representing the type.  In C, this
+     *  parameter is ignored.
+     *  @param value The value of the constant.
+     */
+    public String generateConstantDefinition(String constant, 
+            String type, String value) {
+        // Maybe we should keep track of these in a Set?
+        return "static final " + type + " " + constant + " " + value + ";" + _eol;
+    }
+
     /** Generate the closing code for a group of fire functions common
      *  to a Composite Actor.  This method is called when the firing
      *  code of each actor is not inlined.

@@ -43,7 +43,7 @@ if ($channel == 0) {
 /* Complex $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && Math.abs($actorSymbol(inputToken)
+        && abs($actorSymbol(inputToken)
                 - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
         > $param(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
@@ -60,7 +60,7 @@ $actorSymbol(numberOfTokensSeen)++;
 
 /* IB $actorSymbol(), IntegerBlock($channel) which has only one channel */
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && Math.abs($actorSymbol(inputToken)
+        && abs($actorSymbol(inputToken)
                 - $param(correctValues, $actorSymbol(numberOfTokensSeen)))
                 > $param(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been between: %10.30g and %10.30g\n",
@@ -83,7 +83,7 @@ if ($channel == 0) {
 /* IBMC $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && Math.abs($actorSymbol(inputToken)
+        && abs($actorSymbol(inputToken)
                 - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
         > $param(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
@@ -101,7 +101,7 @@ $actorSymbol(numberOfTokensSeen)++;
 
 /* $actorSymbol(), DoubleBlock($channel) which has only one channel */
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && Math.abs($actorSymbol(inputToken)
+        && abs($actorSymbol(inputToken)
                 - $param(correctValues, $actorSymbol(numberOfTokensSeen)))
                 > $param(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been between: %10.30g and %10.30g\n",
@@ -124,7 +124,7 @@ if ($channel == 0) {
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
    $actorSymbol(correctValuesThisFiring_$channel) =
        $param(correctValues, $actorSymbol(numberOfTokensSeen));
-   if (Math.abs($actorSymbol(inputToken)
+   if (abs($actorSymbol(inputToken)
                    - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
 
     /*- Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))*/
@@ -268,7 +268,7 @@ $actorSymbol(numberOfTokensSeen)++;
 
 /* UB $actorSymbol(), UnsignedByteBlock($channel) which has only one channel */
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && Math.abs($actorSymbol(inputToken)
+        && abs($actorSymbol(inputToken)
                 - $param(correctValues, $actorSymbol(numberOfTokensSeen)))
                 > $param(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been between: %10.30g and %10.30g\n",
@@ -290,7 +290,7 @@ if ($channel == 0) {
 /* UBMC $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && Math.abs($actorSymbol(inputToken)
+        && abs($actorSymbol(inputToken)
                 - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
         > $param(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",

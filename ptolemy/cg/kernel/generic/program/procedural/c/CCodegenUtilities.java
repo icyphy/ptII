@@ -40,17 +40,6 @@ A utility class used to simplify creating c templates in EmbeddedCActors.
 */
 public class CCodegenUtilities {
 
-    /** Return a code block to define a constant.
-     *  @param constant The name of the constant.
-     *  @param value The value of the constant.
-     *  @return A block of codegen code to define a constant.
-     */
-    public static String getDefineBlock(String constant, String value) {
-        String code = "#ifndefine " + constant + "\n" + "#define " + constant
-                + " " + value + "\n" + "#endif\n";
-        return code;
-    }
-
     /** Return a code block to include a file.
      *  @param file The name of the file.
      *  @param constant The name of the constant to check to see if the file

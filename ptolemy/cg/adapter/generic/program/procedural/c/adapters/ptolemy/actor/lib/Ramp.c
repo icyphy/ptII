@@ -19,7 +19,7 @@ $put(output, $actorSymbol(state));
 if ($hasToken(step)) {
         $param(step) = $get(step);
 }
-$actorSymbol(state) += (Integer)$param(step);
+$actorSymbol(state) += (int)$param(step);
 /**/
 
 /***DoubleFireBlock***/

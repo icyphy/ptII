@@ -344,6 +344,18 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return "";
     }
 
+    /** Generate code that defines a constant.  In C, generate a
+     *  #define, in Java, generate a static final.
+     *  @param constant The name of the constant to be defined
+     *  @param type A string representing the type.  In C, this
+     *  parameter is ignored.
+     *  @param value The value of the constant.
+     */
+    public String generateConstantDefinition(String constant, 
+            String type, String value) {
+        return comment(constant + " " + type + " " + value);
+    }
+
     /** Generate The fire function code. This method is called when
      *  the firing code of each actor is not inlined. In the default,
      *  each actor's firing code is in a function with the name that
