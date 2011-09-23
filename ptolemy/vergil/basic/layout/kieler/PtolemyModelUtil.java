@@ -34,6 +34,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.SwingConstants;
+
+import de.cau.cs.kieler.core.math.KVector;
+import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.kiml.options.PortSide;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.Port;
@@ -43,6 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.actor.IOPortController;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyModelUtil
@@ -109,18 +117,21 @@ public final class PtolemyModelUtil {
      * @return A vector corresponding to the location (x and y) of the object.
      *          Will return a zero vector if no location attribute is set for the object.
      */
-    protected static Point2D.Double _getLocationPoint(NamedObj namedObj) {
-        return _getLocationPoint(_getLocation(namedObj));
+    protected static Point2D _getLocationPoint(NamedObj namedObj) {
+        Point2D point = _getLocationPoint(_getLocation(namedObj));
+        if (point == null) {
+            point = new Point2D.Double();
+        }
+        return point;
     }
     
     /**
      * Retrieve the actual position from a locatable instance.
      * 
      * @param locatable a locatable
-     * @return the actual position
+     * @return the actual position, or null if none is found
      */
-    protected static Point2D.Double _getLocationPoint(Locatable locatable) {
-        Point2D.Double location = new Point2D.Double();
+    protected static Point2D _getLocationPoint(Locatable locatable) {
         if (locatable != null) {
             double[] coords = locatable.getLocation();
             try {
@@ -133,13 +144,15 @@ public final class PtolemyModelUtil {
                     locatable.validate();
                     coords = locatable.getLocation();
                 }
+                Point2D.Double location = new Point2D.Double();
                 location.x = coords[0];
                 location.y = coords[1];
+                return location;
             } catch (IllegalActionException e) {
                 // nothing, use default value
             }
         }
-        return location;
+        return null;
     }
 
     /**
@@ -234,5 +247,84 @@ public final class PtolemyModelUtil {
         }
         return false;
     }
+    
+    /**
+     * Get the direction of the edge anchor point of an external port
+     * inside a composite actor. It is given as a {@link SwingConstants}, like
+     * {@link SwingConstants#NORTH}, {@link SwingConstants#SOUTH},
+     * {@link SwingConstants#EAST}, {@link SwingConstants#WEST}.
+     * @param port the external port
+     * @return a SwingConstant about the direction
+     */
+    protected static int _getExternalPortDirection(Port port) {
+        if (port instanceof IOPort) {
+            boolean isInput = ((IOPort) port).isInput();
+            boolean isOutput = ((IOPort) port).isOutput();
+            if (isInput && !isOutput) {
+                return SwingConstants.EAST;
+            }
+            if (!isInput && isOutput) {
+                return SwingConstants.WEST;
+            }
+            if (isInput && isOutput) {
+                return SwingConstants.NORTH;
+            }
+        }
+        return SwingConstants.SOUTH;
+    }
+
+    /**
+     * For a given Ptolemy port, its channel index in a multiport, and the
+     * maximum index in that multiport, calculate its offset in X and Y
+     * coordinates. For example, the first channel on the east side has offset 0
+     * and the next channel is moved below the first one and so on. On the north
+     * side, the last channel has offset 0 and the first channel is at the most
+     * left side.
+     *
+     * @param port the Ptolemy port
+     * @param kportlayout the corresponding KPort KShapeLayout
+     * @param index index of the channel
+     * @param maxIndex maximum available channel
+     * @return offset vector
+     */
+    protected static KVector _getMultiportOffsets(Port port, KShapeLayout kportlayout,
+            int index, int maxIndex, boolean outer) {
+        KVector offset = new KVector();
+        int direction = 0;
+        if (outer) {
+            direction = IOPortController.getDirection(IOPortController
+                    .getCardinality(port));
+        } else {
+            direction = _getExternalPortDirection(port);
+        }
+        switch (direction) {
+        case SwingConstants.NORTH:
+            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.NORTH);
+            // Ports are extended to left with leftmost port index 0.
+            offset.x = -((maxIndex - index) * MULTIPORT_OFFSET);
+            break;
+        case SwingConstants.EAST:
+            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.EAST);
+            // Ports are extended to bottom with top port index 0.
+            offset.y = index * MULTIPORT_OFFSET;
+            break;
+        case SwingConstants.SOUTH:
+            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.SOUTH);
+            offset.x = (index * MULTIPORT_OFFSET);
+            break;
+        default:
+            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.WEST);
+            // Ports are extended to top beginning with top port index 0.
+            offset.y = -((maxIndex - index) * MULTIPORT_OFFSET);
+            break;
+        }
+        return offset;
+    }
+    
+    /**
+     * Offset between KIELER KPorts corresponding to a Ptolemy multiport. I.e.
+     * the distance between multiple single KPorts.
+     */
+    private static final float MULTIPORT_OFFSET = 5.0f;
 
 }

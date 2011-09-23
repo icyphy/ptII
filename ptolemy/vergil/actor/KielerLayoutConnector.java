@@ -36,12 +36,11 @@ import ptolemy.kernel.Relation;
 import ptolemy.vergil.basic.layout.kieler.LayoutHint;
 import ptolemy.vergil.basic.layout.kieler.LayoutHint.LayoutHintItem;
 import ptolemy.vergil.kernel.Link;
+import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.canvas.connector.BasicManhattanRouter;
-import diva.canvas.connector.Connector;
 import diva.canvas.connector.PerimeterSite;
-import diva.util.java2d.Polyline2D;
 
 ///////////////////////////////////////////////////////////////////
 ////KielerLayoutConnector
@@ -85,8 +84,6 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * (i.e., movement of one or the other end of a link).
      */
     public void route() {
-        repaint();
-
         // Parse the bend points if existing.
         List<Point2D> bendPointList = null;
         Object object = this.getUserObject();
@@ -97,8 +94,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
         if (object instanceof Link) {
             link = (Link) object;
             relation = link.getRelation();
-            // relation may be null if a new link is currently dragged from some
-            // port
+            // relation may be null if a new link is currently dragged from some port
             if (relation != null) {
                 LayoutHint layoutHint = (LayoutHint) relation
                         .getAttribute("_layoutHint");
@@ -107,149 +103,120 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                             link.getHead(), link.getTail());
                     if (layoutHintItem != null) {
                         considerBendPoints = layoutHintItem.revalidate();
-                        if (!considerBendPoints) {
-                            layoutHint.removeLayoutHintItem(link.getHead(),
-                                    link.getTail());
-                            if (layoutHint.isEmpty()) {
-                                layoutHint.removeLayoutHintProperty(relation);
-                            }
-                        } else {
+                        if (considerBendPoints) {
                             bendPointList = layoutHintItem.getBendPointList();
+                        } else {
+                            layoutHint.removeLayoutHintItem(layoutHintItem);
                         }
                     }
                 }
             }
         }
 
-        Polyline2D polyline = (Polyline2D) getRouter().route(this);
-        int count = polyline.getVertexCount();
+        if (considerBendPoints) {
+            repaint();
 
-        if (count > 1) {
-            // Pick a location for the label in the middle of the connector.
-            _labelLocation = (new Point2D.Double(
-                    (polyline.getX(count / 2) + polyline.getX((count / 2) - 1)) / 2,
-                    (polyline.getY(count / 2) + polyline.getY((count / 2) - 1)) / 2));
-        } else {
-            // Attach the label to the only point of the connector.
-            _labelLocation = new Point2D.Double(polyline.getX(0),
-                    polyline.getY(0));
-        }
-
-        if (_bendRadius == 0) {
-            setShape(polyline);
-        } else {
             GeneralPath path = new GeneralPath();
 
-            if (considerBendPoints && bendPointList != null) {
+            // we need the "real" start and end points, i.e. the anchor points on the sites
+            Point2D[] startEnd = _getHeadTailPoints(bendPointList);
+            double startX = startEnd[0].getX();
+            double startY = startEnd[0].getY();
+            double previousX = startX;
+            double previousY = startY;
+            double endX = startEnd[1].getX();
+            double endY = startEnd[1].getY();
 
-                // we need the "real" start and end points, i.e. the anchor points on the sites
-                Point2D[] startEnd = _getHeadTailPoints(this, bendPointList);
-                double startX = startEnd[0].getX();
-                double startY = startEnd[0].getY();
-                double previousX = startX;
-                double previousY = startY;
-                double endX = startEnd[1].getX();
-                double endY = startEnd[1].getY();
+            // Start drawing the line.
+            // Under Java 1.5, we only have moveTo(float, float).
+            path.moveTo((float) startX, (float) startY);
 
-                // Start drawing the line.
-                // Under Java 1.5, we only have moveTo(float, float).
-                path.moveTo((float) startX, (float) startY);
+            // Add the start point and end point to the bendPointList in
+            // order to get the curveTo-effect working.
+            bendPointList.add(0, new Point2D.Double(startX, startY));
+            bendPointList.add(new Point2D.Double(endX, endY));
 
-                // Add the start point and end point to the bendPointList in
-                // order to get the curveTo-effect working.
-                bendPointList.add(0, new Point2D.Double(startX, startY));
-                bendPointList.add(new Point2D.Double(endX, endY));
-
-                for (int i = 1; i <= bendPointList.size() - 1; i++) {
-                    int i1 = i;
-                    int i0 = i - 1;
-                    if (i0 < 0) {
-                        i0 = 0;
-                    }
-                    if (i0 > bendPointList.size() - 1) {
-                        i0 = bendPointList.size() - 1;
-                    }
-
-                    // Consider triplets of coordinates.
-                    double x0 = previousX;
-                    double y0 = previousY;
-                    double x1 = bendPointList.get(i0).getX();
-                    double y1 = bendPointList.get(i0).getY();
-
-                    double x2 = bendPointList.get(i1).getX();
-                    double y2 = bendPointList.get(i1).getY();
-
-                    // Calculate midpoints.
-                    x2 = (x1 + x2) / 2;
-                    y2 = (y1 + y2) / 2;
-
-                    // First make sure that the radius is not
-                    // bigger than half one of the arms of the triplets
-                    double d0 = Math.sqrt(((x1 - x0) * (x1 - x0))
-                            + ((y1 - y0) * (y1 - y0)));
-                    double d1 = Math.sqrt(((x2 - x1) * (x2 - x1))
-                            + ((y2 - y1) * (y2 - y1)));
-                    double r = Math.min(_bendRadius, d0);
-                    r = Math.min(r, d1);
-
-                    // The degenerate case of a direct line.
-                    if ((d0 == 0.0) || (d1 == 0.0)) {
-                        path.lineTo((float) x1, (float) y1);
-                    } else {
-                        // Next calculate the intermediate points
-                        // that define the bend.
-                        double intX0 = x1 + ((r / d0) * (x0 - x1));
-                        double intY0 = y1 + ((r / d0) * (y0 - y1));
-                        double intX1 = x1 + ((r / d1) * (x2 - x1));
-                        double intY1 = y1 + ((r / d1) * (y2 - y1));
-
-                        // Next draw the line from the previous
-                        // coord to the intermediate coord, and
-                        // curve around the corner.
-                        path.lineTo((float) intX0, (float) intY0);
-                        path.curveTo((float) x1, (float) y1, (float) x1,
-                                (float) y1, (float) intX1, (float) intY1);
-                        previousX = x2;
-                        previousY = y2;
-                    }
+            for (int i = 1; i <= bendPointList.size() - 1; i++) {
+                int i1 = i;
+                int i0 = i - 1;
+                if (i0 < 0) {
+                    i0 = 0;
+                }
+                if (i0 > bendPointList.size() - 1) {
+                    i0 = bendPointList.size() - 1;
                 }
 
-                // Finally close the last segment with a line.
-                // Under Java 1.5, we only have moveTo(float, float).
-                path.lineTo((float) endX, (float) endY);
+                // Consider triplets of coordinates.
+                double x0 = previousX;
+                double y0 = previousY;
+                double x1 = bendPointList.get(i0).getX();
+                double y1 = bendPointList.get(i0).getY();
 
-                // Now set the shape.
-                setShape(path);
+                double x2 = bendPointList.get(i1).getX();
+                double y2 = bendPointList.get(i1).getY();
 
-                // Move the label.
-                repositionLabel();
+                // Calculate midpoints.
+                x2 = (x1 + x2) / 2;
+                y2 = (y1 + y2) / 2;
 
-                repaint();
-            } else {
-                // In this case we have no bend point annotations available so
-                // we use the normal draw functionality.
-                super.route();
+                // First make sure that the radius is not
+                // bigger than half one of the arms of the triplets
+                double d0 = Math.sqrt(((x1 - x0) * (x1 - x0))
+                        + ((y1 - y0) * (y1 - y0)));
+                double d1 = Math.sqrt(((x2 - x1) * (x2 - x1))
+                        + ((y2 - y1) * (y2 - y1)));
+                double r = Math.min(_bendRadius, d0);
+                r = Math.min(r, d1);
+
+                // The degenerate case of a direct line.
+                if ((d0 == 0.0) || (d1 == 0.0)) {
+                    path.lineTo((float) x1, (float) y1);
+                } else {
+                    // Next calculate the intermediate points
+                    // that define the bend.
+                    double intX0 = x1 + ((r / d0) * (x0 - x1));
+                    double intY0 = y1 + ((r / d0) * (y0 - y1));
+                    double intX1 = x1 + ((r / d1) * (x2 - x1));
+                    double intY1 = y1 + ((r / d1) * (y2 - y1));
+
+                    // Next draw the line from the previous
+                    // coord to the intermediate coord, and
+                    // curve around the corner.
+                    path.lineTo((float) intX0, (float) intY0);
+                    path.curveTo((float) x1, (float) y1, (float) x1,
+                            (float) y1, (float) intX1, (float) intY1);
+                    previousX = x2;
+                    previousY = y2;
+                }
             }
-        } // else bendradius == 2
-          // System.out.println("end route: "+relation.exportMoMLPlain());
+
+            // Finally close the last segment with a line.
+            // Under Java 1.5, we only have moveTo(float, float).
+            path.lineTo((float) endX, (float) endY);
+
+            // Now set the shape.
+            setShape(path);
+
+            // Move the label.
+            int count = bendPointList.size();
+            // Pick a location for the label in the middle of the connector.
+            Point2D point1 = bendPointList.get(count / 2 - 1);
+            Point2D point2 = bendPointList.get(count / 2);
+            _labelLocation = (new Point2D.Double(
+                    (point1.getX() + point2.getX()) / 2,
+                    (point1.getY() + point2.getY()) / 2));
+            repositionLabel();
+
+            repaint();
+        } else {
+            // In this case we have no bend point annotations available so
+            // we use the normal draw functionality.
+            super.route();
+        }
     }
 
-    /**
-     * Reposition the text label of the connector.
-     */
-    public void repositionLabel() {
-        if (_labelLocation == null) {
-            route();
-
-            // Route will call this method recursively.
-            return;
-        }
-
-        if (getLabelFigure() != null) {
-            getLabelFigure().translateTo(_labelLocation);
-            getLabelFigure().autoAnchor(getShape());
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Get the center point of a Perimeter Site. Copied the idea from
@@ -259,30 +226,34 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * @return the center point of the shape that corresponds to the site
      */
     private Point2D _getCenterPoint(Site site) {
-        try {
-            Rectangle bounds = site.getFigure().getShape().getBounds();
-            return new Point2D.Double(bounds.getCenterX(), bounds.getCenterY());
-        } catch (NullPointerException e) {
+        Figure figure = site.getFigure();
+        if (figure == null) {
             return site.getPoint();
         }
+        // Port figures return bounds that are relative to the containing node.
+        if (site instanceof PortConnectSite
+                && figure.getParent() instanceof Figure) {
+            figure = (Figure) figure.getParent();
+        }
+        Rectangle bounds = figure.getShape().getBounds();
+        return new Point2D.Double(bounds.getCenterX(), bounds.getCenterY());
     }
-
+    
     /**
      * Get the starting and ending points of a connector. Copied some code from
      * {@link BasicManhattanRouter#routeManhattan(diva.canvas.connector.ManhattanConnector)}.
-     * @param c the corresponding connector
      * @param bendPoints a list of bendpoints to determine the anchor point on the site
      * @return the anchor points at the start and end of the
      * connection, i.e. a Point2D array of size 2
      */
-    private Point2D[] _getHeadTailPoints(Connector c, List<Point2D> bendPoints) {
-        TransformContext currentContext = c.getTransformContext();
+    private Point2D[] _getHeadTailPoints(List<Point2D> bendPoints) {
+        TransformContext currentContext = getTransformContext();
         Point2D headPt, tailPt;
-        Site headSite = c.getHeadSite();
-        Site tailSite = c.getTailSite();
+        Site headSite = getHeadSite();
+        Site tailSite = getTailSite();
         if (currentContext != null) {
-            headPt = _getCenterPoint(headSite);//headSite.getPoint(currentContext);
-            tailPt = _getCenterPoint(tailSite);//tailSite.getPoint(currentContext);
+            headPt = _getCenterPoint(headSite);
+            tailPt = _getCenterPoint(tailSite);
             // get neighbor point to head and tail to determine the output sides
             Point2D headBend, tailBend;
             if (!bendPoints.isEmpty()) {
@@ -294,7 +265,6 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
             }
             // now change the "Normal" side of the site
             headSite.setNormal(_getNormal(headPt, headBend));
-            // headSite.setNormal(Math.PI);
             tailSite.setNormal(_getNormal(tailPt, tailBend));
             // and get the points again
             headPt = headSite.getPoint(currentContext);
@@ -316,10 +286,9 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * @return angle in radians
      */
     private double _getNormal(Point2D origin, Point2D other) {
-        Point2D normalPoint = new Point2D.Double(other.getX() - origin.getX(),
-                other.getY() - origin.getY());
-        // use negative y coordinate, because atan uses "normal" y direction
-        double theta = Math.atan2(-normalPoint.getY(), normalPoint.getX());
+        double normalX = other.getX() - origin.getX();
+        double normalY = other.getY() - origin.getY();
+        double theta = Math.atan2(normalY, normalX);
         return theta;
     }
 
@@ -330,10 +299,5 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * The radius for filleting the corners of the connector.
      */
     private double _bendRadius = 10;
-
-    /**
-     * The location to attach the label to.
-     */
-    private Point2D _labelLocation;
 
 }

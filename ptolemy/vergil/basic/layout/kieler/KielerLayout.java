@@ -32,7 +32,6 @@ package ptolemy.vergil.basic.layout.kieler;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,11 +44,11 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
 import ptolemy.graph.GraphInvalidStateException;
 import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentPort;
@@ -81,6 +80,7 @@ import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
 import de.cau.cs.kieler.core.properties.Property;
+import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.AbstractLayoutProvider;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
@@ -89,7 +89,6 @@ import de.cau.cs.kieler.kiml.options.Direction;
 import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.options.PortConstraints;
-import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.kiml.options.PortType;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klay.layered.LayeredLayoutProvider;
@@ -347,30 +346,26 @@ public class KielerLayout extends AbstractGlobalLayout {
                 Locatable location;
                 if (divaNode instanceof Location) {
                     location = (Location) divaNode;
-                } else {
-                    NamedObj namedObj = _kieler2ptolemyEntityNodes.get(knode);
-                    location = PtolemyModelUtil._getLocation(namedObj);
+
+                    // Transform coordinate systems.
+                    KimlUtil.toAbsolute(nodePos, parentNode);
+                    _kNode2Ptolemy(nodePos, divaNode, location);
+    
+                    // Calculate the snap-to-grid coordinates.
+                    double[] snapToGridNodePoint = SnapConstraint.constrainPoint(
+                            nodePos.x, nodePos.y);
+    
+                    // Include the new location in the request.
+                    layoutRequest.addLocation(location, snapToGridNodePoint[0],
+                            snapToGridNodePoint[1]);
                 }
-
-                // Transform coordinate systems.
-                KimlUtil.toAbsolute(nodePos, parentNode);
-                _kNode2Ptolemy(nodePos, divaNode, location);
-
-                // Calculate the snap-to-grid coordinates.
-                double[] snapToGridNodePoint = SnapConstraint.constrainPoint(nodePos.x, nodePos.y);
-
-                // Include the new location in the request.
-                layoutRequest.addLocation(location, snapToGridNodePoint[0],
-                        snapToGridNodePoint[1]);
             }
 
             // apply edge layout - bend points (cmot)
             if (_layoutOptions.getProperty(Options.ROUTE_EDGES)) {
-                for (Map.Entry<KEdge, Object> entry : _kieler2PtolemyDivaEdges.entrySet()) {
-                    if (entry.getValue() instanceof Link) {
-                        _applyEdgeLayoutBendPointAnnotation(entry.getKey(),
-                                (Link) entry.getValue(), layoutRequest);
-                    }
+                for (Pair<KEdge, Link> entry : _edgeList) {
+                    _applyEdgeLayoutBendPointAnnotation(entry.getFirst(),
+                            entry.getSecond(), layoutRequest);
                 }
             }
         }
@@ -448,12 +443,10 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     private void _createGraph(Object composite, KNode parentNode) {
         _kieler2ptolemyDivaNodes = HashBiMap.create();
-        _kieler2ptolemyEntityNodes = new HashMap<KNode, NamedObj>();
-        _kieler2PtolemyDivaEdges = HashBiMap.create();
         _ptolemy2KielerPorts = LinkedListMultimap.create();
-        _kieler2PtolemyPorts = new HashMap<KPort, Port>();
-        _divaEdgeSource = new HashMap<Object, Object>();
-        _divaEdgeTarget = new HashMap<Object, Object>();
+        _divaEdgeSource = Maps.newHashMap();
+        _divaEdgeTarget = Maps.newHashMap();
+        _edgeList = Lists.newLinkedList();
         
         // Determine whether to include unconnected nodes.
         boolean doBoxLayout = _layoutOptions.getProperty(Options.DECORATIONS);
@@ -466,12 +459,15 @@ public class KielerLayout extends AbstractGlobalLayout {
         GraphModel graph = target.getGraphModel();
         if (graph instanceof ActorGraphModel) {
             ActorGraphModel aGraph = (ActorGraphModel) graph;
-            List<Object> unprocessedEdges = new LinkedList<Object>();
+            List<Link> unprocessedEdges = new LinkedList<Link>();
 
             // Process nodes.
             for (Iterator iterator = aGraph.nodes(composite);
                     iterator.hasNext();) {
                 Object node = iterator.next();
+                if (!(node instanceof Locatable)) {
+                    continue;
+                }
                 Iterator portIter = null;
 
                 // Here we get the corresponding Ptolemy object.
@@ -532,8 +528,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                         }
     
                         // Store node for later applying layout back.
-                        _kieler2ptolemyDivaNodes.put(knode, node);
-                        _kieler2ptolemyEntityNodes.put(knode, semanticNode);
+                        _kieler2ptolemyDivaNodes.put(knode, (Locatable) node);
                     }
                 }
 
@@ -548,7 +543,10 @@ public class KielerLayout extends AbstractGlobalLayout {
                             edgeIterator = aGraph.outEdges(divaPort);
                         }
                         while (edgeIterator.hasNext()) {
-                            unprocessedEdges.add(edgeIterator.next());
+                            Object next = edgeIterator.next();
+                            if (next instanceof Link) {
+                                unprocessedEdges.add((Link) next);
+                            }
                         }
                     }
                 }
@@ -556,7 +554,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 
             // Create KIELER edges for Diva edges.
             _storeEndpoints(unprocessedEdges);
-            for (Object divaEdge : unprocessedEdges) {
+            for (Link divaEdge : unprocessedEdges) {
                 _createKEdge(divaEdge);
             }
         }
@@ -585,7 +583,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      *
      * @param divaEdge The Ptolemy diva edge object for which to create a new KEdge.
      */
-    private void _createKEdge(Object divaEdge) {
+    private void _createKEdge(Link divaEdge) {
         GraphModel model = this.getLayoutTarget().getGraphModel();
         if (model instanceof ActorGraphModel) {
             ActorGraphModel aGraph = (ActorGraphModel) model;
@@ -620,8 +618,8 @@ public class KielerLayout extends AbstractGlobalLayout {
                 kedge.setTarget(_kieler2ptolemyDivaNodes.inverse().get(target));
             }
 
-            // Add KEdge to map.
-            _kieler2PtolemyDivaEdges.put(kedge, divaEdge);
+            // Add the edge to the list.
+            _edgeList.add(new Pair<KEdge, Link>(kedge, divaEdge));
         }
     }
 
@@ -710,7 +708,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         // These constants are black magic, gotten by trial and error.
         KVector portBase = new KVector(MULTIPORT_INNER_OFFSET);
         portBase.y += figureBounds.getHeight() - shapeBounds.getHeight();
-        int direction = _getExternalPortDirection(port);
+        int direction = PtolemyModelUtil._getExternalPortDirection(port);
         switch (direction) {
         case SwingConstants.NORTH:
             portBase.x += shapeBounds.getWidth() / 2;
@@ -735,8 +733,8 @@ public class KielerLayout extends AbstractGlobalLayout {
             KShapeLayout portLayout = kPort.getData(KShapeLayout.class);
             portLayout.setHeight(DEFAULT_PORT_SIZE);
             portLayout.setWidth(DEFAULT_PORT_SIZE);
-            KVector offset = _getMultiportOffsets(port, portLayout, index,
-                    maxIndex, false);
+            KVector offset = PtolemyModelUtil._getMultiportOffsets(port,
+                    portLayout, index, maxIndex, false);
             portLayout.setXpos((float) (portBase.x + offset.x));
             portLayout.setYpos((float) (portBase.y + offset.y)
                     - portLayout.getHeight() / 2);
@@ -764,7 +762,6 @@ public class KielerLayout extends AbstractGlobalLayout {
         layout.setYpos((float) bounds.getMinY());
         layout.setProperty(LayoutOptions.FIXED_SIZE, true);
         layout.setProperty(LayoutOptions.HYPERNODE, true);
-
         return kNode;
     }
 
@@ -800,8 +797,8 @@ public class KielerLayout extends AbstractGlobalLayout {
         kportlayout.setWidth(DEFAULT_PORT_SIZE);
 
         // Set port side and calculate actual offset.
-        KVector offset = _getMultiportOffsets(port, kportlayout, index,
-                maxIndex, true);
+        KVector offset = PtolemyModelUtil._getMultiportOffsets(port, kportlayout,
+                index, maxIndex, true);
 
         // Try to set actual layout (size and position)
         Object portObject = this.getLayoutTarget().getVisualObject(port);
@@ -856,7 +853,6 @@ public class KielerLayout extends AbstractGlobalLayout {
             }
         }
         // Put ports in global maps for later use.
-        _kieler2PtolemyPorts.put(kport, port);
         _ptolemy2KielerPorts.put(port, kport);
     }
 
@@ -894,79 +890,6 @@ public class KielerLayout extends AbstractGlobalLayout {
                 _createKPort(knode, portType, port, 0, 0, -1);
             }
         }
-    }
-
-    /**
-     * Get the direction of the edge anchor point of an external port
-     * inside a composite actor. It is given as a {@link SwingConstants}, like
-     * {@link SwingConstants#NORTH}, {@link SwingConstants#SOUTH},
-     * {@link SwingConstants#EAST}, {@link SwingConstants#WEST}.
-     * @param port the external port
-     * @return a SwingConstant about the direction
-     */
-    private int _getExternalPortDirection(Port port) {
-        if (port instanceof IOPort) {
-            boolean isInput = ((IOPort) port).isInput();
-            boolean isOutput = ((IOPort) port).isOutput();
-            if (isInput && !isOutput) {
-                return SwingConstants.EAST;
-            }
-            if (!isInput && isOutput) {
-                return SwingConstants.WEST;
-            }
-            if (isInput && isOutput) {
-                return SwingConstants.NORTH;
-            }
-        }
-        return SwingConstants.SOUTH;
-    }
-
-    /**
-     * For a given Ptolemy port, its channel index in a multiport, and the
-     * maximum index in that multiport, calculate its offset in X and Y
-     * coordinates. For example, the first channel on the east side has offset 0
-     * and the next channel is moved below the first one and so on. On the north
-     * side, the last channel has offset 0 and the first channel is at the most
-     * left side.
-     *
-     * @param port the Ptolemy port
-     * @param kportlayout the corresponding KPort KShapeLayout
-     * @param index index of the channel
-     * @param maxIndex maximum available channel
-     * @return offset vector
-     */
-    private KVector _getMultiportOffsets(Port port, KShapeLayout kportlayout,
-            int index, int maxIndex, boolean outer) {
-        KVector offset = new KVector();
-        int direction = 0;
-        if (outer) {
-            direction = IOPortController.getDirection(IOPortController
-                    .getCardinality(port));
-        } else {
-            direction = _getExternalPortDirection(port);
-        }
-        switch (direction) {
-        case SwingConstants.NORTH:
-            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.NORTH);
-            // Ports are extended to left with leftmost port index 0.
-            offset.x = -((maxIndex - index) * MULTIPORT_OFFSET);
-            break;
-        case SwingConstants.EAST:
-            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.EAST);
-            // Ports are extended to bottom with top port index 0.
-            offset.y = index * MULTIPORT_OFFSET;
-            break;
-        case SwingConstants.SOUTH:
-            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.SOUTH);
-            offset.x = (index * MULTIPORT_OFFSET);
-            break;
-        default:
-            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.WEST);
-            // Ports are extended to top beginning with top port index 0.
-            offset.y = -((maxIndex - index) * MULTIPORT_OFFSET);
-            break;
-        }
-        return offset;
     }
 
     /**
@@ -1037,7 +960,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @param locatable the location object of the node
      */
     private void _kNode2Ptolemy(KVector pos, Object divaNode, Locatable locatable) {
-        Point2D.Double location = PtolemyModelUtil._getLocationPoint(locatable);
+        Point2D location = PtolemyModelUtil._getLocationPoint(locatable);
         if (divaNode != null) {
             Rectangle2D divaBounds = this.getLayoutTarget().getBounds(divaNode);
             double offsetX = 0, offsetY = 0;
@@ -1045,9 +968,9 @@ public class KielerLayout extends AbstractGlobalLayout {
             // Check whether the location could be determined.
             // If not, we might have something that has no location attribute,
             // such as a relation vertex, where we use the center as offset.
-            if (location.x != 0 || location.y != 0) {
-                offsetX = location.x - divaBounds.getMinX();
-                offsetY = location.y - divaBounds.getMinY();
+            if (location != null) {
+                offsetX = location.getX() - divaBounds.getMinX();
+                offsetY = location.getY() - divaBounds.getMinY();
             } else {
                 offsetX = divaBounds.getWidth() / 2;
                 offsetY = divaBounds.getHeight() / 2;
@@ -1078,7 +1001,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      *
      * @param unprocessedEdges The list of edges that need processing.
      */
-    private void _storeEndpoints(List<Object> unprocessedEdges) {
+    private void _storeEndpoints(List<Link> unprocessedEdges) {
         ActorGraphModel aGraph = (ActorGraphModel) this.getLayoutTarget()
                 .getGraphModel();
         boolean allDirectionsSet = false;
@@ -1086,8 +1009,8 @@ public class KielerLayout extends AbstractGlobalLayout {
         while (!allDirectionsSet) {
             allDirectionsSet = true;
             progress = false;
-            for (Iterator edgeIter = unprocessedEdges.iterator(); edgeIter.hasNext();) {
-                Object edge = edgeIter.next();
+            for (Iterator<Link> edgeIter = unprocessedEdges.iterator(); edgeIter.hasNext();) {
+                Link edge = edgeIter.next();
                 EdgeModel edgeModel = aGraph.getEdgeModel(edge);
 
                 Object simpleEndpoint1 = edgeModel.getHead(edge);
@@ -1103,8 +1026,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 
                 // Check whether endpoints are source or target ports.
                 if (endpoint1 instanceof Port) {
-                    boolean isInput1 = PtolemyModelUtil
-                            ._isInput((Port) endpoint1);
+                    boolean isInput1 = PtolemyModelUtil._isInput((Port) endpoint1);
                     // Check if we look at inner or outer ports.
                     if (simpleEndpoint1 instanceof Location) {
                         // Inner input port is regarded as output.
@@ -1122,8 +1044,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                     }
                     
                 } else if (endpoint2 instanceof Port) {
-                    boolean isInput2 = PtolemyModelUtil
-                            ._isInput((Port) endpoint2);
+                    boolean isInput2 = PtolemyModelUtil._isInput((Port) endpoint2);
                     // Check if we look at inner or outer ports.
                     if (simpleEndpoint2 instanceof Location) {
                         // Inner input port is regarded as output.
@@ -1201,15 +1122,16 @@ public class KielerLayout extends AbstractGlobalLayout {
     private static final KVector MULTIPORT_INNER_OFFSET = new KVector(3f, -3f);
 
     /**
-     * Offset between KIELER KPorts corresponding to a Ptolemy multiport. I.e.
-     * the distance between multiple single KPorts.
-     */
-    private static final float MULTIPORT_OFFSET = 5.0f;
-
-    /**
      * Offset between bottom of Multiport to the first KIELER KPort
      */
     private static final float MULTIPORT_BOTTOM = 4.5f;
+
+    /**
+     * A pool of layout provider instances, which are used to perform the actual
+     * layout. The pool is accessed statically, so that its instances can be reused
+     * in subsequent layout runs.
+     */
+    private static InstancePool<AbstractLayoutProvider> _layoutProviderPool;
 
     /**
      * The top level Ptolemy composite actor that contains the diagram that is
@@ -1220,46 +1142,29 @@ public class KielerLayout extends AbstractGlobalLayout {
     /**
      * Storage of actual sources of diva edges corresponding to data flow.
      */
-    private Map<Object, Object> _divaEdgeSource;
+    private Map<Link, Object> _divaEdgeSource;
 
     /**
      * Storage of actual targets of diva edges corresponding to data flow.
      */
-    private Map<Object, Object> _divaEdgeTarget;
+    private Map<Link, Object> _divaEdgeTarget;
 
     /**
      * A map of layout option identifiers to specific values. This is used to configure
      * how the layout graph is built and to configure the layout algorithm.
      */
     private IPropertyHolder _layoutOptions = new MapPropertyHolder();
-
-    /**
-     * A pool of layout provider instances, which are used to perform the actual
-     * layout. The pool is accessed statically, so that its instances can be reused
-     * in subsequent layout runs.
-     */
-    private static InstancePool<AbstractLayoutProvider> _layoutProviderPool;
     
     /**
-     * Map KIELER KEdges to Ptolemy Diva Edges and back.
+     * List of KIELER edges and corresponding Diva links.
      */
-    private BiMap<KEdge, Object> _kieler2PtolemyDivaEdges;
+    private List<Pair<KEdge, Link>> _edgeList;
 
     /**
      * Map KIELER nodes to Diva Nodes and back.
      */
-    private BiMap<KNode, Object> _kieler2ptolemyDivaNodes;
+    private BiMap<KNode, Locatable> _kieler2ptolemyDivaNodes;
 
-    /**
-     * Map KIELER Nodes to Ptolemy Nodes.
-     */
-    private Map<KNode, NamedObj> _kieler2ptolemyEntityNodes;
-
-    /**
-     * Map KIELER ports to Ptolemy ports.
-     */
-    private Map<KPort, Port> _kieler2PtolemyPorts;
-    
     /**
      * Map Ptolemy ports to KIELER ports. A Ptolemy multiport could correspond
      * to multiple KIELER ports. Hence it's a mapping to a List of KPorts.

@@ -51,10 +51,10 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.ComponentPort;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -63,7 +63,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.KielerLayoutConnector;
@@ -72,14 +71,12 @@ import diva.canvas.connector.ManhattanConnector;
 ///////////////////////////////////////////////////////////////////
 ////                      LayoutHint
 /**
- * <p>
  * A LayoutHint is an Attribute for Ptolemy Relations that holds the
  * specification of bend points for links. Its value field contains a list of
  * {@link LayoutHintItem} objects because one Relation can correspond to
  * multiple links, which are not real objects in the Ptolemy abstract syntax and
  * therefore can not carry any attributes. Each item carries a list of
  * bendpoints for a specific link.
- * </p>
  * <p>
  * The LayoutHint uses a Ptolemy Expression as its value in which the
  * {@link LayoutHintItem} objects are encoded. Therefore the Expression is
@@ -325,50 +322,24 @@ public class LayoutHint extends SingletonAttribute implements Settable {
     }
 
     /**
-     * Does this LayoutHint contain any {@link LayoutHintItem} objects?
+     * Remove a {@link LayoutHintItem} from this storage. If that is the last
+     * item contained in this layout hint, then the layout hint itself is
+     * removed from its container.
      *
-     * @return true iff the list of LayoutHintItems is empty
+     * @param itemToRemove The layout hint item to remove
      */
-    public boolean isEmpty() {
-        return this._layoutHintItems.isEmpty();
-    }
-
-    /**
-     * Remove a {@link LayoutHintItem} from this storage. It is identified by
-     * its head and tail Ptolemy objects like {@link Port} or {@link Relation}.
-     * If no item with the specified head and tail is found, nothing happens.
-     *
-     * @param head the head object of the corresponding link
-     * @param tail the tail object of the corresponding link
-     */
-    public void removeLayoutHintItem(Object head, Object tail) {
-        LayoutHintItem itemToRemove = null;
-        for (LayoutHintItem item : _layoutHintItems) {
-            if (item.getHead() == head && item.getTail() == tail) {
-                itemToRemove = item;
-                break;
-            }
+    public void removeLayoutHintItem(final LayoutHintItem itemToRemove) {
+        final NamedObj container = getContainer();
+        if (container != null) {
+            container.requestChange(new ChangeRequest(container, "Remove Layout Hint") {
+                protected void _execute() throws Exception {
+                    _layoutHintItems.remove(itemToRemove);
+                    if (_layoutHintItems.isEmpty()) {
+                        setContainer(null);
+                    }
+                }
+            });
         }
-        if (itemToRemove != null) {
-            _layoutHintItems.remove(itemToRemove);
-        }
-    }
-
-    /**
-     * Remove this LayoutHint attribute from a {@link NamedObj}, e.g. an
-     * {@link Entity} or {@link Relation}. Execute in a MoMLChangeRequest and
-     * execute it immediately, thus, notify all listeners about this change and
-     * update the GUI. All {@link LayoutHintItem}s contained in this LayoutHint
-     * will be removed, so handle with care, e.g. by checking whether this
-     * LaoutHint {@link #isEmpty()}.
-     *
-     * @param target the target NamedObj
-     */
-    public void removeLayoutHintProperty(NamedObj target) {
-        String moml = "<deleteProperty name=\"" + this.getName() + "\"/>\n";
-        MoMLChangeRequest request = new MoMLChangeRequest(target, target, moml);
-        request.setUndoable(true);
-        target.requestChange(request);
     }
 
     /**
@@ -523,14 +494,13 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      */
     private void _addLayoutHintItems(Token hints) throws IllegalActionException {
         try {
-            // the token is expected to be an array of LayoutHintItems
+            // The token is expected to be an array of LayoutHintItems.
             for (int i = 0; i < ((ArrayToken) hints).length(); i++) {
-                // each LayoutHintItem is expected to be a Record
-                RecordToken layoutItem = (RecordToken) ((ArrayToken) hints)
-                        .getElement(i);
-                // a LayoutHintItem has a head and tail entry which are
-                // records containing an identifying String, coordinates
-                // and optionally the width of a multiport
+                // Each LayoutHintItem is expected to be a Record.
+                RecordToken layoutItem = (RecordToken) ((ArrayToken) hints).getElement(i);
+                // A LayoutHintItem has a head and tail entry, which are
+                // records containing an identifying String, coordinates,
+                // and optionally the width of a multiport.
                 RecordToken headToken = ((RecordToken) layoutItem.get("head"));
                 NamedObj head = _findNamedObj(this,
                         ((StringToken) headToken.get("id")).stringValue());
@@ -553,11 +523,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                     tailMultiportWidth = ((IntToken) tailToken.get("index")).intValue();
                 }
 
-                // the LayoutHintItem record contains a points entry, containing
-                // an array of bend points
+                // The LayoutHintItem record contains a points entry, containing
+                // an array of bend points.
                 ArrayToken bendPoints = (ArrayToken) layoutItem.get("points");
-                // only do if head and tail could be resolved.
-                // this can fail if you insert a new relation vertex into an
+                // Only do if head and tail could be resolved.
+                // This can fail if you insert a new relation vertex into an
                 // existing link. Then first the attribute is copied and only
                 // then the relation is inserted into the diagram. Therefore the
                 // head and tail cannot be found. However, this LayoutHint will
@@ -622,10 +592,9 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @return the changed array
      */
     private static double[] _reverseCoordinateArray(double[] bendPoints) {
-        int size = bendPoints.length - (bendPoints.length % 2); // make sure
-                                                                // only to
-        // process even length
-        // don't do anything if the array has only one location
+        int size = bendPoints.length - (bendPoints.length % 2);
+        // Make sure only to process even length.
+        // Don't do anything if the array has only one location.
         if (size >= 4) {
             double tempx, tempy;
             int lastX, lastY;
@@ -645,7 +614,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         return bendPoints;
     }
 
-    /** Debug flag, if set will give some debug output to console */
+    /** Debug flag, if set will give some debug output to console
+     * @deprecated XXX */
     private static final boolean DEBUG = false;
     /** A valid example expression to show in the GUI in case of errors. */
     private static final String EXAMPLE_EXPRESSION = "{  \n{head={id=\"a.out\",x=10,y=11},"
@@ -723,8 +693,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * @param tail the tail object of the corresponding link
          */
         public LayoutHintItem(NamedObj head, NamedObj tail) {
-            _head = head;
-            _tail = tail;
+            this._head = head;
+            this._tail = tail;
             _updateHeadTailLocations();
         }
 
@@ -1041,9 +1011,9 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             // a composite actor, so take the actor's position instead of the port's
             // internal position.
             if (obj instanceof ComponentPort) {
-                return PtolemyModelUtil._getLocationPoint(obj.getContainer());
+                return (Point2D.Double) PtolemyModelUtil._getLocationPoint(obj.getContainer());
             }
-            return PtolemyModelUtil._getLocationPoint(obj);
+            return (Point2D.Double) PtolemyModelUtil._getLocationPoint(obj);
         }
 
         /**
@@ -1074,17 +1044,13 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         private NamedObj _head = null;
         /** Coordinates for the head at which this item is only valid. */
         private Point2D.Double _headLocation = new Point2D.Double();
-        /**
-         * Width and index of the multiport, if the head actually is a multiport.
-         */
+        /** Width and index of the multiport, if the head actually is a multiport. */
         private int[] _headMultiportIndex = { 1, 1 };
         /** Tail object to identify this item. */
         private NamedObj _tail = null;
         /** Coordinates for the tail at which this item is only valid. */
         private Point2D.Double _tailLocation = new Point2D.Double();
-        /**
-         * Width and index of the multiport, if the tail actually is a multiport.
-         */
+        /** Width and index of the multiport, if the tail actually is a multiport. */
         private int[] _tailMultiportIndex = { 1, 1 };
     }
 }

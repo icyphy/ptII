@@ -45,13 +45,14 @@ import diva.util.java2d.Polyline2D;
  * @author  Michael Shilman
  */
 public class ManhattanConnector extends AbstractConnector {
-    /** The radius for filleting the corners of the connector.
-     */
-    private double _bendRadius = 50;
 
     /** The location to attach the label to.
      */
-    private Point2D _labelLocation;
+    protected Point2D _labelLocation;
+
+    /** The radius for filleting the corners of the connector.
+     */
+    private double _bendRadius = 50;
 
     /** The router used to route this connector.
      */
