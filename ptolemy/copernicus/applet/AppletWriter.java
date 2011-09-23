@@ -950,7 +950,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // GeneratorTableauAttribute here so that the Vergil applet has
             // the graphical classes
             RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
-            RemoveGraphicalClasses.clear();
+            removeGraphicalClasses.clear();
             removeGraphicalClasses.put(
                     "ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
             MoMLParser.addMoMLFilter(removeGraphicalClasses);

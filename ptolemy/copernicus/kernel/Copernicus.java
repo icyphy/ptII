@@ -526,6 +526,12 @@ public class Copernicus {
         // which is not accessible because of security concerns.
         RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
 
+        // We don't actually remove the graphical classes because PrintingPress
+        // sets the location of a LineAttribute. To reproduce:
+        // cd $PTII/ptolemy/domains/ptides/demo/PrintingPress 
+        // $PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/ptides/demo/PrintingPress PrintingPress.xml
+        removeGraphicalClasses.clear();
+
         // FIXME: Not sure why this is necessary, but it helps
         // when generating an applet for moml/demo/spectrum.xml
         // However, if we remove Location, then shallow CG of Wireless fails.
