@@ -172,8 +172,21 @@ public class MacOSXAdapter implements InvocationHandler {
             }
 
             if (_macOSXApplication == null) {
-                _macOSXApplication = applicationClass.getConstructor(
-                        (Class[]) null).newInstance((Object[]) null);
+                try {
+                    _macOSXApplication = applicationClass.getConstructor(
+                            (Class[]) null).newInstance((Object[]) null);
+                } catch (java.lang.reflect.InvocationTargetException ex) {
+                    if (ex.getCause() instanceof SecurityException) {
+                        if (!_printedSecurityExceptionMessage) {
+                            System.out.println("Warning: Failed to get the"
+                                    + "constructor of \""
+                                    + applicationClassName + "\" ("
+                                    + applicationClass + "): " + ex
+                                    + "(applets and -sandbox always causes this)");
+                        }
+                    }
+                    return;
+                }
             }
             Class applicationListenerClass = Class
                 .forName("com.apple.eawt.ApplicationListener");
