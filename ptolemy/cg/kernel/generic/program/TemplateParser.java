@@ -1603,9 +1603,19 @@ public class TemplateParser {
         TypedIOPort port = getPort(portChannel[0]);
         String channel = portChannel[1];
 
-        if (port == null || channel.length() == 0) {
+        if (port == null) {
             CGException.throwException(parameter
-                    + " is not acceptable by $get(). "
+                    + " is not acceptable by $get() because the getPort("
+                    + "\"" + portChannel[0] + "\") returned null."
+                    + "The $get macro can accept the following forms: "
+                    + "$get(input#channel, offset); or, "
+                    + "$get(input, offset); or, " + "$get(input#channel); or, "
+                    + "$get(input);");
+        }
+        if (channel.length() == 0) {
+            CGException.throwException(port, port.getFullName()
+                    + " is not acceptable by $get() because the length of "
+                    + "channel \"" + channel + "\" is 0."
                     + "The $get macro can accept the following forms: "
                     + "$get(input#channel, offset); or, "
                     + "$get(input, offset); or, " + "$get(input#channel); or, "
