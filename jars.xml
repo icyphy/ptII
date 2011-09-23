@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="jars" name="ptII">
   <!-- $Id
        This file is used to generate jar files for Ptolemy II:
        ant -f jars.xml jars
     -->
+
+<!-- FIXME: Don't set default="jars", it causes the jars to be buit twice? -->
+<project basedir="." name="ptII">
+
   <patternset id="ptII.jars">
     <include name="com/jgoodies/jgoodies.jar" />
     <include name="doc/codeDoc.jar" />
