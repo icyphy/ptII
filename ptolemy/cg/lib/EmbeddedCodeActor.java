@@ -280,7 +280,10 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
                 + "// and an output port named \"output\", "
                 + "then the following\n"
                 + "// line results in the input being copied to the output.\n"
-                + "//$put(output, $get(input));\n" + "/**/\n\n";
+                + "//DOLLARput(output, DOLLARget(input));\n"
+                + "//(replace DOLLAR with the dollar sign.  The problem "
+                + "//is that the code generator does substitution on the dollar sign\n"
+                + "/**/\n\n";
         return code;
     }
 
