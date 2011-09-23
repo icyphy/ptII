@@ -90,12 +90,25 @@ public class MacOSXAdapter implements InvocationHandler {
      */
     public static void setAboutMethod(Top top, Method aboutMethod) {
         _setHandler(top, new MacOSXAdapter("handleAbout", top, aboutMethod));
+        if (_macOSXApplication == null) {
+            // _setHandler should set _macOSXApplication, so perhaps
+            // we are running as Applet or under -sandbox.
+            return;
+        }
         try {
+            System.out.println("MacOSXAdapter.setAboutMethod(): _macOSXApplication: " + _macOSXApplication);
             Method enableAboutMethod = _macOSXApplication.getClass()
                 .getDeclaredMethod("setEnabledAboutMenu",
                         new Class[] { boolean.class });
             enableAboutMethod.invoke(_macOSXApplication,
                     new Object[] { Boolean.TRUE });
+        } catch (SecurityException ex) {            
+            if (!_printedSecurityExceptionMessage) {
+                _printedSecurityExceptionMessage = true;
+                System.out.println("Warning: Failed to enable "
+                        + "the about menu. "
+                        + "(applets and -sandbox always causes this)");
+            }
         } catch (Exception ex) {
             top.report("The about menu could not be set.", ex);
         }
@@ -134,8 +147,31 @@ public class MacOSXAdapter implements InvocationHandler {
      */
     private static void _setHandler(Top top, MacOSXAdapter adapter) {
         try {
-            Class applicationClass = Class
-                .forName("com.apple.eawt.Application");
+            Class applicationClass = null;
+            String applicationClassName = "com.apple.eawt.Application";
+            try {
+                applicationClass = Class
+                    .forName(applicationClassName);
+            } catch (NoClassDefFoundError ex) {
+                if (!_printedNoClassDefFoundMessage) {
+                    System.out.println("Warning: Failed to find the \""
+                            + applicationClassName + "\" class: " + ex
+                            + " (applets and -sandbox always causes this)");
+                    _printedNoClassDefFoundMessage = true;
+                }
+                return;
+            } catch (ExceptionInInitializerError ex) {
+                if (ex.getCause() instanceof SecurityException) {
+                    if (!_printedSecurityExceptionMessage) {
+                        System.out.println("Warning: Failed to create new "
+                                + "instance of \""
+                                + applicationClassName + "\": " + ex
+                                + "(applets and -sandbox always causes this)");
+                    }
+                    return;
+                }
+            }
+
             if (_macOSXApplication == null) {
                 _macOSXApplication = applicationClass.getConstructor(
                         (Class[]) null).newInstance((Object[]) null);
@@ -164,10 +200,19 @@ public class MacOSXAdapter implements InvocationHandler {
     /** An instance of com.apple.eawt.Application, upon which methods are invoked.
      *  We use Object here instead of com.apple.eawt.Application so as to avoid
      *  compile-time dependencies on Apple-specific code.
+     *  The _setHandler() method sets macOSXApplication.
+     *  If we are running as an unsigned applet or using -sandbox, then
+     *  this variable will be null.
      */
     private static Object _macOSXApplication;
 
-    /*  The name of a method in com.apple.eawt.ApplicationListener,
+    /** True if we have printed the securityException message. */
+    private static boolean _printedSecurityExceptionMessage = false;
+
+    /** True if we have printed the NoClassDefFound message. */
+    private static boolean _printedNoClassDefFoundMessage = false;
+
+   /**  The name of a method in com.apple.eawt.ApplicationListener,
      *  for example "handleQuit".
      */
     private String _proxySignature;

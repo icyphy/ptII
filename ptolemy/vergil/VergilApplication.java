@@ -46,6 +46,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.data.expr.Parameter;
+import ptolemy.gui.PtGUIUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
@@ -204,12 +205,24 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(final String[] args) {
-        // Mac OS X: Set the "About" menu name.  These calls must be made outside
-        // the Swing Event Thread.
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Vergil");
-        // Uncomment the next line to use the screen menu bar instead of a per-window
-        // menu bar.
-        //System.setProperty("apple.laf.useScreenMenuBar", "true");
+        if (PtGUIUtilities.macOSLookAndFeel()) {
+            String aboutNameProperty = "com.apple.mrj.application.apple.menu.about.name";
+            try {
+                // Mac OS X: Set the "About" menu name.  These calls must be made outside
+                // the Swing Event Thread.
+                System.setProperty(aboutNameProperty, "Vergil");
+            } catch (SecurityException ex) {
+                if (!_printedSecurityExceptionMessage) {
+                    _printedSecurityExceptionMessage = true;
+                    System.out.println("Warning: Mac OS X: Failed to set the \""
+                            + aboutNameProperty + "\" property. "
+                            + "(applets and -sandbox always causes this)");
+                }
+            }
+            // Uncomment the next line to use the screen menu bar instead of a per-window
+            // menu bar.
+            //System.setProperty("apple.laf.useScreenMenuBar", "true");
+        }
 
         // FIXME: Java superstition dictates that if you want something
         // to work, you should invoke it in event thread.  Otherwise,
@@ -574,4 +587,7 @@ public class VergilApplication extends MoMLApplication {
 
     // Flag indicating that the previous argument was -conf
     private boolean _expectingConfiguration = false;
+
+    /** True if we have printed the securityExceptionMessage. */
+    private static boolean _printedSecurityExceptionMessage = false;
 }

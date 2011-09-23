@@ -335,8 +335,17 @@ public abstract class Top extends JFrame {
                     Class superclass = fields[i].getType();
                     while (superclass != null && superclass != Object.class) {
                         if (superclass.isAssignableFrom(AbstractAction.class)) {
-                            fields[i].setAccessible(true);
-                            fields[i].set(this, null);
+                            try {
+                                fields[i].setAccessible(true);
+                                fields[i].set(this, null);
+                            } catch (SecurityException ex) {
+                                if (!_printedSecurityExceptionMessage) {
+                                    _printedSecurityExceptionMessage = true;
+                                    System.out.println("Warning: Failed set " + fields[i]
+                                            + " accessible while disposing. "
+                                            + "(applets and -sandbox always causes this)");
+                                }                                
+                            }
                             break;
                         }
                         superclass = superclass.getSuperclass();
@@ -1971,24 +1980,28 @@ public abstract class Top extends JFrame {
     /** List of deferred actions. */
     private static List _deferredActions = new LinkedList();
 
-    // The input file.
+    /** True if this frame has been disposed. */
+    private boolean _disposed = false;
+
+    /** The input file. */
     private File _file = null;
 
-    // Flag to hide the menu bar.
+    /** Flag to hide the menu bar. */
     private boolean _hideMenuBar = false;
 
-    // The most recently entered URL in Open URL.
+    /** The most recently entered URL in Open URL. */
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
 
-    // History depth
+    /** History depth. */
     private int _historyDepth = 4;
 
-    // Indicator that the menu has been populated.
+    /** Indicator that the menu has been populated. */
     private boolean _menuPopulated = false;
 
-    // Indicator that the data represented in the window has been modified.
+    /** Indicator that the data represented in the window has been modified. */
     private boolean _modified = false;
 
-    // True if this frame has been disposed
-    private boolean _disposed = false;
+    /** True if we have printed the securityException message. */
+    private static boolean _printedSecurityExceptionMessage = false;
+
 }
