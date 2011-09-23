@@ -195,8 +195,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        // If the object is not persistent, and we are not
-        // at level 0, do nothing.
+        // If the object is not persistent, and we are not at level 0, do nothing.
         if (_isMoMLSuppressed(depth)) {
             return;
         }
@@ -1042,9 +1041,9 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             // a composite actor, so take the actor's position instead of the port's
             // internal position.
             if (obj instanceof ComponentPort) {
-                return PtolemyModelUtil._getLocation(obj.getContainer());
+                return PtolemyModelUtil._getLocationPoint(obj.getContainer());
             }
-            return PtolemyModelUtil._getLocation(obj);
+            return PtolemyModelUtil._getLocationPoint(obj);
         }
 
         /**

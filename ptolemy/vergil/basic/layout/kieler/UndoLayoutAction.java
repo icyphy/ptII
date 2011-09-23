@@ -1,0 +1,98 @@
+/*
+
+Copyright (c) 2011 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
+*/
+package ptolemy.vergil.basic.layout.kieler;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import ptolemy.kernel.undo.UndoAction;
+import ptolemy.kernel.undo.UndoStackAttribute;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.basic.layout.kieler.ApplyLayoutRequest.LocationEntry;
+
+/**
+ * An undo action that is able to revert the changes made by automatic layout, or to
+ * repeat them in the case of redo.
+ *
+ * @author Miro Spoenemann (<a href="mailto:msp@informatik.uni-kiel.de">msp</a>)
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (msp)
+ * @Pt.AcceptedRating Red (msp)
+ */
+public class UndoLayoutAction implements UndoAction {
+    
+    /**
+     * Create an undo action for automatic layout.
+     * 
+     * @param source The source object, which is typically the parent composite entity.
+     */
+    public UndoLayoutAction(NamedObj source) {
+        this._source = source;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /**
+     * Add a location to the undo action. The action will set the location to the
+     * coordinates stored in the given location entry.
+     * 
+     * @param entry A location entry with all required data
+     */
+    public void addLocation(LocationEntry entry) {
+        _locationEntries.add(entry);
+    }
+
+    /**
+     * Execute the undo or redo action. This sets all previously configured locations.
+     * FIXME: Connections are not considered yet!
+     */
+    public void execute() throws Exception {
+        UndoLayoutAction undoLayoutAction = new UndoLayoutAction(_source);
+
+        for (LocationEntry entry : _locationEntries) {
+            double[] oldLoc = entry._locatable.getLocation();
+            undoLayoutAction.addLocation(new LocationEntry(entry._locatable,
+                    oldLoc[0], oldLoc[1]));
+            entry._locatable.setLocation(new double[] { entry._x, entry._y } );
+        }
+        
+        UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(_source);
+        undoInfo.push(undoLayoutAction);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The configured locations that will be changed. */
+    private List<LocationEntry> _locationEntries = new LinkedList<LocationEntry>();
+    /** The source object, which is typically the parent composite entity. */
+    private NamedObj _source;
+    
+}

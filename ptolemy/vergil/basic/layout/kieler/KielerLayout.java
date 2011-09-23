@@ -58,8 +58,8 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
@@ -208,8 +208,6 @@ public class KielerLayout extends AbstractGlobalLayout {
         // some variables for time statistics
         long overallTime = System.currentTimeMillis();
 
-        _ptolemyModelUtil = new PtolemyModelUtil();
-
         _report("Performing KIELER layout... ");
         long graphOverhead = System.currentTimeMillis();
 
@@ -323,6 +321,65 @@ public class KielerLayout extends AbstractGlobalLayout {
     ////                         private methods                   ////
     
     /**
+     * Traverse a composite KNode containing corresponding KIELER nodes, ports
+     * and edges for the Ptolemy model and apply all layout information
+     * contained by it back to the Ptolemy model. Do most changes to the Ptolemy
+     * model via MoMLChangeRequests. Set location attributes for all visible
+     * Ptolemy nodes.
+     * Optionally route edges by inserting {@link LayoutHint} attributes.
+     *
+     * @param parentNode The KIELER graph object containing all layout information
+     *            to apply to the Ptolemy model
+     * @exception IllegalActionException if routing of edges fails.
+     */
+    private void _applyLayout(KNode parentNode) throws IllegalActionException {
+        // Create a special change request to apply the computed layout to the model.
+        ApplyLayoutRequest layoutRequest = new ApplyLayoutRequest(_compositeActor);
+        
+        GraphModel graph = this.getLayoutTarget().getGraphModel();
+        // TODO: extend this to modal models
+        if (graph instanceof ActorGraphModel) {
+            // Apply node layout.
+            for (KNode knode : parentNode.getChildren()) {
+                KShapeLayout nodeLayout = knode.getData(KShapeLayout.class);
+                KVector nodePos = nodeLayout.createVector();
+                Object divaNode = _kieler2ptolemyDivaNodes.get(knode);
+                Locatable location;
+                if (divaNode instanceof Location) {
+                    location = (Location) divaNode;
+                } else {
+                    NamedObj namedObj = _kieler2ptolemyEntityNodes.get(knode);
+                    location = PtolemyModelUtil._getLocation(namedObj);
+                }
+
+                // Transform coordinate systems.
+                KimlUtil.toAbsolute(nodePos, parentNode);
+                _kNode2Ptolemy(nodePos, divaNode, location);
+
+                // Calculate the snap-to-grid coordinates.
+                double[] snapToGridNodePoint = SnapConstraint.constrainPoint(nodePos.x, nodePos.y);
+
+                // Include the new location in the request.
+                layoutRequest.addLocation(location, snapToGridNodePoint[0],
+                        snapToGridNodePoint[1]);
+            }
+
+            // apply edge layout - bend points (cmot)
+            if (_layoutOptions.getProperty(Options.ROUTE_EDGES)) {
+                for (Map.Entry<KEdge, Object> entry : _kieler2PtolemyDivaEdges.entrySet()) {
+                    if (entry.getValue() instanceof Link) {
+                        _applyEdgeLayoutBendPointAnnotation(entry.getKey(),
+                                (Link) entry.getValue(), layoutRequest);
+                    }
+                }
+            }
+        }
+        
+        // Let the composite actor execute the actual changes.
+        _compositeActor.requestChange(layoutRequest);
+    }
+
+    /**
      * Apply the layout of an KEdge to its corresponding Diva Link. This is done
      * by adding a LayoutHint attribute to the corresponding Relation. Only
      * Relations are persistent objects in the abstract Ptolemy syntax and
@@ -337,115 +394,36 @@ public class KielerLayout extends AbstractGlobalLayout {
      *                of original relation is not possible, i.e. if unlink() or
      *                link() methods fail.
      */
-    private void _applyEdgeLayoutBendPointAnnotation(KEdge kEdge)
+    private void _applyEdgeLayoutBendPointAnnotation(KEdge kEdge, Link link,
+            ApplyLayoutRequest layoutRequest)
             throws IllegalActionException {
-        Object object = _kieler2PtolemyDivaEdges.get(kEdge);
-        if (object instanceof Link) {
-            Link link = (Link) object;
+        List<KPoint> bendPoints = kEdge.getData(KEdgeLayout.class).getBendPoints();
 
-            Relation relation = (Relation) this.getLayoutTarget()
-                    .getGraphModel().getSemanticObject(link);
+        // Translate bend points into an array of doubles for the layout hint attribute.
+        double[] layoutHintBendPoints = new double[bendPoints.size() * 2];
+        int index = 0;
+        KNode parentNode = KielerGraphUtil._getParent(kEdge);
+        for (KPoint relativeKPoint : bendPoints) {
+            KVector kpoint = relativeKPoint.createVector();
+            KimlUtil.toAbsolute(kpoint, parentNode);
 
-            List<KPoint> bendPoints = kEdge.getData(KEdgeLayout.class).getBendPoints();
+            // calculate the snap-to-grid coordinates
+            double[] snapToGridBendPoint = SnapConstraint.constrainPoint(kpoint.x, kpoint.y);
 
-            if (!bendPoints.isEmpty()) {
-                // Translate bend points into an array of doubles for the layout hint attribute.
-                double[] layoutHintBendPoints = new double[bendPoints.size() * 2];
-                int index = 0;
-                for (KPoint relativeKPoint : bendPoints) {
-                    KVector kpoint = relativeKPoint.createVector();
-                    KimlUtil.toAbsolute(kpoint, KielerGraphUtil._getParent(kEdge));
-
-                    // calculate the snap-to-grid coordinates
-                    Point2D bendPoint = new Point2D.Double(kpoint.x, kpoint.y);
-                    Point2D snapToGridBendPoint = SnapConstraint.constrainPoint(bendPoint);
-
-                    layoutHintBendPoints[index] = snapToGridBendPoint.getX();
-                    layoutHintBendPoints[index + 1] = snapToGridBendPoint.getY();
-                    index += 2;
-                }
-
-                // Now add a LayoutHint attribute to the relation.
-                // Reuse any existing layout hint. There is only one per relation.
-                try {
-                    Attribute layoutHint = relation.getAttribute("_layoutHint");
-                    if (layoutHint == null) {
-                        layoutHint = new LayoutHint(relation, "_layoutHint");
-                    }
-                    if (layoutHint instanceof LayoutHint) {
-                        NamedObj head = (NamedObj) link.getHead();
-                        NamedObj tail = (NamedObj) link.getTail();
-                        // Determine correct direction of the edge.
-                        if (head == _divaEdgeSource.get(link)) {
-                            ((LayoutHint) layoutHint).setLayoutHintItem(head,
-                                    tail, layoutHintBendPoints);
-                        } else {
-                            ((LayoutHint) layoutHint).setLayoutHintItem(tail,
-                                    head, layoutHintBendPoints);
-                        }
-                        // Add this Attribute in a MoMLChangeRequest in order to get
-                        // all change notifications right.
-                        _ptolemyModelUtil.addProperty(relation, layoutHint);
-                    }
-                } catch (NameDuplicationException e) {
-                    throw new IllegalActionException(relation, e,
-                            "Cannot set _layoutHint attribute for " + relation
-                                    + ": " + e.getMessage());
-                }
-            }
+            layoutHintBendPoints[index] = snapToGridBendPoint[0];
+            layoutHintBendPoints[index + 1] = snapToGridBendPoint[1];
+            index += 2;
         }
-    }
 
-    /**
-     * Traverse a composite KNode containing corresponding KIELER nodes, ports
-     * and edges for the Ptolemy model and apply all layout information
-     * contained by it back to the Ptolemy model. Do most changes to the Ptolemy
-     * model via MoMLChangeRequests. Set location attributes for all visible
-     * Ptolemy nodes.
-     * Optionally route edges by inserting {@link LayoutHint} attributes.
-     *
-     * @param parentNode The KIELER graph object containing all layout information
-     *            to apply to the Ptolemy model
-     * @exception IllegalActionException if routing of edges fails.
-     */
-    private void _applyLayout(KNode parentNode) throws IllegalActionException {
-        GraphModel graph = this.getLayoutTarget().getGraphModel();
-        if (graph instanceof ActorGraphModel) {
-            // Apply node layout.
-            for (KNode knode : parentNode.getChildren()) {
-                KShapeLayout nodeLayout = knode.getData(KShapeLayout.class);
-                KVector nodePos = nodeLayout.createVector();
-                
-                // Transform coordinate systems.
-                KimlUtil.toAbsolute(nodePos, parentNode);
-                _kNode2Ptolemy(nodePos, knode);
-
-                // calculate the snap-to-grid coordinates
-                Point2D nodePoint = new Point2D.Double(nodePos.x, nodePos.y);
-                Point2D snapToGridNodePoint = SnapConstraint.constrainPoint(nodePoint);
-
-                NamedObj namedObj = _kieler2ptolemyEntityNodes.get(knode);
-                if (namedObj instanceof Relation) {
-                    Vertex vertex = (Vertex) _kieler2ptolemyDivaNodes.get(knode);
-                    _ptolemyModelUtil._setLocation(vertex, (Relation) namedObj,
-                            snapToGridNodePoint.getX(),
-                            snapToGridNodePoint.getY());
-                } else {
-                    _ptolemyModelUtil._setLocation(namedObj,
-                            snapToGridNodePoint.getX(),
-                            snapToGridNodePoint.getY());
-                }
-            }
-
-            // apply edge layout - bend points (cmot)
-            if (_layoutOptions.getProperty(Options.ROUTE_EDGES)) {
-                for (KEdge kedge : _kieler2PtolemyDivaEdges.keySet()) {
-                    _applyEdgeLayoutBendPointAnnotation(kedge);
-                }
-            }
+        Relation relation = link.getRelation();
+        NamedObj head = (NamedObj) link.getHead();
+        NamedObj tail = (NamedObj) link.getTail();
+        // Determine correct direction of the edge.
+        if (head != _divaEdgeSource.get(link)) {
+            layoutRequest.addConnection(relation, tail, head, layoutHintBendPoints);
+        } else {
+            layoutRequest.addConnection(relation, head, tail, layoutHintBendPoints);
         }
-        // create change request and fire it
-        _ptolemyModelUtil.performChangeRequest(_compositeActor);
     }
 
     /**
@@ -1055,16 +1033,12 @@ public class KielerLayout extends AbstractGlobalLayout {
      *
      * @param pos Position of KIELER graphical node. This object will be altered to
      *            fit the new location.
-     * @param referenceNode The parent reference node giving the bounds to
-     *            calculate with.
+     * @param divaNode the graphical representation in Diva
+     * @param locatable the location object of the node
      */
-    private void _kNode2Ptolemy(KVector pos, KNode referenceNode) {
-        NamedObj namedObj = _kieler2ptolemyEntityNodes.get(referenceNode);
-        Object divaNode = _kieler2ptolemyDivaNodes.get(referenceNode);
-
-        Point2D.Double location = PtolemyModelUtil._getLocation(namedObj);
-
-        if (namedObj != null && divaNode != null) {
+    private void _kNode2Ptolemy(KVector pos, Object divaNode, Locatable locatable) {
+        Point2D.Double location = PtolemyModelUtil._getLocationPoint(locatable);
+        if (divaNode != null) {
             Rectangle2D divaBounds = this.getLayoutTarget().getBounds(divaNode);
             double offsetX = 0, offsetY = 0;
 
@@ -1265,7 +1239,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * in subsequent layout runs.
      */
     private static InstancePool<AbstractLayoutProvider> _layoutProviderPool;
-
+    
     /**
      * Map KIELER KEdges to Ptolemy Diva Edges and back.
      */
@@ -1291,13 +1265,6 @@ public class KielerLayout extends AbstractGlobalLayout {
      * to multiple KIELER ports. Hence it's a mapping to a List of KPorts.
      */
     private ListMultimap<Port, KPort> _ptolemy2KielerPorts;
-
-    /**
-     * Helper class to manipulate Ptolemy models. Especially for sending
-     * MoMLChangeRequests. Instance is required to buffer multiple requests for
-     * better performance.
-     */
-    private PtolemyModelUtil _ptolemyModelUtil;
 
     /**
      * Pointer to Top in order to report the current status.

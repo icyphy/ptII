@@ -49,10 +49,12 @@ PTPACKAGE = 	kieler
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
+	ApplyLayoutRequest.java \
 	KielerGraphUtil.java \
 	KielerLayout.java \
 	LayoutHint.java \
-	PtolemyModelUtil.java
+	PtolemyModelUtil.java \
+	UndoLayoutAction.java
 
 OTHER_FILES_TO_BE_JARED = \
 	kieler-copyright.htm

@@ -51,11 +51,12 @@ import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.util.KimlUtil;
 
 ///////////////////////////////////////////////////////////////////
 ////KielerGraphUtil
 /**
- * Static helper class to work with KIELER graph datastructures.
+ * Static helper class to work with KIELER graph datas tructures.
  *
  * @author Hauke Fuhrmann (<a href="mailto:haf@informatik.uni-kiel.de">haf</a>)
  * @version $Id$
@@ -63,35 +64,35 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class KielerGraphUtil {
+public final class KielerGraphUtil {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /**
-     * Get the parent node of an Kieler KEdge. That is the Kieler KNode that
+     * Get the parent node of an KIELER KEdge. That is the KIELER KNode that
      * graphically contains the edge. In particular that is the parent node of
      * the source node of the edge. If the source node is null, then the result
      * is also null.
      *
-     * @param edge The Kieler KEdge to determine the parent node.
-     * @return The parent Kieler KNode of the given edge or null if the source
+     * @param edge The KIELER edge to determine the parent node.
+     * @return The parent KIELER node of the given edge or null if the source
      *         of the edge is undefined.
      */
     protected static KNode _getParent(KEdge edge) {
         KNode source = edge.getSource();
-        if (source != null) {
-            return source.getParent();
+        if (KimlUtil.isDescendant(edge.getTarget(), source)) {
+            return source;
         }
-        return null;
+        return source.getParent();
     }
 
     /**
      * Get the upper left corner of the real bounding box of the contents of a
-     * given Kieler KNode. Calculate the minimal x and y coordinates of all
+     * given KIELER node. Calculate the minimal x and y coordinates of all
      * nodes contained in the given node.
      *
-     * @param parent The composite Kieler KNode that contains other nodes.
+     * @param parent The composite KIELER node that contains other nodes.
      * @return The minimal x and y coordinates of all contained nodes. Might be
      *         Float.MAX_VALUE, if the parent does not contain any children.
      */
