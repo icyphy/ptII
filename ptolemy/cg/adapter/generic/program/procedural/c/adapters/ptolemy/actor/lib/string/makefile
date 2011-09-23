@@ -60,7 +60,7 @@ JSRCS = \
 	StringLength.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.j)
+	$(JSRCS:%.java=%.c)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
