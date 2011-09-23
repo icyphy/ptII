@@ -2,8 +2,8 @@
 $type $actorSymbol(result);
 /**/
 
-/***initSum()***/
-$actorSymbol(result) = $zero_$cgType(output)();
+/***initSum($zero)***/
+$actorSymbol(result) = $zero;
 /**/
 
 /***plusBlock($channel, $type1, $type2)***/
