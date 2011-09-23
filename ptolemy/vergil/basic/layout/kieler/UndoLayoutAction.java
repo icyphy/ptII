@@ -27,8 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.basic.layout.kieler;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.kernel.undo.UndoAction;
 import ptolemy.kernel.undo.UndoStackAttribute;
@@ -68,19 +70,44 @@ public class UndoLayoutAction implements UndoAction {
     public void addLocation(LocationEntry entry) {
         _locationEntries.add(entry);
     }
+    
+    /**
+     * Mark the given connection routing hint for removal. The action will remove
+     * the layout hint from its containing relation. 
+     * 
+     * @param layoutHint A connection routing hint contained in a relation
+     */
+    public void removeConnection(LayoutHint layoutHint) {
+        _connRemoveEntries.add(layoutHint);
+    }
 
     /**
-     * Execute the undo or redo action. This sets all previously configured locations.
-     * FIXME: Connections are not considered yet!
+     * Execute the undo or redo action. This sets all previously configured locations,
+     * removes connection routing hints that are marked for removal, and adds
+     * connection routing hints that are marked for adding.
      */
     public void execute() throws Exception {
         UndoLayoutAction undoLayoutAction = new UndoLayoutAction(_source);
 
-        for (LocationEntry entry : _locationEntries) {
+        for (LayoutHint layoutHint : this._connRemoveEntries) {
+            NamedObj container = layoutHint.getContainer();
+            if (container != null) {
+                layoutHint.setContainer(null);
+                undoLayoutAction._connAddEntries.add(new ConnectionHintEntry(
+                        container, layoutHint));
+            }
+        }
+        
+        for (LocationEntry entry : this._locationEntries) {
             double[] oldLoc = entry._locatable.getLocation();
             undoLayoutAction.addLocation(new LocationEntry(entry._locatable,
                     oldLoc[0], oldLoc[1]));
             entry._locatable.setLocation(new double[] { entry._x, entry._y } );
+        }
+        
+        for (ConnectionHintEntry entry : this._connAddEntries) {
+            entry._layoutHint.setContainer(entry._container);
+            undoLayoutAction.removeConnection(entry._layoutHint);
         }
         
         UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(_source);
@@ -92,7 +119,27 @@ public class UndoLayoutAction implements UndoAction {
 
     /** The configured locations that will be changed. */
     private List<LocationEntry> _locationEntries = new LinkedList<LocationEntry>();
+    /** Layout hints that should be removed from their containing relations. */
+    private Set<LayoutHint> _connRemoveEntries = new HashSet<LayoutHint>();
+    /** Layout hints that should be added to relations. */
+    private List<ConnectionHintEntry> _connAddEntries = new LinkedList<ConnectionHintEntry>();
     /** The source object, which is typically the parent composite entity. */
     private NamedObj _source;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /**
+     * An entry that contains data for adding a connection routing hint.
+     */
+    private static class ConnectionHintEntry {
+        NamedObj _container;
+        LayoutHint _layoutHint;
+        
+        ConnectionHintEntry(NamedObj container, LayoutHint layoutHint) {
+            this._container = container;
+            this._layoutHint = layoutHint;
+        }
+    }
     
 }

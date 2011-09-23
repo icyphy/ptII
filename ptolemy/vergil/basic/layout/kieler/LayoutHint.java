@@ -851,7 +851,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             if (DEBUG) {
                 System.out.println("revalidate: " + this.getExpression());
             }
-            if (_bendPoints == null || _bendPoints.length <= 0) {
+            if (_bendPoints == null) {
                 return false;
             }
             if (_head instanceof Port) {

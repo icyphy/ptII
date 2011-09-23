@@ -112,6 +112,7 @@ public class ApplyLayoutRequest extends ChangeRequest {
             if (attribute instanceof LayoutHint) {
                 LayoutHint layoutHint = (LayoutHint) attribute;
                 layoutHint.setLayoutHintItem(entry._head, entry._tail, entry._bendPoints);
+                undoLayoutAction.removeConnection(layoutHint);
             }
         }
         
