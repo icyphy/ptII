@@ -1,4 +1,4 @@
-/* A adapter class for ptolemy.actor.lib.Accumulator
+/* A adapter class for ptolemy.actor.lib.Sequence
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -28,10 +28,10 @@
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
 //////////////////////////////////////////////////////////////////////////
-//// Accumulator
+//// Sequence
 
 /**
- A adapter class for ptolemy.actor.lib.Accumulator.
+ A adapter class for ptolemy.actor.lib.Sequence.
 
  @author Christopher Brooks
  @version $Id$
@@ -39,14 +39,14 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Accumulator
+public class Sequence
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Accumulator {
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Sequence {
     /**
-     *  Construct a Accumulator adapter.
-     *  @param actor The given ptolemy.actor.lib.Accumulator actor.
+     *  Construct a Sequence adapter.
+     *  @param actor The given ptolemy.actor.lib.Sequence actor.
      */
-    public Accumulator(ptolemy.actor.lib.Accumulator actor) {
+    public Sequence(ptolemy.actor.lib.Sequence actor) {
         super(actor);
     }
 }

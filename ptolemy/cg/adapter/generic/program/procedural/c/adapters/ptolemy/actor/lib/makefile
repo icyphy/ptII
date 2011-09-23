@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2010 The Regents of the University of California
+# @Copyright (c) 2005-2011 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -71,6 +71,7 @@ JSRCS = \
 	Ramp.java \
 	Remainder.java \
 	Scale.java \
+	Sequence.java \
 	SingleEvent.java \
 	Synchronizer.java \
 	TimeDelay.java \

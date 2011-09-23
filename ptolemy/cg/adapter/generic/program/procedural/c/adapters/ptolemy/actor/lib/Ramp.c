@@ -27,7 +27,7 @@ $put(output, $actorSymbol(state));
 if ($hasToken(step)) {
         $param(step) = $get(step);
 }
-$actorSymbol(state) += (Double)$param(step);
+$actorSymbol(state) += (double)$param(step);
 /**/
 
 /***BooleanFireBlock***/
@@ -35,7 +35,7 @@ $put(output, $actorSymbol(state));
 if ($hasToken(step)) {
         $param(step) = $get(step);
 }
-$actorSymbol(state) |= (Boolean)$param(step);
+$actorSymbol(state) |= (boolean)$param(step);
 /**/
 
 /***TokenFireBlock***/
