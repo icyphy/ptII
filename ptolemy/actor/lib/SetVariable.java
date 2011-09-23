@@ -248,7 +248,6 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
             // Look for the variableName anywhere in the hierarchy
             _attribute = ModelScope.getScopedAttribute(null, container,
                     variableNameValue);
-
             if (_attribute == null) {
                 try {
                     workspace().getWriteAccess();
@@ -256,6 +255,11 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                     // container might be null, so create the variable
                     // in the container of this actor.
                     _attribute = new Variable(getContainer(), variableNameValue);
+                } catch (IllegalActionException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to create Variable \""
+                            + variableNameValue + "\" in "
+                            + getContainer().getFullName() + ".");
                 } catch (NameDuplicationException ex) {
                     throw new InternalErrorException(ex);
                 } finally {
