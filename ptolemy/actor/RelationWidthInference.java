@@ -390,7 +390,10 @@ public class RelationWidthInference {
                         Iterator deepPorts = relation.deepLinkedPortList()
                                 .iterator();
                         while (deepPorts.hasNext()) {
-                            portDetails.append((deepPorts.next() + "\n"));
+			    if (portDetails.length() > 0) {
+				portDetails.append("\n");
+			    }
+                            portDetails.append(((IOPort)deepPorts.next()).getFullName());
                         }
 
                         throw new IllegalActionException(
