@@ -16,9 +16,8 @@
 		<pathelement location="lib/bsh-2.0b4.jar" />
 		<pathelement location="lib/ptCal.jar" />
 		<pathelement location="lib/java_cup.jar" />
-		<pathelement location="lib/saxon8.jar" />
-		<pathelement location="lib/saxon8-dom.jar" />
 		<pathelement location="lib/chic.jar" />
+		<pathelement location="lib/guava.jar" />
 		<pathelement location="lib/junit-4.8.2.jar" />
 		<pathelement location="lib/jython.jar" />
 		<pathelement location="lib/kieler.jar" />
