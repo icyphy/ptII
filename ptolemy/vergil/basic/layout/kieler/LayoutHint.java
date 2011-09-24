@@ -433,9 +433,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @exception IllegalActionException If the expression is invalid.
      */
     public Collection validate() throws IllegalActionException {
-        if (DEBUG) {
-            System.out.println("validate: " + this.getExpression());
-        }
         _layoutHintItems = new ArrayList<LayoutHintItem>();
         if (_expression == null) {
             return null; // don't parse anything if there is no expression
@@ -614,9 +611,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         return bendPoints;
     }
 
-    /** Debug flag, if set will give some debug output to console
-     * @deprecated XXX */
-    private static final boolean DEBUG = false;
     /** A valid example expression to show in the GUI in case of errors. */
     private static final String EXAMPLE_EXPRESSION = "{  \n{head={id=\"a.out\",x=10,y=11},"
             + "tail={id=\"relation1\",x=20,y=21},points={1,2,3,4,5,6}} ,"
@@ -720,9 +714,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             this._tailLocation = locationTail;
             _headMultiportIndex[1] = multiportWidthHead;
             _tailMultiportIndex[1] = multiportWidthTail;
-            if (DEBUG) {
-                System.out.println("construct: " + this.getExpression());
-            }
         }
 
         /**
@@ -818,9 +809,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          *         as before, false otherwise
          */
         public boolean revalidate() {
-            if (DEBUG) {
-                System.out.println("revalidate: " + this.getExpression());
-            }
             if (_bendPoints == null) {
                 return false;
             }
@@ -843,10 +831,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             if (newHeadLocation.equals(_headLocation)
                     && newTailLocation.equals(_tailLocation)) {
                 // nothing has changed, we don't need to update anything
-                if (DEBUG) {
-                    System.out.println("the same");
-                    System.out.println("after: " + this.getExpression());
-                }
                 return true;
             }
 
@@ -898,9 +882,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * Reverse the list of bend points. This may be neces
          */
         protected void _reverse() {
-            if (DEBUG) {
-                System.out.println("reversing " + this);
-            }
             Object temp;
             // swap head and tail
             temp = _head;
@@ -916,9 +897,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             _tailMultiportIndex = (int[]) temp;
             // reverse bendpoints
             _reverseCoordinateArray(_bendPoints);
-            if (DEBUG) {
-                System.out.println("reversed " + this);
-            }
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -966,9 +944,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * @param y amount on the x-axis to translate
          */
         private void _translate(double x, double y) {
-            if (DEBUG) {
-                System.out.println("translate: " + this.getExpression());
-            }
             _headLocation.x += x;
             _headLocation.y += y;
             _tailLocation.x += x;
@@ -987,17 +962,10 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * get read from the current model objects.
          */
         private void _updateHeadTailLocations() {
-            if (DEBUG) {
-                System.out.println("update: " + this.getExpression());
-            }
-            
             _headLocation = _getEndpointLocation(_head);
             _tailLocation = _getEndpointLocation(_tail);
             _updateChannelIndex(_head, _headMultiportIndex);
             _updateChannelIndex(_tail, _tailMultiportIndex);
-            if (DEBUG) {
-                System.out.println("updated: " + this);
-            }
         }
         
         /**
