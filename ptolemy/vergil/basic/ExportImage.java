@@ -1,4 +1,4 @@
-/* Export a model as an image.
+/* Export a model as an image or set of html files.
 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -44,9 +44,10 @@ import ptolemy.kernel.util.BasicModelErrorHandler;
 ///////////////////////////////////////////////////////////////////
 //// ExportImage
 /**
- * Export a model as a image.
+ * Export a model as an image or set of html files.
  *
  * The default is to export a .gif file with the same name as the model.
+ * See {@link #main(String[])} for usage.
  *
  * @author Christopher Brooks
  * @version $Id$
@@ -55,11 +56,15 @@ import ptolemy.kernel.util.BasicModelErrorHandler;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class ExportImage {
-    /** Export an image of a model to a file.
-     *  The image is written to a file with the same name as the model.
+    /** Export an image of a model to a file or directory.
+     *  The image is written to a file or directory with the same name as the model.
+     *  If formatName starts with "HTM" or "htm", then a directory with the
+     *  same name as the basename of the model is created.
+     *  If the formatName is "GIF", "gif", "PNG" or "png", then a file
+     *  with the same basename as the basename of the model is created.
      *
      *  @param formatName The file format of the file to be generated.
-     *  One of "GIF", "gif", "PNG", "png".
+     *  One of "GIF", "gif", "HTM", "htm", "PNG", "png".
      *  @param modelFileName A Ptolemy model in MoML format.
      *  The string may start with $CLASSPATH, $HOME or other formats
      *  suitable for {@link ptolemy.util.FileUtilities#nameToFile(String, URI)}.
@@ -151,12 +156,23 @@ public class ExportImage {
                             + formatName.toLowerCase());
                     OutputStream out = null;
                     try {
-                        out = new FileOutputStream(imageFile);
-                        // Export the image.
-                        _basicGraphFrame.getJGraph().exportImage(out,
-                                formatName);
-                        System.out.println("Exported "
-                                + imageFile.getCanonicalPath());
+                        if (formatName.toLowerCase().equals("htm")) {
+                            File directory = new File(model[0].getName());
+                            if (!directory.isDirectory()) {
+                                if (!directory.mkdirs()) {
+                                    throw new Exception("Failed to create "
+                                            + directory);
+                                }
+                            }
+                            _basicGraphFrame.writeHTML(directory);
+                        } else {
+                            out = new FileOutputStream(imageFile);
+                            // Export the image.
+                            _basicGraphFrame.getJGraph().exportImage(out,
+                                    formatName);
+                            System.out.println("Exported "
+                                    + imageFile.getCanonicalPath());
+                        }
                     } finally {
                         if (out != null) {
                             try {
@@ -203,10 +219,23 @@ public class ExportImage {
      *  <pre>
      *   java -classpath $PTII ptolemy.vergil.basic.ExportImage model.xml
      *  </pre>
+     *
+     *  <p>or, to save the current view of model in HTML format without any plots:</p>
+     *  <pre>
+     *   java -classpath $PTII ptolemy.vergil.basic.ExportImage htm model.xml
+     *  </pre>
+     *
+     *  <p>or, to run the model and save the current view of model in
+     *  HTML format with any plots:</p>
+     *  <pre>
+     *   java -classpath $PTII ptolemy.vergil.basic.ExportImage -run htm model.xml
+     *  </pre>
+     *
      *  <p>or, to save a png:</p>
      *  <pre>
      *   java -classpath $PTII ptolemy.vergil.basic.ExportImage png model.xml
      *  </pre>
+     *
      *  <p>or, to run the model and then save a png:</p>
      *  <pre>
      *   java -classpath $PTII ptolemy.vergil.basic.ExportImage -run png model.xml
@@ -214,18 +243,18 @@ public class ExportImage {
      *
      *  @param args The arguments for the export image operation.
      *  The arguments should be in the format:
-     *  [-run] [-save] [GIF|gif|PNG|png] model.xml.
+     *  [-run] [-save] [GIF|gif|HTM*|htm*|PNG|png] model.xml.
      *
      *  @exception args If there is 1 argument, then it names a
      *  Ptolemy MoML file and the model is exported as a .gif file.
-     *  If there are two arguments, then the first argument names
-     *  a format, current formats are GIF, gif, PNG and png and
-     *  the second argument names a Ptolemy MoML file.
+     *  If there are two arguments, then the first argument names a
+     *  format, current formats are GIF, gif, HTM, htm, PNG and png
+     *  and the second argument names a Ptolemy MoML file.
      */
     public static void main(String args[]) {
         String usage = "Usage: java -classpath $PTII "
                 + "ptolemy.vergil.basic.ExportImage "
-                + "[-run] [-save] [GIF|gif|PNG|png] model.xml";
+                + "[-run] [-save] [GIF|gif|HTM*|htm*|PNG|png] model.xml";
         if (args.length == 0 || args.length > 4) {
             // FIXME: we should get the list of acceptable format names from
             // BasicGraphFrame
@@ -247,6 +276,7 @@ public class ExportImage {
                 } else if (args[i].equals("-save")) {
                     save = true;
                 } else if (args[i].toUpperCase().equals("GIF")
+                        || args[i].toUpperCase().startsWith("HTM")
                         || args[i].toUpperCase().equals("PNG")) {
                     formatName = args[i].toUpperCase();
                 } else {
