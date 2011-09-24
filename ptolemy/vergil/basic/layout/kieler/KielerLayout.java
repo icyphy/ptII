@@ -92,6 +92,7 @@ import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.Direction;
+import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement;
 import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.options.PortConstraints;
@@ -101,6 +102,8 @@ import de.cau.cs.kieler.klay.layered.LayeredLayoutProvider;
 import de.cau.cs.kieler.klay.layered.properties.Properties;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CompositeFigure;
+import diva.canvas.connector.AbstractConnector;
+import diva.canvas.toolbox.LabelFigure;
 import diva.graph.GraphModel;
 import diva.graph.layout.AbstractGlobalLayout;
 import diva.graph.layout.LayoutTarget;
@@ -645,13 +648,6 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @param divaEdge The Ptolemy diva edge object for which to create a new KEdge.
      */
     private void _createKEdge(Link divaEdge) {
-        GraphModel graphModel = getLayoutTarget().getGraphModel();
-        Object semObj = graphModel.getSemanticObject(divaEdge);
-        Relation rel = null;
-        if (semObj instanceof Relation) {
-            rel = (Relation) semObj;
-        }
-
         KEdge kedge = KimlUtil.createInitializedEdge();
 
         Object source = _divaEdgeSource.get(divaEdge);
@@ -663,7 +659,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             target = divaEdge.getHead();
         }
 
-        KPort kSourcePort = _getPort(source, PortType.OUTPUT, rel);
+        KPort kSourcePort = _getPort(source, PortType.OUTPUT, divaEdge.getRelation());
         if (kSourcePort != null) {
             kedge.setSourcePort(kSourcePort);
             kSourcePort.getEdges().add(kedge);
@@ -672,7 +668,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             // Edge is not connected to a port.
             kedge.setSource(_kieler2ptolemyDivaNodes.inverse().get(source));
         }
-        KPort kTargetPort = _getPort(target, PortType.INPUT, rel);
+        KPort kTargetPort = _getPort(target, PortType.INPUT, divaEdge.getRelation());
         if (kTargetPort != null) {
             kedge.setTargetPort(kTargetPort);
             kTargetPort.getEdges().add(kedge);
@@ -685,7 +681,21 @@ public class KielerLayout extends AbstractGlobalLayout {
         // Add the edge to the list.
         _edgeList.add(new Pair<KEdge, Link>(kedge, divaEdge));
         
-        // TODO Create a label for the edge.
+        // Create a label for the edge.
+        Object figure = getLayoutTarget().getVisualObject(divaEdge);
+        if (figure instanceof AbstractConnector) {
+            LabelFigure labelFigure = ((AbstractConnector) figure).getLabelFigure();
+            if (labelFigure != null) {
+                KLabel label = KimlUtil.createInitializedLabel(kedge);
+                label.setText(labelFigure.getString());
+                KShapeLayout labelLayout = label.getData(KShapeLayout.class);
+                labelLayout.setProperty(LayoutOptions.EDGE_LABEL_PLACEMENT,
+                        EdgeLabelPlacement.CENTER);
+                Rectangle2D bounds = labelFigure.getBounds();
+                labelLayout.setWidth((float) bounds.getWidth());
+                labelLayout.setHeight((float) bounds.getHeight());
+            }
+        }
     }
 
     /**
