@@ -30,6 +30,9 @@ package ptolemy.vergil.basic.layout.kieler;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -85,6 +88,16 @@ public class ApplyLayoutRequest extends ChangeRequest {
             double[] bendPoints) {
         _connectionEntries.add(new ConnectionEntry(relation, head, tail, bendPoints));
     }
+    
+    /**
+     * Add a new transition curve change to the request.
+     * 
+     * @param transition The transition that is represented by the curve.
+     * @param exitAngle The new value for the exit angle.
+     */
+    public void addCurve(Transition transition, double exitAngle) {
+        _curveEntries.add(new CurveEntry(transition, exitAngle));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -97,6 +110,7 @@ public class ApplyLayoutRequest extends ChangeRequest {
         NamedObj source = (NamedObj) getSource();
         UndoLayoutAction undoLayoutAction = new UndoLayoutAction(source);
         
+        // Process locations.
         for (LocationEntry entry : _locationEntries) {
             double[] oldLoc = entry._locatable.getLocation();
             undoLayoutAction.addLocation(new LocationEntry(entry._locatable,
@@ -104,6 +118,7 @@ public class ApplyLayoutRequest extends ChangeRequest {
             entry._locatable.setLocation(new double[] { entry._x, entry._y } );
         }
         
+        // Process connection routings.
         for (ConnectionEntry entry : _connectionEntries) {
             Attribute attribute = entry._relation.getAttribute("_layoutHint");
             if (attribute == null) {
@@ -116,6 +131,14 @@ public class ApplyLayoutRequest extends ChangeRequest {
             }
         }
         
+        // Process transition curves.
+        for (CurveEntry entry : _curveEntries) {
+            Parameter exitAngleParam = entry._transition.exitAngle;
+            DoubleToken token = DoubleToken.convert(exitAngleParam.getToken());
+            undoLayoutAction.addCurve(new CurveEntry(entry._transition, token.doubleValue()));
+            exitAngleParam.setExpression(Double.toString(entry._exitAngle));
+        }
+        
         UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(source);
         undoInfo.push(undoLayoutAction);
     }
@@ -125,8 +148,10 @@ public class ApplyLayoutRequest extends ChangeRequest {
 
     /** The configured locations that will be changed. */
     private List<LocationEntry> _locationEntries = new LinkedList<LocationEntry>();
-    /** The configured connections that will be changed. */
+    /** The configured connection routings that will be changed. */
     private List<ConnectionEntry> _connectionEntries = new LinkedList<ConnectionEntry>();
+    /** The configures curves that will be changed. */
+    private List<CurveEntry> _curveEntries = new LinkedList<CurveEntry>();
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -147,7 +172,7 @@ public class ApplyLayoutRequest extends ChangeRequest {
     }
     
     /**
-     * An entry that contains data for changing a connection.
+     * An entry that contains data for changing a connection using bend points.
      */
     static class ConnectionEntry {
         Relation _relation;
@@ -161,6 +186,19 @@ public class ApplyLayoutRequest extends ChangeRequest {
             this._head = head;
             this._tail = tail;
             this._bendPoints = bendPoints;
+        }
+    }
+    
+    /**
+     * An entry that contains data for changing a curve using angular values.
+     */
+    static class CurveEntry {
+        Transition _transition;
+        double _exitAngle;
+        
+        CurveEntry(Transition transition, double exitAngle) {
+            this._transition = transition;
+            this._exitAngle = exitAngle;
         }
     }
 

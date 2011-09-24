@@ -32,9 +32,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.undo.UndoAction;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.basic.layout.kieler.ApplyLayoutRequest.CurveEntry;
 import ptolemy.vergil.basic.layout.kieler.ApplyLayoutRequest.LocationEntry;
 
 /**
@@ -72,6 +75,16 @@ public class UndoLayoutAction implements UndoAction {
     }
     
     /**
+     * Add a curve to the undo action. The action will set the exit angle to the
+     * value stored in the given curve entry.
+     * 
+     * @param entry A curve entry with stored exit value
+     */
+    public void addCurve(CurveEntry entry) {
+        _curveEntries.add(entry);
+    }
+    
+    /**
      * Mark the given connection routing hint for removal. The action will remove
      * the layout hint from its containing relation. 
      * 
@@ -89,6 +102,7 @@ public class UndoLayoutAction implements UndoAction {
     public void execute() throws Exception {
         UndoLayoutAction undoLayoutAction = new UndoLayoutAction(_source);
 
+        // Process layout hints that shall be removed.
         for (LayoutHint layoutHint : this._connRemoveEntries) {
             NamedObj container = layoutHint.getContainer();
             if (container != null) {
@@ -98,6 +112,7 @@ public class UndoLayoutAction implements UndoAction {
             }
         }
         
+        // Process locations.
         for (LocationEntry entry : this._locationEntries) {
             double[] oldLoc = entry._locatable.getLocation();
             undoLayoutAction.addLocation(new LocationEntry(entry._locatable,
@@ -105,9 +120,18 @@ public class UndoLayoutAction implements UndoAction {
             entry._locatable.setLocation(new double[] { entry._x, entry._y } );
         }
         
+        // Process layout hints that shall be added.
         for (ConnectionHintEntry entry : this._connAddEntries) {
             entry._layoutHint.setContainer(entry._container);
             undoLayoutAction.removeConnection(entry._layoutHint);
+        }
+        
+        // Process transition curves.
+        for (CurveEntry entry : this._curveEntries) {
+            Parameter exitAngleParam = entry._transition.exitAngle;
+            DoubleToken token = DoubleToken.convert(exitAngleParam.getToken());
+            undoLayoutAction.addCurve(new CurveEntry(entry._transition, token.doubleValue()));
+            exitAngleParam.setExpression(Double.toString(entry._exitAngle));
         }
         
         UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(_source);
@@ -119,6 +143,8 @@ public class UndoLayoutAction implements UndoAction {
 
     /** The configured locations that will be changed. */
     private List<LocationEntry> _locationEntries = new LinkedList<LocationEntry>();
+    /** The configures curves that will be changed. */
+    private List<CurveEntry> _curveEntries = new LinkedList<CurveEntry>();
     /** Layout hints that should be removed from their containing relations. */
     private Set<LayoutHint> _connRemoveEntries = new HashSet<LayoutHint>();
     /** Layout hints that should be added to relations. */

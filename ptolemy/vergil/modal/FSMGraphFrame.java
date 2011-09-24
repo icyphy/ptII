@@ -122,6 +122,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
         // Override the default help file.
         helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
         _layoutAction = new LayoutAction();
+        _advancedLayoutDialogAction = new AdvancedLayoutDialogAction();
     }
 
     /** React to the actions specific to this FSM graph frame.
@@ -182,6 +183,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
         _menubar.add(_graphMenu);
         GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
         GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
+        GUIUtilities.addMenuItem(_graphMenu, _advancedLayoutDialogAction);
 
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
@@ -406,6 +408,9 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
     /** The action for automatically laying out the graph. */
     protected Action _layoutAction;
 
+    /** The action for opening the advanced layout dialog. */
+    protected Action _advancedLayoutDialogAction;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -523,4 +528,26 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    //// AdvancedLayoutDialogAction
+
+    /** Action to display a dialog for setting layout options. */
+    private class AdvancedLayoutDialogAction extends AbstractAction {
+        /** Create a new action to show the advanced layout dialog. */
+        public AdvancedLayoutDialogAction() {
+            super("Advanced Layout Dialog");
+            putValue("tooltip", "Set parameters for controlling the layout algorithm");
+        }
+
+        /** Show the advanced layout dialog. */
+        public void actionPerformed(ActionEvent e) {
+            try {
+                layoutGraphDialog();
+            } catch (Exception ex) {
+                MessageHandler.error("Layout failed", ex);
+            }
+        }
+    }
+
 }

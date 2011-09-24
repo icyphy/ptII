@@ -34,7 +34,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -49,8 +48,8 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
@@ -60,15 +59,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.layout.kieler.KielerLayout;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.basic.BasicLayoutTarget;
 
 /**
  A top-level dialog window for controlling the Kieler graph layout algorithm.
@@ -276,18 +270,21 @@ public class KielerLayoutTableau extends Tableau {
      */
     private class LayoutAction extends AbstractAction {
         
-        /** Constructs an action for applying layout.
+        /** Construct an action for applying layout.
          */
         LayoutAction(LayoutConfiguration config) {
             this._layoutConfiguration = config;
         }
 
+        /** Perform the action.
+         */
         public void actionPerformed(ActionEvent e) {
             NamedObj model = null;
             try {
-                // Get the frame and the current model here.
+                // Get the current model and the layout configuration.
                 model = _frame.getModel();
-                actionPerformed(e, model);
+                KielerLayoutAction action = new KielerLayoutAction(_layoutConfiguration.getOptions());
+                action.doAction(model);
             } catch (Exception ex) {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
@@ -298,80 +295,7 @@ public class KielerLayoutTableau extends Tableau {
             }
         }
 
-        void actionPerformed(ActionEvent e, NamedObj model) {
-            if (!(model instanceof CompositeActor)) {
-                // TODO extend this for modal models
-                throw new InternalErrorException(
-                        "For now only actor oriented graphs with ports are supported by KIELER layout. "
-                                + "The model \""
-                                + model.getFullName()
-                                + "\" was a "
-                                + model.getClass().getName()
-                                + " which is not an instance of CompositeActor.");
-            }
-            JFrame frame = null;
-            int tableauxCount = 0;
-            Iterator tableaux = Configuration.findEffigy(model)
-                    .entityList(Tableau.class).iterator();
-            while (tableaux.hasNext()) {
-                Tableau tableau = (Tableau) (tableaux.next());
-                tableauxCount++;
-                if (tableau.getFrame() instanceof ActorGraphFrame) {
-                    frame = tableau.getFrame();
-                }
-            }
-            // Check for supported type of editor
-            if (!(frame instanceof ActorGraphFrame)) {
-                String message = "";
-                if (tableauxCount == 0) {
-                    message = "findEffigy() found no Tableaux?  There should have been one "
-                            + "ActorGraphFrame.";
-                } else {
-                    JFrame firstFrame = (Configuration.findEffigy(model)
-                            .entityList(Tableau.class).get(0)).getFrame();
-                    if (firstFrame instanceof KielerLayoutFrame) {
-                        message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
-                                + "please save the model before running the layout mechanism.";
-                    } else {
-                        message = "The first frame of "
-                                + tableauxCount
-                                + " found by findEffigy() is a \""
-                                + firstFrame.getClass().getName()
-                                + "\", which is not an instance of ActorGraphFrame."
-                                + " None of the other frames were ActorGraphFrames either.";
-                    }
-                }
-                throw new InternalErrorException(model, null,
-                        "For now only actor oriented graphs with ports are supported by KIELER layout. "
-                                + message
-                                + (frame != null ? " Details about the frame: "
-                                        + StringUtilities.ellipsis(
-                                                frame.toString(), 80)
-                                        : ""));
-            } else {
-                BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
-
-                // fetch everything needed to build the LayoutTarget
-                GraphController graphController = graphFrame
-                        .getJGraph().getGraphPane()
-                        .getGraphController();
-                GraphModel graphModel = graphFrame.getJGraph()
-                        .getGraphPane().getGraphController()
-                        .getGraphModel();
-                BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
-                        graphController);
-
-                // create KIELER layouter for this layout target
-                KielerLayout layout = new KielerLayout(layoutTarget);
-                layout.setModel((CompositeActor) model);
-                layout.setTop(graphFrame);
-                IPropertyHolder options = _layoutConfiguration.getOptions();
-                layout.setOptions(options);
-
-                layout.layout(graphModel.getRoot());
-            }
-        }
-
+        /** The layout configuration used to derive layout options. */
         private LayoutConfiguration _layoutConfiguration;
     }
 
@@ -380,8 +304,11 @@ public class KielerLayoutTableau extends Tableau {
         public void actionPerformed(ActionEvent e) {
             // Get the frame and the current model here.
             NamedObj model = _frame.getModel();
-            List tableaux = Configuration.findEffigy(model).entityList(
-                    Tableau.class);
+            Effigy effigy = Configuration.findEffigy(model);
+            if (effigy == null) {
+                effigy = Configuration.findEffigy(model.getContainer());
+            }
+            List tableaux = effigy.entityList(Tableau.class);
             JFrame frame = ((Tableau) tableaux.get(0)).getFrame();
             BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
             graphFrame.layoutGraphWithPtolemyLayout();

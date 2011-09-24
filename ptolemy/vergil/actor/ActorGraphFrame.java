@@ -745,7 +745,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         /** Create a new action to automatically lay out the graph. */
         public LayoutAction() {
             super("Automatic Layout");
-            putValue("tooltip", "Layout the Graph (Ctrl+T)");
+            putValue("tooltip", "Layout the graph (Ctrl+T)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_T, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
@@ -765,19 +765,15 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
     ///////////////////////////////////////////////////////////////////
     //// AdvancedLayoutDialogAction
 
-    /** Action to automatically lay out the graph. */
+    /** Action to display a dialog for setting layout options. */
     private class AdvancedLayoutDialogAction extends AbstractAction {
-        /** Create a new action to automatically lay out the graph. */
+        /** Create a new action to show the advanced layout dialog. */
         public AdvancedLayoutDialogAction() {
             super("Advanced Layout Dialog");
-            putValue("tooltip", "Open the advanced layout dialog");
-            // putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-            // KeyEvent.VK_T, Toolkit.getDefaultToolkit()
-            // .getMenuShortcutKeyMask()));
-            // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
+            putValue("tooltip", "Set parameters for controlling the layout algorithm");
         }
 
-        /** Lay out the graph. */
+        /** Show the advanced layout dialog. */
         public void actionPerformed(ActionEvent e) {
             try {
                 layoutGraphDialog();

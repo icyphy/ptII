@@ -1036,14 +1036,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
-    /** Layout the graph view.
+    /** Show a dialog for manipulating graph layout parameters.
      *  If the configuration contains a parameter named
      *  _layoutGraphDialog, the that parameter is assumed
      *  to name a class that creates a modal dialog that displays
      *  controls to change the layout.  The class should have a constructor
      *  that takes a Frame argument. If the parameter cannot
-     *  be read, then the default Ptolemy layout mechanism in
-     *  {@link #layoutGraphWithPtolemyLayout()} is used.
+     *  be read, then no dialog is shown and the default Ptolemy layout
+     *  mechanism in {@link #layoutGraphWithPtolemyLayout()} is used instead.
      */
     public void layoutGraphDialog() {
         boolean success = false;
@@ -1086,7 +1086,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         }
                     }
                     Tableau kielerTableau = tableauFactory.createTableau(
-                    //getModel(), this);
                             (PtolemyEffigy) getTableau().getContainer());
 
                     kielerTableau.show();

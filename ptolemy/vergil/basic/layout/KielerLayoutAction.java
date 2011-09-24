@@ -33,16 +33,20 @@ import javax.swing.JFrame;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.IGuiAction;
 import ptolemy.vergil.basic.layout.KielerLayoutTableau.KielerLayoutFrame;
 import ptolemy.vergil.basic.layout.kieler.KielerLayout;
+import ptolemy.vergil.modal.FSMGraphFrame;
+import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.basic.BasicLayoutTarget;
@@ -64,6 +68,24 @@ model needs to be an input in the doAction() method.
 public class KielerLayoutAction extends Object implements IGuiAction {
 
     /**
+     * Construct a KIELER layout action.
+     */
+    public KielerLayoutAction() {
+    }
+    
+    /**
+     * Construct a KIELER layout action with a specific set of layout options.
+     * 
+     * @param options layout options that shall be considered by the algorithm
+     */
+    public KielerLayoutAction(IPropertyHolder options) {
+        this._options = options;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
      * Layout the graph if the model is a CompositeActor. Otherwise throw an
      * exception. The frame type must be ActorGraphFrame. The KIELER layouter
      * is called with placing and routing. The routing uses bend point
@@ -73,35 +95,40 @@ public class KielerLayoutAction extends Object implements IGuiAction {
      */
     public void doAction(NamedObj model) {
         try {
-            if (!(model instanceof CompositeActor)) {
+            if (!(model instanceof CompositeActor || model instanceof FSMActor)) {
                 throw new InternalErrorException(
-                        "For now only actor oriented graphs with ports are supported by KIELER layout. "
+                        "For now only actor models and modal models are supported by KIELER layout. "
                                 + "The model \""
                                 + model.getFullName()
-                                + "\" was a "
+                                + "\" is a "
                                 + model.getClass().getName()
-                                + " which is not an instance of CompositeActor.");
+                                + " which is not supported yet.");
             }
             JFrame frame = null;
             int tableauxCount = 0;
-            Iterator tableaux = Configuration.findEffigy(model)
-                    .entityList(Tableau.class).iterator();
-            while (tableaux.hasNext()) {
-                Tableau tableau = (Tableau) (tableaux.next());
-                tableauxCount++;
-                if (tableau.getFrame() instanceof ActorGraphFrame) {
-                    frame = tableau.getFrame();
+            Effigy effigy = Configuration.findEffigy(model);
+            if (effigy == null) {
+                effigy = Configuration.findEffigy(model.getContainer());
+            }
+            if (effigy != null) {
+                Iterator tableaux = effigy.entityList(Tableau.class).iterator();
+                while (tableaux.hasNext()) {
+                    Tableau tableau = (Tableau) (tableaux.next());
+                    tableauxCount++;
+                    if (tableau.getFrame() instanceof ActorGraphFrame
+                            || tableau.getFrame() instanceof FSMGraphFrame) {
+                        frame = tableau.getFrame();
+                        break;
+                    }
                 }
             }
-            // Check for supported type of editor
-            if (!(frame instanceof ActorGraphFrame)) {
+            // Check for supported type of editor.
+            if (frame == null) {
                 String message = "";
                 if (tableauxCount == 0) {
-                    message = "findEffigy() found no Tableaux?  There should have been one "
-                            + "ActorGraphFrame.";
-                } else {
-                    JFrame firstFrame = (Configuration.findEffigy(model)
-                            .entityList(Tableau.class).get(0)).getFrame();
+                    message = "findEffigy() found no Tableaux.";
+                } else if (effigy != null) {
+                    JFrame firstFrame = effigy.entityList(Tableau.class).get(0).getFrame();
                     if (firstFrame instanceof KielerLayoutFrame) {
                         message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
                                 + "please save the model before running the layout mechanism.";
@@ -112,22 +139,16 @@ public class KielerLayoutAction extends Object implements IGuiAction {
                                 + (firstFrame == null ? "null" : "a \""
                                         + firstFrame.getClass().getName()
                                         + "\"")
-                                + ", which is not an instance of ActorGraphFrame."
-                                + " None of the other frames were ActorGraphFrames either.";
+                                + ", which is not an ActorGraphFrame or FSMGraphFrame.";
                     }
                 }
-                throw new InternalErrorException(
-                        model,
-                        null,
-                        "For now only actor oriented graphs with ports are supported by KIELER layout. "
-                                + message
-                                + (frame != null ? " Details about the frame: "
-                                        + StringUtilities.ellipsis(
-                                                frame.toString(), 80) : ""));
+                throw new InternalErrorException(model, null,
+                        "For now only actor models and modal models are supported by KIELER layout. "
+                                + message);
             } else {
                 BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
 
-                // fetch everything needed to build the LayoutTarget
+                // Fetch everything needed to build the LayoutTarget.
                 GraphController graphController = graphFrame.getJGraph()
                         .getGraphPane().getGraphController();
                 GraphModel graphModel = graphFrame.getJGraph().getGraphPane()
@@ -135,10 +156,13 @@ public class KielerLayoutAction extends Object implements IGuiAction {
                 BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
                         graphController);
 
-                // create Kieler layouter for this layout target
+                // Create KIELER layouter for this layout target.
                 KielerLayout layout = new KielerLayout(layoutTarget);
-                layout.setModel((CompositeActor) model);
+                layout.setModel((CompositeEntity) model);
                 layout.setTop(graphFrame);
+                if (_options != null) {
+                    layout.setOptions(_options);
+                }
 
                 layout.layout(graphModel.getRoot());
             }
@@ -152,5 +176,11 @@ public class KielerLayoutAction extends Object implements IGuiAction {
                                     .getFullName())) + "\"", ex);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** the layout options that are used for the layout action. */
+    private IPropertyHolder _options;
 
 }

@@ -43,6 +43,8 @@ import de.cau.cs.kieler.kiml.options.PortSide;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
@@ -220,9 +222,15 @@ public final class PtolemyModelUtil {
         if (namedObj instanceof Relation) {
             return true;
         }
-        if (namedObj instanceof Port) {
-            // assume all inner ports are connected
-            return true;
+        if (namedObj instanceof ComponentPort) {
+            ComponentPort port = (ComponentPort) namedObj;
+            return !port.insidePortList().isEmpty()
+                    || !port.insideRelationList().isEmpty();
+        }
+        if (namedObj instanceof State) {
+            State state = (State) namedObj;
+            return !state.getIncomingPort().connectedPortList().isEmpty()
+                    || !state.getOutgoingPort().connectedPortList().isEmpty();
         }
         // default to false
         return false;
