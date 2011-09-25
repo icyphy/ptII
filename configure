@@ -3631,6 +3631,7 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/codegen/kernel/newInterfaces/"/>
 <exclude name="ptolemy/codegen/lib/"/>
 <exclude name="ptolemy/copernicus/kernel/fragment/JavaFragmentParser.java"/>
+<exclude name="ptolemy/copernicus/shallow/cg/"/>
 <exclude name="ptolemy/domains/ct/demo/Saber/"/>
 <exclude name="ptolemy/domains/giotto/demo/Hierarchy/Hierarchy/"/>
 <exclude name="ptolemy/domains/giotto/demo/Multimode/Multimode/"/>
