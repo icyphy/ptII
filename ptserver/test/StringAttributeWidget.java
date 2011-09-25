@@ -57,8 +57,8 @@ public class StringAttributeWidget extends TypedAtomicActor {
         return _attribute.getExpression();
     }
 
-    /**
-     * @param _attribute the _attribute to set
+    /** Set the value of _attribute.
+     * @param value the new value of _attribute.
      */
     public void setAttributeValue(String value) {
         try {
