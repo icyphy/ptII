@@ -140,6 +140,7 @@
     <exclude name="ptolemy/codegen/newInterfaces/" />
     <exclude name="ptolemy/copernicus/" />
     <exclude name="ptolemy/copernicus/kernel/fragment/" />
+    <exclude name="ptolemy/copernicus/shallow/cg/"/>
     <exclude name="ptolemy/distributed/" />
     <exclude name="ptolemy/domains/ct/demo/Saber/" />
     <exclude name="ptolemy/domains/giotto/" />
