@@ -96,6 +96,7 @@ import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement;
 import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.options.PortConstraints;
+import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.kiml.options.PortType;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klay.layered.LayeredLayoutProvider;
@@ -808,7 +809,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             KShapeLayout portLayout = kPort.getData(KShapeLayout.class);
             portLayout.setHeight(DEFAULT_PORT_SIZE);
             portLayout.setWidth(DEFAULT_PORT_SIZE);
-            KVector offset = PtolemyModelUtil._getMultiportOffsets(port,
+            KVector offset = _getMultiportOffsets(port,
                     portLayout, index, maxIndex, false);
             portLayout.setXpos((float) (portBase.x + offset.x));
             portLayout.setYpos((float) (portBase.y + offset.y)
@@ -900,7 +901,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         kportlayout.setWidth(DEFAULT_PORT_SIZE);
 
         // Set port side and calculate actual offset.
-        KVector offset = PtolemyModelUtil._getMultiportOffsets(port, kportlayout,
+        KVector offset = _getMultiportOffsets(port, kportlayout,
                 index, maxIndex, true);
 
         // Try to set actual layout (size and position)
@@ -1196,9 +1197,63 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
     }
 
+    /**
+     * For a given Ptolemy port, its channel index in a multiport, and the
+     * maximum index in that multiport, calculate its offset in X and Y
+     * coordinates. For example, the first channel on the east side has offset 0
+     * and the next channel is moved below the first one and so on. On the north
+     * side, the last channel has offset 0 and the first channel is at the most
+     * left side.
+     *
+     * @param port the Ptolemy port
+     * @param kportlayout the corresponding KPort KShapeLayout
+     * @param index index of the channel
+     * @param maxIndex maximum available channel
+     * @return offset vector
+     */
+    protected static KVector _getMultiportOffsets(Port port, KShapeLayout kportlayout,
+            int index, int maxIndex, boolean outer) {
+        KVector offset = new KVector();
+        int direction = 0;
+        if (outer) {
+            direction = IOPortController.getDirection(IOPortController
+                    .getCardinality(port));
+        } else {
+            direction = PtolemyModelUtil._getExternalPortDirection(port);
+        }
+        switch (direction) {
+        case SwingConstants.NORTH:
+            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.NORTH);
+            // Ports are extended to left with leftmost port index 0.
+            offset.x = -((maxIndex - index) * MULTIPORT_OFFSET);
+            break;
+        case SwingConstants.EAST:
+            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.EAST);
+            // Ports are extended to bottom with top port index 0.
+            offset.y = index * MULTIPORT_OFFSET;
+            break;
+        case SwingConstants.SOUTH:
+            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.SOUTH);
+            offset.x = (index * MULTIPORT_OFFSET);
+            break;
+        default:
+            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.WEST);
+            // Ports are extended to top beginning with top port index 0.
+            offset.y = -((maxIndex - index) * MULTIPORT_OFFSET);
+            break;
+        }
+        return offset;
+    }
     
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /**
+     * Offset between KIELER KPorts corresponding to a Ptolemy multiport. I.e.
+     * the distance between multiple single KPorts.
+     */
+    private static final float MULTIPORT_OFFSET = 5.0f;
 
     /**
      * Debug flag that will trigger output of additional information during

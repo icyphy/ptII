@@ -36,11 +36,6 @@ import java.util.Set;
 
 import javax.swing.SwingConstants;
 
-import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.LayoutOptions;
-import de.cau.cs.kieler.kiml.options.PortSide;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.domains.modal.kernel.State;
@@ -52,7 +47,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.actor.IOPortController;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyModelUtil
@@ -280,59 +274,5 @@ public final class PtolemyModelUtil {
         }
         return SwingConstants.SOUTH;
     }
-
-    /**
-     * For a given Ptolemy port, its channel index in a multiport, and the
-     * maximum index in that multiport, calculate its offset in X and Y
-     * coordinates. For example, the first channel on the east side has offset 0
-     * and the next channel is moved below the first one and so on. On the north
-     * side, the last channel has offset 0 and the first channel is at the most
-     * left side.
-     *
-     * @param port the Ptolemy port
-     * @param kportlayout the corresponding KPort KShapeLayout
-     * @param index index of the channel
-     * @param maxIndex maximum available channel
-     * @return offset vector
-     */
-    protected static KVector _getMultiportOffsets(Port port, KShapeLayout kportlayout,
-            int index, int maxIndex, boolean outer) {
-        KVector offset = new KVector();
-        int direction = 0;
-        if (outer) {
-            direction = IOPortController.getDirection(IOPortController
-                    .getCardinality(port));
-        } else {
-            direction = _getExternalPortDirection(port);
-        }
-        switch (direction) {
-        case SwingConstants.NORTH:
-            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.NORTH);
-            // Ports are extended to left with leftmost port index 0.
-            offset.x = -((maxIndex - index) * MULTIPORT_OFFSET);
-            break;
-        case SwingConstants.EAST:
-            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.EAST);
-            // Ports are extended to bottom with top port index 0.
-            offset.y = index * MULTIPORT_OFFSET;
-            break;
-        case SwingConstants.SOUTH:
-            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.SOUTH);
-            offset.x = (index * MULTIPORT_OFFSET);
-            break;
-        default:
-            kportlayout.setProperty(LayoutOptions.PORT_SIDE, PortSide.WEST);
-            // Ports are extended to top beginning with top port index 0.
-            offset.y = -((maxIndex - index) * MULTIPORT_OFFSET);
-            break;
-        }
-        return offset;
-    }
-    
-    /**
-     * Offset between KIELER KPorts corresponding to a Ptolemy multiport. I.e.
-     * the distance between multiple single KPorts.
-     */
-    private static final float MULTIPORT_OFFSET = 5.0f;
 
 }
