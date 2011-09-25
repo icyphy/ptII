@@ -72,7 +72,7 @@ public class CheckModelSize {
         StringBuffer results = new StringBuffer();
         Set sizeProblemSet = new HashSet();
         if (configuration != null) {
-            List entityList = configuration.allCompositeEntityList();
+            List entityList = configuration.entityList(CompositeEntity.class);
             Iterator entities = entityList.iterator();
             while (entities.hasNext()) {
                 Object entity = entities.next();

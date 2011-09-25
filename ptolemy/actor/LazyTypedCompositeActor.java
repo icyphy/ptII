@@ -208,27 +208,6 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a list that consists of all the composite entities in a model.
-     *  This method differs from allAtomicEntityList() in that this method
-     *  returns CompositeEntities and allAtomicEntityList() returns atomic entities.
-     *  This method differs from {@link #deepEntityList()} in that
-     *  this method looks inside opaque entities, whereas deepEntityList()
-     *  does not. The returned list does not include any entities that
-     *  are class definitions.
-     *  <p>This method overrides the base class to first populate the
-     *  actor, if necessary, by calling populate().  Note that this
-     *  may result in a runtime exception being thrown (if there is an
-     *  error evaluating the MoML).  This method is read-synchronized
-     *  on the workspace.
-     *
-     *  @return a List of all Composite entities in the model.
-     *  @see #lazyAllCompositeEntityList()
-     */
-    public List allCompositeEntityList() {
-        populate();
-        return super.allCompositeEntityList();
-    }
-
     /** Clone the library into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there). If the library has not yet been
