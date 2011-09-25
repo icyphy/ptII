@@ -375,6 +375,10 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             return new Configurer(_model);
         } else if (name.equals("ConfigureDirector")) {
             // A parameter editor for the director
+            if (_model.getDirector() == null) {
+                throw new IllegalActionException(_model,
+                        "Does not have a director. A director is needed to have a contol panel.");
+            }
             return new Configurer(_model.getDirector());
         } else if (name.startsWith("ConfigureEntity:")) {
             // A parameter editor for an entity is specified with
