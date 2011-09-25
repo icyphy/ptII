@@ -526,11 +526,24 @@ public class Copernicus {
         // which is not accessible because of security concerns.
         RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
 
-        // We don't actually remove the graphical classes because PrintingPress
-        // sets the location of a LineAttribute. To reproduce:
-        // cd $PTII/ptolemy/domains/ptides/demo/PrintingPress 
-        // $PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/ptides/demo/PrintingPress PrintingPress.xml
-        removeGraphicalClasses.clear();
+        // Check saved options to see whether any is setting an attribute.
+        Iterator<String> names = _parameterNames.iterator();
+        Iterator<String> values = _parameterValues.iterator();
+
+        // If invoked with "-codeGenerator applet", then clear the graphical
+        // classes filter.
+        while (names.hasNext() && values.hasNext()) {
+            String name = names.next();
+            String value = values.next();
+            if (name.equals("codeGenerator") && value.equals("applet")) {
+                // We don't actually remove the graphical classes because PrintingPress
+                // sets the location of a LineAttribute. To reproduce:
+                // cd $PTII/ptolemy/domains/ptides/demo/PrintingPress 
+                // $PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/ptides/demo/PrintingPress PrintingPress.xml
+                removeGraphicalClasses.clear();
+                break;
+            }
+        }
 
         // FIXME: Not sure why this is necessary, but it helps
         // when generating an applet for moml/demo/spectrum.xml
@@ -539,6 +552,7 @@ public class Copernicus {
         // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
         removeGraphicalClasses.put(
                 "ptolemy.copernicus.gui.GeneratorTableauAttribute", null);
+
 
         // FIXME: If this is Deep codegen, then don't use Test, use CGTest
         // because Test has a SharedParameter
