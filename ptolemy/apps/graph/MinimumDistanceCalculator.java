@@ -36,7 +36,7 @@ public class MinimumDistanceCalculator extends Attribute {
      * @param entities
      * @param start
      * @param end
-     * @return
+     * @return the number of hops from start to end.
      */
     public static int calculateDistance(Object[] entities, int start, int end) {
         boolean[] visited = new boolean[entities.length];
