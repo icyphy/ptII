@@ -66,7 +66,7 @@ test domains-2.1 {} {
     } out
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Queue size 131072 exceeds the maximum capacity in port .PNSRTimedtest.Topologia SR.port. Perhaps you have an unbounded queue?
-  in .PNSRTimedtest.Timed PN}}
+  in .PNSRTimedtest.Topologia SR.port}}
 
 #############################################
 ####
@@ -75,8 +75,7 @@ test domains-3.1 {} {
      catch {createAndExecute "auto/knownFailedTests/PNSRtest3.xml"} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Queue size 131072 exceeds the maximum capacity in port .PNSRtest3.AddSubtract.plus. Perhaps you have an unbounded queue?
-  in .PNSRtest3.PN Director}}
-
+  in .PNSRtest3.AddSubtract.plus}}
 
 #############################################
 ####
