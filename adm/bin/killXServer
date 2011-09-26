@@ -1,0 +1,23 @@
+#!/bin/sh
+# $Id$
+# Kill the Xvfb process
+
+echo "$0: Looking for Xvfb process (#1)"
+/bin/ps -edalf | /bin/grep Xvfb
+
+echo "$0: pkill -u `/usr/bin/whoami` Xvfb"
+/usr/bin/pkill -u `/usr/bin/whoami` Xvfb
+
+echo "$0: Sleeping 5  seconds"
+sleep 5
+
+echo "$0: pkill -u `/usr/bin/whoami` -s 9 Xvfb"
+/usr/bin/pkill -u `/usr/bin/whoami` -s 9 Xvfb
+
+echo "$0: Sleeping 5  seconds"
+sleep 5
+
+echo "$0: Looking for Xvfb process (#2)"
+/bin/ps -edalf | /bin/grep Xvfb
+
+echo "$0: Done."
