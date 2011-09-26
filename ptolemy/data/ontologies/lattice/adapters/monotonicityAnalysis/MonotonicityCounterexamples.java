@@ -21,6 +21,8 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -162,7 +164,19 @@ public class MonotonicityCounterexamples {
         StringBuffer resultBuffer = new StringBuffer();
 
         resultBuffer.append("{");
-        for (Entry<Concept, Concept> pair : entrySet()) {
+        ConceptPair[] entries = null;
+        entries = entrySet().toArray(entries);
+        Arrays.sort(entries, new Comparator<ConceptPair>() {
+            @Override
+            public int compare(ConceptPair o1, ConceptPair o2) {
+                if (o1.lesser.toString().equals(o2.lesser.toString())) {
+                    return o1.greater.toString().compareTo(o2.greater.toString());
+                } else {
+                    return o1.lesser.toString().compareTo(o2.lesser.toString());
+                }
+            }
+        });
+        for (Entry<Concept, Concept> pair : entries) {
             resultBuffer.append("(" + pair.getKey().toString() + ","
                     + pair.getValue() + ")");
         }
