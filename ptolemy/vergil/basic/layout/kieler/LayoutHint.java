@@ -105,7 +105,7 @@ import diva.canvas.connector.ManhattanConnector;
  * which are Ptolemy objects like {@link Port}s or {@link Relation}s. The
  * methods to access this are {@link #getLayoutHintItem(Object, Object)},
  * {@link #setLayoutHintItem(NamedObj, NamedObj, double[])} and
- * {@link #removeLayoutHintItem(Object, Object)}.</p>
+ * {@link #removeLayoutHintItem(LayoutHintItem)}.</p>
  *
  * <p> The class extends {@link SingletonAttribute} because every
  * Relation is expected to have only one such Attribute, while one of

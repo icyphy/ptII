@@ -72,7 +72,7 @@ public final class PtolemyModelUtil {
      * Find a location for the given object.
      * 
      * @param namedObj a model object
-     * @return the object's location, or {@link null} if there is no location
+     * @return the object's location, or {@code null} if there is no location
      */
     protected static Locatable _getLocation(NamedObj namedObj) {
         if (namedObj instanceof Locatable) {
