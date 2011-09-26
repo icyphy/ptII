@@ -30,7 +30,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $ComplextoString($actorSymbol(inputToken)),
             $param(tolerance),
             $ComplextoString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))));
-
+   exit(-1);
 }
 /**/
 
@@ -51,6 +51,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(inputToken),
             $param(tolerance),
             (int)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
+   exit(-1);
 }
 /**/
 
@@ -70,6 +71,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
                     $param(tolerance),
             $param(correctValues, $actorSymbol(numberOfTokensSeen)) +
             $param(tolerance));
+   exit(-1);
 }
 /**/
 
@@ -84,13 +86,14 @@ if ($channel == 0) {
 $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && abs($actorSymbol(inputToken)
-                - (($lcCgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
+                - IntArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel))
         > $param(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $param(tolerance),
-            (int)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
+            IntArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel));
+    exit(-1);
 }
 /**/
 
@@ -111,6 +114,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
                     $param(tolerance),
             $param(correctValues, $actorSymbol(numberOfTokensSeen)) +
             $param(tolerance));
+    exit(-1);
 }
 /**/
 
@@ -125,16 +129,15 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
    $actorSymbol(correctValuesThisFiring_$channel) =
        $param(correctValues, $actorSymbol(numberOfTokensSeen));
    if (abs($actorSymbol(inputToken)
-                   - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
-
-    /*- Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))*/
+                - DoubleArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel))
            > $param(tolerance)) {
        printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been within %10.30g of: %10.30g\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $param(tolerance),
                (Number)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
-    /*Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input)));*/
+            DoubleArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel));
+       exit(-1);
    }
 }
 /**/
@@ -151,6 +154,7 @@ if (($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             BooleantoString($actorSymbol(inputToken)),
             BooleantoString($param(correctValues, $actorSymbol(numberOfTokensSeen))));
+    exit(-1);
 }
 /**/
 
@@ -168,6 +172,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).getPayload());
+   exit(-1);
 }
 /**/
 
@@ -181,6 +186,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $param(correctValues, $actorSymbol(numberOfTokensSeen)));
+   exit(-1);
 }
 /**/
 
@@ -194,13 +200,14 @@ $actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSym
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && !$actorSymbol(inputToken).equals(
                     (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload))) {
-    throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
+    hrow new RuntimeException("Test $actorSymbol($channel) fails in iteration "
             + $actorSymbol(numberOfTokensSeen)
             + ".\n Value was a String: \""
             + $actorSymbol(inputToken)
             + "\". Should have been a String: \""
             + (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)
             + "\"");
+   exit(-1);
 }
 /**/
 
@@ -229,6 +236,7 @@ if (($type(input) != TYPE_Array
                              + ". Should have been within " + $param(tolerance) + " of: "
                              + $Array_toString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))).getPayload()
                              + ".\n");
+   exit(-1);
 }
 /**/
 
@@ -242,6 +250,10 @@ $actorSymbol(correctValuesThisFiring_$channel) = Array_get($param(correctValues)
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
     //if ($type(input) != TYPE_Array) {
       if (!$tokenFunc($actorSymbol(inputToken)::equals(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)))) {
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
+            $actorSymbol(numberOfTokensSeen),
+            $tokenFunc($actorSymbol(inputToken)::toString()).payload.String,
+            $tokenFunc(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)::toString()).payload.String);
 //     throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
 //             + $actorSymbol(numberOfTokensSeen)
 //             + ".\n Value was: \""
@@ -251,14 +263,15 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
 //             + "\"");
 //       }
 //    } else {
-    throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
-            + $actorSymbol(numberOfTokensSeen)
-            + ".\n Value was: '"
-            + $tokenFunc($actorSymbol(inputToken)::toString()).payload
-            + "'. Should have been: \""
-            + Array_toString(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)).payload
-            + "\"");
+//    throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
+//            + $actorSymbol(numberOfTokensSeen)
+//            + ".\n Value was: '"
+//            + $tokenFunc($actorSymbol(inputToken)::toString()).payload
+//            + "'. Should have been: \""
+//            + Array_toString(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)).payload
+//            + "\"");
       }
+   exit(-1);
 }
 /**/
 
@@ -278,6 +291,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
                     $param(tolerance),
             $param(correctValues, $actorSymbol(numberOfTokensSeen)) +
                     $param(tolerance));
+   exit(-1);
 }
 /**/
 
@@ -298,6 +312,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(inputToken),
             $param(tolerance),
             (int)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
+   exit(-1);
 }
 /**/
 
