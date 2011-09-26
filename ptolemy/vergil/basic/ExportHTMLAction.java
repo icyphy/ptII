@@ -195,7 +195,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  The gif image is assumed to have been generated with the
      *  current view using the
      *  {@link ptolemy.vergil.basic.BasicGraphFrame#writeImage(OutputStream, String)}
-     *  method.
+     *  method.</p>
+     *
+     *  <p>If the "ptolemy.ptII.exportHTML.usePtWebsite" property is set to true,
+     *  then the html files will have Ptolemy website specific Server Side Includes (SSI)
+     *  code.  This facility is not likely to be portable to other websites.</p>
+     *
      *  @param directory The directory in which to put any associated files.
      *  @exception IOException If unable to write associated files.
      *  @exception PrinterException If unable to write associated files.
@@ -213,9 +218,47 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         }
 
         // Next, create an HTML file.
+
+        // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
+        // Side Includes (SSI) and use JavaScript libraries from the
+        // Ptolemy website.  FIXME: this is a bit of a hack, we should
+        // use templates instead.
+        boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
+
         Writer indexWriter = new FileWriter(new File(directory, "index.html"));
         PrintWriter writer = new PrintWriter(indexWriter);
-        writer.println("<html><head>");
+
+        // Generate a header that will pass the HTML validator at
+        // http://validator.w3.org/
+        writer.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+        writer.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
+        writer.println("<html>");
+        writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
+
+        // If non-empty, then the path to the SSI files on the ptolemy site
+        //String ssiRoot = "";
+        String ssiRoot = "http://ptolemy.eecs.berkeley.edu/";
+        if (usePtWebsite) {
+            if (!_printedSSIMessage) {
+                _printedSSIMessage = true;
+                System.out.println("The ptolemy.ptII.exportHTML.usePtWebsite property is true, generating Ptolemy website SSI code.");
+            }
+            // FIXME: this absolute path is not very safe.  The
+            // problem is that we don't know where $PTII is located on
+            // the website.
+            writer.println("<link href=\"http://ptolemy.eecs.berkeley.edu/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
+        }
+
+        // Needed for the HTML validator.
+        writer.println("<title>" + StringUtilities.sanitizeName(model.getName())
+                + "</title>");
+
+        if (usePtWebsite) {
+            writer.println("<!--#include virtual=\"" + ssiRoot + "/ssi/toppremenu.htm\" -->");
+            writer.println("<!--#include virtual=\"../toc.htm\" -->");
+            writer.println("<!--#include virtual=\"" + ssiRoot + "/ssi/toppostmenu.htm\" -->");
+        }
+
         // Include jquery and lightbox.
         // Copy Javascript source files into destination directory,
         // if they are available. The files are under an MIT license,
@@ -224,8 +267,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                 "$CLASSPATH/ptolemy/vergil/javascript", null);
         boolean warn = true;
         // We assume that if the directory exists, then the files exist.
-        if (jsDirectory.isDirectory()) {
+        if (!usePtWebsite && jsDirectory.isDirectory()) {
             warn = false;
+            System.out.println("Copying files into the js directory.");
             // Copy files into the "js" directory.
             File jsTargetDirectory = new File(directory, "js");
             if (jsTargetDirectory.exists() && !jsTargetDirectory.isDirectory()) {
@@ -282,7 +326,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                         imagesTargetDirectory, "lightbox-btn-close.gif"));
             }
         }
-        if (warn) {
+        if (!usePtWebsite && warn) {
             MessageHandler
                     .message("Warning: Cannot find required Javascript files jquery.js"
                             + " and jquery.lightbox-0.5.pack.js. Perhaps your Ptolemy II"
@@ -293,9 +337,15 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         }
 
         // Now write the HTML.
-        writer.println("<script type=\"text/javascript\" src=\"js/jquery.js\"></script>");
-        writer.println("<script type=\"text/javascript\" src=\"js/jquery.lightbox-0.5.pack.js\"></script>");
-        writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/jquery.lightbox-0.5.css\" media=\"screen\"/>");
+
+        String jsLibrary = "";
+        if (usePtWebsite) {
+            // If we are using SSI, then use one location for the JavaScript and CSS.
+            jsLibrary = "http://ptolemy.eecs.berkeley.edu/";
+        }
+        writer.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "js/jquery.js\"></script>");
+        writer.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "js/jquery.lightbox-0.5.pack.js\"></script>");
+        writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "css/jquery.lightbox-0.5.css\" media=\"screen\"/>");
 
         // FIXME: Need to parameterize the functions somehow.
         writer.println("<script type=\"text/javascript\">");
@@ -400,6 +450,15 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
         // Section into which actor information is written.
         writer.println("<p id=\"actorName\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>");
+
+        if (!usePtWebsite) {
+            writer.println("</body>");
+            writer.println("</html");
+        } else {
+            writer.println("<!-- /body -->");
+            writer.println("<!-- /html -->");
+            writer.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
+        }
 
         writer.close(); // Without this, the output file may be empty
     }
@@ -618,6 +677,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
     /** The associated Vergil frame. */
     private final BasicGraphFrame _basicGraphFrame;
+
+    /** True if we have printed the message about SSI. */
+    private static boolean _printedSSIMessage;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

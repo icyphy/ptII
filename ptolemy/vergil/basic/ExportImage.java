@@ -32,14 +32,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportImage
@@ -68,14 +73,19 @@ public class ExportImage {
      *  @param modelFileName A Ptolemy model in MoML format.
      *  The string may start with $CLASSPATH, $HOME or other formats
      *  suitable for {@link ptolemy.util.FileUtilities#nameToFile(String, URI)}.
-     *  @param run True if the model should be run first.
+     *  @param run True if the model should be run first.  If <i>run</i>
+     *  is true, and if <i>formatName</i> starts with "htm" or "HTM", then
+     *  the output will include images of any plots.
+     *  @param openComposites True if the CompositeEntites should be
+     *  open.  The <i>openComposites</i> parameter only has an effect
+     *  if <i>formatName</i> starts with "htm" or "HTM".
      *  @param save True if the model should be saved after being run.
      *  @exception Exception Thrown if there is a problem reading the model
      *  or exporting the image.
      */
     public void exportImage(final String formatName,
-            final String modelFileName, final boolean run, final boolean save)
-            throws Exception {
+            final String modelFileName, final boolean run, final boolean openComposites,
+            final boolean save) throws Exception {
         // FIXME: this seem wrong:  The inner classes are in different
         // threads and can only access final variables.  However, we
         // use an array as a final variable, but we change the value
@@ -127,24 +137,29 @@ public class ExportImage {
             _sleep();
         }
 
-        if (save) {
-            // Optionally save the model.
-            // Sadly, running the DOPCenter.xml model does not seem to update the
-            // graph.  So, we run it and save it and then open it again.
-            Runnable saveAction = new Runnable() {
+        if (openComposites) {
+            // Optionally open any composites.
+            Runnable openCompositesAction = new Runnable() {
                 public void run() {
                     try {
-                        System.out.println("Saving " + model[0].getFullName());
-                        ((PtolemyEffigy) (_basicGraphFrame.getTableau()
-                                .getContainer())).writeFile(new File(
-                                modelFileName));
+                        System.out.println("Opening submodels of " + model[0].getFullName());
+                        Configuration configuration = (Configuration)Configuration.findEffigy(model[0].toplevel()).toplevel();
+
+                        List<CompositeEntity> composites = model[0].deepCompositeEntityList();
+                        for (CompositeEntity composite: composites) {
+                            // Don't open class definitions, then tend not to get closed.
+                            //if (!composite.isClassDefinition()) {
+                                System.out.println("Opening " + composite.getFullName());
+                                configuration.openInstance(composite);
+                                //}
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         throw new RuntimeException(ex);
                     }
                 }
             };
-            SwingUtilities.invokeAndWait(saveAction);
+            SwingUtilities.invokeAndWait(openCompositesAction);
             _sleep();
         }
 
@@ -165,6 +180,9 @@ public class ExportImage {
                                 }
                             }
                             _basicGraphFrame.writeHTML(directory);
+                            System.out.println("Exported html to "
+                                    + StringUtilities.getProperty("user.dir") + "/"
+                                    + directory + "/index.html");
                         } else {
                             out = new FileOutputStream(imageFile);
                             // Export the image.
@@ -231,6 +249,13 @@ public class ExportImage {
      *   java -classpath $PTII ptolemy.vergil.basic.ExportImage -run htm model.xml
      *  </pre>
      *
+     *  <p>or, to run the model, open any composites and save the
+     *  current view of model and the composites HTML format with any
+     *  plots:</p>
+     *  <pre>
+     *   java -classpath $PTII ptolemy.vergil.basic.ExportImage -run -openComposites htm model.xml
+     *  </pre>
+     *
      *  <p>or, to save a png:</p>
      *  <pre>
      *   java -classpath $PTII ptolemy.vergil.basic.ExportImage png model.xml
@@ -264,6 +289,7 @@ public class ExportImage {
         }
         String formatName = "GIF";
         boolean run = false;
+        boolean openComposites = false;
         boolean save = false;
         String modelFileName = null;
         if (args.length == 1) {
@@ -275,6 +301,8 @@ public class ExportImage {
                     run = true;
                 } else if (args[i].equals("-save")) {
                     save = true;
+                } else if (args[i].equals("-openComposites")) {
+                    openComposites = true;
                 } else if (args[i].toUpperCase().equals("GIF")
                         || args[i].toUpperCase().startsWith("HTM")
                         || args[i].toUpperCase().equals("PNG")) {
@@ -285,7 +313,7 @@ public class ExportImage {
             }
         }
         try {
-            new ExportImage().exportImage(formatName, modelFileName, run, save);
+            new ExportImage().exportImage(formatName, modelFileName, run, openComposites, save);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(5);
