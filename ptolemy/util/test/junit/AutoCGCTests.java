@@ -149,11 +149,13 @@ public class AutoCGCTests {
                return;
             }
    
-            System.out.println("----------------- AutoCG $PTII/bin/ptcg -language c -generateInSubdirectory "
+           System.out.println("----------------- AutoCG $PTII/bin/ptcg "
+                    + " -language c -generateInSubdirectory "
                     + generateInSubdirectory + " -inline " + inline
                     + " -maximumLinesPerBlock " + maximumLinesPerBlock
                     + " -variablesAsArrays " + variablesAsArrays
                     + " " + fullPath);
+
             String [] args = new String [] {
                         "-language", "c",
                         "-generateInSubdirectory", Boolean.toString(generateInSubdirectory),

@@ -151,6 +151,24 @@ public class FileUtilities {
         }
     }
 
+    /** Delete a directory.
+     *  @param directory the File naming the directory.
+     *  @return true if the toplevel directory was deleted.
+     */
+    static public boolean deleteDirectory(File directory) {
+        if (directory.exists() ) {
+            File[] files = directory.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    deleteDirectory(files[i]);
+                } else {
+                    files[i].delete();
+                }
+            }
+        }
+        return(directory.delete());
+    }
+
     /** Extract the contents of a jar file.
      *  @param args An array of arguments.  The first argument
      *  names the jar file to be extracted.  The first argument
