@@ -184,6 +184,25 @@ public class AutoCGJavaTests {
         }
          
 	/**
+	 * Generate, compile and run code as if the model was very large.
+	 * 
+	 * @param fullPath The full path to the model file to be
+	 * executed. If the fullPath ends with the value of the {@link
+	 * #THERE_ARE_NO_AUTO_TESTS}, then the method returns
+	 * immediately.
+	 * @exception Throwable If thrown while executing the model.
+	 */
+	@Test
+        @Parameters(method = "modelValues")
+	public void runModelLarge(String fullPath) throws Throwable {
+            runModel(fullPath,
+                    true /* generateInSubdirectory */,
+                    false /* inline */,
+                    1 /* maximumLinesPerBlock */,
+                    true /*variablesAsArrays*/);
+        }
+
+	/**
 	 * Generate, compile and run non-inline code for a model.
 	 * 
 	 * @param fullPath The full path to the model file to be
