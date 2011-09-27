@@ -163,7 +163,8 @@ public class AutoCGJavaTests {
             System.out.println("Warning, failed to delete " + _cgDirectory);
         }
 
-        System.out.println("----------------- AutoCG $PTII/bin/ptcg -generateInSubdirectory "
+        System.out.println("----------------- AutoCG $PTII/bin/ptcg "
+                + "-language java -generateInSubdirectory "
                 + generateInSubdirectory + " -inline " + inline
                 + " -maximumLinesPerBlock " + maximumLinesPerBlock
                 + " -variablesAsArrays " + variablesAsArrays
