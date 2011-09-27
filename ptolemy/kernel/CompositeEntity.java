@@ -623,7 +623,7 @@ public class CompositeEntity extends ComponentEntity {
     *  CompositeEntities, whereas deepEntityList() returns opaque
     *  ComponentEntities.  The returned list of this method does not
     *  include any entities that are class definitions.
-    *  The {@ #entityList(Class)} method only returns entities in the
+    *  The {@link #entityList(Class)} method only returns entities in the
     *  current level, this method traverses the hierarchy.
     *  @return a List of all transparent and opaque composite entities in the
     *  model.  A transparent composite is a composite that does not
