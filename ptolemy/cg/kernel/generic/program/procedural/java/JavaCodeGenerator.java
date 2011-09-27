@@ -2236,8 +2236,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 addLibraryIfNecessary(".");
             }
 
-            _substituteMap.put("@PTCGLibraries@",
-                    _concatenateClasspath(_libraries));
+            String ptcgLibraries = _concatenateClasspath(_libraries);
+            // Remove any trailing : and avoid having ".::.." in the makefile.
+            if (ptcgLibraries.endsWith(":")) {
+                ptcgLibraries = ptcgLibraries.substring(0, ptcgLibraries.length() - 1);
+            }
+            _substituteMap.put("@PTCGLibraries@", ptcgLibraries);
 
             // Define substitutions to be used in the makefile
             _substituteMap.put("@PTJNI_NO_CYGWIN@", "");
