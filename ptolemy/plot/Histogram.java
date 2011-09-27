@@ -124,6 +124,7 @@ import ptolemy.util.RunnableExceptionCatcher;
  @Pt.AcceptedRating Yellow (cxh)
  */
 public class Histogram extends PlotBox {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -292,12 +293,10 @@ public class Histogram extends PlotBox {
         setXLabel("values");
         setYLabel("count");
 
-        Random random = new Random();
-
         for (int i = 0; i <= 1000; i++) {
             this.addPoint(0, 5.0 * Math.cos((Math.PI * i) / 500.0));
-            this.addPoint(1, (10.0 * random.nextDouble()) - 5.0);
-            this.addPoint(2, 2.0 * random.nextGaussian());
+            this.addPoint(1, (10.0 * _random.nextDouble()) - 5.0);
+            this.addPoint(2, 2.0 * _random.nextGaussian());
         }
 
         this.repaint();
@@ -343,6 +342,14 @@ public class Histogram extends PlotBox {
         _binWidth = width;
     }
 
+    /** Set the seed of the random number generator used to create
+     *  the sample plot.  This method is primarily used for testing.
+     *  @param seed The seed.
+     *  @see #samplePlot()
+     */
+    public void setSeed(Long seed) {
+        _random.setSeed(seed);
+    }
     /** Write the current data and plot configuration to the
      *  specified stream in PlotML syntax.  This writes the histogram,
      *  not the raw data, in such a way that the Plot class (not the
@@ -970,6 +977,9 @@ public class Histogram extends PlotBox {
     // _scheduledBinsToAdd a a list a bins that should be added by the scheduled
     // repaint.
     private ArrayList<HashSet<Integer>> _scheduledBinsToAdd = new ArrayList<HashSet<Integer>>();
+
+    /** Random number generator used to create the sample plot. */
+    private Random _random = new Random();
 
     /** @serial  Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
