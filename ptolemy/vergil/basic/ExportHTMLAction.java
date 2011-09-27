@@ -199,7 +199,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *
      *  <p>If the "ptolemy.ptII.exportHTML.usePtWebsite" property is set to true,
      *  then the html files will have Ptolemy website specific Server Side Includes (SSI)
-     *  code.  This facility is not likely to be portable to other websites.</p>
+     *  code and use the jsquery and jsquery.lightbox files from the Ptolemy website.
+     *  In addition, a toc.htm file will be created to aid in navigation.
+     *  This facility is not likely to be portable to other websites.</p>
      *
      *  @param directory The directory in which to put any associated files.
      *  @exception IOException If unable to write associated files.
@@ -217,6 +219,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             out.close();
         }
 
+	PrintWriter index = null;
+	PrintWriter toc = null;
+	try {
+
         // Next, create an HTML file.
 
         // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
@@ -226,18 +232,26 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
 
         Writer indexWriter = new FileWriter(new File(directory, "index.html"));
-        PrintWriter writer = new PrintWriter(indexWriter);
+        index = new PrintWriter(indexWriter);
+
+        Writer tocWriter = new FileWriter(new File(directory, "toc.htm"));
+        toc = new PrintWriter(tocWriter);
+	
 
         // Generate a header that will pass the HTML validator at
         // http://validator.w3.org/
-        writer.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-        writer.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
-        writer.println("<html>");
-        writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
+
+	// We use println so as to get the correct eol character for
+        // the local platform.
+
+        index.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+        index.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
+        index.println("<html>");
+        index.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
 
         // If non-empty, then the path to the SSI files on the ptolemy site
         //String ssiRoot = "";
-        String ssiRoot = "http://ptolemy.eecs.berkeley.edu/";
+        String ssiRoot = "http://ptolemy.eecs.berkeley.edu";
         if (usePtWebsite) {
             if (!_printedSSIMessage) {
                 _printedSSIMessage = true;
@@ -246,17 +260,17 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             // FIXME: this absolute path is not very safe.  The
             // problem is that we don't know where $PTII is located on
             // the website.
-            writer.println("<link href=\"http://ptolemy.eecs.berkeley.edu/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
+            index.println("<link href=\"http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
         }
 
         // Needed for the HTML validator.
-        writer.println("<title>" + StringUtilities.sanitizeName(model.getName())
+        index.println("<title>" + StringUtilities.sanitizeName(model.getName())
                 + "</title>");
 
         if (usePtWebsite) {
-            writer.println("<!--#include virtual=\"" + ssiRoot + "/ssi/toppremenu.htm\" -->");
-            writer.println("<!--#include virtual=\"../toc.htm\" -->");
-            writer.println("<!--#include virtual=\"" + ssiRoot + "/ssi/toppostmenu.htm\" -->");
+            index.println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
+            index.println("<!--#include virtual=\"toc.htm\" -->");
+            index.println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
         }
 
         // Include jquery and lightbox.
@@ -336,6 +350,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                             + " directory into which the HTML is exported.");
         }
 
+        if (usePtWebsite) {
+	    toc.println("<div id=\"menu\">");
+	    toc.println("<ul>");
+	    toc.println("<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
+	    toc.println("</ul>");
+	    toc.println("");
+	    toc.println("<ul>");
+	    toc.println(" <li><a href=\"../index.html\">Up</a></li>");
+	    toc.println("</ul>");
+	    toc.println("<ul>");
+        }
+
         // Now write the HTML.
 
         String jsLibrary = "";
@@ -343,39 +369,39 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             // If we are using SSI, then use one location for the JavaScript and CSS.
             jsLibrary = "http://ptolemy.eecs.berkeley.edu/";
         }
-        writer.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "js/jquery.js\"></script>");
-        writer.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "js/jquery.lightbox-0.5.pack.js\"></script>");
-        writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "css/jquery.lightbox-0.5.css\" media=\"screen\"/>");
+        index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "js/jquery.js\"></script>");
+        index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "js/jquery.lightbox-0.5.pack.js\"></script>");
+        index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "css/jquery.lightbox-0.5.css\" media=\"screen\"/>");
 
         // FIXME: Need to parameterize the functions somehow.
-        writer.println("<script type=\"text/javascript\">");
-        writer.println("function writeText(text) {");
-        writer.println("  document.getElementById(\"actorName\").innerHTML = text;");
-        writer.println("}");
+        index.println("<script type=\"text/javascript\">");
+        index.println("function writeText(text) {");
+        index.println("  document.getElementById(\"actorName\").innerHTML = text;");
+        index.println("}");
         // The following requires the jquery lightbox extension.
-        writer.println("$(function() {");
-        writer.println("  $('area.lightbox').lightBox();");
-        writer.println("});");
-        writer.println("</script>");
-        writer.println("</head><body>");
+        index.println("$(function() {");
+        index.println("  $('area.lightbox').lightBox();");
+        index.println("});");
+        index.println("</script>");
+        index.println("</head><body>");
 
         // Put a header in. Use the name of the ModalModel rather
         // than the Controller if we have a ModalModel.
-        String modelName = model.getName();
+        String modelName = model.getFullName();
         if (model instanceof FSMActor) {
             NamedObj container = model.getContainer();
             if (container instanceof ModalModel) {
-                modelName = container.getName();
+                modelName = container.getFullName();
             }
         }
-        writer.println("<h1>" + modelName + "</h1>");
+        index.println("<h1>" + modelName + "</h1>");
 
         // Put the image in.
-        writer.println("<img src=\"" + _basicGraphFrame.getModel().getName()
+        index.println("<img src=\"" + _basicGraphFrame.getModel().getName()
                 + ".gif\" usemap=\"#actormap\"/>");
 
         // Write the map next.
-        writer.println("<map name=\"actormap\">");
+        index.println("<map name=\"actormap\">");
 
         // Create a table of effigies associated with any
         // open submodel or plot.
@@ -396,6 +422,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             String linkTo = "";
             PtolemyEffigy effigy = openEffigies.get(location.object);
             if (effigy != null) {
+		// _linkToText() recursively calls writeHTML();
                 linkTo = _linkToText(effigy, directory);
             } else {
                 if (location.object instanceof State) {
@@ -434,10 +461,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                         }
                     }
                 }
+
             }
 
             // Write the name of the actor followed by the table.
-            writer.println("<area shape=\"rect\" coords=\""
+            index.println("<area shape=\"rect\" coords=\""
                     + (int) location.topLeftX + "," + (int) location.topLeftY
                     + "," + (int) location.bottomRightX + ","
                     + (int) location.bottomRightY
@@ -445,22 +473,36 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     + location.object.getName() + "</h2>" + table.toString()
                     + "')\"" + linkTo + "/>");
 
+	    if (linkTo.length() > 1) {
+		String tocLink = linkTo.replace(" title=\"",">");
+		toc.println(" <li><a " + tocLink.substring(0, tocLink.length() - 1) + "</a></li>");
+	    }
         }
-        writer.println("</map>");
+        index.println("</map>");
 
         // Section into which actor information is written.
-        writer.println("<p id=\"actorName\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>");
+        index.println("<p id=\"actorName\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>");
 
         if (!usePtWebsite) {
-            writer.println("</body>");
-            writer.println("</html");
+            index.println("</body>");
+            index.println("</html");
         } else {
-            writer.println("<!-- /body -->");
-            writer.println("<!-- /html -->");
-            writer.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
-        }
+            index.println("<!-- /body -->");
+            index.println("<!-- /html -->");
+            index.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
 
-        writer.close(); // Without this, the output file may be empty
+	    toc.println(" </ul>");
+	    toc.println("</ul>");
+	    toc.println("</div><!-- /#menu -->");
+        }
+	} finally {
+	    if (toc != null) {
+		toc.close();
+	    }
+	    if (index != null) {
+		index.close(); // Without this, the output file may be empty
+	    }
+	}
     }
 
     /** Get an HTML table describing the parameters of the object.
