@@ -27,6 +27,8 @@
  */
 package ptolemy.vergil.basic;
 
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -34,16 +36,22 @@ import java.util.List;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.RelativeLocation;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.SnapConstraint;
+import diva.canvas.CanvasComponent;
 import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.SelectionModel;
+import diva.graph.GraphPane;
 import diva.graph.NodeDragInteractor;
+import diva.util.Filter;
+import diva.util.UserObjectContainer;
 
 ///////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor
@@ -158,6 +166,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // so that the change propagates.
         // The toplevel is the container being edited.
         final NamedObj toplevel = (NamedObj) graphModel.getRoot();
+        // The object situated under the location where the mouse was released
+        NamedObj dropTarget = null;
 
         StringBuffer moml = new StringBuffer();
         StringBuffer undoMoml = new StringBuffer();
@@ -172,22 +182,71 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 // attribute (applies to "unseen" relations)
                 continue;
             }
-
-            // Set the new location attribute.
             Locatable locatable = (Locatable) locationList.get(0);
-
-            // Give default values in case the previous locations value
-            // has not yet been set
-            double[] newLocation = null;
-
+            // Use the MoML element name in case the location is a vertex
+            String locationElementName = ((NamedObj) locatable).getElementName();
+            String locationName = locatable.getName();
+            // The location class, which can change if a relative location is dragged.
+            String locationClazz = locatable.getClass().getName();
+            // The new relativeTo property of the relative location.
+            String newRelativeTo = "";
+            String newRelativeToElementName = "";
+            // The old relativeTo property of the relative location.
+            String oldRelativeTo = "";
+            String oldRelativeToElementName = "";
+            
             // If locatable is an instance of RelativeLocation,
             // then its getLocation() method returns the absolute
             // location, not the relative location.
+            double[] newLocation = null;
             if (locatable instanceof RelativeLocation) {
-                newLocation = ((RelativeLocation)locatable).getRelativeLocation();
+                RelativeLocation relativeLocation = (RelativeLocation) locatable;
+                newLocation = relativeLocation.getRelativeLocation();
+                oldRelativeTo = relativeLocation.relativeTo.getExpression();
+                oldRelativeToElementName = relativeLocation
+                        .relativeToElementName.getExpression();
             } else {
                 newLocation = locatable.getLocation();
             }
+
+            // RelativeLocatables can be dropped onto an object to create a
+            // link to that object. In this case the location attribute is
+            // replaced by a RelativeLocation that holds a relative offset.
+            boolean changeRelativeTo = false;
+            if (element instanceof RelativeLocatable) {
+                if (dropTarget == null) {
+                    // Find the drop target if not yet done. Pass the selection
+                    // as filter so that objects from the selection are not chosen.
+                    dropTarget = _getObjectUnder(new Point2D.Double(dragEnd[0], dragEnd[1]),
+                            selection);
+                }
+                if (dropTarget != null && !dropTarget.equals(element)) {
+                    // Set the new values for the relativeTo properties.
+                    newRelativeTo = dropTarget.getName();
+                    newRelativeToElementName = dropTarget.getElementName();
+                    // Change the location class!
+                    locationClazz = RelativeLocation.class.getName();
+                    // Now the location value is relative, so take a fixed offset.
+                    newLocation = new double[] {
+                          RelativeLocation.INITIAL_OFFSET,
+                          RelativeLocation.INITIAL_OFFSET };
+                    changeRelativeTo = true;
+                } else if (oldRelativeTo.length() > 0 && newLocation != null) {
+                    // We have no drop target, so check the current distance to the
+                    // relativeTo object. If it exceeds a threshold, break the reference.
+                    double distance = Math.sqrt(newLocation[0] * newLocation[0]
+                            + newLocation[1] * newLocation[1]);
+                    if (distance > RelativeLocation.BREAK_THRESHOLD) {
+                        // Set the relativeTo property to the empty string.
+                        changeRelativeTo = true;
+                        // Request the absolute location for correct new placement.
+                        newLocation = locatable.getLocation();
+                    }
+                }
+            }
+
+            // Give default values in case the previous locations value
+            // has not yet been set
             if (newLocation == null) {
                 newLocation = new double[] { 0, 0 };
             }
@@ -206,15 +265,31 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             moml.append(elementToMove);
             undoMoml.append(elementToMove);
 
-            // NOTE: use the moml info element name here in case the
-            // location is a vertex
-            String momlInfo = ((NamedObj) locatable).getElementName();
-            moml.append("<" + momlInfo + " name=\"" + locatable.getName()
-                    + "\" value=\"[" + newLocation[0] + ", " + newLocation[1]
-                    + "]\" />\n");
-            undoMoml.append("<" + momlInfo + " name=\"" + locatable.getName()
+            moml.append("<" + locationElementName + " name=\"" + locationName
+                    + "\" class=\"" + locationClazz + "\" value=\"["
+                    + newLocation[0] + ", " + newLocation[1] + "]\" >\n");
+            undoMoml.append("<" + locationElementName + " name=\"" + locationName
                     + "\" value=\"[" + oldLocation[0] + ", " + oldLocation[1]
-                    + "]\" />\n");
+                    + "]\" >\n");
+            
+            if (changeRelativeTo) {
+                // Case 1: We have dragged onto another object. Create a reference to
+                // the drop target and store it as properties of the location.
+                // Case 2: We have dragged the locatable away from its relativeTo
+                // object. In this case delete the reference to break the link.
+                moml.append("<property name=\"relativeTo\" value=\""
+                        + newRelativeTo + "\"/>");
+                moml.append("<property name=\"relativeToElementName\" value=\""
+                        + newRelativeToElementName + "\"/>");
+                // The old reference must be restored upon undo.
+                undoMoml.append("<property name=\"relativeTo\" value=\""
+                        + oldRelativeTo + "\"/>");
+                undoMoml.append("<property name=\"relativeToElementName\" value=\""
+                        + oldRelativeToElementName + "\"/>");
+            }
+            
+            moml.append("</" + locationElementName + ">\n");
+            undoMoml.append("</" + locationElementName + ">\n");
             moml.append("</" + containingElementName + ">\n");
             undoMoml.append("</" + containingElementName + ">\n");
         }
@@ -354,6 +429,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     // Returns a constrained point from the given event
     private double[] _getConstrainedPoint(LayerEvent e) {
         Iterator<?> targets = targets();
@@ -382,9 +458,101 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
          */
         return result;
     }
+    
+    /** Return the figure that is an icon of a NamedObj and is
+     *  under the specified point, or null if there is none.
+     *  
+     *  This code is copied from {@link EditorDropTargetListener#_getFigureUnder(Point2D)}
+     *  and modified for the new context.
+     *  
+     *  @param point The point in the graph pane.
+     *  @param filteredFigures figures that are filtered from the object search
+     *  @return The object under the specified point, or null if there
+     *   is none or it is not a NamedObj.
+     */
+    private Figure _getFigureUnder(Point2D point, final Object[] filteredFigures) {
+        GraphPane pane = getController().getGraphPane();
+
+        FigureLayer layer = pane.getForegroundLayer();
+
+        // Find the figure under the point.
+        // NOTE: Unfortunately, FigureLayer.getCurrentFigure() doesn't
+        // work with a drop target (I guess it hasn't seen the mouse events),
+        // so we have to use a lower level mechanism.
+        double halo = layer.getPickHalo();
+        double width = halo * 2;
+        Rectangle2D region = new Rectangle2D.Double(point.getX()
+                - halo, point.getY() - halo, width, width);
+        // Filter away all figures given by the filteredFigures array
+        CanvasComponent figureUnderMouse = layer.pick(region, new Filter() {
+            public boolean accept(Object o) {
+                for (Object filter : filteredFigures) {
+                    CanvasComponent figure = (CanvasComponent) o;
+                    while (figure != null) {
+                        if (figure.equals(filter)) {
+                            return false;
+                        }
+                        figure = figure.getParent();
+                    }
+                }
+                return true;
+            }
+        });
+
+        // Find a user object belonging to the figure under the mouse
+        // or to any figure containing it (it may be a composite figure).
+        Object objectUnderMouse = null;
+
+        while (figureUnderMouse instanceof UserObjectContainer
+                && (objectUnderMouse == null)) {
+            objectUnderMouse = ((UserObjectContainer) figureUnderMouse)
+                    .getUserObject();
+
+            if (objectUnderMouse instanceof NamedObj) {
+                if (figureUnderMouse instanceof Figure) {
+                    return (Figure) figureUnderMouse;
+                }
+            }
+
+            figureUnderMouse = figureUnderMouse.getParent();
+        }
+
+        return null;
+    }
+
+    /** Return the object under the specified point, or null if there
+     *  is none.
+     *  
+     *  This code is copied from {@link EditorDropTargetListener#_getObjectUnder(Point2D)}.
+     *  
+     *  @param point The point in the graph pane.
+     *  @param filteredFigures figures that are filtered from the object search
+     *  @return The object under the specified point, or null if there
+     *   is none or it is not a NamedObj.
+     */
+    private NamedObj _getObjectUnder(Point2D point, Object[] filteredFigures) {
+        Figure figureUnderMouse = _getFigureUnder(point, filteredFigures);
+
+        if (figureUnderMouse == null) {
+            return null;
+        }
+
+        Object objectUnderMouse = ((UserObjectContainer) figureUnderMouse)
+                .getUserObject();
+
+        // Object might be a Location, in which case we want its container.
+        if (objectUnderMouse instanceof Location) {
+            return ((NamedObj) objectUnderMouse).getContainer();
+        } else if (objectUnderMouse instanceof NamedObj) {
+            return (NamedObj) objectUnderMouse;
+        }
+
+        return null;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     private LocatableNodeController _controller;
 
     // Used to undo a locatable node movement

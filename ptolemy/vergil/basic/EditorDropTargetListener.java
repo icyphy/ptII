@@ -47,6 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.RelativeLocation;
 import ptolemy.kernel.util.Singleton;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
@@ -354,7 +355,9 @@ public class EditorDropTargetListener implements DropTargetListener {
                 moml.append("<" + dropObjElementType + " name=\"" + name + "\">\n");
                 if (relativeLocation) {
                     moml.append("<property name=\"_location\" "
-                            + "class=\"ptolemy.kernel.util.RelativeLocation\" value=\"{ 40, 40}\">"
+                            + "class=\"ptolemy.kernel.util.RelativeLocation\" value=\"{"
+                            + RelativeLocation.INITIAL_OFFSET + ", "
+                            + RelativeLocation.INITIAL_OFFSET + "}\">"
                             + "<property name=\"relativeTo\" value=\""
                             + targetContainer.getName()
                             + "\"/>\n" 

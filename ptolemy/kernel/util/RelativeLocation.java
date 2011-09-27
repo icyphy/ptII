@@ -4,6 +4,7 @@ package ptolemy.kernel.util;
 import java.util.List;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.vergil.basic.LocatableNodeDragInteractor;
 
 /** An attribute used to store a relative visual location.
  *  The location is relative to an object specified by
@@ -48,6 +49,15 @@ public class RelativeLocation extends Location {
      */
     public StringAttribute relativeToElementName;
     
+    /** The initial offset for new relative locatable objects. */
+    public static final double INITIAL_OFFSET = 40.0;
+    
+    /** The maximal distance of the relative location. If this is exceeded
+     *  after moving the relative locatable, the link is broken (see
+     *  {@link LocatableNodeDragInteractor#mouseReleased(diva.canvas.event.LayerEvent)}).
+     */
+    public static final double BREAK_THRESHOLD = 200.0;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -56,6 +66,7 @@ public class RelativeLocation extends Location {
      *  @return The location.
      *  @see #setLocation(double[])
      */
+    @Override
     public double[] getLocation() {
         double[] offset = super.getLocation();
         String relativeToValue = relativeTo.getExpression();
@@ -95,6 +106,7 @@ public class RelativeLocation extends Location {
      *  is called.
      *  @see #getLocation()
      */
+    @Override
     public void setLocation(double[] location) throws IllegalActionException {
         String relativeToValue = relativeTo.getExpression();
         if (relativeToValue.equals("")) {
@@ -113,10 +125,14 @@ public class RelativeLocation extends Location {
         // object is gone... Need to record the old value.
         super.setLocation(location);
     }
+    
+    public void setRelativeLocation(double[] location) throws IllegalActionException {
+        super.setLocation(location);
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
-
+    ////                         private methods                   ////
+    
     /** If the <i>relativeTo</i> object exists, return its location.
      *  Otherwise, return null.
      *  @param relativeToName The name of the relativeTo object.
@@ -148,4 +164,10 @@ public class RelativeLocation extends Location {
         }
         return null;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    
+    
 }
