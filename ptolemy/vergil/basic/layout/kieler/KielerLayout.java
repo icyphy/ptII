@@ -64,12 +64,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.RelativeLocation;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorGraphModel.ExternalPortModel;
 import ptolemy.vergil.actor.IOPortController;
 import ptolemy.vergil.actor.KielerLayoutConnector;
 import ptolemy.vergil.actor.PortTerminal;
+import ptolemy.vergil.basic.RelativeLocatable;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.modal.FSMGraphModel;
 import ptolemy.vergil.toolbox.SnapConstraint;
@@ -511,13 +513,13 @@ public class KielerLayout extends AbstractGlobalLayout {
         float globalX = Float.MAX_VALUE, globalY = Float.MAX_VALUE;
 
         // Traverse the ptolemy graph.
-        LayoutTarget target = getLayoutTarget();
-        GraphModel graphModel = target.getGraphModel();
+        GraphModel graphModel = getLayoutTarget().getGraphModel();
         ExternalPortModel externalPortModel = null;
         if (graphModel instanceof ActorGraphModel) {
             externalPortModel = ((ActorGraphModel) graphModel).getExternalPortModel();
         }
         List<Link> unprocessedEdges = new LinkedList<Link>();
+        List<NamedObj> unprocessedRelatives = new LinkedList<NamedObj>();
 
         // Process nodes.
         for (Iterator iterator = graphModel.nodes(composite);
@@ -557,6 +559,8 @@ public class KielerLayout extends AbstractGlobalLayout {
                         _createKPorts(knode, inputs, PortType.INPUT);
                         _createKPorts(knode, outputs, PortType.OUTPUT);
                         portIter = graphModel.nodes(node);
+                    } else if (semanticNode instanceof RelativeLocatable) {
+                        unprocessedRelatives.add(semanticNode);
                     }
                 }
 
@@ -622,6 +626,19 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
         for (Link divaEdge : unprocessedEdges) {
             _createKEdge(divaEdge);
+        }
+        
+        // Create edges for associations of relative locatables to their reference objects.
+        for (NamedObj relativeObj : unprocessedRelatives) {
+            Locatable source = PtolemyModelUtil._getLocation(relativeObj);
+            if (source instanceof RelativeLocation) {
+                NamedObj referenceObj = PtolemyModelUtil._getReferencedObj(
+                        (RelativeLocation) source);
+                if (referenceObj != null) {
+                    Locatable target = PtolemyModelUtil._getLocation(referenceObj);
+                    _createKEdgeForAttribute(source, target);
+                }
+            }
         }
 
         // set Bounding Box
@@ -698,6 +715,33 @@ public class KielerLayout extends AbstractGlobalLayout {
             }
         }
     }
+    
+    /**
+     * Create a dummy edge for an attribute that is relative locatable. The edge
+     * will only be used to indicate the association between the attribute and
+     * its reference object.
+     * 
+     * @param source the source locatable node
+     * @param target the target locatable node
+     */
+    private void _createKEdgeForAttribute(Locatable source, Locatable target) {
+        KNode sourceNode = _kieler2ptolemyDivaNodes.inverse().get(source);
+        KNode targetNode = _kieler2ptolemyDivaNodes.inverse().get(target);
+        if (sourceNode != null && targetNode != null) {
+            // Create a dummy edge to connect the comment box to its reference.
+            KEdge newEdge = KimlUtil.createInitializedEdge();
+            newEdge.setSource(sourceNode);
+            newEdge.setTarget(targetNode);
+            
+            KEdgeLayout edgeLayout = newEdge.getData(KEdgeLayout.class);
+            double[] sourcePos = source.getLocation();
+            edgeLayout.getSourcePoint().setX((float) sourcePos[0]);
+            edgeLayout.getSourcePoint().setY((float) sourcePos[1]);
+            double[] targetPos = target.getLocation();
+            edgeLayout.getTargetPoint().setX((float) targetPos[0]);
+            edgeLayout.getTargetPoint().setY((float) targetPos[1]);
+        }
+    }
 
     /**
      * Create a new KIELER KNode corresponding to a Ptolemy diva node and its
@@ -723,8 +767,12 @@ public class KielerLayout extends AbstractGlobalLayout {
         nodeLayout.setXpos((float) bounds.getMinX());
         nodeLayout.setYpos((float) bounds.getMinY());
         nodeLayout.setProperty(LayoutOptions.FIXED_SIZE, true);
-        nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
-                PortConstraints.FIXED_POS);
+        if (semanticNode instanceof Attribute) {
+            nodeLayout.setProperty(LayoutOptions.COMMENT_BOX, true);
+        } else {
+            nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
+                    PortConstraints.FIXED_POS);
+        }
         
         // set the node label
         KLabel label = knode.getLabel();

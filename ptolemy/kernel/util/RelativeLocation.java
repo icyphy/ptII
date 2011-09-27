@@ -63,6 +63,10 @@ public class RelativeLocation extends Location {
 
     /** Get the location in some cartesian coordinate system.
      *  This method returns the absolute location of the object.
+     *  If the relative location was previously attached to an object
+     *  referenced in the {@link #relativeTo} property and that object
+     *  is gone, then the internally stored location is updated so it
+     *  contains the correct absolute location.
      *  @return The location.
      *  @see #setLocation(double[])
      */
@@ -70,7 +74,7 @@ public class RelativeLocation extends Location {
     public double[] getLocation() {
         double[] offset = super.getLocation();
         String relativeToValue = relativeTo.getExpression();
-        if (relativeToValue.equals("")) {
+        if (relativeToValue.equals("") || offset == null) {
             return offset;
         }
         double[] relativeToLocation = _getRelativeToLocation(relativeToValue);
@@ -109,9 +113,11 @@ public class RelativeLocation extends Location {
      *  the location involves maintaining a local copy of the passed
      *  parameter. No notification is done if the location is the same
      *  as before. This method propagates the value to any derived objects.
+     *  If the relative location is attached to an object referenced in the
+     *  {@link #relativeTo} property, then only the relative location is
+     *  stored internally.
      *  @param location The location.
-     *  @exception IllegalActionException If throw when attributeChanged()
-     *  is called.
+     *  @exception IllegalActionException Thrown when attributeChanged() is called.
      *  @see #getLocation()
      */
     @Override
@@ -149,15 +155,18 @@ public class RelativeLocation extends Location {
         if (container != null) {
             NamedObj containersContainer = container.getContainer();
             if (containersContainer instanceof CompositeEntity) {
-                // The relativeTo object is not necessarily an Entity.
+                CompositeEntity composite = (CompositeEntity) containersContainer;
                 String elementName = relativeToElementName.getExpression();
-                NamedObj relativeToNamedObj = ((CompositeEntity)containersContainer).getEntity(relativeToName);
+                // The relativeTo object is not necessarily an Entity.
+                NamedObj relativeToNamedObj;
                 if (elementName.equals("property")) {
-                    relativeToNamedObj = ((CompositeEntity)containersContainer).getAttribute(relativeToName);
+                    relativeToNamedObj = composite.getAttribute(relativeToName);
                 } else if (elementName.equals("port")) {
-                    relativeToNamedObj = ((CompositeEntity)containersContainer).getPort(relativeToName);
+                    relativeToNamedObj = composite.getPort(relativeToName);
                 } else if (elementName.equals("relation")) {
-                    relativeToNamedObj = ((CompositeEntity)containersContainer).getRelation(relativeToName);
+                    relativeToNamedObj = composite.getRelation(relativeToName);
+                } else {
+                    relativeToNamedObj = composite.getEntity(relativeToName);
                 }
                 if (relativeToNamedObj != null) {
                     List<Locatable> locatables = relativeToNamedObj.attributeList(Locatable.class);

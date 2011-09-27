@@ -40,6 +40,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
@@ -47,6 +48,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.RelativeLocation;
+import ptolemy.vergil.basic.RelativeLocatable;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyModelUtil
@@ -190,13 +193,21 @@ public final class PtolemyModelUtil {
      *         false if the object is an Attribute. Defaults to false.
      */
     protected static boolean _isConnected(NamedObj namedObj) {
+        if (namedObj instanceof RelativeLocatable) {
+            // Relative locatables may be connected to a reference object.
+            Locatable locatable = _getLocation(namedObj);
+            if (locatable instanceof RelativeLocation) {
+                NamedObj referenceObj = _getReferencedObj((RelativeLocation) locatable);
+                return referenceObj != null && _isConnected(referenceObj);
+            }
+        }
         if (namedObj instanceof Attribute) {
             return false;
         }
         if (namedObj instanceof Actor) {
             Actor actor = (Actor) namedObj;
-            // if any port of an actor is connected to any other
-            // assume that there is also no visible connection
+            // If any port of an actor is connected to any other
+            // assume that there is also no visible connection.
             for (Object o : actor.inputPortList()) {
                 Port port = (Port) o;
                 if (!port.connectedPortList().isEmpty()
@@ -228,6 +239,37 @@ public final class PtolemyModelUtil {
         }
         // default to false
         return false;
+    }
+    
+    /**
+     * Find the reference object for the given relative location.
+     * 
+     * @param location A relative location
+     * @return The corresponding reference object, or null if there is none
+     */
+    protected static NamedObj _getReferencedObj(RelativeLocation location) {
+        NamedObj container = location.getContainer();
+        if (container != null) {
+            NamedObj containersContainer = container.getContainer();
+            if (containersContainer instanceof CompositeEntity) {
+                CompositeEntity composite = (CompositeEntity) containersContainer;
+                String relativeToName = location.relativeTo.getExpression();
+                String elementName = location.relativeToElementName.getExpression();
+                // The relativeTo object is not necessarily an Entity.
+                NamedObj relativeToNamedObj;
+                if (elementName.equals("property")) {
+                    relativeToNamedObj = composite.getAttribute(relativeToName);
+                } else if (elementName.equals("port")) {
+                    relativeToNamedObj = composite.getPort(relativeToName);
+                } else if (elementName.equals("relation")) {
+                    relativeToNamedObj = composite.getRelation(relativeToName);
+                } else {
+                    relativeToNamedObj = composite.getEntity(relativeToName);
+                }
+                return relativeToNamedObj;
+            }
+        }
+        return null;
     }
 
     /**

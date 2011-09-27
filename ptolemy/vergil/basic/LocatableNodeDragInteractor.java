@@ -220,7 +220,10 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                     dropTarget = _getObjectUnder(new Point2D.Double(dragEnd[0], dragEnd[1]),
                             selection);
                 }
-                if (dropTarget != null && !dropTarget.equals(element)) {
+                // Do not accept relative locatables as drop target!! This could lead
+                // to a cycle in the references, and ultimately to a stack overflow
+                // when trying to compute the positions!
+                if (dropTarget != null && !(dropTarget instanceof RelativeLocatable)) {
                     // Set the new values for the relativeTo properties.
                     newRelativeTo = dropTarget.getName();
                     newRelativeToElementName = dropTarget.getElementName();
