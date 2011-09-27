@@ -7,7 +7,7 @@
 
 MODELNAME =	@modelName@
 
-# The include files and libraries are determined in CCodeGeneratorHelper
+# The include files and libraries are determined in CCodeGenerator
 PTCGINCLUDES = 			@PTCGIncludes@
 PTCGLIBRARIES = 		@PTCGLibraries@
 
