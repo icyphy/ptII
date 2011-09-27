@@ -94,8 +94,19 @@ public class TclTests {
 			public boolean accept(File directory, String name) {
 				String fileName = name.toLowerCase();
 				if (fileName.endsWith(".tcl")) {
-					if (!fileName.endsWith("alljtests.tcl")
-							&& !fileName.endsWith("testdefs.tcl")) {
+                                    // alljsimpletests.tcl calls exit,
+                                    // which results in JUnit
+                                    // producing
+                                    // "junit.framework.AssertionFailedError:
+                                    // Forked Java VM exited
+                                    // abnormally. Please note the
+                                    // time in the report does not
+                                    // reflect the time until the VM
+                                    // exit."
+
+                                    if (!fileName.endsWith("alljsimpletests.tcl")
+                                            && !fileName.endsWith("alljtests.tcl")
+                                            && !fileName.endsWith("testdefs.tcl")) {
 						return true;
 					}
 				}
