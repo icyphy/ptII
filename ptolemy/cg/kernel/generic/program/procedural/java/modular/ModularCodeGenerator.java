@@ -379,6 +379,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                         + _eol);
             }
 
+            boolean addComma = false;
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             while (inputPorts.hasNext()) {
@@ -391,7 +392,9 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                         type = "Token";
                     }
                     for (int i = 0; i < inputPort.getWidth(); i++) {
-                        mainEntryCode.append(", ");
+                        if (addComma) {
+                            mainEntryCode.append(", ");
+                        }
                         if (DFUtilities.getTokenConsumptionRate(inputPort) > 1) {
                             mainEntryCode.append(type + "[] "
                                     + inputPort.getName() + "_" + i);
@@ -399,6 +402,7 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             mainEntryCode.append(type + " "
                                     + inputPort.getName() + "_" + i);
                         }
+                        addComma = true;
                     }
                 }
             }
