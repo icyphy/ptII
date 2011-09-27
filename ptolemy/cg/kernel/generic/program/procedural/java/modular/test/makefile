@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California.
+# @Copyright (c) 2005-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -94,7 +94,7 @@ $(RAMP_CLASS):
         fi
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) alljtests.tcl test_auto
 	$(JTCLSH) alljtests.tcl
 
 # 'make clean' removes $(KRUFT)
