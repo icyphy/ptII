@@ -36,6 +36,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.vergil.basic.LocatableNodeController;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.kernel.AnimationRenderer;
@@ -64,11 +65,18 @@ import diva.graph.NodeController;
  @Pt.AcceptedRating Red (johnr)
  */
 public class FSMViewerGraphController extends RunnableGraphController {
+    
     /** Create a new controller with default port, state, and transition
      *  controllers.
      */
     public FSMViewerGraphController() {
         _createControllers();
+        
+        // The following is a fallback controller used when encountering
+        // instances of Locatable that have no container. Do not create
+        // this in _createControllers() because that is overridden by
+        // derived classes.
+        _locatableController = new LocatableNodeController(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -136,6 +144,8 @@ public class FSMViewerGraphController extends RunnableGraphController {
                 return _attributeController;
             } else if (semanticObject instanceof Port) {
                 return _portController;
+            } else {
+                return _locatableController;
             }
         }
 
@@ -239,6 +249,13 @@ public class FSMViewerGraphController extends RunnableGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** The default controller, used only for instances of Locatable
+     *  that have no container.
+     */
+    private LocatableNodeController _locatableController;
+
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
+    
 }

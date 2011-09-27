@@ -29,6 +29,7 @@
 
 package ptolemy.vergil.basic.layout.kieler;
 
+import java.awt.Dimension;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -220,11 +221,16 @@ public class KielerLayout extends AbstractGlobalLayout {
         long overallTime = System.currentTimeMillis();
 
         _report("Performing KIELER layout... ");
-        long graphOverhead = System.currentTimeMillis();
+        long graphOverhead = overallTime;
 
         // Create a KGraph for the KIELER layout algorithm.
         KNode parentNode = KimlUtil.createInitializedNode();
         KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
+        if (_top != null) {
+            Dimension contentSize = _top.getContentSize();
+            parentLayout.setWidth(contentSize.width);
+            parentLayout.setHeight(contentSize.height);
+        }
         
         // Configure the layout algorithm by annotating the graph.
         Options._configureLayout(parentLayout, _layoutOptions,
@@ -630,15 +636,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         
         // Create edges for associations of relative locatables to their reference objects.
         for (NamedObj relativeObj : unprocessedRelatives) {
-            Locatable source = PtolemyModelUtil._getLocation(relativeObj);
-            if (source instanceof RelativeLocation) {
-                NamedObj referenceObj = PtolemyModelUtil._getReferencedObj(
-                        (RelativeLocation) source);
-                if (referenceObj != null) {
-                    Locatable target = PtolemyModelUtil._getLocation(referenceObj);
-                    _createKEdgeForAttribute(source, target);
-                }
-            }
+            _createKEdgeForAttribute(relativeObj);
         }
 
         // set Bounding Box
@@ -695,6 +693,19 @@ public class KielerLayout extends AbstractGlobalLayout {
             // Edge is not connected to a port.
             kedge.setTarget(_kieler2ptolemyDivaNodes.inverse().get(target));
         }
+        
+        // Set source and target point so they are not (0, 0).
+        KEdgeLayout edgeLayout = kedge.getData(KEdgeLayout.class);
+        if (source instanceof Locatable) {
+            double[] pos = ((Locatable) source).getLocation();
+            edgeLayout.getSourcePoint().setX((float) pos[0]);
+            edgeLayout.getSourcePoint().setY((float) pos[1]);
+        }
+        if (target instanceof Locatable) {
+            double[] pos = ((Locatable) target).getLocation();
+            edgeLayout.getTargetPoint().setX((float) pos[0]);
+            edgeLayout.getTargetPoint().setY((float) pos[1]);
+        }
 
         // Add the edge to the list.
         _edgeList.add(new Pair<KEdge, Link>(kedge, divaEdge));
@@ -712,6 +723,11 @@ public class KielerLayout extends AbstractGlobalLayout {
                 Rectangle2D bounds = labelFigure.getBounds();
                 labelLayout.setWidth((float) bounds.getWidth());
                 labelLayout.setHeight((float) bounds.getHeight());
+                labelLayout.setXpos((edgeLayout.getSourcePoint().getX()
+                        + edgeLayout.getTargetPoint().getX()) / 2);
+                labelLayout.setYpos((edgeLayout.getSourcePoint().getY()
+                        + edgeLayout.getTargetPoint().getY()) / 2);
+                kedge.getLabels().add(label);
             }
         }
     }
@@ -721,25 +737,32 @@ public class KielerLayout extends AbstractGlobalLayout {
      * will only be used to indicate the association between the attribute and
      * its reference object.
      * 
-     * @param source the source locatable node
-     * @param target the target locatable node
+     * @param attribute the attribute for which to create a dummy edge
      */
-    private void _createKEdgeForAttribute(Locatable source, Locatable target) {
-        KNode sourceNode = _kieler2ptolemyDivaNodes.inverse().get(source);
-        KNode targetNode = _kieler2ptolemyDivaNodes.inverse().get(target);
-        if (sourceNode != null && targetNode != null) {
-            // Create a dummy edge to connect the comment box to its reference.
-            KEdge newEdge = KimlUtil.createInitializedEdge();
-            newEdge.setSource(sourceNode);
-            newEdge.setTarget(targetNode);
-            
-            KEdgeLayout edgeLayout = newEdge.getData(KEdgeLayout.class);
-            double[] sourcePos = source.getLocation();
-            edgeLayout.getSourcePoint().setX((float) sourcePos[0]);
-            edgeLayout.getSourcePoint().setY((float) sourcePos[1]);
-            double[] targetPos = target.getLocation();
-            edgeLayout.getTargetPoint().setX((float) targetPos[0]);
-            edgeLayout.getTargetPoint().setY((float) targetPos[1]);
+    private void _createKEdgeForAttribute(NamedObj attribute) {
+        Locatable source = PtolemyModelUtil._getLocation(attribute);
+        if (source instanceof RelativeLocation) {
+            NamedObj referenceObj = PtolemyModelUtil._getReferencedObj(
+                    (RelativeLocation) source);
+            if (referenceObj != null) {
+                Locatable target = PtolemyModelUtil._getLocation(referenceObj);
+                KNode sourceNode = _kieler2ptolemyDivaNodes.inverse().get(source);
+                KNode targetNode = _kieler2ptolemyDivaNodes.inverse().get(target);
+                if (sourceNode != null && targetNode != null) {
+                    // Create a dummy edge to connect the comment box to its reference.
+                    KEdge newEdge = KimlUtil.createInitializedEdge();
+                    newEdge.setSource(sourceNode);
+                    newEdge.setTarget(targetNode);
+                    
+                    KEdgeLayout edgeLayout = newEdge.getData(KEdgeLayout.class);
+                    double[] sourcePos = source.getLocation();
+                    edgeLayout.getSourcePoint().setX((float) sourcePos[0]);
+                    edgeLayout.getSourcePoint().setY((float) sourcePos[1]);
+                    double[] targetPos = target.getLocation();
+                    edgeLayout.getTargetPoint().setX((float) targetPos[0]);
+                    edgeLayout.getTargetPoint().setY((float) targetPos[1]);
+                }
+            }
         }
     }
 
