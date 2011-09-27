@@ -100,10 +100,14 @@ public class AutoTests {
 			});
 			int i = 0;
 			Object[][] data = new Object[modelFiles.length][1];
-			for (String modelFile : modelFiles) {
+                        if (modelFiles.length > 0) {
+                            for (String modelFile : modelFiles) {
 				data[i++][0] = new File("auto/" + modelFile).getCanonicalPath();
-			}
-			return data;
+                            }
+                            return data;
+                        } else {
+                            return new Object[][] { { THERE_ARE_NO_AUTO_TESTS } };
+                        }
 		}
 		return new Object[][] { { THERE_ARE_NO_AUTO_TESTS } };
 	}
