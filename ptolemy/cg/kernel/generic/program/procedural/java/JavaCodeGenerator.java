@@ -338,7 +338,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String generateConstantDefinition(String constant, 
             String type, String value) {
         // Maybe we should keep track of these in a Set?
-        return "static final " + type + " " + constant + " " + value + ";" + _eol;
+        return "static final " + type + " " + constant + " = " + value + ";" + _eol;
     }
 
     /** Generate the closing code for a group of fire functions common
