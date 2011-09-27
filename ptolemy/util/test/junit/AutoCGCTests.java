@@ -74,11 +74,14 @@ import org.junit.runner.RunWith;
 public class AutoCGCTests {
 
 	/**
-	 * Return a two dimensional array of arrays of strings that name the model
-	 * to be executed. If auto/ does not exist, or does not contain files that
-	 * end with .xml or .moml, return a list with one element that is empty.
+	 * Return a two dimensional array of arrays of strings that
+	 * name the model to be executed. If auto/ does not exist, or
+	 * does not contain files that end with .xml or .moml, return
+	 * a list with one element that is empty.
 	 * 
 	 * @return The List of model names in auto/
+         * @exception IOException If there is a problem accessing the
+         * auto/ directory.
 	 */
 	public Object[] modelValues() throws IOException {
 		File auto = new File("auto/");
@@ -111,7 +114,7 @@ public class AutoCGCTests {
 
 	/**
 	 * Find the ptolemy.cg.kernel.generic.GenericCodeGenerator class and its generateCode static
-	 * method that takes an array of strings
+	 * method that takes an array of strings.
 	 * 
 	 * @exception Throwable
 	 *                If the class or constructor cannot be found.

@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 Base class for AWT and Swing implementation of actors the implement
-PortablePlaceable
+PortablePlaceable.
 
 @author Edward A. Lee, Ishwinder Singh
 @version $Id$
@@ -138,7 +138,7 @@ public abstract class AbstractPlaceableJavaSE {
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      */
-    protected void _exportMoMLContents(TypedAtomicActor actor, Writer output,
+    protected void _exportMoMLContents(/*TypedAtomicActor actor, */ Writer output,
             int depth) throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.

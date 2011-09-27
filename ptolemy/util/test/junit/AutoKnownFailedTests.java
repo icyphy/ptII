@@ -78,6 +78,8 @@ public class AutoKnownFailedTests {
 	 * end with .xml or .moml, return a list with one element that is empty.
 	 * 
 	 * @return The array of arrays of models in auto/knownFailedTests/
+         * @exception IOException If there is a problem accessing the
+         * auto/knownFailedTests/ directory.
 	 */
 	public Object[] parametersForRunModel() throws IOException {
 		File auto = new File("auto/knownFailedTests/");

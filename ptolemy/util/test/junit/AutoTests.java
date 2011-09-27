@@ -77,6 +77,7 @@ public class AutoTests {
 	 * end with .xml or .moml, return a list with one element that is empty.
 	 * 
 	 * @return The List of model names in auto/
+         * @exception IOException If there is a problem accessing the auto/ directory.
 	 */
 	public Object[] parametersForRunModel() throws IOException {
 		File auto = new File("auto/");

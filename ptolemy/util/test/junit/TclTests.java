@@ -72,11 +72,12 @@ import org.junit.runner.RunWith;
 public class TclTests {
 
 	/**
-	 * Return a two dimensional array of arrays of strings that name the model
-	 * to be executed. If auto/ does not exist, or does not contain files that
-	 * end with .xml or .moml, return a list with one element that is empty.
+	 * Return a two dimensional array of arrays of strings that name the .tcl files
+	 * to be executed. If there are no .tcl files, return a list with one element that
+         * has the value of the {@link #THERE_ARE_NO_TCL_TESTS} field.
 	 * 
-	 * @return The List of model names in auto/
+	 * @return The List of tcl tests.
+         * @exception IOException If there is a problem accessing the auto/ directory.
 	 */
 	public Object[] parametersForRunTclFile() throws IOException {
 		String[] tclFiles = new File(".").list(new FilenameFilter() {

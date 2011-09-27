@@ -75,6 +75,9 @@ public class ActorModuleInitializer {
         }
     }
 
+    /** Set the initializer.
+     *  @param initializer The initializer.
+     */
     public static void setInitializer(Initializer initializer) {
         if (initializer == null) {
             throw new NullPointerException("Initializer must be non-null");

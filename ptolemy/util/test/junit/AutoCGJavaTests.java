@@ -82,6 +82,7 @@ public class AutoCGJavaTests {
      * end with .xml or .moml, return a list with one element that is empty.
      * 
      * @return The List of model names in auto/
+     * @exception IOException If there is a problem accessing the auto/ directory.
      */
     public Object[] modelValues() throws IOException {
         File auto = new File("auto/");
@@ -113,11 +114,11 @@ public class AutoCGJavaTests {
     }
 
     /**
-     * Find the ptolemy.cg.kernel.generic.GenericCodeGenerator class and its generateCode static
-     * method that takes an array of strings
+     * Find the ptolemy.cg.kernel.generic.GenericCodeGenerator class
+     * and its generateCode static method that takes an array of
+     * strings.
      * 
-     * @exception Throwable
-     *                If the class or constructor cannot be found.
+     * @exception Throwable If the class or constructor cannot be found.
      */
     @Before
     public void setUp() throws Throwable {

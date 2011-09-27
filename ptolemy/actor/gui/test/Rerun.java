@@ -62,7 +62,7 @@ import ptolemy.moml.MoMLSimpleApplication;
  for (i=1;i<=NR;i++) {print i, f[i]};
  }' /tmp/t > /tmp/t.plt
 
- <pre>
+ </pre>
 
  @author Christopher Hylands Brooks
  @version $Id$
@@ -85,7 +85,7 @@ public class Rerun extends MoMLSimpleApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create an instance of a single model and run it
+    /** Create an instance of a single model and run it.
      *  @param args The command-line arguments naming the .xml file to run
      */
     public static void main(String[] args) {

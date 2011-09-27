@@ -55,7 +55,7 @@ public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
         _textfield.setEditable(false);
     }
 
-    /** Set the text to the value of the token
+    /** Set the text to the value of the token.
      * @param value The Parameter containing the value
      */
     public void setValue(Token value) {

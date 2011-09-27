@@ -39,6 +39,7 @@ import ptolemy.kernel.util.Workspace;
 //// TestModel
 
 /**
+ A model for testing.
 
  @author Edward A. Lee
  @version $Id$
@@ -47,6 +48,10 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (cxh)
  */
 public class TestModel extends TypedCompositeActor {
+    /** Construct the test model in the supplied workspace.
+     *  @param workspace The workspace in which to build the model.
+     *  @exception Exception If the model cannot be constructed.
+     */
     public TestModel(Workspace workspace) throws Exception {
         super(workspace);
 
@@ -62,6 +67,10 @@ public class TestModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the history of the recorder.
+     *  @result a list Tokens.
+     */  
     public List getResults() {
         return _rec.getHistory(0);
     }

@@ -101,6 +101,10 @@ public class BoundedBufferTimedDelay extends TimeDelay {
 
     /** Override the method of the super class to initialize the
      *  parameter values.
+     *  @exception IllegalActionException If a PortParameter cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has a
+     *   PortParameter named "delay" or "bufferSize".
      */
     protected void _init() throws NameDuplicationException,
             IllegalActionException {

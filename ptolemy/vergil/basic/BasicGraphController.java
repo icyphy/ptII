@@ -107,6 +107,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Request a change that clears all the error highlights. */
     public void clearAllErrorHighlights() {
         ChangeRequest request = _getClearAllErrorHighlightsChangeRequest();
         _frame.getModel().requestChange(request);
