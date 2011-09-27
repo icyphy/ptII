@@ -127,10 +127,10 @@ test CompositeEntity-3.1 {Test deepGetEntities} {
 ######################################################################
 ####
 #
-test CompositeEntity-3.1.1 {Test allCompositeEntityList} {
+test CompositeEntity-3.1.1 {Test deepCompositeEntityList} {
     # Uses 3.1 above
-    list [listToNames [$a allCompositeEntityList]] \
-            [listToNames [$c allCompositeEntityList]] \
+    list [listToNames [$a deepCompositeEntityList]] \
+            [listToNames [$c deepCompositeEntityList]] \
             [listToNames [$a allAtomicEntityList]] \
             [listToNames [$c allAtomicEntityList]] \
             [$a statistics ""]
@@ -496,7 +496,7 @@ test CompositeEntity-11.1 {Test deepLinkedEntities on component relations} {
 # NOTE:  Uses the setup constructed in 11.1.
 test CompositeEntity-11.1.1 {Test allCompositeEntities and statistics} {
     list [listToNames [$e0 allAtomicEntityList]] \
-         [listToNames [$e0 allCompositeEntityList]] \
+         [listToNames [$e0 deepCompositeEntityList]] \
          [listToNames [$e0 deepEntityList]] \
          [listToNames [$e0 deepOpaqueEntityList]] \
             [$e0 statistics [java::null]] \
