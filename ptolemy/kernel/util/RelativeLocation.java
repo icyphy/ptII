@@ -62,7 +62,7 @@ public class RelativeLocation extends Location {
     ////                         public methods                    ////
 
     /** Get the location in some cartesian coordinate system.
-     *  This method returns the relative location of the object.
+     *  This method returns the absolute location of the object.
      *  @return The location.
      *  @see #setLocation(double[])
      */
@@ -81,8 +81,16 @@ public class RelativeLocation extends Location {
             }
             return result;
         }
-        // FIXME: If we get to here, then the relativeTo
-        // object is gone... Need to record the old value.
+        // If we get to here, then the relativeTo object is gone, so
+        // update the relative location to an absolute one if possible.
+        if (_cachedReltoLoc != null) {
+            for (int i = 0; i < offset.length; i++) {
+                // The offset array is also referenced by the superclass, so
+                // changes to its content affect the actual location.
+                offset[i] += _cachedReltoLoc[i];
+            }
+            _cachedReltoLoc = null;
+        }
         return offset;
     }
     
@@ -121,15 +129,12 @@ public class RelativeLocation extends Location {
             super.setLocation(result);
             return;
         }
-        // FIXME: If we get to here, then the relativeTo
-        // object is gone... Need to record the old value.
+        // If we get to here, then the relativeTo object is gone, so delete
+        // the cached value.
+        _cachedReltoLoc = null;
         super.setLocation(location);
     }
     
-    public void setRelativeLocation(double[] location) throws IllegalActionException {
-        super.setLocation(location);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     
@@ -144,7 +149,7 @@ public class RelativeLocation extends Location {
         if (container != null) {
             NamedObj containersContainer = container.getContainer();
             if (containersContainer instanceof CompositeEntity) {
-                // The relativeTo object to not necessarily an Entity.
+                // The relativeTo object is not necessarily an Entity.
                 String elementName = relativeToElementName.getExpression();
                 NamedObj relativeToNamedObj = ((CompositeEntity)containersContainer).getEntity(relativeToName);
                 if (elementName.equals("property")) {
@@ -157,10 +162,19 @@ public class RelativeLocation extends Location {
                 if (relativeToNamedObj != null) {
                     List<Locatable> locatables = relativeToNamedObj.attributeList(Locatable.class);
                     if (locatables.size() > 0) {
-                        return locatables.get(0).getLocation();
+                        _cachedReltoLoc = locatables.get(0).getLocation();
+                        return _cachedReltoLoc;
                     }
                 }
             }
+        }
+        // The relativeTo object could not be found, so the attributes holding
+        // the reference are no longer valid. Erase their content.
+        try {
+            relativeTo.setExpression("");
+            relativeToElementName.setExpression("");
+        } catch (IllegalActionException exception) {
+            throw new InternalErrorException(exception);
         }
         return null;
     }
@@ -168,6 +182,9 @@ public class RelativeLocation extends Location {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    
+    /** The cached relativeTo location. This is used to restore the absolute position
+     *  after the relativeTo object has been deleted.
+     */
+    private double[] _cachedReltoLoc;
     
 }
