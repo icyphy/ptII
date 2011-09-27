@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
+package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
 
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;

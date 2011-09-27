@@ -6,6 +6,11 @@ $type $actorSymbol(result);
 $actorSymbol(result) = $zero;
 /**/
 
+/***minusOnlyInitSum($minusType)***/
+//$actorSymbol(result) = $negate_$minusType($get(minus#0));
+$actorSymbol(result) = $zero_$minusTypeOneArg($get(minus#0));
+/**/
+
 /***plusBlock($channel, $type1, $type2)***/
 if ($hasToken(plus#$channel)) {
     $actorSymbol(result) = $add_$type1_$type2($actorSymbol(result), $get(plus#$channel));

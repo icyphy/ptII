@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib
 
-DIRS =		logic string test
+DIRS =		conversions logic string test
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..
@@ -53,11 +53,13 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
+	conversions/conversions.jar \
 	logic/logic.jar \
 	string/string.jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AbsoluteValue.java \
 	Accumulator.java \
 	AddSubtract.java \
 	BooleanMultiplexor.java \
@@ -88,7 +90,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	logic string test
+MISC_FILES =	conversions logic string test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
