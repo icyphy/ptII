@@ -164,6 +164,8 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         // a code coverage tool such as Cobertura, we get the Cobertura jars.
         // To test this, run:
         // ant -f build.default.xml test.cobertura -Dtest.batch=ptolemy/cg/lib/test/junit/*.java
+        commands.add("pwd");
+        commands.add("ls -l");
         commands.add("javac -classpath \"" + topDirectory
                 + StringUtilities.getProperty("path.separator")
                 + StringUtilities.getProperty("java.class.path")
