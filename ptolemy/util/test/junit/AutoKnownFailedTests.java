@@ -102,11 +102,15 @@ public class AutoKnownFailedTests {
 			});
 			int i = 0;
 			Object[][] data = new Object[modelFiles.length][1];
-			for (String modelFile : modelFiles) {
+                        if (modelFiles.length > 0) {
+                            for (String modelFile : modelFiles) {
 				data[i++][0] = new File("auto/knownFailedTests/" + modelFile)
-						.getCanonicalPath();
-			}
-			return data;
+                                    .getCanonicalPath();
+                            }
+                            return data;
+                        } else {
+                            return new Object[][] { { THERE_ARE_NO_KNOWN_FAILED_TESTS } };
+                        }
 		}
 		return new Object[][] { { THERE_ARE_NO_KNOWN_FAILED_TESTS } };
 	}
