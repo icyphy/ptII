@@ -64,6 +64,7 @@ JSRCS = \
 	PortDialogFactory.java \
 	PortDialogAction.java \
 	RelationController.java \
+	RelativeLinkFigure.java \
 	RenameDialogAction.java \
 	RenameDialogFactory.java \
 	VergilUtilities.java
