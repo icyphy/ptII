@@ -1507,14 +1507,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     //+ AutoAdapter._externalPortName(port.getContainer(),
                     //        unescapedActorPortName)
                     + "\") == null) {" + _eol
-                    + "$actorSymbol(" + escapedCodegenPortName + ") = new TypedIOPort($actorSymbol(actor), \""
+                    //+ "$actorSymbol(" + escapedCodegenPortName + ") "
+                    + "TypedIOPort port" 
+                    + " = new TypedIOPort($actorSymbol(actor), \""
                     + unescapedActorPortName.replace("\\", "\\\\")
                     //+ AutoAdapter._externalPortName(port.getContainer(),
                     //        unescapedActorPortName) 
                     + "\", " + port.isInput()
                     + ", " + port.isOutput() + ");" + _eol);
             if (remotePort.isMultiport()) {
-                code.append("$actorSymbol(" + escapedCodegenPortName + ").setMultiport(true);" + _eol);
+                code.append(
+                        //"$actorSymbol(" + escapedCodegenPortName + ")"
+                        "port"
+                        + ".setMultiport(true);" + _eol);
             }
 
             code.append("}" + _eol);
