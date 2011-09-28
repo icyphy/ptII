@@ -1605,7 +1605,17 @@ public class IOPort extends ComponentPort {
 
                     if (deepReceivers != null) {
                         for (int i = 0; i < deepReceivers.length; i++) {
-                            farReceivers[index] = deepReceivers[i];
+                            try {
+                                farReceivers[index] = deepReceivers[i];
+                            } catch (ArrayIndexOutOfBoundsException ex) {
+                                // ArrayIndexOutOfBounds was thrown by a bug in code generation.
+                                // The previous error message was meaningless.
+                                throw new InternalErrorException(this, ex,
+                                        "Failed to set farReceivers["
+                                        + index + "] = deepReceivers[" + i + "]. "
+                                        + "farReceivers.length = " + farReceivers.length
+                                        + " deepReceivers.length = " + deepReceivers.length + ".");
+                            }
                             index++;
                         }
                     } else {
