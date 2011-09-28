@@ -257,7 +257,15 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             }
         }
 
-        getCodeGenerator().addInclude("-I\"" + javaHome + "/include\"");
+        if ((new File(javaHome + "/include").isDirectory())) {
+            getCodeGenerator().addInclude("-I\"" + javaHome + "/include\"");
+        } else {
+            // Perhaps this is Mac OS X 10.7, where Java is laid out differently?
+            File headerDirectory = new File(new File(javaHome).getParentFile(), "Headers");
+            if (new File(headerDirectory, "jni.h").exists()) {
+                getCodeGenerator().addInclude("-I\"" + headerDirectory + "\"");
+            }
+        }
 
         String osName = StringUtilities.getProperty("os.name");
         String platform = "win32";
