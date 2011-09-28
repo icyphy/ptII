@@ -1606,13 +1606,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             relationAssignment = "IORelation relation = (IORelation)";
                             relationSetWidth = "relation.setWidth("
                                 + port.getWidth() + "); " + _eol;
-                        } else if (remotePort.isMultiport()) {
-                            // Needed for
-                            // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml
-                            _headerFiles.add("ptolemy.actor.IORelation;");
-                            relationAssignment = "IORelation relation = (IORelation)";
-                            relationSetWidth = "relation.setWidth("
-                                + remotePort.getWidth() + "); " + _eol;
+                            //} else if (remotePort.isMultiport()) {
+                            // Don't set the width if the remote port is a multiport. See
+                            // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
+                            //  _headerFiles.add("ptolemy.actor.IORelation;");
+                            // relationAssignment = "IORelation relation2 = (IORelation)";
+                            // relationSetWidth = "relation2.setWidth("
+                            // + remotePort.getWidth() + "); " + _eol;
                         }
 
                         // It is the responsibility of the custom actor
