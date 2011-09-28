@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.SwingConstants;
 
@@ -46,8 +47,11 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.RelativeLocation;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.basic.RelativeLocatable;
+import ptolemy.vergil.kernel.RelativeLinkFigure;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
@@ -304,6 +308,16 @@ public class EditorIcon extends Attribute {
         CompositeFigure figure = new CompositeFigure(background);
 
         NamedObj container = (NamedObj) getContainerOrContainerToBe();
+        
+        // RelativeLocatables are drawn with a line that indicates to which object
+        // they are connected. This line is drawn by RelativeLinkFigure.
+        if (container instanceof RelativeLocatable) {
+            List<RelativeLocation> locations = container.attributeList(RelativeLocation.class);
+            if (locations.size() > 0) {
+                RelativeLocation relativeLocation = locations.get(0);
+                figure.add(new RelativeLinkFigure(relativeLocation));
+            }
+        }
 
         // Create the label, unless this is a visible attribute,
         // which typically carries no label.

@@ -56,7 +56,7 @@ public class RelativeLocation extends Location {
      *  after moving the relative locatable, the link is broken (see
      *  {@link LocatableNodeDragInteractor#mouseReleased(diva.canvas.event.LayerEvent)}).
      */
-    public static final double BREAK_THRESHOLD = 200.0;
+    public static final double BREAK_THRESHOLD = 300.0;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
