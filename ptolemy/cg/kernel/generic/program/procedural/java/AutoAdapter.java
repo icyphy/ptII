@@ -434,23 +434,27 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             //                     + container.getName()  + "\");" + _eol
             //                     + "}" + _eol);
 
-            containmentCode
-                    .append("    if ((temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\""
-                            + getComponent().getContainer().getName()
-                            + "_container"
-                            + "\")) == null) {"
-                            + _eol
-                            + "     $containerSymbol() = new "
-                            + getComponent().getContainer().getClass()
-                                    .getName()
-                            // Some custom actors such as ElectricalOverlord
-                            // want to be in a container with a particular name.
-                            + "(cgContainer, \""
-                            + getComponent().getContainer().getName()
-                            + "_container" + "\");" + _eol
-                            //+ "    } else {" + _eol
-                            //+ "       $containerSymbol() = cgContainer;" + _eol
-                            + "    }" + _eol + "}" + _eol);
+//             containmentCode
+//                     .append("    if ((temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\""
+//                             + getComponent().getContainer().getName()
+//                             + "_container"
+//                             + "\")) == null) {"
+//                             + _eol
+//                             + "     $containerSymbol() = new "
+//                             + getComponent().getContainer().getClass()
+//                                     .getName()
+//                             // Some custom actors such as ElectricalOverlord
+//                             // want to be in a container with a particular name.
+//                             + "(cgContainer, \""
+//                             + getComponent().getContainer().getName()
+//                             + "_container" + "\");" + _eol
+//                             //+ "    } else {" + _eol
+//                             //+ "       $containerSymbol() = cgContainer;" + _eol
+//                             + "    }" + _eol + "}" + _eol);
+
+             containmentCode
+                     .append("$containerSymbol() = cgContainer;" + _eol
+                             + "}" + _eol);
 
             // Instantiate Variables for those actors that access parameters in their container.
             // $PTII/bin/ptcg -language java auto/ReadParametersInContainerTest.xml
@@ -627,7 +631,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + _eol
                 + "        $actorSymbol(actor) = new "
                 + actorClassName
-                + "($containerSymbol(), \"$actorSymbol(actor)\");"
+            //+ "($containerSymbol(), \"$actorSymbol(actor)\");"
+            + "($containerSymbol(), \"" + getComponent().getName() + "\");"
+
                 + _eol
                 // Set the displayName so that actors that call getDisplayName() get the same value.
                 // Actors that generate random numbers often call getFullName(), then should call getDisplayName()
@@ -1362,7 +1368,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
 
             // Create the input and output ports and connect them.
-            //code.append("    System.out.println(\"E1\");" + _eol);
+            code.append("    System.out.println(\"E1\");" + _eol);
             code.append("TypedIOPort c0PortA = new TypedIOPort(c0, \"c0PortA\", false, true);"
                     + _eol
                     + "TypedIOPort c0PortB = new TypedIOPort(c0, \"c0PortB\", true, false);"
@@ -1374,9 +1380,17 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // is no template), then connect directly to the remote port.
         // This allows us to put multiple custom actors in one composite.
 
+        // remoteIsAutoAdaptered is true if the remote actor is a
+        // custom actor.  The idea is that the layout of the custom
+        // actors in the code generated MoML fragment should match the
+        // original layout.  Custom actors may communicate with each
+        // other via backdoor methods, so we keep custom actors in the
+        // same container.
+
         // We don't call _isAutoAdapteredRemotePort() here because we
         // want to use these variables anyway.
         boolean remoteIsAutoAdaptered = false;
+
         Relation relation = (Relation) port.linkedRelationList().get(0);
         TypedIOPort remotePort = (TypedIOPort) relation.linkedPortList(port)
                 .get(0);
@@ -1385,6 +1399,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         boolean moreThanOneRelation = false;
         String relationSymbol = "";
         if (_isAutoAdaptered(remoteActor)) {
+            // The remote actor is a custom actor (aka AutoAdaptered)
             remoteIsAutoAdaptered = true;
             int verbosityLevel = ((IntToken) getCodeGenerator().verbosity.getToken()).intValue();
             if (verbosityLevel > 2) {
@@ -1436,7 +1451,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + remoteActorSymbol + " = new "
                         + remoteActor.getClass().getName()
                         + "($containerSymbol() , \""
-                        + remoteActorSymbol
+                        + remoteActor.getName()
+                        //+ remoteActorSymbol
                         + "\");"
                         + _eol
                         // Set the displayName so that actors that call getDisplayName() get the same value.
@@ -1515,7 +1531,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 //+ ");" + _eol);
             } else {
                 connectedAlready = true;
-                //code.append("    System.out.println(\"D1\");" + _eol);
+                code.append("    System.out.println(\"D1\");" + _eol);
                 code.append("    $containerSymbol().connect(c0PortA,"
                         + portOrParameter + ");" + _eol
                         + "    $containerSymbol().connect($actorSymbol("
@@ -1527,7 +1543,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
 
         }
-        if (remoteIsAutoAdaptered) {
+        if (remoteIsAutoAdaptered /* foo */) { 
+            // Look up the remote port as a field in the remote actor.
+            // If the remote actor does not have a field that matches
+            // the port by name, then it could be a PortParameter
             try {
                 Field remoteFoundPortField = _findFieldByPortName(remoteActor,
                             remotePort.getName());
@@ -1559,7 +1578,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     + multipleRemoteActorSymbol + " = new "
                                     + multipleRemoteActor.getClass().getName()
                                     + "($containerSymbol() , \""
-                                    + multipleRemoteActorSymbol
+                                    //+ multipleRemoteActorSymbol
+                                    + multipleRemoteActor.getName()
                                     + "\");"
                                     + _eol
                                     // Set the displayName so that actors that call getDisplayName() get the same value.
@@ -1581,6 +1601,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             relationAssignment = "IORelation relation = (IORelation)";
                             relationSetWidth = "relation.setWidth("
                                 + port.getWidth() + "); " + _eol;
+                        } else if (remotePort.isMultiport()) {
+                            // Needed for
+                            // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml
+                            _headerFiles.add("ptolemy.actor.IORelation;");
+                            relationAssignment = "IORelation relation = (IORelation)";
+                            relationSetWidth = "relation.setWidth("
+                                + remotePort.getWidth() + "); " + _eol;
                         }
 
                         // It is the responsibility of the custom actor
@@ -1588,7 +1615,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // port of the other custom actor.  This obviates
                         // the need for checking for the connection at
                         // runtime.
-                        //code.append("    System.out.println(\"C1\");" + _eol);
+                        code.append("    System.out.println(\"C1\");" + _eol);
                         code.append(relationAssignment
                                 + "$containerSymbol().connect(" + portOrParameter
                                 + ", " + "((" + remoteActor.getClass().getName()
@@ -1623,12 +1650,20 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + AutoAdapter._externalPortName(remotePort.getContainer(),
                             remotePort.getName()) + "\")";
                 if (!readingRemoteParameters) {
-                    //code.append("    System.out.println(\"B1\");" + _eol);
-                    code.append("    $containerSymbol().connect($actorSymbol("
-                            + escapedCodegenPortName + "), " + portOrParameter
-                            + ");" + _eol);
+                    code.append("    System.out.println(\"B1\");" + _eol);
+                    code.append("    if ($actorSymbol(" + escapedCodegenPortName + ") == null) {" + _eol
+                            + "        $actorSymbol(" + escapedCodegenPortName + ") = (TypedIOPort) "
+                            + remoteActorSymbol + ".getPort(\""
+                            + AutoAdapter._externalPortName(remotePort.getContainer(),
+                                remotePort.getName()) + "\");" + _eol
+                            + "        }" + _eol
+                            + "    if (!$actorSymbol("
+                            + escapedCodegenPortName + ").equals(" + portOrParameter + ")) {" + _eol
+                            + "        $containerSymbol().connect($actorSymbol("
+                            + escapedCodegenPortName + "), " + portOrParameter + ");" + _eol
+                            + "    }" + _eol);
                 } else {
-                    //code.append("    System.out.println(\"B2\");" + _eol);
+                    code.append("    System.out.println(\"B2\");" + _eol);
                     code.append("    $containerSymbol().connect(c0PortA,"
                             + portOrParameter + ");" + _eol
                             + "    $containerSymbol().connect($actorSymbol("
@@ -1641,16 +1676,36 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 }
             }
         } else {
+            // !remoteIsAutoAdaptered
             if (!readingRemoteParameters) {
                 if (!connectedAlready) {
-                    //code.append("    System.out.println(\"A1\");" + _eol);
+                    code.append("    System.out.println(\"A1\");" + _eol);
                     code.append("    $containerSymbol().connect($actorSymbol("
                             + escapedCodegenPortName + "), " + portOrParameter
                             + ");" + _eol);
+//                     try {
+//                         Field remoteFoundPortField = _findFieldByPortName(remoteActor,
+//                                 remotePort.getName());
+//                         if (remoteFoundPortField == null) {
+//                             throw new NoSuchFieldException("Could not find port "
+//                                     + remotePort.getName());
+//                         }
+
+//                         code.append("$containerSymbol().connect(" + portOrParameter
+//                                 + ", " + "((" + remoteActor.getClass().getName()
+//                                 + ")" + remoteActorSymbol + ")."
+//                                 + remoteFoundPortField.getName()
+//                                 // FIXME: should portParameter be the remote port?
+//                                 + (portParameter != null ? ".getPort()" : "")
+//                                 + ");" + _eol /*+ relationSetWidth*/);
+//                     } catch (NoSuchFieldException ex) {
+//                         throw new IllegalActionException(getComponent(), ex, "Could not find " 
+//                                 + remotePort.getName() + " in " + remoteActor.getFullName());
+//                     }
                 }
             } else {
                 if (!connectedAlready) {
-                    //code.append("    System.out.println(\"A2\");" + _eol);
+                    code.append("    System.out.println(\"A2\");" + _eol);
                     code.append("    $containerSymbol().connect(c0PortA,"
                             + portOrParameter + ");" + _eol
                             + "    $containerSymbol().connect($actorSymbol("
