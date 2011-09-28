@@ -379,6 +379,8 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      *  {@link ptolemy.actor.injection.ActorModuleInitializer#initializeInjector()}
      *  should be called before this method is called.  If it is not
      *  called, then a message is printed and initializeInjector() is called.</p>
+     *
+     *  @return the instance of the implementation.
      */
     protected DisplayInterface _getImplementation() {
         if (_implementation == null) {

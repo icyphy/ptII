@@ -1,3 +1,33 @@
+/* 
+ Interface encapsulating platform dependent code of the PlotterBase from the 
+ platform independent parts.
+
+ @Copyright (c) 1998-2010 The Regents of the University of California.
+ All rights reserved.
+
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION 2
+ COPYRIGHTENDKEY
+ */
+
 package ptolemy.actor.lib.gui;
 
 import java.awt.Component;
@@ -35,182 +65,7 @@ import ptolemy.plot.PlotBoxInterface;
  */
 public class PlotterBaseJavaSE implements PlotterBaseInterface {
 
-    /** 
-     * {@inheritDoc}
-     */
-    public void init(PlotterBase plotterBase) {
-        _plotterBase = plotterBase;
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public void initWindowAndSizeProperties() throws IllegalActionException,
-            NameDuplicationException {
-        _windowProperties = new WindowPropertiesAttribute(_plotterBase,
-                "_windowProperties");
-        // Note that we have to force this to be persistent because
-        // there is no real mechanism for the value of the properties
-        // to be updated when the window is moved or resized. By
-        // making it persistent, when the model is saved, the
-        // attribute will determine the current size and position
-        // of the window and save it.
-        _windowProperties.setPersistent(true);
-        _plotSize = new SizeAttribute(_plotterBase, "_plotSize");
-        _plotSize.setPersistent(true);
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public void removeNullContainer() {
-        // NOTE: This actor always shows the plot buttons, even if
-        // the plot is in a separate frame.  They are very useful.
-        if (_container == null) {
-            // Dissociate with any container.
-            // NOTE: _remove() doesn't work here.  Why?
-            if (_frame != null) {
-                _frame.dispose();
-            }
-
-            _frame = null;
-
-            // If we forget the plot, then its properties get lost.
-            // Also, if the window is deleted during a run, the data
-            // will be lost. So do not forget the plot.
-            // plot = null;
-            return;
-        }
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public void updateWindowAndSizeAttributes() {
-        if (_frame != null) {
-            _windowProperties.recordProperties(_frame);
-        }
-
-        if (_plotterBase.plot != null) {
-            _plotSize.recordSize((Component) _plotterBase.plot);
-        }
-    }
-
-    /** Tableau that creates a PlotterPlotFrame.
-     */
-    protected class PlotWindowTableau extends PlotTableau {
-        /** Construct a new tableau for the model represented by the
-         *  given effigy.
-         *  @param container The container.
-         *  @param name The name.
-         *  @exception IllegalActionException If the container does not accept
-         *   this entity (this should not occur).
-         *  @exception NameDuplicationException If the name coincides with an
-         *   attribute already in the container.
-         */
-        public PlotWindowTableau(PlotEffigy container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-            frame = new PlotTableauFrame(this, (PlotBox) _plotterBase.plot,
-                    _plotterBase);
-            setFrame(frame);
-        }
-
-        /** The frame. */
-        public PlotTableauFrame frame;
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public void setTableauTitle(String title) {
-        if (_tableau != null) {
-            _tableau.setTitle(title);
-        }
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public void setFrame(Object frame) {
-        if (_frame != null) {
-            _frame.removeWindowListener(_windowClosingAdapter);
-        }
-
-        if (frame == null) {
-            _frame = null;
-            return;
-        }
-
-        _frame = (PlotTableauFrame) frame;
-
-        _windowClosingAdapter = new WindowClosingAdapter();
-        _frame.addWindowListener(_windowClosingAdapter);
-
-        _windowProperties.setProperties(_frame);
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public void cleanUp() {
-        _tableau = null;
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public void remove() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (_plotterBase.plot != null) {
-                    if (_container != null) {
-                        _container.remove((Component) _plotterBase.plot);
-                        _container.invalidate();
-                        _container.repaint();
-                    } else if (_frame != null) {
-                        _frame.dispose();
-                    }
-                }
-            }
-        });
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public Object getTableau() {
-        return _tableau;
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public Object getFrame() {
-        return _frame;
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public Object getPlatformContainer() {
-        return _container;
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
-    public void updateSize() {
-        if (_plotSize != null) {
-            _plotSize.setSize((Component) _plotterBase.plot);
-        }
-
-        _frame.pack();
-    }
-
-    /** 
-     * {@inheritDoc}
-     */
+    /** Show and then bing the frame to the front. */
     public void bringToFront() {
         if (_frame != null) {
             // show() used to call pack, which would override any manual
@@ -220,8 +75,50 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         }
     }
 
-    /** 
-     * {@inheritDoc}
+    /**
+     * Free up memory when closing. 
+     */
+    public void cleanUp() {
+        _tableau = null;
+    }
+
+    /**
+     * Get the plotter's frame.
+     * @return the plotter's frame.
+     * @see @setFrame(Object)
+     */
+    public Object getFrame() {
+        return _frame;
+    }
+
+    /**
+     * Get the platform dependent container that contains the plotter.
+     * @return the platform dependent container.
+     * @see #setPlatformContainer(Object)
+     */
+    public Object getPlatformContainer() {
+        return _container;
+    }
+
+    /**
+     * Get the plotter tableau.
+     * @return the plotter tableau.
+     */
+    public Object getTableau() {
+        return _tableau;
+    }
+
+    /**
+     * Initialize the implementation.
+     * @param plotterBase the instance that created the implementation.
+     */
+    public void init(PlotterBase plotterBase) {
+        _plotterBase = plotterBase;
+    }
+
+    /**
+     * Initialize the effigy of the plotter.
+     * @exception IllegalActionException If there is a problem initializing the effigy
      */
     public void initializeEffigy() throws IllegalActionException {
         // Need an effigy and a tableau so that menu ops work properly.
@@ -256,37 +153,192 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
         }
     }
 
-    /** 
-     * {@inheritDoc}
+    /**
+     * Initialize the effigy of the plotter.
+     * @exception IllegalActionException If there is a problem initializing the effigy
+     */
+    public void initWindowAndSizeProperties() throws IllegalActionException,
+            NameDuplicationException {
+        _windowProperties = new WindowPropertiesAttribute(_plotterBase,
+                "_windowProperties");
+        // Note that we have to force this to be persistent because
+        // there is no real mechanism for the value of the properties
+        // to be updated when the window is moved or resized. By
+        // making it persistent, when the model is saved, the
+        // attribute will determine the current size and position
+        // of the window and save it.
+        _windowProperties.setPersistent(true);
+        _plotSize = new SizeAttribute(_plotterBase, "_plotSize");
+        _plotSize.setPersistent(true);
+    }
+
+    /**
+     * Create a new instance of the PlotBoxInterface implementation.
+     * @return a new instance of the PlotBoxInterface implementation.
      */
     public PlotBoxInterface newPlot() {
         return new Plot();
     }
 
-    /** 
-     * {@inheritDoc}
+    /**
+     * Remove the plot from the current container, if there is one.
+     */
+    public void remove() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (_plotterBase.plot != null) {
+                    if (_container != null) {
+                        _container.remove((Component) _plotterBase.plot);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Remove the plot from the frame if the container is null.
+     */
+    public void removeNullContainer() {
+        // NOTE: This actor always shows the plot buttons, even if
+        // the plot is in a separate frame.  They are very useful.
+        if (_container == null) {
+            // Dissociate with any container.
+            // NOTE: _remove() doesn't work here.  Why?
+            if (_frame != null) {
+                _frame.dispose();
+            }
+
+            _frame = null;
+
+            // If we forget the plot, then its properties get lost.
+            // Also, if the window is deleted during a run, the data
+            // will be lost. So do not forget the plot.
+            // plot = null;
+            return;
+        }
+    }
+
+    /**
+     * Set the frame of the plotter.
+     * @param frame The frame to set.
+     * @see @getFrame()
+     */
+    public void setFrame(Object frame) {
+        if (_frame != null) {
+            _frame.removeWindowListener(_windowClosingAdapter);
+        }
+
+        if (frame == null) {
+            _frame = null;
+            return;
+        }
+
+        _frame = (PlotTableauFrame) frame;
+
+        _windowClosingAdapter = new WindowClosingAdapter();
+        _frame.addWindowListener(_windowClosingAdapter);
+
+        _windowProperties.setProperties(_frame);
+    }
+
+    /**
+     * Set the platform dependent container of the plotter.
+     * The container can be AWT container or Android view.
+     * @param container the platform dependent container.
+     * @see #getPlatformContainer()
      */
     public void setPlatformContainer(Object container) {
         _container = (Container) container;
     }
 
+    /**
+     * Set the title of the tableau.
+     * @param title the title to set.
+     */
+    public void setTableauTitle(String title) {
+        if (_tableau != null) {
+            _tableau.setTitle(title);
+        }
+    }
+
+    /**
+     * Update size attribute of the plotter.
+     */
+    public void updateSize() {
+        if (_plotSize != null) {
+            _plotSize.setSize((Component) _plotterBase.plot);
+        }
+
+        _frame.pack();
+    }
+
+    /**
+     * Update values of the attributes.
+     */
+    public void updateWindowAndSizeAttributes() {
+        if (_frame != null) {
+            _windowProperties.recordProperties(_frame);
+        }
+
+        if (_plotterBase.plot != null) {
+            _plotSize.recordSize((Component) _plotterBase.plot);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected variables                 ////
-    protected SizeAttribute _plotSize;
-    protected PlotterBase _plotterBase;
-    protected WindowPropertiesAttribute _windowProperties;
     /** Container into which this plot should be placed. */
     protected Container _container;
 
     /** Frame into which plot is placed, if any. */
     protected transient PlotTableauFrame _frame;
+
+    /** An attribute that contains the size of the plot. */
+    protected SizeAttribute _plotSize;
+
+    /** The base instance that created the implementation. */
+    protected PlotterBase _plotterBase;
+
+    /** The Plotter tableau. */
     protected PlotWindowTableau _tableau;
 
     /** A reference to the listener for removal purposes. */
     protected WindowClosingAdapter _windowClosingAdapter;
 
+    /** An attribute tha contains the size and position of the window. */
+    protected WindowPropertiesAttribute _windowProperties;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    /** Tableau that creates a PlotterPlotFrame.
+     */
+    protected class PlotWindowTableau extends PlotTableau {
+        /** Construct a new tableau for the model represented by the
+         *  given effigy.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container does not accept
+         *   this entity (this should not occur).
+         *  @exception NameDuplicationException If the name coincides with an
+         *   attribute already in the container.
+         */
+        public PlotWindowTableau(PlotEffigy container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+            frame = new PlotTableauFrame(this, (PlotBox) _plotterBase.plot,
+                    _plotterBase);
+            setFrame(frame);
+        }
+
+        /** The frame. */
+        public PlotTableauFrame frame;
+    }
+
 
     /** Listener for windowClosing action. */
     class WindowClosingAdapter extends WindowAdapter {

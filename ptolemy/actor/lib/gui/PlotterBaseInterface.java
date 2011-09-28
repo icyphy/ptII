@@ -47,40 +47,60 @@ import ptolemy.plot.PlotBoxInterface;
 public interface PlotterBaseInterface {
 
     /**
+     * Free up memory when closing. 
+     */
+    public void cleanUp();
+
+    /**
+     * Bring the plotter frame to the front.
+     */
+    public void bringToFront();
+
+    /**
+     * Get the plotter's frame.
+     * @return the plotter's frame.
+     * @see @setFrame(Object)
+     */
+    public Object getFrame();
+
+    /**
+     * Get the platform dependent container that contains the plotter.
+     * @return the platform dependent container.
+     * @see #setPlatformContainer(Object)
+     */
+    public Object getPlatformContainer();
+
+    /**
+     * Get the plotter tableau.
+     * @return the plotter tableau.
+     */
+    public Object getTableau();
+
+    /**
      * Initialize the implementation.
      * @param plotterBase the instance that created the implementation.
      */
     public void init(PlotterBase plotterBase);
 
     /**
+     * Initialize the effigy of the plotter.
+     * @exception IllegalActionException If there is a problem initializing the effigy
+     */
+    public void initializeEffigy() throws IllegalActionException;
+
+    /**
      * Initialize window and size attributes.
-     * @throws IllegalActionException if there is a problem creating the attributes.
-     * @throws NameDuplicationException if there is a problem creating the attributes.
+     * @exception IllegalActionException if there is a problem creating the attributes.
+     * @exception NameDuplicationException if there is a problem creating the attributes.
      */
     public void initWindowAndSizeProperties() throws IllegalActionException,
             NameDuplicationException;
 
     /**
-     * Update values of the attributes.
+     * Create a new instance of the PlotBoxInterface implementation.
+     * @return a new instance of the PlotBoxInterface implementation.
      */
-    public void updateWindowAndSizeAttributes();
-
-    /**
-     * Set the title of the tableau.
-     * @param title the title to set.
-     */
-    public void setTableauTitle(String title);
-
-    /**
-     * Set the frame of the plotter.
-     * @param frame The frame to set.
-     */
-    public void setFrame(Object frame);
-
-    /**
-     * Free up memory when closing. 
-     */
-    public void cleanUp();
+    public PlotBoxInterface newPlot();
 
     /**
      * Remove the plot from the current container, if there is one.
@@ -93,16 +113,17 @@ public interface PlotterBaseInterface {
     public void removeNullContainer();
 
     /**
-     * Get the plotter tableau.
-     * @return the plotter tableau.
+     * Set the frame of the plotter.
+     * @param frame The frame to set.
+     * @see @getFrame()
      */
-    public Object getTableau();
+    public void setFrame(Object frame);
 
     /**
-     * Get the plotter's frame.
-     * @return the plotter's frame.
+     * Set the title of the tableau.
+     * @param title the title to set.
      */
-    public Object getFrame();
+    public void setTableauTitle(String title);
 
     /**
      * Set the platform dependent container of the plotter.
@@ -113,31 +134,12 @@ public interface PlotterBaseInterface {
     public void setPlatformContainer(Object container);
 
     /**
-     * Get the platform dependent container that contains the plotter.
-     * @return the platform dependent container.
-     * @see #setPlatformContainer(Object)
-     */
-    public Object getPlatformContainer();
-
-    /**
      * Update size attribute of the plotter.
      */
     public void updateSize();
 
     /**
-     * Bring the plotter frame to the front.
+     * Update values of the attributes.
      */
-    public void bringToFront();
-
-    /**
-     * Initialize the effigy of the plotter.
-     * @throws IllegalActionException
-     */
-    public void initializeEffigy() throws IllegalActionException;
-
-    /**
-     * Create a new instance of the PlotBoxInterface implementation.
-     * @return a new instance of the PlotBoxInterface implementation.
-     */
-    public PlotBoxInterface newPlot();
+    public void updateWindowAndSizeAttributes();
 }

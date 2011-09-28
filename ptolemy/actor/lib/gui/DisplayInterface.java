@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////DisplayInterface
 
 /**
-Interface for implementing platform dependent parts of the display actor.
+ Interface for implementing platform dependent parts of the display actor.
 
 @author Ishwinder Singh
 @version $Id$
@@ -43,56 +43,82 @@ Interface for implementing platform dependent parts of the display actor.
 @Pt.ProposedRating Yellow (ishwinde)
 @Pt.AcceptedRating Yellow (ishwinde)
 */
-
 public interface DisplayInterface {
-
-    /** Set the number of rows for the text area. 
-     * @param display Object of the display actor.
-     */
-    public void init(Display display) throws IllegalActionException,
-            NameDuplicationException;
-
-    /** Set the number of rows for the text area. 
-     */
-    public void setRows(int numRows) throws IllegalActionException;
-
-    /** Set the number of columns for the text area. 
-    */
-    public void setColumns(int numColumns) throws IllegalActionException;
-
-    /** Return the object of the containing text area. 
-    */
-    public Object getTextArea();
-
-    /** Place the Actor in the provided container. 
-     *
-     *  @param container The container into which to place the actor, or
-     *   null to specify that there is no current container.
-     */
-    public void place(PortableContainer container);
-
-    /** Display the string token in the text area. 
-     */
-    public void display(String tokenValue);
 
     /** Free up memory when closing. */
     public void cleanUp();
 
-    /** Set the title of the display.
-     * 
-     * @param stringValue String containing the title to be set
-     * @throws IllegalActionException
+    /** Append the string value of the token to the text area
+     *  on the screen.  Each value is terminated with a newline 
+     *  character.
+     *  @param tokenValue The string to be displayed
      */
-    public void setTitle(String stringValue) throws IllegalActionException;
+    public void display(String tokenValue);
 
-    /** Creates a window for showing the display actor
-     * 
-     * @throws IllegalActionException
+    /** Return the object of the containing text area. 
+     *  @return the text area.   
+     */
+    public Object getTextArea();
+
+    /** Set the number of rows for the text area. 
+     * @param display Object of the display actor.
+     * @exception IllegalActionException If the entity cannot be contained
+     * by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     * actor with this name.
+     */
+    public void init(Display display) throws IllegalActionException,
+            NameDuplicationException;
+
+    /** Open the display window if it has not been opened.
+     *  @exception IllegalActionException If there is a problem creating
+     *  the effigy and tableau.
      */
     public void openWindow() throws IllegalActionException;
+
+    /** Specify the container in which the data should be displayed.
+     *  An instance of JTextArea will be added to that container.
+     *  This method needs to be called before the first call to initialize().
+     *  Otherwise, an instance of JTextArea will be placed in its own frame.
+     *  The text area is also placed in its own frame if this method
+     *  is called with a null argument.
+     *  The background of the text area is set equal to that of the container
+     *  (unless it is null).
+     *
+     *  @param portableContainer The container into which to place the text area, or
+     *   null to specify that there is no current container.
+     */
+    public void place(PortableContainer container);
 
     /** Remove the display from the current container, if there is one.
      */
     public void remove();
 
+    /** Set the desired number of columns of the textArea, if there is one.
+     *  
+     *  @param numColumns The new value of the attribute.
+     *  @exception IllegalActionException If the specified attribute
+     *   is <i>rowsDisplayed</i> and its value is not positive.
+     */
+    public void setColumns(int numOfColumns) throws IllegalActionException;
+
+    /** Set the desired number of rows of the textArea, if there is one.
+     *  
+     *  @param numberOfRows The new value of the attribute.
+     *  @exception IllegalActionException If the specified attribute
+     *   is <i>rowsDisplayed</i> and its value is not positive.
+     */
+    public void setRows(int numberOfRows) throws IllegalActionException;
+
+    /** Set the title of the window.
+     *   
+     *  <p>If the <i>title</i> parameter is set to the empty string,
+     *  and the Display window has been rendered, then the title of
+     *  the Display window will be updated to the value of the name
+     *  parameter.</p>
+     *
+     * @param stringValue The title to be set.
+     * @exception IllegalActionException If the title cannot be set.
+     */
+    public void setTitle(String stringValue) throws IllegalActionException;
 }

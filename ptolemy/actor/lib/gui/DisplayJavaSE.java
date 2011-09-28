@@ -77,7 +77,7 @@ that is known to consume large amounts of memory. It is not advisable
 to use this actor to log large output streams.</p>
 
 @author Yuhong Xiong, Edward A. Lee Contributors: Ishwinder Singh
-@version $Id: DisplayJavaSE.java 61635 2011-07-28 04:52:41Z ahuseyno $
+@version $Id$
 @since Ptolemy II 1.0
 */
 
@@ -85,19 +85,33 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
         DisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
-
-    /** The text area in which the data will be displayed. */
-    public transient JTextArea textArea;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Free up memory when closing. */
+    @Override
+    public void cleanUp() {
+
+        _tableau = null;
+
+        if (_scrollPane != null) {
+            _scrollPane.removeAll();
+            _scrollPane = null;
+        }
+        if (textArea != null) {
+            textArea.removeAll();
+            textArea = null;
+        }
+        _frame = null;
+
+        super.cleanUp();
+
+    }
 
     /** Append the string value of the token to the text area
      *  on the screen.  Each value is terminated with a newline 
      *  character.
+     *  @param tokenValue The string to be displayed
      */
-
     public void display(String value) {
 
         if (textArea == null) {
@@ -128,43 +142,24 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
 
     }
 
-    /** Free up memory when closing. */
-    @Override
-    public void cleanUp() {
-
-        _tableau = null;
-
-        if (_scrollPane != null) {
-            _scrollPane.removeAll();
-            _scrollPane = null;
-        }
-        if (textArea != null) {
-            textArea.removeAll();
-            textArea = null;
-        }
-        _frame = null;
-
-        super.cleanUp();
-
-    }
-
-    /** Get the TextArea object 
+    /** Return the object of the containing text area. 
+     *  @return the text area.   
      */
     public Object getTextArea() {
         return textArea;
     }
 
-    /** Set the reference to the actor Display actor object.
-    *
-    *  @param displayActor The Display actor 
-    */
-
+    /** Set the number of rows for the text area. 
+     * @param display Object of the display actor.
+     * @exception IllegalActionException If the entity cannot be contained
+     * by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     * actor with this name.
+     */
     public void init(Display displayActor) throws IllegalActionException,
             NameDuplicationException {
-
         _display = displayActor;
         super.init(displayActor);
-
     }
 
     /** Open the display window if it has not been opened.
@@ -334,21 +329,20 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
         });
     }
 
-    /** Set the desired number of rows of the textArea, if there is one.
+    /** Set the desired number of columns of the textArea, if there is one.
      *  
-     *  @param numRows The new value of the attribute.
+     *  @param numberOfColumns The new value of the attribute.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
-
-    public void setRows(int numRows) throws IllegalActionException {
+    public void setColumns(int numberOfColumns) throws IllegalActionException {
 
         if (textArea != null) {
             // Unset any previously set size.
             _paneSize.setToken((Token) null);
             setFrame(_frame);
 
-            textArea.setRows(numRows);
+            textArea.setColumns(numberOfColumns);
 
             if (_frame != null) {
                 _frame.pack();
@@ -358,45 +352,51 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
 
     }
 
-    /** Set the desired number of columns of the textArea, if there is one.
+    /** Set the desired number of rows of the textArea, if there is one.
      *  
-     *  @param numColumns The new value of the attribute.
+     *  @param numberOfRows The new value of the attribute.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
-
-    public void setColumns(int numColumns) throws IllegalActionException {
-
+    public void setRows(int numberOfRows) throws IllegalActionException {
         if (textArea != null) {
             // Unset any previously set size.
             _paneSize.setToken((Token) null);
             setFrame(_frame);
 
-            textArea.setColumns(numColumns);
+            textArea.setRows(numberOfRows);
 
             if (_frame != null) {
                 _frame.pack();
                 _frame.setVisible(true);
             }
         }
-
     }
 
     /** Set the title of the window.
+     *   
      *  <p>If the <i>title</i> parameter is set to the empty string,
-     *  and the Display window has been rendered, then the title of the
-     *  Display window will be updated to the value of the name parameter.</p>
+     *  and the Display window has been rendered, then the title of
+     *  the Display window will be updated to the value of the name
+     *  parameter.</p>
+     *
+     * @param stringValue The title to be set.
+     * @exception IllegalActionException If the title cannot be set.
      */
     public void setTitle(String stringValue) throws IllegalActionException {
-
         if (_tableau != null) {
             if (_display.title.stringValue().trim().equals("")) {
                 _tableau.setTitle(stringValue);
             }
-
         }
-
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public members                    ////
+
+    /** The text area in which the data will be displayed. */
+    public transient JTextArea textArea;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
@@ -457,5 +457,4 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
 
         public WeakReference<TextEditor> frame;
     }
-
 }

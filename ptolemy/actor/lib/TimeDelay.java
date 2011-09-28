@@ -369,6 +369,8 @@ public class TimeDelay extends Transformer {
      *  and microstep order, and that when time stamps and microsteps match,
      *  that the order is FIFO. The latest time stamp and largest microstep
      *  are at the beginning of the list.
+     *  @param newEvent The new event to be inserted into the queue
+     *  of pending events.
      */
     protected void _addEvent(PendingEvent newEvent) {
         if (_pendingOutputs.size() == 0) {
@@ -412,7 +414,8 @@ public class TimeDelay extends Transformer {
     }
     
     /** Return true if it is time to produce an output. 
-     *  @throws IllegalActionException If current time exceeds the time of
+     *  @return Return true if it is time to produce an output.
+     *  @exception IllegalActionException If current time exceeds the time of
      *   of the next pending event.
      */
     protected boolean _isTime() throws IllegalActionException {
@@ -479,8 +482,11 @@ public class TimeDelay extends Transformer {
 
     /** Data structure to store pending events. */
     public class PendingEvent {
+        /** The time stamp for the pending event. */
         public Time timeStamp;
+        /** The token associated with the event. */
         public Token token;
+        /** The microstep associated with the pending event. */
         public int microstep;
     }
 }
