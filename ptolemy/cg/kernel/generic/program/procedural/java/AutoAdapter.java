@@ -1517,8 +1517,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + ", " + port.isOutput() + ");" + _eol);
             if (remotePort.isMultiport()) {
                 code.append(
+                        "System.out.println(\"MP1\");" + _eol 
                         //"$actorSymbol(" + escapedCodegenPortName + ")"
-                        "port"
+                        + "port"
                         + ".setMultiport(true);" + _eol);
             }
 
@@ -1606,13 +1607,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             relationAssignment = "IORelation relation = (IORelation)";
                             relationSetWidth = "relation.setWidth("
                                 + port.getWidth() + "); " + _eol;
-                            //} else if (remotePort.isMultiport()) {
-                            // Don't set the width if the remote port is a multiport. See
+                            } else if (remotePort.isMultiport()) {
+                            _headerFiles.add("ptolemy.actor.IORelation;");
+                            relationAssignment = "IORelation relation2 = (IORelation)";
+                            // Don't set the width to the width of the remote port if the remote port is a multiport. See
                             // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
-                            //  _headerFiles.add("ptolemy.actor.IORelation;");
-                            // relationAssignment = "IORelation relation2 = (IORelation)";
-                            // relationSetWidth = "relation2.setWidth("
-                            // + remotePort.getWidth() + "); " + _eol;
+                            // Set the with to the width of the *port*, not the *remotePort*.
+                            relationSetWidth = "relation2.setWidth("
+                                + port.getWidth() + "); " + _eol;
                         }
 
                         // It is the responsibility of the custom actor
@@ -1620,7 +1622,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // port of the other custom actor.  This obviates
                         // the need for checking for the connection at
                         // runtime.
-                        code.append("    System.out.println(\"C1\");" + _eol);
+                        code.append("    System.out.println(\"C1 port " +  port.getFullName() + " " + port.isMultiport() + "\");" + _eol);
                         code.append(relationAssignment
                                 + "$containerSymbol().connect(" + portOrParameter
                                 + ", " + "((" + remoteActor.getClass().getName()
