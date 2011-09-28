@@ -370,16 +370,18 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             + "model.run();" + _eol + "}" + _eol
                             + "public void run() throws Exception {" + _eol);
         } else {
+            boolean addComma = false;
+
             if ((getContainer() instanceof ModularCodeGenTypedCompositeActor)
                     && ((Actor) getContainer()).outputPortList().size() > 0) {
                 mainEntryCode.append(_eol + _eol
                         + "public Object[] fire (boolean export " + _eol);
+                addComma = true;
             } else {
                 mainEntryCode.append(_eol + _eol + "public Object[] fire ("
                         + _eol);
             }
 
-            boolean addComma = false;
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             while (inputPorts.hasNext()) {
