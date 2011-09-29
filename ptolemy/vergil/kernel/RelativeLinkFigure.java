@@ -34,10 +34,12 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 import ptolemy.kernel.util.RelativeLocation;
 
 import diva.canvas.AbstractFigure;
+import diva.canvas.CompositeFigure;
 
 /**
  * A figure for drawing a link between a relative locatable and its referenced object.
@@ -65,9 +67,7 @@ public class RelativeLinkFigure extends AbstractFigure {
         String relativeToName = _relativeLocation.relativeTo.getExpression();
         // If the relativeTo reference is empty, then the location is absolute.
         if (relativeToName != null && relativeToName.length() > 0) {
-            double[] offset = _relativeLocation.getRelativeLocation();
-            _line.x2 = -offset[0];
-            _line.y2 = -offset[1];
+            _updateLine();
         }
     }
 
@@ -91,13 +91,7 @@ public class RelativeLinkFigure extends AbstractFigure {
     public void paint(Graphics2D g) {
         String relativeToName = _relativeLocation.relativeTo.getExpression();
         if (relativeToName != null && relativeToName.length() > 0) {
-            // The line should span from the current location of the parent object,
-            // found at (0,0) due to the transform applied to the graphics, to the
-            // current location of the referenced object, which is at the negative
-            // relative location in the local transform.
-            double[] offset = _relativeLocation.getRelativeLocation();
-            _line.x2 = -offset[0];
-            _line.y2 = -offset[1];
+            _updateLine();
             double distance = Math.sqrt(_line.x2 * _line.x2 + _line.y2 * _line.y2);
             if (distance <= RelativeLocation.BREAK_THRESHOLD) {
                 g.setColor(NORMAL_COLOR);
@@ -105,7 +99,11 @@ public class RelativeLinkFigure extends AbstractFigure {
                 g.setColor(THRESHOLD_COLOR);
             }
             g.setStroke(STROKE);
-            g.draw(_line);
+            if (_transform != null) {
+                g.draw(_transform.createTransformedShape(_line));
+            } else {
+                g.draw(_line);
+            }
         } else {
             // The relative location does not have a valid reference, so reset
             // the cached location vector and draw nothing.
@@ -114,12 +112,35 @@ public class RelativeLinkFigure extends AbstractFigure {
         }
     }
 
-    /** Do nothing. FIXME: Should we do anything here?
+    /** Set the given affine transformation for this figure.
      *
      * @param at an affine transformation
      */
     @Override
     public void transform(AffineTransform at) {
+        _transform = at;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _updateLine() {
+        // The line should span from the center of the parent object to the
+        // current location of the referenced object, which is at the negative
+        // relative location in the local transform.
+        double[] offset = _relativeLocation.getRelativeLocation();
+        _line.x2 = -offset[0];
+        _line.y2 = -offset[1];
+
+        if (getParent() instanceof CompositeFigure) {
+            Rectangle2D bounds = ((CompositeFigure) getParent())
+                    .getBackgroundFigure().getBounds();
+            _line.x1 = bounds.getCenterX();
+            _line.y1 = bounds.getCenterY();
+        } else {
+            _line.x1 = 0;
+            _line.y1 = 0;
+        }
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -130,6 +151,9 @@ public class RelativeLinkFigure extends AbstractFigure {
     
     /** The line used for drawing. */
     private Line2D.Double _line;
+    
+    /** The current affine transformation. */
+    private AffineTransform _transform;
     
     /** The stroke used for drawing the line. */
     private static final Stroke STROKE = new BasicStroke(1.0f, BasicStroke.CAP_ROUND,

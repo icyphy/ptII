@@ -99,6 +99,7 @@ import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klay.layered.LayeredLayoutProvider;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
 import diva.canvas.connector.AbstractConnector;
 import diva.canvas.toolbox.LabelFigure;
 import diva.graph.GraphModel;
@@ -767,8 +768,18 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @return The initialized KIELER KNode
      */
     private KNode _createKNode(Object node, NamedObj semanticNode) {
+        Rectangle2D bounds;
+        if (semanticNode instanceof RelativeLocatable) {
+            // Consider only the background figure of a composite figure
+            // if the node is relative locatable, otherwise the link would also
+            // be included in the bounds.
+            Figure figure = (Figure) getLayoutTarget().getVisualObject(node);
+            bounds = figure.getShape().getBounds2D();
+        } else {
+            bounds = getLayoutTarget().getBounds(node);
+        }
+
         // Create new node in KIELER graph and apply the initial size and position
-        Rectangle2D bounds = getLayoutTarget().getBounds(node);
         KNode knode = KimlUtil.createInitializedNode();
         KShapeLayout nodeLayout = knode.getData(KShapeLayout.class);
         nodeLayout.setWidth((float) bounds.getWidth());
@@ -1123,7 +1134,16 @@ public class KielerLayout extends AbstractGlobalLayout {
     private void _kNode2Ptolemy(KVector pos, Object divaNode, Locatable locatable) {
         Point2D location = PtolemyModelUtil._getLocationPoint(locatable);
         if (divaNode != null) {
-            Rectangle2D divaBounds = getLayoutTarget().getBounds(divaNode);
+            Rectangle2D divaBounds;
+            if (locatable instanceof RelativeLocation) {
+                // Consider only the background figure of a composite figure
+                // if the node is relative locatable, otherwise the link would also
+                // be included in the bounds.
+                Figure figure = (Figure) getLayoutTarget().getVisualObject(divaNode);
+                divaBounds = figure.getShape().getBounds2D();
+            } else {
+                divaBounds = getLayoutTarget().getBounds(divaNode);
+            }
             double offsetX = 0, offsetY = 0;
 
             // Check whether the location could be determined.
