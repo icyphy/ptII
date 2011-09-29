@@ -110,7 +110,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
     /** Append the string value of the token to the text area
      *  on the screen.  Each value is terminated with a newline 
      *  character.
-     *  @param tokenValue The string to be displayed
+     *  @param value The string to be displayed
      */
     public void display(String value) {
 
@@ -150,7 +150,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
     }
 
     /** Set the number of rows for the text area. 
-     * @param display Object of the display actor.
+     * @param displayActor The display actor to be initialized.
      * @exception IllegalActionException If the entity cannot be contained
      * by the proposed container.
      * @exception NameDuplicationException If the container already has an
@@ -241,7 +241,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  The background of the text area is set equal to that of the container
      *  (unless it is null).
      *
-     *  @param portableContainer The container into which to place the text area, or
+     *  @param container The container into which to place the text area, or
      *   null to specify that there is no current container.
      */
     public void place(PortableContainer portableContainer) {

@@ -350,6 +350,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @param type A string representing the type.  In C, this
      *  parameter is ignored.
      *  @param value The value of the constant.
+     *  @return A string that defines a constant.
+     *  In this base class, a comment with the values of the
+     *  arguments is returned.
      */
     public String generateConstantDefinition(String constant, 
             String type, String value) {

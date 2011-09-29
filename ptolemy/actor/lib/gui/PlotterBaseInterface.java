@@ -59,7 +59,7 @@ public interface PlotterBaseInterface {
     /**
      * Get the plotter's frame.
      * @return the plotter's frame.
-     * @see @setFrame(Object)
+     * @see #setFrame(Object)
      */
     public Object getFrame();
 
@@ -115,7 +115,7 @@ public interface PlotterBaseInterface {
     /**
      * Set the frame of the plotter.
      * @param frame The frame to set.
-     * @see @getFrame()
+     * @see #getFrame()
      */
     public void setFrame(Object frame);
 

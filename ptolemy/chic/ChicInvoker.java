@@ -131,7 +131,7 @@ public class ChicInvoker extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Indicate use of the Asynchronous I/O compiler
+    /** Indicate use of the Asynchronous I/O compiler.
      */
     public static final int ASYNCHRONOUS_IO = ChicForPtolemy.ASYN;
 
@@ -145,7 +145,7 @@ public class ChicInvoker extends Attribute {
     //     */
     //    public static final int STATELESS_SOFTWARE = ChicForPtolemy.SOFT_STATELESS;
 
-    /** Indicate use of the Synchronous A/G compiler
+    /** Indicate use of the Synchronous A/G compiler.
      */
     public static final int SYNCHRONOUS_AG = ChicForPtolemy.SYNAG;
 
@@ -160,6 +160,7 @@ public class ChicInvoker extends Attribute {
      *  @see #SYNCHRONOUS_AG
      *  @param silent True if the interface compatibility checking is to be
      *   carried out without invoking the user interface of Chic.
+     *  @param name The name of the ChicAttribute.
      *  @return True if the interfaces of the contained entities are
      *   compatible.
      *  @exception IllegalActionException If a port contained directly or

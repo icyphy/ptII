@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation adapter class 
+ * Generate code for the Renesas board for a Ptides SensorHandler.
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 8.0

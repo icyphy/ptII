@@ -70,6 +70,9 @@ public class TimeDelay extends NamedProgramCodeGeneratorAdapter {
         return processCode(codeStream.toString());
     }
     
+    /** Return the name of the port that is the time source.
+     *  @return The string "trigger".
+     */
     public String getTimeSourcePortName() {
         return "trigger";
     }

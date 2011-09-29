@@ -32,7 +32,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * A code generation adapter class 
+ * Generate code for the Xmos board for a Ptides SensorHandler.
  * @author Patricia Derler
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -54,6 +54,9 @@ public class SensorHandler extends InputDevice {
     }
  
     
+    /** Return a string that represents the source time.
+     *  @return A string that sets the timeVariable to the value at the timestamp pointer.
+     */
     public String getSourceTimeString(String timeVariable) throws IllegalActionException {
         String s = timeVariable + " = *timestamp;";
         return s;

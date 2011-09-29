@@ -85,7 +85,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
     /**
      * Get the plotter's frame.
      * @return the plotter's frame.
-     * @see @setFrame(Object)
+     * @see #setFrame(Object)
      */
     public Object getFrame() {
         return _frame;
@@ -225,7 +225,7 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
     /**
      * Set the frame of the plotter.
      * @param frame The frame to set.
-     * @see @getFrame()
+     * @see #getFrame()
      */
     public void setFrame(Object frame) {
         if (_frame != null) {

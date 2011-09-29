@@ -70,15 +70,21 @@ NamedProgramCodeGeneratorAdapter {
         return processCode(codeStream.toString());
     }
     
+    /** Return a string that represents the source time.
+     *  @return A string sets the timeVariable to the timestamp of the
+     *  last input channel.
+     */
     public String getSourceTimeString(String timeVariable) throws IllegalActionException {
         String name = CodeGeneratorAdapter.generateName((NamedObj) _component);
-        String s = "";
+        StringBuffer result = new StringBuffer();
         for (int i = 0; i < ((ptolemy.domains.de.lib.Merge)_component).input.getWidth(); i++) {
-            s += "if (Event_Head_" + name + "_input[" + i +"] != NULL) {\n" +
-            timeVariable + " = &Event_Head_" + name + "_input[" + i +"]->tag.timestamp;\n" +
-            "}\n";
+            // This seems wrong, it overwrites timeVariable for each EventHead_ that
+            // is non-null.
+            result.append("if (Event_Head_" + name + "_input[" + i +"] != NULL) {\n"
+                    + timeVariable + " = &Event_Head_" + name + "_input[" + i +"]->tag.timestamp;\n" +
+                    "}\n");
         } 
-        return s;
+        return result.toString();
     }
-    
 }
+

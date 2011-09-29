@@ -94,13 +94,17 @@ public class ActorWithPrivateParameter extends Source {
         disconnectedPort.send(0, new DoubleToken(a + b));
     }
 
+    /** A port that is disconnected and that has a name that is different
+     *  from the field name.
+     */
     public TypedIOPort disconnectedPort;
+
+    /** A misnamed Parameter. */
+    public Parameter _myPrivateParameterWithADifferentName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
     private Parameter _myPrivateParameter;
-
-    public Parameter _myPrivateParameterWithADifferentName;
 
 }

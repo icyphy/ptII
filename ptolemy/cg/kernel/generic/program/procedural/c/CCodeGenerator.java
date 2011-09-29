@@ -139,6 +139,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @param type A string representing the type.  In C, this
      *  parameter is ignored.
      *  @param value The value of the constant.
+     *  @return A #define that defines the constant.
      */
     public String generateConstantDefinition(String constant, 
             String type, String value) {

@@ -318,18 +318,36 @@ public class NamedProgramCodeGeneratorAdapter extends
         return _defaultBlocks;
     }
     
+    /** Return a string that represents the additional time.
+     *  @return In this base class, return the empty string. 
+     *  derived classes may want to return the value of the 
+     *  <i>delay</i> parameter in the target language.
+     */
     public String getAddTimeString() throws IllegalActionException {
         return "";
     }
     
+    /** Return a string that represents the source time.
+     *  @return In this base class, return the empty string.
+     *  Derived classes may want to return code that sets
+     *  the time variable to the time stamp.
+     */
     public String getSourceTimeString(String timeVariable) throws IllegalActionException {
         return "";
     }
 
+    /** Return the name of the port that is the time source.
+     *  @return In this base class, return the empty string.
+     *  Derived classes should return the name of the port
+     *  that is the time source.
+     */
     public String getTimeSourcePortName() {
         return "";
     }
     
+    /** Return the parameters for the fire function.
+     *  @return In this base class, return the empty string.
+     */
     public String getFireFunctionParameters() {
         return "";
     }

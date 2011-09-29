@@ -69,6 +69,10 @@ public class TimeDelay
         return processCode(codeStream.toString());
     }
     
+    /** Return the value of the delay parameter.
+     *  @return the value of the delay parameter in the target
+     *  language.
+     */
     public String getAddTimeString() throws IllegalActionException { 
         return getParameterValue("delay", (NamedObj) _component);
     }

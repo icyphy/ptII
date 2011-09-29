@@ -85,7 +85,7 @@ public interface DisplayInterface {
      *  The background of the text area is set equal to that of the container
      *  (unless it is null).
      *
-     *  @param portableContainer The container into which to place the text area, or
+     *  @param container The container into which to place the text area, or
      *   null to specify that there is no current container.
      */
     public void place(PortableContainer container);
@@ -96,11 +96,11 @@ public interface DisplayInterface {
 
     /** Set the desired number of columns of the textArea, if there is one.
      *  
-     *  @param numColumns The new value of the attribute.
+     *  @param numberOfColumns The new value of the attribute.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
-    public void setColumns(int numOfColumns) throws IllegalActionException;
+    public void setColumns(int numberOfColumns) throws IllegalActionException;
 
     /** Set the desired number of rows of the textArea, if there is one.
      *  

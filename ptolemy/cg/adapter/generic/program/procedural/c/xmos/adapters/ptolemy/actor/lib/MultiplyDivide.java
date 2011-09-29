@@ -77,21 +77,26 @@ public class MultiplyDivide
         return processCode(codeStream.toString());
     }
   
-    @Override
+    /** Return a string that represents the source time.
+     *  @return A string sets the timeVariable to the timestamp of the
+     *  last input channel.
+     */
     public String getSourceTimeString(String timeVariable) throws IllegalActionException {
         String name = CodeGeneratorAdapter.generateName((NamedObj) _component);
-        String s = "";
+        StringBuffer result = new StringBuffer();
         for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
-            s += "if (Event_Head_" + name + "_divide[" + i + "] != NULL) {\n" +
-            timeVariable + " = &Event_Head_" + name + "_divide[" + i + "]->tag.timestamp;\n" +
-            "}\n";
+            // This seems wrong, it overwrites timeVariable for each EventHead_ that
+            // is non-null.
+            buffer.append("if (Event_Head_" + name + "_divide[" + i + "] != NULL) {\n" +
+                    timeVariable + " = &Event_Head_" + name + "_divide[" + i + "]->tag.timestamp;\n" +
+                    "}\n");
         }
         for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
-            s += "if (Event_Head_" + name + "_multiply[" + i + "] != NULL) {\n" +
-            timeVariable + " = &Event_Head_" + name + "_multiply[" + i + "]->tag.timestamp;\n" +
-            "}\n";
+            buffer.append("if (Event_Head_" + name + "_multiply[" + i + "] != NULL) {\n" +
+                    timeVariable + " = &Event_Head_" + name + "_multiply[" + i + "]->tag.timestamp;\n" +
+                    "}\n";);
         }
-        return s;
+        return buffer.toString()
     }
     
 }
