@@ -451,34 +451,37 @@ public class KielerLayout extends AbstractGlobalLayout {
             KEdgeLayout edgeLayout = kedge.getData(KEdgeLayout.class);
             List<KPoint> bendPoints = edgeLayout.getBendPoints();
     
-            // Draw the curve as a straight line if there are no bend points.
+            KShapeLayout sourceLayout = kedge.getSource().getData(KShapeLayout.class);
+            double sourcex = sourceLayout.getXpos() + sourceLayout.getWidth() / 2;
+            double sourcey = sourceLayout.getYpos() + sourceLayout.getHeight() / 2;
+            KShapeLayout targetLayout = kedge.getTarget().getData(KShapeLayout.class);
+            double targetx = targetLayout.getXpos() + targetLayout.getWidth() / 2;
+            double targety = targetLayout.getYpos() + targetLayout.getHeight() / 2;
+
+            // Determine a reference point for drawing the curve.
             double exitAngle = 0;
-            if (!bendPoints.isEmpty()) {
-                // Determine a mean point for drawing the curve.
-                double meanx = 0, meany = 0;
-                for (KPoint bendpoint : bendPoints) {
-                    meanx += bendpoint.getX();
-                    meany += bendpoint.getY();
-                }
-                meanx /= bendPoints.size();
-                meany /= bendPoints.size();
-                
-                // Take the angular difference between the mean point and
-                // the target point as seen from the source.
-                KPoint sourcePos = edgeLayout.getSourcePoint();
-                KPoint targetPos = edgeLayout.getTargetPoint();
-                double targetth = Math.atan2(targetPos.getY() - sourcePos.getY(),
-                        targetPos.getX() - sourcePos.getX());
-                double meanth = Math.atan2(meany - sourcePos.getY(),
-                        meanx - sourcePos.getX());
-                exitAngle = meanth - targetth;
-                
-                // Fit the angle into the bounds of [-pi, pi]
-                if (exitAngle > Math.PI) {
-                    exitAngle -= 2 * Math.PI;
-                } else if (exitAngle < -Math.PI) {
-                    exitAngle += 2 * Math.PI;
-                }
+            double refx = 0, refy = 0;
+            if (bendPoints.isEmpty()) {
+                refx = (edgeLayout.getSourcePoint().getX()
+                        + edgeLayout.getTargetPoint().getX()) / 2;
+                refy = (edgeLayout.getSourcePoint().getY()
+                        + edgeLayout.getTargetPoint().getY()) / 2;
+            } else {
+                refx = bendPoints.get(0).getX();
+                refy = bendPoints.get(0).getY();
+            }
+            
+            // Take the angular difference between the reference point and
+            // the target point as seen from the source.
+            double targetth = Math.atan2(targety - sourcey, targetx - sourcex);
+            double meanth = Math.atan2(refy - sourcey, refx - sourcex);
+            exitAngle = meanth - targetth;
+            
+            // Fit the angle into the bounds of [-pi, pi]
+            if (exitAngle > Math.PI) {
+                exitAngle -= 2 * Math.PI;
+            } else if (exitAngle < -Math.PI) {
+                exitAngle += 2 * Math.PI;
             }
         
             layoutRequest.addCurve((Transition) relation, exitAngle);

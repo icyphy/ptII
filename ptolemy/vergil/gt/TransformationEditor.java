@@ -61,7 +61,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -670,8 +669,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         _ruleMenu.addSeparator();
 
-        LayoutAction layoutAction = new LayoutAction();
-        GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
+        GUIUtilities.addMenuItem(_ruleMenu, _layoutAction);
 
         GraphController controller = _getGraphController();
         if (controller instanceof RunnableGraphController) {
@@ -2091,39 +2089,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         public Class<? extends MatchingAttribute> getAttributeClass() {
             return IgnoringAttribute.class;
-        }
-    }
-
-    /** Action to automatically layout the graph.
-
-     @author Thomas Huining Feng
-     @version $Id$
-     @since Ptolemy II 6.1
-     @see ptolemy.vergil.actor.ActorGraphFrame.LayoutAction
-     @Pt.ProposedRating Red (tfeng)
-     @Pt.AcceptedRating Red (tfeng)
-     */
-    private class LayoutAction extends AbstractAction {
-
-        /** Create a new action to automatically lay out the graph. */
-        public LayoutAction() {
-            super("Automatic Layout");
-            putValue("tooltip", "Layout the Graph (Ctrl+T)");
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_T, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
-        }
-
-        /** Lay out the graph.
-         *  @param e The action event.
-         */
-        public void actionPerformed(ActionEvent e) {
-            try {
-                layoutGraph();
-            } catch (Exception ex) {
-                MessageHandler.error("Layout failed", ex);
-            }
         }
     }
 

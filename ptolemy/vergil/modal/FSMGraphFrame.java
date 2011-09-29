@@ -27,7 +27,6 @@
  */
 package ptolemy.vergil.modal;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -38,11 +37,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.DebugListenerTableau;
@@ -121,8 +117,6 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
 
         // Override the default help file.
         helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
-        _layoutAction = new LayoutAction();
-        _advancedLayoutDialogAction = new AdvancedLayoutDialogAction();
     }
 
     /** React to the actions specific to this FSM graph frame.
@@ -181,13 +175,14 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
         _graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
         _menubar.add(_graphMenu);
+        // The layout action is created by BasicGraphFrame.
         GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
         GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-        GUIUtilities.addMenuItem(_graphMenu, _advancedLayoutDialogAction);
+        GUIUtilities.addMenuItem(_graphMenu, _layoutConfigDialogAction);
+        _graphMenu.addSeparator();
 
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
-        _graphMenu.addSeparator();
         _controller.addToMenuAndToolbar(_graphMenu, _toolbar);
 
         JMenuItem[] debugMenuItems = _debugMenuItems();
@@ -405,12 +400,6 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
     /** The graph menu. */
     protected JMenu _graphMenu;
 
-    /** The action for automatically laying out the graph. */
-    protected Action _layoutAction;
-
-    /** The action for opening the advanced layout dialog. */
-    protected Action _advancedLayoutDialogAction;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -498,56 +487,6 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
         }
 
         private NamedObj _listeningTo;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// LayoutAction
-
-    /** Action to automatically lay out the graph. */
-    private class LayoutAction extends AbstractAction {
-
-        // FIXME: consider refactoring this code, see also
-        // vergil/actor/ActorGraphFrame.java
-
-        /** Create a new action to automatically lay out the graph. */
-        public LayoutAction() {
-            super("Automatic Layout");
-            putValue("tooltip", "Layout the Graph (Ctrl+T)");
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_T, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
-        }
-
-        /** Lay out the graph. */
-        public void actionPerformed(ActionEvent e) {
-            try {
-                layoutGraph();
-            } catch (Exception ex) {
-                MessageHandler.error("Layout failed", ex);
-            }
-        }
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    //// AdvancedLayoutDialogAction
-
-    /** Action to display a dialog for setting layout options. */
-    private class AdvancedLayoutDialogAction extends AbstractAction {
-        /** Create a new action to show the advanced layout dialog. */
-        public AdvancedLayoutDialogAction() {
-            super("Advanced Layout Dialog");
-            putValue("tooltip", "Set parameters for controlling the layout algorithm");
-        }
-
-        /** Show the advanced layout dialog. */
-        public void actionPerformed(ActionEvent e) {
-            try {
-                layoutGraphDialog();
-            } catch (Exception ex) {
-                MessageHandler.error("Layout failed", ex);
-            }
-        }
     }
 
 }

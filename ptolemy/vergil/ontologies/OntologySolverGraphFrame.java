@@ -170,7 +170,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         helpFile = "ptolemy/configs/doc/vergilOntologySolverEditorHelp.htm";
 
         _insertOntologyAction = new InsertOntologyAction();
-        _layoutAction = new LayoutAction();
 
         _saveInLibraryAction = new SaveInLibraryAction();
         _importLibraryAction = new ImportLibraryAction();
@@ -270,9 +269,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
     /** The ontology menu. */
     protected JMenu _ontologyMenu;
-
-    /** The action for automatically laying out the graph. */
-    protected Action _layoutAction;
 
     /** The action for saving the current model in a library. */
     protected Action _saveInLibraryAction;
@@ -631,33 +627,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         context, moml);
                 context.requestChange(request);
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// LayoutAction
-
-    /** Action to automatically lay out the graph. */
-    private class LayoutAction extends AbstractAction {
-        /** Create a new action to automatically lay out the graph. */
-        public LayoutAction() {
-            super("Automatic Layout");
-            putValue("tooltip", "Layout the Graph (Ctrl+T)");
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_T, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
-        }
-
-        /** Lay out the graph.
-         *  @param e The event that is received to be reacted to.
-         */
-        public void actionPerformed(ActionEvent e) {
-            try {
-                layoutGraph();
-            } catch (Exception ex) {
-                MessageHandler.error("Layout failed", ex);
             }
         }
     }

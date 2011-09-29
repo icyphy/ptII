@@ -92,12 +92,10 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.gui.properties.ToolBar;
@@ -163,6 +161,7 @@ import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.JCanvasPanner;
 import diva.gui.toolbox.JContextMenu;
+import diva.util.Filter;
 import diva.util.java2d.ShapeUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -1036,138 +1035,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
-    /** Show a dialog for manipulating graph layout parameters.
-     *  If the configuration contains a parameter named
-     *  _layoutGraphDialog, the that parameter is assumed
-     *  to name a class that creates a modal dialog that displays
-     *  controls to change the layout.  The class should have a constructor
-     *  that takes a Frame argument. If the parameter cannot
-     *  be read, then no dialog is shown and the default Ptolemy layout
-     *  mechanism in {@link #layoutGraphWithPtolemyLayout()} is used instead.
-     */
-    public void layoutGraphDialog() {
-        boolean success = false;
-        try {
-            Configuration configuration = getConfiguration();
-            StringParameter layoutGraphDialogParameter = (StringParameter) configuration
-                    .getAttribute("_layoutGraphDialog", Parameter.class);
-            if (layoutGraphDialogParameter == null) {
-                layoutGraphWithPtolemyLayout();
-                success = true;
-            } else {
-                String layoutGraphDialogClassName = layoutGraphDialogParameter
-                        .stringValue();
-                try {
-                    Class layoutGraphDialogClass = Class
-                            .forName(layoutGraphDialogClassName);
-                    List layoutFactories = getModel().attributeList(
-                            layoutGraphDialogClass);
-                    TableauFactory tableauFactory = null;
-                    if (layoutFactories.size() > 0) {
-                        tableauFactory = (TableauFactory) layoutFactories
-                                .get(0);
-                    } else {
-                        Constructor layoutGraphDialogConstructor = layoutGraphDialogClass
-                                .getDeclaredConstructor(NamedObj.class,
-                                        String.class);
-                        // Check to see if we already have a
-                        // tableauFactory in the container.  This
-                        // could happen if the user chooses the
-                        // Advanced Layout Dialog twice.
-                        tableauFactory = (TableauFactory) getTableau()
-                                .getContainer().getAttribute(
-                                        "layoutGraphFactory",
-                                        layoutGraphDialogClass);
-                        if (tableauFactory == null) {
-                            tableauFactory = (TableauFactory) layoutGraphDialogConstructor
-                                    .newInstance((PtolemyEffigy) getTableau()
-                                            .getContainer(),
-                                            "layoutGraphFactory");
-                        }
-                    }
-                    Tableau kielerTableau = tableauFactory.createTableau(
-                            (PtolemyEffigy) getTableau().getContainer());
-
-                    kielerTableau.show();
-                    success = true;
-                } catch (Throwable throwable) {
-                    new Exception(
-                            "Failed to invoke layout graph dialog class \""
-                                    + layoutGraphDialogClassName
-                                    + "\", which was read from the configuration.",
-                            throwable).printStackTrace();
-                    layoutGraphWithPtolemyLayout();
-                }
-            }
-        } catch (Throwable throwable) {
-            new Exception(
-                    "Failed to read _layoutGraphDialogParameter from configuration",
-                    throwable).printStackTrace();
-            if (!success) {
-                layoutGraphWithPtolemyLayout();
-            }
-        }
-    }
-
-    /** Layout the automatically using the KIELER dataflow layout
-     *  algorithm with place and route.  The _layoutGraphAction
-     *  parameter is assumed to name a class that executes the
-     *  automatic layout action.  If the parameter cannot be read,
-     *  then the default Ptolemy layout mechanism in
-     *  {@link #layoutGraphWithPtolemyLayout()} is used.
-     */
-    public void layoutGraph() {
-        boolean success = false;
-        try {
-            Configuration configuration = getConfiguration();
-            StringParameter layoutGraphActionParameter = (StringParameter) configuration
-                    .getAttribute("_layoutGraphAction", StringParameter.class);
-            if (layoutGraphActionParameter == null) {
-                layoutGraphWithPtolemyLayout();
-                success = true;
-            } else {
-                String layoutGraphActionClassName = layoutGraphActionParameter
-                        .stringValue();
-                try {
-                    Class layoutGraphActionClass = Class
-                            .forName(layoutGraphActionClassName);
-                    Object layoutAction = null;
-
-                    Constructor layoutGraphActionConstructor = layoutGraphActionClass
-                            .getDeclaredConstructor();
-
-                    layoutAction = (Object) layoutGraphActionConstructor
-                            .newInstance();
-
-                    if (layoutAction instanceof IGuiAction) {
-                        ((IGuiAction) layoutAction).doAction(getModel());
-                    }
-
-                    success = true;
-                } catch (Throwable throwable) {
-                    new Exception(
-                            "Failed to invoke layout graph dialog class \""
-                                    + layoutGraphActionClassName
-                                    + "\", which was read from the configuration.",
-                            throwable).printStackTrace();
-                    layoutGraphWithPtolemyLayout();
-                }
-            }
-        } catch (Throwable throwable) {
-            new Exception(
-                    "Failed to read _layoutGraphDialogParameter from configuration",
-                    throwable).printStackTrace();
-            if (!success) {
-                layoutGraphWithPtolemyLayout();
-            }
-        }
-    }
-
-    /** Layout the graph view using the default PtolemyLayout. */
-    public void layoutGraphWithPtolemyLayout() {
-        new PtolemyLayoutAction().doAction(getModel());
-    }
-
     /** Do nothing.
      */
     public void lostOwnership(Clipboard clipboard, Transferable transferable) {
@@ -1873,6 +1740,33 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // Add a weak reference to this to keep track of all
         // the graph frames that have been created.
         _openGraphFrames.add(this);
+        
+        // Try to create an advanced layout action.
+        final IGuiAction layoutGuiAction = _createLayoutAction();
+        if (layoutGuiAction != null) {
+            _layoutAction = new AbstractAction("Automatic Layout") {
+                public void actionPerformed(ActionEvent e) {
+                    layoutGuiAction.doAction(getModel());
+                }
+            };
+            // The advanced layout action is available, so create the configuration
+            // dialog for displaying layout parameters.
+            _layoutConfigDialogAction = new LayoutConfigDialogAction();
+        } else {
+            // The advanced layout action is not available, so use the simple
+            // Ptolemy layout algorithm.
+            _layoutAction = new AbstractAction("Automatic Layout") {
+                public void actionPerformed(ActionEvent e) {
+                    new PtolemyLayoutAction().doAction(getModel());
+                }
+            };
+        }
+        _layoutAction.putValue("tooltip", "Layout the graph (Ctrl+T)");
+        _layoutAction.putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                KeyEvent.VK_T, Toolkit.getDefaultToolkit()
+                        .getMenuShortcutKeyMask()));
+        _layoutAction.putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
+
     }
 
     /** Create the menus that are used by this frame.
@@ -2808,6 +2702,58 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Action for zoom reset. */
     protected Action _zoomResetAction = new ZoomResetAction("Zoom Reset");
 
+    /** The action for automatically laying out the graph.
+     *  This can be either an advanced layout or the simple Ptolemy layout,
+     *  depending on whether the better one is available. 
+     */
+    protected Action _layoutAction;
+
+    /** The action for opening the layout configuration dialog.
+     *  This reference can be {@code null}, since the dialog is only supported
+     *  if advanced layout is available. In this case the action should not
+     *  be shown in menus.
+     */
+    protected Action _layoutConfigDialogAction;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /**
+     * Create an action for advanced automatic layout, if possible.
+     * 
+     * @return a layout action, or null if it cannot be created
+     */
+    private IGuiAction _createLayoutAction() {
+        try {
+            StringParameter layoutGraphActionParameter = (StringParameter) getConfiguration()
+                    .getAttribute("_layoutGraphAction", StringParameter.class);
+            if (layoutGraphActionParameter != null) {
+                // Try to find the class given in the configuration.
+                Class layoutGraphActionClass = Class.forName(
+                        layoutGraphActionParameter.stringValue());
+
+                // Try to create an instance using the default constructor.
+                Object object = layoutGraphActionClass.getDeclaredConstructor()
+                        .newInstance();
+
+                if (object instanceof IGuiAction) {
+                    // If the action is a filter and the model is set, ask the action
+                    // whether is supports the model.
+                    if (object instanceof Filter && getModel() != null) {
+                        if (!((Filter) object).accept(getModel())) {
+                            return null;
+                        }
+                    }
+                    
+                    return (IGuiAction) object;
+                }
+            }
+        } catch (Exception exception) {
+            // Fail silently!
+        }
+        return null;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -3703,6 +3649,35 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          */
         public void actionPerformed(ActionEvent e) {
             zoom(1.0 / 1.25);
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    //// LayoutConfigDialogAction
+
+    /** Action to display a dialog for setting layout options. */
+    private class LayoutConfigDialogAction extends AbstractAction {
+        /** Create a new action to show the layout configuration dialog. */
+        public LayoutConfigDialogAction() {
+            super("Configure Layout...");
+            putValue("tooltip", "Set parameters for controlling the layout algorithm");
+        }
+
+        /** Show the layout configuration dialog. */
+        public void actionPerformed(ActionEvent e) {
+            NamedObj model = getModel();
+            Attribute attribute = model.getAttribute("_layoutConfiguration");
+            if (attribute == null) {
+                String momlChange = "<property name=\"_layoutConfiguration\" class=\"ptolemy.vergil.basic.layout.LayoutConfiguration\"/>";
+                model.requestChange(new MoMLChangeRequest(this, model, momlChange, false));
+                attribute = model.getAttribute("_layoutConfiguration");
+                if (attribute == null) {
+                    MessageHandler.error("Could not create the layout configuration attribute.");
+                    return;
+                }
+            }
+            new EditParametersDialog(BasicGraphFrame.this, attribute,
+                    "Configure Layout Parameters");
         }
     }
 

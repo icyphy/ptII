@@ -44,7 +44,7 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.test.Diff;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.PtolemyLayoutAction;
-import ptolemy.vergil.basic.layout.KielerLayoutAction;
+import ptolemy.vergil.basic.layout.kieler.KielerLayoutAction;
 
 ///////////////////////////////////////////////////////////////////
 //// KielerJUnitTest

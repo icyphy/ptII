@@ -190,11 +190,11 @@ public class GenerateCopyrights {
                 "ptolemy/domains/psdf/mapss-copyright.htm");
 
         _addIfPresent(copyrightsMap,
-                "ptolemy.vergil.basic.layout.KielerLayoutAction",
+                "ptolemy.vergil.basic.layout.kieler.KielerLayout",
                 "ptolemy/vergil/basic/layout/kieler/kieler-copyright.htm");
 
         _addIfPresent(copyrightsMap,
-                "ptolemy.vergil.basic.layout.KielerLayoutTableau",
+                "ptolemy.vergil.basic.layout.kieler.KielerLayout",
                 "lib/guava-license.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.ExportHTMLAction",

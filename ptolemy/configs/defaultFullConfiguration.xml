@@ -42,17 +42,11 @@
             class="ptolemy.data.expr.StringParameter"
             value="ptolemy.vergil.basic.ExportHTMLAction"/>
             
-  <!-- Use the Kieler graph layout algorithms. -->
-  <!--  Used in BasicGraphFrame.java-->
-  <property name="_layoutGraphDialog"
-            class="ptolemy.data.expr.StringParameter"
-            value="ptolemy.vergil.basic.layout.KielerLayoutTableauFactory"/>
-
-  <!-- Use the Kieler graph layout algorithms. -->
+  <!-- Use the KIELER graph layout algorithms. -->
   <!--  Used in BasicGraphFrame.java-->
   <property name="_layoutGraphAction"
             class="ptolemy.data.expr.StringParameter"
-            value="ptolemy.vergil.basic.layout.KielerLayoutAction"/>
+            value="ptolemy.vergil.basic.layout.kieler.KielerLayoutAction"/>
 
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->

@@ -34,12 +34,6 @@
             class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/hyvisual/help.htm"/>
 
-  <!-- Use the Kieler graph layout algorithms. -->
-  <!--  Used in BasicGraphFrame.java-->
-  <property name="_layoutGraphDialog"
-            class="ptolemy.data.expr.StringParameter"
-            value="ptolemy.vergil.basic.layout.KielerLayoutGUIFactory"/>
-
   <!-- The directory of open models, each represented by an effigy. -->
   <!-- Note that this begins empty. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>

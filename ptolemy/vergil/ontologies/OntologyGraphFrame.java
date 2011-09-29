@@ -23,23 +23,18 @@
  */
 package ptolemy.vergil.ontologies;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
 
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphPane;
@@ -93,7 +88,6 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
         // FIXME: Help file for ontology editor doesn't exist yet.
         // Override the default help file.
         helpFile = "ptolemy/configs/doc/vergilOntologyEditorHelp.htm";
-        _layoutAction = new LayoutAction();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,10 +115,10 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
         _menubar.add(_graphMenu);
         GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
         GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
+        _graphMenu.addSeparator();
 
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
-        _graphMenu.addSeparator();
         _controller.addToMenuAndToolbar(_graphMenu, _toolbar);
 
         JMenuItem[] debugMenuItems = _debugMenuItems();
@@ -198,9 +192,6 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
     /** The graph menu for the ontology editor frame. */
     protected JMenu _graphMenu;
 
-    /** The action for automatically laying out the graph. */
-    protected Action _layoutAction;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -248,38 +239,4 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private inner classes             ////
-
-    ///////////////////////////////////////////////////////////////////
-    //// LayoutAction
-
-    /** Action to automatically lay out the graph. */
-    private class LayoutAction extends AbstractAction {
-
-        // FIXME: consider refactoring this code, see also
-        // vergil/actor/ActorGraphFrame.java
-
-        /** Create a new action to automatically lay out the graph. */
-        public LayoutAction() {
-            super("Automatic Layout");
-            putValue("tooltip", "Layout the Graph (Ctrl+T)");
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_T, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
-        }
-
-        /** React to the automatic layout command and lay out the graph.
-         *  @param e The event received from the graph menu automatic layout
-         *   command.
-         */
-        public void actionPerformed(ActionEvent e) {
-            try {
-                layoutGraph();
-            } catch (Exception ex) {
-                MessageHandler.error("Layout failed", ex);
-            }
-        }
-    }
 }

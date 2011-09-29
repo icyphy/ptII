@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
  2
  */
-package ptolemy.vergil.basic.layout;
+package ptolemy.vergil.basic.layout.kieler;
 
 import java.util.Iterator;
 
@@ -43,29 +43,32 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.IGuiAction;
-import ptolemy.vergil.basic.layout.KielerLayoutTableau.KielerLayoutFrame;
-import ptolemy.vergil.basic.layout.kieler.KielerLayout;
 import ptolemy.vergil.modal.FSMGraphFrame;
 import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.basic.BasicLayoutTarget;
+import diva.util.Filter;
 
 ///////////////////////////////////////////////////////////////////
 //// KielerLayoutAction
 
 /**
-Trigger the KIELER place and route automatic dataflow layout algorithm
-from withing the Vergil GUI. Operate on the current model, hence the
-model needs to be an input in the doAction() method.
-
-@author  Christian Motika
-@version $Id: IGuiAction.java 59288 2010-09-27 19:39:22Z cmot $
-@since Ptolemy II 8.1
-@Pt.ProposedRating Red (cmot)
-@Pt.AcceptedRating Red (cmot)
-*/
-public class KielerLayoutAction extends Object implements IGuiAction {
+ * Trigger the KIELER place and route automatic dataflow layout algorithm
+ * from within the Vergil GUI. Operate on the current model, hence the
+ * model needs to be an input in the doAction() method.
+ * <p>
+ * This action implements the {@link Filter} interface to check whether
+ * a given model is supported.
+ * </p>
+ * 
+ * @author  Christian Motika
+ * @version $Id: IGuiAction.java 59288 2010-09-27 19:39:22Z cmot $
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (cmot)
+ * @Pt.AcceptedRating Red (cmot)
+ */
+public class KielerLayoutAction extends Object implements IGuiAction, Filter {
 
     /**
      * Construct a KIELER layout action.
@@ -95,7 +98,7 @@ public class KielerLayoutAction extends Object implements IGuiAction {
      */
     public void doAction(NamedObj model) {
         try {
-            if (!(model instanceof CompositeActor || model instanceof FSMActor)) {
+            if (!accept(model)) {
                 throw new InternalErrorException(
                         "For now only actor models and modal models are supported by KIELER layout. "
                                 + "The model \""
@@ -129,18 +132,13 @@ public class KielerLayoutAction extends Object implements IGuiAction {
                     message = "findEffigy() found no Tableaux.";
                 } else if (effigy != null) {
                     JFrame firstFrame = effigy.entityList(Tableau.class).get(0).getFrame();
-                    if (firstFrame instanceof KielerLayoutFrame) {
-                        message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
-                                + "please save the model before running the layout mechanism.";
-                    } else {
-                        message = "The first frame of "
-                                + tableauxCount
-                                + " found by findEffigy() is "
-                                + (firstFrame == null ? "null" : "a \""
-                                        + firstFrame.getClass().getName()
-                                        + "\"")
-                                + ", which is not an ActorGraphFrame or FSMGraphFrame.";
-                    }
+                    message = "The first frame of "
+                            + tableauxCount
+                            + " found by findEffigy() is "
+                            + (firstFrame == null ? "null" : "a \""
+                                    + firstFrame.getClass().getName()
+                                    + "\"")
+                            + ", which is not an ActorGraphFrame or FSMGraphFrame.";
                 }
                 throw new InternalErrorException(model, null,
                         "For now only actor models and modal models are supported by KIELER layout. "
@@ -175,6 +173,15 @@ public class KielerLayoutAction extends Object implements IGuiAction {
                             + (model == null ? "name not found" : (model
                                     .getFullName())) + "\"", ex);
         }
+    }
+
+    /**
+     * Check whether the given model is supported by this layout action.
+     * 
+     * @return true if the model can be laid out with this action.
+     */
+    public boolean accept(Object o) {
+        return o instanceof CompositeActor || o instanceof FSMActor;
     }
 
     ///////////////////////////////////////////////////////////////////

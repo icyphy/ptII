@@ -52,6 +52,7 @@ JSRCS = \
 	ApplyLayoutRequest.java \
 	KielerGraphUtil.java \
 	KielerLayout.java \
+	KielerLayoutAction.java \
 	LayoutHint.java \
 	PtolemyModelUtil.java \
 	UndoLayoutAction.java

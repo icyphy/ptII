@@ -56,9 +56,7 @@ PTCLASSALLJARS = \
 	kieler/kieler.jar
 
 JSRCS = \
-	KielerLayoutAction.java \
-	KielerLayoutTableau.java \
-	KielerLayoutTableauFactory.java
+	LayoutConfiguration.java
 
 OTHER_FILES_TO_BE_JARED =
 

@@ -27,7 +27,6 @@
  */
 package ptolemy.vergil.actor;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -162,8 +161,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _importLibraryAction = null;
         _instantiateAttributeAction = null;
         _instantiateEntityAction = null;
-        _layoutAction = null;
-        _advancedLayoutDialogAction = null;
         _createHierarchyAction = null;
         _debugMenuListener = null;
 
@@ -183,8 +180,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         helpFile = "ptolemy/configs/doc/vergilGraphEditorHelp.htm";
 
         _createHierarchyAction = new CreateHierarchyAction();
-        _layoutAction = new LayoutAction();
-        _advancedLayoutDialogAction = new AdvancedLayoutDialogAction();
         // Only include the various actions if there is an actor library
         // The ptinyViewer configuration uses this.
         if (getConfiguration().getEntity("actor library") != null) {
@@ -206,10 +201,14 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
         _menubar.add(_graphMenu);
+        // The layout action is created by BasicGraphFrame.
         GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
         GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-        GUIUtilities.addMenuItem(_graphMenu, _advancedLayoutDialogAction);
+        if (_layoutConfigDialogAction != null) {
+            GUIUtilities.addMenuItem(_graphMenu, _layoutConfigDialogAction);
+        }
         _graphMenu.addSeparator();
+        
         // Only include the various actions if there is an actor library
         // The ptinyViewer configuration uses this.
         if (getConfiguration().getEntity("actor library") != null) {
@@ -357,12 +356,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
 
     /** The action for creating a level of hierarchy. */
     protected Action _createHierarchyAction;
-
-    /** The action for automatically laying out the graph. */
-    protected Action _layoutAction;
-
-    /** The action for opening the advanced layout dialog. */
-    protected Action _advancedLayoutDialogAction;
 
     /** The action for saving the current model in a library. */
     protected Action _saveInLibraryAction;
@@ -733,52 +726,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         context, moml);
                 context.requestChange(request);
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// LayoutAction
-
-    /** Action to automatically lay out the graph. */
-    private class LayoutAction extends AbstractAction {
-        /** Create a new action to automatically lay out the graph. */
-        public LayoutAction() {
-            super("Automatic Layout");
-            putValue("tooltip", "Layout the graph (Ctrl+T)");
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_T, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
-        }
-
-        /** Lay out the graph. */
-        public void actionPerformed(ActionEvent e) {
-            try {
-                layoutGraph();
-            } catch (Exception ex) {
-                MessageHandler.error("Layout failed", ex);
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// AdvancedLayoutDialogAction
-
-    /** Action to display a dialog for setting layout options. */
-    private class AdvancedLayoutDialogAction extends AbstractAction {
-        /** Create a new action to show the advanced layout dialog. */
-        public AdvancedLayoutDialogAction() {
-            super("Advanced Layout Dialog");
-            putValue("tooltip", "Set parameters for controlling the layout algorithm");
-        }
-
-        /** Show the advanced layout dialog. */
-        public void actionPerformed(ActionEvent e) {
-            try {
-                layoutGraphDialog();
-            } catch (Exception ex) {
-                MessageHandler.error("Layout failed", ex);
             }
         }
     }
