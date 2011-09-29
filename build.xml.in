@@ -318,7 +318,7 @@ For example:
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
-	   timeout="30000">
+	   timeout="1200000">
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
@@ -344,7 +344,7 @@ For example:
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
 	   showoutput="off"
-	   timeout="300000">
+	   timeout="1200000">
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
@@ -420,7 +420,7 @@ For example:
 	   maxmemory="1500m"
 	   printsummary="withOutAndErr"
 	   showoutput="no"
-	   timeout="300000">
+	   timeout="1200000">
       <classpath>
 	<path location="${instrumented.dir}" />
 	<path refid="ptII.classpath" />
