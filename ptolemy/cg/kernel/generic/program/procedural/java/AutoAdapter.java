@@ -1350,6 +1350,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
         }
 
+        int verbosityLevel = ((IntToken) getCodeGenerator().verbosity.getToken()).intValue();
         StringBuffer code = new StringBuffer("{" + _eol);
         if (readingRemoteParameters) {
             code.append("TypedCompositeActor c0 = new TypedCompositeActor($containerSymbol(), \"c0"
@@ -1368,7 +1369,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
 
             // Create the input and output ports and connect them.
-            code.append("    System.out.println(\"E1\");" + _eol);
+            if (verbosityLevel > 3) {
+                code.append("    System.out.println(\"E1\");" + _eol);
+            }
             code.append("TypedIOPort c0PortA = new TypedIOPort(c0, \"c0PortA\", false, true);"
                     + _eol
                     + "TypedIOPort c0PortB = new TypedIOPort(c0, \"c0PortB\", true, false);"
@@ -1411,7 +1414,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         TypedIOPort remotePort = (TypedIOPort) linkedPorts.get(0);
 
 
-        code.append("System.out.println(\"AA1: " + port.getFullName() + " --> " + relation.getName() + " --> " + remotePort.getFullName() + "\");" + _eol);
+        if (verbosityLevel > 3) {
+            code.append("System.out.println(\"AA1: " + port.getFullName() + " --> " + relation.getName() + " --> " + remotePort.getFullName() + "\");" + _eol);
+        }
         NamedObj remoteActor = remotePort.getContainer();
         String remoteActorSymbol = "";
         boolean moreThanOneRelation = false;
@@ -1419,7 +1424,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         if (_isAutoAdaptered(remoteActor)) {
             // The remote actor is a custom actor (aka AutoAdaptered)
             remoteIsAutoAdaptered = true;
-            int verbosityLevel = ((IntToken) getCodeGenerator().verbosity.getToken()).intValue();
             if (verbosityLevel > 2) {
                 System.out.println(getComponent().getName() + " " + port.getName()
                         + "#" + channelNumber
@@ -1534,11 +1538,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + "\", " + port.isInput()
                     + ", " + port.isOutput() + ");" + _eol);
             if (remotePort.isMultiport()) {
-                code.append(
-                        "System.out.println(\"MP1\");" + _eol 
-                        //"$actorSymbol(" + escapedCodegenPortName + ")"
-                        + "port"
-                        + ".setMultiport(true);" + _eol);
+                if (verbosityLevel > 3) {
+                    code.append("System.out.println(\"MP1\");" + _eol); 
+                }
+                code.append(//"$actorSymbol(" + escapedCodegenPortName + ")"
+                            "port"
+                            + ".setMultiport(true);" + _eol);
             }
 
             code.append("}" + _eol);
@@ -1555,7 +1560,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 //+ ");" + _eol);
             } else {
                 connectedAlready = true;
-                code.append("    System.out.println(\"D1\");" + _eol);
+                if (verbosityLevel > 3) {
+                    code.append("    System.out.println(\"D1\");" + _eol);
+                }
                 code.append("    $containerSymbol().connect(c0PortA,"
                         + portOrParameter + ");" + _eol
                         + "    $containerSymbol().connect($actorSymbol("
@@ -1640,7 +1647,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // port of the other custom actor.  This obviates
                         // the need for checking for the connection at
                         // runtime.
-                        code.append("    System.out.println(\"C1 port " +  port.getFullName() + " " + port.isMultiport() + "\");" + _eol);
+                        if (verbosityLevel > 3) {
+                            code.append("    System.out.println(\"C1 port " +  port.getFullName() + " " + port.isMultiport() + "\");" + _eol);
+                        }
                         code.append(relationAssignment
                                 + "$containerSymbol().connect(" + portOrParameter
                                 + ", " + "((" + remoteActor.getClass().getName()
@@ -1675,7 +1684,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + AutoAdapter._externalPortName(remotePort.getContainer(),
                             remotePort.getName()) + "\")";
                 if (!readingRemoteParameters) {
-                    code.append("    System.out.println(\"B1\");" + _eol);
+                    if (verbosityLevel > 3) {
+                        code.append("    System.out.println(\"B1\");" + _eol);
+                    }
                     code.append("    if ($actorSymbol(" + escapedCodegenPortName + ") == null) {" + _eol
                             + "        $actorSymbol(" + escapedCodegenPortName + ") = (TypedIOPort) "
                             + remoteActorSymbol + ".getPort(\""
@@ -1688,7 +1699,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             + escapedCodegenPortName + "), " + portOrParameter + ");" + _eol
                             + "    }" + _eol);
                 } else {
-                    code.append("    System.out.println(\"B2\");" + _eol);
+                    if (verbosityLevel > 3) {
+                        code.append("    System.out.println(\"B2\");" + _eol);
+                    }
                     code.append("    $containerSymbol().connect(c0PortA,"
                             + portOrParameter + ");" + _eol
                             + "    $containerSymbol().connect($actorSymbol("
@@ -1704,7 +1717,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // !remoteIsAutoAdaptered
             if (!readingRemoteParameters) {
                 if (!connectedAlready) {
-                    code.append("    System.out.println(\"A1\");" + _eol);
+                    if (verbosityLevel > 3) {
+                        code.append("    System.out.println(\"A1\");" + _eol);
+                    }
                     code.append("    $containerSymbol().connect($actorSymbol("
                             + escapedCodegenPortName + "), " + portOrParameter
                             + ");" + _eol);
@@ -1730,7 +1745,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 }
             } else {
                 if (!connectedAlready) {
-                    code.append("    System.out.println(\"A2\");" + _eol);
+                    if (verbosityLevel > 3) {
+                        code.append("    System.out.println(\"A2\");" + _eol);
+                    }
                     code.append("    $containerSymbol().connect(c0PortA,"
                             + portOrParameter + ");" + _eol
                             + "    $containerSymbol().connect($actorSymbol("
