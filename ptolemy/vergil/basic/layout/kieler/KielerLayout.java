@@ -702,7 +702,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         if (figure instanceof AbstractConnector) {
             LabelFigure labelFigure = ((AbstractConnector) figure).getLabelFigure();
             if (labelFigure != null) {
-                KLabel label = KimlUtil.createInitializedLabel(kedge);
+                KLabel label = KimlUtil.createInitializedLabel();
                 label.setText(labelFigure.getString());
                 KShapeLayout labelLayout = label.getData(KShapeLayout.class);
                 labelLayout.setProperty(LayoutOptions.EDGE_LABEL_PLACEMENT,
