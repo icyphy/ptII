@@ -1391,9 +1391,27 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // want to use these variables anyway.
         boolean remoteIsAutoAdaptered = false;
 
-        Relation relation = (Relation) port.linkedRelationList().get(0);
-        TypedIOPort remotePort = (TypedIOPort) relation.linkedPortList(port)
-                .get(0);
+        List linkedRelations = port.linkedRelationList();
+        if (linkedRelations.size() > 1) {
+            System.out.println("Warning: AutoAdapter: port " + port.getFullName()
+                    + " has " + linkedRelations.size() + " linked relations, "
+                    + "which is more than 1.  The code only deals with the "
+                    + "first relation.");
+        }
+
+        Relation relation = (Relation) linkedRelations.get(0);
+        List linkedPorts = relation.linkedPortList(port);
+        if (linkedPorts.size() > 1) {
+            System.out.println("Warning: AutoAdapter: port " + port.getFullName()
+                    + " has relation " + relation + ", which has " 
+                    + linkedPorts.size() + " linked ports, "
+                    + "which is more than 1.  The code only deals with the "
+                    + "first port.");
+        }
+        TypedIOPort remotePort = (TypedIOPort) linkedPorts.get(0);
+
+
+        code.append("System.out.println(\"AA1: " + port.getFullName() + " --> " + relation.getName() + " --> " + remotePort.getFullName() + "\");" + _eol);
         NamedObj remoteActor = remotePort.getContainer();
         String remoteActorSymbol = "";
         boolean moreThanOneRelation = false;
