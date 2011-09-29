@@ -87,16 +87,16 @@ public class MultiplyDivide
         for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
             // This seems wrong, it overwrites timeVariable for each EventHead_ that
             // is non-null.
-            buffer.append("if (Event_Head_" + name + "_divide[" + i + "] != NULL) {\n" +
+            result.append("if (Event_Head_" + name + "_divide[" + i + "] != NULL) {\n" +
                     timeVariable + " = &Event_Head_" + name + "_divide[" + i + "]->tag.timestamp;\n" +
                     "}\n");
         }
         for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
-            buffer.append("if (Event_Head_" + name + "_multiply[" + i + "] != NULL) {\n" +
+            result.append("if (Event_Head_" + name + "_multiply[" + i + "] != NULL) {\n" +
                     timeVariable + " = &Event_Head_" + name + "_multiply[" + i + "]->tag.timestamp;\n" +
-                    "}\n";);
+                    "}\n");
         }
-        return buffer.toString()
+        return result.toString();
     }
     
 }
