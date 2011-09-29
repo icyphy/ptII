@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.basic.layout;
 
+import ptolemy.actor.parameters.DoubleRangeParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
@@ -61,16 +62,55 @@ public class LayoutConfiguration extends Attribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        spacing = new Parameter(this, "spacing");
-        spacing.setDisplayName("Spacing");
-        spacing.setTypeEquals(BaseType.DOUBLE);
-        spacing.setExpression("10.0");
+        includeDecorations = new Parameter(this, "includeDecorations");
+        includeDecorations.setDisplayName("Include decorations");
+        includeDecorations.setTypeEquals(BaseType.BOOLEAN);
+        includeDecorations.setExpression(Boolean.toString(DEF_DECORATIONS));
+        
+        routeEdges = new Parameter(this, "routeEdges");
+        routeEdges.setDisplayName("Route edges");
+        routeEdges.setTypeEquals(BaseType.BOOLEAN);
+        routeEdges.setExpression(Boolean.toString(DEF_ROUTE_EDGES));
+        
+        spacing = new DoubleRangeParameter(this, "spacing");
+        spacing.setDisplayName("Object spacing");
+        spacing.min.setExpression("2.0");
+        spacing.max.setExpression("50.0");
+        spacing.setExpression(Double.toString(DEF_SPACING));
+        
+        logAspectRatio = new DoubleRangeParameter(this, "logAspectRatio");
+        logAspectRatio.setDisplayName("Aspect ratio");
+        logAspectRatio.min.setExpression("-1.0");
+        logAspectRatio.max.setExpression("1.0");
+        logAspectRatio.setExpression(Double.toString(Math.log10(DEF_ASPECT_RATIO)));
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                       public parameters                   ////
 
+    /** Whether to include unconnected nodes such as comments. */
+    public Parameter includeDecorations;
+    
+    /** Whether to apply edge routing or to use the standard router. */
+    public Parameter routeEdges;
+    
     /** The overall spacing between graph elements. */
-    public Parameter spacing;
+    public DoubleRangeParameter spacing;
+    
+    /** The aspect ratio for placement of connected components (logarithmic). */
+    public DoubleRangeParameter logAspectRatio;
+    
+    
+    /** Default value for includeDecorations. */
+    public static final boolean DEF_DECORATIONS = false;
+    
+    /** Default value for routeEdges. */
+    public static final boolean DEF_ROUTE_EDGES = true;
+    
+    /** Default value for spacing. */
+    public static final double DEF_SPACING = 10.0;
+    
+    /** Default value for aspectRatio (non-logarithmic). */
+    public static final double DEF_ASPECT_RATIO = 1.6;
 
 }

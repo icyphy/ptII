@@ -53,7 +53,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
-import ptolemy.graph.GraphInvalidStateException;
 import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -62,6 +61,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
@@ -85,25 +85,18 @@ import de.cau.cs.kieler.core.kgraph.KLabel;
 import de.cau.cs.kieler.core.kgraph.KNode;
 import de.cau.cs.kieler.core.kgraph.KPort;
 import de.cau.cs.kieler.core.math.KVector;
-import de.cau.cs.kieler.core.properties.IProperty;
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
-import de.cau.cs.kieler.core.properties.MapPropertyHolder;
-import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.AbstractLayoutProvider;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
-import de.cau.cs.kieler.kiml.options.Direction;
 import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement;
-import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.options.PortConstraints;
 import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.kiml.options.PortType;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klay.layered.LayeredLayoutProvider;
-import de.cau.cs.kieler.klay.layered.properties.Properties;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CompositeFigure;
 import diva.canvas.connector.AbstractConnector;
@@ -232,37 +225,37 @@ public class KielerLayout extends AbstractGlobalLayout {
             parentLayout.setHeight(contentSize.height);
         }
         
-        // Configure the layout algorithm by annotating the graph.
-        Options._configureLayout(parentLayout, _layoutOptions,
-                getLayoutTarget().getGraphModel());
-
-        // Now read Ptolemy model and fill the KGraph with the model data.
-        _createGraph(composite, parentNode);
-        graphOverhead = System.currentTimeMillis() - graphOverhead;
-        
-        // Create the layout provider which performs the actual layout algorithm.
-        InstancePool<AbstractLayoutProvider> layouterPool = _getLayouterPool();
-        AbstractLayoutProvider layoutProvider = layouterPool.fetch();
-
-        // Create a progress monitor for execution time measurement.
-        IKielerProgressMonitor progressMonitor = new BasicProgressMonitor();
-
-        // Perform layout on the created graph.
-        layoutProvider.doLayout(parentNode, progressMonitor);
-        
-        // Write to XML file for debugging layout (requires XMI resource factory).
-        if (DEBUG) {
-            KielerGraphUtil._writeToFile(parentNode);
-        }
-        
-        // Set initial position as the bounding box of the hierarchical node.
-        KVector offset = KielerGraphUtil._getUpperLeftCorner(parentNode);
-        parentLayout.setXpos(parentLayout.getXpos() - (float) offset.x);
-        parentLayout.setYpos(parentLayout.getYpos() - (float) offset.y);
-
-        long momlRequestOverhead = System.currentTimeMillis();
-
         try {
+            // Configure the layout algorithm by annotating the graph.
+            Parameters parameters = new Parameters(_compositeEntity);
+            parameters.configureLayout(parentLayout, getLayoutTarget().getGraphModel());
+    
+            // Now read Ptolemy model and fill the KGraph with the model data.
+            _createGraph(composite, parentNode);
+            graphOverhead = System.currentTimeMillis() - graphOverhead;
+            
+            // Create the layout provider which performs the actual layout algorithm.
+            InstancePool<AbstractLayoutProvider> layouterPool = _getLayouterPool();
+            AbstractLayoutProvider layoutProvider = layouterPool.fetch();
+    
+            // Create a progress monitor for execution time measurement.
+            IKielerProgressMonitor progressMonitor = new BasicProgressMonitor();
+    
+            // Perform layout on the created graph.
+            layoutProvider.doLayout(parentNode, progressMonitor);
+            
+            // Write to XML file for debugging layout (requires XMI resource factory).
+            if (DEBUG) {
+                KielerGraphUtil._writeToFile(parentNode);
+            }
+            
+            // Set initial position as the bounding box of the hierarchical node.
+            KVector offset = KielerGraphUtil._getUpperLeftCorner(parentNode);
+            parentLayout.setXpos(parentLayout.getXpos() - (float) offset.x);
+            parentLayout.setYpos(parentLayout.getYpos() - (float) offset.y);
+    
+            long momlRequestOverhead = System.currentTimeMillis();
+
             // Apply layout to ptolemy model.
             _applyLayout(parentNode);
 
@@ -276,10 +269,9 @@ public class KielerLayout extends AbstractGlobalLayout {
             // Release the layout provider back to the instance pool for later reuse.
             layouterPool.release(layoutProvider);
 
-        } catch (IllegalActionException e) {
-            // Throw some Ptolemy runtime exception
-            throw new GraphInvalidStateException(e,
-                    "KIELER runtime exception: " + e.getMessage());
+        } catch (IllegalActionException exception) {
+            // Throw some Ptolemy runtime exception.
+            throw new InternalErrorException(exception);
         }
 
     }
@@ -303,15 +295,6 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     public void setTop(Top top) {
         this._top = top;
-    }
-    
-    /**
-     * Set the layout options configuration for configuring the layout algorithm.
-     * 
-     * @param options a property holder for layout options configuration
-     */
-    public void setOptions(IPropertyHolder options) {
-        this._layoutOptions = options;
     }
     
     
@@ -375,7 +358,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             }
         }
 
-        if (_layoutOptions.getProperty(Options.ROUTE_EDGES)) {
+        if (parentNode.getData(KShapeLayout.class).getProperty(Parameters.ROUTE_EDGES)) {
             GraphModel graphModel = getLayoutTarget().getGraphModel(); 
             if (graphModel instanceof ActorGraphModel) {
                 // apply edge layout - bend points with layout hints
@@ -514,9 +497,10 @@ public class KielerLayout extends AbstractGlobalLayout {
         _divaEdgeSource = Maps.newHashMap();
         _divaEdgeTarget = Maps.newHashMap();
         _edgeList = Lists.newLinkedList();
-        
+        KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
+
         // Determine whether to include unconnected nodes.
-        boolean doBoxLayout = _layoutOptions.getProperty(Options.DECORATIONS);
+        boolean doBoxLayout = parentLayout.getProperty(Parameters.DECORATIONS);
 
         // On-the-fly find upper left corner for bounding box of parent node.
         float globalX = Float.MAX_VALUE, globalY = Float.MAX_VALUE;
@@ -642,10 +626,9 @@ public class KielerLayout extends AbstractGlobalLayout {
             _createKEdgeForAttribute(relativeObj);
         }
 
-        // set Bounding Box
-        KShapeLayout layout = parentNode.getData(KShapeLayout.class);
-        layout.setXpos(globalX);
-        layout.setYpos(globalY);
+        // Set graph offset.
+        parentLayout.setXpos(globalX);
+        parentLayout.setYpos(globalY);
     }
 
     /**
@@ -1382,12 +1365,6 @@ public class KielerLayout extends AbstractGlobalLayout {
     private Map<Link, Object> _divaEdgeTarget;
 
     /**
-     * A map of layout option identifiers to specific values. This is used to configure
-     * how the layout graph is built and to configure the layout algorithm.
-     */
-    private IPropertyHolder _layoutOptions = new MapPropertyHolder();
-    
-    /**
      * List of KIELER edges and corresponding Diva links.
      */
     private List<Pair<KEdge, Link>> _edgeList;
@@ -1407,58 +1384,5 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Pointer to Top in order to report the current status.
      */
     private Top _top;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    
-    public static final class Options {
-        
-        /**
-         * Configure the KIELER layout using a property holder.
-         * 
-         * @param parentLayout the layout of the parent node
-         * @param options property holder from which user options are copied
-         * @param graphModel the graph model of the current diagram
-         */
-        private static void _configureLayout(KShapeLayout parentLayout,
-                IPropertyHolder options, GraphModel graphModel) {
-            // Set general default values.
-            parentLayout.setProperty(LayoutOptions.DIRECTION, Direction.RIGHT);
-            parentLayout.setProperty(LayoutOptions.BORDER_SPACING, 5.0f);
-            parentLayout.setProperty(LayoutOptions.SPACING, SPACING.getDefault());
-            parentLayout.setProperty(LayoutOptions.ASPECT_RATIO, ASPECT_RATIO.getDefault());
-            parentLayout.setProperty(Properties.EDGE_SPACING_FACTOR, 1.5f);
-            
-            // Copy values specified by user.
-            parentLayout.copyProperties(options);
-            
-            if (graphModel instanceof ActorGraphModel) {
-                // Set default values for actor models.
-                parentLayout.setProperty(LayoutOptions.EDGE_ROUTING, EdgeRouting.ORTHOGONAL);
-            } else if (graphModel instanceof FSMGraphModel) {
-                // Set default values for modal models.
-                parentLayout.setProperty(LayoutOptions.EDGE_ROUTING, EdgeRouting.POLYLINE);
-                float spacing = parentLayout.getProperty(SPACING);
-                parentLayout.setProperty(SPACING, 2 * spacing);
-            }
-        }
-        
-        /** Layout option that determines whether decoration nodes are included in layout. */
-        public static final IProperty<Boolean> DECORATIONS = new Property<Boolean>(
-                "ptolemy.vergil.basic.layout.decorations", false);
-        
-        /** Layout option that determines whether edges are routed. */
-        public static final IProperty<Boolean> ROUTE_EDGES = new Property<Boolean>(
-                "ptolemy.vergil.basic.layout.routeEdges", true);
-        
-        /** Layout option for the overall spacing between elements. */
-        public static final IProperty<Float> SPACING = new Property<Float>(
-                LayoutOptions.SPACING, 10.0f);
-
-        /** Layout option for the aspect ratio of connected components. */
-        public static final IProperty<Float> ASPECT_RATIO = new Property<Float>(
-                LayoutOptions.ASPECT_RATIO, 1.6f);
-
-    }
 
 }

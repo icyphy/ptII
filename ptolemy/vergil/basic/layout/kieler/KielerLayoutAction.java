@@ -44,7 +44,6 @@ import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.IGuiAction;
 import ptolemy.vergil.modal.FSMGraphFrame;
-import de.cau.cs.kieler.core.properties.IPropertyHolder;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.basic.BasicLayoutTarget;
@@ -69,21 +68,6 @@ import diva.util.Filter;
  * @Pt.AcceptedRating Red (cmot)
  */
 public class KielerLayoutAction extends Object implements IGuiAction, Filter {
-
-    /**
-     * Construct a KIELER layout action.
-     */
-    public KielerLayoutAction() {
-    }
-    
-    /**
-     * Construct a KIELER layout action with a specific set of layout options.
-     * 
-     * @param options layout options that shall be considered by the algorithm
-     */
-    public KielerLayoutAction(IPropertyHolder options) {
-        this._options = options;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -158,9 +142,6 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
                 KielerLayout layout = new KielerLayout(layoutTarget);
                 layout.setModel((CompositeEntity) model);
                 layout.setTop(graphFrame);
-                if (_options != null) {
-                    layout.setOptions(_options);
-                }
 
                 layout.layout(graphModel.getRoot());
             }
@@ -183,11 +164,5 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
     public boolean accept(Object o) {
         return o instanceof CompositeActor || o instanceof FSMActor;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** the layout options that are used for the layout action. */
-    private IPropertyHolder _options;
 
 }
