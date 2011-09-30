@@ -52,7 +52,7 @@ import ptolemy.vergil.basic.RelativeLocatable;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public abstract class VisibleAttribute extends Attribute implements RelativeLocatable {
+public abstract class VisibleAttribute extends Attribute {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
