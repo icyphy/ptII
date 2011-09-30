@@ -5,9 +5,9 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="$CLASSPATH/ptolemy/data/ontologies/demo/MonotonicityAnalysis/DimensionSystemMonotonicitySolverModel.xml">
+        <property name="modelURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/data/ontologies/demo/MonotonicityAnalysis/DimensionSystemMonotonicitySolverModel.xml">
         </property>
-        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = General}&quot;, NamedObj = &quot;.MonotonicityIfcProblemCase.Expression.output&quot;}, {Concept = &quot;{x = General}&quot;, NamedObj = &quot;.MonotonicityIfcProblemCase.Expression.expression&quot;}}">
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;{x = NonMonotonic_{&lt;object(Dimensionless: ptolemy.data.ontologies.FiniteConcept), object(Conflict: ptolemy.data.ontologies.FiniteConcept)&gt;, &lt;object(Velocity: ptolemy.data.ontologies.FiniteConcept), object(Conflict: ptolemy.data.ontologies.FiniteConcept)&gt;}}&quot;, NamedObj = &quot;.MonotonicityIfcProblemCase.Expression.expression&quot;}, {Concept = &quot;{x = NonMonotonic_{&lt;object(Dimensionless: ptolemy.data.ontologies.FiniteConcept), object(Conflict: ptolemy.data.ontologies.FiniteConcept)&gt;, &lt;object(Velocity: ptolemy.data.ontologies.FiniteConcept), object(Conflict: ptolemy.data.ontologies.FiniteConcept)&gt;}}&quot;, NamedObj = &quot;.MonotonicityIfcProblemCase.Expression.output&quot;}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 75.0]">
         </property>
@@ -16,7 +16,7 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 63, 929, 501}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={168, 63, 927, 494}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[714, 384]">
     </property>
@@ -38,6 +38,10 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="30">
                 </property>
             </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.4,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = NonMonotonic_{&lt;object(Dimensionless: ptolemy.data.ontologies.FiniteConcept), object(Conflict: ptolemy.data.ontologies.FiniteConcept)&gt;, &lt;object(Velocity: ptolemy.data.ontologies.FiniteConcept), object(Conflict: ptolemy.data.ontologies.FiniteConcept)&gt;}}">
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -49,6 +53,13 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 155.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.4,0.8,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="{x = NonMonotonic_{&lt;object(Dimensionless: ptolemy.data.ontologies.FiniteConcept), object(Conflict: ptolemy.data.ontologies.FiniteConcept)&gt;, &lt;object(Velocity: ptolemy.data.ontologies.FiniteConcept), object(Conflict: ptolemy.data.ontologies.FiniteConcept)&gt;}}">
+            </property>
+        </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
