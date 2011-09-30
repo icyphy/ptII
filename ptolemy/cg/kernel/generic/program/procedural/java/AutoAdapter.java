@@ -353,144 +353,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // names with the same name as the actor.
         String actorClassName = getComponent().getClass().getName();
 
-        // Generate code that creates the hierarchy.
-
-        StringBuffer containmentCode = new StringBuffer();
-
-        //NamedObj child = getComponent();
-        NamedObj parentContainer = getComponent().getContainer();
-        NamedObj grandparentContainer = parentContainer.getContainer();
-
-        if (grandparentContainer == null) {
-            // The simple case, where the actor is in the top level and
-            // we only need to create a TypedCompositeActor container.
-            containmentCode.append("    $containerSymbol() = new "
-                    + getComponent().getContainer().getClass().getName()
-                    // Some custom actors such as ElectricalOverlord
-                    // want to be in a container with a particular name.
-                    + "(_toplevel, \"" + getComponent().getName() + "\");"
-                    + _eol);
-        } else {
-            // This wacky.  What we do is move up the hierarchy and instantiate
-            // TypedComposites as necessary and *insert* the appropriate code into
-            // the StringBuffer.  When we get to the top, we *append* code that
-            // inserts the hierarchy into the toplevel and that creates the container
-            // for the actor.  At runtime, when we are generating the hierarchy,
-            // we need to avoid generating duplicate entities (entities that
-            // already exist in a container that has more than one actor handled
-            // by AutoAdapter).
-
-            //            while (grandparentContainer != null && grandparentContainer.getContainer() != null && grandparentContainer.getContainer().getContainer() != null) {
-            while (parentContainer != null
-                    && parentContainer.getContainer() != null /* && parentContainer.getContainer().getContainer() != null*/) {
-                containmentCode.insert(0,
-                //                         "temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\"" + grandparentContainer.getName() + "\");" + _eol
-                //                         + "if (temporaryContainer == null) { " + _eol
-                //                         + "    cgContainer = new "
-                //                         // Use the actual class of the container, not TypedCompositeActor.
-                //                         + grandparentContainer.getClass().getName()
-                //                         + "(cgContainer, \"" + grandparentContainer.getName() + "\");" + _eol
-                //                         + "} else {" + _eol
-                //                         + "    cgContainer = temporaryContainer;" + _eol
-                //                         + "}" + _eol);
-
-                        "temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\""
-                                + parentContainer.getName()
-                                + "\");"
-                                + _eol
-                                + "if (temporaryContainer == null) { "
-                                + _eol
-                                + "    cgContainer = new "
-                                // Use the actual class of the container, not TypedCompositeActor.
-                                + parentContainer.getClass().getName()
-                                + "(cgContainer, \""
-                                + parentContainer.getName() + "\");" + _eol
-                                + "} else {" + _eol
-                                + "    cgContainer = temporaryContainer;"
-                                + _eol + "}" + _eol);
-                //child = parentContainer;
-                parentContainer = parentContainer.getContainer();
-                //parentContainer = grandparentContainer;
-                //grandparentContainer = grandparentContainer.getContainer();
-            }
-
-            //NamedObj container = grandparentContainer;
-            //if (container == null) {
-            //    container = parentContainer;
-            //}
-            containmentCode.insert(
-                    0,
-                    "{"
-                            + _eol
-                            + getCodeGenerator().comment(
-                                    getComponent().getFullName()) + _eol
-                            + "TypedCompositeActor cgContainer = _toplevel;"
-                            + _eol
-                            + "TypedCompositeActor temporaryContainer = null;"
-                            + _eol);
-            //                     + "if ((cgContainer = (TypedCompositeActor)_toplevel.getEntity(\"" + container.getName() + "\")) == null) { " + _eol
-            //                     + "   cgContainer = new "
-            //                     + container.getClass().getName() + "(_toplevel, \""
-            //                     + container.getName()  + "\");" + _eol
-            //                     + "}" + _eol);
-
-//             containmentCode
-//                     .append("    if ((temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\""
-//                             + getComponent().getContainer().getName()
-//                             + "_container"
-//                             + "\")) == null) {"
-//                             + _eol
-//                             + "     $containerSymbol() = new "
-//                             + getComponent().getContainer().getClass()
-//                                     .getName()
-//                             // Some custom actors such as ElectricalOverlord
-//                             // want to be in a container with a particular name.
-//                             + "(cgContainer, \""
-//                             + getComponent().getContainer().getName()
-//                             + "_container" + "\");" + _eol
-//                             //+ "    } else {" + _eol
-//                             //+ "       $containerSymbol() = cgContainer;" + _eol
-//                             + "    }" + _eol + "}" + _eol);
-
-             containmentCode
-                     .append("$containerSymbol() = cgContainer;" + _eol
-                             + "}" + _eol);
-
-            // Instantiate Variables for those actors that access parameters in their container.
-            // $PTII/bin/ptcg -language java auto/ReadParametersInContainerTest.xml
-            Iterator variables = getComponent().getContainer()
-                    .attributeList(Variable.class).iterator();
-            while (variables.hasNext()) {
-                if (!_importedVariable) {
-                    _importedVariable = true;
-                    _headerFiles.add("ptolemy.data.expr.Variable;");
-                }
-                Variable variable = (Variable) variables.next();
-                String variableName = StringUtilities.sanitizeName(
-                        variable.getName()).replaceAll("\\$", "Dollar");
-                if (variableName.charAt(0) == '_') {
-                    if (variableName.equals("_windowProperties")
-                            || variableName.startsWith("_vergil")) {
-                        // No need to create _windowProperties,  _vergilSize,
-                        // _vergilZoomFactor, or _vergilCenter variables.
-                        continue;
-                    }
-                }
-                // FIXME: optimize this by creating a method that only creates
-                // the variable if it is not already set.  The reason we would
-                // have duplicate variables is because we have two custom actors
-                // in one container and the container has Parameters.
-                containmentCode
-                        .append("if ($containerSymbol().getAttribute(\""
-                                + variable.getName() + "\") == null) {" + _eol
-                                + "   new Variable($containerSymbol(), \""
-                                + variable.getName() + "\").setExpression(\""
-                                + variable.getExpression() + "\");" + _eol
-                                + "}" + _eol);
-            }
-
-            // Whew.
-        }
+        String containmentCode = _generateContainmentCode(getComponent());
 
         StringBuffer code = new StringBuffer();
         // Generate code that creates and connects each port.
@@ -514,8 +377,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // Multiports.  Not all multiports have port names
                     // that match the field name. See
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
-
-                    //TypedIOPort actorPort = (TypedIOPort)(((Entity)getComponent()).getPort(castPort.getName()));
 
                     TypedIOPort actorPort = null;
                     try {
@@ -1049,6 +910,109 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return foundPortField;
     }
 
+    /** Generate code that creates the hierarchy.
+     *  @return code that creates the hierarchy
+     */
+    private String _generateContainmentCode(NamedObj component) {
+        StringBuffer containmentCode = new StringBuffer();
+
+        // The symbol of the container of the component, similar to $containerSymbol.
+        String containerSymbol = getCodeGenerator().generateVariableName((((NamedObj) component).getContainer()));
+
+        NamedObj parentContainer = component.getContainer();
+        NamedObj grandparentContainer = parentContainer.getContainer();
+
+        if (grandparentContainer == null) {
+            // The simple case, where the actor is in the top level and
+            // we only need to create a TypedCompositeActor container.
+            containmentCode.append(containerSymbol + " = new "
+                    + component.getContainer().getClass().getName()
+                    // Some custom actors such as ElectricalOverlord
+                    // want to be in a container with a particular name.
+                    + "(_toplevel, \"" + component.getName() + "\");"
+                    + _eol);
+        } else {
+            // This wacky.  What we do is move up the hierarchy and instantiate
+            // TypedComposites as necessary and *insert* the appropriate code into
+            // the StringBuffer.  When we get to the top, we *append* code that
+            // inserts the hierarchy into the toplevel and that creates the container
+            // for the actor.  At runtime, when we are generating the hierarchy,
+            // we need to avoid generating duplicate entities (entities that
+            // already exist in a container that has more than one actor handled
+            // by AutoAdapter).
+
+            while (parentContainer != null
+                    && parentContainer.getContainer() != null) {
+                containmentCode.insert(0,
+                        "temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\""
+                        + parentContainer.getName()
+                        + "\");"
+                        + _eol
+                        + "if (temporaryContainer == null) { "
+                        + _eol
+                        + "    cgContainer = new "
+                        // Use the actual class of the container, not TypedCompositeActor.
+                        + parentContainer.getClass().getName()
+                        + "(cgContainer, \""
+                        + parentContainer.getName() + "\");" + _eol
+                        + "} else {" + _eol
+                        + "    cgContainer = temporaryContainer;"
+                        + _eol + "}" + _eol);
+                parentContainer = parentContainer.getContainer();
+            }
+
+            containmentCode.insert(
+                    0,
+                    "{"
+                            + _eol
+                            + getCodeGenerator().comment(
+                                    component.getFullName()) + _eol
+                            + "TypedCompositeActor cgContainer = _toplevel;"
+                            + _eol
+                            + "TypedCompositeActor temporaryContainer = null;"
+                            + _eol);
+             containmentCode
+                 .append(containerSymbol
+                         + " = cgContainer;" + _eol
+                         + "}" + _eol);
+
+            // Instantiate Variables for those actors that access parameters in their container.
+            // $PTII/bin/ptcg -language java auto/ReadParametersInContainerTest.xml
+            Iterator variables = component.getContainer()
+                    .attributeList(Variable.class).iterator();
+            while (variables.hasNext()) {
+                if (!_importedVariable) {
+                    _importedVariable = true;
+                    _headerFiles.add("ptolemy.data.expr.Variable;");
+                }
+                Variable variable = (Variable) variables.next();
+                String variableName = StringUtilities.sanitizeName(
+                        variable.getName()).replaceAll("\\$", "Dollar");
+                if (variableName.charAt(0) == '_') {
+                    if (variableName.equals("_windowProperties")
+                            || variableName.startsWith("_vergil")) {
+                        // No need to create _windowProperties,  _vergilSize,
+                        // _vergilZoomFactor, or _vergilCenter variables.
+                        continue;
+                    }
+                }
+                // FIXME: optimize this by creating a method that only creates
+                // the variable if it is not already set.  The reason we would
+                // have duplicate variables is because we have two custom actors
+                // in one container and the container has Parameters.
+                containmentCode
+                        .append("if (" + containerSymbol + ".getAttribute(\""
+                                + variable.getName() + "\") == null) {" + _eol
+                                + "   new Variable(" + containerSymbol + ", \""
+                                + variable.getName() + "\").setExpression(\""
+                                + variable.getExpression() + "\");" + _eol
+                                + "}" + _eol);
+            }
+            // Whew.
+        }
+        return containmentCode.toString();
+    }
+
     /**
      * Generate execution code for the actor execution methods.
      * @param executionMethod One of "prefire", "postfire" or "wrapup".
@@ -1464,19 +1428,26 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     System.out.println(message);
                 }
             }
+
             // If the remote actor has not yet been created, then create it.
             remoteActorSymbol = getCodeGenerator().generateVariableName(
                     remoteActor) + "_actor";
+
+            String remoteActorContainerSymbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer()));
 
             if (!moreThanOneRelation) {
                 if (verbosityLevel > 1) {
                     code.append("System.out.println(\"Create remote actor: " + remoteActor.getName() + "\");" + _eol);
                 }
                 code.append("if (" + remoteActorSymbol + " == null) {" + _eol
+                        + "if (" + remoteActorContainerSymbol + " == null) {" + _eol
+                        // FIXME: we should define a method that creates the containment hierarchy.
+                        + _generateContainmentCode(remoteActor)
+                        + "}" + _eol
                         + remoteActorSymbol + " = new "
                         + remoteActor.getClass().getName()
                         //+ "($containerSymbol() , \""
-                        + "(" + getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer()))
+                        + "(" + remoteActorContainerSymbol
                         + ", \""
                         + remoteActor.getName()
                         //+ remoteActorSymbol
