@@ -137,6 +137,25 @@ public class ExportImage {
             _sleep();
         }
 
+        if (save) {
+            // Optionally save the model.
+            // Sadly, running the DOPCenter.xml model does not seem to update the
+            // graph.  So, we run it and save it and then open it again.
+            Runnable saveAction = new Runnable() {
+                    public void run() {
+                        try {
+                            System.out.println("Saving " + model[0].getFullName());
+                            ((PtolemyEffigy)(_basicGraphFrame.getTableau().getContainer())).writeFile(new File(modelFileName));
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                };
+            SwingUtilities.invokeAndWait(saveAction);
+            _sleep();
+        }
+
         if (openComposites) {
             // Optionally open any composites.
             Runnable openCompositesAction = new Runnable() {
