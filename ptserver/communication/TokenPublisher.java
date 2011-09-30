@@ -30,6 +30,7 @@ package ptserver.communication;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -73,7 +74,7 @@ public class TokenPublisher {
      */
     public void startTimer(Ticket ticket) {
         _executor = Executors.newSingleThreadScheduledExecutor();
-        _executor.scheduleAtFixedRate(new Runnable() {
+        _publisherFuture = _executor.scheduleAtFixedRate(new Runnable() {
 
             public void run() {
                 try {
@@ -88,9 +89,12 @@ public class TokenPublisher {
 
     /** Cancel the publisher's timer used for sending batch of tokens.
      */
-    public void cancelTimer() {
+    public void cancel() {
         if (_executor != null) {
-            _executor.shutdown();
+            _executor.shutdownNow();
+            if (_publisherFuture != null) {
+                _publisherFuture.cancel(true);
+            }
         }
     }
 
@@ -200,6 +204,11 @@ public class TokenPublisher {
     /** The executor used for sending batch of tokens.
      */
     private ScheduledExecutorService _executor;
+
+    /**
+     * The publisher's future that sends out token batches.
+     */
+    private ScheduledFuture<?> _publisherFuture;
 
     /** The count of tokens in the batch.
      */

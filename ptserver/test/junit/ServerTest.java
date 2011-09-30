@@ -28,12 +28,16 @@ package ptserver.test.junit;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.ResourceBundle;
 
 import org.junit.Test;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.injection.ActorModuleInitializer;
+import ptolemy.actor.injection.PtolemyInjector;
+import ptolemy.actor.injection.PtolemyModule;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
@@ -46,18 +50,25 @@ import ptserver.util.ServerUtility;
 
 public class ServerTest {
 
+    static {
+        // FIXME remove PTServerModule after SysOutActor is deleted 
+        // or create a proper initializer for it
+        ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
+        modules.addAll(ActorModuleInitializer.getModules());
+        modules.add(new PtolemyModule(ResourceBundle
+                .getBundle("ptserver.util.PTServerModule")));
+        PtolemyInjector.createInjector(modules);
+    }
+
     @Test
     public void testServerGeneration() throws MalformedURLException,
             URISyntaxException, Exception {
-        ActorModuleInitializer.initializeInjector();
         MoMLParser parser = new MoMLParser();
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
         CompositeActor model = (CompositeActor) parser.parse(null,
-                ServerTest.class.getResource("NoisySinewave.xml").toURI()
-                        .toURL());
+                ServerTest.class.getResource("junitmodel.xml").toURI().toURL());
         CompositeActor layout = (CompositeActor) parser.parse(null,
-                ServerTest.class
-                        .getResource("NoisySinewave_layout2.layout.xml")
+                ServerTest.class.getResource("junitmodel_test.layout.xml")
                         .toURI().toURL());
         HashSet<String> remoteAttributes = new HashSet<String>();
         remoteAttributes.add(ServerUtility.REMOTE_OBJECT_TAG);

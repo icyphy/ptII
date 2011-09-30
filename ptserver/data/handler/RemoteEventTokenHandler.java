@@ -32,20 +32,20 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import ptserver.data.ServerEventToken;
-import ptserver.data.ServerEventToken.EventType;
+import ptserver.data.RemoteEventToken;
+import ptserver.data.RemoteEventToken.EventType;
 
 //////////////////////////////////////////////////////////////////////////
-//// ServerEventTokenHandler
+//// RemoteEventTokenHandler
 
 /** ServerEventTokenHandler converts ServerEventToken to/from byte form.
  *  @author Justin Killian
- *  @version $Id$ 
+ *  @version $Id: ServerEventTokenHandler.java 61629 2011-07-28 02:17:45Z ahuseyno $ 
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
  */
-public class ServerEventTokenHandler implements TokenHandler<ServerEventToken> {
+public class RemoteEventTokenHandler implements TokenHandler<RemoteEventToken> {
 
     ///////////////////////////////////////////////////////////////////
     ////                      public variables                     ////
@@ -56,7 +56,7 @@ public class ServerEventTokenHandler implements TokenHandler<ServerEventToken> {
      *  @exception IOException If the stream cannot be written.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
-    public void convertToBytes(ServerEventToken token,
+    public void convertToBytes(RemoteEventToken token,
             DataOutputStream outputStream) throws IOException {
         outputStream.writeInt(token.getEventType().ordinal());
         outputStream.writeUTF(token.getMessage());
@@ -69,8 +69,8 @@ public class ServerEventTokenHandler implements TokenHandler<ServerEventToken> {
      *  @exception IOException If the stream cannot be read.
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
-    public ServerEventToken convertToToken(DataInputStream inputStream,
-            Class<? extends ServerEventToken> tokenType) throws IOException {
+    public RemoteEventToken convertToToken(DataInputStream inputStream,
+            Class<? extends RemoteEventToken> tokenType) throws IOException {
 
         // Initialize values.
         EventType eventType = EventType.class.getEnumConstants()[inputStream
@@ -85,6 +85,6 @@ public class ServerEventTokenHandler implements TokenHandler<ServerEventToken> {
         }
 
         // Return the parsed token.
-        return new ServerEventToken(eventType, message);
+        return new RemoteEventToken(eventType, message);
     }
 }

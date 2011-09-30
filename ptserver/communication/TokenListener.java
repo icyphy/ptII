@@ -36,6 +36,7 @@ import ptserver.data.AttributeChangeToken;
 import ptserver.data.CommunicationToken;
 import ptserver.data.PingToken;
 import ptserver.data.PongToken;
+import ptserver.data.RemoteEventToken;
 import ptserver.data.Tokenizer;
 
 import com.ibm.mqtt.MqttSimpleCallback;
@@ -118,14 +119,14 @@ public class TokenListener implements MqttSimpleCallback {
                         listener.setEnabled(false);
                         // Note: obtaining the write access breaks this functionality.
                         // Disabled for now since documentation does not say that 
-                        // write access need to be obtained for setting the expression.
+                        // write access needs to be obtained for setting the expression.
                         //                        ((Attribute) remoteAttribute).workspace()
                         //                                .getWriteAccess();
                         remoteAttribute.setExpression(attributeChangeToken
                                 .getExpression());
                         remoteAttribute.validate();
                     } finally {
-                        //                        ((Attribute) remoteAttribute).workspace().doneWriting();
+                        //   ((Attribute) remoteAttribute).workspace().doneWriting();
                         listener.setEnabled(true);
                     }
                 }
@@ -138,6 +139,9 @@ public class TokenListener implements MqttSimpleCallback {
             } else if (token instanceof PongToken) {
                 _proxyModelInfrastructure.setLastPongToken((PongToken) token);
                 _LOGGER.info("Received pong token");
+            } else if (token instanceof RemoteEventToken) {
+                _proxyModelInfrastructure
+                        .fireServerEvent((RemoteEventToken) token);
             }
         }
     }

@@ -60,11 +60,12 @@ import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.injection.PtolemyModule;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.MessageHandler;
+import ptserver.communication.ProxyModelAdapter;
 import ptserver.communication.ProxyModelInfrastructure;
 import ptserver.communication.ProxyModelInfrastructure.ProxyModelListener;
 import ptserver.communication.ProxyModelResponse;
-import ptserver.data.ServerEventToken;
-import ptserver.data.ServerEventToken.EventType;
+import ptserver.data.RemoteEventToken;
+import ptserver.data.RemoteEventToken.EventType;
 import ptserver.data.TokenParser;
 import ptserver.data.TokenParser.HandlerData;
 
@@ -620,7 +621,7 @@ public final class PtolemyServer implements IServerManager {
                 task.getProxyModelInfrastructure()
                         .getTokenPublisher()
                         .sendToken(
-                                new ServerEventToken(EventType.SERVER_SHUTDOWN,
+                                new RemoteEventToken(EventType.SERVER_SHUTDOWN,
                                         "The Ptolemy server you are currently connected is shutting down."),
                                 null);
 
@@ -859,7 +860,7 @@ public final class PtolemyServer implements IServerManager {
     /** The proxy model listener that is notified of exceptions within
      *  the other threads of the application.
      */
-    private final ProxyModelListener _remoteModelListener = new ProxyModelListener() {
+    private final ProxyModelListener _remoteModelListener = new ProxyModelAdapter() {
 
         /** React to the remote connection expiring.
          *  @param remoteModel The remote model whose connection has expired.
@@ -879,25 +880,46 @@ public final class PtolemyServer implements IServerManager {
             }
         }
 
-        /** React to the exception within the model.
-         *  @param remoteModel The remote model that experienced the fault. 
-         *  @param message The message explaining where the fault happened.
-         *  @param exception The exception that was thrown.
-         */
-        public void modelException(ProxyModelInfrastructure remoteModel,
+        public void modelException(
+                ProxyModelInfrastructure proxyModelInfrastructure,
                 String message, Throwable exception) {
-            PtolemyServer.LOGGER.log(Level.SEVERE, "Ticket: "
-                    + remoteModel.getTicket().getTicketID(), exception);
+            PtolemyServer.LOGGER.log(Level.INFO,
+                    "Unhandled exception in model "
+                            + proxyModelInfrastructure.getTicket()
+                                    .getTicketID()
+                            + " that is being propagated to the client",
+                    exception);
+            try {
+                proxyModelInfrastructure.getTokenPublisher().sendToken(
+                        new RemoteEventToken(message, exception), null);
+            } catch (Throwable e) {
+                // In order to prevent infinite recursive calls, just print the stack trace since
+                // there is nothing one could do.
+                PtolemyServer.LOGGER.log(Level.SEVERE,
+                        "Problem sending exception event for "
+                                + proxyModelInfrastructure.getTicket()
+                                        .getTicketID(), exception);
+            } finally {
+                try {
+                    PtolemyServer.getInstance().close(
+                            proxyModelInfrastructure.getTicket());
+                } catch (Throwable e) {
+                    PtolemyServer.LOGGER.log(Level.SEVERE,
+                            "Problem sending exception event for "
+                                    + proxyModelInfrastructure.getTicket()
+                                            .getTicketID(), exception);
+                }
+            }
         }
 
-        /** React to the simulation event.
-         *  @param remoteModel The remote model that raised the event.
-         *  @param message The message explaining what happened.
-         *  @param type The type of event being handled.
-         */
-        public void modelEvent(ProxyModelInfrastructure remoteModel,
-                String message, EventType type) {
+        public void onRemoteEvent(
+                ProxyModelInfrastructure proxyModelInfrastructure,
+                RemoteEventToken event) {
+            PtolemyServer.LOGGER.info("Remote event was received for model."
+                    + proxyModelInfrastructure.getTicket().getTicketID() + "\n"
+                    + event.toString());
         }
+
     };
 
     /** The process reference to the MQTT broker.

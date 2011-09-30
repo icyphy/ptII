@@ -28,6 +28,7 @@
  */
 package ptolemy.actor.injection;
 
+
 ///////////////////////////////////////////////////////////////////
 //// PtolemyInjector
 /**
@@ -78,6 +79,9 @@ public class PtolemyInjector {
      * @return the PtolemyInjector that was created with the supplied modules.
      */
     public static Injector getInjector() {
+        if (_instance == null) {
+            ActorModuleInitializer.initializeInjector();
+        }
         return _instance;
     }
 

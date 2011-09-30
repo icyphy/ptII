@@ -253,10 +253,11 @@ public class ServletTest {
      *  @return Ticket The ticket reference to the simulation request.
      */
     private ProxyModelResponse _openRemoteModel() throws Exception {
-        URL modelUrl = ServletTest.class
-                .getResource("/ptserver/test/junit/addermodel.xml");
-        URL layoutUrl = ServletTest.class
-                .getResource("/ptserver/test/junit/addermodel_test.layout.xml");
+        String unitModel = getJUnitModel(PtolemyServer.getInstance()
+                .getModelListing());
+        URL modelUrl = new URL(unitModel);
+        URL layoutUrl = new URL(getJUnitModelLayout(PtolemyServer.getInstance()
+                .getLayoutListing(unitModel)));
         ProxyModelResponse response = _servletProxy.open(
                 modelUrl.toExternalForm(), layoutUrl.toExternalForm());
         // Just to keep the test output clean.
@@ -271,6 +272,24 @@ public class ServletTest {
         });
 
         return response;
+    }
+
+    private String getJUnitModel(String[] modelUrls) {
+        for (String model : modelUrls) {
+            if (model.endsWith("junitmodel.xml")) {
+                return model;
+            }
+        }
+        return null;
+    }
+
+    private String getJUnitModelLayout(String[] layoutUrls) {
+        for (String model : layoutUrls) {
+            if (model.contains("junitmodel") && model.endsWith(".layout.xml")) {
+                return model;
+            }
+        }
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////

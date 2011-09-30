@@ -35,6 +35,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -57,7 +58,7 @@ import ptserver.actor.ProxySource;
 import ptserver.control.Ticket;
 import ptserver.data.PingToken;
 import ptserver.data.PongToken;
-import ptserver.data.ServerEventToken;
+import ptserver.data.RemoteEventToken;
 import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
 import ptserver.util.ServerUtility;
@@ -99,13 +100,13 @@ public class ProxyModelInfrastructure {
         void modelException(ProxyModelInfrastructure proxyModelInfrastructure,
                 String message, Throwable exception);
 
-        /** Notify all model listeners that an event has happened.
-         *  @param proxyModelInfrastructure The infrastructure where the event happened.
-         *  @param message The message explaining what has happened.
-         *  @param type The type of event that has occurred.
+        /**
+         * Notify the listener about server event received from the remote ProxyModelInfrastructure
+         * @param proxyModelInfrastructure The proxyModelInfrastructure that received the event
+         * @param event The remote event
          */
-        void modelEvent(ProxyModelInfrastructure proxyModelInfrastructure,
-                String message, ServerEventToken.EventType type);
+        void onRemoteEvent(ProxyModelInfrastructure proxyModelInfrastructure,
+                RemoteEventToken event);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,7 +135,7 @@ public class ProxyModelInfrastructure {
             TypeConflictException, NameDuplicationException,
             CloneNotSupportedException {
         _tokenPublisher = new TokenPublisher(_PERIOD, this);
-        _executor = Executors.newSingleThreadExecutor();
+        _executor = Executors.newFixedThreadPool(_POOL_SIZE);
         _modelType = modelType;
         _topLevelActor = plainTopLevelActor;
         _loadPlainModel();
@@ -179,13 +180,20 @@ public class ProxyModelInfrastructure {
     /** Close the model along with all its connection.
      */
     public void close() {
-        _pingPongExecutor.shutdown();
-        _tokenPublisher.cancelTimer();
-        _executor.shutdown();
-        try {
-            _mqttClient.disconnect();
-        } catch (MqttException e) {
-            fireModelException(null, e);
+        _pingPongExecutor.shutdownNow();
+        if (_pingPongFuture != null) {
+            _pingPongFuture.cancel(true);
+        }
+        _tokenPublisher.cancel();
+        _executor.shutdownNow();
+        if (_mqttClient != null) {
+            try {
+                _mqttClient.disconnect();
+            } catch (MqttException e) {
+                fireModelException(null, e);
+            } finally {
+                _mqttClient.terminate();
+            }
         }
     }
 
@@ -207,13 +215,13 @@ public class ProxyModelInfrastructure {
         }
     }
 
-    /** Notify all model listeners that an event has happened.
-     *  @param message The message explaining what has happened.
-     *  @param type The type of event that has occurred.
+    /**
+     * Notify all model listeners that a server event has occurred.
+     * @param event The remote event
      */
-    public void fireModelEvent(String message, ServerEventToken.EventType type) {
+    public void fireServerEvent(RemoteEventToken event) {
         for (ProxyModelListener listener : _modelListeners) {
-            listener.modelEvent(this, message, type);
+            listener.onRemoteEvent(this, event);
         }
     }
 
@@ -624,7 +632,7 @@ public class ProxyModelInfrastructure {
     private void _setUpMonitoring() {
         setLastPongToken(new PongToken(System.currentTimeMillis()));
         _pingPongExecutor = Executors.newSingleThreadScheduledExecutor();
-        _pingPongExecutor.scheduleAtFixedRate(new Runnable() {
+        _pingPongFuture = _pingPongExecutor.scheduleAtFixedRate(new Runnable() {
             public void run() {
                 try {
                     long msTime = System.currentTimeMillis();
@@ -646,7 +654,6 @@ public class ProxyModelInfrastructure {
                 }
             }
         }, 0, _PING_PERIOD, TimeUnit.MILLISECONDS);
-
     }
 
     /** Set up remote attribute listeners.
@@ -758,6 +765,10 @@ public class ProxyModelInfrastructure {
      * The executor that sends periodical ping messages.
      */
     private ScheduledExecutorService _pingPongExecutor;
+    /**
+     * The future that sends ping pongs.
+     */
+    private ScheduledFuture<?> _pingPongFuture;
 
     /**
      * The logger used by the ptserver. 

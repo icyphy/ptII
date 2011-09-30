@@ -34,8 +34,6 @@ import java.util.HashSet;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptserver.communication.ProxyModelInfrastructure;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
 import ptserver.util.ServerUtility;
@@ -47,7 +45,7 @@ import ptserver.util.ServerUtility;
  *  ticket reference and wait for the user to issue control commands.
  *
  *  @author Justin Killian
- *  @version $Id$
+ *  @version $Id: SimulationTask.java 61629 2011-07-28 02:17:45Z ahuseyno $
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
@@ -60,7 +58,7 @@ public class SimulationTask implements Runnable {
      *  @exception Exception If the simulation encounters a problem setting
      *  the director or getting workspace access.
      */
-    public SimulationTask(Ticket ticket) throws Exception {
+    public SimulationTask(final Ticket ticket) throws Exception {
         CompositeActor model = (CompositeActor) ServerUtility
                 .createMoMLParser().parse(null, new URL(ticket.getModelUrl()));
         CompositeActor layout = (CompositeActor) ServerUtility
@@ -88,12 +86,9 @@ public class SimulationTask implements Runnable {
         try {
             getProxyModelInfrastructure().getTopLevelActor().getManager()
                     .execute();
-        } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (KernelException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Throwable e) {
+            getProxyModelInfrastructure().fireModelException(
+                    "Problem starting model execution", e);
         }
     }
 

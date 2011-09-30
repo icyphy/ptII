@@ -38,16 +38,16 @@ import java.io.StringWriter;
 import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////
-//// ServerEventToken
+//// RemoteEventToken
 
-/** Encapsulates an informational token raised by the the Ptolemy server.
+/** Encapsulates an informational token raised by the proxy model infrastructure.
  *  @author Justin Killian
  *  @version $Id$
  *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jkillian)
  *  @Pt.AcceptedRating Red (jkillian)
  */
-public class ServerEventToken extends Token {
+public class RemoteEventToken extends Token {
 
     /** Type of notification message being sent to the user.
      */
@@ -66,7 +66,7 @@ public class ServerEventToken extends Token {
 
     /** Initialize the token using its superclass.
      */
-    public ServerEventToken() {
+    public RemoteEventToken() {
         super();
     }
 
@@ -74,7 +74,7 @@ public class ServerEventToken extends Token {
      *  @param eventType The type of event to alert the user of.
      *  @param message The accompanying message to explain the event.
      */
-    public ServerEventToken(EventType eventType, String message) {
+    public RemoteEventToken(EventType eventType, String message) {
         this();
 
         _message = message;
@@ -84,21 +84,18 @@ public class ServerEventToken extends Token {
     /** Initialize the token when an exception has occurred.
      *  @param exception Exception thrown by the active simulation.
      */
-    public ServerEventToken(Exception exception) {
+    public RemoteEventToken(String message, Throwable exception) {
         this();
-
-        _message = "";
         _eventType = EventType.EXCEPTION;
 
-        if (exception != null) {
-            // Print the stack trace to the writer.
-            StringWriter writer = new StringWriter();
-            exception.printStackTrace(new PrintWriter(
-                    new BufferedWriter(writer)));
-
-            // Save the message and stack trace.
-            _message = writer.toString();
+        // Print the stack trace to the writer.
+        StringWriter writer = new StringWriter();
+        if (message != null) {
+            writer.write("Message: " + message + "\n");
         }
+        exception.printStackTrace(new PrintWriter(new BufferedWriter(writer)));
+        // Save the message and stack trace.
+        _message = writer.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,6 +113,11 @@ public class ServerEventToken extends Token {
      */
     public String getMessage() {
         return _message;
+    }
+
+    @Override
+    public String toString() {
+        return "Event type: " + _eventType + "\n" + _message;
     }
 
     ///////////////////////////////////////////////////////////////////

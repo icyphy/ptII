@@ -47,14 +47,13 @@ import ptolemy.data.Token;
 import ptolemy.domains.pn.kernel.PNDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Settable;
+import ptserver.communication.ProxyModelAdapter;
 import ptserver.communication.ProxyModelInfrastructure;
-import ptserver.communication.ProxyModelInfrastructure.ProxyModelListener;
 import ptserver.communication.ProxyModelResponse;
 import ptserver.control.IServerManager;
 import ptserver.control.PtolemyServer;
 import ptserver.control.SimulationTask;
 import ptserver.control.Ticket;
-import ptserver.data.ServerEventToken.EventType;
 import ptserver.test.SysOutActor;
 import ptserver.test.SysOutActor.TokenDelegator;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
@@ -176,13 +175,13 @@ public class RemoteModelTest {
         String[] modelUrls = _proxy.getModelListing();
         assertNotNull(modelUrls);
         assertTrue(modelUrls.length > 0);
-        String adderModel = getAdderModel(modelUrls);
+        String adderModel = getJUnitModel(modelUrls);
         assertNotNull(adderModel);
 
         String[] layoutUrls = _proxy.getLayoutListing(adderModel);
         assertNotNull(layoutUrls);
         assertTrue(layoutUrls.length > 0);
-        String adderModelLayout = getAdderModelLayout(layoutUrls);
+        String adderModelLayout = getJUnitModelLayout(layoutUrls);
         assertNotNull(adderModelLayout);
 
         ProxyModelResponse response = _proxy.open(adderModel, adderModelLayout);
@@ -330,13 +329,7 @@ public class RemoteModelTest {
         task.getProxyModelInfrastructure().setTimeoutPeriod(timeoutPeriod);
         final long time = System.currentTimeMillis();
         task.getProxyModelInfrastructure().addProxyModelListener(
-                new ProxyModelListener() {
-
-                    public void modelException(
-                            ProxyModelInfrastructure remoteModel,
-                            String message, Throwable exception) {
-
-                    }
+                new ProxyModelAdapter() {
 
                     public void modelConnectionExpired(
                             ProxyModelInfrastructure remoteModel) {
@@ -348,11 +341,6 @@ public class RemoteModelTest {
                             isWaiting = false;
                             RemoteModelTest.this.notifyAll();
                         }
-                    }
-
-                    public void modelEvent(
-                            ProxyModelInfrastructure remoteModel,
-                            String message, EventType type) {
                     }
                 });
         _proxy.start(response.getTicket());
@@ -375,18 +363,18 @@ public class RemoteModelTest {
         _server = null;
     }
 
-    private String getAdderModel(String[] modelUrls) {
+    private String getJUnitModel(String[] modelUrls) {
         for (String model : modelUrls) {
-            if (model.endsWith("addermodel.xml")) {
+            if (model.endsWith("junitmodel.xml")) {
                 return model;
             }
         }
         return null;
     }
 
-    private String getAdderModelLayout(String[] layoutUrls) {
+    private String getJUnitModelLayout(String[] layoutUrls) {
         for (String model : layoutUrls) {
-            if (model.contains("addermodel") && model.endsWith(".layout.xml")) {
+            if (model.contains("junitmodel") && model.endsWith(".layout.xml")) {
                 return model;
             }
         }

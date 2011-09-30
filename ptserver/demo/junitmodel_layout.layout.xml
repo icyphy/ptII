@@ -170,8 +170,6 @@
 	<!-- End of settable parameter example. -->
 
 	<!-- Relations and links for the client structure. -->
-	<relation name="relation3" class="ptolemy.actor.TypedIORelation">
-	</relation>
 	<relation name="relation4" class="ptolemy.actor.TypedIORelation">
 	</relation>
 	<relation name="relation" class="ptolemy.actor.TypedIORelation">

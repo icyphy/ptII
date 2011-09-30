@@ -172,9 +172,9 @@ public class LayoutParser {
     public ArrayList<AttributeElement> getPositionableAttributes()
             throws IllegalActionException {
         ArrayList<AttributeElement> attributeDefinitions = new ArrayList<AttributeElement>();
-        for (EntityElement element : getPositionableEntities()) {
-            _initPositionableAttributes(element.getElement(),
-                    attributeDefinitions);
+        List<ComponentEntity> entities = _topLevelActor.deepEntityList();
+        for (ComponentEntity entity : entities) {
+            _initPositionableAttributes(entity, attributeDefinitions);
         }
         _initPositionableAttributes(_topLevelActor, attributeDefinitions);
 
