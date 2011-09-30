@@ -130,6 +130,22 @@ public class MonotonicityCounterexamples {
         return !_counterexamples.isEmpty();
     }
 
+    public ConceptPair[] entryArraySorted() {
+        ConceptPair[] entries = new ConceptPair[0];
+        entries = entrySet().toArray(entries);
+        Arrays.sort(entries, new Comparator<ConceptPair>() {
+            @Override
+            public int compare(ConceptPair o1, ConceptPair o2) {
+                if (o1.lesser.toString().equals(o2.lesser.toString())) {
+                    return o1.greater.toString().compareTo(o2.greater.toString());
+                } else {
+                    return o1.lesser.toString().compareTo(o2.lesser.toString());
+                }
+            }
+        });
+        return entries;
+    }
+
     /** Return a set of all the counterexamples.
      *  For each pair in the set returned, (x1, x2),
      *  we have x1 <= x2, but on the function under consideration
@@ -148,8 +164,19 @@ public class MonotonicityCounterexamples {
     }
 
     public boolean equals(Object o) {
-        return (o instanceof MonotonicityCounterexamples && _counterexamples
-                .equals(((MonotonicityCounterexamples) o)._counterexamples));
+        if (!(o instanceof MonotonicityCounterexamples)) {
+            return false;
+        }
+        MonotonicityCounterexamples mc = (MonotonicityCounterexamples)o;
+        if (!mc._counterexamples.keySet().equals(_counterexamples.keySet())) {
+            return false;
+        }
+        for (Concept key : _counterexamples.keySet()) {
+            if (!mc._counterexamples.get(key).equals(_counterexamples.get(key))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public int hashCode() {
@@ -164,19 +191,7 @@ public class MonotonicityCounterexamples {
         StringBuffer resultBuffer = new StringBuffer();
 
         resultBuffer.append("{");
-        ConceptPair[] entries = null;
-        entries = entrySet().toArray(entries);
-        Arrays.sort(entries, new Comparator<ConceptPair>() {
-            @Override
-            public int compare(ConceptPair o1, ConceptPair o2) {
-                if (o1.lesser.toString().equals(o2.lesser.toString())) {
-                    return o1.greater.toString().compareTo(o2.greater.toString());
-                } else {
-                    return o1.lesser.toString().compareTo(o2.lesser.toString());
-                }
-            }
-        });
-        for (Entry<Concept, Concept> pair : entries) {
+        for (Entry<Concept, Concept> pair : entryArraySorted()) {
             resultBuffer.append("(" + pair.getKey().toString() + ","
                     + pair.getValue() + ")");
         }
@@ -198,7 +213,7 @@ public class MonotonicityCounterexamples {
         
         TupleToken[] array = new TupleToken[entrySet().size()];
         int i = 0;
-        for (Entry<Concept, Concept> pair : entrySet()) {
+        for (Entry<Concept, Concept> pair : entryArraySorted()) {
             ConceptToken[] conceptArr = {
                     new ConceptToken(pair.getKey()),
                     new ConceptToken(pair.getValue())
