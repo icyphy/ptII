@@ -209,6 +209,13 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 newLocation = locatable.getLocation();
             }
 
+            // NOTE: we use the transform worked out for the drag to
+            // set the original MoML location.
+            // Should do this before we break or create the relative location link.
+            double[] oldLocation = new double[2];
+            oldLocation[0] = newLocation[0] + transform[0];
+            oldLocation[1] = newLocation[1] + transform[1];
+
             // RelativeLocatables can be dropped onto an object to create a
             // link to that object. In this case the location attribute is
             // replaced by a RelativeLocation that holds a relative offset.
@@ -223,6 +230,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 // Do not accept relative locatables as drop target!! This could lead
                 // to a cycle in the references, and ultimately to a stack overflow
                 // when trying to compute the positions!
+                // FIXME: Could make this check weaker by checking for cycles.
                 if (dropTarget != null && !(dropTarget instanceof RelativeLocatable)) {
                     // Set the new values for the relativeTo properties.
                     newRelativeTo = dropTarget.getName();
@@ -253,12 +261,6 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             if (newLocation == null) {
                 newLocation = new double[] { 0, 0 };
             }
-
-            // NOTE: we use the transform worked out for the drag to
-            // set the original MoML location
-            double[] oldLocation = new double[2];
-            oldLocation[0] = newLocation[0] + transform[0];
-            oldLocation[1] = newLocation[1] + transform[1];
 
             // Create the MoML, wrapping the new location attribute
             // in an element referring to the container
