@@ -1469,10 +1469,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     remoteActor) + "_actor";
 
             if (!moreThanOneRelation) {
+                if (verbosityLevel > 1) {
+                    code.append("System.out.println(\"Create remote actor: " + remoteActor.getName() + "\");" + _eol);
+                }
                 code.append("if (" + remoteActorSymbol + " == null) {" + _eol
                         + remoteActorSymbol + " = new "
                         + remoteActor.getClass().getName()
-                        + "($containerSymbol() , \""
+                        //+ "($containerSymbol() , \""
+                        + "(" + getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer()))
+                        + ", \""
                         + remoteActor.getName()
                         //+ remoteActorSymbol
                         + "\");"
