@@ -201,6 +201,12 @@ public class TransitionController extends BasicEdgeController {
                     blob.setFilled(true);
                     c.setTailEnd(blob);
                 }
+                if (transition.isImmediate()) {
+                    Blob blob = new Blob(0, 0, 0, Blob.BLOB_DIAMOND, 5.0,
+                            Color.red);
+                    blob.setFilled(true);
+                    c.setTailEnd(blob);
+                }
                 if (transition.isNondeterministic()) {
                     c.setStrokePaint(Color.RED);
                 }

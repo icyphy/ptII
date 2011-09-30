@@ -141,6 +141,10 @@ import ptolemy.kernel.util.Workspace;
  token with value as false, meaning that if this transition is enabled, it
  must be the only enabled transition.
  <p>
+ The <i>immediateTransition</i> parameter, if given a value true, specifies
+ that this transition is may be taken as soon as its source state is entered.
+ This may lead to transient states.
+ <p>
  The <i>defaultTransition</i> parameter, if given a value true, specifies
  that this transition is enabled if and only if no other non-default
  transition is enabled.
@@ -221,6 +225,24 @@ public class Transition extends ComponentRelation {
             // expression
             preemptive.getToken();
             workspace().incrVersion();
+            //FIXME: cmot see comment @immediate
+            if (!this.isPreemptive()) {
+                if (immediate != null) {
+                    immediate.setToken(BooleanToken.FALSE); 
+                }
+            }
+        } else if (attribute == immediate) {
+            _immediate = ((BooleanToken) immediate.getToken()).booleanValue();
+            // If this is an immediate transition, enforce it is also a
+            // preemptive one, because we can only handle immediate preemptive
+            // transition at this time.
+            // FIXME: cmot, does this only enforce GUI created immediate transitions to be
+            // preemptive? Should we need a runtime error?
+            if (_immediate) {
+                if (preemptive != null) {
+                    preemptive.setToken(BooleanToken.TRUE);
+                }
+            }
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
                     .booleanValue();
@@ -235,6 +257,8 @@ public class Transition extends ComponentRelation {
 
                 reset.setToken(BooleanToken.FALSE);
                 preemptive.setToken(BooleanToken.FALSE);
+                //TODO: cmot, verify
+                immediate.setToken(BooleanToken.FALSE);
                 defaultTransition.setToken(BooleanToken.FALSE);
                 nondeterministic.setToken(BooleanToken.FALSE);
             }
@@ -293,6 +317,8 @@ public class Transition extends ComponentRelation {
         newObject.guardExpression = (StringAttribute) newObject
                 .getAttribute("guardExpression");
         newObject.preemptive = (Parameter) newObject.getAttribute("preemptive");
+        //TODO: cmot, verify
+        newObject.immediate = (Parameter) newObject.getAttribute("immediate");
         newObject.refinementName = (StringAttribute) newObject
                 .getAttribute("refinementName");
         newObject._destinationState = null;
@@ -585,6 +611,15 @@ public class Transition extends ComponentRelation {
         }
     }
 
+    /** Return true if this transition is immediate. Whether this transition
+     *  is immediate is specified by the <i>immediateTransition</i> parameter.
+     *  @return True if this transition is immediate.
+     */
+    public boolean isImmediate() {
+        //TODO: cmot, verify
+        return _immediate;
+    }
+
     /** Override the base class to ensure that the proposed container
      *  is an instance of FSMActor or null; if it is null, then
      *  remove it from the container, and also remove any refinement(s)
@@ -689,6 +724,10 @@ public class Transition extends ComponentRelation {
     /** Parameter specifying whether this transition is preemptive.
      */
     public Parameter preemptive = null;
+
+    /** Parameter specifying whether this transition is immediate.
+     */
+    public Parameter immediate = null;
 
     /** Parameter specifying whether this transition should be treated
      *  as an error transition.  The default value is a boolean with
@@ -863,6 +902,11 @@ public class Transition extends ComponentRelation {
         preemptive = new Parameter(this, "preemptive");
         preemptive.setTypeEquals(BaseType.BOOLEAN);
         preemptive.setToken(BooleanToken.FALSE);
+        //TODO: cmot, verify
+        immediate = new Parameter(this, "immediate");
+        immediate.setTypeEquals(BaseType.BOOLEAN);
+        immediate.setToken(BooleanToken.FALSE);
+
         errorTransition = new Parameter(this, "errorTransiton");
         errorTransition.setTypeEquals(BaseType.BOOLEAN);
         errorTransition.setToken(BooleanToken.FALSE);
@@ -930,7 +974,11 @@ public class Transition extends ComponentRelation {
     // Version of the cached guard parse tree
     private long _guardParseTreeVersion = -1;
 
-    // Cached nondeterministic attribute value.
+    // Set to true if the transition should be checked
+    // as son as the source state is entered. This may lead 
+    // to possibly transient states.
+    private boolean _immediate = false;
+
     private boolean _nondeterministic = false;
 
     // The parse tree evaluator for the transition.
