@@ -57,6 +57,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
@@ -955,6 +956,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + parentContainer.getClass().getName()
                         + "(cgContainer, \""
                         + parentContainer.getName() + "\");" + _eol
+                        + _generateContainedVariables(parentContainer, "cgContainer")
                         + "} else {" + _eol
                         + "    cgContainer = temporaryContainer;"
                         + _eol + "}" + _eol);
@@ -976,41 +978,88 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                          + " = cgContainer;" + _eol
                          + "}" + _eol);
 
-            // Instantiate Variables for those actors that access parameters in their container.
-            // $PTII/bin/ptcg -language java auto/ReadParametersInContainerTest.xml
-            Iterator variables = component.getContainer()
-                    .attributeList(Variable.class).iterator();
-            while (variables.hasNext()) {
-                if (!_importedVariable) {
-                    _importedVariable = true;
-                    _headerFiles.add("ptolemy.data.expr.Variable;");
-                }
-                Variable variable = (Variable) variables.next();
-                String variableName = StringUtilities.sanitizeName(
-                        variable.getName()).replaceAll("\\$", "Dollar");
-                if (variableName.charAt(0) == '_') {
-                    if (variableName.equals("_windowProperties")
-                            || variableName.startsWith("_vergil")) {
-                        // No need to create _windowProperties,  _vergilSize,
-                        // _vergilZoomFactor, or _vergilCenter variables.
-                        continue;
-                    }
-                }
-                // FIXME: optimize this by creating a method that only creates
-                // the variable if it is not already set.  The reason we would
-                // have duplicate variables is because we have two custom actors
-                // in one container and the container has Parameters.
-                containmentCode
-                        .append("if (" + containerSymbol + ".getAttribute(\""
-                                + variable.getName() + "\") == null) {" + _eol
-                                + "   new Variable(" + containerSymbol + ", \""
-                                + variable.getName() + "\").setExpression(\""
-                                + variable.getExpression() + "\");" + _eol
-                                + "}" + _eol);
-            }
+             containmentCode.append(_generateContainedVariables(component.getContainer(), containerSymbol));
             // Whew.
         }
         return containmentCode.toString();
+    }
+
+    /** Instantiate Variables and locations for those actors that access parameters in their container. 
+     *  @param container The container in which we should look for variables and locations
+     *  @param containerSymbol The java variable present in the generated code that refers
+     *  to the container.
+     *  @return code that instantiates any variables in the container.
+     */
+    private String _generateContainedVariables(NamedObj container, String containerSymbol) {
+        StringBuffer variableCode = new StringBuffer();
+        // Instantiate Variables for those actors that access parameters in their container.
+        // $PTII/bin/ptcg -language java auto/ReadParametersInContainerTest.xml
+        Iterator variables = container
+            .attributeList(Variable.class).iterator();
+        while (variables.hasNext()) {
+            //if (!_importedVariable) {
+                //   _importedVariable = true;
+
+                //}
+            Variable variable = (Variable) variables.next();
+            String variableName = StringUtilities.sanitizeName(
+                    variable.getName()).replaceAll("\\$", "Dollar");
+            if (variableName.charAt(0) == '_') {
+                if (variableName.equals("_windowProperties")
+                        || variableName.startsWith("_vergil")) {
+                    // No need to create _windowProperties,  _vergilSize,
+                    // _vergilZoomFactor, or _vergilCenter variables.
+                    continue;
+                }
+            }
+            String variableClassName = variable.getClass().getName();
+            String variableClassShortName = variableClassName.substring(variableClassName.lastIndexOf(".") + 1);
+            _headerFiles.add(variableClassName + ";");
+
+            // FIXME: optimize this by creating a method that only creates
+            // the variable if it is not already set.  The reason we would
+            // have duplicate variables is because we have two custom actors
+            // in one container and the container has Parameters.
+            variableCode
+                .append("if (" + containerSymbol + ".getAttribute(\""
+                        + variable.getName() + "\") == null) {" + _eol
+                        + "   new " + variableClassShortName + "(" + containerSymbol + ", \""
+                        + variable.getName() + "\").setExpression(\""
+                        + variable.getExpression() + "\");" + _eol
+                        + "}" + _eol);
+        }
+
+        Iterator locations = container
+            .attributeList(Location.class).iterator();
+        while (locations.hasNext()) {
+            Location location = (Location) locations.next();
+            String locationName = StringUtilities.sanitizeName(
+                    location.getName()).replaceAll("\\$", "Dollar");
+            if (locationName.charAt(0) == '_') {
+                if (locationName.equals("_windowProperties")
+                        || locationName.startsWith("_vergil")) {
+                    // No need to create _windowProperties,  _vergilSize,
+                    // _vergilZoomFactor, or _vergilCenter locations.
+                    continue;
+                }
+            }
+            String locationClassName = location.getClass().getName();
+            String locationClassShortName = locationClassName.substring(locationClassName.lastIndexOf(".") + 1);
+            _headerFiles.add(locationClassName + ";");
+
+            // FIXME: optimize this by creating a method that only creates
+            // the location if it is not already set.  The reason we would
+            // have duplicate locations is because we have two custom actors
+            // in one container and the container has Parameters.
+            variableCode
+                .append("if (" + containerSymbol + ".getAttribute(\""
+                        + location.getName() + "\") == null) {" + _eol
+                        + "   new " + locationClassShortName + "(" + containerSymbol + ", \""
+                        + location.getName() + "\").setExpression(\""
+                        + location.getExpression() + "\");" + _eol
+                        + "}" + _eol);
+        }
+        return variableCode.toString();
     }
 
     /**
