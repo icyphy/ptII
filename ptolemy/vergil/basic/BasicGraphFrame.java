@@ -1487,288 +1487,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /**
-     * Initialize this BasicGraphFrame.
-     * Derived classes may call this method in their constructors.
-     */
-    protected void _initBasicGraphFrame() {
-
-        getModel().addChangeListener(this);
-
-        getContentPane().setLayout(new BorderLayout());
-
-        _rightComponent = _createRightComponent(getModel());
-
-        ActionListener deletionListener = new DeletionListener();
-
-        _rightComponent.registerKeyboardAction(deletionListener, "Delete",
-                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
-        _rightComponent.registerKeyboardAction(deletionListener, "BackSpace",
-                KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-        _rightComponent.setRequestFocusEnabled(true);
-
-        // We used to do this, but it would result in context menus
-        // getting lost on the mac.
-        // _jgraph.addMouseListener(new FocusMouseListener());
-        _rightComponent.setAlignmentX(1);
-        _rightComponent.setAlignmentY(1);
-        // Background color is parameterizable by preferences.
-        Configuration configuration = getConfiguration();
-        _rightComponent.setBackground(BACKGROUND_COLOR);
-        if (configuration != null) {
-            try {
-                PtolemyPreferences preferences = PtolemyPreferences
-                        .getPtolemyPreferencesWithinConfiguration(configuration);
-                if (preferences != null) {
-                    _rightComponent.setBackground(preferences.backgroundColor
-                            .asColor());
-                }
-            } catch (IllegalActionException e1) {
-                // Ignore the exception and use the default color.
-            }
-        }
-
-        try {
-            // The SizeAttribute property is used to specify the size
-            // of the JGraph component. Unfortunately, with Swing's
-            // mysterious and undocumented handling of component sizes,
-            // there appears to be no way to control the size of the
-            // JGraph from the size of the Frame, which is specified
-            // by the WindowPropertiesAttribute.
-            SizeAttribute size = (SizeAttribute) getModel().getAttribute(
-                    "_vergilSize", SizeAttribute.class);
-
-            if (size != null) {
-                size.setSize(_rightComponent);
-            } else {
-                // Set the default size.
-                // Note that the location is of the frame, while the size
-                // is of the scrollpane.
-                _rightComponent.setMinimumSize(new Dimension(200, 200));
-                _rightComponent.setPreferredSize(new Dimension(600, 400));
-                _rightComponent.setSize(600, 400);
-            }
-
-            // Set the zoom factor.
-            Parameter zoom = (Parameter) getModel().getAttribute(
-                    "_vergilZoomFactor", Parameter.class);
-
-            if (zoom != null) {
-                zoom(((DoubleToken) zoom.getToken()).doubleValue());
-
-                // Make sure the visibility is only expert.
-                zoom.setVisibility(Settable.EXPERT);
-            }
-
-            // Set the pan position.
-            Parameter pan = (Parameter) getModel().getAttribute(
-                    "_vergilCenter", Parameter.class);
-
-            if (pan != null) {
-                ArrayToken panToken = (ArrayToken) pan.getToken();
-                Point2D center = new Point2D.Double(
-                        ((DoubleToken) panToken.getElement(0)).doubleValue(),
-                        ((DoubleToken) panToken.getElement(1)).doubleValue());
-                setCenter(center);
-
-                // Make sure the visibility is only expert.
-                pan.setVisibility(Settable.EXPERT);
-            }
-        } catch (Throwable throwable) {
-            // Ignore problems here.  Errors simply result in a default
-            // size and location.
-        }
-
-        _rightComponent.addMouseWheelListener(this);
-        _rightComponent.addMouseMotionListener(this);
-        _rightComponent.addMouseListener(this);
-
-        // If we don't have a library, we might be trying to only show
-        // models
-        // FIXME: should we be checking for _library instead?
-        if ((CompositeEntity) configuration.getEntity("actor library") != null) {
-            // Create the panner.
-            _graphPanner = new JCanvasPanner(getJGraph());
-            _graphPanner.setPreferredSize(new Dimension(200, 150));
-            _graphPanner.setMaximumSize(new Dimension(200, 150));
-            _graphPanner.setSize(200, 150);
-        }
-
-        // NOTE: Border causes all kinds of problems!
-        // _graphPanner.setBorder(BorderFactory.createEtchedBorder());
-        // Create the library of actors, or use the one in the entity,
-        // if there is one.
-        // FIXME: How do we make changes to the library persistent?
-        boolean gotLibrary = false;
-
-        try {
-            LibraryAttribute libraryAttribute = (LibraryAttribute) getModel()
-                    .getAttribute("_library", LibraryAttribute.class);
-
-            if (libraryAttribute != null) {
-                // The model contains a library.
-                try {
-                    _topLibrary = libraryAttribute.getLibrary();
-                    gotLibrary = true;
-                } catch (SecurityException ex) {
-                    System.out.println("Warning: failed to parse "
-                            + "_library attribute (running in an applet "
-                            + "or sandbox always causes this)");
-                }
-            }
-        } catch (Exception ex) {
-            try {
-                MessageHandler.warning("Invalid library in the model.", ex);
-            } catch (CancelException e) {
-            }
-        }
-
-        if (!gotLibrary) {
-            try {
-                if (_defaultLibrary != null) {
-                    // A default library has been specified.
-                    _topLibrary = _defaultLibrary.getLibrary();
-                    gotLibrary = true;
-                }
-            } catch (SecurityException ex) {
-                // Ignore, we are in an applet or sandbox.
-                // We already printed a message, why print it again?
-            } catch (Exception ex) {
-                try {
-                    // FIXME: It seems wrong to call MessageHandler here,
-                    // instead, we should throw an IllegalActionException?
-                    MessageHandler.warning(
-                            "Invalid default library for the frame.", ex);
-                } catch (CancelException e) {
-                }
-            }
-        }
-
-        if (!gotLibrary) {
-            // Neither the model nor the argument have specified a library.
-            // See if there is a default library in the configuration.
-            _topLibrary = _createDefaultLibrary(getModel().workspace());
-        }
-
-        // Only include the palettePane and panner if there is an actor library.
-        // The ptinyViewer configuration uses this.
-        if ((CompositeEntity) configuration.getEntity("actor library") != null) {
-            _libraryModel = new VisibleTreeModel(_topLibrary);
-            _library = new PTree(_libraryModel);
-            _library.setRootVisible(false);
-            _library.setBackground(BACKGROUND_COLOR);
-
-            // If you want to expand the top-level libraries, uncomment this.
-            // Object[] path = new Object[2];
-            // path[0] = _topLibrary;
-            // Iterator libraries = _topLibrary.entityList().iterator();
-            // while (libraries.hasNext()) {
-            //     path[1] = libraries.next();
-            //     _library.expandPath(new javax.swing.tree.TreePath(path));
-            // }
-
-            _libraryContextMenuCreator = new PTreeMenuCreator();
-            _libraryContextMenuCreator
-                    .addMenuItemFactory(new OpenLibraryMenuItemFactory());
-            _libraryContextMenuCreator
-                    .addMenuItemFactory(new DocumentationMenuItemFactory());
-            _library.addMouseListener(_libraryContextMenuCreator);
-
-            _libraryScrollPane = new JScrollPane(_library);
-            _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
-            _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
-
-            // create the palette on the left.
-            _palettePane = new JPanel();
-            _palettePane.setBorder(null);
-            _palettePane
-                    .setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
-
-            _palettePane.add(_libraryScrollPane, BorderLayout.CENTER);
-            if (_graphPanner != null) {
-                _palettePane.add(_graphPanner, BorderLayout.SOUTH);
-            }
-
-            _splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
-            _splitPane.setLeftComponent(_palettePane);
-            _splitPane.setRightComponent(_rightComponent);
-            getContentPane().add(_splitPane, BorderLayout.CENTER);
-        } else {
-            getContentPane().add(_rightComponent, BorderLayout.CENTER);
-        }
-
-        _toolbar = new JToolBar();
-        _toolbar.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
-        try {
-            new ToolBar(getTableau(), "toolbar", _toolbar, BorderLayout.NORTH);
-        } catch (Exception e) {
-            throw new InternalErrorException("Unable to create tool bar.");
-        }
-
-        GUIUtilities.addToolBarButton(_toolbar, _saveAction);
-
-        // Note that in Top we disable Print unless the class implements
-        // the Printable or Pageable interfaces.  By definition, this class
-        // implements the Printable interface
-        GUIUtilities.addToolBarButton(_toolbar, _printAction);
-
-        GUIUtilities.addToolBarButton(_toolbar, _zoomInAction);
-        GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
-        GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
-        GUIUtilities.addToolBarButton(_toolbar, _zoomOutAction);
-
-        GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
-        if (getModel() == getModel().toplevel()) {
-            // If we are at the top level, disable
-            _openContainerAction.setEnabled(false);
-        }
-
-        _cutAction = new CutAction();
-        _copyAction = new CopyAction();
-        _pasteAction = new PasteAction();
-
-        // FIXME: vergil.kernel.AttributeController also defines context
-        // menu choices that do the same thing.
-        _moveToFrontAction = new MoveToFrontAction();
-        _moveToBackAction = new MoveToBackAction();
-
-        _editPreferencesAction = new EditPreferencesAction();
-
-        // Add a weak reference to this to keep track of all
-        // the graph frames that have been created.
-        _openGraphFrames.add(this);
-        
-        // Try to create an advanced layout action.
-        final IGuiAction layoutGuiAction = _createLayoutAction();
-        if (layoutGuiAction != null) {
-            _layoutAction = new AbstractAction("Automatic Layout") {
-                public void actionPerformed(ActionEvent e) {
-                    layoutGuiAction.doAction(getModel());
-                }
-            };
-            // The advanced layout action is available, so create the configuration
-            // dialog for displaying layout parameters.
-            _layoutConfigDialogAction = new LayoutConfigDialogAction();
-        } else {
-            // The advanced layout action is not available, so use the simple
-            // Ptolemy layout algorithm.
-            _layoutAction = new AbstractAction("Automatic Layout") {
-                public void actionPerformed(ActionEvent e) {
-                    new PtolemyLayoutAction().doAction(getModel());
-                }
-            };
-        }
-        _layoutAction.putValue("tooltip", "Layout the graph (Ctrl+T)");
-        _layoutAction.putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                KeyEvent.VK_T, Toolkit.getDefaultToolkit()
-                        .getMenuShortcutKeyMask()));
-        _layoutAction.putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
-
-    }
-
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {
@@ -2298,6 +2016,353 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         return namedObjSet;
     }
+
+    /**
+     * Initialize this BasicGraphFrame.
+     * Derived classes may call this method in their constructors.
+     * Derived classes should call the various _initBasicGraphFrame*() methods
+     * so as to avoid code duplication
+     */
+    protected void _initBasicGraphFrame() {
+
+        // WARNING: If you change this method, then Kepler will probably break.
+        // kepler/gui/src/org/kepler/gui/KeplerGraphFrame.java extends BasicGraphFrame
+        // and has an _initBasicGraphFrame() method.
+        
+        // To build Kepler under Eclipse, see
+        // https://kepler-project.org/developers/reference/kepler-and-eclipse
+
+        // This method calls a series of other protected methods whose
+        // names start with _initBasicGraphFrame. These methods contain common
+        // functionality between this class and KeplerGraphFrame so
+        // that there is a chance that we avoid a ton of code
+        // duplication.
+
+        // Code that is different between this class and KeplerGraphFrame
+        // appears below.
+
+        // Eventually, perhaps the common functionality can be put into one
+        // method.
+
+        _initBasicGraphFrameInitialization();
+
+        ActionListener deletionListener = new DeletionListener();
+
+        _rightComponent.registerKeyboardAction(deletionListener, "Delete",
+                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+        _rightComponent.registerKeyboardAction(deletionListener, "BackSpace",
+                KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        _initBasicGraphFrameRightComponent();
+
+        // Background color is parameterizable by preferences.
+        Configuration configuration = getConfiguration();
+        _rightComponent.setBackground(BACKGROUND_COLOR);
+        if (configuration != null) {
+            try {
+                PtolemyPreferences preferences = PtolemyPreferences
+                        .getPtolemyPreferencesWithinConfiguration(configuration);
+                if (preferences != null) {
+                    _rightComponent.setBackground(preferences.backgroundColor
+                            .asColor());
+                }
+            } catch (IllegalActionException e1) {
+                // Ignore the exception and use the default color.
+            }
+        }
+
+        _initBasicGraphFrameRightComponentMouseListeners();
+
+        try {
+            // The SizeAttribute property is used to specify the size
+            // of the JGraph component. Unfortunately, with Swing's
+            // mysterious and undocumented handling of component sizes,
+            // there appears to be no way to control the size of the
+            // JGraph from the size of the Frame, which is specified
+            // by the WindowPropertiesAttribute.
+            SizeAttribute size = (SizeAttribute) getModel().getAttribute(
+                    "_vergilSize", SizeAttribute.class);
+
+            if (size != null) {
+                size.setSize(_rightComponent);
+            } else {
+                // Set the default size.
+                // Note that the location is of the frame, while the size
+                // is of the scrollpane.
+                _rightComponent.setMinimumSize(new Dimension(200, 200));
+                _rightComponent.setPreferredSize(new Dimension(600, 400));
+                _rightComponent.setSize(600, 400);
+            }
+
+            _initBasicGraphFrameSetZoomAndPan();
+        } catch (Throwable throwable) {
+            // Ignore problems here.  Errors simply result in a default
+            // size and location.
+        }
+
+
+        // If we don't have a library, we might be trying to only show
+        // models
+        // FIXME: should we be checking for _library instead?
+        if ((CompositeEntity) configuration.getEntity("actor library") != null) {
+            // Create the panner.
+            _graphPanner = new JCanvasPanner(getJGraph());
+            _graphPanner.setPreferredSize(new Dimension(200, 150));
+            _graphPanner.setMaximumSize(new Dimension(200, 150));
+            _graphPanner.setSize(200, 150);
+        }
+
+        // NOTE: Border causes all kinds of problems!
+        // _graphPanner.setBorder(BorderFactory.createEtchedBorder());
+        // Create the library of actors, or use the one in the entity,
+        // if there is one.
+        // FIXME: How do we make changes to the library persistent?
+        boolean gotLibrary = false;
+
+        try {
+            LibraryAttribute libraryAttribute = (LibraryAttribute) getModel()
+                    .getAttribute("_library", LibraryAttribute.class);
+
+            if (libraryAttribute != null) {
+                // The model contains a library.
+                try {
+                    _topLibrary = libraryAttribute.getLibrary();
+                    gotLibrary = true;
+                } catch (SecurityException ex) {
+                    System.out.println("Warning: failed to parse "
+                            + "_library attribute (running in an applet "
+                            + "or sandbox always causes this)");
+                }
+            }
+        } catch (Exception ex) {
+            try {
+                MessageHandler.warning("Invalid library in the model.", ex);
+            } catch (CancelException e) {
+            }
+        }
+
+        if (!gotLibrary) {
+            try {
+                if (_defaultLibrary != null) {
+                    // A default library has been specified.
+                    _topLibrary = _defaultLibrary.getLibrary();
+                    gotLibrary = true;
+                }
+            } catch (SecurityException ex) {
+                // Ignore, we are in an applet or sandbox.
+                // We already printed a message, why print it again?
+            } catch (Exception ex) {
+                try {
+                    // FIXME: It seems wrong to call MessageHandler here,
+                    // instead, we should throw an IllegalActionException?
+                    MessageHandler.warning(
+                            "Invalid default library for the frame.", ex);
+                } catch (CancelException e) {
+                }
+            }
+        }
+
+        if (!gotLibrary) {
+            // Neither the model nor the argument have specified a library.
+            // See if there is a default library in the configuration.
+            _topLibrary = _createDefaultLibrary(getModel().workspace());
+        }
+
+        // Only include the palettePane and panner if there is an actor library.
+        // The ptinyViewer configuration uses this.
+        if ((CompositeEntity) configuration.getEntity("actor library") != null) {
+            _libraryModel = new VisibleTreeModel(_topLibrary);
+            _library = new PTree(_libraryModel);
+            _library.setRootVisible(false);
+            _library.setBackground(BACKGROUND_COLOR);
+
+            // If you want to expand the top-level libraries, uncomment this.
+            // Object[] path = new Object[2];
+            // path[0] = _topLibrary;
+            // Iterator libraries = _topLibrary.entityList().iterator();
+            // while (libraries.hasNext()) {
+            //     path[1] = libraries.next();
+            //     _library.expandPath(new javax.swing.tree.TreePath(path));
+            // }
+
+            _libraryContextMenuCreator = new PTreeMenuCreator();
+            _libraryContextMenuCreator
+                    .addMenuItemFactory(new OpenLibraryMenuItemFactory());
+            _libraryContextMenuCreator
+                    .addMenuItemFactory(new DocumentationMenuItemFactory());
+            _library.addMouseListener(_libraryContextMenuCreator);
+
+            _libraryScrollPane = new JScrollPane(_library);
+            _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
+            _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
+
+            // create the palette on the left.
+            _palettePane = new JPanel();
+            _palettePane.setBorder(null);
+            _palettePane
+                    .setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
+
+            _palettePane.add(_libraryScrollPane, BorderLayout.CENTER);
+            if (_graphPanner != null) {
+                _palettePane.add(_graphPanner, BorderLayout.SOUTH);
+            }
+
+            _splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+            _splitPane.setLeftComponent(_palettePane);
+            _splitPane.setRightComponent(_rightComponent);
+            getContentPane().add(_splitPane, BorderLayout.CENTER);
+        } else {
+            getContentPane().add(_rightComponent, BorderLayout.CENTER);
+        }
+
+        _toolbar = new JToolBar();
+        _toolbar.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+        try {
+            new ToolBar(getTableau(), "toolbar", _toolbar, BorderLayout.NORTH);
+        } catch (Exception e) {
+            throw new InternalErrorException("Unable to create tool bar.");
+        }
+
+        GUIUtilities.addToolBarButton(_toolbar, _saveAction);
+
+        // Note that in Top we disable Print unless the class implements
+        // the Printable or Pageable interfaces.  By definition, this class
+        // implements the Printable interface
+        GUIUtilities.addToolBarButton(_toolbar, _printAction);
+
+        _initBasicGraphFrameToolBarZoomButtons();
+
+        GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
+        if (getModel() == getModel().toplevel()) {
+            // If we are at the top level, disable
+            _openContainerAction.setEnabled(false);
+        }
+
+        _initBasicGraphFrameActions();
+
+        // Add a weak reference to this to keep track of all
+        // the graph frames that have been created.
+        _openGraphFrames.add(this);
+    }
+
+    /** Add the cut, copy, paste, move to front, mode to back
+     *  actions.  Also add the EditPreferencesAction and initialize
+     *  the layout gui.
+     *  Derived classes usually call this at the end of
+     *  _initBasicGraphFrame().
+     */
+    protected void _initBasicGraphFrameActions() {
+        _cutAction = new CutAction();
+        _copyAction = new CopyAction();
+        _pasteAction = new PasteAction();
+
+        // FIXME: vergil.kernel.AttributeController also defines context
+        // menu choices that do the same thing.
+        _moveToFrontAction = new MoveToFrontAction();
+        _moveToBackAction = new MoveToBackAction();
+
+        _editPreferencesAction = new EditPreferencesAction();
+
+        _initLayoutGuiAction();
+    }
+
+    /** Set up the right component. */
+    protected void _initBasicGraphFrameRightComponent() {
+        _rightComponent.setRequestFocusEnabled(true);
+        _rightComponent.setAlignmentX(1);
+        _rightComponent.setAlignmentY(1);
+    }
+
+    /** Add listeners to the right component. */
+    protected void _initBasicGraphFrameRightComponentMouseListeners() {
+        _rightComponent.addMouseWheelListener(this);
+        _rightComponent.addMouseMotionListener(this);
+        _rightComponent.addMouseListener(this);
+    }
+
+    /** Common initialization for a BasicGraphFrame.
+     *  Derived classes should call this method early in
+     *  _initBasicGraphFrame().
+     */
+    protected void _initBasicGraphFrameInitialization() {
+        getModel().addChangeListener(this);
+        getContentPane().setLayout(new BorderLayout());
+        _rightComponent = _createRightComponent(getModel());
+    }
+
+    /** Add tool bar buttons.
+     *  Derived classes should set _toolbar before calling
+     *  this method.
+     */
+    protected void _initBasicGraphFrameToolBarZoomButtons() {
+        GUIUtilities.addToolBarButton(_toolbar, _zoomInAction);
+        GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
+        GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
+        GUIUtilities.addToolBarButton(_toolbar, _zoomOutAction);
+    }
+
+    /** Set the zoom factor and the pan.
+     *  @exception IllegalActionException If the zoom or pan parameters
+     *  cannot be read.
+     */
+    protected void _initBasicGraphFrameSetZoomAndPan()
+            throws IllegalActionException {
+        // Set the zoom factor.
+        Parameter zoom = (Parameter) getModel().getAttribute(
+                "_vergilZoomFactor", Parameter.class);
+        if (zoom != null) {
+            zoom(((DoubleToken) zoom.getToken()).doubleValue());
+            // Make sure the visibility is only expert.
+            zoom.setVisibility(Settable.EXPERT);
+        }
+
+        // Set the pan position.
+        Parameter pan = (Parameter) getModel().getAttribute(
+                "_vergilCenter", Parameter.class);
+        
+        if (pan != null) {
+            ArrayToken panToken = (ArrayToken) pan.getToken();
+            Point2D center = new Point2D.Double(
+                    ((DoubleToken) panToken.getElement(0)).doubleValue(),
+                    ((DoubleToken) panToken.getElement(1)).doubleValue());
+            setCenter(center);
+
+            // Make sure the visibility is only expert.
+            pan.setVisibility(Settable.EXPERT);
+        }
+    }
+
+    /** Initialize the layout gui. */
+    protected void _initLayoutGuiAction() {
+        // Try to create an advanced layout action.
+        final IGuiAction layoutGuiAction = _createLayoutAction();
+        if (layoutGuiAction != null) {
+            _layoutAction = new AbstractAction("Automatic Layout") {
+                public void actionPerformed(ActionEvent e) {
+                    layoutGuiAction.doAction(getModel());
+                }
+            };
+            // The advanced layout action is available, so create the configuration
+            // dialog for displaying layout parameters.
+            _layoutConfigDialogAction = new LayoutConfigDialogAction();
+        } else {
+            // The advanced layout action is not available, so use the simple
+            // Ptolemy layout algorithm.
+            _layoutAction = new AbstractAction("Automatic Layout") {
+                public void actionPerformed(ActionEvent e) {
+                    new PtolemyLayoutAction().doAction(getModel());
+                }
+            };
+        }
+        _layoutAction.putValue("tooltip", "Layout the graph (Ctrl+T)");
+        _layoutAction.putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                KeyEvent.VK_T, Toolkit.getDefaultToolkit()
+                        .getMenuShortcutKeyMask()));
+        _layoutAction.putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
+    }
+
 
     /** Return true if this is a design pattern.
      *  @return true if the model corresponding to this object
