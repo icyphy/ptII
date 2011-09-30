@@ -36,7 +36,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-# set VERBOSE 1
+set VERBOSE 1
 
 ######################################################################
 ####
@@ -83,7 +83,7 @@ test PlotBox-2.2 {setDataurl, getDataurl, getDocumentBase, setDocumentBase} {
     # Reset so we don't break tests below
     $plot setDocumentBase $docbase
     list $url [java::isnull $docbase] [$newdocbase toString]
-} {http://notasite/bar/foo.plt 1 http://notasite/}
+} {http://notasite/bar/foo.plt 1 http://notasite}
 
 test PlotBox-3.1 {getMinimumSize getPreferredSize} {
     #$frame setSize 425 600
@@ -200,12 +200,12 @@ test PlotBox-14.1 {write} {
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "xxx">
 <plot>
-<!-- Ptolemy plot, version 3.1, PlotML format. -->
+<!-- Ptolemy plot, version 5.8.beta , PlotML format. -->
 <title>Software Downloads</title>
 <xLabel>Year</xLabel>
 <yLabel>Downloads</yLabel>
-<xRange min="0.0010" max="10.0"/>
-<yRange min="1.0" max="1000.0"/>
+<xRange min="1.0" max="3.0"/>
+<yRange min="2.0" max="4.0"/>
 <xTicks>
   <tick label="1993" position="0.0"/>
   <tick label="1994" position="1.0"/>
@@ -223,7 +223,7 @@ test PlotBox-14.1 {write} {
 </plot>
 }}
 
-test PlotBox-14.2 {write with DTD included} {
+test PlotBox-14.2 {write with a link to the public DTD included} {
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
 	    {java.io.PrintStream java.io.OutputStream} $stream]
@@ -232,76 +232,20 @@ test PlotBox-14.2 {write with DTD included} {
     $printStream flush
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \
-                [$stream toString] "\n" output
+                [$stream toString] "\n" results2
+    regsub -all {<!-- Ptolemy plot, version .* -->} $results2 "<!-- Ptolemy plot, version XXX -->" results3
 
-    list $output
+    list $results3
 } {{<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE plot [
-<!-- PlotML DTD, created by Edward A. Lee, eal@eecs.berkeley.edu. --><!ELEMENT plot (barGraph | bin | dataset | default | noColor | 
-	noGrid | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | 
- yLog | yRange | yTicks)*>
-  <!ELEMENT barGraph EMPTY>
-    <!ATTLIST barGraph width CDATA #IMPLIED>
-    <!ATTLIST barGraph offset CDATA #IMPLIED>
-  <!ELEMENT bin EMPTY>
-    <!ATTLIST bin width CDATA #IMPLIED>
-    <!ATTLIST bin offset CDATA #IMPLIED>
-  <!ELEMENT dataset (m | move | p | point)*>
-    <!ATTLIST dataset connected (yes | no) #IMPLIED>
-    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
-    <!ATTLIST dataset name CDATA #IMPLIED>
-    <!ATTLIST dataset stems (yes | no) #IMPLIED>
-  <!ELEMENT default EMPTY>
-    <!ATTLIST default connected (yes | no) "yes">
-    <!ATTLIST default marks (none | dots | points | various) "none">
-    <!ATTLIST default stems (yes | no) "no">
-  <!ELEMENT noColor EMPTY>
-  <!ELEMENT noGrid EMPTY>
-  <!ELEMENT title (#PCDATA)>
-  <!ELEMENT wrap EMPTY>
-  <!ELEMENT xLabel (#PCDATA)>
-  <!ELEMENT xLog EMPTY>
-  <!ELEMENT xRange EMPTY>
-    <!ATTLIST xRange min CDATA #REQUIRED>
-    <!ATTLIST xRange max CDATA #REQUIRED>
-  <!ELEMENT xTicks (tick)+>
-  <!ELEMENT yLabel (#PCDATA)>
-  <!ELEMENT yLog EMPTY>
-  <!ELEMENT yRange EMPTY>
-    <!ATTLIST yRange min CDATA #REQUIRED>
-    <!ATTLIST yRange max CDATA #REQUIRED>
-  <!ELEMENT yTicks (tick)+>
-    <!ELEMENT tick EMPTY>
-      <!ATTLIST tick label CDATA #REQUIRED>
-      <!ATTLIST tick position CDATA #REQUIRED>
-    <!ELEMENT m EMPTY>
-      <!ATTLIST m x CDATA #IMPLIED>
-      <!ATTLIST m x CDATA #REQUIRED>
-      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
-      <!ATTLIST m highErrorBar CDATA #IMPLIED>
-    <!ELEMENT move EMPTY>
-      <!ATTLIST move x CDATA #IMPLIED>
-      <!ATTLIST move x CDATA #REQUIRED>
-      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
-      <!ATTLIST move highErrorBar CDATA #IMPLIED>
-    <!ELEMENT p EMPTY>
-      <!ATTLIST p x CDATA #IMPLIED>
-      <!ATTLIST p x CDATA #REQUIRED>
-      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
-      <!ATTLIST p highErrorBar CDATA #IMPLIED>
-    <!ELEMENT point EMPTY>
-      <!ATTLIST point x CDATA #IMPLIED>
-      <!ATTLIST point x CDATA #REQUIRED>
-      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
-      <!ATTLIST point highErrorBar CDATA #IMPLIED>
-]>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<!-- Ptolemy plot, version 3.1, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <title>Software Downloads</title>
 <xLabel>Year</xLabel>
 <yLabel>Downloads</yLabel>
-<xRange min="0.0010" max="10.0"/>
-<yRange min="1.0" max="1000.0"/>
+<xRange min="1.0" max="3.0"/>
+<yRange min="2.0" max="4.0"/>
 <xTicks>
   <tick label="1993" position="0.0"/>
   <tick label="1994" position="1.0"/>
@@ -334,8 +278,8 @@ test PlotBox-14.3 {writeOldSyntax} {
 TitleText: Software Downloads
 XLabel: Year
 YLabel: Downloads
-XRange: 0.0010, 10.0
-YRange: 1.0, 1000.0
+XRange: 1.0, 3.0
+YRange: 2.0, 4.0
 XTicks: "1993" 0.0, "1994" 1.0, "1995" 2.0, "1996" 3.0, "1997" 4.0, "1998" 5.0, "1999" 6.0, "2000" 7.0, "2001" 8.0, "2002" 9.0, "2003" 10.0
 Color: off
 }}
@@ -377,7 +321,7 @@ test PlotBox-18.1 {getXRange, getYRange} {
     set xrange [$plot getXRange]
     set yrange [$plot getYRange]
     list [$xrange getrange] [$yrange getrange]
-} {{0.001 10.0} {1.0 1000.0}}
+} {{1.0 3.0} {2.0 4.0}}
 
 test PlotBox-18.2 {setXRange, setYRange} {
     $plot setXRange 0.002 11.0
@@ -399,12 +343,12 @@ test PlotBox-19.1 {getXTicks, getYTicks} {
 test PlotBox-20.1 {read} {
     $plot read "Title: Read Title Test"
     list [$plot getTitle]
-} {}
+} {{Read Title Test}}
 
 # FIXME: Need a better test of setWrap 
 test PlotBox-21.1 {setWrap} {
     $plot setWrap true
 } {}
 
-
 # Close the window
+$frame dispose

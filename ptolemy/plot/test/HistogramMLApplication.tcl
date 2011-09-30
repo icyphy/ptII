@@ -99,8 +99,8 @@ proc histogramTest { args } {
     $printStream flush
     set results [$stream toString]
     set thread [java::call Thread currentThread ]
-    # sleep 5 seconds
-    $thread sleep 5000
+    # sleep 0.1 seconds
+    $thread sleep 100
     $histogram dispose
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \
@@ -180,8 +180,16 @@ test Histogram-2.1 {Read in an old format file} {
 </plot>
 }
 
-test Histogram-3.1 {Read in an old format file} {
+test Histogram-3.1 {-help output} {
     global histogramfile1
     jdkCapture {histogramTest -help} results
     set results
-} {}
+} {Usage: ptplot [ options ] [file ...]
+
+Options that take values:
+ -height <pixels>
+ -width <pixels>
+
+Boolean flags:
+ -help -printPDF -test -version -
+}

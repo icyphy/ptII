@@ -93,6 +93,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljsimpletests.tcl
 	$(JTCLSH) alljsimpletests.tcl
 
 # These tests require a graphics terminal, but do use TclBlend and Java
+JTCLSHFLAGS=-Dptolemy.ptII.doNotExit=true
 test_jgraphical: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
