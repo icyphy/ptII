@@ -491,6 +491,8 @@ public class CompositeFigure extends AbstractFigureContainer {
         repaint();
         ShapeUtilities.translateModify(_cachedBounds, x, y);
         _transformContext.translate(x, y);
+        // The translate may actually modify the bounds.
+        _cachedBounds = null;
         repaint();
     }
 }
