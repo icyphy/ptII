@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
         </property>
     </property>
-    <property name="rooms" class="ptolemy.data.expr.Parameter" value="{&quot;545B&quot;, &quot;545D&quot;, &quot;545F&quot;, &quot;545H&quot;, &quot;545J&quot;, &quot;545K&quot;, &quot;545M&quot;, &quot;545N&quot;, &quot;545P&quot;, &quot;545Q&quot;, &quot;545L&quot;, &quot;545S&quot;, &quot;545W&quot;}">
+    <property name="rooms" class="ptolemy.data.expr.Parameter" value="{&quot;545B&quot;, &quot;545D&quot;, &quot;545F&quot;, &quot;545H&quot;, &quot;545J&quot;, &quot;545K&quot;, &quot;545M&quot;, &quot;545N&quot;, &quot;545P&quot;, &quot;545Q&quot;, &quot;545L&quot;, &quot;545S&quot;, &quot;545T&quot;, &quot;545W&quot;}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -53,6 +53,8 @@
     </property>
     <entity name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
         <property name="database" class="ptolemy.data.expr.StringParameter" value="jdbc:mysql://newton.eecs.berkeley.edu:3306/space">
+        </property>
+        <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.spacecadet">
         </property>
         <property name="userName" class="ptolemy.data.expr.StringParameter" value="spacecadet">
         </property>
