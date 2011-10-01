@@ -441,6 +441,11 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put(
                 "ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl.Tank",
                 "ptolemy.domains.wireless.kernel.WirelessComposite");
+
+        _graphicalClasses.put("ptolemy.actor.lib.image.ImageDisplay",
+                "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("ptolemy.actor.lib.gui.MatrixViewer",
+                "ptolemy.actor.lib.Discard");
     }
 
     /** True if we should remove the GR domain. */
