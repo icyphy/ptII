@@ -74,7 +74,7 @@ test domains-2.1 {} {
 test domains-3.1 {} {
      catch {createAndExecute "auto/knownFailedTests/PNSRtest3.xml"} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Queue size 131072 exceeds the maximum capacity in port .PNSRtest3.AddSubtract.plus. Perhaps you have an unbounded queue?
+} {{ptolemy.kernel.util.IllegalActionException: Queue size 131072 exceeds the maximum capacity in port .PNSRtest3.AddSubtract.plus (channel 1). Perhaps you have an unbounded queue?
   in .PNSRtest3.AddSubtract.plus}}
 
 #############################################
