@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SDFSRtest3" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -17,12 +17,12 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Teste uma topologia SR em um loop.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Calculate Eularian Numbers.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 64, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 64, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -42,6 +42,8 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[223, 247]">
         </property>
         <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
@@ -50,11 +52,7 @@
                     </property>
                 </property>
             </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 60.0">
-            </property>
-            <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
             </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -90,8 +88,12 @@
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="port" relation="relation"/>
         <link port="port3" relation="relation4"/>
@@ -114,20 +116,26 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{10, 21, 44, 91, 186, 377, 760, 1527, 3062, 6133}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 4, 11, 26, 57, 120, 247, 502, 1013}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{485, 130}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 130.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[330.0, 145.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="topologia SR.port" relation="relation3"/>
     <link port="topologia SR.port3" relation="relation2"/>
