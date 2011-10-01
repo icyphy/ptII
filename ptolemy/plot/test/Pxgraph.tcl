@@ -1151,6 +1151,11 @@ test Pxgraph-6.1 {Reusedatasets} {
 }
 
 # Clean up
-file delete -force $pxgraphfile1 $pxgraphfile2 $pxgraphfile3 $pxgraphfile4
+if [catch {file delete -force $pxgraphfile1 $pxgraphfile2 $pxgraphfile3 $pxgraphfile4} err] {
+    puts "Failed to clean up files: $err"
+}
 
-$plotFrame dispose
+set thread [java::call Thread currentThread ]
+$thread sleep 1000
+
+#$plotFrame dispose

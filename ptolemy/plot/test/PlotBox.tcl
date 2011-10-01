@@ -352,3 +352,5 @@ test PlotBox-21.1 {setWrap} {
 
 # Close the window
 $frame dispose
+
+unset VERBOSE
