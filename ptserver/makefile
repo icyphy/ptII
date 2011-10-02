@@ -77,6 +77,7 @@ MISC_FILES = \
 	communication \
 	control \
 	data \
+	demo \
 	lib \
 	test \
 	util

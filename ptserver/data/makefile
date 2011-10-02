@@ -63,9 +63,14 @@ JSRCS = \
 	CommunicationToken.java \
 	PingToken.java \
 	PongToken.java \
-	ServerEventToken.java \
+	RemoteEventToken.java \
 	TokenParser.java \
 	Tokenizer.java
+
+OTHER_FILES_TO_BE_JARED = \
+	TokenHandlers.properties
+
+SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,10 +78,14 @@ MISC_FILES = \
 	handler
 
 OPTIONAL_FILES = \
-	'TokenParser$$HandlerData.class' \
-	'ServerEventToken$$EventType.class'
+	'RemoteEventToken$$EventType.class' \
+	'ServerEventToken$$EventType.class' \
+	'TokenParser$$HandlerData.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
+
+EXTRA_SRCS =	$(JSRCS)
 
 all: jclass $(EXTRA_SRCS)
 install: subinstall jars

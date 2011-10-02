@@ -45,6 +45,7 @@ include $(CONFIG)
 JSRCS = \
 	AllTests.java \
 	FileDownloadTest.java \
+	JUnitTclTest.java \
 	RemoteModelTest.java \
 	RESTGetHandlerTest.java \
 	ServerTest.java \
@@ -70,14 +71,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
-	addermodel_test.layout.xml \
-	addermodel.xml \
-	HelloWorld.xml \
-	NoisySinewave.xml \
-	SoundSpectrum_layout.layout.xml \
-	SoundSpectrum.xml \
-	SynthesizedVoice.xml
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -86,7 +80,11 @@ OPTIONAL_FILES = \
 	PtolemyServer.log \
 	'RemoteModelTest$$1.class' \
 	'RemoteModelTest$$2.class' \
-	'RemoteModelTest$$3.class'
+	'RemoteModelTest$$3.class' \
+	'RemoteModelTest$$4.class' \
+	'RemoteModelTest$$5.class' \
+	'RemoteModelTest$$6.class' \
+	'ServletTest$$1.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 

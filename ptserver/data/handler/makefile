@@ -73,12 +73,14 @@ JSRCS = \
 	LongTokenHandler.java \
 	PingPongTokenHandler.java \
 	RecordTokenHandler.java \
-	ServerEventTokenHandler.java \
+	RemoteEventTokenHandler.java \
 	ShortTokenHandler.java \
 	StringTokenHandler.java \
 	TokenHandler.java \
 	UnionTokenHandler.java \
 	UnsignedByteTokenHandler.java
+
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

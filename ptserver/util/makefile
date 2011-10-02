@@ -59,9 +59,13 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 JSRCS = \
 	LayoutValidationErrors.java \
 	ProxyModelBuilder.java \
-	PtolemyModuleJavaSEInitializer.java \
 	ServerUtility.java \
 	TypeParser.java
+
+OTHER_FILES_TO_BE_JARED = \
+	PTServerModule.properties
+
+SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

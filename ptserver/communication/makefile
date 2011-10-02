@@ -56,6 +56,7 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Keep this list alphabetized.
 JSRCS = \
+	ProxyModelAdapter.java \
 	ProxyModelInfrastructure.java \
 	ProxyModelResponse.java \
 	ProxySourceData.java \
