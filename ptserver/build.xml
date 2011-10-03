@@ -208,13 +208,26 @@
 				<path refid="ptII.classpath" />
 				<path refid="cobertura.classpath" />
 			</classpath>
-			<formatter type="xml" />
+			<formatter type="plain" />
 			<test name="ptserver.test.junit.AllTests" todir="${junit.output.dir}" />
 			<!-- Cobertura -->
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
 		</junit>
 		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
 	</target>
+
+	<target name="junit" depends="build, initOutput">
+		<junit fork="yes"
+		       printsummary="withOutAndErr"
+		       showoutput="yes">
+			<classpath>
+				<path refid="ptII.classpath" />
+			</classpath>
+			<formatter type="plain" />
+			<test name="ptserver.test.junit.AllTests" todir="${junit.output.dir}" />
+		</junit>
+        </target>
+
 	<property name="ptdroid.builddir" location="${basedir}/../ptdroid/ptbin" />
 	<target name="ptdroid.build">
 		<copy includeemptydirs="false" todir="${ptdroid.builddir}">
