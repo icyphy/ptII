@@ -30,6 +30,7 @@ package ptserver.test.junit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -255,7 +256,16 @@ public class ServletTest {
     private ProxyModelResponse _openRemoteModel() throws Exception {
         String unitModel = getJUnitModel(PtolemyServer.getInstance()
                 .getModelListing());
-        URL modelUrl = new URL(unitModel);
+        URL modelUrl = null;
+        try {
+            modelUrl = new URL(unitModel);
+        } catch (MalformedURLException ex) {
+            MalformedURLException exception = new MalformedURLException(
+                    "Failed to instantiate a URL for \""
+                    + unitModel + "\".");
+            exception.initCause(ex);
+            throw exception;
+        }
         URL layoutUrl = new URL(getJUnitModelLayout(PtolemyServer.getInstance()
                 .getLayoutListing(unitModel)));
         ProxyModelResponse response = _servletProxy.open(

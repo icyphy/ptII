@@ -59,7 +59,9 @@ import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.injection.PtolemyModule;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptserver.communication.ProxyModelAdapter;
 import ptserver.communication.ProxyModelInfrastructure;
 import ptserver.communication.ProxyModelInfrastructure.ProxyModelListener;
@@ -104,162 +106,16 @@ import ptserver.data.TokenParser.HandlerData;
  * </ol>
  *
  * @author Justin Killian
- * @version $Id: PtolemyServer.java 61629 2011-07-28 02:17:45Z ahuseyno $
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (jkillian)
  * @Pt.AcceptedRating Red (jkillian)
  */
 public final class PtolemyServer implements IServerManager {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                      public variables                     ////
-
-    /** The ResourceBundle containing configuration parameters.
-     */
-    public static final ResourceBundle CONFIG = ResourceBundle
-            .getBundle("ptserver.PtolemyServerConfig");
-
-    /** The logger that will record Ptolemy errors to the log file.
-     */
-    public static final Logger LOGGER;
-
-    /** Export format of the model image.
-     */
-    public static final String IMAGE_FORMAT = "PNG";
-
-    /** Buffer size to be used when exporting the model image.
-     */
-    public static final int IMAGE_BUFFER_SIZE = 50000;
-
-    /** The virtual path of the command servlet.
-     */
-    public static final String SERVLET_NAME = "PtolemyServer";
-
-    /** Roles to classify users during basic authentication.
-     */
-    public static final String SERVLET_ROLE = "user";
-
-    /** Initialize the logger used for error handling.
-     */
-    static {
-        Logger logger = null;
-        FileHandler logFile = null;
-
-        ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
-        modules.addAll(ActorModuleInitializer.getModules());
-        modules.add(new PtolemyModule(ResourceBundle
-                .getBundle("ptserver.util.PTServerModule")));
-        PtolemyInjector.createInjector(modules);
-
-        try {
-            logger = Logger.getLogger(PtolemyServer.class.getSimpleName());
-            logFile = new FileHandler(CONFIG.getString("LOG_FILENAME"), true);
-            logFile.setFormatter(new XMLFormatter());
-            logger.addHandler(logFile);
-            logger.setLevel(Level.INFO);
-        } catch (SecurityException e) {
-            throw new ExceptionInInitializerError(e);
-        } catch (IOException e) {
-            throw new ExceptionInInitializerError(e);
-        }
-
-        LOGGER = logger;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                  constructor                              ////
-
-    /** Create an instance of the Ptolemy server. This class is a singleton so
-     *  only one instance should ever exist at a time.  An embedded servlet container
-     *  is initialized for the servlet (synchronous command handler).
-     *  @param servletPort The port on which the servlet operates.
-     *  @param brokerPath The path to the broker executable.
-     *  @param brokerAddress The host address of the MQTT broker.
-     *  @param brokerPort The port of the broker.
-     *  @param modelDirectory The root directory of where model files are stored.
-     *  @exception IllegalActionException If the server was unable to load the default 
-     *  configuration from the resource file.
-     */
-    private PtolemyServer(int servletPort, String brokerPath,
-            String brokerAddress, int brokerPort, String modelDirectory)
-            throws IllegalActionException {
-        try {
-            // If not passed, attempt to pull from configuration.
-            brokerPath = (brokerPath != null ? brokerPath : CONFIG
-                    .getString("BROKER_PATH"));
-            brokerAddress = (brokerAddress != null ? brokerAddress : (CONFIG
-                    .getString("BROKER_ADDRESS") != null ? CONFIG
-                    .getString("BROKER_ADDRESS") : InetAddress.getLocalHost()
-                    .getHostAddress()));
-            brokerPort = (brokerPort > 0 ? brokerPort : Integer.parseInt(CONFIG
-                    .getString("BROKER_PORT")));
-            servletPort = (servletPort > 0 ? servletPort : Integer
-                    .parseInt(CONFIG.getString("SERVLET_PORT")));
-            modelDirectory = (modelDirectory != null ? modelDirectory : CONFIG
-                    .getString("MODELS_DIRECTORY"));
-
-            // If path is specified, attempt to launch the broker process.
-            if (_configureBroker(brokerPath, brokerPort)) {
-                brokerAddress = InetAddress.getLocalHost().getHostAddress();
-            }
-
-            //MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-            //            _configuration = ConfigurationApplication
-            //                    .readConfiguration(ConfigurationApplication
-            //                            .specToURL("ptolemy/configs/full/configuration.xml"));
-            _brokerUrl = String
-                    .format("tcp://%s@%s", brokerAddress, brokerPort);
-            _servletUrl = String
-                    .format("http://%s:%s/%s", InetAddress.getLocalHost()
-                            .getHostAddress(), servletPort, SERVLET_NAME);
-            _modelsDirectory = modelDirectory;
-            _servletHost = new Server(servletPort);
-            _servletHost.setHandler(_configureServlet());
-            _servletHost.start();
-            _executor = Executors.newCachedThreadPool();
-            _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
-
-            Timer timer = new Timer("PtolemyServer timer");
-            timer.scheduleAtFixedRate(new TimerTask() {
-
-                @Override
-                public void run() {
-                    for (SimulationTask task : _requests.values()) {
-                        LOGGER.info(task.getProxyModelInfrastructure()
-                                .getTicket()
-                                + " latency "
-                                + task.getProxyModelInfrastructure()
-                                        .getPingPongLatency());
-                    }
-                }
-            }, 1000, 1000);
-            File file = new File(_modelsDirectory);
-            if (!file.isDirectory()) {
-                throw new IllegalArgumentException("Models directory "
-                        + _modelsDirectory + " is invalid directory/path");
-            }
-        } catch (Throwable e) {
-            _handleException("Unable to initialize Ptolemy server.", e);
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                  public methods                           ////
-
-    /** Create the singleton with non-default configuration values.
-     *  @param servletPort The port on which the servlet operates.
-     *  @param brokerPath The path to the broker executable.
-     *  @param brokerAddress The host address of the MQTT broker.
-     *  @param brokerPort The port of the broker.
-     *  @param modelDirectory The root directory of where model files are stored.
-     *  @exception IllegalActionException If the server could not be created.
-     */
-    public static synchronized void createInstance(int servletPort,
-            String brokerPath, String brokerAddress, int brokerPort,
-            String modelDirectory) throws IllegalActionException {
-        _instance = new PtolemyServer(servletPort, brokerPath, brokerAddress,
-                brokerPort, modelDirectory);
-    }
 
     /** Shut down the simulation thread by calling the finish() method 
      *  on its Manager and removing the task from the server.
@@ -281,6 +137,21 @@ public final class PtolemyServer implements IServerManager {
 
     }
 
+    /** Create the singleton with non-default configuration values.
+     *  @param servletPort The port on which the servlet operates.
+     *  @param brokerPath The path to the broker executable.
+     *  @param brokerAddress The host address of the MQTT broker.
+     *  @param brokerPort The port of the broker.
+     *  @param modelDirectory The root directory of where model files are stored.
+     *  @exception IllegalActionException If the server could not be created.
+     */
+    public static synchronized void createInstance(int servletPort,
+            String brokerPath, String brokerAddress, int brokerPort,
+            String modelDirectory) throws IllegalActionException {
+        _instance = new PtolemyServer(servletPort, brokerPath, brokerAddress,
+                brokerPort, modelDirectory);
+    }
+
     /** Download the selected model to the client.
      *  @param url URL of the model file.
      *  @return Byte array containing the model data.
@@ -289,8 +160,7 @@ public final class PtolemyServer implements IServerManager {
     public byte[] downloadModel(String url) throws IllegalActionException {
         byte[] modelData = null;
         try {
-            modelData = ptolemy.util.FileUtilities
-                    .binaryReadURLToByteArray(new URL(url));
+            modelData = FileUtilities.binaryReadURLToByteArray(new URL(url));
         } catch (Exception e) {
             _handleException("Unable to read the model URL: " + url, e);
         }
@@ -699,6 +569,153 @@ public final class PtolemyServer implements IServerManager {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                      public variables                     ////
+
+    /** The ResourceBundle containing configuration parameters.
+     */
+    public static ResourceBundle CONFIG = null;
+
+    /** The logger that will record Ptolemy errors to the log file.
+     */
+    public static final Logger LOGGER;
+
+    /** Export format of the model image.
+     */
+    public static final String IMAGE_FORMAT = "PNG";
+
+    /** Buffer size to be used when exporting the model image.
+     */
+    public static final int IMAGE_BUFFER_SIZE = 50000;
+
+    /** The virtual path of the command servlet.
+     */
+    public static final String SERVLET_NAME = "PtolemyServer";
+
+    /** Roles to classify users during basic authentication.
+     */
+    public static final String SERVLET_ROLE = "user";
+
+
+    /** Initialize the logger used for error handling.
+     */
+    static {
+        Logger logger = null;
+        FileHandler logFile = null;
+
+        String serverConfig = "PtolemyServerConfig.properties";
+        try {
+            PtolemyServer._lookupPropertyFile(serverConfig);
+        } catch (IOException ex) {
+            ExceptionInInitializerError exception = new ExceptionInInitializerError("Failed to find \""
+                    + serverConfig + "\"");
+            exception.initCause(ex);
+            throw exception;
+        }
+        CONFIG = ResourceBundle
+            .getBundle("ptserver.PtolemyServerConfig");
+
+        ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
+        modules.addAll(ActorModuleInitializer.getModules());
+        modules.add(new PtolemyModule(ResourceBundle
+                .getBundle("ptserver.util.PTServerModule")));
+        PtolemyInjector.createInjector(modules);
+
+        try {
+            logger = Logger.getLogger(PtolemyServer.class.getSimpleName());
+            logFile = new FileHandler(CONFIG.getString("LOG_FILENAME"), true);
+            logFile.setFormatter(new XMLFormatter());
+            logger.addHandler(logFile);
+            logger.setLevel(Level.INFO);
+        } catch (SecurityException e) {
+            throw new ExceptionInInitializerError(e);
+        } catch (IOException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+
+        LOGGER = logger;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                   constructor                             ////
+
+    /** Create an instance of the Ptolemy server. This class is a singleton so
+     *  only one instance should ever exist at a time.  An embedded servlet container
+     *  is initialized for the servlet (synchronous command handler).
+     *  @param servletPort The port on which the servlet operates.
+     *  @param brokerPath The path to the broker executable.
+     *  @param brokerAddress The host address of the MQTT broker.
+     *  @param brokerPort The port of the broker.
+     *  @param modelDirectory The root directory of where model files are stored.
+     *  @exception IllegalActionException If the server was unable to load the default 
+     *  configuration from the resource file.
+     */
+    private PtolemyServer(int servletPort, String brokerPath,
+            String brokerAddress, int brokerPort, String modelDirectory)
+            throws IllegalActionException {
+        try {
+            // If not passed, attempt to pull from configuration.
+            brokerPath = (brokerPath != null ? brokerPath : CONFIG
+                    .getString("BROKER_PATH"));
+            brokerAddress = (brokerAddress != null ? brokerAddress : (CONFIG
+                    .getString("BROKER_ADDRESS") != null ? CONFIG
+                    .getString("BROKER_ADDRESS") : InetAddress.getLocalHost()
+                    .getHostAddress()));
+            brokerPort = (brokerPort > 0 ? brokerPort : Integer.parseInt(CONFIG
+                    .getString("BROKER_PORT")));
+            servletPort = (servletPort > 0 ? servletPort : Integer
+                    .parseInt(CONFIG.getString("SERVLET_PORT")));
+            modelDirectory = (modelDirectory != null ? modelDirectory : CONFIG
+                    .getString("MODELS_DIRECTORY"));
+
+            // If path is specified, attempt to launch the broker process.
+            if (_configureBroker(brokerPath, brokerPort)) {
+                brokerAddress = InetAddress.getLocalHost().getHostAddress();
+            }
+
+            //MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+            //            _configuration = ConfigurationApplication
+            //                    .readConfiguration(ConfigurationApplication
+            //                            .specToURL("ptolemy/configs/full/configuration.xml"));
+            _brokerUrl = String
+                    .format("tcp://%s@%s", brokerAddress, brokerPort);
+            _servletUrl = String
+                    .format("http://%s:%s/%s", InetAddress.getLocalHost()
+                            .getHostAddress(), servletPort, SERVLET_NAME);
+            if (modelDirectory.length() == 0) {
+                modelDirectory = StringUtilities.getProperty("user.dir");
+            }
+            _modelsDirectory = modelDirectory;
+            _servletHost = new Server(servletPort);
+            _servletHost.setHandler(_configureServlet());
+            _servletHost.start();
+            _executor = Executors.newCachedThreadPool();
+            _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
+
+            Timer timer = new Timer("PtolemyServer timer");
+            timer.scheduleAtFixedRate(new TimerTask() {
+
+                @Override
+                public void run() {
+                    for (SimulationTask task : _requests.values()) {
+                        LOGGER.info(task.getProxyModelInfrastructure()
+                                .getTicket()
+                                + " latency "
+                                + task.getProxyModelInfrastructure()
+                                        .getPingPongLatency());
+                    }
+                }
+            }, 1000, 1000);
+            File file = new File(_modelsDirectory);
+            if (!file.isDirectory()) {
+                throw new IllegalArgumentException("Models directory \""
+                        + _modelsDirectory + "\" is invalid directory/path");
+            }
+        } catch (Throwable e) {
+            _handleException("Unable to initialize Ptolemy server.", e);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                   private methods                         ////
 
     /** Check to ensure that the provided ticket is valid and refers to
@@ -763,25 +780,7 @@ public final class PtolemyServer implements IServerManager {
         mapping.setPathSpec("/" + SERVLET_NAME);
         mapping.getConstraint().setAuthenticate(true);
 
-        // Find the user file for authentication.
-        String location = ptolemy.util.StringUtilities
-                .getProperty("ptolemy.ptII.dir")
-                + File.separator
-                + "ptserver"
-                + File.separator + "PtolemyServerUsers.properties";
-
-        File userFile = new File(location);
-        if (!userFile.exists()) {
-
-            // Attempt to create it using the supplied default file.
-            URL defaultFile = ptolemy.util.FileUtilities.nameToURL(location
-                    + ".default", null, null);
-            if (!ptolemy.util.FileUtilities.binaryCopyURLToFile(defaultFile,
-                    userFile)) {
-                throw new IllegalStateException(
-                        "The server users file could not be found.");
-            }
-        }
+        File userFile = PtolemyServer._lookupPropertyFile("PtolemyServerUsers.properties");
 
         // Define the security context.
         ConstraintSecurityHandler security = new ConstraintSecurityHandler();
@@ -852,6 +851,49 @@ public final class PtolemyServer implements IServerManager {
             throws IllegalActionException {
         PtolemyServer.LOGGER.log(Level.SEVERE, message, error);
         throw new IllegalActionException(null, error, message);
+    }
+
+    /** Look up a propertyBaseName in $CLASSPATH/ptserver.
+     *  If $PTII/ptserver/propertyBaseName.properties does
+     *  not exist, copy $PTII/ptserver/propertyBaseName.properties.default
+     *  to that $PTII/ptserver/propertyBaseName.properties.
+     *  @param propertyBaseName  The name of properties file without
+     *  any directory information.
+     *  @return The File named by propertyBaseName
+     *  @exception IOException If thrown while looking for the default
+     *  file or copying the default file.
+     */
+    private static File _lookupPropertyFile(String propertyBaseName)
+            throws IOException {
+        // This method is necessary so that we can copy the *.properties.default files
+        // to *.properties automatically.  This makes the tests easier to run
+        // without requiring user setup.
+
+        // Find the user file for authentication.
+        //String location = ptolemy.util.StringUtilities
+        //        .getProperty("ptolemy.ptII.dir")
+        //        + File.separator
+        //        + "ptserver"
+        //        + File.separator + propertyBaseName;
+
+        String location = "$CLASSPATH/ptserver/" + propertyBaseName;
+
+        File userFile = FileUtilities.nameToFile(location, null);
+        if (!userFile.exists()) {
+
+            // Attempt to create it using the supplied default file.
+            URL defaultFile = FileUtilities.nameToURL(
+                    location + ".default",
+                    null, null);
+            if (!FileUtilities.binaryCopyURLToFile(defaultFile,
+                    userFile)) {
+                throw new IllegalStateException(
+                        "The server users file \""
+                        + userFile + "\"could not be found and \""
+                        + defaultFile + "\" the copy failed.");
+            }
+        }
+        return userFile;
     }
 
     ///////////////////////////////////////////////////////////////////

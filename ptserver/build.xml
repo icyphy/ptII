@@ -208,7 +208,7 @@
 				<path refid="ptII.classpath" />
 				<path refid="cobertura.classpath" />
 			</classpath>
-			<formatter type="plain" />
+			<formatter type="xml" />
 			<test name="ptserver.test.junit.AllTests" todir="${junit.output.dir}" />
 			<!-- Cobertura -->
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
@@ -216,16 +216,19 @@
 		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
 	</target>
 
-	<target name="junit" depends="build, initOutput">
-		<junit fork="yes"
-		       printsummary="withOutAndErr"
-		       showoutput="yes">
-			<classpath>
-				<path refid="ptII.classpath" />
-			</classpath>
-			<formatter type="plain" />
-			<test name="ptserver.test.junit.AllTests" todir="${junit.output.dir}" />
-		</junit>
+	<target name="junit" depends="build"
+		description="Run ptserver.test.junit.AllTests.  Results are in $PTII/TEST-ptserver.test.junit.AllTests.txt">
+	  <junit fork="yes"
+		 printsummary="withOutAndErr"
+		 showoutput="yes">
+	    <classpath>
+	      <path refid="ptII.classpath" />
+	    </classpath>
+	    <formatter type="plain" usefile="yes"/>
+	    <test name="ptserver.test.junit.AllTests">
+	    </test>
+	  </junit>
+	  <echo>Results are in $PTII/TEST-ptserver.test.junit.AllTests.txt</echo>
         </target>
 
 	<property name="ptdroid.builddir" location="${basedir}/../ptdroid/ptbin" />
