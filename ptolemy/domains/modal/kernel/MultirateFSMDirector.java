@@ -122,20 +122,29 @@ public class MultirateFSMDirector extends FSMDirector {
             throws IllegalActionException {
         State state = chooseTransition(currentState);
         Actor[] actors = state.getRefinement();
-        Transition transition;
 
         while (actors == null) {
             // Commit the transition.
             super.postfire();
             state = chooseTransition(state);
-            transition = _getLastChosenTransition();
+            Map<State,Transition> chosenTransitions = _getLastChosenTransition();
 
-            if (transition == null) {
+            if (chosenTransitions.size() == 0) {
                 throw new IllegalActionException(this,
                         "Reached a state without a refinement: "
                                 + state.getName());
             }
+            if (chosenTransitions.size() > 1) {
+                throw new IllegalActionException(this, state,
+                        "MultirateFSMDirector does not support immediate transitions: "
+                                + state.getName());
+            }
 
+            Transition transition = chosenTransitions.get(currentState);
+            if (transition == null) {
+                throw new InternalErrorException(
+                        "Expected the enabled transition to emmanate from the current state!");
+            }
             actors = (transition.destinationState()).getRefinement();
         }
     }
@@ -167,12 +176,12 @@ public class MultirateFSMDirector extends FSMDirector {
         }
 
         if (state.getRefinement() == null) {
-            transition = _chooseTransition(state.preemptiveTransitionList());
+            transition = _chooseTransition(state, state.preemptiveTransitionList(), false);
         }
 
         if (transition == null) {
             // No preemptiveTransition enabled. Choose nonpreemptiveTransition.
-            transition = _chooseTransition(state.nonpreemptiveTransitionList());
+            transition = _chooseTransition(state, state.nonpreemptiveTransitionList(), false);
         }
 
         if (transition == null) {
@@ -356,7 +365,7 @@ public class MultirateFSMDirector extends FSMDirector {
         // in the fire() method.
         FSMActor controller = getController();
         State currentState = controller.currentState();
-        Transition lastChosenTransition = _getLastChosenTransition();
+        Map<State,Transition> lastChosenTransitions = _getLastChosenTransition();
 
         // Commit the transition.
         boolean superPostfire = super.postfire();
@@ -372,7 +381,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
         TypedCompositeActor actor = (TypedCompositeActor) (actors[0]);
 
-        if (lastChosenTransition != null) {
+        if (lastChosenTransitions.size() > 0) {
             Director refinementDir = actor.getDirector();
 
             if (refinementDir instanceof MultirateFSMDirector) {
@@ -908,10 +917,10 @@ public class MultirateFSMDirector extends FSMDirector {
             // postfire() here.
             controller._commitLastChosenTransition();
             currentState = controller.currentState();
-            Transition lastChosenTransition = _getLastChosenTransition();
-            controller._lastChosenTransition = null;
+            Map<State,Transition> lastChosenTransitions = _getLastChosenTransition();
+            controller._lastChosenTransition.clear();
 
-            if (lastChosenTransition == null) {
+            if (lastChosenTransitions.size() == 0) {
                 throw new IllegalActionException(currentState,
                         "Reached a transient state "
                                 + "without an enabled transition.");

@@ -77,6 +77,7 @@ import ptolemy.kernel.util.Workspace;
  This director could use a different receiver and support a syntax in
  the guard expression language to support consumption of more than one
  token.
+ FIXME: This director does not support immediate transitions.
 
  @author Ye Zhou
  @version $Id$
@@ -155,7 +156,7 @@ public class NonStrictFSMDirector extends FSMDirector {
 
         // Choose a preemptive transition
         List enabledTransitions = controller.enabledTransitions(currentState
-                .preemptiveTransitionList());
+                .preemptiveTransitionList(), false);
 
         // Ensure that if there are multiple enabled transitions, all of them
         // must be nondeterministic.
@@ -249,11 +250,11 @@ public class NonStrictFSMDirector extends FSMDirector {
 
             // Choose an error transition
             enabledTransitions = controller.enabledTransitions(currentState
-                    .errorTransitionList());
+                    .errorTransitionList(), false);
             if (enabledTransitions.size() == 0) {
                 //choose a nonpremptive transition
                 enabledTransitions = controller.enabledTransitions(currentState
-                        .nonpreemptiveTransitionList());
+                        .nonpreemptiveTransitionList(), false);
             }
 
             // Ensure that if there are multiple enabled transitions, all of them
@@ -339,7 +340,7 @@ public class NonStrictFSMDirector extends FSMDirector {
             controller.readInputs();
         }
 
-        controller._lastChosenTransition = enabledTransition;
+        controller.setLastChosenTransition(enabledTransition);
     }
 
     /** Given a state, get a set of input ports referred in the guards of

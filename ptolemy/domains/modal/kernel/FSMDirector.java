@@ -179,7 +179,7 @@ import ptolemy.kernel.util.Workspace;
  * closer to SR semantics. The same argument could apply when both a refinement and
  * a transition produce outputs.</p>
  *
- * @author Xiaojun Liu, Haiyang Zheng, Edward A. Lee
+ * @author Xiaojun Liu, Haiyang Zheng, Edward A. Lee, Christian Motika
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Yellow (hyzheng)
@@ -287,7 +287,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // Private variables.
         newObject._controller = null;
         newObject._controllerVersion = -1;
-        newObject._lastChosenTransition = null;
         newObject._localReceiverMapsVersion = -1;
 
         newObject._currentOffset = null;
@@ -334,7 +333,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         setModelTime(environmentTime);
         _stateRefinementsToPostfire.clear();
         _transitionRefinementsToPostfire.clear();
-        _lastChosenTransition = null;
         FSMActor controller = getController();
         State currentState = controller.currentState();
         if (_debugging) {
@@ -343,56 +341,39 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
         controller.readInputs();
 
-        List<Transition> enabledPreemptiveTransitions = controller
-                .enabledTransitions(currentState.preemptiveTransitionList());
-        if (enabledPreemptiveTransitions.size() > 0) {
-            // Do not call the following unless there is actually a
-            // preemptive transition enabled because in a fixed-point
-            // iteration you could get an exception if you call
-            // chooseTransition with the list of preemptive
-            // transitions after a non-preemptive transition was
-            // already discovered to be enabled.
-            _lastChosenTransition = controller
-                    .chooseTransition(enabledPreemptiveTransitions);
-            if (_debugging) {
-                _debug("Preemptive transition enabled:",
-                        _lastChosenTransition.getName());
-            }
-            // First execute the refinements of the transition.
-            Actor[] transitionRefinements = _lastChosenTransition
-                    .getRefinement();
+        List<Transition> transitionList = currentState.preemptiveTransitionList();
 
-            if (transitionRefinements != null) {
-                for (int i = 0; i < transitionRefinements.length; ++i) {
-                    if (_stopRequested
-                            || _disabledActors
-                                    .contains(transitionRefinements[i])) {
-                        break;
-                    }
-                    if (_debugging) {
-                        _debug("Fire transition refinement:",
-                                transitionRefinements[i].getName());
-                    }
-                    // FIXME: What should model time be for transition refinements?
-                    // It is not reasonable for it to be the time of the originating
-                    // refinement because multiple transitions may share a refinement
-                    // and time will end up bouncing around...
-                    if (transitionRefinements[i].prefire()) {
-                        transitionRefinements[i].fire();
-                        _transitionRefinementsToPostfire
-                                .add(transitionRefinements[i]);
-                    }
-                }
+        // The last argument ensures that we look at all transitions
+        // not just those that are marked immediate.
+        Transition chosenPreemptiveTransition = _chooseTransition(currentState, transitionList, false);
+        // The destination of the chosen transition may be transient,
+        // so we should also choose transitions on the destination state.
+        while (chosenPreemptiveTransition != null) {
+            State nextState = chosenPreemptiveTransition.destinationState();
+            if (nextState == currentState) {
+                break;
             }
+            // NOTE: We look at not only preemptive transitions from the destination
+            // state, but all immediate transitions, whether they are preemptive or not.
+            transitionList = nextState.outgoingPort.linkedRelationList();
+            // The last argument ensures that we look only at transitions
+            // that are marked immediate.
+            chosenPreemptiveTransition = _chooseTransition(nextState, transitionList, true);
+        }
+
+        // If there is an enabled preemptive transition, then we know
+        // that the current refinement cannot generated outputs, so we
+        // may be able to assert that some outputs are absent.
+        if (controller._lastChosenTransition.size() > 0) {
             // FIXME: Next line needed?
             setModelTime(environmentTime);
 
             // If the current (preempted) state has a refinement, then
             // we know it cannot produce any outputs. All outputs of
-            // this state must be cleared so that at least they not
-            // remain unknown in the end of the fixed point iteration.
-            // If an output port is known because this preempted
-            // transition already set it we do not send a clear.
+            // this state must be cleared so that at least they do not
+            // remain unknown at the end of the fixed point iteration.
+            // If an output port is known because these preemptive
+            // transitions already set it we do not send a clear.
             if (controller._currentState.getRefinement() != null) {
                 TypedActor[] refinements = controller._currentState
                         .getRefinement();
@@ -420,12 +401,17 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // inputs, then check whether it is possible anyway to assert that some
         // outputs are absent.
         if (controller.foundUnknown()) {
+            // FIXME: The following may not correctly consider the
+            // non-preemptive transitions that may become enabled later.
             _assertAbsentOutputs(getController(), true);
             // We should not fire the refinements, because some preemptive
             // transition may later become enabled. Hence, we have to return now.
             return;
         }
-
+        
+        // ASSERT: At this point, there are no enabled preemptive transitions,
+        // and all preemptive transition guards, if any, have evaluated to false.
+        // We can now fire the refinements.
         Actor[] stateRefinements = currentState.getRefinement();
 
         if (stateRefinements != null) {
@@ -454,34 +440,29 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         controller.readOutputsFromRefinement();
 
-        _lastChosenTransition = controller.chooseTransition(currentState
-                .nonpreemptiveTransitionList());
-        if (_lastChosenTransition != null) {
-            if (_debugging) {
-                _debug("Nonpreemptive transition enabled:",
-                        _lastChosenTransition.getName());
+        // NOTE: immediate transitions are always preemptive, so the nonpreemptive transition
+        // list should not contain any immediate transitions.
+        transitionList = currentState.nonpreemptiveTransitionList();
+        // The last argument ensures that we look at all transitions
+        // not just those that are marked immediate.
+        Transition chosenNonpreemptiveTransition = _chooseTransition(currentState, transitionList, false);
+
+        // The destination of the chosen transition may be transient,
+        // so we should also choose transitions on the destination state.
+        while (chosenNonpreemptiveTransition != null) {
+            State nextState = chosenNonpreemptiveTransition.destinationState();
+            if (nextState == currentState) {
+                break;
             }
-            stateRefinements = _lastChosenTransition.getRefinement();
-            if (stateRefinements != null) {
-                for (int i = 0; i < stateRefinements.length; ++i) {
-                    if (_stopRequested
-                            || _disabledActors.contains(stateRefinements[i])) {
-                        break;
-                    }
-                    // FIXME: What to set time to for the refinement?
-                    if (stateRefinements[i].prefire()) {
-                        if (_debugging) {
-                            _debug("Fire transition refinement:",
-                                    stateRefinements[i].getName());
-                        }
-                        stateRefinements[i].fire();
-                        _transitionRefinementsToPostfire
-                                .add(stateRefinements[i]);
-                    }
-                }
-                controller.readOutputsFromRefinement();
-            }
-        } else {
+            // NOTE: We look at not only preemptive transitions from the destination
+            // state, but all immediate transitions, whether they are preemptive or not.
+            transitionList = nextState.outgoingPort.linkedRelationList();
+            // The last argument ensures that we look only at transitions
+            // that are marked immediate.
+            chosenNonpreemptiveTransition = _chooseTransition(nextState, transitionList, true);
+        }
+
+        if (controller._lastChosenTransition.size() == 0) {
             // If no transition was chosen, then it still might be
             // possible to assert that certain outputs are absent.
             _assertAbsentOutputs(controller, true);
@@ -610,8 +591,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             FSMActor controller = getController();
             List transitionList = controller.currentState().outgoingPort
                     .linkedRelationList();
+            // FIXME: Does this do the right thing with a chain
+            // of immediate transitions?
             List enabledTransitions = controller
-                    .enabledTransitions(transitionList);
+                    .enabledTransitions(transitionList, false);
             if (enabledTransitions.size() > 0) {
                 return _currentTime;
             }
@@ -763,8 +746,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             controller.readOutputsFromRefinement();
 
             State st = controller.currentState();
+            // FIXME: Need to understand how error transitions work
+            // in combination with immediate transitions.
             List enabledTransitions = controller.enabledTransitions(st
-                    .nonpreemptiveTransitionList());
+                    .nonpreemptiveTransitionList(), false);
 
             if (enabledTransitions.size() == 0) {
                 ModelErrorHandler container = getContainer();
@@ -962,7 +947,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         Actor[] refinements = controller.currentState().getRefinement();
         if (refinements != null) {
             for (Actor stateRefinement : refinements) {
-                if (_lastChosenTransition != null
+                if (controller._lastChosenTransition.size() != 0
                         && stateRefinement instanceof Suspendable) {
                     ((Suspendable) stateRefinement).suspend(environmentTime);
                 }
@@ -971,8 +956,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         // Notify all the refinements of the destination state that they are being
         // resumed.
-        if (_lastChosenTransition != null) {
-            State destinationState = _lastChosenTransition.destinationState();
+        if (controller._lastChosenTransition.size() != 0) {            
+            State destinationState = controller._destinationState();
             if (destinationState != null) {
                 TypedActor[] destinationRefinements = destinationState
                         .getRefinement();
@@ -1314,28 +1299,75 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
     }
 
-    /**
-     * Return the enabled transition among the given list of
-     * transitions. Throw an exception if there is more than one
-     * transition enabled. This method is called by subclasses of
-     * FSMDirector in other packages.
-     *
-     * @param transitionList
-     *            A list of transitions.
-     * @return An enabled transition, or null if none is enabled.
-     * @exception IllegalActionException
-     *                If there is more than one transition enabled, or if thrown by any choice
-     *                action contained by the enabled transition, or if there is no controller.
+    /** Return an enabled transition among the given list of transitions
+     *  for which both the guard expression and the output actions can
+     *  be evaluated (the inputs referred by these are known).
+     *  If there is only one transition enabled, return that transition.
+     *  In case there are multiple enabled transitions, if any of
+     *  them is not nondeterministic, throw an exception. See {@link Transition}
+     *  for the explanation of "nondeterministic". Otherwise, randomly choose
+     *  one from the enabled transitions and return it if the output actions
+     *  can be evaluated.
+     *  Execute the output actions contained by the returned
+     *  transition before returning.
+     *  <p>
+     *  Before returning, if the returned transition has any refinements,
+     *  fire those refinements, and add them to the list of refinements
+     *  to be postfired.
+     *  <p>
+     *  After calling this method, you can call foundUnknown()
+     *  to determine whether any guard expressions or output value
+     *  expressions on a transition whose guard evaluates to true
+     *  were found in the specified transition list that
+     *  referred to input ports that are not currently known.
+     *  @param currentState The state from which transitions are examined.
+     *  @param transitionList A list of transitions.
+     *  @param immediateOnly True to consider only immediate transitions.
+     *  @return An enabled transition, or null if none is enabled.
+     *  @exception IllegalActionException If there is more than one
+     *   transition enabled and not all of them are nondeterministic,
+     *   or if there is no controller.
      */
-    protected Transition _chooseTransition(List transitionList)
+    protected Transition _chooseTransition(State currentState, List transitionList, boolean immediateOnly)
             throws IllegalActionException {
         FSMActor controller = getController();
 
-        if (controller != null) {
-            return controller.chooseTransition(transitionList);
-        } else {
+        if (controller == null) {
             throw new IllegalActionException(this, "No controller!");
         }
+        Transition result = controller._chooseTransition(currentState, transitionList, immediateOnly);
+
+        if (result != null) {
+            if (_debugging) {
+                _debug("Transition enabled:", result.getName());
+            }
+            // Execute the refinements of the transition.
+            Actor[] transitionRefinements = result.getRefinement();
+
+            if (transitionRefinements != null) {
+                for (int i = 0; i < transitionRefinements.length; ++i) {
+                    if (_stopRequested
+                            || _disabledActors
+                            .contains(transitionRefinements[i])) {
+                        break;
+                    }
+                    if (_debugging) {
+                        _debug("Fire transition refinement:",
+                                transitionRefinements[i].getName());
+                    }
+                    // FIXME: What should model time be for transition refinements?
+                    // It is not reasonable for it to be the time of the originating
+                    // refinement because multiple transitions may share a refinement
+                    // and time will end up bouncing around...
+                    if (transitionRefinements[i].prefire()) {
+                        transitionRefinements[i].fire();
+                        _transitionRefinementsToPostfire
+                        .add(transitionRefinements[i]);
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -1357,7 +1389,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         return (Receiver[][]) _currentLocalReceiverMap.get(port);
     }
-
+    
     /**
      * If the specified actor is currently enabled (because it
      * previously returned false from postfire), then re-enable
@@ -1371,16 +1403,15 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return the last chosen transition.
+     * Return the last chosen transitions.
      *
-     * @return The last chosen transition, or null if there has been none.
+     * @return The last chosen transitions, or null if there has been none.
      * @exception IllegalActionException
      *                If there is no controller.
      */
-    protected Transition _getLastChosenTransition()
+    protected Map<State,Transition> _getLastChosenTransition()
             throws IllegalActionException {
         FSMActor controller = getController();
-
         if (controller != null) {
             return controller._lastChosenTransition;
         } else {
@@ -1518,7 +1549,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             // in the fixed-point iteration, it will not be possible
                             // for a transition to become enabled that might send data
                             // on this port.
-                            if ((controller.getLastChosenTransition() != null)
+                            if (controller._lastChosenTransition.size() > 0 && !controller.foundUnknown()
                                     || _isSafeToClear(port, i, controller)) {
                                 port.send(i, null);
                             }
@@ -1792,6 +1823,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @return True, if successful.
      */
     private boolean _isSafeToClear(IOPort port, int channel, FSMActor controller) {
+        // FIXME: This code is not right if there immediate transitions
+        // because there may be some of the transitions in a transition chain
+        // that are enabled, but some in the chain may not be known yet!
         if (_debugging) {
             _debug("Calling _isSafeToClear() on port: " + port.getFullName());
         }
@@ -1913,9 +1947,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
     /** Ports that had seen a Token to prevent clearing them afterwards. */
     private LinkedList<IOPort> _hadToken = new LinkedList<IOPort>();
-
-    /** The last chosen transition, or null if none was chosen. */
-    private Transition _lastChosenTransition;
 
     /** Version of the local receiver maps. */
     private long _localReceiverMapsVersion = -1;
