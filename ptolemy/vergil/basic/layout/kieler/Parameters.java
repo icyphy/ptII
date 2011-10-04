@@ -72,7 +72,6 @@ public class Parameters {
      * Configure the KIELER layout using a property holder.
      * 
      * @param parentLayout the layout of the parent node
-     * @param options property holder from which user options are copied
      * @param graphModel the graph model of the current diagram
      * @throws IllegalActionException if one of the parameters has the wrong type
      */

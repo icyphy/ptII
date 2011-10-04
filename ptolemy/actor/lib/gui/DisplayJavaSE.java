@@ -241,8 +241,9 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
      *  The background of the text area is set equal to that of the container
      *  (unless it is null).
      *
-     *  @param container The container into which to place the text area, or
-     *   null to specify that there is no current container.
+     *  @param portableContainer The container into which to place the
+     *   text area, or null to specify that there is no current
+     *   container.
      */
     public void place(PortableContainer portableContainer) {
         Container container = (Container) (portableContainer != null ? portableContainer
