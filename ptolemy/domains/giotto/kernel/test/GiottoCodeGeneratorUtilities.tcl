@@ -42,7 +42,7 @@ if {[string compare test [info procs jdkCapture]] == 1} then {
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-# set VERBOSE 1
+#set VERBOSE 1
 
 
 # Generate giotto for the Ptolemy model named by the model arg
@@ -50,12 +50,14 @@ proc generateGiotto { model } {
     set args [java::new {String[]} 1 \
             [list $model]]
 
-    jdkCapture {
+    set output ""
+    set err ""
+    jdkCaptureOutAndErr {
         java::call ptolemy.domains.giotto.kernel.GiottoCodeGeneratorUtilities \
             main $args
-    } output
+    } output err
     regsub {@version \$Id.*$} $output {@version ...} output2
-    return $output2
+    return "$output2$err"
 }
 
 

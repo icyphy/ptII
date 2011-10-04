@@ -61,7 +61,6 @@ JSIMPLE_TESTS = \
 	RelationWidthChanges.tcl \
 	RemoveClasses.tcl \
 	RemoveGraphicalClasses.tcl
-	
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -98,14 +97,17 @@ OPTIONAL_FILES = \
 JCLASS =	$(JSRCS:%.java=%.class)
 
 MOML_SIMPLE_APPLICATION_CLASS = $(ROOT)/ptolemy/actor/gui/MoMLSimpleApplication.class
+BOXED_VALUE_ICON_CLASS = $(ROOT)/ptolemy/vergil/icon/BoxedValueIcon.class
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) $(MOML_SIMPLE_APPLICATION_CLASS) jclass test_java test_jsimple test_auto
+tests:: $(EXTRA_SRCS) $(MOML_SIMPLE_APPLICATION_CLASS) $(BOXED_VALUE_ICON_CLASS) jclass test_java test_jsimple test_auto
 
 $(MOML_SIMPLE_APPLICATION_CLASS): $(ROOT)/ptolemy/actor/gui/MoMLSimpleApplication.java
 	(cd $(ROOT)/ptolemy/actor/gui; $(MAKE))
+$(BOXED_VALUE_ICON_CLASS): $(ROOT)/ptolemy/vergil/icon/BoxedValueIcon.java
+	(cd $(ROOT)/ptolemy/vergil/icon; $(MAKE))
 
 test_java: jclass
 

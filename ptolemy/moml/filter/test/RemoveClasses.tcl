@@ -674,10 +674,7 @@ test RemoveClasses-1.5 {clear} {
     set filter [java::new ptolemy.moml.filter.RemoveClasses]
     java::call ptolemy.moml.filter.RemoveClasses clear
     $filter toString
-} {ptolemy.moml.filter.RemoveClasses: Remove or replace classes that are graphical.
-This filter is used by the nightly build, and
-can be used to run applets so that files like
-diva.jar do not need to be downloaded.
+} {ptolemy.moml.filter.RemoveClasses: Remove or replace classes.
 The following actors are affected:
 }
 

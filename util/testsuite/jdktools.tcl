@@ -118,6 +118,40 @@ proc jdkCaptureErr {script varName} {
     return $output
 }
 
+# Capture output to System.out and System.err
+proc jdkCaptureOutAndErr {script outputVarName errVarName} {
+    upvar $outputVarName output
+    upvar $errVarName err
+
+    set outputStream [java::new java.io.ByteArrayOutputStream]
+    set outputPrintStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $outputStream]
+    set stdout [java::field System out]
+    java::call System setOut $outputPrintStream
+
+    set errorStream [java::new java.io.ByteArrayOutputStream]
+    set errorPrintStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $errorStream]
+    set stderr [java::field System err]
+    java::call System setErr $errorPrintStream
+
+    set errMsg ""
+    catch {set result [uplevel $script]} errMsg
+
+    java::call System setOut $stdout
+    java::call System setErr $stderr
+
+    $errorPrintStream flush
+    $outputPrintStream flush
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$outputStream toString] "\n" output
+    regsub -all [java::call System getProperty "line.separator"] \
+	        "[$errorStream toString]$errMsg" "\n" err
+    
+    return "$errMsg$output$err"
+}
+
 # Print the most recent Java stack trace
 # Here's an example:
 # Create a String
