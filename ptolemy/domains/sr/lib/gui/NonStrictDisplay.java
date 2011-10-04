@@ -28,29 +28,14 @@
  */
 package ptolemy.domains.sr.lib.gui;
 
-import javax.swing.JTextArea;
-import javax.swing.text.BadLocationException;
-
 import ptolemy.actor.lib.gui.Display;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- Display the status and value of input tokens in a text area.
- Display the values of the tokens arriving on the input channels along
- with the associated time in a text area on the screen. If the value is
- undefined or known to be absent, that information is indicated instead.
- Each input token is written on a separate line.  The input type can be
- of any type.  If the input happens to be a StringToken,
- then the surrounding quotation marks are stripped before printing
- the value of the token.  Thus, string-valued tokens can be used to
- generate arbitrary textual output, at one token per line.
- Tokens are read from the input only in
- the postfire() method, to allow them to settle in domains where they
- converge to a fixed point.
+ Display the inputs in a text area.
+ This overrides the base class to tolerate unknown inputs.
 
  @author  Paul Whitaker, Yuhong Xiong, Edward A. Lee
  @version $Id$
@@ -85,112 +70,32 @@ public class NonStrictDisplay extends Display {
         return false;
     }
 
-    /** Read at most one token from each input channel and display its
-     *  string value along with the current time on the screen.  Each
-     *  value is terminated with a newline character.
-     *  @exception IllegalActionException If there is no director.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return a string describing the input on channel i.
+     *  This is a protected method to allow subclasses to override
+     *  how inputs are observed. 
+     *  @param i The channel
+     *  @return A string representation of the input.
+     *  @throws IllegalActionException If reading the input fails.
      */
-    @Override
-    public boolean postfire() throws IllegalActionException {
-        // We don't invoke super.postfire() here, but we should
-        // do what Display.super.postfire() does, which is eventually
-        // call AtomicActor.postfire(), which prints debugging.
-        if (_debugging) {
-            _debug("Called postfire()");
-        }
-
-        JTextArea textArea = (JTextArea) _getImplementation().getTextArea();
-
-        int width = input.getWidth();
-
-        boolean currentInputIsBlankLine = true;
-
-        for (int i = 0; i < width; i++) {
-            String value;
-
-            if (!initialized) {
-                initialized = true;
-                _openWindow();
-            }
-
-            if (input.isKnown(i)) {
-                if (input.hasToken(i)) {
-                    Token token = input.get(i);
-
-                    // The toString() method yields a string that can be parsed back
-                    // in the expression language to get the original token.
-                    // However, if the token is a StringToken, that probably is
-                    // not what we want. So we treat StringToken separately.
-                    value = token.toString();
-                    if (token instanceof StringToken) {
-                        value = ((StringToken) token).stringValue();
-                    }
-                } else {
-                    value = ABSENT_STRING;
-                }
+    protected String _getInputString(int i) throws IllegalActionException {
+        if (input.isKnown(i)) {
+            if (input.hasToken(i)) {
+                return super._getInputString(i);
             } else {
-                value = UNDEFINED_STRING;
+                return _ABSENT_STRING;
             }
-
-            // If the window has been deleted, read the
-            // rest of the inputs.
-
-            if (textArea == null) {
-                continue;
-            }
-
-            // FIXME: There is a race condition here.
-            // textArea can be set to null during execution of this method
-            // if another thread closes the display window.
-
-            // If the value is not an empty string, set the
-            // currentInputIsBlankLine to false.
-            // Note that if there are multiple input ports, and if any of
-            // the input ports has data, the current input is considered
-            // to be non-empty.
-            if (value.length() > 0) {
-                currentInputIsBlankLine = false;
-            }
-
-            textArea.append(value);
-
-            // Append a newline character.
-            if (width > (i + 1)) {
-                textArea.append("\n");
-            }
-
-            // Regrettably, the default in swing is that the top
-            // of the textArea is visible, not the most recent text.
-            // So we have to manually move the scrollbar.
-            // The (undocumented) way to do this is to set the
-            // caret position (despite the fact that the caret
-            // is already where want it).
-            try {
-                int lineOffset = textArea.getLineStartOffset(textArea
-                        .getLineCount() - 1);
-                textArea.setCaretPosition(lineOffset);
-            } catch (BadLocationException ex) {
-                // Ignore ... worst case is that the scrollbar
-                // doesn't move.
-            }
+        } else {
+            return _UNDEFINED_STRING;
         }
-
-        // If the current input is not a blank line, or the supressBlankLines
-        // parameter is configured to false, append a newline character.
-        if ((textArea != null)
-                && !(isSuppressBlankLines && currentInputIsBlankLine)) {
-            textArea.append("\n");
-        }
-
-        // We don't invoke super.postfire() here, but we should
-        // do what Display.super.postfire() does, which is eventually
-        // call AtomicActor.postfire(), which returns the value of !_stopRequested.
-        return !_stopRequested;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private static final String ABSENT_STRING = "absent";
+        
+    private static final String _ABSENT_STRING = "absent";
 
-    private static final String UNDEFINED_STRING = "undefined";
+    private static final String _UNDEFINED_STRING = "unknown";
 }
