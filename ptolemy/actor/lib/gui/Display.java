@@ -272,20 +272,8 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
 
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-                Token token = input.get(i);
-
-                if (!initialized) {
-                    initialized = true;
-                    _openWindow();
-                }
-
-                // If the window has been deleted, read the rest of the inputs.
-
-                String value = token.toString();
-                if (token instanceof StringToken) {
-                    value = ((StringToken) token).stringValue();
-                }
-
+                String value = _getInputString(i);
+                // Do not open the display until there is a token.
                 _implementation.display(value);
             }
 
@@ -403,6 +391,30 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
             }
         }
         return _implementation;
+    }
+
+    /** Return a string describing the input on channel i.
+     *  This is a protected method to allow subclasses to override
+     *  how inputs are observed. 
+     *  @param i The channel
+     *  @return A string representation of the input.
+     *  @throws IllegalActionException If reading the input fails.
+     */
+    protected String _getInputString(int i) throws IllegalActionException {
+        Token token = input.get(i);
+
+        if (!initialized) {
+            initialized = true;
+            _openWindow();
+        }
+
+        // If the window has been deleted, read the rest of the inputs.
+
+        String value = token.toString();
+        if (token instanceof StringToken) {
+            value = ((StringToken) token).stringValue();
+        }
+        return value;
     }
 
     /** Open the display window if it has not been opened.
