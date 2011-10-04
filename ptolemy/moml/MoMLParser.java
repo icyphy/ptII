@@ -5598,6 +5598,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (className != null) {
                 try {
                     newClass = Class.forName(className, true, _classLoader);
+                } catch (ClassNotFoundException ex) {
+                    throw new XmlException("Failed to find class '" + className
+                            + "'", _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber(), ex);
                 } catch (NoClassDefFoundError ex) {
                     throw new XmlException("Failed to find class '" + className
                             + "'", _currentExternalEntity(), _getLineNumber(),
