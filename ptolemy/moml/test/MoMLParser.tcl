@@ -4239,7 +4239,7 @@ test MoMLParser-31.1 {Make sure that the error message refers to the proper file
     # The error message used to refer to http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd
 
     string range $errMsg 0 82
-} {com.microstar.xml.XmlException: XML element "property" triggers exception. in file:}
+} {com.microstar.xml.XmlException: Failed to find class 'ptolemy.domains.DoesNotExist.}
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
