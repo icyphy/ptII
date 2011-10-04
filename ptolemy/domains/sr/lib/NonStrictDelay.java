@@ -106,11 +106,20 @@ public class NonStrictDelay extends Transformer {
         if (_previousToken != null) {
             if (_previousToken == AbsentToken.ABSENT) {
                 output.send(0, null);
+                if (_debugging) {
+                    _debug("Output is absent.");
+                }
             } else {
                 output.send(0, _previousToken);
+                if (_debugging) {
+                    _debug("Output is " + _previousToken);
+                }
             }
         } else {
             output.send(0, null);
+            if (_debugging) {
+                _debug("Output is absent.");
+            }
         }
     }
 
