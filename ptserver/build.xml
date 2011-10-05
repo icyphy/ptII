@@ -216,8 +216,7 @@
 		<cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
 	</target>
 
-	<target name="junit" depends="build"
-		description="Run ptserver.test.junit.AllTests.  Results are in $PTII/TEST-ptserver.test.junit.AllTests.txt">
+	<target name="junit" depends="build">
 	  <junit fork="yes"
 		 printsummary="withOutAndErr"
 		 showoutput="yes">
