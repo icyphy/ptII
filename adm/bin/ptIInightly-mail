@@ -59,6 +59,29 @@ echo "See http://embedded.eecs.berkeley.edu/buildmaster" >> $mailmsg
 #echo "http://ptolemy.eecs.berkeley.edu/~ptII/nightly" >> $mailmsg
 
 #echo "" >> $mailmsg
+
+echo "" >> $mailmsg
+echo "------------------------------------------------" >> $mailmsg
+echo "Test results during code coverage" >> $mailmsg
+echo "" >> $mailmsg
+echo "............................................................" >> $mailmsg
+echo "|To add a directory to the list of directories to be tested|" >> $mailmsg
+echo "|edit the value of JSALLDIRS in                            |" >> $mailmsg
+echo "| \$PTII/adm/$GENVERSION/makefile |" >> $mailmsg
+echo "............................................................" >> $mailmsg
+echo "" >> $mailmsg
+echo "------------------------------------------------" >> $mailmsg
+echo "Test Failures during code coverage." >> $mailmsg
+echo "" >> $mailmsg
+egrep 'Total Tests' $ptbuildlog |
+    egrep -v '^Failed: 0' >> $mailmsg
+
+# Get the tests from ptdb
+cat $ptbuildlog |
+    awk ' $0 ~ /make.*: Entering/ {entering=$NF}
+          $0 ~ /^Tests run: [0-9]*,  Failures: [0-9]*/ { print $0, entering}' >> $mailmsg
+
+
 echo "------------------------------------------------" >> $mailmsg
 echo "The build started at:" >> $mailmsg
 grep "#ptIInightly-mail#: Starting make clean at" $ptbuildlog >> $mailmsg
@@ -151,27 +174,6 @@ egrep 'warning: \[deprecation\]' $ptbuildlog | egrep 'in (diva|ptolemy).' | grep
 #echo "------------------------------------------------" >> $mailmsg
 #echo "Diffs between tonight's build and lastnight's build" >> $mailmsg
 # cat $ADMDIR/test/ptIInightly.diffs >> $mailmsg
-
-echo "" >> $mailmsg
-echo "------------------------------------------------" >> $mailmsg
-echo "Test results during code coverage" >> $mailmsg
-echo "" >> $mailmsg
-echo "............................................................" >> $mailmsg
-echo "|To add a directory to the list of directories to be tested|" >> $mailmsg
-echo "|edit the value of JSALLDIRS in                            |" >> $mailmsg
-echo "| \$PTII/adm/$GENVERSION/makefile |" >> $mailmsg
-echo "............................................................" >> $mailmsg
-echo "" >> $mailmsg
-echo "------------------------------------------------" >> $mailmsg
-echo "Test Failures during code coverage." >> $mailmsg
-echo "" >> $mailmsg
-egrep 'Total Tests' $ptbuildlog |
-    egrep -v '^Failed: 0' >> $mailmsg
-
-# Get the tests from ptdb
-cat $ptbuildlog |
-    awk ' $0 ~ /make.*: Entering/ {entering=$NF}
-          $0 ~ /^Tests run: [0-9]*,  Failures: [0-9]*/ { print $0, entering}' >> $mailmsg
 
 echo "------------------------------------------------" >> $mailmsg
 echo "Tests without Failures during code coverage." >> $mailmsg
