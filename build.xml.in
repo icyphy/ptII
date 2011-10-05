@@ -62,12 +62,20 @@
     @ANT_EXCLUDE@
   </patternset>  
 
-  <!-- Tests that we want to exclude because they don't work. -->
+  <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/KielerJUnitTest.*" />
     <exclude name="**/lbnl/actor/lib/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptserver/test/junit/FileDownloadTest.*" />
+    <exclude name="**/ptserver/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptserver/test/junit/RESTGetHandlerTest.*" />
+    <exclude name="**/ptserver/test/junit/RemoteModelTest.*" />
+    <exclude name="**/ptserver/test/junit/ServerTest.*" />
+    <exclude name="**/ptserver/test/junit/ServletTest.*" />
+    <exclude name="**/ptserver/test/junit/TokenParserTest.*" />
+    <exclude name="**/ptserver/test/junit/TypeParserTest.*" />
   </patternset>
 
   <!-- Ant targets. Alphabetize and add a description, please.  -->
