@@ -39,12 +39,12 @@
 #  ./configure
 #  make fast
 #  make tests >& adm/logs/ptIInightly.txt
-#  python $PTII/ptII/util/testsuite/GenerateConciseLog.py -s $PTII/ptII/adm/logs/ptIInightly.txt -t $PTII/ptII/adm/logs/ptIInightly.htm
+#  python $PTII/util/testsuite/GenerateConciseLog.py -s $PTII/adm/logs/ptIInightly.txt -t $PTII/adm/logs/ptIInightly.htm
 #
 
 import re
 from optparse import OptionParser
-from time import gmtime, strftime
+from time import localtime, strftime
 
 foundTest = False
 foundTestName = ""
@@ -111,11 +111,11 @@ if __name__=="__main__":
 
 	file=open(options.target, 'w')
 	title = "Failed tests"
-	file.write("<html><head><title>%s</title></head><body><ul><h1>%s</h1>" %(title, title))
+	file.write("<html><head><title>%s</title></head><body><h1>%s</h1>" %(title, title))
 	i = 0
 	file.write("<p>")
-	file.write(strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()))
-	file.write("</p>")
+	file.write(strftime("%a, %d %b %Y %H:%M:%S", localtime()))
+	file.write("</p><ul>")
 	for test in FailedTests:
 		file.write("<li><a href=\"#%d\">%s</a></li>" %(i, test.name))
 		i = i + 1
