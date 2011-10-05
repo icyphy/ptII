@@ -32,8 +32,19 @@
 #######################################################################
 
 
+# This script reads in the output of the nightly build and creates an
+# html file that lists the Tcl test case failures.
+# Usage:
+#  cd $PTII
+#  ./configure
+#  make fast
+#  make tests >& adm/logs/ptIInightly.txt
+#  python $PTII/ptII/util/testsuite/GenerateConciseLog.py -s $PTII/ptII/adm/logs/ptIInightly.txt -t $PTII/ptII/adm/logs/ptIInightly.htm
+#
+
 import re
 from optparse import OptionParser
+from time import gmtime, strftime
 
 foundTest = False
 foundTestName = ""
@@ -102,6 +113,9 @@ if __name__=="__main__":
 	title = "Failed tests"
 	file.write("<html><head><title>%s</title></head><body><ul><h1>%s</h1>" %(title, title))
 	i = 0
+	file.write("<p>")
+	file.write(strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()))
+	file.write("</p>")
 	for test in FailedTests:
 		file.write("<li><a href=\"#%d\">%s</a></li>" %(i, test.name))
 		i = i + 1
