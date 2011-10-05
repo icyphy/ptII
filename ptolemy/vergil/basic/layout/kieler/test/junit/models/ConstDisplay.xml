@@ -20,7 +20,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0,145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 145.0}">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -28,10 +28,12 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0,145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 145.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=120.0,y=145.0}, tail={id=&quot;Display.input&quot;,x=190.0,y=145.0}, points={} } }">
+        </property>
     </relation>
     <link port="Const.output" relation="relation"/>
     <link port="Display.input" relation="relation"/>
