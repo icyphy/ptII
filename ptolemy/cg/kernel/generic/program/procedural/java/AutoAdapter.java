@@ -1025,7 +1025,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + variable.getName() + "\") == null) {" + _eol
                         + "   new " + variableClassShortName + "(" + containerSymbol + ", \""
                         + variable.getName() + "\").setExpression(\""
-                        + variable.getExpression() + "\");" + _eol
+                        + variable.getExpression().replace("$", "\\u0024") + "\");" + _eol
                         + "}" + _eol);
         }
 
@@ -1438,7 +1438,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // The remote actor is a custom actor (aka AutoAdaptered)
             remoteIsAutoAdaptered = true;
             if (verbosityLevel > 2) {
-                System.out.println(getComponent().getName() + " " + port.getName()
+                System.out.println("AutoAdapter: " + getComponent().getName() + " " + port.getName()
                         + "#" + channelNumber
                         + " is connected to remote actor " + remoteActor.getName()
                         + " " + remotePort.getName() + " via "
@@ -1474,7 +1474,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 moreThanOneRelation = true;
                 relationSymbol = "$actorSymbol(" + relation.getName() + ")";
                 if (verbosityLevel > 1) {
-                    System.out.println(message);
+                    System.out.println("AutoAdapter: " + message);
                 }
             }
 
@@ -1672,8 +1672,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // port of the other custom actor.  This obviates
                         // the need for checking for the connection at
                         // runtime.
+
                         if (verbosityLevel > 3) {
-                            code.append("    System.out.println(\"C1 port " +  port.getFullName() + " " + port.isMultiport() + "\");" + _eol);
+                            code.append("    System.out.println(\"C1 port: " +  port.getFullName() + " remotePort: " + remotePort.getName() + " found: " + remoteFoundPortField.getName() + " " + port.isMultiport() + "\");" + _eol);
                         }
                         code.append(relationAssignment
                                 + "$containerSymbol().connect(" + portOrParameter
@@ -1683,6 +1684,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 // FIXME: should portParameter be the remote port?
                                 + (portParameter != null ? ".getPort()" : "")
                                 + ");" + _eol + relationSetWidth);
+//                         code.append("((" + remoteActor.getClass().getName()
+//                                       + ")" + remoteActorSymbol + ")."
+//                                 + remoteFoundPortField.getName()
+//                                 // FIXME: should portParameter be the remote port?
+//                                 + (portParameter != null ? ".getPort()" : "")
+//                                 + ".setName(\"" + remotePort.getName() + "\");" + _eol);
                     }
                 }
             } catch (NoSuchFieldException ex) {
@@ -1909,16 +1916,18 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         String setParameter = "";
         if (parameter instanceof Parameter) {
             setParameter = "    Parameter " + parameterName + " = (("
-                    + actorClassName + ")$actorSymbol(actor))." + parameterName
-                    + ";" + _eol + "    " + parameterName + ".setExpression(\""
-                    + parameterValue + "\");" + _eol;
+                + actorClassName + ")$actorSymbol(actor))." + parameterName
+                + ";" + _eol + "    " + parameterName + ".setExpression(\""
+                // Handle custom actors that are in non-toplevel containers that refer to variables that have dollar signs in their names.
+                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/AutoAdapterStringParameter.xml 
+                + parameterValue.replace("$", "\\u0024") + "\");" + _eol;
         } else {
             if (parameter instanceof ptolemy.kernel.util.StringAttribute) {
                 setParameter = "    ptolemy.kernel.util.StringAttribute "
                         + parameterName + " = ((" + actorClassName
                         + ")$actorSymbol(actor))." + parameterName + ";" + _eol
                         + "    " + parameterName + ".setExpression(\""
-                        + parameterValue + "\");" + _eol;
+                    + parameterValue.replace("$", "\\u0024") + "\");" + _eol;
             }
         }
         return "{ " + _eol + setParameter + "    ((" + actorClassName
@@ -2012,7 +2021,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
             int verbosityLevel = ((IntToken) getCodeGenerator().verbosity.getToken()).intValue();
             if (verbosityLevel > 0) {
-                System.out.println(message);
+                System.out.println("AutoAdapter: " + message);
             }
             return remoteIsAutoAdaptered;
         }
