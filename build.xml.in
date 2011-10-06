@@ -41,14 +41,18 @@
   <!-- model names the model to be opened.  The default is the empty string.  To use this, run 'ant vergil -Dmodel=foo.xml' -->
   <property name="model" value="" />
 
-  <property name="source" value="1.5" />
+  <property name="source" value="1.6" />
+
+  <property name="target" value="1.6" />
 
   <!-- The tests that are run by the test target. -->
   <property name="test.batch" value="**/junit/*.java" />
   <!-- The test that is run by the test.auto target. -->
   <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
 
-  <property name="target" value="1.5" />
+  <!-- The timeout in seconds for findbugs and junit. -->
+  <property name="timeout" value="1200000" />
+
 
   <!-- Ant paths. Alphabetize, please -->
   <path id="ptII.classpath">
@@ -177,7 +181,7 @@ For example:
        jvmargs="-Xms256m -Xmx2000m"
        output="xml"
        outputFile="${ptII.reports}/ptII-findbugs.xml"
-       timeout="2400000"
+       timeout="${timeout}"
        >
       <auxclasspath refid="ptII.classpath" />
       <class location="${basedir}" />
@@ -326,7 +330,7 @@ For example:
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
-	   timeout="2400000">
+	   timeout="${timeout}">
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
@@ -352,7 +356,7 @@ For example:
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
 	   showoutput="off"
-	   timeout="2400000">
+	   timeout="${timeout}">
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/JUnitParams-0.3.0.jar"/>
@@ -428,7 +432,7 @@ For example:
 	   maxmemory="1500m"
 	   printsummary="withOutAndErr"
 	   showoutput="no"
-	   timeout="2400000">
+	   timeout="${timeout}">
       <classpath>
 	<path location="${instrumented.dir}" />
 	<path refid="ptII.classpath" />
