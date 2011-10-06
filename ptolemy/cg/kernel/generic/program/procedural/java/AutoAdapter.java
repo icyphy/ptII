@@ -401,7 +401,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 //+ actorPort.getName().replace("\\", "\\\\") + "\", "
                                 + AutoAdapter._externalPortName(
                                         actorPort.getContainer(),
-                                        actorPort.getName())
+                                        actorPort.getName()).replace("$", "\\u0024")
                                 + "\", "
                                 + actorPort.isInput() + ", "
                                 + actorPort.isOutput()
@@ -461,7 +461,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             //+ insidePort.getName().replace("\\", "\\\\")
                             + AutoAdapter._externalPortName(
                                         insidePort.getContainer(),
-                                        insidePort.getName())
+                                        insidePort.getName()).replace("$", "\\u0024")
                             + "\"), \"inputType\");" + _eol
                             + "_type.setExpression(\""
                             + typeAttribute.getExpression() + "\");" + _eol
@@ -619,6 +619,44 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public Set<String> getSharedCode() throws IllegalActionException {
+        StringBuffer variableCode = new StringBuffer();
+        Iterator composites = ((TypedCompositeActor)getComponent().toplevel()).entityList(TypedCompositeActor.class).iterator();
+        while (composites.hasNext()) {
+            String containerSymbol = "_toplevel";
+            TypedCompositeActor composite = (TypedCompositeActor) composites.next();
+            // FIXME: we could just search entities that end in "Parameters"
+            String subparametersCode = "";
+            TypedCompositeActor subparameters = (TypedCompositeActor)composite.getEntity("EconomicsParameters");
+            if (subparameters != null) {
+                subparametersCode = "{" + _eol
+                        + "TypedCompositeActor subParameters = (TypedCompositeActor)"
+                        + "subComposite" + ".getEntity(\""
+                        + subparameters.getName() + "\");" + _eol
+                        + "if (subParameters == null) {" + _eol
+                        + "    subParameters = new "
+                        + subparameters.getClass().getName()
+                        + "(" + "subComposite" + ", \""
+                        + subparameters.getName() + "\");" + _eol
+                        + _generateContainedVariables(subparameters, "subParameters")
+                        + "}" + _eol
+                        + "}" + _eol;
+            }
+            variableCode.append("{" + _eol
+                        + "TypedCompositeActor subComposite = (TypedCompositeActor)"
+                        + containerSymbol + ".getEntity(\""
+                        + composite.getName() + "\");" + _eol
+                        + "if (subComposite == null) {" + _eol
+                        + "    subComposite = new "
+                        + composite.getClass().getName()
+                        + "(" + containerSymbol + ", \""
+                        + composite.getName() + "\");" + _eol
+                        + _generateContainedVariables(composite, "subComposite")
+                        + subparametersCode
+                        + "}" + _eol
+                        + "}" + _eol);
+        }
+                        
+
         Set<String> sharedCode = super.getSharedCode();
         sharedCode
                 .add("static TypedCompositeActor _toplevel = null;"
@@ -638,7 +676,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + "        new Director(_toplevel, \"director\");"
                         + _eol
                         + "        _toplevel.setManager(new Manager(\"manager\"));"
-                        + _eol + "    }" + _eol + "}" + _eol
+                        + _eol
+                        + variableCode.toString() + _eol
+                        + "    }" + _eol
+                        + "}" + _eol
                 //                + getCodeGenerator().comment("Instantiate the containment hierarchy and return the container.")
                 //                 + "static ptolemy.kernel.CompositeEntity getContainer(ptolemy.kernel.util.NamedObj namedObj) {" + _eol
                 //                 + "    NamedObj child = namedObj;" + _eol
@@ -1059,6 +1100,31 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + location.getExpression() + "\");" + _eol
                         + "}" + _eol);
         }
+
+        // Include the variables of any TypedComposites that have only parameters and not actors.
+        // By rights, these should be ScopeExtendingAttributes . . .
+        
+        if (container instanceof TypedCompositeActor) {
+            Iterator composites = ((TypedCompositeActor)container).deepCompositeEntityList().iterator();
+            while (composites.hasNext()) {
+                TypedCompositeActor composite = (TypedCompositeActor) composites.next();
+                if (composite.getName().equals("Generator")) {
+                    variableCode.append("{" + _eol
+                        + "System.out.println(\"GeneratorHack: \");" + _eol
+                        + "TypedCompositeActor genComposite = (TypedCompositeActor)"
+                        + containerSymbol + ".getEntity(\""
+                        + composite.getName() + "\");" + _eol
+                        + "if (genComposite == null) {" + _eol
+                        + "    genComposite = new "
+                        + composite.getClass().getName()
+                        + "(" + containerSymbol + ", \""
+                        + composite.getName() + "\");" + _eol
+                        + _generateContainedVariables(composite, "genComposite")
+                        + "}" + _eol
+                        + "}" + _eol);
+                }
+            }
+        }
         return variableCode.toString();
     }
 
@@ -1428,7 +1494,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
 
         if (verbosityLevel > 3) {
-            code.append("System.out.println(\"AA1: " + port.getFullName() + " --> " + relation.getName() + " --> " + remotePort.getFullName() + "\");" + _eol);
+            //code.append("System.out.println(\"AA1: " + port.getFullName().replace("$", "\\u0024") + " --> " + relation.getName() + " --> " + remotePort.getFullName().replace("$", "\\u0024") + "\");" + _eol);
         }
         NamedObj remoteActor = remotePort.getContainer();
         String remoteActorSymbol = "";
@@ -1520,7 +1586,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + ", \""
                     //+ codegenPortName.replace("\\", "\\\\")
                     + AutoAdapter._externalPortName(port.getContainer(),
-                            codegenPortName)
+                            codegenPortName).replace("$", "\\u0024")
                     + "\", "
                     + port.isInput() + ", "
                     + port.isOutput() + ");"
@@ -1550,14 +1616,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortParameterActorTest.xml
             //String multiport = "";
             code.append("if ($actorSymbol(actor).getPort(\""
-                    + unescapedActorPortName.replace("\\", "\\\\")
+                    + unescapedActorPortName.replace("\\", "\\\\").replace("$", "\\uu0024")
                     //+ AutoAdapter._externalPortName(port.getContainer(),
                     //        unescapedActorPortName)
                     + "\") == null) {" + _eol
                     //+ "$actorSymbol(" + escapedCodegenPortName + ") "
                     + "TypedIOPort port" 
                     + " = new TypedIOPort($actorSymbol(actor), \""
-                    + unescapedActorPortName.replace("\\", "\\\\")
+                    + unescapedActorPortName.replace("\\", "\\\\").replace("$", "\\u0024")
                     //+ AutoAdapter._externalPortName(port.getContainer(),
                     //        unescapedActorPortName) 
                     + "\", " + port.isInput()
@@ -1705,7 +1771,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + "$actorSymbol(" + escapedCodegenPortName + ") = "
                         + " new TypedIOPort(" + remoteActorSymbol + ", \""
                         + AutoAdapter._externalPortName(remotePort.getContainer(),
-                                remotePort.getName()) + "\", " + remotePort.isInput()
+                                remotePort.getName()).replace("$", "\\u0024") + "\", " + remotePort.isInput()
                         + ", " + remotePort.isOutput() + ");" + _eol);
                 if (port.isMultiport()) {
                     code.append("$actorSymbol(" + escapedCodegenPortName + ").setMultiport(true);" + _eol);
@@ -1714,7 +1780,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     
                 portOrParameter = "(TypedIOPort)" + remoteActorSymbol + ".getPort(\""
                     + AutoAdapter._externalPortName(remotePort.getContainer(),
-                            remotePort.getName()) + "\")";
+                            remotePort.getName()).replace("$", "\\uu0024") + "\")";
                 if (!readingRemoteParameters) {
                     if (verbosityLevel > 3) {
                         code.append("    System.out.println(\"B1\");" + _eol);
