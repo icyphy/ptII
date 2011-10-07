@@ -77,7 +77,8 @@ public class NonStrictDisplay extends Display {
      *  This is a protected method to allow subclasses to override
      *  how inputs are observed. 
      *  @param i The channel
-     *  @return A string representation of the input.
+     *  @return A string representation of the input, or the string
+     *   "absent" or "unknown" if the input is absent or unknown.
      *  @throws IllegalActionException If reading the input fails.
      */
     protected String _getInputString(int i) throws IllegalActionException {
