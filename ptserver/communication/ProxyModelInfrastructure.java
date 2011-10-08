@@ -184,8 +184,8 @@ public class ProxyModelInfrastructure {
         if (_pingPongFuture != null) {
             _pingPongFuture.cancel(true);
         }
-        _tokenPublisher.cancel();
         _executor.shutdownNow();
+        _tokenPublisher.cancel();
         if (_mqttClient != null) {
             try {
                 _mqttClient.disconnect();

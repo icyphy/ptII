@@ -89,7 +89,20 @@ public class TokenPublisher {
 
     /** Cancel the publisher's timer used for sending batch of tokens.
      */
-    public void cancel() {
+    public synchronized void cancel() {
+        // Send the last batch before closing
+        try {
+            if (_tokenCount != 0) {
+                _sendBatch();
+                // NOTE: for some reason, the last batch is not send out, 
+                // if the mqtt connection is closed right after the publish method.
+                // By forcing the thread sleep, we give MQTT some time to send the last message.
+                Thread.sleep(_period);
+            }
+        } catch (Throwable e) {
+            _proxyModelInfrastructure.fireModelException(
+                    "Unhandled exception in the TokenPublisher", e);
+        }
         if (_executor != null) {
             _executor.shutdownNow();
             if (_publisherFuture != null) {

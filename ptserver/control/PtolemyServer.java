@@ -113,7 +113,6 @@ import ptserver.data.TokenParser.HandlerData;
  */
 public final class PtolemyServer implements IServerManager {
 
-
     ///////////////////////////////////////////////////////////////////
     ////                  public methods                           ////
 
@@ -595,7 +594,6 @@ public final class PtolemyServer implements IServerManager {
      */
     public static final String SERVLET_ROLE = "user";
 
-
     /** Initialize the logger used for error handling.
      */
     static {
@@ -606,13 +604,12 @@ public final class PtolemyServer implements IServerManager {
         try {
             PtolemyServer._lookupPropertyFile(serverConfig);
         } catch (IOException ex) {
-            ExceptionInInitializerError exception = new ExceptionInInitializerError("Failed to find \""
-                    + serverConfig + "\"");
+            ExceptionInInitializerError exception = new ExceptionInInitializerError(
+                    "Failed to find \"" + serverConfig + "\"");
             exception.initCause(ex);
             throw exception;
         }
-        CONFIG = ResourceBundle
-            .getBundle("ptserver.PtolemyServerConfig");
+        CONFIG = ResourceBundle.getBundle("ptserver.PtolemyServerConfig");
 
         ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
         modules.addAll(ActorModuleInitializer.getModules());
@@ -625,7 +622,7 @@ public final class PtolemyServer implements IServerManager {
             logFile = new FileHandler(CONFIG.getString("LOG_FILENAME"), true);
             logFile.setFormatter(new XMLFormatter());
             logger.addHandler(logFile);
-            logger.setLevel(Level.INFO);
+            logger.setLevel(Level.SEVERE);
         } catch (SecurityException e) {
             throw new ExceptionInInitializerError(e);
         } catch (IOException e) {
@@ -780,7 +777,8 @@ public final class PtolemyServer implements IServerManager {
         mapping.setPathSpec("/" + SERVLET_NAME);
         mapping.getConstraint().setAuthenticate(true);
 
-        File userFile = PtolemyServer._lookupPropertyFile("PtolemyServerUsers.properties");
+        File userFile = PtolemyServer
+                ._lookupPropertyFile("PtolemyServerUsers.properties");
 
         // Define the security context.
         ConstraintSecurityHandler security = new ConstraintSecurityHandler();
@@ -882,13 +880,10 @@ public final class PtolemyServer implements IServerManager {
         if (!userFile.exists()) {
 
             // Attempt to create it using the supplied default file.
-            URL defaultFile = FileUtilities.nameToURL(
-                    location + ".default",
+            URL defaultFile = FileUtilities.nameToURL(location + ".default",
                     null, null);
-            if (!FileUtilities.binaryCopyURLToFile(defaultFile,
-                    userFile)) {
-                throw new IllegalStateException(
-                        "The server users file \""
+            if (!FileUtilities.binaryCopyURLToFile(defaultFile, userFile)) {
+                throw new IllegalStateException("The server users file \""
                         + userFile + "\"could not be found and \""
                         + defaultFile + "\" the copy failed.");
             }
@@ -908,8 +903,8 @@ public final class PtolemyServer implements IServerManager {
          *  @param remoteModel The remote model whose connection has expired.
          */
         public void modelConnectionExpired(ProxyModelInfrastructure remoteModel) {
-            LOGGER.info("Removing model " + remoteModel.getTicket());
-            LOGGER.info("Last pong was " + remoteModel.getPingPongLatency()
+            LOGGER.severe("Removing model " + remoteModel.getTicket());
+            LOGGER.severe("Last pong was " + remoteModel.getPingPongLatency()
                     + " ms ago");
 
             try {
@@ -925,7 +920,7 @@ public final class PtolemyServer implements IServerManager {
         public void modelException(
                 ProxyModelInfrastructure proxyModelInfrastructure,
                 String message, Throwable exception) {
-            PtolemyServer.LOGGER.log(Level.INFO,
+            PtolemyServer.LOGGER.log(Level.SEVERE,
                     "Unhandled exception in model "
                             + proxyModelInfrastructure.getTicket()
                                     .getTicketID()
