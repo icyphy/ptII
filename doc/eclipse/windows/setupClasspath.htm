@@ -1,0 +1,110 @@
+<!-- $Id$ -->
+<html>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Windows: Setup up the Eclipse ptII .classpath for Ptolemy II</title>
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>Set up the Eclipse ptII project .classpath for Ptolemy II</h1>
+
+    Once you have downloaded the Ptolemy II source files, Eclipse uses
+    the <code>.classpath</code> file to set paths and exclude files.
+
+    <br/>There are two choices:
+    <ol>
+
+      <li> In the Ptolemy II source tree,
+	copy <code>.classpath.default</code> to <code>.classpath</code>.
+	This choice is the simpler choice, but might exclude optional
+	third party packages.
+      </li>
+      <li> Run <code>./configure</code>.  This choice is more complex, but this choice will include
+	optional third party software that is already installed on your
+	machine.
+      </li>
+    </ol>
+
+    <ol>
+      <li>
+	Choose <b>one</b> of the options below
+	<h4>A. Copy .classpath to .classpath.default</h4>
+	<ul>
+     <ol>
+     <li>Find the Ptolemy II source distribution,
+     which by default would be <code>c:\Ptolemy\ptII8.1.devel</code>.
+     <li>Right click on <code>.classpath</code> and select delete.
+     <li>Right click on <code>.classpath.default</code>, select copy.
+     <li>Select paste and paste a copy of the file.
+     <li>Right click on the copy, select rename and rename the file
+       to <code>.classpath.default</code>.
+     <br>Windows 7 users:  If you get a message "You must type a file name",
+     then rename the file to <code>.classpath.</code> with a
+     trailing dot.  The "operating system" will delete the trailing dot.
+     <br><i>This is one of the oddest things I've ever seen</i>.</li>
+     </ol>
+	</ul>
+	<p><b>OR</b></p>
+	<h4><a name="#runConfigure">B. Run ./configure</a></h4> 
+
+	Ptolemy II includes a number of packages that rely on software that
+	you may or may not have installed, such as MATLAB, the rxtx
+	package (for serial port connections), Java
+	Advanced Imaging (JAI), the Java Media Framework (JMF), and Java
+	3D.  If you wish to use or extend these features, you will need to
+	perform a few extra steps.  These steps require execution of a
+	script called <code>configure</code> in the Ptolemy II home
+	directory.
+
+	<p>The procedure below will modify the <code>.classpath</code> file
+	  that is provided in the version control repository to customize it
+	  for the software that you have installed.</p>
+   <li>(<i>Windows</i>): Install Cygwin and run configure
+
+   Unfortunately Windows does not ship with Unix shell commands
+   like <code>make</code>.  The workaround is to install Cygwin,
+   see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</code></a>
+      <ol>
+	<li> Start up the Cygwin Bash shell: <code>Start</code> | <code>Run</code> | <code>Cygwin</code>
+	<li> Change to the directory where the Ptolemy II source code was
+	  installed.  For example:
+	  <pre>
+	    cd c:/Ptolemy/ptII8.1.devel
+          </pre>
+	  Note that if there are <b>spaces</b> in the path name to the directory
+	    where your Ptolemy installation is located, then you should use
+	    double quotes around the path:
+	    <code>cd "c:/Documents and Settings/<i>yourLogin</i>/workspace/ptII"</code> 
+	<li> Set <code>$PTII</code> to the location of the Ptolemy II source tree:
+	  <pre>
+	    export PTII=c:/Ptolemy/ptII8.1.devel
+	  </pre>
+	    Again, if there are spaces in the path, use double quotes:
+            <code> export PTII="c:/Documents and Settings/<i>yourLogin</i>/workspace/ptII"</code> 
+	<li>  Run:
+	  <pre>
+	    ./configure
+	  </pre>  
+	  This will create <code>$PTII/.classpath</code>
+      </ol>
+
+      </li>
+      <li>Choose <b>one</b> of the choices above.
+      </li>
+
+      <li>Once you have configured <code>.classpath</code>, go back to Eclipse and
+	do <code>File</code> | <code>Refresh</code> so that Eclipse gets the updated
+	<code>.classpath</code> file.
+      </li>
+
+      <li> Build Ptolemy II by doing <code>Project</code> | <code>Build All</code>.
+	<br/> Note that you <i>may</i> want to select 
+	<code>Project</code> | <code>Build Automatically.</code>.
+      </li>
+
+      <li> Go back
+	to <a href="project.htm" target="main">Setting up Eclipse to manage your Ptolemy II development environment</a>.
+      </li>
+    </ol>
+  </body>
+</html>

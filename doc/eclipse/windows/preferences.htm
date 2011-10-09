@@ -1,12 +1,144 @@
 <!-- $Id$ -->
 <html>
-<head>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title></title>
-<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<h1></h1>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Windows: Setting the Eclipse Preferences</title>
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1>Windows: Setting the Eclipse Preferences</h1>
+    <p>Eclipse has the notion of a workspace, which is a collection of
+      one or more projects.  Ptolemy II is a project. </p>
 
-</body>
+
+    <p>In Windows,  create a shortcut to <code>eclipse.exe</code> by going to the 
+      directory where Eclipse is installed, right clicking on eclipse.exe 
+      and selecting <code>Create Shortcut</code>. 
+      <br>To add Eclipse to the start menu, right click on the shortcut and 
+      select <code>Pin to Start Menu</code>
+      <br>There is usually no need to set the memory size for Eclipse.  By default, it is set to 512 megabytes in the
+      <code>eclipse.ini</code> file.</p>
+
+    <p>When the "Workspace Launcher" window comes up, either stick with the default
+      or choose a new directory.  Note that the projects can be located outside
+      of the workspace directory.  One caveat is that Eclipse will not permit
+      the project directory to be a parent of the workspace directory, so placing the
+      workspace in a subdirectory such as the default location is best.
+      <br>Click "OK" to create the workspace and open Eclipse.
+      <br>Below is the Workspace Launcher Window:</p>
+    <center><p><img src="../../img/eclipseWorkspaceLauncher.png" alt="Eclipse Workspace Launcher" width="597" height="244"></p></center>
+
+    <p>The default configuration of Eclipse has some difficulties with Ptolemy II,
+      so a few changes are necessary.</p>
+    <ol>
+
+      <li>Eclipse requires some customization to build Ptolemy II
+	and to keep the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/style.htm#in_browser" target="_top">Ptolemy II coding style</a>.
+	In the steps below, we
+	outline changes to be made in the Eclipse Preferences window.
+
+	<br> Under Windows, the Eclipse Preferences window
+	is invoked via <code>Windowe</code> | <code>Preferences</code>.
+
+	<br>For each of the
+	changes, hit <code>Apply</code>.  When all the changes are done, hit
+	<code>OK</code>, which will close the Eclipse Preferences Window.</li>
+
+      <!--/eclipseSimple-->
+      <li>By default, Eclipse rebuilds a project when any change is made
+	to a file.  This will result in thousands of errors when Ptolemy II
+	is first checked out, and during normal usage, can be annoying because
+	of the pauses it creates. We suggest disabling this feature as
+	follows:
+	<ol>
+	  <li> While still in the preferences window 
+	    <br> (<code>Window</code> | <code>Preferences</code>)</li>
+	  <li> Select <code>General</code> | <code>Workspace</code></li>
+	  <li> Deselect <code>Build automatically</code>.</li>
+	  <li> Click Apply.</li> 
+	</ol>
+	Below is the <code>General</code> | <code>Workspace</code> window:
+	<center>
+	  <p><img src="../../img/eclipsePreferencesGeneralWorkspace.png" alt="Eclipse Preferemces General Workspace" width="624" height="537"></p>
+	</center>
+	<p>&nbsp;</p>
+      </li>
+      <!--/eclipseSimple-->
+      <li>Ptolemy II source files are worked on by many people with different
+	editors.  Unfortunately, different text editors interpret tab
+	characters differently, so it is best to use spaces rather than tabs.
+	<br>Sadly, the Eclipse developers have chosen to use tabs
+	as spaces, so you must adjust the Eclipse Java Formatter
+	if you plan on contributing code to the Ptolemy II tree.
+
+	<br>Also, it is best if files end with new line characters, so
+	that we can run line oriented scripts on them.
+	<br>In addition, we currently do not want the Eclipse
+	Formatter to format comments because some of the comments
+	include ASCII art diagrams. We hope to change this policy in
+	the future.
+
+	<br>We handle these changes together:
+	<ol>
+	  <li> While 
+	    <!--/eclipseSimple-->
+	    still
+	    <!--eclipseSimple-->
+	    in the preferences window
+	    <br> (<code>Window</code> | <code>Preferences</code>)
+	  </li>
+	  <li> Go to <code>Java</code> | <code>Code Style</code> | <code>Formatter</code> and click
+	    New
+	  </li>
+	  <li> In the "New Profile" Window, for the Profile name, enter "Ptolemy II"
+	    Under "Initialize settings with the following profile",
+	    select "Java Conventions [built-in]"
+	    (We use Java Conventions over the "Eclipse"
+	    setting because the Eclipse style uses tabs.)
+	    Then hit OK
+	  </li>
+	  <li> Under the "Indentation" tab, change the Tab policy to "Spaces only"
+	  </li> 
+	  <li> Under the "New Lines" tab, select "at end of file"
+	  </li>
+	  <li> Under the "Comments" tab,
+	    <br><b>unselect</b> "Enable Javadoc comment formatting" 
+	    <br><b>unselect</b> "Enable block comment formatting", otherwise the block comments that have &lt;pre&gt; ... &lt;pre&gt; get changed.
+	    <br><b>unselect</b> "Enable line comment formatting", otherwise the headers for public methods etc. get changed.
+	  </li>
+	  <li> Click OK.
+	  </li>
+	  <li> In the Preferences Window, click Apply.
+	  </li>
+	</ol>
+      </li>
+
+      <li> Eclipse has very good compiler error/warning.  One of the
+	warnings complains if a Serializable class does not have
+	serialVersionUID declared.  Since this warning is only useful
+	if you are tightly managing serialization, we turn it off:
+	<ol>
+	  <li> While still in the preferences window
+	    <br> (<code>Window</code> | <code>Preferences</code>)
+	    <br>  Expand <code>Java</code> | <code>Compiler</code> | <code>Errors/Warning</code>
+	  </li>
+	  <li> Under "Potential programming problems", change
+	    "Serializable class without serialVersionUID" to "Ignore"
+	  </li>
+	  <li> Under "Generic Types", change
+	    "Unchecked generic type operation" to "Ignore".
+	  </li>
+	  <li> Under "Generic Types", change
+	    "Usage of a raw type" to "Ignore".
+	  </li>
+	  <li> Click Apply.  If you are prompted for a full rebuild, click Yes.
+	  </li>
+	</ol>
+      </li>
+      <li> Click OK  in the Preferences window to apply all of the above changes.
+      </li>
+      <li>Proceed to the next step, <a href="project.htm">Setting up the ptII project</a>
+      </li>
+    </ol>
+  </body>
 </html>
