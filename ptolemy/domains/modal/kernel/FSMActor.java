@@ -435,7 +435,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             _foundUnknown = _foundUnknown
                     || transitionRefersToUnknownInputs;
             if (transition.isDefault()) {
-                if (_isTransitionEnabled(transition, transitionRefersToUnknownInputs)) {
+                if (_isTransitionEnabled(transition)) {
                     defaultTransitions.add(transition);
                 }
             } else if (transition.isErrorTransition()) {
@@ -447,7 +447,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     clearModelError();
                 }
             } else {
-                if (_isTransitionEnabled(transition, transitionRefersToUnknownInputs)) {
+                if (_isTransitionEnabled(transition)) {
                     enabledTransitions.add(transition);
                 }
             }
@@ -984,20 +984,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (_currentState != null) {
             List transitionList = _currentState.outgoingPort
                     .linkedRelationList();
-            try {
-                List enabledTransitions = enabledTransitions(transitionList, false);
-                if (enabledTransitions.size() > 0) {
-                    if (_debugging) {
-                        _debug("FSMActor requesting refiring by at "
-                                + getDirector().getModelTime());
-                    }
-                    getDirector().fireAtCurrentTime(this);
+            List enabledTransitions = enabledTransitions(transitionList, false);
+            if (enabledTransitions.size() > 0) {
+                if (_debugging) {
+                    _debug("FSMActor requesting refiring by at "
+                            + getDirector().getModelTime());
                 }
-            } catch (UndefinedConstantOrIdentifierException ex) {
-                // An identifier in a guard expression could not be evaluated.
-                // We interpret this to mean that we should not fire at time zero.
-                // An alternative would be to always request a firing at time zero.
-                // Would that be correct?
+                getDirector().fireAtCurrentTime(this);
             }
         }
     }
@@ -1574,7 +1567,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (!_referencedInputPortsByGuardKnown(transition)) {
                     return false;
                 }
-                if (transition.isEnabled()) {
+                if (_isTransitionEnabled(transition)) {
                     return false;
                 }
             }
@@ -2324,12 +2317,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  guard expression referenced any unknown inputs, and if so,
      *  it returns false (the transition is not (yet) enabled).
      *  @param transition The transition to check.
-     *  @param transitionRefersToUnknownInputs True if the guard on the
-     *   transition refers to inputs that are currently unkown.
      *  @return True if the transition is enabled.
      *  @throws IllegalActionException If the guard expression cannot be parsed.
      */
-    private boolean _isTransitionEnabled(Transition transition, boolean transitionRefersToUnknownInputs) throws IllegalActionException {
+    private boolean _isTransitionEnabled(Transition transition) throws IllegalActionException {
         try {
             return transition.isEnabled();
         } catch (UndefinedConstantOrIdentifierException ex) {
@@ -2345,8 +2336,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 return false;
             }
             throw ex;
-            
-            /* NOTE: Used to catch many more expressions, but this
+        }
+            /* NOTE: Used to catch many more exceptions, but this
              * masked too many errors. -- eal 10/8/2011.
         } catch (RuntimeException ex) {
             // If an exception occurs, it could be because there are unknown
@@ -2383,7 +2374,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
             return false;
             */
-        }
     }
 
     /** Remove all variable definitions associated with the specified
