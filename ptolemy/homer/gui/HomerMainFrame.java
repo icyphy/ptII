@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -240,15 +241,11 @@ public class HomerMainFrame extends JFrame {
         if (_layoutURL == null) {
             return null;
         }
-        try {
-            if (!new File(_layoutURL.toURI()).canRead()) {
-                return null;
-            }
-
-            return _layoutURL;
-        } catch (URISyntaxException e) {
+        if (_layoutURL.getFile().equals("")) {
             return null;
         }
+
+        return _layoutURL;
     }
 
     /** Get the model URL.
@@ -428,7 +425,12 @@ public class HomerMainFrame extends JFrame {
      *  @param layoutFile The target file for the "Save As" operation.
      */
     public void saveLayoutAs(File layoutFile) {
-        LayoutFileOperations.saveAs(this, layoutFile);
+        try {
+            _layoutURL = layoutFile.toURL();
+        } catch (MalformedURLException e) {
+            MessageHandler.error(e.getMessage(), e);
+        }
+        LayoutFileOperations.saveAs(this, layoutFile);        
     }
 
     /** Set the orientation of the scene.

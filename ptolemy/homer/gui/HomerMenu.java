@@ -400,12 +400,7 @@ public class HomerMenu {
     private void _saveMenuActionPerformed(ActionEvent e) {
         URL layoutURL = _mainFrame.getLayoutURL();
         if (layoutURL != null) {
-            try {
-                _mainFrame.saveLayoutAs(new File(layoutURL.toURI()));
-            } catch (URISyntaxException ex) {
-                // Can't happen, getLayoutURL already checks for this.
-                return;
-            }
+            _mainFrame.saveLayoutAs(new File(layoutURL.getPath()));
         } else {
             // No file was selected before, let's invoke the saveAs used in
             // the menu.
