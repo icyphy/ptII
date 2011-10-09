@@ -40,6 +40,9 @@
 <entity name="InstantaneousDialogGenerator" class="ptolemy.domains.sr.lib.InstantaneousDialogGenerator">
 </entity>
 
+<entity name="IsPresent" class="ptolemy.actor.lib.logic.IsPresent">
+</entity>
+
 <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
       <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialValue">
