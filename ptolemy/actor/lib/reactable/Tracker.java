@@ -77,7 +77,7 @@ public class Tracker extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Output an OpenCV Object
+    /** Output an OpenCV Object.
      *  @exception IllegalActionException If thrown while writing to the port.
      */
     public void fire() throws IllegalActionException {

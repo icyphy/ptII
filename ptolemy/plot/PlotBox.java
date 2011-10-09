@@ -1865,15 +1865,13 @@ out.println("\\begin{document}");
         _setYRange(min, max);
     }
 
-    /** Write the current data and plot configuration to the
-     *  specified stream in PlotML syntax.  PlotML is an XML
-     *  extension for plot data.  The written information is
-     *  standalone, in that it includes the DTD (document type
-     *  definition).  This makes is somewhat verbose.  To get
-     *  smaller files, use the two argument version of write().
-     *  The output is buffered, and is flushed and
-     *  closed before exiting.  Derived classes should override
-     *  writeFormat and writeData rather than this method.
+    /** Write the current data and plot configuration to the specified
+     *  stream in PlotML syntax.  PlotML is an XML extension for plot
+     *  data.  The written information is includes a reference to the
+     *  PlotML dtd on the the Ptolemy website.  The output is
+     *  buffered, and is flushed and but not closed before exiting.
+     *  Derived classes should override writeFormat and writeData
+     *  rather than this method.
      *  @param out An output stream.
      */
     public void write(OutputStream out) {
@@ -1887,8 +1885,8 @@ out.println("\\begin{document}");
      *  then the PlotML PUBLIC DTD is referenced, resulting in a file
      *  that can be read by a PlotML parser without any external file
      *  references, as long as that parser has local access to the DTD.
-     *  The output is buffered, and is flushed and
-     *  closed before exiting.  Derived classes should override
+     *  The output is buffered, and is flushed but
+     *  not closed before exiting.  Derived classes should override
      *  writeFormat and writeData rather than this method.
      *  @param out An output stream.
      *  @param dtd The reference (URL) for the DTD, or null to use the

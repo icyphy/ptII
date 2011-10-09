@@ -44,10 +44,10 @@ import ptolemy.plot.Plot;
 /**
  TwoPlotExample is a simple example that uses displays two plots side by side
  To compile and run this application, do the following:
- <pre>
+ <code>
  javac -classpath ../../.. TwoPlotExample.java
  java -classpath ../../.. ptolemy.plot.demo.TwoPlotExample
- </pre>
+ </code>
 
  @author Christopher Hylands
  @version $Id$
@@ -159,9 +159,10 @@ public class TwoPlotExample extends JFrame {
         setVisible(true);
     }
 
-    /** main method called in a standalone java application.
+    /** Run the demonstration a standalone java application.
      *  We simple instantiate this class, most of the work
      *  happens in the constructor.
+     * @param args Not used.
      */
     public static void main(String[] args) {
         // We execute everything in the Swing Event Thread, see

@@ -93,8 +93,9 @@ public class PlotLiveDemo extends PlotLive {
     }
 
     /** Run the demo as an application.
-     *        This is very useful for debugging.  The command to run would be
+     * This is very useful for debugging.  The command to run would be
      * java -classpath $PTII ptolemy.plot.demo.PlotLiveDemo
+     * @param args Not used.
      */
     public static void main(String[] args) {
         // Run this in the Swing Event Thread.

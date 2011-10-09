@@ -60,6 +60,17 @@ public class PtolemyApplication extends MoMLApplication {
         super(args);
     }
 
+    /** Parse the specified command-line arguments, creating models
+     *  and frames to interact with them.
+     *  @param args The command-line arguments.
+     *  @exception Exception If command line arguments have problems.
+     */
+    public PtolemyApplication(String arg) throws Exception {
+        // This method is used by the JUnit test framework, see
+        // ptolemy/util/test/junit/AutoGUITests.java
+        super(new String[] {arg});
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
