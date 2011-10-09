@@ -168,31 +168,7 @@ should <b>use the 64-bit version of Eclipse</b>
 
 <li> (<i>Windows</i>): Determine whether you are running a 32-bit or
     64-bit version of the OS.
-<ul>
-<li><i>Windows 7 or Vista</i>:  "Start", then right click on
-"Computer", then click on "Properties".  Under System, you
-should see the system type.  The 64-bit version of Windows 7 will
-say "64-bit Operating System".  See
-<a href="http://windows.microsoft.com/en-US/windows7/32-bit-and-64-bit-Windows-frequently-asked-questions"><code>http://windows.microsoft.com/en-US/windows7/32-bit-and-64-bit-Windows-frequently-asked-questions</code></a>.
-for details.
 
-<li><i>Windows XP</i>: "Start", then right click on "My Computer",
-and then click on "Properties". Under "System", if you see "x64
-Edition", then you are running a 64-bit version of Windows.  If "x64
-Edition" is <b>not</b> listed, then you are running a 32-bit version of Windows.
-</ul>
-
-<br>After determining whether to download the 32-bit or 64-bit version
-of Eclipse, download the file and unzip the download file into an
-appropriate place, such as <code>C:\Program Files</code>, which will
-create <code>C:\Program Files\eclipse\eclipse.exe</code>.
-
-<br>If <code>eclipse\eclipse.exe</code> is not created, then it could
-be that the security policy on your machine is preventing the creation
-of <code>.exe</code> files.  If this is the case, then try right
-clicking on the zip file, select "Properties" and then at the bottom,
-hit "Unblock" and then "Apply". Or try running
-<code>unzip</code> from the command line.
 
 </ul>
 
@@ -690,6 +666,7 @@ install a separate source-only download.
 <h3>OR</h3>
 
 <h3>3. Setting up Eclipse for use with Subversion: <a name="Subversive">Installing Subversive</a></h3>
+
 <p>There are at least two Subversion plugins for Eclipse, Subversive and Subclipse.  Either will work, for a brief comparison, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#SubclipseVsSubversion" target="_top">Subclipse vs. Subversion</a>.  The instructions below are for Subversive. To use Subclipse, see <a href="https://kepler-project.org/developers/reference/kepler-and-eclipse#7-installing-subversion-svn" target="_top">Installing Subversion (SVN) into Eclipse</a>.
 
 <p>The <a href="http://www.eclipse.org/subversive/downloads.php#in_browser" target="_top">Subversive</a>
@@ -1043,14 +1020,19 @@ on your machine:
 <pre>
 svn co svn+ssh://<I>yourID</I>@source.eecs.berkeley.edu/chess/ptII
 </pre>
-Read/write users will be prompted for their source.eecs.berkeley.edu
-username and password. This typically happens more than once since in case the svn+ssh protocol is being used passwords are not cached.
+Read/writes users may want to check "Save authentication".
+
+<p>Click <code>Finish</code></p>n
+
+<p>Read/write users will be prompted for their source.eecs.berkeley.edu
+username and password. This typically happens more than once since in case the svn+ssh protocol is being used passwords are not cached </p>
 
 <li>If you get a "Certificate Problem" window, then select
 <code>Trust</code> or <code>Trust Always</code>.  For details and
 a workaround, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#svnCertficateIsNotIssuedByATrustedAuthority" target="_top">Certificate is not issued by a trusted authority</a>.
 
-<li>In the SVN Repository view, right click on <code>trunk</code> and select <code>Find/Check out As</code>
+<li>In the SVN Repository view, expand the repository by clicking in the triangle at the left, then
+right click on <code>trunk</code> and select <code>Find/Check out As</code>
 
 <blockquote>
  <table border="1">
@@ -1073,7 +1055,9 @@ Follow the wizard, creating selections as follows:
      <br> set "Project Layout" to <code>Use project folder as root for sources and class files</code>.
      This is done so that <code>$PTII/bin</code> will contain the Ptolemy II command line scripts instead of the
      <code>*.class</code> files created by Eclipse.
-<li> Click Finish.
+<li> Click Next
+<li> In the "New Java Project" window, select "Allow output folders for source folders", click "Finish"
+
 <li> If you see a Confirm Overwrite Window that says:
 <blockquote>
  <code>The project you created, ptII, contains resources other than the standard .project file. If any of those resources have the same name and relative location of a resource you are checking out, the local resource will be replaced with the resource from the repository</code>

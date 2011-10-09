@@ -11,13 +11,11 @@
       one or more projects.  Ptolemy II is a project. </p>
 
 
-    <p>In Windows,  create a shortcut to <code>eclipse.exe</code> by going to the 
-      directory where Eclipse is installed, right clicking on eclipse.exe 
-      and selecting <code>Create Shortcut</code>. 
-      <br>To add Eclipse to the start menu, right click on the shortcut and 
-      select <code>Pin to Start Menu</code>
-      <br>There is usually no need to set the memory size for Eclipse.  By default, it is set to 512 megabytes in the
-      <code>eclipse.ini</code> file.</p>
+    <p><i>(Optional)</i>: To add Eclipse to your start menu, go to the
+      directory where Eclipse is installed, right click on eclipse.exe 
+      and select <code>Pin to Start Menu</code>.</p>
+
+    <p>Start up Eclipse by clicking on eclipse.exe.</p> 
 
     <p>When the "Workspace Launcher" window comes up, either stick with the default
       or choose a new directory.  Note that the projects can be located outside
@@ -26,7 +24,11 @@
       workspace in a subdirectory such as the default location is best.
       <br>Click "OK" to create the workspace and open Eclipse.
       <br>Below is the Workspace Launcher Window:</p>
-    <center><p><img src="../../img/eclipseWorkspaceLauncher.png" alt="Eclipse Workspace Launcher" width="597" height="244"></p></center>
+    <center><p><img src="../../img/eclipseWorkspaceLauncherWindows.png" alt="Eclipse Workspace Launcher" width="592" height="243"></p></center>
+
+    <p>The "Usage Data Upload" window may appear.  The Eclipse developers
+      use this facility to see how Eclipse is used.  We recommend selecting
+      "Turn UDC Off" and clicking "Finish".</p>
 
     <p>The default configuration of Eclipse has some difficulties with Ptolemy II,
       so a few changes are necessary.</p>
@@ -38,7 +40,7 @@
 	outline changes to be made in the Eclipse Preferences window.
 
 	<br> Under Windows, the Eclipse Preferences window
-	is invoked via <code>Windowe</code> | <code>Preferences</code>.
+	is invoked via <code>Windows</code> | <code>Preferences</code>.
 
 	<br>For each of the
 	changes, hit <code>Apply</code>.  When all the changes are done, hit
@@ -59,7 +61,7 @@
 	</ol>
 	Below is the <code>General</code> | <code>Workspace</code> window:
 	<center>
-	  <p><img src="../../img/eclipsePreferencesGeneralWorkspace.png" alt="Eclipse Preferemces General Workspace" width="624" height="537"></p>
+	  <p><img src="../../img/eclipsePreferencesGeneralWorkspaceWindows.png" alt="Eclipse Preferemces General Workspace" width="625" height="533"></p>
 	</center>
 	<p>&nbsp;</p>
       </li>
@@ -135,9 +137,22 @@
 	  </li>
 	</ol>
       </li>
-      <li> Click OK  in the Preferences window to apply all of the above changes.
+
+      <li> The PtDoc Doclet in <code>$PTII/doc/doclets/PtDoclet.java</code>
+	requires <code>tools.jar</code>, 
+	<br/>While still in the preferences window: 
+	<br/><code>Java</code> | <code>Installed JREs</code>, <code>tools.jar</code> must be added the external jars:
+	<ol>
+	  <li>Select the default JRE | <code>Edit</code> | <code>Add External Jars</code>.
+	    
+	  <li> Browse to the path of your JDK for example: 
+	    <br/> 32 bit: <code>c:\Program Files (x86) \Java\jdk1.6.0_23\lib</code> 
+	    <br/> 64 bit: <code>c:\Program Files\Java\jdk1.6.0_23\lib</code></li> 
+	  <li> Hit <code>Open</code>, select <code>tools.jar</code> and then finish.
+	</ol>
       </li>
-      <li>Proceed to the next step, <a href="project.htm">Setting up the ptII project</a>
+      <li> Click OK  in the Preferences window to apply all of the above changes.</li>
+      <li> Proceed to the next step, <a href="project.htm">Setting up the ptII project</a>
       </li>
     </ol>
   </body>

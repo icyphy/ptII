@@ -7,18 +7,20 @@
   </head>
   <body>
     <h1>Eclipse is aware of the Subversion aspects of the project.</h1>
+    <i>(Use both the Eclipse Subversion plug-in (Subversive) and the
+    shell <code>svn</code> command).</i>
 
-    You can use both Eclipse and shell version of Subversion to update the tree.
+    <p>You can use both Eclipse and the TortoiseSVN version of
+    Subversion or the Cygwin bash shell version of Subversion to
+    update the tree.
 
     <br/>This choice is the <b>preferred</b> choice for collaborating with
     the Ptolemy group because it means that your Ptolemy II tree can get
     recent changes.
 
     <br/>The downside is that that the development tree is under
-    development, so there may be bugs or instability.
+    development, so there may be bugs or instability.</p>
 
-    <br/>(Use both the Eclipse Subversion plug-in (Subversive) and the
-    shell <code>svn</code> command).
 
     <p>For other ways to set up Eclipse and Ptolemy II, see
       the <a href="project.htm" target="main">Setting up Eclipse to manage your Ptolemy II development Environment</a> page.</p>
@@ -44,8 +46,8 @@
       <li>In the "Work with" field, select "Indigo - http://download.eclipse.org/releases/indigo" from the drop down.  The install facility will take a few moments to connect to the site and determine
 	what is available.
       </li>
-      <br>Expand the "Collaboration" tab and check the box next to
-      "Subversive SVN Team Provider (Incubation)"
+      <li>Expand the "Collaboration" tab and check the box next to
+      "Subversive SVN Team Provider (Incubation)"</li>
       
       <li>Then click <code>Next</code>, <code>Next</code> again and click
 	through the license agreement and hit <code>Finish</code>.  
@@ -53,8 +55,8 @@
       <li> When the "Software Updates" window appears and asks about a
 	restart, select "Restart Now" and restart.
       </li>
-      <li> When Eclipse restarts, bring up the preferences window:
-	<br> <code>Eclipse</code> | <code>Preferences</code>
+      <li> When Eclipse restarts, the "Workspace Launcher" window will appear.  Click on "OK" and then bring up the preferences window:
+	<br> <code>Window</code> | <code>Preferences</code>
 	<br> Then do <code>Team</code> | <code>SVN</code>.  When you click
 	on the <code>SVN</code>, the "Subversion Connector Discovery" window
 	will pop up.  (See <a href="http://www.polarion.com/products/svn/subversive/connector_discovery.php#in_browser" target="_top">http://www.polarion.com/products/svn/subversive/connector_discovery.php</a>
@@ -201,7 +203,7 @@
 	<li><b>If you have read/write access</b> go to <a href="setupSubversion.htm" target="main">Setup the Subversion Configuration to Sane Settings</a> so that if you commit files, they will have the appropriate settings.
 	</li>
 
-	<li>All users should go on to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>
+      <li>The next step is to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>.
 	</li>
 
     </ol>

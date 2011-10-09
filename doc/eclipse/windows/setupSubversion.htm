@@ -28,12 +28,20 @@
     </ol>
 
     <p>To change the Subversion configuration, hunt for the
-      <code>.subversion/config</code> file.</p>  
+      <code>.subversion/config</code> file.  This file is created the
+      first time Subversion is invoked.</p>
 
-    <p>You might find it as <code>$HOME/.subversion/config</code>.  Another place to look
-      is <code>c:/Documents and Settings/<i>yourlogin</i>/Application Data/Subversion/config</code>. </p>
+    <p>Under Windows 7, you might find it
+    as <code>/Users/<i>yourlogin</i>/.subversion/config</code>.</p>
 
-    <p>If the directory does not exist, try running <CODE>svn --version</CODE> to create the directory.</p>
+    <p>Under older versions of Windows, another place to look
+      is <code>c:/Documents and Settings/<i>yourlogin</i>/Application
+      Data/Subversion/config</code>.</p>
+
+    <p>If you have installed Cygwin, from within a Cygwin bash window,
+    try <code>$HOME/.subversion/config</code>.  If you have Cygwin and
+    the directory does not exist, try
+    running <CODE>svn --version</CODE> to create the directory.</p>
 
     <p>Make this change to <CODE>.subversion/config</CODE></p>
     <pre>
@@ -250,6 +258,6 @@
 
     <p>Then run <code>svn commit</code> to commit the change. </p>
 
-    <p>The next step is to <a href="setupClasspath.htm">Run Ptolemy II</a></p>
+    <p>The next step is to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>.</p>
   </body>
 </html>

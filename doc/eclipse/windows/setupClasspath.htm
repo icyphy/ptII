@@ -30,20 +30,31 @@
 	Choose <b>one</b> of the options below
 	<h4>A. Copy .classpath to .classpath.default</h4>
 	<ul>
-     <ol>
-     <li>Find the Ptolemy II source distribution,
-     which by default would be <code>c:\Ptolemy\ptII8.1.devel</code>.
-     <li>Right click on <code>.classpath</code> and select delete.
-     <li>Right click on <code>.classpath.default</code>, select copy.
-     <li>Select paste and paste a copy of the file.
-     <li>Right click on the copy, select rename and rename the file
-       to <code>.classpath.default</code>.
-     <br>Windows 7 users:  If you get a message "You must type a file name",
-     then rename the file to <code>.classpath.</code> with a
-     trailing dot.  The "operating system" will delete the trailing dot.
-     <br><i>This is one of the oddest things I've ever seen</i>.</li>
-     </ol>
+	  <ol>
+	    <li>In the Windows file browser, find the Ptolemy II source distribution,
+	      <br/>If you installed from the installer, the Ptolemy source distribution will be at  <code>c:\Ptolemy\ptII8.1.devel</code>.
+	      <br/>If you downloaded Ptolemy II via Subversion, then the Ptolemy II source distribution will be at 
+	      <dl>
+		<dt>Windows 7:</dt>
+		<dd><code>/Users/<i>yourlogin</i>/workspace/ptII</code></dd>
+		<dt>Older versions of Windows:</dt>
+		<dd><code>c:/Documents and Settings/<i>yourlogin</i>/Documents/workspace/ptII</code></dd>
+	      </dl>
+	    <li>Right click on <code>.classpath</code> and select delete.</li>
+	    <li>Right click on <code>.classpath.default</code>, select copy.</li>
+	    <li>Right click on the background of the file browswer window and select paste and paste a copy of the file.
+	      <br/>You may need to change the file browser view from "List" to "Small Icons" so that it is possible to paste
+	      into the background.</li>
+	    <li>Right click on the copy, select rename and rename the file
+	      to <code>.classpath.default</code>.
+	      <br>Windows 7 users:  If you get a message "You must type a file name",
+	      then rename the file to <code>.classpath.</code> with a
+	      trailing dot.  The "operating system" will delete the trailing dot.
+	      <!-- This is one of the oddest things I've ever seen. --></li>
+	  </ol>
+	  <p><b>Most users will choose the above option because running configure requires installing Cygwin.</b></p>
 	</ul>
+
 	<p><b>OR</b></p>
 	<h4><a name="#runConfigure">B. Run ./configure</a></h4> 
 
@@ -59,34 +70,35 @@
 	<p>The procedure below will modify the <code>.classpath</code> file
 	  that is provided in the version control repository to customize it
 	  for the software that you have installed.</p>
-   <li>(<i>Windows</i>): Install Cygwin and run configure
 
-   Unfortunately Windows does not ship with Unix shell commands
-   like <code>make</code>.  The workaround is to install Cygwin,
-   see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</code></a>
-      <ol>
-	<li> Start up the Cygwin Bash shell: <code>Start</code> | <code>Run</code> | <code>Cygwin</code>
-	<li> Change to the directory where the Ptolemy II source code was
-	  installed.  For example:
-	  <pre>
-	    cd c:/Ptolemy/ptII8.1.devel
-          </pre>
-	  Note that if there are <b>spaces</b> in the path name to the directory
+	<ol>
+	  <li>Unfortunately Windows does not ship with Unix shell commands
+	like <code>make</code>.  The workaround is to install Cygwin,
+	see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</code></a></li>
+	  <li> Start up the Cygwin Bash shell: <code>Start</code> | <code>Run</code> | <code>Cygwin</code>
+	  <li> Change to the directory where the Ptolemy II source code was
+	    installed.  For example:
+	    <pre>
+	      cd c:/Ptolemy/ptII8.1.devel
+            </pre>
+	    Note that if there are <b>spaces</b> in the path name to the directory
 	    where your Ptolemy installation is located, then you should use
 	    double quotes around the path:
-	    <code>cd "c:/Documents and Settings/<i>yourLogin</i>/workspace/ptII"</code> 
-	<li> Set <code>$PTII</code> to the location of the Ptolemy II source tree:
-	  <pre>
-	    export PTII=c:/Ptolemy/ptII8.1.devel
-	  </pre>
+	    <pre>
+	      cd "c:/Documents and Settings/<i>yourLogin</i>/workspace/ptII"
+	  </pre></li>
+	  <li> Set <code>$PTII</code> to the location of the Ptolemy II source tree:
+	    <pre>
+	      export PTII=c:/Ptolemy/ptII8.1.devel
+	    </pre>
 	    Again, if there are spaces in the path, use double quotes:
             <code> export PTII="c:/Documents and Settings/<i>yourLogin</i>/workspace/ptII"</code> 
-	<li>  Run:
-	  <pre>
-	    ./configure
-	  </pre>  
-	  This will create <code>$PTII/.classpath</code>
-      </ol>
+	  <li>  Run:
+	    <pre>
+	      ./configure
+	    </pre>  
+	    This will create <code>$PTII/.classpath</code>
+	</ol>
 
       </li>
       <li>Choose <b>one</b> of the choices above.
@@ -102,8 +114,7 @@
 	<code>Project</code> | <code>Build Automatically.</code>.
       </li>
 
-      <li> Go back
-	to <a href="project.htm" target="main">Setting up Eclipse to manage your Ptolemy II development environment</a>.
+      <li> Go on to <a href="runPtolemyII.htm" target="main">Running Ptolemy II</a>.
       </li>
     </ol>
   </body>

@@ -19,8 +19,8 @@
     <p>The advantage of the development version is that it has the
       latest and greatest changes.  However, there could be bugs and
       instability in the development version. To access the
-      development version, you must either install XCode (a 1Gb
-      download) or install an Eclipse Subversion plug-in.  Currently,
+      development version, you must either install TortoiseSVN, or Cygwin
+      or install an Eclipse Subversion plug-in.  Currently,
       we prefer a plug-in called "Subversive".</p>
 
     <!--/eclipseSimple-->
@@ -29,23 +29,23 @@
       <li> <a href="noSVN.htm" target="main">Eclipse is unaware of the version control aspects of the project.</a>
 	<br>If you are downloading the source from major Ptolemy release,
 	and don't want to update regularly, or you do not have network access, then use this choice.
-	<br>(No Eclipse Subversion plug-in (Subversive),
-	No Subversion (<code>svn</code>) from the command line).
+	<br><i>(No Eclipse Subversion plug-in (Subversive),
+	No Subversion (<code>svn</code>) from the command line).</i>
       </li>
 
-      <li> <a href="noEclipseSVN.htm" target="main">Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a>
+      <li> <a href="noEclipseSVN.htm" target="main">Eclipse is unaware of the version control aspects of the project, use the TortoiseSVN version of Subversion or the Cygwin command line version of Subversion to update the tree.</a>
 
-	<br>(No Eclipse Subversion plug-in (Subversive),
-	use Subversion (<code>svn</code>) from the command line).
+	<br><i>(No Eclipse Subversion plug-in (Subversive),
+	use Subversion (<code>svn</code>) from the command line).</i>
       </li>
 
       <li> <a href="eclipseSVN.htm" target="main">Eclipse is aware of the Subversion aspects of the project.</a> 
-	You can use both Eclipse and shell version of Subversion to update the tree.
+	<br><i>(Use both the Eclipse Subversion plug-in (Subversive) and the
+	shell <code>svn</code> command).</i>
 
 	<br>This choice is the <b>preferred</b> choice for collaborating with the Ptolemy group because it means that your Ptolemy II tree can get recent changes.
 	<br/>The downside is that that the development tree is under development, so there may be bugs or instability.
-	<br>(Use both the Eclipse Subversion plug-in (Subversive) and the
-	shell <code>svn</code> command).
+
       </li>
 
     </ol>
