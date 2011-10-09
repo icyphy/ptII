@@ -35,7 +35,7 @@ import ptolemy.moml.ErrorHandler;
 //// RecorderErrorHandler
 
 /**
- Record MoML Errors and retrieve them later
+ Record MoML Errors and retrieve them later.
 
  @see ptolemy.kernel.util.RecorderListener
  @author Christopher Hylands Brooks
@@ -48,7 +48,7 @@ public class RecorderErrorHandler implements ErrorHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         constructors                      ////
 
-    /** Create an error handler
+    /** Create an error handler.
      */
     public RecorderErrorHandler() {
     }
@@ -63,6 +63,7 @@ public class RecorderErrorHandler implements ErrorHandler {
     }
 
     /** Get the messages recorded so far.
+     *  @return The messages.   
      */
     public String getMessages() {
         return _buffer.toString();

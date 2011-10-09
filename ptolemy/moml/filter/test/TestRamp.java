@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// TestRamp
 
 /**
- Test out icon handling
+ Test out icon handling by the filters.
 
  @author Christopher Brooks
  @version $Id$

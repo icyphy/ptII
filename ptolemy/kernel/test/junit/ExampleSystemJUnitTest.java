@@ -43,7 +43,8 @@ import ptolemy.kernel.test.ExampleSystem;
  */
 public class ExampleSystemJUnitTest {
     /**
-     *
+     * Create the example system and compare the value returned by the
+     * toString() method to the known good results.
      */
     @org.junit.Test
     public void run() throws Exception {
@@ -80,6 +81,9 @@ public class ExampleSystemJUnitTest {
         assertArrayEquals(example.toString().getBytes(), knownGood.getBytes());
     }
 
+    /** Run the test that creates the example system.
+     *  @param args Not used.
+     */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
                 .main("ptolemy.kernel.test.junit.ExampleSystemJUnitTest");

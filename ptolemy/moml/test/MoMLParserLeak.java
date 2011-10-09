@@ -51,6 +51,9 @@ public class MoMLParserLeak {
 
     /** Attempt to leak code by parsing MoML that looks for a class
      *  that does not exist.
+     *  @return the top level that would be found if the class that
+     *  does not exist was present
+     *  @exception Exception If the class does not exist.
      */
     public static CompositeEntity leak() throws Exception {
         //MoMLParser parser = new MoMLParser();
@@ -96,6 +99,6 @@ public class MoMLParserLeak {
         }
     }
 
-    // Note that the parser is what actually leaks here.
+    /** Note that the parser is what actually leaks here. */
     public static MoMLParser parser;
 }

@@ -54,6 +54,10 @@ import ptolemy.matlab.Engine;
  @Pt.AcceptedRating Red (cxh)
  */
 public class TestEngine {
+    /** Invoke the Matlab engine and run a few tests.
+     *  @param args Not used.
+     *  @exception IllegalActionException If there is a problem running the tests.
+     */
     public static void main(String[] args) throws IllegalActionException {
         Engine eng = new Engine();
         eng.setDebugging((byte) 0);

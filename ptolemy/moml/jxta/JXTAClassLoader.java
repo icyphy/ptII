@@ -41,8 +41,17 @@ package ptolemy.moml.jxta;
  @Pt.AcceptedRating Red (cxheecs.berkeley.edu)
  */
 public class JXTAClassLoader extends ClassLoader {
-    // FIXME: the name of this method needs to be changed
+
+
+    /** A public version of the protected ClassLoader.defineClass() method.
+     *  @param name The name of the class.
+     *  @param b The bytes or the class.
+     *  @param off The offsite into b.
+     *  @param len The length of the class data.
+     *  @return the class   
+     */   
     public Class myDefineClass(String name, byte[] b, int off, int len) {
+        // FIXME: the name of this method needs to be changed
         Class myClass = null;
 
         try {
@@ -57,8 +66,11 @@ public class JXTAClassLoader extends ClassLoader {
         return myClass;
     }
 
-    // FIXME: the name of this method needs to be changed
+    /** A public verison of the protected ClassLoader.resolveClass() method.
+     *  @param c The class to be resolved.
+     */
     public void myResolveClass(Class c) {
+        // FIXME: the name of this method needs to be changed
         resolveClass(c);
     }
 }

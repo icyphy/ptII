@@ -103,6 +103,7 @@ public class FileChooserQuery extends JFrame implements QueryListener {
      *  <pre>
      *   java -classpath $PTII ptolemy.gui.demo.FileChooserQuery
      *  </pre>
+     *  @param args Not used.
      */
     public static void main(String[] args) {
         try {

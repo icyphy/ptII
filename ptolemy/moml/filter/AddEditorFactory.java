@@ -140,6 +140,7 @@ public class AddEditorFactory extends MoMLFilterSimple {
      *  @param currentCharData The character data, which appears
      *   only in the doc and configure elements
      *  @param xmlFile The file currently being parsed.
+     *  @param parser The parser in which MoML is optionally evaluated.
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */

@@ -219,8 +219,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         _createActorResponse();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+
     public void changeExecuted(ChangeRequest change) {
     }
 
@@ -260,6 +259,9 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         }
     }
 
+    /** Return the pipe advertisement.
+     *  @param The pipe advertisement.
+     */
     public PipeAdvertisement getPipeAdvertisement(String str) {
         PipeAdvertisement pipeAdv = null;
 
