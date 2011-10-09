@@ -88,7 +88,7 @@
 <entity name="When" class="ptolemy.domains.sr.lib.When">
 </entity>
 
-<entity name="Combine" class="ptolemy.domains.sr.lib.Combine">
+<entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
 </entity>
 
       </group>
