@@ -53,7 +53,6 @@ EXTRA_SRCS = \
 	debugging.htm \
 	develsetup.htm \
 	eclipse.htm \
-	eclipseSimple.awk \
 	eclipseSimple.htm \
 	eclipse_index.htm \
 	index.htm \
@@ -87,9 +86,6 @@ OPTIONAL_FILES =
 
 all: $(EXTRA_SRCS)
 install: all jars
-
-eclipseSimple.htm: eclipse.htm
-	awk -f $(ROOT)/doc/coding/eclipseSimple.awk $< > $@
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
