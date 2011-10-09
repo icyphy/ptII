@@ -430,52 +430,26 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     continue;
                 }
             }
+            boolean transitionRefersToUnknownInputs
+                    = !_referencedInputPortsByGuardKnown(transition);
+            _foundUnknown = _foundUnknown
+                    || transitionRefersToUnknownInputs;
             if (transition.isDefault()) {
-                if (transition.isEnabled()) {
+                if (_isTransitionEnabled(transition, transitionRefersToUnknownInputs)) {
                     defaultTransitions.add(transition);
                 }
-            } else {
-                _foundUnknown = _foundUnknown
-                        || !_referencedInputPortsByGuardKnown(transition);
+            } else if (transition.isErrorTransition()) {
+                // FIXME: This seems to ignore guards!
                 // Add a transition the the enabled transition list if
-                // it is an error transition and the model error flag is
-                // set.  Otherwise, try to evaluate the guard whether
-                // the inputs are known or not. An unknown input might be
-                // in a part of the guard expression that is not evaluated,
-                // e.g. if the guard expression is "true || in == 1".
-
-                try {
-                    if (transition.isErrorTransition()) {
-                        if (_modelError) {
-                            enabledTransitions.add(transition);
-                            clearModelError();
-                        }
-                    } else if (transition.isEnabled()) {
-                        enabledTransitions.add(transition);
-                    }
-                } catch (RuntimeException ex) {
-                    // If an exception occurs, it could be because there are unknown
-                    // inputs. But it could also be because of an expression like
-                    // (in == value), where in is an input port whose status is
-                    // known to be absent. In that case, we want to interpret
-                    // the guard as false.
-                    if (!_foundUnknown) {
-                        // All referenced inputs are known.
-                        // Check whether some are absent.
-                        if (_referencedInputPortValuesByGuardPresent(transition)) {
-                            // All referenced input values are to ports with present status.
-                            throw ex;
-                        }
-                    }
-                } catch (IllegalActionException ex) {
-                    // See comments above.
-                    if (!_foundUnknown) {
-                        if (_referencedInputPortValuesByGuardPresent(transition)) {
-                            throw ex;
-                        }
-                    }
+                // it is an error transition and the model error flag is set.
+                if (_modelError) {
+                    enabledTransitions.add(transition);
+                    clearModelError();
                 }
-
+            } else {
+                if (_isTransitionEnabled(transition, transitionRefersToUnknownInputs)) {
+                    enabledTransitions.add(transition);
+                }
             }
         }
 
@@ -666,6 +640,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             if (matches) {
                                 // Next check to see whether the guard evaluates to false.
                                 try {
+                                    // NOTE: Do not use _isTransitionedEnabled() here
+                                    // because that returns false if the guard cannot
+                                    // be evaluated.
                                     if (!transition.isEnabled()) {
                                         guardsEvaluable = false;
                                         break;
@@ -1242,7 +1219,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public boolean postfire() throws IllegalActionException {
         _commitLastChosenTransition();
-        _lastChosenTransition = new HashMap<State, Transition>();
+        _lastChosenTransition.clear();
         return !_reachedFinalState && !_stopRequested;
     }
 
@@ -1527,152 +1504,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public Parameter stateDependentCausality;
 
-    /** This class implements a scope, which is used to evaluate the
-     *  parsed expressions.  This class is currently rather simple,
-     *  but in the future should allow the values of input ports to
-     *  be referenced without having shadow variables.
-     */
-    public class PortScope extends ModelScope {
-        /** Look up and return the attribute with the specified name in the
-         *  scope. Return null if such an attribute does not exist.
-         *  @param name The name of the variable to be looked up.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.data.Token get(String name)
-                throws IllegalActionException {
-            // Check to see if it is something we refer to.
-            Token token = (Token) _inputTokenMap.get(name);
-
-            if (token != null) {
-                return token;
-            }
-
-            Variable result = getScopedVariable(null, FSMActor.this, name);
-
-            if (result != null) {
-                return result.getToken();
-            } else {
-                // If we still can't find a name, try to resolve it with
-                // ModelScope. This will look up the names of all states, as
-                // well as the names in refinements and those at higher levels
-                // of the model hierarchy.
-                // -- tfeng (09/26/2008)
-                NamedObj object = ModelScope.getScopedObject(FSMActor.this,
-                        name);
-                if (object instanceof Variable) {
-                    token = ((Variable) object).getToken();
-                } else if (object != null) {
-                    token = new ObjectToken(object, object.getClass());
-                }
-                return token;
-            }
-        }
-
-        /** Look up and return the type of the attribute with the
-         *  specified name in the scope. Return null if such an
-         *  attribute does not exist.
-         *  @param name The name of the variable to be looked up.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public Type getType(String name) throws IllegalActionException {
-            // Check to see if this is something we refer to.
-            Port port = _getPortForIdentifier(name);
-
-            if ((port != null) && port instanceof Typeable) {
-                if (name.endsWith("_isPresent")) {
-                    return BaseType.BOOLEAN;
-
-                } else if (name.endsWith("Array")) {
-
-                    // We need to explicit return an ArrayType here
-                    // because the port type may not be an ArrayType.
-                    String portName = name.substring(0, name.length() - 5);
-                    if (port == _getPortForIdentifier(portName)) {
-                        Type portType = ((Typeable) port).getType();
-                        return new ArrayType(portType);
-                    }
-                }
-                return ((Typeable) port).getType();
-            }
-
-            Variable result = getScopedVariable(null, FSMActor.this, name);
-
-            if (result != null) {
-                return result.getType();
-            } else {
-                // If we still can't find a name, try to resolve it with
-                // ModelScope. This will look up the names of all states, as
-                // well as the names in refinements and those at higher levels
-                // of the model hierarchy.
-                // -- tfeng (09/26/2008)
-                Type type = null;
-                NamedObj object = ModelScope.getScopedObject(FSMActor.this,
-                        name);
-                if (object instanceof Variable) {
-                    type = ((Variable) object).getType();
-                } else if (object != null) {
-                    type = new ObjectType(object, object.getClass());
-                }
-                return type;
-            }
-        }
-
-        /** Look up and return the type term for the specified name
-         *  in the scope. Return null if the name is not defined in this
-         *  scope, or is a constant type.
-         *  @param name The name of the variable to be looked up.
-         *  @return The InequalityTerm associated with the given name in
-         *  the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            // Check to see if this is something we refer to.
-            Port port = _getPortForIdentifier(name);
-
-            if ((port != null) && port instanceof Typeable) {
-                return ((Typeable) port).getTypeTerm();
-            }
-
-            Variable result = getScopedVariable(null, FSMActor.this, name);
-
-            if (result != null) {
-                return result.getTypeTerm();
-            } else {
-                return null;
-            }
-        }
-
-        /** Return the list of identifiers within the scope.
-         *  @return The list of identifiers within the scope.
-         *  @exception IllegalActionException If getting the width of
-         *   some port fails.
-         */
-        public Set identifierSet() throws IllegalActionException {
-            Set set = getAllScopedVariableNames(null, FSMActor.this);
-
-            // Make sure the identifier set is up to date.
-            if (workspace().getVersion() != _identifierToPortVersion) {
-                _setIdentifierToPort();
-                _identifierToPortVersion = workspace().getVersion();
-            }
-
-            set.addAll(_identifierToPort.keySet());
-            // If we still can't find a name, try to resolve it with
-            // ModelScope. This will look up the names of all states, as
-            // well as the names in refinements and those at higher levels
-            // of the model hierarchy.
-            // -- tfeng (09/26/2008)
-            set.addAll(ModelScope.getAllScopedObjectNames(FSMActor.this));
-            return set;
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1732,7 +1563,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @param state The state to check for immediate transitions.
      *  @return true If there are no immediate transitions or if
      *   they are all disabled.
-     * @throws IllegalActionException If the guard expression cannot be parsed.
+     * @throws IllegalActionException If the guard expression cannot be parsed
+     *  or if it cannot yet be evaluated.
      */
     protected boolean _areAllImmediateTransitionsDisabled(State state) throws IllegalActionException {
         List<Transition> transitionList = state.outgoingPort
@@ -1931,6 +1763,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (currentTransition == null) {
             return;
         }
+
+        // Remove the entry from the map of chosen transitions to prevent
+        // a stack overflow from cycling forever around a directed cycle.
+        _lastChosenTransition.remove(_currentState);
 
         if (_debugging) {
             _debug("Commit transition ", currentTransition.getFullName()
@@ -2192,7 +2028,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         boolean[] flags = (boolean[]) _currentConnectionMap.get(port);
         return flags[channel];
     }
-
+    
     /** Read tokens from the given channel of the given input port and
      *  make them accessible to the expressions of guards and
      *  transitions through the port scope.  If the specified port is
@@ -2482,6 +2318,74 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _identifierToPort = new HashMap<String, Port>();
     }
 
+    /** Check to see whether the specified transition is enabled.
+     *  This method attempts to evaluate the guard of a transition.
+     *  If an exception occurs, then it checks to see whether the
+     *  guard expression referenced any unknown inputs, and if so,
+     *  it returns false (the transition is not (yet) enabled).
+     *  @param transition The transition to check.
+     *  @param transitionRefersToUnknownInputs True if the guard on the
+     *   transition refers to inputs that are currently unkown.
+     *  @return True if the transition is enabled.
+     *  @throws IllegalActionException If the guard expression cannot be parsed.
+     */
+    private boolean _isTransitionEnabled(Transition transition, boolean transitionRefersToUnknownInputs) throws IllegalActionException {
+        try {
+            return transition.isEnabled();
+        } catch (UndefinedConstantOrIdentifierException ex) {
+            // If the node refers to a port, then it may be that the
+            // port is absent.  Check that it matches a port name.
+            String name = ex.nodeName();
+            if (_getPortForIdentifier(name) != null) {
+                // FIXME: We would like to make sure at this point that the
+                // expression is well formed, but the issue simply that
+                // port has absent, and hence the port name is undefined.
+                // This is pretty tricky. How can we check that the
+                // expression could be evaluated if the input were present?
+                return false;
+            }
+            throw ex;
+            
+            /* NOTE: Used to catch many more expressions, but this
+             * masked too many errors. -- eal 10/8/2011.
+        } catch (RuntimeException ex) {
+            // If an exception occurs, it could be because there are unknown
+            // inputs. But it could also be because of an expression like
+            // (in == value), where in is an input port whose status is
+            // known to be absent. In that case, we want to interpret
+            // the guard as false.
+            //
+            if (_foundUnknown) {
+                return false;
+            }
+            // All referenced inputs are known.
+            // Check whether some are absent.
+            
+            // FIXME: This masks other errors!!! In particular,
+            // if the expression cannot be evaluated (e.g., I write
+            // in.foo() and there is no function foo()), but in is
+            // unkwown, then the expression will simply evaluate to false!
+            // It seems we need the expression evaluator to support the
+            // notion of absent.
+
+            if (_referencedInputPortValuesByGuardPresent(transition)) {
+                // All referenced input values are to ports with present status.
+                throw ex;
+            }
+            return false;
+        } catch (IllegalActionException ex) {
+            // See comments above.
+            if (_foundUnknown) {
+                return false;
+            }
+            if (_referencedInputPortValuesByGuardPresent(transition)) {
+                throw ex;
+            }
+            return false;
+            */
+        }
+    }
+
     /** Remove all variable definitions associated with the specified
      *  port name and channel number.
      *  @param portName The name of the port
@@ -2537,6 +2441,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private boolean _referencedInputPortValuesByGuardPresent(
             Transition transition) throws IllegalActionException {
 
+        // NOTE: This method is no longer used, but might prove
+        // useful in the future.
+        
         // If the port identifier does
         // not end with "_isPresent", then return false if port
         // identifier with "_isPresent" appended is false. There is no data on
@@ -2729,10 +2636,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  of these cases, another (up to) three variables are set
      *  with portName replaced by portName_i, where i is the channel
      *  number. If token is null, then the variable portName
-     *  is set to have the value Token.NIL. Note that this yields
-     *  far better error messages than leaving it unset, because if
-     *  if it not set, portName will resolve to the port itself,
-     *  which can be very confusing.
+     *  is unset, so that an access to it results in the name
+     *  resolving to the port itself, which can be very confusing.
      *  @param port The port.
      *  @param channel The channel.
      *  @param token If not null, the data token at the port.
@@ -2778,8 +2683,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 _debug("--- Setting variable ", name, " to " + token);
             }
         } else {
-            // Set the identifier to have value Token.NIL.
-            _inputTokenMap.put(name, Token.NIL);
+            // Remove the identifier.
+            _inputTokenMap.remove(name);
         }
 
         name = portChannelName;
@@ -2899,4 +2804,162 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private Hashtable _tokenListArrays;
     //A flag indicating whether or not the actor needs to deal with a model error.
     private boolean _modelError = false;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** This class implements a scope, which is used to evaluate the
+     *  parsed expressions.  This class is currently rather simple,
+     *  but in the future should allow the values of input ports to
+     *  be referenced without having shadow variables.
+     */
+    public class PortScope extends ModelScope {
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @param name The name of the variable to be looked up.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.Token get(String name)
+                throws IllegalActionException {
+            // Check to see if it is something we refer to.
+            Token token = (Token) _inputTokenMap.get(name);
+
+            if (token != null) {
+                return token;
+            }
+
+            Variable result = getScopedVariable(null, FSMActor.this, name);
+
+            if (result != null) {
+                return result.getToken();
+            } else {
+                // If we still can't find a name, try to resolve it with
+                // ModelScope. This will look up the names of all states, as
+                // well as the names in refinements and those at higher levels
+                // of the model hierarchy.
+                // -- tfeng (09/26/2008)
+                NamedObj object = ModelScope.getScopedObject(FSMActor.this,
+                        name);
+                if (object instanceof Variable) {
+                    token = ((Variable) object).getToken();
+                } else if (object != null) {
+                    // If the object is an IOPort contained by this actor,
+                    // then do not return it. IOPort names refer to the shadow
+                    // variables.
+                    // -- eal (10/8/2011)
+                    if (object instanceof IOPort) {
+                        if (object.getContainer() == FSMActor.this) {
+                            return null;
+                        }
+                    }
+                    token = new ObjectToken(object, object.getClass());
+                }
+                return token;
+            }
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @param name The name of the variable to be looked up.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public Type getType(String name) throws IllegalActionException {
+            // Check to see if this is something we refer to.
+            Port port = _getPortForIdentifier(name);
+
+            if ((port != null) && port instanceof Typeable) {
+                if (name.endsWith("_isPresent")) {
+                    return BaseType.BOOLEAN;
+
+                } else if (name.endsWith("Array")) {
+
+                    // We need to explicit return an ArrayType here
+                    // because the port type may not be an ArrayType.
+                    String portName = name.substring(0, name.length() - 5);
+                    if (port == _getPortForIdentifier(portName)) {
+                        Type portType = ((Typeable) port).getType();
+                        return new ArrayType(portType);
+                    }
+                }
+                return ((Typeable) port).getType();
+            }
+
+            Variable result = getScopedVariable(null, FSMActor.this, name);
+
+            if (result != null) {
+                return result.getType();
+            } else {
+                // If we still can't find a name, try to resolve it with
+                // ModelScope. This will look up the names of all states, as
+                // well as the names in refinements and those at higher levels
+                // of the model hierarchy.
+                // -- tfeng (09/26/2008)
+                Type type = null;
+                NamedObj object = ModelScope.getScopedObject(FSMActor.this,
+                        name);
+                if (object instanceof Variable) {
+                    type = ((Variable) object).getType();
+                } else if (object != null) {
+                    type = new ObjectType(object, object.getClass());
+                }
+                return type;
+            }
+        }
+
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @param name The name of the variable to be looked up.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            // Check to see if this is something we refer to.
+            Port port = _getPortForIdentifier(name);
+
+            if ((port != null) && port instanceof Typeable) {
+                return ((Typeable) port).getTypeTerm();
+            }
+
+            Variable result = getScopedVariable(null, FSMActor.this, name);
+
+            if (result != null) {
+                return result.getTypeTerm();
+            } else {
+                return null;
+            }
+        }
+
+        /** Return the list of identifiers within the scope.
+         *  @return The list of identifiers within the scope.
+         *  @exception IllegalActionException If getting the width of
+         *   some port fails.
+         */
+        public Set identifierSet() throws IllegalActionException {
+            Set set = getAllScopedVariableNames(null, FSMActor.this);
+
+            // Make sure the identifier set is up to date.
+            if (workspace().getVersion() != _identifierToPortVersion) {
+                _setIdentifierToPort();
+                _identifierToPortVersion = workspace().getVersion();
+            }
+
+            set.addAll(_identifierToPort.keySet());
+            // If we still can't find a name, try to resolve it with
+            // ModelScope. This will look up the names of all states, as
+            // well as the names in refinements and those at higher levels
+            // of the model hierarchy.
+            // -- tfeng (09/26/2008)
+            set.addAll(ModelScope.getAllScopedObjectNames(FSMActor.this));
+            return set;
+        }
+    }
 }
