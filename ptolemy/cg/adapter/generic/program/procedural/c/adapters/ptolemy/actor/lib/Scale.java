@@ -1,6 +1,6 @@
 /* A adapter class for ptolemy.actor.lib.Scale
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2006-2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,50 +27,27 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
-import ptolemy.cg.kernel.generic.program.CodeStream;
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.data.BooleanToken;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scale
 
 /**
- An adapter class for ptolemy.actor.lib.Scale.
+ A adapter class for ptolemy.actor.lib.Scale.
 
- @author Gang Zhou
+ @author Bert Rodiers
  @version $Id$
  @since Ptolemy II 8.0
- @Pt.ProposedRating Green (mankit)
- @Pt.AcceptedRating Green (cxh)
+ @Pt.ProposedRating Red (rodiers)
+ @Pt.AcceptedRating Red (rodiers)
  */
-public class Scale extends NamedProgramCodeGeneratorAdapter {
+public class Scale
+    extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
+
     /**
      *  Construct a Scale adapter.
      *  @param actor The given ptolemy.actor.lib.Scale actor.
      */
     public Scale(ptolemy.actor.lib.Scale actor) {
         super(actor);
-    }
-
-    /**
-     * Generate fire code for the Scale actor.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    protected String _generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super._generateFireCode());
-
-        ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
-
-        CodeStream codeStream = getTemplateParser().getCodeStream();
-        if (actor.scaleOnLeft.getToken() == BooleanToken.TRUE) {
-            codeStream.appendCodeBlock("scaleOnLeft");
-        } else {
-            codeStream.appendCodeBlock("scaleOnRight");
-        }
-        return processCode(codeStream.toString());
     }
 }

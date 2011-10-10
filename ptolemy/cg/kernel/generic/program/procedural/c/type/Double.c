@@ -101,6 +101,7 @@ Token Double_add(Token thisToken, ...) {
 
 /***Double_subtract***/
 Token subtract_Double_Array(double a1, Token a2);
+
 Token Double_subtract(Token thisToken, ...) {
     va_list argp;
     Token result;
@@ -123,7 +124,7 @@ Token Double_subtract(Token thisToken, ...) {
 
         // FIXME: not finished
     default:
-        fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+        fprintf(stderr, "Double_subtract(): Subtract with an unsupported type. (%d)\n", otherToken.type);
         exit(1);
     }
 
@@ -156,6 +157,12 @@ Token Double_multiply(Token thisToken, ...) {
 #ifdef TYPE_Array
     case TYPE_Array:
         result = $multiply_Double_Array(thisToken.payload.Double, otherToken);
+        break;
+#endif
+
+#ifdef TYPE_DoubleArray
+    case TYPE_DoubleArray:
+        result = $multiply_Double_DoubleArray(thisToken.payload.Double, otherToken);
         break;
 #endif
 

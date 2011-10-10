@@ -2685,7 +2685,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         functions.add("isCloseTo");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
-
+//         System.out.println("JavaCodeGenerator: all type functions: " + _typeFuncUsed);
+//         System.out.println("JavaCodeGenerator: all token functions: " + _tokenFuncUsed);
+//         System.out.println("JavaCodeGenerator: all referenced functions: " + functions);
         return functions;
     }
 
@@ -2715,6 +2717,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         types.addAll(_newTypesUsed);
+        System.out.println("JavaCodeGenerator: all referenced types: " + types);
         return types;
     }
 

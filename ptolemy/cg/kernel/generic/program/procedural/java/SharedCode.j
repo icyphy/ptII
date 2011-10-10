@@ -1,10 +1,9 @@
 /***constantsBlock***/
-// ConstantsBlock from codegen/java/kernel/SharedCode.j
+// ConstantsBlock from SharedCode.j
 /**/
 
 /***funcHeaderBlock ($function)***/
-
-// Token $function (Token thisToken, Token... tokens);  From codegen/java/kernel/SharedCode.j
+// Token $function (Token thisToken, Token... tokens);  funcHeaderBlock from SharedCode.j
 /**/
 
 /***tokenDeclareBlock***/

@@ -1010,9 +1010,21 @@ public class TemplateParser {
                             + "Initial String was:\n:" + initialFunctionString);
         }
 
+
         String typeOrToken = functionString.substring(0, commaIndex).trim();
         String functionName = functionString.substring(commaIndex + 2,
                 openFuncParenIndex).trim();
+
+        addFunctionUsed(functionName);
+        //System.out.println("TemplateParser: functionName: " + functionName + " " + functionString);
+        int underbar = typeOrToken.indexOf("_");
+        if (underbar != -1) {
+            String type = typeOrToken.substring(underbar + 1,
+                    typeOrToken.length());
+            if (_getCodeGenerator().isPrimitive(type) || type.equals("Complex") || type.equals("Matrix")) {
+                addNewTypesUsed(type);
+            }
+        }
 
         String argumentList = functionString.substring(openFuncParenIndex + 1)
                 .trim();
@@ -1024,7 +1036,7 @@ public class TemplateParser {
                         "Call TemplateParser.setCodeGenerator() "
                                 + "before calling getFunctionInvocation()");
             }
-            _codeGenerator._typeFuncUsed.add(functionName);
+            //_codeGenerator._typeFuncUsed.add(functionName);
 
             if (argumentList.length() == 0) {
                 CGException

@@ -46,7 +46,9 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class Scale extends NamedProgramCodeGeneratorAdapter {
+public class Scale
+    extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Scale {
+
     /**
      *  Construct a Scale adapter.
      *  @param actor The given ptolemy.actor.lib.Scale actor.
@@ -54,49 +56,4 @@ public class Scale extends NamedProgramCodeGeneratorAdapter {
     public Scale(ptolemy.actor.lib.Scale actor) {
         super(actor);
     }
-
-    /**
-     * Generate the shared code.  If the Scale_scaleOnLeft() or
-     * Scale_scaleOnRight methods are needed, include them in the shared
-     * section
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public Set<String> getSharedCode() throws IllegalActionException {
-        Set<String> sharedCode = new HashSet<String>();
-        CodeStream codestream = _templateParser.getCodeStream();
-        codestream.clear();
-        if (_needScaleMethods) {
-            codestream.appendCodeBlocks("Scale_scaleOn.*");
-            if (!codestream.isEmpty()) {
-                sharedCode.add(_templateParser.processCode(codestream
-                        .toString()));
-            }
-        }
-        return sharedCode;
-    }
-
-    /**
-     * Generate fire code for the Scale actor.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    protected String _generateFireCode() throws IllegalActionException {
-        super._generateFireCode();
-
-        ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
-
-        String type = "";
-        if (!getCodeGenerator().isPrimitive(actor.input.getType())) {
-            type = "Token";
-            _needScaleMethods = true;
-        }
-
-        _templateParser.getCodeStream().appendCodeBlock(type + "FireBlock",
-                false);
-        return processCode(_templateParser.getCodeStream().toString());
-    }
-
-    /** True if we need the Scale_scaleOn methods .*/
-    protected boolean _needScaleMethods = false;
 }

@@ -80,6 +80,7 @@ JSRCS = \
 	Pulse.java \
 	Ramp.java \
 	Recorder.java \
+	Scale.java \
 	Sequence.java \
 	StringConst.java \
 	SubscriptionAggregator.java \

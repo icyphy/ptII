@@ -170,29 +170,33 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             for (int i = 0; i < types.length; i++) {
                 code.append("\t{");
                 for (int j = 0; j < functions.length; j++) {
-                    if (functions[j].equals("isCloseTo")
-                            && (types[i].equals("Boolean") || types[i]
-                                    .equals("String"))) {
-                        // Boolean_isCloseTo and String_isCloseTo
-                        // are the same as their corresponding *_equals
-                        code.append(types[i] + "_equals");
-                    } else {
-                        // Check to see if the type/function combo is supported.
-                        String typeFunctionName = types[i] + "_" + functions[j];
-                        if (_unsupportedTypeFunctions
-                                .contains(typeFunctionName)) {
-                            code.append("unsupportedTypeFunction");
+                    // Do not add the *_new() methods because they
+                    // take a primitive type, not a Token.
+                    if (!functions[j].equals("new")) {
+                        if (functions[j].equals("isCloseTo")
+                                && (types[i].equals("Boolean") || types[i]
+                                        .equals("String"))) {
+                            // Boolean_isCloseTo and String_isCloseTo
+                            // are the same as their corresponding *_equals
+                            code.append(types[i] + "_equals");
                         } else {
-                            if (_scalarDeleteTypes.contains(types[i])
-                                    && functions[j].equals("delete")) {
-                                code.append("scalarDelete");
+                            // Check to see if the type/function combo is supported.
+                            String typeFunctionName = types[i] + "_" + functions[j];
+                            if (_unsupportedTypeFunctions
+                                    .contains(typeFunctionName)) {
+                                code.append("unsupportedTypeFunction");
                             } else {
-                                code.append(typeFunctionName);
+                                if (_scalarDeleteTypes.contains(types[i])
+                                        && functions[j].equals("delete")) {
+                                    code.append("scalarDelete");
+                                } else {
+                                    code.append(typeFunctionName);
+                                }
                             }
                         }
-                    }
-                    if (j != (functions.length - 1)) {
-                        code.append(", ");
+                        if (j != (functions.length - 1)) {
+                            code.append(", ");
+                        }
                     }
                 }
                 if (i != (types.length - 1)) {
@@ -587,7 +591,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         || !functionsArray[j].equals("delete")) {
                     // Skip Boolean_delete etc.
                     args.clear();
-                    if (!_unsupportedTypeFunctions.contains(functionName)) {
+                    if (!_unsupportedTypeFunctions.contains(functionName)
+                            && !functionName.endsWith("_new")) {
                         args.add(functionName);
                         sharedStream.append("// functionHeader: " + _eol);
                         sharedStream.appendCodeBlock("funcHeaderBlock", args);
@@ -665,9 +670,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         //functions.add("toString");    // for debugging.
         functions.add("convert");
         functions.add("isCloseTo");
-        functions.add("equals");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
+
+        //System.out.println("CCodeGenerator: all referenced functions: " + functions);
         return functions;
     }
 
@@ -696,6 +702,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
 
         types.addAll(_newTypesUsed);
+        //System.out.println("CCodeGenerator: all referenced types: " + types);
         return types;
     }
 
@@ -1608,14 +1615,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
                 _overloadedFunctionSet.add(name);
             }
-            //            if (name.startsWith("Array_")) {
-            //                // Array_xxx might need to have xxx added.
-            //                // See c/actor/lib/test/auto/MultiplyDivide5.xml
-            //
-            //                // FIXME: this will add any function, which means that
-            //                // if the user has Array_foo, foo is added.  Is this right?
-            //                _tokenFuncUsed.add(name.substring(6));
-            //            }
+            if (name.startsWith("Array_")) {
+                // Array_xxx might need to have xxx added.
+                // See c/actor/lib/test/auto/MultiplyDivide5.xml
+            
+                // FIXME: this will add any function, which means that
+                // if the user has Array_foo, foo is added.  Is this right?
+                _tokenFuncUsed.add(name.substring(6));
+            }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to mark function called for \"" + name + "\" in \""

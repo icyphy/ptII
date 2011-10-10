@@ -107,6 +107,7 @@ Token Matrix_new(int row, int column, int given, ...) {
 /**/
 
 /***Matrix_equals***/
+#ifdef TYPE_MATRIX
 Token Matrix_equals(Token thisToken, ...) {
     int i, j;
     va_list argp;
@@ -128,10 +129,12 @@ Token Matrix_equals(Token thisToken, ...) {
     }
     return $new(Boolean(true));
 }
+#endif
 /**/
 
 
 /***Matrix_isCloseTo***/
+#ifdef TYPE_MATRIX
 Token Matrix_isCloseTo(Token thisToken, ...) {
     int i, j;
     va_list argp;
@@ -155,6 +158,7 @@ Token Matrix_isCloseTo(Token thisToken, ...) {
     va_end(argp);
     return $new(Boolean(true));
 }
+#endif
 /**/
 
 /***Matrix_print***/

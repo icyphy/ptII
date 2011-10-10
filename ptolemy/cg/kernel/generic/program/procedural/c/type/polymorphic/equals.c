@@ -211,6 +211,12 @@ boolean equals_Token_Token(Token thisToken, Token otherToken) {
         break;
 #endif
 
+#ifdef TYPE_DoubleArray
+    case TYPE_DoubleArray:
+        result = (boolean)$DoubleArray_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
 #ifdef TYPE_Matrix
     case TYPE_Matrix:
         result = (boolean)$Matrix_equals(thisToken, otherToken).payload.Boolean;
