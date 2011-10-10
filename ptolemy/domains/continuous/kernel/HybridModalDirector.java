@@ -29,6 +29,7 @@ package ptolemy.domains.continuous.kernel;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -386,8 +387,8 @@ public class HybridModalDirector extends FSMDirector implements
     public boolean postfire() throws IllegalActionException {
         FSMActor controller = getController();
         State currentState = controller.currentState();
-        Transition lastChosenTransition = controller.getLastChosenTransition();
-        if (lastChosenTransition == null) {
+        Map<State,Transition> lastChosenTransitions = controller.getLastChosenTransitions();
+        if (lastChosenTransitions.size() == 0) {
             // No transition was chosen.
             // Record the current values on either side of each
             // comparison operation (called a relation) in each guard.
@@ -574,7 +575,8 @@ public class HybridModalDirector extends FSMDirector implements
         try {
             FSMActor controller = getController();
             if (controller != null) {
-                controller.setLastChosenTransition(null);
+                Map<State,Transition> chosenTransitions = controller.getLastChosenTransitions();
+                chosenTransitions.clear();
             }
         } catch (IllegalActionException e) {
             // This should not occur.
