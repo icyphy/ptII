@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
+package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
 
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
@@ -35,13 +35,14 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 /**
  A adapter class for ptolemy.actor.lib.DB.
 
- @author Bert Rodiers
+ @author Christopher Brooks, based on Java version by Bert Rodiers
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class DB extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.DB {
+public class DB extends NamedProgramCodeGeneratorAdapter {
+        
     /**
      *  Construct a DB adapter.
      *  @param actor The given ptolemy.actor.lib.DB actor.

@@ -65,6 +65,7 @@ JSRCS = \
 	BooleanMultiplexor.java \
 	BooleanSwitch.java \
 	Const.java \
+	DB.java \
 	Differential.java \
 	Discard.java \
 	DiscreteClock.java \

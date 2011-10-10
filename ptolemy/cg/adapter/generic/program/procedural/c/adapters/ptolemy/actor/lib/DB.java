@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
+package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
@@ -35,9 +35,9 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 /**
  A adapter class for ptolemy.actor.lib.DB.
 
- @author Bert Rodiers
+ @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 8.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
