@@ -334,6 +334,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         _stateRefinementsToPostfire.clear();
         _transitionRefinementsToPostfire.clear();
         FSMActor controller = getController();
+        controller._lastChosenTransition.clear();
         State currentState = controller.currentState();
         if (_debugging) {
             _debug("*** Firing " + getFullName(), " at time " + getModelTime());
