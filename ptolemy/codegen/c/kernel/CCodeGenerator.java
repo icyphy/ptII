@@ -1033,6 +1033,12 @@ public class CCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(typeDir + "StringArray.c");
         _overloadedFunctions.parse(typeDir + "UnsignedByte.c");
 
+        // Useful for debugging
+        //Iterator codeBlockNames = _overloadedFunctions.getAllCodeBlockNames().iterator();
+        //while (codeBlockNames.hasNext()) {
+        //    System.out.println("code block: " + codeBlockNames.next());
+        //}
+
         // Parse other function files.
         String directorFunctionDir = cCodegenPath
                 + "kernel/parameterized/directorFunctions/";

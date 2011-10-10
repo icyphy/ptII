@@ -220,8 +220,8 @@ Token Matrix_toString(Token thisToken, ...) {
 
 
 /***Matrix_add***/
-// Assume the given otherToken is array type.
-// Return a new Array token.
+// Assume the given otherToken is matrix type.
+// Return a new Matrix token.
 Token Matrix_add(Token thisToken, ...) {
     int i, j;
     va_list argp;
@@ -246,8 +246,8 @@ Token Matrix_add(Token thisToken, ...) {
 
 
 /***Matrix_subtract***/
-// Assume the given otherToken is array type.
-// Return a new Array token.
+// Assume the given otherToken is matrix type.
+// Return a new Matrix token.
 Token Matrix_subtract(Token thisToken, ...) {
     int i, j;
     va_list argp;
@@ -274,8 +274,8 @@ Token Matrix_subtract(Token thisToken, ...) {
 
 
 /***Matrix_multiply***/
-// Assume the given otherToken is array type.
-// Return a new Array token.
+// Assume the given otherToken is either an array or a matrix.
+// Return a new Matrix token.
 Token Matrix_multiply(Token thisToken, ...) {
     int i, j;
     va_list argp;
@@ -331,8 +331,8 @@ Token Matrix_multiply(Token thisToken, ...) {
 /**/
 
 /***Matrix_divide***/
-// Assume the given otherToken is array type.
-// Return a new Array token.
+// Assume the given otherToken is either an array or a matrix.
+// Return a new Matrix token.
 Token Matrix_divide(Token thisToken, ...) {
     int i, j, index;
     va_list argp;
@@ -380,6 +380,38 @@ Token Matrix_divide(Token thisToken, ...) {
 /***Matrix_toExpression***/
 Token Matrix_toExpression(Token thisToken, ...) {
     return Matrix_toString(thisToken);
+}
+/**/
+
+/***matrixToArray***/
+Token matrixToArray(Token thisToken) {
+    int i, j, index;
+    Token result;
+    Token element;
+
+    result = $new(Array(thisToken.payload.Matrix->column*thisToken.payload.Matrix->row, 0));
+    for (i = 0, index = 0; i < thisToken.payload.Matrix->column; i++) {
+        for (j = 0; j < thisToken.payload.Matrix->row; j++, index++) {
+            element = Matrix_get(thisToken, j, i);
+            switch (element.type) {
+                // This seems really wrong, dealing with DoubleArray and IntArray adds complexity
+#ifdef TYPE_DoubleArray;
+            case TYPE_Double:
+                result.payload.DoubleArray->elements[index] = element.payload.Double;
+                break;
+#endif                
+#ifdef TYPE_IntArray
+            case TYPE_Int:
+                result.payload.IntArray->elements[index] = element.payload.Int;
+                break;
+#endif                
+            default:
+                result.payload.Array->elements[index] = element;
+                break;
+            }
+        }
+    }
+    return result;
 }
 /**/
 

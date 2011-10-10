@@ -475,7 +475,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         if (functionName != null) {
             int index = functionName.indexOf("Array");
-            if (index > 0) {
+            if (index > 0 && value != null) {
                 String label = value.toString();
                 if (label.startsWith("object(")) {
                     label = label.substring(7, label.length() - 1);
@@ -585,13 +585,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             assert (argumentTypes.size() == 1);
 
             return "$" + _generator.codeGenType(argumentTypes.get(0)) + "_sum";
-        }
-
-        if (functionName.equals("repeat")) {
+        } else  if (functionName.equals("repeat")) {
             assert (argumentTypes.size() == 2);
 
             return "$" + _generator.codeGenType(argumentTypes.get(1))
                     + "Array_repeat";
+        } else if (functionName.equals("matrixToArray")) {
+            return "$" + functionName;
         }
         return functionName;
     }
