@@ -388,3 +388,20 @@ static Token Matrix_toExpression(Token thisToken, Token... tokens) {
 }
 /**/
 
+/***matrixToArray***/
+Token matrixToArray(Token thisToken) {
+    int i, j, index;
+    Token result;
+    Token element;
+
+    int size = ((Matrix)(thisToken.payload)).row*((Matrix)(thisToken.payload)).column;
+    result = $new(Array(size, 0));
+    for (i = 0, index = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
+        for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++, index++) {
+            element = Matrix_get(thisToken, j, i);
+	    Array_set(result, index, element);
+        }
+    }
+    return result;
+}
+/**/

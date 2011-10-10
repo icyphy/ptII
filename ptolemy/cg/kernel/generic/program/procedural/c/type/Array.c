@@ -137,10 +137,10 @@ Token Array_equals(Token thisToken, ...) {
                 return $new(Boolean(false));
         }
         for (i = 0; i < thisToken.payload.Array->size; i++) {
-                if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_equals]
+            if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_equals]
                                                                       (Array_get(thisToken, i), Array_get(otherToken, i)).payload.Boolean) {
-                        return $new(Boolean(false));
-                }
+                return $new(Boolean(false));
+            }
         }
 
         va_end(argp);

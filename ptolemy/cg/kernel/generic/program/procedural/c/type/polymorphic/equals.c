@@ -178,8 +178,95 @@ boolean equals_Token_Int(Token a1, int a2) {
 /**/
 
 /*** equals_Token_Token() ***/
-boolean equals_Token_Token(Token a1, Token a2) {
-    return $tokenFunc(a1::equals(a2));
+boolean equals_Token_Token(Token thisToken, Token otherToken) {
+    boolean result = false;
+    switch (thisToken.type) {
+#ifdef TYPE_Boolean
+    case TYPE_Boolean:
+        result = (boolean)$Boolean_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_Int
+    case TYPE_Int:
+        result = (boolean)$Int_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_Double
+    case TYPE_Double:
+        result = (boolean)$Double_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_String
+    case TYPE_String:
+        result = (boolean)$String_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_Array
+    case TYPE_Array:
+        result = (boolean)$Array_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_Matrix
+    case TYPE_Matrix:
+        result = (boolean)$Matrix_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+    default:
+        fprintf(stderr, "equals_Token_Token_(): iscloseTo with an unsupported type. Type1: %d, Type2: %d\n", thisToken.type, otherToken.type);
+        exit(-1);
+    }
+    return result;
 }
 /**/
 
+/*** isCloseTo_Token_Token() ***/
+static boolean isCloseTo_Token_Token(Token thisToken, Token otherToken, Token tolerance) {
+    boolean result = false;
+    switch (thisToken.type) {
+#ifdef TYPE_Boolean
+    case TYPE_Boolean:
+        result = (boolean)$Boolean_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_Int
+    case TYPE_Int:
+        result = (boolean)$Int_isCloseTo(thisToken, otherToken, tolerance).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_Double
+    case TYPE_Double:
+        result = (boolean)$Double_isCloseTo(thisToken, otherToken, tolerance).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_String
+    case TYPE_String:
+        result = (boolean)$String_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_Array
+    case TYPE_Array:
+        result = (boolean)$Array_isCloseTo(thisToken, otherToken, tolerance).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_Matrix
+    case TYPE_Matrix:
+        result = (boolean)$Matrix_isCloseTo(thisToken, otherToken, tolerance).payload.Boolean;
+        break;
+#endif
+    default:
+        fprintf(stderr, "iscloseTo_Token_Token_(): iscloseTo with an unsupported type. Type1: %d, Type2: %d\n", thisToken.type, otherToken.type);
+        exit(-1);
+    }
+    return result;
+}
+/**/

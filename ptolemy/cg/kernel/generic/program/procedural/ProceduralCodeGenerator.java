@@ -159,6 +159,20 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
         }
     }
 
+    /** Add called functions to the set of overloaded functions for
+     *  later use.
+     *  If the function starts with "Array_", add everything after the
+     *  "Array_" is added to the set of token functions used.
+     *  @param name The name of the function, for example "Double_equals"
+     *  @param templateParser The corresponding templateParser that contains the
+     *  codeBlock.
+     *  @exception IllegalActionException If there is a problem adding
+     *  a function to the set of overloaded functions.
+     */
+    public void markFunctionCalled(String name,
+            ProceduralTemplateParser templateParser) throws IllegalActionException {
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

@@ -213,7 +213,7 @@ if (($type(input) != TYPE_Array
 #ifdef PTCG_TYPE_Matrix
      && $type(input) != TYPE_Matrix
 #endif
-     && !equals_Token_Token($actorSymbol(inputToken), Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))))
+     && !$equals_Token_Token($actorSymbol(inputToken), Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))))
     || ($type(input) == TYPE_Array
         && !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken)))
 #ifdef PTCG_TYPE_Matrix

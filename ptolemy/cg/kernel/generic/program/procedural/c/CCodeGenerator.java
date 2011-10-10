@@ -53,6 +53,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
+import ptolemy.cg.kernel.generic.program.procedural.ProceduralTemplateParser;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
@@ -512,8 +513,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     // Boolean_isCloseTo and String_isCloseTo map to
                     // Boolean_equals and String_equals.
                     if (functionsArray[j].equals("isCloseTo")
-                            && (typesArray[i].equals("Boolean") || typesArray[i]
-                                    .equals("String"))) {
+                            && (typesArray[i].equals("Boolean")
+                                    || typesArray[i].equals("String"))) {
 
                         if (!functions.contains("equals")) {
                             markFunctionCalled(typesArray[i] + "_equals", null);
@@ -664,6 +665,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         //functions.add("toString");    // for debugging.
         functions.add("convert");
         functions.add("isCloseTo");
+        functions.add("equals");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
         return functions;
@@ -940,6 +942,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(typeDir + "String.c");
         _overloadedFunctions.parse(typeDir + "StringArray.c");
         _overloadedFunctions.parse(typeDir + "UnsignedByte.c");
+
+        // Useful for debugging
+        //Iterator codeBlockNames = _overloadedFunctions.getAllCodeBlockNames().iterator();
+        //while (codeBlockNames.hasNext()) {
+        //    System.out.println("code block: " + codeBlockNames.next());
+        //}
 
         // Parse other function files.
         //        String directorFunctionDir = cCodegenPath
@@ -1585,8 +1593,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If there is a problem adding
      *  a function to the set of overloaded functions.
      */
-    final public void markFunctionCalled(String name,
-            CTemplateParser templateParser) throws IllegalActionException {
+    public void markFunctionCalled(String name,
+            ProceduralTemplateParser templateParser) throws IllegalActionException {
 
         try {
             String functionCode = _overloadedFunctions.getCodeBlock(name);

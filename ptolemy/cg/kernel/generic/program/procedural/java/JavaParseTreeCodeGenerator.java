@@ -474,7 +474,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
         if (functionName != null) {
             int index = functionName.indexOf("Array");
-            if (index > 0) {
+            if (index > 0 && value != null) {
                 String label = value.toString();
                 if (label.startsWith("object(")) {
                     label = label.substring(7, label.length() - 1);
@@ -1906,6 +1906,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     private static Map cFunctionMap = new HashMap();
     static {
+        cFunctionMap.put("matrixToArray", "$matrixToArray");
         cFunctionMap.put("roundToInt", "(int)");
         cFunctionMap.put("repeat", "$arrayRepeat");
         cFunctionMap.put("sum", "$arraySum");

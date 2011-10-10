@@ -476,7 +476,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         if (functionName != null) {
             int index = functionName.indexOf("Array");
-            if (index > 0) {
+            if (index > 0 && value != null) {
                 String label = value.toString();
                 if (label.startsWith("object(")) {
                     label = label.substring(7, label.length() - 1);
@@ -500,6 +500,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 functionName = cFunction;
             }
         }
+        System.out.println("CParseTree2: " + functionName + " value: " + value);
+
 
         // The first child contains the function name as an id.  It is
         // ignored, and not evaluated unless necessary.
@@ -514,6 +516,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             if (value == null) {
                 value = _evaluateChild(node, 0);
             }
+        System.out.println("CParseTree: " + functionName + "value: " + value);
+
 
             if (type instanceof ArrayType) {
                 if (argCount == 1) {
@@ -572,6 +576,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType(),
                     _childCode));
         }
+        _childCode = _specializeReturnValue(functionName, node.getType(),
+                result + ")");
+
     }
 
     /** Define a function, where the children specify the argument types
@@ -1755,6 +1762,15 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         return argumentCode;
     }
 
+    private String _specializeReturnValue(String function, Type returnType,
+            String returnCode) {
+        if (function.equals("$arraySum") && _generator.isPrimitive(returnType)) {
+
+            returnCode += ".payload." + _generator.codeGenType(returnType);
+        }
+        return returnCode;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1780,6 +1796,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
     private static Map cFunctionMap = new HashMap();
     static {
+        cFunctionMap.put("matrixToArray", "$matrixToArray");
         cFunctionMap.put("roundToInt", "(int)");
         cFunctionMap.put("repeat", "$arrayRepeat");
         cFunctionMap.put("sum", "$arraySum");

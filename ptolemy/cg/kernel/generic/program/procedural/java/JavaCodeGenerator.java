@@ -1332,7 +1332,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If there is a problem adding
      *  a function to the set of overloaded functions.
      */
-    final public void markFunctionCalled(String name,
+    public void markFunctionCalled(String name,
             JavaTemplateParser javaTemplateParser)
             throws IllegalActionException {
 

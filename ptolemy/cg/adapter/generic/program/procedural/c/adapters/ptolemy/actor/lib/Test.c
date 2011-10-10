@@ -228,14 +228,11 @@ if (($type(input) != TYPE_Array
         && !$isCloseTo_Token_Token(Matrix_get($actorSymbol(inputToken), 0, 0), Matrix_get(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)), 0, 0), $actorSymbol(toleranceToken)))
 #endif
     ) {
-    printf("\nTest $actorSymbol($channel) fails in iteration "
-                                 + $actorSymbol(numberOfTokensSeen)
-                             + ".\n Value was: "
-                             /*+ $actorSymbol(inputToken).getPayload()*/
-                             + $Array_toString($actorSymbol(inputToken)).getPayload()
-                             + ". Should have been within " + $param(tolerance) + " of: "
-                             + $Array_toString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))).getPayload()
-                             + ".\n");
+    printf("\nTest $actorSymbol($channel) fails in iteration %d\n Value was: %s. Should have been within %f of %s\n",
+            $actorSymbol(numberOfTokensSeen),
+            $Array_toString($actorSymbol(inputToken)).payload.String,
+            $param(tolerance),
+            $Array_toString(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))).payload.String);
    exit(-1);
 }
 /**/
