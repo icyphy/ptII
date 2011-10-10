@@ -149,9 +149,15 @@
         <link port="_Controller.b" relation="bRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false}">
+        </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="IsPresent" class="ptolemy.actor.lib.logic.IsPresent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 105.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -160,7 +166,11 @@
         <vertex name="vertex1" value="[180.0, 105.0]">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ModalModel.a" relation="relation2"/>
     <link port="ModalModel.b" relation="relation2"/>
-    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="IsPresent.input" relation="relation2"/>
+    <link port="IsPresent.output" relation="relation"/>
 </entity>
