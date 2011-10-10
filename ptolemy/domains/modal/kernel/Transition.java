@@ -519,10 +519,10 @@ public class Transition extends ComponentRelation {
         return ((BooleanToken) defaultTransition.getToken()).booleanValue();
     }
 
-    /** Return true if the transition is enabled, that is the guard is true, or
-     *  some event has been detected due to crossing some level.
-     *  @return True if the transition is enabled and some event is detected.
-     *  @exception IllegalActionException If thrown when evaluating the guard.
+    /** Return true if the transition is enabled, that is the guard is true,
+     *  and false if the guard evaluates to false.
+     *  @return True If the transition is enabled and some event is detected.
+     *  @exception IllegalActionException If the guard cannot be evaluated.
      */
     public boolean isEnabled() throws IllegalActionException {
         NamedObj container = getContainer();
@@ -533,10 +533,11 @@ public class Transition extends ComponentRelation {
         }
     }
 
-    /** Return true if the transition is enabled, that is the guard is true.
+    /** Return true if the transition is enabled, that is the guard is true,
+     *  and false if the guard evaluates to false.
      *  @param scope The parser scope in which the guard is to be evaluated.
      *  @return True If the transition is enabled and some event is detected.
-     *  @exception IllegalActionException If thrown when evaluating the guard.
+     *  @exception IllegalActionException If the guard cannot be evaluated.
      */
     public boolean isEnabled(ParserScope scope) throws IllegalActionException {
         ParseTreeEvaluator parseTreeEvaluator = getParseTreeEvaluator();
@@ -560,14 +561,12 @@ public class Transition extends ComponentRelation {
         Token token = parseTreeEvaluator.evaluateParseTree(_guardParseTree,
                 scope);
         if (!(token instanceof BooleanToken)) {
-            // This odd situation can occur, for example, if a guard
-            // directly references an input, e.g. "in" and the input
-            // is absent. In this case, the ID "in" evaluates to the port!
-            // The guard expression evaluator, oddly, seems to return a
-            // nil token, but in any case, it isn't a boolean token,
-            // so evaluating its boolean value will trigger a rather
-            // ugly class cast exception.
-            return false;
+            throw new IllegalActionException(this,
+                    "Guard expression does not evaluate to a boolean!"
+                    + " The gaurd expression is: \""
+                    + guardExpression.getExpression()
+                    + "\", which evaluates to "
+                    + token);
         }
         boolean result = ((BooleanToken) token).booleanValue();
         return result;

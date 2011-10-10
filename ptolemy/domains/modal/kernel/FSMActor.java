@@ -358,7 +358,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             newObject._initialState = (State) newObject.getEntity(_initialState
                     .getName());
         }
-        newObject._portReferencedInTransitionMaps = new HashMap<IOPort, HashMap<Transition, Boolean>>();
 
         newObject._inputPortsVersion = -1;
         newObject._cachedInputPorts = null;
@@ -547,119 +546,39 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
+        // The following has the side effect of puting the chosen
+        // transition into the _lastChosenTransition map.
         Transition chosenTransition = _chooseTransition(_currentState, transitionList, false);
         // The destination of the chosen transition may be transient,
-        // so we should also choose transitions on the destination state.
+        // so we should also choose immediate transitions out
+        // of the destination state. The following set is used
+        // to detect cycles of immediate transitions.
+        HashSet<State> visitedStates = new HashSet<State>();
         while (chosenTransition != null) {
             State nextState = chosenTransition.destinationState();
             if (nextState == _currentState) {
                 break;
             }
+            if (visitedStates.contains(nextState)) {
+                throw new IllegalActionException(nextState, this,
+                        "Cycle of immediate transitions found.");
+            }
+            visitedStates.add(nextState);
             transitionList = nextState.outgoingPort.linkedRelationList();
             // The last argument ensures that we look only at transitions
             // that are marked immediate.
             chosenTransition = _chooseTransition(nextState, transitionList, true);
         }
         
-        // If no transition was chosen, then it still might
-        // possible to assert that certain outputs are absent.
-        // FIXME: We need to execute this even if the size is not zero!
-        if (_lastChosenTransition.size() == 0) {
-            
-            // Add to this transition list all the outgoing transitions
-            // of any transient states that are a destination of a transition.
-            /* FIXME: In order to assert that outputs are absent, we also
-             * need to examine all transitions out of transient states
-             * that are destinations of transitions from this state.
-             * Do something like the following to add those transitions
-             * to the list to be examined.
-            for(Transition transition : transitionList) {
-                State destination = transition.destinationState();
-                if (destination instanceof TransientState) {
-                    // FIXME: This needs to be recursive to include transitions out of the transient state.
-                    transitionList.addAll(destination.outgoingPort.linkedRelationList());
-                }
-            }
-            */
-
-            // If all relevant inputs (those on guards of outgoing
-            // transitions) are known, and the current state has no refinement,
-            // then make all outputs absent.
-            // FIXME: Why require that the current state have no refinement?
-            // Probably because the transfer of the output from the refinement
-            // to this port hasn't occurred yet, and if we assert now that the
-            // output is absent, we will get an exception when do the transfer.
-            if (!foundUnknown() && _currentState.getRefinement() == null) {
-                List<IOPort> outputs = outputPortList();
-                for (IOPort port : outputs) {
-                    for (int channel = 0; channel < port.getWidth(); channel++) {
-                        if (!port.isKnown(channel)) {
-                            port.send(channel, null);
-                        }
-                    }
-                }
-            }
-            // Next, for each output port, we need to check whether
-            // it is possible for an output to be produced on that port.
-            // It will not be possible if all transitions that can produce
-            // the output have guards that evaluate to false.
-            List<IOPort> outputs = outputPortList();
-            for (IOPort port : outputs) {
-
-                // grab the HashMap for all transitions where this port is referenced
-                // in the output actions
-                HashMap transitionMap;
-                if (_portReferencedInTransitionMaps.containsKey(port)) {
-                    transitionMap = _portReferencedInTransitionMaps.get(port);
-                } else {
-                    transitionMap = new HashMap<Transition, Boolean>();
-                    _portReferencedInTransitionMaps.put(port, transitionMap);
-                }
-
-                for (int channel = 0; channel < port.getWidth(); channel++) {
-                    if (!port.isKnown(channel)) {
-                        // Check all transitions. If no transition can
-                        // possibly produce this output, set the output absent.
-                        boolean guardsEvaluable = true;
-                        for (Transition transition : transitionList) {
-                            // Determine whether the transition includes an assignment to this port.
-                            // Use a HashMap for each port to save booleans for each transition
-                            Boolean matches;
-                            if (transitionMap.containsKey(transition)) {
-                                matches = (Boolean) transitionMap
-                                        .get(transition);
-                            } else {
-                                String outputActionsExpression = transition.outputActions
-                                        .getExpression();
-                                String regexp = "(^|((.|\\s)*\\W))"
-                                        + port.getName() + "\\s*=[^=](.|\\s)*";
-                                matches = (outputActionsExpression.trim()
-                                        .matches(regexp));
-                                transitionMap.put(transition, matches);
-                            }
-                            if (matches) {
-                                // Next check to see whether the guard evaluates to false.
-                                try {
-                                    // NOTE: Do not use _isTransitionedEnabled() here
-                                    // because that returns false if the guard cannot
-                                    // be evaluated.
-                                    if (!transition.isEnabled()) {
-                                        guardsEvaluable = false;
-                                        break;
-                                    }
-                                } catch (IllegalActionException ex) {
-                                    // Guard cannot be evaluated. Cannot set this port
-                                    // to absent (yet).
-                                    guardsEvaluable = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (guardsEvaluable) {
-                            // Send absent.
-                            port.send(channel, null);
-                        }
-                    }
+        // Finally, for each output port where we can determine that
+        // it is not possible for it to become present, assert that it
+        // is absent.
+        List<IOPort> outputs = outputPortList();
+        for (IOPort port : outputs) {
+            for (int channel = 0; channel < port.getWidth(); channel++) {
+                if (_isSafeToClear(port, channel, _currentState, false, null)) {
+                    // Send absent.
+                    port.send(channel, null);
                 }
             }
         }
@@ -1374,9 +1293,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public void stop() {
         _stopRequested = true;
-        // If the execution stops, that should result in clearing the HashMaps
-        // because the user might change the model (transition-labels).
-        this._portReferencedInTransitionMaps.clear();
     }
 
     /** Do nothing.
@@ -1717,7 +1633,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // from the refinement have not been transferred.
             // This case has to be handled by the FSMDirector.
             // FURTHER NOTE: This cannot be done unless either
-            // the current state has no immediate transitions
+            // the destination state of the chosen transition
+            // has no immediate transitions
             // out of it, or the guards on all immediate transitions
             // out of it are known to evaluate to false.
             if (_areAllImmediateTransitionsDisabled(chosenTransition.destinationState())
@@ -2022,6 +1939,116 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return flags[channel];
     }
     
+    /**
+     * Given an output port and channel, determine whether the
+     * output port must be absent on the specified channel, given whatever
+     * current information about the inputs is available (the inputs
+     * may be known or unknown).
+     * <p>
+     * The way this works is that it examines all the outgoing
+     * transitions of the current state. If the guard on the transition
+     * can be evaluated to false, then as far as this transition is
+     * concerned, the output port can be absent.
+     * Otherwise, two things happen. First, we check to see whether
+     * the output actions of a transition writes to the specified
+     * port. Second, we look at the destination state of the
+     * transition and examine all immediate transition emanating
+     * from that state. If none of the transitions makes an assignment
+     * to the output port, then we can safely
+     * assert that the output is absent.
+     * <p>
+     * This method ignores any state refinements, and consequently
+     * its analysis is valid only if all state refinements also assert
+     * that the output is absent.
+     *
+     * @param port The IOPort in question.
+     * @param channel The channel in question.
+     * @param state The state whose transitions are examined.
+     * @param immediateOnly True to examine only immediate transitions.
+     * @param visitedStates The set of states already visited, or null
+     *  if none have yet been visited.
+     * @return True, if successful.
+     */
+    protected boolean _isSafeToClear(IOPort port, int channel,
+            State state, boolean immediateOnly, HashSet<State> visitedStates) {
+        // FIXME: This code is not right if there immediate transitions
+        // because there may be some of the transitions in a transition chain
+        // that are enabled, but some in the chain may not be known yet!
+        if (_debugging) {
+            _debug("Calling _isSafeToClear() on port: " + port.getFullName());
+        }
+
+        List<Transition> transitionList = state.outgoingPort
+                .linkedRelationList();
+        for (Transition transition : transitionList) {
+            if (immediateOnly && !transition.isImmediate()) {
+                // Skip the transition.
+                continue;
+            }
+            // Next check to see whether the transition can be
+            // evaluated to false. This will throw an exception
+            // if there is not enough information to evaluate
+            // the guard.
+            try {
+                if (!transition.isEnabled()) {
+                    // Transition is assured of not being
+                    // enabled, so we can ignore it.
+                    continue;
+                }
+            } catch (IllegalActionException ex) {
+                // Guard cannot be evaluated. Therefore,
+                // we have to check it.
+            }
+            // ASSERT: Either the guard cannot be evaluated
+            // or it evaluates to true at this point.
+            
+            // First, recursively check immediate transitions
+            // emanating from the destination state.
+            State destinationState = transition.destinationState();
+            // Guard against cycles!!
+            if (visitedStates == null) {
+                visitedStates = new HashSet<State>();
+                visitedStates.add(state);
+            }
+            if (!visitedStates.contains(destinationState)) {
+                // Have not checked the destination state. Check it now.
+                // The "true" argument asks for only immediate transitions to be checked.
+                if (!_isSafeToClear(port, channel, destinationState, true, visitedStates)) {
+                    // An immediate transition somewhere downstream may
+                    // assign a value to the port, so it is not safe
+                    // to clear the port.
+                    return false;
+                }
+            }
+            // ASSERT: At this point, the transition may be
+            // enabled (now or later), and all downstream immediate
+            // transitions assert that as far as they are concerned,
+            // the port is safe to clear. So now, we should check
+            // to see whether this transition assigns a value to the
+            // port.
+            
+            // FIXME: The implementation should not re-parse the output
+            // actions and get the information from the parsed AST.
+            // This code already exists somewhere... Where?
+            String outputActionsExpression = transition.outputActions
+                    .getExpression();
+            String regexp = "(^|((.|\\s)*\\W))" + port.getName()
+                    + "\\s*=[^=](.|\\s)*";
+            boolean transitionWritesToThePort = outputActionsExpression.trim()
+                    .matches(regexp);
+
+            if (transitionWritesToThePort) {
+                // The transition does include an assignement to the port, so
+                // it is not safe to clear the port.
+                return false;
+            }
+        } // Continue to the next transition.
+        
+        // ASSERT: At this point, no transition can possibly write
+        // to the output, so it is safe to 
+        return true;
+    }
+
     /** Read tokens from the given channel of the given input port and
      *  make them accessible to the expressions of guards and
      *  transitions through the port scope.  If the specified port is
@@ -2159,13 +2186,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
-
-    /** A HashMap of transition-boolean-pairs for each port indicating whether the port is contained
-     * in an output action of the specific transition. This information is lazily inserted into
-     * the HashMap during the simulation for performance reasons. It is not pre-done because during a run
-     * we may never traverse all nodes defined.
-     */
-    protected HashMap<IOPort, HashMap<Transition, Boolean>> _portReferencedInTransitionMaps = new HashMap<IOPort, HashMap<Transition, Boolean>>();
 
     ///////////////////////////////////////////////////////////////////
     ////                package friendly variables                 ////

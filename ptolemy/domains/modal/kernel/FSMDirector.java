@@ -346,16 +346,24 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
+        // The following has the side effect of puting the chosen
+        // transition into the _lastChosenTransition map.
         Transition chosenPreemptiveTransition = _chooseTransition(currentState, transitionList, false);
         // The destination of the chosen transition may be transient,
         // so we should also choose transitions on the destination state.
+        // The following set is used
+        // to detect cycles of immediate transitions.
+        HashSet<State> visitedStates = new HashSet<State>();
         while (chosenPreemptiveTransition != null) {
             State nextState = chosenPreemptiveTransition.destinationState();
             if (nextState == currentState) {
                 break;
             }
-            // NOTE: We look at not only preemptive transitions from the destination
-            // state, but all immediate transitions, whether they are preemptive or not.
+            if (visitedStates.contains(nextState)) {
+                throw new IllegalActionException(nextState, this,
+                        "Cycle of immediate transitions found.");
+            }
+            visitedStates.add(nextState);
             transitionList = nextState.outgoingPort.linkedRelationList();
             // The last argument ensures that we look only at transitions
             // that are marked immediate.
@@ -366,7 +374,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // that the current refinement cannot generated outputs, so we
         // may be able to assert that some outputs are absent.
         if (controller._lastChosenTransition.size() > 0) {
-            // FIXME: Next line needed?
+            // In case the refinement port somehow accesses time, set it.
             setModelTime(environmentTime);
 
             // If the current (preempted) state has a refinement, then
@@ -402,9 +410,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // inputs, then check whether it is possible anyway to assert that some
         // outputs are absent.
         if (controller.foundUnknown()) {
-            // FIXME: The following may not correctly consider the
-            // non-preemptive transitions that may become enabled later.
-            _assertAbsentOutputs(getController(), true);
+            _assertAbsentOutputs(getController());
             // We should not fire the refinements, because some preemptive
             // transition may later become enabled. Hence, we have to return now.
             return;
@@ -450,24 +456,27 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         // The destination of the chosen transition may be transient,
         // so we should also choose transitions on the destination state.
+        // The following set is used
+        // to detect cycles of immediate transitions.
+        visitedStates.clear();
         while (chosenNonpreemptiveTransition != null) {
             State nextState = chosenNonpreemptiveTransition.destinationState();
             if (nextState == currentState) {
                 break;
             }
-            // NOTE: We look at not only preemptive transitions from the destination
-            // state, but all immediate transitions, whether they are preemptive or not.
+            if (visitedStates.contains(nextState)) {
+                throw new IllegalActionException(nextState, this,
+                        "Cycle of immediate transitions found.");
+            }
+            visitedStates.add(nextState);
             transitionList = nextState.outgoingPort.linkedRelationList();
             // The last argument ensures that we look only at transitions
             // that are marked immediate.
             chosenNonpreemptiveTransition = _chooseTransition(nextState, transitionList, true);
         }
 
-        if (controller._lastChosenTransition.size() == 0) {
-            // If no transition was chosen, then it still might be
-            // possible to assert that certain outputs are absent.
-            _assertAbsentOutputs(controller, true);
-        }
+        // Finally, assert any absent outputs that can be asserted absent.
+        _assertAbsentOutputs(controller);
     }
 
     /**
@@ -1551,7 +1560,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             // for a transition to become enabled that might send data
                             // on this port.
                             if (controller._lastChosenTransition.size() > 0 && !controller.foundUnknown()
-                                    || _isSafeToClear(port, i, controller)) {
+                                    || controller._isSafeToClear(port, i, controller._currentState, false, null)) {
                                 port.send(i, null);
                             }
                         }
@@ -1614,60 +1623,52 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * currently unknown to absent if it
      * can be determined to be absent given the current state and possibly
      * partial information about the inputs (some of the inputs may be
-     * unknown). If the <i>checkRefinements</i> argument is true,
-     * then this method first explores any refinements of the current
+     * unknown). If the current state has any refinements that are not
+     * FSMs, then return false. It is not safe to assert absent outputs
+     * because we have no visibility into what those refinements do with
+     * the outputs.
+     * 
+     * This method first explores any FSM refinements of the current
      * state. If those refinements are all FSMs and they are all able
      * to assert that an output is absent, then explore this FSM
      * to determine whether it also can assert that the output is absent.
      * If all the refinements and the specified FSM agree that an
      * output is absent, then this method sets it to absent.
      * Otherwise, it leaves it unknown.
-     * For each output port, this method calls
-     * {@link #_isSafeToClear(IOPort, int, FSMActor)} to determine whether
-     * this FSM can assert that an output port is absent.
      *
      * @param controller The controller FSM.
-     * @param checkRefinement True to recursively descend through refinements of states.
      * @return True if after this method is called, any output port is absent.
      * @exception IllegalActionException If something goes wrong.
      */
-    private boolean _assertAbsentOutputs(FSMActor controller,
-            boolean checkRefinement) throws IllegalActionException {
+    private boolean _assertAbsentOutputs(FSMActor controller) throws IllegalActionException {
+        // First check the refinements.
+        TypedActor[] refinements = controller._currentState.getRefinement();
+        if (refinements != null) {
+            for (Actor refinementActor : refinements) {
+                Director refinementDirector = refinementActor.getDirector();
 
-        // First, check the refinements.
-        if (checkRefinement) {
-            TypedActor[] refinements = controller._currentState.getRefinement();
-            if (refinements != null) {
-                for (Actor refinementActor : refinements) {
-                    Director refinementDirector = refinementActor.getDirector();
-                    // FIXME: Even if the refinement's director is not an FSMDirector,
-                    // it might be possible to assert absent outputs. E.g., we should be
-                    // able to simply fire() an SR model, which will result in asserting
-                    // any outputs that can be asserted. For now, however, we deal
-                    // only with refinements that are state machines.
-
-                    // The second check below guards against a refinement with no director.
-                    if (refinementDirector instanceof FSMDirector
-                            && refinementDirector != this) {
-                        // The refinement is an FSM, so we perform must/may analysis
-                        // to identify outputs that can be determined to be absent.
-                        FSMActor refinementController = ((FSMDirector) refinementDirector)
-                                .getController();
-                        if (!_assertAbsentOutputs(refinementController,
-                                checkRefinement)) {
-                            // The refinement has no absent outputs (they are all either
-                            // unknown or present), therefore we cannot assert any outputs
-                            // to be absent at this level either.
-                            return false;
-                        }
+                // The second check below guards against a refinement with no director.
+                if (refinementDirector instanceof FSMDirector && refinementDirector != this) {
+                    // The refinement is an FSM, so we perform must/may analysis
+                    // to identify outputs that can be determined to be absent.
+                    FSMActor refinementController = ((FSMDirector) refinementDirector)
+                            .getController();
+                    if (!_assertAbsentOutputs(refinementController)) {
+                        // The refinement has no absent outputs (they are all either
+                        // unknown or present), therefore we cannot assert any outputs
+                        // to be absent at this level either.
+                        return false;
                     }
+                } else {
+                    // Refinement is not an FSM. We can't say anything about
+                    // outputs.
+                    return false;
                 }
             }
         }
-        // At this point, if there are any refinements that
-        // are FSMs, those refinements have asserted outputs
-        // to be absent if they have been able to conclude
-        // that they must be absent.
+        // At this point, if there are no refinements, or all refinements
+        // are FSMs, those refinements have asserted at least one output
+        // to be absent.
 
         // We now iterate over all output ports of the container
         // of this director, and for each such output port p,
@@ -1684,7 +1685,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         boolean foundAbsentOutputs = false;
         for (IOPort port : outputs) {
             IOPort[] refinementPorts = null;
-            TypedActor[] refinements = controller._currentState.getRefinement();
             if (refinements != null) {
                 refinementPorts = new IOPort[refinements.length];
                 int i = 0;
@@ -1716,6 +1716,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                                 // output. Give up on this channel. It cannot be
                                 // asserted absent.
                                 channelIsAbsent = false;
+                                break;
                             }
                         }
                     }
@@ -1735,8 +1736,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     // We can't do it by sending null from controllerPort, because
                     // there is no controllerPort!
                     if (controllerPort != null) {
-                        channelIsAbsent = _isSafeToClear(controllerPort,
-                                channel, controller);
+                        channelIsAbsent = controller._isSafeToClear(
+                                controllerPort, channel, controller._currentState, false, null);
                         if (channelIsAbsent) {
                             foundAbsentOutputs = true;
                             controllerPort.send(channel, null);
@@ -1798,80 +1799,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
         return getModelTime();
     }
-
-    /**
-     * Given an output port, channel, and a controller (an FSM) with a current state,
-     * determine whether the output port must be absent on the specified
-     * channel, given whatever
-     * current information about the inputs is available (the inputs
-     * may be known or unknown).
-     * <p>
-     * The way this works is that it examines all the outgoing
-     * transitions of the current state. If none of them mentions
-     * the output port in its output actions, then we can safely
-     * assert that the output is absent. If all of them that do
-     * mention the port have guards that evaluate to false,
-     * given current information about the inputs, then it is
-     * also safe to assert that the output is absent.
-     * <p>
-     * This method ignores any state refinements, and consequently
-     * its analysis is valid only if all state refinements also assert
-     * that the output is absent.
-     *
-     * @param port The IOPort in question.
-     * @param channel The channel in question.
-     * @param controller The controller for considering the current state.
-     * @return True, if successful.
-     */
-    private boolean _isSafeToClear(IOPort port, int channel, FSMActor controller) {
-        // FIXME: This code is not right if there immediate transitions
-        // because there may be some of the transitions in a transition chain
-        // that are enabled, but some in the chain may not be known yet!
-        if (_debugging) {
-            _debug("Calling _isSafeToClear() on port: " + port.getFullName());
-        }
-        boolean isSafeToClear = true;
-
-        List<Transition> transitionList = controller._currentState.outgoingPort
-                .linkedRelationList();
-        for (Transition transition : transitionList) {
-            // Determine whether the transition includes an assignment
-            // to this port in its output actions.
-            // FIXME: The implementation should not re-parse the output
-            // actions and get the information from the parsed AST.
-            // This code already exists somewhere... Where?
-            String outputActionsExpression = transition.outputActions
-                    .getExpression();
-            String regexp = "(^|((.|\\s)*\\W))" + port.getName()
-                    + "\\s*=[^=](.|\\s)*";
-            boolean transitionWritesToThePort = outputActionsExpression.trim()
-                    .matches(regexp);
-
-            if (transitionWritesToThePort) {
-                // Next check to see whether the guard evaluates to false.
-                try {
-                    // Attempt to evaluate the guard. This will throw
-                    // an exception if there is not enough information
-                    // about the inputs.
-                    if (transition.isEnabled()) {
-                        // Guard evaluates to true, so it is not
-                        // safe to set the output to absent.
-                        isSafeToClear = false;
-                        // No need to check additional transitions.
-                        break;
-                    }
-                } catch (IllegalActionException ex) {
-                    // Guard cannot be evaluated. Cannot set this port
-                    // to absent (yet).
-                    isSafeToClear = false;
-                    // No need to check additional transitions.
-                    break;
-                }
-            }
-        }
-        return isSafeToClear;
-    }
-
+    
     /**
      * Reset the output receivers, which are the inside receivers of the output ports of the
      * container.

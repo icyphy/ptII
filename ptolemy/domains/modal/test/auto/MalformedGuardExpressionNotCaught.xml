@@ -27,7 +27,7 @@
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 150.0}">
         </property>
         <port name="a" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -149,18 +149,28 @@
         <link port="_Controller.b" relation="bRelation"/>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false}">
+        </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="IsPresent" class="ptolemy.actor.lib.logic.IsPresent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 105.0}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[180.0, 105.0]">
+        <vertex name="vertex1" value="{180.0, 105.0}">
         </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ModalModel.a" relation="relation2"/>
     <link port="ModalModel.b" relation="relation2"/>
-    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="IsPresent.input" relation="relation2"/>
+    <link port="IsPresent.output" relation="relation"/>
 </entity>
