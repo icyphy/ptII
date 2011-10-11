@@ -555,7 +555,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 298.5]">
         </property>
-        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Introductory Electronic Transducer Laboratory">
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute" value="Mechatronic Design Laboratory">
         </property>
     </entity>
     <entity name="CS 3" class="ptolemy.domains.curriculum.Course">
