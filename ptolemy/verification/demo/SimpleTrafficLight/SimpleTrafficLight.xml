@@ -14,7 +14,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 279, 980, 650}, maximized=false}">
     </property>
@@ -90,7 +90,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="Pred" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="Pred" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -109,7 +109,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 345.0]">
         </property>
     </property>
-    <property name="Pgrn" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="Pgrn" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -128,7 +128,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 365.0]">
         </property>
     </property>
-    <property name="Cred" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="Cred" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -166,7 +166,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 350.0]">
         </property>
     </property>
-    <property name="Cgrn" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="Cgrn" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -243,7 +243,6 @@
             <display name="Model Type"/>
         </property>
         <property name="Output Type" class="ptolemy.data.expr.ChoiceParameter" value="Invoke NuSMV">
-            <display name="Output Type"/>
         </property>
         <property name="formula" class="ptolemy.data.expr.StringParameter" value="! EF (CarLightNormal.state = Cgrn &amp; PedestrianLightNormal.state = Pgreen)">
             <display name="Temporal Formula"/>
@@ -281,7 +280,7 @@
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 90.0}">
         </property>
         <property name="count" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -299,6 +298,14 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 35.0]">
             </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={714, 22, 813, 511}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
         <port name="Sec" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -491,15 +498,15 @@
         <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  Sec_isPresent">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pgo = 1; Cred = 1; Cyel = 0; Cgrn = 0">
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="&#10;  Pgo = 1; &#10;  Cred = 1;&#10;  Cyel = 0;&#10;  Cgrn = 0">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 0">
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="&#10;  count = 0">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3240577187759756">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6141932897654804">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.1674944875851097">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.2236449187996903">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
