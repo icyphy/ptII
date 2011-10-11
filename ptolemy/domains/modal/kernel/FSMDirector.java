@@ -334,7 +334,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         _stateRefinementsToPostfire.clear();
         _transitionRefinementsToPostfire.clear();
         FSMActor controller = getController();
-        controller._lastChosenTransition.clear();
+        controller._lastChosenTransitions.clear();
         State currentState = controller.currentState();
         if (_debugging) {
             _debug("*** Firing " + getFullName(), " at time " + getModelTime());
@@ -373,7 +373,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // If there is an enabled preemptive transition, then we know
         // that the current refinement cannot generated outputs, so we
         // may be able to assert that some outputs are absent.
-        if (controller._lastChosenTransition.size() > 0) {
+        if (controller._lastChosenTransitions.size() > 0) {
             // In case the refinement port somehow accesses time, set it.
             setModelTime(environmentTime);
 
@@ -957,7 +957,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         Actor[] refinements = controller.currentState().getRefinement();
         if (refinements != null) {
             for (Actor stateRefinement : refinements) {
-                if (controller._lastChosenTransition.size() != 0
+                if (controller._lastChosenTransitions.size() != 0
                         && stateRefinement instanceof Suspendable) {
                     ((Suspendable) stateRefinement).suspend(environmentTime);
                 }
@@ -966,7 +966,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         // Notify all the refinements of the destination state that they are being
         // resumed.
-        if (controller._lastChosenTransition.size() != 0) {            
+        if (controller._lastChosenTransitions.size() != 0) {            
             State destinationState = controller._destinationState();
             if (destinationState != null) {
                 TypedActor[] destinationRefinements = destinationState
@@ -1423,7 +1423,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             throws IllegalActionException {
         FSMActor controller = getController();
         if (controller != null) {
-            return controller._lastChosenTransition;
+            return controller._lastChosenTransitions;
         } else {
             return null;
         }
@@ -1559,7 +1559,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             // in the fixed-point iteration, it will not be possible
                             // for a transition to become enabled that might send data
                             // on this port.
-                            if (controller._lastChosenTransition.size() > 0 && !controller.foundUnknown()
+                            if (controller._lastChosenTransitions.size() > 0 && !controller.foundUnknown()
                                     || controller._isSafeToClear(port, i, controller._currentState, false, null)) {
                                 port.send(i, null);
                             }

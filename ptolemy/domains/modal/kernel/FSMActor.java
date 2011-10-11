@@ -290,12 +290,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   the same transition.
      */
     public void addChosenTransition(State state, Transition transition) throws IllegalActionException {
-        Transition previouslyChosenTransition = _lastChosenTransition.get(state);
+        Transition previouslyChosenTransition = _lastChosenTransitions.get(state);
         if (previouslyChosenTransition != null && previouslyChosenTransition != transition) {
             throw new IllegalActionException(this, transition, "Cannot change chosen transition within a firing.");
         }
         if (previouslyChosenTransition != transition) {
-            _lastChosenTransition.put(state,transition);
+            _lastChosenTransitions.put(state,transition);
         }
     }
 
@@ -352,7 +352,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._currentState = null;
         newObject._identifierToPort = new HashMap<String, Port>();
         newObject._inputTokenMap = new HashMap();
-        newObject._lastChosenTransition = new HashMap<State,Transition>();
+        newObject._lastChosenTransitions = new HashMap<State,Transition>();
 
         if (_initialState != null) {
             newObject._initialState = (State) newObject.getEntity(_initialState
@@ -742,16 +742,24 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @deprecated Use getLastChosenTransitions instead.
      */
     public Transition getLastChosenTransition() {
-        return _lastChosenTransition.get(currentState());
+        return _lastChosenTransitions.get(currentState());
     }
     
     /** Get the last chosen transitions.
-     *  @return The last chosen transition.
+     *  @return A map of last chosen transitions.
      *  @see #setLastChosenTransition(Transition)
      */
     public Map<State,Transition> getLastChosenTransitions() {
-        return _lastChosenTransition;
+        return _lastChosenTransitions;
     }
+    
+    /** Get the last taken transitions.
+     *  @return A list of last taken transition.
+     *  @see #setLastChosenTransition(Transition)
+     */
+    public List<Transition> getLastTakenTransitions() {
+        return _lastTakenTransitions;
+    }    
 
     /** Return the Manager responsible for execution of this actor,
      *  if there is one. Otherwise, return null.
@@ -893,7 +901,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // taken, preinitialize() is not called.
         reset();
 
-        _lastChosenTransition.clear();
+        _lastChosenTransitions.clear();
 
         // If there is a transition enabled in the initial state, then request a
         // refiring at the current time. The initial state may be transient.
@@ -1130,8 +1138,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If any action throws it.
      */
     public boolean postfire() throws IllegalActionException {
+        _lastTakenTransitions.clear();
+        // the lastTakenTransitions are added by the commitLastChosenTransition function
         _commitLastChosenTransition();
-        _lastChosenTransition.clear();
         return !_reachedFinalState && !_stopRequested;
     }
 
@@ -1247,9 +1256,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @deprecated Use addChosenTransition(State, Transition)
      */
     public void setLastChosenTransition(Transition transition) {
-        _lastChosenTransition.clear();
+        _lastChosenTransitions.clear();
         if (transition != null) {
-            _lastChosenTransition.put(currentState(), transition);
+            _lastChosenTransitions.put(currentState(), transition);
         }
     }
 
@@ -1549,7 +1558,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // one of which detects nondeterminism and one of which does not.
         // We guard against that by checking above for multiple enabled
         // transitions. That check must be done before returning.
-        Transition chosenTransition = _lastChosenTransition.get(currentState);
+        Transition chosenTransition = _lastChosenTransitions.get(currentState);
         if (chosenTransition != null) {
             // If a transition was previously chosen, but is not in
             // the list of transitions we are currently searching, then
@@ -1650,7 +1659,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
 
             // Commit to this transition, if it is != null.
-            _lastChosenTransition.put(currentState, chosenTransition);
+            _lastChosenTransitions.put(currentState, chosenTransition);
         }
         
         return chosenTransition;
@@ -1669,14 +1678,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   or the last chosen transition does not have a destination state.
      */
     protected void _commitLastChosenTransition() throws IllegalActionException {
-        Transition currentTransition = _lastChosenTransition.get(_currentState);
+        Transition currentTransition = _lastChosenTransitions.get(_currentState);
         if (currentTransition == null) {
             return;
         }
+        
+        // Add this transition to the last taken transitions
+        _lastTakenTransitions.add(currentTransition);
 
         // Remove the entry from the map of chosen transitions to prevent
         // a stack overflow from cycling forever around a directed cycle.
-        _lastChosenTransition.remove(_currentState);
+        _lastChosenTransitions.remove(_currentState);
 
         if (_debugging) {
             _debug("Commit transition ", currentTransition.getFullName()
@@ -1833,6 +1845,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // _currentState, then the recursive call will return immediately.
         if (!_reachedFinalState && stateChanged) {
             _commitLastChosenTransition();
+        } 
+        else {
+            _lastChosenTransitions.clear();
         }
     }
 
@@ -1845,19 +1860,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      * @throws IllegalActionException If no controller is found.
      */
     protected State _destinationState() throws IllegalActionException {
-        Transition chosenTransition = _lastChosenTransition.get(_currentState);
+        Transition chosenTransition = _lastChosenTransitions.get(_currentState);
         if (chosenTransition == null) {
             return null;
         }
         State destinationState = chosenTransition.destinationState();
-        Transition nextTransition = _lastChosenTransition.get(destinationState);
+        Transition nextTransition = _lastChosenTransitions.get(destinationState);
         while (nextTransition != null) {
             State newDestinationState = nextTransition.destinationState();
             if (newDestinationState == destinationState) {
                 // Found a self loop.
                 return destinationState;
             }
-            nextTransition = _lastChosenTransition.get(newDestinationState);
+            nextTransition = _lastChosenTransitions.get(newDestinationState);
         }
         return destinationState;
     }
@@ -2182,7 +2197,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     protected Map _inputTokenMap = new HashMap();
 
     /** The last chosen transitions, by state from which these transitions emerge. */
-    protected HashMap<State,Transition> _lastChosenTransition = new HashMap<State,Transition>();
+    protected HashMap<State,Transition> _lastChosenTransitions = new HashMap<State,Transition>();
+
+    /** The last taken transitions, by state from which these transitions emerge. */
+    protected List<Transition> _lastTakenTransitions = new LinkedList<Transition>();
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
