@@ -1,0 +1,786 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CycleOfImmediateTransitionsModal3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="statesignals" class="ptolemy.kernel.util.StringAttribute" value="[A_immediate4_1893289564, B_immediate4_1893289564]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -55.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={496, 192, 944, 708}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[729, 601]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{282.6515151515152, 174.0306186868687}">
+    </property>
+    <property name="Image2" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="Broadcast.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 130.0}">
+        </property>
+    </property>
+    <property name="Image3" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="CycleOfImmediateTransitionsModal3.gif">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 110.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christian Motika">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 185.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Check the detection of immediate cycles&#10;crossing hierarchy levels and several firings&#10;of the ModalModels involved.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 115.0]">
+        </property>
+    </property>
+    <entity name="immediate4_1893289564_region_2" class="ptolemy.domains.modal.modal.ModalModel">
+        <display name="Region_2"/>
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 0.0}">
+        </property>
+        <port name="A_immediate4_1893289564_i" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="1" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+        <port name="A_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="2" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+        <port name="B_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="2" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <port name="A_immediate4_1893289564_i" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="1" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <port name="A_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                </property>
+            </port>
+            <port name="B_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 240.0}">
+                </property>
+            </port>
+            <entity name="__1063672062" class="ptolemy.domains.modal.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="__1063672062">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="originalName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 205.0]">
+                </property>
+            </entity>
+        </entity>
+        <entity name="__1063672062" class="ptolemy.domains.modal.modal.Refinement">
+            <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+                <property name="statesignals" class="ptolemy.kernel.util.StringAttribute" value="[]">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, -75.0]">
+                </property>
+            </property>
+            <port name="A_immediate4_1893289564_i" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="1" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 15.0}">
+                </property>
+            </port>
+            <port name="A_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, -10.0}">
+                </property>
+            </port>
+            <port name="B_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 45.0}">
+                </property>
+            </port>
+            <entity name="__1063672062_region_1" class="ptolemy.domains.modal.modal.ModalModel">
+                <display name="Region_1"/>
+                <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 15.0}">
+                </property>
+                <port name="A_immediate4_1893289564_i" class="ptolemy.domains.modal.modal.ModalPort">
+                    <property name="input"/>
+                    <property name="environment_input" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                    </property>
+                    <property name="1" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                </port>
+                <port name="A_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+                    <property name="output"/>
+                    <property name="environment_output" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                    </property>
+                    <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                </port>
+                <port name="B_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+                    <property name="output"/>
+                    <property name="environment_output" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                    </property>
+                    <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                </port>
+                <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 345, 815, 509}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+                    </property>
+                    <port name="A_immediate4_1893289564_i" class="ptolemy.domains.modal.modal.ModalPort">
+                        <property name="input"/>
+                        <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
+                        </property>
+                        <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                        </property>
+                        <property name="1" class="ptolemy.kernel.util.StringAttribute">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                        </property>
+                    </port>
+                    <port name="A_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+                        <property name="output"/>
+                        <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                        </property>
+                        <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                        </property>
+                        <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                        </property>
+                    </port>
+                    <port name="B_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+                        <property name="output"/>
+                        <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                        </property>
+                        <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                        </property>
+                        <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 240.0}">
+                        </property>
+                    </port>
+                    <entity name="_6_372745638" class="ptolemy.domains.modal.kernel.State">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.3">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 45.0]">
+                        </property>
+                    </entity>
+                    <entity name="_3_372745637" class="ptolemy.domains.modal.kernel.State">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.2">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 210.0]">
+                        </property>
+                    </entity>
+                    <entity name="_2_372745636" class="ptolemy.domains.modal.kernel.State">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.1">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 105.0]">
+                        </property>
+                    </entity>
+                    <entity name="__372745635" class="ptolemy.domains.modal.kernel.State">
+                        <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                        </property>
+                        <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.0">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 45.0]">
+                        </property>
+                    </entity>
+                    <relation name="_6_372745638_transition_1" class="ptolemy.domains.modal.kernel.Transition">
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.3/@outgoingTransitions.0">
+                        </property>
+                        <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
+                        </property>
+                    </relation>
+                    <relation name="_3_372745637_transition_1" class="ptolemy.domains.modal.kernel.Transition">
+                        <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="B_immediate4_1893289564_o=1">
+                        </property>
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.2181613790860013">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.7108969798931097">
+                        </property>
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.2/@outgoingTransitions.0">
+                        </property>
+                        <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
+                        </property>
+                    </relation>
+                    <relation name="_2_372745636_transition_1" class="ptolemy.domains.modal.kernel.Transition">
+                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="A_immediate4_1893289564_i_isPresent">
+                        </property>
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7073076654262556">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6014965636376663">
+                        </property>
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.1/@outgoingTransitions.0">
+                        </property>
+                        <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
+                        </property>
+                    </relation>
+                    <relation name="__372745635_transition_1" class="ptolemy.domains.modal.kernel.Transition">
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.1/@states.0/@regions.0/@states.0/@outgoingTransitions.0">
+                        </property>
+                        <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
+                        </property>
+                    </relation>
+                    <link port="_6_372745638.incomingPort" relation="__372745635_transition_1"/>
+                    <link port="_6_372745638.outgoingPort" relation="_6_372745638_transition_1"/>
+                    <link port="_3_372745637.incomingPort" relation="_2_372745636_transition_1"/>
+                    <link port="_3_372745637.outgoingPort" relation="_3_372745637_transition_1"/>
+                    <link port="_2_372745636.incomingPort" relation="_6_372745638_transition_1"/>
+                    <link port="_2_372745636.incomingPort" relation="_3_372745637_transition_1"/>
+                    <link port="_2_372745636.outgoingPort" relation="_2_372745636_transition_1"/>
+                    <link port="__372745635.outgoingPort" relation="__372745635_transition_1"/>
+                </entity>
+                <relation name="A_immediate4_1893289564_iRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                    </property>
+                </relation>
+                <relation name="A_immediate4_1893289564_oRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                    </property>
+                </relation>
+                <relation name="B_immediate4_1893289564_oRelation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                    </property>
+                </relation>
+                <link port="A_immediate4_1893289564_i" relation="A_immediate4_1893289564_iRelation"/>
+                <link port="A_immediate4_1893289564_o" relation="A_immediate4_1893289564_oRelation"/>
+                <link port="B_immediate4_1893289564_o" relation="B_immediate4_1893289564_oRelation"/>
+                <link port="_Controller.A_immediate4_1893289564_i" relation="A_immediate4_1893289564_iRelation"/>
+                <link port="_Controller.A_immediate4_1893289564_o" relation="A_immediate4_1893289564_oRelation"/>
+                <link port="_Controller.B_immediate4_1893289564_o" relation="B_immediate4_1893289564_oRelation"/>
+            </entity>
+            <entity name="A_immediate4_1893289564_o_COMBINE" class="ptolemy.actor.lib.Const">
+                <display name="Combine"/>
+                <property name="signal name" class="ptolemy.data.expr.Parameter" value="'A_immediate4_1893289564_o'">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, -20.0}">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+            </entity>
+            <entity name="B_immediate4_1893289564_o_COMBINE" class="ptolemy.actor.lib.Const">
+                <display name="Combine"/>
+                <property name="signal name" class="ptolemy.data.expr.Parameter" value="'B_immediate4_1893289564_o'">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 35.0}">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+            </entity>
+            <relation name="A_immediate4_1893289564_i_RELATION" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="A_immediate4_1893289564_i_RELATIONVERTEX" value="{135.0, 15.0}">
+                </vertex>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;__1063672062_region_1.A_immediate4_1893289564_i&quot;,x=195.0,y=15.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=135.0,y=15.0}, points={} },{ head={id=&quot;A_immediate4_1893289564_i._location&quot;,x=-25.0,y=15.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=135.0,y=15.0}, points={} } }">
+                </property>
+            </relation>
+            <relation name="A_immediate4_1893289564_o__1063672062_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;A_immediate4_1893289564_o_COMBINE.trigger&quot;,x=285.0,y=-20.0}, tail={id=&quot;__1063672062_region_1.A_immediate4_1893289564_o&quot;,x=195.0,y=15.0}, points={245.0,-10.0,245.0,5.0} } }">
+                </property>
+            </relation>
+            <relation name="A_immediate4_1893289564_o_RELATION" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="A_immediate4_1893289564_o_RELATIONVERTEX" value="{365.0, -10.0}">
+                </vertex>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;A_immediate4_1893289564_o_COMBINE.output&quot;,x=285.0,y=-20.0}, tail={id=&quot;A_immediate4_1893289564_o_RELATION.A_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=-10.0}, points={} },{ head={id=&quot;A_immediate4_1893289564_o._location&quot;,x=400.0,y=-10.0}, tail={id=&quot;A_immediate4_1893289564_o_RELATION.A_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=-10.0}, points={375.0,-10.0,375.0,-10.0} } }">
+                </property>
+            </relation>
+            <relation name="B_immediate4_1893289564_o__1063672062_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;B_immediate4_1893289564_o_COMBINE.trigger&quot;,x=285.0,y=35.0}, tail={id=&quot;__1063672062_region_1.B_immediate4_1893289564_o&quot;,x=195.0,y=15.0}, points={245.0,45.0,245.0,25.0} } }">
+                </property>
+            </relation>
+            <relation name="B_immediate4_1893289564_o_RELATION" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                </property>
+                <vertex name="B_immediate4_1893289564_o_RELATIONVERTEX" value="{365.0, 45.0}">
+                </vertex>
+                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;B_immediate4_1893289564_o_COMBINE.output&quot;,x=285.0,y=35.0}, tail={id=&quot;B_immediate4_1893289564_o_RELATION.B_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=45.0}, points={} },{ head={id=&quot;B_immediate4_1893289564_o._location&quot;,x=400.0,y=45.0}, tail={id=&quot;B_immediate4_1893289564_o_RELATION.B_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=45.0}, points={375.0,45.0,375.0,45.0} } }">
+                </property>
+            </relation>
+            <link port="A_immediate4_1893289564_i" relation="A_immediate4_1893289564_i_RELATION"/>
+            <link port="A_immediate4_1893289564_o" relation="A_immediate4_1893289564_o_RELATION"/>
+            <link port="B_immediate4_1893289564_o" relation="B_immediate4_1893289564_o_RELATION"/>
+            <link port="__1063672062_region_1.A_immediate4_1893289564_i" relation="A_immediate4_1893289564_i_RELATION"/>
+            <link port="__1063672062_region_1.A_immediate4_1893289564_o" relation="A_immediate4_1893289564_o__1063672062_region_1_COMBINERELATION"/>
+            <link port="__1063672062_region_1.B_immediate4_1893289564_o" relation="B_immediate4_1893289564_o__1063672062_region_1_COMBINERELATION"/>
+            <link port="A_immediate4_1893289564_o_COMBINE.output" relation="A_immediate4_1893289564_o_RELATION"/>
+            <link port="A_immediate4_1893289564_o_COMBINE.trigger" relation="A_immediate4_1893289564_o__1063672062_region_1_COMBINERELATION"/>
+            <link port="B_immediate4_1893289564_o_COMBINE.output" relation="B_immediate4_1893289564_o_RELATION"/>
+            <link port="B_immediate4_1893289564_o_COMBINE.trigger" relation="B_immediate4_1893289564_o__1063672062_region_1_COMBINERELATION"/>
+        </entity>
+        <relation name="A_immediate4_1893289564_iRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="A_immediate4_1893289564_oRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="B_immediate4_1893289564_oRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="A_immediate4_1893289564_i" relation="A_immediate4_1893289564_iRelation"/>
+        <link port="A_immediate4_1893289564_o" relation="A_immediate4_1893289564_oRelation"/>
+        <link port="B_immediate4_1893289564_o" relation="B_immediate4_1893289564_oRelation"/>
+        <link port="_Controller.A_immediate4_1893289564_i" relation="A_immediate4_1893289564_iRelation"/>
+        <link port="_Controller.A_immediate4_1893289564_o" relation="A_immediate4_1893289564_oRelation"/>
+        <link port="_Controller.B_immediate4_1893289564_o" relation="B_immediate4_1893289564_oRelation"/>
+        <link port="__1063672062.A_immediate4_1893289564_i" relation="A_immediate4_1893289564_iRelation"/>
+        <link port="__1063672062.A_immediate4_1893289564_o" relation="A_immediate4_1893289564_oRelation"/>
+        <link port="__1063672062.B_immediate4_1893289564_o" relation="B_immediate4_1893289564_oRelation"/>
+    </entity>
+    <entity name="immediate4_1893289564_region_1" class="ptolemy.domains.modal.modal.ModalModel">
+        <display name="Region_1"/>
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 20.0}">
+        </property>
+        <port name="A_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="2" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+        <port name="B_immediate4_1893289564_i" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="1" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+        <port name="B_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="2" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 345, 815, 509}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.4116950757576, 113.9830493927002}">
+            </property>
+            <port name="A_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                </property>
+            </port>
+            <port name="B_immediate4_1893289564_i" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+                <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="1" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <port name="B_immediate4_1893289564_o" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+                <property name="local_output" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 240.0}">
+                </property>
+            </port>
+            <entity name="_4_733279300" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.3">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 120.0]">
+                </property>
+            </entity>
+            <entity name="_6_733279299" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.2">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, -55.0]">
+                </property>
+            </entity>
+            <entity name="_2_733279298" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.1">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 0.0}">
+                </property>
+            </entity>
+            <entity name="__733279297" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, -50.0]">
+                </property>
+            </entity>
+            <relation name="_4_733279300_transition_1" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="B_immediate4_1893289564_i_isPresent">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5680766318026774">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.6316538174518778">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.3/@outgoingTransitions.0">
+                </property>
+                <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
+                </property>
+            </relation>
+            <relation name="_6_733279299_transition_1" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.2/@outgoingTransitions.0">
+                </property>
+                <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
+                </property>
+            </relation>
+            <relation name="_2_733279298_transition_1" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="A_immediate4_1893289564_o=1">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.2768651377186306">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6123497745894861">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.1/@outgoingTransitions.0">
+                </property>
+                <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
+                </property>
+            </relation>
+            <relation name="__733279297_transition_1" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="elementURIFragment" class="ptolemy.kernel.util.StringAttribute" value="//@states.0/@regions.0/@states.0/@outgoingTransitions.0">
+                </property>
+                <property name="priority" class="ptolemy.kernel.util.StringAttribute" value="1">
+                </property>
+            </relation>
+            <link port="_4_733279300.incomingPort" relation="_2_733279298_transition_1"/>
+            <link port="_4_733279300.outgoingPort" relation="_4_733279300_transition_1"/>
+            <link port="_6_733279299.incomingPort" relation="__733279297_transition_1"/>
+            <link port="_6_733279299.outgoingPort" relation="_6_733279299_transition_1"/>
+            <link port="_2_733279298.incomingPort" relation="_4_733279300_transition_1"/>
+            <link port="_2_733279298.incomingPort" relation="_6_733279299_transition_1"/>
+            <link port="_2_733279298.outgoingPort" relation="_2_733279298_transition_1"/>
+            <link port="__733279297.outgoingPort" relation="__733279297_transition_1"/>
+        </entity>
+        <relation name="A_immediate4_1893289564_oRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="B_immediate4_1893289564_iRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="B_immediate4_1893289564_oRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="A_immediate4_1893289564_o" relation="A_immediate4_1893289564_oRelation"/>
+        <link port="B_immediate4_1893289564_i" relation="B_immediate4_1893289564_iRelation"/>
+        <link port="B_immediate4_1893289564_o" relation="B_immediate4_1893289564_oRelation"/>
+        <link port="_Controller.A_immediate4_1893289564_o" relation="A_immediate4_1893289564_oRelation"/>
+        <link port="_Controller.B_immediate4_1893289564_i" relation="B_immediate4_1893289564_iRelation"/>
+        <link port="_Controller.B_immediate4_1893289564_o" relation="B_immediate4_1893289564_oRelation"/>
+    </entity>
+    <entity name="A_immediate4_1893289564_o_COMBINE" class="ptolemy.actor.lib.Const">
+        <display name="Combine"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 5.0}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="B_immediate4_1893289564_o_COMBINE" class="ptolemy.actor.lib.Const">
+        <display name="Combine"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 15.0}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
+    <entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Cycle of immediate transitions found.&#10;  in .CycleOfImmediateTransitionsModal3.immediate4_1893289564_region_2.__1063672062.__1063672062_region_1._Controller._2_372745636 and .CycleOfImmediateTransitionsModal3.immediate4_1893289564_region_2.__1063672062.__1063672062_region_1._Director">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, -80.0]">
+        </property>
+    </entity>
+    <relation name="A_immediate4_1893289564_i_RELATION" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="A_immediate4_1893289564_i_RELATIONVERTEX" value="{180.0, 5.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_2.A_immediate4_1893289564_i&quot;,x=245.0,y=0.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=180.0,y=5.0}, points={190.0,0.0,190.0,5.0} },{ head={id=&quot;A_immediate4_1893289564_o_COMBINE.output&quot;,x=130.0,y=5.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=180.0,y=5.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="A_immediate4_1893289564_oimmediate4_1893289564_region_2_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_2.A_immediate4_1893289564_o&quot;,x=245.0,y=0.0}, tail={id=&quot;A_immediate4_1893289564_o_COMBINE.trigger&quot;,x=130.0,y=5.0,index=2}, points={295.0,-10.0,295.0,40.0,65.0,40.0,65.0,0.0} } }">
+        </property>
+    </relation>
+    <relation name="B_immediate4_1893289564_oimmediate4_1893289564_region_2_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_2.B_immediate4_1893289564_o&quot;,x=245.0,y=0.0}, tail={id=&quot;B_immediate4_1893289564_o_COMBINE.trigger&quot;,x=360.0,y=15.0,index=2}, points={} } }">
+        </property>
+    </relation>
+    <relation name="A_immediate4_1893289564_oimmediate4_1893289564_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_1.A_immediate4_1893289564_o&quot;,x=0.0,y=20.0}, tail={id=&quot;A_immediate4_1893289564_o_COMBINE.trigger&quot;,x=130.0,y=5.0,index=2}, points={80.0,10.0,80.0,5.0} } }">
+        </property>
+    </relation>
+    <relation name="B_immediate4_1893289564_i_RELATION" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="B_immediate4_1893289564_i_RELATIONVERTEX" value="{430.0, 70.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_1.B_immediate4_1893289564_i&quot;,x=0.0,y=20.0}, tail={id=&quot;B_immediate4_1893289564_i_RELATION.B_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=430.0,y=70.0}, points={-55.0,20.0,-55.0,70.0} },{ head={id=&quot;B_immediate4_1893289564_o_COMBINE.output&quot;,x=360.0,y=15.0}, tail={id=&quot;B_immediate4_1893289564_i_RELATION.B_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=430.0,y=70.0}, points={410.0,15.0,410.0,70.0} } }">
+        </property>
+    </relation>
+    <relation name="B_immediate4_1893289564_oimmediate4_1893289564_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_1.B_immediate4_1893289564_o&quot;,x=0.0,y=20.0}, tail={id=&quot;B_immediate4_1893289564_o_COMBINE.trigger&quot;,x=360.0,y=15.0,index=2}, points={50.0,30.0,50.0,55.0,310.0,55.0,310.0,15.0} } }">
+        </property>
+    </relation>
+    <link port="immediate4_1893289564_region_2.A_immediate4_1893289564_i" relation="A_immediate4_1893289564_i_RELATION"/>
+    <link port="immediate4_1893289564_region_2.A_immediate4_1893289564_o" relation="A_immediate4_1893289564_oimmediate4_1893289564_region_2_COMBINERELATION"/>
+    <link port="immediate4_1893289564_region_2.B_immediate4_1893289564_o" relation="B_immediate4_1893289564_oimmediate4_1893289564_region_2_COMBINERELATION"/>
+    <link port="immediate4_1893289564_region_1.A_immediate4_1893289564_o" relation="A_immediate4_1893289564_oimmediate4_1893289564_region_1_COMBINERELATION"/>
+    <link port="immediate4_1893289564_region_1.B_immediate4_1893289564_i" relation="B_immediate4_1893289564_i_RELATION"/>
+    <link port="immediate4_1893289564_region_1.B_immediate4_1893289564_o" relation="B_immediate4_1893289564_oimmediate4_1893289564_region_1_COMBINERELATION"/>
+    <link port="A_immediate4_1893289564_o_COMBINE.output" relation="A_immediate4_1893289564_i_RELATION"/>
+    <link port="A_immediate4_1893289564_o_COMBINE.trigger" relation="A_immediate4_1893289564_oimmediate4_1893289564_region_2_COMBINERELATION"/>
+    <link port="A_immediate4_1893289564_o_COMBINE.trigger" relation="A_immediate4_1893289564_oimmediate4_1893289564_region_1_COMBINERELATION"/>
+    <link port="B_immediate4_1893289564_o_COMBINE.output" relation="B_immediate4_1893289564_i_RELATION"/>
+    <link port="B_immediate4_1893289564_o_COMBINE.trigger" relation="B_immediate4_1893289564_oimmediate4_1893289564_region_2_COMBINERELATION"/>
+    <link port="B_immediate4_1893289564_o_COMBINE.trigger" relation="B_immediate4_1893289564_oimmediate4_1893289564_region_1_COMBINERELATION"/>
+</entity>
