@@ -354,7 +354,8 @@ public class PNDirector extends CompositeProcessDirector {
     public String[] suggestedModalModelDirectors() {
         return new String[] {
                 "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
-                "ptolemy.domains.fsm.kernel.FSMDirector" };
+                "ptolemy.domains.fsm.kernel.FSMDirector",
+                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector" };
     }
 
     /** Return true to indicate that a ModalModel under control
