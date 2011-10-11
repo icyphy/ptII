@@ -212,9 +212,27 @@ boolean equals_Token_Token(Token thisToken, Token otherToken) {
         break;
 #endif
 
+#ifdef TYPE_BooleanArray
+    case TYPE_BooleanArray:
+        result = (boolean)$BooleanArray_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
 #ifdef TYPE_DoubleArray
     case TYPE_DoubleArray:
         result = (boolean)$DoubleArray_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_IntArray
+    case TYPE_IntArray:
+        result = (boolean)$IntArray_equals(thisToken, otherToken).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_StringArray
+    case TYPE_StringArray:
+        result = (boolean)$StringArray_equals(thisToken, otherToken).payload.Boolean;
         break;
 #endif
 

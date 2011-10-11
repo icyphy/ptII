@@ -148,7 +148,9 @@ Token BooleanArray_divide(Token thisToken, ...) {
 }
 /**/
 
+
 /*** BooleanArray_equals() ***/
+#ifdef TYPE_BooleanArray
 // BooleanArray_equals: Test an array for equality with a second array.
 Token BooleanArray_equals(Token thisToken, ...) {
     int i;
@@ -173,9 +175,11 @@ Token BooleanArray_equals(Token thisToken, ...) {
     va_end(argp);
     return $new(Boolean(true));
 }
+#endif
 /**/
 
 /*** BooleanArray_isCloseTo() ***/
+#ifdef TYPE_BooleanArray
 // BooleanArray_isCloseTo: Test an array to see whether it is close in value to another.
 Token BooleanArray_isCloseTo(Token thisToken, ...) {
     int i;
@@ -186,7 +190,7 @@ Token BooleanArray_isCloseTo(Token thisToken, ...) {
 
 
     otherToken = va_arg(argp, Token);
-    otherToken = BooleanArray_convert(otherToken);
+    otherToken = $BooleanArray_convert(otherToken);
 
     boolean value1, value2;
     tolerance = va_arg(argp, Token);
@@ -206,6 +210,7 @@ Token BooleanArray_isCloseTo(Token thisToken, ...) {
     va_end(argp);
     return $new(Boolean(true));
 }
+#endif
 /**/
 
 /*** BooleanArray_multiply() ***/

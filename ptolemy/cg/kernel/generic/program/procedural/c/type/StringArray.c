@@ -109,6 +109,7 @@ Token StringArray_delete(Token token, ...) {
 /**/
 
 /*** StringArray_equals() ***/
+#ifdef TYPE_StringArray
 // StringArray_equals: Test an array for equality with a second array.
 Token StringArray_equals(Token thisToken, ...) {
     int i;
@@ -129,9 +130,11 @@ Token StringArray_equals(Token thisToken, ...) {
     va_end(argp);
     return $new(Boolean(true));
 }
+#endif
 /**/
 
 /*** StringArray_isCloseTo() ***/
+#ifdef TYPE_StringArray
 // StringArray_isCloseTo: Test an array to see whether it is close in value to another.
 Token StringArray_isCloseTo(Token thisToken, ...) {
     va_list argp;
@@ -141,6 +144,7 @@ Token StringArray_isCloseTo(Token thisToken, ...) {
     va_end(argp);
     return $StringArray_equals(thisToken, otherToken);
 }
+#endif
 /**/
 
 /*** StringArray_new() ***/
