@@ -53,7 +53,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	polymorphic/polymorphic.jar
 
-JSRCS =
+JSRCS = \
+	AlphabetizeOperation.java
 
 OTHER_FILES_TO_BE_JARED = \
 	Array.j \

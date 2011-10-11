@@ -107,9 +107,25 @@ Token subtract_Double_Token(double a1, Token a2) {
 }
 /**/
 
+/*** subtract_Int_IntArray() ***/
+#define subtract_Int_IntArray(a1, a2) $subtract_IntArray_Int(a2, a1)
+/**/
+
 /*** subtract_IntArray_IntArray() ***/
 Token subtract_IntArray_IntArray(Token a1, Token a2) {
     return $IntArray_subtract(a1, a2);
+}
+/**/
+
+/*** subtract_IntArray_Int() ***/
+Token subtract_IntArray_Int(Token a1, int a2) {
+    int i;
+    Token result = $new(IntArray(a1.payload.IntArray->size, 0));
+
+    for (i = 0; i < a1.payload.IntArray->size; i++) {
+            IntArray_set(result, i, $subtract_Int_Int(IntArray_get(a1, i), a2));
+    }
+    return result;
 }
 /**/
 

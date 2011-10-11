@@ -105,6 +105,41 @@ Token divide_Double_Token(double a1, Token a2) {
 }
 /**/
 
+/*** divide_Int_IntArray() ***/
+Token divide_Int_IntArray(int a1, Token a2) {
+    int i;
+    Token result = $new(IntArray(a2.payload.IntArray->size, 0));
+
+    for (i = 0; i < a2.payload.IntArray->size; i++) {
+        IntArray_set(result, i, $divide_Int_Int(a1, IntArray_get(a2, i)));
+    }
+    return result;
+}
+/**/
+
+/*** divide_IntArray_Int() ***/
+Token divide_IntArray_Int(Token a1, int a2) {
+    int i;
+    Token result = $new(IntArray(a1.payload.IntArray->size, 0));
+
+    for (i = 0; i < a1.payload.IntArray->size; i++) {
+            IntArray_set(result, i, $divide_Int_Int(IntArray_get(a1, i), a2));
+    }
+    return result;
+}
+/**/
+
+/*** divide_Int_DoubleArray() ***/
+#define divide_Int_DoubleArray(a1, a2) $divide_Double_DoubleArray((double) a1, a2)
+/**/
+
+
+/*** divide_IntArray_IntArray() ***/
+Token divide_IntArray_IntArray(Token a1, Token a2) {
+    return $IntArray_divide(a1, a2);
+}
+/**/
+
 /*** divide_Int_Array() ***/
 Token divide_Int_Array(int a1, Token a2) {
     int i;

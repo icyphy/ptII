@@ -177,6 +177,11 @@ Token convert_IntArray_StringArray(Token token) {
 #define convert_IntArray_Token(a) a
 /**/
 
+/*** convert_Int_IntArray() ***/
+Token convert_Int_IntArray(int a) {
+  return $new(IntArray(1, 1, a));
+}
+/**/
 /*** convert_Int_Array() ***/
 Token convert_Int_Array(int a) {
   return $new(Array(1, 1, $new(Int(a)), TYPE_Int));

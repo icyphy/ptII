@@ -118,6 +118,22 @@ Token add_IntArray_IntArray(Token a1, Token a2) {
 }
 /**/
 
+/*** add_Int_IntArray() ***/
+#define add_Int_IntArray(a1, a2) $add_IntArray_Int(a2, a1)
+/**/
+
+/*** add_IntArray_Int() ***/
+Token add_IntArray_Int(Token a1, int a2) {
+    int i;
+    Token result = $new(IntArray(a1.payload.IntArray->size, 0));
+
+    for (i = 0; i < a1.payload.IntArray->size; i++) {
+            IntArray_set(result, i, $add_Int_Int(IntArray_get(a1, i), a2));
+    }
+    return result;
+}
+/**/
+
 /*** add_Int_Array() ***/
 Token add_Int_Array(int a1, Token a2) {
     int i;
