@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib
 
-DIRS =		conversions logic string test
+DIRS =		test
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -52,54 +52,33 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	conversions/conversions.jar \
-	logic/logic.jar \
-	string/string.jar
+PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
 JSRCS = \
-	AbsoluteValue.java \
-	Accumulator.java \
-	AddSubtract.java \
-	BooleanMultiplexor.java \
-	BooleanSwitch.java \
-	Const.java \
-	DB.java \
-	Differential.java \
-	Discard.java \
-	DiscreteClock.java \
-	Distributor.java \
-	Expression.java \
-	Maximum.java \
-	MultiplyDivide.java \
-	Publisher.java \
-	Ramp.java \
-	Remainder.java \
-	Scale.java \
-	Sequence.java \
-	SingleEvent.java \
-	Subscriber.java \
-	Synchronizer.java \
-	TimeDelay.java \
-	Test.java \
-	UnaryMathFunction.java
+	SampleDelay.java
+
+#	BootstrapSampleDelay.java \
+#	DownSample.java \
+#	FFT.java \
+#	IFFT.java \
+#	Repeat.java \
+#	UpSample.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.c)
+	$(JSRCS:%.java=%.j)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	conversions logic string test
+MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	'Expression$$VariableScope.class'
+	demo 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

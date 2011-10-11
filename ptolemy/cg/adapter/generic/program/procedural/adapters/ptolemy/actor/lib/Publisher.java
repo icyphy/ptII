@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
+package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
 
 import java.util.ArrayList;
 
@@ -44,8 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (cxh)
  *
  */
-public class Publisher
-    extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Publisher {
+public class Publisher extends NamedProgramCodeGeneratorAdapter {
     /**
      * Constructor method for the Publisher adapter.
      * @param actor the associated actor
@@ -53,4 +52,38 @@ public class Publisher
     public Publisher(ptolemy.actor.lib.Publisher actor) {
         super(actor);
     }
+
+    /**
+     * Generate fire code.
+     * The method reads in <code>fireBlock</code> from Publisher.c and
+     * replaces macros with their values and returns the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    protected String _generateFireCode() throws IllegalActionException {
+        super._generateFireCode();
+
+        ptolemy.actor.lib.Publisher actor = (ptolemy.actor.lib.Publisher) getComponent();
+
+        ArrayList<String> args = new ArrayList<String>();
+        args.add(Integer.toString(0));
+
+        // FIXME: we are getting the minimum of the input and output
+        // width for now. But we still have to prove that this is
+        // sufficient.
+        int width = Math.min(actor.output.getWidth(), actor.input.getWidth());
+
+        if (actor.output.numberOfSinks() > 0) {
+            for (int i = 0; i < width; i++) {
+                args.set(0, Integer.toString(i));
+                _templateParser.getCodeStream().appendCodeBlock("fireBlock",
+                        args);
+            }
+        }
+
+        return processCode(_templateParser.getCodeStream().toString());
+    }
+
 }

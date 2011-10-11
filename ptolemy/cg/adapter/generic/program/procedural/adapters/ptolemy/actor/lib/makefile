@@ -77,12 +77,14 @@ JSRCS = \
 	Minimum.java \
 	MovingAverage.java \
 	MultiplyDivide.java \
+	Publisher.java \
 	Pulse.java \
 	Ramp.java \
 	Recorder.java \
 	Scale.java \
 	Sequence.java \
 	StringConst.java \
+	Subscriber.java \
 	SubscriptionAggregator.java \
 	Test.java \
 	TrigFunction.java \

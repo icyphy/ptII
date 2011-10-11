@@ -26,7 +26,7 @@
 
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
+package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
 import java.util.ArrayList;
 
@@ -34,25 +34,23 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * Generate C code for an actor that produces an output token on
- * on each firing with a value that is equal to the absolute value of
- * the input.
+ * Generate Java code for an actor that publishes tokens on a named channel.
  *
- * @see ptolemy.actor.lib.Subscriber
- * @author Man-Kit Leung, Contributor: Bert Rodiers
+ * @see ptolemy.actor.lib.Publisher
+ * @author Christopher Brooks, Contributor: Bert Rodiers
  * @version $Id$
  * @since Ptolemy II 8.0
- * @Pt.ProposedRating Green (mankit)
- * @Pt.AcceptedRating Green (cxh)
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (cxh)
  *
  */
-public class Subscriber
-    extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Subscriber {
+public class Publisher
+    extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Publisher {
     /**
-     * Constructor method for the Subscriber adapter.
+     * Constructor method for the Publisher adapter.
      * @param actor the associated actor
      */
-    public Subscriber(ptolemy.actor.lib.Subscriber actor) {
+    public Publisher(ptolemy.actor.lib.Publisher actor) {
         super(actor);
     }
 }
