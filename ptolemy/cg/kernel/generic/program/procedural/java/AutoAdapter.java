@@ -967,12 +967,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         if (grandparentContainer == null) {
             // The simple case, where the actor is in the top level and
             // we only need to create a TypedCompositeActor container.
-            containmentCode.append(containerSymbol + " = new "
-                    + component.getContainer().getClass().getName()
-                    // Some custom actors such as ElectricalOverlord
-                    // want to be in a container with a particular name.
-                    + "(_toplevel, \"" + component.getName() + "\");"
-                    + _eol);
+            // Put the actor into the toplevel so that getFullName() returns the same value.
+            // This is important for actors that use random numbers, as it is common to
+            // set the seed to seed + getFullName().hashCode().
+            containmentCode.append(containerSymbol + " = _toplevel;" + _eol);
         } else {
             // This wacky.  What we do is move up the hierarchy and instantiate
             // TypedComposites as necessary and *insert* the appropriate code into
