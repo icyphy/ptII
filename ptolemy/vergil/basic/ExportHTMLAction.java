@@ -54,11 +54,13 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.Locatable;
@@ -174,6 +176,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             } catch (PrinterException e1) {
                 MessageHandler.error("Failed to created associated files.", e1);
                 return;
+            } catch (IllegalActionException e2) {
+                MessageHandler.error("Error occurred accessing model.", e2);
+                return;
             }
         }
     }
@@ -206,8 +211,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  @param directory The directory in which to put any associated files.
      *  @exception IOException If unable to write associated files.
      *  @exception PrinterException If unable to write associated files.
+     * @throws IllegalActionException 
      */
-    public void writeHTML(File directory) throws PrinterException, IOException {
+    public void writeHTML(File directory) throws PrinterException, IOException, IllegalActionException {
         // First, create the gif file showing whatever the current
         // view in this frame shows.
         NamedObj model = _basicGraphFrame.getModel();
@@ -415,7 +421,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
         for (IconVisibleLocation location : iconLocations) {
             // Create a table with parameter values for the actor.
-            String table = _getParameterTable(location.object);
+            String mouseOverAction = _getMouseOverAction(location.object);
 
             // If the actor has an open window (either an plot or
             // a vergil window), then create a link to that.
@@ -469,9 +475,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     + (int) location.topLeftX + "," + (int) location.topLeftY
                     + "," + (int) location.bottomRightX + ","
                     + (int) location.bottomRightY
-                    + "\" onmouseover=\"writeText('<h2>"
-                    + location.object.getName() + "</h2>" + table.toString()
-                    + "')\"" + linkTo + "/>");
+                    + "\" onmouseover="
+                    + mouseOverAction
+                    + linkTo + "/>");
 
 	    if (linkTo.length() > 1) {
 		String tocLink = linkTo.replace(" title=\"",">");
@@ -503,52 +509,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 		index.close(); // Without this, the output file may be empty
 	    }
 	}
-    }
-
-    /** Get an HTML table describing the parameters of the object.
-     *  @param object The Ptolemy object to return a table for.
-     *  @return An HTML table displaying the parameter values for the
-     *   specified object, or the string "Has no parameters" if the
-     *   object has no parameters.
-     */
-    private String _getParameterTable(NamedObj object) {
-        StringBuffer table = new StringBuffer();
-        List<Settable> parameters = object.attributeList(Settable.class);
-        boolean hasParameter = false;
-        for (Settable parameter : parameters) {
-            if (parameter.getVisibility().equals(Settable.FULL)) {
-                hasParameter = true;
-                table.append("<tr><td>");
-                table.append(parameter.getName());
-                table.append("</td><td>");
-                String expression = parameter.getExpression();
-                expression = StringUtilities.escapeForXML(expression);
-                expression = expression.replaceAll("'", "\\\\'");
-                if (expression.length() == 0) {
-                    expression = "&nbsp;";
-                }
-                table.append(expression);
-                table.append("</td><td>");
-                String value = parameter.getValueAsString();
-                value = StringUtilities.escapeForXML(value);
-                value = value.replaceAll("'", "\\\\'");
-                if (value.length() == 0) {
-                    value = "&nbsp;";
-                }
-                table.append(value);
-                table.append("</td></tr>");
-            }
-        }
-        if (hasParameter) {
-            table.insert(0, "<table border=&quot;1&quot;>"
-                    + "<tr><td><b>Parameter</b></td>"
-                    + "<td><b>Expression</b></td>"
-                    + "<td><b>Value</b></td></tr>");
-            table.append("</table>");
-        } else {
-            table.append("Has no parameters.");
-        }
-        return table.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -656,7 +616,93 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         }
         return result;
     }
+    
+    /** Return JavaScript text for the mouse over action for the
+     *  specified object. By default this returns a writeText
+     *  command that produces an HTML header followed by a table
+     *  showing the parameter names and value of the specified
+     *  object. If, however, the object contains a Settable
+     *  Attribute named _onMouseOverAction, then it returns
+     *  instead the string representation of that attribute.
+     *  If the object contains a Settable
+     *  Attribute named _onMouseOverText, then it returns
+     *  instead a JavaScript writeText() command with the
+     *  text being the value provided by that parameter.
+     *  If it has both parameters, _onMouseOverAction dominates.
+     *  @param object The object.
+     *  @return Mouse over command.
+     *  @throws IllegalActionException If accessing the attribute
+     *   causes an error.
+     */
+    protected String _getMouseOverAction(NamedObj object) throws IllegalActionException {
+        Attribute action = object.getAttribute("_onMouseOverAction", StringParameter.class);
+        if (action != null) {
+            // FIXME: need to escape quotation marks here.
+            return "\"" + ((StringParameter)action).stringValue() + "\"";
+        }
+        String text = null;
+        Attribute textSpec = object.getAttribute("_onMouseOverText", StringParameter.class);
+        if (textSpec != null) {
+            // FIXME: need to escape quotation marks here.
+            text = ((StringParameter)textSpec).stringValue();
+        }
+        if (text == null) {
+            text = "<h2>"
+                    + object.getName()
+                    + "</h2>"
+                    + _getParameterTable(object).toString();
+        }
+        return "\"writeText('"
+                + text
+                + "')\"";
+    }
 
+    /** Get an HTML table describing the parameters of the object.
+     *  @param object The Ptolemy object to return a table for.
+     *  @return An HTML table displaying the parameter values for the
+     *   specified object, or the string "Has no parameters" if the
+     *   object has no parameters.
+     */
+    protected String _getParameterTable(NamedObj object) {
+        StringBuffer table = new StringBuffer();
+        List<Settable> parameters = object.attributeList(Settable.class);
+        boolean hasParameter = false;
+        for (Settable parameter : parameters) {
+            if (parameter.getVisibility().equals(Settable.FULL)) {
+                hasParameter = true;
+                table.append("<tr><td>");
+                table.append(parameter.getName());
+                table.append("</td><td>");
+                String expression = parameter.getExpression();
+                expression = StringUtilities.escapeForXML(expression);
+                expression = expression.replaceAll("'", "\\\\'");
+                if (expression.length() == 0) {
+                    expression = "&nbsp;";
+                }
+                table.append(expression);
+                table.append("</td><td>");
+                String value = parameter.getValueAsString();
+                value = StringUtilities.escapeForXML(value);
+                value = value.replaceAll("'", "\\\\'");
+                if (value.length() == 0) {
+                    value = "&nbsp;";
+                }
+                table.append(value);
+                table.append("</td></tr>");
+            }
+        }
+        if (hasParameter) {
+            table.insert(0, "<table border=&quot;1&quot;>"
+                    + "<tr><td><b>Parameter</b></td>"
+                    + "<td><b>Expression</b></td>"
+                    + "<td><b>Value</b></td></tr>");
+            table.append("</table>");
+        } else {
+            table.append("Has no parameters.");
+        }
+        return table.toString();
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -670,10 +716,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  @return The link to HTML, or an empty string if there is none.
      *  @exception IOException If unable to create required HTML files.
      *  @exception PrinterException If unable to create required HTML files.
+     * @throws IllegalActionException If something goes wrong.
      *  @exception FileNotFoundException
      */
     private String _linkToText(PtolemyEffigy effigy, File directory)
-            throws IOException, PrinterException {
+            throws IOException, PrinterException, IllegalActionException {
         String linkTo = "";
         NamedObj object = effigy.getModel();
         File gifFile;
