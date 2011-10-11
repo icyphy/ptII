@@ -903,40 +903,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         ////                     private methods                       ////
 
         /**
-         * Get the width of a channel corresponding to a port. If no
-         * {@link IOPort} is passed, return 0.
-         *
-         * @param port port for which to determine the channel width
-         * @return channel width if applicable, else 0
-         */
-        private static int _getChannelWidth(Object port) {
-            if (port instanceof IOPort) {
-                return ((IOPort) port).numLinks();
-                // return ((IOPort)port).getWidth();
-            }
-            return 0;
-        }
-
-        /**
-         * Get a String name of an object that is sufficient to identify it on
-         * one level of hierarchy. The name will be the name of the object
-         * relative to some parent. E.g. a port "input" of a "Discard" actor
-         * will result in the name "Discard.input".
-         *
-         * @param obj The object for which the name should be obtained
-         * @return a String representation that is sufficient to identify the
-         *         object
-         */
-        private String _getName(NamedObj obj) {
-            NamedObj parent = obj.getContainer();
-            if (obj instanceof Port || obj instanceof Vertex
-                    || obj instanceof Attribute) {
-                parent = parent.getContainer();
-            }
-            return obj.getName(parent);
-        }
-
-        /**
          * Translate all coordinates given in this hint item. Include the
          * memorized head and tail location as well as all bend points.
          *
@@ -967,6 +933,40 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             _updateChannelIndex(_head, _headMultiportIndex);
             _updateChannelIndex(_tail, _tailMultiportIndex);
         }
+
+        /**
+         * Get the width of a channel corresponding to a port. If no
+         * {@link IOPort} is passed, return 0.
+         *
+         * @param port port for which to determine the channel width
+         * @return channel width if applicable, else 0
+         */
+        private static int _getChannelWidth(Object port) {
+            if (port instanceof IOPort) {
+                return ((IOPort) port).numLinks();
+                // return ((IOPort)port).getWidth();
+            }
+            return 0;
+        }
+
+        /**
+         * Get a String name of an object that is sufficient to identify it on
+         * one level of hierarchy. The name will be the name of the object
+         * relative to some parent. E.g. a port "input" of a "Discard" actor
+         * will result in the name "Discard.input".
+         *
+         * @param obj The object for which the name should be obtained
+         * @return a String representation that is sufficient to identify the
+         *         object
+         */
+        private static String _getName(NamedObj obj) {
+            NamedObj parent = obj.getContainer();
+            if ((obj instanceof Port || obj instanceof Vertex
+                    || obj instanceof Attribute) && parent != null) {
+                parent = parent.getContainer();
+            }
+            return obj.getName(parent);
+        }
         
         /**
          * Determine the correct location of a link endpoint.
@@ -974,7 +974,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * @param obj an endpoint of a link
          * @return the location for the given endpoint
          */
-        private Point2D.Double _getEndpointLocation(NamedObj obj) {
+        private static Point2D.Double _getEndpointLocation(NamedObj obj) {
             // In case of a component port, the endpoint is the external port of
             // a composite actor, so take the actor's position instead of the port's
             // internal position.
@@ -993,7 +993,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * @param indexLocation array with at least 2 entries in where to store
          *            the index locations
          */
-        private void _updateChannelIndex(Object port, int[] indexLocation) {
+        private static void _updateChannelIndex(Object port, int[] indexLocation) {
             int width = 1;
             int index = 1; // currently the index is ignored
             if (port instanceof IOPort) {
