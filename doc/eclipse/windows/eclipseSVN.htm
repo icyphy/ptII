@@ -40,7 +40,7 @@
 
     <ol>
       <li> To download Subversive, in Eclipse, follow these menus
-	<br>The first time software is to be added the menu will be:
+	<br/>The first time software is to be added the menu will be:
 	<code>Help</code> | <code>Install New Software</code> 
       </li>
       <li>In the "Work with" field, select "Indigo - http://download.eclipse.org/releases/indigo" from the drop down.  The install facility will take a few moments to connect to the site and determine
@@ -56,8 +56,8 @@
 	restart, select "Restart Now" and restart.
       </li>
       <li> When Eclipse restarts, the "Workspace Launcher" window will appear.  Click on "OK" and then bring up the preferences window:
-	<br> <code>Window</code> | <code>Preferences</code>
-	<br> Then do <code>Team</code> | <code>SVN</code>.  When you click
+	<br/> <code>Window</code> | <code>Preferences</code>
+	<br/> Then do <code>Team</code> | <code>SVN</code>.  When you click
 	on the <code>SVN</code>, the "Subversion Connector Discovery" window
 	will pop up.  (See <a href="http://www.polarion.com/products/svn/subversive/connector_discovery.php#in_browser" target="_top">http://www.polarion.com/products/svn/subversive/connector_discovery.php</a>
 	for details.)
@@ -77,7 +77,7 @@
 	  version of the command line <code>svn</code> tool, then
 	  you will not be able to use the command line <code>svn</code> to
 	  update or modify the tree that is checked out by Eclipse.
-	  <br>If you
+	  <br/>If you
 	  run <code>svn</code> on a tree checked out by Eclipse and get a message 
 	  <code> svn: This client is too old to work with working copy '.'; please get a newer Subversion
 	    client</code>, then the solution is to
@@ -108,7 +108,7 @@
 	select <code>New</code> | <code>Repository Location</code> and
 	set the url.
 
-	<br>To check out the ptII svn repository with <b>read-only</b> access:
+	<br/>To check out the ptII svn repository with <b>read-only</b> access:
 
 	<pre>
 	  https://source.eecs.berkeley.edu/svn/chess/ptII
@@ -118,10 +118,10 @@
 	  svn://source.eecs.berkeley.edu/chess/ptII
 	</pre>
 
-	<p><B>Note:</B> Most users will select <code>https://</code> or 
-	  <CODE>svn://</CODE> because
-	  they will be accessing the tree with <B>read-only</B> Subversion access.
-	  <br>If you have an 
+	<p><b>Note:</b> Most users will select <code>https://</code> or 
+	  <code>svn://</code> because
+	  they will be accessing the tree with <b>read-only</b> Subversion access.
+	  <br/>If you have an 
 	  <a href="http://chess.eecs.berkeley.edu/ptexternal/#in_browser" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
 	  read/write access:</p>
 
@@ -131,7 +131,7 @@
 	Or, if your user id on source.eecs is different than your current user id
 	on your machine:
 	<pre>
-	  svn co svn+ssh://<I>yourID</I>@source.eecs.berkeley.edu/chess/ptII
+	  svn co svn+ssh://<i>yourID</i>@source.eecs.berkeley.edu/chess/ptII
 	</pre>
 	Read/writes users may want to check "Save authentication".
 
@@ -172,8 +172,8 @@
 	<li> In the "Select a wizard" window, select <code>Java</code> | <code>Java Project</code>, then hit <code>Next</code>.
 	</li>
 	<li> In the "Create a Java Project" window,
-	  <br> set "Project Name" to: <CODE>ptII</CODE>
-	  <br> set "Project Layout" to <code>Use project folder as root for sources and class files</code>.
+	  <br/> set "Project Name" to: <code>ptII</code>
+	  <br/> set "Project Layout" to <code>Use project folder as root for sources and class files</code>.
 	  This is done so that <code>$PTII/bin</code> will contain the Ptolemy II command line scripts instead of the
 	  <code>*.class</code> files created by Eclipse.
 	</li>
@@ -192,11 +192,11 @@
       </ol>
 
       <p>
-	<li> Wait for the checkout to finish. <I>Go get coffee.</I>
-	  <br><B>Note:</B>If you did not disable build automatically, as
+	<li> Wait for the checkout to finish. <i>Go get coffee.</i>
+	  <br/><b>Note:</b>If you did not disable build automatically, as
 	  suggested above, then Eclipse will build the project and produce
-	  <B>thousands of errors</B>. This is not really a problem.  You will
-	  fix the errors below with the <CODE>.classpath.default</CODE> file.
+	  <b>thousands of errors</b>. This is not really a problem.  You will
+	  fix the errors below with the <code>.classpath.default</code> file.
 	</li>
 
 

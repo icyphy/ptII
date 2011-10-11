@@ -34,11 +34,11 @@
       might find it as <code>$HOME/.subversion/config</code>.  Another place to look
       is <code>c:/Documents and Settings/<i>yourlogin</i>/Application Data/Subversion/config</code>.</p> 
 
-    <p>On the Mac, try <CODE>/Users/<I>yourlogin</I>/.subversion</CODE>.</p>
+    <p>On the Mac, try <code>/Users/<i>yourlogin</i>/.subversion</code>.</p>
 
-    <p>If the directory does not exist, try running <CODE>svn --version</CODE> to create the directory.</p>
+    <p>If the directory does not exist, try running <code>svn --version</code> to create the directory.</p>
 
-    <p>Make this change to <CODE>.subversion/config</CODE></p>
+    <p>Make this change to <code>.subversion/config</code></p>
     <pre>
       ### Set use-commit-times to make checkout/update/switch/revert
       ### put last-committed timestamps on every file touched.
@@ -62,12 +62,12 @@
       enable-auto-props = yes 
     </pre>
 
-    <p>Also, uncomment the <CODE>[auto-props]</CODE> and the section below that
+    <p>Also, uncomment the <code>[auto-props]</code> and the section below that
       sets the properties for the files.  Also, set props for 
-      at least <CODE>makefile</CODE>, <CODE>*.tcl</CODE> and <CODE>*.mk</CODE> files.
-      See <a href="../../coding/svn-config-auto-props.txt"><CODE>$PTII/doc/coding/svn-config-auto-props.txt</CODE></a> for a more complete set of properties.</p>
+      at least <code>makefile</code>, <code>*.tcl</code> and <code>*.mk</code> files.
+      See <a href="../../coding/svn-config-auto-props.txt"><code>$PTII/doc/coding/svn-config-auto-props.txt</code></a> for a more complete set of properties.</p>
 
-    <p>The bottom of the <CODE>.subversion/config</CODE> file should look like:</p>
+    <p>The bottom of the <code>.subversion/config</code> file should look like:</p>
 
     <pre>
       ### Settings for your ~/.subversion/config file.  To use this:
