@@ -1,0 +1,28 @@
+#!/bin/sh
+# $Id$
+# Fix the $PTII/doc/eclipse html pages so that they work on the CHESS website
+# at http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/eclipse/
+
+# Remove the index.htm files because they use frames.
+# Link to body.htm
+
+cd /export/home/www/cvswww/chess.eecs.berkeley.edu/ptexternal/nightly/doc/eclipse
+
+rm -f index.htm
+ln -s main.htm index.htm
+
+rm -f mac/index.htm
+(cd mac; ln -s main.htm index.htm)
+
+rm -f windows/index.htm
+(cd windows; ln -s main.htm index.htm)
+
+files=`ls toc.htm */toc.htm`
+for file in $files
+do
+        sed -e 's/ target="[^"]*"//' \
+	    -e 's/body.htm/main.htm/' \
+	    $file > tmp.htm
+	#diff tmp.htm $file
+        mv tmp.htm $file
+done
