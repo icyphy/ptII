@@ -32,6 +32,8 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 ///////////////////////////////////////////////////////////////////
 //// HTMLExportable
 /**
@@ -52,6 +54,7 @@ public interface HTMLExportable {
      *  @param directory The directory in which to put the files.
      *  @exception IOException If unable to write any files.
      *  @exception PrinterException If unable to write associated files.
+     *  @exception IllegalActionException If something goes wrong.
      */
-    public void writeHTML(File directory) throws PrinterException, IOException;
+    public void writeHTML(File directory) throws PrinterException, IOException, IllegalActionException;
 }
