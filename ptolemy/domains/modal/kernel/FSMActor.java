@@ -2026,6 +2026,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 visitedStates.add(state);
             }
             if (!visitedStates.contains(destinationState)) {
+                visitedStates.add(destinationState);
                 // Have not checked the destination state. Check it now.
                 // The "true" argument asks for only immediate transitions to be checked.
                 if (!_isSafeToClear(port, channel, destinationState, true, visitedStates)) {
