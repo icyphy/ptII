@@ -104,7 +104,7 @@ Token Matrix_divide(Token thisToken, ...) {
 /**/
 
 /*** Matrix_equals() ***/
-#ifdef TYPE_MATRIX
+#ifdef TYPE_Matrix
 Token Matrix_equals(Token thisToken, ...) {
     int i, j;
     va_list argp;
@@ -130,7 +130,7 @@ Token Matrix_equals(Token thisToken, ...) {
 /**/
 
 /*** Matrix_isCloseTo() ***/
-#ifdef TYPE_MATRIX
+#ifdef TYPE_Matrix
 Token Matrix_isCloseTo(Token thisToken, ...) {
     int i, j;
     va_list argp;

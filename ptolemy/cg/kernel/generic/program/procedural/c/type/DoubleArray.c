@@ -148,6 +148,7 @@ Token DoubleArray_divide(Token thisToken, ...) {
 /**/
 
 /*** DoubleArray_equals() ***/
+#ifdef TYPE_DoubleArray
 // DoubleArray_equals: Test an array for equality with a second array.
 Token DoubleArray_equals(Token thisToken, ...) {
     int i;
@@ -183,9 +184,11 @@ Token DoubleArray_equals(Token thisToken, ...) {
     va_end(argp);
     return $new(Boolean(true));
 }
+#endif
 /**/
 
 /*** DoubleArray_isCloseTo() ***/
+#ifdef TYPE_DoubleArray
 // DoubleArray_isCloseTo: Test an array to see whether it is close in value to another.
 Token DoubleArray_isCloseTo(Token thisToken, ...) {
     int i;
@@ -216,6 +219,7 @@ Token DoubleArray_isCloseTo(Token thisToken, ...) {
     va_end(argp);
     return $new(Boolean(true));
 }
+#endif
 /**/
 
 /*** DoubleArray_multiply() ***/

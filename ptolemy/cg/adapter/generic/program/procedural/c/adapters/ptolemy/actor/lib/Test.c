@@ -217,23 +217,50 @@ $actorSymbol(numberOfTokensSeen)++;
 /* If the type of the input is an array, then cast the input to
  * the type of the elements of the elements of correctValues. */
 if (($type(input) != TYPE_Array
-#ifdef TYPE_Matrix
-     && $type(input) != TYPE_Matrix
+
+#ifdef TYPE_BooleanArray
+     && $type(input) != TYPE_BooleanArray
 #endif
+
 #ifdef TYPE_DoubleArray
      && $type(input) != TYPE_DoubleArray
 #endif
-                && !equals_Token_Token($actorSymbol(inputToken), Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))))
-    || ($type(input) == TYPE_Array
-        && !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken)))
-#ifdef TYPE_DoubleArray
-    || ($type(input) == TYPE_DoubleArray
-        && !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken)))
+
+#ifdef TYPE_IntArray
+     && $type(input) != TYPE_IntArray
 #endif
+
+#ifdef TYPE_StringArray
+     && $type(input) != TYPE_StringArray
+#endif
+
 #ifdef TYPE_Matrix
-    || ($type(input) == TYPE_Matrix
-        && !$isCloseTo_Token_Token(Matrix_get($actorSymbol(inputToken), 0, 0), Matrix_get(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)), 0, 0), $actorSymbol(toleranceToken)))
+     && $type(input) != TYPE_Matrix
 #endif
+
+                && !equals_Token_Token($actorSymbol(inputToken), Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen))))
+
+     || (($type(input) == TYPE_Array
+#ifdef TYPE_BooleanArray
+          || $type(input) == TYPE_BooleanArray
+#endif
+#ifdef TYPE_DoubleArray
+          || $type(input) == TYPE_DoubleArray
+#endif
+#ifdef TYPE_IntArray
+          || $type(input) == TYPE_IntArray
+#endif
+#ifdef TYPE_StringArray
+          || $type(input) == TYPE_StringArray
+#endif
+          )
+             && !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken)))
+
+#ifdef TYPE_Matrix
+     || ($type(input) == TYPE_Matrix
+             && !$isCloseTo_Token_Token(Matrix_get($actorSymbol(inputToken), 0, 0), Matrix_get(Array_get($param(correctValues), $actorSymbol(numberOfTokensSeen)), 0, 0), $actorSymbol(toleranceToken)))
+#endif
+
     ) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d\n Value was: %s. Should have been within %g of %s\n",
             $actorSymbol(numberOfTokensSeen),
