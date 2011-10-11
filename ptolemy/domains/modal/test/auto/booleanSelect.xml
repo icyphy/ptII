@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="booleanSelect" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
@@ -17,7 +17,7 @@
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="30">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 60}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
@@ -25,7 +25,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 185.0}">
         </property>
         <port name="T" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -56,14 +56,12 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={618, 489, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -162,14 +160,14 @@
     </entity>
     <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
         <doc>Create a sequence of bernoulli random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 225.0}">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 140}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 90.0}">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
@@ -178,7 +176,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 200}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 160.0}">
         </property>
     </entity>
     <entity name="BooleanSelect" class="ptolemy.actor.lib.BooleanSelect">
@@ -188,11 +186,11 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 90.0}">
         </property>
     </entity>
     <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{410, 105}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 140.0}">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
@@ -200,7 +198,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 140.0}">
         </property>
         <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -208,31 +206,43 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[165.0, 140.0]">
+        <vertex name="vertex1" value="{200.0, 90.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=100.0,y=90.0}, tail={id=&quot;relation5.vertex1&quot;,x=200.0,y=90.0}, points={} },{ head={id=&quot;BooleanSelect.trueInput&quot;,x=255.0,y=90.0}, tail={id=&quot;relation5.vertex1&quot;,x=200.0,y=90.0}, points={200.0,80.0} },{ head={id=&quot;ModalModel.T&quot;,x=275.0,y=185.0}, tail={id=&quot;relation5.vertex1&quot;,x=200.0,y=90.0}, points={200.0,175.0} } }">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[240.0, 265.0]">
+        <vertex name="vertex1" value="{185.0, 195.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BooleanSelect.control&quot;,x=255.0,y=90.0}, tail={id=&quot;relation6.vertex1&quot;,x=185.0,y=195.0}, points={255.0,135.0,185.0,135.0} },{ head={id=&quot;Bernoulli.output&quot;,x=100.0,y=225.0}, tail={id=&quot;relation6.vertex1&quot;,x=185.0,y=195.0}, points={150.0,225.0,150.0,195.0} },{ head={id=&quot;ModalModel.control&quot;,x=275.0,y=185.0}, tail={id=&quot;relation6.vertex1&quot;,x=185.0,y=195.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[200.0, 200.0]">
+        <vertex name="vertex1" value="{170.0, 150.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.F&quot;,x=275.0,y=185.0}, tail={id=&quot;relation7.vertex1&quot;,x=170.0,y=150.0}, points={170.0,185.0} },{ head={id=&quot;Ramp2.output&quot;,x=100.0,y=160.0}, tail={id=&quot;relation7.vertex1&quot;,x=170.0,y=150.0}, points={150.0,160.0,150.0,150.0} },{ head={id=&quot;BooleanSelect.falseInput&quot;,x=255.0,y=90.0}, tail={id=&quot;relation7.vertex1&quot;,x=170.0,y=150.0}, points={170.0,100.0} } }">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BooleanSelect.output&quot;,x=255.0,y=90.0}, tail={id=&quot;Equals.input&quot;,x=410.0,y=140.0,index=2}, points={350.0,90.0,350.0,135.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.output&quot;,x=275.0,y=185.0}, tail={id=&quot;Equals.input&quot;,x=410.0,y=140.0,index=2}, points={350.0,185.0,350.0,140.0} } }">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Equals.output&quot;,x=410.0,y=140.0}, tail={id=&quot;NonStrictTest.input&quot;,x=505.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <link port="ModalModel.T" relation="relation5"/>
