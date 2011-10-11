@@ -156,15 +156,30 @@ Token DoubleArray_equals(Token thisToken, ...) {
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
-    if (thisToken.payload.DoubleArray->size != otherToken.payload.DoubleArray->size) {
-        return $new(Boolean(false));
-    }
-    for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
+    switch (otherToken.type) {
+    case TYPE_DoubleArray:
+        if (thisToken.payload.DoubleArray->size != otherToken.payload.DoubleArray->size) {
+            return $new(Boolean(false));
+        }
+        for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
             if (!$equals_Double_Double(DoubleArray_get(thisToken, i), DoubleArray_get(otherToken, i))) {
-                    return $new(Boolean(false));
+                return $new(Boolean(false));
             }
+        }
+        break;
+#ifdef TYPE_Array
+    case TYPE_Array:
+        if (thisToken.payload.DoubleArray->size != otherToken.payload.Array->size) {
+            return $new(Boolean(false));
+        }
+        for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
+            if (!$equals_Double_Double(DoubleArray_get(thisToken, i), Array_get(otherToken, i).payload.Double)) {
+                return $new(Boolean(false));
+            }
+        }
+        break;
     }
-
+#endif
     va_end(argp);
     return $new(Boolean(true));
 }

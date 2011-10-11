@@ -446,11 +446,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         boolean defineEmptyToken = false;
 
         // Generate function map.
+        // We don't generate functions for the new functions. because new takes
+        // different arguments than the other functions
+        int offset = 0;  // set to 1 when we see the new function
         for (int i = 0; i < functionsArray.length; i++) {
-
-            code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
-            if (functionsArray[i].equals("delete")) {
-                defineEmptyToken = true;
+            if (functionsArray[i].equals("new")) {
+                offset = 1;
+            } else {
+                code.append("#define FUNC_" + functionsArray[i] + " " + (i - offset) + _eol);
+                if (functionsArray[i].equals("delete")) {
+                    defineEmptyToken = true;
+                }
             }
         }
 

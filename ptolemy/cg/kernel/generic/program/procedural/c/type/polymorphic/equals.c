@@ -181,6 +181,7 @@ boolean equals_Token_Int(Token a1, int a2) {
 boolean equals_Token_Token(Token thisToken, Token otherToken) {
     boolean result = false;
     switch (thisToken.type) {
+
 #ifdef TYPE_Boolean
     case TYPE_Boolean:
         result = (boolean)$Boolean_equals(thisToken, otherToken).payload.Boolean;
@@ -223,7 +224,7 @@ boolean equals_Token_Token(Token thisToken, Token otherToken) {
         break;
 #endif
     default:
-        fprintf(stderr, "equals_Token_Token_(): iscloseTo with an unsupported type. Type1: %d, Type2: %d\n", thisToken.type, otherToken.type);
+        fprintf(stderr, "equals_Token_Token(): equals with an unsupported type. Type1: %d, Type2: %d\n", thisToken.type, otherToken.type);
         exit(-1);
     }
     return result;
@@ -264,6 +265,29 @@ static boolean isCloseTo_Token_Token(Token thisToken, Token otherToken, Token to
         break;
 #endif
 
+#ifdef TYPE_BooleanArray
+    case TYPE_BooleanArray:
+        result = (boolean)$BooleanArray_isCloseTo(thisToken, otherToken, tolerance).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_DoubleArray
+    case TYPE_DoubleArray:
+        result = (boolean)$DoubleArray_isCloseTo(thisToken, otherToken, tolerance).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_IntArray
+    case TYPE_IntArray:
+        result = (boolean)$IntArray_isCloseTo(thisToken, otherToken, tolerance).payload.Boolean;
+        break;
+#endif
+
+#ifdef TYPE_StringArray
+    case TYPE_StringArray:
+        result = (boolean)$StringArray_isCloseTo(thisToken, otherToken, tolerance).payload.Boolean;
+        break;
+#endif
 #ifdef TYPE_Matrix
     case TYPE_Matrix:
         result = (boolean)$Matrix_isCloseTo(thisToken, otherToken, tolerance).payload.Boolean;
