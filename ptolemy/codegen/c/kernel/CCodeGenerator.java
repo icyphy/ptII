@@ -491,9 +491,9 @@ public class CCodeGenerator extends CodeGenerator {
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
 
-        HashSet functions = _getReferencedFunctions();
+        HashSet<String> functions = _getReferencedFunctions();
 
-        HashSet types = _getTypeIDToUsed(_getNewTypesUsed(functions));
+        HashSet<String> types = _getTypeIDToUsed(_getNewTypesUsed(functions));
 
         Object[] typesArray = types.toArray();
         CodeStream[] typeStreams = new CodeStream[types.size()];
@@ -739,9 +739,9 @@ public class CCodeGenerator extends CodeGenerator {
     /** Return the set of referenced functions.
      * @return The set of referenced functions.
      */
-    private HashSet _getReferencedFunctions() {
+    private HashSet<String> _getReferencedFunctions() {
         // Determine the total number of referenced polymorphic functions.
-        HashSet functions = new HashSet();
+        HashSet<String> functions = new HashSet<String>();
         functions.add("delete");
         //functions.add("toString");    // for debugging.
         functions.add("convert");
@@ -756,9 +756,9 @@ public class CCodeGenerator extends CodeGenerator {
      * "isCloseTo", and "toString".
      * @return The new types used.
      */
-    private HashSet _getNewTypesUsed(HashSet functions) {
+    private HashSet<String> _getNewTypesUsed(HashSet functions) {
         // Determine the total number of referenced types.
-        HashSet types = new HashSet();
+        HashSet<String> types = new HashSet<String>();
         if (functions.contains("equals") || functions.contains("isCloseTo")) {
             types.add("Boolean");
         }
