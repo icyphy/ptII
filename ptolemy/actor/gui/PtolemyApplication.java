@@ -54,6 +54,8 @@ public class PtolemyApplication extends MoMLApplication {
     /** Parse the specified command-line arguments, creating models
      *  and frames to interact with them.
      *  @param args The command-line arguments.
+     *  See {@link ptolemy.actor.gui.ConfigurationApplication} for a
+     *  description of the command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
     public PtolemyApplication(String[] args) throws Exception {
@@ -62,7 +64,10 @@ public class PtolemyApplication extends MoMLApplication {
 
     /** Parse the specified command-line arguments, creating models
      *  and frames to interact with them.
-     *  @param args The command-line arguments.
+     *  @param arg The command-line argument, typically the name of
+     *  the model to open.
+     *  See {@link ptolemy.actor.gui.ConfigurationApplication} for a
+     *  description of the command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
     public PtolemyApplication(String arg) throws Exception {
