@@ -918,7 +918,7 @@ public class MultirateFSMDirector extends FSMDirector {
             controller._commitLastChosenTransition();
             currentState = controller.currentState();
             Map<State,Transition> lastChosenTransitions = _getLastChosenTransition();
-            controller._lastChosenTransition.clear();
+            controller._lastChosenTransitions.clear();
 
             if (lastChosenTransitions.size() == 0) {
                 throw new IllegalActionException(currentState,
