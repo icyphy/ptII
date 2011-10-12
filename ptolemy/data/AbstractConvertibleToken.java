@@ -83,7 +83,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
-    public final Token add(Token rightArgument) throws IllegalActionException {
+    public Token add(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
         if (typeInfo == CPO.SAME) {
@@ -127,7 +127,7 @@ public abstract class AbstractConvertibleToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
-    public final Token addReverse(ptolemy.data.Token leftArgument)
+    public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
 
