@@ -79,15 +79,82 @@ import diva.graph.GraphController;
  *  currently visible portion of the BasicGraphFrame and an
  *  HTML page that displays that GIF image. In addition, it
  *  creates a map of the locations of actors in the GIF image
- *  and a mouse-over handler that displays parameter values
- *  in a table when the mouse passes over an actor.
- *  Moreover, if any plot windows are open when the HTML is
+ *  and actions associated with each of the actors.
+ *  The following actions are supported:
+ *  <ul>
+ *  <li> A mouse-over handler that, by default, displays parameter
+ *       values in a table when the mouse passes over an actor.
+ *       This default can be overridden by inserting into the
+ *       actor a parameter named <i>_onMouseOverText</i>. The
+ *       value of that parameter provides HTML text that will
+ *       be displayed on mouse over instead of the parameter
+ *       value table. This text can reference variables in scope
+ *       using the usual mechanisms for string-valued parameters.
+ *       For example, if the actor has a parameter named <i>p</i>,
+ *       then its value can be displayed by setting
+ *       <i>_onMouseOverText</i> to "value of p: $(this.p)".
+ *       <p>
+ *       If instead (or in addition) the actor
+ *       has a parameter named <i>_onMouseOverAction</i>, then
+ *       the value of that parameter provides a JavaScript
+ *       command that will be invoked on mouse over.
+ *       For example, if the value of <i>_onMouseOverAction</i>
+ *       is a string "writeText('value of p: $(this.p)')", then
+ *       the effect will be the same as in the example above.
+ *       The writeText command is defined by default
+ *       header text, which can be overridden to provide
+ *       other JavaScript function definitions (see below)
+ *       <p>
+ *  FIXME: 
+ *  <li> Moreover, if any plot windows are open when the HTML is
  *  exported, then GIF images of those plot windows are linked
  *  to the plotter icons so that clicking on the icons causes
  *  the plot window to appear in a lightbox style.
  *  In addition, if any composite actors are open, then
  *  clicking on the composite actors will take the viewer
  *  to a new HTML page showing the inside of the composite actor.
+ *  </ul>
+ *  <p>
+ *  In addition to the actions on the regions of the GIF
+ *  image, the model can specify text to include in the
+ *  header of the HTML file, HTML text to put
+ *  before the GIF image, and HTML text to put after the
+ *  GIF image.  These are done as follows:
+ *  <ul>
+ *  <li> Text to include in the header of the HTML file
+ *       can be specified by inserting into the model a
+ *       <i>_headerText</i> parameter. If no such parameter
+ *       is provided, then the following header text is
+ *       inserted in the file:
+<pre>
+&lt;script type="text/javascript"&gt;
+function writeText(text) {
+  document.getElementById("afterImage").innerHTML = text;
+}
+&lt;/script&gt;
+</pre>
+ *         Notice that this defines a function <i>writeText</i>
+ *         which can used to insert text into a document element
+ *         with ID "afterImage" (see below).
+ *         <p>
+ *  <li> Text to include before the image in the HTML file
+ *       can be specified by inserting into the model a
+ *       <i>_beforeImage</i> parameter. If no such parameter
+ *       is provided, then the following text is
+ *       inserted in the file before the image:
+ *       <pre>&lt;h1&gt;modelName&lt;/h1&gt;</pre>
+ *       where <i>modelName</i>
+ *       is the name of the model.
+ *  <li> Text to include after the image in the HTML file
+ *       can be specified by inserting into the model a
+ *       <i>_afterImage</i> parameter. If no such parameter
+ *       is provided, then the following text is
+ *       inserted in the file after the image:
+ <pre>
+ &lt;p id="afterImage"&gt;Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).&lt;/p&gt;
+ </pre>
+ *       Notice that defines the document element with ID afterImage.
+ *  </ul>
  *
  @author  Edward A. Lee
  @version $Id$
@@ -379,12 +446,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "js/jquery.lightbox-0.5.pack.js\"></script>");
         index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "css/jquery.lightbox-0.5.css\" media=\"screen\"/>");
 
-        // FIXME: Need to parameterize the functions somehow.
-        index.println("<script type=\"text/javascript\">");
-        index.println("function writeText(text) {");
-        index.println("  document.getElementById(\"actorName\").innerHTML = text;");
-        index.println("}");
+        Attribute headerText = model.getAttribute("_headerText", StringParameter.class);
+        if (headerText != null) {
+            index.println(((StringParameter)headerText).stringValue());
+        } else {
+            index.println("<script type=\"text/javascript\">");
+            index.println("function writeText(text) {");
+            index.println("  document.getElementById(\"afterImage\").innerHTML = text;");
+            index.println("}");
+            index.println("</script>");
+        }
         // The following requires the jquery lightbox extension.
+        index.println("<script type=\"text/javascript\">");
         index.println("$(function() {");
         index.println("  $('area.lightbox').lightBox();");
         index.println("});");
@@ -400,7 +473,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                 modelName = container.getFullName();
             }
         }
-        index.println("<h1>" + modelName + "</h1>");
+        Attribute beforeImage = model.getAttribute("_beforeImage", StringParameter.class);
+        if (beforeImage != null) {
+            index.println(((StringParameter)beforeImage).stringValue());
+        } else {
+            index.println("<h1>" + modelName + "</h1>");
+        }
 
         // Put the image in.
         index.println("<img src=\"" + _basicGraphFrame.getModel().getName()
@@ -486,8 +564,13 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         }
         index.println("</map>");
 
-        // Section into which actor information is written.
-        index.println("<p id=\"actorName\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>");
+        Attribute afterImage = model.getAttribute("_afterImage", StringParameter.class);
+        if (afterImage != null) {
+            index.println(((StringParameter)afterImage).stringValue());
+        } else {
+            // Section into which actor information is written.
+            index.println("<p id=\"afterImage\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>");
+        }
 
         if (!usePtWebsite) {
             index.println("</body>");
@@ -637,14 +720,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     protected String _getMouseOverAction(NamedObj object) throws IllegalActionException {
         Attribute action = object.getAttribute("_onMouseOverAction", StringParameter.class);
         if (action != null) {
-            // FIXME: need to escape quotation marks here.
-            return "\"" + ((StringParameter)action).stringValue() + "\"";
+            String value = ((StringParameter)action).stringValue();
+            return "\""
+                    + StringUtilities.escapeString(value)
+                    + "\"";
         }
         String text = null;
         Attribute textSpec = object.getAttribute("_onMouseOverText", StringParameter.class);
         if (textSpec != null) {
-            // FIXME: need to escape quotation marks here.
-            text = ((StringParameter)textSpec).stringValue();
+            String value = ((StringParameter)textSpec).stringValue();
+            text = StringUtilities.escapeString(value);
         }
         if (text == null) {
             text = "<h2>"

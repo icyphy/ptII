@@ -19,9 +19,10 @@
         <!-- Do not include this as singleton parameters are buggy. -->
         <!-- input source="ptolemy/configs/customize.xml"/ -->
         <input source="ptolemy/data/unit/unitSystems.xml"/>
-        <entity name="Classic" class="ptolemy.moml.EntityLibrary">
+        <!-- FSM domain is obsolete. -->
+        <!--entity name="Classic" class="ptolemy.moml.EntityLibrary">
            <input source="ptolemy/configs/utilityFsmModalModal.xml"/>
-        </entity>
+        </entity-->
       </group>
     ?>
   </configure>

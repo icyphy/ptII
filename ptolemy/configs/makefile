@@ -123,7 +123,8 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityRequireVersion.xml \
 	utilityScopeExtender.xml \
 	utilitySharedParameter.xml \
-	utilityStringParameter.xml
+	utilityStringParameter.xml \
+	utilityWebExport.xml
 
 # Include these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \

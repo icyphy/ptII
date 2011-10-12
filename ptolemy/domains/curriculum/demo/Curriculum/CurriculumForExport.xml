@@ -1,0 +1,875 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CurriculumForExport" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 1400, 758}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1187, 648]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1433095803642">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{588.6069944598339, 289.8878116343491}">
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="_relationSize" class="ptolemy.data.expr.Parameter" value="8.0">
+            <display name="Relation size"/>
+        </property>
+        <property name="_linkBendRadius" class="ptolemy.data.expr.Parameter" value="15.0">
+            <display name="Link bend radius"/>
+        </property>
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 620.0]">
+        </property>
+    </property>
+    <property name="DoNothingDirector" class="ptolemy.actor.DoNothingDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[785.0, 620.0]">
+        </property>
+    </property>
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="3.44">
+            <display name="Object spacing"/>
+        </property>
+    </property>
+    <property name="_beforeImage" class="ptolemy.data.expr.StringParameter" value="&lt;h1&gt;EECS Undergraduate Curriculum, UC Berkeley&lt;/h1&gt;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">www</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            <property name="height" class="ptolemy.data.expr.Parameter" value="5">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 625.0]">
+        </property>
+    </property>
+    <property name="_afterImage" class="ptolemy.data.expr.StringParameter" value="&lt;h2&gt;&lt;p id=&quot;afterImage&quot;&gt;Mouse over the courses to replace this text with the course title.&lt;/p&gt;&lt;/h2&gt;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">www</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            <property name="height" class="ptolemy.data.expr.Parameter" value="5">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 650.0]">
+        </property>
+    </property>
+    <entity name="20" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 165.0]">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Structure and Interpretation of Signals and Systems">
+        </property>
+    </entity>
+    <entity name="40" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 75.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Microelectronic Circuits">
+        </property>
+    </entity>
+    <entity name="61A" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 200.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Structure and Interpretation of Computer Programs">
+        </property>
+    </entity>
+    <entity name="61B" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 205.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Data Structures">
+        </property>
+    </entity>
+    <entity name="61C" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 240.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Machine Structures">
+        </property>
+    </entity>
+    <entity name="70" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 280.0]">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Discrete Mathematics and Probability Theory">
+        </property>
+    </entity>
+    <entity name="150" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{915.0, 215.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Components and Design Techniques for DigitalSystems">
+        </property>
+    </entity>
+    <entity name="152" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1070.0, 125.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Computer Architecture and Engineering">
+        </property>
+    </entity>
+    <entity name="160" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{680.0, 145.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="User Interface Design and Development">
+        </property>
+    </entity>
+    <entity name="Math 53" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 70.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Multivariable Calculus">
+        </property>
+    </entity>
+    <entity name="Math 54" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 130.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Linear Algebra and Differential Equations">
+        </property>
+    </entity>
+    <entity name="Math 55" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 310.0]">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Discrete Mathematics">
+        </property>
+    </entity>
+    <entity name="162" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 450.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Operating Systems and System Programming">
+        </property>
+    </entity>
+    <entity name="164" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 360.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Programming Languages and Compilers">
+        </property>
+    </entity>
+    <entity name="169" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 520.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Software Engineering">
+        </property>
+    </entity>
+    <entity name="170" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 550.0]">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Efficient Algorithms and Intractable Problems">
+        </property>
+    </entity>
+    <entity name="172" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{915.0, 550.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Computability and Complexity">
+        </property>
+    </entity>
+    <entity name="182" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 210.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="The Neural Basis of Thought and Language">
+        </property>
+    </entity>
+    <entity name="184" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 170.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Foundations of Computer Graphics">
+        </property>
+    </entity>
+    <entity name="186" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 390.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Database Systems">
+        </property>
+    </entity>
+    <entity name="188" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 270.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Artificial Intelligence">
+        </property>
+    </entity>
+    <entity name="or" class="ptolemy.domains.curriculum.Or">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 310.0}">
+        </property>
+        <property name="_onMouseOverAction" class="ptolemy.data.expr.StringParameter" value="">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">www</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="5">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{600, 310}">
+            </property>
+        </property>
+    </entity>
+    <entity name="Physics 7A" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 30.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Physics for Scientists and Engineers">
+        </property>
+    </entity>
+    <entity name="Physics 7B" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415.0, 30.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Physics for Scientists and Engineers">
+        </property>
+    </entity>
+    <entity name="100" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 45.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Electronic Techniques for Engineering">
+        </property>
+    </entity>
+    <entity name="113" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{995.0, 55.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Power Electronics">
+        </property>
+    </entity>
+    <entity name="105" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{825.0, 55.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Microelectronic Devices and Circuits">
+        </property>
+    </entity>
+    <entity name="Math 1A" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 50.0]">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Calculus">
+        </property>
+    </entity>
+    <entity name="Math 1B" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 50.0]">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Calculus">
+        </property>
+    </entity>
+    <entity name="117" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{825.0, 185.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Electromagnetic Fields and Waves">
+        </property>
+    </entity>
+    <entity name="118" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 300.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Optical Communication Systems and Networks">
+        </property>
+    </entity>
+    <entity name="Physics 7C" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{700.0, 20.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Physics for Scientists and Engineers">
+        </property>
+    </entity>
+    <entity name="119" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 20.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Optical Engineering">
+        </property>
+    </entity>
+    <entity name="120" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{825.0, 420.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Signals and Systems">
+        </property>
+    </entity>
+    <entity name="121" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 475.0]">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Communication Systems">
+        </property>
+    </entity>
+    <entity name="122" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{915.0, 190.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Communication Networks">
+        </property>
+    </entity>
+    <entity name="123" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{995.0, 270.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Digital Signal Processing">
+        </property>
+    </entity>
+    <entity name="125" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{995.0, 180.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Robotics">
+        </property>
+    </entity>
+    <entity name="128" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{995.0, 240.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Feedback Control">
+        </property>
+    </entity>
+    <entity name="Or2" class="ptolemy.domains.curriculum.Or">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 240.0}">
+        </property>
+        <property name="_onMouseOverAction" class="ptolemy.data.expr.StringParameter" value="">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">www</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="5">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{820, 240}">
+            </property>
+        </property>
+    </entity>
+    <entity name="130" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{915.0, 120.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Integrated-Circuit Devices">
+        </property>
+    </entity>
+    <entity name="131" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{995.0, 120.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Semiconductor Electronics">
+        </property>
+    </entity>
+    <entity name="133" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 145.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Microfabrication Equipment Laboratory">
+        </property>
+    </entity>
+    <entity name="140" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1000.0, 90.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Linear Integrated Circuits">
+        </property>
+    </entity>
+    <entity name="141" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{995.0, 25.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Digital Integrated Circuits">
+        </property>
+    </entity>
+    <entity name="142" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1075.0, 90.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Integrated Circuits for Communications">
+        </property>
+    </entity>
+    <entity name="143" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 210.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Microfabrication Technology">
+        </property>
+    </entity>
+    <entity name="145M" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{825.0, 330.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introductory Microcomputer Interfacing Laboratory">
+        </property>
+    </entity>
+    <entity name="145L" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{825.0, 115.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introductory Electronic Transducer Laboratory">
+        </property>
+    </entity>
+    <entity name="192" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1070.0, 165.0]">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Mechatronic Design Laboratory">
+        </property>
+    </entity>
+    <entity name="CS 3" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 200.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Programming">
+        </property>
+    </entity>
+    <entity name="Or" class="ptolemy.domains.curriculum.Or">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{820.0, 85.0}">
+        </property>
+        <property name="_onMouseOverAction" class="ptolemy.data.expr.StringParameter" value="">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">www</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="5">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{815, 85}">
+            </property>
+        </property>
+    </entity>
+    <entity name="42" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 100.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Digital Electronics">
+        </property>
+    </entity>
+    <entity name="43" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 115.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Digital Electronics Laboratory">
+        </property>
+    </entity>
+    <entity name="126" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{915.0, 470.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Signals and Systems">
+        </property>
+    </entity>
+    <entity name="129" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{995.0, 210.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Neural and Nonlinear Information Processing">
+        </property>
+    </entity>
+    <entity name="145B" class="ptolemy.domains.curriculum.Course">
+        <property name="units" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1000.0, 300.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Image Processing and Reconstruction Tomography">
+        </property>
+    </entity>
+    <entity name="149" class="ptolemy.domains.curriculum.Course">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{825.0, 490.0}">
+        </property>
+        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Introduction to Embedded Systems">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{865.0, 270.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, tail={id=&quot;relation2.vertex1&quot;,x=865.0,y=270.0}, points={775.0,270.0} },{ head={id=&quot;150.prerequisites&quot;,x=915.0,y=215.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=865.0,y=270.0}, points={865.0,210.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{1035.0, 145.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;150.postrequisites&quot;,x=915.0,y=215.0}, tail={id=&quot;relation4.vertex1&quot;,x=1035.0,y=145.0}, points={945.0,215.0,945.0,145.0} },{ head={id=&quot;152.prerequisites&quot;,x=1070.0,y=125.0}, tail={id=&quot;relation4.vertex1&quot;,x=1035.0,y=145.0}, points={1035.0,125.0} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{555.0, 240.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;184.prerequisites&quot;,x=600.0,y=170.0}, tail={id=&quot;relation.vertex1&quot;,x=555.0,y=240.0}, points={555.0,170.0} },{ head={id=&quot;182.prerequisites&quot;,x=600.0,y=210.0}, tail={id=&quot;relation.vertex1&quot;,x=555.0,y=240.0}, points={555.0,210.0} },{ head={id=&quot;61B.postrequisites&quot;,x=415.0,y=205.0}, tail={id=&quot;relation.vertex1&quot;,x=555.0,y=240.0}, points={465.0,205.0,465.0,240.0} },{ head={id=&quot;relation6.vertex1&quot;,x=640.0,y=145.0}, tail={id=&quot;relation.vertex1&quot;,x=555.0,y=240.0}, points={555.0,145.0} },{ head={id=&quot;61C.prerequisites&quot;,x=600.0,y=240.0}, tail={id=&quot;relation.vertex1&quot;,x=555.0,y=240.0}, points={} },{ head={id=&quot;188.prerequisites&quot;,x=600.0,y=270.0}, tail={id=&quot;relation.vertex1&quot;,x=555.0,y=240.0}, points={555.0,270.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{640.0, 145.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;160.prerequisites&quot;,x=680.0,y=145.0}, tail={id=&quot;relation6.vertex1&quot;,x=640.0,y=145.0}, points={} },{ head={id=&quot;145M.prerequisites&quot;,x=825.0,y=330.0,index=2}, tail={id=&quot;relation6.vertex1&quot;,x=640.0,y=145.0}, points={760.0,330.0,760.0,125.0,640.0,125.0} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{770.0, 390.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;169.prerequisites&quot;,x=820.0,y=520.0,index=2}, tail={id=&quot;relation7.vertex1&quot;,x=770.0,y=390.0}, points={770.0,515.0} },{ head={id=&quot;164.prerequisites&quot;,x=820.0,y=360.0}, tail={id=&quot;relation7.vertex1&quot;,x=770.0,y=390.0}, points={770.0,360.0} },{ head={id=&quot;162.prerequisites&quot;,x=820.0,y=450.0,index=2}, tail={id=&quot;relation7.vertex1&quot;,x=770.0,y=390.0}, points={770.0,445.0} },{ head={id=&quot;149.prerequisites&quot;,x=825.0,y=490.0,index=3}, tail={id=&quot;relation7.vertex1&quot;,x=770.0,y=390.0}, points={770.0,490.0} },{ head={id=&quot;186.prerequisites&quot;,x=820.0,y=390.0}, tail={id=&quot;relation7.vertex1&quot;,x=770.0,y=390.0}, points={} },{ head={id=&quot;170.prerequisites&quot;,x=825.0,y=550.0,index=2}, tail={id=&quot;relation7.vertex1&quot;,x=770.0,y=390.0}, points={770.0,545.0} },{ head={id=&quot;150.prerequisites&quot;,x=915.0,y=215.0,index=2}, tail={id=&quot;relation7.vertex1&quot;,x=770.0,y=390.0}, points={870.0,215.0,870.0,280.0,770.0,280.0} },{ head={id=&quot;61C.postrequisites&quot;,x=600.0,y=240.0}, tail={id=&quot;relation7.vertex1&quot;,x=770.0,y=390.0}, points={640.0,240.0,640.0,390.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{750.0, 485.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;162.prerequisites&quot;,x=820.0,y=450.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=750.0,y=485.0}, points={750.0,450.0} },{ head={id=&quot;or.postrequisites&quot;,x=600.0,y=310.0}, tail={id=&quot;relation3.vertex1&quot;,x=750.0,y=485.0}, points={635.0,310.0,635.0,485.0} },{ head={id=&quot;149.prerequisites&quot;,x=825.0,y=490.0,index=3}, tail={id=&quot;relation3.vertex1&quot;,x=750.0,y=485.0}, points={} },{ head={id=&quot;170.prerequisites&quot;,x=825.0,y=550.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=750.0,y=485.0}, points={750.0,550.0} },{ head={id=&quot;169.prerequisites&quot;,x=820.0,y=520.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=750.0,y=485.0}, points={750.0,520.0} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;170.postrequisites&quot;,x=825.0,y=550.0}, tail={id=&quot;172.prerequisites&quot;,x=915.0,y=550.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Physics 7A.postrequisites&quot;,x=310.0,y=30.0}, tail={id=&quot;Physics 7B.prerequisites&quot;,x=415.0,y=30.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{555.0, 30.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Physics 7B.postrequisites&quot;,x=415.0,y=30.0}, tail={id=&quot;relation13.vertex1&quot;,x=555.0,y=30.0}, points={} },{ head={id=&quot;relation29.vertex1&quot;,x=600.0,y=20.0}, tail={id=&quot;relation13.vertex1&quot;,x=555.0,y=30.0}, points={555.0,20.0} } }">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Math 1A.postrequisites&quot;,x=110.0,y=50.0}, tail={id=&quot;Math 1B.prerequisites&quot;,x=200.0,y=50.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[250.0, 50.0]">
+        </vertex>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{910.0, 55.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;140.prerequisites&quot;,x=1000.0,y=90.0}, tail={id=&quot;relation16.vertex1&quot;,x=910.0,y=55.0}, points={960.0,90.0,960.0,55.0} },{ head={id=&quot;141.prerequisites&quot;,x=995.0,y=25.0}, tail={id=&quot;relation16.vertex1&quot;,x=910.0,y=55.0}, points={960.0,25.0,960.0,55.0} },{ head={id=&quot;113.prerequisites&quot;,x=995.0,y=55.0}, tail={id=&quot;relation16.vertex1&quot;,x=910.0,y=55.0}, points={960.0,55.0,960.0,55.0} },{ head={id=&quot;105.postrequisites&quot;,x=825.0,y=55.0}, tail={id=&quot;relation16.vertex1&quot;,x=910.0,y=55.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{770.0, 90.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Or2.prerequisites&quot;,x=820.0,y=240.0,index=2}, tail={id=&quot;relation17.vertex1&quot;,x=770.0,y=90.0}, points={770.0,240.0} },{ head={id=&quot;Math 53.postrequisites&quot;,x=310.0,y=70.0}, tail={id=&quot;relation17.vertex1&quot;,x=770.0,y=90.0}, points={360.0,70.0,360.0,95.0,635.0,95.0,635.0,90.0} },{ head={id=&quot;117.prerequisites&quot;,x=825.0,y=185.0,index=3}, tail={id=&quot;relation17.vertex1&quot;,x=770.0,y=90.0}, points={770.0,180.0} } }">
+        </property>
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{765.0, 110.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;117.prerequisites&quot;,x=825.0,y=185.0,index=3}, tail={id=&quot;relation18.vertex1&quot;,x=765.0,y=110.0}, points={765.0,175.0} },{ head={id=&quot;Math 54.postrequisites&quot;,x=310.0,y=130.0}, tail={id=&quot;relation18.vertex1&quot;,x=765.0,y=110.0}, points={360.0,130.0,360.0,130.0,635.0,130.0,635.0,110.0} },{ head={id=&quot;120.prerequisites&quot;,x=825.0,y=420.0,index=2}, tail={id=&quot;relation18.vertex1&quot;,x=765.0,y=110.0}, points={765.0,415.0} },{ head={id=&quot;Or2.prerequisites&quot;,x=820.0,y=240.0,index=2}, tail={id=&quot;relation18.vertex1&quot;,x=765.0,y=110.0}, points={765.0,235.0} } }">
+        </property>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{755.0, 295.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;126.prerequisites&quot;,x=915.0,y=470.0}, tail={id=&quot;relation19.vertex1&quot;,x=755.0,y=295.0}, points={755.0,470.0} },{ head={id=&quot;149.prerequisites&quot;,x=825.0,y=490.0,index=3}, tail={id=&quot;relation19.vertex1&quot;,x=755.0,y=295.0}, points={755.0,480.0} },{ head={id=&quot;120.prerequisites&quot;,x=825.0,y=420.0,index=2}, tail={id=&quot;relation19.vertex1&quot;,x=755.0,y=295.0}, points={755.0,420.0} },{ head={id=&quot;118.prerequisites&quot;,x=820.0,y=300.0,index=2}, tail={id=&quot;relation19.vertex1&quot;,x=755.0,y=295.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Physics 7C.postrequisites&quot;,x=700.0,y=20.0}, tail={id=&quot;119.prerequisites&quot;,x=820.0,y=20.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{955.0, 270.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;120.postrequisites&quot;,x=825.0,y=420.0}, tail={id=&quot;relation22.vertex1&quot;,x=955.0,y=270.0}, points={875.0,420.0,875.0,270.0} },{ head={id=&quot;121.prerequisites&quot;,x=995.0,y=475.0,index=2}, tail={id=&quot;relation22.vertex1&quot;,x=955.0,y=270.0}, points={955.0,475.0} },{ head={id=&quot;123.prerequisites&quot;,x=995.0,y=270.0}, tail={id=&quot;relation22.vertex1&quot;,x=955.0,y=270.0}, points={} },{ head={id=&quot;142.prerequisites&quot;,x=1075.0,y=90.0,index=2}, tail={id=&quot;relation22.vertex1&quot;,x=955.0,y=270.0}, points={1035.0,85.0,1035.0,70.0,955.0,70.0} },{ head={id=&quot;125.prerequisites&quot;,x=995.0,y=180.0}, tail={id=&quot;relation22.vertex1&quot;,x=955.0,y=270.0}, points={955.0,180.0} },{ head={id=&quot;145B.prerequisites&quot;,x=1000.0,y=300.0}, tail={id=&quot;relation22.vertex1&quot;,x=955.0,y=270.0}, points={955.0,300.0} },{ head={id=&quot;129.prerequisites&quot;,x=995.0,y=210.0}, tail={id=&quot;relation22.vertex1&quot;,x=955.0,y=270.0}, points={955.0,210.0} },{ head={id=&quot;128.prerequisites&quot;,x=995.0,y=240.0}, tail={id=&quot;relation22.vertex1&quot;,x=955.0,y=270.0}, points={955.0,240.0} } }">
+        </property>
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;122.prerequisites&quot;,x=915.0,y=190.0}, tail={id=&quot;Or2.postrequisites&quot;,x=820.0,y=240.0}, points={860.0,190.0,860.0,240.0} } }">
+        </property>
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;130.postrequisites&quot;,x=915.0,y=120.0}, tail={id=&quot;131.prerequisites&quot;,x=995.0,y=120.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;140.postrequisites&quot;,x=1000.0,y=90.0}, tail={id=&quot;142.prerequisites&quot;,x=1075.0,y=90.0,index=2}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{775.0, 70.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;118.prerequisites&quot;,x=820.0,y=300.0,index=2}, tail={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, points={775.0,300.0} },{ head={id=&quot;Or.prerequisites&quot;,x=820.0,y=85.0,index=2}, tail={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, points={775.0,85.0} },{ head={id=&quot;130.prerequisites&quot;,x=915.0,y=120.0,index=2}, tail={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, points={860.0,120.0,860.0,165.0,775.0,165.0} },{ head={id=&quot;105.prerequisites&quot;,x=825.0,y=55.0}, tail={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, points={775.0,55.0} },{ head={id=&quot;117.prerequisites&quot;,x=825.0,y=185.0,index=3}, tail={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, points={775.0,185.0} },{ head={id=&quot;145L.prerequisites&quot;,x=825.0,y=115.0}, tail={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, points={775.0,115.0} },{ head={id=&quot;145M.prerequisites&quot;,x=825.0,y=330.0,index=2}, tail={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, points={775.0,325.0} },{ head={id=&quot;143.prerequisites&quot;,x=820.0,y=210.0}, tail={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, points={775.0,210.0} },{ head={id=&quot;133.prerequisites&quot;,x=820.0,y=145.0}, tail={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, points={775.0,145.0} },{ head={id=&quot;40.postrequisites&quot;,x=600.0,y=75.0}, tail={id=&quot;relation28.vertex1&quot;,x=775.0,y=70.0}, points={635.0,75.0,635.0,70.0} } }">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;61A.prerequisites&quot;,x=310.0,y=200.0}, tail={id=&quot;CS 3.postrequisites&quot;,x=220.0,y=200.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;61A.postrequisites&quot;,x=310.0,y=200.0}, tail={id=&quot;61B.prerequisites&quot;,x=415.0,y=205.0}, points={360.0,200.0,360.0,205.0} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;130.prerequisites&quot;,x=915.0,y=120.0,index=2}, tail={id=&quot;Or.postrequisites&quot;,x=820.0,y=85.0}, points={860.0,115.0,860.0,85.0} } }">
+        </property>
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;100.postrequisites&quot;,x=600.0,y=45.0}, tail={id=&quot;Or.prerequisites&quot;,x=820.0,y=85.0,index=2}, points={780.0,45.0,780.0,80.0} } }">
+        </property>
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;42.postrequisites&quot;,x=310.0,y=100.0}, tail={id=&quot;43.prerequisites&quot;,x=395.0,y=115.0}, points={360.0,100.0,360.0,115.0} } }">
+        </property>
+    </relation>
+    <relation name="relation36" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;121.prerequisites&quot;,x=995.0,y=475.0,index=2}, tail={id=&quot;126.postrequisites&quot;,x=915.0,y=470.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{600.0, 20.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Physics 7C.prerequisites&quot;,x=700.0,y=20.0}, tail={id=&quot;relation29.vertex1&quot;,x=600.0,y=20.0}, points={635.0,20.0,635.0,20.0} } }">
+        </property>
+    </relation>
+    <link port="20.postrequisites" relation="relation19"/>
+    <link port="20.prerequisites" relation="relation15"/>
+    <link port="40.postrequisites" relation="relation28"/>
+    <link port="40.prerequisites" relation="relation13"/>
+    <link port="40.prerequisites" relation="relation15"/>
+    <link port="61A.postrequisites" relation="relation35"/>
+    <link port="61A.prerequisites" relation="relation11"/>
+    <link port="61B.postrequisites" relation="relation"/>
+    <link port="61B.prerequisites" relation="relation35"/>
+    <link port="61C.postrequisites" relation="relation7"/>
+    <link port="61C.prerequisites" relation="relation"/>
+    <link port="70.postrequisites" relation="relation9"/>
+    <link port="150.postrequisites" relation="relation4"/>
+    <link port="150.prerequisites" relation="relation2"/>
+    <link port="150.prerequisites" relation="relation7"/>
+    <link port="152.prerequisites" relation="relation4"/>
+    <link port="160.prerequisites" relation="relation6"/>
+    <link port="Math 53.postrequisites" relation="relation17"/>
+    <link port="Math 53.prerequisites" relation="relation15"/>
+    <link port="Math 54.postrequisites" relation="relation18"/>
+    <link port="Math 54.prerequisites" relation="relation15"/>
+    <link port="Math 55.postrequisites" relation="relation10"/>
+    <link port="Math 55.prerequisites" relation="relation15"/>
+    <link port="162.prerequisites" relation="relation7"/>
+    <link port="162.prerequisites" relation="relation3"/>
+    <link port="164.prerequisites" relation="relation7"/>
+    <link port="169.prerequisites" relation="relation7"/>
+    <link port="169.prerequisites" relation="relation3"/>
+    <link port="170.postrequisites" relation="relation5"/>
+    <link port="170.prerequisites" relation="relation7"/>
+    <link port="170.prerequisites" relation="relation3"/>
+    <link port="172.prerequisites" relation="relation5"/>
+    <link port="182.prerequisites" relation="relation"/>
+    <link port="184.prerequisites" relation="relation"/>
+    <link port="186.prerequisites" relation="relation7"/>
+    <link port="188.prerequisites" relation="relation"/>
+    <link port="or.postrequisites" relation="relation3"/>
+    <link port="or.prerequisites" relation="relation9"/>
+    <link port="or.prerequisites" relation="relation10"/>
+    <link port="Physics 7A.postrequisites" relation="relation12"/>
+    <link port="Physics 7A.prerequisites" relation="relation15"/>
+    <link port="Physics 7B.postrequisites" relation="relation13"/>
+    <link port="Physics 7B.prerequisites" relation="relation12"/>
+    <link port="100.postrequisites" relation="relation21"/>
+    <link port="100.prerequisites" relation="relation13"/>
+    <link port="100.prerequisites" relation="relation15"/>
+    <link port="113.prerequisites" relation="relation16"/>
+    <link port="105.postrequisites" relation="relation16"/>
+    <link port="105.prerequisites" relation="relation28"/>
+    <link port="Math 1A.postrequisites" relation="relation14"/>
+    <link port="Math 1B.postrequisites" relation="relation15"/>
+    <link port="Math 1B.prerequisites" relation="relation14"/>
+    <link port="117.prerequisites" relation="relation18"/>
+    <link port="117.prerequisites" relation="relation17"/>
+    <link port="117.prerequisites" relation="relation28"/>
+    <link port="118.prerequisites" relation="relation19"/>
+    <link port="118.prerequisites" relation="relation28"/>
+    <link port="Physics 7C.postrequisites" relation="relation20"/>
+    <link port="Physics 7C.prerequisites" relation="relation29"/>
+    <link port="119.prerequisites" relation="relation20"/>
+    <link port="120.postrequisites" relation="relation22"/>
+    <link port="120.prerequisites" relation="relation18"/>
+    <link port="120.prerequisites" relation="relation19"/>
+    <link port="121.prerequisites" relation="relation36"/>
+    <link port="121.prerequisites" relation="relation22"/>
+    <link port="122.prerequisites" relation="relation23"/>
+    <link port="123.prerequisites" relation="relation22"/>
+    <link port="125.prerequisites" relation="relation22"/>
+    <link port="128.prerequisites" relation="relation22"/>
+    <link port="Or2.postrequisites" relation="relation23"/>
+    <link port="Or2.prerequisites" relation="relation18"/>
+    <link port="Or2.prerequisites" relation="relation17"/>
+    <link port="130.postrequisites" relation="relation25"/>
+    <link port="130.prerequisites" relation="relation8"/>
+    <link port="130.prerequisites" relation="relation28"/>
+    <link port="131.prerequisites" relation="relation25"/>
+    <link port="133.prerequisites" relation="relation28"/>
+    <link port="140.postrequisites" relation="relation27"/>
+    <link port="140.prerequisites" relation="relation16"/>
+    <link port="141.prerequisites" relation="relation16"/>
+    <link port="142.prerequisites" relation="relation22"/>
+    <link port="142.prerequisites" relation="relation27"/>
+    <link port="143.prerequisites" relation="relation28"/>
+    <link port="145M.prerequisites" relation="relation28"/>
+    <link port="145M.prerequisites" relation="relation6"/>
+    <link port="145L.prerequisites" relation="relation28"/>
+    <link port="192.prerequisites" relation="relation4"/>
+    <link port="192.prerequisites" relation="relation22"/>
+    <link port="CS 3.postrequisites" relation="relation11"/>
+    <link port="Or.postrequisites" relation="relation8"/>
+    <link port="Or.prerequisites" relation="relation21"/>
+    <link port="Or.prerequisites" relation="relation28"/>
+    <link port="42.postrequisites" relation="relation24"/>
+    <link port="42.prerequisites" relation="relation15"/>
+    <link port="43.prerequisites" relation="relation24"/>
+    <link port="126.postrequisites" relation="relation36"/>
+    <link port="126.prerequisites" relation="relation19"/>
+    <link port="129.prerequisites" relation="relation22"/>
+    <link port="145B.prerequisites" relation="relation22"/>
+    <link port="149.prerequisites" relation="relation19"/>
+    <link port="149.prerequisites" relation="relation3"/>
+    <link port="149.prerequisites" relation="relation7"/>
+    <link relation1="relation2" relation2="relation28"/>
+    <link relation1="relation" relation2="relation6"/>
+    <link relation1="relation13" relation2="relation29"/>
+</entity>
