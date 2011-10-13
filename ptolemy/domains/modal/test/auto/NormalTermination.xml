@@ -172,6 +172,14 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 190.0]">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 346, 815, 507}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
             <port name="L_simple_918158682i" class="ptolemy.domains.modal.modal.ModalPort">
                 <property name="input"/>
                 <property name="local_input" class="ptolemy.kernel.util.StringAttribute">
@@ -258,7 +266,7 @@
                     </property>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 257, 815, 509}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 345, 815, 509}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -374,31 +382,33 @@
                 <link port="_Controller.L2_simple_918158682i" relation="L2_simple_918158682iRelation"/>
                 <link port="_Controller.L2_simple_918158682o" relation="L2_simple_918158682oRelation"/>
             </entity>
-            <entity name="L_simple_918158682o_COMBINE" class="ptolemy.domains.sr.lib.Combine">
-                <property name="combine function" class="ptolemy.kernel.util.StringAttribute" value="1">
+            <entity name="Olocal_immediate1_1893289564_o_COMBINE" class="ptolemy.actor.lib.Const">
+                <display name="Combine"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 115.0]">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
                 </property>
                 <property name="signal name" class="ptolemy.data.expr.Parameter" value="'L_simple_918158682o'">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{297.7578125, 126.0703125}">
-                </property>
             </entity>
-            <entity name="L2_simple_918158682o_COMBINE" class="ptolemy.domains.sr.lib.Combine">
-                <property name="combine function" class="ptolemy.kernel.util.StringAttribute" value="1">
+            <entity name="Olocal_immediate1_1893289564_o_COMBINE2" class="ptolemy.actor.lib.Const">
+                <display name="Combine"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 275.0]">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
                 </property>
                 <property name="signal name" class="ptolemy.data.expr.Parameter" value="'L2_simple_918158682o'">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{294.2578125, 286.0703125}">
-                </property>
             </entity>
             <relation name="L_simple_918158682i_RELATION" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-            </relation>
-            <relation name="L_simple_918158682os3_200586989_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
-            </relation>
-            <relation name="L_simple_918158682o_RELATION" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
             </relation>
@@ -406,26 +416,26 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
             </relation>
-            <relation name="L2_simple_918158682os3_200586989_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="L2_simple_918158682o_RELATION" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                </property>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="L_simple_918158682i" relation="L_simple_918158682i_RELATION"/>
-            <link port="L_simple_918158682o" relation="L_simple_918158682o_RELATION"/>
+            <link port="L_simple_918158682o" relation="relation3"/>
             <link port="L2_simple_918158682i" relation="L2_simple_918158682i_RELATION"/>
-            <link port="L2_simple_918158682o" relation="L2_simple_918158682o_RELATION"/>
+            <link port="L2_simple_918158682o" relation="relation"/>
             <link port="s3_200586989_region_1.L_simple_918158682i" relation="L_simple_918158682i_RELATION"/>
-            <link port="s3_200586989_region_1.L_simple_918158682o" relation="L_simple_918158682os3_200586989_region_1_COMBINERELATION"/>
+            <link port="s3_200586989_region_1.L_simple_918158682o" relation="relation4"/>
             <link port="s3_200586989_region_1.L2_simple_918158682i" relation="L2_simple_918158682i_RELATION"/>
-            <link port="s3_200586989_region_1.L2_simple_918158682o" relation="L2_simple_918158682os3_200586989_region_1_COMBINERELATION"/>
-            <link port="L_simple_918158682o_COMBINE.input" relation="L_simple_918158682os3_200586989_region_1_COMBINERELATION"/>
-            <link port="L_simple_918158682o_COMBINE.output" relation="L_simple_918158682o_RELATION"/>
-            <link port="L2_simple_918158682o_COMBINE.input" relation="L2_simple_918158682os3_200586989_region_1_COMBINERELATION"/>
-            <link port="L2_simple_918158682o_COMBINE.output" relation="L2_simple_918158682o_RELATION"/>
+            <link port="s3_200586989_region_1.L2_simple_918158682o" relation="relation2"/>
+            <link port="Olocal_immediate1_1893289564_o_COMBINE.output" relation="relation3"/>
+            <link port="Olocal_immediate1_1893289564_o_COMBINE.trigger" relation="relation4"/>
+            <link port="Olocal_immediate1_1893289564_o_COMBINE2.output" relation="relation"/>
+            <link port="Olocal_immediate1_1893289564_o_COMBINE2.trigger" relation="relation2"/>
         </entity>
         <relation name="L_simple_918158682iRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -456,14 +466,6 @@
         <link port="s3_200586989.L2_simple_918158682i" relation="L2_simple_918158682iRelation"/>
         <link port="s3_200586989.L2_simple_918158682o" relation="L2_simple_918158682oRelation"/>
     </entity>
-    <entity name="L_simple_918158682o_COMBINE" class="ptolemy.domains.sr.lib.Combine">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 90.0]">
-        </property>
-    </entity>
-    <entity name="L2_simple_918158682o_COMBINE" class="ptolemy.domains.sr.lib.Combine">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 195.0]">
-        </property>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, false}">
         </property>
@@ -492,14 +494,32 @@
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="0">
         </property>
     </entity>
-    <relation name="L_simple_918158682osimple_918158682_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+    <entity name="Olocal_immediate1_1893289564_o_COMBINE" class="ptolemy.actor.lib.Const">
+        <display name="Combine"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 130.0]">
         </property>
-    </relation>
-    <relation name="L2_simple_918158682osimple_918158682_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
         </property>
-    </relation>
+        <property name="signal name" class="ptolemy.data.expr.Parameter" value="'A_SyncChart_918158682o'">
+        </property>
+    </entity>
+    <entity name="Olocal_immediate1_1893289564_o_COMBINE2" class="ptolemy.actor.lib.Const">
+        <display name="Combine"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 185.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="signal name" class="ptolemy.data.expr.Parameter" value="'A_SyncChart_918158682o'">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -518,18 +538,22 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="simple_918158682_region_1.L_simple_918158682i" relation="relation"/>
-    <link port="simple_918158682_region_1.L_simple_918158682o" relation="L_simple_918158682osimple_918158682_region_1_COMBINERELATION"/>
+    <link port="simple_918158682_region_1.L_simple_918158682o" relation="relation6"/>
     <link port="simple_918158682_region_1.L2_simple_918158682i" relation="relation2"/>
-    <link port="simple_918158682_region_1.L2_simple_918158682o" relation="L2_simple_918158682osimple_918158682_region_1_COMBINERELATION"/>
-    <link port="L_simple_918158682o_COMBINE.input" relation="L_simple_918158682osimple_918158682_region_1_COMBINERELATION"/>
-    <link port="L_simple_918158682o_COMBINE.output" relation="relation"/>
-    <link port="L2_simple_918158682o_COMBINE.input" relation="L2_simple_918158682osimple_918158682_region_1_COMBINERELATION"/>
-    <link port="L2_simple_918158682o_COMBINE.output" relation="relation2"/>
+    <link port="simple_918158682_region_1.L2_simple_918158682o" relation="relation5"/>
     <link port="NonStrictTest.input" relation="relation3"/>
     <link port="NonStrictTest2.input" relation="relation4"/>
     <link port="IsPresent2.input" relation="relation2"/>
     <link port="IsPresent2.output" relation="relation4"/>
     <link port="IsPresent.input" relation="relation"/>
     <link port="IsPresent.output" relation="relation3"/>
+    <link port="Olocal_immediate1_1893289564_o_COMBINE.output" relation="relation"/>
+    <link port="Olocal_immediate1_1893289564_o_COMBINE.trigger" relation="relation6"/>
+    <link port="Olocal_immediate1_1893289564_o_COMBINE2.output" relation="relation2"/>
+    <link port="Olocal_immediate1_1893289564_o_COMBINE2.trigger" relation="relation5"/>
 </entity>

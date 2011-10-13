@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.0, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{310.2272727272727, 142.8068181818182}">
     </property>
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="source" class="ptolemy.data.expr.FileParameter" value="BroadcastHierarchy.gif">
@@ -58,7 +58,7 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 257, 815, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 345, 815, 509}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -164,7 +164,7 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 257, 815, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 345, 815, 509}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -246,10 +246,6 @@
         <link port="_Controller.A_SyncChart_918158682i" relation="A_SyncChart_918158682iRelation"/>
         <link port="_Controller.A_SyncChart_918158682o" relation="A_SyncChart_918158682oRelation"/>
     </entity>
-    <entity name="A_SyncChart_918158682o_COMBINE" class="ptolemy.domains.sr.lib.Combine">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 80.0]">
-        </property>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, false}">
         </property>
@@ -266,30 +262,37 @@
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="0">
         </property>
     </entity>
+    <entity name="Olocal_immediate1_1893289564_o_COMBINE2" class="ptolemy.actor.lib.Const">
+        <display name="Combine"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 80.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+    </entity>
     <relation name="A_SyncChart_918158682i_RELATION" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="A_SyncChart_918158682i_RELATIONVERTEX" value="[30.0, 170.0]">
         </vertex>
     </relation>
-    <relation name="A_SyncChart_918158682oSyncChart_918158682_region_2_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-    </relation>
-    <relation name="A_SyncChart_918158682oSyncChart_918158682_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="SyncChart_918158682_region_2.A_SyncChart_918158682i" relation="A_SyncChart_918158682i_RELATION"/>
-    <link port="SyncChart_918158682_region_2.A_SyncChart_918158682o" relation="A_SyncChart_918158682oSyncChart_918158682_region_2_COMBINERELATION"/>
+    <link port="SyncChart_918158682_region_2.A_SyncChart_918158682o" relation="relation2"/>
     <link port="SyncChart_918158682_region_1.A_SyncChart_918158682i" relation="A_SyncChart_918158682i_RELATION"/>
-    <link port="SyncChart_918158682_region_1.A_SyncChart_918158682o" relation="A_SyncChart_918158682oSyncChart_918158682_region_1_COMBINERELATION"/>
-    <link port="A_SyncChart_918158682o_COMBINE.input" relation="A_SyncChart_918158682oSyncChart_918158682_region_2_COMBINERELATION"/>
-    <link port="A_SyncChart_918158682o_COMBINE.input" relation="A_SyncChart_918158682oSyncChart_918158682_region_1_COMBINERELATION"/>
-    <link port="A_SyncChart_918158682o_COMBINE.output" relation="A_SyncChart_918158682i_RELATION"/>
+    <link port="SyncChart_918158682_region_1.A_SyncChart_918158682o" relation="relation3"/>
     <link port="NonStrictTest.input" relation="relation"/>
     <link port="IsPresent.input" relation="A_SyncChart_918158682i_RELATION"/>
     <link port="IsPresent.output" relation="relation"/>
+    <link port="Olocal_immediate1_1893289564_o_COMBINE2.output" relation="A_SyncChart_918158682i_RELATION"/>
+    <link port="Olocal_immediate1_1893289564_o_COMBINE2.trigger" relation="relation2"/>
+    <link port="Olocal_immediate1_1893289564_o_COMBINE2.trigger" relation="relation3"/>
 </entity>
