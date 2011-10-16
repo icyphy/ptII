@@ -167,6 +167,7 @@ public class MultirateFSMDirector extends FSMDirector {
     public State chooseTransition(State state) throws IllegalActionException {
         State destinationState;
         Transition transition = null;
+        FSMActor controller = getController();
 
         if ((state.getRefinement() != null)
                 && (state.preemptiveTransitionList().size() != 0)) {
@@ -176,12 +177,12 @@ public class MultirateFSMDirector extends FSMDirector {
         }
 
         if (state.getRefinement() == null) {
-            transition = _chooseTransition(state, state.preemptiveTransitionList(), false);
+            transition = controller._chooseTransition(state, state.preemptiveTransitionList(), false);
         }
 
         if (transition == null) {
             // No preemptiveTransition enabled. Choose nonpreemptiveTransition.
-            transition = _chooseTransition(state, state.nonpreemptiveTransitionList(), false);
+            transition = controller._chooseTransition(state, state.nonpreemptiveTransitionList(), false);
         }
 
         if (transition == null) {

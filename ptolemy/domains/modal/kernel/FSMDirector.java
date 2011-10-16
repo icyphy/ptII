@@ -356,7 +356,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // not just those that are marked immediate.
         // The following has the side effect of putting the chosen
         // transition into the _lastChosenTransition map of the controller.
-        _chooseTransitions(transitionList, false);
+        controller._chooseTransitions(transitionList, false);
 
         // If there is an enabled preemptive transition, then we know
         // that the current refinement cannot generated outputs, so we
@@ -440,7 +440,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         transitionList = currentState.nonpreemptiveTransitionList();
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
-        _chooseTransitions(transitionList, false);
+        controller._chooseTransitions(transitionList, false);
 
         // Finally, assert any absent outputs that can be asserted absent.
         _assertAbsentOutputs(controller);
@@ -1275,119 +1275,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             workspace().doneReading();
         }
     }
-
-    /** Return an enabled transition among the given list of transitions
-     *  for which both the guard expression and the output actions can
-     *  be evaluated (the inputs referred by these are known).
-     *  If there is only one transition enabled, return that transition.
-     *  In case there are multiple enabled transitions, if any of
-     *  them is not nondeterministic, throw an exception. See {@link Transition}
-     *  for the explanation of "nondeterministic". Otherwise, randomly choose
-     *  one from the enabled transitions and return it if the output actions
-     *  can be evaluated.
-     *  Execute the output actions contained by the returned
-     *  transition before returning.
-     *  <p>
-     *  Before returning, if the returned transition has any refinements,
-     *  fire those refinements, and add them to the list of refinements
-     *  to be postfired.
-     *  <p>
-     *  After calling this method, you can call foundUnknown()
-     *  to determine whether any guard expressions or output value
-     *  expressions on a transition whose guard evaluates to true
-     *  were found in the specified transition list that
-     *  referred to input ports that are not currently known.
-     *  @param currentState The state from which transitions are examined.
-     *  @param transitionList A list of transitions.
-     *  @param immediateOnly True to consider only immediate transitions.
-     *  @return An enabled transition, or null if none is enabled.
-     *  @exception IllegalActionException If there is more than one
-     *   transition enabled and not all of them are nondeterministic,
-     *   or if there is no controller.
-     */
-    protected Transition _chooseTransition(State currentState, List transitionList, boolean immediateOnly)
-            throws IllegalActionException {
-        FSMActor controller = getController();
-
-        if (controller == null) {
-            throw new IllegalActionException(this, "No controller!");
-        }
-        Transition result = controller._chooseTransition(currentState, transitionList, immediateOnly);
-
-        if (result != null) {
-            if (_debugging) {
-                _debug("Transition enabled:", result.getName());
-            }
-            // Execute the refinements of the transition.
-            Actor[] transitionRefinements = result.getRefinement();
-
-            if (transitionRefinements != null) {
-                for (int i = 0; i < transitionRefinements.length; ++i) {
-                    if (_stopRequested
-                            || _disabledActors
-                            .contains(transitionRefinements[i])) {
-                        break;
-                    }
-                    if (_debugging) {
-                        _debug("Fire transition refinement:",
-                                transitionRefinements[i].getName());
-                    }
-                    // FIXME: What should model time be for transition refinements?
-                    // It is not reasonable for it to be the time of the originating
-                    // refinement because multiple transitions may share a refinement
-                    // and time will end up bouncing around...
-                    if (transitionRefinements[i].prefire()) {
-                        transitionRefinements[i].fire();
-                        _transitionRefinementsToPostfire
-                        .add(transitionRefinements[i]);
-                    }
-                }
-            }
-        }
-        return result;
-    }
     
-    /** Choose zero or more transitions enabled in the current
-     *  state from the list of specified transitions. This method
-     *  follows chains of immediate transitions, if there are any.
-     *  As a side effect, the controller's _lastChosenTransitions
-     *  protected variable will contain the chosen transitions.
-     *  @param transitionList The candidate transitions.
-     *  @param immediateOnly If true, look only at immediate
-     *   transitions from the current state.
-     *  @throws IllegalActionException If something goes wrong.
-     */
-    protected void _chooseTransitions(
-            List<Transition> transitionList, boolean immediateOnly)
-            throws IllegalActionException {
-        
-        FSMActor controller = getController();
-        State currentState = controller.currentState();
-
-        Transition chosenTransition = _chooseTransition(currentState, transitionList, immediateOnly);
-
-        // The destination of the chosen transition may be transient,
-        // so we should also choose transitions on the destination state.
-        // The following set is used
-        // to detect cycles of immediate transitions.
-        HashSet<State> visitedStates = new HashSet<State>();
-        while (chosenTransition != null) {
-            State nextState = chosenTransition.destinationState();
-            if (nextState == currentState) {
-                break;
-            }
-            if (visitedStates.contains(nextState)) {
-                throw new IllegalActionException(nextState, this,
-                        "Cycle of immediate transitions found.");
-            }
-            visitedStates.add(nextState);
-            transitionList = nextState.outgoingPort.linkedRelationList();
-            // The last argument ensures that we look only at transitions
-            // that are marked immediate.
-            chosenTransition = _chooseTransition(nextState, transitionList, true);
-        }
-    }
-
     /**
      * Return the receivers contained by ports connected to the inside
      * of the given input port and on the mode controller or the

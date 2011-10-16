@@ -361,9 +361,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // newObject._initializables = null;
 
         newObject._currentState = null;
+        newObject._disabledRefinements = new HashSet<Actor>();
         newObject._identifierToPort = new HashMap<String, Port>();
         newObject._inputTokenMap = new HashMap();
         newObject._lastChosenTransitions = new HashMap<State,Transition>();
+        newObject._transitionsPreviouslyChosenInIteration = new HashSet<Transition>();
+        newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
 
         if (_initialState != null) {
             newObject._initialState = (State) newObject.getEntity(_initialState
@@ -562,6 +565,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // still enabled, then the same transitions will be
         // chosen again.
         _lastChosenTransitions.clear();
+        
+        // Keep track during firing of all transitions refinements
+        // that are fired so that they can later be postfired.
+        _transitionRefinementsToPostfire.clear();
         
         // Choose enabled transitions from the current state,
         // following chains of immediate transitions.
@@ -908,6 +915,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // choices can be made in subsequent transitions, clear the
         // set of previously chosen transitions.
         _transitionsPreviouslyChosenInIteration.clear();
+        
+        // Although this will be cleared at the start of fire(),
+        // we need to clear it here as well before we potentially
+        // choose immediate transitions.
+        _lastChosenTransitions.clear();
+        
+        // Clear the list of refinements whose postfire() methods
+        // have returned false.
+        _disabledRefinements.clear();
 
         // Check for immediate transitions out of the initial state,
         // and also for any enabled transition (to request a refiring
@@ -1158,6 +1174,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         // Commit transitions on the _lastChosenTransitions map.
         _commitLastChosenTransition();
+        
+        // Postfire any transition refinements that were fired in fire().
+        for (Actor transitionRefinement : _transitionRefinementsToPostfire) {
+            if (_debugging) {
+                _debug("Postfiring transition refinment:",
+                        transitionRefinement.getName());
+            }
+            if (!transitionRefinement.postfire()) {
+                _disabledRefinements.add(transitionRefinement);
+                // It is not correct for the modal model to return false
+                // just because the refinement doesn't want to be fired anymore.
+                // result = false;
+            }
+        }
+
         return !_reachedFinalState && !_stopRequested;
     }
 
@@ -1521,11 +1552,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  be evaluated (the inputs referred by these are known).
      *  If there is only one transition enabled, return that transition.
      *  In case there are multiple enabled transitions, if any of
-     *  them is not nondeterministic, throw an exception. Otherwise, randomly choose
-     *  one from the enabled transitions and return it if the output actions
-     *  can be evaluated.
+     *  them is not marked nondeterministic, throw an exception.
+     *  Otherwise, randomly choose one from the enabled transitions
+     *  and return it if the output actions can be evaluated.
      *  Execute the output actions contained by the returned
-     *  transition before returning.
+     *  transition before returning. Also, fire the transition
+     *  refinements, if any.
      *  <p>
      *  After calling this method, you can call foundUnknown()
      *  to determine whether any guard expressions or output value
@@ -1539,7 +1571,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If there is more than one
      *   transition enabled and not all of them are nondeterministic.
      */
-    // FIXME: Make this private when FSMDirector no longer needs it.
+    // FIXME: Make this private when MultirateFSMDirector no longer needs it.
     protected Transition _chooseTransition(State currentState, List transitionList, boolean immediateOnly)
             throws IllegalActionException {
 
@@ -1622,6 +1654,32 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 Action action = (Action) actions.next();
                 action.execute();
             }
+            
+            // Execute the refinements of the transition.
+            Actor[] transitionRefinements = chosenTransition.getRefinement();
+            if (transitionRefinements != null) {
+                for (int i = 0; i < transitionRefinements.length; ++i) {
+                    if (_stopRequested
+                            || _disabledRefinements
+                            .contains(transitionRefinements[i])) {
+                        break;
+                    }
+                    if (_debugging) {
+                        _debug("Fire transition refinement:",
+                                transitionRefinements[i].getName());
+                    }
+                    // NOTE: What should model time be for transition refinements?
+                    // It is not reasonable for it to be the time of the originating
+                    // refinement because multiple transitions may share a refinement
+                    // and time will end up bouncing around...
+                    // Transition refinements are deprecated anyway, so let's not
+                    // worry about that.
+                    if (transitionRefinements[i].prefire()) {
+                        transitionRefinements[i].fire();
+                        _transitionRefinementsToPostfire.add(transitionRefinements[i]);
+                    }
+                }
+            }
 
             // If the current state has no refinement and there are
             // outputs that remain unknown, make them absent.
@@ -1669,6 +1727,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             List<Transition> transitionList, boolean immediateOnly)
             throws IllegalActionException {
         Transition chosenTransition = _chooseTransition(_currentState, transitionList, immediateOnly);
+        
+        // A self-loop that is immediate is not allowed, because if it is enabled,
+        // it implied an infinite number of traversals.
+        if (chosenTransition != null
+                && chosenTransition.isImmediate()
+                && chosenTransition.destinationState() == _currentState) {
+            throw new IllegalActionException(_currentState, this,
+                    "Self loop cannot be an immediate transition.");
+        }
 
         // The destination of the chosen transition may be transient,
         // so we should also choose transitions on the destination state.
@@ -1677,9 +1744,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         HashSet<State> visitedStates = new HashSet<State>();
         while (chosenTransition != null) {
             State nextState = chosenTransition.destinationState();
-            if (nextState == _currentState) {
-                break;
-            }
             if (visitedStates.contains(nextState)) {
                 throw new IllegalActionException(nextState, this,
                         "Cycle of immediate transitions found.");
@@ -1770,8 +1834,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         } finally {
                             ((FSMDirector) executiveDirector)._indexOffset = 0;
                         }
-                        ((FSMDirector) executiveDirector)
-                                ._enableActor(actors[i]);
+                        // FIXME: The following may no longer be necessary,
+                        // given the line after.
+                        ((FSMDirector) executiveDirector)._enableActor(actors[i]);
+                        _disabledRefinements.remove(actors[i]);
                     } else {
                         actors[i].initialize();
                     }
@@ -2818,6 +2884,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // current state.
     private Map _currentConnectionMap = null;
 
+    /** State and transition refinements that have returned false in postfire(). */
+    protected Set<Actor> _disabledRefinements = new HashSet<Actor>();
+
     /** A flag indicating that unknown inputs were referenced in guards
      *  and/or output value expressions (when guards evaluate to true)
      *  in the most recently called enabledTransition() or
@@ -2866,8 +2935,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  in an iteration. There may be more than one because of
      *  immediate transitions.
      */
-    private HashSet<Transition> _transitionsPreviouslyChosenInIteration
+    private Set<Transition> _transitionsPreviouslyChosenInIteration
             = new HashSet<Transition>();
+    
+    /** Transition refinements to postfire(), as determined by the fire() method. */
+    private List<Actor> _transitionRefinementsToPostfire = new LinkedList<Actor>();
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

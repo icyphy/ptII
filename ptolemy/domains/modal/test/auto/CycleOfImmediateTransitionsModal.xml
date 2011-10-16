@@ -126,7 +126,7 @@
         <link port="_Controller.click" relation="clickRelation"/>
     </entity>
     <entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Cycle of immediate transitions found.&#10;  in .CycleOfImmediateTransitionsModal.ModalModel._Controller.State and .CycleOfImmediateTransitionsModal.ModalModel._Director">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Cycle of immediate transitions found.&#10;  in .CycleOfImmediateTransitionsModal.ModalModel._Controller.State and .CycleOfImmediateTransitionsModal.ModalModel._Controller">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
