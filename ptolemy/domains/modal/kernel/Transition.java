@@ -866,25 +866,25 @@ public class Transition extends ComponentRelation {
         annotation.setExpression("");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
         Variable variable = new Variable(annotation, "_textHeightHint");
-        variable.setExpression("5");
+        variable.setExpression(_TEXT_HEIGHT);
         variable.setPersistent(false);
 
         guardExpression = new StringAttribute(this, "guardExpression");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
         variable = new Variable(guardExpression, "_textHeightHint");
-        variable.setExpression("5");
+        variable.setExpression(_TEXT_HEIGHT);
         variable.setPersistent(false);
 
         outputActions = new OutputActionsAttribute(this, "outputActions");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
         variable = new Variable(outputActions, "_textHeightHint");
-        variable.setExpression("5");
+        variable.setExpression(_TEXT_HEIGHT);
         variable.setPersistent(false);
 
         setActions = new CommitActionsAttribute(this, "setActions");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
         variable = new Variable(setActions, "_textHeightHint");
-        variable.setExpression("5");
+        variable.setExpression(_TEXT_HEIGHT);
         variable.setPersistent(false);
 
         exitAngle = new Parameter(this, "exitAngle");
@@ -967,6 +967,10 @@ public class Transition extends ComponentRelation {
     // Cached destination state of this transition.
     private State _destinationState = null;
 
+    // Set to true if the user wants the transition to be used
+    // to detect errors.
+    private boolean _errorTransition = false;
+
     // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
 
@@ -999,8 +1003,7 @@ public class Transition extends ComponentRelation {
 
     // Version of cached source/destination state.
     private long _stateVersion = -1;
-
-    // Set to true if the user wants the transition to be used
-    // to detect errors.
-    private boolean _errorTransition = false;
+    
+    // Default text height in the dialog box.
+    private static String _TEXT_HEIGHT = "4";
 }

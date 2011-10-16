@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ImmediateTransitionsInstantanousCommunication" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ImmediateTransitionsInstantaneousCommunication" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={286, 393, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={286, 393, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -39,7 +39,7 @@
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 130.0]">
         </property>
         <port name="I" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -53,7 +53,7 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 10, 1928, 1180}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1680, 1024}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1713, 1071]">
             </property>
@@ -107,9 +107,9 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.05362890747321189">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -175,13 +175,13 @@
       <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
     </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 10, 1928, 1180}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1680, 1024}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1713, 1071]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1467, 913]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.953125">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0101010101009, 136.5454545454545}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{237.0341010101009, 96.0974545454545}">
             </property>
             <port name="O" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
@@ -233,9 +233,9 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.05362890747321189">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="immediate" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="immediate" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">

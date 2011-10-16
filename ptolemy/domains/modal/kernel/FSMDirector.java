@@ -334,6 +334,13 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         _stateRefinementsToPostfire.clear();
         _transitionRefinementsToPostfire.clear();
         FSMActor controller = getController();
+        // FIXME: For continuous-time models, we need to clear
+        // the list of chosen transitions because, during an
+        // iteration, the solver may backtrack, and transitions
+        // that were previously enabled in the iteration will
+        // no longer be enabled. However, this breaks the
+        // mechanism that ensures that nondeterminate transitions
+        // always make the same choice during an iteration!
         controller._lastChosenTransitions.clear();
         State currentState = controller.currentState();
         if (_debugging) {
@@ -342,33 +349,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
         controller.readInputs();
 
+        // Choose transitions from the preemptive transitions,
+        // including any immediate transitions that these lead to.
         List<Transition> transitionList = currentState.preemptiveTransitionList();
-
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
-        // The following has the side effect of puting the chosen
-        // transition into the _lastChosenTransition map.
-        Transition chosenPreemptiveTransition = _chooseTransition(currentState, transitionList, false);
-        // The destination of the chosen transition may be transient,
-        // so we should also choose transitions on the destination state.
-        // The following set is used
-        // to detect cycles of immediate transitions.
-        HashSet<State> visitedStates = new HashSet<State>();
-        while (chosenPreemptiveTransition != null) {
-            State nextState = chosenPreemptiveTransition.destinationState();
-            if (nextState == currentState) {
-                break;
-            }
-            if (visitedStates.contains(nextState)) {
-                throw new IllegalActionException(nextState, this,
-                        "Cycle of immediate transitions found.");
-            }
-            visitedStates.add(nextState);
-            transitionList = nextState.outgoingPort.linkedRelationList();
-            // The last argument ensures that we look only at transitions
-            // that are marked immediate.
-            chosenPreemptiveTransition = _chooseTransition(nextState, transitionList, true);
-        }
+        // The following has the side effect of putting the chosen
+        // transition into the _lastChosenTransition map of the controller.
+        _chooseTransitions(transitionList, false);
 
         // If there is an enabled preemptive transition, then we know
         // that the current refinement cannot generated outputs, so we
@@ -447,33 +435,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         controller.readOutputsFromRefinement();
 
-        // NOTE: immediate transitions are always preemptive, so the nonpreemptive transition
-        // list should not contain any immediate transitions.
+        // Choose transitions from the nonpreemptive transitions,
+        // including any immediate transitions that these lead to.
         transitionList = currentState.nonpreemptiveTransitionList();
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
-        Transition chosenNonpreemptiveTransition = _chooseTransition(currentState, transitionList, false);
-
-        // The destination of the chosen transition may be transient,
-        // so we should also choose transitions on the destination state.
-        // The following set is used
-        // to detect cycles of immediate transitions.
-        visitedStates.clear();
-        while (chosenNonpreemptiveTransition != null) {
-            State nextState = chosenNonpreemptiveTransition.destinationState();
-            if (nextState == currentState) {
-                break;
-            }
-            if (visitedStates.contains(nextState)) {
-                throw new IllegalActionException(nextState, this,
-                        "Cycle of immediate transitions found.");
-            }
-            visitedStates.add(nextState);
-            transitionList = nextState.outgoingPort.linkedRelationList();
-            // The last argument ensures that we look only at transitions
-            // that are marked immediate.
-            chosenNonpreemptiveTransition = _chooseTransition(nextState, transitionList, true);
-        }
+        _chooseTransitions(transitionList, false);
 
         // Finally, assert any absent outputs that can be asserted absent.
         _assertAbsentOutputs(controller);
@@ -1378,6 +1345,47 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             }
         }
         return result;
+    }
+    
+    /** Choose zero or more transitions enabled in the current
+     *  state from the list of specified transitions. This method
+     *  follows chains of immediate transitions, if there are any.
+     *  As a side effect, the controller's _lastChosenTransitions
+     *  protected variable will contain the chosen transitions.
+     *  @param transitionList The candidate transitions.
+     *  @param immediateOnly If true, look only at immediate
+     *   transitions from the current state.
+     *  @throws IllegalActionException If something goes wrong.
+     */
+    protected void _chooseTransitions(
+            List<Transition> transitionList, boolean immediateOnly)
+            throws IllegalActionException {
+        
+        FSMActor controller = getController();
+        State currentState = controller.currentState();
+
+        Transition chosenTransition = _chooseTransition(currentState, transitionList, immediateOnly);
+
+        // The destination of the chosen transition may be transient,
+        // so we should also choose transitions on the destination state.
+        // The following set is used
+        // to detect cycles of immediate transitions.
+        HashSet<State> visitedStates = new HashSet<State>();
+        while (chosenTransition != null) {
+            State nextState = chosenTransition.destinationState();
+            if (nextState == currentState) {
+                break;
+            }
+            if (visitedStates.contains(nextState)) {
+                throw new IllegalActionException(nextState, this,
+                        "Cycle of immediate transitions found.");
+            }
+            visitedStates.add(nextState);
+            transitionList = nextState.outgoingPort.linkedRelationList();
+            // The last argument ensures that we look only at transitions
+            // that are marked immediate.
+            chosenTransition = _chooseTransition(nextState, transitionList, true);
+        }
     }
 
     /**

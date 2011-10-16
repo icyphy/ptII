@@ -154,13 +154,22 @@ import ptolemy.kernel.util.Workspace;
  Nondeterministic transitions are allowed if all enabled transitions
  are marked <i>nondeterministic</i>. If more than one transition is
  enabled and they are all marked nondeterministic, then one is chosen
- at random in the fire() method. If the fire() method is invoked more
+ at random in the fire() method. Note that this class provides no
+ guarantees about the probability of selecting a particular
+ nondeterministic transition. It is perfectly valid to always
+ choose the same one, for example. To provide such a guarantee,
+ we would have to impose the constraint that no nondeterministic
+ transition can be chosen until the guards of all nondeterministic
+ transitions can be evaluated. This would rule out certain models,
+ in particular those that illustrate the celebrated Brock-Ackerman
+ anomaly.  Hence, in this implementation,
+ if the fire() method is invoked more
  than once in an iteration, then subsequent invocations in the same
- iteration will always choose the same transition.  However,
- if more transitions become enabled in subsequent firings and
+ iteration will always choose the same transition, if it is still
+ enabled. If more transitions become enabled in subsequent firings and
  they are not all marked nondeterminate, then an
- exception will thrown. Note that this
- means that if some input is unknown on the first invocation
+ exception will thrown. All of this means that
+ if some input is unknown on the first invocation
  of fire(), and a guard refers to that input, then that transition
  will not be chosen. As a consequence, for nondeterministic state
  machines, the behavior may depend on the order of firings in
@@ -170,7 +179,9 @@ import ptolemy.kernel.util.Workspace;
  not completely determine its behavior; the context in which it
  is used can also affect the behavior; specifically, the context
  may make it impossible to know the value of input on the first
- invocation of fire() because of a feedback loop).
+ invocation of fire() because of a feedback loop). Thus, to
+ correctly realize all nondeterministic systems, we cannot provide
+ probabilistic execution of nondeterministic transitions.
  <p>
  If no transition is
  enabled and all their guard expressions have been evaluated (all relevant
@@ -539,36 +550,28 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // except when a state refinement is itself an FSMActor.
         // FIXME: In the latter case, this method doesn't do the
         // right thing!  It needs to do everything that the FSMDirector's
-        // fire() method does.
+        // fire() method does.  Should move everything from FSMDirector
+        // to here to avoid code duplication.
         readInputs();
+        
+        // To support continuous-time models, we need to clear
+        // the list of chosen transitions because, during an
+        // iteration, the solver may backtrack, and transitions
+        // that were previously enabled in the iteration will
+        // no longer be enabled. Presumably, if the guards are
+        // still enabled, then the same transitions will be
+        // chosen again.
+        _lastChosenTransitions.clear();
+        
+        // Choose enabled transitions from the current state,
+        // following chains of immediate transitions.
         List<Transition> transitionList = _currentState.outgoingPort
                 .linkedRelationList();
-        
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
-        // The following has the side effect of puting the chosen
+        // The following has the side effect of putting the chosen
         // transition into the _lastChosenTransition map.
-        Transition chosenTransition = _chooseTransition(_currentState, transitionList, false);
-        // The destination of the chosen transition may be transient,
-        // so we should also choose immediate transitions out
-        // of the destination state. The following set is used
-        // to detect cycles of immediate transitions.
-        HashSet<State> visitedStates = new HashSet<State>();
-        while (chosenTransition != null) {
-            State nextState = chosenTransition.destinationState();
-            if (nextState == _currentState) {
-                break;
-            }
-            if (visitedStates.contains(nextState)) {
-                throw new IllegalActionException(nextState, this,
-                        "Cycle of immediate transitions found.");
-            }
-            visitedStates.add(nextState);
-            transitionList = nextState.outgoingPort.linkedRelationList();
-            // The last argument ensures that we look only at transitions
-            // that are marked immediate.
-            chosenTransition = _chooseTransition(nextState, transitionList, true);
-        }
+        _chooseTransitions(transitionList, false);
         
         // Finally, for each output port where we can determine that
         // it is not possible for it to become present, assert that it
@@ -900,16 +903,26 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // taken, preinitialize() is not called.
         reset();
 
-        _lastChosenTransitions.clear();
+        // To ensure that nondeterministic transitions result in the
+        // same choice anytime during an iteration, but that different
+        // choices can be made in subsequent transitions, clear the
+        // set of previously chosen transitions.
+        _transitionsPreviouslyChosenInIteration.clear();
 
-        // If there is a transition enabled in the initial state, then request a
-        // refiring at the current time. The initial state may be transient.
-        //
-        // There is no current state when the FSMActor is in fact a Ptera
+        // Check for immediate transitions out of the initial state,
+        // and also for any enabled transition (to request a refiring
+        // at the current time.
+        // NOTE: There is no current state when the FSMActor is in fact a Ptera
         // controller. (tfeng 05/12/2009)
         if (_currentState != null) {
-            List transitionList = _currentState.outgoingPort
-                    .linkedRelationList();
+            List transitionList = _currentState.outgoingPort.linkedRelationList();
+            _chooseTransitions(transitionList, true);
+            _commitLastChosenTransition();
+            // Need to clear this again.
+            _transitionsPreviouslyChosenInIteration.clear();
+                        
+            // If there is a non-immediate transition enabled in the initial state,
+            // then request a refiring at the current time.
             List enabledTransitions = enabledTransitions(transitionList, false);
             if (enabledTransitions.size() > 0) {
                 if (_debugging) {
@@ -1137,8 +1150,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If any action throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        _lastTakenTransitions.clear();
-        // the lastTakenTransitions are added by the commitLastChosenTransition function
+        // To ensure that nondeterministic transitions result in the
+        // same choice anytime during an iteration, but that different
+        // choices can be made in subsequent transitions, clear the
+        // set of previously chosen transitions.
+        _transitionsPreviouslyChosenInIteration.clear();
+
+        // Commit transitions on the _lastChosenTransitions map.
         _commitLastChosenTransition();
         return !_reachedFinalState && !_stopRequested;
     }
@@ -1503,8 +1521,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  be evaluated (the inputs referred by these are known).
      *  If there is only one transition enabled, return that transition.
      *  In case there are multiple enabled transitions, if any of
-     *  them is not nondeterministic, throw an exception. See {@link Transition}
-     *  for the explanation of "nondeterministic". Otherwise, randomly choose
+     *  them is not nondeterministic, throw an exception. Otherwise, randomly choose
      *  one from the enabled transitions and return it if the output actions
      *  can be evaluated.
      *  Execute the output actions contained by the returned
@@ -1522,15 +1539,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If there is more than one
      *   transition enabled and not all of them are nondeterministic.
      */
+    // FIXME: Make this private when FSMDirector no longer needs it.
     protected Transition _chooseTransition(State currentState, List transitionList, boolean immediateOnly)
             throws IllegalActionException {
 
+        // Get the transitions enabled from the current state.
         List<Transition> enabledTransitions = enabledTransitions(transitionList, immediateOnly);
-        int length = enabledTransitions.size();
+        int numberOfEnabledTransitions = enabledTransitions.size();
 
-        // Ensure that if there are multiple enabled transitions, all of them
-        // are nondeterministic.
-        if (length > 1) {
+        Transition chosenTransition = null;
+
+        if (numberOfEnabledTransitions == 1) {
+            chosenTransition = (Transition) enabledTransitions.get(0);
+        } else if (numberOfEnabledTransitions > 1) {
+            // Ensure that if there are multiple enabled transitions, all of them
+            // are nondeterministic.
             for (Transition enabledTransition : enabledTransitions) {
                 if (!enabledTransition.isNondeterministic()) {
                     throw new MultipleEnabledTransitionsException(
@@ -1542,76 +1565,49 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                                     + " is deterministic.");
                 }
             }
-        }
-
-        // If a transition has been previously chosen in this iteration,
-        // then we have to return the same transition here. Otherwise we
-        // get a very odd bug with nondeterminate machines where an output
-        // action may be executed on a transition that is not taken.
-        // NOTE: We have to be careful to not mask nondeterminism! In particular, if
-        // two transitions are enabled, but on a previous invocation fire()
-        // only one of the two guards could be evaluated (because inputs
-        // were not known), then no nondeterminism would be detected.
-        // This is a problem because we could have two valid schedules,
-        // one of which detects nondeterminism and one of which does not.
-        // We guard against that by checking above for multiple enabled
-        // transitions. That check must be done before returning.
-        Transition chosenTransition = _lastChosenTransitions.get(currentState);
-        if (chosenTransition != null) {
-            // If a transition was previously chosen, but is not in
-            // the list of transitions we are currently searching, then
-            // it must be that the previously chosen transition was
-            // non-preemptive and the list being searched contains only
-            // preemptive transitions, or vice versa.
-            if (!transitionList.contains(chosenTransition)) {
-                return null;
-            }
-            // Guard against non-monotonic behavior.
-            // NOTE: This check means that it is essential that if a guard
-            // evaluates to true at one firing, it must evaluate to true at
-            // all subsequent firings in the same iteration. This creates
-            // a complication for Continuous, where time advances between
-            // steps, so guards may become false again. We have fixed this
-            // by evaluating guards only at the last stage of iteration.
-            if (!enabledTransitions.contains(chosenTransition)) {
-                throw new IllegalActionException(this, chosenTransition,
-                        "Transition was enabled in an earlier firing of this "
-                                + "iteration, but is no longer enabled!");
-            }
-            return chosenTransition;
-        }
-
-        if (length == 1) {
-            chosenTransition = (Transition) enabledTransitions.get(0);
-        } else if (length > 1) {
-            // Randomly choose one transition from the list of the
-            // enabled transitions. Note that it is possible that the
-            // chosen transition cannot be executed because inputs needed
-            // by its output actions are not known.
-            // In that case, we have to choose a different transition.
-            while (enabledTransitions.size() > 0) {
-                // Since the size of the list of enabled transitions usually (almost
-                // always) is less than the maximum value of integer. We can safely
-                // do the cast from long to int in the following statement.
-                int randomChoice = (int) Math.floor(Math.random() * length);
-
-                // There is a tiny chance that randomChoice equals length.
-                // When this happens, we deduct 1 from the randomChoice.
-                if (randomChoice == length) {
-                    randomChoice--;
+            // If one of these transitions has been previously chosen in
+            // this iteration, then choose it again. This ensures the same
+            // results for nondeterministic choices.
+            if (_transitionsPreviouslyChosenInIteration.size() > 0) {
+                for (Transition previouslyChosenTransition : _transitionsPreviouslyChosenInIteration) {
+                    if (enabledTransitions.contains(previouslyChosenTransition)) {
+                        chosenTransition = previouslyChosenTransition;
+                    }
                 }
+            }
+            if (chosenTransition == null) {
+                // No previously chosen transition.
+                // Randomly choose one transition from the list of the
+                // enabled transitions. Note that it is possible that the
+                // chosen transition cannot be executed because inputs needed
+                // by its output actions are not known.
+                // In that case, we have to choose a different transition.
+                while (enabledTransitions.size() > 0) {
+                    // Since the size of the list of enabled transitions usually (almost
+                    // always) is less than the maximum value of integer. We can safely
+                    // do the cast from long to int in the following statement.
+                    int randomChoice = (int) Math.floor(Math.random() * numberOfEnabledTransitions);
 
-                chosenTransition = (Transition) enabledTransitions.get(randomChoice);
-                if (_referencedInputPortsByOutputKnown(chosenTransition)) {
-                    // The chosen transition has an output action that
-                    // references an unknown input.
-                    _foundUnknown = true;
-                    break;
-                } else {
-                    // Cannot make this choice.
-                    enabledTransitions.remove(chosenTransition);
-                    chosenTransition = null;
+                    // There is a tiny chance that randomChoice equals length.
+                    // When this happens, we deduct 1 from the randomChoice.
+                    if (randomChoice == numberOfEnabledTransitions) {
+                        randomChoice--;
+                    }
+
+                    chosenTransition = (Transition) enabledTransitions.get(randomChoice);
+                    if (_referencedInputPortsByOutputKnown(chosenTransition)) {
+                        // The chosen transition has an output action that
+                        // references an unknown input.
+                        _foundUnknown = true;
+                        break;
+                    } else {
+                        // Cannot make this choice.
+                        enabledTransitions.remove(chosenTransition);
+                        chosenTransition = null;
+                    }
                 }
+                // Record the chosen transition.
+                _transitionsPreviouslyChosenInIteration.add(chosenTransition);
             }
         }
 
@@ -1620,15 +1616,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 _debug("Enabled transition: ", chosenTransition.getFullName());
             }
 
+            // Execute the choice actions.
             Iterator actions = chosenTransition.choiceActionList().iterator();
-
             while (actions.hasNext()) {
                 Action action = (Action) actions.next();
-                // FIXME: Seems like this could be executed even
-                // if _foundUknown is now true, which means that
-                // _referencedInputPortsByOutputKnown(result)
-                // returned true. Won't the following line throw
-                // an exception in this case?
                 action.execute();
             }
 
@@ -1639,6 +1630,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // We can't do that here, however, because the outputs
             // from the refinement have not been transferred.
             // This case has to be handled by the FSMDirector.
+            // FIXME: FSMDirector handling, if any, needs to move here.
             // FURTHER NOTE: This cannot be done unless either
             // the destination state of the chosen transition
             // has no immediate transitions
@@ -1661,6 +1653,43 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         
         return chosenTransition;
+    }
+    
+    /** Choose zero or more transitions enabled in the current
+     *  state from the list of specified transitions. This method
+     *  follows chains of immediate transitions, if there are any.
+     *  As a side effect, the controller's _lastChosenTransitions
+     *  protected variable will contain the chosen transitions.
+     *  @param transitionList The candidate transitions.
+     *  @param immediateOnly If true, look only at immediate
+     *   transitions from the current state.
+     *  @throws IllegalActionException If something goes wrong.
+     */
+    protected void _chooseTransitions(
+            List<Transition> transitionList, boolean immediateOnly)
+            throws IllegalActionException {
+        Transition chosenTransition = _chooseTransition(_currentState, transitionList, immediateOnly);
+
+        // The destination of the chosen transition may be transient,
+        // so we should also choose transitions on the destination state.
+        // The following set is used
+        // to detect cycles of immediate transitions.
+        HashSet<State> visitedStates = new HashSet<State>();
+        while (chosenTransition != null) {
+            State nextState = chosenTransition.destinationState();
+            if (nextState == _currentState) {
+                break;
+            }
+            if (visitedStates.contains(nextState)) {
+                throw new IllegalActionException(nextState, this,
+                        "Cycle of immediate transitions found.");
+            }
+            visitedStates.add(nextState);
+            transitionList = nextState.outgoingPort.linkedRelationList();
+            // The last argument ensures that we look only at transitions
+            // that are marked immediate.
+            chosenTransition = _chooseTransition(nextState, transitionList, true);
+        }
     }
     
     /** Execute all set actions contained by the transition chosen
@@ -2829,8 +2858,16 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
     private Hashtable _tokenListArrays;
+    
     //A flag indicating whether or not the actor needs to deal with a model error.
     private boolean _modelError = false;
+    
+    /** Set of nondeterministic transitions previously chosen
+     *  in an iteration. There may be more than one because of
+     *  immediate transitions.
+     */
+    private HashSet<Transition> _transitionsPreviouslyChosenInIteration
+            = new HashSet<Transition>();
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
