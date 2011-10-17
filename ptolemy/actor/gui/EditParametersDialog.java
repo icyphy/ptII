@@ -164,7 +164,7 @@ public class EditParametersDialog extends ComponentDialog implements
                 request.setUndoable(true);
                 _target.requestChange(request);
             }
-        } else if (buttonPressed().equals("Restore Defaults")) {
+        } else if (buttonPressed().equals("Defaults")) {
             ((Configurer) contents).restoreToDefaults();
 
             // Open a new dialog (a modal dialog).
@@ -433,5 +433,5 @@ public class EditParametersDialog extends ComponentDialog implements
     ////                         private variables                 ////
     // Button labels.
     private static String[] _moreButtons = { "Commit", "Add", "Remove",
-            "Restore Defaults", "Preferences", "Help", "Cancel" };
+            "Defaults", "Preferences", "Help", "Cancel" };
 }
