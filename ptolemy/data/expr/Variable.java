@@ -1535,7 +1535,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // method of the container is called.
             _setToken(token);
 
-            // Record the initial value so "Restore Defaults" works.
+            // Record the initial value so "Defaults" button works.
             // Note that we call the superclass only to avoid getting the
             // other effects of setting the expression.
             super.setExpression(token.toString());
