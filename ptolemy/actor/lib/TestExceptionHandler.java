@@ -104,6 +104,12 @@ public class TestExceptionHandler extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Initialize. */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _invoked = false;
+    }
 
     /** Handle an exception thrown in a test. If in training
      *  mode, simply record the exception message. If not in training mode,
@@ -127,7 +133,10 @@ public class TestExceptionHandler extends TypedAtomicActor implements
         } else {
             if (!exception.getMessage().equals(
                     correctExceptionMessage.stringValue())) {
-                throw new IllegalActionException(this, exception, null);
+                throw new IllegalActionException(this, exception, "Expected:\n"
+                        + correctExceptionMessage.stringValue()
+                        + "\nBut got:\n"
+                        + exception.getMessage());
             }
         }
         return true;
