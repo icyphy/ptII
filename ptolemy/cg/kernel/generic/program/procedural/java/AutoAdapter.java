@@ -56,6 +56,7 @@ import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
@@ -1626,6 +1627,28 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     //        unescapedActorPortName) 
                     + "\", " + port.isInput()
                     + ", " + port.isOutput() + ");" + _eol);
+            
+            // Instantiate any attributes contained by the port
+            StringBuffer attributeCode = new StringBuffer();
+            Iterator portAttributes = port.attributeList().iterator();
+            while (portAttributes.hasNext()) {
+                Attribute attribute = (Attribute)portAttributes.next();
+                System.out.println("AutoAdapter: port: " + port.getFullName() + " " + attribute);
+                if (attribute instanceof Parameter) {
+                	Parameter parameter = (Parameter)attribute;
+                	String className = parameter.getClassName();
+                    attributeCode.append("parameter = new " + className
+                            + "(port, \"" + parameter.getName() + "\");" + _eol
+                            + "parameter.setExpression(\"" + parameter.getExpression() + "\");" + _eol);
+                }
+            }
+            if (attributeCode.length() > 0) {
+                code.append("{" + _eol
+                        + "Parameter parameter = null;" + _eol
+                        + attributeCode 
+                        + "}" + _eol);
+            }
+            
             if (remotePort.isMultiport()) {
                 if (verbosityLevel > 3) {
                     code.append("System.out.println(\"MP1\");" + _eol); 
