@@ -53,6 +53,7 @@ import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -365,6 +366,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._identifierToPort = new HashMap<String, Port>();
         newObject._inputTokenMap = new HashMap();
         newObject._lastChosenTransitions = new HashMap<State,Transition>();
+        newObject._stateRefinementsToPostfire = new LinkedList<Actor>();
         newObject._transitionsPreviouslyChosenInIteration = new HashSet<Transition>();
         newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
 
@@ -549,12 +551,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   transition enabled.
      */
     public void fire() throws IllegalActionException {
-        // NOTE: this method is not called in the FSMDirector class,
-        // except when a state refinement is itself an FSMActor.
-        // FIXME: In the latter case, this method doesn't do the
-        // right thing!  It needs to do everything that the FSMDirector's
-        // fire() method does.  Should move everything from FSMDirector
-        // to here to avoid code duplication.
+        Time environmentTime = _getEnvironmentTime();
+        Director director = getDirector();
+        boolean inModalModel = false;
+        if (director instanceof FSMDirector) {
+            inModalModel = true;
+            director.setModelTime(environmentTime);
+        }
+
         readInputs();
         
         // To support continuous-time models, we need to clear
@@ -566,32 +570,99 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // chosen again.
         _lastChosenTransitions.clear();
         
-        // Keep track during firing of all transitions refinements
+        // Keep track during firing of all refinements
         // that are fired so that they can later be postfired.
         _transitionRefinementsToPostfire.clear();
+        _stateRefinementsToPostfire.clear();
         
-        // Choose enabled transitions from the current state,
-        // following chains of immediate transitions.
-        List<Transition> transitionList = _currentState.outgoingPort
-                .linkedRelationList();
+        // Choose transitions from the preemptive transitions,
+        // including any immediate transitions that these lead to.
+        List<Transition> transitionList = _currentState.preemptiveTransitionList();
         // The last argument ensures that we look at all transitions
         // not just those that are marked immediate.
         // The following has the side effect of putting the chosen
-        // transition into the _lastChosenTransition map.
+        // transition into the _lastChosenTransition map of the controller.
         _chooseTransitions(transitionList, false);
-        
-        // Finally, for each output port where we can determine that
-        // it is not possible for it to become present, assert that it
-        // is absent.
-        List<IOPort> outputs = outputPortList();
-        for (IOPort port : outputs) {
-            for (int channel = 0; channel < port.getWidth(); channel++) {
-                if (_isSafeToClear(port, channel, _currentState, false, null)) {
-                    // Send absent.
-                    port.send(channel, null);
+
+        // If there is an enabled preemptive transition, then we know
+        // that the current refinements cannot generated outputs, so we
+        // may be able to assert that some outputs are absent.
+        if (_lastChosenTransitions.size() > 0) {
+            // In case the refinement port somehow accesses time, set it.
+            if (inModalModel) {
+                director.setModelTime(environmentTime);
+            }
+
+            // If the current (preempted) state has refinements, then
+            // we know they cannot produce any outputs. All outputs of
+            // this state must be cleared so that at least they do not
+            // remain unknown at the end of the fixed point iteration.
+            // If an output port is known because these preemptive
+            // transitions already set it we do not send a clear.
+            TypedActor[] refinements = _currentState.getRefinement();
+            if (refinements != null) {
+                for (Actor refinementActor : refinements) {
+                    if (refinementActor instanceof CompositeActor) {
+                        CompositeActor refinement = (CompositeActor) refinementActor;
+                        for (IOPort refinementPort : ((List<IOPort>) refinement.outputPortList())) {
+                            if (!refinementPort.isKnown()) {
+                                refinementPort.sendClear(0);
+                            }
+                        }// end for all ports
+                    }// end if CompositeActor
+                }// end for all refinements
+            }// end if has refinement
+            readOutputsFromRefinement();
+        } else {
+            // ASSERT: At this point, there are no enabled preemptive transitions.
+            // It may be that some preemptive transition guards cannot be evaluated yet.
+            // If some preemptive transition guards could not be evaluated due to unknown
+            // inputs, then check whether it is possible anyway to assert that some
+            // outputs are absent.
+            if (!foundUnknown()) {
+                // ASSERT: At this point, there are no enabled preemptive transitions,
+                // and all preemptive transition guards, if any, have evaluated to false.
+                // We can now fire the refinements.
+                Actor[] stateRefinements = _currentState.getRefinement();
+
+                if (stateRefinements != null) {
+                    for (int i = 0; i < stateRefinements.length; ++i) {
+                        if (_stopRequested
+                                || _disabledRefinements.contains(stateRefinements[i])) {
+                            break;
+                        }
+                        _setTimeForRefinement(stateRefinements[i]);
+                        if (stateRefinements[i].prefire()) {
+                            if (_debugging) {
+                                _debug("Fire state refinement:",
+                                        stateRefinements[i].getName());
+                            }
+                            // NOTE: If the state refinement is an FSMActor, then the following
+                            // fire() method doesn't do the right thing. That fire() method does
+                            // much less than this fire() method, and in particular, does not
+                            // invoke refinements! This is fixed by using ModalModel in a
+                            // hierarchical state.
+                            stateRefinements[i].fire();
+                            _stateRefinementsToPostfire.add(stateRefinements[i]);
+                        }
+                    }
                 }
+                if (inModalModel) {
+                    director.setModelTime(environmentTime);
+                }
+
+                readOutputsFromRefinement();
+
+                // Choose transitions from the nonpreemptive transitions,
+                // including any immediate transitions that these lead to.
+                transitionList = _currentState.nonpreemptiveTransitionList();
+                // The last argument ensures that we look at all transitions
+                // not just those that are marked immediate.
+                _chooseTransitions(transitionList, false);
             }
         }
+        // Finally, assert any absent outputs that can be asserted absent.
+        _assertAbsentOutputs(this);
     }
 
     /** Return true if the most recent call to enabledTransition()
@@ -1166,6 +1237,60 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If any action throws it.
      */
     public boolean postfire() throws IllegalActionException {
+        Director director = getDirector();
+        boolean inModalModel = false;
+        if (director instanceof FSMDirector) {
+            inModalModel = true;
+        }
+
+        // First, postfire any state refinements that were fired.
+        Time environmentTime = _getEnvironmentTime();
+        for (Actor stateRefinement : _stateRefinementsToPostfire) {
+            if (_debugging) {
+                _debug("Postfiring state refinment:", stateRefinement.getName());
+            }
+            _setTimeForRefinement(stateRefinement);
+            if (!stateRefinement.postfire()) {
+                _disabledRefinements.add(stateRefinement);
+                // It is not correct for the modal model to return false
+                // just because the refinement doesn't want to be fired anymore.
+                // result = false;
+            }
+            if (inModalModel) {
+                director.setModelTime(environmentTime);
+            }
+        }
+        // Suspend all refinements of the current state, whether they were fired
+        // or not. This is important because if a preemptive transition was taken,
+        // then the refinement was not fired, but it should still be suspended.
+        Actor[] refinements = _currentState.getRefinement();
+        if (refinements != null) {
+            for (Actor stateRefinement : refinements) {
+                if (_lastChosenTransitions.size() != 0
+                        && stateRefinement instanceof Suspendable) {
+                    ((Suspendable) stateRefinement).suspend(environmentTime);
+                }
+            }
+        }
+
+        // Notify all the refinements of the destination state that they are being
+        // resumed.
+        if (_lastChosenTransitions.size() != 0) {            
+            State destinationState = _destinationState();
+            if (destinationState != null) {
+                TypedActor[] destinationRefinements = destinationState
+                        .getRefinement();
+                if (destinationRefinements != null) {
+                    for (TypedActor destinationRefinement : destinationRefinements) {
+                        if (destinationRefinement instanceof Suspendable) {
+                            ((Suspendable) destinationRefinement)
+                                    .resume(environmentTime);
+                        }
+                    }
+                }
+            }
+        }
+
         // To ensure that nondeterministic transitions result in the
         // same choice anytime during an iteration, but that different
         // choices can be made in subsequent transitions, clear the
@@ -1188,7 +1313,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // result = false;
             }
         }
-
+        
         return !_reachedFinalState && !_stopRequested;
     }
 
@@ -1687,13 +1812,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // reasonable to assert that outputs are absent.
             // We can't do that here, however, because the outputs
             // from the refinement have not been transferred.
-            // This case has to be handled by the FSMDirector.
-            // FIXME: FSMDirector handling, if any, needs to move here.
-            // FURTHER NOTE: This cannot be done unless either
-            // the destination state of the chosen transition
-            // has no immediate transitions
-            // out of it, or the guards on all immediate transitions
-            // out of it are known to evaluate to false.
+            // This case has to be handled by the fire method.
             if (_areAllImmediateTransitionsDisabled(chosenTransition.destinationState())
                     && currentState.getRefinement() == null) {
                 List<IOPort> outputs = outputPortList();
@@ -1834,40 +1953,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         } finally {
                             ((FSMDirector) executiveDirector)._indexOffset = 0;
                         }
-                        // FIXME: The following may no longer be necessary,
-                        // given the line after.
-                        ((FSMDirector) executiveDirector)._enableActor(actors[i]);
                         _disabledRefinements.remove(actors[i]);
                     } else {
                         actors[i].initialize();
                     }
-                    /* NOTE: The following is no longer correct because
-                     * the destination state director will have as its current
-                     * local time whatever it was when it was last suspended,
-                     * or the initial value if hasn't run before. This is
-                     * the correct value upon creation of version 3 of the
-                     * modal model time semantics.  EAL 9/17/09.
-                    } else {
-                        // Set current time of the director of the destination
-                        // refinement before executing actions because there may
-                        // be attributeChanged() methods that are invoked that depend
-                        // on current time.
-                        actors[i].getDirector().setModelTime(
-                                executiveDirector.getModelTime());
-
-                        // Need also to set the superdense time index of the destination director
-                        // one greater than the one of the enclosing director.
-                        Director destinationDirector = actors[i].getDirector();
-                        int index = 1;
-                        if (executiveDirector instanceof SuperdenseTimeDirector) {
-                            index = ((SuperdenseTimeDirector) executiveDirector)
-                                    .getIndex() + 1;
-                        }
-                        if (destinationDirector instanceof SuperdenseTimeDirector) {
-                            ((SuperdenseTimeDirector) destinationDirector)
-                                    .setIndex(index);
-                        }
-                     */
                 }
             }
         }
@@ -2020,6 +2109,26 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         return _identifierToPort.get(identifier);
     }
+    
+    /** Return the list used to keep track of refinements that have been
+     *  fired. This is protected so that FSMDirector can mirror it with
+     *  its own protected method so that subclasses of FSMDirector can
+     *  access it.
+     *  @return A list of actors to postfire.
+     */
+    protected List<Actor> _getStateRefinementsToPostfire() {
+        return _stateRefinementsToPostfire;
+    }
+
+    /** Return the list used to keep track of refinements that have been
+     *  fired. This is protected so that FSMDirector can mirror it with
+     *  its own protected method so that subclasses of FSMDirector can
+     *  access it.
+     *  @return A list of actors to postfire.
+     */
+    protected List<Actor> _getTransitionRefinementsToPostfire() {
+        return _transitionRefinementsToPostfire;
+    }
 
     /** Return true if the channel of the port is connected to an output
      *  port of the refinement of current state. If the current state
@@ -2047,41 +2156,37 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return flags[channel];
     }
     
-    /**
-     * Given an output port and channel, determine whether the
-     * output port must be absent on the specified channel, given whatever
-     * current information about the inputs is available (the inputs
-     * may be known or unknown).
-     * <p>
-     * The way this works is that it examines all the outgoing
-     * transitions of the current state. If the guard on the transition
-     * can be evaluated to false, then as far as this transition is
-     * concerned, the output port can be absent.
-     * Otherwise, two things happen. First, we check to see whether
-     * the output actions of a transition writes to the specified
-     * port. Second, we look at the destination state of the
-     * transition and examine all immediate transition emanating
-     * from that state. If none of the transitions makes an assignment
-     * to the output port, then we can safely
-     * assert that the output is absent.
-     * <p>
-     * This method ignores any state refinements, and consequently
-     * its analysis is valid only if all state refinements also assert
-     * that the output is absent.
+    /** Given an output port and channel, determine whether the
+     *  output port must be absent on the specified channel, given whatever
+     *  current information about the inputs is available (the inputs
+     *  may be known or unknown).
+     *  <p>
+     *  The way this works is that it examines all the outgoing
+     *  transitions of the current state. If the guard on the transition
+     *  can be evaluated to false, then as far as this transition is
+     *  concerned, the output port can be absent.
+     *  Otherwise, two things happen. First, we check to see whether
+     *  the output actions of a transition writes to the specified
+     *  port. Second, we look at the destination state of the
+     *  transition and examine all immediate transition emanating
+     *  from that state. If none of the transitions makes an assignment
+     *  to the output port, then we can safely
+     *  assert that the output is absent.
+     *  <p>
+     *  This method ignores any state refinements, and consequently
+     *  its analysis is valid only if all state refinements also assert
+     *  that the output is absent.
      *
-     * @param port The IOPort in question.
-     * @param channel The channel in question.
-     * @param state The state whose transitions are examined.
-     * @param immediateOnly True to examine only immediate transitions.
-     * @param visitedStates The set of states already visited, or null
-     *  if none have yet been visited.
-     * @return True, if successful.
+     *  @param port The IOPort in question.
+     *  @param channel The channel in question.
+     *  @param state The state whose transitions are examined.
+     *  @param immediateOnly True to examine only immediate transitions.
+     *  @param visitedStates The set of states already visited, or null
+     *   if none have yet been visited.
+     *  @return True, if successful.
      */
     protected boolean _isSafeToClear(IOPort port, int channel,
             State state, boolean immediateOnly, HashSet<State> visitedStates) {
-        // FIXME: This code is not right if there immediate transitions
-        // because there may be some of the transitions in a transition chain
-        // that are enabled, but some in the chain may not be known yet!
         if (_debugging) {
             _debug("Calling _isSafeToClear() on port: " + port.getFullName());
         }
@@ -2154,7 +2259,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         } // Continue to the next transition.
         
         // ASSERT: At this point, no transition can possibly write
-        // to the output, so it is safe to 
+        // to the output, so it is safe to clear.
         return true;
     }
 
@@ -2276,6 +2381,40 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _currentConnectionMap = (Map) _connectionMaps.get(_currentState);
     }
 
+    /** If the specified refinement implements Suspendable, then set
+     *  its current time equal to the current environment time minus
+     *  the refinement's total accumulated suspension time. Otherwise,
+     *  set current time to match that of the environment. If there is
+     *  no environment, do nothing.
+     *  @param refinement The refinement.
+     *  @exception IllegalActionException If setModelTime() throws it.
+     */
+    private void _setTimeForRefinement(Actor refinement)
+            throws IllegalActionException {
+        Actor container = (Actor) getContainer();
+        Director director = getDirector();
+        if (!(director instanceof FSMDirector)) {
+            throw new IllegalActionException(this,
+                    "State refinements are only supported within ModalModel.");
+        }
+        Director executiveDirector = container.getExecutiveDirector();
+        if (executiveDirector != null) {
+            Time environmentTime = executiveDirector.getModelTime();
+            if (refinement instanceof Suspendable) {
+                // Adjust current time to be the environment time minus
+                // the accumulated suspended time of the refinement.
+                Time suspendedTime = ((Suspendable) refinement)
+                        .accumulatedSuspendTime();
+                if (suspendedTime != null) {
+                    director.setModelTime(environmentTime.subtract(suspendedTime));
+                    ((FSMDirector)director)._currentOffset = suspendedTime;
+                    return;
+                }
+            }
+            director.setModelTime(environmentTime);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
 
@@ -2296,6 +2435,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** The last taken transitions, by state from which these transitions emerge. */
     protected List<Transition> _lastTakenTransitions = new LinkedList<Transition>();
 
+    /** State refinements to postfire(), as determined by the fire() method. */
+    protected List<Actor> _stateRefinementsToPostfire = new LinkedList<Actor>();
+
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
 
@@ -2309,6 +2451,161 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /**
+     * For the given controller FSM, set all outputs that are
+     * currently unknown to absent if it
+     * can be determined to be absent given the current state and possibly
+     * partial information about the inputs (some of the inputs may be
+     * unknown). If the current state has any refinements that are not
+     * FSMs, then return false. It is not safe to assert absent outputs
+     * because we have no visibility into what those refinements do with
+     * the outputs.
+     * 
+     * This method first explores any FSM refinements of the current
+     * state. If those refinements are all FSMs and they are all able
+     * to assert that an output is absent, then explore this FSM
+     * to determine whether it also can assert that the output is absent.
+     * If all the refinements and the specified FSM agree that an
+     * output is absent, then this method sets it to absent.
+     * Otherwise, it leaves it unknown.
+     *
+     * @param controller The controller FSM.
+     * @return True if after this method is called, any output port is absent.
+     * @exception IllegalActionException If something goes wrong.
+     */
+    private boolean _assertAbsentOutputs(FSMActor controller) throws IllegalActionException {
+        // First check the refinements.
+        TypedActor[] refinements = controller._currentState.getRefinement();
+        if (refinements != null) {
+            for (Actor refinementActor : refinements) {
+                Director refinementDirector = refinementActor.getDirector();
+
+                // The second check below guards against a refinement with no director.
+                if (refinementDirector instanceof FSMDirector && refinementDirector != getDirector()) {
+                    // The refinement is an FSM, so we perform must/may analysis
+                    // to identify outputs that can be determined to be absent.
+                    FSMActor refinementController = ((FSMDirector) refinementDirector)
+                            .getController();
+                    if (!_assertAbsentOutputs(refinementController)) {
+                        // The refinement has no absent outputs (they are all either
+                        // unknown or present), therefore we cannot assert any outputs
+                        // to be absent at this level either.
+                        return false;
+                    }
+                } else {
+                    // Refinement is not an FSM. We can't say anything about
+                    // outputs.
+                    return false;
+                }
+            }
+        }
+        // At this point, either there are no refinements, or all refinements
+        // are FSMs, those refinements have asserted at least one output
+        // to be absent.
+
+        Director director = getDirector();
+        boolean foundAbsentOutputs = false;
+        if (director instanceof FSMDirector) {
+            // Inside a modal model.
+            // We now iterate over all output ports of the container
+            // of this director, and for each such output port p,
+            // on each channel c,
+            // if all the refinements and the controller FSM agree that
+            // p on c is absent, then we assert it to be absent.
+            Actor container = (Actor) getContainer();
+            List<IOPort> outputs = container.outputPortList();
+            if (outputs.size() == 0) {
+                // There are no outputs, so in effect, all outputs
+                // are absent !!
+                return true;
+            }
+            for (IOPort port : outputs) {
+                IOPort[] refinementPorts = null;
+                if (refinements != null) {
+                    refinementPorts = new IOPort[refinements.length];
+                    int i = 0;
+                    for (TypedActor refinement : refinements) {
+                        refinementPorts[i++] = (IOPort) ((Entity) refinement)
+                                .getPort(port.getName());
+                    }
+                }
+                for (int channel = 0; channel < port.getWidthInside(); channel++) {
+                    // If the channel is known, we don't need to do any
+                    // further checks.
+                    if (!port.isKnownInside(channel)) {
+                        // First check whether all refinements agree that the channel is
+                        // absent.
+                        boolean channelIsAbsent = true;
+                        if (refinementPorts != null) {
+                            for (int i = 0; i < refinementPorts.length; i++) {
+                                // Note that _transferOutputs(refinementPorts[i]
+                                // has not been called, or the inside of port would
+                                // be known and we would not be here. Hence, we
+                                // have to check the inside of this refinement port.
+                                if (refinementPorts[i] != null
+                                        && channel < refinementPorts[i]
+                                                .getWidthInside()
+                                        && (!refinementPorts[i]
+                                                .isKnownInside(channel) || refinementPorts[i]
+                                                .hasTokenInside(channel))) {
+                                    // A refinement has either unknown or non-absent
+                                    // output. Give up on this channel. It cannot be
+                                    // asserted absent.
+                                    channelIsAbsent = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!channelIsAbsent) {
+                            // A refinement has either unknown or non-absent
+                            // output. Give up on this channel. It cannot be
+                            // asserted absent.
+                            break;
+                        }
+                        // If we get here, all refinements (if any) agree that
+                        // the current channel of the current port is absent. See
+                        // whether this controller FSM also agrees.
+                        IOPort controllerPort = (IOPort) controller.getPort(port
+                                .getName());
+                        // NOTE: If controllerPort is null, then presumably we should
+                        // be able to set the output port to absent, but how to do that?
+                        // We can't do it by sending null from controllerPort, because
+                        // there is no controllerPort!
+                        if (controllerPort != null) {
+                            channelIsAbsent = controller._isSafeToClear(
+                                    controllerPort, channel, controller._currentState, false, null);
+                            if (channelIsAbsent) {
+                                foundAbsentOutputs = true;
+                                controllerPort.send(channel, null);
+                                _debug("Asserting absence and clearing port: "
+                                        + port.getName());
+                            }
+                        }
+                    } else {
+                        if (!port.hasTokenInside(channel)) {
+                            foundAbsentOutputs = true;
+                        }
+                    }
+                }
+            }
+        } else {
+            // Not inside a modal model.
+            List<IOPort> outputs = outputPortList();
+            for (IOPort port : outputs) {
+                for (int channel = 0; channel < port.getWidth(); channel++) {
+                    if (_isSafeToClear(port, channel, _currentState, false, null)) {
+                        // Send absent.
+                        port.send(channel, null);
+                        foundAbsentOutputs = true;
+                    }
+                }
+            }
+        }
+
+        // Return true if any output channel is absent.
+        return foundAbsentOutputs;
+    }
 
     /*  Build for each state a map from input ports to boolean flags
      *  indicating whether a channel is connected to an output port
@@ -2406,6 +2703,27 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
+    /** Return the environment time.
+     *  If this actor is the controller for a modal model,
+     *  then return the model time of the modal model's executive director,
+     *  if there is one. Otherwise, return the model of the director
+     *  for this actor.
+     *  @return The current environment time.
+     */
+    private Time _getEnvironmentTime() {
+        Director director = getDirector();
+        if (director instanceof FSMDirector) {
+            // In a modal model.
+            Actor container = (Actor) director.getContainer();
+            Director executiveDirector = container.getExecutiveDirector();
+            if (executiveDirector != null) {
+                Time environmentTime = executiveDirector.getModelTime();
+                return environmentTime;
+            }
+        }
+        return director.getModelTime();
+    }
+
     /*  Initialize the actor.
      *  @exception IllegalActionException If any port throws it.
      */
@@ -2460,7 +2778,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // port is absent.  Check that it matches a port name.
             String name = ex.nodeName();
             if (_getPortForIdentifier(name) != null) {
-                // FIXME: We would like to make sure at this point that the
+                // NOTE: We would like to make sure at this point that the
                 // expression is well formed, but the issue simply that
                 // port has absent, and hence the port name is undefined.
                 // This is pretty tricky. How can we check that the
@@ -2469,43 +2787,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
             throw ex;
         }
-            /* NOTE: Used to catch many more exceptions, but this
-             * masked too many errors. -- eal 10/8/2011.
-        } catch (RuntimeException ex) {
-            // If an exception occurs, it could be because there are unknown
-            // inputs. But it could also be because of an expression like
-            // (in == value), where in is an input port whose status is
-            // known to be absent. In that case, we want to interpret
-            // the guard as false.
-            //
-            if (_foundUnknown) {
-                return false;
-            }
-            // All referenced inputs are known.
-            // Check whether some are absent.
-            
-            // FIXME: This masks other errors!!! In particular,
-            // if the expression cannot be evaluated (e.g., I write
-            // in.foo() and there is no function foo()), but in is
-            // unkwown, then the expression will simply evaluate to false!
-            // It seems we need the expression evaluator to support the
-            // notion of absent.
-
-            if (_referencedInputPortValuesByGuardPresent(transition)) {
-                // All referenced input values are to ports with present status.
-                throw ex;
-            }
-            return false;
-        } catch (IllegalActionException ex) {
-            // See comments above.
-            if (_foundUnknown) {
-                return false;
-            }
-            if (_referencedInputPortValuesByGuardPresent(transition)) {
-                throw ex;
-            }
-            return false;
-            */
     }
 
     /** Remove all variable definitions associated with the specified
@@ -2560,11 +2841,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If the guard expression cannot
      *   be parsed.
      */
+    /*
+     * NOTE: This method is no longer used, but might prove
+     * useful in the future.
     private boolean _referencedInputPortValuesByGuardPresent(
             Transition transition) throws IllegalActionException {
 
-        // NOTE: This method is no longer used, but might prove
-        // useful in the future.
         
         // If the port identifier does
         // not end with "_isPresent", then return false if port
@@ -2618,6 +2900,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         return true;
     }
+    */
 
     /** Given a transition, find any input ports
      *  referenced in the guard expressions of the

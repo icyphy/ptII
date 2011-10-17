@@ -143,7 +143,7 @@ public class HybridModalDirector extends FSMDirector implements
                                     stateRefinements[i].getName());
                         }
                         stateRefinements[i].fire();
-                        _stateRefinementsToPostfire.add(stateRefinements[i]);
+                        _getStateRefinementsToPostfire().add(stateRefinements[i]);
                     }
                 }
             }
@@ -189,7 +189,12 @@ public class HybridModalDirector extends FSMDirector implements
         _distanceToBoundary = 0.0;
 
         // Double iterator over two lists.
-        Iterator actors = new ActorsFiredIterator();
+        Iterator actors = null;
+        try {
+            actors = new ActorsFiredIterator();
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStepSizeController) {
@@ -555,7 +560,12 @@ public class HybridModalDirector extends FSMDirector implements
      *  This will roll back any actors that were fired in the current iteration.
      */
     public void rollBackToCommittedState() {
-        Iterator actors = new ActorsFiredIterator();
+        Iterator actors = null;
+        try {
+            actors = new ActorsFiredIterator();
+        } catch (IllegalActionException e1) {
+            throw new InternalErrorException(e1);
+        }
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStatefulComponent) {
@@ -693,15 +703,19 @@ public class HybridModalDirector extends FSMDirector implements
      *  _transitionRefinementsToPostfire.
      */
     private class ActorsFiredIterator implements Iterator {
-        public ActorsFiredIterator() {
-            _iterator = _stateRefinementsToPostfire.iterator();
+        public ActorsFiredIterator() throws IllegalActionException {
+            _iterator = _getStateRefinementsToPostfire().iterator();
         }
 
         public boolean hasNext() {
             if (_iterator.hasNext()) {
                 return true;
             }
-            _iterator = _transitionRefinementsToPostfire.iterator();
+            try {
+                _iterator = _getTransitionRefinementsToPostfire().iterator();
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
             return _iterator.hasNext();
         }
 
