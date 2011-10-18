@@ -368,6 +368,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 if (!castPort.isOutsideConnected()) {
                     continue;
                 }
+
+                // True if the port has a relation whose name starts with "autoConnector".
+                boolean hasAutoConnectorRelation = _hasAutoConnectorRelation(castPort);
+
                 String name = TemplateParser.escapePortName(castPort.getName());
                 if (!castPort.isMultiport()) {
                     // Only instantiate ports that are outside connected and avoid
@@ -386,27 +390,31 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 getComponent(), castPort.getName());
                         actorPort = (TypedIOPort) foundPortField
                                 .get(getComponent());
-                        code.append("    (("
-                                + getComponent().getClass().getName()
-                                + ")$actorSymbol(actor))."
-                                + foundPortField.getName() + ".setTypeEquals("
-                                + _typeToBaseType(actorPort.getType()) + ");"
-                                + _eol);
+                        if (!hasAutoConnectorRelation) {
+                            code.append("    (("
+                                    + getComponent().getClass().getName()
+                                    + ")$actorSymbol(actor))."
+                                    + foundPortField.getName() + ".setTypeEquals("
+                                    + _typeToBaseType(actorPort.getType()) + ");"
+                                    + _eol);
+                        }
 
                     } catch (Throwable throwable) {
-                        //throw new IllegalActionException(castPort, throwable,
-                        //        "Could not find port " + castPort.getName());
+                        //new IllegalActionException(castPort, throwable,
+                        //        "Could not find port " + castPort.getName() + " " + throwable).printStackTrace();
                         actorPort = (TypedIOPort) ((Entity) getComponent())
                                 .getPort(castPort.getName());
-                        code.append("new TypedIOPort($containerSymbol(), \""
-                                //+ actorPort.getName().replace("\\", "\\\\") + "\", "
-                                + AutoAdapter._externalPortName(
-                                        actorPort.getContainer(),
-                                        actorPort.getName()).replace("$", "\\u0024")
-                                + "\", "
-                                + actorPort.isInput() + ", "
-                                + actorPort.isOutput()
-                                + ").setMultiport(true);" + _eol);
+                        if (!hasAutoConnectorRelation) {
+                            code.append("new TypedIOPort($containerSymbol(), \""
+                                    //+ actorPort.getName().replace("\\", "\\\\") + "\", "
+                                    + AutoAdapter._externalPortName(
+                                            actorPort.getContainer(),
+                                            actorPort.getName()).replace("$", "\\u0024")
+                                    + "\", "
+                                    + actorPort.isInput() + ", "
+                                    + actorPort.isOutput()
+                                    + ").setMultiport(true);" + _eol);
+                        }
                     }
 
                     int sources = actorPort.numberOfSources();
@@ -1499,6 +1507,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         String remoteActorSymbol = "";
         boolean moreThanOneRelation = false;
         String relationSymbol = "";
+        boolean hasAutoConnectorRelation = _hasAutoConnectorRelation(port);
         if (_isAutoAdaptered(remoteActor)) {
             // The remote actor is a custom actor (aka AutoAdaptered)
             remoteIsAutoAdaptered = true;
@@ -1511,6 +1520,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + port.linkedRelationList().size() + " "
                         + relation.linkedPortList(port).size());
             }
+            
+            // Warn if relations that have more than one port. 
             if (/*port.linkedRelationList().size() > 1
                   ||*/ relation.linkedPortList(port).size() > 1) {
                 StringBuffer message = new StringBuffer(
@@ -1543,12 +1554,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 }
             }
 
-            // If the remote actor has not yet been created, then create it.
             remoteActorSymbol = getCodeGenerator().generateVariableName(
                     remoteActor) + "_actor";
-
             String remoteActorContainerSymbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer()));
 
+            // Create the remote actor if necessary.
             if (!moreThanOneRelation) {
                 if (verbosityLevel > 1) {
                     code.append("System.out.println(\"Create remote actor: " + remoteActor.getName() + "\");" + _eol);
@@ -1575,8 +1585,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
         }
 
-        boolean connectedAlready = false;
-        if (!remoteIsAutoAdaptered) {
+        // Instantiate the port and set its type.
+        if (!remoteIsAutoAdaptered /*&& !hasAutoConnectorRelation*/) {
+            // Ports that have a relation whose name starts with "autoConnector" will be created specially?
+            // FIXME: maybe this should only be input or output ports that are autoConnector ports?
+            if (verbosityLevel > 3) {
+                code.append("System.out.println(\"I1\");" + _eol); 
+            }
             code.append("$actorSymbol("
                     + escapedCodegenPortName
                     + ") = new TypedIOPort($containerSymbol()"
@@ -1595,7 +1610,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + ").setTypeEquals(" + _typeToBaseType(port.getType())
                     + ");" + _eol);
         }
+
+        boolean connectedAlready = false;
         String portOrParameter = "";
+
+        // Try to get the field by port name.  Unfortunately, some field names
+        // do not match their port names.
         try {
             Field foundPortField = _findFieldByPortName(getComponent(),
                     unescapedActorPortName);
@@ -1633,7 +1653,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             Iterator portAttributes = port.attributeList().iterator();
             while (portAttributes.hasNext()) {
                 Attribute attribute = (Attribute)portAttributes.next();
-                System.out.println("AutoAdapter: port: " + port.getFullName() + " " + attribute);
                 if (attribute instanceof Parameter) {
                 	Parameter parameter = (Parameter)attribute;
                 	String className = parameter.getClassName();
@@ -1760,6 +1779,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // the need for checking for the connection at
                         // runtime.
 
+                        // At runtime, check to see that the remote port is not null.
+                        // Some actors do magic in preinitialize() and before that time,
+                        // the port is null.
+                        // FIXME: could this conditional be moved up further so as to avoid
+                        // unnecessary work?
+                        code.append("{" + _eol
+                                + "if (((" + remoteActor.getClass().getName()
+                                + ")" + remoteActorSymbol + ")."
+                                + remoteFoundPortField.getName() + " != null) {" + _eol);
                         if (verbosityLevel > 3) {
                             code.append("    System.out.println(\"C1 port: " +  port.getFullName() + " remotePort: " + remotePort.getName() + " found: " + remoteFoundPortField.getName() + " " + port.isMultiport() + "\");" + _eol);
                         }
@@ -1770,7 +1798,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 + remoteFoundPortField.getName()
                                 // FIXME: should portParameter be the remote port?
                                 + (portParameter != null ? ".getPort()" : "")
-                                + ");" + _eol + relationSetWidth);
+                                + ");" + _eol + relationSetWidth
+                                + _eol + "}" + _eol + "}" + _eol);
 //                         code.append("((" + remoteActor.getClass().getName()
 //                                       + ")" + remoteActorSymbol + ")."
 //                                 + remoteFoundPortField.getName()
@@ -1780,6 +1809,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     }
                 }
             } catch (NoSuchFieldException ex) {
+                if (!hasAutoConnectorRelation) {
                 // The port is not a field, it might be a PortParameter
                 // that whose name is not the same as the declared name.
                 // We check before we create it.  To test, use:
@@ -1830,6 +1860,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
                     code.append("    (" + portOrParameter + ").setTypeEquals("
                             + _typeToBaseType(port.getType()) + ");" + _eol);
+                }
                 }
             }
         } else {
@@ -2020,6 +2051,24 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return "{ " + _eol + setParameter + "    ((" + actorClassName
                 + ")$actorSymbol(actor)).attributeChanged(" + parameterName
                 + ");" + _eol + "}" + _eol;
+    }
+
+    /** Return true if the port has a linked relation whose name starts
+     *  with "autoConnector".
+     *  @param port The port to be checked.
+     *  @return true if the port has a relation that starts with the string
+     *  "autoConnector".
+     */
+    private boolean _hasAutoConnectorRelation(TypedIOPort port) {
+        Iterator relations = port.linkedRelationList().iterator();
+        while (relations.hasNext()) {
+            Relation relation = (Relation)relations.next();
+            if (relation.getName().startsWith("autoConnector")) {
+                System.out.println("Partially skipping " + port + " because it has a relation that starts with 'autoConnector'");
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Return true if the argument would be generated using
