@@ -46,7 +46,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 EXAMPLE_MODELS = \
-	Brewery.xml
+	Brewery.xml \
+	BreweryWireless.xml
 
 OTHER_FILES_TO_BE_JARED = \
 	AbstractTank.xml \
