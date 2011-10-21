@@ -13,21 +13,21 @@
         </property>
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-3">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-400.0, 275.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={150, 33, 961, 646}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 22, 1280, 741}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[748, 536]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1067, 631]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.4904867777994">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7739447172078">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{322.9140624999997, 578.6615975935829}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{233.3257207371733, 649.10693359375}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This design demonstrates  DC motors driving a feed roller and a drive roller. The PID-based motor controllers minimize&#10;the error between the paper velocity produced by the roller and the target profile&#10;velocity produced by the Target Profile actor. The tracking error input allows one such roller to&#10;track the other to remove small differences in paper velocity.&#10;&#10;The target profile is either a profile from 0 to maxPaperVelocity starting at time 0 and &#10;reaching the maximum value at time Interval seconds. The profile and its derivative are continuous.&#10;&#10;SENSOR, ACTUATOR and NETWORK ACTORS STILL NEED TO BE ADDED ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This design demonstrates  DC motors driving a feed roller and a drive roller. The PID-based motor controllers minimize&#10;the error between the paper velocity produced by the roller and the target profile&#10;velocity produced by the Target Profile actor. The tracking error input allows one such roller to&#10;track the other to remove small differences in paper velocity.&#10;&#10;The target profile is either a profile from 0 to maxPaperVelocity starting at time 0 and &#10;reaching the maximum value at time Interval seconds. The profile and its derivative are continuous. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-495.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 940.0]">
         </property>
     </property>
     <property name="maxPaperVelocity" class="ptolemy.data.expr.Parameter" value="35.0">
@@ -46,7 +46,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 370.0]">
         </property>
     </property>
     <property name="startupInterval" class="ptolemy.data.expr.Parameter" value="120.0">
@@ -65,7 +65,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 385.0]">
         </property>
     </property>
     <property name="systemSamplingInterval" class="ptolemy.data.expr.Parameter" value="0.40">
@@ -84,7 +84,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 400.0]">
         </property>
     </property>
     <property name="systemStart" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -103,7 +103,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 415.0]">
         </property>
     </property>
     <property name="coreRadius" class="ptolemy.data.expr.Parameter" value="0.07">
@@ -122,7 +122,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 315.0]">
         </property>
     </property>
     <property name="paperThickness" class="ptolemy.data.expr.Parameter" value="0.000075">
@@ -141,7 +141,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 355.0]">
         </property>
     </property>
     <property name="fullRollRadius" class="ptolemy.data.expr.Parameter" value="0.7">
@@ -160,11 +160,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-450.0, 335.0]">
         </property>
     </property>
     <entity name="feedRoller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 520.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 275.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={131, 49, 967, 599}, maximized=false}">
         </property>
@@ -413,6 +413,8 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, -140.0]">
             </property>
+        </property>
+        <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <port name="paperVelocity" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1208,19 +1210,8 @@
         <link port="MultiplyDivide.multiply" relation="relation4"/>
         <link port="MultiplyDivide.output" relation="relation10"/>
     </entity>
-    <entity name="Scale" class="ptolemy.actor.lib.Scale">
-        <display name="Error Multiplier"/>
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[226.7437744140625, 654.7633972167969]">
-        </property>
-    </entity>
     <entity name="driveRoller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-225.0, 545.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-210.0, 275.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -1721,7 +1712,7 @@
     </entity>
     <entity name="DriveController" class="ptolemy.actor.TypedCompositeActor">
         <display name="Drive Controller"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-305.0, 610.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 700.0]">
         </property>
         <property name="Kp" class="ptolemy.data.expr.Parameter" value="16.0">
         </property>
@@ -1752,6 +1743,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
         </port>
         <port name="paperVelocityProfile" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1759,6 +1752,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-185.0, 395.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
         </port>
         <port name="motorDriveVoltage" class="ptolemy.actor.TypedIOPort">
@@ -1768,6 +1763,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
         </port>
         <port name="servoError" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -1775,6 +1772,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 355.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
         <entity name="DriveControllerMicro" class="ptolemy.actor.TypedCompositeActor">
@@ -2096,7 +2095,9 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, 675.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-340.0, 705.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="driveToFeedError" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -2104,7 +2105,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 267]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-220.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 560.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -2124,7 +2125,7 @@
     </entity>
     <entity name="DtoFTrackingController" class="ptolemy.actor.TypedCompositeActor">
         <display name="DtoFTracking Controller"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 545.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 15, 815, 518}, maximized=false}">
         </property>
@@ -2155,6 +2156,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2180,6 +2183,8 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
         </port>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -2500,7 +2505,7 @@
         <link port="CompositeActor2.port2" relation="relation5"/>
     </entity>
     <entity name="reserveFeedRoller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 275.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 16, 969, 607}, maximized=false}">
         </property>
@@ -2773,6 +2778,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
         </port>
         <port name="angularAcceleration" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -2796,6 +2803,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 235.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
         </port>
         <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
@@ -3625,7 +3634,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 207]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 535.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 315.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -3647,7 +3656,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 650.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 730.0]">
         </property>
     </entity>
     <entity name="driveToReserveError" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -3655,7 +3664,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 267]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 645.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -3675,9 +3684,9 @@
     </entity>
     <entity name="DtoRTrackingController" class="ptolemy.actor.TypedCompositeActor">
         <display name="DtoRTracking Controller"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 590.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 211, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 211, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -3706,6 +3715,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -3722,6 +3733,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
         </port>
         <port name="port5" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -3732,6 +3745,8 @@
             </property>
             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -3739,6 +3754,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 355.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -4185,7 +4202,7 @@
     </entity>
     <entity name="ReserveTargetProfile" class="ptolemy.actor.TypedCompositeActor">
         <display name="Reserve Target Profile"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 715.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 845.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 31, 921, 600}, maximized=false}">
         </property>
@@ -4208,6 +4225,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
         </port>
         <port name="startProfile" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -4215,6 +4234,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-750.0, 35.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
         <entity name="ReserveTargetProfileMicro" class="ptolemy.actor.TypedCompositeActor">
@@ -4890,7 +4911,7 @@
     </entity>
     <entity name="DriveTargetProfile" class="ptolemy.actor.TypedCompositeActor">
         <display name="Drive Target Profile"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 800.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-160.0, 850.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 22, 919, 592}, maximized=false}">
         </property>
@@ -5559,15 +5580,15 @@
     </entity>
     <entity name="FeedTargetProfile" class="ptolemy.actor.TypedCompositeActor">
         <display name="Feed Target Profile"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 780.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 840.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 105, 921, 600}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 105, 919, 592}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 482]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4208805031447">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9093635220126">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-430.5625, 179.4881373937677}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-430.5625000000001, 179.4881373937677}">
         </property>
         <property name="Interval" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
@@ -5589,6 +5610,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-660.0, 35.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -5615,7 +5638,7 @@
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <display name="startProfileEVENT"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-655.0, 45.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-560.0, 45.0]">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -5623,7 +5646,7 @@
             <port name="port3" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <display name="targetProfileNET"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[810.0, 405.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 470.0]">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -5873,7 +5896,7 @@
                 </port>
             </entity>
             <entity name="Merge3" class="ptolemy.domains.de.lib.Merge">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{630.0, 405.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 470.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -6073,7 +6096,7 @@
                 </port>
             </entity>
             <entity name="NetworkTransmitter" class="ptolemy.domains.ptides.lib.NetworkTransmitter">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{710.0, 405.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 470.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -6341,13 +6364,13 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 840.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 895.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="remainingPaperDetector" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 475.0}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 163, 815, 518}, maximized=false}">
         </property>
@@ -6382,6 +6405,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
         </port>
         <port name="port5" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -6391,6 +6416,8 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -6907,7 +6934,7 @@
     </entity>
     <entity name="ContactController" class="ptolemy.actor.TypedCompositeActor">
         <display name="Contact Controller"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 380.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={205, 207, 815, 518}, maximized=false}">
         </property>
@@ -6942,6 +6969,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -6966,6 +6995,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
         </port>
         <port name="port6" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -6973,6 +7004,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 295.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
         </port>
         <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -7474,7 +7507,7 @@
         <link port="CompositeActor7.port2" relation="relation12"/>
     </entity>
     <entity name="FeedController" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 620.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 690.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor models the controller circuit board and the controller microprocessor.&#10;The board models the ADC and the network NIC and PHY.">
@@ -7509,6 +7542,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
         </port>
         <port name="paperVelocityProfile" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -7517,6 +7552,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
         </port>
         <port name="motorDriveVoltage" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -7524,6 +7561,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 195.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
         <port name="servoError" class="ptolemy.actor.TypedIOPort">
@@ -7541,6 +7580,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -7548,6 +7589,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 450.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
         <entity name="FeedControllerMicro" class="ptolemy.actor.TypedCompositeActor">
@@ -8100,7 +8143,7 @@
         <link port="CompositeActor5.port2" relation="relation9"/>
     </entity>
     <entity name="ReserveController" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[544.8210144042969, 638.197021484375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 690.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor models the controller circuit board and the controller microprocessor.&#10;The board models the ADC and the network NIC and PHY.">
@@ -8137,6 +8180,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
         </port>
         <port name="paperVelocityProfile" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -8145,6 +8190,8 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
         </port>
         <port name="motorDriveVoltage" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -8152,6 +8199,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 195.0]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
         <port name="servoError" class="ptolemy.actor.TypedIOPort">
@@ -8168,6 +8217,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-84.66796875, 355.01953125]">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
             </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
@@ -8729,7 +8780,7 @@
     </entity>
     <entity name="feedPaperVelocityPlot" class="ptolemy.actor.TypedCompositeActor">
         <display name="feedPaperVelocity, error"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 695.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 780.0]">
         </property>
         <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 675.0]">
@@ -8776,7 +8827,7 @@
     </entity>
     <entity name="feedPaperRadius" class="ptolemy.actor.TypedCompositeActor">
         <display name="feedPaperRadius, markers"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[930.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 925.0}">
         </property>
         <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 70.0]">
@@ -8916,7 +8967,7 @@
         <link port="NetworkReceiver3.output" relation="relation3"/>
     </entity>
     <entity name="reserveFeedMonitor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 610.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 775.0]">
         </property>
         <property name="SamplingPeriod" class="ptolemy.data.expr.Parameter" value="systemSamplingInterval">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -9157,7 +9208,7 @@
     </entity>
     <entity name="DriveMonitor" class="ptolemy.actor.TypedCompositeActor">
         <display name="Drive Monitor"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 715.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-160.0, 910.0]">
         </property>
         <property name="Ptides Basic Director" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 80.0}">
@@ -9174,6 +9225,8 @@
         <port name="port6" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 280.0}">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
         <entity name="NetworkReceiver" class="ptolemy.domains.ptides.lib.NetworkReceiver">
@@ -9199,7 +9252,9 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 207]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 695.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-430.0, 645.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -9219,7 +9274,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[559, 289]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 670.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 650.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -9244,7 +9299,32 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 207]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1045.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 930.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0}">
+            </property>
+        </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Paper Radius on Feed Roller, start (0.15), contact (0.2), cut (0.3)</title>
+<xLabel>Time in seconds</xLabel>
+<yLabel>Paper Radius  (meters)</yLabel>
+<xRange min="470.0" max="650.1"/>
+<yRange min="0.15" max="0.3"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="feedPaperRadius3" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 42, 514, 251}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[514, 207]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 295.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -9267,7 +9347,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[40.0, 725.0]">
+        <vertex name="vertex1" value="[-10.0, 740.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -9275,13 +9355,13 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <vertex name="vertex1" value="[301.7437744140625, 464.7633972167969]">
+        <vertex name="vertex1" value="[110.0, 545.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-121.7437744140625, 475.2366027832031]">
+        <vertex name="vertex1" value="[-165.0, 370.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -9289,7 +9369,7 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-360.0, 725.0]">
+        <vertex name="vertex1" value="[-230.0, 775.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -9301,7 +9381,7 @@
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[485.0, 680.0]">
+        <vertex name="vertex1" value="[445.0, 785.0]">
         </vertex>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
@@ -9309,7 +9389,7 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <vertex name="vertex1" value="[750.0, 445.0]">
+        <vertex name="vertex1" value="[620.0, 625.0]">
         </vertex>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
@@ -9319,31 +9399,25 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <vertex name="vertex1" value="[175.0, 800.0]">
-        </vertex>
-    </relation>
-    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{710.0, 375.0}">
+        <vertex name="vertex1" value="[-65.0, 850.0]">
         </vertex>
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[245.0, 545.0]">
+        <vertex name="vertex1" value="[182.625, 294.53125]">
         </vertex>
     </relation>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[710.0, 285.0]">
+        <vertex name="vertex1" value="[240.0, 600.0]">
         </vertex>
     </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[745.0, 305.0]">
+        <vertex name="vertex1" value="[325.0, 475.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -9353,20 +9427,14 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
         </property>
-        <vertex name="vertex1" value="[885.0, 745.0]">
+        <vertex name="vertex1" value="[280.0, 700.0]">
         </vertex>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -9376,8 +9444,6 @@
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
@@ -9386,11 +9452,19 @@
     </relation>
     <relation name="relation33" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation34" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[390.0, 440.0]">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-85.0, 590.0]">
+        </vertex>
+    </relation>
     <link port="feedRoller.paperVelocity" relation="relation"/>
-    <link port="feedRoller.voltage" relation="relation3"/>
+    <link port="feedRoller.voltage" relation="relation16"/>
     <link port="feedRoller.paperRadius" relation="relation25"/>
-    <link port="Scale.input" relation="relation13"/>
-    <link port="Scale.output" relation="relation17"/>
     <link port="driveRoller.paperVelocity" relation="relation7"/>
     <link port="driveRoller.voltage" relation="relation8"/>
     <link port="DriveController.measuredPaperVelocity" relation="relation7"/>
@@ -9405,7 +9479,7 @@
     <link port="DtoFTrackingController.port4" relation="relation12"/>
     <link port="DtoFTrackingController.port5" relation="relation22"/>
     <link port="reserveFeedRoller.paperVelocity" relation="relation20"/>
-    <link port="reserveFeedRoller.voltage" relation="relation16"/>
+    <link port="reserveFeedRoller.voltage" relation="relation34"/>
     <link port="reserveFeedRoller.angularVelocity" relation="relation5"/>
     <link port="reserveFeedRoller.paperRadius" relation="relation15"/>
     <link port="reserveFeedRoller.port" relation="relation26"/>
@@ -9417,9 +9491,9 @@
     <link port="DtoRTrackingController.port2" relation="relation20"/>
     <link port="DtoRTrackingController.port4" relation="relation18"/>
     <link port="DtoRTrackingController.port5" relation="relation2"/>
-    <link port="DtoRTrackingController.port3" relation="relation23"/>
+    <link port="DtoRTrackingController.port3" relation="relation29"/>
     <link port="ReserveTargetProfile.port" relation="relation19"/>
-    <link port="ReserveTargetProfile.startProfile" relation="relation23"/>
+    <link port="ReserveTargetProfile.startProfile" relation="relation29"/>
     <link port="DriveTargetProfile.port" relation="relation9"/>
     <link port="DriveTargetProfile.startDriveProfile" relation="relation24"/>
     <link port="FeedTargetProfile.port" relation="relation4"/>
@@ -9436,13 +9510,13 @@
     <link port="ContactController.port6" relation="relation31"/>
     <link port="FeedController.measuredPaperVelocity" relation="relation"/>
     <link port="FeedController.paperVelocityProfile" relation="relation4"/>
-    <link port="FeedController.motorDriveVoltage" relation="relation3"/>
+    <link port="FeedController.motorDriveVoltage" relation="relation16"/>
     <link port="FeedController.servoError" relation="relation13"/>
     <link port="FeedController.port" relation="relation22"/>
     <link port="FeedController.port2" relation="relation31"/>
     <link port="ReserveController.measuredPaperVelocity" relation="relation20"/>
     <link port="ReserveController.paperVelocityProfile" relation="relation19"/>
-    <link port="ReserveController.motorDriveVoltage" relation="relation16"/>
+    <link port="ReserveController.motorDriveVoltage" relation="relation34"/>
     <link port="ReserveController.servoError" relation="relation21"/>
     <link port="ReserveController.port" relation="relation2"/>
     <link port="ReserveController.port2" relation="relation31"/>
@@ -9463,11 +9537,10 @@
     <link port="reserveFeedPaperRadius2.input" relation="relation7"/>
     <link port="reserveFeedPaperRadius2.input" relation="relation11"/>
     <link port="feedPaperVelocity.input" relation="relation"/>
-    <link port="feedPaperVelocity.input" relation="relation17"/>
     <link port="feedPaperVelocity.input" relation="relation14"/>
-    <link port="feedPaperRadius2.input" relation="relation25"/>
+    <link port="feedPaperVelocity.input" relation="relation13"/>
     <link port="feedPaperRadius2.input" relation="relation27"/>
     <link port="feedPaperRadius2.input" relation="relation32"/>
     <link port="feedPaperRadius2.input" relation="relation33"/>
-    <link relation1="relation23" relation2="relation29"/>
+    <link port="feedPaperRadius3.input" relation="relation25"/>
 </entity>
