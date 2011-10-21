@@ -73,6 +73,8 @@ import ptolemy.util.StringUtilities;
  back from the inherently platform-sensitive concept of a default
  browser and simply attempts to launch Firefox via a shell command.
 
+ </blockquote>
+
  <p> This code is Copyright 1999-2001 by Eric Albert (ejalbert@cs.stanford.edu)
  and may be redistributed or modified in any form without restrictions as
  long as the portion of this comment from this paragraph through the end
@@ -91,9 +93,15 @@ import ptolemy.util.StringUtilities;
  <br>Thanks also to Ron B. Yeh, Eric Shapiro, Ben Engber, Paul
  Teitlebaum, Andrea Cantatore, Larry Barowski, Trevor Bedzek, Frank
  Miedrich, and Ron Rabakukk
+ </p>
+ </blockquote>
 
- <p> This code is from
- <a href="http://browserlauncher.sourceforge.net/">http://browserlauncher.sourceforge.net/</a>
+ <p> On November 3, 2003, BrowserLauncher was downloaded from 
+ <a href="http://browserlauncher.sourceforge.net/">http://browserlauncher.sourceforge.net/</a>.
+That URL no longer exists, there is a replacement package which is LGPL'd.
+See <a href="http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/">http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/</code> for the original web page.
+
+
 
  @author Eric Albert (<a href="mailto:ejalbert@cs.stanford.edu">ejalbert@cs.stanford.edu</a>)
  @version $Id$, based on 1.4b1 (Released June 20, 2001)

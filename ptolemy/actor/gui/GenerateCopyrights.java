@@ -101,6 +101,9 @@ public class GenerateCopyrights {
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
+        _addIfPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
+                "ptolemy/actor/gui/BrowserLauncher-license.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.run.PtolemyFormEditor",
                 "com/jgoodies/jgoodies-copyright.htm");
 

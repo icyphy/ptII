@@ -166,6 +166,7 @@ JSRCS = \
 
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED = \
+	BrowserLauncher-license.htm \
 	PtolemyIISmallIcon.gif
 
 # Note that PtolemyIISmallIcon.gif is also in doc/img.
