@@ -101,7 +101,12 @@ test TestExceptionHandler-1.3 {Run again, but with a different Exception} {
 	$errMsg \
 	[[getParameter $testExceptionHandler trainingMode] getExpression] \
 	[[getParameter $testExceptionHandler correctExceptionMessage] getExpression]
-} {{ptolemy.kernel.util.IllegalActionException:   in .top.testExceptionHandler
+} {{ptolemy.kernel.util.IllegalActionException: Expected:
+This is not the exception
+But got:
+Found a zero delay loop containing .top.const
+  in .top and .top.const
+  in .top.testExceptionHandler
 Because:
 Found a zero delay loop containing .top.const
   in .top and .top.const} false {This is not the exception}}
