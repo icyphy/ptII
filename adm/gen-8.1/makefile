@@ -1421,6 +1421,11 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/html \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/c/type \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/c \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/lib \
@@ -1481,6 +1486,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/lbnl/actor/lib \
 	$(REMOTE1PTIIDIST)/doc/books/design/modal \
 	$(REMOTE1PTIIDIST)/doc/books/design/time \
+	$(REMOTE1PTIIDIST)/doc/books/embedded/concurrent \
 	$(REMOTE1PTIIDIST)/doc/books/system/continuous \
 	$(REMOTE1PTIIDIST)/doc/books/system/dataflow \
 	$(REMOTE1PTIIDIST)/doc/books/system/discreteevents \
