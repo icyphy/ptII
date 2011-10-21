@@ -382,13 +382,30 @@ Token matrixToArray(Token thisToken) {
     Token result;
     Token element;
 
-    result = $new(Array(thisToken.payload.Matrix->column*thisToken.payload.Matrix->row, 0));
+    // Instantiate the result.
+    switch (Matrix_get(thisToken, 0, 0).type) {
+      // This seems really wrong, dealing with DoubleArray and IntArray adds complexity
+#ifdef TYPE_DoubleArray
+    case TYPE_Double:
+      result = DoubleArray_new(thisToken.payload.Matrix->column*thisToken.payload.Matrix->row, 0);
+      break;
+#endif
+#ifdef TYPE_IntArray
+    case TYPE_Int:
+      result = IntArray_new(thisToken.payload.Matrix->column*thisToken.payload.Matrix->row, 0);
+      break;
+#endif
+    default:
+      result = Array_new(thisToken.payload.Matrix->column*thisToken.payload.Matrix->row, 0);
+      break;
+    }
+
     for (i = 0, index = 0; i < thisToken.payload.Matrix->column; i++) {
         for (j = 0; j < thisToken.payload.Matrix->row; j++, index++) {
             element = Matrix_get(thisToken, j, i);
             switch (element.type) {
                 // This seems really wrong, dealing with DoubleArray and IntArray adds complexity
-#ifdef TYPE_DoubleArray;
+#ifdef TYPE_DoubleArray
             case TYPE_Double:
                 result.payload.DoubleArray->elements[index] = element.payload.Double;
                 break;
