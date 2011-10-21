@@ -155,7 +155,6 @@
 			<exclude name="ptolemy/domains/wireless/" />
 			<exclude name="ptolemy/**/test/" />
 			<exclude name="com/jgoodies/" />
-			<exclude name="com/JLex/" />
 			<exclude name="ptolemy/apps/" />
 			<exclude name="ptolemy/backtrack/" />
 			<exclude name="ptolemy/calltrop/" />
@@ -346,7 +345,6 @@
 				<exclude name="ptolemy/**/test/" />
 				<exclude name="ptolemy/**/demo/" />
 				<exclude name="com/jgoodies/" />
-				<exclude name="com/JLex/" />
 				<exclude name="ptolemy/apps/" />
 				<exclude name="ptolemy/backtrack/" />
 				<exclude name="ptolemy/calltrop/" />
@@ -468,7 +466,6 @@
 			<exclude name="ptolemy/**/test/" />
 			<exclude name="ptolemy/**/demo/" />
 			<exclude name="com/jgoodies/" />
-			<exclude name="com/JLex/" />
 			<exclude name="ptolemy/apps/" />
 			<exclude name="ptolemy/backtrack/" />
 			<exclude name="ptolemy/calltrop/" />

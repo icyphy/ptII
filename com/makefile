@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = jgoodies microstar JLex
+DIRS = jgoodies microstar
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -51,7 +51,6 @@ install: subinstall
 # want make checkjunk to report an error on them.
 MISC_FILES = \
 	jgoodies \
-	JLex \
 	microstar 
 
 # Get the rest of the rules

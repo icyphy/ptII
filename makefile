@@ -33,7 +33,7 @@ ME =		.
 
 # Order matters here.
 # Go into util first so we get the latest version of the testsuite
-# Go into com before compiling ptolemy so we get JLex
+# Go into com before compiling ptolemy so we get com/microstar, used by MoMLParser.
 # PTLBNL_DIR is set to lbnl by configure in $PTII/mk/ptII.mk
 #   if libexpat was found.
 # PTMESCAL_DIR is set to mescal by configure in $PTII/mk/ptII.mk
