@@ -1,6 +1,6 @@
 $Id$
 This directory contains a tabbed single window mode that
-was developed at Thal=E8s Research & Technology by J. Blanc and
+was developed at Thales Research & Technology by J. Blanc and
 B. Masson.
 
 To use the single window mode:

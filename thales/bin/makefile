@@ -48,7 +48,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Bourne Shell scripts for Unix and Cygwin
 SHELL_FILES = \
-	vergilSingleWindowMode
+	vergilSingleWindowMode \
+	vergilSingleWindowMode.cygwin
 
 # DOS batch files
 BAT_FILES = \

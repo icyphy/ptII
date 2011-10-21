@@ -55,7 +55,8 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	README.txt
+	README.txt \
+	thalesSingleWindow-license.htm
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
