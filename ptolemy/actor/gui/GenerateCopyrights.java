@@ -243,6 +243,10 @@ public class GenerateCopyrights {
                 "ptolemy.domains.ptinyos.util.nc2moml.MoMLLib",
                 "ptolemy/domains/ptinyos/lib/jdom-copyright.htm");
 
+        _addIfPresent(copyrightsMap,
+                "thales.vergil.SingleWindowApplication",
+                "thales/thalesSingleWindow-license.htm");
+
         // Check for the _applicationCopyrights parameter
         try {
             Parameter applicationCopyrights = (Parameter) configuration
