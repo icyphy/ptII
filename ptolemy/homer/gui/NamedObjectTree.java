@@ -106,6 +106,7 @@ public class NamedObjectTree extends JPanel {
                     }
                 } else {
                     for (int i = 0; i < _tree.getRowCount(); i++) {
+                        treeModel.applyFilter("");
                         _tree.collapseRow(i);
                     }
                 }
