@@ -51,8 +51,8 @@ import ptolemy.util.FileUtilities;
  or URL, possibly containing references to variables defined in scope
  using the syntax $ID, ${ID} or $(ID). The value returned by getToken()
  is name of the file with such references resolved.</p>
- <p>
- If this attribute contains a parameter named <i>allowFiles</i> with
+
+ <p>If this attribute contains a parameter named <i>allowFiles</i> with
  value false, then when a file browser is used to select a file,
  that file browser will be set to not show files (only directories
  will be shown).  If this attribute contains a parameter named
@@ -60,26 +60,28 @@ import ptolemy.util.FileUtilities;
  will permit the user to select directories (the default behavior
  is that when a directory is selected, that directory is opened
  and its contained files and directories are listed).</p>
- <p>
- If the model containing this
+
+ <p>If the model containing this
  attribute has been saved to a MoML file, then the file name can be
  given relative to the directory containing that MoML file.
  If the model has not been saved to a file,
  then the classpath is used for identifying relative file names.</p>
- <p>
- Files can be given relative to a <i>base</i>, where the base is
+
+ <p>Files can be given relative to a <i>base</i>, where the base is
  the URI of the first container above this one that has a URIAttribute.
  Normally, this URI specifies the file or URL containing the model
  definition. Thus, files that are referred to here can be kept in the
  same directory as the model, or in a related directory, and can
  moved together with the model.</p>
- <p>
- The following special file names are understood:
+
+
+ <p>The following special file names are understood:</p>
  <ul>
  <li> System.in: Standard input.
  <li> System.out: Standard output.
  </ul>
- Note, however, that these file names cannot be converted to URLs
+
+ <p> Note, however, that these file names cannot be converted to URLs
  using the asURL() method.
  A file name can also contain the following strings that start
  with "$", which get substituted
