@@ -1599,7 +1599,7 @@ public class Director extends Attribute implements Executable {
                                 "Dropping single input from " + port.getName());
                     }
 
-                    if (port.hasToken(i)) {
+                    if (port.isKnown() && port.hasToken(i)) {
                         port.get(i);
                     }
                 }
