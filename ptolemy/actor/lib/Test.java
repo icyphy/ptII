@@ -154,6 +154,9 @@ public class Test extends NonStrictTest {
                 .booleanValue();
 
         if (training) {
+            if (_debugging) {
+                _debug("Debug mode is on.");
+            }
             if (_trainingTokens == null) {
                 _trainingTokens = new ArrayList();
             }
@@ -161,6 +164,9 @@ public class Test extends NonStrictTest {
             if (width == 1) {
                 if (input.hasToken(0)) {
                     Token token = input.get(0);
+                    if (_debugging) {
+                        _debug("-- Read training input: " + token);
+                    }
                     if (token instanceof ArrayToken) {
                         Token[] innerArrayToken = new Token[1];
                         innerArrayToken[0] = token;
@@ -173,9 +179,12 @@ public class Test extends NonStrictTest {
                 ArrayList arrayList = new ArrayList();
 
                 for (int i = 0; i < width; i++) {
-                    arrayList.add(input.get(i));
+                    Token token = input.get(i);
+                    if (_debugging) {
+                        _debug("-- Read training inputs: " + token);
+                    }
+                    arrayList.add(token);
                 }
-
                 _trainingTokens.add(arrayList);
             }
 
@@ -184,6 +193,9 @@ public class Test extends NonStrictTest {
 
         if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
                 .length()) {
+            if (_debugging) {
+                _debug("Past the end of training data. Read and discard all inputs.");
+            }
             // Consume and discard input values.  We are beyond the end
             // of the correctValues array.
             for (int i = 0; i < width; i++) {
@@ -192,12 +204,16 @@ public class Test extends NonStrictTest {
                 }
             }
 
-            // Indicate that the test has passed.
-            output.send(0, new BooleanToken(true));
+            // Indicate that the test has passed if the output is connected.
+            if (output.numberOfSinks() > 0) {
+                output.send(0, new BooleanToken(true));
+            }
             return;
         }
 
-        output.send(0, new BooleanToken(false));
+        if (output.numberOfSinks() > 0) {
+            output.send(0, new BooleanToken(false));
+        }
 
         Token referenceToken = ((ArrayToken) (correctValues.getToken()))
                 .getElement(_numberOfInputTokensSeen);
@@ -236,6 +252,13 @@ public class Test extends NonStrictTest {
             }
 
             Token token = input.get(i);
+            
+            if (_debugging) {
+                _debug("-- Read input: " + token
+                        + ", which is expected to match: "
+                        + reference[i]);
+            }
+
             boolean isClose;
 
             try {
