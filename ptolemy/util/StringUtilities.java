@@ -567,9 +567,8 @@ public class StringUtilities {
         Properties newProperties = new Properties(systemProperties);
         String propertyFileName = "$CLASSPATH/lib/ptII.properties";
 
-        // FIXME: xxxxxxCLASSPATHxxxxxx is an ugly hack
         URL propertyFileURL = FileUtilities.nameToURL(
-                "xxxxxxCLASSPATHxxxxxx/lib/ptII.properties", null, null);
+                "$CLASSPATH/lib/ptII.properties", null, null);
 
         if (propertyFileURL == null) {
             throw new IOException("Could not find " + propertyFileName);
