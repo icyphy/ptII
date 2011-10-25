@@ -113,7 +113,6 @@ PTII_TOPDIR=	.cshrc \
 		bin \
 		build.default.xml \
 		build.xml.in \
-		com/JLex \
 		com/jgoodies \
 		com/makefile \
 		com/microstar \
@@ -1327,7 +1326,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/psdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/filter \
-	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
