@@ -42,12 +42,13 @@ running <code>$PTII/bin/vergil -ptiny</code> or by running the
 Mac OS X <code>Ptiny.app</code> or by running the 
 Windows "vergil -ptiny" executable uses only the Ptolemy copyright above, 
 <a href="#AElfred">AElfred</a>,
+<a heef="#Audio">Audio</a>,
 <a href="#BrowserLauncher">BrowserLauncher</a>,
 <a href="#colt">Colt </a>,
 <a href="#ExtensionFileFilter">ExtensionFileFilter</a>,
 <a href="#matlab">Matlab Expression Actor</a> and
 <a href="#jython">Jython</a>.
-Colt, Matlab Expression actor and Jython are all used by actors
+Audio, Colt, Matlab Expression actor and Jython are all used by actors
 specific to those packages.
 The other license below
 are used primarily by actors that interface to those libraries.</p>
@@ -78,12 +79,20 @@ are used primarily by actors that interface to those libraries.</p>
     <th>Summary</th>
   <tr> 
   <tr>
-    <td><a href="#AElfred">AElfred License</a></td>
+    <td><a href="#AElfred">AElfred</a></td>
     <td>X</td>
     <td>&nbsp;</td>
     <td>X</td>
     <td>X</td>
     <td>Include Microstar's Copyright</td>
+  </tr>
+  <tr>
+    <td><a href="#Audio">Audio</a></td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>X</td>
+    <td>Include credit text</td>
   </tr>
   <tr>
     <td><a href="#BrowserLauncher">BrowserLauncher</a></td>
@@ -293,6 +302,40 @@ YOUR OWN RISK.
 </blockquote>
 
 </pre>
+
+<h2><a name="#Audio">Audio</a></h2>
+<p>The ptolemy/media/Audio.java class is used by the ptolemy/media/AudioViewer.java class.</p>
+
+<p>The ptolemy/media/Audio.java class is based on the web page of
+ <a href="mailto:donahu@cooper.edu">Billy Donahue</a>.
+ <a href="http://www.cooper.edu/~donahu/auformat/auFormat.html#in_browser"> http://www.cooper.edu/~donahu/auformat/auFormat.html</a>.
+ That page no longer exists.  This file was created on 1998-08-31,
+ The Wayback machine yields this page for that date:
+ <a href="http://web.archive.org/web/19980709194800/http://www.cooper.edu/~donahu/auformat/auFormat.html#in_browser">http://web.archive.org/web/19980709194800/http://www.cooper.edu/~donahu/auformat/auFormat.html</a>.</p>
+
+
+<p>The lin2mu() method is based on an implementation by Anthony Hursh,
+who included it with the following information:
+<blockquote>
+     Copyright 1997 by Anthony Hursh
+     <br/>&lt;hursha@saturn.math.uaa.alaska.edu&gt;
+     <br/> This code may be freely used as long as proper credit
+     is given.  It was originally written in C by
+     Craig Reese (IDA/Supercomputing Research Center) and
+     Joe Campbell (Department of Defense), and
+     ported to Java by Tony Hursh, January 1997.
+     <br/>References:
+     <ol>
+     <li> CCITT Recommendation G.711  (very difficult to follow)</li>
+     <li> "A New Digital Technique for Implementation of Any
+          Continuous PCM Companding Law," Villeret, Michel,
+          et al. 1973 IEEE Int. Conf. on Communications, Vol 1,
+          1973, pg. 11.12-11.17</li>
+     <li> MIL-STD-188-113,"Interoperability and Performance Standards
+          for Analog-to_Digital Conversion Techniques,"
+          17 February 1987</li>
+     </ol>
+</blockquote>
 
 <h2><a name="BrowserLauncher">BrowserLauncher</a></h2>
 Ptolemy II can open up urls that

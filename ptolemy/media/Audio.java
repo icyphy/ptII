@@ -66,9 +66,12 @@ import java.io.IOException;
  </CENTER>
  <p>
  The design of this class is based on the web page of
- <a href=mailto:donahu@cooper.edu>Billy Donahue</a>.
- <a href=http://www.cooper.edu/~donahu/auformat/auFormat.html>
- http://www.cooper.edu/~donahu/auformat/auFormat.html</a>.
+ <a href="mailto:donahu@cooper.edu">Billy Donahue</a>.
+ <a href="http://www.cooper.edu/~donahu/auformat/auFormat.html#in_browser"> http://www.cooper.edu/~donahu/auformat/auFormat.html</a>.
+ That page no longer exists.  This file was created on 1998-08-31,
+ The Wayback machine yields this page for that date:
+ <a href="http://web.archive.org/web/19980709194800/http://www.cooper.edu/~donahu/auformat/auFormat.html#in_browser">http://web.archive.org/web/19980709194800/http://www.cooper.edu/~donahu/auformat/auFormat.html</a>.</p>
+
  Note that this class serves the same role as
  the class by the same name in the sun.audio package, but is much
  more public about its information.  For example, the Sun version
