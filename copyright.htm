@@ -263,6 +263,14 @@ are used primarily by actors that interface to those libraries.</p>
     <td>BSD</td>
   </tr>
   <tr>
+    <td><a href="#ptjacl">Ptjacl</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>BSD, Sun, Apache-2.0</td>
+  </tr>
+  <tr>
     <td><a href="#thalesSingleWindow">Thales Single Window Application</a></td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
@@ -4224,6 +4232,350 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 </blockquote>
+
+<h2><a name="ptjacl">Ptjacl</a></h2>
+
+Jacl is a 100% Java implementation of Tcl that we use for testing Ptolemy II.
+
+Each Java directory contains a <CODE>test</CODE> subdirectory that contains
+Tcl files that use Jacl to test the Ptolemy II Java code.
+
+ <p>Jacl is <B>only</B> necessary if you are planning on running
+the Ptolemy II test suite.
+
+ <p>We ship a customized version of Jacl called Ptjacl.
+The primary difference between Ptjacl and Jacl1.1 is that Ptjacl
+is shipped as one jar file.
+
+ <p>The Ptjacl jar file at <CODE>$PTII/lib/ptjacl.jar</CODE>
+is shipped with Ptolemy II.
+
+
+ <p>For more information about Jacl and Tcl Blend, see
+<menu>
+<li> <a href="http://tcl.activestate.com/software/java/#in_browser" target="_top">Activestate.com Jacl and Tcl Blend page</a>.
+
+<li> <a href="http://ptolemy.eecs.berkeley.edu/~cxh/java/#in_browser" target="_top">Christopher Brooks' Java Page.</a>
+<li>If you have a read/write account on <code>source.eecs.berkeley.edu</code>, then the sources for ptjacl are available via cvs:
+<pre>
+cvs -d :ext:source.eecs.berkeley.edu:/home/cvs_chess co tcl
+</pre>
+or 
+<li> <a href="../doc/coding/tcljava.htm"><CODE>java::</CODE> man page</a>
+</menu>
+
+<p>Ptjacl has many different copyrights and licenses: BSD, Sun, Apache-2.0.</p>
+
+<p>Portions of Ptjacl have the standard BSD Ptolemy II copyright.</p>
+
+<p>Many of Jacl source files have the following copyright:
+<pre>
+ * Copyright (c) 1997 Cornell University.
+ * Copyright (c) 1997 Sun Microsystems, Inc.
+ *
+ * See the file "license.terms" for information on usage and
+ * redistribution of this file, and for a DISCLAIMER OF ALL
+ * WARRANTIES.
+</pre>
+
+In the tcl cvs repository, <code>tcl/lang/library/license.terms</code> says:
+<blockquote>
+<p>SUN MICROSYSTEMS, INC. THROUGH ITS SUN MICROSYSTEMS LABORATORIES
+DIVISION ("SUN") WILL LICENSE THIS SOFTWARE AND THE ACCOMPANYING
+DOCUMENTATION TO YOU (a "Licensee") ONLY ON YOUR ACCEPTANCE OF ALL 
+THE TERMS SET FORTH BELOW.</p>
+
+<p>Sun grants Licensee a non-exclusive, royalty-free right to download,
+install, compile, use, copy and distribute the Software, modify or
+otherwise create derivative works from the Software (each, a
+"Modification") and distribute any Modification in source code and/or
+binary code form to its customers with a license agreement containing
+these terms and noting that the Software has been modified. The
+Software is copyrighted by Sun and other third parties and Licensee
+shall retain and reproduce all copyright and other notices presently 
+on the Software. As between Sun and Licensee, Sun is the sole owner of
+all rights in and to the Software other than the limited rights
+granted to Licensee herein; Licensee will own its Modifications,
+expressly subject to Sun's continuing ownership of the
+Software. Licensee will, at its expense, defend and indemnify Sun and
+its licensors from and against any third party claims, including costs
+and reasonable attorneys' fees, and be wholly responsible for any
+liabilities arising out of or related to Licensee's development, use
+or distribution of the Software or Modifications. Any distribution of
+the Software and Modifications must comply with all applicable United
+States export control laws.</p>
+
+<p>THE SOFTWARE IS BEING PROVIDED TO LICENSEE "AS IS" AND ALL EXPRESS OR
+IMPLIED CONDITIONS AND WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
+ARE DISCLAIMED. IN NO EVENT WILL SUN BE LIABLE HEREUNDER FOR ANY
+DIRECT DAMAGES OR ANY INDIRECT, PUNITIVE, SPECIAL, INCIDENTAL OR
+CONSEQUENTIAL DAMAGES OF ANY KIND.</p>
+</blockquote>
+
+tcl/lang/QSort.java has the following copyright
+<blockquote>
+<pre>
+ * This file is adapted from the JDK 1.0 QSortAlgorithm.java demo program.
+ * Original copyright notice is preserveed below.
+ *
+ * @(#)QSortAlgorithm.java	1.3   29 Feb 1996 James Gosling
+ *
+ * Copyright (c) 1994-1996 Sun Microsystems, Inc. All Rights Reserved.
+ *
+ * Permission to use, copy, modify, and distribute this software
+ * and its documentation for NON-COMMERCIAL or COMMERCIAL purposes and
+ * without fee is hereby granted. 
+ * Please refer to the file http://www.javasoft.com/copy_trademarks.html
+ * for further important copyright and trademark information and to
+ * http://www.javasoft.com/licensing.html for further important
+ * licensing information for the Java (tm) Technology.
+ * 
+ * SUN MAKES NO REPRESENTATIONS OR WARRANTIES. ABOUT THE SUITABILITY OF
+ * THE SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+ * TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE, OR NON-INFRINGEMENT. SUN SHALL NOT BE LIABLE FOR
+ * ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR
+ * DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+ * 
+ * THIS SOFTWARE IS NOT DESIGNED OR INTENDED FOR USE OR RESALE AS ON-LINE
+ * CONTROL EQUIPMENT IN HAZARDOUS ENVIRONMENTS REQUIRING FAIL-SAFE
+ * PERFORMANCE, SUCH AS IN THE OPERATION OF NUCLEAR FACILITIES, AIRCRAFT
+ * NAVIGATION OR COMMUNICATION SYSTEMS, AIR TRAFFIC CONTROL, DIRECT LIFE
+ * SUPPORT MACHINES, OR WEAPONS SYSTEMS, IN WHICH THE FAILURE OF THE
+ * SOFTWARE COULD LEAD DIRECTLY TO DEATH, PERSONAL INJURY, OR SEVERE
+ * PHYSICAL OR ENVIRONMENTAL DAMAGE ("HIGH RISK ACTIVITIES").  SUN
+ * SPECIFICALLY DISCLAIMS ANY EXPRESS OR IMPLIED WARRANTY OF FITNESS FOR
+ * HIGH RISK ACTIVITIES.
+</pre>
+</blockquote>
+
+Ptjacl includes oroinc.jar,
+<a href="http://www.savarese.org/oro/index.html#in_browser">http://www.savarese.org/oro/index.html</a> says:
+<blockquote>
+<b>OROMatcher and the rest.&nbsp;</b>
+
+      In June, 2000, OROMatcher 2.0, PerlTools 2.0, and the rest
+      of the ORO text processing software (AwkTools and TextTools)
+      were donated to the Apache Jakarta Project, which took over
+      custodianship of the software, housing CVS repository, mailing
+      lists, and release archives.  The software is now <a class="ulink" href="http://jakarta.apache.org/oro/" target="_top">Jakarta ORO</a> and is
+      licensed under the <a class="ulink" href="software/ApacheLicense-2.0" target="_top">Apache License</a>, which
+      is a BSD-style license that allows projects such as Jython to
+      continue to use the software without special licensing.  Support
+      questions should be directed to the Jakarta oro-user and oro-dev
+      <a class="ulink" href="http://jakarta.apache.org/site/mail.html" target="_top">mailing
+      lists</a>.
+</blockquote>
+
+On October 25, 2011,
+<a href="https://svn.apache.org/repos/asf/jakarta/oro/trunk/LICENSE#in_browser">https://svn.apache.org/repos/asf/jakarta/oro/trunk/LICENSE</a> contained:
+<blockquote>
+<pre>
+  Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+<pre>
+</blockquote>
+
 
 <h2><a name="thalesSingleWindow">Thales Single Window Application</a></h2>
 <p>The $PTII/thales directory contains a tabbed single window mode that

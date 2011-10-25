@@ -204,6 +204,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.vergil.pdfrenderer.PDFAttribute",
                 "ptolemy/vergil/pdfrenderer/PDFRenderer-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "tcl.lang.Shell",
+                "lib/ptjacl-license.htm");
+
         _addIfPresent(copyrightsMap, "thales.vergil.SingleWindowApplication",
                 "thales/thalesSingleWindow-license.htm");
 
