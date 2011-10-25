@@ -26,6 +26,7 @@
 /* This class is probably based on soot/jimple/toolkits/invoke/StaticMethodBinder.java, which
  * is why it is LGPL'd.  See
  * http://www.java2s.com/Open-Source/Java-Document/Code-Analyzer/soot/soot/jimple/toolkits/invoke/StaticMethodBinder.java.htm
+ */
 
 package ptolemy.copernicus.kernel;
 
