@@ -85,7 +85,10 @@ JSRCS = \
 	ViewEvent.java \
 	ViewListener.java
 
-EXTRA_SRCS =	$(JSRCS) \
+OTHER_FILES_TO_BE_JARED = \
+	ExtensionFileFilter-license.htm
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 	package.html
 
 # Sources that may or may not be present, but if they are present, we don't

@@ -45,7 +45,7 @@ import javax.swing.filechooser.FileFilter;
  * <p>Extensions are of the type ".foo", which is typically found on
  * Windows and Unix boxes, but not on Macintosh. Case is ignored.
  *
- * >p>Extension - create a new filter that filters out all files
+ * <p>Extension - create a new filter that filters out all files
  * but gif and jpg image files:
  *
  * <pre>

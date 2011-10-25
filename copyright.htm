@@ -4,7 +4,7 @@
 <link href="StyleSheet" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>Ptolemy II Version 8.0.beta</h1>
+<h1>Ptolemy II Version 8.1.devel</h1>
 
 Below is the copyright agreement for the Ptolemy II system.
 
@@ -44,6 +44,7 @@ Windows "vergil -ptiny" executable uses only the Ptolemy copyright above,
 <a href="#AElfred">AElfred</a>,
 <a href="#BrowserLauncher">BrowserLauncher</a>,
 <a href="#colt">Colt </a>,
+<a href="#ExtensionFileFilter">ExtensionFileFilter</a>,
 <a href="#matlab">Matlab Expression Actor</a> and
 <a href="#jython">Jython</a>.
 Colt, Matlab Expression actor and Jython are all used by actors
@@ -85,12 +86,20 @@ are used primarily by actors that interface to those libraries.</p>
     <td>Include Microstar's Copyright</td>
   </tr>
   <tr>
-    <td><a href="#BrowserLauncer">BrowserLauncher</a></td>
+    <td><a href="#BrowserLauncher">BrowserLauncher</a></td>
     <td>X</td>
     <td>&nbsp;</td>
     <td>X</td>
     <td>X</td>
     <td>Include the BrowserLauncher Copyright</td>
+  </tr>
+  <tr>
+    <td><a href="#ExtensionFileFilter">ExtensionFileFilter</a></td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>X</td>
+    <td>Include Sun's copyright</td>
   </tr>
   <tr>
     <td><a href="#Java3D">Java 3D License</a></td>
@@ -147,6 +156,14 @@ are used primarily by actors that interface to those libraries.</p>
     <td>X</td>
     <td>&nbsp;</td>
     <td>LGPL 2.1</td>
+  </tr>
+  <tr>
+    <td><a href="#eclipse">Eclipse License</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>X</td>
+    <td>Common Public License Version 1.0</td>
   </tr>
   <tr>
     <td><a href="#gcj">GCJ License</a></td>
@@ -311,6 +328,48 @@ Credits:
 <a href="http://browserlauncher.sourceforge.net/">http://browserlauncher.sourceforge.net/</a>.
 That URL no longer exists, there is a replacement package which is LGPL'd.
 See <a href="http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/">http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/</code> for the original web page.</p>
+
+
+<h2><a name="ExtensionFileFilter">ExtensionFileFilter</a></h2>
+<p>diva/gui/ExtensionFileFilter.java is used by ptolemy/actor/gui/PtolemyFrame.java
+and ptolemy/actor/gui/TableauFrame.java.</p>
+
+<p>Note that as of Java 1.6, there is a FileNameExtensionFilter which
+replaces this class.  See
+<a href="http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html">http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html</a>
+However, this class can be used with both java.awt.FileDialog
+and javax.swing.JFileChooser because it implements java.io.FilenameFilter
+and extends javax.swing.FilenameFilter.</p>
+
+<p>diva/gui/ExtensionFileFilter.java has the following license:</p>
+
+<blockquote>
+<p>Copyright (c) 1998, 1999 by Sun Microsystems, Inc. All Rights Reserved.</p>
+
+<p>Sun grants you ("Licensee") a non-exclusive, royalty free, license to use,
+modify and redistribute this software in source and binary code form,
+provided that i) this copyright notice and license appear on all copies of
+the software; and ii) Licensee does not utilize the software in a manner
+which is disparaging to Sun.</p>
+
+<p>This software is provided "AS IS," without a warranty of any kind. ALL
+EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY
+IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN AND ITS LICENSORS SHALL NOT BE
+LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING
+OR DISTRIBUTING THE SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS
+LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT,
+INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
+CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF
+OR INABILITY TO USE SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGES.</p>
+
+<p>This software is not designed or intended for use in on-line control of
+aircraft, air traffic, aircraft navigation or aircraft communications; or in
+the design, construction, operation or maintenance of any nuclear
+facility. Licensee represents and warrants that it will not use or
+redistribute the Software for such purposes.</p>
+</blockquote>
 
 
 <h2><a name="Java3D">Java 3D License</a></h2>
@@ -1571,6 +1630,80 @@ This directory contains a launcher for JNI Programs.  For details, see
 <a href="http://software.jessies.org/terminator/#in_browser" target="_top"><code>http://software.jessies.org/terminator/</code></a>.
 The salma-hayek package is LGPL'd, 
 see <a href="#lgpl2.1">LGPL 2.1</a> for a local copy of the LGPL.
+
+
+<h2><a name="eclipse">Eclipse License</a></h2
+Eclipse can be found at
+<a href="http://www.eclipse.org/#in_browser" target="_top"><code>http://www.eclipse.org/</code></a>
+
+<p>Backtracking requires the Eclipse parser</p>
+<p>Eclipse has the following license:</p>
+
+<blockquote>
+<h2>Eclipse.org Software User Agreement</h2>
+<p>15<sup>th</sup> June, 2004</p>
+
+<h3>Usage Of Content</h3>
+
+<p>ECLIPSE.ORG MAKES AVAILABLE SOFTWARE, DOCUMENTATION, INFORMATION AND/OR OTHER MATERIALS FOR OPEN SOURCE PROJECTS
+   (COLLECTIVELY &quot;CONTENT&quot;).  USE OF THE CONTENT IS GOVERNED BY THE TERMS AND CONDITIONS OF THIS AGREEMENT AND/OR THE TERMS AND
+   CONDITIONS OF LICENSE AGREEMENTS OR NOTICES INDICATED OR REFERENCED BELOW.  BY USING THE CONTENT, YOU AGREE THAT YOUR USE
+   OF THE CONTENT IS GOVERNED BY THIS AGREEMENT AND/OR THE TERMS AND CONDITIONS OF ANY APPLICABLE LICENSE AGREEMENTS OR
+   NOTICES INDICATED OR REFERENCED BELOW.  IF YOU DO NOT AGREE TO THE TERMS AND CONDITIONS OF THIS AGREEMENT AND THE TERMS AND
+   CONDITIONS OF ANY APPLICABLE LICENSE AGREEMENTS OR NOTICES INDICATED OR REFERENCED BELOW, THEN YOU MAY NOT USE THE CONTENT.</p>
+   
+<h3>Applicable Licenses</h3>   
+   
+<p>Unless otherwise indicated, all Content made available by Eclipse.org is provided to you under the terms and conditions of the Common Public License Version 1.0
+   (&quot;CPL&quot;).  A copy of the CPL is provided with this Content and is also available at <a href="http://www.eclipse.org/legal/cpl-v10.html">http://www.eclipse.org/legal/cpl-v10.html</a>.
+   For purposes of the CPL, &quot;Program&quot; will mean the Content.</p>
+
+<p>Content includes, but is not limited to, source code, object code, documentation and other files maintained in the Eclipse.org CVS repository (&quot;Repository&quot;) in CVS
+   modules (&quot;Modules&quot;) and made available as downloadable archives (&quot;Downloads&quot;).</p>
+
+<p>Content may be apportioned into plug-ins (&quot;Plug-ins&quot;), plug-in fragments (&quot;Fragments&quot;), and features (&quot;Features&quot;). A Feature is a bundle of one or more Plug-ins and/or Fragments and associated material. Files named &quot;feature.xml&quot; may contain a list of the names and version numbers of  the Plug-ins and/or Fragments associated with a Feature.   Plug-ins and Fragments are located in directories
+   named &quot;plugins&quot; and Features are located in directories named &quot;features&quot;.</p>
+  
+<p>Features may also include other Features (&quot;Included Features&quot;). Files named &quot;feature.xml&quot; may contain a list of the names and version numbers of Included Features.</p>
+  
+<p>The terms and conditions governing Plug-ins and Fragments should be contained in files named &quot;about.html&quot; (&quot;Abouts&quot;). The terms and conditions governing Features and
+Included Features should be contained in files named &quot;license.html&quot; (&quot;Feature Licenses&quot;). Abouts and Feature Licenses may be located in any directory of a Download or Module
+including, but not limited to the following locations:</p>
+
+<ul>
+	<li>The top-level (root) directory</li>
+	<li>Plug-in and Fragment directories</li>
+	<li>Subdirectories of the directory named &quot;src&quot; of certain Plug-ins</li>
+	<li>Feature directories</li>
+</ul>
+		
+<p>Note: if a Feature made available by Eclipse.org is installed using the Eclipse Update Manager, you must agree to a license (&quot;Feature Update License&quot;) during the
+installation process. If the Feature contains Included Features, the Feature Update License should either provide you with the terms and conditions governing the Included Features or
+inform you where you can locate them. Feature Update Licenses may be found in the &quot;license&quot; property of files named &quot;feature.properties&quot;.
+Such Abouts, Feature Licenses and Feature Update Licenses contain the terms and conditions (or references to such terms and conditions) that govern your use of the associated Content in
+that directory.</p>
+
+<p>THE ABOUTS, FEATURE LICENSES AND FEATURE UPDATE LICENSES MAY REFER TO THE CPL OR OTHER LICENSE AGREEMENTS, NOTICES OR TERMS AND CONDITIONS.  SOME OF THESE
+OTHER LICENSE AGREEMENTS MAY INCLUDE (BUT ARE NOT LIMITED TO):</p>
+
+<ul>
+	<li>Eclipse Public License Version 1.0 (available at <a href="http://www.eclipse.org/legal/epl-v10.html">http://www.eclipse.org/legal/epl-v10.html</a>)</li>
+	<li>Apache Software License 1.1 (available at <a href="http://www.apache.org/licenses/LICENSE">http://www.apache.org/licenses/LICENSE</a>)</li>
+	<li>IBM Public License 1.0 (available at <a href="http://oss.software.ibm.com/developerworks/opensource/license10.html">http://oss.software.ibm.com/developerworks/opensource/license10.html</a>)</li>	
+	<li>Metro Link Public License 1.00 (available at <a href="http://www.opengroup.org/openmotif/supporters/metrolink/license.html">http://www.opengroup.org/openmotif/supporters/metrolink/license.html</a>)</li>
+	<li>Mozilla Public License Version 1.1 (available at <a href="http://www.mozilla.org/MPL/MPL-1.1.html">http://www.mozilla.org/MPL/MPL-1.1.html</a>)</li>
+</ul>
+
+<p>IT IS YOUR OBLIGATION TO READ AND ACCEPT ALL SUCH TERMS AND CONDITIONS PRIOR TO USE OF THE CONTENT.  If no About, Feature License or Feature Update License is provided, please
+contact Eclipse.org to determine what terms and conditions govern that particular Content.</p>
+
+<h3>Cryptography</h3>
+
+<p>Content may contain encryption software. The country in which you are currently may have restrictions on the import, possession, and use, and/or re-export to
+   another country, of encryption software. BEFORE using any encryption software, please check the country's laws, regulations and policies concerning the import,
+   possession, or use, and re-export of encryption software, to see if this is permitted.</p>
+
+</blockquote>
 
 
 <h2><a name="gcj">GCJ License</a></h2>

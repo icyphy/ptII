@@ -101,13 +101,16 @@ public class GenerateCopyrights {
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
+        _addIfPresent(copyrightsMap, "diva.gui.ExtensionFileFilter",
+                "diva/gui/ExtensionFileFilter-license.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.run.PtolemyFormEditor",
                 "com/jgoodies/jgoodies-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "actor.lib.logic.fuzzy.FuzzyLogic",
+        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.logic.fuzzy.FuzzyLogic",
                 "ptolemy/actor/lib/logic/fuzzy/FuzzyEngine-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.domains.gro.kernel.GRODirector",
