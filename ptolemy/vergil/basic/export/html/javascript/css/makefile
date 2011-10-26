@@ -1,8 +1,8 @@
-# Tests for Licensing problems
+# Makefile for exporting Vergil models as javascript, css directory.
 #
-# @Author: Christopher Brooks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# $Id: Release.tcl 59969 2010-12-13 00:09:52Z bldmastr $
+# @Version: $Id$
 #
 # @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
@@ -28,30 +28,51 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-#######################################################################
 
-# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
-# Get rid of any previous lists of .java files etc.
-exec make clean
+ME =		ptolemy/vergil/basic/export/html/javascript/css
 
-# Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then {
-    source testDefs.tcl
-} {}
+DIRS =
 
-test license-1.1 {Check to see if BasicGraphFrame was checked in with itextpdf enabled} {
-    set result {}
-    set file $PTII/ptolemy/vergil/basic/BasicGraphFrame.java
-    set fp [open $file]
-    while 1 {
-	gets $fp line
-	if [eof $fp] {
-	    break
-     	}
-	if [regexp {^ *String exportPDFActionClassName = "ptolemy.vergil.basic.export.itextpdf.ExportPDFAction"} $line] {
-	    set result "$file contains \n$line\nWhich is not commented out!\nThis line should be commented out so that Export PDF is disabled.\nWe don't want it always enabled because ptiny, the applets and\nWeb Start should not included this AGPL'd piece of software"
-        }
-    }
-    list $result
-} {{}}
+# Root of the Java directory
+ROOT =		../../../../../../..
+
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+
+# Get configuration info
+CONFIG =	$(ROOT)/mk/ptII.mk
+include $(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = 	css
+PTCLASSJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = 
+
+# Include the .class files from these jars in PTCLASSALLJAR
+#PTCLASSALLJARS =
+
+JSRCS =
+
+OTHER_FILES_TO_BE_JARED = \
+	jquery.lightbox-license.htm \
+	jquery.lightbox-0.5.css \
+	logo_code.gif
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	$(DIRS)
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	$(PTCLASSJAR)
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+all: jclass
+install: jclass jars
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk

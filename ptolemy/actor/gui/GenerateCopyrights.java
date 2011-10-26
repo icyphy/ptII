@@ -212,7 +212,7 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.ExportHTMLAction",
                 "ptolemy/vergil/javascript/javascript-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.itextpdf.ExportPDFAction",
+        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.export.itextpdf.ExportPDFAction",
                 "ptolemy/vergil/basic/itextpdf/itextpdf-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.layout.kieler.KielerLayout",

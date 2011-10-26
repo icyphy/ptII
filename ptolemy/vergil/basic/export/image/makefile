@@ -1,4 +1,4 @@
-# Makefile for exporting Vergil models as javascript, js directory.
+# Makefile for the ptolemy/vergil/basic/export/image package
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -30,12 +30,12 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/javascript/js
+ME =		ptolemy/vergil/basic/export/image
 
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -44,23 +44,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	js
-PTCLASSJAR = $(PTPACKAGE).jar
-#PTCLASSALLJAR = 
+PTPACKAGE = 	image
+PTCLASSJAR =	 $(PTPACKAGE).jar
+#PTCLASSALLJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 #PTCLASSALLJARS =
 
-JSRCS =
+JSRCS = \
+	ExportImage.java
 
-OTHER_FILES_TO_BE_JARED = \
-	jquery-license.htm \
-	jquery.js \
-	jquery.lightbox-0.5.js \
-	jquery.lightbox-0.5.min.js \
-	jquery.lightbox-0.5.pack.js
+EXTRA_SRCS =	$(JSRCS)
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -69,7 +64,13 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'ExportImage$$1.class' \
+	'ExportImage$$2.class' \
+	'ExportImage$$3.class' \
+	'ExportImage$$4.class' \
+	'ExportImage$$5.class' \
+	'ExportImage$$6.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

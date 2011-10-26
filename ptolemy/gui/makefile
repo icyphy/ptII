@@ -53,6 +53,7 @@ JSRCS = \
 	CloseListener.java \
 	ComponentDialog.java \
 	GraphicalMessageHandler.java \
+	ImageExportable.java \
 	JFileChooserBugFix.java \
 	JTextAreaExec.java \
 	MacOSXAdapter.java \

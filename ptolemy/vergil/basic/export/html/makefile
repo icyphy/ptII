@@ -1,10 +1,10 @@
-# Makefile for the interface to itextpdf, which implements the Export PDF choice.
+# Makefile for the ptolemy/vergil/basic/export/html package
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2010 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,36 +30,33 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/basic/itextpdf
+ME =		ptolemy/vergil/basic/export/html
 
-DIRS =
+DIRS =		javascript
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTITEXTPDF_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	itextpdf
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	html
+PTCLASSJAR =
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJAR = 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	javascript/javascript.jar
 
 JSRCS = \
-	ExportPDFAction.java
+	ExportHTMLAction.java \
+	ExportToWeb.java
 
-OTHER_FILES_TO_BE_JARED = \
-	itextpdf-copyright.htm
-
-EXTRA_SRCS = \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -69,9 +66,12 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
-	'ExportPDFAction$$ExtensionFileFilter.class'
+	'ExportHTMLAction$$IconVisibleLocation.class' \
+	'ExportToWeb$$1.class' \
+	'ExportToWeb$$2.class' \
+	'ExportToWeb$$3.class'
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS= $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars

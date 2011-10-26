@@ -1,4 +1,4 @@
-# Makefile for exporting Vergil models as javascript
+# Makefile for exporting Vergil models as javascript, js directory.
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -30,12 +30,12 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/javascript
+ME =		ptolemy/vergil/basic/export/html/javascript/js
 
-DIRS =		css images js
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -44,20 +44,21 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	javascript
-PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	js
+PTCLASSJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = 
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	css/css.jar \
-	images/images.jar \
-	js/js.jar
+#PTCLASSALLJARS =
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	javascript-license.htm
+	jquery-license.htm \
+	jquery.js \
+	jquery.lightbox-0.5.js \
+	jquery.lightbox-0.5.min.js \
+	jquery.lightbox-0.5.pack.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

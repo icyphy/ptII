@@ -6951,7 +6951,7 @@ fi
 #--------------------------------------------------------------------
 
 # Set to itextpdf and used in
-# $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
+# $PTII/ptolemy/vergil/basic/export/makefile if iText.jar was found
 PTITEXTPDF_DIR=
 
 # iText PDF jar file.  iText is from
@@ -6959,7 +6959,7 @@ PTITEXTPDF_DIR=
 PTITEXTPDF_JAR=
 
 # We only need to look for iText.jar if $ITEXTPDF_USER_DIR exists
-ITEXTPDF_USER_DIR="$PTII/ptolemy/vergil/basic/itextpdf"
+ITEXTPDF_USER_DIR="$PTII/ptolemy/vergil/basic/export/itextpdf"
 if test ! -d "$ITEXTPDF_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $ITEXT_USER_DIR is not present,
     so we need not find the iText PDF interface." >&5
@@ -6982,10 +6982,10 @@ fi
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTITEXTPDF_JAR" >&5
 echo "${ECHO_T}$PTITEXTPDF_JAR" >&6; }; fi
 	# Set to itextpdf and used in
-	# $PTII/ptolemy/vergil/basic/makefile if iText.jar is found
+	# $PTII/ptolemy/vergil/basic/export/makefile if iText.jar is found
 	PTITEXTPDF_DIR=itextpdf
         # PTITEXTPDF_PACKAGES is used in ptII/doc/makefile
-	PTITEXTPDF_PACKAGES=ptolemy.vergil.basic.itextpdf
+	PTITEXTPDF_PACKAGES=ptolemy.vergil.basic.export.itextpdf
     fi
 
     if test "$PTITEXTPDF_DIR" = ""; then
@@ -7013,7 +7013,7 @@ echo "$as_me: WARNING: Failed to find iText.jar
 fi
 
 if test -z "$PTITEXTPDF_DIR"; then
-   updateExcludes "ptolemy/vergil/basic/itextpdf/"
+   updateExcludes "ptolemy/vergil/basic/export/itextpdf/"
 else
    updateClasspath "$PTITEXTPDF_JAR"
 fi
@@ -8517,8 +8517,8 @@ fi
 	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJXL_JAR" >&5
 echo "${ECHO_T}$PTJXL_JAR" >&6; }; fi
-	# Set to itextpdf and used in
-	# $PTII/ptolemy/vergil/basic/makefile if iText.jar is found
+	# Set to excel and used in
+	# $PTII/ptolemy/actor/lib/makefile if iText.jar is found
 	PTEXCEL_DIR=excel
         # PTJXL_PACKAGES is used in ptII/doc/makefile
 	PTEXCEL_PACKAGES=ptolemy.actor.lib.excel
@@ -12955,7 +12955,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # Set to itextpdf and used in
-# $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
+# $PTII/ptolemy/vergil/basic/export/makefile if iText.jar was found
 
 
 # iText PDF jar file.  iText is from

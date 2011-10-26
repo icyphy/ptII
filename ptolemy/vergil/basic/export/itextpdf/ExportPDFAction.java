@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY 2
  */
 
-package ptolemy.vergil.basic.itextpdf;
+package ptolemy.vergil.basic.export.itextpdf;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -69,7 +69,7 @@ import diva.gui.GUIUtilities;
  <pre>
   &lt;property name="_exportPDFClassName"
             class="ptolemy.data.expr.StringParameter"
-            value="ptolemy.vergil.basic.itextpdf.ExportPDFAction"/&gt;
+            value="ptolemy.vergil.basic.export.itextpdf.ExportPDFAction"/&gt;
  </pre>
  {@link ptolemy.vergil.basic.BasicGraphFrame} checks for this parameter
  and adds the "Export PDF" menu choice if the class named by that parameter exists.

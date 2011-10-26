@@ -564,8 +564,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Select a library");
 
-            if (_getDirectory() != null) {
-                chooser.setCurrentDirectory(_getDirectory());
+            if (getLastDirectory() != null) {
+                chooser.setCurrentDirectory(getLastDirectory());
             } else {
                 // The default on Windows is to open at user.home, which is
                 // typically an absurd directory inside the O/S installation.
@@ -590,7 +590,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
                             .toplevel();
                     UserActorLibrary.openLibrary(configuration, file);
 
-                    _setDirectory(chooser.getCurrentDirectory());
+                    setLastDirectory(chooser.getCurrentDirectory());
                 } catch (Throwable throwable) {
                     MessageHandler.error("Library import failed.", throwable);
                 }

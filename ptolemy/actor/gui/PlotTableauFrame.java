@@ -53,6 +53,7 @@ import javax.swing.filechooser.FileFilter;
 
 import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.gui.ImageExportable;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.InternalErrorException;
@@ -61,7 +62,6 @@ import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotFormatter;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.ImageExportable;
 
 ///////////////////////////////////////////////////////////////////
 //// PlotTableauFrame
@@ -380,7 +380,7 @@ public class PlotTableauFrame extends TableauFrame implements Printable,
 
         //         if (_exportPDFAction == null) {
         //             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
-        //             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+        //             String exportPDFActionClassName = "ptolemy.vergil.basic.export.itextpdf.ExportPDFAction";
         //             try {
         //                 Class exportPDFActionClass = Class
         //                         .forName(exportPDFActionClassName);

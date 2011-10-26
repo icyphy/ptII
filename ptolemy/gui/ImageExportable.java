@@ -26,11 +26,12 @@
 
  */
 
-package ptolemy.vergil.basic;
+package ptolemy.gui;
 
 import java.awt.print.PrinterException;
 import java.io.IOException;
 import java.io.OutputStream;
+
 
 ///////////////////////////////////////////////////////////////////
 //// ImageExportable
@@ -41,7 +42,6 @@ import java.io.OutputStream;
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
- * @see ptolemy.vergil.basic.ExportImage
  */
 public interface ImageExportable {
 

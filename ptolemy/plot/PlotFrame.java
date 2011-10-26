@@ -62,8 +62,8 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
+import ptolemy.gui.ImageExportable;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.ImageExportable;
 
 // TO DO:
 //   - Add a mechanism for combining two plots into one

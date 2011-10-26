@@ -34,13 +34,13 @@
   <!-- Used in BasicGraphFrame.java -->
   <property name="_exportPDFActionClassName"
             class="ptolemy.data.expr.StringParameter"
-            value="ptolemy.vergil.basic.itextpdf.ExportPDFAction"/>
+            value="ptolemy.vergil.basic.export.itextpdf.ExportPDFAction"/>
 
   <!-- Add support for exporting HTML. -->
   <!-- Used in BasicGraphFrame.java -->
   <property name="_exportHTMLActionClassName"
             class="ptolemy.data.expr.StringParameter"
-            value="ptolemy.vergil.basic.ExportHTMLAction"/>
+            value="ptolemy.vergil.basic.export.html.ExportHTMLAction"/>
             
   <!-- Use the KIELER graph layout algorithms. -->
   <!--  Used in BasicGraphFrame.java-->

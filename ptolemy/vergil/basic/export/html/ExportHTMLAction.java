@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.vergil.basic;
+package ptolemy.vergil.basic.export.html;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -58,6 +58,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.modal.ModalModel;
+import ptolemy.gui.ImageExportable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -69,6 +70,9 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.BasicGraphFrame.FolderFileFilter;
+import ptolemy.vergil.basic.export.HTMLExportable;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.JCanvas;
@@ -188,7 +192,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         fileDialog.setDialogTitle("Choose a directory to write HTML...");
         fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        File modelDirectory = _basicGraphFrame._getDirectory();
+        File modelDirectory = _basicGraphFrame.getLastDirectory();
         if (modelDirectory != null) {
             fileDialog.setCurrentDirectory(modelDirectory);
         } else {
@@ -351,7 +355,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         // if they are available. The files are under an MIT license,
         // which is compatible with the Ptolemy license.
         File jsDirectory = FileUtilities.nameToFile(
-                "$CLASSPATH/ptolemy/vergil/javascript", null);
+                "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript", null);
         boolean warn = true;
         // We assume that if the directory exists, then the files exist.
         if (!usePtWebsite && jsDirectory.isDirectory()) {
@@ -366,14 +370,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                 warn = true;
             } else {
                 URL jqueryFile = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/vergil/javascript/js/jquery.js",
+                        "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/js/jquery.js",
                         null, null);
                 FileUtilities.binaryCopyURLToFile(jqueryFile, new File(
                         jsTargetDirectory, "jquery.js"));
 
                 URL lightboxFile = FileUtilities
                         .nameToURL(
-                                "$CLASSPATH/ptolemy/vergil/javascript/js/jquery.lightbox-0.5.pack.js",
+                                "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/js/jquery.lightbox-0.5.pack.js",
                                 null, null);
                 FileUtilities.binaryCopyURLToFile(lightboxFile, new File(
                         jsTargetDirectory, "jquery.lightbox-0.5.pack.js"));
@@ -389,7 +393,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             } else {
                 URL jqueryFile = FileUtilities
                         .nameToURL(
-                                "$CLASSPATH/ptolemy/vergil/javascript/css/jquery.lightbox-0.5.css",
+                                "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/css/jquery.lightbox-0.5.css",
                                 null, null);
                 FileUtilities.binaryCopyURLToFile(jqueryFile, new File(
                         cssTargetDirectory, "jquery.lightbox-0.5.css"));
@@ -407,7 +411,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             } else {
                 URL jqueryFile = FileUtilities
                         .nameToURL(
-                                "$CLASSPATH/ptolemy/vergil/javascript/images/lightbox-btn-close.gif",
+                                "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/images/lightbox-btn-close.gif",
                                 null, null);
                 FileUtilities.binaryCopyURLToFile(jqueryFile, new File(
                         imagesTargetDirectory, "lightbox-btn-close.gif"));

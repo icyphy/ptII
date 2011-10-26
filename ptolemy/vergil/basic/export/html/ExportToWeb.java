@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.basic;
+package ptolemy.vergil.basic.export.html;
 
 import java.io.File;
 import java.util.HashSet;
@@ -51,6 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.BasicGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportToWeb

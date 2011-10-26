@@ -107,6 +107,7 @@ import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.ImageExportable;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.MemoryCleaner;
 import ptolemy.gui.Query;
@@ -136,6 +137,7 @@ import ptolemy.moml.MoMLVariableChecker;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.export.HTMLExportable;
 import ptolemy.vergil.icon.DesignPatternIcon;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -928,6 +930,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public JGraph getJGraph() {
         return _jgraph;
     }
+    
+    /** Get the directory that was last accessed by this window.
+     *  @see #_setDirectory
+     *  @return The directory last accessed.
+     */
+    public File getLastDirectory() {
+        // NOTE: This method is necessary because we wish to have
+        // this accessed by inner classes, and there is a bug in
+        // jdk1.2.2 where inner classes cannot access protected
+        // static members.
+        return _directory;
+    }
 
     /** Return the JCanvasPanner instance.
      *  @return the JCanvasPanner
@@ -1248,6 +1262,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public void setJGraph(JGraph jgraph) {
         _jgraph = jgraph;
     }
+    
+    /** Set the directory that was last accessed by this window.
+     *  @see #getLastDirectory
+     *  @param directory The directory last accessed.
+     */
+    public void setLastDirectory(File directory) {
+        // NOTE: This method is necessary because we wish to have
+        // this accessed by inner classes, and there is a bug in
+        // jdk1.2.2 where inner classes cannot access protected
+        // static members.
+        _directory = directory;
+    }
 
     /** Undo the last undoable change on the model.
      *  @see #redo()
@@ -1298,7 +1324,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Write an image to the specified output stream in the specified format.
      *  Supported formats include at least "gif" and "png", standard image file formats.
      *  The image is a rendition of the current view of the model.
-     *  <p>{@link ptolemy.vergil.basic.ExportImage} is a standalone class
+     *  <p>{@link ptolemy.vergil.basic.export.image.ExportImage} is a standalone class
      *  that exports an image of a model.
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
@@ -1724,7 +1750,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
 //                 if (_exportPDFAction == null) {
 //                     //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
-//                     String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+//                     String exportPDFActionClassName = "ptolemy.vergil.basic.export.itextpdf.ExportPDFAction";
 //                     try {
 //                         Class exportPDFActionClass = Class
 //                                 .forName(exportPDFActionClassName);
@@ -1909,13 +1935,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Get the directory that was last accessed by this window.
      *  @see #_setDirectory
      *  @return The directory last accessed.
+     * @deprecated Use {@link #getLastDirectory()} instead
      */
     protected File _getDirectory() {
-        // NOTE: This method is necessary because we wish to have
-        // this accessed by inner classes, and there is a bug in
-        // jdk1.2.2 where inner classes cannot access protected
-        // static members.
-        return _directory;
+        return getLastDirectory();
     }
 
     /** Return the graph controller associated with this frame.
@@ -2437,15 +2460,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Set the directory that was last accessed by this window.
-     *  @see #_getDirectory
+     *  @see #getLastDirectory
      *  @param directory The directory last accessed.
+     * @deprecated Use {@link #setLastDirectory(File)} instead
      */
     protected void _setDirectory(File directory) {
-        // NOTE: This method is necessary because we wish to have
-        // this accessed by inner classes, and there is a bug in
-        // jdk1.2.2 where inner classes cannot access protected
-        // static members.
-        _directory = directory;
+        setLastDirectory(directory);
     }
 
     /** Enable or disable drop into.
@@ -3153,7 +3173,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //// ExportMapAction
 
     /** Accept only folders in a file browser. */
-    static class FolderFileFilter extends FileFilter {
+    static public class FolderFileFilter extends FileFilter {
         /** Accept only folders.
          *  @param fileOrDirectory The file or directory to be checked.
          *  @return true if the file is a directory.

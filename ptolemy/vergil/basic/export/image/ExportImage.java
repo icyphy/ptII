@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.basic;
+package ptolemy.vergil.basic.export.image;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,6 +44,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.BasicGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportImage

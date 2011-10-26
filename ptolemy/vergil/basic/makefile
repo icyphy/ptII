@@ -32,8 +32,7 @@
 
 ME =		ptolemy/vergil/basic
 
-# PTITEXTPDF_DIR is set to itextpdf if iText.jar was found by configure.
-DIRS =		img $(PTITEXTPDF_DIR) layout test
+DIRS =		export img layout test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -51,6 +50,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+		export/export.jar \
 		img/img.jar \
 		layout/layout.jar
 
@@ -66,15 +66,10 @@ JSRCS = \
 	DocViewerFactory.java \
 	EditorDropTarget.java \
 	EditorDropTargetListener.java \
-	ExportHTMLAction.java \
-	ExportImage.java \
-	ExportToWeb.java \
 	ExtendedGraphFrame.java \
 	GetDocumentationAction.java \
-	HTMLExportable.java \
 	IconController.java \
 	IGuiAction.java \
-	ImageExportable.java \
 	KeplerDocumentationAttribute.java \
 	LocatableNodeController.java \
 	LocatableNodeDragInteractor.java \
@@ -105,11 +100,6 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'BasicGraphController$$2.class' \
 	'BasicGraphController$$3.class' \
-	'ExportHTMLAction$$1.class' \
-	'ExportHTMLAction$$IconVisibleLocation.class' \
-	'ExportToWeb$$1.class' \
-	'ExportToWeb$$2.class' \
-	'ExportToWeb$$3.class' \
 	'LookInsideAction$$1.class' \
 	'BasicGraphController$$1.class' \
 	'BasicGraphController$$OpenBaseClassAction.class' \
@@ -154,11 +144,6 @@ OPTIONAL_FILES = \
 	'DependencyHighlighter$$HighlightDependents.class' \
 	'EditorDropTarget$$1.class' \
 	'EditorDropTarget$$DTListener.class' \
-	'ExportImage$$1.class' \
-	'ExportImage$$2.class' \
-	'ExportImage$$3.class' \
-	'ExportImage$$4.class' \
-	'ExportImage$$5.class' \
 	'ExtendedGraphFrame$$FullScreenAction.class' \
 	'IconController$$IconRenderer$$1.class' \
 	'IconController$$IconRenderer.class' \

@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.basic;
+package ptolemy.vergil.basic.export;
 
 import java.awt.print.PrinterException;
 import java.io.File;

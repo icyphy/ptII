@@ -1929,7 +1929,7 @@ fi
 #--------------------------------------------------------------------
 
 # Set to itextpdf and used in
-# $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
+# $PTII/ptolemy/vergil/basic/export/makefile if iText.jar was found
 PTITEXTPDF_DIR=
 
 # iText PDF jar file.  iText is from
@@ -1937,7 +1937,7 @@ PTITEXTPDF_DIR=
 PTITEXTPDF_JAR=
 
 # We only need to look for iText.jar if $ITEXTPDF_USER_DIR exists
-ITEXTPDF_USER_DIR="$PTII/ptolemy/vergil/basic/itextpdf"
+ITEXTPDF_USER_DIR="$PTII/ptolemy/vergil/basic/export/itextpdf"
 if test ! -d "$ITEXTPDF_USER_DIR"; then
     PT_MSG_STATUS([$ITEXT_USER_DIR is not present,
     so we need not find the iText PDF interface.])
@@ -1951,10 +1951,10 @@ else
     if test -f "$PTITEXTPDF_JAR"; then
 	PT_MSG_RESULT([$PTITEXTPDF_JAR])
 	# Set to itextpdf and used in
-	# $PTII/ptolemy/vergil/basic/makefile if iText.jar is found
+	# $PTII/ptolemy/vergil/basic/export/makefile if iText.jar is found
 	PTITEXTPDF_DIR=itextpdf
         # PTITEXTPDF_PACKAGES is used in ptII/doc/makefile
-	PTITEXTPDF_PACKAGES=ptolemy.vergil.basic.itextpdf
+	PTITEXTPDF_PACKAGES=ptolemy.vergil.basic.export.itextpdf
     fi	
 
     if test "$PTITEXTPDF_DIR" = ""; then
@@ -1973,7 +1973,7 @@ else
 fi
 
 if test -z "$PTITEXTPDF_DIR"; then
-   updateExcludes "ptolemy/vergil/basic/itextpdf/"
+   updateExcludes "ptolemy/vergil/basic/export/itextpdf/"
 else
    updateClasspath "$PTITEXTPDF_JAR"
 fi 
@@ -2664,8 +2664,8 @@ else
 
     if test -f "$PTJXL_JAR"; then
 	PT_MSG_RESULT([$PTJXL_JAR])
-	# Set to itextpdf and used in
-	# $PTII/ptolemy/vergil/basic/makefile if iText.jar is found
+	# Set to excel and used in
+	# $PTII/ptolemy/actor/lib/makefile if iText.jar is found
 	PTEXCEL_DIR=excel
         # PTJXL_PACKAGES is used in ptII/doc/makefile
 	PTEXCEL_PACKAGES=ptolemy.actor.lib.excel
@@ -5598,7 +5598,7 @@ AC_SUBST(PTHOMER_PACKAGES)
 AC_SUBST(PTII)
 
 # Set to itextpdf and used in
-# $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
+# $PTII/ptolemy/vergil/basic/export/makefile if iText.jar was found
 AC_SUBST(PTITEXTPDF_DIR)
 
 # iText PDF jar file.  iText is from

@@ -1,10 +1,10 @@
-# Makefile for exporting Vergil models as javascript, css directory.
+# Makefile for the interface to itextpdf, which implements the Export PDF choice.
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2011 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,35 +30,36 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/javascript/css
+ME =		ptolemy/vergil/basic/export/itextpdf
 
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTITEXTPDF_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	css
-PTCLASSJAR = $(PTPACKAGE).jar
-#PTCLASSALLJAR = 
+PTPACKAGE = 	itextpdf
+PTCLASSJAR =	$(PTPACKAGE).jar
 
+PTCLASSALLJAR = 
 # Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
+PTCLASSALLJARS =
 
-JSRCS =
+JSRCS = \
+	ExportPDFAction.java
 
 OTHER_FILES_TO_BE_JARED = \
-	jquery.lightbox-license.htm \
-	jquery.lightbox-0.5.css \
-	logo_code.gif
+	itextpdf-copyright.htm
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -67,7 +68,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'ExportPDFAction$$ExtensionFileFilter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

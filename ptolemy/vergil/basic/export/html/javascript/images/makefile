@@ -30,12 +30,12 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/javascript/images
+ME =		ptolemy/vergil/basic/export/html/javascript/images
 
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
