@@ -423,10 +423,7 @@ DEVEL_FUZZY_JARS = \
 	ptolemy/actor/lib/logic/fuzzy/fuzzy.jar \
 	ptolemy/actor/lib/logic/fuzzy/demo/demo.jar \
 
-# Jar files for the New Associative Object Model of Integration (NAOMI) 
-# http://chess.eecs.berkeley.edu/naomi
-NAOMI_JARS = \
-	lib/naomi.jar \
+RTMAUDE_JARS = \
 	ptolemy/codegen/rtmaude/rtmaude.jar 
 
 PDFRENDERER_JARS = ptolemy/vergil/pdfrenderer/pdfrenderer.jar \
@@ -469,6 +466,7 @@ FULL_8_1_JARS = \
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
 FULL_ONLY_JNLP_JARS = \
 	$(CODEGEN_JARS) \
+	$(RTMAUDE_JARS) \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
 	doc/img/img.jar \
@@ -491,7 +489,6 @@ FULL_ONLY_JNLP_JARS = \
 	$(FUZZY_JARS) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
-	$(NAOMI_JARS) \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
