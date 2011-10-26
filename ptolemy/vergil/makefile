@@ -33,7 +33,7 @@ ME =		ptolemy/vergil
 
 # PTPDFRENDERER_DIR is set to pdfrenderer by configure
 DIRS = 		toolbox basic actor kernel fsm gt debugger \
-		icon javascript modal $(PTPDFRENDERER_DIR) \
+		icon modal $(PTPDFRENDERER_DIR) \
 		ontologies ptera tree tdl \
 		unit test
 
@@ -58,7 +58,6 @@ PTAUXALLJARS = \
 		icon/icon.jar \
 		kernel/kernel.jar \
 		debugger/debugger.jar \
-		javascript/javascript.jar \
 		modal/modal.jar \
 		toolbox/toolbox.jar \
 		tree/tree.jar \
