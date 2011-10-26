@@ -36,7 +36,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.vergil.basic.RelativeLocatable;
 
 ///////////////////////////////////////////////////////////////////
 //// VisibleAttribute

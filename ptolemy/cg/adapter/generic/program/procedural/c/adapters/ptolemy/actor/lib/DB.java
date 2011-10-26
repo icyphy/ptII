@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
 //////////////////////////////////////////////////////////////////////////
 //// DB

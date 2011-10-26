@@ -28,10 +28,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
-import java.util.ArrayList;
-
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Generate Java code for an actor that publishes tokens on a named channel.

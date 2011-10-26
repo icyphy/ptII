@@ -28,10 +28,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
-import java.util.ArrayList;
-
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Generate C code for an actor that produces an output token on

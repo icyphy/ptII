@@ -36,9 +36,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;

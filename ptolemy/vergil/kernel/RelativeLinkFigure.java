@@ -37,7 +37,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import ptolemy.kernel.util.RelativeLocation;
-
 import diva.canvas.AbstractFigure;
 import diva.canvas.CompositeFigure;
 

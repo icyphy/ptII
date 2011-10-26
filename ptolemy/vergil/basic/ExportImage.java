@@ -43,7 +43,6 @@ import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
