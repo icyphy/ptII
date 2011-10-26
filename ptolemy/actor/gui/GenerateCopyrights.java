@@ -27,11 +27,11 @@
 package ptolemy.actor.gui;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.RecordToken;
@@ -97,24 +97,40 @@ public class GenerateCopyrights {
         // A Map of copyrights, where the key is a URL naming
         // the copyright and the value is a List of entities
         // that use that as a copyright.
-        Map copyrightsMap = new HashMap();
+        TreeMap<String, Set <String>> copyrightsMap = new TreeMap<String, Set<String>>();
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
         _addIfPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
                 "lib/ojdcheck-license.htm");
+
+        _addIfPresent(copyrightsMap, "com.sun.jna.Pointer",
+                "lib/jna-license.htm");
+
         _addIfPresent(copyrightsMap, "diva.gui.ExtensionFileFilter",
                 "diva/gui/ExtensionFileFilter-license.htm");
+
+        _addIfPresent(copyrightsMap, "interfaces.util.ChicUI",
+                "lib/chic-license.htm");
+
         _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
+
         _addIfPresent(copyrightsMap, "mescal.domains.mescalPE.kernel.parser",
                 "mescal/configs/doc/cup-copyright.htm");
+
         _addIfPresent(copyrightsMap, "org.json.JSONObject",
                 "org/json/json-license.htm");
+
         _addIfPresent(copyrightsMap, "org.junit.runner.JUnitCore",
                 "lib/junit-license.htm");
+
+        _addIfPresent(copyrightsMap, "org.netbeans.api.visual.widget.Scene",
+                "lib/netbeans-visual-library-license.htm");
+
         _addIfPresent(copyrightsMap, "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.run.PtolemyFormEditor",
@@ -152,6 +168,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
                 "ptolemy/actor/lib/x10/x10-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "ptolemy.actor.ptalon.PtalonActor",
+                "ptolemy/actor/ptalon/ptalon-copyright.html");
+
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.eclipse.ast.TypeAnalyzer",
                 "ptolemy/backtrack/eclipse/ast/eclipse-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.util.ClassFileLoader",
@@ -187,8 +206,8 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.media.Audio",
                 "ptolemy/media/Audio-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.ptolemy.actor.ptalon.PtalonActor",
-                "ptolemy/actor/ptalon/ptalon-copyright.html");
+        _addIfPresent(copyrightsMap, "ptolemy.util.test.junit.TclTests",
+                "lib/JUnitParams-license.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.ExportHTMLAction",
                 "ptolemy/vergil/javascript/javascript-license.htm");
@@ -388,7 +407,7 @@ public class GenerateCopyrights {
      * @param copyrightPath The path or URL to the copyright for
      * the library
      */
-    private static void _addIfPresent(Map copyrightsMap,
+    private static void _addIfPresent(Map<String,Set<String>> copyrightsMap,
             String applicationClassName, String libraryClassName,
             String copyrightPath) {
         // If actor.lib.database.DatabaseManager is present, then
@@ -411,19 +430,20 @@ public class GenerateCopyrights {
      * @param copyrightPath The path or URL to the copyright for
      * the library.
      */
-    private static void _addIfPresent(Map copyrightsMap, String className,
+    private static void _addIfPresent(Map<String,Set<String>> copyrightsMap,
+            String className,
             String copyrightPath) {
         try {
             Class.forName(className);
 
-            Set entitiesSet = (Set) copyrightsMap.get(copyrightPath);
+            Set<String> entitiesSet = copyrightsMap.get(copyrightPath);
 
             if (entitiesSet == null) {
                 // This is the first time we've seen this copyright,
                 // add a key/value pair to copyrights, where the key
                 // is the URL of the copyright and the value is Set
                 // of entities that correspond with that copyright.
-                entitiesSet = new HashSet();
+                entitiesSet = new HashSet<String>();
 
                 entitiesSet.add(className);
                 copyrightsMap.put(copyrightPath, entitiesSet);
