@@ -54,6 +54,7 @@ JSRCS = \
 	PtidesBasicReceiver.java \
 	PtidesEvent.java \
 	PtidesListEventQueue.java \
+	PtidesMulticoreDirector.java \
 	PtidesNoPhysicalTimeDirector.java \
 	PtidesPreemptiveEDFDirector.java \
 	PtidesPreemptiveUserEDFDirector.java \

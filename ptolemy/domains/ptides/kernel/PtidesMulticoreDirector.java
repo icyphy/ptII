@@ -36,8 +36,12 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.SuperdenseDependency;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -48,6 +52,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+///////////////////////////////////////////////////////////////////
+//// PtidesMulticoreDirector
 /**
  *  This director simulates the execution of the Ptides programming model
  *  on multi-core platforms. The goal is to provide a framework for evaluation
@@ -62,34 +68,60 @@ import java.util.Set;
  */
 public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {    
 
+    /** Construct a PtidesMulticoreDirector in the given container with 
+     *  the given name. Parameters for the director are also initialized.
+     *  @param container Container of the director.
+     *  @param name Name of this director.
+     *  @exception IllegalActionException If the constructor of the super 
+     *  class throws it or there is an error initializing parameters.
+     *  @exception NameDuplicationException If the constructor of the super 
+     *  class throws it.
+     */
     public PtidesMulticoreDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _initParameters();
     }
+   
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
     
-    public void initialize() throws IllegalActionException {
-        
+    /** The number of cores available for event processing (actor firing). */
+    public Parameter coresForEventProcessing;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Initialize all the actors and variables. Perform static analysis on 
+     *  superdense dependencies between ports in the topology.
+     *  @exception IllegalActionException If the initialize() method of
+     *  the super class throws it.
+     */
+    public void initialize() throws IllegalActionException {     
         super.initialize();
         _calculateSuperdenseDependenices();
-        
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
     
     /** Calculate the superdense dependency (minimum model time delay) between
      * a source input port and the input port group of a destination input 
      * port. The Floyd-Warshall algorithm is used to calculate the minimum 
-     * model time delay paths. 
-     * @throws IllegalActionException */
-    //TODO: Code assumes code generation is at atomic actor level.
-    //TODO: multiports?
+     * model time delay paths.
+     * @exception IllegalActionException If the container is not a
+     * TypedCompositeActor. 
+     */
     protected void _calculateSuperdenseDependenices() 
             throws IllegalActionException {
-       
-        // For debugging.
-        NamedObj dir = getContainer();
+        
+        //TODO: Code assumes code generation is at atomic actor level.
+        //TODO: multiports?
         
         if (!(getContainer() instanceof TypedCompositeActor)) {
-            throw new IllegalActionException(getContainer(), getContainer() +
-                    "is not a TypedCompositeActor");
+            throw new IllegalActionException(getContainer(), 
+                    getContainer().getFullName() + 
+                    " is not a TypedCompositeActor");
         }
 
         // Initialize HashMap.
@@ -107,6 +139,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                 getContainer()).deepEntityList()) {
             
             CausalityInterface actorCausality = actor.getCausalityInterface();
+            
             for(TypedIOPort inputPort: 
                     (List<TypedIOPort>)(actor.inputPortList())) {
                 
@@ -114,7 +147,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                 _superdenseDependencyPair.put(inputPort, 
                         new HashMap<TypedIOPort,SuperdenseDependency>());
                 
-                // Add to list.
+                // Add input port to list.
                 inputPorts.add(inputPort);
                 
                 // Set dependency with self.
@@ -230,12 +263,12 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
             StringBuffer buf = new StringBuffer();
             buf.append("\t");
             for(TypedIOPort srcPort : inputPorts) {
-                buf.append(srcPort.getName(dir) + "\t");
+                buf.append(srcPort.getName(getContainer()) + "\t");
             }
             _debug(buf.toString());
             for(TypedIOPort srcPort : inputPorts) {
                 buf = new StringBuffer();
-                buf.append(srcPort.getName(dir) + "\t");
+                buf.append(srcPort.getName(getContainer()) + "\t");
                 for(TypedIOPort destPort : inputPorts) {
                     buf.append(_getSuperdenseDependencyPair(srcPort, destPort)
                             .timeValue() + "(" +
@@ -245,46 +278,72 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                 _debug(buf.toString());
             }
         }
-        
     }
     
+    /** Return the superdense dependency between a source input port and the
+     * input port group of a destination input port. If the mapping does not
+     * exist, it is assumed to be SuperdenseDependency.OPLUS_IDENTITY.
+     * @param source Source input port.
+     * @param destination Destination input port.
+     * @return Superdense dependency.
+     */
+    protected SuperdenseDependency _getSuperdenseDependencyPair(
+            TypedIOPort source, TypedIOPort destination) {
+        if(_superdenseDependencyPair.containsKey(source) &&
+                _superdenseDependencyPair.get(source).containsKey(destination))
+        {
+            return _superdenseDependencyPair.get(source).get(destination);
+        } else {
+            return SuperdenseDependency.OPLUS_IDENTITY;
+        }
+    }
+    
+    /** Store the superdense dependency between a source input port and the
+     * input port group of a destination input port. If the mapping does not
+     * exist, it is assumed to be SuperdenseDependency.OPLUS_IDENTITY.
+     * @param source Source input port.
+     * @param destination Destination input port.
+     * @param dependency Superdense dependency.
+     */
+    protected void _putSuperdenseDependencyPair(TypedIOPort source, 
+            TypedIOPort destination, SuperdenseDependency dependency) {
+        if(!dependency.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
+            _superdenseDependencyPair.get(source).put(destination, dependency);
+        }
+    }
+        
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
     
     /** Store the superdense dependency between pairs of input ports using 
      * nested Maps. Providing the source input as a key will return a Map 
      * value, where the destination input port can be used as a key to return 
      * the superdense dependency. 
      */
-    private Map<TypedIOPort, Map<TypedIOPort,SuperdenseDependency>> 
+    protected Map<TypedIOPort, Map<TypedIOPort,SuperdenseDependency>> 
             _superdenseDependencyPair;
     
-    /** Store a superdense dependency between a source input port and the
-     * input port group of a destination input port.
-     * 
-     * @param src The source input port.
-     * @param dest The destination input port.
-     * @param dep The superdense dependency.
-     */
-    protected void _putSuperdenseDependencyPair(TypedIOPort src, 
-            TypedIOPort dest, SuperdenseDependency dep) {
-        if(!dep.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
-            _superdenseDependencyPair.get(src).put(dest, dep);
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
     
-    /** Return the superdense dependency between a source input port and the
-     * input port group of a destination input port.
-     * 
-     * @param src Source input port.
-     * @param dest Destination input port.
-     * @return Superdense dependency.
-     */
-    protected SuperdenseDependency _getSuperdenseDependencyPair(
-            TypedIOPort src, TypedIOPort dest) {
-        if(_superdenseDependencyPair.containsKey(src) &&
-                _superdenseDependencyPair.get(src).containsKey(dest)) {
-            return _superdenseDependencyPair.get(src).get(dest);
-        } else {
-            return SuperdenseDependency.OPLUS_IDENTITY;
-        }
+    /** Initialize parameters to default values. */
+    private void _initParameters() {    
+        try {
+            coresForEventProcessing = 
+                    new Parameter(this, "coresForEventProcessing");
+            coresForEventProcessing.setExpression("4");
+            coresForEventProcessing.setTypeEquals(BaseType.INT); 
+        } catch (KernelException e) {
+            throw new InternalErrorException("Cannot set parameter:\n"
+                    + e.getMessage());
+        }    
     }
+        
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 }
