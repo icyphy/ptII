@@ -205,7 +205,11 @@ public abstract class PtolemyFrame extends TableauFrame {
             }
         } else {
             _model = model;
-            _model.setModelErrorHandler(new BasicModelErrorHandler());
+            if (model.getContainer() == null) {
+                if (model.getModelErrorHandler() == null) {
+                    _model.setModelErrorHandler(new BasicModelErrorHandler());
+                }
+            }
 
             List attrList = _model.attributeList(UndoStackAttribute.class);
 
