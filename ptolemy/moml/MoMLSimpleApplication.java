@@ -34,6 +34,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.injection.ActorModuleInitializer;
+import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Workspace;
@@ -113,6 +114,15 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // parameters if the xml file was specified as an absolute path.
         _toplevel = (CompositeActor) _parser.parse(null, new File(xmlFileName)
                 .toURI().toURL());
+
+        // If the model is a top level, and a model error handler has not been set,
+        // then set a BasicModelErrorHandler.
+        // (PtolemyFrame has similar code.)
+        if (_toplevel.getContainer() == null) {
+            if (_toplevel.getModelErrorHandler() == null) {
+                _toplevel.setModelErrorHandler(new BasicModelErrorHandler());
+            }
+        }
 
         _manager = new Manager(_toplevel.workspace(), "MoMLSimpleApplication");
         _toplevel.setManager(_manager);
