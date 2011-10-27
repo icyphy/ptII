@@ -496,7 +496,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // known to disabled, so we cannot return a transition (even the
         // default transition).
         if (_debugging) {
-            _debug("No enabled transitions (some are not known to be diabled).");
+            _debug("No enabled transitions.");
+            if (_foundUnknown) {
+                _debug("(some are not known to be disabled).");
+            }
         }
         return new LinkedList();
     }

@@ -65,7 +65,8 @@ import ptolemy.kernel.util.Workspace;
 /**
  A Transition has a source state and a destination state. A
  transition has a guard expression, which is evaluated to a boolean value.
- Whenever a transition is enabled, it must be taken immediately.
+ Whenever a transition out of the current state
+ is enabled, it must be taken in the current firing.
  That is, unlike some state machines formalisms, our guard is not just
  an enabler for the transition but rather a trigger for the transition.
 
@@ -142,19 +143,20 @@ import ptolemy.kernel.util.Workspace;
  must be the only enabled transition.
  <p>
  The <i>immediateTransition</i> parameter, if given a value true, specifies
- that this transition is may be taken as soon as its source state is entered.
- This may lead to transient states.
+ that this transition is may be taken as soon as its source state is entered,
+ in the same iteration. This may lead to transient states, where a state is
+ passed through without ever becoming the current state.
  <p>
  The <i>defaultTransition</i> parameter, if given a value true, specifies
- that this transition is enabled if and only if no other non-default
- transition is enabled.
+ that this transition is enabled if no other non-default
+ transition is enabled and if its guard evaluates to true.
  <p>
  The <i>errorTransition</i> parameter, if given a value true, specifies
- that this transition is enabled if and only if the refinement of the source state of
+ that this transition is enabled if the refinement of the source state of
  the transition throws a model error while executing. The default value is a boolean
  token with value false.
 
- @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
+ @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng, Christian Motika
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (hyzheng)
@@ -225,30 +227,16 @@ public class Transition extends ComponentRelation {
             // expression
             preemptive.getToken();
             workspace().incrVersion();
-            //FIXME: cmot see comment @immediate
-            if (!this.isPreemptive()) {
-                if (immediate != null) {
-                    immediate.setToken(BooleanToken.FALSE); 
-                }
-            }
         } else if (attribute == immediate) {
             _immediate = ((BooleanToken) immediate.getToken()).booleanValue();
-            // If this is an immediate transition, enforce it is also a
-            // preemptive one, because we can only handle immediate preemptive
-            // transition at this time.
-            // FIXME: cmot, does this only enforce GUI created immediate transitions to be
-            // preemptive? Should we need a runtime error?
-            if (_immediate) {
-                if (preemptive != null) {
-                    preemptive.setToken(BooleanToken.TRUE);
-                }
-            }
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
                     .booleanValue();
         } else if (attribute == errorTransition) {
             _errorTransition = ((BooleanToken) errorTransition.getToken())
                     .booleanValue();
+            // FIXME: The following needs to be rethought.
+            // Discarding user data here. Undo will not work. This is bogus.
             if (_errorTransition == true) {
                 guardExpression.setExpression("");
                 annotation.setExpression("");
@@ -261,13 +249,6 @@ public class Transition extends ComponentRelation {
                 immediate.setToken(BooleanToken.FALSE);
                 defaultTransition.setToken(BooleanToken.FALSE);
                 nondeterministic.setToken(BooleanToken.FALSE);
-            }
-            if (_errorTransition == false) {
-                // should everything be cleared here?
-                // I want the boxed to be cleared if it was initially true and then set to false
-                // however this will be called when the model is opened and I don't want to clear
-                // the parameters set by the user then.. What if they're not at all interested in
-                // error stuff.. ie.. they're not using transitions for timed models
             }
         } else if (attribute == guardExpression) {
             // The guard expression can only be evaluated at run
@@ -979,7 +960,7 @@ public class Transition extends ComponentRelation {
 
     // Set to true if the transition should be checked
     // as son as the source state is entered. This may lead 
-    // to possibly transient states.
+    // to transient states.
     private boolean _immediate = false;
 
     private boolean _nondeterministic = false;
