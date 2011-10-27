@@ -195,14 +195,26 @@ public class TransitionController extends BasicEdgeController {
                 } catch (IllegalActionException e) {
                     // Ignore erroneous parameter value.
                 }
-                if (transition.isPreemptive()) {
+                if (transition.isPreemptive() && !transition.isImmediate()) {
                     Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0,
                             Color.red);
                     blob.setFilled(true);
                     c.setTailEnd(blob);
                 }
-                if (transition.isImmediate()) {
+                if (transition.isImmediate() && !transition.isPreemptive()) {
                     Blob blob = new Blob(0, 0, 0, Blob.BLOB_DIAMOND, 5.0,
+                            Color.red);
+                    blob.setFilled(true);
+                    c.setTailEnd(blob);
+                }
+                if (transition.isImmediate() && transition.isPreemptive()) {
+                    Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE_DIAMOND, 5.0,
+                            Color.red);
+                    blob.setFilled(true);
+                    c.setTailEnd(blob);
+                }
+                if (transition.isErrorTransition()) {
+                    Blob blob = new Blob(0, 0, 0, Blob.STAR, 5.0,
                             Color.red);
                     blob.setFilled(true);
                     c.setTailEnd(blob);
