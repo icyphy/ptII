@@ -50,14 +50,14 @@ import ptolemy.util.StringUtilities;
  frequently desirable but inherently platform-specific -- opening a
  default browser -- and allow programmers (you, for example) to do so
  without worrying about dropping into native code or doing anything
- else similarly evil.
+ else similarly evil.</p>
 
  <p> Anyway, this code is completely in Java and will run on all JDK
  1.1-compliant systems without modification or a need for additional
  libraries.  All classes that are required on certain platforms to
  allow this to run are dynamically loaded at runtime via reflection
  and, if not found, will not cause this to do anything other than
- returning an error when opening the browser.
+ returning an error when opening the browser.</p>
 
 
  <p> There are certain system requirements for this class, as it's
@@ -71,9 +71,9 @@ import ptolemy.util.StringUtilities;
  On Windows, it only runs under Win32 systems (Windows 95, 98, and NT
  4.0, as well as later versions of all).  On other systems, this drops
  back from the inherently platform-sensitive concept of a default
- browser and simply attempts to launch Firefox via a shell command.
+ browser and simply attempts to launch Firefox via a shell command.</p>
 
- </blockquote>
+ <blockquote>
 
  <p> This code is Copyright 1999-2001 by Eric Albert (ejalbert@cs.stanford.edu)
  and may be redistributed or modified in any form without restrictions as
@@ -83,7 +83,7 @@ import ptolemy.util.StringUtilities;
  but that is more out of curiosity than anything and is not required.  This
  software includes no warranty.  The author is not responsible for any
  loss of data or functionality or any adverse or unexpected effects of
- using this software.
+ using this software.</p>
 
  <p>
  Credits:
@@ -99,7 +99,7 @@ import ptolemy.util.StringUtilities;
  <p> On November 3, 2003, BrowserLauncher was downloaded from 
  <a href="http://browserlauncher.sourceforge.net/">http://browserlauncher.sourceforge.net/</a>.
 That URL no longer exists, there is a replacement package which is LGPL'd.
-See <a href="http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/">http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/</code> for the original web page.
+See <a href="http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/">http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/</code></a> for the original web page.</p>
 
 
 
