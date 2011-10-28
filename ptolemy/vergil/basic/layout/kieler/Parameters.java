@@ -114,10 +114,10 @@ public class Parameters {
             if (interactionMode != null) {
                 // The switch cases fall through on purpose! 
                 switch (interactionMode) {
-                case Order:
+                case Full:
                     parentLayout.setProperty(Properties.CROSSMIN,
                             CrossingMinimizationStrategy.INTERACTIVE);
-                case Layers:
+                case Columns:
                     parentLayout.setProperty(Properties.NODE_LAYERING,
                             LayeringStrategy.INTERACTIVE);
                 case Cycles:

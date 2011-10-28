@@ -56,9 +56,9 @@ public class LayoutConfiguration extends Attribute {
         /** User positioning affects cycle detection. */
         Cycles,
         /** User positioning affects cycle detection and node layering. */
-        Layers,
+        Columns,
         /** User positioning affects cycle detection, node layering, and node order. */
-        Order;
+        Full;
     }
     
     /**
