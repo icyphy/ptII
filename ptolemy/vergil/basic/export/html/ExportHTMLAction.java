@@ -71,7 +71,6 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.basic.BasicGraphFrame.FolderFileFilter;
 import ptolemy.vergil.basic.export.HTMLExportable;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -109,14 +108,28 @@ import diva.graph.GraphController;
  *       header text, which can be overridden to provide
  *       other JavaScript function definitions (see below)
  *       <p>
- *  FIXME: 
- *  <li> Moreover, if any plot windows are open when the HTML is
- *  exported, then GIF images of those plot windows are linked
- *  to the plotter icons so that clicking on the icons causes
- *  the plot window to appear in a lightbox style.
- *  In addition, if any composite actors are open, then
- *  clicking on the composite actors will take the viewer
- *  to a new HTML page showing the inside of the composite actor.
+ *  <li> A click-on handler that responds to user clicks on an
+ *       object in the model. If there is no customization of this
+ *       action in the model, then by default, upon a click,
+ *       the web page will display any open windows associated
+ *       with the object. Specifically, if the object is a plotter,
+ *       for example, and a plot window is open, then upon clicking
+ *       on the plot, the user will see an image of the plot in
+ *       a lightbox. If the object is a composite actor that has
+ *       an open window, then clicking on the composite actors
+ *       will take the viewer to a new HTML page showing the
+ *       inside of the composite actor.
+ *       <p>
+ *       This behavior can be customized in a number of ways.
+ *       If an object in the model contains a parameter named
+ *       <i>_onClickLinkTo</i>, then the value of this parameter
+ *       specifies a URL to go to in response to a click.
+ *       If there is no <i>_onClickLinkTo</i> but there is an
+ *       <i>_onClickLightBox</i> parameter, then a click on
+ *       object will display the HTML specified by the value
+ *       of the <i>_onClickLightBox</i> parameter in a
+ *       lightbox (a kind of popup that appears in front
+ *       of the current HTML page).
  *  </ul>
  *  <p>
  *  In addition to the actions on the regions of the GIF
@@ -275,7 +288,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *
      *  <p>If the "ptolemy.ptII.exportHTML.usePtWebsite" property is set to true,
      *  then the html files will have Ptolemy website specific Server Side Includes (SSI)
-     *  code and use the jsquery and jsquery.lightbox files from the Ptolemy website.
+     *  code and use the fancybox files from the Ptolemy website.
      *  In addition, a toc.htm file will be created to aid in navigation.
      *  This facility is not likely to be portable to other websites.</p>
      *
@@ -300,294 +313,305 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	PrintWriter toc = null;
 	try {
 
-        // Next, create an HTML file.
+	    // Next, create an HTML file.
 
-        // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
-        // Side Includes (SSI) and use JavaScript libraries from the
-        // Ptolemy website.  FIXME: this is a bit of a hack, we should
-        // use templates instead.
-        boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
+	    // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
+	    // Side Includes (SSI) and use JavaScript libraries from the
+	    // Ptolemy website.  FIXME: this is a bit of a hack, we should
+	    // use templates instead.
+	    boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
 
-        Writer indexWriter = new FileWriter(new File(directory, "index.html"));
-        index = new PrintWriter(indexWriter);
+	    Writer indexWriter = new FileWriter(new File(directory, "index.html"));
+	    index = new PrintWriter(indexWriter);
 
-        Writer tocWriter = new FileWriter(new File(directory, "toc.htm"));
-        toc = new PrintWriter(tocWriter);
-	
+	    Writer tocWriter = new FileWriter(new File(directory, "toc.htm"));
+	    toc = new PrintWriter(tocWriter);
 
-        // Generate a header that will pass the HTML validator at
-        // http://validator.w3.org/
 
-	// We use println so as to get the correct eol character for
-        // the local platform.
+	    // Generate a header that will pass the HTML validator at
+	    // http://validator.w3.org/
 
-        index.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-        index.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
-        index.println("<html>");
-        index.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
+	    // We use println so as to get the correct eol character for
+	    // the local platform.
 
-        // If non-empty, then the path to the SSI files on the ptolemy site
-        //String ssiRoot = "";
-        String ssiRoot = "http://ptolemy.eecs.berkeley.edu";
-        if (usePtWebsite) {
-            if (!_printedSSIMessage) {
-                _printedSSIMessage = true;
-                System.out.println("The ptolemy.ptII.exportHTML.usePtWebsite property is true, generating Ptolemy website SSI code.");
-            }
-            // FIXME: this absolute path is not very safe.  The
-            // problem is that we don't know where $PTII is located on
-            // the website.
-            index.println("<link href=\"http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
-        }
+	    index.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+	    index.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
+	    index.println("<html>");
+	    index.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
 
-        // Needed for the HTML validator.
-        index.println("<title>" + StringUtilities.sanitizeName(model.getName())
-                + "</title>");
-
-        if (usePtWebsite) {
-            index.println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
-            index.println("<!--#include virtual=\"toc.htm\" -->");
-            index.println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
-        }
-
-        // Include jquery and lightbox.
-        // Copy Javascript source files into destination directory,
-        // if they are available. The files are under an MIT license,
-        // which is compatible with the Ptolemy license.
-        File jsDirectory = FileUtilities.nameToFile(
-                "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript", null);
-        boolean warn = true;
-        // We assume that if the directory exists, then the files exist.
-        if (!usePtWebsite && jsDirectory.isDirectory()) {
-            warn = false;
-            System.out.println("Copying files into the js directory.");
-            // Copy files into the "js" directory.
-            File jsTargetDirectory = new File(directory, "js");
-            if (jsTargetDirectory.exists() && !jsTargetDirectory.isDirectory()) {
-                jsTargetDirectory.renameTo(new File(directory, "js.bak"));
-            }
-            if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
-                warn = true;
-            } else {
-                URL jqueryFile = FileUtilities.nameToURL(
-                        "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/js/jquery.js",
-                        null, null);
-                FileUtilities.binaryCopyURLToFile(jqueryFile, new File(
-                        jsTargetDirectory, "jquery.js"));
-
-                URL lightboxFile = FileUtilities
-                        .nameToURL(
-                                "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/js/jquery.lightbox-0.5.pack.js",
-                                null, null);
-                FileUtilities.binaryCopyURLToFile(lightboxFile, new File(
-                        jsTargetDirectory, "jquery.lightbox-0.5.pack.js"));
-            }
-            // Copy files into the "css" directory.
-            File cssTargetDirectory = new File(directory, "css");
-            if (cssTargetDirectory.exists()
-                    && !cssTargetDirectory.isDirectory()) {
-                cssTargetDirectory.renameTo(new File(directory, "css.bak"));
-            }
-            if (!cssTargetDirectory.exists() && !cssTargetDirectory.mkdir()) {
-                warn = true;
-            } else {
-                URL jqueryFile = FileUtilities
-                        .nameToURL(
-                                "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/css/jquery.lightbox-0.5.css",
-                                null, null);
-                FileUtilities.binaryCopyURLToFile(jqueryFile, new File(
-                        cssTargetDirectory, "jquery.lightbox-0.5.css"));
-            }
-            // Copy files into the "images" directory.
-            File imagesTargetDirectory = new File(directory, "images");
-            if (imagesTargetDirectory.exists()
-                    && !imagesTargetDirectory.isDirectory()) {
-                imagesTargetDirectory
-                        .renameTo(new File(directory, "images.bak"));
-            }
-            if (!imagesTargetDirectory.exists()
-                    && !imagesTargetDirectory.mkdir()) {
-                warn = true;
-            } else {
-                URL jqueryFile = FileUtilities
-                        .nameToURL(
-                                "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/images/lightbox-btn-close.gif",
-                                null, null);
-                FileUtilities.binaryCopyURLToFile(jqueryFile, new File(
-                        imagesTargetDirectory, "lightbox-btn-close.gif"));
-            }
-        }
-        if (!usePtWebsite && warn) {
-            MessageHandler
-                    .message("Warning: Cannot find required Javascript files jquery.js"
-                            + " and jquery.lightbox-0.5.pack.js. Perhaps your Ptolemy II"
-                            + " installation does not include them (because they are GPLd."
-                            + " For the exported HTML to work correctly, you will need to find"
-                            + " and copy these files into a subdirectory called 'js' of the"
-                            + " directory into which the HTML is exported.");
-        }
-
-        if (usePtWebsite) {
-	    toc.println("<div id=\"menu\">");
-	    toc.println("<ul>");
-	    toc.println("<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
-	    toc.println("</ul>");
-	    toc.println("");
-	    toc.println("<ul>");
-	    toc.println(" <li><a href=\"../index.html\">Up</a></li>");
-	    toc.println("</ul>");
-	    toc.println("<ul>");
-        }
-
-        // Now write the HTML.
-
-        String jsLibrary = "";
-        if (usePtWebsite) {
-            // If we are using SSI, then use one location for the JavaScript and CSS.
-            jsLibrary = "http://ptolemy.eecs.berkeley.edu/";
-        }
-        index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "js/jquery.js\"></script>");
-        index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "js/jquery.lightbox-0.5.pack.js\"></script>");
-        index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "css/jquery.lightbox-0.5.css\" media=\"screen\"/>");
-
-        Attribute headerText = model.getAttribute("_headerText", StringParameter.class);
-        if (headerText != null) {
-            index.println(((StringParameter)headerText).stringValue());
-        } else {
-            index.println("<script type=\"text/javascript\">");
-            index.println("function writeText(text) {");
-            index.println("  document.getElementById(\"afterImage\").innerHTML = text;");
-            index.println("}");
-            index.println("</script>");
-        }
-        // The following requires the jquery lightbox extension.
-        index.println("<script type=\"text/javascript\">");
-        index.println("$(function() {");
-        index.println("  $('area.lightbox').lightBox();");
-        index.println("});");
-        index.println("</script>");
-        index.println("</head><body>");
-
-        // Put a header in. Use the name of the ModalModel rather
-        // than the Controller if we have a ModalModel.
-        String modelName = model.getFullName();
-        if (model instanceof FSMActor) {
-            NamedObj container = model.getContainer();
-            if (container instanceof ModalModel) {
-                modelName = container.getFullName();
-            }
-        }
-        Attribute beforeImage = model.getAttribute("_beforeImage", StringParameter.class);
-        if (beforeImage != null) {
-            index.println(((StringParameter)beforeImage).stringValue());
-        } else {
-            index.println("<h1>" + modelName + "</h1>");
-        }
-
-        // Put the image in.
-        index.println("<img src=\"" + _basicGraphFrame.getModel().getName()
-                + ".gif\" usemap=\"#actormap\"/>");
-
-        // Write the map next.
-        index.println("<map name=\"actormap\">");
-
-        // Create a table of effigies associated with any
-        // open submodel or plot.
-        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, PtolemyEffigy>();
-        Tableau myTableau = _basicGraphFrame.getTableau();
-        Effigy myEffigy = (Effigy) myTableau.getContainer();
-        List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
-        for (PtolemyEffigy effigy : effigies) {
-            openEffigies.put(effigy.getModel(), effigy);
-        }
-        List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
-        for (IconVisibleLocation location : iconLocations) {
-            // Create a table with parameter values for the actor.
-            String mouseOverAction = _getMouseOverAction(location.object);
-
-            // If the actor has an open window (either an plot or
-            // a vergil window), then create a link to that.
-            String linkTo = "";
-            PtolemyEffigy effigy = openEffigies.get(location.object);
-            if (effigy != null) {
-		// _linkToText() recursively calls writeHTML();
-                linkTo = _linkToText(effigy, directory);
-            } else {
-                if (location.object instanceof State) {
-                    // In a ModalModel, location.object is a State
-                    // inside the _Controller.  But the effigy is stored
-                    // under the refinements of that state, which have the
-                    // same container as the _Controller.
-                    try {
-                        TypedActor[] refinements = ((State) location.object)
-                                .getRefinement();
-                        // FIXME: There may be more
-                        // than one refinement. How to open all of them?
-                        // We have only one link. For now, just open the first one.
-                        if (refinements != null && refinements.length > 0) {
-                            effigy = openEffigies
-                                    .get((NamedObj) refinements[0]);
-                            if (effigy != null) {
-                                linkTo = _linkToText(effigy, directory);
-                            }
-                        }
-                    } catch (IllegalActionException e) {
-                        // Ignore errors here. Just don't export this refinement.
-                    }
-                } else if (location.object instanceof Instantiable) {
-                    // There is no open effigy, but the object might
-                    // be an instance of a class where the class definition
-                    // is open. Look for that.
-                    Instantiable parent = ((Instantiable) location.object)
-                            .getParent();
-                    if (parent instanceof NamedObj) {
-                        Effigy classEffigy = Configuration
-                                .findEffigy((NamedObj) parent);
-                        if (classEffigy instanceof PtolemyEffigy) {
-                            linkTo = _linkToText((PtolemyEffigy) classEffigy,
-                                    directory);
-                        }
-                    }
-                }
-
-            }
-
-            // Write the name of the actor followed by the table.
-            index.println("<area shape=\"rect\" coords=\""
-                    + (int) location.topLeftX + "," + (int) location.topLeftY
-                    + "," + (int) location.bottomRightX + ","
-                    + (int) location.bottomRightY
-                    + "\" onmouseover="
-                    + mouseOverAction
-                    + linkTo + "/>");
-
-	    if (linkTo.length() > 1) {
-		String tocLink = linkTo.replace(" title=\"",">");
-		toc.println(" <li><a " + tocLink.substring(0, tocLink.length() - 1) + "</a></li>");
+	    // If non-empty, then the path to the SSI files on the ptolemy site
+	    //String ssiRoot = "";
+	    String ssiRoot = "http://ptolemy.eecs.berkeley.edu";
+	    if (usePtWebsite) {
+	        if (!_printedSSIMessage) {
+	            _printedSSIMessage = true;
+	            System.out.println("The ptolemy.ptII.exportHTML.usePtWebsite property is true, generating Ptolemy website SSI code.");
+	        }
+	        // FIXME: this absolute path is not very safe.  The
+	        // problem is that we don't know where $PTII is located on
+	        // the website.
+	        index.println("<link href=\"http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
 	    }
-        }
-        index.println("</map>");
 
-        Attribute afterImage = model.getAttribute("_afterImage", StringParameter.class);
-        if (afterImage != null) {
-            index.println(((StringParameter)afterImage).stringValue());
-        } else {
-            // Section into which actor information is written.
-            index.println("<p id=\"afterImage\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>");
-        }
+	    // Needed for the HTML validator.
+	    index.println("<title>" + StringUtilities.sanitizeName(model.getName())
+	            + "</title>");
 
-        if (!usePtWebsite) {
-            index.println("</body>");
-            index.println("</html");
-        } else {
-            index.println("<!-- /body -->");
-            index.println("<!-- /html -->");
-            index.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
+	    if (usePtWebsite) {
+	        index.println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
+	        index.println("<!--#include virtual=\"toc.htm\" -->");
+	        index.println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
+	    }
 
-	    toc.println(" </ul>");
-	    toc.println("</ul>");
-	    toc.println("</div><!-- /#menu -->");
-        }
+	    // Include jquery and fancybox. The following files are needed:
+	    // The first of these should be the JavaScript file,
+	    // and the second should be the CSS file.
+	    // FIXME: I don't like the hardwired version number here.
+	    String[] filenames = {
+	            "jquery.fancybox-1.3.4.pack.js",
+	            "jquery.fancybox-1.3.4.css",
+	            "blank.gif",
+	            "fancybox.png",
+	            "fancybox-y.png",
+	            "fancybox-x.png",
+	            "fancy_title_right.png",
+	            "fancy_title_over.png",
+	            "fancy_title_main.png",
+	            "fancy_title_left.png",
+	            "fancy_shadow_w.png",
+	            "fancy_shadow_sw.png",
+	            "fancy_shadow_se.png",
+	            "fancy_shadow_s.png",
+	            "fancy_shadow_nw.png",
+	            "fancy_shadow_ne.png",
+	            "fancy_shadow_n.png",
+	            "fancy_shadow_e.png",
+	            "fancy_nav_right.png",
+	            "fancy_nav_left.png",
+	            "fancy_loading.png",
+	            "fancy_close.png"
+	    };
+
+	    // Copy fancybox Javascript source files into destination directory,
+	    // if they are available. The files are under an MIT license,
+	    // which is compatible with the Ptolemy license.
+	    // For jquery, we use a CDS (content delivery service) instead
+	    // of copying the file.
+	    // FIXME: This should be an option somewhere, since it makes the
+	    // web page not work offline.
+	    String jsDirectoryName = "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/fancybox/";
+	    File jsDirectory = FileUtilities.nameToFile(
+	            jsDirectoryName, null);
+	    boolean warn = true;
+	    // We assume that if the directory exists, then the files exist.
+	    if (!usePtWebsite && jsDirectory.isDirectory()) {
+	        warn = false;
+	        // System.out.println("Copying files into the js directory.");
+	        // Copy files into the "fancybox" directory.
+	        File jsTargetDirectory = new File(directory, "fancybox");
+	        if (jsTargetDirectory.exists() && !jsTargetDirectory.isDirectory()) {
+	            jsTargetDirectory.renameTo(new File(directory, "fancybox.bak"));
+	        }
+	        if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
+	            warn = true;
+	        } else {
+	            // Copy css, JavaScript, and image files.
+	            for (String filename : filenames) {
+	                URL lightboxFile = FileUtilities
+	                        .nameToURL(
+	                                jsDirectoryName + filename,
+	                                null, null);
+	                FileUtilities.binaryCopyURLToFile(lightboxFile, new File(
+	                        jsTargetDirectory, filename));
+	            }
+	        }
+	    }
+	    if (!usePtWebsite && warn) {
+	        MessageHandler
+	        .message("Warning: Cannot find required JavaScript, CSS, and image files"
+	                + " for lightbox effect implemented by the fancybox"
+	                + " package. Perhaps your Ptolemy II"
+	                + " installation does not include them.");
+	    }
+
+	    if (usePtWebsite) {
+	        toc.println("<div id=\"menu\">");
+	        toc.println("<ul>");
+	        toc.println("<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
+	        toc.println("</ul>");
+	        toc.println("");
+	        toc.println("<ul>");
+	        toc.println(" <li><a href=\"../index.html\">Up</a></li>");
+	        toc.println("</ul>");
+	        toc.println("<ul>");
+	    }
+
+	    // Now write the HTML.
+	    // Use a CDS (Content Delivery Service) for the JavaScript library for jquery.
+	    // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
+	    index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
+
+	    // For fancybox, use either the files we copied above, or use the Ptolemy website.
+	    String jsLibrary = "";
+	    if (usePtWebsite) {
+	        // If we are using SSI, then use one location for the JavaScript and CSS and image files.
+	        jsLibrary = "http://ptolemy.eecs.berkeley.edu/";
+	    }
+	    index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "fancybox/" + filenames[0] + "\"></script>");
+	    index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "fancybox/" + filenames[1] + "\" media=\"screen\"/>");
+
+	    Attribute headerText = model.getAttribute("_headerText", StringParameter.class);
+	    if (headerText != null) {
+	        index.println(((StringParameter)headerText).stringValue());
+	    } else {
+	        index.println("<script type=\"text/javascript\">");
+	        index.println("function writeText(text) {");
+	        index.println("  document.getElementById(\"afterImage\").innerHTML = text;");
+	        index.println("}");
+	        index.println("</script>");
+	    }
+	    // The following requires the jquery fancybox extension.
+	    index.println("<script type=\"text/javascript\">");
+	    index.println("$(document).ready(function(){");
+	    index.println("  $(\"area.iframe\").fancybox();");
+	    index.println("});");
+	    index.println("</script>");
+
+	    index.println("</head><body>");
+
+	    // Put a header in. Use the name of the ModalModel rather
+	    // than the Controller if we have a ModalModel.
+	    String modelName = model.getFullName();
+	    if (model instanceof FSMActor) {
+	        NamedObj container = model.getContainer();
+	        if (container instanceof ModalModel) {
+	            modelName = container.getFullName();
+	        }
+	    }
+	    Attribute beforeImage = model.getAttribute("_beforeImage", StringParameter.class);
+	    if (beforeImage != null) {
+	        index.println(((StringParameter)beforeImage).stringValue());
+	    } else {
+	        index.println("<h1>" + modelName + "</h1>");
+	    }
+
+	    // Put the image in.
+	    index.println("<img src=\"" + _basicGraphFrame.getModel().getName()
+	            + ".gif\" usemap=\"#actormap\"/>");
+
+	    // Write the map next.
+	    index.println("<map name=\"actormap\">");
+
+	    // Create a table of effigies associated with any
+	    // open submodel or plot.
+	    Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, PtolemyEffigy>();
+	    Tableau myTableau = _basicGraphFrame.getTableau();
+	    Effigy myEffigy = (Effigy) myTableau.getContainer();
+	    List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
+	    for (PtolemyEffigy effigy : effigies) {
+	        openEffigies.put(effigy.getModel(), effigy);
+	    }
+	    List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
+	    for (IconVisibleLocation location : iconLocations) {
+	        // Create a table with parameter values for the actor.
+	        String mouseOverAction = _getMouseOverAction(location.object);
+
+	        // If the actor customizes the click-on action with its own
+	        // link, then use that link.
+	        String linkTo = _getClickOnLink(location.object, directory);
+
+	        // If the behavior has not been customized in the model,
+	        // then the default behavior is to provide a link to
+	        // any open tableaux. If the the frame associated with
+	        // the tableau implements
+	        // HTMLExportable, then this is an ordinary link to
+	        // the HTML exported by the frame. If it instead
+	        // implements ImageExportable, then this a link that
+	        // brings up the image in a lightbox.
+	        if (linkTo == null) {
+	            PtolemyEffigy effigy = openEffigies.get(location.object);
+	            if (effigy != null) {
+	                // _linkToText() recursively calls writeHTML();
+	                linkTo = _linkToText(effigy, directory);
+	            } else {
+	                // Default is empty.
+	                linkTo = "";
+	                if (location.object instanceof State) {
+	                    // In a ModalModel, location.object is a State
+	                    // inside the _Controller.  But the effigy is stored
+	                    // under the refinements of that state, which have the
+	                    // same container as the _Controller.
+	                    try {
+	                        TypedActor[] refinements = ((State) location.object)
+	                                .getRefinement();
+	                        // FIXME: There may be more
+	                        // than one refinement. How to open all of them?
+	                        // We have only one link. For now, just open the first one.
+	                        if (refinements != null && refinements.length > 0) {
+	                            effigy = openEffigies
+	                                    .get((NamedObj) refinements[0]);
+	                            if (effigy != null) {
+	                                linkTo = _linkToText(effigy, directory);
+	                            }
+	                        }
+	                    } catch (IllegalActionException e) {
+	                        // Ignore errors here. Just don't export this refinement.
+	                    }
+	                } else if (location.object instanceof Instantiable) {
+	                    // There is no open effigy, but the object might
+	                    // be an instance of a class where the class definition
+	                    // is open. Look for that.
+	                    Instantiable parent = ((Instantiable) location.object)
+	                            .getParent();
+	                    if (parent instanceof NamedObj) {
+	                        Effigy classEffigy = Configuration
+	                                .findEffigy((NamedObj) parent);
+	                        if (classEffigy instanceof PtolemyEffigy) {
+	                            linkTo = _linkToText((PtolemyEffigy) classEffigy,
+	                                    directory);
+	                        }
+	                    }
+	                }
+	            }
+	        }
+
+	        // Write the name of the actor followed by the table.
+	        index.println("<area shape=\"rect\" coords=\""
+	                + (int) location.topLeftX + "," + (int) location.topLeftY
+	                + "," + (int) location.bottomRightX + ","
+	                + (int) location.bottomRightY
+	                + "\" onmouseover="
+	                + mouseOverAction
+	                + " "
+	                + linkTo + "/>");
+
+	        if (linkTo.length() > 1) {
+	            String tocLink = linkTo.replace(" title=\"",">");
+	            toc.println(" <li><a " + tocLink.substring(0, tocLink.length() - 1) + "</a></li>");
+	        }
+	    }
+	    index.println("</map>");
+
+	    Attribute afterImage = model.getAttribute("_afterImage", StringParameter.class);
+	    if (afterImage != null) {
+	        index.println(((StringParameter)afterImage).stringValue());
+	    } else {
+	        // Section into which actor information is written.
+	        index.println("<p id=\"afterImage\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>");
+	    }
+
+	    if (!usePtWebsite) {
+	        index.println("</body>");
+	        index.println("</html");
+	    } else {
+	        index.println("<!-- /body -->");
+	        index.println("<!-- /html -->");
+	        index.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
+
+	        toc.println(" </ul>");
+	        toc.println("</ul>");
+	        toc.println("</div><!-- /#menu -->");
+	    }
 	} finally {
 	    if (toc != null) {
 		toc.close();
@@ -601,6 +625,45 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** If the specified object customizes the link to follow upon
+     *  clicking on that object, then return that link-to HTML text
+     *  here. This will normally have one of the following forms:
+     *  <pre>
+     *    href="filename.html"
+     *    href="filename.html" title="SequencePlotter"
+     *    href="SequencePlotter.gif" class="iframe" title="SequencePlotter"
+     *  </pre>
+     *  @return Custom link reference, or null if there is no customization.
+     *  @throws IllegalActionException If accessing the customization attributes fails.
+     *  @throws IOException If a file operation fails.
+     */
+    protected String _getClickOnLink(NamedObj object, File directory) throws IllegalActionException, IOException {
+        Attribute linkAttribute = object.getAttribute("_onClickLinkTo", StringParameter.class);
+        if (linkAttribute != null) {
+            String link = ((StringParameter)linkAttribute).stringValue();
+            return "href=\""
+                    + StringUtilities.escapeString(link)
+                    + "\"";
+        }
+        
+        linkAttribute = object.getAttribute("_onClickLightBox", StringParameter.class);
+        if (linkAttribute != null) {
+            String html = ((StringParameter)linkAttribute).stringValue();
+            String fileName = object.getName() + "_onClickLightBox.html";
+            File htmlFile = new File(directory, fileName);
+            Writer htmlWriter = new FileWriter(htmlFile);
+            PrintWriter htmlPrintWriter = new PrintWriter(htmlWriter);
+            htmlPrintWriter.print(html);
+            htmlPrintWriter.close();
+            return "href=\""
+                    + StringUtilities.escapeString(fileName)
+                    + "\" class=\"iframe\" title=\""
+                    + object.getName()
+                    + "\"";
+        }
+        return null;
+    }
+    
     /** Return a list of data structures with one entry for each visible
      *  entity plus the director, if there is one. Each data structure contains
      *  a reference to the entity and the coordinates
@@ -795,7 +858,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** For the specified effigy, return HTML text for a link to link
+    /** For the specified effigy, return HTML text for a link
      *  if the effigy has any open tableaux, and those have frames
      *  that implement either HTMLExportable or ImageExportable.
      *  As a side effect, this may generate HTML files in the specified
@@ -843,7 +906,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                 } finally {
                     gifOut.close();
                 }
-                linkTo = "href=\"" + name + ".gif\"" + " class=\"lightbox\""
+                linkTo = "href=\"" + name + ".gif\"" + " class=\"iframe\""
                         + " title=\"" + name + "\"";
             }
         }
