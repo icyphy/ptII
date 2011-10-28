@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 package ptolemy.vergil.basic.layout;
 
 import ptolemy.actor.parameters.DoubleRangeParameter;
+import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
@@ -47,6 +48,18 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.AcceptedRating Red (msp)
  */
 public class LayoutConfiguration extends Attribute {
+    
+    /** Available modes of user interaction. */
+    public enum InteractionMode {
+        /** No user interaction: full automatic layout. */
+        None,
+        /** User positioning affects cycle detection. */
+        Cycles,
+        /** User positioning affects cycle detection and node layering. */
+        Layers,
+        /** User positioning affects cycle detection, node layering, and node order. */
+        Order;
+    }
     
     /**
      * Create and initialize a layout configuration.
@@ -83,6 +96,10 @@ public class LayoutConfiguration extends Attribute {
         logAspectRatio.min.setExpression("-1.0");
         logAspectRatio.max.setExpression("1.0");
         logAspectRatio.setExpression(Double.toString(Math.log10(DEF_ASPECT_RATIO)));
+        
+        interactionMode = new ChoiceParameter(this, "interactionMode", InteractionMode.class);
+        interactionMode.setDisplayName("Interaction mode");
+        interactionMode.setExpression(DEF_INTERACTION_MODE.toString());
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -100,6 +117,9 @@ public class LayoutConfiguration extends Attribute {
     /** The aspect ratio for placement of connected components (logarithmic). */
     public DoubleRangeParameter logAspectRatio;
     
+    /** Mode of user interaction: whether user positioning is allowed to affect the layout. */
+    public ChoiceParameter interactionMode;
+    
     
     /** Default value for includeDecorations. */
     public static final boolean DEF_DECORATIONS = false;
@@ -112,5 +132,8 @@ public class LayoutConfiguration extends Attribute {
     
     /** Default value for aspectRatio (non-logarithmic). */
     public static final double DEF_ASPECT_RATIO = 1.6;
+    
+    /** Default value for interaction mode. */
+    public static final InteractionMode DEF_INTERACTION_MODE = InteractionMode.None;
 
 }

@@ -35,6 +35,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.layout.LayoutConfiguration;
+import ptolemy.vergil.basic.layout.LayoutConfiguration.InteractionMode;
 import ptolemy.vergil.modal.FSMGraphModel;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
@@ -42,6 +43,9 @@ import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.Direction;
 import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
+import de.cau.cs.kieler.klay.layered.p1cycles.CycleBreakingStrategy;
+import de.cau.cs.kieler.klay.layered.p2layers.LayeringStrategy;
+import de.cau.cs.kieler.klay.layered.p3order.CrossingMinimizationStrategy;
 import de.cau.cs.kieler.klay.layered.properties.Properties;
 import diva.graph.GraphModel;
 
@@ -104,6 +108,23 @@ public class Parameters {
                     configuration.logAspectRatio.getToken());
             parentLayout.setProperty(ASPECT_RATIO, (float) Math.pow(
                     10, logAspectToken.doubleValue()));
+            
+            InteractionMode interactionMode = (InteractionMode) configuration
+                    .interactionMode.getChosenValue();
+            if (interactionMode != null) {
+                // The switch cases fall through on purpose! 
+                switch (interactionMode) {
+                case Order:
+                    parentLayout.setProperty(Properties.CROSSMIN,
+                            CrossingMinimizationStrategy.INTERACTIVE);
+                case Layers:
+                    parentLayout.setProperty(Properties.NODE_LAYERING,
+                            LayeringStrategy.INTERACTIVE);
+                case Cycles:
+                    parentLayout.setProperty(Properties.CYCLE_BREAKING,
+                            CycleBreakingStrategy.INTERACTIVE);
+                }
+            }
             
         } else {
             parentLayout.setProperty(LayoutOptions.SPACING, SPACING.getDefault());

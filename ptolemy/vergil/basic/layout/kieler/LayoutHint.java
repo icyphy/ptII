@@ -843,7 +843,6 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             if ((int) oldDistanceX != (int) newDistanceX
                     || (int) oldDistanceY != (int) newDistanceY) {
                 // in this case we cannot use the bend points anymore
-                // System.out.println("Kick: moved");
                 return false;
             }
             // now we know the head and tail have been moved but the relative
