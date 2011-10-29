@@ -209,11 +209,14 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.util.test.junit.TclTests",
                 "lib/JUnitParams-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.ExportHTMLAction",
-                "ptolemy/vergil/javascript/javascript-license.htm");
+        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.export.html.ExportHTMLAction",
+                "ptolemy/vergil/basic/export/html/javascript/javascript-license.htm");
+
+        _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.export.html.ExportToWeb",
+                "ptolemy/vergil/basic/export/html/javascript/fancybox/fancybox-license.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.export.itextpdf.ExportPDFAction",
-                "ptolemy/vergil/basic/itextpdf/itextpdf-copyright.htm");
+                "ptolemy/vergil/basic/export/itextpdf/itextpdf-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.vergil.basic.layout.kieler.KielerLayout",
                 "lib/guava-license.htm");

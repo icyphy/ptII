@@ -71,6 +71,7 @@ OTHER_FILES_TO_BE_JARED = \
 	fancy_title_main.png \
 	fancy_title_over.png \
 	fancy_title_right.png \
+	fancybox-license.htm \
 	fancybox-x.png \
 	fancybox-y.png \
 	fancybox.png \
