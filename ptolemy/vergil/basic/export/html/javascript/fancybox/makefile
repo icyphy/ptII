@@ -1,4 +1,4 @@
-# Makefile for exporting Vergil models as javascript
+# Makefile for exporting Vergil models as javascript, fancybox directory.
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -30,12 +30,12 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/basic/export/html/javascript
+ME =		ptolemy/vergil/basic/export/html/javascript/fancybox
 
-DIRS =		css fancybox images js
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -44,21 +44,41 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	javascript
-PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	fancybox
+PTCLASSJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = 
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	css/css.jar \
-	fancybox/fancybox.jar \
-	images/images.jar \
-	js/js.jar
+#PTCLASSALLJARS =
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	javascript-license.htm
+	blank.gif \
+	fancy_close.png \
+	fancy_loading.png \
+	fancy_nav_left.png \
+	fancy_nav_right.png \
+	fancy_shadow_e.png \
+	fancy_shadow_n.png \
+	fancy_shadow_ne.png \
+	fancy_shadow_nw.png \
+	fancy_shadow_s.png \
+	fancy_shadow_se.png \
+	fancy_shadow_sw.png \
+	fancy_shadow_w.png \
+	fancy_title_left.png \
+	fancy_title_main.png \
+	fancy_title_over.png \
+	fancy_title_right.png \
+	fancybox-x.png \
+	fancybox-y.png \
+	fancybox.png \
+	jquery.easing-1.3.pack.js \
+	jquery.fancybox-1.3.4.css \
+	jquery.fancybox-1.3.4.js \
+	jquery.fancybox-1.3.4.pack.js \
+	jquery.mousewheel-3.0.4.pack.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
