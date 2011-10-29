@@ -67,6 +67,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ExportHTMLAction$$IconVisibleLocation.class' \
+	'ExportHTMLAction$$1.class' \
 	'ExportToWeb$$1.class' \
 	'ExportToWeb$$2.class' \
 	'ExportToWeb$$3.class'
