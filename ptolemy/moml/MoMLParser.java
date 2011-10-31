@@ -241,7 +241,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public MoMLParser(Workspace workspace, ClassLoader loader) {
         this(workspace);
-        _classLoader = loader;
+        if (loader != null) {
+        	_classLoader = loader;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -6053,6 +6055,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     private boolean _loadFileInContext(String fileName, NamedObj context)
             throws Exception {
+    	if (_classLoader == null) {
+    		throw new InternalErrorException("_classloader is null? "
+    					+ "If you are using Eclipse, then perhaps the ptII project is in the boothpath? "
+    					+ "Check Run -> Run Configurations... -> Classpath and be sure that the ptII project "
+    					+ "is not in the Bootstrap Entries section.");
+    	}
         URL xmlFile = _classLoader.getResource(fileName);
 
         if (xmlFile == null) {
