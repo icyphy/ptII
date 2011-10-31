@@ -303,17 +303,6 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
-
-    /** Override the base class to make this synchronized to prevent
-     *  a comodification exception.
-     *  @param newFigure A newly manufactured figure.
-     */
-    protected synchronized void _addLiveFigure(Figure newFigure) {
-        super._addLiveFigure(newFigure);
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Update any previously rendered Diva figures that contain
