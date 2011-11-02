@@ -37,7 +37,9 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// HTMLExportable
 /**
- * Interface indicating support for exporting an HTML file and supporting files.
+ * Interface for parameters and attribute
+ * indicating support for exporting an HTML file and supporting files.
+ * 
  * @author Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.1
