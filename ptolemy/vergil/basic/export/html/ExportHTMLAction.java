@@ -75,6 +75,7 @@ import ptolemy.vergil.basic.export.HTMLExportable;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.JCanvas;
+import diva.canvas.toolbox.BasicFigure;
 import diva.graph.GraphController;
 
 /** An Action that works with BasicGraphFrame to export HTML.
@@ -288,7 +289,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *
      *  <p>If the "ptolemy.ptII.exportHTML.usePtWebsite" property is set to true,
      *  then the html files will have Ptolemy website specific Server Side Includes (SSI)
-     *  code and use the fancybox files from the Ptolemy website.
+     *  code and use the JavaScript and fancybox files from the Ptolemy website.
      *  In addition, a toc.htm file will be created to aid in navigation.
      *  This facility is not likely to be portable to other websites.</p>
      *
@@ -327,7 +328,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	    Writer tocWriter = new FileWriter(new File(directory, "toc.htm"));
 	    toc = new PrintWriter(tocWriter);
 
-
 	    // Generate a header that will pass the HTML validator at
 	    // http://validator.w3.org/
 
@@ -350,7 +350,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	        // FIXME: this absolute path is not very safe.  The
 	        // problem is that we don't know where $PTII is located on
 	        // the website.
-	        index.println("<link href=\"http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
+	        index.println("<link href=\""
+	                + ssiRoot
+	                + "/ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
 	    }
 
 	    // Needed for the HTML validator.
@@ -363,13 +365,17 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	        index.println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
 	    }
 
-	    // Include jquery and fancybox. The following files are needed:
-	    // The first of these should be the JavaScript file,
-	    // and the second should be the CSS file.
-	    // FIXME: I don't like the hardwired version number here.
+	    // Include Ptolemy-specific JavaScript,
+	    // jquery and fancybox. The following files are needed:
+	    // The first three of these should be the JavaScript files to include,
+	    // and the fourth should be the CSS file.
+	    // The rest are image files to copy over.
+	    // FIXME: I don't like the hardwired version numbers here.
 	    String[] filenames = {
+	            "jquery-1.4.3.min.js",
 	            "jquery.fancybox-1.3.4.pack.js",
 	            "jquery.fancybox-1.3.4.css",
+                    "pt-1.0.0.js",
 	            "blank.gif",
 	            "fancybox.png",
 	            "fancybox-y.png",
@@ -389,17 +395,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	            "fancy_nav_right.png",
 	            "fancy_nav_left.png",
 	            "fancy_loading.png",
-	            "fancy_close.png"
+	            "fancy_close.png",
+	            "javascript-license.htm"
 	    };
 
-	    // Copy fancybox Javascript source files into destination directory,
+	    // Copy Javascript source files into destination directory,
 	    // if they are available. The files are under an MIT license,
 	    // which is compatible with the Ptolemy license.
-	    // For jquery, we use a CDS (content delivery service) instead
+	    // For jquery, we could use a CDS (content delivery service) instead
 	    // of copying the file.
-	    // FIXME: This should be an option somewhere, since it makes the
-	    // web page not work offline.
-	    String jsDirectoryName = "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/fancybox/";
+	    String jsDirectoryName = "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/";
 	    File jsDirectory = FileUtilities.nameToFile(
 	            jsDirectoryName, null);
 	    boolean warn = true;
@@ -407,10 +412,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	    if (!usePtWebsite && jsDirectory.isDirectory()) {
 	        warn = false;
 	        // System.out.println("Copying files into the js directory.");
-	        // Copy files into the "fancybox" directory.
-	        File jsTargetDirectory = new File(directory, "fancybox");
+	        // Copy files into the "javascript" directory.
+	        File jsTargetDirectory = new File(directory, "javascript");
 	        if (jsTargetDirectory.exists() && !jsTargetDirectory.isDirectory()) {
-	            jsTargetDirectory.renameTo(new File(directory, "fancybox.bak"));
+	            jsTargetDirectory.renameTo(new File(directory, "javascript.bak"));
 	        }
 	        if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
 	            warn = true;
@@ -447,158 +452,78 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	    }
 
 	    // Now write the HTML.
-	    // Use a CDS (Content Delivery Service) for the JavaScript library for jquery.
-	    // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
-	    index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
-
-	    // For fancybox, use either the files we copied above, or use the Ptolemy website.
+	    
+	    // Include required script files.
+	    // Use either the files we copied above, or use the Ptolemy website.
 	    String jsLibrary = "";
 	    if (usePtWebsite) {
 	        // If we are using SSI, then use one location for the JavaScript and CSS and image files.
-	        jsLibrary = "http://ptolemy.eecs.berkeley.edu/";
+	        jsLibrary = ssiRoot;
 	    }
-	    index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "fancybox/" + filenames[0] + "\"></script>");
-	    index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "fancybox/" + filenames[1] + "\" media=\"screen\"/>");
+	    // FIXME: The following is not going to work with SSI. Christopher? Where are the files?
+            // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
+	    index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + filenames[0] + "\"></script>");
+            index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + filenames[1] + "\"></script>");
+            index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + filenames[2] + "\" media=\"screen\"/>");
+            index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + filenames[3] + "\"></script>");
+            // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
+            // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
 
-	    Attribute headerText = model.getAttribute("_headerText", StringParameter.class);
-	    if (headerText != null) {
-	        index.println(((StringParameter)headerText).stringValue());
-	    } else {
-	        index.println("<script type=\"text/javascript\">");
-	        index.println("function writeText(text) {");
-	        index.println("  document.getElementById(\"afterImage\").innerHTML = text;");
-	        index.println("}");
-	        index.println("</script>");
-	    }
-	    // The following requires the jquery fancybox extension.
-	    index.println("<script type=\"text/javascript\">");
-	    index.println("$(document).ready(function(){");
-	    index.println("  $(\"area.iframe\").fancybox();");
-	    index.println("});");
-	    index.println("</script>");
-
-	    index.println("</head><body>");
-
-	    // Put a header in. Use the name of the ModalModel rather
-	    // than the Controller if we have a ModalModel.
-	    String modelName = model.getFullName();
-	    if (model instanceof FSMActor) {
-	        NamedObj container = model.getContainer();
-	        if (container instanceof ModalModel) {
-	            modelName = container.getFullName();
+	    // Collect HTML text to insert at various points in the output file.
+	    StringBuffer header = new StringBuffer();
+            StringBuffer start = new StringBuffer();
+            StringBuffer end = new StringBuffer();
+	    List<HTMLText> texts = model.attributeList(HTMLText.class);
+	    if (texts != null && texts.size() > 0) {
+	        for(HTMLText text : texts) {
+	            String position = text.textPosition.stringValue();
+	            if (position.equals("header")) {
+	                header.append(text.getContent());
+	                header.append("\n");
+	            } else if (position.equals("start")) {
+	                start.append(text.getContent());
+                        start.append("\n");
+                    } else if (position.equals("end")) {
+                        end.append(text.getContent());
+                        end.append("\n");
+                    } else {
+                        throw new IllegalActionException(text,
+                                "Unrecognized textPosition value: " + position);
+                    }
 	        }
-	    }
-	    Attribute beforeImage = model.getAttribute("_beforeImage", StringParameter.class);
-	    if (beforeImage != null) {
-	        index.println(((StringParameter)beforeImage).stringValue());
-	    } else {
-	        index.println("<h1>" + modelName + "</h1>");
-	    }
+	    }	    
+	    
+	    // Insert default start text if none was given.
+            if (start.length() == 0) {
+                // Put a header in. Use the name of the ModalModel rather
+                // than the Controller if we have a ModalModel.
+                String modelName = model.getFullName();
+                if (model instanceof FSMActor) {
+                    NamedObj container = model.getContainer();
+                    if (container instanceof ModalModel) {
+                        modelName = container.getFullName();
+                    }
+                }
+                start.append("<h1>" + modelName + "</h1>\n");
+            }
+            
+            // Insert the default end text if none was given.
+            if (end.length() == 0) {
+                end.append("<p id=\"afterImage\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>\n");
+            }
 
+            // Next, create the image map.
+            String map = _createImageMap(directory, toc);
+
+	    // Write the main part of the HTML file.
+	    index.println(header.toString());
+	    index.println("</head><body>");
+	    index.println(start.toString());
 	    // Put the image in.
 	    index.println("<img src=\"" + _basicGraphFrame.getModel().getName()
 	            + ".gif\" usemap=\"#actormap\"/>");
-
-	    // Write the map next.
-	    index.println("<map name=\"actormap\">");
-
-	    // Create a table of effigies associated with any
-	    // open submodel or plot.
-	    Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, PtolemyEffigy>();
-	    Tableau myTableau = _basicGraphFrame.getTableau();
-	    Effigy myEffigy = (Effigy) myTableau.getContainer();
-	    List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
-	    for (PtolemyEffigy effigy : effigies) {
-	        openEffigies.put(effigy.getModel(), effigy);
-	    }
-	    List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
-	    for (IconVisibleLocation location : iconLocations) {
-	        // Create a table with parameter values for the actor.
-	        String mouseOverAction = _getMouseOverAction(location.object);
-
-	        // If the actor customizes the click-on action with its own
-	        // link, then use that link.
-	        String linkTo = _getClickOnLink(location.object, directory);
-
-	        // If the behavior has not been customized in the model,
-	        // then the default behavior is to provide a link to
-	        // any open tableaux. If the the frame associated with
-	        // the tableau implements
-	        // HTMLExportable, then this is an ordinary link to
-	        // the HTML exported by the frame. If it instead
-	        // implements ImageExportable, then this a link that
-	        // brings up the image in a lightbox.
-	        if (linkTo == null) {
-	            PtolemyEffigy effigy = openEffigies.get(location.object);
-	            if (effigy != null) {
-	                // _linkToText() recursively calls writeHTML();
-	                linkTo = _linkToText(effigy, directory);
-	            } else {
-	                // Default is empty.
-	                linkTo = "";
-	                if (location.object instanceof State) {
-	                    // In a ModalModel, location.object is a State
-	                    // inside the _Controller.  But the effigy is stored
-	                    // under the refinements of that state, which have the
-	                    // same container as the _Controller.
-	                    try {
-	                        TypedActor[] refinements = ((State) location.object)
-	                                .getRefinement();
-	                        // FIXME: There may be more
-	                        // than one refinement. How to open all of them?
-	                        // We have only one link. For now, just open the first one.
-	                        if (refinements != null && refinements.length > 0) {
-	                            effigy = openEffigies
-	                                    .get((NamedObj) refinements[0]);
-	                            if (effigy != null) {
-	                                linkTo = _linkToText(effigy, directory);
-	                            }
-	                        }
-	                    } catch (IllegalActionException e) {
-	                        // Ignore errors here. Just don't export this refinement.
-	                    }
-	                } else if (location.object instanceof Instantiable) {
-	                    // There is no open effigy, but the object might
-	                    // be an instance of a class where the class definition
-	                    // is open. Look for that.
-	                    Instantiable parent = ((Instantiable) location.object)
-	                            .getParent();
-	                    if (parent instanceof NamedObj) {
-	                        Effigy classEffigy = Configuration
-	                                .findEffigy((NamedObj) parent);
-	                        if (classEffigy instanceof PtolemyEffigy) {
-	                            linkTo = _linkToText((PtolemyEffigy) classEffigy,
-	                                    directory);
-	                        }
-	                    }
-	                }
-	            }
-	        }
-
-	        // Write the name of the actor followed by the table.
-	        index.println("<area shape=\"rect\" coords=\""
-	                + (int) location.topLeftX + "," + (int) location.topLeftY
-	                + "," + (int) location.bottomRightX + ","
-	                + (int) location.bottomRightY
-	                + "\" onmouseover="
-	                + mouseOverAction
-	                + " "
-	                + linkTo + "/>");
-
-	        if (linkTo.length() > 1) {
-	            String tocLink = linkTo.replace(" title=\"",">");
-	            toc.println(" <li><a " + tocLink.substring(0, tocLink.length() - 1) + "</a></li>");
-	        }
-	    }
-	    index.println("</map>");
-
-	    Attribute afterImage = model.getAttribute("_afterImage", StringParameter.class);
-	    if (afterImage != null) {
-	        index.println(((StringParameter)afterImage).stringValue());
-	    } else {
-	        // Section into which actor information is written.
-	        index.println("<p id=\"afterImage\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>");
-	    }
+	    index.println(map);
+	    index.println(end);
 
 	    if (!usePtWebsite) {
 	        index.println("</body>");
@@ -625,6 +550,116 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Create the image map. As a side effect, this may create other
+     *  HTML files or subdirectories.
+     *  @param directory The directory into which to write any HTML
+     *   that is created as a side effect.
+     *  @param toc The table of contents file to write to, or null
+     *   to not write to the table of contents.
+     *  @throws PrinterException If writing to the toc file fails.
+     *  @throws IOException If IO fails.
+     *  @throws IllegalActionException If reading parameters fails.
+     */
+    protected String _createImageMap(File directory, PrintWriter toc)
+            throws IllegalActionException, IOException, PrinterException {
+        StringBuffer result = new StringBuffer();
+        result.append("<map name=\"actormap\">\n");
+
+        // Create a table of effigies associated with any
+        // open submodel or plot.
+        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, PtolemyEffigy>();
+        Tableau myTableau = _basicGraphFrame.getTableau();
+        Effigy myEffigy = (Effigy) myTableau.getContainer();
+        List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
+        for (PtolemyEffigy effigy : effigies) {
+            openEffigies.put(effigy.getModel(), effigy);
+        }
+        List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
+        for (IconVisibleLocation location : iconLocations) {
+            // Create a table with parameter values for the actor.
+            String mouseOverAction = _getMouseOverAction(location.object);
+
+            // If the actor customizes the click-on action with its own
+            // link, then use that link.
+            String linkTo = _getClickOnLink(location.object, directory);
+
+            // If the behavior has not been customized in the model,
+            // then the default behavior is to provide a link to
+            // any open tableaux. If the the frame associated with
+            // the tableau implements
+            // HTMLExportable, then this is an ordinary link to
+            // the HTML exported by the frame. If it instead
+            // implements ImageExportable, then this a link that
+            // brings up the image in a lightbox.
+            if (linkTo == null) {
+                PtolemyEffigy effigy = openEffigies.get(location.object);
+                if (effigy != null) {
+                    // _linkToText() recursively calls writeHTML();
+                    linkTo = _linkToText(effigy, directory);
+                } else {
+                    // Default is empty.
+                    linkTo = "";
+                    if (location.object instanceof State) {
+                        // In a ModalModel, location.object is a State
+                        // inside the _Controller.  But the effigy is stored
+                        // under the refinements of that state, which have the
+                        // same container as the _Controller.
+                        try {
+                            TypedActor[] refinements = ((State) location.object)
+                                    .getRefinement();
+                            // FIXME: There may be more
+                            // than one refinement. How to open all of them?
+                            // We have only one link. For now, just open the first one.
+                            if (refinements != null && refinements.length > 0) {
+                                effigy = openEffigies
+                                        .get((NamedObj) refinements[0]);
+                                if (effigy != null) {
+                                    linkTo = _linkToText(effigy, directory);
+                                }
+                            }
+                        } catch (IllegalActionException e) {
+                            // Ignore errors here. Just don't export this refinement.
+                        }
+                    } else if (location.object instanceof Instantiable) {
+                        // There is no open effigy, but the object might
+                        // be an instance of a class where the class definition
+                        // is open. Look for that.
+                        Instantiable parent = ((Instantiable) location.object)
+                                .getParent();
+                        if (parent instanceof NamedObj) {
+                            Effigy classEffigy = Configuration
+                                    .findEffigy((NamedObj) parent);
+                            if (classEffigy instanceof PtolemyEffigy) {
+                                linkTo = _linkToText((PtolemyEffigy) classEffigy,
+                                        directory);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Write the name of the actor followed by the table.
+            result.append("<area shape=\"rect\" coords=\""
+                    + (int) location.topLeftX + "," + (int) location.topLeftY
+                    + "," + (int) location.bottomRightX + ","
+                    + (int) location.bottomRightY
+                    + "\" onmouseover="
+                    + mouseOverAction
+                    + " "
+                    + linkTo + "/>\n");
+
+            if (toc != null && linkTo.length() > 1) {
+                String tocLink = linkTo.replace(" title=\"",">");
+                // FIXME: The following looks wrong.
+                // The substring gets the whole thing.
+                // But may be OK. Tricky...
+                toc.println(" <li><a " + tocLink.substring(0, tocLink.length() - 1) + "</a></li>");
+            }
+        }
+        result.append("</map>\n");
+        return result.toString();
+    }
+    
     /** If the specified object customizes the link to follow upon
      *  clicking on that object, then return that link-to HTML text
      *  here. This will normally have one of the following forms:
@@ -638,15 +673,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  @throws IOException If a file operation fails.
      */
     protected String _getClickOnLink(NamedObj object, File directory) throws IllegalActionException, IOException {
-        Attribute linkAttribute = object.getAttribute("_onClickLinkTo", StringParameter.class);
-        if (linkAttribute != null) {
-            String link = ((StringParameter)linkAttribute).stringValue();
-            return "href=\""
-                    + StringUtilities.escapeString(link)
-                    + "\"";
+        // If the object contains an IconLink parameter, then use that instead of the default.
+        // If it has more than one, then just use the first one.
+        List<IconLink> links = object.attributeList(IconLink.class);
+        if (links != null && links.size() > 0) {
+            return links.get(0).getContent();
         }
         
-        linkAttribute = object.getAttribute("_onClickLightBox", StringParameter.class);
+        Attribute linkAttribute = object.getAttribute("_onClickLightBox", StringParameter.class);
         if (linkAttribute != null) {
             String html = ((StringParameter)linkAttribute).stringValue();
             String fileName = object.getName() + "_onClickLightBox.html";
@@ -695,6 +729,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
         NamedObj model = _basicGraphFrame.getModel();
         if (model instanceof CompositeEntity) {
+            // FIXME: Should include attributes as well, at least directors.
             List<Entity> entities = ((CompositeEntity) model).entityList();
             for (Entity entity : entities) {
                 Locatable location = null;
@@ -708,34 +743,49 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     GraphController controller = _basicGraphFrame.getJGraph()
                             .getGraphPane().getGraphController();
                     Figure figure = controller.getFigure(location);
+
                     if (figure != null) {
-                        Figure mainIcon = figure;
-                        Point2D origin = ((CompositeFigure) figure).getOrigin();
-                        double iconOriginX = origin.getX();
-                        double iconOriginY = origin.getY();
+                        Point2D figureOrigin = figure.getOrigin();
 
+                        // NOTE: Calling getBounds() on the figure itself yields an
+                        // inaccurate bounds, for some reason.
+                        // Weirdly, to get the size right, we need to use the shape.
+                        // But to get the location right, we need the other!
+                        Rectangle2D figureBounds = figure.getShape().getBounds2D();
+                        
+                        // If the figure is composite, use the background figure 
+                        // for the bounds instead.
                         if (figure instanceof CompositeFigure) {
-                            mainIcon = ((CompositeFigure) figure)
-                                    .getBackgroundFigure();
-                            origin = ((CompositeFigure) figure).getOrigin();
-                            iconOriginX = origin.getX();
-                            iconOriginY = origin.getY();
+                            figure = ((CompositeFigure) figure).getBackgroundFigure();
+                            figureBounds = figure.getShape().getBounds2D();
                         }
-                        Rectangle2D iconBounds = mainIcon.getBounds();
+                        boolean isCentered = false;
+                        if (figure instanceof BasicFigure) {
+                            isCentered = ((BasicFigure) figure).isCentered();
+                        }
 
+                        double iconX = figureOrigin.getX() + figureBounds.getX();
+                        double iconY = figureOrigin.getY() + figureBounds.getY();
+                        
                         IconVisibleLocation i = new IconVisibleLocation();
                         i.object = entity;
 
                         // Calculate the location of the icon relative to the visible rectangle.
-                        i.topLeftX = (iconOriginX + iconBounds.getX()) * scaleX
-                                + translateX;
-                        i.topLeftY = (iconOriginY + iconBounds.getY()) * scaleY
-                                + translateY;
-
-                        i.bottomRightX = (iconOriginX + iconBounds.getX() + iconBounds
-                                .getWidth()) * scaleX + translateX;
-                        i.bottomRightY = (iconOriginY + iconBounds.getY() + iconBounds
-                                .getHeight()) * scaleY + translateY;
+                        i.topLeftX = iconX * scaleX + translateX;
+                        i.topLeftY = iconY  * scaleY + translateY;
+                        i.bottomRightX = (iconX + figureBounds.getWidth()) * scaleX + translateX;
+                        i.bottomRightY = (iconY + figureBounds.getHeight()) * scaleY + translateY;
+                        
+                        // Correction needed if the figure is centered (sadly...
+                        // that's how AWT APIs work, I guess... you have to guess what it means).
+                        if (isCentered) {
+                            double widthOffset = figureBounds.getWidth()/2.0;
+                            double heightOffset = figureBounds.getHeight()/2.0;
+                            i.topLeftX -= widthOffset;
+                            i.topLeftY -= heightOffset;
+                            i.bottomRightX -= widthOffset;
+                            i.bottomRightY -= heightOffset;
+                        }
 
                         if (i.bottomRightX < 0.0 || i.bottomRightY < 0.0
                                 || i.topLeftX > viewSize.getWidth()
@@ -788,17 +838,21 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         Attribute action = object.getAttribute("_onMouseOverAction", StringParameter.class);
         if (action != null) {
             String value = ((StringParameter)action).stringValue();
-            return "\""
-                    + StringUtilities.escapeString(value)
-                    + "\"";
+            value = StringUtilities.escapeForXML(value);            
+            return "\"" + value + "\"";
         }
         String text = null;
         Attribute textSpec = object.getAttribute("_onMouseOverText", StringParameter.class);
         if (textSpec != null) {
             String value = ((StringParameter)textSpec).stringValue();
-            text = StringUtilities.escapeString(value);
+            text = StringUtilities.escapeForXML(value);
+            // Bizarrely, escaping all characters except newlines work.
+            // Newlines need to be converted to \n.
+            // No idea why so many backslashes are required below.
+            text = text.replaceAll("&#10;", "\\\\\\n");
         }
         if (text == null) {
+            // NOTE: The following needs to not include any newlines.
             text = "<h2>"
                     + object.getName()
                     + "</h2>"

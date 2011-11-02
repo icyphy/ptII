@@ -32,7 +32,7 @@
 
 ME =		ptolemy/vergil/basic/export/html/javascript
 
-DIRS =		css fancybox images js
+DIRS =		
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -50,15 +50,41 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	css/css.jar \
-	fancybox/fancybox.jar \
-	images/images.jar \
-	js/js.jar
+	fancybox/fancybox.jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	javascript-license.htm
+	blank.gif \
+	fancy_close.png \
+	fancy_loading.png \
+	fancy_nav_left.png \
+	fancy_nav_right.png \
+	fancy_shadow_e.png \
+	fancy_shadow_n.png \
+	fancy_shadow_ne.png \
+	fancy_shadow_nw.png \
+	fancy_shadow_s.png \
+	fancy_shadow_se.png \
+	fancy_shadow_sw.png \
+	fancy_shadow_w.png \
+	fancy_title_left.png \
+	fancy_title_main.png \
+	fancy_title_over.png \
+	fancy_title_right.png \
+	fancybox-license.htm \
+	fancybox-x.png \
+	fancybox-y.png \
+	fancybox.png \
+	javascript-license.htm \
+	jquery-1.4.3.min.js \
+	jquery.easing-1.3.pack.js \
+	jquery.fancybox-1.3.4.css \
+	jquery.fancybox-1.3.4.js \
+	jquery.fancybox-1.3.4.pack.js \
+	jquery.mousewheel-3.0.4.pack.js \
+	pt-1.0.0.js
+	
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -1,0 +1,87 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<!-- Utilities supporting customized web export. -->
+<entity name="WebExport" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<!------------------------------------------->
+<property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="Mouse over text here">
+  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
+  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
+  </property>
+  <property name="_smallIconDescription" 
+            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <text x="20"
+              style="font-size:14; font-family:SansSerif; fill:blue"
+              y="20">www</text>
+      </svg>
+    </configure>
+  </property>
+  <property name="_editorFactory"
+            class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
+  <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+    <property name="height" class="ptolemy.data.expr.Parameter" value="5"/>
+    <property name="width" class="ptolemy.data.expr.Parameter" value="30"/>
+  </property>
+</property>
+
+<!------------------------------------------->
+<property name="_onMouseOverAction" class="ptolemy.data.expr.StringParameter" value="writeText('sample text')">
+  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
+  <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
+  </property>
+  <property name="_smallIconDescription" 
+            class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <text x="20"
+              style="font-size:14; font-family:SansSerif; fill:blue"
+              y="20">www</text>
+      </svg>
+    </configure>
+  </property>
+  <property name="_editorFactory"
+            class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
+  <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+    <property name="height" class="ptolemy.data.expr.Parameter" value="5"/>
+    <property name="width" class="ptolemy.data.expr.Parameter" value="30"/>
+  </property>
+</property>
+
+<!------------------------------------------->
+<property name="header text" class="ptolemy.vergil.basic.export.html.HTMLText" value="<!-- Example header text -->&#10;<script type=&quot;text/javascript&quot;>&#10;function writeText(text) {&#10;  document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;}&#10;</script>">
+  <property name="textPosition" value="header"/>
+</property>
+
+<!------------------------------------------->
+<property name="start text" class="ptolemy.vergil.basic.export.html.HTMLText" value="<!-- Example start text -->&#10;<h1>$(this.getName())</h1>">
+  <property name="textPosition" value="start"/>
+</property>
+
+<!------------------------------------------->
+<property name="end text" class="ptolemy.vergil.basic.export.html.HTMLText" value="<!-- Example end text -->&#10;<p id=&quot;afterImage&quot;>Mouse over the icons to replace this text.</p>">
+  <property name="textPosition" value="end"/>
+</property>
+
+<!------------------------------------------->
+<property name="icon iframe" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org">
+  <property name="linkTarget" value="_iframe"/>
+</property>
+
+<!------------------------------------------->
+<property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org">
+  <property name="linkTarget" value="_blank"/>
+</property>
+
+<!------------------------------------------->
+      </group>
+    ?>
+  </configure>
+</entity>
