@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- Utilities supporting customized web export. -->
-<entity name="WebExport" class="ptolemy.moml.EntityLibrary">
+<entity name="WebExport old" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
