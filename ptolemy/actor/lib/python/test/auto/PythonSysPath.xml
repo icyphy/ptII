@@ -1,0 +1,103 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PythonSysPath" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 30, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 50}">
+        </property>
+    </property>
+    <entity name="PythonActor" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="import sys.path&#10;&#10;import ptolemy.data.type.BaseType&#10;import ptolemy.data.StringToken&#10;&#10;class Main :&#10;  &quot;Report the components of Jython's syspath&quot;&#10;  def preinitialize(self):&#10;    self.output.setTypeEquals(ptolemy.data.type.BaseType.STRING)&#10;  def prefire(self):&#10;    return self.input.hasToken(0)&#10;  def fire(self) :&#10;    y=self.input.get(0) # retrieve and discard the trigger&#10;    result=&quot;&quot;&#10;    sp=sys.path&#10;    for i in range(len(sp)) :&#10;      if (len(result) &gt; 0):&#10;          result+=&quot;,&quot;&#10;      result+=sp[i]&#10;    self.output.broadcast(ptolemy.data.StringToken(result))&#10;    return&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 220.0">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 225}">
+        </property>
+    </entity>
+    <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="XXPTIIXX">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="property(&quot;ptolemy.ptII.dir&quot;)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{175, 145}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;XXPTIIXX/vendors/jython/Lib,XXPTIIXX/vendors/jython/jython.jar/Lib,__classpath__,XXPTIIXX/vendors/jython/Lib&quot;, &quot;XXPTIIXX/vendors/jython/Lib,XXPTIIXX/vendors/jython/jython.jar/Lib,__classpath__,XXPTIIXX/vendors/jython/Lib&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 200.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="PythonActor.input" relation="relation"/>
+    <link port="PythonActor.output" relation="relation2"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="StringReplace.pattern" relation="relation3"/>
+    <link port="StringReplace.stringToEdit" relation="relation2"/>
+    <link port="StringReplace.output" relation="relation4"/>
+    <link port="Expression.output" relation="relation3"/>
+    <link port="Test.input" relation="relation4"/>
+</entity>
