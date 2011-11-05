@@ -72,6 +72,8 @@ public class TimeDelay
     /** Return the value of the delay parameter.
      *  @return the value of the delay parameter in the target
      *  language.
+     *  @exception IllegalActionException If thrown while reading the
+     *  <i>delay</i parameter.
      */
     public String getAddTimeString() throws IllegalActionException { 
         return getParameterValue("delay", (NamedObj) _component);

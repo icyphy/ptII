@@ -1287,6 +1287,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @param kportlayout the corresponding KPort KShapeLayout
      * @param index index of the channel
      * @param maxIndex maximum available channel
+     * @param outer
      * @return offset vector
      */
     protected static KVector _getMultiportOffsets(Port port, KShapeLayout kportlayout,

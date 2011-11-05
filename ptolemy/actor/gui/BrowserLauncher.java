@@ -99,7 +99,7 @@ import ptolemy.util.StringUtilities;
  <p> On November 3, 2003, BrowserLauncher was downloaded from 
  <a href="http://browserlauncher.sourceforge.net/">http://browserlauncher.sourceforge.net/</a>.
 That URL no longer exists, there is a replacement package which is LGPL'd.
-See <a href="http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/">http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/</code></a> for the original web page.</p>
+See <a href="http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/"><code>http://web.archive.org/web/20031028032907/http://browserlauncher.sourceforge.net/</code></a> for the original web page.</p>
 
 
 

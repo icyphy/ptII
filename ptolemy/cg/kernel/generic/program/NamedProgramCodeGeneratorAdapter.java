@@ -322,15 +322,23 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  @return In this base class, return the empty string. 
      *  derived classes may want to return the value of the 
      *  <i>delay</i> parameter in the target language.
+     *  @exception IllegalActionException Not thrown in this baseclass.
+     *  Derived classes may throw it if there is a problem accessing
+     *  ports or parameters in the associated actor.
      */
     public String getAddTimeString() throws IllegalActionException {
         return "";
     }
     
     /** Return a string that represents the source time.
+     *  @param timeVariable The variable to be set in the generated
+     *  code.
      *  @return In this base class, return the empty string.
      *  Derived classes may want to return code that sets
      *  the time variable to the time stamp.
+     *  @exception IllegalActionException Not thrown in this baseclass.
+     *  Derived classes may throw it if there is a problem accessing
+     *  ports or parameters in the associated actor.
      */
     public String getSourceTimeString(String timeVariable) throws IllegalActionException {
         return "";

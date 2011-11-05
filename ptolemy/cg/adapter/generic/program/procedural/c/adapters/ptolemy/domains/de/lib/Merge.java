@@ -71,8 +71,11 @@ NamedProgramCodeGeneratorAdapter {
     }
     
     /** Return a string that represents the source time.
+     *  @param timeVariable The variable to be set in the generated code   
      *  @return A string sets the timeVariable to the timestamp of the
      *  last input channel.
+     *  @exception IllegalActionException If there is a problme
+     *  getting the width of the input.
      */
     public String getSourceTimeString(String timeVariable) throws IllegalActionException {
         String name = CodeGeneratorAdapter.generateName((NamedObj) _component);

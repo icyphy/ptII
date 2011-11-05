@@ -595,6 +595,11 @@ public class PtidesPreemptiveEDFDirector extends Director {
         return code.toString();
     }
 
+    /** Generate a pointer to the event head.
+     *  @return a pointer to the event head
+     *  @exception IllegalActionException If thrown while getting the inputs
+     *  or reading the width of the inputs.
+     */ 
     protected String _generatePtrToEventHeadCodeInputs()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();

@@ -159,6 +159,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
     /**
      * Check whether the given model is supported by this layout action.
      * 
+     * @param o The object to be be checked.
      * @return true if the model can be laid out with this action.
      */
     public boolean accept(Object o) {

@@ -78,8 +78,11 @@ public class MultiplyDivide
     }
   
     /** Return a string that represents the source time.
+     *  @param The name of the time variable to be set.
      *  @return A string sets the timeVariable to the timestamp of the
      *  last input channel.
+     *  @exception IllegalActionException If there is a problem getting the width of the divide
+     *  or multiply ports.
      */
     public String getSourceTimeString(String timeVariable) throws IllegalActionException {
         String name = CodeGeneratorAdapter.generateName((NamedObj) _component);
@@ -91,7 +94,7 @@ public class MultiplyDivide
                     timeVariable + " = &Event_Head_" + name + "_divide[" + i + "]->tag.timestamp;\n" +
                     "}\n");
         }
-        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).divide.getWidth(); i++) {
+        for (int i = 0; i < ((ptolemy.actor.lib.MultiplyDivide)_component).multiply.getWidth(); i++) {
             result.append("if (Event_Head_" + name + "_multiply[" + i + "] != NULL) {\n" +
                     timeVariable + " = &Event_Head_" + name + "_multiply[" + i + "]->tag.timestamp;\n" +
                     "}\n");

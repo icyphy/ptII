@@ -295,6 +295,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  There may be more than one chosen transition because the destination
      *  state of a chosen transition may have immediate transitions emerging
      *  from it.
+     *  @param state The state that has the last chosen transition.
      *  @param transition The last chosen transition.
      *  @see #getLastChosenTransitions()
      *  @exception IllegalActionException If there is already a chosen
@@ -842,6 +843,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  from the destination of the returned transition.
      *  @return The last chosen transition from the current state.
      *  @deprecated Use getLastChosenTransitions instead.
+     *  @see #setLastChosenTransitions(Transition)
      */
     public Transition getLastChosenTransition() {
         return _lastChosenTransitions.get(currentState());
@@ -1462,6 +1464,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  transitions that this might lead to.
      *  @param transition The last chosen transition.
      *  @deprecated Use addChosenTransition(State, Transition)
+     *  @see #getLastChosenTransition()
      */
     public void setLastChosenTransition(Transition transition) {
         _lastChosenTransitions.clear();

@@ -82,91 +82,14 @@ public class PtidesPreemptiveEDFDirector
 
     /** Generate the assembly file associated for this PtidyOS program.
      *  @return The generated assembly file code.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while generating the XC file.
      */
     public Map<String, String> generateAdditionalCodeFiles() throws IllegalActionException {
         Map<String, String> list = new HashMap<String, String>();
-        
-        
         list.put("xc", _generateXCFile());
-        
         return list;
     }
    
-    
-    protected String _generateSensorFuncProtoCode() {
-        StringBuffer code = new StringBuffer();
-
-        for (Actor actor : (List<Actor>) ((CompositeActor) _director
-                .getContainer()).deepEntityList()) {
-            if (actor instanceof SensorHandler) {
-                code.append("void "
-                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
-                        + "(streaming chanend schedulerChannel, const Time &timestamp);" + _eol); 
-            } 
-        }  
-
-        return code.toString();
-    }
-
-    private String _generateXCFile() throws IllegalActionException { 
-        List<String> args = new ArrayList<String>();
-        _templateParser.getCodeStream().clear();
-        
-        String sensorDefinition = "", sensorReadyFlags = "", sensorSwitch = "while (1) {\n    select {\n";
-        for (Actor sensor : sensors.keySet()) {
-            String deviceName = CodeGeneratorAdapter.generateName((NamedObj) sensor) + "_device";
-            
-            sensorDefinition += "on stdcore[1]: in port " 
-                + deviceName + " = " 
-                + _devicePortIds.get(sensor) + ";\n";
-            
-            sensorReadyFlags += "uint8 " 
-                + deviceName + "Ready = TRUE;\n";
-             
-            sensorSwitch += "case " + deviceName + " when pinseq(" + deviceName + "Ready) :> void:\n"
-                + "if(" + deviceName + "Ready) {\n" 
-                + "getTimestamp(timestamp, platformClockChannel);\n" 
-                + CodeGeneratorAdapter.generateName((NamedObj) sensor) + "(schedulerChannel, timestamp);\n"  
-                + deviceName + "Ready = FALSE;\n"
-                + "} else {\n"
-                + deviceName + "Ready = TRUE;\n" 
-                + "}\n break; \n"; 
-        }
-        sensorSwitch += "}\n}\n"; 
-        
-        String actuatorDefinition = "", doActuation = "", initActuatorString = "";
-        for (Actor actuator : actuators.keySet()) {
-            String deviceName = CodeGeneratorAdapter.generateName((NamedObj) actuator);
-            actuatorDefinition += "on stdcore[1]: out port " 
-                + deviceName + " = " 
-                + _devicePortIds.get(actuator) + ";\n";
-            
-            doActuation += "void " + deviceName + "_Actuation() {\n" 
-                + "timer time;\n uint32 count;\n"
-                + deviceName + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
-                + deviceName + " <: 0;\n}\n"; 
-            
-            initActuatorString += deviceName + " <: 0;\n"; 
-        }
-        
-        String sensorProtoCode = _generateSensorFuncProtoCode();
-        args.add(sensorDefinition);  
-        args.add(sensorProtoCode);
-        args.add(actuatorDefinition); 
-        args.add(sensorReadyFlags);  
-        args.add(sensorSwitch);  
-        args.add(doActuation); 
-        args.add(initActuatorString);
-        
-        _templateParser.getCodeStream()
-        .append(_templateParser.getCodeStream().getCodeBlock(
-                "XCCodeBlock", args));
-        
-        return processCode(_templateParser.getCodeStream()
-                .toString());
-    }
-    
     /**
      * Generate the director fire code.
      * The code creates a new task for each actor according to
@@ -431,8 +354,6 @@ public class PtidesPreemptiveEDFDirector
         return sharedCode;
     }
     
-    private Map<Actor, String> _devicePortIds = new HashMap();
-    private Map<Actor, String> _deviceIds = new HashMap();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -509,7 +430,90 @@ public class PtidesPreemptiveEDFDirector
         return code.toString();
     }
 
+    /** Generate the function prototype.
+     *  @return The function prototype.   
+     */   
+    protected String _generateSensorFuncProtoCode() {
+        StringBuffer code = new StringBuffer();
+
+        for (Actor actor : (List<Actor>) ((CompositeActor) _director
+                .getContainer()).deepEntityList()) {
+            if (actor instanceof SensorHandler) {
+                code.append("void "
+                        + CodeGeneratorAdapter.generateName((NamedObj) actor)
+                        + "(streaming chanend schedulerChannel, const Time &timestamp);" + _eol); 
+            } 
+        }  
+
+        return code.toString();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private String _generateXCFile() throws IllegalActionException { 
+        List<String> args = new ArrayList<String>();
+        _templateParser.getCodeStream().clear();
+        
+        String sensorDefinition = "", sensorReadyFlags = "", sensorSwitch = "while (1) {\n    select {\n";
+        for (Actor sensor : sensors.keySet()) {
+            String deviceName = CodeGeneratorAdapter.generateName((NamedObj) sensor) + "_device";
+            
+            sensorDefinition += "on stdcore[1]: in port " 
+                + deviceName + " = " 
+                + _devicePortIds.get(sensor) + ";\n";
+            
+            sensorReadyFlags += "uint8 " 
+                + deviceName + "Ready = TRUE;\n";
+             
+            sensorSwitch += "case " + deviceName + " when pinseq(" + deviceName + "Ready) :> void:\n"
+                + "if(" + deviceName + "Ready) {\n" 
+                + "getTimestamp(timestamp, platformClockChannel);\n" 
+                + CodeGeneratorAdapter.generateName((NamedObj) sensor) + "(schedulerChannel, timestamp);\n"  
+                + deviceName + "Ready = FALSE;\n"
+                + "} else {\n"
+                + deviceName + "Ready = TRUE;\n" 
+                + "}\n break; \n"; 
+        }
+        sensorSwitch += "}\n}\n"; 
+        
+        String actuatorDefinition = "", doActuation = "", initActuatorString = "";
+        for (Actor actuator : actuators.keySet()) {
+            String deviceName = CodeGeneratorAdapter.generateName((NamedObj) actuator);
+            actuatorDefinition += "on stdcore[1]: out port " 
+                + deviceName + " = " 
+                + _devicePortIds.get(actuator) + ";\n";
+            
+            doActuation += "void " + deviceName + "_Actuation() {\n" 
+                + "timer time;\n uint32 count;\n"
+                + deviceName + " <: 1;\n time :> count;\ntime when timerafter(count + 5000) :> void;"
+                + deviceName + " <: 0;\n}\n"; 
+            
+            initActuatorString += deviceName + " <: 0;\n"; 
+        }
+        
+        String sensorProtoCode = _generateSensorFuncProtoCode();
+        args.add(sensorDefinition);  
+        args.add(sensorProtoCode);
+        args.add(actuatorDefinition); 
+        args.add(sensorReadyFlags);  
+        args.add(sensorSwitch);  
+        args.add(doActuation); 
+        args.add(initActuatorString);
+        
+        _templateParser.getCodeStream()
+        .append(_templateParser.getCodeStream().getCodeBlock(
+                "XCCodeBlock", args));
+        
+        return processCode(_templateParser.getCodeStream()
+                .toString());
+    }
+    
     /** The maximum number of sensor inputs that is supported.
      */
     private static int maxNumSensorInputs = 8;
+
+    private Map<Actor, String> _devicePortIds = new HashMap();
+    private Map<Actor, String> _deviceIds = new HashMap();
+
 }

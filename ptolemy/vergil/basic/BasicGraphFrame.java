@@ -932,8 +932,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
     
     /** Get the directory that was last accessed by this window.
-     *  @see #_setDirectory
      *  @return The directory last accessed.
+     *  @see #setLastDirectory(FIle)
      */
     public File getLastDirectory() {
         // NOTE: This method is necessary because we wish to have
@@ -1264,7 +1264,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
     
     /** Set the directory that was last accessed by this window.
-     *  @see #getLastDirectory
+     *  @see #getLastDirectory()
      *  @param directory The directory last accessed.
      */
     public void setLastDirectory(File directory) {
@@ -1935,7 +1935,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Get the directory that was last accessed by this window.
      *  @see #_setDirectory
      *  @return The directory last accessed.
-     * @deprecated Use {@link #getLastDirectory()} instead
+     *  @deprecated Use {@link #getLastDirectory()} instead
      */
     protected File _getDirectory() {
         return getLastDirectory();
@@ -2462,7 +2462,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Set the directory that was last accessed by this window.
      *  @see #getLastDirectory
      *  @param directory The directory last accessed.
-     * @deprecated Use {@link #setLastDirectory(File)} instead
+     *  @deprecated Use {@link #setLastDirectory(File)} instead
      */
     protected void _setDirectory(File directory) {
         setLastDirectory(directory);
@@ -3185,7 +3185,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             return false;
         }
 
-        /**  The description of this filter */
+        /**  The description of this filter. */
         public String getDescription() {
             return "Choose a Folder";
         }

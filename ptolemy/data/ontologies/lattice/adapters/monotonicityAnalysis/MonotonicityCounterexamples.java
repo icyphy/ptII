@@ -130,6 +130,9 @@ public class MonotonicityCounterexamples {
         return !_counterexamples.isEmpty();
     }
 
+    /** Return the sorted entry array.
+     *  @return The sorted entry array.
+     */
     public ConceptPair[] entryArraySorted() {
         ConceptPair[] entries = new ConceptPair[0];
         entries = entrySet().toArray(entries);

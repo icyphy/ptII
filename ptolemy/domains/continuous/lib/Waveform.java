@@ -207,6 +207,7 @@ public class Waveform extends DiscreteClock {
      *  @param endTime The time of the ending reference point.
      *  @param endValue The value of the ending reference point.
      *  @param tanEnd The tangent of the ending reference point.
+     *  @return The Hermite curve interpolation.
      */
     protected double _hermite(double index, double startTime, double startValue,
             double tanStart, double endTime, double endValue, double tanEnd) {
