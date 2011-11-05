@@ -77,7 +77,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;XXPTIIXX/vendors/jython/Lib,XXPTIIXX/vendors/jython/jython.jar/Lib,__classpath__,__pyclasspath__/,XXPTIIXX/vendors/jython/Lib&quot;, &quot;XXPTIIXX/vendors/jython/Lib,XXPTIIXX/vendors/jython/jython.jar/Lib,__classpath__,__pyclasspath__/,XXPTIIXX/vendors/jython/Lib&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;XXPTIIXX/lib/Lib,XXPTIIXX/lib/jython.jar/Lib,__classpath__,__pyclasspath__/,XXPTIIXX/vendors/jython/Lib&quot;, &quot;XXPTIIXX/lib/Lib,XXPTIIXX/lib/jython.jar/Lib,__classpath__,__pyclasspath__/,XXPTIIXX/vendors/jython/Lib&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
