@@ -133,6 +133,13 @@ public class ProxySource extends ProxyActor {
         }
     }
 
+    @Override
+    public void initialize() throws IllegalActionException {
+        synchronized (this) {
+            getProxySourceData().getTokenQueue().clear();
+        }
+    }
+
     /**
      * Set the ProxySourceData structure used for synchronization and thread blocking.
      * @param remoteSourceData the remoteSourceData containing the instance

@@ -113,6 +113,16 @@ import ptserver.data.TokenParser.HandlerData;
  */
 public final class PtolemyServer implements IServerManager {
 
+    static {
+        // FIXME remove PTServerModule after SysOutActor is deleted 
+        // or create a proper initializer for it
+        ArrayList<PtolemyModule> modules = new ArrayList<PtolemyModule>();
+        modules.addAll(ActorModuleInitializer.getModules());
+        modules.add(new PtolemyModule(ResourceBundle
+                .getBundle("ptserver.util.PTServerModule")));
+        PtolemyInjector.createInjector(modules);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                  public methods                           ////
 
