@@ -33,7 +33,8 @@ import java.util.Properties;
 
 import org.python.core.PyClass;
 import org.python.core.PyException;
-import org.python.core.PyJavaInstance;
+//import org.python.core.PyJavaInstance;
+import org.python.core.PyJavaType;
 import org.python.core.PyMethod;
 import org.python.core.PyObject;
 import org.python.core.PyString;
@@ -63,8 +64,8 @@ import ptolemy.util.StringUtilities;
  its Python script, look inside the actor.  The second version is
  called "PythonScript" and has no ports; to view or edit its Python
  script, select Configure (or double click on the icon).
- <p>
- Upon creation, this actor has no ports, and no parameters other than
+
+ <p> Upon creation, this actor has no ports, and no parameters other than
  {@link #script script}; The <i>script</i> parameter has visibility
  EXPERT, and therefore does not normally show up in a configure dialog
  for the actor.  To make the script visible and editable, you have two
@@ -76,9 +77,9 @@ import ptolemy.util.StringUtilities;
  then to edit the script you look inside the actor.  Use the latter
  if you wish to add additional attributes to the actor and hide the
  script from the users.  Use the former if the script is the main
- means by which users interact with the actor.
- <p>
- Upon creation, this actor has no ports, and no parameters other than
+ means by which users interact with the actor.</p>
+
+ <p> Upon creation, this actor has no ports, and no parameters other than
  {@link #script script}; The <i>script</i> parameter has visibility
  EXPERT, and therefore does not normally show up in a configure dialog
  for the actor.  To make the script visible and editable, you have two
@@ -90,12 +91,12 @@ import ptolemy.util.StringUtilities;
  then to edit the script you look inside the actor.  Use the latter
  if you wish to add additional attributes to the actor and hide the
  script from the users.  Use the former if the script is the main
- means by which users interact with the actor.
- <p>
- The functionality of an actor of this type is given by a Python script.
+ means by which users interact with the actor.</p>
+
+ <p> The functionality of an actor of this type is given by a Python script.
  As an example, a simplified version of the
  {@link ptolemy.actor.lib.Scale Scale}
- actor can be implemented by the following script:
+ actor can be implemented by the following script:</p>
  <pre>
  1.  class Main :
  2.    "scale"
@@ -106,7 +107,8 @@ import ptolemy.util.StringUtilities;
  7.      t = self.input.get(0)
  8.      self.output.broadcast(s.multiply(t))
  </pre>
- Line 1 defines a Python class Main. This name is fixed. An instance of this
+ 
+ <p>Line 1 defines a Python class Main. This name is fixed. An instance of this
  class is created when the actor is initialized. Line 2 is a description of
  the purpose of the script. Lines 3-8 define the fire() method, which is
  called by the {@link #fire() fire()} method of this actor. In the method body,
@@ -115,36 +117,30 @@ import ptolemy.util.StringUtilities;
  added to the actor (these can be added in the XML that defines the
  actor instance in an actor library). The Main class can provide other
  methods in the {@link ptolemy.actor.Executable Executable} interface
- as needed.
- <p>
- In the script, use <code>self.actor</code> to access the actor. For example,
+ as needed.</p>
+
+ <p>In the script, use <code>self.actor</code> to access the actor. For example,
  <code>self.actor.getDirector()</code> returns the current director of the
  actor. For debugging, use <code>self.actor.debug(someMessage)</code>. The
  final message sent to the debug listeners of the actor will have the string
  "From script: " inserted at the beginning. To avoid generating the debug
- message when there are no listeners, use:
+ message when there are no listeners, use:</p>
  <pre>
  if self.actor.isDebugging() :
  self.actor.debug(someMessage)
  </pre>
- <p>
- This class relies on Jython, which is a Java implementation of Python.
- <p>As of 1/2/2006, $PTII/lib/jython.jar was based on Jython 1.1 .
 
- <p><a href="http://www.jython.org/Project/userguide.html#the-jython-registry">The Jython Registry</a> - information about how to set the search path.
+ <p>This class relies on <a href="http://jython.org">Jython</a>, which
+ is a Java implementation of Python.
 
- <p> Follow the links below for more information about the Python language,
- licensing, downloads, etc.
+ <p>As of November, 2011 $PTII/lib/jython.jar was based on Jython 2.5.2.</p>
 
  @author Xiaojun Liu
  @version $Id$
  @since Ptolemy II 2.3
  @Pt.ProposedRating Yellow (liuxj)
  @Pt.AcceptedRating Red (reviewmoderator)
- @see <a href="http://www.python.org" target="_top">Python</a>
- @see <a href="http://www.jython.org" target="_top">Jython</a>
- @see <a href="http://www.jython.org/docs/differences.html">Differences between Jython and the C version of Python</a>
-
+ @see <a href="https://kepler-project.org/developers/reference/python-and-kepler">Python and Kepler notes</a>.
 
  */
 public class PythonScript extends TypedAtomicActor {
@@ -407,7 +403,8 @@ public class PythonScript extends TypedAtomicActor {
         // first create an attribute "actor" on the object
         // the PyObject class does not allow adding a new attribute to the
         // object
-        object.__setattr__("actor", new PyJavaInstance(this));
+        //object.__setattr__("actor", new PyJavaInstance(this));
+        object.__setattr__("actor", PyJavaType.wrapJavaObject(this));
 
         // give the object access to attributes and ports of this actor
         Iterator attributes = attributeList().iterator();
@@ -421,8 +418,10 @@ public class PythonScript extends TypedAtomicActor {
                         + "\" as \"" + mangledName + "\"");
             }
 
-            object.__setattr__(new PyString(mangledName), new PyJavaInstance(
-                    attribute));
+            object.__setattr__(new PyString(mangledName), 
+                    //new PyJavaInstance(attribute)
+                    PyJavaType.wrapJavaObject(attribute)
+                               );
         }
 
         Iterator ports = portList().iterator();
@@ -436,8 +435,10 @@ public class PythonScript extends TypedAtomicActor {
                         + "\" as \"" + mangledName + "\"");
             }
 
-            object.__setattr__(new PyString(mangledName), new PyJavaInstance(
-                    port));
+            object.__setattr__(new PyString(mangledName),
+                    //new PyJavaInstance(port)
+                    PyJavaType.wrapJavaObject(port)
+                               );
         }
 
         // populate the method map
@@ -541,7 +542,7 @@ public class PythonScript extends TypedAtomicActor {
 
                     for (int i = 0; i < args.length; ++i) {
                         if (!(args[i] instanceof PyObject)) {
-                            convertedArgs[i] = new PyJavaInstance(args[i]);
+                            convertedArgs[i] = PyJavaType.wrapJavaObject(args[i]); //new PyJavaInstance(args[i]);
                         } else {
                             convertedArgs[i] = (PyObject) args[i];
                         }

@@ -164,7 +164,7 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.opencv.javacv.CameraReader",
                 "ptolemy/actor/lib/opencv/javacv/javacv-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.python.PythonScript",
-                "ptolemy/actor/lib/python/copyright.htm");
+                "ptolemy/actor/lib/python/jython-license.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
                 "ptolemy/actor/lib/x10/x10-copyright.htm");
 

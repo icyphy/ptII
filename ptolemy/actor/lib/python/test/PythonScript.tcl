@@ -324,11 +324,11 @@ class Main :
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Error in invoking the fire method:
 line 8, in fire
-NameError: ThisIsATypo
+NameError: global name 'ThisIsATypo' is not defined
 
   in .top.PythonScript
 Because:
-Traceback (innermost last):
+Traceback (most recent call last):
   File "<string>", line 8, in fire
-NameError: ThisIsATypo
+NameError: global name 'ThisIsATypo' is not defined
 }}

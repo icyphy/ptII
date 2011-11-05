@@ -51,7 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = PythonScript.java
 
 OTHER_FILES_TO_BE_JARED = \
-	copyright.htm \
+	jython-license.htm \
 	python.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
