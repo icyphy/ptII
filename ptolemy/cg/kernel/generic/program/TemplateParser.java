@@ -150,6 +150,7 @@ public class TemplateParser {
                     .replace("[", "_X_LBRACKET_X_")
                     .replace("]", "_X_RBRACKET_X_").replace("+", "_X_PLUS_X_")
                     .replace("\\", "_X_BACKSLASH_X_")
+                    .replace("/", "_X_FORWARDSLASH_X_")
                     .replace("^", "_X_CARET_X_");
         } else {
             return name;
@@ -1220,6 +1221,7 @@ public class TemplateParser {
                     .replace("_X_LBRACKET_X_", "[")
                     .replace("_X_RBRACKET_X_", "]").replace("_X_PLUS_X_", "+")
                     .replace("_X_BACKSLASH_X_", "\\")
+                    .replace("_X_FORWARDSLASH_X_", "/")
                     .replace("_X_CARET_X_", "^");
         } else {
             return name;
