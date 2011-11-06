@@ -508,13 +508,13 @@ See $PTII/doc/coding/maven.htm
       <version>0.3.0</version>
     </dependency>
 
-    <dependency> <!-- $PTII/vendors/jython/jython.jar -->
-      <groupId>jython</groupId>
-      <artifactId>jython</artifactId>
-      <version>svn</version>
-      <!-- use this unless you work from the svn tree
-	   <version>2.2.1</version> -->
+    <!-- Get jython from the maven repo, not from http://chess.eecs.berkeley.edu/ptexternal/src/maven/org/python/jython-standalone/2.5.2/jython-standalone-2.5.2.jar -->
+    <dependency>
+       <groupId>org.python</groupId>
+       <artifactId>jython-standalone</artifactId>
+       <version>2.5.2</version>
     </dependency>
+
     <dependency>  <!-- $PTII/vendors/misc/joystick/Joystick.jar -->
       <groupId>javajoystick</groupId>
       <artifactId>joystick</artifactId>
