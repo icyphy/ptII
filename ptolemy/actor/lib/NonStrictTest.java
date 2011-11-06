@@ -69,10 +69,15 @@ import ptolemy.util.StringUtilities;
  from Test in that it ignores absent inputs, and it checks the inputs
  in the postfire() method rather than the fire() method.</p>
  <p>
+ The  input data type is undeclared, so it can resolve to anything.
  If the input is a DoubleToken or ComplexToken, then the comparison
  passes if the value is close to what it should be, within the
- specified <i>tolerance</i> (which defaults to 10<sup>-9</sup>.  The
- input data type is undeclared, so it can resolve to anything.</p>
+ specified <i>tolerance</i> (which defaults to 10<sup>-9</sup>).
+ During training, if a correct value is
+ greater than 10 orders of magnitude than the tolerance, then the
+ tolerance is changed to a value 9 orders of magnitude less than
+ the correct value.  This helps avoid comparisons beyond the
+ precision of a Java double.</p>
  <p>
  If the parameter <i>trainingMode</i> is <i>true</i>, then instead
  of performing the test, this actor collects the inputs into the
@@ -144,7 +149,11 @@ public class NonStrictTest extends Sink {
 
     /** A double specifying how close the input has to be to the value
      *  given by <i>correctValues</i>.  This is a DoubleToken, with default
-     *  value 10<sup>-9</sup>.
+     *  value 10<sup>-9</sup>.  During training, if a correct value is
+     *  greater than 10 orders of magnitude than the tolerance, then the
+     *  tolerance is changed to a value 9 orders of magnitude less than
+     *  the correct value.  This helps avoid comparisons beyond the
+     *  precision of a Java double.
      */
     public Parameter tolerance;
 
@@ -386,8 +395,12 @@ public class NonStrictTest extends Sink {
                     if (newValues[i] instanceof Token[]) {
                         // Handle width of 1, ArrayToken
                         newTokens[i] = new ArrayToken((Token[]) newValues[i]);
+                        for (int j = 0; j < ((Token[])newValues[i]).length; i++) {
+                            _checkRangeOfTolerance(((Token[])newValues[i])[j]);
+                        }
                     } else {
                         newTokens[i] = (Token) newValues[i];
+                        _checkRangeOfTolerance((Token)newValues[i]);
                     }
                 }
             } else {
@@ -408,6 +421,7 @@ public class NonStrictTest extends Sink {
 
                     for (int j = 0; j < entries.length; j++) {
                         newEntry[j] = (Token) entries[j];
+                        _checkRangeOfTolerance(newEntry[i]);
                     }
 
                     newTokens[i] = new ArrayToken(newEntry);
@@ -447,6 +461,44 @@ public class NonStrictTest extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Check that the difference in exponents between the 
+     *  input and the tolerance is not greater than the precision
+     *  of a Double.  If the exponent of newValue parameter is
+     *  different by from the exponent of the <i>tolerance</i>
+     *  parameter by more than 10, then adjust the <i>tolerance</i>
+     *  parameter.  This is useful for training large modesl
+     *  that have many PublisherTests.
+     *  @param newValue The token to be tested.  DoubleTokens
+     *  are tested, other tokens are ignored.
+     *  @exception IllegalActionException If thrown while reading the
+     *  <i>tolerance</i> parameter.
+     */
+    protected void _checkRangeOfTolerance(Token newValue) throws IllegalActionException {
+        if (newValue instanceof DoubleToken) {
+            Double value = ((DoubleToken)newValue).doubleValue();
+            if (value == 0.0) {
+                // The exponent of 0.0 is -Infinity, so skip it
+                return;
+            }
+            double log = Math.log10(((DoubleToken)newValue).doubleValue());
+            if (Math.abs(log - Math.log10(_tolerance)) > 10) {
+                // Set the tolerance to something closer to the input so that
+                // we don't set it many times. 
+                double newTolerance = Math.pow(10, log-9);
+                if (newTolerance > _tolerance) {
+                    // Only set the tolerance if it is greater than the old tolerance.
+                    tolerance.setToken(new DoubleToken(newTolerance));
+                    tolerance.setPersistent(true);
+                    attributeChanged(tolerance);
+                    System.out.println("NonStrictTest: " + getFullName() + ": exponent of " 
+                            + newValue + " is " + log
+                            + ", which cannot be compared with the previous tolerance."
+                            + " The new tolerance is " + tolerance.getExpression() + ".");
+                }
+            }
+        }
+    }
 
     /** Test whether the value of this token is close to the first argument,
      *  where "close" means that the distance between them is less than

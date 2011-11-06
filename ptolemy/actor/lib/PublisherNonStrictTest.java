@@ -84,7 +84,7 @@ public class PublisherNonStrictTest extends Publisher {
         correctValues.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
 
         tolerance = new Parameter(this, "tolerance");
-        tolerance.setExpression("1.0E-9");
+        tolerance.setExpression("1.0");
         tolerance.setTypeEquals(BaseType.DOUBLE);
 
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
@@ -475,13 +475,17 @@ public class PublisherNonStrictTest extends Publisher {
             if (Math.abs(log - Math.log10(_tolerance)) > 10) {
                 // Set the tolerance to something closer to the input so that
                 // we don't set it many times. 
-                tolerance.setToken(new DoubleToken(Math.pow(10, log-9)));
-                tolerance.setPersistent(true);
-                attributeChanged(tolerance);
-                System.out.println("PublisherNonStrictTest: " + getFullName() + ": exponent of " 
-                        + newValue + " is " + log
-                        + ", which cannot be compared with the previous tolerance."
-                        + " The new tolerance is " + tolerance.getExpression() + ".");
+                double newTolerance = Math.pow(10, log-9);
+                if (newTolerance > _tolerance) {
+                    // Only set the tolerance if it is greater than the old tolerance.
+                    tolerance.setToken(new DoubleToken(newTolerance));
+                    tolerance.setPersistent(true);
+                    attributeChanged(tolerance);
+                    System.out.println("PublisherNonStrictTest: " + getFullName() + ": exponent of " 
+                            + newValue + " is " + log
+                            + ", which cannot be compared with the previous tolerance."
+                            + " The new tolerance is " + tolerance.getExpression() + ".");
+                }
             }
         }
     }
