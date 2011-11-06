@@ -2,13 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StreamLoader" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 65}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {289, 54, 815, 509}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={289, 54, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -23,7 +23,7 @@
         </property>
     </property>
     <entity name="StreamLoader" class="ptolemy.actor.lib.jmf.StreamLoader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="file:/C:/cxh/ptII/ptolemy/actor/lib/jmf/MrPtolemy.mov">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/jmf/MrPtolemy.mov">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 200}">
         </property>
@@ -33,6 +33,8 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="StreamLoader.output" relation="relation"/>
     <link port="VideoPlayer.input" relation="relation"/>

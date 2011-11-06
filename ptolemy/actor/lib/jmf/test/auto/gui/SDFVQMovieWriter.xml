@@ -2,10 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SDFVQMovieWriter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SDF10" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="19">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 104, 815, 559}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={294, 120, 813, 560}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -73,15 +73,15 @@
         </property>
     </entity>
     <entity name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix">
-        <property name="rows" class="ptolemy.data.expr.Parameter" value="176">
+        <property name="rows" class="ptolemy.data.expr.Parameter" value="144">
         </property>
-        <property name="columns" class="ptolemy.data.expr.Parameter" value="144">
+        <property name="columns" class="ptolemy.data.expr.Parameter" value="176">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 125.0]">
         </property>
     </entity>
     <entity name="JAIRotate" class="ptolemy.actor.lib.jai.JAIRotate">
-        <property name="degrees" class="ptolemy.data.expr.Parameter" value="180.0">
+        <property name="degrees" class="ptolemy.actor.parameters.PortParameter" value="180.0">
         </property>
         <property name="interpolationType" class="ptolemy.kernel.util.StringAttribute" value="bilinear">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -103,7 +103,9 @@
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {487, 248, 184, 192}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 175, 144, 220}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[176, 144]">
         </property>
@@ -111,6 +113,10 @@
         </property>
     </entity>
     <entity name="MovieWriter" class="ptolemy.actor.lib.jmf.MovieWriter">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$TMPDIR/movieOut.mov">
+        </property>
+        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="fileType" class="ptolemy.kernel.util.StringAttribute" value="QUICKTIME">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="AVI" class="ptolemy.kernel.util.StringAttribute" value="AVI">
@@ -124,23 +130,43 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 355.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Original" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 414, 176, 188}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[175, 144]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{561.5, 73.5}">
+        </property>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[270.0, 190.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[235.0, 125.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[470.0, 275.0]">
         </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="ImageSequence0.output" relation="relation2"/>
     <link port="DoubleMatrixToJAI.input" relation="relation5"/>
@@ -155,4 +181,5 @@
     <link port="ImageToJMF.output" relation="relation6"/>
     <link port="ImageDisplay.input" relation="relation6"/>
     <link port="MovieWriter.input" relation="relation6"/>
+    <link port="Original.input" relation="relation5"/>
 </entity>
