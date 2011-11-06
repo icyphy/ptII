@@ -370,13 +370,18 @@ public class PublisherNonStrictTest extends Publisher {
             int width = input.getWidth();
             Token[] newTokens = new Token[newValues.length];
 
+            double newTolerance = _tolerance;
             if (width == 1) {
                 for (int i = 0; i < newValues.length; i++) {
                     if (newValues[i] instanceof Token[]) {
                         // Handle width of 1, ArrayToken
                         newTokens[i] = new ArrayToken((Token[]) newValues[i]);
+                        for (int j = 0; j < ((Token[])newValues[i]).length; i++) {
+                            _checkRangeOfTolerance(((Token[])newValues[i])[j]);
+                        }
                     } else {
                         newTokens[i] = (Token) newValues[i];
+                        _checkRangeOfTolerance((Token)newValues[i]);
                     }
                 }
             } else {
@@ -397,6 +402,7 @@ public class PublisherNonStrictTest extends Publisher {
 
                     for (int j = 0; j < entries.length; j++) {
                         newEntry[j] = (Token) entries[j];
+                        _checkRangeOfTolerance(newEntry[i]);
                     }
 
                     newTokens[i] = new ArrayToken(newEntry);
@@ -441,4 +447,41 @@ public class PublisherNonStrictTest extends Publisher {
 
     /** List to store tokens for training mode. */
     protected List _trainingTokens;
+
+    /** Check that the difference in exponents between the 
+     *  input and the tolerance is not greater than the precision
+     *  of a Double.  If the exponent of newValue parameter is
+     *  different by from the exponent of the <i>tolerance</i>
+     *  parameter by more than 10, then adjust the <i>tolerance</i>
+     *  parameter.  This is useful for training large modesl
+     *  that have many PublisherTests.
+     *  @param newValue The token to be tested.  DoubleTokens
+     *  are tested, other tokens are ignored.
+     *  @exception IllegalActionException If thrown while reading the
+     *  <i>tolerance</i> parameter.
+     */
+    private void _checkRangeOfTolerance(Token newValue) throws IllegalActionException {
+        if (newValue instanceof DoubleToken) {
+            Double value = ((DoubleToken)newValue).doubleValue();
+            if (value == 0.0) {
+                // The exponent of 0.0 is -Infinity, so skip it
+                return;
+            }
+            double log = Math.log10(((DoubleToken)newValue).doubleValue());
+            if (Math.abs(log - Math.log10(_tolerance)) > 10) {
+                // Set the tolerance to something closer to the input so that
+                // we don't set it many times. 
+                tolerance.setExpression( new DoubleToken(Math.pow(10, log-9)).toString());
+                attributeChanged(tolerance);
+                //if (_debugging) {
+                //
+                System.out.println
+                ("PublisherNonStrictTest: " + getFullName() + ": exponent of " 
+                            + newValue + " is " + log
+                            + ", which cannot be compared with the previous tolerance."
+                            + " The new tolerance is " + tolerance.getExpression() + " " + _tolerance);
+                //}
+            }
+        }
+    }
 }
