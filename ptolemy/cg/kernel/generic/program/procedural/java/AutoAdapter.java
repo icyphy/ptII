@@ -419,7 +419,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // "Cannot put a token in a full mailbox."  See
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/ActorWithPrivateParameterTest.xml
                     code.append(_generatePortInstantiation(name,
-                            castPort.getName(), castPort, 0 /* channelNumber */));
+                                    castPort.getName(), castPort, 0 /* channelNumber */,
+                                    castPort.sourcePortList()));
                 } else {
                     // Multiports.  Not all multiports have port names
                     // that match the field name. See
@@ -458,19 +459,22 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         }
                     }
 
-                    int sources = actorPort.numberOfSources();
-                    for (int i = 0; i < sources; i++) {
+                    // If we have a multiport connected to a composite that has a multiport with two inputs, then
+                    // we want to use sourcePortList() and not numberOfSources()
+                    // $PTII/bin/ptcg -language java ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ReadPMultiport.xml 
+                    List sourcePortList = actorPort.sourcePortList();
+                    for (int i = 0; i < sourcePortList.size(); i++) {
                         if (actorPort.isOutsideConnected()) {
                             code.append(_generatePortInstantiation(name, name
-                                    + "Source" + i, actorPort, i));
+                                            + "Source" + i, actorPort, i, sourcePortList));
                         }
                     }
 
-                    int sinks = actorPort.numberOfSinks();
-                    for (int i = 0; i < sinks; i++) {
+                    List sinkPortList = actorPort.sinkPortList();
+                    for (int i = 0; i < sinkPortList.size(); i++) {
                         if (actorPort.isOutsideConnected()) {
                             code.append(_generatePortInstantiation(name, name
-                                    + "Sink" + i, actorPort, i));
+                                            + "Sink" + i, actorPort, i, sinkPortList));
                         }
                     }
                 }
@@ -1484,11 +1488,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  singlePorts, the channelNumber will be 0.  For multiports, the
      *  channelNumber will range from 0 to the number of sinks or
      *  sources.
+     *  @param sourceOrSinkPorts The source or sink ports connected to the port.
      *  @exception IllegalActionException If there is a problem checking whether
      *  actorPortName is a PortParameter.
      */
     private String _generatePortInstantiation(String actorPortName,
-            String codegenPortName, TypedIOPort port, int channelNumber)
+            String codegenPortName, TypedIOPort port, int channelNumber, List sourceOrSinkPorts)
             throws IllegalActionException {
         //String escapedActorPortName = TemplateParser.escapePortName(actorPortName);
         String unescapedActorPortName = TemplateParser
@@ -1546,14 +1551,18 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + codegenPortName + "\");" + _eol);
 
             // Iterate through all the parameters in the remote actor.
-            List ports = port.connectedPortList();
+            //List ports = port.connectedPortList();
             NamedObj remoteActor = null;
             try {
-                remoteActor = ((IOPort) ports.get(channelNumber))
+                remoteActor = ((IOPort) sourceOrSinkPorts.get(channelNumber))
                     .getContainer();
+                System.out.println("AutoAdapter: port " + port.getFullName() + " is connected to" + remoteActor);
+                if (remoteActor instanceof TypedAtomicActor) {
+                    remoteActor = remoteActor.getContainer();
+                }
             } catch (Exception ex) {
                 StringBuffer message = new StringBuffer("Ports are:\n");
-                Iterator portsIterator = ports.iterator();
+                Iterator portsIterator = sourceOrSinkPorts.iterator();
                 while (portsIterator.hasNext()) {
                     Port p = (TypedIOPort) portsIterator.next();
                     message.append("    " + p + "\n");
@@ -1569,8 +1578,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + ": while reading remote parameters, "
                         + "failed to get the remote actor connected to port "
                         + port.getName() + " to channel "
-                        + channelNumber + " of " + ports.size() + " channels. "
-                        + "numberOfSources was " + port.numberOfSources()
+                        + channelNumber + " of " + sourceOrSinkPorts.size() + " channels. "
+                        + " numberOfSources was " + port.numberOfSources()
+                        + " insidePortList.size() " + port.insidePortList().size()
+                        + " sinkPortList.size() " + port.sinkPortList().size()
+                        + " sourcePortList.size() " + port.sourcePortList().size()
+                        + " width " + port.getWidth()
                         + "\n"  + message);
             }
             List<Parameter> parameters = remoteActor
