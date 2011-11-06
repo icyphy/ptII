@@ -2717,7 +2717,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         types.addAll(_newTypesUsed);
-        System.out.println("JavaCodeGenerator: all referenced types: " + types);
+        //System.out.println("JavaCodeGenerator: all referenced types: " + types);
         return types;
     }
 
