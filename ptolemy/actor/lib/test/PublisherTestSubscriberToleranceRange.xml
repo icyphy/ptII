@@ -86,14 +86,16 @@
         <link port="Subscriber.output" relation="relation2"/>
     </class>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1E7">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 180.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, -1, -2, -3, -4, -5, -6, -7, -8, -9}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0E7, 1.0000001E7, 1.0000002E7, 1.0000003E7, 1.0000004E7, 1.0000005E7, 1.0000006E7, 1.0000007E7, 1.0000008E7, 1.0000009E7}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -103,7 +105,9 @@
     <entity name="PublisherTest2" class="ptolemy.actor.lib.PublisherTest">
         <property name="channel" class="ptolemy.data.expr.StringParameter" value="foo">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, -1, -2, -3, -4, -5, -6, -7, -8, -9}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0E7, 1.0000001E7, 1.0000002E7, 1.0000003E7, 1.0000004E7, 1.0000005E7, 1.0000006E7, 1.0000007E7, 1.0000008E7, 1.0000009E7}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -139,6 +143,8 @@
         </property>
         <entity name="PublisherTest" class="ptolemy.actor.lib.PublisherTest">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.005530376731197E7, 2.005530376731197E7, 3.005530376731197E7, 4.005530376731197E7, 5.005530376731197E7, 6.005530376731197E7, 7.005530376731196E7, 8.005530376731196E7, 9.005530376731196E7, 1.00055303767312E8}">
+            </property>
+            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0100553037673">
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">

@@ -105,7 +105,11 @@ public class PublisherNonStrictTest extends Publisher {
 
     /** A double specifying how close the input has to be to the value
      *  given by <i>correctValues</i>.  This is a DoubleToken, with default
-     *  value 10<sup>-9</sup>.
+     *  value 10<sup>-9</sup>.  During training, if a correct value is
+     *  greater than 10 orders of magnitude than the tolerance, then the
+     *  tolerance is changed to a value 9 orders of magnitude less than
+     *  the correct value.  This helps avoid comparisons beyond the
+     *  precision of a Java double.
      */
     public Parameter tolerance;
 
@@ -471,16 +475,13 @@ public class PublisherNonStrictTest extends Publisher {
             if (Math.abs(log - Math.log10(_tolerance)) > 10) {
                 // Set the tolerance to something closer to the input so that
                 // we don't set it many times. 
-                tolerance.setExpression( new DoubleToken(Math.pow(10, log-9)).toString());
+                tolerance.setToken(new DoubleToken(Math.pow(10, log-9)));
+                tolerance.setPersistent(true);
                 attributeChanged(tolerance);
-                //if (_debugging) {
-                //
-                System.out.println
-                ("PublisherNonStrictTest: " + getFullName() + ": exponent of " 
-                            + newValue + " is " + log
-                            + ", which cannot be compared with the previous tolerance."
-                            + " The new tolerance is " + tolerance.getExpression() + " " + _tolerance);
-                //}
+                System.out.println("PublisherNonStrictTest: " + getFullName() + ": exponent of " 
+                        + newValue + " is " + log
+                        + ", which cannot be compared with the previous tolerance."
+                        + " The new tolerance is " + tolerance.getExpression() + ".");
             }
         }
     }
