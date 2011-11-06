@@ -182,7 +182,6 @@ OPTIONAL_FILES = \
 
 # Packages under the com package
 COMPACKAGES = \
-	com.JLex \
 	com.microstar.xml
 
 # JUnit tests
