@@ -1,7 +1,8 @@
-/*** preinitBlock ***/
 // Initialize to -1 because we ALWAYS increment first.
 // This is more convenient for multiport, where we check if \$channel
 // number is equal zero (the first channel). If so, then we increment.
+
+/*** preinitBlock ***/
 int $actorSymbol(numberOfTokensSeen) = -1;
 $targetType(input) $actorSymbol(inputToken);
 /**/
