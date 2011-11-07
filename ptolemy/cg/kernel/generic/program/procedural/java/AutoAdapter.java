@@ -1163,7 +1163,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // FIXME: we could have an attribute if set will generates variables.
                 if (composite.getName().equals("Generator")) {
                     variableCode.append("{" + _eol
-                        + "System.out.println(\"GeneratorHack: \");" + _eol
+                            //+ "System.out.println(\"GeneratorHack: \");" + _eol
                         + "TypedCompositeActor genComposite = (TypedCompositeActor)"
                         + containerSymbol + ".getEntity(\""
                         + composite.getName() + "\");" + _eol
@@ -1590,7 +1590,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     .attributeList(Parameter.class);
             for (Parameter parameter : parameters) {
                 code.append("new Parameter(c0, \"" + parameter.getName()
-                        + "\").setExpression(\"" + parameter.getExpression()
+                        + "\").setExpression(\"" + parameter.getExpression().replace("$", "\\u0024")
                         + "\");" + _eol);
             }
 
