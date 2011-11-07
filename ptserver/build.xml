@@ -66,7 +66,6 @@
 			<exclude name="ptdb/" />
 			<exclude name="ptolemy/actor/lib/excel/" />
 			<exclude name="ptolemy/actor/lib/mail/" />
-			<exclude name="ptolemy/actor/lib/logic/fuzzy/" />
 			<exclude name="ptolemy/actor/lib/opencv/" />
 			<exclude name="ptolemy/actor/lib/reactable/" />
 			<exclude name="ptolemy/backtrack/eclipse/" />

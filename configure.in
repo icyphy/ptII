@@ -1760,81 +1760,6 @@ else
    updateClasspath "$PTDB_JAR"
 fi 
 
-#--------------------------------------------------------------------
-#       FuzzyEngine is an "Open source fuzzy inference engine for Java"
-#	http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
-#	However, FuzzyEngine is GPL'd, so we don't ship it.
-#
-#       See if there was a command-line option for where FuzzyEngine interface is
-#       If not, look for $PTII/vendors/misc/FuzzyEngine/fuzzy/FuzzyEngine.class
-#--------------------------------------------------------------------
-
-# PTFUZZY_DIR is set to fuzzy and used in
-# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.class was found
-PTFUZZY_DIR=
-
-# FuzzyEngine Directory
-# http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
-PTFUZZYENGINE_DIR='${PTII}/vendors/misc/FuzzyEngine'
-
-FUZZYLOGIC_USER_DIR="$PTII/ptolemy/actor/lib/logic/fuzzy"
-# We only need to look for FuzzyEngine if $FUZZYLOGIC_USER_DIR
-if test ! -d "$FUZZYLOGIC_USER_DIR"; then
-    PT_MSG_STATUS([$FUZZYLOGIC_USER_DIR is not present,
-    so we need not find the FuzzyEngine interface.])
-else
-    AC_MSG_CHECKING([for FuzzyEngine directory])
-    AC_ARG_WITH(fuzzyengine, [  --with-fuzzyengine=DIRECTORY       use FuzzyEngine from DIRECTORY,
-                          defaults to \$PTII/vendors/misc/FuzzyEngine],
-	PTFUZZYENGINE_DIR=$withval,
-	PTFUZZYENGINE_DIR=$PTII/vendors/misc/FuzzyEngine)
-
-    if test ! -f "$PTFUZZYENGINE_DIR/fuzzy/FuzzyEngine.class"; then
-	PT_MSG_RESULT([Could not find $PTFUZZYENGINE_DIR/fuzzy/FuzzyEngine.class])
-	AC_MSG_CHECKING([compiling in $PTFUZZYENGINE_DIR/fuzzy])
-        (cd "$PTFUZZYENGINE_DIR/fuzzy"; javac -classpath .. *.java)
-    fi	
-    if test -f "$PTFUZZYENGINE_DIR/fuzzy/FuzzyEngine.class"; then
-	PT_MSG_RESULT([$PTFUZZYENGINE_DIR])
-	# Set to fuzzy and used in
-	# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.class
-	PTFUZZY_DIR=fuzzy
-        # PTFUZZYLOGIC_PACKAGES is used in ptII/doc/makefile
-	PTFUZZY_PACKAGES=ptolemy.actor.lib.logic.fuzzy
-    fi	
-
-    if test "$PTFUZZY_DIR" = ""; then
-        AC_MSG_WARN([Failed to find fuzzy/FuzzyEngine.class
-    in $PTFUZZYENGINE_DIR.
-    Perhaps the FuzzyEngine is not installed?
-    You need not download the FuzzyEngine interface unless you
-    plan on using the actor.lib.logic.fuzzy actors with Ptolemy II. 
-    The FuzzyEngine interface can be downloaded from
-    http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
-    an untar'd into $PTII/vendors/misc so that
-    $PTII/vendors/misc/FuzzyEngine/fuzzy/FuzzyEngine.class exists.] )
-	# Note that we don't substitute in the ${PTII} here
-	PTFUZZYENGINE_DIR='${PTII}/vendors/misc/FuzzyEngine'
-    fi
-fi
-
-if test -z "$PTFUZZY_DIR"; then
-   updateExcludes "ptolemy/actor/lib/logic/fuzzy/"
-else
-   shortdir=`echo "$PTFUZZYENGINE_DIR" | sed "s@$PTII/@@"`
-   if test -d "$shortdir"; then
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                <classpathentry kind=\"src\" path=\"$shortdir\"/>"
-      ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$shortdir\"/> "
-      ANT_SRC="$ANT_SRC <src path=\"$shortdir\"/>"
-   else
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-           <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
-      ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$PTFUZZYENGINE_DIR\"/> "
-      ANT_SRC="$ANT_SRC <src path=\"$PTFUZZYENGINE_DIR\"/>"
-   fi
-
-fi 
 
 #--------------------------------------------------------------------
 #       Garbage Collector (GC)
@@ -5552,17 +5477,6 @@ AC_SUBST(PTEXCEL_DIR)
 
 # PTEXCEL_PACKAGES is used in doc/makefile
 AC_SUBST(PTEXCEL_PACKAGES)
-
-# Set to fuzzy and used in
-# $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.jar was found
-AC_SUBST(PTFUZZY_DIR)
-
-# FuzzyEngine directory.  FuzzyEngine is from
-# http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
-AC_SUBST(PTFUZZYENGINE_DIR)
-
-# PTFUZZYLOGIC_PACKAGES is used in ptII/doc/makefile if FuzzyEngine.jar is found
-AC_SUBST(PTFUZZY_PACKAGES)
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat

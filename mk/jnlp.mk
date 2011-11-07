@@ -417,12 +417,6 @@ BACKTRACK_JARS =
 
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
-# We are not shipping the fuzzy logic actor because it is GPL'd
-FUZZY_JARS =
-DEVEL_FUZZY_JARS = \
-	ptolemy/actor/lib/logic/fuzzy/fuzzy.jar \
-	ptolemy/actor/lib/logic/fuzzy/demo/demo.jar \
-
 RTMAUDE_JARS = \
 	ptolemy/codegen/rtmaude/rtmaude.jar 
 
@@ -486,7 +480,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/mail/mail.jar \
 	ptolemy/actor/lib/mail/demo/demo.jar \
 	$(PTJAVAMAIL_JARS) \
-	$(FUZZY_JARS) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
 	lib/ptCal.jar \

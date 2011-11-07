@@ -462,18 +462,6 @@ PTEXCEL_DIR=	@PTEXCEL_DIR@
 # PTEXCEL_PACKAGES is used in doc/makefile
 PTEXCEL_PACKAGES=	@PTEXCEL_PACKAGES@
 
-# Set to fuzzy and used in
-# $PTII/ptolemy/actor/lib/logic/makefile if fuzzy/FuzzyEngine.class was found
-PTFUZZY_DIR = @PTFUZZY_DIR@
-
-# The FuzzyEngine directory, usually
-# $PTII/vendors/misc/FuzzyEngine.  Available from
-# http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
-PTFUZZYENGINE_DIR = @PTFUZZYENGINE_DIR@
-
-# PTFUZZYLOGIC_PACKAGES is used in ptII/doc/makefile if fuzzy/FuzzyEngine.class is found
-PTFUZZY_PACKAGES = @PTFUZZY_PACKAGES@
-
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
 PTII_LOCALURL = @PTII_LOCALURL@

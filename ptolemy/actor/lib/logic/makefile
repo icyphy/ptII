@@ -33,9 +33,7 @@
 
 ME =		ptolemy/actor/lib/logic
 
-# PTFUZZY_DIR is set to fuzzy by configure in $PTII/mk/ptII.mk
-#  if fuzzy/FuzzyEngine.class was found
-DIRS = 		test $(PTFUZZY_DIR)
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../../..
