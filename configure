@@ -722,7 +722,6 @@ JVERSION
 JMF_JARS
 JNA_JAR
 JODE_CLASSES
-JOGL_DIR
 JUNIT_JARS
 JYTHON_DIR
 JXTA_DIR
@@ -813,9 +812,6 @@ PTJNI_SHAREDLIBRARY_PREFIX
 PTJNI_SHAREDLIBRARY_SUFFIX
 PTJNI_SHAREDLIBRARY_SUFFIX2
 PTJNI_LIBRARIES
-PTJOGL_DIR
-PTJOGL_JARS
-PTJOGL_PACKAGES
 PTJOYSTICK_DIR
 PTJOYSTICK_PACKAGES
 PTJSON_DIR
@@ -1511,8 +1507,6 @@ Optional Packages:
                               defaults to \$PTII/lib/org-netbeans-api-visual.jar
   --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
                           defaults to \$PTII/vendors/oracle/javamail
-  --with-jogl=DIRECTORY       use Java OpenGL interface (jogl) from DIRECTORY,
-                          defaults to \$PTII/vendors/sun/jogl
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
@@ -8041,105 +8035,6 @@ if test -z "$PTJMF_DIR"; then
    updateExcludes "ptolemy/actor/lib/jmf/"
 fi
 
-
-#--------------------------------------------------------------------
-#       Jogl is Java bindings for OpenGL
-#	https://jogl.dev.java.net/
-#	Jogl is BSD licensed, but platform dependent, so we don't
-#       include Jogl in the Ptolemy II tree
-#--------------------------------------------------------------------
-
-# PTJOGL_DIR is set to jogl
-# $PTII/ptolemy/domains/makefile if Jogl was found
-PTJOGL_DIR=
-
-# Jogl Directory.  Jogl is available from
-# https://jogl.dev.java.net/
-JOGL_DIR='${PTII}/vendors/sun/jogl'
-
-# Java OpenGL (Jogl) jar files.   Used to compile the jogl domain.
-PTJOGL_JARS=
-
-JOGL_USER_DIR="$PTII/ptolemy/domains/jogl"
-# We only need to look for Jogl if $JOGL_USER_DIR
-if test ! -d "$JOGL_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $JOGL_USER_DIR is not present,
-    so we need not find the Jogl interface." >&5
-echo "${ECHO_T}$JOGL_USER_DIR is not present,
-    so we need not find the Jogl interface." >&6; }; fi
-else
-    { echo "$as_me:$LINENO: checking for Jogl directory" >&5
-echo $ECHO_N "checking for Jogl directory... $ECHO_C" >&6; }
-
-# Check whether --with-jogl was given.
-if test "${with_jogl+set}" = set; then
-  withval=$with_jogl; JOGL_DIR=$withval
-else
-  JOGL_DIR=$PTII/vendors/sun/jogl
-fi
-
-
-    if test -f "$JOGL_DIR/lib/jogl.jar"; then
-	# Set to jogl and used in
-	# $PTII/ptolemy/domains/makefile if jogl.jar was found.
-	PTJOGL_DIR=jogl
-        # PTJOGL_PACKAGES is used in ptII/doc/makefile
-	PTJOGL_PACKAGES="ptolemy.domains.jogl.kernel ptolemy.domains.jogl.lib ptolemy.domains.jogl.objLoader ptolemy.domains.jogl.objModel ptolemy.domains.jogl.renderingActive ptolemy.domains.jogl.TourModelsGL ptolemy.domains.petrinet.lib.gui"
-
-	# Look for Jogl jar files
-	jogljars="jogl.jar gluegen-rt.jar"
-        for jar in $jogljars
-        do
-    	    if test "${PTVERBOSE:-none}" = "none"; then
-                $PT_ECHO $ECHO_N "."
-            else
-                $PT_ECHO $ECHO_N "$jar "
-            fi
-	    if test -f "$JOGL_DIR/lib/$jar"; then
-	       PTJOGL_JARS="${PTJOGL_JARS}${CLASSPATHSEPARATOR}${JOGL_DIR}/lib/$jar"
-	       updateClasspath "$JOGL_DIR/lib/$jar"
-	    fi
-        done
-	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JOGL_DIR" >&5
-echo "${ECHO_T}$JOGL_DIR" >&6; }; fi
-    fi
-
-    if test "$PTJOGL_DIR" = ""; then
-        { echo "$as_me:$LINENO: WARNING: Failed to find lib/jogl.jar
-    in $JOGL_DIR
-    perhaps the Java OpenGL (Jogl) interface is not installed?
-    You need not download the Jogl interface unless you
-    plan on using the Jogl domain with Ptolemy II.
-    The Jogl interface can be downloaded from
-    http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1a/
-    or
-    http://jogamp.org/deployment/autobuilds/master/
-    an untar'd into $PTII/vendors/sun.  Note that configure looks
-    for $PTII/vendors/sun/jogl, so either move the Jogl distribution
-    or create a symbolic link and then rerun configure. " >&5
-echo "$as_me: WARNING: Failed to find lib/jogl.jar
-    in $JOGL_DIR
-    perhaps the Java OpenGL (Jogl) interface is not installed?
-    You need not download the Jogl interface unless you
-    plan on using the Jogl domain with Ptolemy II.
-    The Jogl interface can be downloaded from
-    http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1a/
-    or
-    http://jogamp.org/deployment/autobuilds/master/
-    an untar'd into $PTII/vendors/sun.  Note that configure looks
-    for $PTII/vendors/sun/jogl, so either move the Jogl distribution
-    or create a symbolic link and then rerun configure. " >&2;}
-	# Note that we don't substitute in the ${PTII} here
-	JOGL_DIR='${PTII}/vendors/sun/jogl'
-    fi
-fi
-
-if test -z "$PTJOGL_DIR"; then
-   updateExcludes "ptolemy/domains/jogl/"
-fi
-
-
 #--------------------------------------------------------------------
 #       The Joystick interface is a Java interface to Joysticks, see
 #	http://sourceforge.net/projects/javajoystick/
@@ -12615,9 +12510,6 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # jode.jar used in bin/ptinvoke to start up Jode, the .class disassembler
 
 
-# Java OpenGL (Jogl) directory.  Jogl is from
-# https://jogl.dev.java.net/
-
 
 # Used in many test/makefiles
 
@@ -12941,16 +12833,6 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos)
-
-
-# Set to jogl and used in
-# $PTII/ptolemy/domains/makefile if the Java OpenGL (Jogl) interface was found.
-
-
-# Java OpenGL (Jogl) jar files.   Used to compile jogl domain.
-
-
-# PTJOGL_PACKAGES is used in ptII/doc/makefile if Jogl was found.
 
 
 # Set to joystick if Joystick.jar was found
@@ -13993,7 +13875,6 @@ JVERSION!$JVERSION$ac_delim
 JMF_JARS!$JMF_JARS$ac_delim
 JNA_JAR!$JNA_JAR$ac_delim
 JODE_CLASSES!$JODE_CLASSES$ac_delim
-JOGL_DIR!$JOGL_DIR$ac_delim
 JUNIT_JARS!$JUNIT_JARS$ac_delim
 JYTHON_DIR!$JYTHON_DIR$ac_delim
 JXTA_DIR!$JXTA_DIR$ac_delim
@@ -14079,6 +13960,7 @@ PTJNI_LIB_ARCHITECTURE!$PTJNI_LIB_ARCHITECTURE$ac_delim
 PTJNI_NO_CYGWIN!$PTJNI_NO_CYGWIN$ac_delim
 PTJNI_GCC_SHARED_FLAG!$PTJNI_GCC_SHARED_FLAG$ac_delim
 PTJNI_SHAREDLIBRARY_CFLAG!$PTJNI_SHAREDLIBRARY_CFLAG$ac_delim
+PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -14120,14 +14002,10 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
-PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_PREFIX!$PTJNI_SHAREDLIBRARY_PREFIX$ac_delim
 PTJNI_SHAREDLIBRARY_SUFFIX!$PTJNI_SHAREDLIBRARY_SUFFIX$ac_delim
 PTJNI_SHAREDLIBRARY_SUFFIX2!$PTJNI_SHAREDLIBRARY_SUFFIX2$ac_delim
 PTJNI_LIBRARIES!$PTJNI_LIBRARIES$ac_delim
-PTJOGL_DIR!$PTJOGL_DIR$ac_delim
-PTJOGL_JARS!$PTJOGL_JARS$ac_delim
-PTJOGL_PACKAGES!$PTJOGL_PACKAGES$ac_delim
 PTJOYSTICK_DIR!$PTJOYSTICK_DIR$ac_delim
 PTJOYSTICK_PACKAGES!$PTJOYSTICK_PACKAGES$ac_delim
 PTJSON_DIR!$PTJSON_DIR$ac_delim
@@ -14200,7 +14078,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 78; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 74; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

@@ -41,13 +41,11 @@ EXPERIMENTAL_DOMAINS =
 #   $PTII/lib/mapss.jar was found
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
-# PTJOGL_DIR is set by configure in $PTII/mk/ptII.mk to jogl if
-#   Jogl (Java bindings for OpenGL) was found.
 # PTSPACE_DIR is set to space by configure in $PTII/mk/ptII.mk if
 #   ojdbc6.jar was found.
 DOMAINS =	ca ci continuous csp ct curriculum \
 	        dde ddf de fsm hdf modal pn sdf dt \
-	        giotto ontologies $(PTJOGL_DIR) petrinet rendezvous \
+	        giotto ontologies petrinet rendezvous \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \
 		sequence sr taskpt tdl tester tm $(PTJAVA3D_DIR) wireless
 
