@@ -684,6 +684,7 @@ ALLPACKAGES = \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.petrinet.kernel \
 	ptolemy.domains.petrinet.lib \
+	ptolemy.domains.petrinet.lib.gui \
 	ptolemy.domains.psdf.kernel \
 	ptolemy.domains.ptera.kernel \
 	ptolemy.domains.ptera.lib \
