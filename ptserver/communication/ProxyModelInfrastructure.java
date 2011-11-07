@@ -37,6 +37,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ptolemy.actor.CompositeActor;
@@ -210,6 +211,14 @@ public class ProxyModelInfrastructure {
      *  @param e The exception (if any) that should be propagated.
      */
     public void fireModelException(String message, Throwable e) {
+        if (_firedExceptionEvent) {
+            _LOGGER.log(
+                    Level.INFO,
+                    "Trying to fire model exception from the proxy model that has fired the same event before. Ignoring to prevent recursive model exceptions",
+                    e);
+            return;
+        }
+        _firedExceptionEvent = true;
         for (ProxyModelListener listener : _modelListeners) {
             listener.modelException(this, message, e);
         }
@@ -774,4 +783,9 @@ public class ProxyModelInfrastructure {
      * The logger used by the ptserver. 
      */
     private static final Logger _LOGGER = Logger.getLogger("PtolemyServer");
+
+    /**
+     * Flag used to prevent recursive exception events.
+     */
+    private boolean _firedExceptionEvent = false;
 }

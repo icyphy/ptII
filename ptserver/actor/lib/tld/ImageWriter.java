@@ -24,7 +24,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.servertld.actor;
+package ptserver.actor.lib.tld;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

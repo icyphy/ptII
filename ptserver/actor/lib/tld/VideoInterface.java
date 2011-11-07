@@ -24,7 +24,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.servertld.actor;
+package ptserver.actor.lib.tld;
 
 import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.kernel.util.IllegalActionException;
