@@ -1,6 +1,6 @@
 # Makefile for ptserver actors - a system that allows execution of models on handheld devices
 #
-# @Version: $Id$
+# @Version: $Id: makefile 61448 2011-07-11 17:11:01Z cxh $
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2011 The Regents of the University of California.
@@ -29,12 +29,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptserver/actor/lib
+ME =		ptserver/actor/lib/tld
 
-DIRS =		io tld
+DIRS =
 
 # Root of Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -43,28 +43,30 @@ include $(CONFIG)
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-#PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	tld
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
-PTCLASSALLJARS = \
-	io/io.jar \
-	tld/tld.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJARS =
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+	ImageWriter.java \
+	VideoInterface.java \
+	Video.java \
+	VideoJavaSE.java
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES = test
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 
