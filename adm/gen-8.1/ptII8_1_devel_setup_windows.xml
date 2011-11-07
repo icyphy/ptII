@@ -361,8 +361,6 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/gt"/>
             <file src="../../jar_dist/ptolemy/actor/ptalon/gt/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/gt/demo"/>
-            <file src="../../jar_dist/lib/naomi.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/lib/ptCal.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/lib/saxon8.jar"
