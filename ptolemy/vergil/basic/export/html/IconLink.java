@@ -43,6 +43,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 //// IconLink
 /**
  * Attribute specifying a URI to link to from an icon.
+ * Using the <i>linkTarget</i> parameter, you can control how the
+ * link is displayed.
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -63,6 +65,8 @@ public class IconLink extends StringParameter implements WebExportable {
         super(container, name);
         
         linkTarget = new LinkTarget(this, "linkTarget");
+        // Note that the default value and choices are set
+        // in the above constructor call.
         
         // Add parameters that ensure this is rendered correctly in Vergil.
         new SingletonAttribute(this, "_hideName");
@@ -84,14 +88,14 @@ public class IconLink extends StringParameter implements WebExportable {
     /** Parameter specifying the target for the link.
      *  The possibilities are:
      *  <ul>
-     *  <li><b>_iframe</b>: Open in a lightbox-style popup frame.
+     *  <li><b>_lightbox</b>: Open in a lightbox-style popup frame.
      *  <li><b>_blank</b>: Open in a new window or tab.
      *  <li><b>_self</b>: Open in the same frame as it was clicked.
      *  <li><b>_parent</b>: Open in the parent frameset.
      *  <li><b>_top</b>: Open in the full body of the window.
      *  <li><b><i>framename</i></b>: Open in a named frame.
      *  </ul>
-     *  The default is "_iframe".
+     *  The default is "_lightbox".
      */
     public LinkTarget linkTarget;
 
@@ -100,11 +104,15 @@ public class IconLink extends StringParameter implements WebExportable {
 
     /** Return a string of the form:
      *  <pre>
-     *     href="linkvalue" target="targetvalue" title="containername"
+     *     href="linkvalue" target="targetvalue"
+     *  <pre>
+     *  or
+     *  <pre>
+     *     href="linkvalue" class="classname" 
      *  <pre>
      *  where <i>linkvalue</i> is the string value of this parameter,
-     *  <i>targetvalue</i> is the value of the <i>linkTarget</i> parameter,
-     *  and <i>containername</i> is the name of the container of this object.
+     *  <i>targetvalue</i> or <i>classname</i> is given
+     *  by the <i>linkTarget</i> parameter.
      *  @return Text to insert into an anchor or area command in HTML.
      *  @throws IllegalActionException If evaluating the parameter fails.
      */
@@ -113,8 +121,6 @@ public class IconLink extends StringParameter implements WebExportable {
         	+ StringUtilities.escapeString(stringValue())
         	+ "\" "
         	+ linkTarget.getModifier()
-        	+ " title=\""
-        	+ getContainer().getName()
         	+ "\"";
     }
 }

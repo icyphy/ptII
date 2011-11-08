@@ -40,14 +40,14 @@ import ptolemy.kernel.util.NamedObj;
  * Parameter specifying the target for an HTML link.
  * The parameter offers the following possibilities:
  *  <ul>
- *  <li><b>_iframe</b>: Open in a lightbox-style popup frame.
+ *  <li><b>_lightbox</b>: Open in a lightbox-style popup frame.
  *  <li><b>_blank</b>: Open in a new window or tab.
  *  <li><b>_self</b>: Open in the same frame as it was clicked.
  *  <li><b>_parent</b>: Open in the parent frameset.
  *  <li><b>_top</b>: Open in the full body of the window.
  *  <li><b><i>framename</i></b>: Open in a named frame.
  *  </ul>
- *  The default is "_iframe".
+ *  The default is "_lightbox".
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -67,11 +67,11 @@ public class LinkTarget extends StringParameter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        addChoice("_iframe");
+        addChoice("_lightbox");
         addChoice("_blank");
         addChoice("_self");
         addChoice("_top");
-        setExpression("_iframe");
+        setExpression("_lightbox");
     }
     
     /** Return the modifier to append to an href anchor corresponding
@@ -85,8 +85,8 @@ public class LinkTarget extends StringParameter {
      */
     public String getModifier() throws IllegalActionException {
         String value = stringValue();
-        if (value.equals("_iframe")) {
-            return "class=\"iframe\"";
+        if (value.equals("_lightbox")) {
+            return "class=\"lightbox\"";
         } else {
             return "target=\"" + value + "\"";
         }

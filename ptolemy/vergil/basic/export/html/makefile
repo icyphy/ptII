@@ -53,8 +53,15 @@ PTCLASSALLJARS = \
 	javascript/javascript.jar
 
 JSRCS = \
+	AreaEventType.java \
 	ExportHTMLAction.java \
-	ExportToWeb.java
+	ExportToWeb.java \
+	HTMLText.java \
+	HTMLTextPosition.java \
+	IconLink.java \
+	IconScript.java \
+	LinkTarget.java \
+	Title.java
 
 EXTRA_SRCS =	$(JSRCS)
 

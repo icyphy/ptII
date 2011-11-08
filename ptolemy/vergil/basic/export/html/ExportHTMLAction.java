@@ -85,6 +85,7 @@ import diva.graph.GraphController;
  *  creates a map of the locations of actors in the GIF image
  *  and actions associated with each of the actors.
  *  The following actions are supported:
+ *  <b>FIXME: The following is obsolete!!! Update it.</b>
  *  <ul>
  *  <li> A mouse-over handler that, by default, displays parameter
  *       values in a table when the mouse passes over an actor.
@@ -356,7 +357,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	    }
 
 	    // Needed for the HTML validator.
-	    index.println("<title>" + StringUtilities.sanitizeName(model.getName())
+	    index.println("<title>" + StringUtilities.escapeForXML(_getTitleText(model))
 	            + "</title>");
 
 	    if (usePtWebsite) {
@@ -472,6 +473,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	    // Collect HTML text to insert at various points in the output file.
 	    StringBuffer header = new StringBuffer();
             StringBuffer start = new StringBuffer();
+            
+            // Always start with the title.
+            start.append("<h1>" + _getTitleText(model) + "</h1>\n");
+            
             StringBuffer end = new StringBuffer();
 	    List<HTMLText> texts = model.attributeList(HTMLText.class);
 	    if (texts != null && texts.size() > 0) {
@@ -492,21 +497,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     }
 	        }
 	    }	    
-	    
-	    // Insert default start text if none was given.
-            if (start.length() == 0) {
-                // Put a header in. Use the name of the ModalModel rather
-                // than the Controller if we have a ModalModel.
-                String modelName = model.getFullName();
-                if (model instanceof FSMActor) {
-                    NamedObj container = model.getContainer();
-                    if (container instanceof ModalModel) {
-                        modelName = container.getFullName();
-                    }
-                }
-                start.append("<h1>" + modelName + "</h1>\n");
-            }
-            
+	                
             // Insert the default end text if none was given.
             if (end.length() == 0) {
                 end.append("<p id=\"afterImage\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>\n");
@@ -637,6 +628,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     }
                 }
             }
+            
+            // Get the title to associate with the object.
+            // This defaults to the name of the object.
+            String title = _getTitleText(location.object);
 
             // Write the name of the actor followed by the table.
             result.append("<area shape=\"rect\" coords=\""
@@ -646,14 +641,13 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     + "\" onmouseover="
                     + mouseOverAction
                     + " "
-                    + linkTo + "/>\n");
+                    + linkTo
+                    + " title=\""
+                    + StringUtilities.escapeString(title)
+                    + "\"/>\n");
 
             if (toc != null && linkTo.length() > 1) {
-                String tocLink = linkTo.replace(" title=\"",">");
-                // FIXME: The following looks wrong.
-                // The substring gets the whole thing.
-                // But may be OK. Tricky...
-                toc.println(" <li><a " + tocLink.substring(0, tocLink.length() - 1) + "</a></li>");
+                toc.println(" <li><a " + linkTo + ">" + _getTitleText(location.object) + "</a></li>");
             }
         }
         result.append("</map>\n");
@@ -664,10 +658,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  clicking on that object, then return that link-to HTML text
      *  here. This will normally have one of the following forms:
      *  <pre>
-     *    href="filename.html"
-     *    href="filename.html" title="SequencePlotter"
-     *    href="SequencePlotter.gif" class="iframe" title="SequencePlotter"
-     *  </pre>
+     *     href="linkvalue" target="targetvalue"
+     *  <pre>
+     *  or
+     *  <pre>
+     *     href="linkvalue" class="classname" 
+     *  <pre>
+     *  The customization is done by inserting an instance of
+     *  {@see IconLink} into the object.
      *  @return Custom link reference, or null if there is no customization.
      *  @throws IllegalActionException If accessing the customization attributes fails.
      *  @throws IOException If a file operation fails.
@@ -678,22 +676,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         List<IconLink> links = object.attributeList(IconLink.class);
         if (links != null && links.size() > 0) {
             return links.get(0).getContent();
-        }
-        
-        Attribute linkAttribute = object.getAttribute("_onClickLightBox", StringParameter.class);
-        if (linkAttribute != null) {
-            String html = ((StringParameter)linkAttribute).stringValue();
-            String fileName = object.getName() + "_onClickLightBox.html";
-            File htmlFile = new File(directory, fileName);
-            Writer htmlWriter = new FileWriter(htmlFile);
-            PrintWriter htmlPrintWriter = new PrintWriter(htmlWriter);
-            htmlPrintWriter.print(html);
-            htmlPrintWriter.close();
-            return "href=\""
-                    + StringUtilities.escapeString(fileName)
-                    + "\" class=\"iframe\" title=\""
-                    + object.getName()
-                    + "\"";
         }
         return null;
     }
@@ -909,6 +891,31 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         return table.toString();
     }
     
+    /** Return the title of the specified object. If it contains a parameter
+     *  of class {@see Title}, then return the title specified by that class.
+     *  Otherwise, if the object is an instance of FSMActor contained by
+     *  a ModalModel, then return the
+     *  name of its container, not the name of the FSMActor.
+     *  Otherwise, return the name of the object.
+     *  @return A title for the object.
+     *  @throws IllegalActionException If accessing the title attribute fails..
+     */
+    protected String _getTitleText(NamedObj object) throws IllegalActionException {
+        // If the object contains an IconLink parameter, then use that instead of the default.
+        // If it has more than one, then just use the first one.
+        List<Title> links = object.attributeList(Title.class);
+        if (links != null && links.size() > 0) {
+            return links.get(0).stringValue();
+        }
+        if (object instanceof FSMActor) {
+            NamedObj container = object.getContainer();
+            if (container instanceof ModalModel) {
+                return container.getName();
+            }
+        }
+        return object.getName();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -950,8 +957,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                             + subDirectory);
                 }
                 ((HTMLExportable) frame).writeHTML(subDirectory);
-                linkTo = "href=\"" + name + "/index.html\"" + " title=\""
-                        + name + "\"";
+                linkTo = "href=\"" + name + "/index.html\"";
             } else if (frame instanceof ImageExportable) {
                 gifFile = new File(directory, name + ".gif");
                 OutputStream gifOut = new FileOutputStream(gifFile);
@@ -960,8 +966,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                 } finally {
                     gifOut.close();
                 }
-                linkTo = "href=\"" + name + ".gif\"" + " class=\"iframe\""
-                        + " title=\"" + name + "\"";
+                linkTo = "href=\"" + name + ".gif\"" + " class=\"lightbox\"";
             }
         }
         return linkTo;

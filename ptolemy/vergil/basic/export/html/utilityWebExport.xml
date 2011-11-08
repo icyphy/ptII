@@ -72,12 +72,16 @@
 
 <!------------------------------------------->
 <property name="icon iframe" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org">
-  <property name="linkTarget" value="_iframe"/>
+  <property name="linkTarget" value="_lightbox"/>
 </property>
 
 <!------------------------------------------->
 <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://ptolemy.org">
   <property name="linkTarget" value="_blank"/>
+</property>
+
+<!------------------------------------------->
+<property name="title" class="ptolemy.vergil.basic.export.html.Title" value="$(this.getName())">
 </property>
 
 <!------------------------------------------->

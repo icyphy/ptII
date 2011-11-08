@@ -11,7 +11,7 @@ function writeText(text) {
 // after the parent has completed.
 $(document).ready(function(){
   // The following says to select all elements that are
-  // areas of class iframe (use # instead of . to specify an ID instead
+  // areas of class lightbox (use # instead of . to specify an ID instead
   // of a class), and apply the function fancybox to them with the specified
   // arguments.
   // FIXME: This should be inserted by the classes that use it!
@@ -20,5 +20,5 @@ $(document).ready(function(){
   // be parameterized. Can be parameterized individually
   // by using an object ID instead of the iframe class.
   // Many more options can be set, as shown in http://fancybox.net/api.
-  $("area.iframe").fancybox({'width':700,'height':500});
+  $("area.lightbox").fancybox({'width':700,'height':500});
 });
