@@ -45,12 +45,11 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	javascript
-PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSALLJAR = 
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	fancybox/fancybox.jar
+#PTCLASSALLJARS =
 
 JSRCS =
 
