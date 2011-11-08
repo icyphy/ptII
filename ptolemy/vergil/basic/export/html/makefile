@@ -65,6 +65,9 @@ JSRCS = \
 
 EXTRA_SRCS =	$(JSRCS)
 
+OTHER_FILES_TO_BE_JARED = \
+	utiltityWebExport.xml
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
