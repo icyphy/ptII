@@ -764,7 +764,7 @@ public class PtidesBasicDirector extends DEDirector {
         // Do not invoke the superclass prefire() because that
         // sets model time to match the enclosing director's time.
         if (_debugging) {
-            _debug("Prefiring: Current time is: " + getModelTime());
+            _debug("Prefiring: Current time is: " + getModelTag());
         }
         return true;
     }
@@ -926,6 +926,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  _pureEventSourcePorts that are associated with this actor should be removed.
      */
     protected Actor _lastActorFired;
+    
+    /** Execution time of last actor fired. */
+    protected Time _lastExecutionTime;
 
     /** Zero time.
      */
@@ -1299,7 +1302,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Put a pure event into the event queue to schedule the given actor to
      *  fire at the specified timestamp.
      *  <p>
-     *  The default microstep for the queued event is equal to zero,
+     *  The default microstep for the queued event is equal to one,
      *  unless the time is equal to the current time, where the microstep
      *  will be the current microstep plus one.
      *  </p><p>
@@ -1326,7 +1329,6 @@ public class PtidesBasicDirector extends DEDirector {
                         .contains(actor))) {
             return;
         }
-
         // Reset the microstep to 1.
         int microstep = 1;
 
@@ -1392,7 +1394,6 @@ public class PtidesBasicDirector extends DEDirector {
                         .contains(actor))) {
             return;
         }
-
         int depth = _getDepthOfIOPort(ioPort);
 
         if (_debugging) {
@@ -1510,20 +1511,12 @@ public class PtidesBasicDirector extends DEDirector {
         }
         // Add this fireAt time to the list of future fireAt times to expect.
         if (realTimeClock == platformTimeClock) {
-            boolean fireAtTimeExists = false;
-            if (_futurePlatformFireAtTimes.contains(fireAtTime)) {
-                fireAtTimeExists = true;
-            }
-            if (!fireAtTimeExists) {
+            if(!_futurePlatformFireAtTimes.contains(fireAtTime)) {
                 _futurePlatformFireAtTimes.add(fireAtTime);
                 Collections.sort(_futurePlatformFireAtTimes);
             }
         } else if (realTimeClock == executionTimeClock) {
-            boolean fireAtTimeExists = false;
-            if (_futureExecutionFireAtTimes.contains(fireAtTime)) {
-                fireAtTimeExists = true;
-            }
-            if (!fireAtTimeExists) {
+            if (!_futureExecutionFireAtTimes.contains(fireAtTime)) {
                 _futureExecutionFireAtTimes.add(fireAtTime);
                 Collections.sort(_futureExecutionFireAtTimes);
             }
@@ -1714,7 +1707,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  these two times are described in the comment of this class.
      *  <p>
      *  In this base class, this method first checks whether the top event from
-     *  the event queue is has an actuator as its destination. If it is,
+     *  the event queue has an actuator as its destination. If it does,
      *  then we check
      *  if physical time has reached the timestamp of the actuation event. If it
      *  has, then the actuator is fired. If not, then the actuator event is
@@ -1722,8 +1715,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  fireAt() of the executive director is called. We then check if a
      *  real-time event should be processed by looking at the top event of the
      *  _realTimeEventQueue. If there is one that should be fired, that
-     *  actor is returned for firing. If not, we go on and considers two
-     *  cases, depending whether there is an actor currently executing,
+     *  actor is returned for firing. If not, we go on and consider two
+     *  cases, depending on whether there is an actor currently executing,
      *  as follows:
      *  <p>
      *  <b>Case 1</b>: If there is no actor currently
@@ -1731,7 +1724,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  null if the queue is empty. If the queue is not empty, it checks the
      *  destination actor of the earliest event on the event queue. If the
      *  destination port or actor has a non-zero
-     *  execution time, then that event is pushes  onto the currently executing
+     *  execution time, then that event is pushed onto the currently executing
      *  stack and this method returns null.
      *  Otherwise, if the execution time of the actor is
      *  zero, this method sets the current model time to the time stamp of
@@ -1739,7 +1732,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  <p>
      *  <b>Case 2</b>: If there is an actor currently executing, then this
      *  method checks whether that actor has a remaining execution time of zero.
-     *  If so, then the currently executing actor is return.
+     *  If so, then the currently executing actor is returned.
      *  If not, then we check if
      *  the earliest event on the event queue should
      *  preempt it (by invoking _preemptExecutingActor()).
@@ -1756,7 +1749,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  If there is no event on the event queue or that event should not preempt
      *  the currently executing actor, fireAt()
      *  of the enclosing director is called, with the time at which the
-     *  currently executing actor to finish executing is passed inas input.
+     *  currently executing actor to finish executing is passed in as input.
      *  Finally this method returns null.
      *  <p>
      *  Also, when an actor is fired, not only is the top event processed,
@@ -1816,7 +1809,7 @@ public class PtidesBasicDirector extends DEDirector {
         if (_timedInterruptOccurred()) {
             // Indicate that no other event is processing, only the scheduler is
             // running.
-            // Unlike the oter cases (input event or scheduling new event),
+            // Unlike the other cases (input event or scheduling new event),
             // where the overhead of the scheduling is captured in parameter
             // schedulerExecutionTimeBound, here, the execution time also needs
             // to include an additional execution time for the system to handle
@@ -1854,7 +1847,7 @@ public class PtidesBasicDirector extends DEDirector {
             // scheduling or sensor interruption, then restart the event
             // execution at the current simulated physical time.
             // Note: even though preemption is not supported in this director,
-            // its subclasses do need such as support. Ideally this code should
+            // its subclasses do need such support. Ideally this code should
             // be refactored and the code that deals with preemption should be
             // put in the subclass.
             if (_physicalTimeExecutionStarted == null) {
@@ -1918,7 +1911,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // overhead is simulated. This is based on the assumption that
                 // PtidyOS does not have a separate fireAt() for pure events,
                 // and thus an actor such as TimeDelay would produce an output
-                // in the same firing at which the triggere event is consumed.
+                // in the same firing at which the trigger event is consumed.
                 if (!((List<PtidesEvent>) currentEventList.contents).get(0)
                         .isPureEvent()) {
                     _scheduleNewEvent = true;
@@ -3734,9 +3727,6 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private Actor _lastExecutingActor;
 
-    /** Execution time of last actor fired. */
-    private Time _lastExecutionTime;
-
     /** Keep track of a set of input ports to the composite actor governed by
      *  this director. These input ports are network input ports, which are
      *  input ports that are directly connected to NetworkReceivers.
@@ -3837,10 +3827,10 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         /** Remaining execution time of the currently executing event. */
-        private Time remainingExecutionTime;
+        protected Time remainingExecutionTime;
 
         /** Microstep of the executing event. */
-        private int microstep;
+        protected int microstep;
 
         /** Converts the executing event to a string. */
         public String toString() {
