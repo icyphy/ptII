@@ -45,10 +45,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -104,7 +104,6 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     public void initialize() throws IllegalActionException {     
         super.initialize();
         _calculateSuperdenseDependenices();
-
         // Create a stack to contain currently processing events on each core.
         int cores = ((IntToken)coresForEventProcessing.getToken()).intValue();
         _currentlyProcessingEvents = 
@@ -113,8 +112,6 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
             _currentlyProcessingEvents
                     .add(i, new Stack<ProcessingPtidesEvents>());
         }
-
-
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -293,123 +290,139 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                 _debug(buf.toString());
             }
         }
+    } 
+    
+    /** Model time is only used for correct execution of actors and the
+     * scheduler will determine whether another event can be fired in
+     * the current firing of the platform, so this method isn't needed.
+     *  @return true Always.
+     */
+    protected boolean _checkForNextEvent() {
+        return true;
     }
     
     /** Return the actor to fire in this iteration, or null if no actor should
      * be fired. To simulate execution time, an event may be marked as being
      * processed, but the actor is only fired when execution time expires. This
      * is based on the assumption that an actor only produces events when it
-     * is done firing, not during firing.  
-     * @exception IllegalActionException getPlatformPhysicalTag()
+     * is done firing, not during firing. Since _checkForNextEvent() always
+     * returns true, this method will keep being called until it returns null.  
+     * @exception IllegalActionException If getPlatformPhysicalTag() throws it.
      * 
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
         
+        // TODO: need good way of representing the reason this method is being
+        // fired. Ex. Sensor, execution finishing, event becomes safe, etc.
+        // Also, can these refirings be removed easily?
+        // Two event queues?
+        
         Tag executionPhysicalTag = 
             getPlatformPhysicalTag(executionTimeClock);
+        
+        // Run scheduler. This may result in event(s) being added to a
+        // _currentlyExecutingEvents stack. It may also request a
+        // refiring at a future time (Otherwise it would only be fired on
+        // sensor/network inputs).
+        _runScheduler(executionPhysicalTag);
 
         // If any of the currently processing events have reached their finish
         // time, they should be fired.
+        Time nextFinishTime = null;
         for(Stack<ProcessingPtidesEvents> coreStack : 
                 _currentlyProcessingEvents) {
-            ProcessingPtidesEvents processingEvent = coreStack.peek();
-            int compare = processingEvent.finishTime.compareTo(
-                    executionPhysicalTag.timestamp);
-            // If event is finished processing, then fire actor.
-            if(compare == 0) {
-                PtidesEvent eventToFire = processingEvent.events.get(0);
-                setTag(eventToFire.timeStamp(), eventToFire.microstep());
-                coreStack.pop();
-                return eventToFire.actor();
-            // Missed it!
-            } else if(compare < 0) {
-                throw new IllegalActionException(this, 
-                        "Missed firing actor: " + processingEvent);
-            }        
-        }
-
-        // Get the next event which should be processed (it may not be
-        // in this iteration).
-        PtidesEvent nextEvent = _getNextSafeEvent();
-        
-        // Nothing can potentially be fired in this iteration, so return.
-        if(nextEvent == null) {
-            return null;
-        }
-        
-        // Find a core to process next event on, if such a core exists. This 
-        // may either be a core which isn't currently processing an event or 
-        // a core processing an event which should be preempted.
-        Stack<ProcessingPtidesEvents> coreToProcessOn = null;
-        
-        // If there are any open cores, then process the event on that
-        // core.
-        for(Stack<ProcessingPtidesEvents> coreStack : 
-            _currentlyProcessingEvents) {
-            if(coreStack.size() == 0) {
-                coreToProcessOn = coreStack;
-                break;
+            if (coreStack.size() != 0) {   
+                ProcessingPtidesEvents processingEvent = coreStack.peek();
+                int compare = processingEvent.finishTime.compareTo(
+                        executionPhysicalTag.timestamp);
+                // If event is finished processing, then fire actor.
+                if(compare == 0) {
+                    PtidesEvent eventToFire = processingEvent.events.get(0);
+                    setTag(eventToFire.timeStamp(), eventToFire.microstep());
+                    coreStack.pop();
+                    //TODO: record finish time
+                    // Used for pure events.
+                    _saveEventInformation(processingEvent.events);
+                    _lastActorFired = eventToFire.actor();
+                    // Keep PtidesBasicDirector happy.
+                    _lastExecutionTime = executionPhysicalTag.timestamp;
+                    // Return actor to fire.
+                    return eventToFire.actor();
+                // Missed it!
+                } else if(compare < 0) {
+                    throw new IllegalActionException(this, 
+                            "Missed firing actor: " + processingEvent);
+                // Find earliest finish time amongst cores.
+                } else {
+                    if(nextFinishTime == null) {
+                        nextFinishTime = processingEvent.finishTime;
+                    } else if(processingEvent.finishTime.compareTo(
+                            nextFinishTime) < 0) {
+                        nextFinishTime = processingEvent.finishTime;
+                    }
+                }
             }
         }
         
-        // TODO: preemption
-        
-        // nextEvent shouldn't be processed yet, so return.
-        if(coreToProcessOn == null) {
-            return null;
+        // Request firing at earliest finish time.
+        // TODO: preemption may cause a refiring to become useless and
+        // require finish times to be modified.
+        if(nextFinishTime != null) {
+            _fireAtPlatformTime(nextFinishTime, executionTimeClock);
         }
-        
-        // Process next event on selected core.
-        
-        // Remove events with same tag and destination input port
-        // group from event queue.
-        List<PtidesEvent> eventList = 
-                _takeAllSameTagEventsFromQueue(nextEvent);
-        // Find execution time of actor which event fires.
-        double executionTime = _getExecutionTime(
-                nextEvent.ioPort(), nextEvent.actor());
-        // If execution time is 0, actor can be fire immediately.
-        if(executionTime == 0) {
-            setTag(nextEvent.timeStamp(), nextEvent.microstep());
-            return nextEvent.actor();
-        } else {
-            Time finishTime = executionPhysicalTag.timestamp;
-            finishTime.add(executionTime);
-            // Record events as processing.
-            ProcessingPtidesEvents events = new ProcessingPtidesEvents(
-                    eventList, executionPhysicalTag, finishTime);
-            coreToProcessOn.push(events);
-            // TODO: Make sure director is fired at correct time.
-        }
-        
+             
         return null;
     }
     
     /** Return an event which is safe-to-process and should be processed next.
      *  If no such event exists, null is returned. In this implementation, the
-     *  event that should be processed next is the safe-to-process event with
-     *  the earliest deadline. Note that this method does not modify the event
+     *  event that should be processed next is the safe-to-process event that
+     *  is earliest in <absolute deadline, tag, microstep, depth> lexical 
+     *  ordering. Note that this method does not modify the event
      *  queue.
      *  @return Safe event to process.
      *  @exception IllegalActionException 
      */
     protected PtidesEvent _getNextSafeEvent() throws IllegalActionException {
+
+        // Safe-to-process may set a time when scheduler should be run again.
+        _nextRunScheduler = null;
         
-        PtidesEvent eventToReturn = null;
+        // Put events in EDF order <absolute deadline, tag, microstep, depth>.
+        List<PtidesEvent> EDF = new ArrayList<PtidesEvent>(_eventQueue.size());
         for(int i = 0; i < _eventQueue.size(); i++) {
-            PtidesEvent event = ((PtidesListEventQueue)_eventQueue).get(i);
-            // If the deadline isn't earlier, consider next event.
-            if(eventToReturn != null && event.absoluteDeadline().compareTo(
-                    eventToReturn.absoluteDeadline()) >= 0) {
-                continue;
-            }
-            // If earlier deadline and safe-to-process, then store.
+            EDF.add(((PtidesListEventQueue)_eventQueue).get(i));
+        }        
+        Collections.sort(EDF, new EDFComparator());
+
+        // Return first event in <AD, T, I, D> order that is safe-to-process.
+        for(PtidesEvent event : EDF) {
             if(_safeToProcess(event)) {
-                eventToReturn = event;
+                // _peekingIndex needs to be set for 
+                //_takeAllSameTagEventsFromQueue.
+                // TODO: improve _takeAllSameTagEventsFromQueue to
+                // not require _peekingIndex and remove this code.
+                for(int i = 0; i < _eventQueue.size(); i++) {
+                    if(((PtidesListEventQueue)_eventQueue).get(i).equals(
+                            event)) {
+                        _peekingIndex = i;
+                    }
+                }
+                // End code to remove.
+                return event;
             }
         }
 
-        return eventToReturn;
+        // If no events are safe-to-process, then request a refiring when the
+        // earliest event will be. (Assume refiring occurs at end of event
+        // processing, so this is based on platform time check)
+        if(_nextRunScheduler != null) {
+            _debug("next scheduler run: " + _nextRunScheduler);
+            _fireAtPlatformTime(_nextRunScheduler, platformTimeClock);
+        }
+        
+        return null;
+
     }
     
     /** Return the superdense dependency between a source input port and the
@@ -444,6 +457,73 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         }
     }
     
+    /** Decide whether an event should begin processing at the provided
+     * execution time, and if so, what event and core. To process an 
+     * event, all events with the same tag and destination input port group
+     * are removed from the event queue, and added to the 
+     * _currentlyProcessingEvents stack for the core being processed on.
+     * This method is responsible for taking overhead execution times into
+     * account.
+     * @param executionPhysicalTag Current execution physical time.
+     * @exception IllegalActionException 
+     */
+    protected void _runScheduler(Tag executionPhysicalTag) throws IllegalActionException {
+        
+        _debug("Scheduler running @ " + executionPhysicalTag);
+        
+        // Get the next event which should be processed (if it exists).
+        PtidesEvent nextEvent = _getNextSafeEvent();
+        
+        _debug("_getNextSafeEvent(): " + nextEvent);
+        
+        // Nothing can potentially be fired in this iteration, so return.
+        if(nextEvent == null) {
+            return;
+        }
+        
+        // Find a core to process next event on, if such a core exists. This 
+        // may either be a core which isn't currently processing an event or 
+        // a core processing an event which should be preempted.
+        Stack<ProcessingPtidesEvents> coreToProcessOn = null;
+        
+        // If there are any open cores, then process the event on that
+        // core.
+        for(Stack<ProcessingPtidesEvents> coreStack : 
+            _currentlyProcessingEvents) {
+            if(coreStack.size() == 0) {
+                coreToProcessOn = coreStack;
+                break;
+            }
+        }
+        
+        // TODO: preemption
+        
+        // nextEvent shouldn't be processed yet, so return.
+        if(coreToProcessOn == null) {
+            return;
+        }
+        
+        // Process next event on selected core.
+        _debug("Process " + nextEvent + " on core " + 
+                _currentlyProcessingEvents.indexOf(coreToProcessOn));
+        
+        // Remove events with same tag and destination input port
+        // group from event queue.
+        List<PtidesEvent> eventList = 
+                _takeAllSameTagEventsFromQueue(nextEvent);
+        // Find execution time of actor which event fires.
+        double executionTime = _getExecutionTime(
+                nextEvent.ioPort(), nextEvent.actor());
+        Time finishTime = executionPhysicalTag.timestamp;
+        finishTime.add(executionTime);
+        // Record events as processing.
+        ProcessingPtidesEvents events = new ProcessingPtidesEvents(
+                eventList, executionPhysicalTag, finishTime);
+        coreToProcessOn.push(events);
+        // TODO: record start time
+        
+    }
+    
     /** Check whether the event is safe to process. If the platform time has
      * passed the timestamp of the event minus the delayOffset, then no
      * later events arriving at a sensor/network port can reach the input
@@ -460,30 +540,37 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
      */
     protected boolean _safeToProcess(PtidesEvent event) 
             throws IllegalActionException {
-        
+
         //TODO: write test cases
-        
         //TODO: _timedInterruptTimes not implemented (used for scheduling
         // overhead)
         
-        // If the platform time has not passed the timestamp of the event 
-        // minus the delay offset, return false.
-        // TODO: how to handle pure events?
+        double delayOffset = 0;
         if(!event.isPureEvent()) {
-            double delayOffset = _getDelayOffset(event.ioPort(),
+            _getDelayOffset(event.ioPort(),
                     event.channel(), false);
-            Time waitUntilPhysicalTime = event.timeStamp().
-                    subtract(delayOffset);
-            Tag platformPhysicalTag = 
-                    getPlatformPhysicalTag(platformTimeClock);
-            int compare = platformPhysicalTag.timestamp.compareTo(
-                    waitUntilPhysicalTime);
-            int microstep = platformPhysicalTag.microstep;
-            if ((compare < 0) || compare == 0 && (microstep < event.microstep())) {
-                return false;
-            }
         }
         
+        // If the platform time has not passed the timestamp of the event 
+        // minus the delay offset, return false.
+        Time waitUntilPhysicalTime = event.timeStamp().
+                subtract(delayOffset);
+        Tag platformPhysicalTag = 
+                getPlatformPhysicalTag(platformTimeClock);
+        int compare = platformPhysicalTag.timestamp.compareTo(
+                waitUntilPhysicalTime);
+        int microstep = platformPhysicalTag.microstep;
+        if ((compare < 0) || compare == 0 && 
+                (microstep < event.microstep())) {
+            if(_nextRunScheduler == null) {
+                _nextRunScheduler = waitUntilPhysicalTime;
+            } else if(waitUntilPhysicalTime.compareTo(
+                    _nextRunScheduler) < 0) {
+                _nextRunScheduler = waitUntilPhysicalTime;
+            }
+            return false;
+        }
+
         // If a currently processing event has a superdense dependency with
         // the event being checked, then it COULD causally affect it, so
         // conservatively return not safe to process.
@@ -494,10 +581,14 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                 // all have their destination port in same input port group.
                 PtidesEvent processingEvent = 
                     processingEvents.events.get(0);
+                // FIXME: ioport of a pure event?
+                assert(!event.isPureEvent());
                 if(_getSuperdenseDependencyPair(
                         (TypedIOPort) processingEvent.ioPort(), 
                         (TypedIOPort) event.ioPort()) !=
                         SuperdenseDependency.OPLUS_IDENTITY) {
+                    // Assume scheduler is run again when event finishes
+                    // processing, so no need to request refiring.
                     return false;
                 }
             }  
@@ -524,6 +615,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
      */
     protected List<Stack<ProcessingPtidesEvents>> _currentlyProcessingEvents;
     
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     
@@ -543,10 +635,62 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    
+    /** The time when the scheduler should next check whether any
+     * events should be processed. In some hardware implementations,
+     * this could be the time an interrupt is set to.
+     */
+    private Time _nextRunScheduler;
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    
+    /** Compare PtidesEvents based on <absolute deadline, tag, microstep, 
+     * depth> lexical ordering.
+     */
+    protected class EDFComparator implements Comparator<PtidesEvent> {
+
+        /** Return -1, 0, or 1 if the first argument is less than, equal to, 
+         * or greater than the seconds argument based on <absolute deadline,
+         * tag, microstep, depth> lexical ordering.
+         * @param e1 The first PtidesEvent.
+         * @param e2 The seconds PtidesEvent.
+         * @return Integer -1, 0, or 1 if first argument is less than,
+         * equal to, or greater than the second argument.
+         */
+        public int compare(PtidesEvent e1, PtidesEvent e2) {
+            _debug("COMPARE e1: " + e1 + "\nCOMPARE e2: " + e2);
+            try {
+                int compare;
+                compare = _getAbsoluteDeadline(e1).compareTo(
+                        _getAbsoluteDeadline(e2));
+            
+                if(compare != 0) {
+                    return compare;
+                }
+                compare = e1.timeStamp().compareTo(e2.timeStamp());
+                if(compare != 0) {
+                    return compare;
+                }
+                if(e1.microstep() < e2.microstep()) {
+                    return -1;
+                } else if(e1.microstep() > e2.microstep()) {
+                    return 1;
+                }
+                if(e1.depth() < e2.depth()) {
+                    return -1;
+                } else if(e1.depth() > e2.depth()) {
+                    return 1;
+                } else {
+                    return 0;
+            }
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+        
+        
+    }
     
     /** A group of PtidesEvent being processed with the same tag and
      * destination input port group, along with the start tag of

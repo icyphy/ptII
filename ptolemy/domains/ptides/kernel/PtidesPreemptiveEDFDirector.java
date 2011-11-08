@@ -104,7 +104,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _pureEventDeadlines = new HashMap<NamedObj, Time>();
+        _pureEventDeadlines = new HashMap<Actor, Time>();
         _eventToProcess = null;
         _calculateDeadline();
 
@@ -592,6 +592,11 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
 
     /** The index of the event we are peeking in the event queue. */
     protected int _peekingIndex;
+    
+    /** Store absolute deadline information for pure events that will be produced
+     *  in the future.
+     */
+    private Map<Actor, Time> _pureEventDeadlines;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private method                 ////
@@ -616,9 +621,6 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Store absolute deadline information for pure events that will be produced
-     *  in the future.
-     */
-    private Map _pureEventDeadlines;
+
 
 }
