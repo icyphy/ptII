@@ -447,32 +447,59 @@ See $PTII/doc/coding/maven.htm
     <maven.test.skip>true</maven.test.skip>
   </properties> 
   <dependencies>
+
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.2</version>
+      <groupId>antlr</groupId>
+      <artifactId>antlr</artifactId>
+      <version>[1.9.9,2.7.7]</version>
     </dependency>
-    <dependency>
-      <groupId>jdom</groupId>
-      <artifactId>jdom</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <!-- <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.15</version>
-    </dependency>
-     -->
     <dependency>
       <groupId>colt</groupId>
       <artifactId>colt</artifactId>
       <version>1.0.3</version>
     </dependency>
     <dependency>
-      <groupId>antlr</groupId>
-      <artifactId>antlr</artifactId>
-      <version>[1.9.9,2.7.7]</version>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>10.0.1</version>
     </dependency>
+    <dependency>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>itext-xtra</artifactId>
+      <version>5.1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>jdom</groupId>
+      <artifactId>jdom</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+       <groupId>org.python</groupId>
+       <artifactId>jython-standalone</artifactId>
+       <version>2.5.2</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+    </dependency>
+    <dependency>
+      <groupId>pl.pragmatists</groupId>
+      <artifactId>JUnitParams</artifactId>
+      <version>0.3.5</version>
+    </dependency>
+    <dependency>  <!-- $PTII/vendors/sun/jxta/jxta.jar -->
+      <groupId>jxta</groupId>
+      <artifactId>jxta</artifactId>
+      <version>2.0</version>
+    </dependency>
+
+    <!-- <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.15</version>
+    </dependency>
+     -->
 <!--    <dependency>
       <groupId>javax.media</groupId>
      <artifactId>jai_core</artifactId>
@@ -502,18 +529,6 @@ See $PTII/doc/coding/maven.htm
     <!-- Dependencies that need to be added manually -->
     <!-- See ptII/doc/coding/maven.htm for the commands 
 	 to run to install these dependencies -->
-    <dependency> <!-- $PTII/libJUnitParams-0.3.0.jar -->
-      <groupId>junitparams</groupId>
-      <artifactId>junitparams</artifactId>
-      <version>0.3.0</version>
-    </dependency>
-
-    <!-- Get jython from the maven repo, not from http://chess.eecs.berkeley.edu/ptexternal/src/maven/org/python/jython-standalone/2.5.2/jython-standalone-2.5.2.jar -->
-    <dependency>
-       <groupId>org.python</groupId>
-       <artifactId>jython-standalone</artifactId>
-       <version>2.5.2</version>
-    </dependency>
 
     <dependency>  <!-- $PTII/vendors/misc/joystick/Joystick.jar -->
       <groupId>javajoystick</groupId>
@@ -521,16 +536,6 @@ See $PTII/doc/coding/maven.htm
       <version>0.7</version>
     </dependency>
 
-    <dependency>  <!-- $PTII/vendors/sun/jxta/jxta.jar -->
-      <groupId>jxta</groupId>
-      <artifactId>jxta</artifactId>
-      <version>2.0</version>
-    </dependency>
-    <dependency>  <!-- $PTII/vendors/sun/jxta/jxtasecurity.jar -->
-      <groupId>jxta</groupId>
-      <artifactId>jxtasecurity</artifactId>
-      <version>1.0</version>
-    </dependency>
 
     <!-- jars have to be taken from ptII/lib -->
     <dependency> <!-- $PTII/lib/sootclasses.jar -->
@@ -555,23 +560,6 @@ See $PTII/doc/coding/maven.htm
       <version>ptII</version>
     </dependency>
 
-    <dependency> <!-- $PTII/lib/kieler.jar -->
-      <groupId>guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>ptII</version>
-    </dependency>
-
-    <dependency> <!-- $PTII/lib/kieler.jar -->
-      <groupId>kieler</groupId>
-      <artifactId>kieler</artifactId>
-      <version>ptII</version>
-    </dependency>
-
-    <dependency> <!-- $PTII/lib/ptjacl.jar -->
-      <groupId>jacl</groupId>
-      <artifactId>jacl</artifactId>
-      <version>ptII</version>
-    </dependency>
     <dependency> <!-- $PTII/ptdb/lib/dbxml.jar -->
       <groupId>dbxml</groupId>
       <artifactId>dbxml</artifactId>
@@ -584,17 +572,30 @@ See $PTII/doc/coding/maven.htm
     </dependency>
 
 
+    <dependency> <!-- $PTII/lib/kieler.jar -->
+      <groupId>kieler</groupId>
+      <artifactId>kieler</artifactId>
+      <version>ptII</version>
+    </dependency>
+
+    <dependency> <!-- $PTII/lib/ptjacl.jar -->
+      <groupId>jacl</groupId>
+      <artifactId>jacl</artifactId>
+      <version>ptII</version>
+    </dependency>
+
+    <dependency>  <!-- $PTII/vendors/sun/jxta/jxtasecurity.jar -->
+      <groupId>jxta</groupId>
+      <artifactId>jxtasecurity</artifactId>
+      <version>1.0</version>
+    </dependency>
+
     <dependency> 
       <groupId>PDFRenderer</groupId>
       <artifactId>PDFRenderer</artifactId>
       <version>ptII</version>
     </dependency>
 
-    <dependency> 
-      <groupId>iText</groupId>
-      <artifactId>iText</artifactId>
-      <version>ptII</version>
-    </dependency>
 
   </dependencies>
   <repositories>
