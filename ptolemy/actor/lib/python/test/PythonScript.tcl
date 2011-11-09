@@ -109,6 +109,7 @@ class Main :
 } {Connections changed on port: input
 Connections changed on port: output
 Called preinitialize()
+set up reference to attribute "jythonClassName" as "jythonClassName"
 set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"
 set up reference to port "input" as "input"
@@ -140,6 +141,7 @@ Called fire()
 Called postfire()
 Called wrapup()
 Called preinitialize()
+set up reference to attribute "jythonClassName" as "jythonClassName"
 set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"
 set up reference to attribute "firingsPerIteration" as "firingsPerIteration"
@@ -192,6 +194,7 @@ class Main :
     [$e0 getManager] execute
     $recorder getMessages
 } {Called preinitialize()
+set up reference to attribute "jythonClassName" as "jythonClassName"
 set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"
 set up reference to attribute "firingsPerIteration" as "firingsPerIteration"
@@ -233,6 +236,7 @@ class Main :
     [$e0 getManager] execute
     $recorder getMessages
 } {Called preinitialize()
+set up reference to attribute "jythonClassName" as "jythonClassName"
 set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"
 set up reference to attribute "firingsPerIteration" as "firingsPerIteration"
@@ -274,6 +278,7 @@ class Main :
     [$e0 getManager] execute
     $recorder getMessages
 } {Called preinitialize()
+set up reference to attribute "jythonClassName" as "jythonClassName"
 set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"
 set up reference to attribute "firingsPerIteration" as "firingsPerIteration"

@@ -33,9 +33,9 @@ import java.util.Properties;
 
 import org.python.core.PyClass;
 import org.python.core.PyException;
-//import org.python.core.PyJavaInstance;
 import org.python.core.PyJavaType;
 import org.python.core.PyMethod;
+import org.python.core.PyModule;
 import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.core.PySystemState;
@@ -108,12 +108,13 @@ import ptolemy.util.StringUtilities;
  8.      self.output.broadcast(s.multiply(t))
  </pre>
  
- <p>Line 1 defines a Python class Main. This name is fixed. An instance of this
- class is created when the actor is initialized. Line 2 is a description of
- the purpose of the script. Lines 3-8 define the fire() method, which is
- called by the {@link #fire() fire()} method of this actor. In the method body,
- <i>input</i> and <i>output</i> are ports that have to have been
- added to the actor, and <i>scale</i> is a parameter that has to have been
+ <p>Line 1 defines a Python class Main, which matches the value of the
+ <i>jythonClassName</i> parameter. An instance of this class is created when the
+ actor is initialized. Line 2 is a description of the purpose of the
+ script. Lines 3-8 define the fire() method, which is called by the
+ {@link #fire() fire()} method of this actor. In the method body,
+ <i>input</i> and <i>output</i> are ports that have to have been added
+ to the actor, and <i>scale</i> is a parameter that has to have been
  added to the actor (these can be added in the XML that defines the
  actor instance in an actor library). The Main class can provide other
  methods in the {@link ptolemy.actor.Executable Executable} interface
@@ -129,6 +130,42 @@ import ptolemy.util.StringUtilities;
  if self.actor.isDebugging() :
  self.actor.debug(someMessage)
  </pre>
+
+ <p>To use a Jython module, it is necessary to create a .py file
+ located in a location where Jython can find it.  The Jython
+ <code>sys.path</code> variable contains the Jython path.  One way to
+ get the value of the sys.path variable is to enable debugging on the
+ actor by right clicking and selecting "Listen to Actor", which will
+ cause the preinitialize() method to print the contents of sys.path to
+ standard out.  Another way to get the value of <code>sys.path</code>
+ is to run the Ptolemy model at
+ <code>ptolemy/actor/lib/python/test/PythonSysPath</code>.  For
+ example, under Mac OS X for the ptII user, sys.path includes
+ <code>/Users/ptII/lib/Lib</code>.  So, create that directory if
+ necessary and place the .py file in that directory, for example
+ <code>/Users/ptII/lib/Lib/PtPythonSquare.py</code></p>
+
+ <pre>
+class Main :
+  "Read the input and send the squary to the output"
+  def fire(self) :
+    token = self.input.get(0)
+    self.output.broadcast(token.multiply(token))
+    return
+ </pre> 
+
+ <p>Then set <i>jythonClassName</i> to the name of the <b>Jython</b>
+ class, for example <code>PtPythonSquare.Main</code>.  (Note that the
+ <i>jythonClassName</i> parameter should be set to the value of the
+ Jython class name before changing the <i>script</i> parameter to
+ import a Jython module.)</p>
+
+ <p>Then set <i>script</i> to  to:</p>
+ <pre>
+ import PtPythonSquare
+ PtPythonSquare = reload(PtPythonSquare) 
+ </pre>
+  
 
  <p>This class relies on <a href="http://jython.org">Jython</a>, which
  is a Java implementation of Python.
@@ -158,6 +195,10 @@ public class PythonScript extends TypedAtomicActor {
     public PythonScript(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
+        jythonClassName = new StringAttribute(this, "jythonClassName");
+        jythonClassName.setExpression("Main");
+
         script = new StringAttribute(this, "script");
 
         // Set the visibility to expert, as casual users should
@@ -192,8 +233,23 @@ public class PythonScript extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** The Jython class name to be invoked.  The default value is
+     *  "Main", which indicates that the <i>script</i> parameter
+     *  should define a class named "Main".  If the <i>script</i>
+     *  parameter imports a Jython module, for example: "import Foo",
+     *  then Foo.py should define a class named "Main" and this
+     *  parameter should have the value "Foo.Main".  If the value of
+     *  this parameter is anything other than "Main", then
+     *  preinitialize() will reread the script.  This is how Jython
+     *  modules can be used.  Note that the <i>jythonClassName</i>
+     *  parameter should be set to the value of the Jython class name
+     *  before changing the <i>script</i> parameter to import a Jython
+     *  module.
+     */ 
+    public StringAttribute jythonClassName;
+
     /** The script that specifies the function of this actor.
-     *  The default value provides an empty template.
+     *  The default value is a script that copies the input to the output.
      */
     public StringAttribute script;
 
@@ -304,15 +360,21 @@ public class PythonScript extends TypedAtomicActor {
         }
     }
 
-    /** Create an instance of the Main class defined in the script.
-     *  Add all parameters and ports of this actor as attributes of
-     *  the object, so that they become accessible to the methods
-     *  defined in the script.
-     *  @exception IllegalActionException If there is any error in creating
-     *   an instance of the Main class defined in the script.
+    /** Create an instance of the parameter named by the
+     *  jythonClassName parameter that is defined in the script.  Add
+     *  all parameters and ports of this actor as attributes of the
+     *  object, so that they become accessible to the methods defined
+     *  in the script.
+     *  @exception IllegalActionException If there is any error in
+     *   creating an instance of the class named by the
+     *   jythonClassName class defined in the script.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+        if (_debugging) {
+            _interpreter.exec("print sys.path");
+        }
+
         _object = _createObject();
         _invokeMethod("preinitialize", null);
     }
@@ -375,17 +437,19 @@ public class PythonScript extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /*  Create an instance of the Main class defined in the script.
-     *  Add all parameters and ports of this actor as attributes of
-     *  the object, so that they become accessible to the methods
-     *  defined in the script. IllegalActionException is thrown if
-     *  there is any error in creating an instance of the Main class
-     *  defined in the script.
+    /**  Create an instance of the class named by the jythonClassName
+     *  parameter which is defined in the script.  Add all parameters
+     *  and ports of this actor as attributes of the object, so that
+     *  they become accessible to the methods defined in the
+     *  script.
+     *  @exception IllegalActionException If there is any error in
+     *  creating an instance of the class named by the jythonClassName
+     *  parameter defined in the script.
      */
     private PyObject _createObject() throws IllegalActionException {
-        // create an instance by using the __call__ method
-        // of the Main class object
-        if (_class == null) {
+        // Create an instance by using the __call__ method
+        // of the class object
+        if (_class == null || !jythonClassName.getExpression().equals("Main")) {
             // Since _class is null, we could have been cloned.
             // Evaluate the script so that we do not use a different
             // script of another python actor. (This will set _class).
@@ -395,15 +459,15 @@ public class PythonScript extends TypedAtomicActor {
 
         if (object == null) {
             throw new IllegalActionException(this,
-                    "Error in creating an instance of the Main class "
-                            + "defined in the script.");
+                    "Error in creating an instance of the "
+                    + jythonClassName.getExpression() 
+                    + "defined in the script.");
         }
 
         // set up access to this actor
         // first create an attribute "actor" on the object
         // the PyObject class does not allow adding a new attribute to the
         // object
-        //object.__setattr__("actor", new PyJavaInstance(this));
         object.__setattr__("actor", PyJavaType.wrapJavaObject(this));
 
         // give the object access to attributes and ports of this actor
@@ -419,7 +483,6 @@ public class PythonScript extends TypedAtomicActor {
             }
 
             object.__setattr__(new PyString(mangledName), 
-                    //new PyJavaInstance(attribute)
                     PyJavaType.wrapJavaObject(attribute)
                                );
         }
@@ -436,7 +499,6 @@ public class PythonScript extends TypedAtomicActor {
             }
 
             object.__setattr__(new PyString(mangledName),
-                    //new PyJavaInstance(port)
                     PyJavaType.wrapJavaObject(port)
                                );
         }
@@ -459,16 +521,20 @@ public class PythonScript extends TypedAtomicActor {
         return object;
     }
 
-    /*  Evaluate the script by invoking the python interpreter.
-     *  IllegalActionException is thrown if the script does not
-     *  define a class named Main, or the python interpreter
-     *  cannot be initialized.
+    /**  Evaluate the script by invoking the Jython interpreter.
+     *  @exception IllegalActionException If the script does
+     *  not define a class with the name of the value of the
+     *  jythonClassName parameter, or the python interpreter cannot be
+     *  initialized.
      */
     private void _evaluateScript() throws IllegalActionException {
         synchronized (_interpreter) {
             String pythonScript = script.getExpression();
 
             try {
+                if (_debugging) {
+                    _debug("PythonScript: evaluating " + pythonScript);
+                }
                 _interpreter.exec(pythonScript);
             } catch (Exception ex) {
                 if (ex instanceof PyException) {
@@ -480,25 +546,38 @@ public class PythonScript extends TypedAtomicActor {
                 }
             }
 
-            // get the class defined by the script
+            // Get the class defined by the script.
             try {
-                _class = (PyClass) _interpreter.get(_CLASS_NAME);
+                _class = (PyClass) _interpreter.get(jythonClassName.getExpression());
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(this,
-                        "The script does not define a Main class.");
+                try {
+                    PyModule module = (PyModule) _interpreter.get(jythonClassName.getExpression());
+                    _class = (PyClass)module.__findattr_ex__("Main");
+                } catch (ClassCastException ex2) {
+                    throw new IllegalActionException(this, ex,
+                        "Failed to cast _interpreter.get(jythonClassName.getExpression()) "
+                        + " which is of type "
+                        + _interpreter.get(jythonClassName.getExpression()).getClass().getName()
+                        + " to PyClass.");
+                }
             }
 
             if (_class == null) {
                 throw new IllegalActionException(this,
-                        "The script does not define a Main class.");
+                        "The script does not define a \""
+                        + jythonClassName.getExpression()
+                        + " \" class, try setting the jythonClassName parameter "
+                        + "or have the script start with \"class "
+                        + jythonClassName.getExpression() + "\".");
             }
         }
     }
 
-    /*  Invoke the specified method on the instance of the Main class.
-     *  Any argument that is not an instance of PyObject is wrapped in
-     *  an instance of PyJavaInstance. The result of invoking the method
-     *  is returned. IllegalActionException is thrown if there is any
+    /**  Invoke the specified method on the instance of the class
+     *  named by the jythonClassName parameter.  Any argument that is
+     *  not an instance of PyObject is wrapped in an instance of
+     *  PyJavaType. The result of invoking the method is returned.
+     *  @exception IllegalActionException If there is any
      *  error in calling the method.
      */
     private PyObject _invokeMethod(String methodName, Object[] args)
@@ -542,7 +621,7 @@ public class PythonScript extends TypedAtomicActor {
 
                     for (int i = 0; i < args.length; ++i) {
                         if (!(args[i] instanceof PyObject)) {
-                            convertedArgs[i] = PyJavaType.wrapJavaObject(args[i]); //new PyJavaInstance(args[i]);
+                            convertedArgs[i] = PyJavaType.wrapJavaObject(args[i]);
                         } else {
                             convertedArgs[i] = (PyObject) args[i];
                         }
@@ -684,6 +763,7 @@ public class PythonScript extends TypedAtomicActor {
             _interpreter.exec("import sys\n");
             _interpreter.exec("sys.path.append('" + ptIIDir
                     + "/vendors/jython/Lib')");
+
         } catch (Exception ex) {
             // Ignore this, $PTII/vendors/jython/Lib might not exist.
         }
@@ -706,14 +786,11 @@ public class PythonScript extends TypedAtomicActor {
     // Map from method name to PyMethod objects.
     private HashMap _methodMap = new HashMap();
 
-    // The instance of the Main class defined in the script.
+    // The instance of the jythonClassName class defined in the script.
     private PyObject _object;
 
-    // The expected name of the class defined in the script.
-    private static String _CLASS_NAME = "Main";
-
     // Invocation of methods named in this list is delegated to the instance
-    // of the Main class defined in the script.
+    // of the jythonClassName class defined in the script.
     // Listed here are all methods of the Executable interface, except
     // iterate().
     private static final String[] _METHOD_NAMES = { "fire", "initialize",

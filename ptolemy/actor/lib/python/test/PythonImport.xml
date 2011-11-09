@@ -1,0 +1,80 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PythonImport" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 55.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 30, 1160, 734}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[947, 624]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{473.5, 312.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates how to import a Jython module that &#10;defines an actor from another location.&#10;&#10;1. Right click on the PythonScript actor, select Configure and&#10;note that jythonClassName is set to &quot;PtPythonSquare&quot;&#10;&#10;2. Create $PTII/lib/Lib/PtPythonSquare.py.  Note that&#10;you may need to create the Lib/ directory.  Note that the&#10;first lib directory starts with a lower case el and the second&#10;starts with an uppercase el.  Jython uses the Jython sys.path&#10;variable to find modules.  &#10;&#10;To get the value of sys.path, either:&#10;Right click on the PythonScript actor, select &quot;Listen to Actor&quot;&#10;run the model and look at the value printed on stdout&#10;OR&#10;Run the model at $PTII/ptolemy/actor/lib/python/test/PythonSysPath.xml&#10;&#10;The contents of PtPythonSquare.py should be:&#10;--start--&#10;class Main :&#10;  def fire(self) :&#10;    token = self.input.get(0)&#10;    self.output.broadcast(token.multiply(token))&#10;    return&#10;--end--&#10;&#10;3. Run the model, note that the output is the square of the input.&#10;&#10;4. Edit PtPythonSquare.py and change&#10;  multiply(token)&#10;to&#10;  add(token)&#10;&#10;5. Run the model again, note that the output is the twice the input.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 10.0]">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={658, 398, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 220.0}">
+        </property>
+    </entity>
+    <entity name="PythonScript" class="ptolemy.actor.lib.python.PythonScript">
+        <property name="jythonClassName" class="ptolemy.kernel.util.StringAttribute" value="PtPythonSquare">
+        </property>
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="import PtPythonSquare                                                                                                 &#10;PtPythonSquare = reload(PtPythonSquare)   ">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorConfigureFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 220.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="PythonScript.input" relation="relation2"/>
+    <link port="PythonScript.output" relation="relation"/>
+</entity>
