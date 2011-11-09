@@ -188,8 +188,8 @@ public class PythonScript extends TypedAtomicActor {
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception NameDuplicationException If the container already
-     *   has an actor with this name.ÿ
-     *  @exception IllegalActionException If the actor cannot be containedÿ
+     *   has an actor with this name.
+     *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      */
     public PythonScript(CompositeEntity container, String name)
