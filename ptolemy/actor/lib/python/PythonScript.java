@@ -188,8 +188,8 @@ public class PythonScript extends TypedAtomicActor {
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception NameDuplicationException If the container already
-     *   has an actor with this name.
-     *  @exception IllegalActionException If the actor cannot be contained
+     *   has an actor with this name.ÿ
+     *  @exception IllegalActionException If the actor cannot be containedÿ
      *   by the proposed container.
      */
     public PythonScript(CompositeEntity container, String name)
@@ -759,13 +759,14 @@ public class PythonScript extends TypedAtomicActor {
         }
 
         try {
-            String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
+            //String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
             _interpreter.exec("import sys\n");
-            _interpreter.exec("sys.path.append('" + ptIIDir
-                    + "/vendors/jython/Lib')");
+            //_interpreter.exec("sys.path.append('" + ptIIDir
+            //        + "/ptolemy/actor/lib/python/test/')");
+
 
         } catch (Exception ex) {
-            // Ignore this, $PTII/vendors/jython/Lib might not exist.
+            // Ignore this, $PTII//ptolemy/actor/lib/python/test/ might not exist.
         }
 
         String className = "ptolemy.kernel.util.NamedObj";
