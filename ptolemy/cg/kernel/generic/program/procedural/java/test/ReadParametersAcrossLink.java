@@ -105,11 +105,16 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
         super.fire();
         double sum = 0.0;
         int i = 0;
+        //System.out.println(getFullName() + ".fire() start");
         for (PopulationGroup group : _groups) {
             sum += group.performCalculation();
-            /*Discard the input */
-            input.get(i++);
         }
+        for (int x = 0; x < input.getWidth(); ++x) {
+            /*Discard the input */
+            //System.out.println(getFullName() + ".fire() reading input " + x);
+            input.get(x);
+        }
+        //System.out.println(getFullName() + ".fire() sending " + sum);
         output.send(0, new DoubleToken(sum));
     }
 
@@ -137,8 +142,11 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
 
             // Add the current group to the list of groups.
             PopulationGroup group = new PopulationGroup();
+            //System.out.println(getFullName() + ".preinitialize(): adding " + relationIndex);
             _groups.add(relationIndex, group);
 
+            //System.out.println(getFullName() + ".preinitialize(): container: " + container);
+            //System.out.println(getFullName() + ".preinitialize(): container.getAttribute(\"remoteParameter\"): " + container.getAttribute("remoteParameter"));
             double remoteParameter = ((DoubleToken) ((Variable) container
                     .getAttribute("remoteParameter")).getToken()).doubleValue();
             group.setRemoteParameter(remoteParameter);
