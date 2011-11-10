@@ -242,7 +242,14 @@
     <p>See <a href="http://svn.haxx.se/users/archive-2003-12/0063.shtml#in_browser" _target="_top">Subversion Users: Re: Setting svn:eol-style</a>
       and <a href="http://maven.apache.org/developers/svn-eol-style.txt#in_browser" target="_top"><code>http://maven.apache.org/developers/svn-eol-style.txt</code></a></p>
 
-    <p>BTW - To set the style on already checked in file, run:</p>
+   <h3>How to fix svn:eol-style and svn:keywords</h3>
+   <i>This information is only for reference, during the initial
+   setup, it is not necessary to run these commands.</i>
+    <p>
+    If you don't do the above configuration, then the files that you
+    check in may have the svn:eol-style set to binary.  To change the
+    svn:eol-style, run</p>
+
     <pre>
       svn propset svn:eol-style native <i>filename</i>
     </pre>
