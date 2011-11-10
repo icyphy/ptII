@@ -1669,6 +1669,7 @@ changequote([, ])dnl
 fi
 
 if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
+   updateExcludes "ptolemy/apps/eclipse/awt/"
    updateExcludes "ptolemy/backtrack/"
    updateExcludes "ptolemy/backtrack/ast/"
 fi 
