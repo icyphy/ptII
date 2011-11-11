@@ -41,6 +41,7 @@ import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.StringConst;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
@@ -1065,18 +1066,18 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + _eol
                         + "if (temporaryContainer == null) { "
                         + _eol
-                        + "    cgContainer = new "
+                        + "    temporaryContainer = new "
                         // Use the actual class of the container, not TypedCompositeActor.
                         + parentContainer.getClass().getName()
                         + "(cgContainer, \""
                         + parentContainer.getName() + "\");" + _eol
-                        + _generateContainedVariables(parentContainer, "cgContainer")
+                        + _generateStringConsts(parentContainer)
+                        + _generateContainedVariables(parentContainer, "temporaryContainer")
                         //+ "{" + _eol
                         //+ generatePreinitializeMethodBodyCode(parentContainer)
                         //+ "}" + _eol
-                        + "} else {" + _eol
-                        + "    cgContainer = temporaryContainer;"
-                        + _eol + "}" + _eol);
+                        + "}" + _eol
+                        + "cgContainer = temporaryContainer;" + _eol);
                 parentContainer = parentContainer.getContainer();
             }
 
@@ -2250,6 +2251,59 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return "{ " + _eol + setParameter + "    ((" + actorClassName
                 + ")$actorSymbol(actor)).attributeChanged(" + parameterName
                 + ");" + _eol + "}" + _eol;
+    }
+
+    /** If the name of the container is "Electricity", then
+     *  find any StringConsts that are attached to the parent
+     *  and generate code.
+     *  @param composite
+     *  @return Code that creates any StringConsts
+     */
+    private String _generateStringConsts(NamedObj composite) {
+        if (!composite.getContainer().getName().equals("Electricity")) {
+            return "";
+        }
+        StringBuffer code = new StringBuffer();
+        Iterator entityPorts = ((Entity)composite).portList().iterator();
+        while (entityPorts.hasNext()) {
+            ComponentPort insidePort = (ComponentPort) entityPorts.next();
+            if (insidePort instanceof TypedIOPort) {
+                TypedIOPort castPort = (TypedIOPort) insidePort;
+                //if (!castPort.isOutsideConnected()) {
+                //    continue;
+                //}
+                StringBuffer stringConstantCode = new StringBuffer();
+                Iterator remotePorts = castPort.connectedPortList().iterator();
+                while (remotePorts.hasNext()) {
+                    TypedIOPort remotePort = (TypedIOPort)remotePorts.next();
+                    System.out.println("AutoAdapter.remotePort.getContainer(): " + remotePort.getContainer());
+                    if (remotePort.getContainer() instanceof StringConst) {
+                        StringConst stringConstant = (StringConst) remotePort.getContainer();
+                        if (stringConstantCode.length() == 0) {
+                            _headerFiles.add("ptolemy.actor.lib.StringConst;");
+                            stringConstantCode.append("{" + _eol
+                                    + "StringConst stringConst = null;" + _eol
+                                    + "TypedIOPort port = null;" + _eol);
+                        }
+                        stringConstantCode.append("stringConst = new StringConst(cgContainer, \""
+                                + stringConstant.getName()
+                                + "\");" + _eol
+                                + "stringConst.value.setExpression(\""
+                                + stringConstant.value.getExpression() + "\");" + _eol
+                                + "port = new TypedIOPort(temporaryContainer, \""
+                                + castPort.getName() + "\", "
+                                + castPort.isInput() + ", " + castPort.isOutput() + ");" + _eol
+                                + "cgContainer.connect(port, stringConst." + remotePort.getName() + ");" + _eol);
+                    }
+                }
+                if (stringConstantCode.length() != 0) {
+                    stringConstantCode.append("}" + _eol);
+                    code.append(stringConstantCode);
+                }
+            }
+            
+        }
+        return code.toString();
     }
 
     /** Return true if the port has a linked relation whose name starts
