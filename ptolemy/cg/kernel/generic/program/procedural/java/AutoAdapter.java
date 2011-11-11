@@ -990,7 +990,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */   
     private String _generateActorInstantiation(NamedObj actor,
             String actorSymbol, String containerSymbol,
-            boolean generateContainmentCode, boolean generateContainedVariables)
+            boolean generateContainmentCode, boolean generateContainedVariables, boolean generateElectricityConnections)
     throws IllegalActionException {
         //String actorSymbol = getCodeGenerator().generateVariableName(
         //            actor) + "_actor";
@@ -1012,7 +1012,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + ", \""
                         + actor.getName()
                         + "\");"  + _eol
-            + _generateStringConsts(actor, actorSymbol, containerSymbol)
+                        + _generateStringConsts(actor, actorSymbol, containerSymbol)
+                        + (generateElectricityConnections ? 
+                                _generateElectricityConnections(actor, actorSymbol, containerSymbol) : "")
                         + "}" + _eol
                         + (generateContainedVariables
                                 ? _generateContainedVariables(actor, actorSymbol) : " ")
@@ -1027,6 +1029,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             + "return " + actorSymbol + ";" + _eol;
         String methodName = "_instantiate"
             + (generateContainmentCode ? "Containment" : "")
+            + (generateContainedVariables ? "Variables" : "")
+            + (generateElectricityConnections ? "ECons" : "")
             + processCode(actorSymbol);
         _actorInstantiationMethods.put(methodName, processCode(code));
         return methodName + "();" + _eol;
@@ -1090,7 +1094,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 containmentCode.insert(0,
                         "cgContainer = (TypedCompositeActor)"
                         + _generateActorInstantiation(parentContainer,  parentContainerSymbol,
-                                parentContainerContainerSymbol, false, true));
+                                parentContainerContainerSymbol, false, true, true));
                 parentContainer = parentContainer.getContainer();
             }
 
@@ -1633,7 +1637,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     code.append("TypedCompositeActor c1 = (TypedCompositeActor)"
                             + _generateActorInstantiation(remoteActor.getContainer().getContainer(),
                                     remoteActorContainerContainerSymbol,
-                                    remoteActorC3Symbol, true, true));
+                                    remoteActorC3Symbol, true, true, true));
                     code.append("TypedIOPort c1PortA = (TypedIOPort)c1.getPort(\"c1PortA\");" + _eol
                             + "if ( c1PortA == null) {" + _eol
                             + "c1PortA = new TypedIOPort(c1, \"c1PortA\", false, true);" + _eol
@@ -1647,7 +1651,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 }
                 code.append("TypedCompositeActor c0 = (TypedCompositeActor)"
                         + _generateActorInstantiation(remoteActor.getContainer(), remoteActorContainerSymbol, 
-                                remoteActorContainerContainerSymbol, true, true));
+                                remoteActorContainerContainerSymbol, true, true, true));
                 // Create the input and output ports and connect them.
                 if (verbosityLevel > 3) {
                     code.append("    System.out.println(\"E1\");" + _eol);
@@ -1766,7 +1770,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 if (verbosityLevel > 1) {
                     code.append("System.out.println(\"Create remote actor: " + remoteActor.getName() + "\");" + _eol);
                 }
-                code.append(_generateActorInstantiation(remoteActor, remoteActorSymbol, remoteActorContainerSymbol, true, false));
+                code.append(_generateActorInstantiation(remoteActor, remoteActorSymbol, remoteActorContainerSymbol, true, false, true));
 //                 code.append("if (" + remoteActorSymbol + " == null) {" + _eol
 //                         + "if (" + remoteActorContainerSymbol + " == null) {" + _eol
 //                         // FIXME: we should define a method that creates the containment hierarchy.
@@ -2273,7 +2277,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  @return Code that creates any StringConsts
      */
     private String _generateStringConsts(NamedObj composite,
-            String actorSymbol, String containerSymbol) {
+            String actorSymbol, String containerSymbol) throws IllegalActionException {
         if (!composite.getContainer().getName().equals("Electricity")) {
             return "";
         }
@@ -2324,7 +2328,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  @param composite
      *  @return Code that creates any StringConsts
      */
-    private String _generateStringConstDeclarations(NamedObj composite) {
+    private String _generateElectricityConnections(NamedObj composite,
+            String actorSymbol, String containerSymbol) throws IllegalActionException {
         if (!composite.getContainer().getName().equals("Electricity")) {
             return "";
         }
@@ -2334,21 +2339,86 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             ComponentPort insidePort = (ComponentPort) entityPorts.next();
             if (insidePort instanceof TypedIOPort) {
                 TypedIOPort castPort = (TypedIOPort) insidePort;
-                StringBuffer stringConstantCode = new StringBuffer();
+                StringBuffer connectionCode = new StringBuffer();
                 Iterator remotePorts = castPort.connectedPortList().iterator();
                 while (remotePorts.hasNext()) {
                     TypedIOPort remotePort = (TypedIOPort)remotePorts.next();
-                    if (remotePort.getContainer() instanceof StringConst) {
-                        if (!_containersDeclared.contains(remotePort.getContainer())) {
-                            _containersDeclared.add(remotePort.getContainer());
-                        }
+                    if (remotePort.getContainer() instanceof TypedCompositeActor) {
+                        // Create connections to any other TypedCompositeActors in the Electrical composite
+                        TypedCompositeActor remoteActor = (TypedCompositeActor)remotePort.getContainer();
+                        String remoteActorSymbol = getCodeGenerator().generateVariableName(remoteActor);
+                        TypedCompositeActor remoteActorContainer = (TypedCompositeActor)remoteActor.getContainer();
+                        String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
+
+                        connectionCode.append("{" + _eol
+                                + "TypedCompositeActor e0 = (TypedCompositeActor)"
+                                + _generateActorInstantiation(remoteActor, remoteActorSymbol,
+                                        remoteActorContainerSymbol, false, true,
+                                        false)
+                                + "TypedIOPort e0PortA = (TypedIOPort)e0.getPort(\""
+                                + remotePort.getName() + "\");" + _eol
+                                + "if (e0PortA == null) {" + _eol
+                                + "e0PortA = new TypedIOPort(e0, \""
+                                + remotePort.getName() + "\", "
+                                + remotePort.isInput() + ", " + remotePort.isOutput() + ");" + _eol
+                                + "}" + _eol
+
+                                + "TypedIOPort e0PortB = (TypedIOPort)" + actorSymbol + ".getPort(\""
+                                + castPort.getName() + "\");" + _eol
+                                + "if (e0PortB == null) {" + _eol
+                                + "e0PortB = new TypedIOPort(" + actorSymbol + ", \""
+                                + castPort.getName() + "\", "
+                                + castPort.isInput() + ", " + castPort.isOutput() + ");" + _eol
+                                + "}" + _eol
+
+                                + "if (!e0PortA.isDeeplyConnected(e0PortB)) {" + _eol
+                                + "((TypedCompositeActor)e0.getContainer()).connect(e0PortA, e0PortB);" + _eol
+                                + "}" + _eol);
                     }
+                }
+                if (connectionCode.length() != 0) {
+                    connectionCode.append("}" + _eol);
+                    code.append(connectionCode);
                 }
             }
             
         }
         return code.toString();
     }
+
+
+
+//     /** If the name of the container is "Electricity", then
+//      *  find any StringConsts that are attached to the parent
+//      *  and generate code.
+//      *  @param composite
+//      *  @return Code that creates any StringConsts
+//      */
+//     private String _generateStringConstDeclarations(NamedObj composite) {
+//         if (!composite.getContainer().getName().equals("Electricity")) {
+//             return "";
+//         }
+//         StringBuffer code = new StringBuffer();
+//         Iterator entityPorts = ((Entity)composite).portList().iterator();
+//         while (entityPorts.hasNext()) {
+//             ComponentPort insidePort = (ComponentPort) entityPorts.next();
+//             if (insidePort instanceof TypedIOPort) {
+//                 TypedIOPort castPort = (TypedIOPort) insidePort;
+//                 StringBuffer stringConstantCode = new StringBuffer();
+//                 Iterator remotePorts = castPort.connectedPortList().iterator();
+//                 while (remotePorts.hasNext()) {
+//                     TypedIOPort remotePort = (TypedIOPort)remotePorts.next();
+//                     if (remotePort.getContainer() instanceof StringConst) {
+//                         if (!_containersDeclared.contains(remotePort.getContainer())) {
+//                             _containersDeclared.add(remotePort.getContainer());
+//                         }
+//                     }
+//                 }
+//             }
+            
+//         }
+//         return code.toString();
+//     }
 
     /** Return true if the port has a linked relation whose name starts
      *  with "autoConnector".
@@ -2361,7 +2431,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         while (relations.hasNext()) {
             Relation relation = (Relation)relations.next();
             if (relation.getName().startsWith("autoConnector")) {
-                System.out.println("Partially skipping " + port + " because it has a relation that starts with 'autoConnector'");
+                int verbosityLevel = ((IntToken) getCodeGenerator().verbosity.getToken()).intValue();
+                if (verbosityLevel > 0) {
+                    System.out.println("Partially skipping " + port + " because it has a relation that starts with 'autoConnector'");
+                }
                 return true;
             }
         }
