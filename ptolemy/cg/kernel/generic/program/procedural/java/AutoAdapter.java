@@ -294,12 +294,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer(
                 "TypedAtomicActor $actorSymbol(actor);" + _eol);
         // Declare each container only once.
-        if (!_containersDeclared.contains(getComponent().getContainer())) {
-            _containersDeclared.add(getComponent().getContainer());
-            code.append("TypedCompositeActor $containerSymbol();" + _eol);
-            //code.append(_generatePortDeclarations((Entity)getComponent().getContainer()));
+        NamedObj container = getComponent().getContainer();
+        while (container != null) { 
+            if (!_containersDeclared.contains(container)) {
+                _containersDeclared.add(container);
+                String containerSymbol = getCodeGenerator().generateVariableName(container);
+                code.append("TypedCompositeActor " + containerSymbol + ";" + _eol);
+            }
+            container = container.getContainer();
         }
-
         code.append(_generatePortDeclarations((Entity)getComponent()));
 
         return processCode(code.toString());
@@ -336,8 +339,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 //+ "    $containerSymbol() = new TypedCompositeActor();" +_eol
                 + "    instantiateToplevel(\""
                 + component.toplevel().getName()
-                + "\");"
-                + _eol
+                + "\");" + _eol
+                // FIXME: set this just once
+                + getCodeGenerator().generateVariableName(component.toplevel()) + " = _toplevel;" + _eol
                 + containmentCode
                 // If there are two custom actors in one container, then
                 // we may have already created the actor.
@@ -1008,6 +1012,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + ", \""
                         + actor.getName()
                         + "\");"  + _eol
+            + _generateStringConsts(actor, actorSymbol, containerSymbol)
                         + "}" + _eol
                         + (generateContainedVariables
                                 ? _generateContainedVariables(actor, actorSymbol) : " ")
@@ -1020,7 +1025,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             + actor.getName() + "\");" + _eol
             + "}" + _eol
             + "return " + actorSymbol + ";" + _eol;
-        String methodName = "_instantiate" + processCode(actorSymbol);
+        String methodName = "_instantiate"
+            + (generateContainmentCode ? "Containment" : "")
+            + processCode(actorSymbol);
         _actorInstantiationMethods.put(methodName, processCode(code));
         return methodName + "();" + _eol;
     }
@@ -1059,25 +1066,31 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
             while (parentContainer != null
                     && parentContainer.getContainer() != null) {
+//                 containmentCode.insert(0,
+//                         "temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\""
+//                         + parentContainer.getName()
+//                         + "\");"
+//                         + _eol
+//                         + "if (temporaryContainer == null) { "
+//                         + _eol
+//                         + "    temporaryContainer = new "
+//                         // Use the actual class of the container, not TypedCompositeActor.
+//                         + parentContainer.getClass().getName()
+//                         + "(cgContainer, \""
+//                         + parentContainer.getName() + "\");" + _eol
+//                         + _generateStringConsts(parentContainer)
+//                         + _generateContainedVariables(parentContainer, "temporaryContainer")
+//                         //+ "{" + _eol
+//                         //+ generatePreinitializeMethodBodyCode(parentContainer)
+//                         //+ "}" + _eol
+//                         + "}" + _eol
+//                         + "cgContainer = temporaryContainer;" + _eol);
+                String parentContainerSymbol = getCodeGenerator().generateVariableName(parentContainer);
+                String parentContainerContainerSymbol = getCodeGenerator().generateVariableName(parentContainer.getContainer());
                 containmentCode.insert(0,
-                        "temporaryContainer = (TypedCompositeActor)cgContainer.getEntity(\""
-                        + parentContainer.getName()
-                        + "\");"
-                        + _eol
-                        + "if (temporaryContainer == null) { "
-                        + _eol
-                        + "    temporaryContainer = new "
-                        // Use the actual class of the container, not TypedCompositeActor.
-                        + parentContainer.getClass().getName()
-                        + "(cgContainer, \""
-                        + parentContainer.getName() + "\");" + _eol
-                        + _generateStringConsts(parentContainer)
-                        + _generateContainedVariables(parentContainer, "temporaryContainer")
-                        //+ "{" + _eol
-                        //+ generatePreinitializeMethodBodyCode(parentContainer)
-                        //+ "}" + _eol
-                        + "}" + _eol
-                        + "cgContainer = temporaryContainer;" + _eol);
+                        "cgContainer = (TypedCompositeActor)"
+                        + _generateActorInstantiation(parentContainer,  parentContainerSymbol,
+                                parentContainerContainerSymbol, false, true));
                 parentContainer = parentContainer.getContainer();
             }
 
@@ -2259,7 +2272,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  @param composite
      *  @return Code that creates any StringConsts
      */
-    private String _generateStringConsts(NamedObj composite) {
+    private String _generateStringConsts(NamedObj composite,
+            String actorSymbol, String containerSymbol) {
         if (!composite.getContainer().getName().equals("Electricity")) {
             return "";
         }
@@ -2269,14 +2283,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             ComponentPort insidePort = (ComponentPort) entityPorts.next();
             if (insidePort instanceof TypedIOPort) {
                 TypedIOPort castPort = (TypedIOPort) insidePort;
-                //if (!castPort.isOutsideConnected()) {
-                //    continue;
-                //}
                 StringBuffer stringConstantCode = new StringBuffer();
                 Iterator remotePorts = castPort.connectedPortList().iterator();
                 while (remotePorts.hasNext()) {
                     TypedIOPort remotePort = (TypedIOPort)remotePorts.next();
-                    System.out.println("AutoAdapter.remotePort.getContainer(): " + remotePort.getContainer());
                     if (remotePort.getContainer() instanceof StringConst) {
                         StringConst stringConstant = (StringConst) remotePort.getContainer();
                         if (stringConstantCode.length() == 0) {
@@ -2285,20 +2295,54 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     + "StringConst stringConst = null;" + _eol
                                     + "TypedIOPort port = null;" + _eol);
                         }
-                        stringConstantCode.append("stringConst = new StringConst(cgContainer, \""
+                        stringConstantCode.append("stringConst = new StringConst("
+                                + containerSymbol + ", \""
                                 + stringConstant.getName()
                                 + "\");" + _eol
                                 + "stringConst.value.setExpression(\""
                                 + stringConstant.value.getExpression() + "\");" + _eol
-                                + "port = new TypedIOPort(temporaryContainer, \""
+                                + "port = new TypedIOPort(" + actorSymbol + ", \""
                                 + castPort.getName() + "\", "
                                 + castPort.isInput() + ", " + castPort.isOutput() + ");" + _eol
-                                + "cgContainer.connect(port, stringConst." + remotePort.getName() + ");" + _eol);
+                                + containerSymbol + ".connect(port, stringConst." + remotePort.getName() + ");" + _eol);
                     }
                 }
                 if (stringConstantCode.length() != 0) {
                     stringConstantCode.append("}" + _eol);
                     code.append(stringConstantCode);
+                }
+            }
+            
+        }
+        return code.toString();
+    }
+
+
+    /** If the name of the container is "Electricity", then
+     *  find any StringConsts that are attached to the parent
+     *  and generate code.
+     *  @param composite
+     *  @return Code that creates any StringConsts
+     */
+    private String _generateStringConstDeclarations(NamedObj composite) {
+        if (!composite.getContainer().getName().equals("Electricity")) {
+            return "";
+        }
+        StringBuffer code = new StringBuffer();
+        Iterator entityPorts = ((Entity)composite).portList().iterator();
+        while (entityPorts.hasNext()) {
+            ComponentPort insidePort = (ComponentPort) entityPorts.next();
+            if (insidePort instanceof TypedIOPort) {
+                TypedIOPort castPort = (TypedIOPort) insidePort;
+                StringBuffer stringConstantCode = new StringBuffer();
+                Iterator remotePorts = castPort.connectedPortList().iterator();
+                while (remotePorts.hasNext()) {
+                    TypedIOPort remotePort = (TypedIOPort)remotePorts.next();
+                    if (remotePort.getContainer() instanceof StringConst) {
+                        if (!_containersDeclared.contains(remotePort.getContainer())) {
+                            _containersDeclared.add(remotePort.getContainer());
+                        }
+                    }
                 }
             }
             
