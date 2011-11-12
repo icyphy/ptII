@@ -2425,8 +2425,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  @param port The port to be checked.
      *  @return true if the port has a relation that starts with the string
      *  "autoConnector".
+     *  @exception IllegalActionException If the verbosity parameter
+     *  of the code generator cannot be read.
      */
-    private boolean _hasAutoConnectorRelation(TypedIOPort port) {
+    private boolean _hasAutoConnectorRelation(TypedIOPort port)
+	throws IllegalActionException {
         Iterator relations = port.linkedRelationList().iterator();
         while (relations.hasNext()) {
             Relation relation = (Relation)relations.next();
