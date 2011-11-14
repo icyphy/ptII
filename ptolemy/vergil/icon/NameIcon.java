@@ -27,7 +27,6 @@
  */
 package ptolemy.vergil.icon;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
 import java.awt.geom.Point2D;
@@ -36,6 +35,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -100,6 +100,9 @@ public class NameIcon extends EditorIcon {
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
+        
+        color = new ColorAttribute(this, "color");
+        color.setExpression("{1.0,1.0,1.0,1.0}");
 
         rounding = new Parameter(this, "rounding");
         rounding.setTypeEquals(BaseType.DOUBLE);
@@ -109,6 +112,26 @@ public class NameIcon extends EditorIcon {
         spacing.setTypeEquals(BaseType.DOUBLE);
         spacing.setExpression("0.0");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The background color to use in the box.
+     *  This defaults to white.
+     */
+    public ColorAttribute color;
+    
+    /** The amount of rounding of the corners.
+     *  This is a double that defaults to 0.0, which indicates no rounding.
+     */
+    public Parameter rounding;
+
+    /** If greater than zero, then use a double box where the outside
+     *  one is the specified size larger than the inside one.
+     *  This is a double that defaults to 0.0, which indicates a single
+     *  box.
+     */
+    public Parameter spacing;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -255,21 +278,6 @@ public class NameIcon extends EditorIcon {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The amount of rounding of the corners.
-     *  This is a double that defaults to 0.0, which indicates no rounding.
-     */
-    public Parameter rounding;
-
-    /** If greater than zero, then use a double box where the outside
-     *  one is the specified size larger than the inside one.
-     *  This is a double that defaults to 0.0, which indicates a single
-     *  box.
-     */
-    public Parameter spacing;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Return the background size.
@@ -300,11 +308,11 @@ public class NameIcon extends EditorIcon {
     }
 
     /** Return the paint to use to fill the icon.
-     *  This base class returns Color.white.
+     *  This base class returns the value of the <i>color</i> attribute.
      *  @return The paint to use to fill the icon.
      */
     protected Paint _getFill() {
-        return Color.white;
+        return color.asColor();
     }
 
     /** Get the label to put on the specified background
