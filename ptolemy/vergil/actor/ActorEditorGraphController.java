@@ -47,7 +47,9 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
@@ -78,12 +80,17 @@ import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.Interactor;
+import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.NodeRenderer;
+import diva.graph.layout.GlobalLayout;
+import diva.graph.layout.IncrLayoutAdapter;
+import diva.graph.layout.IncrementalLayoutListener;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.JContextMenu;
+import diva.util.Filter;
 import diva.util.UserObjectContainer;
 
 ///////////////////////////////////////////////////////////////////
@@ -453,6 +460,41 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         if (_alternateActorInstanceClassName == null) {
             // Default to the normal ActorInstanceController.
             _entityController = new ActorInstanceController(this);
+            
+            // Set up a listener to lay out the ports when graph changes.
+            // NOTE: It is imperative that there be no more than one such
+            // listener!  If there is more than one instance, the
+            // ports will be laid out more than once. This manifests itself
+            // as a bug where port names are rendered twice, and for some
+            // inexplicable reason, are rendered in two different places!
+            // The filter for the layout algorithm of the ports within this
+            // entity. This returns true only if the candidate object is
+            // an instance of Locatable and the semantic object associated
+            // with it is an instance of Entity.
+            Filter portFilter = new Filter() {
+                public boolean accept(Object candidate) {
+                    GraphModel model = getGraphModel();
+                    Object semanticObject = model.getSemanticObject(candidate);
+
+                    if (candidate instanceof Locatable
+                            && semanticObject instanceof Entity
+                            && !((Entity) semanticObject).isClassDefinition()) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            };
+
+            // Anytime we add a port to an entity, we want to layout all the
+            // ports within that entity.
+            GlobalLayout layout = new EntityLayout();
+            addGraphViewListener(new IncrementalLayoutListener(
+                    new IncrLayoutAdapter(layout) {
+                        public void nodeDrawn(Object node) {
+                            layout(node);
+                        }
+                    }, portFilter));
         } else {
             try {
                 // Try to load the alternate class.

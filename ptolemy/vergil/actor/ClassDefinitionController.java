@@ -38,10 +38,8 @@ import java.util.List;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.Instantiable;
-import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
@@ -52,13 +50,8 @@ import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
 import diva.graph.GraphController;
-import diva.graph.GraphModel;
 import diva.graph.JGraph;
-import diva.graph.layout.GlobalLayout;
-import diva.graph.layout.IncrLayoutAdapter;
-import diva.graph.layout.IncrementalLayoutListener;
 import diva.gui.GUIUtilities;
-import diva.util.Filter;
 
 ///////////////////////////////////////////////////////////////////
 //// ClassDefinitionController
@@ -106,42 +99,6 @@ public class ClassDefinitionController extends ActorController {
             _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
                     "Class Actions"));
         }
-
-        // Set up a listener to lay out the ports when graph changes.
-        // NOTE: Because of this listener, it is imperative that there
-        // be no more than one instance of this object associated with
-        // a graph controller!  If there is more than one instance, the
-        // ports will be laid out more than once. This manifests itself
-        // as a bug where port names are rendered twice, and for some
-        // inexplicable reason, are rendered in two different places!
-        // The filter for the layout algorithm of the ports within this
-        // entity. This returns true only if the candidate object is
-        // an instance of Locatable and the semantic object associated
-        // with it is an instance of Entity.
-        Filter portFilter = new Filter() {
-            public boolean accept(Object candidate) {
-                GraphModel model = getController().getGraphModel();
-                Object semanticObject = model.getSemanticObject(candidate);
-
-                if (candidate instanceof Locatable
-                        && semanticObject instanceof Entity
-                        && ((Entity) semanticObject).isClassDefinition()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        };
-
-        // Anytime we add a port to an entity, we want to layout all the
-        // ports within that entity.
-        GlobalLayout layout = new EntityLayout();
-        controller.addGraphViewListener(new IncrementalLayoutListener(
-                new IncrLayoutAdapter(layout) {
-                    public void nodeDrawn(Object node) {
-                        layout(node);
-                    }
-                }, portFilter));
     }
 
     /** Add hot keys to the actions in the given JGraph.

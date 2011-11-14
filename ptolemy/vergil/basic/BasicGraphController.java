@@ -217,6 +217,8 @@ public abstract class BasicGraphController extends AbstractGraphController
                 List factoryList = ((NamedObj) semanticObject)
                         .attributeList(NodeControllerFactory.class);
 
+                // FIXME: This is creating a new node controller for each instance!!!
+                // This causes problems as indicated by the NOTE in ActorInstanceController.
                 if (factoryList.size() > 0) {
                     NodeControllerFactory factory = (NodeControllerFactory) factoryList
                             .get(0);
