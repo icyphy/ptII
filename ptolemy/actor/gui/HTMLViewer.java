@@ -53,6 +53,7 @@ import javax.swing.text.html.StyleSheet;
 
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -356,6 +357,16 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *  @see #getPage()
      */
     public void setPage(URL page) throws IOException {
+        URL jarURL = ClassUtilities.jarURLEntryResource(page.toString());
+        if (jarURL != null) {
+            // Under Java 1.7, JEditorPane.setPage() handles jar urls
+            // differently.  In Java 1.6, setPage() would correctly open
+            // jar:file:/Users/cxh/ptII/ptolemy/ptsupport.jar!/doc/mainVergilPtiny.htm
+            // even though doc/MainVergilPtiny.htm is in doc/docConfig.jar, 
+            // not ptsupport.jar.  So, we look up the jar URL.
+            // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5508
+            page = jarURL;
+        }
         pane.setPage(page);
     }
 
