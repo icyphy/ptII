@@ -63,7 +63,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * containing component.
  * <p>
  * In vergil, double click to edit the title text. Right click and
- * select Configure to change the appearance of the title.
+ * select Customize->Configure to change the appearance of the title
+ * (or altnatively, Alt-click).
  *
  * @author Edward A. Lee
  * @version $Id$

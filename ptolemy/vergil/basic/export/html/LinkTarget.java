@@ -86,7 +86,9 @@ public class LinkTarget extends StringParameter {
     public String getModifier() throws IllegalActionException {
         String value = stringValue();
         if (value.equals("_lightbox")) {
-            return "class=\"lightbox\"";
+            // Strangely, the class has to be "iframe".
+            // I don't understand why it can't be "lightbox".
+            return "class=\"iframe\"";
         } else {
             return "target=\"" + value + "\"";
         }

@@ -11,14 +11,15 @@ function writeText(text) {
 // after the parent has completed.
 $(document).ready(function(){
   // The following says to select all elements that are
-  // areas of class lightbox (use # instead of . to specify an ID instead
+  // areas of class iframe (use # instead of . to specify an ID instead
   // of a class), and apply the function fancybox to them with the specified
-  // arguments.
+  // arguments. This gives a lightbox effect. Strangely, the
+  // class name has to be "iframe". Another class name won't work.
   // FIXME: This should be inserted by the classes that use it!
   // The following requires the jquery fancybox extension.
   // FIXME: The width and height below are hardwired. Should
   // be parameterized. Can be parameterized individually
   // by using an object ID instead of the iframe class.
   // Many more options can be set, as shown in http://fancybox.net/api.
-  $("area.lightbox").fancybox({'width':700,'height':500});
+  $("area.iframe").fancybox({'width':700,'height':500});
 });

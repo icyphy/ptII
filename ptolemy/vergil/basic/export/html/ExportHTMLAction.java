@@ -184,7 +184,7 @@ function writeText(text) {
 public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
     /** Create a new action to export HTML.
-     * @param basicGraphFrame TODO
+     *  @param basicGraphFrame The Vergil window to export.
      */
     public ExportHTMLAction(BasicGraphFrame basicGraphFrame) {
         super("Export to Web");
@@ -966,7 +966,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                 } finally {
                     gifOut.close();
                 }
-                linkTo = "href=\"" + name + ".gif\"" + " class=\"lightbox\"";
+                // Strangely, the clas has to be "iframe".
+                // I don't understand why it can't be "lightbox".
+                linkTo = "href=\"" + name + ".gif\"" + " class=\"iframe\"";
             }
         }
         return linkTo;

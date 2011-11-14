@@ -45,6 +45,16 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * Attribute specifying a URI to link to from an icon.
  * Using the <i>linkTarget</i> parameter, you can control how the
  * link is displayed.
+ * <p>
+ * To use this, drag it onto an icon in your model. Then double
+ * click on that icon to set the URL to link to. At the current time,
+ * Vergil provides no mechanism to modify the <i>linkTarget</i>
+ * parameter. To work around that, we provide the two most useful
+ * values for this parameter in the WebExport library.
+ * Specifically, the <i>icon iframe</i> attribute in that library
+ * brings up the link in lightbox. The <i>icon link</i> attribute
+ * follows the link using the browser's default (which may replace
+ * the current view or open in a new tab).
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -120,7 +130,6 @@ public class IconLink extends StringParameter implements WebExportable {
         return "href=\""
         	+ StringUtilities.escapeString(stringValue())
         	+ "\" "
-        	+ linkTarget.getModifier()
-        	+ "\"";
+        	+ linkTarget.getModifier();
     }
 }

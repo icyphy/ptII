@@ -41,7 +41,13 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 ///////////////////////////////////////////////////////////////////
 //// HTMLText
 /**
- * Attribute for inserting HTML text into the page exported by Export to Web..
+ * Attribute for inserting HTML text into the page exported by Export to Web.
+ * Drag this icon into the background of a model, and specify the HTML text to
+ * export (double click on the attribute to set the text).
+ * By default, this text will be placed after the image for the model,
+ * but you can change the position by setting the <i>textPosition</i>
+ * parameter. To set the <i>textPosition</i> parameter, Alt-click or
+ * right-click and select Customize->Configure.
  *
  * @author Edward A. Lee
  * @version $Id$
