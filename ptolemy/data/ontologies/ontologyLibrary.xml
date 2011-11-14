@@ -3,7 +3,10 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <group>
-  <input source="ptolemy/configs/annotation.xml"/>
+  <!-- input source="ptolemy/configs/annotation.xml"/-->
+  <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences"/>
+  <input source="ptolemy/vergil/kernel/attributes/decorative.xml"/>
+  <input source="ptolemy/vergil/basic/export/html/utilityWebExport.xml"/>
   
   <entity name="Top" class="ptolemy.data.ontologies.FiniteConcept">
     <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}"/>
