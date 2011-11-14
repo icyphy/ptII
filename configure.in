@@ -824,6 +824,7 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/apps/webstart/"/>
 <exclude name="ptolemy/apps/xsl/"/>
 <exclude name="ptolemy/apps/zaurus/"/>
+<exclude name="ptolemy/backtrack/eclipse/plugin/"/>
 <exclude name="ptolemy/backtrack/test/"/>
 <exclude name="ptolemy/codegen/c/actor/lib/oldJavaFiles/"/>
 <exclude name="ptolemy/codegen/dsp/lib/"/>
