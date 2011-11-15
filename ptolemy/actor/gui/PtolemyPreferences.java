@@ -89,6 +89,11 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         relationSize.setTypeEquals(BaseType.DOUBLE);
         relationSize.setExpression("12.0");
         relationSize.setDisplayName("Relation size");
+        
+        Parameter portSize = new Parameter(this, "_portSize");
+        portSize.setTypeEquals(BaseType.DOUBLE);
+        portSize.setExpression("4.0");
+        portSize.setDisplayName("Port size");
 
         Parameter linkBendRadius = new Parameter(this, "_linkBendRadius");
         linkBendRadius.setTypeEquals(BaseType.DOUBLE);
