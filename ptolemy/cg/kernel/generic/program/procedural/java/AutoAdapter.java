@@ -49,6 +49,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
@@ -773,6 +774,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + methodBody
                     + _eol + "}" + _eol);
         }
+        if (((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
+                .booleanValue()) {
+            // The array of TypedIOPorts used if the code generator variablesAsArrays is true.
+            sharedCode.add("TypedIOPort [] _ioPortMap = new TypedIOPort[" + 
+                    ((ProgramCodeGenerator)getCodeGenerator()).generatePtIOPortSize()
+                    + "];" + _eol);
+        }
         return sharedCode;
     }
 
@@ -1253,9 +1261,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * @param type The type of the port.
      * @param channel The channel number.
      * For non-multiports, the channel number will be 0.
+     * @exception IllegalActionException If thrown while reading the
+     * variablesAsArrays parameter of the code generator.
      */
     private String _generateGetInside(String actorPortName,
-            String codegenPortName, Type type, int channel) {
+            String codegenPortName, Type type, int channel) 
+            throws IllegalActionException {
         actorPortName = TemplateParser.escapePortName(actorPortName);
         //codegenPortName = TemplateParser.escapePortName(codegenPortName);
         if (type instanceof ArrayType) {
@@ -1266,8 +1277,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     array.getDeclaredElementType()).replace("Integer", "Int");
             String targetElementType = getCodeGenerator().targetType(
                     array.getDeclaredElementType());
-            String ptolemyData = "$actorSymbol(" + actorPortName
-                    + "_ptolemyData)";
+            // FIXME: do we really need a separate symbol here?  This is inside a block.
+            //String ptolemyDataSymbol = _generatePtIOPortName(getComponent(), actorPortName + "_ptolemyData");
+            String ptolemyDataSymbol = "$actorSymbol(" + actorPortName + "_ptolemyData)";
             return "{"
                     + _eol
                     //                 // Get the data from the Ptolemy port
@@ -1285,19 +1297,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     "AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
                     + " Token codeGenData = $Array_new("
                     + "((ArrayToken)"
-                    + ptolemyData
+                    + ptolemyDataSymbol
                     + ").length() , 0);"
                     + _eol
 
                     // Copy from the Ptolemy data to the codegen data.
                     + " for (int i = 0; i < ((ArrayToken)"
-                    + ptolemyData
+                    + ptolemyDataSymbol
                     + ").length(); i++) {"
                     + _eol
                     + "   Array_set(codeGenData, i, "
                     + getCodeGenerator().codeGenType(
                             array.getDeclaredElementType()) + "_new(((("
-                    + codeGenElementType + "Token)(" + ptolemyData
+                    + codeGenElementType + "Token)(" + ptolemyDataSymbol
                     + ".getElement(i)))." + targetElementType + "Value())));"
                     + _eol + "  }" + _eol
 
@@ -1310,8 +1322,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             return "$put(" + actorPortName
             // Refer to the token by the full class name and obviate the
             // need to manage imports.
-            // + ", ((" + type.getTokenClass().getName() + ")($actorSymbol("
-                    + ", ($actorSymbol(" + portData + ")))";
+            //+ ", (" + _generatePtIOPortName(getComponent(), portData) + "))";
+                + ", ($actorSymbol(" + portData + ")))";
+
         }
     }
 
@@ -1330,11 +1343,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * @param type The type of the port.
      * @param channel The channel number.
      * For non-multiports, the channel number will be 0.
+     * @exception IllegalActionException If thrown while generating code to to 
+     * gets data from the actor port and sends it to the codegen port.
      */
     private String _generateGetInsideDeclarations(String actorPortName,
-            String codegenPortName, Type type, int channel) {
+            String codegenPortName, Type type, int channel) 
+    throws IllegalActionException {
         actorPortName = TemplateParser.escapePortName(actorPortName);
         codegenPortName = TemplateParser.escapePortName(codegenPortName);
+        String codegenPortNameSymbol = _generatePtIOPortName(getComponent(), codegenPortName);
         // This method is needed by $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
         String portData = actorPortName + "_portData"
                 + (channel == 0 ? "" : channel);
@@ -1346,18 +1363,20 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String targetElementType = getCodeGenerator().targetType(
                     array.getDeclaredElementType());
 
-            String ptolemyData = "$actorSymbol(" + actorPortName
-                    + "_ptolemyData)";
+            // FIXME: do we really need a separate symbol here?  This is inside a block.
+            //String ptolemyDataSymbol = _generatePtIOPortName(getComponent(), actorPortName + "_ptolemyData");
+            String ptolemyDataSymbol = "$actorSymbol(" + actorPortName + "_ptolemyData)";
+
             return
             // Get the data from the Ptolemy port
             type.getTokenClass().getName()
                     + " "
-                    + ptolemyData
+                    + ptolemyDataSymbol
                     + " = (("
                     + type.getTokenClass().getName()
-                    + ")($actorSymbol("
-                    + codegenPortName
-                    + ").getInside(0"
+                    + ")("
+                    + codegenPortNameSymbol
+                    + ".getInside(0"
                     // For non-multiports "". For multiports, ", 0", ", 1" etc.
                     + (channel == 0 ? "" : ", " + channel)
                     + ")));"
@@ -1367,28 +1386,28 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + getCodeGenerator()
                             .comment(
                                     "AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
-                    + " Token $actorSymbol("
-                    + portData
-                    + ") = $Array_new("
+                    + " Token "
+                    + " $actorSymbol(" + portData + ")"
+                    + " = $Array_new("
                     + "((ArrayToken)"
-                    + ptolemyData
+                    + ptolemyDataSymbol
                     + ").length(), 0);"
                     + _eol
 
                     // Copy from the Ptolemy data to the codegen data.
                     + " for (int i = 0; i < ((ArrayToken)"
-                    + ptolemyData
+                    + ptolemyDataSymbol
                     + ").length(); i++) {"
                     + _eol
-                    + "   Array_set($actorSymbol("
-                    + portData
-                    + "), i, "
+                    + "   Array_set("
+                    + "$actorSymbol(" + portData + ")"
+                    + ", i, "
                     + getCodeGenerator().codeGenType(
                             array.getDeclaredElementType())
                     + "_new(((("
                     + codeGenElementType
                     + "Token)("
-                    + ptolemyData
+                    + ptolemyDataSymbol
                     + ".getElement(i)))."
                     + targetElementType
                     + "Value())));"
@@ -1408,20 +1427,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + "Complex complex = (Complex)((("
                     + type.getTokenClass().getName()
                     + ")"
-                    + "($actorSymbol("
-                    + codegenPortName
-                    + ").getInside(0"
+                    + "("
+                    + codegenPortNameSymbol
+                    + ".getInside(0"
                     + ")))."
-                    + type.toString().toLowerCase()
-                    + "Value());"
-                    + _eol
-                    + "double real = complex.real;"
-                    + _eol
-                    + "double imag = complex.imag;"
-                    + _eol
-                    + "$actorSymbol("
-                    + portData
-                    + ") = $typeFunc(TYPE_Complex::new(real, imag));"
+                    + type.toString().toLowerCase() + "Value());" + _eol
+                    + "double real = complex.real;" + _eol
+                    + "double imag = complex.imag;" + _eol
+                    + "$actorSymbol(" + portData + ")"
+                    + " = $typeFunc(TYPE_Complex::new(real, imag));"
                     + _eol
                     + _generateGetInside(actorPortName, codegenPortName, type,
                             channel);
@@ -1431,23 +1445,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         } else {
             return "$targetType("
                     + actorPortName
-                    + ") $actorSymbol("
-                    + portData
-                    + ");"
-                    + _eol
-                    + "if ($actorSymbol("
-                    + codegenPortName
-                    + ").hasTokenInside(0)) {"
-                    + _eol
-                    + "    $actorSymbol("
-                    + portData
-                    + ") = "
+                    + ") $actorSymbol(" + portData + ");" + _eol
+                    + "if (" + codegenPortNameSymbol + ".hasTokenInside(0)) {" + _eol
+                    + "    $actorSymbol(" + portData + ") = "
                     + "(("
                     + type.getTokenClass().getName()
                     + ")"
-                    + "($actorSymbol("
-                    + codegenPortName
-                    + ").getInside(0"
+                    + "(" + codegenPortNameSymbol + ".getInside(0"
                     + ")))."
                     + type.toString().toLowerCase()
                     + "Value();"
@@ -1461,23 +1465,29 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     
     /** Return the code that is used to connect ports for situations
      *  where an actor may read parameters from a remote container.
+     * @exception IllegalActionException If thrown while reading the
+     * variablesAsArrays parameter of the code generator.
      */
     private String _generateRemoteParameterConnections(int readingRemoteParametersDepth,
             String portOrParameter,
-            String escapedCodegenPortName) {
+            String escapedCodegenPortName) 
+            throws IllegalActionException {
         String outputPortName = "c" + readingRemoteParametersDepth + "PortA";
+        String escapedCodegenPortNameSymbol = _generatePtIOPortName(getComponent(), escapedCodegenPortName);
         return "if (!c0PortA.isDeeplyConnected(" + portOrParameter + ")) {" + _eol
                         + "    $containerSymbol().connect(" + outputPortName + ","
                         + portOrParameter + ");" + _eol
-                        + "    $containerSymbol().connect($actorSymbol("
-                        + escapedCodegenPortName + "), c0PortB);" + _eol
+                        + "    $containerSymbol().connect("
+                        + escapedCodegenPortNameSymbol + ", c0PortB);" + _eol
                         + "}" + _eol;
     }
 
     /** Generate port declaration code for a composite or atomic entity.
      *  @return the port declaration code.
+     *  @exception IllegalActionException If the variablesAsArrays parameter
+     *  of the code generator cannot be read.
      */
-    private StringBuffer _generatePortDeclarations(Entity entity) {
+    private StringBuffer _generatePortDeclarations(Entity entity) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         // Handle inputs and outputs on a per-actor basis.
         // There is very similar code in generatePreinitializeMethodBodyCode()
@@ -1491,8 +1501,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 }
                 String name = TemplateParser.escapePortName(castPort.getName());
                 if (!castPort.isMultiport()) {
-                    code.append("TypedIOPort $actorSymbol(" + name + ");"
-                            + _eol);
+                    if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
+                            .booleanValue()) {
+                        code.append("TypedIOPort $actorSymbol(" + name + ");"
+                                + _eol);
+                    }
                 } else {
                     // FIXME: We instantiate a separate external port for each channel
                     // of the multiport.  Could we just connect directly to the channels
@@ -1521,8 +1534,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
                     List sourcePortList = castPort.sourcePortList();
                     for (int i = 0; i < sourcePortList.size(); i++) {
-                        code.append("TypedIOPort $actorSymbol(" + name
-                                + "Source" + i + ");" + _eol);
+                        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
+                                .booleanValue()) {
+                            code.append("TypedIOPort $actorSymbol(" + name
+                                    + "Source" + i + ");" + _eol);
+                        }
 
                         // True if the port is an input multiport connected to an
                         // actor in a container that has parameters.
@@ -1548,11 +1564,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             }
                         }
                     }
-
-                    List sinkPortList = castPort.sinkPortList();
-                    for (int i = 0; i < sinkPortList.size(); i++) {
-                        code.append("TypedIOPort $actorSymbol(" + name + "Sink"
-                                + i + ");" + _eol);
+                    if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
+                            .booleanValue()) {
+                        List sinkPortList = castPort.sinkPortList();
+                        for (int i = 0; i < sinkPortList.size(); i++) {
+                            code.append("TypedIOPort $actorSymbol(" + name + "Sink"
+                                    + i + ");" + _eol);
+                        }
                     }
                 }
             }
@@ -1583,6 +1601,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 .unescapePortName(actorPortName);
         String escapedCodegenPortName = TemplateParser
                 .escapePortName(codegenPortName);
+        String escapedCodegenPortNameSymbol = _generatePtIOPortName(getComponent(), escapedCodegenPortName);
         PortParameter portParameter = (PortParameter) getComponent()
                 .getAttribute(actorPortName, PortParameter.class);
         // Multiport need to have different codegenPortNames, see
@@ -1805,9 +1824,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                    //         "$containerSymbol()", 
                    //         getCodeGenerator().generateVariableName(getComponent().getContainer().getContainer()),
                    //         false)
-                    "$actorSymbol("
-                    + escapedCodegenPortName
-                    + ") = new TypedIOPort($containerSymbol()"
+                    escapedCodegenPortNameSymbol
+                    + " = new TypedIOPort($containerSymbol()"
                     // Need to deal with backslashes in port names, see
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
                     + ", \""
@@ -1819,8 +1837,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + port.isOutput() + ");"
                     + _eol
                     // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
-                    + "    $actorSymbol(" + escapedCodegenPortName
-                    + ").setTypeEquals(" + _typeToBaseType(port.getType())
+                    + "    " + escapedCodegenPortNameSymbol
+                    + ".setTypeEquals(" + _typeToBaseType(port.getType())
                     + ");" + _eol);
         }
 
@@ -1852,7 +1870,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     //+ AutoAdapter._externalPortName(port.getContainer(),
                     //        unescapedActorPortName)
                     + "\") == null) {" + _eol
-                    //+ "$actorSymbol(" + escapedCodegenPortName + ") "
+                    //+ escapedCodegenPortNameSymbol
                     + "TypedIOPort port" 
                     + " = new TypedIOPort($actorSymbol(actor), \""
                     + unescapedActorPortName.replace("\\", "\\\\").replace("$", "\\u0024")
@@ -1885,7 +1903,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 if (verbosityLevel > 3) {
                     code.append("System.out.println(\"MP1\");" + _eol); 
                 }
-                code.append(//"$actorSymbol(" + escapedCodegenPortName + ")"
+                code.append(// escapedCodegenPortNameSymbol
                             "port"
                             + ".setMultiport(true);" + _eol);
             }
@@ -1903,8 +1921,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + "\")";
             if (!readingRemoteParameters) {
                 connectedAlready = false;
-                //code.append("    $containerSymbol().connect($actorSymbol("
-                //+ escapedCodegenPortName + "), " + portOrParameter
+                //code.append("    $containerSymbol().connect("
+                //+ escapedCodegenPortNameSymbol + ", " + portOrParameter
                 //+ ");" + _eol);
             } else {
                 connectedAlready = true;
@@ -2033,15 +2051,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 code.append("if (" + remoteActorSymbol + ".getPort(\""
                         + AutoAdapter._externalPortName(remotePort.getContainer(),
                                 remotePort.getName())
-                        + "\") == null) {"
-                        + _eol
-                        + "$actorSymbol(" + escapedCodegenPortName + ") = "
+                        + "\") == null) {" + _eol
+                        + escapedCodegenPortNameSymbol + " = "
                         + " new TypedIOPort(" + remoteActorSymbol + ", \""
                         + AutoAdapter._externalPortName(remotePort.getContainer(),
                                 remotePort.getName()).replace("$", "\\u0024") + "\", " + remotePort.isInput()
                         + ", " + remotePort.isOutput() + ");" + _eol);
                 if (port.isMultiport()) {
-                    code.append("$actorSymbol(" + escapedCodegenPortName + ").setMultiport(true);" + _eol);
+                    code.append(escapedCodegenPortNameSymbol + ".setMultiport(true);" + _eol);
                 }
                 code.append("}" + _eol);
                     
@@ -2052,16 +2069,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     if (verbosityLevel > 3) {
                         code.append("    System.out.println(\"B1\");" + _eol);
                     }
-                    code.append("    if ($actorSymbol(" + escapedCodegenPortName + ") == null) {" + _eol
-                            + "        $actorSymbol(" + escapedCodegenPortName + ") = (TypedIOPort) "
+                    code.append("    if (" + escapedCodegenPortNameSymbol + " == null) {" + _eol
+                            + "        " + escapedCodegenPortNameSymbol + " = (TypedIOPort) "
                             + remoteActorSymbol + ".getPort(\""
                             + AutoAdapter._externalPortName(remotePort.getContainer(),
                                 remotePort.getName()) + "\");" + _eol
                             + "        }" + _eol
-                            + "    if (!$actorSymbol("
-                            + escapedCodegenPortName + ").equals(" + portOrParameter + ")) {" + _eol
-                            + "        $containerSymbol().connect($actorSymbol("
-                            + escapedCodegenPortName + "), " + portOrParameter + ");" + _eol
+                            + "    if (!" + escapedCodegenPortName + ".equals(" + portOrParameter + ")) {" + _eol
+                            + "        $containerSymbol().connect(" + escapedCodegenPortName
+                            + ", " + portOrParameter + ");" + _eol
                             + "    }" + _eol);
                 } else {
                     if (verbosityLevel > 3) {
@@ -2085,8 +2101,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     if (verbosityLevel > 3) {
                         code.append("    System.out.println(\"A1\");" + _eol);
                     }
-                    code.append("    $containerSymbol().connect($actorSymbol("
-                            + escapedCodegenPortName + "), " + portOrParameter
+                    code.append("    $containerSymbol().connect(" + escapedCodegenPortNameSymbol
+                            + ", " + portOrParameter
                             + ");" + _eol);
 //                     try {
 //                         Field remoteFoundPortField = _findFieldByPortName(remoteActor,
@@ -2134,6 +2150,29 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return code.toString();
     }
 
+    /** Generate sanitized name for the given port.
+     * This method is used when the {@link #variablesAsArrays}
+     * parameter is true.
+     * @param portName The sanitized name of the port
+     * @return The name of the port as an array element.
+     *  @exception IllegalActionException If the variablesAsArrays parameter
+     *  of the code generator cannot be read.
+     */
+    private String _generatePtIOPortName(NamedObj container, String portName)
+            throws IllegalActionException {
+        // See also ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/sched/StaticSchedulingDirector.java generatePortName()
+        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
+                .booleanValue()) {
+            if (container != null) {
+                return getCodeGenerator().generateVariableName(container) + "_" + portName;
+            } else {
+                return "$actorSymbol(" + portName + ")";
+            }
+        } else {
+            return ((ProgramCodeGenerator)getCodeGenerator()).generatePtIOPortName(container, portName);
+        }
+    }
+
     /**
      * Return the code that sends data from the codegen variable to
      * the actor port.
@@ -2146,11 +2185,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * @param type The type of the port.
      * @param channel The channel number.
      * For non-multiports, the channel number will be 0.
+     * @exception IllegalActionException If thrown while reading the
+     * variablesAsArrays parameter of the code generator.
      */
     private String _generateSendInside(String actorPortName,
-            String codegenPortName, Type type, int channel) {
+            String codegenPortName, Type type, int channel) 
+            throws IllegalActionException {
         actorPortName = TemplateParser.escapePortName(actorPortName);
         codegenPortName = TemplateParser.escapePortName(codegenPortName);
+        String codegenPortNameSymbol = _generatePtIOPortName(getComponent(), codegenPortName);
         if (type instanceof ArrayType) {
 
             ArrayType array = (ArrayType) type;
@@ -2161,7 +2204,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     "Int");
             String targetElementType = getCodeGenerator().targetType(
                     array.getDeclaredElementType());
-            String ptolemyData = "$actorSymbol(" + actorPortName
+            // FIXME: do we really need a separate symbol here?  This is inside a block.
+            String ptolemyDataSymbol = "$actorSymbol(" + actorPortName
                     + "_ptolemyData)";
             return "{"
                     + _eol
@@ -2176,7 +2220,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // Create a token to send
                     + codeGenElementType
                     + "Token [] "
-                    + ptolemyData
+                    + ptolemyDataSymbol
                     + " = new "
                     + codeGenElementType
                     + "Token [((Array)codeGenData.getPayload()).size];"
@@ -2184,7 +2228,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
                     // Copy from the codegen data to the Ptolemy data
                     + " for (int i = 0; i < ((Array)codeGenData.getPayload()).size; i++) {"
-                    + _eol + "   " + ptolemyData + "[i] = new "
+                    + _eol + "   " + ptolemyDataSymbol + "[i] = new "
                     + codeGenElementType + "Token(((" + javaElementType
                     + ")(Array_get(codeGenData, i).getPayload()))."
                     + targetElementType + "Value());" + _eol
@@ -2192,23 +2236,21 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + _eol
 
                     // Set the type.
-                    + "    $actorSymbol(" + codegenPortName
-                    + ").setTypeEquals(" + _typeToBaseType(type) + ");"
+                    + "   " + codegenPortNameSymbol + ".setTypeEquals(" + _typeToBaseType(type) + ");"
                     + _eol
                     // Output our newly constructed token
-                    + " $actorSymbol(" + codegenPortName
-                    + ").sendInside(0, new ArrayToken(" + ptolemyData + "));"
+                    + codegenPortNameSymbol
+                    + ".sendInside(0, new ArrayToken(" + ptolemyDataSymbol + "));"
                     + _eol + "}" + _eol;
         } else if (type == BaseType.COMPLEX) {
             return
             // Set the type.
-            "    $actorSymbol(" + codegenPortName + ").setTypeEquals("
+            "   " + codegenPortNameSymbol + ".setTypeEquals("
                     + _typeToBaseType(type) + ");"
                     + _eol
                     // Send data to the actor.
-                    + "    $actorSymbol("
-                    + codegenPortName
-                    + ").sendInside(0, new "
+                    + "    " + codegenPortNameSymbol
+                    + ".sendInside(0, new "
                     // Refer to the token by the full class name and obviate the
                     // need to manage imports.
                     + type.getTokenClass().getName()
@@ -2224,11 +2266,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         } else {
             return
             // Set the type.
-            "    $actorSymbol(" + codegenPortName + ").setTypeEquals("
+                    codegenPortNameSymbol + ".setTypeEquals("
                     + _typeToBaseType(type) + ");" + _eol
                     // Send data to the actor.
-                    + "    $actorSymbol(" + codegenPortName
-                    + ").sendInside(0, new "
+                    + "    " + codegenPortNameSymbol
+                    + ".sendInside(0, new "
                     // Refer to the token by the full class name and obviate the
                     // need to manage imports.
                     + type.getTokenClass().getName() + "($get(" + actorPortName
@@ -2429,7 +2471,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  of the code generator cannot be read.
      */
     private boolean _hasAutoConnectorRelation(TypedIOPort port)
-	throws IllegalActionException {
+            throws IllegalActionException {
         Iterator relations = port.linkedRelationList().iterator();
         while (relations.hasNext()) {
             Relation relation = (Relation)relations.next();
@@ -2681,4 +2723,5 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  custom actors in to the same container.
      */
     private static boolean _wouldBeAutoAdapted = false;
+
 }

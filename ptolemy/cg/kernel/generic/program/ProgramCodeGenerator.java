@@ -693,6 +693,34 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                 + portIndex + "]";
     }
 
+
+    /** Generate sanitized name for the given port.
+     * This method is used when the {@link #variablesAsArrays}
+     * parameter is true.
+     * @param container The actor that contains the port, which may be null.
+     * @param portName The sanitized name of the port
+     * @return The name of the port as an array element.
+     */
+    public String generatePtIOPortName(NamedObj container, String portName) {
+        // This method is used in AutoAdapter.
+        Integer portIndex = null;
+        String portNameSymbol = generateVariableName(container) + "_" + portName;
+        if ((portIndex = _ioPortMap.get(portNameSymbol)) == null) {
+            // FIXME: is there a better way to update an element in a HashMap?
+            portIndex = Integer.valueOf(_ioPortMap.size());
+            _ioPortMap.put(portNameSymbol, portIndex);
+        }
+        return "_ioPortMap[" + portIndex + "]";
+    }
+
+    /** Return the size of the ioPortMap.
+     *  @return the size of the ioPortMap.
+     */
+    public int generatePtIOPortSize() {
+        // This method is used in AutoAdapter.
+        return _ioPortMap.size();
+    }
+
     /** Generate into the specified code stream the code associated with
      *  postfiring up the container composite actor. This method calls the
      *  generatePostfireCode() method of the code generator adapter associated
@@ -1898,6 +1926,12 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /** The current indent level when pretty printing code. */
     private int _indent;
+
+    /** A map from an IOPort name to a table index.
+     *  This is used when the variablesAsArrays parameter of the code generator
+     *  is set to true.
+     */
+    private static HashMap<String, Integer> _ioPortMap = new HashMap<String, Integer>();
 
     /** The extension of the template files.
      *   (for example c in case of C and j in case of Java)
