@@ -39,9 +39,11 @@ import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -345,40 +347,56 @@ public class IOPortController extends AttributeController {
             // the actor.
             Shape shape;
 
-            if (isInputOutput) {
-                Polygon2D.Double polygon = new Polygon2D.Double();
-                polygon.moveTo(0, -4);
-                polygon.lineTo(-4, -4);
-                polygon.lineTo(-2, 0);
-                polygon.lineTo(-4, 4);
-                polygon.lineTo(4, 4);
-                polygon.lineTo(2, 0);
-                polygon.lineTo(4, -4);
-                polygon.lineTo(0, -4);
-                polygon.closePath();
-                shape = polygon;
-            } else if (isInput) {
-                Polygon2D.Double polygon = new Polygon2D.Double();
-                polygon.moveTo(-4, 0);
-                polygon.lineTo(-4, 4);
-                polygon.lineTo(4, 0);
-                polygon.lineTo(-4, -4);
-                polygon.lineTo(-4, 0);
-                polygon.closePath();
-                shape = polygon;
-            } else if (isOutput) {
-                Polygon2D.Double polygon = new Polygon2D.Double();
-                polygon.moveTo(4, 0);
-                polygon.lineTo(4, -4);
-                polygon.lineTo(-4, 0);
-                polygon.lineTo(4, 4);
-                polygon.lineTo(4, 0);
-                polygon.closePath();
-                shape = polygon;
-            } else {
-                shape = new Ellipse2D.Double(-4, -4, 8, 8);
-            }
+            // NOTE: The preferences mechanism may set this.
+            Token portSize = PtolemyPreferences.preferenceValue(
+                    port, "_portSize");
 
+            // Default size is 4.0.
+            double size = 4.0;
+            if (portSize instanceof DoubleToken) {
+                size = ((DoubleToken) portSize).doubleValue();
+            }
+            double halfSize = size/2.0;
+            double doubleSize = size*2.0;
+
+            if (size == 0.0) {
+                // Use an empty ellipse as the shape.
+                shape = new Ellipse2D.Double();
+            } else {
+                if (isInputOutput) {
+                    Polygon2D.Double polygon = new Polygon2D.Double();
+                    polygon.moveTo(0, -size);
+                    polygon.lineTo(-size, -size);
+                    polygon.lineTo(-halfSize, 0);
+                    polygon.lineTo(-size, size);
+                    polygon.lineTo(size, size);
+                    polygon.lineTo(halfSize, 0);
+                    polygon.lineTo(size, -size);
+                    polygon.lineTo(0, -size);
+                    polygon.closePath();
+                    shape = polygon;
+                } else if (isInput) {
+                    Polygon2D.Double polygon = new Polygon2D.Double();
+                    polygon.moveTo(-size, 0);
+                    polygon.lineTo(-size, size);
+                    polygon.lineTo(size, 0);
+                    polygon.lineTo(-size, -size);
+                    polygon.lineTo(-size, 0);
+                    polygon.closePath();
+                    shape = polygon;
+                } else if (isOutput) {
+                    Polygon2D.Double polygon = new Polygon2D.Double();
+                    polygon.moveTo(size, 0);
+                    polygon.lineTo(size, -size);
+                    polygon.lineTo(-size, 0);
+                    polygon.lineTo(size, size);
+                    polygon.lineTo(size, 0);
+                    polygon.closePath();
+                    shape = polygon;
+                } else {
+                    shape = new Ellipse2D.Double(-size, -size, doubleSize, doubleSize);
+                }
+            }
             Color fill;
 
             if (port instanceof ParameterPort) {
