@@ -46,6 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
@@ -299,10 +300,18 @@ public class NameIcon extends EditorIcon {
                 SwingConstants.CENTER);
         Rectangle2D stringBounds = label.getBounds();
 
-        // NOTE: Padding of 20. Quantize the height so that
-        // snap to grid still works.
+        // NOTE: Padding of 20.
         width = Math.floor(stringBounds.getWidth()) + _xPadding;
         height = Math.floor(stringBounds.getHeight()) + _yPadding;
+        // Quantize the height so that snap to grid still works.
+        // Round up so as to never overlap the text.
+        double defaultResolution = SnapConstraint.getDefaultResolution();
+        height = (Math.floor(height / defaultResolution)+1) * defaultResolution;
+        // Quantize the width to an even multiple of the resolution.
+        // The icon is centered on snap to grid, so this ensures that both
+        // ends align with the grid.
+        width = (Math.floor((width + defaultResolution) / (2.0* defaultResolution))
+                * 2.0 * defaultResolution);
 
         return new Point2D.Double(width, height);
     }
