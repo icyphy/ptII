@@ -83,6 +83,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
     public NamedObjController create(GraphController controller) {
         super.create(controller);
         //return new ConfigureHighlightController(controller);
+        // FIXME: This should not create a new one each time...
         return new HighlighterController(this, controller);
     }
 
