@@ -67,7 +67,7 @@ JSRCS = \
 	RelativeLinkFigure.java \
 	RenameDialogAction.java \
 	RenameDialogFactory.java \
-	ShadowHighligheter.java \
+	ShadowHighlighter.java \
 	ShadowRenderer.java \
 	VergilUtilities.java
 
