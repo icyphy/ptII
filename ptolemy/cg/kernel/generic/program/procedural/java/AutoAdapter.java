@@ -2563,17 +2563,21 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // used by actors to read parameters in remote actors.
 
 
-            //System.out.println("_isReadingRemoteParameters:" + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " width: " + port.getWidth() + " " + port.sourcePortList().size());
-
             NamedObj container = null;
             try {
-                ((NamedObj)sourceOrSinkPorts.get(channelNumber)).getContainer().getContainer();
+                container = ((NamedObj)sourceOrSinkPorts.get(channelNumber)).getContainer().getContainer();
             } catch (Exception ex) {
                 System.out.println(port.getContainer().getContainer().exportMoML());
                 throw new IllegalActionException(port, "Failed to get channel " 
                         + channelNumber + " of sourcePorts " + sourceOrSinkPorts.size()
                         + " width: " + port.getWidth());
             }
+            System.out.println("_isReadingRemoteParameters: 0 " + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " width: " + port.getWidth() + " " + port.sourcePortList().size() + container.getFullName());
+
+            // If the custom actor is connected to a CompositeActorA
+            // inside a CompositeActorB, then we want to check
+            // CompositeActorB for Parameters.
+            while (container != null) {
                 if (container instanceof TypedCompositeActor) {
                     // If the container contains any actors that would be AutoAdaptered,
                     // then we need not do anything special, the parameters will be 
@@ -2582,20 +2586,25 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     while (entities.hasNext()) {
                         NamedObj namedObj = (NamedObj)entities.next();
                         if (_isAutoAdaptered(namedObj)) {
-                            //System.out.println("_isReadingRemoteParameters: " + namedObj + " is autoadaptered, returning false");
+                            System.out.println("_isReadingRemoteParameters: " + namedObj.getFullName() + " is autoadaptered, returning false");
                             return false;
                         }
                     } 
                     List<Parameter> parameters = container
                         .attributeList(Parameter.class);
                     if (parameters.size() > 0) {
-                        //System.out.println("_isReadingRemoteParameters: " + container.getFullName() + " return True");
+                        System.out.println("_isReadingRemoteParameters: " + container.getFullName() + " return True");
                         return true;
                     }
                 }
+                if (container.getContainer() == getComponent().getContainer()) {
+                    // Stop because we are at the same level as the container of the component.
+                    break;
+                }
+                container = container.getContainer();
             }
-    
-        //System.out.println("_isReadingRemoteParameters:" + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " returning FALSE");
+        }
+        System.out.println("_isReadingRemoteParameters:" + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " returning FALSE");
 
         return false;
     }
