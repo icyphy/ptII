@@ -335,6 +335,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.TextAttribute",
                 null);
 
+        _graphicalClasses.put("ptolemy.vergil.basic.export.html.Title", null);
+
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 null);
 
