@@ -30,6 +30,7 @@ package ptolemy.vergil.kernel;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Line2D;
+import java.util.List;
 
 import javax.swing.SwingConstants;
 
@@ -167,20 +168,19 @@ public class RelationController extends ParameterizedNodeController {
                         String color = colorAttr.getExpression();
                         ((BasicFigure) figure).setFillPaint(SVGUtilities
                                 .getColor(color));
+                        ((BasicFigure) figure).setStrokePaint(SVGUtilities
+                                .getColor(color));
                     }
                 } catch (IllegalActionException e) {
                     // Ignore.
                 }
                 // New way to set the color
-                try {
-                    ColorAttribute colorAttr = (ColorAttribute) (relation
-                            .getAttribute("_color", ColorAttribute.class));
-                    if (colorAttr != null) {
-                        Color color = colorAttr.asColor();
-                        ((BasicFigure) figure).setFillPaint(color);
-                    }
-                } catch (IllegalActionException e) {
-                    // Ignore.
+                List<ColorAttribute> colorAttributes = relation.attributeList(ColorAttribute.class);
+                if (colorAttributes != null && colorAttributes.size() > 0) {
+                    // Use the last color added.
+                    Color color = colorAttributes.get(colorAttributes.size() - 1).asColor();
+                    ((BasicFigure) figure).setFillPaint(color);
+                    ((BasicFigure) figure).setStrokePaint(color);
                 }
             }
 

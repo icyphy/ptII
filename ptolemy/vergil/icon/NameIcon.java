@@ -363,5 +363,5 @@ public class NameIcon extends EditorIcon {
     protected double _xPadding = 20.0;
 
     /** The vertical padding above and below the name. */
-    protected double _yPadding = 10.0;
+    protected double _yPadding = 8.0;
 }

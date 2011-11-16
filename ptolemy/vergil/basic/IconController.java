@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -42,6 +43,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AnimationRenderer;
+import ptolemy.vergil.kernel.ShadowRenderer;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.GraphController;
@@ -229,6 +231,46 @@ public class IconController extends ParameterizedNodeController {
             } catch (IllegalActionException e) {
                 // Ignore.
             }
+            
+            // If a shadow is specified, render it now.
+            // The shadow attribute can be contained by the container
+            // so that it is applied to all icons corresponding to Entity
+            // objects (not attributes). This can be overridden for each
+            // object (including attributes) by providing an individual
+            // shadow specification. An empty color results in no shadow.
+            try {
+                // If the object itself has a shadow specification, use that.
+                ColorAttribute shadowAttribute = (ColorAttribute) (object
+                        .getAttribute("_shadowColor", ColorAttribute.class));
+                if (shadowAttribute != null) {
+                    if (!shadowAttribute.getExpression().trim().equals("")) {
+                        Color color = shadowAttribute.asColor();
+                        // FIXME: How to set the size of the shadow?
+                        ShadowRenderer animationRenderer = new ShadowRenderer(
+                                color);
+                        animationRenderer.renderSelected(result);
+                    }
+                } else if (object instanceof Entity) {
+                    // If the container has a shadow specification, use that.
+                    NamedObj container = object.getContainer();
+                    if (container != null) {
+                        shadowAttribute = (ColorAttribute) (container
+                                .getAttribute("_shadowColor", ColorAttribute.class));
+                        if (shadowAttribute != null
+                                && !shadowAttribute.getExpression().trim()
+                                .equals("")) {
+                            Color color = shadowAttribute.asColor();
+                            // FIXME: How to set the size of the shadow?
+                            ShadowRenderer animationRenderer = new ShadowRenderer(
+                                    color);
+                            animationRenderer.renderSelected(result);
+                        }
+                    }
+                }
+            } catch (IllegalActionException e) {
+                // Ignore.
+            }
+
             try {
                 StringAttribute explanationAttribute = (StringAttribute) (object
                         .getAttribute("_explanation", StringAttribute.class));
@@ -238,7 +280,7 @@ public class IconController extends ParameterizedNodeController {
             } catch (IllegalActionException e) {
                 // Ignore.
             }
-
+            
             return result;
         }
     }

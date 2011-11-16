@@ -192,7 +192,7 @@ public class LinkController extends BasicEdgeController {
         /** Render a visual representation of the given edge.
          *
          *  <p>If a StringAttribute named "_color", or a
-         *  ColorAttribute named "color" of the edge is set then use
+         *  ColorAttribute is set then use
          *  that color to draw the line.</p>
          *
          *  <p>If the attribute is named "_color", then the value of
@@ -208,7 +208,7 @@ public class LinkController extends BasicEdgeController {
          *  java.awt.Color.getColor(String) and if there is no match,
          *  then the color black is used.</p>
          *
-         *  <p>If the attribute is named "color" and is a
+         *  <p>If the attribute is an instance of
          *  {@link ptolemy.actor.gui.ColorAttribute}, then the
          *  javax.swing.JColorChooser gui will be offered as a way to
          *  edit the color.</p>
@@ -251,6 +251,7 @@ public class LinkController extends BasicEdgeController {
                 connector.setToolTipText(tipText);
 
                 try {
+                    // Old style of colors.
                     // FIXME: This isn't quite right for relation groups.
                     StringAttribute colorAttribute = (StringAttribute) (relation
                             .getAttribute("_color", StringAttribute.class));
@@ -265,17 +266,12 @@ public class LinkController extends BasicEdgeController {
                 } catch (IllegalActionException e) {
                     // Ignore;
                 }
-                try {
-                    // FIXME: This isn't quite right for relation groups.
-                    ColorAttribute colorAttribute = (ColorAttribute) (relation
-                            .getAttribute("_color", ColorAttribute.class));
-
-                    if (colorAttribute != null) {
-                        Color color = colorAttribute.asColor();
-                        connector.setStrokePaint(color);
-                    }
-                } catch (IllegalActionException e) {
-                    // Ignore;
+                // New way to specify colors.
+                List<ColorAttribute> colorAttributes = relation.attributeList(ColorAttribute.class);
+                if (colorAttributes != null && colorAttributes.size() > 0) {
+                    // Use the last color added.
+                    Color color = colorAttributes.get(colorAttributes.size() - 1).asColor();
+                    connector.setStrokePaint(color);
                 }
 
                 StringAttribute _explAttr = (StringAttribute) (relation

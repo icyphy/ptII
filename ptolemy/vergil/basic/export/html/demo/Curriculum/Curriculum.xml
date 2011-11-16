@@ -3,11 +3,11 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Curriculum" class="ptolemy.actor.TypedCompositeActor">
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 470.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="119.0">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="143.0">
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -18,25 +18,28 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 1672, 1016}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 1219, 796}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1459, 906]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1006, 686]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4106613387343">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4001281153188">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{589.6333331177567, 349.8740234375001}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{433.2528387200342, 303.424160537308}">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="_relationSize" class="ptolemy.data.expr.Parameter" value="8">
+        <property name="_relationSize" class="ptolemy.data.expr.Parameter" value="4">
             <display name="Relation size"/>
         </property>
-        <property name="_linkBendRadius" class="ptolemy.data.expr.Parameter" value="15.0">
+        <property name="_portSize" class="ptolemy.data.expr.Parameter" value="0">
+            <display name="Port size"/>
+        </property>
+        <property name="_linkBendRadius" class="ptolemy.data.expr.Parameter" value="30.0">
             <display name="Link bend radius"/>
         </property>
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,1.0,1.0,1.0}">
             <display name="Background Color"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 620.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 620.0}">
         </property>
     </property>
     <property name="DoNothingDirector" class="ptolemy.actor.DoNothingDirector">
@@ -110,10 +113,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 120.0]">
         </property>
     </property>
-    <property name="circuitsColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.4,0.4,1.0}">
+    <property name="circuitsColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.56078434,0.0,1.0}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -129,7 +132,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 140.0]">
         </property>
     </property>
     <property name="systemsColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.4,0.0,1.0}">
@@ -148,7 +151,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 160.0]">
         </property>
     </property>
     <property name="csColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.8,1.0,1.0}">
@@ -167,7 +170,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 100.0]">
         </property>
     </property>
     <property name="eecsColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.2,1.0}">
@@ -186,7 +189,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 80.0]">
         </property>
     </property>
     <property name="computingColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
@@ -205,21 +208,17 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 180.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="EE Classes">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="EE">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[770.0, 65.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[690.0, 417.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -229,27 +228,27 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Color Key:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[770.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[690.0, 397.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="csColor">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="CS Classes">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="CS">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[770.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[690.0, 437.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="eecsColor">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="EECS Classes">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="EECS">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[770.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[690.0, 457.0]">
         </property>
     </property>
     <property name="serviceColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
@@ -268,27 +267,182 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 200.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="serviceColor">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Service Classes">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Service">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[770.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[690.0, 477.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="mathColor">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Math">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[690.0, 497.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="systemsColor">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Outside classes">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="systems">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[770.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 145.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="circuitsColor">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="circuits">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 180.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="computingColor">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="computing">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 370.0]">
+        </property>
+    </property>
+    <property name="mathColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.84313726,0.84313726,1.0}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 220.0]">
+        </property>
+    </property>
+    <property name="mathLinkColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8235294,0.0,0.0,1.0}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 240.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="mathLinkColor">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="math">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 125.0]">
+        </property>
+    </property>
+    <property name="physicsColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 260.0]">
+        </property>
+    </property>
+    <property name="physicsLinkColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.8,0.8,1.0}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 280.0]">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="physicsLinkColor">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="physics">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 195.0]">
+        </property>
+    </property>
+    <property name="_shadowColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 350.0]">
+        </property>
+    </property>
+    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="physicsColor">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Physics">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[690.0, 517.0]">
         </property>
     </property>
     <entity name="20" class="ptolemy.domains.curriculum.Course">
@@ -312,7 +466,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 180.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -360,7 +514,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="csColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 390.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -376,7 +530,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="csColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 360.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -392,7 +546,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eecsColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 420.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -408,7 +562,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="csColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 420.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -424,7 +578,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="csColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 420.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -438,7 +592,9 @@
     <entity name="Math 53" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 260.0]">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="mathColor">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 265.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -452,7 +608,9 @@
     <entity name="Math 54" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 295.0]">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="mathColor">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 300.0}">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -466,7 +624,9 @@
     <entity name="Math 55" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 330.0]">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="mathColor">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 335.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -482,7 +642,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="csColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 410.0}">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -562,7 +722,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="csColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 450.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -594,7 +754,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="csColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 480.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -606,7 +766,7 @@
         </property>
     </entity>
     <entity name="or" class="ptolemy.domains.curriculum.Or">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 340.0]">
         </property>
         <property name="_onMouseOverAction" class="ptolemy.data.expr.StringParameter" value="">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -633,11 +793,33 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{600, 310}">
             </property>
         </property>
+        <property name="_shadowColor" class="ptolemy.actor.gui.ColorAttribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <rect x="0" y="0" width="10" height="10" style="fill:#111111"></rect>
+        <rect x="4" y="4" width="10" height="10" style="fill:#000000"></rect>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{355, 335}">
+            </property>
+        </property>
     </entity>
     <entity name="Physics 7A" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 190.0]">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="physicsColor">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 195.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -651,7 +833,9 @@
     <entity name="Physics 7B" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 225.0]">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="physicsColor">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 230.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -683,7 +867,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 180.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -699,7 +883,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 180.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -713,7 +897,9 @@
     <entity name="Math 1A" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 75.0}">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="mathColor">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 75.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -728,6 +914,8 @@
     </entity>
     <entity name="Math 1B" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="mathColor">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 110.0]">
         </property>
@@ -745,7 +933,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 330.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -759,7 +947,9 @@
     <entity name="Physics 7C" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 225.0]">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="physicsColor">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 230.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -775,7 +965,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 230.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -791,7 +981,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 150.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -807,7 +997,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 90.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -823,7 +1013,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eecsColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 360.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -839,7 +1029,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 120.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -855,7 +1045,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{730.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 150.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -871,7 +1061,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 180.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -910,13 +1100,33 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{820, 240}">
             </property>
         </property>
+        <property name="_shadowColor" class="ptolemy.actor.gui.ColorAttribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <rect x="0" y="0" width="10" height="10" style="fill:#111111"></rect>
+        <rect x="4" y="4" width="10" height="10" style="fill:#000000"></rect>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{525, 360}">
+            </property>
+        </property>
     </entity>
     <entity name="130" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 120.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -950,7 +1160,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 240.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -966,7 +1176,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 270.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -982,7 +1192,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 240.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -998,7 +1208,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 220.0}">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -1016,7 +1226,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 280.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -1032,7 +1242,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 250.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -1048,7 +1258,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{725.0, 300.0}">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -1076,7 +1286,7 @@
         </property>
     </entity>
     <entity name="Or" class="ptolemy.domains.curriculum.Or">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 120.0]">
         </property>
         <property name="_onMouseOverAction" class="ptolemy.data.expr.StringParameter" value="">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1101,6 +1311,26 @@
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{815, 85}">
+            </property>
+        </property>
+        <property name="_shadowColor" class="ptolemy.actor.gui.ColorAttribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <rect x="0" y="0" width="10" height="10" style="fill:#111111"></rect>
+        <rect x="4" y="4" width="10" height="10" style="fill:#000000"></rect>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{495, 115}">
             </property>
         </property>
     </entity>
@@ -1143,7 +1373,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 85.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -1161,7 +1391,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 210.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -1179,7 +1409,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eeColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 270.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -1195,7 +1425,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="eecsColor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 390.0]">
         </property>
         <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
         </property>
@@ -1207,19 +1437,13 @@
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[660.0, 420.0]">
+        <vertex name="vertex1" value="[615.0, 420.0]">
         </vertex>
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.6,1.0}">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[295.0, 480.0]">
-        </vertex>
-        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="computingColor">
-        </property>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[295.0, 275.0]">
+        <vertex name="vertex1" value="[280.0, 480.0]">
         </vertex>
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="computingColor">
         </property>
@@ -1231,7 +1455,7 @@
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[370.0, 335.0]">
+        <vertex name="vertex1" value="[370.0, 365.0]">
         </vertex>
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="computingColor">
         </property>
@@ -1241,32 +1465,80 @@
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="mathLinkColor">
+        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="physicsLinkColor">
+        </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[290.0, 225.0]">
+        <vertex name="vertex1" value="[290.0, 230.0]">
         </vertex>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="physicsLinkColor">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{290, 230}">
+            </property>
+        </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="mathLinkColor">
+        </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[170.0, 85.0]">
         </vertex>
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="mathLinkColor">
+        </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[605.0, 225.0]">
+        <vertex name="vertex1" value="[600.0, 180.0]">
         </vertex>
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="circuitsColor">
         </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[450.0, 260.0]">
+        <vertex name="vertex1" value="[450.0, 265.0]">
         </vertex>
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="mathLinkColor">
+        </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[490.0, 295.0]">
+        <vertex name="vertex1" value="[490.0, 300.0]">
         </vertex>
+        <property name="ColorAttribute" class="ptolemy.actor.gui.ColorAttribute" value="mathLinkColor">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{490, 300}">
+            </property>
+        </property>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[480.0, 145.0]">
@@ -1275,6 +1547,8 @@
         </property>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="physicsLinkColor">
+        </property>
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[680.0, 150.0]">
@@ -1283,6 +1557,8 @@
         </property>
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute" value="mathLinkColor">
+        </property>
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -1291,13 +1567,13 @@
         </property>
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[470.0, 175.0]">
+        <vertex name="vertex1" value="[470.0, 180.0]">
         </vertex>
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="circuitsColor">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -1307,18 +1583,26 @@
         </property>
     </relation>
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[170.0, 110.0]">
         </vertex>
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="mathLinkColor">
+        </property>
     </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[170.0, 145.0]">
         </vertex>
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="mathLinkColor">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="computingColor">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="computingColor">
@@ -1327,8 +1611,16 @@
     <relation name="relation31" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[170.0, 170.0]">
+        <vertex name="vertex1" value="[170.0, 175.0]">
         </vertex>
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="mathLinkColor">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[280.0, 280.0]">
+        </vertex>
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="computingColor">
+        </property>
     </relation>
     <link port="20.postrequisites" relation="relation19"/>
     <link port="20.prerequisites" relation="relation30"/>
@@ -1343,8 +1635,8 @@
     <link port="61C.prerequisites" relation="relation"/>
     <link port="70.postrequisites" relation="relation9"/>
     <link port="150.postrequisites" relation="relation4"/>
-    <link port="150.prerequisites" relation="relation7"/>
     <link port="150.prerequisites" relation="relation28"/>
+    <link port="150.prerequisites" relation="relation7"/>
     <link port="152.prerequisites" relation="relation4"/>
     <link port="160.prerequisites" relation="relation"/>
     <link port="Math 53.postrequisites" relation="relation17"/>
