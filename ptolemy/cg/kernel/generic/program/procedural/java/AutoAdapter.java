@@ -1542,7 +1542,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
                         // True if the port is an input multiport connected to an
                         // actor in a container that has parameters.
-                        if (_isReadingRemoteParameters(castPort, i)) {
+                        if (_isReadingRemoteParameters(castPort, i, sourcePortList)) {
                             NamedObj remoteActorContainer = ((IOPort) sourcePortList.get(i))
                                 .getContainer().getContainer();
                             if (remoteActorContainer != null) {
@@ -1627,7 +1627,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         
         // True if the port is an input multiport connected to an
         // actor in a container that has parameters.
-        boolean readingRemoteParameters = _isReadingRemoteParameters(port, channelNumber);
+        boolean readingRemoteParameters = _isReadingRemoteParameters(port, channelNumber, sourceOrSinkPorts);
         int verbosityLevel = ((IntToken) getCodeGenerator().verbosity.getToken()).intValue();
         StringBuffer code = new StringBuffer("{" + _eol);
         int readingRemoteParametersDepth = 0;
@@ -1646,7 +1646,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // FIXME: remoteActor.getContainer().getContainer() be null?
                 String remoteActorContainerContainerSymbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer().getContainer()));
 
-                if (remoteActor.getContainer().getContainer() != port.getContainer().getContainer()) {
+                if (remoteActor.getContainer().getContainer() != port.getContainer().getContainer()
+                        && remoteActor.getContainer().getContainer().getContainer() != null) {
                     // The remoteActor could be contained by a composite, so we create connections
                     // all the way up.
                     // FIXME: In theory, we should have a loop here to deal with arbitrary depth
@@ -1673,7 +1674,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 remoteActorContainerContainerSymbol, true, true, true));
                 // Create the input and output ports and connect them.
                 if (verbosityLevel > 3) {
-                    code.append("    System.out.println(\"E1\");" + _eol);
+                    code.append("    System.out.println(\"E1 " + actorPortName + " " + port.getFullName() + " " + channelNumber + " " + remoteActor.getFullName() + "\");" + _eol);
                 }
                 code.append("TypedIOPort c0PortA = (TypedIOPort)c0.getPort(\"c0PortA\");" + _eol
                         + "if ( c0PortA == null) {" + _eol
@@ -1790,25 +1791,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     code.append("System.out.println(\"Create remote actor: " + remoteActor.getName() + "\");" + _eol);
                 }
                 code.append(_generateActorInstantiation(remoteActor, remoteActorSymbol, remoteActorContainerSymbol, true, false, true));
-//                 code.append("if (" + remoteActorSymbol + " == null) {" + _eol
-//                         + "if (" + remoteActorContainerSymbol + " == null) {" + _eol
-//                         // FIXME: we should define a method that creates the containment hierarchy.
-//                         + _generateContainmentCode(remoteActor)
-//                         + "}" + _eol
-//                         + remoteActorSymbol + " = new "
-//                         + remoteActor.getClass().getName()
-//                         //+ "($containerSymbol() , \""
-//                         + "(" + remoteActorContainerSymbol
-//                         + ", \""
-//                         + remoteActor.getName()
-//                         //+ remoteActorSymbol
-//                         + "\");"
-//                         + _eol
-//                         // Set the displayName so that actors that call getDisplayName() get the same value.
-//                         // Actors that generate random numbers often call getFullName(), then should call getDisplayName()
-//                         // instead.
-//                         + "        " + remoteActorSymbol + ".setDisplayName(\""
-//                         + remoteActor.getName() + "\");" + _eol + "}" + _eol);
             }
         }
 
@@ -1820,10 +1802,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 code.append("System.out.println(\"I1\");" + _eol); 
             }
            code.append(
-                   //_generateActorInstantiation(getComponent().getContainer(),
-                   //         "$containerSymbol()", 
-                   //         getCodeGenerator().generateVariableName(getComponent().getContainer().getContainer()),
-                   //         false)
                     escapedCodegenPortNameSymbol
                     + " = new TypedIOPort($containerSymbol()"
                     // Need to deal with backslashes in port names, see
@@ -2104,34 +2082,24 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     code.append("    $containerSymbol().connect(" + escapedCodegenPortNameSymbol
                             + ", " + portOrParameter
                             + ");" + _eol);
-//                     try {
-//                         Field remoteFoundPortField = _findFieldByPortName(remoteActor,
-//                                 remotePort.getName());
-//                         if (remoteFoundPortField == null) {
-//                             throw new NoSuchFieldException("Could not find port "
-//                                     + remotePort.getName());
-//                         }
-
-//                         code.append("$containerSymbol().connect(" + portOrParameter
-//                                 + ", " + "((" + remoteActor.getClass().getName()
-//                                 + ")" + remoteActorSymbol + ")."
-//                                 + remoteFoundPortField.getName()
-//                                 // FIXME: should portParameter be the remote port?
-//                                 + (portParameter != null ? ".getPort()" : "")
-//                                 + ");" + _eol /*+ relationSetWidth*/);
-//                     } catch (NoSuchFieldException ex) {
-//                         throw new IllegalActionException(getComponent(), ex, "Could not find " 
-//                                 + remotePort.getName() + " in " + remoteActor.getFullName());
-//                     }
                 }
             } else {
                 if (!connectedAlready) {
                     if (verbosityLevel > 3) {
                         code.append("    System.out.println(\"A2\");" + _eol);
                     }
-                    code.append(_generateRemoteParameterConnections(readingRemoteParametersDepth,
-                                    portOrParameter,
-                                    escapedCodegenPortName));
+                    //code.append(_generateRemoteParameterConnections(readingRemoteParametersDepth,
+                    //                portOrParameter,
+                    //                escapedCodegenPortName));
+                    String outputPortName = "c" + readingRemoteParametersDepth + "PortA";
+                    //String escapedCodegenPortNameSymbol = _generatePtIOPortName(getComponent(), escapedCodegenPortName);
+                    code.append("if (!c0PortA.isDeeplyConnected(" + portOrParameter + ")) {" + _eol
+                        + "    $containerSymbol().connect(" + outputPortName + ","
+                        + portOrParameter + ");" + _eol
+                        + "    $containerSymbol().connect("
+                        + escapedCodegenPortNameSymbol + ", c0PortB);" + _eol
+                            + "}" + _eol);
+
                     if (readingRemoteParametersDepth == 1) {
                         code.append("c1.connect(c0PortA,c1PortA);" + _eol);
                     }
@@ -2584,39 +2552,51 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  Only ports that are input multiports are checked.
      *  @param port The port.
      *  @param channelNumber The channel number of the port to be checked.
+     *  @param sourceOrSinkPorts The source or sink ports connected to the port.
      *  @return True if the port is connected to a TypedCompositeActor that has Parameters.
      */
-    private boolean _isReadingRemoteParameters(TypedIOPort port, int channelNumber) {
+    private boolean _isReadingRemoteParameters(TypedIOPort port, int channelNumber, List sourceOrSinkPorts)
+            throws IllegalActionException {
         if (port.isInput() && port.isMultiport()) {
 
             // FIXME: We should annotate the very few ports that are
             // used by actors to read parameters in remote actors.
 
-            List<Relation> linkedRelationList = port.linkedRelationList();
-            // FIXME: We are ignoring the channelNumber here.
 
-            for (Relation relation : linkedRelationList) {
-                NamedObj container = ((TypedIOPort) relation.linkedPortList(
-                                port).get(0)).getContainer();
+            //System.out.println("_isReadingRemoteParameters:" + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " width: " + port.getWidth() + " " + port.sourcePortList().size());
+
+            NamedObj container = null;
+            try {
+                ((NamedObj)sourceOrSinkPorts.get(channelNumber)).getContainer().getContainer();
+            } catch (Exception ex) {
+                System.out.println(port.getContainer().getContainer().exportMoML());
+                throw new IllegalActionException(port, "Failed to get channel " 
+                        + channelNumber + " of sourcePorts " + sourceOrSinkPorts.size()
+                        + " width: " + port.getWidth());
+            }
                 if (container instanceof TypedCompositeActor) {
                     // If the container contains any actors that would be AutoAdaptered,
                     // then we need not do anything special, the parameters will be 
                     // created for us.  Thus, thsi method returns false
-//                     Iterator entities = ((TypedCompositeActor)container).allAtomicEntityList().iterator();
-//                     while (entities.hasNext()) {
-//                         NamedObj namedObj = (NamedObj)entities.next();
-//                         if (_isAutoAdaptered(namedObj)) {
-//                             return false;
-//                         }
-//                     } 
+                    Iterator entities = ((TypedCompositeActor)container).allAtomicEntityList().iterator();
+                    while (entities.hasNext()) {
+                        NamedObj namedObj = (NamedObj)entities.next();
+                        if (_isAutoAdaptered(namedObj)) {
+                            //System.out.println("_isReadingRemoteParameters: " + namedObj + " is autoadaptered, returning false");
+                            return false;
+                        }
+                    } 
                     List<Parameter> parameters = container
                         .attributeList(Parameter.class);
                     if (parameters.size() > 0) {
+                        //System.out.println("_isReadingRemoteParameters: " + container.getFullName() + " return True");
                         return true;
                     }
                 }
             }
-        }
+    
+        //System.out.println("_isReadingRemoteParameters:" + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " returning FALSE");
+
         return false;
     }
 
