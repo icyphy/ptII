@@ -1,0 +1,58 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="predator2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 50}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 270, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Video" class="ptserver.actor.lib.tld.Video">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="ImageWriter" class="ptserver.actor.lib.tld.ImageWriter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[258.837890625, 152.080078125]">
+        </property>
+    </entity>
+    <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
+        <property name="expression" class="ptolemy.data.expr.StringParameter" value="process(input, iteration)">
+        </property>
+        <property name="get1x1asScalars" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="getIntegerMatrices" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 150.0]">
+        </property>
+        <property name="packageDirectories" class="ptolemy.data.expr.Parameter" value="&quot;/Users/anarhuseynov/Documents/repos/OpenTLD, /Users/anarhuseynov/Documents/repos/OpenTLD/bbox, /Users/anarhuseynov/Documents/repos/OpenTLD/img, /Users/anarhuseynov/Documents/repos/OpenTLD/other, /Users/anarhuseynov/Documents/repos/OpenTLD/mex, /Users/anarhuseynov/Documents/repos/OpenTLD/tld, /Users/anarhuseynov/Documents/repos/OpenTLD/utils&quot;">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Video.output" relation="relation"/>
+    <link port="ImageWriter.input" relation="relation"/>
+    <link port="ImageWriter.ouput" relation="relation2"/>
+    <link port="MatlabExpression.input" relation="relation2"/>
+</entity>

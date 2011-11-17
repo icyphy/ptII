@@ -29,6 +29,8 @@ package ptolemy.homer.widgets;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -70,7 +72,8 @@ import ptolemy.kernel.util.Settable;
 * @Pt.ProposedRating Red (ahuseyno)
 * @Pt.AcceptedRating Red (ahuseyno)
 */
-public class AttributeStyleWidget extends GlassPaneWidget {
+public class AttributeStyleWidget extends GlassPaneWidget implements
+        MinSizeInterface {
 
     /**
      * Create a new instance visualizing the positionable element based on its style definitions.
@@ -153,7 +156,15 @@ public class AttributeStyleWidget extends GlassPaneWidget {
             // Will add combobox elements just to make it conceptually closes to the running UI.
             List<Settable> attributes = style.attributeList(Settable.class);
             JComboBox comboBox = (JComboBox) _attributeComponent;
-            comboBox.setModel(new DefaultComboBoxModel(attributes.toArray()));
+            ArrayList<String> values = new ArrayList<String>();
+            for (Settable value : attributes) {
+                values.add(value.getExpression());
+            }
+            comboBox.setModel(new DefaultComboBoxModel(values.toArray()));
+            if (namedObject instanceof Settable) {
+                comboBox.setSelectedItem(((Settable) namedObject)
+                        .getExpression());
+            }
         } else if (style instanceof NotEditableLineStyle) {
             JLabel label = (JLabel) _attributeComponent;
             if (namedObject instanceof Settable) {
@@ -180,4 +191,14 @@ public class AttributeStyleWidget extends GlassPaneWidget {
      * The component visualizing the positionable element.
      */
     private JComponent _attributeComponent;
+
+    public Integer getMinWidth() {
+        Dimension preferredSize = _attributeComponent.getPreferredSize();
+        return preferredSize != null ? preferredSize.width : null;
+    }
+
+    public Integer getMinHeight() {
+        Dimension preferredSize = _attributeComponent.getPreferredSize();
+        return preferredSize != null ? preferredSize.height : null;
+    }
 }

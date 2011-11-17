@@ -50,10 +50,11 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (ahuseyno)
  * @Pt.AcceptedRating Red (ahuseyno)
  */
-public class PortablePlaceableWidget extends GlassPaneWidget {
+public class PortablePlaceableWidget extends GlassPaneWidget implements
+        MinSizeInterface {
 
     /** Create a new instance of the widget by requesting the element to place
-     *  itselft into the provided container.
+     *  itself into the provided container.
      *  @param scene The scene.
      *  @param element The positionable element.
      */
@@ -93,4 +94,23 @@ public class PortablePlaceableWidget extends GlassPaneWidget {
         setGlassPaneSize(component.getPreferredSize());
         super.place(component);
     }
+
+    /** 
+     * The minimal width for this width is _MIN_DIMENSION.
+     */
+    public Integer getMinWidth() {
+        return _MIN_DIMENSION;
+    }
+
+    /** 
+     * The minimal width for this height is _MIN_DIMENSION.
+     */
+    public Integer getMinHeight() {
+        return _MIN_DIMENSION;
+    }
+
+    /**
+     * The minimal dimension a widget can have. 
+     */
+    private static final int _MIN_DIMENSION = 20;
 }

@@ -84,6 +84,7 @@ import ptolemy.homer.kernel.LayoutFileOperations;
 import ptolemy.homer.kernel.LayoutFileOperations.SinkOrSource;
 import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.homer.widgets.AttributeStyleWidget;
+import ptolemy.homer.widgets.MinSizeInterface;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -465,6 +466,16 @@ public class TabScenePanel implements ContentPrototype {
      */
     private void _adjustBounds(Widget widget, Rectangle bounds) {
         Insets insets = widget.getBorder().getInsets();
+        if (widget instanceof MinSizeInterface) {
+            Integer width = ((MinSizeInterface) widget).getMinWidth();
+            Integer height = ((MinSizeInterface) widget).getMinHeight();
+            if (width != null && bounds.getWidth() < width) {
+                bounds.width = width + insets.right + insets.left;
+            }
+            if (height != null && bounds.getHeight() < height) {
+                bounds.height = height + insets.top + insets.bottom;
+            }
+        }
         Point preferredLocation = widget.getPreferredLocation();
         if (bounds.x + preferredLocation.x + bounds.getWidth() - insets.right > _scene
                 .getView().getWidth()) {

@@ -426,11 +426,11 @@ public class HomerMainFrame extends JFrame {
      */
     public void saveLayoutAs(File layoutFile) {
         try {
-            _layoutURL = layoutFile.toURL();
+            _layoutURL = layoutFile.toURI().toURL();
         } catch (MalformedURLException e) {
             MessageHandler.error(e.getMessage(), e);
         }
-        LayoutFileOperations.saveAs(this, layoutFile);        
+        LayoutFileOperations.saveAs(this, layoutFile);
     }
 
     /** Set the orientation of the scene.
