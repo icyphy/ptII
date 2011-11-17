@@ -421,7 +421,7 @@ public class NonStrictTest extends Sink {
 
                     for (int j = 0; j < entries.length; j++) {
                         newEntry[j] = (Token) entries[j];
-                        _checkRangeOfTolerance(newEntry[i]);
+                        _checkRangeOfTolerance(newEntry[j]);
                     }
 
                     newTokens[i] = new ArrayToken(newEntry);
