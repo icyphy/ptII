@@ -192,11 +192,17 @@ public class AttributeStyleWidget extends GlassPaneWidget implements
      */
     private JComponent _attributeComponent;
 
+    /** 
+     * Return minimal width which is the preferred width of the widget if it's defined.
+     */
     public Integer getMinWidth() {
         Dimension preferredSize = _attributeComponent.getPreferredSize();
         return preferredSize != null ? preferredSize.width : null;
     }
 
+    /** 
+     * Return minimal height which is the preferred height of the widget if it's defined.
+     */
     public Integer getMinHeight() {
         Dimension preferredSize = _attributeComponent.getPreferredSize();
         return preferredSize != null ? preferredSize.height : null;
