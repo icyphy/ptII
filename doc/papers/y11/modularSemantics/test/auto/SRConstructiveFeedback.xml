@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 49, 724, 411}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 49, 724, 460}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 301]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{255.5, 150.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{255.5, 175.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple model illustrating the SR semantics, in particular,&#10;fixpoint computation and non-strictness of logical and.&#10;">
@@ -24,14 +24,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 205.0]">
         </property>
     </property>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={473, 383, 334, 257}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 110.0]">
-        </property>
-    </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -69,15 +61,23 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 165.0]">
         </property>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 110.0}">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[290.0, 110.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Display.input" relation="relation"/>
     <link port="Const.output" relation="relation2"/>
     <link port="NonStrictLogicFunction.input" relation="relation"/>
     <link port="NonStrictLogicFunction.input" relation="relation2"/>
     <link port="NonStrictLogicFunction.output" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
 </entity>

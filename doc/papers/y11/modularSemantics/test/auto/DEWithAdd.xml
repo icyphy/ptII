@@ -44,36 +44,24 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{255, 185}">
         </property>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 170, 627, 365}, maximized=false}">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.8, 0.5, 0.3, 0.5, 0.5, 0.3, 0.5, 0.8, 0.5, 0.3, 0.5, 0.5, 0.3}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 317]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 185.0]">
         </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="5.0"/>
-<yRange min="0.3" max="0.8"/>
-<default connected="no"/>
-</plot>?>
-        </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
     <link port="DiscreteClock2.output" relation="relation2"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation2"/>
-    <link port="AddSubtract.output" relation="relation3"/>
-    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="AddSubtract.output" relation="relation4"/>
+    <link port="Test.input" relation="relation4"/>
 </entity>

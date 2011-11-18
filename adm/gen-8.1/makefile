@@ -1495,6 +1495,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/doc/books/system/pn \
 	$(REMOTE1PTIIDIST)/doc/books/system/synchronous \
 	$(REMOTE1PTIIDIST)/doc/books/system/vergil \
+	$(REMOTE1PTIIDIST)/doc/papers/y11/modularSemantics \
 	$(REMOTE1PTIIDIST)/doc/tutorial/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/demo \
