@@ -33,7 +33,7 @@ ME =		doc
 
 # Sub directories to run make in.
 # PTDOCLETS_DIR is set to doclets if tools.jar can be found
-DIRS =		 books coding design img tour tutorial ui test $(PTDOCLETS_DIR)
+DIRS =		 books coding design img papers tour tutorial ui test $(PTDOCLETS_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		..
