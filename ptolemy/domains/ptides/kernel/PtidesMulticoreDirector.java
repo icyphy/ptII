@@ -40,6 +40,8 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.ptides.lib.ExecutionTimeListener;
+import ptolemy.domains.ptides.lib.ExecutionTimeListener.ExecutionEventType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -127,8 +129,11 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     protected void _calculateSuperdenseDependenices() 
             throws IllegalActionException {
         
-        //TODO: Code assumes code generation is at atomic actor level.
-        //TODO: multiports?
+        //TODO: Code assumes code generation is at atomic actor level, so if
+        // code generation is modified to cluster atomic actors (to reduce
+        // execution overhead) this method will need to be modified.
+        // Code generation would also need to handle multiports differently.
+        
         
         if (!(getContainer() instanceof TypedCompositeActor)) {
             throw new IllegalActionException(getContainer(), 
@@ -149,12 +154,17 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         // This builds a directed graph.
         for(Actor actor : (List<Actor>)((TypedCompositeActor) 
                 getContainer()).deepEntityList()) {
-            
+
             CausalityInterface actorCausality = actor.getCausalityInterface();
             
             for(TypedIOPort inputPort: 
                     (List<TypedIOPort>)(actor.inputPortList())) {
                 
+                // Ignore input if not connected to anything.
+                if(!inputPort.isOutsideConnected()) {
+                    continue;
+                }
+
                 // Initialize nested HashMap.
                 _superdenseDependencyPair.put(inputPort, 
                         new HashMap<TypedIOPort,SuperdenseDependency>());
@@ -180,7 +190,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                         // Assumes no delay from connections.
                         for(TypedIOPort connectedPort: 
                                 (List<TypedIOPort>)
-                                outputPort.connectedPortList()) {
+                                outputPort.deepConnectedPortList()) {
                             // Exclude ports which aren't input ports.
                             //TODO: is this the right check?
                             if(connectedPort.isInput()) {
@@ -329,8 +339,9 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         // If any of the currently processing events have reached their finish
         // time, they should be fired.
         Time nextFinishTime = null;
-        for(Stack<ProcessingPtidesEvents> coreStack : 
-                _currentlyProcessingEvents) {
+        for(int i = 0; i < _currentlyProcessingEvents.size(); i++) {
+            Stack<ProcessingPtidesEvents> coreStack = 
+                _currentlyProcessingEvents.get(i);
             if (coreStack.size() != 0) {   
                 ProcessingPtidesEvents processingEvent = coreStack.peek();
                 int compare = processingEvent.finishTime.compareTo(
@@ -338,14 +349,20 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                 // If event is finished processing, then fire actor.
                 if(compare == 0) {
                     PtidesEvent eventToFire = processingEvent.events.get(0);
+                    // Actor needs model time to be that of the timestamp.
                     setTag(eventToFire.timeStamp(), eventToFire.microstep());
+                    // Remove processing event.
                     coreStack.pop();
-                    //TODO: record finish time
+                    // Record time that execution finished.
+                    _sendExecutionTimeEvent(eventToFire.actor(), 
+                            executionPhysicalTag.timestamp.getDoubleValue(), 
+                            ExecutionEventType.STOP, i);
                     // Used for pure events.
                     _saveEventInformation(processingEvent.events);
                     _lastActorFired = eventToFire.actor();
                     // Keep PtidesBasicDirector happy.
                     _lastExecutionTime = executionPhysicalTag.timestamp;
+                    
                     // Return actor to fire.
                     return eventToFire.actor();
                 // Missed it!
@@ -368,6 +385,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         // TODO: preemption may cause a refiring to become useless and
         // require finish times to be modified.
         if(nextFinishTime != null) {
+            _debug("next finish time: " + nextFinishTime);
             _fireAtPlatformTime(nextFinishTime, executionTimeClock);
         }
              
@@ -398,7 +416,6 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         // Return first event in <AD, T, I, D> order that is safe-to-process.
         for(PtidesEvent event : EDF) {
             if(_safeToProcess(event)) {
-                // _peekingIndex needs to be set for 
                 //_takeAllSameTagEventsFromQueue.
                 // TODO: improve _takeAllSameTagEventsFromQueue to
                 // not require _peekingIndex and remove this code.
@@ -406,6 +423,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                     if(((PtidesListEventQueue)_eventQueue).get(i).equals(
                             event)) {
                         _peekingIndex = i;
+                        break;
                     }
                 }
                 // End code to remove.
@@ -474,53 +492,67 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         // Get the next event which should be processed (if it exists).
         PtidesEvent nextEvent = _getNextSafeEvent();
         
-        _debug("_getNextSafeEvent(): " + nextEvent);
-        
-        // Nothing can potentially be fired in this iteration, so return.
-        if(nextEvent == null) {
-            return;
-        }
-        
-        // Find a core to process next event on, if such a core exists. This 
-        // may either be a core which isn't currently processing an event or 
-        // a core processing an event which should be preempted.
-        Stack<ProcessingPtidesEvents> coreToProcessOn = null;
-        
-        // If there are any open cores, then process the event on that
-        // core.
-        for(Stack<ProcessingPtidesEvents> coreStack : 
-            _currentlyProcessingEvents) {
-            if(coreStack.size() == 0) {
-                coreToProcessOn = coreStack;
-                break;
+        // Start processing of all events which can be processed.
+        while(nextEvent != null) {
+            
+            _debug("_getNextSafeEvent(): " + nextEvent);
+            
+            // Find a core to process next event on, if such a core exists. 
+            // This may either be a core which isn't currently processing 
+            // an event or a core processing an event which should be 
+            // preempted.
+            Stack<ProcessingPtidesEvents> coreToProcessOn = null;
+            
+            // If there are any open cores, then process the event on that
+            // core.
+            for(Stack<ProcessingPtidesEvents> coreStack : 
+                _currentlyProcessingEvents) {
+                if(coreStack.size() == 0) {
+                    _debug("Found open core.");
+                    coreToProcessOn = coreStack;
+                    break;
+                }
             }
+            
+            // TODO: preemption
+            
+            // nextEvent shouldn't be processed yet, so return.
+            if(coreToProcessOn == null) {
+                _debug("Don't process yet.");
+                return;
+            }
+            
+            // Process next event on selected core.
+            _debug("Process event at " + nextEvent.actor() + " on core " + 
+                    _currentlyProcessingEvents.indexOf(coreToProcessOn));
+            
+            // Remove events with same tag and destination input port
+            // group from event queue.
+            List<PtidesEvent> eventList = 
+                    _takeAllSameTagEventsFromQueue(nextEvent);
+            // Find execution time of actor which event fires.
+            Time executionTime = new Time(this, _getExecutionTime(
+                    nextEvent.ioPort(), nextEvent.actor()));
+            //double executionTime = _getExecutionTime(
+            //        nextEvent.ioPort(), nextEvent.actor());
+            Time finishTime = 
+                    executionPhysicalTag.timestamp.add(executionTime);
+            _debug(executionPhysicalTag.timestamp + "+" + executionTime + "=" + finishTime);
+            // Record events as processing.
+            ProcessingPtidesEvents events = new ProcessingPtidesEvents(
+                    eventList, executionPhysicalTag, finishTime);
+            coreToProcessOn.push(events);
+            // Record time execution started.
+            _sendExecutionTimeEvent(nextEvent.actor(), 
+                    executionPhysicalTag.timestamp.getDoubleValue(), 
+                    ExecutionEventType.START,
+                    _currentlyProcessingEvents.indexOf(coreToProcessOn));
+            // TODO: handle core id better?
+            
+            nextEvent = _getNextSafeEvent();
         }
         
-        // TODO: preemption
         
-        // nextEvent shouldn't be processed yet, so return.
-        if(coreToProcessOn == null) {
-            return;
-        }
-        
-        // Process next event on selected core.
-        _debug("Process " + nextEvent + " on core " + 
-                _currentlyProcessingEvents.indexOf(coreToProcessOn));
-        
-        // Remove events with same tag and destination input port
-        // group from event queue.
-        List<PtidesEvent> eventList = 
-                _takeAllSameTagEventsFromQueue(nextEvent);
-        // Find execution time of actor which event fires.
-        double executionTime = _getExecutionTime(
-                nextEvent.ioPort(), nextEvent.actor());
-        Time finishTime = executionPhysicalTag.timestamp;
-        finishTime.add(executionTime);
-        // Record events as processing.
-        ProcessingPtidesEvents events = new ProcessingPtidesEvents(
-                eventList, executionPhysicalTag, finishTime);
-        coreToProcessOn.push(events);
-        // TODO: record start time
         
     }
     
@@ -595,6 +627,34 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         }
         
         return true;
+    }
+    
+    /** Do nothing. When plotting execution times for multicore, the core
+     * id is needed, which this method does not provide.
+     * TODO: PtidesBasicDirector should be modified to not call this method.
+     */
+    protected void _sendExecutionTimeEvent(Actor actor, double time,
+            ExecutionEventType event) {
+
+    }
+    
+    /** Send an execution time event to all listeners.
+     *  @param actor Actor that produced an execution time event.
+     *  @param time Time when the event occurred.
+     *  @param event Type of the event.
+     *  @param core Core the event occured on.
+     */
+    protected void _sendExecutionTimeEvent(Actor actor, double time,
+            ExecutionEventType event, int core) {
+        _debug(actor + " " + time + " " + event + " " + core);
+        
+        /*
+        if (_executionTimeListeners != null) {
+            for (ExecutionTimeListener listener : _executionTimeListeners) {
+                listener.event(actor, time, event, core);
+            }
+        }
+        */
     }
         
     ///////////////////////////////////////////////////////////////////
@@ -720,7 +780,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         protected Tag startTag;
         
         /** Execution physical time when processing will finish. */
-        // TODO modify with preemption
+        // TODO: modify with preemption
         protected Time finishTime;
     }
         

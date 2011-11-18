@@ -920,6 +920,11 @@ public class PtidesBasicDirector extends DEDirector {
      *  timestamp) and their remaining execution times.
      */
     protected Stack<ExecutionTimedEvent> _currentlyExecutingStack;
+    
+    /** List of listeners to be informed whenever an execution time
+     *  event occurs.
+     */
+    protected ArrayList<ExecutionTimeListener> _executionTimeListeners;
 
     /** The last actor that was fired by this director. If null, then after
      *  actor firing, values saved in _pureEventDeadlines, _pureEventDelays, and
@@ -3669,11 +3674,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  timed interrupt set.
      */
     private Set<PtidesEvent> _eventsWithTimedInterrupt;
-
-    /** List of listeners to be informed whenever an execution time
-     *  event occurs.
-     */
-    private ArrayList<ExecutionTimeListener> _executionTimeListeners;
 
     /** A list that keeps track of future fireAt oracle times for execution time
      *  simulation. When the clock drift
