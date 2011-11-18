@@ -157,7 +157,7 @@ The Ptiny pack is required.
             <file src="../../jar_dist/ptolemy/vergil/vergil.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil"/>
             <file src="../../jar_dist/ptolemy/vergil/basic/export/exportFull.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export">
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export"/>
             <file src="../../jar_dist/ptolemy/domains/domains.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains"/>
             <file src="../../jar_dist/ptolemy/actor/parameters/demo/demo.jar"
