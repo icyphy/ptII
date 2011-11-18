@@ -1320,7 +1320,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             parser.reset();
             MoMLParser.purgeAllModelRecords();
         }
-        return documentation;
+        return documentation.replaceAll("<svg>", "")
+            .replaceAll("</svg>","")
+            .replaceAll("<text .*[^>]>", "")
+            .replaceAll("</text>", "");
     }
 
     /** Return the file size as a JNLP file attribute
