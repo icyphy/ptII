@@ -7,21 +7,21 @@
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 49, 971, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 49, 724, 411}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[758, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 301]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.8238814477059">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{262.79859375, 181.78125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{255.5, 150.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple model illustrating the SR semantics, in particular,&#10;fixpoint computation and non-strictness of logical and.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 205.0]">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -29,7 +29,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 110.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -42,7 +42,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 165.0]">
         </property>
     </entity>
     <entity name="NonStrictLogicFunction" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
@@ -66,11 +66,11 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 165.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[295.0, 150.0]">
+        <vertex name="vertex1" value="[290.0, 110.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

@@ -57,9 +57,9 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="scale is the proportional controller parameter&#10;period determines sampling period of the input signal and the output signal">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="period determines sampling period of the input signal and the output signal">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 60.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 75.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -69,9 +69,15 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple model of a helicopter controlled by a simple periodic sampling &#10;proportional controller.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple model of a helicopter controlled by a simple periodic sampling &#10;proportional controller.  Look inside the Helicopter state machine for details.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="scale is the proportional controller parameter&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 55.0]">
         </property>
     </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -95,13 +101,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 105.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 168, 979, 533}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 168, 800, 455}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[764, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[587, 345]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2055568636685">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{605.5517676767677, 215.8282828282828}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.5, 172.5}">
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -218,7 +224,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="state, control">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={354, 527, 508, 371}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={354, 527, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
