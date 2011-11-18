@@ -27,6 +27,7 @@
    deployJava.createWebStartLaunchButton(url);
 </script>
 <li> An <a href="@sanitizedModelName@Vergil.htm">applet</a>.
+<li> An <a href="@sanitizedModelName/index.html">HTML Version</a> - browsable only, not executable.
 </ul>  
 <script>
   deployJava.displayWebStartMessage("@codeBase@");

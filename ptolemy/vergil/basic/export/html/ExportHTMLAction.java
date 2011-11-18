@@ -459,7 +459,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	    String jsLibrary = "";
 	    if (usePtWebsite) {
 	        // If we are using SSI, then use one location for the JavaScript and CSS and image files.
-	        jsLibrary = ssiRoot;
+	        jsLibrary = ssiRoot + "/";
 	    }
 	    // FIXME: The following is not going to work with SSI. Christopher? Where are the files?
             // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.

@@ -15,7 +15,7 @@
 @documentation@
 <!-- PT DEPLOYJAVA CONVERTER -->
 <p>
-@sanitizedModelName@ is available in two formats:
+@sanitizedModelName@ is available in three formats:
 <ul>
  <li> As a Web Start Application: 
 <!-- See http://blogs.sun.com/thejavatutorials/entry/deployment_toolkit_101 -->
@@ -25,7 +25,8 @@
    var url = dir + "@sanitizedModelName@.jnlp";
    deployJava.createWebStartLaunchButton(url);
 </script>
-<li> As a <a href="@sanitizedModelName@Vergil.htm">applet</a>.
+<li> As a <a href="@sanitizedModelName@Vergil.htm">applet</a>.</li>
+<li> An <a href="@sanitizedModelName@/index.html">HTML Version</a> - browsable only, not executable.</li>
 </ul>  
 The Java Web Start version is preferred, though browsers with versions of Java
 earlier than Java 1.6.0_13 may only work with the applet version.
