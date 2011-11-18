@@ -32,15 +32,22 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.PtolemyPreferences;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.util.StringUtilities;
@@ -80,12 +87,13 @@ public class ExportImage {
      *  open.  The <i>openComposites</i> parameter only has an effect
      *  if <i>formatName</i> starts with "htm" or "HTM".
      *  @param save True if the model should be saved after being run.
+     *  @param whiteBackground True if the model background should be set to white.
      *  @exception Exception Thrown if there is a problem reading the model
      *  or exporting the image.
      */
     public void exportImage(final String formatName,
             final String modelFileName, final boolean run, final boolean openComposites,
-            final boolean save) throws Exception {
+            final boolean save, boolean whiteBackground) throws Exception {
         // FIXME: this seem wrong:  The inner classes are in different
         // threads and can only access final variables.  However, we
         // use an array as a final variable, but we change the value
@@ -111,6 +119,63 @@ public class ExportImage {
         _sleep();
 
         _basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(model[0]);
+
+        if (whiteBackground) {
+            // Optionally set the background to white.
+            Runnable openCompositesAction = new Runnable() {
+                public void run() {
+                    try {
+                        System.out.println("Setting the background to white.");
+                        Configuration configuration = (Configuration)Configuration.findEffigy(model[0].toplevel()).toplevel();
+                        ModelDirectory directory = (ModelDirectory) configuration
+                            .getEntity(Configuration._DIRECTORY_NAME);
+                        Iterator effigies = directory.entityList().iterator();
+
+                        while (effigies.hasNext()) {
+                            Effigy effigy = (Effigy) effigies.next();
+                            Iterator tableaux = effigy.entityList(Tableau.class).iterator();
+                            System.out.println("Effigy: " + effigy);
+                            while (tableaux.hasNext()) {
+                                Tableau tableau = (Tableau) tableaux.next();
+                                System.out.println("Tableau: " + tableau);
+                                JFrame frame = tableau.getFrame();
+                                if (frame instanceof TableauFrame) {
+                                    // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
+                                    if (!tableau
+                                            .getFullName()
+                                            .equals(".configuration.directory.configuration.graphTableau")
+                                            && !tableau
+                                            .getFullName()
+                                            .equals(".configuration.directory.UserLibrary.graphTableau")) {
+                                        try {
+                                            // Set the background to white
+
+                                            frame.setBackground(java.awt.Color.WHITE);
+                                            ((ptolemy.vergil.basic.BasicGraphFrame)frame).getJGraph().getCanvasPane().getCanvas().setBackground(java.awt.Color.WHITE);
+                                            PtolemyPreferences preferences = PtolemyPreferences
+                                                .getPtolemyPreferencesWithinConfiguration(configuration);
+                                            preferences.backgroundColor
+                                                .setExpression("{1.0, 1.0, 1.0, 1.0}");
+                                            System.out.println("Frame: " + frame);
+                                            frame.repaint();
+                                        } catch (Exception ex) {
+                                            System.out
+                                                .println("Failed to set the background to white.");
+                                            ex.printStackTrace();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        throw new RuntimeException(ex);
+                    }
+                }
+            };
+            SwingUtilities.invokeAndWait(openCompositesAction);
+            _sleep();
+        }
 
         if (run) {
             // Optionally run the model.
@@ -254,40 +319,51 @@ public class ExportImage {
      *  <p>Usage:</p>
      *  <p> To save a gif:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.ExportImage model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage model.xml
      *  </pre>
      *
      *  <p>or, to save the current view of model in HTML format without any plots:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.ExportImage htm model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage htm model.xml
      *  </pre>
      *
      *  <p>or, to run the model and save the current view of model in
      *  HTML format with any plots:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.ExportImage -run htm model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage -run htm model.xml
      *  </pre>
      *
      *  <p>or, to run the model, open any composites and save the
      *  current view of model and the composites HTML format with any
      *  plots:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.ExportImage -run -openComposites htm model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage -run -openComposites htm model.xml
      *  </pre>
      *
      *  <p>or, to save a png:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.ExportImage png model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage png model.xml
      *  </pre>
      *
      *  <p>or, to run the model and then save a png:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.ExportImage -run png model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage -run png model.xml
      *  </pre>
      *
+     *  <p>To set the background to white, invoke with
+     *  <code>-whiteBackground</code>.</p>
+     * 
+     *  <p>To export an html version in a format suitable for the
+     *  Ptolemy website, set the
+     *  "ptolemy.ptII.exportHTML.usePtWebsite" property to true,
+     *  perhaps by including the following in the command line:</p>
+     *  <pre>
+     *  -Dptolemy.ptII.exportHTML.usePtWebsite=true
+     *  </pre>
+     *  
      *  @param args The arguments for the export image operation.
      *  The arguments should be in the format:
-     *  [-run] [-save] [GIF|gif|HTM*|htm*|PNG|png] model.xml.
+     *  [-openComposites] [-run] [-save] [-whiteBackground] [GIF|gif|HTM*|htm*|PNG|png] model.xml.
      *
      *  @exception args If there is 1 argument, then it names a
      *  Ptolemy MoML file and the model is exported as a .gif file.
@@ -298,8 +374,8 @@ public class ExportImage {
     public static void main(String args[]) {
         String usage = "Usage: java -classpath $PTII "
                 + "ptolemy.vergil.basic.ExportImage "
-                + "[-run] [-save] [GIF|gif|HTM*|htm*|PNG|png] model.xml";
-        if (args.length == 0 || args.length > 4) {
+                + "[-openComposites] [-run] [-save] [-whiteBackground] [GIF|gif|HTM*|htm*|PNG|png] model.xml";
+        if (args.length == 0 || args.length > 5) {
             // FIXME: we should get the list of acceptable format names from
             // BasicGraphFrame
             System.err.println("Wrong number of arguments");
@@ -310,6 +386,7 @@ public class ExportImage {
         boolean run = false;
         boolean openComposites = false;
         boolean save = false;
+        boolean whiteBackground = false;
         String modelFileName = null;
         if (args.length == 1) {
             modelFileName = args[0];
@@ -326,13 +403,15 @@ public class ExportImage {
                         || args[i].toUpperCase().startsWith("HTM")
                         || args[i].toUpperCase().equals("PNG")) {
                     formatName = args[i].toUpperCase();
+                } else if (args[i].equals("-whiteBackground")) {
+                    whiteBackground = true;
                 } else {
                     modelFileName = args[i];
                 }
             }
         }
         try {
-            new ExportImage().exportImage(formatName, modelFileName, run, openComposites, save);
+            new ExportImage().exportImage(formatName, modelFileName, run, openComposites, save, whiteBackground);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(5);
