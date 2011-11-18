@@ -32,7 +32,7 @@
 ME =		doc/books
 
 # Sub directories to run make in.
-DIRS =		design embedded systems 11
+DIRS =		design embedded systems
 
 # Root of Ptolemy II directory
 ROOT =		../..
