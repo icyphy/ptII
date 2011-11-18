@@ -1,0 +1,79 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DEWithAdd" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 60.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={201, 150, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple model illustrating the semantics of DE and AddSubtract actor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 305.0]">
+        </property>
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0.3}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.6">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0.5}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255, 185}">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 170, 627, 365}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 317]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 185.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="5.0"/>
+<yRange min="0.3" max="0.8"/>
+<default connected="no"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="DiscreteClock2.output" relation="relation2"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+</entity>
