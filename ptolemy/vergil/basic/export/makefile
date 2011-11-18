@@ -46,13 +46,18 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	export
-PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
+# We don't include the subjars because ptiny should not include the export facilities.
+#PTCLASSALLJAR =
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
+PTAUXALLJAR = exportFull.jar
+
+# Include the .class files from these jars in PTAUXALLJARS
+PTAUXALLJARS = \
 		html/html.jar \
 		image/image.jar
+
+# Note that itextpdf/itextpdf.jar is optional
 
 JSRCS = \
 	HTMLExportable.java

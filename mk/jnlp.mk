@@ -1261,6 +1261,7 @@ update_gr_codeDoc:
 APPLET_FILES_TO_BE_UPDATED = \
 	$(CODEGEN_DOMAIN_JARS) \
 	doc/codeDoc.jar \
+	doc/webStartHelp.htm \
 	lib/diva.jar \
 	ptolemy/domains/ptides/ptides.jar \
 	ptolemy/ptsupport.jar \
@@ -1785,7 +1786,7 @@ EXPORT_HTML_RUN=-run
 HTML_MODEL =           $(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL)
 html_model: $(HTML_MODEL)
 $(HTML_MODEL):
-	(cd $(JNLP_MODEL_DIRECTORY); $(PTII)/bin/ptinvoke -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.image.ExportImage $(EXPORT_HTML_RUN) -openComposites htm $(JNLP_MODEL).xml; find $(JNLP_MODEL) -name "*.htm*" -exec chmod a+x {} \;)
+	(cd $(JNLP_MODEL_DIRECTORY); $(PTII)/bin/ptinvoke -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.image.ExportImage $(EXPORT_HTML_RUN) -whiteBackground -openComposites htm $(JNLP_MODEL).xml; find $(JNLP_MODEL) -name "*.htm*" -exec chmod a+x {} \;)
 
 # Update the website, create links.
 update_html_model: html_model
