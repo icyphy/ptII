@@ -648,13 +648,13 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
             ExecutionEventType event, int core) {
         _debug(actor + " " + time + " " + event + " " + core);
         
-        /*
+     
         if (_executionTimeListeners != null) {
             for (ExecutionTimeListener listener : _executionTimeListeners) {
                 listener.event(actor, time, event, core);
             }
         }
-        */
+        
     }
         
     ///////////////////////////////////////////////////////////////////
@@ -686,6 +686,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                     new Parameter(this, "coresForEventProcessing");
             coresForEventProcessing.setExpression("4");
             coresForEventProcessing.setTypeEquals(BaseType.INT); 
+            
         } catch (KernelException e) {
             throw new InternalErrorException("Cannot set parameter:\n"
                     + e.getMessage());
