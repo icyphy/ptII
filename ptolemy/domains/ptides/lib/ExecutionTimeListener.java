@@ -49,6 +49,16 @@ public interface ExecutionTimeListener {
      */
     public void event(Actor actor, double time, ExecutionEventType event);
 
+    /** The event is displayed.
+     *  @param actor The actor where the event happened. This parameter can be
+     *     null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
+     *  @param time The physical time when the event happened.
+     *  @param event The type of the event.
+     *  @param core The core where the event happened.
+     */
+    public void event(Actor actor, double time, ExecutionEventType event,
+            int core);
+    
     /** Execution time event type. */
     public static enum ExecutionEventType {
         /** Started the execution of an actor. */
@@ -58,5 +68,7 @@ public interface ExecutionTimeListener {
         /** Preempted the execution of an actor. */
         PREEMPTED
     }
+
+
 
 }

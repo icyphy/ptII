@@ -142,6 +142,18 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
         plot.fillPlot();
         plot.repaint();
     }
+    
+    /** The event is displayed (core is ignored).
+     *  @param actor The actor where the event happened. This parameter can be
+     *     null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
+     *  @param time The physical time when the event happened.
+     *  @param scheduleEvent The type of the event.
+     *  @param core Not used.
+     */
+    public void event(Actor actor, double time, ExecutionEventType event,
+            int core) {
+        event(actor, time, event, 0);  
+    }
 
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
