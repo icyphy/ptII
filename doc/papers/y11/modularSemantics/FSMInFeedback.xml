@@ -4,7 +4,7 @@
 <entity name="FSMInFeedback" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 23, 859, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 23, 861, 457}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[646, 350]">
     </property>
@@ -19,13 +19,13 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the modal model:&#10;- at State 1 the non-strict interpretation concludes absence of output y&#10;- at State 2 presence of output y cannot be concluded in a constructive semantics.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the modal model:&#10;- at State 1 the non-strict interpretation concludes absence of output y&#10;- at State 2 presence of output y cannot be concluded in a constructive semantics&#10;(and because of this an exception is thrown).">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 250.0}">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Right click on the SR Director and change the iterations parameter&#10;of the director to allow the model to move to State 2.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click on the SR Director and change the iterations parameter&#10;from 1 to 2 to allow the modal model to move to State 2.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 30.0]">
         </property>
