@@ -17,15 +17,15 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Video" class="ptserver.actor.lib.tld.Video">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 155.0]">
         </property>
     </entity>
     <entity name="ImageWriter" class="ptserver.actor.lib.tld.ImageWriter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[258.837890625, 152.080078125]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 155.0]">
         </property>
     </entity>
     <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
-        <property name="expression" class="ptolemy.data.expr.StringParameter" value="process(input, iteration)">
+        <property name="expression" class="ptolemy.data.expr.StringParameter" value="output = process(input, iteration)">
         </property>
         <property name="get1x1asScalars" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -37,22 +37,39 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 155.0]">
         </property>
         <property name="packageDirectories" class="ptolemy.data.expr.Parameter" value="&quot;/Users/anarhuseynov/Documents/repos/OpenTLD, /Users/anarhuseynov/Documents/repos/OpenTLD/bbox, /Users/anarhuseynov/Documents/repos/OpenTLD/img, /Users/anarhuseynov/Documents/repos/OpenTLD/other, /Users/anarhuseynov/Documents/repos/OpenTLD/mex, /Users/anarhuseynov/Documents/repos/OpenTLD/tld, /Users/anarhuseynov/Documents/repos/OpenTLD/utils&quot;">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
     </entity>
+    <entity name="Display" class="ptserver.test.SysOutActor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315, 305}">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Video.output" relation="relation"/>
     <link port="ImageWriter.input" relation="relation"/>
     <link port="ImageWriter.ouput" relation="relation2"/>
+    <link port="MatlabExpression.output" relation="relation3"/>
     <link port="MatlabExpression.input" relation="relation2"/>
+    <link port="Display.input" relation="relation3"/>
 </entity>

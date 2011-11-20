@@ -33,13 +33,13 @@ import java.io.IOException;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptserver.actor.ProxySource;
+import ptserver.data.ByteArrayToken;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageWriter
@@ -53,19 +53,21 @@ public class ImageWriter extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        input.setTypeEquals(BaseType.GENERAL);
         output = new TypedIOPort(this, "ouput", false, true);
         output.setTypeEquals(BaseType.STRING);
     }
 
     @Override
     public boolean postfire() throws IllegalActionException {
-        ArrayToken tokens = (ArrayToken) input.get(0);
-        ByteArrayInputStream stream = new ByteArrayInputStream(
-                ArrayToken.arrayTokenToUnsignedByteArray(tokens));
+        ByteArrayToken token = (ByteArrayToken) input.get(0);
+        ByteArrayInputStream stream = new ByteArrayInputStream(token.getArray());
 
+        CompositeEntity container = (CompositeEntity) this.getContainer();
+        ProxySource source = (ProxySource) container.getEntity("Video_remote");
+        source.getProxySourceData().getTokenQueue().clear();
         try {
-            File temp = File.createTempFile("predator", "");
+            File temp = File.createTempFile("predator", ".jpg");
             FileOutputStream f = new FileOutputStream(temp);
             int val;
             while ((val = stream.read()) != -1) {

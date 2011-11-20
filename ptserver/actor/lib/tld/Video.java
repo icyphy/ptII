@@ -31,7 +31,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.injection.PortableContainer;
 import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.actor.injection.PtolemyInjector;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -50,7 +49,7 @@ public class Video extends TypedAtomicActor implements PortablePlaceable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _output = new TypedIOPort(this, "output", false, true);
-        _output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        _output.setTypeEquals(BaseType.GENERAL);
         _interface.init(this);
     }
 
