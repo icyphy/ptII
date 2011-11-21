@@ -97,16 +97,19 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
             // because this will trigger evaluation, defeating deferred
             // evaluation.
             if (!(object instanceof EntityLibrary)) {
+
                 // Only if an object has an icon, an icon description, or
                 // a small icon description is it rendered in the tree.
                 List iconList = object.attributeList(EditorIcon.class);
+                // if ((iconList.size() > 0)
+                //      || (object.getAttribute("_iconDescription") != null)
+                //      || (object.getAttribute("_smallIconDescription") != null)) {
 
-                if ((iconList.size() > 0)
-                        || (object.getAttribute("_iconDescription") != null)
+                if ((object.getAttribute("_iconDescription") != null)
                         || (object.getAttribute("_smallIconDescription") != null)) {
+
                     // NOTE: this code is similar to that in IconController.
                     EditorIcon icon = null;
-
                     try {
                         if (iconList.size() == 0) {
                             icon = XMLIcon.getXMLIcon(object, "_icon");
@@ -138,7 +141,6 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 // which means no tooltip for those. Calling it would
                 // force expansion of the library. No good solution here.
                 Attribute tooltipAttribute = object.getAttribute("tooltip");
-
                 if ((tooltipAttribute != null)
                         && tooltipAttribute instanceof Documentation) {
                     // FIXME: This doesn't work with calling this
@@ -147,7 +149,6 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                             .getValueAsString());
                 } else {
                     String tip = Documentation.consolidate(object);
-
                     if (tip != null) {
                         // FIXME: This doesn't work with calling this
                         // on either this or component.
