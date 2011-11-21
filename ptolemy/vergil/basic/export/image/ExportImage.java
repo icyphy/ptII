@@ -93,7 +93,7 @@ public class ExportImage {
      */
     public void exportImage(final String formatName,
             final String modelFileName, final boolean run, final boolean openComposites,
-            final boolean save, boolean whiteBackground) throws Exception {
+            final boolean save, final boolean whiteBackground) throws Exception {
         // FIXME: this seem wrong:  The inner classes are in different
         // threads and can only access final variables.  However, we
         // use an array as a final variable, but we change the value
@@ -119,63 +119,6 @@ public class ExportImage {
         _sleep();
 
         _basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(model[0]);
-
-        if (whiteBackground) {
-            // Optionally set the background to white.
-            Runnable openCompositesAction = new Runnable() {
-                public void run() {
-                    try {
-                        System.out.println("Setting the background to white.");
-                        Configuration configuration = (Configuration)Configuration.findEffigy(model[0].toplevel()).toplevel();
-                        ModelDirectory directory = (ModelDirectory) configuration
-                            .getEntity(Configuration._DIRECTORY_NAME);
-                        Iterator effigies = directory.entityList().iterator();
-
-                        while (effigies.hasNext()) {
-                            Effigy effigy = (Effigy) effigies.next();
-                            Iterator tableaux = effigy.entityList(Tableau.class).iterator();
-                            System.out.println("Effigy: " + effigy);
-                            while (tableaux.hasNext()) {
-                                Tableau tableau = (Tableau) tableaux.next();
-                                System.out.println("Tableau: " + tableau);
-                                JFrame frame = tableau.getFrame();
-                                if (frame instanceof TableauFrame) {
-                                    // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
-                                    if (!tableau
-                                            .getFullName()
-                                            .equals(".configuration.directory.configuration.graphTableau")
-                                            && !tableau
-                                            .getFullName()
-                                            .equals(".configuration.directory.UserLibrary.graphTableau")) {
-                                        try {
-                                            // Set the background to white
-
-                                            frame.setBackground(java.awt.Color.WHITE);
-                                            ((ptolemy.vergil.basic.BasicGraphFrame)frame).getJGraph().getCanvasPane().getCanvas().setBackground(java.awt.Color.WHITE);
-                                            PtolemyPreferences preferences = PtolemyPreferences
-                                                .getPtolemyPreferencesWithinConfiguration(configuration);
-                                            preferences.backgroundColor
-                                                .setExpression("{1.0, 1.0, 1.0, 1.0}");
-                                            System.out.println("Frame: " + frame);
-                                            frame.repaint();
-                                        } catch (Exception ex) {
-                                            System.out
-                                                .println("Failed to set the background to white.");
-                                            ex.printStackTrace();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        throw new RuntimeException(ex);
-                    }
-                }
-            };
-            SwingUtilities.invokeAndWait(openCompositesAction);
-            _sleep();
-        }
 
         if (run) {
             // Optionally run the model.
@@ -233,9 +176,14 @@ public class ExportImage {
                         for (CompositeEntity composite: composites) {
                             // Don't open class definitions, then tend not to get closed.
                             //if (!composite.isClassDefinition()) {
-                                System.out.println("Opening " + composite.getFullName());
-                                configuration.openInstance(composite);
-                                //}
+                            System.out.println("Opening " + composite.getFullName());
+                            Tableau tableau = configuration.openInstance(composite);
+                            if (whiteBackground) {
+                                JFrame frame = tableau.getFrame();
+                                frame.setBackground(java.awt.Color.WHITE);
+                                ((ptolemy.vergil.basic.BasicGraphFrame)frame).getJGraph().getCanvasPane().getCanvas().setBackground(java.awt.Color.WHITE);
+                            }
+                            //}
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -246,6 +194,77 @@ public class ExportImage {
             SwingUtilities.invokeAndWait(openCompositesAction);
             _sleep();
         }
+
+        if (whiteBackground) {
+            // Optionally set the background to white.
+            Runnable openCompositesAction = new Runnable() {
+                public void run() {
+                    try {
+                        System.out.println("Setting the background to white.");
+                        Configuration configuration = (Configuration)Configuration.findEffigy(model[0].toplevel()).toplevel();
+                        ModelDirectory directory = (ModelDirectory) configuration
+                            .getEntity(Configuration._DIRECTORY_NAME);
+                        Iterator effigies = directory.entityList().iterator();
+
+                        while (effigies.hasNext()) {
+                            Effigy effigy = (Effigy) effigies.next();
+                            Iterator tableaux = effigy.entityList(Tableau.class).iterator();
+                            System.out.println("Effigy: " + effigy);
+                            while (tableaux.hasNext()) {
+                                Tableau tableau = (Tableau) tableaux.next();
+                                System.out.println("Tableau: " + tableau);
+                                JFrame frame = tableau.getFrame();
+                                if (frame instanceof TableauFrame) {
+                                    // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
+                                    if (!tableau
+                                            .getFullName()
+                                            .equals(".configuration.directory.configuration.graphTableau")
+                                            && !tableau
+                                            .getFullName()
+                                            .equals(".configuration.directory.UserLibrary.graphTableau")) {
+                                        try {
+                                            // Set the background to white.
+
+                                            frame.setBackground(java.awt.Color.WHITE);
+                                            ((ptolemy.vergil.basic.BasicGraphFrame)frame).getJGraph().getCanvasPane().getCanvas().setBackground(java.awt.Color.WHITE);
+
+                                            // FIXME: It should be
+                                            // possible to use
+                                            // PtolemyPreference here,
+                                            // but it does not work,
+                                            // we have to set the
+                                            // frame background by
+                                            // hand.
+                                            
+//                                             PtolemyPreferences.setDefaultPreferences(configuration);
+//                                             PtolemyPreferences preferences = PtolemyPreferences
+//                                                 .getPtolemyPreferencesWithinConfiguration(configuration);
+//                                             preferences.backgroundColor
+//                                                 .setExpression("{1.0, 1.0, 1.0, 1.0}");
+//                                             //preferences.save();
+//                                             preferences.setAsDefault();
+
+                                            System.out.println("Frame: " + frame);
+                                            frame.repaint();
+                                        } catch (Exception ex) {
+                                            System.out
+                                                .println("Failed to set the background to white.");
+                                            ex.printStackTrace();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        throw new RuntimeException(ex);
+                    }
+                }
+            };
+            SwingUtilities.invokeAndWait(openCompositesAction);
+            _sleep();
+        }
+
 
         // Export images
         Runnable exportImageAction = new Runnable() {
