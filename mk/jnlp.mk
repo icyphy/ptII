@@ -1786,7 +1786,7 @@ EXPORT_HTML_RUN=-run
 HTML_MODEL =           $(JNLP_MODEL_DIRECTORY)/$(JNLP_MODEL)
 html_model: $(HTML_MODEL)
 $(HTML_MODEL):
-	(cd $(JNLP_MODEL_DIRECTORY); $(PTII)/bin/ptinvoke -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.image.ExportImage $(EXPORT_HTML_RUN) -whiteBackground -openComposites htm $(JNLP_MODEL).xml; find $(JNLP_MODEL) -name "*.htm*" -exec chmod a+x {} \;)
+	(cd $(JNLP_MODEL_DIRECTORY); $(PTII)/bin/ptinvoke -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true ptolemy.vergil.basic.export.image.ExportImage $(EXPORT_HTML_RUN) -whiteBackground -openComposites htm $(JNLP_MODEL).xml; find $(JNLP_MODEL) -name "*.htm*" -exec chmod a+x {} \;)
 
 # Update the website, create links.
 update_html_model: html_model
@@ -1819,6 +1819,8 @@ book_dist_update: $(JNLP_FILE_FIXED) $(HTML_MODEL)
 	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
 	ssh $(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
 	ssh $(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM) $(DIST_DIR)/$(JNLP_VERGIL_HTM) $(DIST_DIR)/$(HTML_MODEL)/index.html"
+	ssh $(WEBSERVER) "chgrp -R ptolemy $(DIST_DIR)"
+
 ####################################################
 # Generate ant code to build ALL_JNLP_JARS except for files in lib/
 

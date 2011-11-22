@@ -175,11 +175,29 @@ function writeText(text) {
  *       Notice that defines the document element with ID afterImage.
  *  </ul>
  *
- @author  Edward A. Lee
- @version $Id$
- @since Ptolemy II 8.1
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (eal)
+ * <p>The following JVM properties affect the output:</p>
+ * <dl>
+ * <dt>	-Dptolemy.ptII.usePtWebsite=true<.dt>
+ * <dd> Include Ptolemy Website (<a href="http://ptolemy.org">http://ptolemy.org</a>)
+ * specific Side Includes (SSI) and use JavaScript libraries from the
+ * Ptolemy website.</dd>
+ * <dt> -Dptolemy.ptII.exportHTML.linkToJNLP=true</dt>
+ * <dd> Include a link to the a <code><i>sanitizedModelName</i>.jnlp</code> file.</dd>
+ * </dl>
+ *
+ * <p>Typically, JVM properties are set when Java is invoked.  
+ * {@link ptolemy.vergil.basic.export.image.ExportImage} can be called with these
+ * properties set to create Ptolemy website specific web pages.</p>
+ *
+ * <p> See <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport</a>
+ * for detailed instructions about how to create web pages on the
+ * Ptolemy website for models.</p>
+ *
+ * @author  Edward A. Lee, Contributor: Christopher Brooks
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Yellow (eal)
+ * @Pt.AcceptedRating Red (eal)
  */
 public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
@@ -303,7 +321,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         // First, create the gif file showing whatever the current
         // view in this frame shows.
         NamedObj model = _basicGraphFrame.getModel();
-        File gifFile = new File(directory, model.getName() + ".gif");
+        // Use a sanitized model name and avoid problems with special characters in file names.
+        _sanitizedModelName = StringUtilities.sanitizeName(model.getName());
+        File gifFile = new File(directory, _sanitizedModelName + ".gif");
         OutputStream out = new FileOutputStream(gifFile);
         try {
             _basicGraphFrame.writeImage(out, "gif");
@@ -510,8 +530,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	    index.println(header.toString());
 	    index.println("</head><body>");
 	    index.println(start.toString());
+
+	    boolean linkToJNLP = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
+            if (linkToJNLP) {
+                index.println("Below is a browsable image of the model. "
+                        + "For an executable version, go to the "
+                        + "<a href=\"../" + _sanitizedModelName + ".jnlp\">WebStart version</a>.");
+            }
 	    // Put the image in.
-	    index.println("<img src=\"" + _basicGraphFrame.getModel().getName()
+
+	    index.println("<img src=\"" + _sanitizedModelName
 	            + ".gif\" usemap=\"#actormap\"/>");
 	    index.println(map);
 	    index.println(end);
@@ -983,6 +1011,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     /** True if we have printed the message about SSI. */
     private static boolean _printedSSIMessage;
 
+    // The sanitized modelName
+    private String _sanitizedModelName;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -1021,4 +1052,5 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
                     + ") to (" + bottomRightX + ", " + bottomRightY + ")");
         }
     }
+
 }
