@@ -1,0 +1,464 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="BasicModel1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 65.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 0, 894, 1032}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 916]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{335.5, 458.0}">
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="100">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{10}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 185.0}">
+        </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="100">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{20}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 270.0}">
+        </property>
+    </entity>
+    <entity name="DiscreteClock3" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="100">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{30}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 360.0}">
+        </property>
+    </entity>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 195.0}">
+        </property>
+        <property name="PtidesMulticoreDirector" class="ptolemy.domains.ptides.kernel.PtidesMulticoreDirector">
+            <property name="coresForEventProcessing" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 65.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2338, 15, 1008, 1063}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[785, 947]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{392.5, 473.5}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 180.0]">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 245.0]">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 305.0]">
+            </property>
+        </port>
+        <port name="port4" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 200.0]">
+            </property>
+        </port>
+        <port name="port5" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 310.0]">
+            </property>
+        </port>
+        <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 180.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="-Infinity">
+                </property>
+            </port>
+        </entity>
+        <entity name="SensorHandler2" class="ptolemy.domains.ptides.lib.SensorHandler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 245.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="-Infinity">
+                </property>
+            </port>
+        </entity>
+        <entity name="SensorHandler3" class="ptolemy.domains.ptides.lib.SensorHandler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 305.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="-Infinity">
+                </property>
+            </port>
+        </entity>
+        <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 200.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{50.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </port>
+        </entity>
+        <entity name="ActuatorSetup2" class="ptolemy.domains.ptides.lib.ActuatorSetup">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 310.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{10.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </port>
+        </entity>
+        <entity name="MulticoreExecutionTimeMonitor" class="ptolemy.domains.ptides.lib.MulticoreExecutionTimeMonitor">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 12, 1326, 799}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1310, 740]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 80.0]">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>MulticoreExecutionTimeMonitor</title>
+<xRange min="0.0" max="70.0"/>
+<yRange min="0.0" max="22.6"/>
+<yTicks>
+  <tick label="SensorHandler" position="0.0"/>
+  <tick label="SensorHandler2" position="1.0"/>
+  <tick label="SensorHandler3" position="2.0"/>
+  <tick label="ActuatorSetup" position="3.0"/>
+  <tick label="ActuatorSetup2" position="4.0"/>
+  <tick label="Merge" position="5.0"/>
+  <tick label="Const" position="6.0"/>
+  <tick label="Const2" position="7.0"/>
+  <tick label="Const3" position="8.0"/>
+  <tick label="TimeDelay" position="9.0"/>
+  <tick label="TimeDelay2" position="10.0"/>
+  <tick label="SensorHandler" position="12.0"/>
+  <tick label="SensorHandler2" position="13.0"/>
+  <tick label="SensorHandler3" position="14.0"/>
+  <tick label="ActuatorSetup" position="15.0"/>
+  <tick label="ActuatorSetup2" position="16.0"/>
+  <tick label="Merge" position="17.0"/>
+  <tick label="Const" position="18.0"/>
+  <tick label="Const2" position="19.0"/>
+  <tick label="Const3" position="20.0"/>
+  <tick label="TimeDelay" position="21.0"/>
+  <tick label="TimeDelay2" position="22.0"/>
+  <tick label="SensorHandler" position="0.0"/>
+  <tick label="SensorHandler2" position="1.0"/>
+  <tick label="SensorHandler3" position="2.0"/>
+  <tick label="ActuatorSetup" position="3.0"/>
+  <tick label="ActuatorSetup2" position="4.0"/>
+  <tick label="Merge" position="5.0"/>
+  <tick label="Const" position="6.0"/>
+  <tick label="Const2" position="7.0"/>
+  <tick label="Const3" position="8.0"/>
+  <tick label="TimeDelay" position="9.0"/>
+  <tick label="TimeDelay2" position="10.0"/>
+  <tick label="SensorHandler" position="12.0"/>
+  <tick label="SensorHandler2" position="13.0"/>
+  <tick label="SensorHandler3" position="14.0"/>
+  <tick label="ActuatorSetup" position="15.0"/>
+  <tick label="ActuatorSetup2" position="16.0"/>
+  <tick label="Merge" position="17.0"/>
+  <tick label="Const" position="18.0"/>
+  <tick label="Const2" position="19.0"/>
+  <tick label="Const3" position="20.0"/>
+  <tick label="TimeDelay" position="21.0"/>
+  <tick label="TimeDelay2" position="22.0"/>
+</yTicks>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 205.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="50.0">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 180.0]">
+            </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="50.0">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 245.0]">
+            </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="50.0">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="20.0">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const3" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 305.0]">
+            </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="executionTime" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </port>
+        </entity>
+        <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="50">
+            </property>
+            <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="50">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 205.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="50.0">
+                </property>
+            </port>
+            <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="50.0">
+                </property>
+            </port>
+        </entity>
+        <entity name="TimeDelay2" class="ptolemy.actor.lib.TimeDelay">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="10">
+            </property>
+            <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 310.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </port>
+            <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port._location&quot;,x=45.0,y=180.0}, tail={id=&quot;SensorHandler.input&quot;,x=120.0,y=180.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=45.0,y=245.0}, tail={id=&quot;SensorHandler2.input&quot;,x=115.0,y=245.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port3._location&quot;,x=45.0,y=305.0}, tail={id=&quot;SensorHandler3.input&quot;,x=115.0,y=305.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port4._location&quot;,x=570.0,y=200.0}, tail={id=&quot;ActuatorSetup.output&quot;,x=495.0,y=200.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port5._location&quot;,x=500.0,y=310.0}, tail={id=&quot;ActuatorSetup2.output&quot;,x=425.0,y=310.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ActuatorSetup.input&quot;,x=495.0,y=200.0}, tail={id=&quot;TimeDelay.output&quot;,x=390.0,y=205.0}, points={440.0,200.0,440.0,205.0} } }">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ActuatorSetup2.input&quot;,x=425.0,y=310.0}, tail={id=&quot;TimeDelay2.output&quot;,x=325.0,y=310.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=230.0,y=180.0}, tail={id=&quot;SensorHandler.output&quot;,x=120.0,y=180.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const2.trigger&quot;,x=230.0,y=245.0}, tail={id=&quot;SensorHandler2.output&quot;,x=115.0,y=245.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=305.0,y=205.0,index=2}, tail={id=&quot;Const.output&quot;,x=230.0,y=180.0}, points={270.0,200.0,270.0,180.0} } }">
+            </property>
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=305.0,y=205.0,index=2}, tail={id=&quot;Const2.output&quot;,x=230.0,y=245.0}, points={270.0,205.0,270.0,245.0} } }">
+            </property>
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay.input&quot;,x=390.0,y=205.0}, tail={id=&quot;Merge.output&quot;,x=305.0,y=205.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const3.trigger&quot;,x=230.0,y=305.0}, tail={id=&quot;SensorHandler3.output&quot;,x=115.0,y=305.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay2.input&quot;,x=325.0,y=310.0}, tail={id=&quot;Const3.output&quot;,x=230.0,y=305.0}, points={270.0,310.0,270.0,305.0} } }">
+            </property>
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation2"/>
+        <link port="port3" relation="relation3"/>
+        <link port="port4" relation="relation4"/>
+        <link port="port5" relation="relation5"/>
+        <link port="SensorHandler.input" relation="relation"/>
+        <link port="SensorHandler.output" relation="relation8"/>
+        <link port="SensorHandler2.input" relation="relation2"/>
+        <link port="SensorHandler2.output" relation="relation9"/>
+        <link port="SensorHandler3.input" relation="relation3"/>
+        <link port="SensorHandler3.output" relation="relation13"/>
+        <link port="ActuatorSetup.input" relation="relation6"/>
+        <link port="ActuatorSetup.output" relation="relation4"/>
+        <link port="ActuatorSetup2.input" relation="relation7"/>
+        <link port="ActuatorSetup2.output" relation="relation5"/>
+        <link port="Merge.input" relation="relation10"/>
+        <link port="Merge.input" relation="relation11"/>
+        <link port="Merge.output" relation="relation12"/>
+        <link port="Const.output" relation="relation10"/>
+        <link port="Const.trigger" relation="relation8"/>
+        <link port="Const2.output" relation="relation11"/>
+        <link port="Const2.trigger" relation="relation9"/>
+        <link port="Const3.output" relation="relation14"/>
+        <link port="Const3.trigger" relation="relation13"/>
+        <link port="TimeDelay.input" relation="relation12"/>
+        <link port="TimeDelay.output" relation="relation6"/>
+        <link port="TimeDelay2.input" relation="relation14"/>
+        <link port="TimeDelay2.output" relation="relation7"/>
+    </entity>
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 230.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=100.0,y=185.0}, tail={id=&quot;CompositeActor.port&quot;,x=240.0,y=195.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock2.output&quot;,x=95.0,y=270.0}, tail={id=&quot;CompositeActor.port2&quot;,x=240.0,y=195.0}, points={170.0,270.0,170.0,195.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock3.output&quot;,x=95.0,y=360.0}, tail={id=&quot;CompositeActor.port3&quot;,x=240.0,y=195.0}, points={185.0,360.0,185.0,205.0} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="DiscreteClock2.output" relation="relation2"/>
+    <link port="DiscreteClock3.output" relation="relation3"/>
+    <link port="CompositeActor.port" relation="relation"/>
+    <link port="CompositeActor.port2" relation="relation2"/>
+    <link port="CompositeActor.port3" relation="relation3"/>
+    <link port="CompositeActor.port4" relation="relation4"/>
+    <link port="CompositeActor.port5" relation="relation5"/>
+    <link port="Discard.input" relation="relation4"/>
+    <link port="Discard.input" relation="relation5"/>
+</entity>

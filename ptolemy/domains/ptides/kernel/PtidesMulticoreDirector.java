@@ -357,6 +357,14 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                     _sendExecutionTimeEvent(eventToFire.actor(), 
                             executionPhysicalTag.timestamp.getDoubleValue(), 
                             ExecutionEventType.STOP, i);
+                    // If another event was preempted, record that it has
+                    // started again.
+                    if(coreStack.size() != 0) {
+                        _sendExecutionTimeEvent(
+                            coreStack.peek().events.get(0).actor(), 
+                            executionPhysicalTag.timestamp.getDoubleValue(), 
+                            ExecutionEventType.START, i);
+                    }
                     // Used for pure events.
                     _saveEventInformation(processingEvent.events);
                     _lastActorFired = eventToFire.actor();
@@ -515,6 +523,42 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
             }
             
             // TODO: preemption
+            if(coreToProcessOn == null) {
+                EDFComparator comparator = new EDFComparator();
+                // Find processing event with latest deadline.
+                PtidesEvent latestEvent = null;
+                Stack<ProcessingPtidesEvents> latestCore = null;
+                for(Stack<ProcessingPtidesEvents> coreStack : 
+                    _currentlyProcessingEvents) {
+                    if(coreStack.size() != 0) {
+                        PtidesEvent processingEvent = 
+                            coreStack.peek().events.get(0);
+                        if(latestEvent == null || comparator.compare(
+                                processingEvent, latestEvent) > 0) {
+                            latestEvent = processingEvent;
+                            latestCore = coreStack;
+                        }
+                    }
+                }
+                // If next event has earlier deadline than the lastest deadline
+                // processing event, preempt it.
+                if(comparator.compare(nextEvent, latestEvent) < 0) {
+                    _debug("preempt " + latestEvent.actor().getName());
+                    coreToProcessOn = latestCore;
+                    // Execution time of event causing preemption.
+                    Time executionTime = new Time(this, _getExecutionTime(
+                            nextEvent.ioPort(), nextEvent.actor()));
+                    // Add this to all the finish times on the core.
+                    for(ProcessingPtidesEvents events : latestCore) {
+                        events.finishTime = 
+                            events.finishTime.add(executionTime);
+                        _sendExecutionTimeEvent(events.events.get(0).actor(), 
+                            executionPhysicalTag.timestamp.getDoubleValue(), 
+                           ExecutionEventType.PREEMPTED, 
+                           _currentlyProcessingEvents.indexOf(latestCore));
+                    }
+                }
+            }
             
             // nextEvent shouldn't be processed yet, so return.
             if(coreToProcessOn == null) {
