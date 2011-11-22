@@ -42,6 +42,7 @@ if {[info procs testJavaCG] == "" } then {
 }
 
 # Currently, we can only generate code for models that have SDFDirectors:
+#   cd $PTII
 #   find . -name auto > /tmp/a
 #   awk '{print "ls " $1 "/*.xml"}' /tmp/a > /tmp/d
 #   sh /tmp/d > /tmp/models
@@ -62,7 +63,7 @@ if {[info procs testJavaCG] == "" } then {
 #    that has an output connected to a relation that is connected to two inputs.  The
 #    code does a getInside() on the output port of the Opaque twice, hence the empty mailbox.    
 #    Fails in ConvolutionalCoder.fire()
-# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Fails to compile, uses matrices
+# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Runs, but gets "Cannot put a token in a full mailbox."
 # $PTII/ptolemy/actor/lib/comm/test/auto/HuffmanCoder.xml  Fails to compile, uses DDF
 # $PTII/ptolemy/actor/lib/comm/test/auto/HuffmanDecoder.xml  Fails to compile, uses DDF
 # $PTII/ptolemy/actor/lib/comm/test/auto/LempelZivCoder.xml  Fails to compile, uses DDF
@@ -90,8 +91,12 @@ if {[info procs testJavaCG] == "" } then {
 
 
 set models [list \
+		$PTII/ptolemy/actor/lib/colt/test/auto/AllColt.xml
+		$PTII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml \
+		$PTII/ptolemy/actor/lib/conversions/test/auto/FixToDoubleAndBack.xml \
 		$PTII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml \
 		$PTII/ptolemy/actor/lib/hoc/test/auto/Case1.xml \
+		$PTII/ptolemy/actor/lib/hoc/test/auto/Case2.xml \
 		$PTII/ptolemy/actor/lib/test/auto/AbsoluteValue.xml \
 		$PTII/ptolemy/actor/lib/test/auto/FileWriter1.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Gaussian1.xml \
