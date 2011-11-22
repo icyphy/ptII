@@ -30,8 +30,13 @@ package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
 
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
+
+import ptolemy.actor.Director;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -107,19 +112,14 @@ public class RunCompositeActor extends LifeCycleManager {
      *  workspace directory.  You should set the local director or
      *  executive director before attempting to send data to the actor or
      *  to execute it. Increment the version number of the workspace.
+     *  @throws NameDuplicationException If there is already a parameter with
+     *   name firingCountLimit.
+     *  @throws IllegalActionException If the firingCountLimit cannot be
+     *   initialized.
      */
-    public RunCompositeActor() {
+    public RunCompositeActor() throws IllegalActionException, NameDuplicationException {
         super();
-
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is RunCompositeActor.
-        // In derived classes, however, we usually do not want to identify
-        // the class name as that of the derived class, but rather want
-        // to identify it as RunCompositeActor.  This way, the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be RunCompositeActor.
-        setClassName("ptolemy.actor.lib.hoc.RunCompositeActor");
+        _init();
     }
 
     /** Construct a RunCompositeActor in the specified workspace with
@@ -130,19 +130,14 @@ public class RunCompositeActor extends LifeCycleManager {
      *  or to execute it. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
+     *  @throws NameDuplicationException If there is already a parameter with
+     *   name firingCountLimit.
+     *  @throws IllegalActionException If the firingCountLimit cannot be
+     *   initialized.
      */
-    public RunCompositeActor(Workspace workspace) {
+    public RunCompositeActor(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
-
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is RunCompositeActor.
-        // In derived classes, however, we usually do not want to identify
-        // the class name as that of the derived class, but rather want
-        // to identify it as RunCompositeActor.  This way, the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be RunCompositeActor.
-        setClassName("ptolemy.actor.lib.hoc.RunCompositeActor");
+        _init();
     }
 
     /** Construct a RunCompositeActor with a name and a container.
@@ -164,18 +159,20 @@ public class RunCompositeActor extends LifeCycleManager {
     public RunCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is RunCompositeActor.
-        // In derived classes, however, we usually do not want to identify
-        // the class name as that of the derived class, but rather want
-        // to identify it as RunCompositeActor.  This way, the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be RunCompositeActor.
-        setClassName("ptolemy.actor.lib.hoc.RunCompositeActor");
+        _init();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
 
+    /** Indicator to run the contained model a limited number of times.
+     *  If this parameter has a value greater than zero, then after
+     *  firing the inside model the specified number of times,
+     *  {@link #postfire()} will return false. This is an int that
+     *  defaults to 0.
+     */
+    public Parameter firingCountLimit;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -203,6 +200,15 @@ public class RunCompositeActor extends LifeCycleManager {
         // FIXME: Return result should be used to set what postfire() returns?
         _executeInsideModel();
     }
+    
+    /** Return null, indicating that there is no executive director.
+     *  In fact, there is, but since the inside model is supposed to run
+     *  as if there were not.
+     *  @return null.
+     */
+    public Director getExecutiveDirector() {
+        return null;
+    }
 
     /** Initialize this actor, which in this case, does nothing.  The
      *  initialization of the submodel is accomplished in fire().  The
@@ -216,6 +222,22 @@ public class RunCompositeActor extends LifeCycleManager {
         if (_debugging) {
             _debug("Called initialize(), which does nothing.");
         }
+        _iteration = 0;
+    }
+    
+    /** Override the base class to make sure we actually use the
+     *  executive director instead of null as returned by
+     *  {@link #getExecutiveDirector()}.
+     *  @exception IllegalActionException If there is no executive director.
+     *  @return A new object implementing the Receiver interface.
+     */
+    public Receiver newReceiver() throws IllegalActionException {
+        Director director = super.getExecutiveDirector();
+        if (director == null) {
+            throw new IllegalActionException(this,
+                    "Cannot create a receiver without an executive director.");
+        }
+        return director.newReceiver();
     }
 
     /** Return true, indicating that execution can continue.  The
@@ -226,10 +248,19 @@ public class RunCompositeActor extends LifeCycleManager {
      *  but declared so the subclasses can throw it.
      */
     public boolean postfire() throws IllegalActionException {
+        int limitValue = ((IntToken)firingCountLimit.getToken()).intValue();
+        if (limitValue > 0) {
+            _iteration++;
+            if (_iteration >= limitValue) {
+                if (_debugging) {
+                    _debug("Called postfire(), which returns false.");
+                }
+                return false;
+            }
+        }
         if (_debugging) {
             _debug("Called postfire(), which returns true.");
         }
-
         return true;
     }
 
@@ -313,4 +344,35 @@ public class RunCompositeActor extends LifeCycleManager {
             _debug("Called wrapup(), which does nothing.");
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Set the class name and create the parameters.
+     *  @throws NameDuplicationException If there is already a parameter with
+     *   name firingCountLimit.
+     *  @throws IllegalActionException If the firingCountLimit cannot be
+     *   initialized.
+     */
+    private void _init() throws IllegalActionException, NameDuplicationException {
+        // By default, when exporting MoML, the class name is whatever
+        // the Java class is, which in this case is RunCompositeActor.
+        // In derived classes, however, we usually do not want to identify
+        // the class name as that of the derived class, but rather want
+        // to identify it as RunCompositeActor.  This way, the MoML
+        // that is exported does not depend on the presence of the
+        // derived class Java definition. Thus, we force the class name
+        // here to be RunCompositeActor.
+        setClassName("ptolemy.actor.lib.hoc.RunCompositeActor");
+        
+        firingCountLimit = new Parameter(this, "firingCountLimit");
+        firingCountLimit.setTypeEquals(BaseType.INT);
+        firingCountLimit.setExpression("0");
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The count of iterations. */
+    private int _iteration;
 }
