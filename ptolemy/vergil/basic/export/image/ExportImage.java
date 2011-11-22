@@ -58,8 +58,12 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 /**
  * Export a model as an image or set of html files.
  *
- * The default is to export a .gif file with the same name as the model.
- * See {@link #main(String[])} for usage.
+ * <p>The default is to export a .gif file with the same name as the model.
+ * See {@link #main(String[])} for usage.</p>
+ * 
+ * <p> See <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport</a>
+ * for detailed instructions about how to create web pages on the
+ * Ptolemy website for models.</p>
  *
  * @author Christopher Brooks
  * @version $Id$
@@ -209,10 +213,10 @@ public class ExportImage {
                         while (effigies.hasNext()) {
                             Effigy effigy = (Effigy) effigies.next();
                             Iterator tableaux = effigy.entityList(Tableau.class).iterator();
-                            System.out.println("Effigy: " + effigy);
+                            //System.out.println("Effigy: " + effigy);
                             while (tableaux.hasNext()) {
                                 Tableau tableau = (Tableau) tableaux.next();
-                                System.out.println("Tableau: " + tableau);
+                                //System.out.println("Tableau: " + tableau);
                                 JFrame frame = tableau.getFrame();
                                 if (frame instanceof TableauFrame) {
                                     // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
@@ -244,7 +248,7 @@ public class ExportImage {
 //                                             //preferences.save();
 //                                             preferences.setAsDefault();
 
-                                            System.out.println("Frame: " + frame);
+                                            //System.out.println("Frame: " + frame);
                                             frame.repaint();
                                         } catch (Exception ex) {
                                             System.out
@@ -379,6 +383,10 @@ public class ExportImage {
      *  <pre>
      *  -Dptolemy.ptII.exportHTML.usePtWebsite=true
      *  </pre>
+     *
+     *  <p>Include a link to the a
+     *  <code><i>sanitizedModelName</i>.jnlp</code> file, set the
+     *  "ptolemy.ptII.exportHTML.linkToJNLP" property to true.</p>
      *  
      *  @param args The arguments for the export image operation.
      *  The arguments should be in the format:
