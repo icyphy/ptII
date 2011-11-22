@@ -33,4 +33,4 @@ MODELCLASS = @MODELCLASS@
 	@PTJavaCompiler@ -classpath "$(CLASSPATH)" $(WARNING_CC_FLAGS) $(JAVAC_FLAGS) $(USER_JAVAC_FLAGS) @modelName@.java
 
 run: @modelName@.class
-	"java" -ea -classpath "$(CLASSPATH)" $(MODELCLASS)
+	"java" -Xmx3000m -ea -classpath "$(CLASSPATH)" $(MODELCLASS)

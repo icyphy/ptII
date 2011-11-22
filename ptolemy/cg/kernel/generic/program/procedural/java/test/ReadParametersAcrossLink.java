@@ -112,6 +112,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
         for (int x = 0; x < input.getWidth(); ++x) {
             /*Discard the input */
             //System.out.println(getFullName() + ".fire() reading input " + x);
+            // Note that we don't check for input, which is bad, but common.
             input.get(x);
         }
         //System.out.println(getFullName() + ".fire() sending " + sum);
