@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+import ptolemy.domains.ptides.kernel.PtidesEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -53,6 +55,9 @@ import ptolemy.plot.Plot;
 ////MulticoreExecutionTimeMonitor 
 /** A multicore execution time monitor. This monitors the execution 
  * time of actors on a multicore platform and displays with a plotter.
+ * Use parameter "monitorExecutionTime" on actor for non-default behavior.
+ * The "executionTime" parameter can either be specified on ports or actors,
+ * with ports taking precedence.
  *
  *  @author Michael Zimmer
  *  @version $Id$
@@ -176,12 +181,11 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
                     plot.deferIfNecessary(doAddYTick);
                 } 
             }
-            
+
         } else {
             // Get map of last points for core.
             lastPoint = _previousPoint.get(Integer.valueOf(core));
         }
-        
         // Create initial point if needed.
         if(!lastPoint.containsKey(actor)) {
             point[0] = Double.valueOf(0);
@@ -199,15 +203,30 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         y = getOffset(actor, core);
         if (scheduleEvent == ExecutionEventType.START) {
             y += 0.6;
+            _parallelMonitor.coreStarts(x);
         } else if (scheduleEvent == ExecutionEventType.STOP) {
+            _parallelMonitor.coreStops(x);
         } else if (scheduleEvent == ExecutionEventType.PREEMPTED) {
-            y += 0.4;    
+            y += 0.4;  
+            _parallelMonitor.coreStops(x);
         }
         point[0] = x;
         point[1] = y;  
         ((Plot)plot).addPoint(actorDataset, x, y, true);
         lastPoint.put(actor, point);
-        plot.fillPlot();
+        
+        Runnable doPlotActions = new Runnable() {
+            public void run() {
+                plot.setXLabel(""); // Needed for padding to captions.
+                // Show parallel monitoring results in caption.
+                plot.clearCaptions();
+                plot.addCaptionLine(_parallelMonitor.toString());
+                plot.fillPlot();
+            }
+        };
+        synchronized (plot) {
+            plot.deferIfNecessary(doPlotActions);
+        } 
         
     }
 
@@ -224,6 +243,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             return;
         }
 
+        _parallelMonitor = new ParallelMonitor();
         _previousPoint = 
             new HashMap<Integer, Map<Actor, Double[]>>();
         _actors = new ArrayList<Actor>();
@@ -315,10 +335,76 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
     
     /** Contains the actors to be monitored. */
     protected List<Actor> _actors;
+    
+    /** Monitor how much time elapses with respect to the number of cores
+     * processing events at a given time.
+     */
+    protected ParallelMonitor _parallelMonitor;
 
     /** Maps a core number to a map between actors and previous (x,y)
      * points. 
      */
     protected Map<Integer, Map<Actor, Double[]>> _previousPoint;
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    /** Monitor how much time elapses with respect to the number of cores
+     * processing events at a given time. This provides a measure of
+     * parallelization achieved.
+     */
+    protected class ParallelMonitor {
+        
+        /** Construct the parallel monitor by initializing variables. */
+        protected ParallelMonitor() {
+            _busyTime = new HashMap<Integer, Double>();
+            _activeCores = 0;
+            _lastTime = 0;
+        }
+
+        /** Call when a core starts processing an event. 
+         * @param time Time when this occurs.
+         */
+        protected void coreStarts(double time) {
+            Integer i = Integer.valueOf(_activeCores);
+            double elapsedTime = time - _lastTime;
+            if(_busyTime.containsKey(i)) {
+                elapsedTime += _busyTime.get(i).doubleValue();
+            }
+            _busyTime.put(i, Double.valueOf(elapsedTime));
+            _lastTime = time;
+            _activeCores++;
+        }
+        
+        /** Call when a core stops processing an event (including preemption). 
+         * @param time Time when this occurs.
+         */
+        protected void coreStops(double time) {
+            Integer i = Integer.valueOf(_activeCores);
+            double elapsedTime = time - _lastTime;
+            if(_busyTime.containsKey(i)) {
+                elapsedTime += _busyTime.get(i).doubleValue();
+            }
+            _busyTime.put(i, Double.valueOf(elapsedTime));
+            _lastTime = time;
+            _activeCores--;
+        }
+        
+        /** Return results as a string */
+        public String toString() {
+            return _busyTime.entrySet().toString();      
+        }
+        
+        /** How much busy time with respect to the number of active cores. */
+        private Map<Integer, Double> _busyTime;
+        
+        /** Number of active cores. */
+        private int _activeCores;
+        
+        /** Last time number of active cores changed. */
+        private double _lastTime;
+
+    }
 
 }

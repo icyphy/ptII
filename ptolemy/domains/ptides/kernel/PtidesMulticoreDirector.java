@@ -37,6 +37,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -47,6 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,6 +97,13 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     /** The number of cores available for event processing (actor firing). */
     public Parameter coresForEventProcessing;
     
+    /** If true, safe-to-process analysis will only consider trigger ports.
+     * Parameter "isTrigger" must be set to false on a port to have it not
+     * be considered a trigger port.
+     * TODO: Better way to change scheduling options?
+     */
+    public Parameter considerTriggerPorts;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
@@ -133,8 +142,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         // code generation is modified to cluster atomic actors (to reduce
         // execution overhead) this method will need to be modified.
         // Code generation would also need to handle multiports differently.
-        
-        
+
         if (!(getContainer() instanceof TypedCompositeActor)) {
             throw new IllegalActionException(getContainer(), 
                     getContainer().getFullName() + 
@@ -163,6 +171,21 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                 // Ignore input if not connected to anything.
                 if(!inputPort.isOutsideConnected()) {
                     continue;
+                }
+                
+                // Ignore if not a trigger input.
+                // TODO: to use this method to find deadlines and delay offsets, this
+                // would need to be removed and have algorithm operate on two 
+                // separate maps.
+                if(((BooleanToken)considerTriggerPorts.getToken()) 
+                        .booleanValue()) {
+                    Parameter isTrigger = (Parameter)
+                        inputPort.getAttribute("isTrigger");
+                    if(isTrigger != null && 
+                            !((BooleanToken)isTrigger.getToken()).
+                            booleanValue()) {
+                        continue;
+                    }
                 }
 
                 // Initialize nested HashMap.
@@ -730,6 +753,11 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                     new Parameter(this, "coresForEventProcessing");
             coresForEventProcessing.setExpression("4");
             coresForEventProcessing.setTypeEquals(BaseType.INT); 
+            
+            considerTriggerPorts = 
+                    new Parameter(this, "considerTriggerPorts");
+            considerTriggerPorts.setExpression("true");
+            considerTriggerPorts.setTypeEquals(BaseType.BOOLEAN);
             
         } catch (KernelException e) {
             throw new InternalErrorException("Cannot set parameter:\n"

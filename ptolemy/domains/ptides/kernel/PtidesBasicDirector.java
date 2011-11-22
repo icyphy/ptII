@@ -847,7 +847,9 @@ public class PtidesBasicDirector extends DEDirector {
         if (_executionTimeListeners == null) {
             _executionTimeListeners = new ArrayList();
         }
-        _executionTimeListeners.add(listener);
+        if(!_executionTimeListeners.contains(listener)) {
+            _executionTimeListeners.add(listener);
+        }
     }
 
     /** Set the microstep. A microstep is an
