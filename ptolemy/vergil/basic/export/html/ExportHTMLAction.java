@@ -532,7 +532,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	    index.println(start.toString());
 
 	    boolean linkToJNLP = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
-            if (linkToJNLP) {
+            if (linkToJNLP && model.getContainer() == null) {
                 index.println("Below is a browsable image of the model. "
                         + "For an executable version, go to the "
                         + "<a href=\"../" + _sanitizedModelName + ".jnlp\">WebStart version</a>.");
