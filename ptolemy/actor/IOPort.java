@@ -2617,25 +2617,30 @@ public class IOPort extends ComponentPort {
         try {
             _workspace.getReadAccess();
             if (_numberOfSinksVersion != _workspace.getVersion()) {
+                _numberOfSinks = 0;
                 Nameable container = getContainer();
-                Director excDirector = ((Actor) container)
-                        .getExecutiveDirector();
-                int depthOfDirector = excDirector.depthInHierarchy();
-                LinkedList<IOPort> result = new LinkedList<IOPort>();
-                Iterator<?> ports = deepConnectedPortList().iterator();
+                // Do not use getExecutiveDirector() here because some
+                // actors fool with that (like RunCompositeActor).
+                Nameable containersContainer = container.getContainer();
+                if (containersContainer instanceof Actor) {
+                    Director excDirector = ((Actor)containersContainer).getDirector();
+                    int depthOfDirector = excDirector.depthInHierarchy();
+                    LinkedList<IOPort> result = new LinkedList<IOPort>();
+                    Iterator<?> ports = deepConnectedPortList().iterator();
 
-                while (ports.hasNext()) {
-                    IOPort port = (IOPort) ports.next();
-                    int depth = port.getContainer().depthInHierarchy();
+                    while (ports.hasNext()) {
+                        IOPort port = (IOPort) ports.next();
+                        int depth = port.getContainer().depthInHierarchy();
 
-                    if (port.isInput() && (depth >= depthOfDirector)) {
-                        result.addLast(port);
-                    } else if (port.isOutput() && (depth < depthOfDirector)
-                            && (port.numberOfSinks() > 0)) {
-                        result.addLast(port);
+                        if (port.isInput() && (depth >= depthOfDirector)) {
+                            result.addLast(port);
+                        } else if (port.isOutput() && (depth < depthOfDirector)
+                                && (port.numberOfSinks() > 0)) {
+                            result.addLast(port);
+                        }
                     }
+                    _numberOfSinks = result.size();
                 }
-                _numberOfSinks = result.size();
                 _numberOfSinksVersion = _workspace.getVersion();
             }
             return _numberOfSinks;
@@ -2671,10 +2676,14 @@ public class IOPort extends ComponentPort {
                 int depthOfDirector = -1;
 
                 if (container != null) {
-                    Director director = ((Actor) container)
-                            .getExecutiveDirector();
-                    if (director != null) {
-                        depthOfDirector = director.depthInHierarchy();
+                    // Do not use getExecutiveDirector() here because some
+                    // actors fool with that (like RunCompositeActor).
+                    Nameable containersContainer = container.getContainer();
+                    if (containersContainer instanceof Actor) {
+                        Director director = ((Actor)containersContainer).getDirector();
+                        if (director != null) {
+                            depthOfDirector = director.depthInHierarchy();
+                        }
                     }
                 }
 
@@ -3227,20 +3236,24 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             if (_sinkPortListVersion != _workspace.getVersion()) {
                 Nameable container = getContainer();
-                Director excDirector = ((Actor) container)
-                        .getExecutiveDirector();
-                int depthOfDirector = excDirector.depthInHierarchy();
+                // Do not use getExecutiveDirector() here because some
+                // actors fool with that (like RunCompositeActor).
+                Nameable containersContainer = container.getContainer();
                 _sinkPortList = new LinkedList<IOPort>();
-                Iterator<?> ports = deepConnectedPortList().iterator();
+                if (containersContainer instanceof Actor) {
+                    Director excDirector = ((Actor)containersContainer).getDirector();
+                    int depthOfDirector = excDirector.depthInHierarchy();
+                    Iterator<?> ports = deepConnectedPortList().iterator();
 
-                while (ports.hasNext()) {
-                    IOPort port = (IOPort) ports.next();
-                    int depth = port.getContainer().depthInHierarchy();
+                    while (ports.hasNext()) {
+                        IOPort port = (IOPort) ports.next();
+                        int depth = port.getContainer().depthInHierarchy();
 
-                    if (port.isInput() && (depth >= depthOfDirector)) {
-                        _sinkPortList.addLast(port);
-                    } else if (port.isOutput() && (depth < depthOfDirector)) {
-                        _sinkPortList.addLast(port);
+                        if (port.isInput() && (depth >= depthOfDirector)) {
+                            _sinkPortList.addLast(port);
+                        } else if (port.isOutput() && (depth < depthOfDirector)) {
+                            _sinkPortList.addLast(port);
+                        }
                     }
                 }
                 _sinkPortListVersion = _workspace.getVersion();
@@ -3271,10 +3284,14 @@ public class IOPort extends ComponentPort {
                 int depthOfDirector = -1;
 
                 if (container != null) {
-                    Director director = ((Actor) container)
-                            .getExecutiveDirector();
-                    if (director != null) {
-                        depthOfDirector = director.depthInHierarchy();
+                    // Do not use getExecutiveDirector() here because some
+                    // actors fool with that (like RunCompositeActor).
+                    Nameable containersContainer = container.getContainer();
+                    if (containersContainer instanceof Actor) {
+                        Director director = ((Actor)containersContainer).getDirector();
+                        if (director != null) {
+                            depthOfDirector = director.depthInHierarchy();
+                        }
                     }
                 }
 
