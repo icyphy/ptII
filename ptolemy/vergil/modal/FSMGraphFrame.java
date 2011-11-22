@@ -175,11 +175,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
         _graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
         _menubar.add(_graphMenu);
-        // The layout action is created by BasicGraphFrame.
-        GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
-        GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-        GUIUtilities.addMenuItem(_graphMenu, _layoutConfigDialogAction);
-        _graphMenu.addSeparator();
+        _addLayoutMenu(_graphMenu);
 
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.

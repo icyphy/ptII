@@ -186,9 +186,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         _graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
         _menubar.add(_graphMenu);
-        GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
-        GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-        _graphMenu.addSeparator();
+        _addLayoutMenu(_graphMenu);
 
         GUIUtilities.addHotKey(_getRightComponent(), _saveInLibraryAction);
         GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);

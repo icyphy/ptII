@@ -201,13 +201,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
         _menubar.add(_graphMenu);
-        // The layout action is created by BasicGraphFrame.
-        GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
-        GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-        if (_layoutConfigDialogAction != null) {
-            GUIUtilities.addMenuItem(_graphMenu, _layoutConfigDialogAction);
-        }
-        _graphMenu.addSeparator();
+        _addLayoutMenu(_graphMenu);
         
         // Only include the various actions if there is an actor library
         // The ptinyViewer configuration uses this.

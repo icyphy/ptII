@@ -669,7 +669,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         _ruleMenu.addSeparator();
 
-        GUIUtilities.addMenuItem(_ruleMenu, _layoutAction);
+        _addLayoutMenu(_ruleMenu);
 
         GraphController controller = _getGraphController();
         if (controller instanceof RunnableGraphController) {

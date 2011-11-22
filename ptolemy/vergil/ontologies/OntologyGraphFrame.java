@@ -113,9 +113,7 @@ public class OntologyGraphFrame extends ExtendedGraphFrame implements
         _graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
         _menubar.add(_graphMenu);
-        GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
-        GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-        _graphMenu.addSeparator();
+        _addLayoutMenu(_graphMenu);
 
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.

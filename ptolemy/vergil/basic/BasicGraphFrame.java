@@ -1569,6 +1569,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         GUIUtilities.addMenuItem(_viewMenu, _zoomOutAction);
     }
 
+    protected void _addLayoutMenu(JMenu graphMenu) {
+        // The layout action is created by BasicGraphFrame.
+        if (_layoutAction != null) {
+            // If we are running with -ptinyViewer, then the layout facility
+            // might not be present.
+            GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
+            GUIUtilities.addMenuItem(graphMenu, _layoutAction);
+            if (_layoutConfigDialogAction != null) {
+                GUIUtilities.addMenuItem(graphMenu, _layoutConfigDialogAction);
+            }
+            graphMenu.addSeparator();
+        }
+    }
+
     /** Return true if any element of the specified list is implied.
      *  An element is implied if its getDerivedLevel() method returns
      *  anything smaller than Integer.MAX_VALUE.
