@@ -91,7 +91,7 @@ if {[info procs testJavaCG] == "" } then {
 
 
 set models [list \
-		$PTII/ptolemy/actor/lib/colt/test/auto/AllColt.xml
+		$PTII/ptolemy/actor/lib/colt/test/auto/AllColt.xml \
 		$PTII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml \
 		$PTII/ptolemy/actor/lib/conversions/test/auto/FixToDoubleAndBack.xml \
 		$PTII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml \
