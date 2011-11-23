@@ -1340,15 +1340,17 @@ public class TemplateParser {
                         + processCode(parameter);
             }
         } else if (macro.equals("containerSymbol")) {
+            NamedObj container = ((NamedObj) _component).getContainer();
             if (parameter.trim().length() == 0) {
-                return _codeGenerator
-                        .generateVariableName((((NamedObj) _component)
-                                .getContainer()));
+                //return _codeGenerator
+                //        .generateVariableName((((NamedObj) _component)
+                //                .getContainer()));
+                return _codeGenerator.generatePtTypedCompositeActorName(
+                        container, container.getName());
             } else {
-                return _codeGenerator
-                        .generateVariableName((((NamedObj) _component)
-                                .getContainer()))
-                        + "_" + processCode(parameter);
+                return _codeGenerator.generatePtTypedCompositeActorName(
+                        container, container.getName()
+                        + "_" + processCode(parameter));
             }
 
         } else if (macro.equals("actorClass")) {

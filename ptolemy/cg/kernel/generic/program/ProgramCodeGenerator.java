@@ -721,6 +721,42 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return _ioPortMap.size();
     }
 
+
+    /** Generate sanitized name for the given TypedCompositeActor
+     * This method is used when the {@link #variablesAsArrays}
+     * parameter is true.
+     * @param container The container of the actor.
+     * @param actorName The sanitized name of the actor.
+     * @return The name of the actor as an array element.
+     *  @exception IllegalActionException If the variablesAsArrays parameter
+     *  of the code generator cannot be read.
+     */
+    public String generatePtTypedCompositeActorName(NamedObj container, String actorName) 
+            throws IllegalActionException {
+//         if (!((BooleanToken) variablesAsArrays.getToken())
+//                 .booleanValue()) {
+             return generateVariableName(container);
+//         } else {
+//             // This method is used in AutoAdapter.
+//             Integer actorIndex = null;
+//             String actorNameSymbol = generateVariableName(container) + "_" + actorName;
+//             if ((actorIndex = _typedCompositeActorMap.get(actorNameSymbol)) == null) {
+//                 // FIXME: is there a better way to update an element in a HashMap?
+//                 actorIndex = Integer.valueOf(_typedCompositeActorMap.size());
+//                 _typedCompositeActorMap.put(actorNameSymbol, actorIndex);
+//             }
+//             return "_compositeMap[" + actorIndex + "]";
+//         }
+    }
+
+    /** Return the size of the TypedCompositeActor Map.
+     *  @return the size of the TypedCompositeActor Map.
+     */
+    public int generatePtTypedCompositeActorSize() {
+        // This method is used in AutoAdapter.
+        return _typedCompositeActorMap.size();
+    }
+
     /** Generate into the specified code stream the code associated with
      *  postfiring up the container composite actor. This method calls the
      *  generatePostfireCode() method of the code generator adapter associated
@@ -1932,6 +1968,13 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  is set to true.
      */
     private static HashMap<String, Integer> _ioPortMap = new HashMap<String, Integer>();
+
+    /** A map from a TypedAtomicActor name to a table index.
+     *  This is used when the variablesAsArrays parameter of the code generator
+     *  is set to true.
+     */
+    private static HashMap<String, Integer> _typedCompositeActorMap = new HashMap<String, Integer>();
+
 
     /** The extension of the template files.
      *   (for example c in case of C and j in case of Java)

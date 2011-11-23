@@ -35,7 +35,7 @@ ME =		ptolemy/cg/kernel/generic/program/procedural/java/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

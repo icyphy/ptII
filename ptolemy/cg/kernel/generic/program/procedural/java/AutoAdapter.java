@@ -824,37 +824,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // Generate code for the sources.  We don't use
                     // getWidth() here because IOPort.getWidth() says
                     // not to.
-                    // FIXME: Shouldn't we use sourcePortList() and not numberOfSources()?  See generatePreinitializeMethodBodyCode().
-                    //int sources = inputPort.numberOfSources();
-                    List sourcePortList = inputPort.sourcePortList();
-                    int sources = sourcePortList.size();
+                    int sources = inputPort.numberOfSources();
                     //code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort name " + name + " type: " + type + " numberOfSources: " + inputPort.numberOfSources() + " inputPort: " + inputPort + " width: " + inputPort.getWidth() + " numberOfSinks: " + inputPort.numberOfSinks()));
                     for (int i = 0; i < sources; i++) {
                         code.append(_generateSendInside(name, name + "Source"
                                 + i, type, i));
-                        
-                         if (_isReadingRemoteParameters(inputPort, i, sourcePortList)) {
-                        	// Sigh.
-
-                            // If we have a custom actor A that is
-                            // connected to a composite that contains a
-                            // custom actor B, but A and B are conected by
-                            // a non-custom actor, then we need to
-                            // transfer the token by hand.  For example:
-                            // B--> AddSubtract --> A
-                            // Test case
-                            // $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/knownFailedTests/ReadPMultiport2AutoD.xml 
-                           
-                            NamedObj remoteActorContainer = ((IOPort) sourcePortList.get(i))
-                                .getContainer().getContainer();
-                            String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
-                            code.append("{" + _eol
-                                    + "TypedCompositeActor c0 = (TypedCompositeActor) " + remoteActorContainerSymbol + ";" + _eol
-                                    + "TypedIOPort c0PortA = (TypedIOPort)c0.getPort(\"c0PortA\");" + _eol
-                                    + "TypedIOPort c0PortB = (TypedIOPort)c0.getPort(\"c0PortB\");" + _eol
-                                    + "c0PortA.send(0, c0PortB.get(0));" + _eol
-                                    + "}" + _eol);
-                        }
                     }
 
                     // Generate code for the sinks.
@@ -863,7 +837,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     if (width < sinks) {
                         sinks = width;
                     }
-                    // FIXME: Shouldn't we use sinkPortList() and not numberOfSinks()?  See generatePreinitializeMethodBodyCode().
                     for (int i = 0; i < sinks; i++) {
                         code.append(_generateSendInside(name,
                                 name + "Sink" + i, type, i));
@@ -2609,14 +2582,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // If the container contains any actors that would be AutoAdaptered,
                     // then we need not do anything special, the parameters will be 
                     // created for us.  Thus, thsi method returns false
-//                     Iterator entities = ((TypedCompositeActor)container).allAtomicEntityList().iterator();
-//                     while (entities.hasNext()) {
-//                         NamedObj namedObj = (NamedObj)entities.next();
-//                         if (_isAutoAdaptered(namedObj)) {
-//                             System.out.println("_isReadingRemoteParameters: " + namedObj.getFullName() + " is autoadaptered, returning false");
-//                             return false;
-//                         }
-//                     } 
+                    Iterator entities = ((TypedCompositeActor)container).allAtomicEntityList().iterator();
+                    while (entities.hasNext()) {
+                        NamedObj namedObj = (NamedObj)entities.next();
+                        if (_isAutoAdaptered(namedObj)) {
+                            //System.out.println("_isReadingRemoteParameters: " + namedObj.getFullName() + " is autoadaptered, returning false");
+                            return false;
+                        }
+                    } 
                     List<Parameter> parameters = container
                         .attributeList(Parameter.class);
                     if (parameters.size() > 0) {
