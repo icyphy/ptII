@@ -343,6 +343,16 @@ public class ClassChanges extends MoMLFilterSimple {
                     "ptolemy.kernel.util.StringAttribute");
         }
 
+        // Look for Kepler's CompositeClassEntity, and if we don't find it, then
+        // add it to the filter.  This makes it much easier to open
+        // Kepler models in Ptolemy.
+        try {
+            Class.forName("org.kepler.moml.CompositeClassEntity");
+        } catch (ClassNotFoundException ex) {
+            _classChanges.put("org.kepler.moml.CompositeClassEntity",
+                    "ptolemy.actor.TypedCompositeActor");
+        }
+
         _classChanges.put("ptolemy.data.unit.UnitAttribute",
                 "ptolemy.moml.unit.UnitAttribute");
 
