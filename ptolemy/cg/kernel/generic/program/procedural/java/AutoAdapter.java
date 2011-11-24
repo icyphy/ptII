@@ -824,14 +824,50 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // Generate code for the sources.  We don't use
                     // getWidth() here because IOPort.getWidth() says
                     // not to.
-                    int sources = inputPort.numberOfSources();
+                    // FIXME: Shouldn't we use sourcePortList() and not numberOfSources()?  See generatePreinitializeMethodBodyCode().
+                    //int sources = inputPort.numberOfSources();
+                    List sourcePortList = inputPort.sourcePortList();
+                    int sources = sourcePortList.size();
+
                     //code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort name " + name + " type: " + type + " numberOfSources: " + inputPort.numberOfSources() + " inputPort: " + inputPort + " width: " + inputPort.getWidth() + " numberOfSinks: " + inputPort.numberOfSinks()));
                     for (int i = 0; i < sources; i++) {
                         code.append(_generateSendInside(name, name + "Source"
                                 + i, type, i));
+                        NamedObj remoteActor = ((NamedObj)sourcePortList.get(i)).getContainer();
+                        NamedObj remoteContainer = remoteActor.getContainer();
+                        if (_isReadingRemoteParameters(inputPort, i, sourcePortList)) {
+                            // Sigh.
+
+                            // If we have a custom actor A that is
+                            // connected to a composite that contains a
+                            // custom actor B, but A and B are conected by
+                            // a non-custom actor, then we need to
+                            // transfer the token by hand.  For example:
+                            // B--> AddSubtract --> A
+                            // Test case
+                            // $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/knownFailedTests/ReadPMultiport2AutoD.xml 
+
+                            NamedObj remoteActorContainer = ((IOPort) sourcePortList.get(i))
+                                .getContainer().getContainer();
+                            String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
+                            code.append("{" + _eol
+                                    + "TypedCompositeActor c0 = (TypedCompositeActor) " + remoteActorContainerSymbol + ";" + _eol
+                                    + "TypedIOPort c0PortA = (TypedIOPort)c0.getPort(\"c0PortA\");" + _eol
+                                    // The check for null is needed by
+                                    // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml
+                                    + "if (c0PortA != null) {" + _eol
+                                    + "    TypedIOPort c0PortB = (TypedIOPort)c0.getPort(\"c0PortB\");" + _eol
+                                    + "    if (c0PortB != null) {" + _eol
+                                    + "        c0PortA.setTypeEquals(" + _typeToBaseType(inputPort.getType()) + ");" + _eol
+                                    + "        c0PortA.send(0, c0PortB.get(0));" + _eol
+                                    + "    }" + _eol
+                                    + "}" + _eol
+                                    + "}" + _eol);
+                        }
                     }
 
                     // Generate code for the sinks.
+                    // FIXME: Shouldn't we use sinkPortList() and not numberOfSinks()?  See generatePreinitializeMethodBodyCode().
                     int sinks = inputPort.numberOfSinks();
                     int width = inputPort.getWidth();
                     if (width < sinks) {
@@ -2562,46 +2598,86 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // FIXME: We should annotate the very few ports that are
             // used by actors to read parameters in remote actors.
 
-
-            NamedObj container = null;
+            NamedObj remoteActor = null;
+            NamedObj remoteContainer = null;
             try {
-                container = ((NamedObj)sourceOrSinkPorts.get(channelNumber)).getContainer().getContainer();
+                remoteActor = ((NamedObj)sourceOrSinkPorts.get(channelNumber)).getContainer();
+                remoteContainer = remoteActor.getContainer();
             } catch (Exception ex) {
                 System.out.println(port.getContainer().getContainer().exportMoML());
                 throw new IllegalActionException(port, "Failed to get channel " 
                         + channelNumber + " of sourcePorts " + sourceOrSinkPorts.size()
                         + " width: " + port.getWidth());
             }
-            //System.out.println("_isReadingRemoteParameters: 0 " + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " width: " + port.getWidth() + " " + port.sourcePortList().size() + container.getFullName());
+            //System.out.println("_isReadingRemoteParameters: 0 " + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " width: " + port.getWidth() + " " + port.sourcePortList().size() + " " + remoteActor.getFullName() + " " + remoteContainer.getFullName());
 
             // If the custom actor is connected to a CompositeActorA
             // inside a CompositeActorB, then we want to check
             // CompositeActorB for Parameters.
-            while (container != null) {
-                if (container instanceof TypedCompositeActor) {
-                    // If the container contains any actors that would be AutoAdaptered,
+            while (remoteContainer != null) {
+                if (remoteContainer instanceof TypedCompositeActor) {
+                    // If the remoteContainer contains any actors that would be AutoAdaptered,
                     // then we need not do anything special, the parameters will be 
-                    // created for us.  Thus, thsi method returns false
-                    Iterator entities = ((TypedCompositeActor)container).allAtomicEntityList().iterator();
-                    while (entities.hasNext()) {
-                        NamedObj namedObj = (NamedObj)entities.next();
-                        if (_isAutoAdaptered(namedObj)) {
-                            //System.out.println("_isReadingRemoteParameters: " + namedObj.getFullName() + " is autoadaptered, returning false");
-                            return false;
+                    // created for us.  Thus, this method returns false
+                    boolean foundAutoAdapteredUpstreamActor = false;
+
+                    if (!_isAutoAdaptered(remoteActor)) {
+                        // If the remote actor is not auto adaptered,
+                        // but it is connected to an auto adaptered
+                        // actor in the same container, then consider
+                        // it be reading remote parameters and return
+                        // true.
+
+                        // FIXME: This only checks one upstream actor,
+                        // we should check all upstream actors in the
+                        // container of the remote actor.
+
+                        // Tests:
+                        //$PTII/bin/ptcg -language java  $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/AutoAdapterStringParameter.xml
+                        //$PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ReadPMultiport2AutoD.xml
+                        Iterator remoteActorSourcePorts = ((Actor)remoteActor).inputPortList().iterator();
+                        done: while (remoteActorSourcePorts.hasNext()) {
+                            IOPort remotePort = (IOPort)remoteActorSourcePorts.next();
+                            Iterator remotePorts = remotePort.sourcePortList().iterator();
+                            while (remotePorts.hasNext()) {
+                                NamedObj upstreamActor = ((NamedObj)remotePorts.next()).getContainer();
+                                //System.out.println("_isReadingRemoteParameters: upstream actor: " + upstreamActor.getFullName());
+                                if (upstreamActor.getContainer().equals(remoteActor.getContainer())
+                                        &&  _isAutoAdaptered(upstreamActor)) {
+                                    foundAutoAdapteredUpstreamActor = true;
+                                    // We found one, so stop searching
+                                    break done;
+                                }
+                            }
+                        }
+                    }
+                    if (!foundAutoAdapteredUpstreamActor) {
+                        // Oddly, if we found an upstream auto adaptered actor and there are parameters in the container.
+                        // However, if the remote actor does not have an upstream auto adaptered actor, then return false
+                        // because we will catch these parameters elsewhere.
+                        Iterator entities = ((TypedCompositeActor)remoteContainer).allAtomicEntityList().iterator();
+                        while (entities.hasNext()) {
+                            NamedObj namedObj = (NamedObj)entities.next();
+                            if (_isAutoAdaptered(namedObj)) {
+                                //System.out.println("_isReadingRemoteParameters: " + namedObj.getFullName() + " is autoadaptered, returning false");
+                                return false;
+                            }
                         }
                     } 
-                    List<Parameter> parameters = container
+                    // FIXME: we could be smarter about *which* parameters matter here.
+                    List<Parameter> parameters = remoteContainer
                         .attributeList(Parameter.class);
                     if (parameters.size() > 0) {
-                        //System.out.println("_isReadingRemoteParameters: " + container.getFullName() + " return True");
+                        // We have parameters in the container, so return true.
+                        //System.out.println("_isReadingRemoteParameters: " + remoteContainer.getFullName() + " return True");
                         return true;
                     }
                 }
-                if (container.getContainer() == getComponent().getContainer()) {
+                if (remoteContainer.getContainer() == getComponent().getContainer()) {
                     // Stop because we are at the same level as the container of the component.
                     break;
                 }
-                container = container.getContainer();
+                remoteContainer = remoteContainer.getContainer();
             }
         }
         //System.out.println("_isReadingRemoteParameters:" + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " returning FALSE");
