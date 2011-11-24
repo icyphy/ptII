@@ -733,20 +733,20 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     public String generatePtTypedCompositeActorName(NamedObj container, String actorName) 
             throws IllegalActionException {
-//         if (!((BooleanToken) variablesAsArrays.getToken())
-//                 .booleanValue()) {
+         if (!((BooleanToken) variablesAsArrays.getToken())
+                 .booleanValue()) {
              return generateVariableName(container);
-//         } else {
-//             // This method is used in AutoAdapter.
-//             Integer actorIndex = null;
-//             String actorNameSymbol = generateVariableName(container) + "_" + actorName;
-//             if ((actorIndex = _typedCompositeActorMap.get(actorNameSymbol)) == null) {
-//                 // FIXME: is there a better way to update an element in a HashMap?
-//                 actorIndex = Integer.valueOf(_typedCompositeActorMap.size());
-//                 _typedCompositeActorMap.put(actorNameSymbol, actorIndex);
-//             }
-//             return "_compositeMap[" + actorIndex + "]";
-//         }
+         } else {
+             // This method is used in AutoAdapter.
+             Integer actorIndex = null;
+             String actorNameSymbol = generateVariableName(container) + "_" + actorName;
+             if ((actorIndex = _typedCompositeActorMap.get(actorNameSymbol)) == null) {
+                 // FIXME: is there a better way to update an element in a HashMap?
+                 actorIndex = Integer.valueOf(_typedCompositeActorMap.size());
+                 _typedCompositeActorMap.put(actorNameSymbol, actorIndex);
+             }
+             return "_compositeMap[" + actorIndex + "]";
+         }
     }
 
     /** Return the size of the TypedCompositeActor Map.

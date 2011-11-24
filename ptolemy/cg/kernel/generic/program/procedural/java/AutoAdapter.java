@@ -294,15 +294,18 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(
                 "TypedAtomicActor $actorSymbol(actor);" + _eol);
-        // Declare each container only once.
-        NamedObj container = getComponent().getContainer();
-        while (container != null) { 
-            if (!_containersDeclared.contains(container)) {
-                _containersDeclared.add(container);
-                String containerSymbol = getCodeGenerator().generateVariableName(container);
-                code.append("TypedCompositeActor " + containerSymbol + ";" + _eol);
+        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
+                .booleanValue()) {
+            // Declare each container only once.
+            NamedObj container = getComponent().getContainer();
+            while (container != null) { 
+                if (!_containersDeclared.contains(container)) {
+                    _containersDeclared.add(container);
+                    String containerSymbol = getCodeGenerator().generateVariableName(container);
+                    code.append("TypedCompositeActor " + containerSymbol + ";" + _eol);
+                }
+                container = container.getContainer();
             }
-            container = container.getContainer();
         }
         code.append(_generatePortDeclarations((Entity)getComponent()));
 
@@ -331,6 +334,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         String[] splitInitializeConnectionCode = getCodeGenerator()._splitBody(
                 "_AutoAdapterI_", code);
 
+        String toplevelSymbol = _generatePtTypedCompositeActorName(component.toplevel(), component.toplevel().getName());
         // Stitch every thing together.  We do this last because of
         // the _splitBody() calls.
         String result = getCodeGenerator().comment(
@@ -342,13 +346,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + component.toplevel().getName()
                 + "\");" + _eol
                 // FIXME: set this just once
-                + getCodeGenerator().generateVariableName(component.toplevel()) + " = _toplevel;" + _eol
+                //+ getCodeGenerator().generateVariableName(component.toplevel()) + " = _toplevel;" + _eol
+                + toplevelSymbol +  " = _toplevel;" + _eol
                 + containmentCode
                 // If there are two custom actors in one container, then
                 // we may have already created the actor.
-                + "    if ($actorSymbol(actor) == null) {"
-                + _eol
-                + "        $actorSymbol(actor) = new "
+                + "    if ($actorSymbol(actor) == null) {" + _eol
+                + "            $actorSymbol(actor) = new "
                 + actorClassName
                //+ "($containerSymbol(), \"$actorSymbol(actor)\");"
                 + "($containerSymbol(), \"" + component.getName() + "\");"
@@ -359,10 +363,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // then should call getDisplayName() instead.
                 + "        $actorSymbol(actor).setDisplayName(\""
                 + component.getName()
-                + "\");"
-                + _eol
-                + "    }"
-                + _eol
+                + "\");" + _eol
+                + "    }" + _eol
                 + splitInitializeConnectionCode[0]
                 + splitInitializeConnectionCode[1]
                 + "    if ($containerSymbol().getAttribute(\"director\") == null) {"
@@ -371,10 +373,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + _eol
                 + "    }"
                 + _eol
-                //+ "    $containerSymbol().setManager(new ptolemy.actor.Manager(\"manager\"));" + _eol
-                //+ "    $containerSymbol().preinitialize();" + _eol
-                //+ getCodeGenerator().comment("FIXME: Don't call _toplevel.preinitialize() for each AutoAdapter")
-                //+ "    _toplevel.preinitialize();" + _eol
                 + "} catch (Exception ex) {"
                 + _eol
                 + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);"
@@ -777,8 +775,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         if (((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
                 .booleanValue()) {
             // The array of TypedIOPorts used if the code generator variablesAsArrays is true.
-            sharedCode.add("TypedIOPort [] _ioPortMap = new TypedIOPort[" + 
-                    ((ProgramCodeGenerator)getCodeGenerator()).generatePtIOPortSize()
+            sharedCode.add("TypedIOPort [] _ioPortMap = new TypedIOPort["
+                    + ((ProgramCodeGenerator)getCodeGenerator()).generatePtIOPortSize()
+                    + "];" + _eol
+                    + "TypedCompositeActor [] _compositeMap = new TypedCompositeActor["
+                    + ((ProgramCodeGenerator)getCodeGenerator()).generatePtTypedCompositeActorSize()
                     + "];" + _eol);
         }
         return sharedCode;
@@ -828,15 +829,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     //int sources = inputPort.numberOfSources();
                     List sourcePortList = inputPort.sourcePortList();
                     int sources = sourcePortList.size();
-
                     //code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort name " + name + " type: " + type + " numberOfSources: " + inputPort.numberOfSources() + " inputPort: " + inputPort + " width: " + inputPort.getWidth() + " numberOfSinks: " + inputPort.numberOfSinks()));
                     for (int i = 0; i < sources; i++) {
                         code.append(_generateSendInside(name, name + "Source"
                                 + i, type, i));
-                        NamedObj remoteActor = ((NamedObj)sourcePortList.get(i)).getContainer();
-                        NamedObj remoteContainer = remoteActor.getContainer();
-                        if (_isReadingRemoteParameters(inputPort, i, sourcePortList)) {
-                            // Sigh.
+                        
+                         if (_isReadingRemoteParameters(inputPort, i, sourcePortList)) {
+                        	// Sigh.
 
                             // If we have a custom actor A that is
                             // connected to a composite that contains a
@@ -846,33 +845,30 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             // B--> AddSubtract --> A
                             // Test case
                             // $PTII/bin/ptcg -language java ~/ptII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/knownFailedTests/ReadPMultiport2AutoD.xml 
+                           
+                            NamedObj remoteActor = ((IOPort) sourcePortList.get(i)).getContainer();
+                            NamedObj remoteActorContainer = remoteActor.getContainer();
 
-                            NamedObj remoteActorContainer = ((IOPort) sourcePortList.get(i))
-                                .getContainer().getContainer();
-                            String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
+                            //String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
+                            String remoteActorContainerSymbol = _generatePtTypedCompositeActorName(remoteActorContainer,
+                                    remoteActorContainer.getName());
                             code.append("{" + _eol
                                     + "TypedCompositeActor c0 = (TypedCompositeActor) " + remoteActorContainerSymbol + ";" + _eol
                                     + "TypedIOPort c0PortA = (TypedIOPort)c0.getPort(\"c0PortA\");" + _eol
-                                    // The check for null is needed by
-                                    // $PTII/bin/ptcg -language java  $PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml
-                                    + "if (c0PortA != null) {" + _eol
-                                    + "    TypedIOPort c0PortB = (TypedIOPort)c0.getPort(\"c0PortB\");" + _eol
-                                    + "    if (c0PortB != null) {" + _eol
-                                    + "        c0PortA.setTypeEquals(" + _typeToBaseType(inputPort.getType()) + ");" + _eol
-                                    + "        c0PortA.send(0, c0PortB.get(0));" + _eol
-                                    + "    }" + _eol
-                                    + "}" + _eol
+                                    + "TypedIOPort c0PortB = (TypedIOPort)c0.getPort(\"c0PortB\");" + _eol
+                                    + "c0PortA.setTypeEquals(" + _typeToBaseType(inputPort.getType()) + ");" + _eol
+                                    + "c0PortA.send(0, c0PortB.get(0));" + _eol
                                     + "}" + _eol);
                         }
                     }
 
                     // Generate code for the sinks.
-                    // FIXME: Shouldn't we use sinkPortList() and not numberOfSinks()?  See generatePreinitializeMethodBodyCode().
                     int sinks = inputPort.numberOfSinks();
                     int width = inputPort.getWidth();
                     if (width < sinks) {
                         sinks = width;
                     }
+                    // FIXME: Shouldn't we use sinkPortList() and not numberOfSinks()?  See generatePreinitializeMethodBodyCode().
                     for (int i = 0; i < sinks; i++) {
                         code.append(_generateSendInside(name,
                                 name + "Sink" + i, type, i));
@@ -1071,11 +1067,17 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             + actor.getName() + "\");" + _eol
             + "}" + _eol
             + "return " + actorSymbol + ";" + _eol;
+        String nonArrayActorSymbol = "";
+        if (actor instanceof TypedCompositeActor) {
+            nonArrayActorSymbol = getCodeGenerator().generateVariableName(actor);
+        } else {
+            nonArrayActorSymbol = actorSymbol;
+        }
         String methodName = "_instantiate"
             + (generateContainmentCode ? "Containment" : "")
             + (generateContainedVariables ? "Variables" : "")
             + (generateElectricityConnections ? "ECons" : "")
-            + processCode(actorSymbol);
+            + processCode(nonArrayActorSymbol);
         _actorInstantiationMethods.put(methodName, processCode(code));
         return methodName + "();" + _eol;
     }
@@ -1090,7 +1092,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         StringBuffer containmentCode = new StringBuffer();
 
         // The symbol of the container of the component, similar to $containerSymbol.
-        String containerSymbol = getCodeGenerator().generateVariableName((((NamedObj) component).getContainer()));
+        //String containerSymbol = getCodeGenerator().generateVariableName((((NamedObj) component).getContainer()));
+        NamedObj container = ((NamedObj) component).getContainer();
+        String containerSymbol = _generatePtTypedCompositeActorName(container, container.getName());
 
         NamedObj parentContainer = component.getContainer();
         NamedObj grandparentContainer = parentContainer.getContainer();
@@ -1133,8 +1137,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 //                         //+ "}" + _eol
 //                         + "}" + _eol
 //                         + "cgContainer = temporaryContainer;" + _eol);
-                String parentContainerSymbol = getCodeGenerator().generateVariableName(parentContainer);
-                String parentContainerContainerSymbol = getCodeGenerator().generateVariableName(parentContainer.getContainer());
+                //String parentContainerSymbol = getCodeGenerator().generateVariableName(parentContainer);
+                String parentContainerSymbol = _generatePtTypedCompositeActorName(parentContainer, parentContainer.getName());
+                //String parentContainerContainerSymbol = getCodeGenerator().generateVariableName(parentContainer.getContainer());
+                NamedObj parentContainerContainer = parentContainer.getContainer();
+                String parentContainerContainerSymbol = _generatePtTypedCompositeActorName(parentContainerContainer,
+                        parentContainerContainer.getName());
                 containmentCode.insert(0,
                         "cgContainer = (TypedCompositeActor)"
                         + _generateActorInstantiation(parentContainer,  parentContainerSymbol,
@@ -1581,10 +1589,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         if (_isReadingRemoteParameters(castPort, i, sourcePortList)) {
                             NamedObj remoteActorContainer = ((IOPort) sourcePortList.get(i))
                                 .getContainer().getContainer();
-                            if (remoteActorContainer != null) {
+                            if (remoteActorContainer != null
+                                    && !((BooleanToken) getCodeGenerator().variablesAsArrays.getToken()).booleanValue()) {
                                 if (!_containersDeclared.contains(remoteActorContainer)) {
+
                                     _containersDeclared.add(remoteActorContainer);
-                                    String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
+                                    //String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
+                                    String remoteActorContainerSymbol = _generatePtTypedCompositeActorName(remoteActorContainer,
+                                            remoteActorContainer.getName());
                                     code.append("TypedCompositeActor " + remoteActorContainerSymbol
                                             + ";" + _eol);
                                 }
@@ -1593,7 +1605,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                 if (remoteActorContainerContainer != null
                                         && !_containersDeclared.contains(remoteActorContainerContainer)) {
                                     _containersDeclared.add(remoteActorContainerContainer);
-                                    String remoteActorContainerContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainerContainer);
+                                    //String remoteActorContainerContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainerContainer);
+                                    String remoteActorContainerContainerSymbol = _generatePtTypedCompositeActorName(remoteActorContainerContainer,
+                                            remoteActorContainerContainer.getName());
                                     code.append("TypedCompositeActor " + remoteActorContainerContainerSymbol
                                             + ";" + _eol);
                                 }
@@ -1678,18 +1692,24 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             } else {
                 String remoteActorSymbol = getCodeGenerator().generateVariableName(
                         remoteActor) + "_actor";
-                String remoteActorContainerSymbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer()));
+                //String remoteActorContainerSymbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer()));
+                NamedObj remoteActorContainer = ((NamedObj)remoteActor).getContainer();
+                String remoteActorContainerSymbol = _generatePtTypedCompositeActorName(remoteActorContainer,
+                        remoteActorContainer.getName());
                 // FIXME: remoteActor.getContainer().getContainer() be null?
-                String remoteActorContainerContainerSymbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer().getContainer()));
-
+                //String remoteActorContainerContainerSymbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer().getContainer()));
+                NamedObj remoteActorContainerContainer = remoteActorContainer.getContainer();
+                String remoteActorContainerContainerSymbol = _generatePtTypedCompositeActorName(remoteActorContainerContainer,
+                        remoteActorContainerContainer.getName());
                 if (remoteActor.getContainer().getContainer() != port.getContainer().getContainer()
                         && remoteActor.getContainer().getContainer().getContainer() != null) {
                     // The remoteActor could be contained by a composite, so we create connections
                     // all the way up.
                     // FIXME: In theory, we should have a loop here to deal with arbitrary depth
                     readingRemoteParametersDepth = 1;
-                    String remoteActorC3Symbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer().getContainer().getContainer()));
-
+                    //String remoteActorC3Symbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer().getContainer().getContainer()));
+                    NamedObj remoteActorC3 = ((((NamedObj) remoteActor).getContainer().getContainer().getContainer()));
+                    String remoteActorC3Symbol = _generatePtTypedCompositeActorName(remoteActorC3, remoteActorC3.getName());
                     code.append("TypedCompositeActor c1 = (TypedCompositeActor)"
                             + _generateActorInstantiation(remoteActor.getContainer().getContainer(),
                                     remoteActorContainerContainerSymbol,
@@ -1817,7 +1837,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
             remoteActorSymbol = getCodeGenerator().generateVariableName(
                     remoteActor) + "_actor";
-            String remoteActorContainerSymbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer()));
+            //String remoteActorContainerSymbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer()));
+            NamedObj remoteActorContainer = ((NamedObj) remoteActor).getContainer();
+            String remoteActorContainerSymbol = _generatePtTypedCompositeActorName(remoteActorContainer,
+                    remoteActorContainer.getName());
 
             // Create the remote actor if necessary.
             if (!moreThanOneRelation) {
@@ -2177,6 +2200,30 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
     }
 
+    /** Generate a name for the given actor.
+     * This method is used when the {@link #variablesAsArrays}
+     * parameter is true.
+     * @param container The container of the TypedCompositeActor
+     * @param actorName The sanitized name of the typedCompositeActor
+     * @return The name of the TypedCompositeActor as an array element.
+     *  @exception IllegalActionException If the variablesAsArrays parameter
+     *  of the code generator cannot be read.
+     */
+    private String _generatePtTypedCompositeActorName(NamedObj container, String actorName)
+            throws IllegalActionException {
+        // See also ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/sched/StaticSchedulingDirector.java generatePortName()
+        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
+                .booleanValue()) {
+            if (container != null) {
+                return getCodeGenerator().generateVariableName(container); //+ "_" + actorName;
+            } else {
+                return "$actorSymbol(" + actorName + ")";
+            }
+        } else {
+            return ((ProgramCodeGenerator)getCodeGenerator()).generatePtTypedCompositeActorName(container, actorName);
+        }
+    }
+
     /**
      * Return the code that sends data from the codegen variable to
      * the actor port.
@@ -2394,8 +2441,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         TypedCompositeActor remoteActor = (TypedCompositeActor)remotePort.getContainer();
                         String remoteActorSymbol = getCodeGenerator().generateVariableName(remoteActor);
                         TypedCompositeActor remoteActorContainer = (TypedCompositeActor)remoteActor.getContainer();
-                        String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
-
+                        //String remoteActorContainerSymbol = getCodeGenerator().generateVariableName(remoteActorContainer);
+                        String remoteActorContainerSymbol = _generatePtTypedCompositeActorName(remoteActorContainer,
+                                remoteActorContainer.getName());
                         connectionCode.append("{" + _eol
                                 + "TypedCompositeActor e0 = (TypedCompositeActor)"
                                 + _generateActorInstantiation(remoteActor, remoteActorSymbol,
@@ -2684,7 +2732,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         return false;
     }
-
 
     /** Return a sanitized version of the value of the parameter.
      *  @param parameter The parameter.
