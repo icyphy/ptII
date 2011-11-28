@@ -39,6 +39,7 @@ import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.lib.qm.CompositeQuantityManager;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.lib.qm.MonitoredQuantityManager;
 import ptolemy.actor.parameters.ParameterPort;
@@ -398,7 +399,6 @@ public class IOPortController extends AttributeController {
                 }
             }
             Color fill;
-
             if (port instanceof ParameterPort) {
                 fill = Color.lightGray;
             } else if (port instanceof IOPort && ((IOPort) port).isMultiport()) {
@@ -410,7 +410,7 @@ public class IOPortController extends AttributeController {
             try {
                 if (port instanceof IOPort) {
 
-                    List<MonitoredQuantityManager> qmList;
+                    List qmList;
                     //port.workspace().getReadAccess();
                     List list = ((IOPort) port).getQuantityManagers();
                     if (list != null) {
@@ -420,12 +420,20 @@ public class IOPortController extends AttributeController {
                         if (qmList != _qmList && qmList.size() > 0) {
 
                             _qmList = qmList;
+                            
+                            Object object = null; 
                             if (((IOPort) port).isOutput()) {
-                                fill = qmList.get(0).color.asColor();
+                                object = qmList.get(0);
                             } else {
-                                fill = qmList.get(qmList.size() - 1).color
-                                        .asColor();
+                                object = qmList.get(qmList.size() - 1);
+                            } 
+                            ColorAttribute color = null; 
+                            if (object instanceof MonitoredQuantityManager) {
+                                color = ((MonitoredQuantityManager) qmList.get(0)).color; 
+                            } else if (object instanceof IOPort) {
+                                color = ((CompositeQuantityManager) ((IOPort)qmList.get(0)).getContainer()).color; 
                             }
+                            fill = color.asColor();
 
                             StringAttribute info = (StringAttribute) port
                                     .getAttribute("_showInfo");
@@ -438,7 +446,7 @@ public class IOPortController extends AttributeController {
                                 if (qmStringBuffer.length() > 0) {
                                     qmStringBuffer.append(", ");
                                 }
-                                qmStringBuffer.append(qmList.get(j).getName());
+                                qmStringBuffer.append(((NamedObj)qmList.get(j)).getName());
                             }
                             info.setExpression("QM: "
                                     + qmStringBuffer.toString());

@@ -40,6 +40,10 @@ import javax.swing.SwingConstants;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.type.Typeable;
+import ptolemy.domains.ptides.lib.io.ActuatorPort;
+import ptolemy.domains.ptides.lib.io.NetworkReceiverPort;
+import ptolemy.domains.ptides.lib.io.NetworkTransmitterPort;
+import ptolemy.domains.ptides.lib.io.SensorPort;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -294,7 +298,7 @@ public class ExternalIOPortController extends AttributeController {
      *  @param port The port.
      *  @return The name, type, and whether it's a multiport.
      */
-    private String _portTooltip(final Port port) {
+    protected String _portTooltip(final Port port) {
         String tipText = port.getName();
 
         if (port instanceof IOPort) {
@@ -326,7 +330,7 @@ public class ExternalIOPortController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+    protected static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -448,21 +452,57 @@ public class ExternalIOPortController extends AttributeController {
                             polygon.lineTo(0, -4);
                             polygon.lineTo(-8, -4);
                         } else if (ioport.isOutput()) {
-                            polygon.lineTo(-8, 9);
-                            polygon.lineTo(-2, 4);
-                            polygon.lineTo(12, 4);
-                            polygon.lineTo(12, -4);
-                            polygon.lineTo(-2, -4);
-                            polygon.lineTo(-8, -9);
-                        } else if (ioport.isInput()) {
-                            polygon.lineTo(0, 4);
-                            polygon.lineTo(0, 9);
-                            //polygon.lineTo(6, 4);
-                            polygon.lineTo(12, 0);
-                            //polygon.lineTo(6, -4);
-                            polygon.lineTo(0, -9);
-                            polygon.lineTo(0, -4);
-                            polygon.lineTo(-8, -4);
+                            if (port instanceof ActuatorPort) {
+                                polygon.lineTo(-8, 8);
+                                polygon.lineTo(8, 8);
+                                polygon.lineTo(8, -8);
+                                polygon.lineTo(-8, -8); 
+                                polygon.lineTo(-8, -4);
+                                polygon.lineTo(-12, 0); 
+                                polygon.lineTo(-8, 4);
+                            } else if (port instanceof NetworkTransmitterPort) {
+                                polygon.lineTo(-8, 8);
+                                polygon.lineTo(8, 8);
+                                polygon.lineTo(8, -8);
+                                polygon.lineTo(-8, -8); 
+                                polygon.lineTo(-8, -4);
+                                polygon.lineTo(-12, -4);
+                                polygon.lineTo(-12, 4);
+                                polygon.lineTo(-8, 4);
+                            } else {
+                                polygon.lineTo(-8, 9);
+                                polygon.lineTo(-2, 4);
+                                polygon.lineTo(12, 4);
+                                polygon.lineTo(12, -4);
+                                polygon.lineTo(-2, -4);
+                                polygon.lineTo(-8, -9);
+                            }
+                        } else if (ioport.isInput()) { 
+                            if (port instanceof SensorPort) { 
+                                polygon.lineTo(-8, 8);
+                                polygon.lineTo(8, 8);
+                                polygon.lineTo(8, 4);
+                                polygon.lineTo(12, 0); 
+                                polygon.lineTo(8, -4);
+                                polygon.lineTo(8, -8);
+                                polygon.lineTo(-8, -8);
+                            } else if (port instanceof NetworkReceiverPort) {
+                                polygon.lineTo(-8, 8);
+                                polygon.lineTo(8, 8);
+                                polygon.lineTo(8, 4);
+                                polygon.lineTo(12, 4);
+                                polygon.lineTo(12, -4);
+                                polygon.lineTo(8, -4);
+                                polygon.lineTo(8, -8);
+                                polygon.lineTo(-8, -8);
+                            } else {
+                                polygon.lineTo(0, 4);
+                                polygon.lineTo(0, 9); 
+                                polygon.lineTo(12, 0); 
+                                polygon.lineTo(0, -9);
+                                polygon.lineTo(0, -4);
+                                polygon.lineTo(-8, -4);
+                            }
                         } else {
                             polygon = null;
                         }

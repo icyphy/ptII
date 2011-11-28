@@ -161,6 +161,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _importLibraryAction = null;
         _instantiateAttributeAction = null;
         _instantiateEntityAction = null;
+        _instantiatePortAction = null;
         _createHierarchyAction = null;
         _debugMenuListener = null;
 
@@ -187,6 +188,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
             _importLibraryAction = new ImportLibraryAction();
             _instantiateAttributeAction = new InstantiateAttributeAction();
             _instantiateEntityAction = new InstantiateEntityAction();
+            _instantiatePortAction = new InstantiatePortAction();
         }
 
     }
@@ -214,6 +216,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
             GUIUtilities.addHotKey(_getRightComponent(),
                     _instantiateAttributeAction);
             GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
+            GUIUtilities.addMenuItem(_graphMenu, _instantiatePortAction);
             GUIUtilities.addHotKey(_getRightComponent(),
                     _instantiateEntityAction);
             _graphMenu.addSeparator();
@@ -363,6 +366,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
     /** The action for instantiating an entity. */
     protected Action _instantiateEntityAction;
 
+    /** The action for instantiating a port. */
+    protected Action _instantiatePortAction;
+    
     /** Listener for debug menu commands. */
     protected DebugMenuListener _debugMenuListener;
 
@@ -717,6 +723,78 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
                         + "><property name=\"_location\" "
                         + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
                         + ", " + y + "\"></property></entity></group>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        context, moml);
+                context.requestChange(request);
+            }
+        }
+    }
+    
+///////////////////////////////////////////////////////////////////
+    //// InstantiatePortAction
+
+    /** An action to instantiate an entity given a class name. */
+    private class InstantiatePortAction extends AbstractAction {
+        /** Create a new action to instantiate an entity. */
+        public InstantiatePortAction() {
+            super("Instantiate Port");
+            putValue("tooltip", "Instantiate a port by class name");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
+        }
+
+        /**
+         * Instantiate a class by first opening a dialog to get a class name and
+         * then issuing a change request.
+         */
+        public void actionPerformed(ActionEvent e) {
+            Query query = new Query();
+            query.setTextWidth(60);
+            query.addLine("class", "Class name", _lastEntityClassName);
+            query.addLine("location", "Location (URL)", _lastLocation);
+
+            ComponentDialog dialog = new ComponentDialog(ActorGraphFrame.this,
+                    "Instantiate Port", query);
+
+            if (dialog.buttonPressed().equals("OK")) {
+                // Get the associated Ptolemy model.
+                GraphController controller = getJGraph().getGraphPane()
+                        .getGraphController();
+                AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
+                        .getGraphModel();
+                NamedObj context = model.getPtolemyModel();
+
+                _lastEntityClassName = query.getStringValue("class");
+                _lastLocation = query.getStringValue("location");
+
+                // Find the root for the instance name.
+                String rootName = _lastEntityClassName;
+                int period = rootName.lastIndexOf(".");
+
+                if ((period >= 0) && (rootName.length() > (period + 1))) {
+                    rootName = rootName.substring(period + 1);
+                }
+
+                // Use the center of the screen as a location.
+                Rectangle2D bounds = getVisibleCanvasRectangle();
+                double x = bounds.getWidth() / 2.0;
+                double y = bounds.getHeight() / 2.0;
+
+                // If a location is given, construct MoML to
+                // specify a "source".
+                String source = "";
+
+                if (!(_lastLocation.trim().equals(""))) {
+                    source = " source=\"" + _lastLocation.trim() + "\"";
+                }
+
+                // Use the "auto" namespace group so that name collisions
+                // are automatically avoided by appending a suffix to the name.
+                String moml = "<port name=\"" + rootName
+                        + "\" class=\"" + _lastEntityClassName + "\"" + source
+                        + "><property name=\"_location\" "
+                        + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
+                        + ", " + y + "\"></property></port>";
+                
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         context, moml);
                 context.requestChange(request);
