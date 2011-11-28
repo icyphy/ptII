@@ -32,6 +32,7 @@ package ptolemy.actor;
 
 import java.util.List;
 
+import ptolemy.actor.lib.qm.CompositeQuantityManager;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -64,6 +65,12 @@ public class IntermediateReceiver extends AbstractReceiver {
     public IntermediateReceiver(QuantityManager qm, Receiver receiver) {
         _receiver = receiver;
         quantityManager = qm;
+    }
+    
+    public IntermediateReceiver(QuantityManager qm, Receiver receiver, IOPort port) {
+        _receiver = receiver;
+        quantityManager = qm;
+        _port = port;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,7 +140,12 @@ public class IntermediateReceiver extends AbstractReceiver {
      *  the constructor.
      */
     public void put(Token token) throws NoRoomException, IllegalActionException {
-        quantityManager.sendToken(this, _receiver, token);
+        if (_port != null) { 
+            ((CompositeQuantityManager)quantityManager)
+                    .sendToken(this, _receiver, token, _port);
+        } else {
+            quantityManager.sendToken(this, _receiver, token);
+        }
     }
 
     /** Set the container of the internal receiver.
@@ -155,6 +167,8 @@ public class IntermediateReceiver extends AbstractReceiver {
 
     /** Target receiver that is wrapped by this intermediate receiver.  */
     private Receiver _receiver;
+    
+    private IOPort _port;
 
     /** Quantity manager that receives tokens from this receiver. */
     public QuantityManager quantityManager;
