@@ -110,12 +110,15 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
      *  @param time The physical time when the event happened.
      *  @param scheduleEvent The type of the event.
      */
-    public void event(final Actor actor, double time,
+    public void event(final Actor actor, double oracleTime,
+            double physicalTime, double modelTime,
             ExecutionEventType scheduleEvent) {
         if (plot == null) {
             return;
         }
-        double x = time;
+
+
+        double x = physicalTime;
         int actorDataset = _actors.indexOf(actor);
         if (actorDataset == -1) {
             return; // actor is not being monitored
@@ -205,7 +208,7 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
 
             for (Actor actor : _actors) {
                 plot.addLegend(_actors.indexOf(actor), actor.getName());
-                event(actor, 0.0, null);
+                event(actor, 0.0, 0.0, 0.0, null);
             }
             plot.doLayout();
         }
@@ -298,6 +301,8 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
                 plot.setTitle("Execution Time Monitor");
                 plot.setButtons(true);
                 plot.setMarksStyle("none");
+                plot.setXLabel("platform time");
+                plot.setYLabel("actor ID"); 
 
                 // We put the plotter as a sub-effigy of the toplevel effigy,
                 // so that it closes when the model is closed.
