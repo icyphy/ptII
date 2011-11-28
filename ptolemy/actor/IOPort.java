@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import ptolemy.actor.lib.qm.CompositeQuantityManager;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
@@ -1350,7 +1351,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException Thrown if the token of the parameter
      *      containing the quantity manager object cannot be retrieved.
      */
-    public List<QuantityManager> getQuantityManagers()
+    public List getQuantityManagers()
             throws IllegalActionException {
         if (_qmListValid == false) {
             _qmList = new ArrayList();
@@ -1362,15 +1363,18 @@ public class IOPort extends ComponentPort {
                         if (paramToken instanceof ObjectToken) {
                             Object paramObject = ((ObjectToken) paramToken)
                                     .getValue();
-                            if (paramObject instanceof QuantityManager) {
-                                _qmList.add((QuantityManager) paramObject);
+                            if ((paramObject instanceof QuantityManager) ||
+                                (paramObject instanceof IOPort && 
+                                    ((IOPort)paramObject).getContainer() 
+                                    instanceof QuantityManager)) {
+                                _qmList.add(paramObject);
                             }
                         }
                     }
                 }
             }
             _qmListValid = true;
-        }
+        } 
         return _qmList;
     }
 
@@ -4309,10 +4313,16 @@ public class IOPort extends ComponentPort {
     protected Receiver _wrapReceiver(Receiver receiver)
             throws IllegalActionException {
         Receiver result = receiver;
-        List<QuantityManager> qmList = getQuantityManagers();
+        List qmList = getQuantityManagers();
         if (isInput()) {
             for (int i = qmList.size() - 1; i >= 0; i--) {
-                result = qmList.get(i).getReceiver(result);
+                Object object = qmList.get(i);
+                if (object instanceof QuantityManager) {
+                    result = ((QuantityManager)object).getReceiver(result);
+                } else if (object instanceof IOPort) {
+                    result = ((CompositeQuantityManager)((IOPort)object).getContainer())
+                            .getReceiver(result, ((IOPort)object));
+                }
             }
             if (result instanceof IntermediateReceiver) {
                 IntermediateReceiver intermediateReceiver = (IntermediateReceiver) result;
@@ -4330,7 +4340,13 @@ public class IOPort extends ComponentPort {
                 		" and thus mediating the inside connection.");
             }
             for (int i = 0; i < qmList.size(); i++) {
-                result = qmList.get(i).getReceiver(result);
+                Object object = qmList.get(i);
+                if (object instanceof QuantityManager) {
+                    result = ((QuantityManager)object).getReceiver(result);
+                } else if (object instanceof IOPort) {
+                    result = ((CompositeQuantityManager)((IOPort)object).getContainer())
+                            .getReceiver(result, ((IOPort)object));
+                } 
             }
         }
         // TODO what if isInput && isOutput??
@@ -4715,7 +4731,7 @@ public class IOPort extends ComponentPort {
     private transient long _insideReceiversVersion = -1;
 
     // Lists of local receivers, indexed by relation.
-    private HashMap<IORelation, List<Receiver[][]>> _localReceiversTable;
+    public HashMap<IORelation, List<Receiver[][]>> _localReceiversTable;
 
     // A cache of the number of sinks, since it's expensive to compute.
     private transient int _numberOfSinks;
@@ -4726,7 +4742,7 @@ public class IOPort extends ComponentPort {
     private transient long _numberOfSourcesVersion = -1;
 
     /** List of quantity managers specified for the port. */
-    private List<QuantityManager> _qmList;
+    private List _qmList;
 
     /** True if list of quantity managers was not modified since
      *  it was last modified.
