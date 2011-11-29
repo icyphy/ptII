@@ -130,6 +130,13 @@ public class SnapConstraint implements PointConstraint {
         return _defaultResolution;
     }
 
+    /** Return the resolution for this instance.
+     *  @return The global default resolution.
+     */
+    public double getResolution() {
+        return _resolution;
+    }
+
     /** Return true to indicate that this does snap to grid.
      *  @return True.
      */

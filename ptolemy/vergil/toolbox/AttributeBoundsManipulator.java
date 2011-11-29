@@ -30,10 +30,13 @@ package ptolemy.vergil.toolbox;
 import java.awt.geom.Rectangle2D;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import diva.canvas.CanvasUtilities;
@@ -91,11 +94,18 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
 
         if (child != null) {
             // NOTE: Calling getBounds() on the child itself yields an
-            // inaccurate bounds, for some reason.
-            // Weirdly, to get the size right, we need to use this.
-            // But to get the location right, we need the other!
+            // inaccurate bounds, for some reason. Use getShape().
             Rectangle2D bounds = child.getShape().getBounds2D();
-            Rectangle2D childBounds = child.getBounds();
+            
+            double resolution = _resizer.getSnapResolution();
+            // Check to see whether the size has changed by more than the
+            // snap resolution.
+            if (_boundsOnMousePressed != null
+                    && Math.abs(bounds.getWidth() - _boundsOnMousePressed.getWidth()) < resolution
+                    && Math.abs(bounds.getHeight() - _boundsOnMousePressed.getHeight()) < resolution) {
+                // Change is not big enough. Return.
+                return;
+            }
 
             // Use a MoMLChangeRequest here so that the resize can be
             // undone and so that a repaint occurs.
@@ -104,48 +114,108 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             Attribute locationParameter = _container.getAttribute("_location");
 
             // Proceed only if the container has these parameters.
-            if ((widthParameter != null) && (heightParameter != null)) {
+            if ((widthParameter instanceof Parameter)
+                    && (heightParameter instanceof Parameter)) {
+                // Snap the new width and height to the grid (not the parameter values!).
+                // The reason is that it is the new width and height, not the parameter
+                // values, are what is visible on the screen.
+                double[] snappedWidthHeight = _resizer.constrain(bounds.getWidth(), bounds.getHeight());
+
+                // The new width and height should be proportional to the original
+                // ones. This is because the width and height parameters of the
+                // attribute are not necessarily the same as the bounds of the
+                // figure. An extreme example of this is the ArcAttribute,
+                // where the width and height parameters specify the width
+                // and height of the base ellipse used to draw the arc.
+                // Provide default values in case something goes wrong.
+                double newWidth = snappedWidthHeight[0];
+                double newHeight = snappedWidthHeight[1];
+
+                try {
+                    Token previousWidth = ((Parameter)widthParameter).getToken();
+                    if (previousWidth instanceof DoubleToken && _boundsOnMousePressed != null) {
+                        newWidth = (snappedWidthHeight[0]/_boundsOnMousePressed.getWidth())
+                                * ((DoubleToken)previousWidth).doubleValue();
+                    }
+                } catch (IllegalActionException e1) {
+                    // This should not occur.
+                    e1.printStackTrace();
+                }              
+                
+                try {
+                    Token previousHeight = ((Parameter)heightParameter).getToken();
+                    if (previousHeight instanceof DoubleToken && _boundsOnMousePressed != null) {
+                        newHeight = (snappedWidthHeight[1]/_boundsOnMousePressed.getHeight())
+                                * ((DoubleToken)previousHeight).doubleValue();
+                    }
+                } catch (IllegalActionException e1) {
+                    // This should not occur.
+                    e1.printStackTrace();
+                }
+                
+                // Create the MoML command to change the width and height.
                 StringBuffer command = new StringBuffer(
                         "<group><property name =\"width\" value=\"");
-
-                // FIXME: Force to integer values only. Is this a good idea?
-                command.append(Math.rint(bounds.getWidth()));
+                command.append(newWidth);
                 command.append("\"/><property name =\"height\" value=\"");
-                command.append(Math.rint(bounds.getHeight()));
+                command.append(newHeight);
                 command.append("\"/>");
 
-                // Location needs to change too if dragged left or down.
-                if (locationParameter != null) {
-                    // Weirdly, to get the location right, need to use
-                    // these bounds.
+                // Location may be the upper left corner. Hence,
+                // location needs to change too if dragged left or up.
+                if (locationParameter instanceof Locatable) {
+                    
+                    double[] previousLocation = ((Locatable)locationParameter).getLocation();
+                    
+                    // Use these defaults if for some reason _boundsOnMousePressed == null
+                    // (which should not occur).
+                    Rectangle2D childBounds = child.getBounds();
                     double newX = childBounds.getX();
                     double newY = childBounds.getY();
+                    
+                    if (_boundsOnMousePressed != null) {
+                        // Snap the new X and Y to the grid (not the new location!).
+                        // The reason is that it is the new X and Y, not the location,
+                        // the is visible on the screen. The location could be the
+                        // center of the object, or off center anywhere.
+                        double[] snappedXY = _resizer.constrain(bounds.getX(), bounds.getY());
 
-                    // If the figure is centered, have to use the center
-                    // instead.
-                    try {
-                        Attribute centered = _container.getAttribute(
-                                "centered", Parameter.class);
+                        // If the previous location does not match X and Y of
+                        // _boundsOnMousePressed, then the figure location is not
+                        // the upper left corner. In this case, we need to scale
+                        // displacement according to the following formulas
+                        // (this is a tricky geometry problem!).
+                        newX = snappedXY[0] + (snappedWidthHeight[0]/_boundsOnMousePressed.getWidth())
+                                * (previousLocation[0] - _boundsOnMousePressed.getX());
+                        newY = snappedXY[1] + (snappedWidthHeight[1]/_boundsOnMousePressed.getHeight())
+                                * (previousLocation[1] - _boundsOnMousePressed.getY());
+                    } else {
+                        // This is legacy code. Should never be invoked.
+                        // If the figure is centered, have to use the center
+                        // instead.
+                        try {
+                            Attribute centered = _container.getAttribute(
+                                    "centered", Parameter.class);
 
-                        if (centered != null) {
-                            boolean isCentered = ((BooleanToken) ((Parameter) centered)
-                                    .getToken()).booleanValue();
+                            if (centered != null) {
+                                boolean isCentered = ((BooleanToken) ((Parameter) centered)
+                                        .getToken()).booleanValue();
 
-                            if (isCentered) {
-                                newX = childBounds.getCenterX();
-                                newY = childBounds.getCenterY();
+                                if (isCentered) {
+                                    newX = childBounds.getCenterX();
+                                    newY = childBounds.getCenterY();
+                                }
                             }
+                        } catch (IllegalActionException ex) {
+                            // Something went wrong. Use default.
                         }
-                    } catch (IllegalActionException ex) {
-                        // Something went wrong. Use default.
                     }
-
+                    
                     command.append("<property name = \"_location\" value=\"");
 
-                    // FIXME: Make locations only integral?
-                    command.append(Math.rint(newX));
+                    command.append(newX);
                     command.append(", ");
-                    command.append(Math.rint(newY));
+                    command.append(newY);
                     command.append("\"/>");
                 }
 
@@ -158,6 +228,31 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         } else {
             throw new InternalErrorException(
                     "No child figure for the manipulator!");
+        }
+    }
+
+    /** Make a record of the size before resizing.
+     *  @param e The mouse event.
+     */
+    public void mousePressed(LayerEvent e) {
+        Figure child = getChild();
+
+        // FIXME: Diva has a bug where this method is called on the
+        // prototype rather than the instance that has a child.
+        // We work around this by getting access to the instance.
+        if ((child == null) && (_instanceDecorator != null)) {
+            child = _instanceDecorator.getChild();
+        }
+
+        if (child != null) {
+            // NOTE: Calling getBounds() on the child itself yields an
+            // inaccurate bounds, for some reason.
+            // Weirdly, to get the size right, we need to use this.
+            // But to get the location right, we need the other!
+            _boundsOnMousePressed = child.getShape().getBounds2D();
+        } else {
+            // Make sure we don't use some previous bogus value.
+            _boundsOnMousePressed = null;
         }
     }
 
@@ -191,7 +286,11 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                         ////
+    ////                         private members                   ////
+    
+    // Bounds of the child figure upon the mouse being pressed.
+    private Rectangle2D _boundsOnMousePressed;
+    
     // FIXME: Instance used to work around Diva bug.
     private FigureDecorator _instanceDecorator;
 
@@ -213,6 +312,31 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         public Resizer() {
             _snapConstraint = new SnapConstraint();
             appendConstraint(_snapConstraint);
+        }
+
+        /** Modify the specified point to snap to grid using the local
+         *  resolution.
+         *  @param x The x dimension of the point to modify.
+         *  @param y The y dimension of the point to modify.
+         *  @return The constrained point.
+         */
+        public double[] constrain(double x, double y) {
+            return _snapConstraint.constrain(x, y);
+        }
+
+        /** Get the snap resolution.
+         *  @return The snap resolution.
+         */
+        public double getSnapResolution() {
+            return _snapConstraint.getResolution();
+        }
+
+        /** Override the base class to notify the enclosing BoundsInteractor.
+         *  @param e The mouse event.
+         */
+        public void mousePressed(LayerEvent e) {
+            super.mousePressed(e);
+            AttributeBoundsManipulator.this.mousePressed(e);
         }
 
         /** Override the base class to notify the enclosing BoundsInteractor.

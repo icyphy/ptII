@@ -35,6 +35,7 @@
     <property name="centered" class="ptolemy.data.expr.Parameter" value="true"/>
 </property>
 <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute"/>
+<property name="Arc" class="ptolemy.vergil.kernel.attributes.ArcAttribute"/>
 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute"/>
 <property name="_shadowColor" class="ptolemy.actor.gui.ColorAttribute">
   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>

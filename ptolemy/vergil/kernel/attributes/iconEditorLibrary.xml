@@ -12,6 +12,12 @@
     <property name="centered" value="true"/>
     <property name="fillColor" value="{1.0, 1.0, 1.0, 1.0}"/>
   </property>
+  <property name="arc" class="ptolemy.vergil.kernel.attributes.ArcAttribute">
+    <property name="width" value="30"/>
+    <property name="height" value="30"/>
+    <property name="centered" value="true"/>
+    <property name="fillColor" value="{1.0, 1.0, 1.0, 1.0}"/>
+  </property>
   <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
   </property>
   <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">

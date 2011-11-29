@@ -210,11 +210,11 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
     protected boolean _centeredValue = false;
 
     /** Most recently set value of the height parameter. */
-    protected double _heightValue = 0.0;
+    protected double _heightValue;
 
     /** Variable used to prevent re-entry into attributeChanged(). */
     protected transient boolean _inAttributeChanged = false;
 
     /** Most recently set value of the width parameter. */
-    protected double _widthValue = 0.0;
+    protected double _widthValue;
 }
