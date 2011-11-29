@@ -58,6 +58,7 @@ JSRCS = \
 	BasicSwitch.java \
 	Bus.java \
 	ColoredQuantityManager.java \
+	CompositeQuantityManager.java \
 	CrossbarSwitch.java \
 	TTESwitch.java \
 	MonitoredQuantityManager.java \
