@@ -1,0 +1,85 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DEInPNInRunCompositeActor" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 55}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={164, 81, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 240.0}">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 105}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 270, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="1L">
+            </property>
+            <property name="resetOnEachRun" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 185.0]">
+            </property>
+        </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 2.123236346, 2.7258402092, 4.8294616036, 6.5681704006, 7.3454238696, 9.272267838}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 185.0]">
+            </property>
+        </entity>
+        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 190.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="PoissonClock.output" relation="relation"/>
+        <link port="NonStrictTest.input" relation="relation2"/>
+        <link port="CurrentTime.output" relation="relation2"/>
+        <link port="CurrentTime.trigger" relation="relation"/>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 140}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 140.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+</entity>
