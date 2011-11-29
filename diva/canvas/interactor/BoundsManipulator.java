@@ -89,6 +89,16 @@ public class BoundsManipulator extends Manipulator {
     public void mouseReleased(LayerEvent e) {
     }
 
+    /** Do nothing.  This method is called when the resizer gets a mouse
+     *  pressed event, indicating that resizing may be starting. Subclasses
+     *  may wish to override this to, for example, make a record
+     *  of the size before resizing (which can be obtained by calling
+     *  getChild().getBounds()).
+     *  @param e The mouse event.
+     */
+    public void mousePressed(LayerEvent e) {
+    }
+
     /** Create a new instance of this manipulator. The new
      * instance will have the same grab handle, and interactor
      * for grab-handles.
@@ -175,6 +185,14 @@ public class BoundsManipulator extends Manipulator {
         public void mouseReleased(LayerEvent e) {
             super.mouseReleased(e);
             BoundsManipulator.this.mouseReleased(e);
+        }
+        
+        /** Override the base class to notify the enclosing BoundsInteractor.
+         *  @param e The mouse event.
+         */
+        public void mousePressed(LayerEvent e) {
+            super.mousePressed(e);
+            BoundsManipulator.this.mousePressed(e);
         }
 
         /** Translate the grab-handle
