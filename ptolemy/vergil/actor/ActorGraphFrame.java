@@ -792,11 +792,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
 
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
-                String moml = "<port name=\"" + rootName
+                String moml = "<group name=\"auto\"><port name=\"" + rootName
                         + "\" class=\"" + _lastPortClassName + "\"" + source
                         + "><property name=\"_location\" "
                         + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
-                        + ", " + y + "\"></property></port>";
+                        + ", " + y + "\"></property></port></group>";
                 
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         context, moml);
