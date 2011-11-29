@@ -1,4 +1,4 @@
-/* Sensor port.
+/* Interface for ports that require custom rendering.
 
 @Copyright (c) 2008-2011 The Regents of the University of California.
 All rights reserved.
@@ -27,20 +27,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 */
 
-package ptolemy.domains.ptides.lib.io;
+package ptolemy.actor;
 
-import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.continuous.lib.PeriodicSampler;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import java.util.List;
 
-/**
- *  This port provides a specialized TypedIOPort for sensors that 
- *  periodically sample data
- *  used in Ptides. This port just specializes parameters.
+/** This interface is used for ports that require a custom rendering. It
+ *  implements a method that returns a list of coordinates for the custom
+ *  shape.
  *
  *  @author Patricia Derler
  *  @version $Id$
@@ -48,24 +41,11 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public class PeriodicSamplingSensorPort extends SensorPort {
-    
-    public Parameter samplingTime; 
+public interface CustomRenderedPort {
 
-    /** Create a new PeriodicSamplingSensorPort with a given container and a name.
-     * @param container The container of the port. 
-     * @param name The name of the port.
-     * @throws IllegalActionException If parameters cannot be set.
-     * @throws NameDuplicationException If name already exists.
+    /** Compute and return a list of coordinates for the custom shape. 
+     *  @return List of coordinates.
      */
-    public PeriodicSamplingSensorPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        
-        samplingTime = new Parameter(this, "samplingTime");
-        samplingTime.setToken(new DoubleToken(1.0));
-        samplingTime.setTypeEquals(BaseType.DOUBLE); 
-    }
-    
-    
+    public List<Integer[]> getCoordinatesForShape();
     
 }

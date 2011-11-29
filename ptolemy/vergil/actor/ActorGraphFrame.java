@@ -380,6 +380,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
 
     /** The most recent class name for instantiating an entity. */
     private String _lastEntityClassName = "ptolemy.actor.lib.Ramp";
+    
+    /** The most recent class name for instantiating a port. */
+    private String _lastPortClassName = "ptolemy.actor.TypedIOPort";
 
     /** The most recent location for instantiating a class. */
     private String _lastLocation = "";
@@ -733,9 +736,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
 ///////////////////////////////////////////////////////////////////
     //// InstantiatePortAction
 
-    /** An action to instantiate an entity given a class name. */
+    /** An action to instantiate a port given a class name. */
     private class InstantiatePortAction extends AbstractAction {
-        /** Create a new action to instantiate an entity. */
+        /** Create a new action to instantiate a port. */
         public InstantiatePortAction() {
             super("Instantiate Port");
             putValue("tooltip", "Instantiate a port by class name");
@@ -749,7 +752,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         public void actionPerformed(ActionEvent e) {
             Query query = new Query();
             query.setTextWidth(60);
-            query.addLine("class", "Class name", _lastEntityClassName);
+            query.addLine("class", "Class name", _lastPortClassName);
             query.addLine("location", "Location (URL)", _lastLocation);
 
             ComponentDialog dialog = new ComponentDialog(ActorGraphFrame.this,
@@ -763,11 +766,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
                         .getGraphModel();
                 NamedObj context = model.getPtolemyModel();
 
-                _lastEntityClassName = query.getStringValue("class");
+                _lastPortClassName = query.getStringValue("class");
                 _lastLocation = query.getStringValue("location");
 
                 // Find the root for the instance name.
-                String rootName = _lastEntityClassName;
+                String rootName = _lastPortClassName;
                 int period = rootName.lastIndexOf(".");
 
                 if ((period >= 0) && (rootName.length() > (period + 1))) {
@@ -790,7 +793,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
                 String moml = "<port name=\"" + rootName
-                        + "\" class=\"" + _lastEntityClassName + "\"" + source
+                        + "\" class=\"" + _lastPortClassName + "\"" + source
                         + "><property name=\"_location\" "
                         + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
                         + ", " + y + "\"></property></port>";

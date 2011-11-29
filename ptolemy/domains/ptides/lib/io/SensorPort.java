@@ -1,7 +1,42 @@
+/* Sensor port.
+
+@Copyright (c) 2008-2011 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in all
+copies of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
+
+*/
+
+
+
 package ptolemy.domains.ptides.lib.io;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.ComplexType;
 
+import ptolemy.actor.CustomRenderedPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -10,14 +45,25 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-public class SensorPort extends TypedIOPort {
+/**
+ *  This port provides a specialized TypedIOPort for sensors
+ *  used in Ptides. This port just specializes parameters.
+ *
+ *  @author Patricia Derler
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (derler)
+ *  @Pt.AcceptedRating
+ */
+public class SensorPort extends TypedIOPort implements CustomRenderedPort {
 
-    public Parameter deviceDelay;
-    public Parameter deviceDelayBound;
-    public Parameter timestampCorrection;
-    public Parameter valueCorrection;
-    public Parameter driver;
     
+    /** Create a new SensorPort with a given container and a name.
+     * @param container The container of the port. 
+     * @param name The name of the port.
+     * @throws IllegalActionException If parameters cannot be set.
+     * @throws NameDuplicationException If name already exists.
+     */
     public SensorPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
@@ -38,5 +84,35 @@ public class SensorPort extends TypedIOPort {
         timestampCorrection = new Parameter(this, "valueCorrection"); 
         driver = new Parameter(this, "driver");
     }
+    
+    /** Return the custom shape for this port.
+     *  @return List of coordinates representing the shape.
+     */
+    public List<Integer[]> getCoordinatesForShape() {
+        List<Integer[]> coordinates = new ArrayList<Integer[]>();
+        coordinates.add(new Integer[]{-8, 8});
+        coordinates.add(new Integer[]{8, 8});
+        coordinates.add(new Integer[]{8, 4});
+        coordinates.add(new Integer[]{12, 0});
+        coordinates.add(new Integer[]{8, -4});
+        coordinates.add(new Integer[]{8, -8});
+        coordinates.add(new Integer[]{-8, -8}); 
+        return coordinates;
+    }
+    
+    /** Device delay parameter that defaults to the double value 0.0. */
+    public Parameter deviceDelay;
+    
+    /** Device delay bound parameter that defaults to the double value 0.0. */
+    public Parameter deviceDelayBound;
+    
+    /** Timestamp parameter that defaults to the double value 0.0. */
+    public Parameter timestampCorrection;
+    
+    /** ValueCorrection parameter. FIXME: Whats the default? Function? */
+    public Parameter valueCorrection;
+    
+    /** Driver parameter. FIXME: Whats the default? Path to file? */
+    public Parameter driver;
     
 }

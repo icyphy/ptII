@@ -34,16 +34,14 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.SwingConstants;
 
+import ptolemy.actor.CustomRenderedPort;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.data.type.Typeable;
-import ptolemy.domains.ptides.lib.io.ActuatorPort;
-import ptolemy.domains.ptides.lib.io.NetworkReceiverPort;
-import ptolemy.domains.ptides.lib.io.NetworkTransmitterPort;
-import ptolemy.domains.ptides.lib.io.SensorPort;
+import ptolemy.data.type.Typeable; 
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -452,23 +450,11 @@ public class ExternalIOPortController extends AttributeController {
                             polygon.lineTo(0, -4);
                             polygon.lineTo(-8, -4);
                         } else if (ioport.isOutput()) {
-                            if (port instanceof ActuatorPort) {
-                                polygon.lineTo(-8, 8);
-                                polygon.lineTo(8, 8);
-                                polygon.lineTo(8, -8);
-                                polygon.lineTo(-8, -8); 
-                                polygon.lineTo(-8, -4);
-                                polygon.lineTo(-12, 0); 
-                                polygon.lineTo(-8, 4);
-                            } else if (port instanceof NetworkTransmitterPort) {
-                                polygon.lineTo(-8, 8);
-                                polygon.lineTo(8, 8);
-                                polygon.lineTo(8, -8);
-                                polygon.lineTo(-8, -8); 
-                                polygon.lineTo(-8, -4);
-                                polygon.lineTo(-12, -4);
-                                polygon.lineTo(-12, 4);
-                                polygon.lineTo(-8, 4);
+                            if (port instanceof CustomRenderedPort) {
+                                List<Integer[]> list = ((CustomRenderedPort)port).getCoordinatesForShape();
+                                for (int i = 0; i < list.size(); i++) {
+                                    polygon.lineTo(list.get(i)[0], list.get(i)[1]);  
+                                }
                             } else {
                                 polygon.lineTo(-8, 9);
                                 polygon.lineTo(-2, 4);
@@ -478,23 +464,11 @@ public class ExternalIOPortController extends AttributeController {
                                 polygon.lineTo(-8, -9);
                             }
                         } else if (ioport.isInput()) { 
-                            if (port instanceof SensorPort) { 
-                                polygon.lineTo(-8, 8);
-                                polygon.lineTo(8, 8);
-                                polygon.lineTo(8, 4);
-                                polygon.lineTo(12, 0); 
-                                polygon.lineTo(8, -4);
-                                polygon.lineTo(8, -8);
-                                polygon.lineTo(-8, -8);
-                            } else if (port instanceof NetworkReceiverPort) {
-                                polygon.lineTo(-8, 8);
-                                polygon.lineTo(8, 8);
-                                polygon.lineTo(8, 4);
-                                polygon.lineTo(12, 4);
-                                polygon.lineTo(12, -4);
-                                polygon.lineTo(8, -4);
-                                polygon.lineTo(8, -8);
-                                polygon.lineTo(-8, -8);
+                            if (port instanceof CustomRenderedPort) {
+                                List<Integer[]> list = ((CustomRenderedPort)port).getCoordinatesForShape();
+                                for (int i = 0; i < list.size(); i++) {
+                                    polygon.lineTo(list.get(i)[0], list.get(i)[1]);  
+                                }
                             } else {
                                 polygon.lineTo(0, 4);
                                 polygon.lineTo(0, 9); 

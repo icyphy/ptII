@@ -138,6 +138,18 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
     
     /** Display an execution time event.
      *  @param actor Actor of event.
+     *  @param oracleTime Oracle time event occurred.
+     *  @param physicalTime Physical time event occurred.
+     *  @param modelTime Model time of the event.
+     *  @param event Type of event.
+     */
+    public void event(Actor actor, double oracleTime, double physicalTime,
+            double modelTime, ExecutionEventType event) {
+        
+    }
+    
+    /** Display an execution time event.
+     *  @param actor Actor of event.
      *  @param time Time event occurred.
      *  @param scheduleEvent Type of event.
      *  @param core Core event occurred on.
@@ -406,5 +418,8 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         private double _lastTime;
 
     }
+
+
+    
 
 }

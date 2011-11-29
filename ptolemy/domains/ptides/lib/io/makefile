@@ -30,9 +30,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/lib
+ME =		ptolemy/domains/ptides/lib/io
 
-DIRS =		io luminary test 
+DIRS =		
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -44,49 +44,32 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	io
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	luminary/luminary.jar
+PTCLASSALLJARS = 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	ActuationDevice.java \
-	ActuatorSetup.java \
-	InputDevice.java \
-	MasterClock.java \
-	NetworkReceiver.java \
-	NetworkTransmitter.java \
-	OutputDevice.java \
-	RealisticSlaveClock.java \
-	SensorHandler.java \
-	SimulatedPlatformPhysicalTime.java \
-	SlaveClock.java \
-	ExecutionTimeListener.java \
-	ExecutionTimeMonitor.java
-
-OTHER_FILES_TO_BE_JARED = \
-	ptidesentities.xml
+	ActuatorPort.java \
+	NetworkReceiverPort.java \
+	NetworkTransmitterPort.java \
+	PeriodicSamplingSensorPort.java \
+	SensorPort.java  
+	
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	luminary test
+MISC_FILES =	
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	'ExecutionTimeListener$$ExecutionEventType.class' \
-	'ExecutionTimeMonitor$$SchedulePlotterEditorFactory.class' \
-	'NetworkReceiver$$1.class' \
-	'NetworkReceiver$$PortFunction.class' \
-	'ScheduleListener$$ScheduleEventType.class' \
-	'SchedulePlotter$$SchedulePlotterEditorFactory.class'
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
