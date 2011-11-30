@@ -31,19 +31,33 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.io;
 
+import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.ComplexType;
 
+import diva.canvas.Figure;
+import diva.util.java2d.Polygon2D;
+
 import ptolemy.actor.CustomRenderedPort;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.vergil.icon.ShapeIcon;
 
 /**
  *  This port provides a specialized TypedIOPort for sensors
@@ -55,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public class SensorPort extends TypedIOPort implements CustomRenderedPort {
+public class SensorPort extends PtidesPort implements CustomRenderedPort {
 
     
     /** Create a new SensorPort with a given container and a name.
@@ -83,6 +97,7 @@ public class SensorPort extends TypedIOPort implements CustomRenderedPort {
         
         timestampCorrection = new Parameter(this, "valueCorrection"); 
         driver = new Parameter(this, "driver");
+             
     }
     
     /** Return the custom shape for this port.
@@ -100,6 +115,8 @@ public class SensorPort extends TypedIOPort implements CustomRenderedPort {
         return coordinates;
     }
     
+    
+    
     /** Device delay parameter that defaults to the double value 0.0. */
     public Parameter deviceDelay;
     
@@ -114,5 +131,6 @@ public class SensorPort extends TypedIOPort implements CustomRenderedPort {
     
     /** Driver parameter. FIXME: Whats the default? Path to file? */
     public Parameter driver;
+    
     
 }

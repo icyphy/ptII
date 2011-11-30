@@ -31,6 +31,14 @@
 <entity name="ExecutionTimeMonitor" class="ptolemy.domains.ptides.lib.ExecutionTimeMonitor">
 </entity>
 
+<port name="SensorPort" class="ptolemy.domains.ptides.lib.io.SensorPort">
+</port>
+<port name="ActuatorPort" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
+</port>
+<port name="NetworkReceiverPort" class="ptolemy.domains.ptides.lib.io.NetworkReceiverPort">
+</port>
+<port name="NetworkTransmitterPort" class="ptolemy.domains.ptides.lib.io.NetworkTransmitterPort">
+</port>
 
       </group>
     ?>

@@ -55,7 +55,7 @@ import ptolemy.util.MultiHashMap;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public class ActuatorPort extends TypedIOPort implements CustomRenderedPort {
+public class ActuatorPort extends PtidesPort implements CustomRenderedPort {
  
     /** Create a new ActuatorPort with a given container and a name.
      * @param container The container of the port. 

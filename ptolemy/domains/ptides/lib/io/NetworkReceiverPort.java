@@ -71,7 +71,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public class NetworkReceiverPort extends TypedIOPort implements CustomRenderedPort {
+public class NetworkReceiverPort extends PtidesPort implements CustomRenderedPort {
     
     /** Create a new NetworkReceiverPort with a given container and a name.
      * @param container The container of the port. 

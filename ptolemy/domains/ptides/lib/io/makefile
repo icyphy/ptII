@@ -57,6 +57,7 @@ JSRCS = \
 	NetworkReceiverPort.java \
 	NetworkTransmitterPort.java \
 	PeriodicSamplingSensorPort.java \
+	PtidesPort.java \
 	SensorPort.java  
 	
 OTHER_FILES_TO_BE_JARED = 
