@@ -48,6 +48,7 @@ TCL_SRCS = \
 JSRCS = \
 	ActorWithPortNameProblem.java \
 	ActorWithPrivateParameter.java \
+	CustomAdder.java \
 	PortParameterActor.java \
 	ReadParametersAcrossLink.java \
 	ReadParametersInContainer.java \

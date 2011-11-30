@@ -112,11 +112,11 @@
         <link port="Ramp4.output" relation="relation4"/>
     </class>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{84.0, 84.0, 84.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{84.0, 88.0, 92.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="8.400000000000006E-8">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 180.0]">
         </property>

@@ -34,6 +34,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -113,7 +114,7 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
             /*Discard the input */
             //System.out.println(getFullName() + ".fire() reading input " + x);
             // Note that we don't check for input, which is bad, but common.
-            input.get(x);
+            sum += ((ScalarToken)input.get(x)).doubleValue();
         }
         //System.out.println(getFullName() + ".fire() sending " + sum);
         output.send(0, new DoubleToken(sum));
@@ -152,6 +153,8 @@ public class ReadParametersAcrossLink extends TypedAtomicActor {
                 double remoteParameter = ((DoubleToken) ((Variable) container
                                 .getAttribute("remoteParameter")).getToken()).doubleValue();
                 group.setRemoteParameter(remoteParameter);
+            } else {
+                throw new IllegalActionException(this, "Could not find a parameter named \"remoteParameter\".");
             }
         }
     }
