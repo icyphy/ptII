@@ -1732,15 +1732,22 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 if (verbosityLevel > 3) {
                     code.append("    System.out.println(\"E1 " + actorPortName + " " + port.getFullName() + " " + channelNumber + " " + remoteActor.getFullName() + "\");" + _eol);
                 }
+                // We set the port as a multiport if necessary, see:
+                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ReadPMultiport7.xml
+                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ReadPMultiport.xml
                 code.append("TypedIOPort c0PortA = (TypedIOPort)c0.getPort(\"c0PortA\");" + _eol
                         + "if ( c0PortA == null) {" + _eol
                         + "c0PortA = new TypedIOPort(c0, \"c0PortA\", false, true);" + _eol
+                        + "} else {" + _eol
+                        + "c0PortA.setMultiport(true);" + _eol
                         + "}" + _eol
                         + "TypedIOPort c0PortB = (TypedIOPort)c0.getPort(\"c0PortB\");" + _eol
                         + "if ( c0PortB == null) {" + _eol
                         + "c0PortB = new TypedIOPort(c0, \"c0PortB\", true, false);" + _eol
                         // If c0PortB does not exist, then connect it.
                         + "c0.connect(c0PortB, c0PortA);" + _eol
+                        + "} else {" + _eol
+                        + "c0PortB.setMultiport(true);" + _eol
                         + "}" + _eol);
             }
         }
@@ -2155,9 +2162,14 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     code.append("if (!c0PortA.isDeeplyConnected(" + portOrParameter + ")) {" + _eol
                         + "    $containerSymbol().connect(" + outputPortName + ","
                         + portOrParameter + ");" + _eol
+                        + "}" + _eol
+                            // Connect c0PortB if necessary.  See.
+                            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ReadPMultiport7.xml
+                            // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ReadPMultiport.xml
+                        + "if (!c0PortB.isDeeplyConnected(" + escapedCodegenPortNameSymbol + ")) {" + _eol
                         + "    $containerSymbol().connect("
                         + escapedCodegenPortNameSymbol + ", c0PortB);" + _eol
-                            + "}" + _eol);
+                        + "}" + _eol);
 
                     if (readingRemoteParametersDepth == 1) {
                         code.append("c1.connect(c0PortA,c1PortA);" + _eol);
@@ -2641,6 +2653,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private boolean _isReadingRemoteParameters(TypedIOPort port, int channelNumber, List sourceOrSinkPorts)
             throws IllegalActionException {
+        int verbosityLevel = ((IntToken) getCodeGenerator().verbosity.getToken()).intValue();
+
         if (port.isInput() && port.isMultiport()) {
 
             // FIXME: We should annotate the very few ports that are
@@ -2657,8 +2671,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + channelNumber + " of sourcePorts " + sourceOrSinkPorts.size()
                         + " width: " + port.getWidth());
             }
-            //System.out.println("_isReadingRemoteParameters: 0 " + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " width: " + port.getWidth() + " " + port.sourcePortList().size() + " " + remoteActor.getFullName() + " " + remoteContainer.getFullName());
-
+            if (verbosityLevel > 14) {
+                System.out.println("_isReadingRemoteParameters: 0 " + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " width: " + port.getWidth() + " " + port.sourcePortList().size() + " " + remoteActor.getFullName() + " " + remoteContainer.getFullName());
+            }
             // If the custom actor is connected to a CompositeActorA
             // inside a CompositeActorB, then we want to check
             // CompositeActorB for Parameters.
@@ -2689,7 +2704,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                             Iterator remotePorts = remotePort.sourcePortList().iterator();
                             while (remotePorts.hasNext()) {
                                 NamedObj upstreamActor = ((NamedObj)remotePorts.next()).getContainer();
-                                //System.out.println("_isReadingRemoteParameters: upstream actor: " + upstreamActor.getFullName());
+                                if (verbosityLevel > 14) {
+                                    System.out.println("_isReadingRemoteParameters: upstream actor: " + upstreamActor.getFullName());
+                                }
                                 if (upstreamActor.getContainer().equals(remoteActor.getContainer())
                                         &&  _isAutoAdaptered(upstreamActor)) {
                                     foundAutoAdapteredUpstreamActor = true;
@@ -2707,7 +2724,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         while (entities.hasNext()) {
                             NamedObj namedObj = (NamedObj)entities.next();
                             if (_isAutoAdaptered(namedObj)) {
-                                //System.out.println("_isReadingRemoteParameters: " + namedObj.getFullName() + " is autoadaptered, returning false");
+                                if (verbosityLevel > 14) {
+                                    System.out.println("_isReadingRemoteParameters: " + namedObj.getFullName() + " is autoadaptered, returning false");
+                                }
                                 return false;
                             }
                         }
@@ -2717,7 +2736,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         .attributeList(Parameter.class);
                     if (parameters.size() > 0) {
                         // We have parameters in the container, so return true.
-                        //System.out.println("_isReadingRemoteParameters: " + remoteContainer.getFullName() + " return True");
+                        if (verbosityLevel > 14) {
+                            System.out.println("_isReadingRemoteParameters: " + remoteContainer.getFullName() + " return True");
+                        }
                         return true;
                     }
                 }
@@ -2727,9 +2748,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 }
                 remoteContainer = remoteContainer.getContainer();
             }
-        }
-        //System.out.println("_isReadingRemoteParameters:" + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " returning FALSE");
 
+        }
+        if (verbosityLevel > 14) {
+            System.out.println("_isReadingRemoteParameters:" + getComponent().getFullName() + " " + port.getFullName() + " " + channelNumber + " returning FALSE");
+        }
         return false;
     }
 
