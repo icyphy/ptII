@@ -37,8 +37,6 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.ComplexType;
-
 import diva.canvas.Figure;
 import diva.util.java2d.Polygon2D;
 

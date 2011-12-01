@@ -36,8 +36,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.ComplexType;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.CustomRenderedPort;
 import ptolemy.actor.Director;
