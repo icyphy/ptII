@@ -395,7 +395,7 @@ public class NonStrictTest extends Sink {
                     if (newValues[i] instanceof Token[]) {
                         // Handle width of 1, ArrayToken
                         newTokens[i] = new ArrayToken((Token[]) newValues[i]);
-                        for (int j = 0; j < ((Token[])newValues[i]).length; i++) {
+                        for (int j = 0; j < ((Token[])newValues[i]).length; j++) {
                             _checkRangeOfTolerance(((Token[])newValues[i])[j]);
                         }
                     } else {
