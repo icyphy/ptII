@@ -31,19 +31,22 @@
 
 ME =		ptolemy/domains/ptides/demo
 
-DIRS =		PtidesBasicDistributedPowerPlant\
+DIRS =		CompositeQM \
+		PtidesBasicDistributedPowerPlant\
 		PtidesBasicMixedSimulator PtidesBasicMultiPlatformTDMA \
 		PtidesBasicOnePlatform PtidesBasicPowerPlant \
 		PtidesBasicTwoPlatformsNetworkSensorEvents \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PtidesBasicTTE \
 		PtidesClockSynchronizationError \
+		PtidesMulticoreDirector \
 		PtidesNetworkLatencyTest \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime \
 		PrintingPress \
 		PtidesSynchrophasor \
 		TREX
+
 # Root of the Java directory
 ROOT =		../../../..
 
@@ -58,6 +61,7 @@ PTPACKAGE = 	demo
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	CompositeQM/CompositeQM.jar \
 	PtidesBasicDistributedPowerPlant/PtidesBasicDistributedPowerPlant.jar \
 	PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.jar \
 	PtidesBasicMultiPlatformTDMA/PtidesBasicMultiPlatformTDMA.jar \
@@ -67,6 +71,7 @@ PTCLASSALLJARS = \
 	PtidesBasicTTE/PtidesBasicTTE.jar \
 	PtidesClockSynchronizationError/PtidesClockSynchronizationError.jar \
 	PtidesNetworkLatencyTest/PtidesNetworkLatencyTest.jar \
+	PtidesMulticoreDirector/PtidesMulticoreDirector.jar \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
 	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
 	PrintingPress/PrintingPress.jar \

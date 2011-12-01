@@ -35,7 +35,7 @@ ME =		ptolemy/domains/ptides/lib/io
 DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,12 +45,11 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	io
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJARS = 
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	ActuatorPort.java \
