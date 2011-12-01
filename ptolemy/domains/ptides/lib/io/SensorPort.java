@@ -31,31 +31,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.io;
 
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import diva.canvas.Figure;
-import diva.util.java2d.Polygon2D;
-
-import ptolemy.actor.CustomRenderedPort;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.icon.ShapeIcon;
 
 /**
  *  This port provides a specialized TypedIOPort for sensors
@@ -67,7 +51,7 @@ import ptolemy.vergil.icon.ShapeIcon;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public class SensorPort extends PtidesPort implements CustomRenderedPort {
+public class SensorPort extends PtidesPort {
 
     
     /** Create a new SensorPort with a given container and a name.

@@ -32,16 +32,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib.io;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.CustomRenderedPort;
-import ptolemy.actor.Director;
 import ptolemy.actor.NoRoomException;
-import ptolemy.actor.NoTokenException;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -49,12 +43,7 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MonotonicFunction;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -69,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public class NetworkReceiverPort extends PtidesPort implements CustomRenderedPort {
+public class NetworkReceiverPort extends PtidesPort {
     
     /** Create a new NetworkReceiverPort with a given container and a name.
      * @param container The container of the port. 

@@ -32,17 +32,13 @@ package ptolemy.domains.ptides.lib.io;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import ptolemy.actor.CustomRenderedPort;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.util.MultiHashMap;
 
 
 /**
@@ -55,7 +51,7 @@ import ptolemy.util.MultiHashMap;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public class ActuatorPort extends PtidesPort implements CustomRenderedPort {
+public class ActuatorPort extends PtidesPort {
  
     /** Create a new ActuatorPort with a given container and a name.
      * @param container The container of the port. 

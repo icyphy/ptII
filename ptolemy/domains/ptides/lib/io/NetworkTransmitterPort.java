@@ -32,28 +32,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib.io;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.CustomRenderedPort;
-import ptolemy.actor.Director;
 import ptolemy.actor.NoRoomException;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
-import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -67,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public class NetworkTransmitterPort extends PtidesPort implements CustomRenderedPort {
+public class NetworkTransmitterPort extends PtidesPort {
  
     
     /** Create a new NetworkTransmitterPort with a given container and a name.

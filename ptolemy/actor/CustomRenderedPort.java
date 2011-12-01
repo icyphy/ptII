@@ -31,6 +31,10 @@ package ptolemy.actor;
 
 import java.util.List;
 
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 /** This interface is used for ports that require a custom rendering. It
  *  implements a method that returns a list of coordinates for the custom
  *  shape.
@@ -41,11 +45,27 @@ import java.util.List;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public interface CustomRenderedPort {
+public abstract class CustomRenderedPort extends TypedIOPort {
 
+    /** Create a new CustomRenderedPort with a given container and a name.
+     * @param container The container of the port. 
+     * @param name The name of the port.
+     * @throws IllegalActionException If parameters cannot be set.
+     * @throws NameDuplicationException If name already exists.
+     */
+    public CustomRenderedPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+
+        // FIXME: the following should use getCoordinatesForShape to 
+        // generate the correct svg icon.
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-5\" y=\"-5\" " + "width=\"5\" height=\"5\" "
+                + "style=\"fill:black\"/>\n" + "</svg>\n");
+    }
+    
     /** Compute and return a list of coordinates for the custom shape. 
      *  @return List of coordinates.
      */
-    public List<Integer[]> getCoordinatesForShape();
+    public abstract List<Integer[]> getCoordinatesForShape();
     
 }

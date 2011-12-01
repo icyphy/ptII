@@ -31,17 +31,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.lib.io;
 
-import java.awt.Shape;
-import java.util.List;
-
-import diva.util.java2d.Polygon2D;
-import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.CustomRenderedPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.icon.ShapeIcon;
 
 /**
  *  This abstract class implements common functionality for ptides
@@ -53,8 +47,8 @@ import ptolemy.vergil.icon.ShapeIcon;
  *  @Pt.ProposedRating Red (derler)
  *  @Pt.AcceptedRating
  */
-public abstract class PtidesPort extends TypedIOPort {
-
+public abstract class PtidesPort extends CustomRenderedPort {
+    
     /** Create a new PtidesPort with a given container and a name.
      * @param container The container of the port. 
      * @param name The name of the port.
@@ -62,26 +56,8 @@ public abstract class PtidesPort extends TypedIOPort {
      * @throws NameDuplicationException If name already exists.
      */
     public PtidesPort(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        _iconDescription = new ShapeIcon(this, "_iconDescription"); 
-        
-        Shape shape;
-        Polygon2D.Double polygon = new Polygon2D.Double();  
-        polygon.moveTo(-8, 4); 
-        List<Integer[]> list = getCoordinatesForShape();
-        for (int i = 0; i < list.size(); i++) {
-            polygon.lineTo(list.get(i)[0], list.get(i)[1]);  
-        }      
-        polygon.closePath();
-        shape = polygon;     
-        ((ShapeIcon)_iconDescription).setShape(shape); 
+        super(container, name); 
     }
-    
-    /** Return coordinates for the port icon. */
-    public abstract List<Integer[]> getCoordinatesForShape();
-    
-    /** IconDescription parameter used for representation in the library */
-    public Attribute _iconDescription;
     
     /** Override this method with an empty implementation to allow for
      *  adding this port to the library.
