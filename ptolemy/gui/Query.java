@@ -1854,7 +1854,7 @@ public class Query extends JPanel {
         private String _name;
     }
 
-    /** Panel containing an entry box and color chooser.
+    /** Panel containing an entry box and button that opens a color chooser.
      */
     public static class QueryColorChooser extends Box implements ActionListener {
         /** Create a panel containing an entry box and a color chooser.

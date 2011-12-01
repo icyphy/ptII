@@ -29,7 +29,10 @@
 package ptolemy.actor.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.util.HashMap;
@@ -38,9 +41,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
@@ -153,256 +160,262 @@ public class PtolemyQuery extends Query implements QueryListener,
         // it in this class.
         // Look for a ParameterEditorStyle.
         boolean foundStyle = false;
+        
+        try {
+            _addingStyledEntryFor = attribute;
 
-        if (attribute instanceof NamedObj) {
-            Iterator<?> styles = ((NamedObj) attribute).attributeList(
-                    ParameterEditorStyle.class).iterator();
+            if (attribute instanceof NamedObj) {
+                Iterator<?> styles = ((NamedObj) attribute).attributeList(
+                        ParameterEditorStyle.class).iterator();
 
-            while (styles.hasNext() && !foundStyle) {
-                ParameterEditorStyle style = (ParameterEditorStyle) styles
-                        .next();
+                while (styles.hasNext() && !foundStyle) {
+                    ParameterEditorStyle style = (ParameterEditorStyle) styles
+                            .next();
+
+                    try {
+                        style.addEntry(this);
+                        foundStyle = true;
+                    } catch (IllegalActionException ex) {
+                        // Ignore failures here, and just present
+                        // the default dialog.
+                    }
+                }
+            }
+
+            if (!foundStyle) {
+                // NOTE: Infer the style.
+                // This is a regrettable approach, but it keeps
+                // dependence on UI issues out of actor definitions.
+                // Also, the style code is duplicated here and in the
+                // style attributes. However, it won't work to create
+                // a style attribute here, because we don't necessarily
+                // have write access to the workspace.
+                String name = attribute.getName();
+                String displayName = attribute.getDisplayName();
 
                 try {
-                    style.addEntry(this);
-                    foundStyle = true;
-                } catch (IllegalActionException ex) {
-                    // Ignore failures here, and just present
-                    // the default dialog.
-                }
-            }
-        }
+                    JComponent component = null;
+                    if (attribute instanceof IntRangeParameter) {
+                        int current = ((IntRangeParameter) attribute)
+                                .getCurrentValue();
+                        int min = ((IntRangeParameter) attribute).getMinValue();
+                        int max = ((IntRangeParameter) attribute).getMaxValue();
 
-        if (!foundStyle) {
-            // NOTE: Infer the style.
-            // This is a regrettable approach, but it keeps
-            // dependence on UI issues out of actor definitions.
-            // Also, the style code is duplicated here and in the
-            // style attributes. However, it won't work to create
-            // a style attribute here, because we don't necessarily
-            // have write access to the workspace.
-            String name = attribute.getName();
-            String displayName = attribute.getDisplayName();
-
-            try {
-                JComponent component = null;
-                if (attribute instanceof IntRangeParameter) {
-                    int current = ((IntRangeParameter) attribute)
-                            .getCurrentValue();
-                    int min = ((IntRangeParameter) attribute).getMinValue();
-                    int max = ((IntRangeParameter) attribute).getMaxValue();
-
-                    component = addSlider(name, displayName, current, min, max);
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                } else if (attribute instanceof DoubleRangeParameter) {
-                    double current = ((DoubleToken) ((DoubleRangeParameter) attribute)
-                            .getToken()).doubleValue();
-                    double max = ((DoubleToken) ((DoubleRangeParameter) attribute).max
-                            .getToken()).doubleValue();
-                    double min = ((DoubleToken) ((DoubleRangeParameter) attribute).min
-                            .getToken()).doubleValue();
-                    int precision = ((IntToken) ((DoubleRangeParameter) attribute).precision
-                            .getToken()).intValue();
-
-                    // Get the quantized integer for the current value.
-                    int quantized = ((int) Math
-                            .round(((current - min) * precision) / (max - min)));
-                    component = addSlider(name, displayName, quantized, 0,
-                            precision);
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                } else if (attribute instanceof ColorAttribute) {
-                    component = addColorChooser(name, displayName,
-                            attribute.getExpression());
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                } else if (attribute instanceof CustomQueryBoxParameter) {
-                    JLabel label = new JLabel(displayName + ": ");
-                    label.setBackground(_background);
-                    component = ((CustomQueryBoxParameter) attribute)
-                            .createQueryBox(this, attribute);
-                    _addPair(name, label, component, component);
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                } else if (attribute instanceof FileParameter
-                        || attribute instanceof FilePortParameter) {
-                    // Specify the directory in which to start browsing
-                    // to be the location where the model is defined,
-                    // if that is known.
-                    URI modelURI = URIAttribute
-                            .getModelURI((NamedObj) attribute);
-                    File directory = null;
-
-                    if (modelURI != null) {
-                        if (modelURI.getScheme().equals("file")) {
-                            File modelFile = new File(modelURI);
-                            directory = modelFile.getParentFile();
-                        }
-                    }
-
-                    URI base = null;
-
-                    if (directory != null) {
-                        base = directory.toURI();
-                    }
-
-                    // Check to see whether the attribute being configured
-                    // specifies whether files or directories should be listed.
-                    // By default, only files are selectable.
-                    boolean allowFiles = true;
-                    boolean allowDirectories = false;
-
-                    // attribute is always a NamedObj
-                    Parameter marker = (Parameter) ((NamedObj) attribute)
-                            .getAttribute("allowFiles", Parameter.class);
-
-                    if (marker != null) {
-                        Token value = marker.getToken();
-
-                        if (value instanceof BooleanToken) {
-                            allowFiles = ((BooleanToken) value).booleanValue();
-                        }
-                    }
-
-                    marker = (Parameter) ((NamedObj) attribute).getAttribute(
-                            "allowDirectories", Parameter.class);
-
-                    if (marker != null) {
-                        Token value = marker.getToken();
-
-                        if (value instanceof BooleanToken) {
-                            allowDirectories = ((BooleanToken) value)
-                                    .booleanValue();
-                        }
-                    }
-
-                    // FIXME: What to do when neither files nor directories are allowed?
-                    if (!allowFiles && !allowDirectories) {
-                        // The given attribute will not have a query in the dialog.
-                        return;
-                    }
-
-                    boolean isOutput = false;
-                    if (attribute instanceof FileParameter
-                            && ((FileParameter) attribute).isOutput()) {
-                        isOutput = true;
-                    }
-
-                    // FIXME: Should remember previous browse location?
-                    // Next to last argument is the starting directory.
-                    component = addFileChooser(name, displayName,
-                            attribute.getExpression(), base, directory,
-                            allowFiles, allowDirectories, isOutput,
-                            preferredBackgroundColor(attribute),
-                            preferredForegroundColor(attribute));
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                } else if (attribute instanceof PasswordAttribute) {
-                    component = addPassword(name, displayName, "");
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                } else if (attribute instanceof Parameter
-                        && (((Parameter) attribute).getChoices() != null)) {
-                    Parameter castAttribute = (Parameter) attribute;
-
-                    // NOTE: Make this always editable since Parameter
-                    // supports a form of expressions for value propagation.
-                    component = addChoice(name, displayName,
-                            castAttribute.getChoices(),
-                            castAttribute.getExpression(), true,
-                            preferredBackgroundColor(attribute),
-                            preferredForegroundColor(attribute));
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                } else if ((attribute instanceof NamedObj)
-                        && ((((NamedObj) attribute)
-                                .getAttribute("_textWidthHint") != null) || ((NamedObj) attribute)
-                                .getAttribute("_textHeightHint") != null)) {
-                    // Support hints for text height and/or width so that actors
-                    // don't have to use a ParameterEditorStyle, which depends
-                    // on packages that depend on graphics.
-
-                    // Default values:
-                    int widthValue = 30;
-                    int heightValue = 10;
-
-                    Attribute widthAttribute = ((NamedObj) attribute)
-                            .getAttribute("_textWidthHint");
-                    if (widthAttribute instanceof Variable) {
-                        Token token = ((Variable) widthAttribute).getToken();
-                        if (token instanceof IntToken) {
-                            widthValue = ((IntToken) token).intValue();
-                        }
-                    }
-                    Attribute heightAttribute = ((NamedObj) attribute)
-                            .getAttribute("_textHeightHint");
-                    if (heightAttribute instanceof Variable) {
-                        Token token = ((Variable) heightAttribute).getToken();
-                        if (token instanceof IntToken) {
-                            heightValue = ((IntToken) token).intValue();
-                        }
-                    }
-
-                    component = addTextArea(name, displayName,
-                            attribute.getExpression(),
-                            preferredBackgroundColor(attribute),
-                            preferredForegroundColor(attribute), heightValue,
-                            widthValue);
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                } else if (attribute instanceof Variable) {
-                    Type declaredType = ((Variable) attribute)
-                            .getDeclaredType();
-                    Token current = ((Variable) attribute).getToken();
-
-                    if (declaredType == BaseType.BOOLEAN) {
-                        // NOTE: If the expression is something other than
-                        // "true" or "false", then this parameter is set
-                        // to an expression that evaluates to to a boolean,
-                        // and the default Line style should be used.
-                        if (attribute.getExpression().equals("true")
-                                || attribute.getExpression().equals("false")) {
-                            component = addCheckBox(name, displayName,
-                                    ((BooleanToken) current).booleanValue());
-                            attachParameter(attribute, name);
-                            foundStyle = true;
-                        }
-                    }
-                }
-
-                // NOTE: Other attribute classes?
-
-                if (attribute.getVisibility() == Settable.NOT_EDITABLE) {
-                    if (component == null) {
-                        String defaultValue = attribute.getExpression();
-                        component = addDisplay(name, displayName, defaultValue);
+                        component = addSlider(name, displayName, current, min, max);
                         attachParameter(attribute, name);
                         foundStyle = true;
-                    } else if (component instanceof JTextComponent) {
-                        component.setBackground(_background);
-                        ((JTextComponent) component).setEditable(false);
-                    } else {
-                        component.setEnabled(false);
+                    } else if (attribute instanceof DoubleRangeParameter) {
+                        double current = ((DoubleToken) ((DoubleRangeParameter) attribute)
+                                .getToken()).doubleValue();
+                        double max = ((DoubleToken) ((DoubleRangeParameter) attribute).max
+                                .getToken()).doubleValue();
+                        double min = ((DoubleToken) ((DoubleRangeParameter) attribute).min
+                                .getToken()).doubleValue();
+                        int precision = ((IntToken) ((DoubleRangeParameter) attribute).precision
+                                .getToken()).intValue();
+
+                        // Get the quantized integer for the current value.
+                        int quantized = ((int) Math
+                                .round(((current - min) * precision) / (max - min)));
+                        component = addSlider(name, displayName, quantized, 0,
+                                precision);
+                        attachParameter(attribute, name);
+                        foundStyle = true;
+                    } else if (attribute instanceof ColorAttribute) {
+                        component = addColorChooser(name, displayName,
+                                attribute.getExpression());
+                        attachParameter(attribute, name);
+                        foundStyle = true;
+                    } else if (attribute instanceof CustomQueryBoxParameter) {
+                        JLabel label = new JLabel(displayName + ": ");
+                        label.setBackground(_background);
+                        component = ((CustomQueryBoxParameter) attribute)
+                                .createQueryBox(this, attribute);
+                        _addPair(name, label, component, component);
+                        attachParameter(attribute, name);
+                        foundStyle = true;
+                    } else if (attribute instanceof FileParameter
+                            || attribute instanceof FilePortParameter) {
+                        // Specify the directory in which to start browsing
+                        // to be the location where the model is defined,
+                        // if that is known.
+                        URI modelURI = URIAttribute
+                                .getModelURI((NamedObj) attribute);
+                        File directory = null;
+
+                        if (modelURI != null) {
+                            if (modelURI.getScheme().equals("file")) {
+                                File modelFile = new File(modelURI);
+                                directory = modelFile.getParentFile();
+                            }
+                        }
+
+                        URI base = null;
+
+                        if (directory != null) {
+                            base = directory.toURI();
+                        }
+
+                        // Check to see whether the attribute being configured
+                        // specifies whether files or directories should be listed.
+                        // By default, only files are selectable.
+                        boolean allowFiles = true;
+                        boolean allowDirectories = false;
+
+                        // attribute is always a NamedObj
+                        Parameter marker = (Parameter) ((NamedObj) attribute)
+                                .getAttribute("allowFiles", Parameter.class);
+
+                        if (marker != null) {
+                            Token value = marker.getToken();
+
+                            if (value instanceof BooleanToken) {
+                                allowFiles = ((BooleanToken) value).booleanValue();
+                            }
+                        }
+
+                        marker = (Parameter) ((NamedObj) attribute).getAttribute(
+                                "allowDirectories", Parameter.class);
+
+                        if (marker != null) {
+                            Token value = marker.getToken();
+
+                            if (value instanceof BooleanToken) {
+                                allowDirectories = ((BooleanToken) value)
+                                        .booleanValue();
+                            }
+                        }
+
+                        // FIXME: What to do when neither files nor directories are allowed?
+                        if (!allowFiles && !allowDirectories) {
+                            // The given attribute will not have a query in the dialog.
+                            return;
+                        }
+
+                        boolean isOutput = false;
+                        if (attribute instanceof FileParameter
+                                && ((FileParameter) attribute).isOutput()) {
+                            isOutput = true;
+                        }
+
+                        // FIXME: Should remember previous browse location?
+                        // Next to last argument is the starting directory.
+                        component = addFileChooser(name, displayName,
+                                attribute.getExpression(), base, directory,
+                                allowFiles, allowDirectories, isOutput,
+                                preferredBackgroundColor(attribute),
+                                preferredForegroundColor(attribute));
+                        attachParameter(attribute, name);
+                        foundStyle = true;
+                    } else if (attribute instanceof PasswordAttribute) {
+                        component = addPassword(name, displayName, "");
+                        attachParameter(attribute, name);
+                        foundStyle = true;
+                    } else if (attribute instanceof Parameter
+                            && (((Parameter) attribute).getChoices() != null)) {
+                        Parameter castAttribute = (Parameter) attribute;
+
+                        // NOTE: Make this always editable since Parameter
+                        // supports a form of expressions for value propagation.
+                        component = addChoice(name, displayName,
+                                castAttribute.getChoices(),
+                                castAttribute.getExpression(), true,
+                                preferredBackgroundColor(attribute),
+                                preferredForegroundColor(attribute));
+                        attachParameter(attribute, name);
+                        foundStyle = true;
+                    } else if ((attribute instanceof NamedObj)
+                            && ((((NamedObj) attribute)
+                                    .getAttribute("_textWidthHint") != null) || ((NamedObj) attribute)
+                                    .getAttribute("_textHeightHint") != null)) {
+                        // Support hints for text height and/or width so that actors
+                        // don't have to use a ParameterEditorStyle, which depends
+                        // on packages that depend on graphics.
+
+                        // Default values:
+                        int widthValue = 30;
+                        int heightValue = 10;
+
+                        Attribute widthAttribute = ((NamedObj) attribute)
+                                .getAttribute("_textWidthHint");
+                        if (widthAttribute instanceof Variable) {
+                            Token token = ((Variable) widthAttribute).getToken();
+                            if (token instanceof IntToken) {
+                                widthValue = ((IntToken) token).intValue();
+                            }
+                        }
+                        Attribute heightAttribute = ((NamedObj) attribute)
+                                .getAttribute("_textHeightHint");
+                        if (heightAttribute instanceof Variable) {
+                            Token token = ((Variable) heightAttribute).getToken();
+                            if (token instanceof IntToken) {
+                                heightValue = ((IntToken) token).intValue();
+                            }
+                        }
+
+                        component = addTextArea(name, displayName,
+                                attribute.getExpression(),
+                                preferredBackgroundColor(attribute),
+                                preferredForegroundColor(attribute), heightValue,
+                                widthValue);
+                        attachParameter(attribute, name);
+                        foundStyle = true;
+                    } else if (attribute instanceof Variable) {
+                        Type declaredType = ((Variable) attribute)
+                                .getDeclaredType();
+                        Token current = ((Variable) attribute).getToken();
+
+                        if (declaredType == BaseType.BOOLEAN) {
+                            // NOTE: If the expression is something other than
+                            // "true" or "false", then this parameter is set
+                            // to an expression that evaluates to to a boolean,
+                            // and the default Line style should be used.
+                            if (attribute.getExpression().equals("true")
+                                    || attribute.getExpression().equals("false")) {
+                                component = addCheckBox(name, displayName,
+                                        ((BooleanToken) current).booleanValue());
+                                attachParameter(attribute, name);
+                                foundStyle = true;
+                            }
+                        }
                     }
+
+                    // NOTE: Other attribute classes?
+
+                    if (attribute.getVisibility() == Settable.NOT_EDITABLE) {
+                        if (component == null) {
+                            String defaultValue = attribute.getExpression();
+                            component = addDisplay(name, displayName, defaultValue);
+                            attachParameter(attribute, name);
+                            foundStyle = true;
+                        } else if (component instanceof JTextComponent) {
+                            component.setBackground(_background);
+                            ((JTextComponent) component).setEditable(false);
+                        } else {
+                            component.setEnabled(false);
+                        }
+                    }
+                } catch (IllegalActionException ex) {
+                    // Ignore and create a line entry.
                 }
-            } catch (IllegalActionException ex) {
-                // Ignore and create a line entry.
             }
-        }
 
-        String defaultValue = attribute.getExpression();
+            String defaultValue = attribute.getExpression();
 
-        if (defaultValue == null) {
-            defaultValue = "";
-        }
+            if (defaultValue == null) {
+                defaultValue = "";
+            }
 
-        if (!(foundStyle)) {
-            addLine(attribute.getName(), attribute.getDisplayName(),
-                    defaultValue, preferredBackgroundColor(attribute),
-                    preferredForegroundColor(attribute));
+            if (!(foundStyle)) {
+                addLine(attribute.getName(), attribute.getDisplayName(),
+                        defaultValue, preferredBackgroundColor(attribute),
+                        preferredForegroundColor(attribute));
 
-            // The style itself does this, so we don't need to do it again.
-            attachParameter(attribute, attribute.getName());
+                // The style itself does this, so we don't need to do it again.
+                attachParameter(attribute, attribute.getName());
+            }
+        } finally {
+            _addingStyledEntryFor = null;
         }
     }
 
@@ -902,6 +915,33 @@ public class PtolemyQuery extends Query implements QueryListener,
             attribute.removeValueListener(this);
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the base class to put a button on the right if
+     *  the Settable object for which we are adding an entry itself
+     *  contains Settable parameters.
+     *  @param name The name of the entry.
+     *  @param label The label.
+     *  @param widget The interactive entry to the right of the label.
+     *  @param entry The object that contains user data.
+     */
+    protected void _addPair(String name, JLabel label, Component widget,
+            Object entry) {
+        if (_addingStyledEntryFor != null) {
+            List<Settable> settables = ((NamedObj)_addingStyledEntryFor).attributeList(Settable.class);
+            if (settables == null || settables.size() == 0) {
+                super._addPair(name, label, widget, entry);
+            } else {
+                HierarchicalConfigurer configurer = new HierarchicalConfigurer(
+                        PtolemyQuery.this, name, _addingStyledEntryFor, widget);
+                super._addPair(name, label, configurer, entry);
+            }
+        } else {
+            super._addPair(name, label, widget, entry);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -951,6 +991,10 @@ public class PtolemyQuery extends Query implements QueryListener,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    // Settable for which we are adding a styled entry.
+    private Settable _addingStyledEntryFor;
+
     // Another dialog used to prompt for corrections to errors.
     private ComponentDialog _dialog;
 
@@ -984,4 +1028,58 @@ public class PtolemyQuery extends Query implements QueryListener,
     // Maps an attribute name to a list of entry names that the
     // attribute is attached to.
     private Map<Settable, List<String>> _varToListOfEntries;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Panel containing an entry box and button that opens another query
+     *  to edit the parameters of a specified parameter.
+     */
+    public class HierarchicalConfigurer extends Box implements ActionListener {
+        /** Create a panel containing an entry box and a button.
+         *  @param owner The owner query.
+         *  @param name The name of the query.
+         *  @param parameter The parameter containing parameters.
+         *  @param widget The widget to use to edit the parameter.
+         */
+        public HierarchicalConfigurer(Query owner, String name, Settable parameter, Component widget) {
+            super(BoxLayout.X_AXIS);
+            _owner = owner;
+            _parameter = parameter;
+            JButton button = new JButton("Configure");
+            button.addActionListener(this);
+            add(widget);
+            add(button);
+
+            // Add the listener last so that there is no notification
+            // of the first value.
+            if (widget instanceof JTextField) {
+                ((JTextField)widget).addActionListener(new QueryActionListener(_owner, name));
+
+                // Add a listener for loss of focus.  When the entry gains
+                // and then loses focus, listeners are notified of an update,
+                // but only if the value has changed since the last notification.
+                // FIXME: Unfortunately, Java calls this listener some random
+                // time after the window has been closed.  It is not even a
+                // a queued event when the window is closed.  Thus, we have
+                // a subtle bug where if you enter a value in a line, do not
+                // hit return, and then click on the X to close the window,
+                // the value is restored to the original, and then sometime
+                // later, the focus is lost and the entered value becomes
+                // the value of the parameter.  I don't know of any workaround.
+                ((JTextField)widget).addFocusListener(new QueryFocusListener(_owner, name));
+            }
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            // Open a dialog to edit parameters contained by the parameter.
+            new EditParametersDialog(
+                    JOptionPane.getFrameForComponent(PtolemyQuery.this),
+                    (NamedObj)_parameter);
+        }
+
+        private Query _owner;
+
+        private Settable _parameter;
+    }
 }
