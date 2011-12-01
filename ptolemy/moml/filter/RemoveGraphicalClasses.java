@@ -305,6 +305,9 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.ontologies.ConceptIcon", null);
 
         _graphicalClasses.put(
+                "ptolemy.vergil.kernel.attributes.ArcAttribute", null);
+
+        _graphicalClasses.put(
                 "ptolemy.vergil.kernel.attributes.EllipseAttribute", null);
 
         _graphicalClasses.put(
