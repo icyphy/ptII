@@ -73,5 +73,8 @@ public class Video extends TypedAtomicActor implements PortablePlaceable {
     public void fire() throws IllegalActionException {
         _interface.fire();
     }
-
+    
+    public void updateBoundingBox(float x1, float y1, float x2, float y2) {
+    	_interface.updateBoundingBox(x1, y1, x2, y2);
+    }
 }

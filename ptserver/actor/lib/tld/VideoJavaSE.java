@@ -59,4 +59,10 @@ public class VideoJavaSE implements VideoInterface {
 
     }
 
+	@Override
+	public void updateBoundingBox(float x1, float y1, float x2, float y2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

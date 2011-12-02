@@ -42,4 +42,5 @@ public interface VideoInterface extends PortablePlaceable {
 
     public void fire() throws IllegalActionException;
 
+    public void updateBoundingBox(float x1, float y1, float x2, float y2);
 }

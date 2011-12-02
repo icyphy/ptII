@@ -45,18 +45,12 @@ public class ByteArrayTokenHandler implements TokenHandler<ByteArrayToken> {
         outputStream.write(token.getArray());
     }
 
-    private long time = 0;
-
     public ByteArrayToken convertToToken(DataInputStream inputStream,
             Class<? extends ByteArrayToken> tokenType) throws IOException,
             IllegalActionException {
         int length = inputStream.readInt();
         byte[] array = new byte[length];
         inputStream.readFully(array);
-        long t = System.currentTimeMillis();
-        System.out.println(t - time);
-        time = t;
-
         return new ByteArrayToken(array);
     }
 
