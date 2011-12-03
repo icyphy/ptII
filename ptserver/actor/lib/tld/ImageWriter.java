@@ -68,6 +68,7 @@ public class ImageWriter extends TypedAtomicActor {
         source.getProxySourceData().getTokenQueue().clear();
         try {
             File temp = File.createTempFile("predator", ".jpg");
+            temp.deleteOnExit();
             System.out.println(temp.getAbsolutePath());
             FileOutputStream f = new FileOutputStream(temp);
             int val;

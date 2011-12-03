@@ -8,7 +8,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 50}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={80, 106, 1083, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={80, 106, 1073, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[860, 400]">
     </property>
@@ -16,16 +16,28 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{430.0000000000001, 200.0000000000001}">
     </property>
+    <property name="bb" class="ptolemy.kernel.util.StringAttribute">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[126, 66, 205, 122]">
+            <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="attribute">
+            </property>
+        </property>
+    </property>
     <property name="droid_orientation" class="ptolemy.kernel.util.StringAttribute" value="landscape">
     </property>
-    <property name="droid_screensize" class="ptolemy.data.expr.Parameter" value="{810, 1210}">
+    <property name="droid_screensize" class="ptolemy.data.expr.Parameter" value="{830, 1230}">
     </property>
     <property name="droid_tabs" class="ptolemy.kernel.util.Attribute">
         <property name="tab_" class="ptolemy.kernel.util.StringAttribute" value="Default">
         </property>
     </property>
+    <entity name="BoundingBox" class="ptserver.actor.lib.tld.BoundingBox">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 155.0]">
+        </property>
+        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
+        </property>
+    </entity>
     <entity name="Video" class="ptserver.actor.lib.tld.Video">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 145.0]">
         </property>
         <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="source">
         </property>
@@ -38,12 +50,6 @@
         <property name="droid_tab" class="ptolemy.kernel.util.StringAttribute" value="tab_">
         </property>
     </entity>
-    <entity name="BoundingBox" class="ptserver.actor.lib.tld.BoundingBox">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[711.5473937988281, 158.30711364746094]">
-        </property>
-        <property name="_remote" class="ptolemy.data.expr.SingletonParameter" value="sink">
-        </property>
-    </entity>
     <entity name="Video_remote" class="ptserver.actor.ProxySink">
         <property name="targetEntityName" class="ptolemy.kernel.util.StringAttribute" value=".predator2.Video">
         </property>
@@ -54,7 +60,7 @@
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 145.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -72,7 +78,7 @@
 </svg>
 </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[711.5473937988281, 158.30711364746094]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 155.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -80,12 +86,12 @@
             </property>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Video.output" relation="relation"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="BoundingBox.input" relation="relation3"/>
+    <link port="Video.output" relation="relation"/>
     <link port="Video_remote.output" relation="relation"/>
     <link port="BoundingBox_remote.input" relation="relation3"/>
 </entity>
