@@ -51,7 +51,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	ObjectWidgets.properties
+	ObjectWidgets.properties \
+	ResizableImageWidget-license.htm
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
