@@ -152,7 +152,7 @@ public class PtidesBasicReceiver
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(sourcePort.getContainer());
 
         sourceTime = adapter.getSourceTimeString("sourceTime");
-        if (sourceTime == "") { // use default input output actor 
+        if (sourceTime.equals("")) { // use default input output actor 
             sourceTime = "sourceTime = &Event_Head_" + CodeGeneratorAdapter.generateName(sourcePort.getContainer()) + "_" + adapter.getTimeSourcePortName() + "[0]->tag.timestamp";
         }
         

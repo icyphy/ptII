@@ -115,16 +115,28 @@ public class ModelServer implements QueryHandler {
          */
         _properties = new Properties(System.getProperties());
 
+        String configFile = _configDir + "/" + _CONFIG_FILE;
+        InputStream configProperties = null;
         try {
-            InputStream configProperties = new FileInputStream(_configDir + "/"
-                    + _CONFIG_FILE);
+            configProperties = new FileInputStream(configFile);
             _properties.load(configProperties);
-            configProperties.close();
         } catch (IOException e) {
             System.out
                     .println("Warning: Can't find configuration propertiees file. ' "
                             + e.getMessage() + "'");
+                    e.printStackTrace();
+        } finally {
+            if (configProperties != null) {
+                try {
+                    configProperties.close();
+                } catch (IOException ex) {
+                    System.out.println("Failed to close " + configFile + ": "
+                            + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
         }
+        
 
         PeerGroup netPeerGroup = null;
 

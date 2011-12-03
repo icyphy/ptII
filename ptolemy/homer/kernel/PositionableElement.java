@@ -67,6 +67,7 @@ public abstract class PositionableElement {
      *  @return Return the location object of the element.
      *  @exception IllegalActionException If the location of the element
      *  is not defined.
+     *  @see #setLocation(HomerLocation)
      */
     public HomerLocation getLocation() throws IllegalActionException {
         HomerLocation location = (HomerLocation) getElement().getAttribute(
@@ -83,6 +84,7 @@ public abstract class PositionableElement {
      *  @param width The width of the representation.
      *  @param height The height of the representation.
      *  @exception IllegalActionException If the location cannot be set.
+     *  @see #getLocation()
      */
     public void setLocation(int x, int y, int width, int height)
             throws IllegalActionException {
@@ -111,6 +113,7 @@ public abstract class PositionableElement {
      * 
      *  @param tag The tag identifier of the tab this element belongs to.
      *  @throws IllegalActionException If the tab cannot be set. 
+     *  @see #getTab()
      */
     public void setTab(String tag) throws IllegalActionException {
         Attribute attribute = getElement()
@@ -140,6 +143,7 @@ public abstract class PositionableElement {
     /** Get the location of the element.
      * 
      *  @return Return the location object of the element.
+     *  @see setTab(String)
      */
     public String getTab() {
         Settable tag = ((Settable) _element

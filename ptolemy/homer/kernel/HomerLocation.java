@@ -79,10 +79,12 @@ public class HomerLocation extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                public methods                             ////
 
-    /** Get the relative x position of the top-left corner. <br/>
-     *  Special constants: <br/>
-     *          MATCH_PARENT = -1 <br/>
-     *          WRAP_CONTENT = -2
+    /** Get the relative x position of the top-left corner.
+     *  Special constants:
+     *  <pre>
+     *  MATCH_PARENT = -1
+     *  WRAP_CONTENT = -2
+     *  </pre>
      *  @return The relative x position.
      *  @exception IllegalActionException If the underlying token is not
      *  an IntMatrixToken.
@@ -92,10 +94,12 @@ public class HomerLocation extends Parameter {
         return ((IntMatrixToken) getToken()).getElementAt(0, 0);
     }
 
-    /** Get the relative y position of the top-left corner. <br/>
-     *  Special constants: <br/>
-     *          MATCH_PARENT = -1 <br/>
-     *          WRAP_CONTENT = -2
+    /** Get the relative y position of the top-left corner.
+     *  Special constants:
+     *  <pre>
+     *  MATCH_PARENT = -1
+     *  WRAP_CONTENT = -2
+     *  </pre>
      *  @return The relative y position.
      *  @exception IllegalActionException If the underlying token is not
      *  an IntMatrixToken.

@@ -154,25 +154,35 @@ public class PtalonDialog extends JDialog implements ActionListener,
             }
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 FileReader reader = null;
+                File fileName = chooser.getSelectedFile();
                 try {
-                    reader = new FileReader(chooser.getSelectedFile());
+                    reader = new FileReader(fileName);
                     StringBuffer buffer = new StringBuffer();
                     char[] c = new char[1024];
                     int i = 0;
                     while ((i = reader.read(c, 0, 1024)) > 0) {
                         buffer.append(c, 0, i);
                     }
-                    reader.close();
                     _codeArea.setText(buffer.toString());
                     _codeArea.setCaretPosition(0);
                     _model.setFile(chooser.getSelectedFile());
                 } catch (FileNotFoundException e1) {
-                    JOptionPane.showMessageDialog(this, "Could not open file.",
+                    JOptionPane.showMessageDialog(this, "Failed to open file \"" + fileName + "\":" + e1.getMessage(),
                             "Ptalon", JOptionPane.ERROR_MESSAGE);
                 } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(this, "Failed to read file.",
+                    JOptionPane.showMessageDialog(this, "Failed to read file \"" + fileName + "\":" + e1.getMessage(),
                             "Ptalon", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(this, "Failed to close file \"" + fileName + "\":" + ex.getMessage(),
+                                    "Ptalon", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
                 }
+
             }
         } else if ("save".equals(e.getActionCommand())) {
             File file = _model.getFile();

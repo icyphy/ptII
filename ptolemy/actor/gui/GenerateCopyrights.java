@@ -200,6 +200,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.domains.ptinyos.util.nc2moml.MoMLLib",
                 "ptolemy/domains/ptinyos/lib/jdom-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "ptolemy.homer.widgets.ResizableImageWidget",
+                "ptolemy/homer/widgets/ResizableImageWidget-license.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.matlab.Expression",
                 "ptolemy/matlab/copyright.htm");
 

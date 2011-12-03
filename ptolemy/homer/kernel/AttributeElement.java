@@ -123,6 +123,7 @@ public class AttributeElement extends PositionableElement {
     /** Remove a value listener from the underlying attribute.
      * 
      *  @param listener The listener to remove.
+     *  @see #addListener(ValueListener)
      */
     public void removeListener(ValueListener listener) {
         ((AbstractSettableAttribute) getElement())

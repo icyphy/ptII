@@ -131,7 +131,7 @@ public class PtidesPreemptiveEDFDirector
         String emptyfunctions = "";
         for (int key : _interruptHandlerNames.keySet()) {
             String function = _interruptHandlerNames.get(key);
-            if (function == "") {
+            if (function.equals("")) {
                 emptyfunctions += "void EmptyInterruptHandler_" + key + "() {}\n";
                 function = "EmptyInterruptHandler_" + key;
             }  
@@ -174,7 +174,7 @@ public class PtidesPreemptiveEDFDirector
         String externDeclarations = "";
         for (int key : _interruptHandlerNames.keySet()) {
             String function = _interruptHandlerNames.get(key);
-            if (function == "") { 
+            if (function.equals("")) { 
                 function = "EmptyInterruptHandler_" + key;
             } 
             args.add(function); 
@@ -417,7 +417,7 @@ public class PtidesPreemptiveEDFDirector
             + "#pragma interrupt SafeToProcessInterruptHandler(resbank)\n";
         for (Integer id : _interruptHandlerNames.keySet()) {
             String function = _interruptHandlerNames.get(id);
-            if (function == "") { 
+            if (function.equals("")) { 
                 function = "EmptyInterruptHandler_" + id;
             } 
             interruptPragmas += "#pragma interrupt" + function + "(resbank)\n";

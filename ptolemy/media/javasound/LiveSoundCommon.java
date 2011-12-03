@@ -59,6 +59,10 @@ public class LiveSoundCommon {
         }
     }
 
+    /** Return the number of bits per sample.
+     *  @return The number of bits per sample, which in this base
+     *  class defaults to 16.
+     */   
     public int getBitsPerSample() {
         return _bitsPerSample;
     }
@@ -177,7 +181,7 @@ public class LiveSoundCommon {
         }
     }
 
-    /* Convert a byte array of audio samples in linear signed PCM big endian
+    /** Convert a byte array of audio samples in linear signed PCM big endian
      * format into a double array of audio samples (-1, 1) range.
      * @param byteArray  The linear signed pcm big endian byte array
      * formatted array representation of audio data.
@@ -227,7 +231,7 @@ public class LiveSoundCommon {
         }
     }
 
-    /* Convert a double array of audio samples into a byte array of
+    /** Convert a double array of audio samples into a byte array of
      * audio samples in linear signed PCM big endian format. The
      * samples contained in <i>doubleArray</i> should be in the
      * range (-1, 1). Samples outside this range will be hard clipped
@@ -343,22 +347,30 @@ public class LiveSoundCommon {
     /** Byte buffer used for playback data. */
     protected byte[] _playbackData;
 
+    /** The list of listeners. */
     protected List _liveSoundListeners = new LinkedList();
 
-    // Cashed value of the maximum value scaling factor, default for 16 bits.
+    /** Cached value of the maximum value scaling factor, default for
+     * 16 bits.
+     */
     protected double _maxSampleReciprocal = 1.0 / 32768;
 
-    // Cashed value of the maximum integer value, default for 16 bits.
+    /** Cached value of the maximum integer value, default for 16
+     *  bits.
+     */
     protected double _maxSample = 32767;
 
-    // true is audio playback is currently active
+    /** true is audio playback is currently active. */
     protected boolean _playbackIsActive = false;
 
+    /** The sample rate. */
     protected float _sampleRate;
 
+    /** The list of sound consumers. */
     protected List _soundConsumers = new LinkedList();
 
-    /** The number of audio samples to transfer per channel when getSamples() is invoked. */
+    /** The number of audio samples to transfer per channel when
+     * getSamples() is invoked. */
     protected int _transferSize = 128;
 
 }

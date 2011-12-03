@@ -394,7 +394,7 @@ public class PtidesPreemptiveEDFDirector extends Director {
                 .getContainer()).deepEntityList()) {
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(actor);
             String fireFunctionParameters = adapter.getFireFunctionParameters();
-            if (fireFunctionParameters == "") {
+            if (fireFunctionParameters.equals("")) {
                 fireFunctionParameters = "void";
             }
             code.append("void "

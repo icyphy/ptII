@@ -91,15 +91,22 @@ public class ActorInstantiator {
                 PtalonModel model = new PtalonModel(_actor,
                         _actor.uniqueName(actorNameInPtalon));
                 File file = new File(_ptalonUrl);
-                FileReader reader;
-                reader = new FileReader(file);
-                StringBuffer buffer = new StringBuffer();
-                char[] c = new char[1024];
-                int i = 0;
-                while ((i = reader.read(c, 0, 1024)) > 0) {
-                    buffer.append(c, 0, i);
+                FileReader reader = null;
+                StringBuffer buffer = null;
+                try {
+                    reader = new FileReader(file);
+                    buffer = new StringBuffer();
+                    char[] c = new char[1024];
+                    int i = 0;
+                    while ((i = reader.read(c, 0, 1024)) > 0) {
+                        buffer.append(c, 0, i);
+                    }
+                } finally {
+                    if (reader != null) {
+                        reader.close();
+                    }
                 }
-                reader.close();
+
                 String result = buffer.toString();
                 model.setCode(result);
                 model.updateModel();

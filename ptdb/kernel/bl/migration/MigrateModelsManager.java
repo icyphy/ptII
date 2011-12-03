@@ -92,7 +92,9 @@ public class MigrateModelsManager {
         try {
 
             File csvFile = new File(csvFilePath);
-            csvFile.createNewFile();
+            if (!csvFile.createNewFile()) {
+                throw new IOException("Failed to create " + csvFilePath);
+            }
 
         } catch (IOException e) {
 

@@ -1033,6 +1033,8 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *          to match publisher and subscriber. This will be the port
      *          that should be removed
      *  @param publisherPort The publisher port.
+     *  @exception IllegalActionException If thrown by the parent method.
+     *  @exception NameDuplicationException If thrown by the parent method.
      */
     public void unregisterPublisherPort(String name, IOPort publisherPort)
             throws IllegalActionException, NameDuplicationException {

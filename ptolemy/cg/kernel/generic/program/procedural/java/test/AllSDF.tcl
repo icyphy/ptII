@@ -42,6 +42,7 @@ if {[info procs testJavaCG] == "" } then {
 }
 
 # Currently, we can only generate code for models that have SDFDirectors:
+#   cd $PTII
 #   find . -name auto > /tmp/a
 #   awk '{print "ls " $1 "/*.xml"}' /tmp/a > /tmp/d
 #   sh /tmp/d > /tmp/models

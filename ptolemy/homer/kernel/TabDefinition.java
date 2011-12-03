@@ -93,15 +93,40 @@ public class TabDefinition {
     ///////////////////////////////////////////////////////////////////
     ////                public methods                             ////
 
-    /** Get the tag used to identify the tab.
-     *  @return The tag of the tab.
+    /** Add an element to the contents of this tab. The element has to have
+     *  at least the location defined.
+     * 
+     *  @param element Ptolemy element with location defined.
+     *  @throws IllegalActionException If the element cannot be added to the
+     *  tab content area, or if the tab content area has not been set.
+     *  @see #setContent(ContentPrototype)
      */
-    public String getTag() {
-        return _tabElement.getName();
+    public void addContent(PositionableElement element)
+            throws IllegalActionException {
+        if (_content == null) {
+            throw new IllegalActionException("Content are must be set first");
+        }
+        _elements.add(element);
+        // Add representation to the tab contents
+        _content.add(element);
+    }
+
+    /** Remove an element to the contents of this tab.
+    /** Return the content area of the tab.
+     * 
+     * @return The content area of the tab, or null if it has not been set.
+     * @see #setContent(ContentPrototype)
+     */
+    public Object getContent() {
+        if (_content == null) {
+            return null;
+        }
+        return _content.getContent();
     }
 
     /** Get the name of the tab.
      *  @return The name of the tab.
+     *  @see #setName(String)
      */
     public String getName() {
         return _tabElement.getExpression();
@@ -115,49 +140,30 @@ public class TabDefinition {
         return _tabElement;
     }
 
-    /** Set the name of the tab.
-     * 
-     *  @param name The new name of the tab.
-     *  @exception IllegalActionException If the new name is not accepted by the model.
+    /** Get the tag used to identify the tab.
+     *  @return The tag of the tab.
      */
-    public void setName(String name) throws IllegalActionException {
-        _tabElement.setExpression(name);
-    }
-
-    /** Return the content area of the tab.
-     * 
-     * @return The content area of the tab, or null if it has not been set.
-     */
-    public Object getContent() {
-        if (_content == null) {
-            return null;
-        }
-        return _content.getContent();
+    public String getTag() {
+        return _tabElement.getName();
     }
 
     /** Set the content area of the tab.
      * 
      *  @param content The content to be used in the tab.
+     *  @see #getContent()
      */
     public void setContent(ContentPrototype content) {
         _content = content;
     }
 
-    /** Add an element to the contents of this tab. The element has to have
-     *  at least the location defined.
+    /** Set the name of the tab.
      * 
-     *  @param element Ptolemy element with location defined.
-     *  @throws IllegalActionException If the element cannot be added to the
-     *  tab content area, or if the tab content area has not been set.
+     *  @param name The new name of the tab.
+     *  @exception IllegalActionException If the new name is not accepted by the model.
+     *  @see #getName()
      */
-    public void addContent(PositionableElement element)
-            throws IllegalActionException {
-        if (_content == null) {
-            throw new IllegalActionException("Content are must be set first");
-        }
-        _elements.add(element);
-        // Add representation to the tab contents
-        _content.add(element);
+    public void setName(String name) throws IllegalActionException {
+        _tabElement.setExpression(name);
     }
 
     /** Remove an element to the contents of this tab.

@@ -41,7 +41,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.Clock;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.de.lib.TimedDelay;
+import ptolemy.actor.lib.TimeDelay;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
@@ -301,7 +301,7 @@ public class RTMaudeUtility {
             ret.addStrAttr("period",
                     (new RTMPtExp(((Clock) act).period.getExpression(), true))
                             .getValue());
-        } else if (act instanceof TimedDelay) {
+        } else if (act instanceof TimeDelay) {
             ret.setClass("Delay");
             // BoundedBufferNondeterministicDelay did not PROPERLY override "delay"
             if (act instanceof BoundedBufferNondeterministicDelay) {
@@ -312,7 +312,7 @@ public class RTMaudeUtility {
                                         .getExpression(), true)).getValue());
             } else {
                 ret.addStrAttr("delay",
-                        (new RTMPtExp(((TimedDelay) act).delay.getExpression(),
+                        (new RTMPtExp(((TimeDelay) act).delay.getExpression(),
                                 true)).getValue());
             }
         } else if (act instanceof FSMActor || act instanceof ModalModel) {

@@ -165,13 +165,15 @@ public class TupleType extends StructuredType implements Cloneable {
         return true;
     }
 
-    /** Return the number of arguments in this type
+    /** Return the number of arguments in this type.
+     *  @return The number of arguments in this type.   
      */
     public int getElementCount() {
         return _elementTypeTerms.length;
     }
 
     /** Return the type of the given argument.
+     *  @param i The given argument.
      *  @return a Type.
      */
     public Type getElementType(int i) {
@@ -189,6 +191,7 @@ public class TupleType extends StructuredType implements Cloneable {
     }
 
     /** Return the class for tokens that this type represents.
+     *  @return The class for tokens that this type represents.
      */
     public Class getTokenClass() {
         return FunctionToken.class;
@@ -196,6 +199,7 @@ public class TupleType extends StructuredType implements Cloneable {
 
     /** Return the InequalityTerm representing the type of the given
      *  argument.
+     *  @param i The given argument.
      *  @return An InequalityTerm.
      *  @see ptolemy.graph.InequalityTerm
      */
@@ -344,8 +348,9 @@ public class TupleType extends StructuredType implements Cloneable {
     }
 
     /** Return the string representation of this type. The format is
-     *  function(a0:<type>, a1:<type>, ...) <type>.  Note that the
-     *  function argument names are not semantically significant.
+     *  function(a0:&gt;type&lt;, a1:&gt;type&lt;, ...) &gt;type&lt;.
+     *  Note that the function argument names are not semantically
+     *  significant.
      *  @return A String.
      */
     public String toString() {

@@ -403,7 +403,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             _activeCores--;
         }
         
-        /** Return results as a string */
+        /** Return results as a string. */
         public String toString() {
             return _busyTime.entrySet().toString();      
         }

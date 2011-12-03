@@ -5533,7 +5533,7 @@ AC_SUBST(PTJNI_SHAREDLIBRARY_SUFFIX2)
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos) 
 AC_SUBST(PTJNI_LIBRARIES)
 
-# Set to joystick if Joystick.jar was found
+# Set to joystick if Joystick.jar was found 
 AC_SUBST(PTJOYSTICK_DIR)
 
 # Ptolemy II packages that use the Java Joystick facilty

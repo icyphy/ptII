@@ -388,6 +388,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *   that instantiate wrapper TypedCompositeActors, so we need
      *   to invoke those method calls.</p>
      *
+     *  @param component The component for which the preinitialization
+     *  method is to be created.
      *  @return a string for the preinitialization method body.  In
      *  this base class, return the empty string.
      *  @exception IllegalActionException If there is a problem

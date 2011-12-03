@@ -264,6 +264,7 @@ public class HomerMainFrame extends JFrame {
 
     /** Get the selected screen orientation.
      *  @return The screen orientation.
+     *  @see #setOrientation(ScreenOrientation)
      */
     public ScreenOrientation getOrientation() {
         if (_screenPanel.getSceneTabs().getPreferredSize().height > _screenPanel
@@ -283,6 +284,7 @@ public class HomerMainFrame extends JFrame {
 
     /** Get the screen size.
      *  @return The size of the scene.
+     *  @see #setScreenSize(Dimension)
      */
     public Dimension getScreenSize() {
         return _screenPanel.getPreferredSize();
@@ -435,6 +437,7 @@ public class HomerMainFrame extends JFrame {
 
     /** Set the orientation of the scene.
      *  @param orientation The orientation of the scene.
+     *  @see #getOrientation()
      */
     public void setOrientation(ScreenOrientation orientation) {
 
@@ -461,6 +464,10 @@ public class HomerMainFrame extends JFrame {
         }
     }
 
+    /** Set the screen size.
+     *  @param dimension The screen size.
+     *  @see #getScreenSize()
+     */
     public void setScreenSize(Dimension dimension) {
         if (dimension != null) {
             if (getOrientation() == ScreenOrientation.LANDSCAPE) {
@@ -497,9 +504,13 @@ public class HomerMainFrame extends JFrame {
         }
     }
 
-    /** Return if the NamedObj is a label widget.
-     *  @param object
-     *  @return If the NamedObj is a label widget.
+    /** Return if the object argument is a label widget.
+     *  A label widget is an object that is an Attribute that contains
+     *  a {@link ptolemy.kernel.HomerMainFrame#TAB_NODE} and the
+     *  value of the TAB_NODE is the name of the container of the
+     *  object.
+     *  @param object The object to be checked.
+     *  @return If the value of the object argument is a label widget.
      */
     public static boolean isLabelWidget(NamedObj object) {
         Attribute tab = object.getAttribute(HomerConstants.TAB_NODE);

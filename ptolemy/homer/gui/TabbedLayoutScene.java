@@ -248,17 +248,17 @@ public class TabbedLayoutScene extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         if (event instanceof TabEvent) {
             TabEvent tabEvent = (TabEvent) event;
-            if (tabEvent.getActionCommand() == "addTab") {
+            if (tabEvent.getActionCommand().equals("addTab")) {
                 _addTab(tabEvent.getTag(), tabEvent.getName(),
                         (TabScenePanel) tabEvent.getContent());
-            } else if (tabEvent.getActionCommand() == "removeTab") {
+            } else if (tabEvent.getActionCommand().equals("removeTab")) {
                 _removeTab(tabEvent.getPosition());
-            } else if (tabEvent.getActionCommand() == "renameTab") {
+            } else if (tabEvent.getActionCommand().equals("renameTab")) {
                 _renameTab(tabEvent.getPosition(), tabEvent.getName());
             }
         }
 
-        if (event.getActionCommand() == "clear") {
+        if (event.getActionCommand().equals("clear")) {
             _clear();
         }
     }

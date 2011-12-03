@@ -78,7 +78,7 @@ public class MultiplyDivide
     }
   
     /** Return a string that represents the source time.
-     *  @param The name of the time variable to be set.
+     *  @param timeVariable The name of the time variable to be set.
      *  @return A string sets the timeVariable to the timestamp of the
      *  last input channel.
      *  @exception IllegalActionException If there is a problem getting the width of the divide

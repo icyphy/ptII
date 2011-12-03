@@ -53,7 +53,9 @@ public class ShadowHighlighter extends BasicHighlighter {
         super(Color.gray, 6.0f);
     }
 
-    /** Create a new shadow with the given paint and size.
+    /** Create a new shadow with the given paint and halo.
+     *  @param paint The paint.
+     *  @param halo The halo, which is the size of the shadow.
      */
     public ShadowHighlighter(Paint paint, float halo) {
         super(paint, halo);
@@ -61,6 +63,9 @@ public class ShadowHighlighter extends BasicHighlighter {
 
     /** Create a new shadow with the given paint, size.
      *  and compositing operation.
+     *  @param paint The paint.
+     *  @param halo The halo, which is the size of the shadow.
+     *  @param composite The composoting operation.
      */
     public ShadowHighlighter(Paint paint, float halo, Composite composite) {
         super(paint, halo, composite);
@@ -69,6 +74,10 @@ public class ShadowHighlighter extends BasicHighlighter {
     /** Create a new shadow with the given paint, size,
      *  compositing operation, and stroke.  This shadow
      *  draws an outline only and does not fill it.
+     *  @param paint The paint.
+     *  @param halo The halo, which is the size of the shadow.
+     *  @param composite The composoting operation.
+     *  @param stroke The stroke
      */
     public ShadowHighlighter(Paint paint, float halo, Composite composite,
             Stroke stroke) {
@@ -76,7 +85,8 @@ public class ShadowHighlighter extends BasicHighlighter {
     }
 
     /** Get the bounds. This is the child's bounding box stretched
-     * by the "halo."
+     *  by the "halo."
+     *  @return The bounds.
      */
     public Rectangle2D getBounds() {
         Rectangle2D b = getChild().getBounds();
@@ -87,16 +97,19 @@ public class ShadowHighlighter extends BasicHighlighter {
     }
 
     /** Create a new instance of this shadower. The new
-     * instance will have the same paint, size, and composite
-     * as this one.
+     *  instance will have the same paint, size, and composite
+     *  as this one.
+     *  @param figure The figure, ignored in this method.
+     *  @return A new instance of the ShadowHighlighter class.
      */
     public FigureDecorator newInstance(Figure f) {
         return new ShadowHighlighter(getPaint(), getHalo(), getComposite(), getStroke());
     }
 
     /** Paint the figure. This method first paints the shadow over
-     * the contained figure's bounding box stretched by the size. It
-     * then paints the contained figure.
+     *  the contained figure's bounding box stretched by the size. It
+     *  then paints the contained figure.
+     *  @param g The Graphics2D context.
      */
     public void paint(Graphics2D g) {
         Composite composite = getComposite();

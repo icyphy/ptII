@@ -60,6 +60,7 @@ import org.openide.ErrorManager;
  *  and article http://java.dzone.com/news/how-add-resize-functionality-v
  *  A widget representing image. The origin of the widget is at its top-left corner.
  *  @author David Kaspar
+ *  @version $Id$
  */
 public class ResizableImageWidget extends Widget {
 
@@ -87,6 +88,7 @@ public class ResizableImageWidget extends Widget {
 
     /** Returns an image.
      *  @return The image.
+     *  @see #setImage(Image)
      */
     public Image getImage() {
         return _image;
@@ -101,6 +103,7 @@ public class ResizableImageWidget extends Widget {
 
     /** Sets an image.
      *  @param image The image
+     *  @see #getImage()
      */
     public void setImage(Image image) {
         if (_image == image) {

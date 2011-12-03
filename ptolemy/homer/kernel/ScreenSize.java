@@ -1,4 +1,5 @@
-/*
+/* A Parameter that contains the size of the screen.
+
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -39,6 +40,7 @@ import ptolemy.kernel.util.Settable;
 //// ScreenSize
 
 /**  
+ * A Parameter that contains the size of the screen.
  * @author Peter Foldes
  * @version $Id$
  * @since Ptolemy II 8.0

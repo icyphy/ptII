@@ -113,7 +113,7 @@ import ptolemy.kernel.util.Workspace;
  time <i>t</i> - <i>d</i>, where <i>t</i> is the time of the firing
  and <i>d</i> is the value of the delay parameter. Thus, a continuous
  signal input will have gaps on the output, and will fail to be
- piecewise continuous.
+bR piecewise continuous.
 
  @author Edward A. Lee
  @version $Id$

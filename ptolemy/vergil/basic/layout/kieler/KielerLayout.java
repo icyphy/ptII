@@ -1287,7 +1287,9 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @param kportlayout the corresponding KPort KShapeLayout
      * @param index index of the channel
      * @param maxIndex maximum available channel
-     * @param outer
+     * @param outer True if the direction of the ports is obtained by calling
+     * IOPortController.getDirection().  Otherwise, the direction is obtained
+     * by callng PtolemyModelUtil._getExternalPortDirection().
      * @return offset vector
      */
     protected static KVector _getMultiportOffsets(Port port, KShapeLayout kportlayout,

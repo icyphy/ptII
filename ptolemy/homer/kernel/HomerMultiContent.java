@@ -188,6 +188,7 @@ public class HomerMultiContent extends MultiContent<TabScenePanel> {
 
     /** Remove an action listener.
      *  @param listener The listener to remove.
+     *  @see #addListener(ActionListener)
      */
     public void removeListener(ActionListener listener) {
         _listeners.remove(listener);

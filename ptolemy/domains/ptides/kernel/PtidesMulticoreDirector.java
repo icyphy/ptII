@@ -426,7 +426,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     /** Return an event which is safe-to-process and should be processed next.
      *  If no such event exists, null is returned. In this implementation, the
      *  event that should be processed next is the safe-to-process event that
-     *  is earliest in <absolute deadline, tag, microstep, depth> lexical 
+     *  is earliest in &gt;absolute deadline, tag, microstep, depth&lt; lexical 
      *  ordering. Note that this method does not modify the event
      *  queue.
      *  @return Safe event to process.
@@ -777,14 +777,14 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     
-    /** Compare PtidesEvents based on <absolute deadline, tag, microstep, 
-     * depth> lexical ordering.
+    /** Compare PtidesEvents based on &gt;absolute deadline, tag, microstep, 
+     * depth&lt; lexical ordering.
      */
     protected class EDFComparator implements Comparator<PtidesEvent> {
 
         /** Return -1, 0, or 1 if the first argument is less than, equal to, 
-         * or greater than the seconds argument based on <absolute deadline,
-         * tag, microstep, depth> lexical ordering.
+         * or greater than the seconds argument based on &gt;absolute deadline,
+         * tag, microstep, depth&lt; lexical ordering.
          * @param e1 The first PtidesEvent.
          * @param e2 The seconds PtidesEvent.
          * @return Integer -1, 0, or 1 if first argument is less than,
