@@ -180,7 +180,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 105.0]">
             </property>
-            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
         </port>
         <port name="networkOut" class="ptolemy.actor.TypedIOPort">
@@ -276,7 +276,7 @@
             </property>
             <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
         </port>
         <port name="out" class="ptolemy.actor.TypedIOPort">

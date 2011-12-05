@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={282, 236, 866, 515}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={282, 236, 865, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 400]">
     </property>
@@ -149,7 +149,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 85.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={191, 176, 814, 515}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={191, 176, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -173,6 +173,8 @@
             <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="-0.5">
             </property>
             <property name="networkPort" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="networkDelayBound" class="ptolemy.data.expr.Parameter" value="-0.5">
             </property>
         </port>
         <entity name="NetworkReceiver" class="ptolemy.domains.ptides.lib.NetworkReceiver">

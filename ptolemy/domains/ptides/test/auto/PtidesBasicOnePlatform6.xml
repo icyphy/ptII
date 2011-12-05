@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 95.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 114, 735, 654}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 112, 734, 651}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[521, 541]">
     </property>
@@ -41,7 +41,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 160.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={285, 213, 814, 513}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={285, 213, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -92,12 +92,16 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 135.0}">
             </property>
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.5">
+            </property>
             <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 255.0}">
+            </property>
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>

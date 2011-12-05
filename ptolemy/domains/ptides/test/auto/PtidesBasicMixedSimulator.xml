@@ -105,6 +105,8 @@
             </property>
             <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.002">
             </property>
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.002">
+            </property>
         </port>
         <port name="actuator" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

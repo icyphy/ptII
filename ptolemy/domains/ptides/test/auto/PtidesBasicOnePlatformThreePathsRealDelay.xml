@@ -69,7 +69,7 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 215.0]">
             </property>
-            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.1">
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
@@ -81,7 +81,7 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 295.0]">
             </property>
-            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
         </port>
         <port name="port6" class="ptolemy.actor.TypedIOPort">

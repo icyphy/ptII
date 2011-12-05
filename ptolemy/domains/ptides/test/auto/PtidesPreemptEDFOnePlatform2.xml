@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 65.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={466, 116, 814, 513}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={466, 116, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -47,7 +47,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 160.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 135, 810, 513}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 135, 809, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 400]">
         </property>
@@ -68,12 +68,16 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 135.0}">
             </property>
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.5">
+            </property>
             <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
         </port>
         <port name="port3" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 255.0}">
+            </property>
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
@@ -88,6 +92,8 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{1.0}">
+                </property>
             </port>
             <port name="minus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -95,6 +101,8 @@
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{1.0}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{1.0}">
                 </property>
             </port>
         </entity>
@@ -113,6 +121,8 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-1.0}">
+                </property>
             </port>
         </entity>
         <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
@@ -127,6 +137,8 @@
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-1.0}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-1.0}">
                 </property>
             </port>
         </entity>
@@ -145,6 +157,8 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="3.0">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                </property>
             </port>
         </entity>
         <entity name="TimedDelay2" class="ptolemy.domains.de.lib.TimedDelay">
@@ -160,6 +174,8 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="3.0">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-0.5}">
+                </property>
             </port>
         </entity>
         <entity name="TestActorPortDepth" class="ptolemy.domains.de.lib.TestActorPortDepth">
@@ -170,6 +186,8 @@
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-1.0}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-1.0}">
                 </property>
             </port>
         </entity>
@@ -186,6 +204,8 @@
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{-1.0}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
+                </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{-1.0}">
                 </property>
             </port>
         </entity>

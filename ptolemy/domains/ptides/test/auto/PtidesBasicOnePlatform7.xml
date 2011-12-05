@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 50.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 143, 814, 513}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 143, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -23,7 +23,7 @@
     <entity name="PtidesPlatform" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 150.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 34, 719, 696}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 34, 709, 692}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[496, 582]">
         </property>
@@ -76,18 +76,22 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 135.0}">
             </property>
-            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
         </port>
         <port name="stimulus2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 255.0}">
             </property>
-            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="deviceDelayBound" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
         </port>
         <entity name="Computation2" class="ptolemy.actor.lib.Scale">

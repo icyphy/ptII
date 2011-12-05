@@ -4,7 +4,7 @@
 <entity name="PtidesNetworkLatencyTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 11, 910, 631}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 22, 909, 626}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 516]">
     </property>
@@ -84,7 +84,7 @@
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{1.0}">
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
             </port>
         </entity>
@@ -158,7 +158,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 105.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 280, 814, 515}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 253, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -178,6 +178,10 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 300.0]">
             </property>
             <property name="networkDelay" class="ptolemy.data.expr.Parameter" value="2.7">
+            </property>
+            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="networkDelayBound" class="ptolemy.data.expr.Parameter" value="2.7">
             </property>
         </port>
         <port name="port" class="ptolemy.actor.TypedIOPort">

@@ -834,6 +834,7 @@ public class PtidesBasicDirector extends DEDirector {
         _eventQueue = new PtidesListEventQueue();
 
         _checkSensorActuatorNetworkConsistency();
+        
         _calculateDelayOffsets();
 
         // In Ptides, we should never stop when queue is empty.
@@ -1043,7 +1044,11 @@ public class PtidesBasicDirector extends DEDirector {
                 // we start with is the deviceDelay.
                 Double start = null;
                 if (_isNetworkInputPort(inputPort)) {
-                    start = _getDeviceDelayBound(inputPort);
+                    Double deviceDelayBound = _getDeviceDelayBound(inputPort);
+                    Double networkDelayBound = _getNetworkDelayBound(inputPort);
+                    
+                    start = ((deviceDelayBound != null) ? deviceDelayBound : 0) + 
+                            ((networkDelayBound != null) ? networkDelayBound : 0);
                     if (start != null) {
                         // FIXME: this is wrong, need to get the max between all
                         // differences in error bounds instead of just getting the
@@ -1192,12 +1197,12 @@ public class PtidesBasicDirector extends DEDirector {
 
         _networkInputPorts = new HashSet<IOPort>();
         
-//        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-//                .inputPortList())) {
-//            // For each input port of the composite actor, make sure it's not
-//            // both a sensor port and a network port.
-//            _checkSensorNetworkInputConsistency(port);
-//
+        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
+                .inputPortList())) {
+            // For each input port of the composite actor, make sure it's not
+            // both a sensor port and a network port.
+            _checkSensorNetworkInputConsistency(port);
+
 //            for (TypedIOPort sinkPort : (List<TypedIOPort>) port
 //                    .deepInsidePortList()) {
 //                if (!_isNetworkInputPort(port)) {
@@ -1223,7 +1228,7 @@ public class PtidesBasicDirector extends DEDirector {
 //                    }
 //                }
 //            }
-//        }
+        }
         
         _networkOutputPorts = new HashSet<IOPort>();
         for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
@@ -1233,7 +1238,7 @@ public class PtidesBasicDirector extends DEDirector {
                     sourcePortList()) {
                 if (sourcePort.getContainer() instanceof NetworkTransmitter) {
                     _networkOutputPorts.add(sourcePort);
-                }
+                } 
             }
         }
         
@@ -2885,6 +2890,7 @@ public class PtidesBasicDirector extends DEDirector {
                 } else {
                     // If a port is not connected to a NetworkReceiver, it is
                     // assumed to be a sensorPort.
+                    
                     sensorPort = true;
                 }
             }
@@ -2902,8 +2908,8 @@ public class PtidesBasicDirector extends DEDirector {
         // networkDriverDelay.
         Double deviceDelay = _getDeviceDelay(port);
         Double deviceDelayBound = _getDeviceDelayBound(port);
-        if (deviceDelay != null && (deviceDelayBound == null ||
-                deviceDelay > deviceDelayBound)) {
+        if (deviceDelay != null && deviceDelayBound != null &&
+                deviceDelay > deviceDelayBound) {
             throw new IllegalActionException(port, 
                     "The deviceDelayBound must be >= deviceDelay.");
         }
@@ -2999,6 +3005,26 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         Parameter parameter = (Parameter) ((NamedObj) port)
                 .getAttribute("deviceDelayBound");
+        if (parameter != null) {
+            return Double.valueOf(((DoubleToken) parameter.getToken())
+                    .doubleValue());
+        }
+        return null;
+    }
+    
+    /** Return the value stored in the deviceDelayBound parameter associated with
+     *  the port. deviceDelayBound parameters can be associated to sensors, 
+     *  actuators and network devices.
+     *  @param port The port the deviceDelayBound is associated with.
+     *  @return the value of the deviceDelayBound parameter if the parameter is not
+     *  null. Otherwise return null.
+     *  @exception IllegalActionException If the token of the deviceDelayBound
+     *  parameter cannot be evaluated.
+     */
+    private static Double _getNetworkDelayBound(IOPort port)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute("networkDelayBound");
         if (parameter != null) {
             return Double.valueOf(((DoubleToken) parameter.getToken())
                     .doubleValue());
