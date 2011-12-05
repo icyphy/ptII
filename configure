@@ -3611,6 +3611,7 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/apps/transmission/"/>
 <exclude name="ptolemy/apps/vergil/"/>
 <exclude name="ptolemy/apps/waba/"/>
+<exclude name="ptolemy/apps/websensor/"/>
 <exclude name="ptolemy/apps/webstart/"/>
 <exclude name="ptolemy/apps/xsl/"/>
 <exclude name="ptolemy/apps/zaurus/"/>
