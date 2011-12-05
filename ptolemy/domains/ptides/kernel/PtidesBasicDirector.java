@@ -72,6 +72,7 @@ import ptolemy.domains.ptides.lib.ExecutionTimeListener.ExecutionEventType;
 import ptolemy.domains.ptides.lib.NetworkReceiver;
 import ptolemy.domains.ptides.lib.NetworkTransmitter;
 import ptolemy.domains.ptides.lib.SensorHandler;
+import ptolemy.domains.ptides.lib.io.NetworkReceiverPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -2759,7 +2760,7 @@ public class PtidesBasicDirector extends DEDirector {
                 if (port.hasTokenInside(i)) {
                     throw new IllegalActionException(port,
                             "missed deadline at the actuator. The deadline is "
-                                    + _currentTime
+                                    + deadline
                                     + ", and the platform physical time is "
                                     + platformPhysicalTag.timestamp);
                 }
@@ -2882,6 +2883,10 @@ public class PtidesBasicDirector extends DEDirector {
 
         boolean sensorPort = false;
         boolean networkPort = false;
+        if (port instanceof NetworkReceiverPort) {
+            _networkInputPorts.add(port);
+        }
+        
         for (IOPort sinkPort : (List<IOPort>) port.deepInsidePortList()) {
             if (sinkPort.isInput()) {
                 if (sinkPort.getContainer() instanceof NetworkReceiver) {

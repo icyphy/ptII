@@ -141,6 +141,7 @@ public class NetworkReceiverPort extends PtidesPort {
         director.setTag(recordTimeStamp, recordMicrostep);
         
         director.setTag(lastModelTime, lastMicrostep);
+        director.setModelTime(recordTimeStamp);
         super.sendInside(channelIndex, record.get(payload));
     }
 
