@@ -164,7 +164,9 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         _portLocationComboBox.addItem("WEST");
 
         _portTable = new JTable();
-        _portTable.setPreferredScrollableViewportSize(new Dimension(600, 70));
+        // If you change the height, then check that a few rows can be added.
+        // Also, check the setRowHeight call below.
+        _portTable.setPreferredScrollableViewportSize(new Dimension(600, 100));
 
         _portTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent mouseEvent) {
@@ -1877,7 +1879,18 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         if (_columnNames.contains(ColumnNames.COL_TYPE)) {
             int index = _columnNames.indexOf(ColumnNames.COL_TYPE);
             column = _portTable.getColumnModel().getColumn(index);
-            column.setPreferredWidth(70);
+            // Set the preferred with of the type column to 100.
+            // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5545
+            // "The default horizontal space is too short to show a number of the default
+            // options."
+            column.setPreferredWidth(100);
+            // Increase the row height.
+            // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5545
+            // "On OS X, when choosing or typing in a Type, there isn't enough vertical space
+            // and characters can be hard to read."
+            // If you change the height, then check that a few rows can be added,
+            // see the _portTable.setPreferredScrollableViewportSize(new Dimension(... call above
+            _portTable.setRowHeight((int)Math.round(_portTable.getRowHeight() * 1.20));
         }
 
         if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
