@@ -48,6 +48,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ptides.lib.NetworkReceiver;
 import ptolemy.domains.ptides.lib.SensorHandler;
+import ptolemy.domains.ptides.lib.io.NetworkTransmitterPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -175,6 +176,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         for (TypedIOPort outputPort : (List<TypedIOPort>) (((Actor) getContainer())
                 .outputPortList())) {
             SuperdenseDependency startDelay = SuperdenseDependency.OTIMES_IDENTITY;
+            // If platformDelayBound is specified use that to update deadline.
+            if (outputPort instanceof NetworkTransmitterPort) {
+                startDelay = SuperdenseDependency.valueOf(((DoubleToken)((NetworkTransmitterPort)outputPort).platformDelayBound.getToken()).doubleValue(), 0);
+            }
             portDeadlines.put(outputPort, startDelay);
         }
         // Now start from each sensor (input port at the top level), traverse through all

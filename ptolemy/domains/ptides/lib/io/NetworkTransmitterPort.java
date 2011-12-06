@@ -78,6 +78,10 @@ public class NetworkTransmitterPort extends PtidesPort {
         deviceDelayBound = new Parameter(this, "deviceDelayBound");
         deviceDelayBound.setExpression("0.0");
         deviceDelayBound.setTypeEquals(BaseType.DOUBLE); 
+        
+        platformDelayBound = new Parameter(this, "platformDelayBound");
+        platformDelayBound.setExpression("0.0");
+        platformDelayBound.setTypeEquals(BaseType.DOUBLE); 
     }
     
     /** Return the custom shape for this port.
@@ -101,6 +105,9 @@ public class NetworkTransmitterPort extends PtidesPort {
     
     /** Device delay bound parameter that defaults to the double value 0.0. */
     public Parameter deviceDelayBound;
+    
+    /** Platform delay bound parameter that defaults to the double value 0.0. */
+    public Parameter platformDelayBound;
      
  
     /** Send new Recordtoken with timestamp, microstep and the original token
@@ -120,8 +127,11 @@ public class NetworkTransmitterPort extends PtidesPort {
                         .getDoubleValue()),
                 new IntToken(director.getMicrostep()), token };
         RecordToken record = new RecordToken(labels, values); 
-        
+        try {
         super.send(channelIndex, record);
+        } catch (IllegalActionException ex) {
+            throw new IllegalActionException(this, ex.getMessage());
+        }
     }
     
     public Token convert(Token token) throws IllegalActionException { 

@@ -79,6 +79,10 @@ public class NetworkReceiverPort extends PtidesPort {
         deviceDelayBound.setExpression("0.0");
         deviceDelayBound.setTypeEquals(BaseType.DOUBLE); 
         
+        sourcePlatformDelayBound = new Parameter(this, "sourcePlatformDelayBound");
+        sourcePlatformDelayBound.setExpression("0.0");
+        sourcePlatformDelayBound.setTypeEquals(BaseType.DOUBLE); 
+        
         networkDelayBound = new Parameter(this, "networkDelayBound");
         networkDelayBound.setExpression("0.0");
         networkDelayBound.setTypeEquals(BaseType.DOUBLE); 
@@ -108,6 +112,9 @@ public class NetworkReceiverPort extends PtidesPort {
     
     /** Network delay bound parameter that defaults to the double value 0.0. */
     public Parameter networkDelayBound; 
+    
+    /** Source platform delay bound parameter that defaults to the double value 0.0. */
+    public Parameter sourcePlatformDelayBound; 
      
     /** Send Token inside. Tokens received on this port are recordTokens. Only the
      *  payload of the RecordToken should be sent inside. 
@@ -121,7 +128,7 @@ public class NetworkReceiverPort extends PtidesPort {
         PtidesBasicDirector director = (PtidesBasicDirector) ((CompositeActor)getContainer()).getDirector();
 
         if (!(token instanceof RecordToken) || ((RecordToken)token).labelSet().size() != 3) {
-            throw new IllegalActionException(
+            throw new IllegalActionException(this, 
                     "The input token is not a RecordToken or " +
                     "does not have a size not equal to 3: "
                             + "Here we assume the Record is of types: timestamp"

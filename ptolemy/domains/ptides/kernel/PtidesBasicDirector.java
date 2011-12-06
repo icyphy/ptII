@@ -73,6 +73,8 @@ import ptolemy.domains.ptides.lib.NetworkReceiver;
 import ptolemy.domains.ptides.lib.NetworkTransmitter;
 import ptolemy.domains.ptides.lib.SensorHandler;
 import ptolemy.domains.ptides.lib.io.NetworkReceiverPort;
+import ptolemy.domains.ptides.lib.io.NetworkTransmitterPort;
+import ptolemy.domains.ptides.lib.io.PeriodicSamplingSensorPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -842,6 +844,9 @@ public class PtidesBasicDirector extends DEDirector {
         stopWhenQueueIsEmpty.setExpression("false");
     }
 
+
+    
+    
     /** Add a new execution time listener to the list of listeners.
      *  @param listener New listener.
      */
@@ -1045,11 +1050,13 @@ public class PtidesBasicDirector extends DEDirector {
                 // we start with is the deviceDelay.
                 Double start = null;
                 if (_isNetworkInputPort(inputPort)) {
-                    Double deviceDelayBound = _getDeviceDelayBound(inputPort);
-                    Double networkDelayBound = _getNetworkDelayBound(inputPort);
+                    Double deviceDelayBound = _getDoubleParameterValue(inputPort, "deviceDelayBound");
+                    Double networkDelayBound = _getDoubleParameterValue(inputPort, "networkDelayBound");
+                    Double sourcePlatformDelayBound = _getDoubleParameterValue(inputPort, "sourcePlatformDelayBound");
                     
                     start = ((deviceDelayBound != null) ? deviceDelayBound : 0) + 
-                            ((networkDelayBound != null) ? networkDelayBound : 0);
+                            ((networkDelayBound != null) ? networkDelayBound : 0) + 
+                            ((sourcePlatformDelayBound != null) ? sourcePlatformDelayBound : 0);
                     if (start != null) {
                         // FIXME: this is wrong, need to get the max between all
                         // differences in error bounds instead of just getting the
@@ -1059,7 +1066,7 @@ public class PtidesBasicDirector extends DEDirector {
                         start = getAssumedSynchronizationErrorBound();
                     }
                 } else {
-                    start = _getDeviceDelayBound(inputPort);
+                    start = _getDoubleParameterValue(inputPort, "deviceDelayBound");
                 }
                 if (start == null) {
                     start = 0.0;
@@ -1197,80 +1204,43 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
 
         _networkInputPorts = new HashSet<IOPort>();
+        _networkOutputPorts = new HashSet<IOPort>();
         
+        // Find all network input ports and put them into a list.
         for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-                .inputPortList())) {
-            // For each input port of the composite actor, make sure it's not
-            // both a sensor port and a network port.
-            _checkSensorNetworkInputConsistency(port);
-
-//            for (TypedIOPort sinkPort : (List<TypedIOPort>) port
-//                    .deepInsidePortList()) {
-//                if (!_isNetworkInputPort(port)) {
-//                    // The port is a sensor port.
-//                    // If the schedulerExecutionTime is non-zero, then to
-//                    // simulate the correct behavior, sensors must be connected
-//                    // to SensorHandlers, and actuators
-//                    // must be connected to ActuatorSetups.
-//                    Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
-//                    if ((parameter != null)
-//                            && (((DoubleToken) parameter.getToken())
-//                                    .doubleValue() != 0.0)
-//                            && sinkPort.isInput()
-//                            && !(sinkPort.getContainer() instanceof SensorHandler)) {
-//                        throw new IllegalActionException(
-//                                port,
-//                                sinkPort.getContainer(),
-//                                "The schedulerExecutionTime parameter is "
-//                                        + "not 0.0. In this case to get the correct "
-//                                        + "simulated physical time behavior, an input "
-//                                        + "sensor port must be connected to a"
-//                                        + "SensorHandler.");
-//                    }
-//                }
-//            }
+                .inputPortList())) {  
+            if (port instanceof NetworkReceiverPort) {
+                _networkInputPorts.add(port);
+            } else if (port instanceof PeriodicSamplingSensorPort) {
+                
+            } else {
+                for (IOPort sinkPort : (List<IOPort>) port.deepInsidePortList()) {
+                    if (sinkPort.isInput()) {
+                        if (sinkPort.getContainer() instanceof NetworkReceiver) { 
+                            _networkInputPorts.add(port);
+                        }  
+                    }
+                } 
+            }
+            _checkDeviceDelay(port); 
         }
         
-        _networkOutputPorts = new HashSet<IOPort>();
+        // Find all network output ports and put them into a list.
         for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-                .outputPortList())) { 
-
+                .outputPortList())) {  
+            if (port instanceof NetworkTransmitterPort) {
+                _networkOutputPorts.add(port);
+            } 
             for (TypedIOPort sourcePort : (List<TypedIOPort>) port.
                     sourcePortList()) {
                 if (sourcePort.getContainer() instanceof NetworkTransmitter) {
                     _networkOutputPorts.add(sourcePort);
                 } 
             }
-        }
-        
-        // Check consistency for all output ports of this director.
-        
-//        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-//                .outputPortList())) {
-//            for (TypedIOPort sourcePort : (List<TypedIOPort>) port
-//                    .deepInsidePortList()) {
-//                // If the schedulerExecutionTime is non-zero, then to simulate
-//                // the correct behavior, sensors must be connected to
-//                // SensorHandlers, and actuators must be connected to
-//                // ActuatorSetups or a NetworkTransmitter.
-//                Parameter parameter = (Parameter) getAttribute("schedulerExecutionTime");
-//                if ((parameter != null)
-//                        && (((DoubleToken) parameter.getToken()).doubleValue() != 0.0)
-//                        && sourcePort.isOutput()
-//                        && !((sourcePort.getContainer() instanceof ActuatorSetup) || 
-//                             (sourcePort.getContainer() instanceof NetworkTransmitter))) {
-//                    throw new IllegalActionException(
-//                            port,
-//                            sourcePort.getContainer(),
-//                            "The schedulerExecutionTime parameter is not "
-//                                    + "0.0. In this case to get the correct simulated "
-//                                    + "physical time behavior, an output actuator "
-//                                    + "port must be connected to a ActuatorSetup or a "
-//                                    + "NetworkTransmitter.");
-//                }
-//            }
-//        }
+            _checkDeviceDelay(port); 
+        } 
     }
+ 
 
     /** For each input port within the composite actor where this director
      *  resides. If the input port has a delayOffset parameter, set the value
@@ -2589,7 +2559,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
-        Double inputDelay = _getDeviceDelay(port); 
+        Double inputDelay = _getDoubleParameterValue(port, "deviceDelay"); 
         if (inputDelay == null) {
             inputDelay = 0.0;
         }
@@ -2742,9 +2712,10 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
+        
         // Deadline of an actuation event is the timestamp subtracted by the
         // deviceDelay (d_a) at the actuators.
-        Double actuatorDeviceDelay = _getDeviceDelay(port);
+        Double actuatorDeviceDelay = _getDoubleParameterValue(port, "deviceDelay");
         Time deadline = _currentTime;
         if (actuatorDeviceDelay != null) {
             deadline = deadline.subtract(actuatorDeviceDelay);
@@ -2755,7 +2726,9 @@ public class PtidesBasicDirector extends DEDirector {
         // are not checked for deadline violations, do they still count
         // as actuation ports? i.e., when calculating deadline, should we
         // start at ports that are annotated with transferImmediately?
-        if (compare < 0 && !_ignoreDeadline(port)) {
+        if (port instanceof NetworkTransmitterPort) {
+            super._transferOutputs(port);
+        } else if (compare < 0 && !_ignoreDeadline(port)) {
             for (int i = 0; i < port.getWidthInside(); i++) {
                 if (port.hasTokenInside(i)) {
                     throw new IllegalActionException(port,
@@ -2861,77 +2834,19 @@ public class PtidesBasicDirector extends DEDirector {
         }
         return smallestDependency.timeValue();
     }
-
-    /** Check whether an input port is a network port or a sensor port by
-     *  checking what actor this input port is connected to. If it's connected
-     *  to a NetworkReceiver actor, it's assumed to be a network port. If
-     *  it's not connected to a NetworkReceiver actor, then it's assumed
-     *  to be a sensor port. However, this port cannot be connected to
-     *  NetworkReceiver and SensorHandler actors at the same time.
-     *  Also, add all network ports into a set for future reference. Finally,
-     *  make sure all sensor ports are not annotated with either networkDelay
-     *  or networkDriverDelay parameters, while all network ports are not
-     *  annotated with deviceDelay parameters.
-     *  @param port Input port to check consistancy.
-     *  @exception IllegalActionException If port is connected to both a
-     *  SensorHandler and a NetworkReceiver, or a network port is annotated
-     *  with the deviceDelay parameter, or a sensor port is
-     *  annotated with networkDelay or networkDriverDelay parameter.
+    
+    /** Check that actual deviceDelay is not bigger than the bound.
+     *  @param Port to be checked.
+     *  @exception IllegalActionException Thrown if parameters of port cannot be read.
      */
-    private void _checkSensorNetworkInputConsistency(IOPort port)
-            throws IllegalActionException {
-
-        boolean sensorPort = false;
-        boolean networkPort = false;
-        if (port instanceof NetworkReceiverPort) {
-            _networkInputPorts.add(port);
-        }
-        
-        for (IOPort sinkPort : (List<IOPort>) port.deepInsidePortList()) {
-            if (sinkPort.isInput()) {
-                if (sinkPort.getContainer() instanceof NetworkReceiver) {
-                    networkPort = true;
-                    _networkInputPorts.add(port);
-                } else {
-                    // If a port is not connected to a NetworkReceiver, it is
-                    // assumed to be a sensorPort.
-                    
-                    sensorPort = true;
-                }
-            }
-        }
-        if (sensorPort && networkPort) {
-            throw new IllegalActionException(port,
-                    "This port has been connected to both a "
-                            + "SensorHandler and a NetworkReceiver, "
-                            + "which is disallowed. A port must be either "
-                            + "a sensor port or a network port.");
-        }
-        // If both sensorPort and networkPort are false, this port is assumed to
-        // be a sensor port with deviceDelay = 0.0.
-        // The following checks are eliminated when eliminating networkDelay and
-        // networkDriverDelay.
-        Double deviceDelay = _getDeviceDelay(port);
-        Double deviceDelayBound = _getDeviceDelayBound(port);
+    private void _checkDeviceDelay(TypedIOPort port) throws IllegalActionException {
+        Double deviceDelay = _getDoubleParameterValue(port, "deviceDelay");
+        Double deviceDelayBound = _getDoubleParameterValue(port, "deviceDelayBound");
         if (deviceDelay != null && deviceDelayBound != null &&
                 deviceDelay > deviceDelayBound) {
             throw new IllegalActionException(port, 
                     "The deviceDelayBound must be >= deviceDelay.");
         }
-//        if (sensorPort && _getDeviceDelay(port) != null) {
-//            throw new IllegalActionException(
-//                    port,
-//                    "A port that is not connected to a NetworkReceiver is "
-//                            + "considered to be a sensor port, and a sensor port "
-//                            + "should not have networkDelay or networkDriverDelay "
-//                            + "parameters annotated on it.");
-//        } else if (networkPort && _getDeviceDelay(port) != null) {
-//            throw new IllegalActionException(port,
-//                    "A port that is connected to a NetworkReceiver is "
-//                            + "considered to be a network port, and a "
-//                            + "network port should not have deviceDelay "
-//                            + "parameter annotated on it.");
-//        }
     }
 
     /** Return the actor associated with the events in the list. All events
@@ -2978,64 +2893,29 @@ public class PtidesBasicDirector extends DEDirector {
         return null;
     }
 
-    /** Return the value stored in the deviceDelay parameter associated with
+    /** Return the value stored in a parameter associated with
      *  the input port.
+     *  Used for deviceDelay, deviceDelayBound, networkDelayBound, 
+     *  platformDelay and sourcePlatformDelay. 
+     *  FIXME: specialized ports do contain the parameters, don't
+     *  have to get the attribute with the string! For now leave it
+     *  that way to support older models that do not use PtidesPorts.
      *  @param port The port the deviceDelay is associated with.
      *  @return the value of the deviceDelay parameter if the parameter is not
      *  null. Otherwise return null.
      *  @exception IllegalActionException If the token of the deviceDelay
      *  parameter cannot be evaluated.
      */
-    private static Double _getDeviceDelay(IOPort port)
+    private static Double _getDoubleParameterValue(IOPort port, String parameterName)
             throws IllegalActionException {
         Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("deviceDelay");
+                .getAttribute(parameterName);
         if (parameter != null) {
             return Double.valueOf(((DoubleToken) parameter.getToken())
                     .doubleValue());
         }
         return null;
-    }
-    
-    /** Return the value stored in the deviceDelayBound parameter associated with
-     *  the port. deviceDelayBound parameters can be associated to sensors, 
-     *  actuators and network devices.
-     *  @param port The port the deviceDelayBound is associated with.
-     *  @return the value of the deviceDelayBound parameter if the parameter is not
-     *  null. Otherwise return null.
-     *  @exception IllegalActionException If the token of the deviceDelayBound
-     *  parameter cannot be evaluated.
-     */
-    private static Double _getDeviceDelayBound(IOPort port)
-            throws IllegalActionException {
-        Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("deviceDelayBound");
-        if (parameter != null) {
-            return Double.valueOf(((DoubleToken) parameter.getToken())
-                    .doubleValue());
-        }
-        return null;
-    }
-    
-    /** Return the value stored in the deviceDelayBound parameter associated with
-     *  the port. deviceDelayBound parameters can be associated to sensors, 
-     *  actuators and network devices.
-     *  @param port The port the deviceDelayBound is associated with.
-     *  @return the value of the deviceDelayBound parameter if the parameter is not
-     *  null. Otherwise return null.
-     *  @exception IllegalActionException If the token of the deviceDelayBound
-     *  parameter cannot be evaluated.
-     */
-    private static Double _getNetworkDelayBound(IOPort port)
-            throws IllegalActionException {
-        Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute("networkDelayBound");
-        if (parameter != null) {
-            return Double.valueOf(((DoubleToken) parameter.getToken())
-                    .doubleValue());
-        }
-        return null;
-    }
+    } 
 
     /** Return the model time of the enclosing director, which is our model
      *  of time in the physical environment. Note this oracle physical time

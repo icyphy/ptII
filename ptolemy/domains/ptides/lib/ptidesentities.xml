@@ -7,28 +7,17 @@
       <group>
 <doc>Ptides actors</doc>
 
-<!--property name="SchedulePlotter" class="ptolemy.domains.ptides.lib.SchedulePlotter"/>
-<property name="GPIOA" class="ptolemy.domains.ptides.lib.targets.luminary.GPIOA_Transmitter"/-->
-
-<entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
-</entity>
-
 <entity name="MasterClock" class="ptolemy.domains.ptides.lib.MasterClock">
 </entity>
 
-<entity name="NetworkReceiver" class="ptolemy.domains.ptides.lib.NetworkReceiver">
-</entity>
-
-<entity name="NetworkTransmitter" class="ptolemy.domains.ptides.lib.NetworkTransmitter">
-</entity>
 <entity name="RealisticSlaveClock" class="ptolemy.domains.ptides.lib.RealisticSlaveClock">
-</entity>
-<entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
 </entity>
 <entity name="SlaveClock" class="ptolemy.domains.ptides.lib.SlaveClock">
 </entity>
 
 <entity name="ExecutionTimeMonitor" class="ptolemy.domains.ptides.lib.ExecutionTimeMonitor">
+</entity>
+<entity name="PlatformTimeMonitor" class="ptolemy.domains.ptides.lib.PlatformTimeMonitor">
 </entity>
 
 <port name="SensorPort" class="ptolemy.domains.ptides.lib.io.SensorPort">

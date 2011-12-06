@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.Actor;
+import ptolemy.kernel.util.IllegalActionException;
 
 /** This interface defines the method that has to be implemented by
  *  an execution time listener.
@@ -59,6 +60,7 @@ public interface ExecutionTimeListener {
      */
     public void event(Actor actor, double time, ExecutionEventType event,
             int core);
+
     
     /** Execution time event type. */
     public static enum ExecutionEventType {

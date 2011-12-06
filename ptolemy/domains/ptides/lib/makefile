@@ -68,7 +68,8 @@ JSRCS = \
 	SimulatedPlatformPhysicalTime.java \
 	SlaveClock.java \
 	ExecutionTimeListener.java \
-	ExecutionTimeMonitor.java
+	ExecutionTimeMonitor.java \
+	PlatformTimeMonitor.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptidesentities.xml
