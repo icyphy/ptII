@@ -239,7 +239,9 @@ public class Constants {
         _types.put("long", new LongToken(0));
         _types.put("matrix", new ConcreteMatrixToken());
         _types.put("object", ObjectToken.NULL);
-        _types.put("xmltoken", new XMLToken());
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5545
+        // "Also, why is "xmltoken" an option in the list? For double you enter "double", not DoubleToken, etc."
+        _types.put("xml", new XMLToken());
         _types.put("scalar", new ConcreteScalarToken());
         _types.put("string", new StringToken(""));
         _types.put("unknown", new UnknownToken());
