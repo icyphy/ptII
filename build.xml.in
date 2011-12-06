@@ -2,7 +2,9 @@
 <!-- $Id$
      $PTII/configure reads in build.xml.in and creates build.xml.
      If configure is not available, copy build.xml.default to build.xml. -->
-<project basedir="." default="build" name="ptII">
+<project basedir="." default="build" name="ptII" 
+	 @ANT_MAVEN_ARTIFACT@
+	 >
   <!-- We can refer to any environment variable FOO as ${env.FOO} -->
   <property environment="env" />
 
@@ -126,7 +128,9 @@ For example:
     </echo>
   </target>
 
-  <target name="build-subprojects" />
+  <target @ANT_MAVEN_SUBPROJECTS@ name="build-subprojects" />
+
+  @ANT_MAVEN_BUILD_WEBSENSOR@
 
   <target name="build-project">
     <echo message="${ant.project.name}: ${ant.file}" />
@@ -140,7 +144,7 @@ For example:
 	   source="${source}"
 	   target="${target}">
       <src path="${basedir}" />
-      @ANT_SRC@
+      @ANT_WEBSENSOR_SRC@
       <patternset refid="ptII.excludes" />
       <classpath refid="ptII.classpath" />
     </javac>
@@ -153,12 +157,14 @@ For example:
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
 	     maxmemory="1000m"
-	     sourcepath="${basedir}">
+	     useexternalfile="true">
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
       </classpath>
       <doclet name="com.sun.tools.doclets.doccheck.DocCheck" path="vendors/sun/doccheck1.2b2/doccheck.jar" />
+      <fileset dir="${basedir}"/>
+      @ANT_WEBSENSOR_FILESET@
     </javadoc>
   </target>
 
@@ -186,6 +192,7 @@ For example:
       <auxclasspath refid="ptII.classpath" />
       <class location="${basedir}" />
       <sourcePath path="${basedir}" />
+      @ANT_WEBSENSOR_SOURCEPATH@
     </findbugs>
   </target>
 
