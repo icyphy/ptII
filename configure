@@ -660,6 +660,8 @@ JAR
 JARSIGNER
 JAVAWS
 KEYTOOL
+ANT
+MVN
 CC
 CFLAGS
 LDFLAGS
@@ -687,6 +689,12 @@ ANT_ALWAYS_EXCLUDE
 ANT_CLASSPATH
 ANT_EXCLUDE
 ANT_JAVADOC_EXCLUDEPACKAGENAMES
+ANT_MAVEN_ARTIFACT
+ANT_MAVEN_SUBPROJECTS
+ANT_MAVEN_BUILD_WEBSENSOR
+ANT_WEBSENSOR_FILESET
+ANT_WEBSENSOR_SOURCEPATH
+ANT_WEBSENSOR_SRC
 ANT_SRC
 CALTROP_DIR
 CHIC_DIR
@@ -3639,6 +3647,9 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 # Jar files to include in Ant's build.xml
 ANT_CLASSPATH=''
 
+# if maven-ant-tasks/*.jar was found
+# and if $PTII/ptolemy/apps/websensor was found.
+
 # Paths to exclude in Ant's build.xml
 ANT_EXCLUDE=''
 
@@ -3712,6 +3723,167 @@ esac
 #       Please try to keep the packages vaguely alphabetical
 #####################################################################
 #####################################################################
+
+#--------------------------------------------------------------------
+#       Look for the maven-ant-tasks-*.jar file used
+#       to run Maven from ant.
+#
+#--------------------------------------------------------------------
+
+# Set to 'xmlns:artifact="antlib:org.apache.maven.artifact.ant"' if
+# maven-ant-tasks-*.jar is found
+ANT_MAVEN_ARTIFACT=''
+
+# The ant rule to build $PTII/ptolemy/apps/websensor.
+ANT_MAVEN_BUILD_WEBSENSOR=''
+
+# Set to 'depends="build-websensor"'
+# if maven-ant-tasks/*.jar was found
+# and if $PTII/ptolemy/apps/websensor was found.
+ANT_MAVEN_SUBPROJECTS=''
+
+# Set to '<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
+# if maven-ant-tasks/*.jar was found
+# and if $PTII/ptolemy/apps/websensor was found.
+ANT_WEBSENSOR_FILESET=''
+
+# Set to <sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
+ANT_WEBSENSOR_SOURCEPATH=''
+
+# Set to '<src path="${basedir}/ptolemy/apps/websensor"/>'
+# if maven-ant-tasks*.jar was found
+# and if $PTII/ptolemy/apps/websensor was found.
+ANT_WEBSENSOR_SRC=''
+
+# Extract the first word of "ant", so it can be a program name with args.
+set dummy ant; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_ANT+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $ANT in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ANT="$ANT" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_ANT="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+ANT=$ac_cv_path_ANT
+if test -n "$ANT"; then
+  { echo "$as_me:$LINENO: result: $ANT" >&5
+echo "${ECHO_T}$ANT" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+# Extract the first word of "mvn", so it can be a program name with args.
+set dummy mvn; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_MVN+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $MVN in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_MVN="$MVN" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_MVN="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+MVN=$ac_cv_path_MVN
+if test -n "$MVN"; then
+  { echo "$as_me:$LINENO: result: $MVN" >&5
+echo "${ECHO_T}$MVN" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+if test -x "$ANT" -a -x "$MVN"; then
+   cat > maven-ant-tasks-test.xml << EoF
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="ptII"
+ xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+ <target name="help">
+    <artifact:mvn pom="pom.xml">
+      <arg value="help"/>
+    </artifact:mvn>
+  </target>
+</project>
+EoF
+   if "$ANT" -f maven-ant-tasks-test.xml help > /dev/null 2>&1 ; then
+      ANT_MAVEN_ARTIFACT='xmlns:artifact="antlib:org.apache.maven.artifact.ant"'
+      { echo "$as_me:$LINENO: checking for websensor in \$PTII/ptolemy/apps/websensor" >&5
+echo $ECHO_N "checking for websensor in \$PTII/ptolemy/apps/websensor... $ECHO_C" >&6; }
+      if test -d "$PTII/ptolemy/apps/websensor" ; then
+         if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; fi
+	 ANT_MAVEN_BUILD_WEBSENSOR="
+  <target name=\"build-websensor\">
+    <artifact:mvn pom=\"ptolemy/apps/websensor/pom.xml\">
+      <arg value=\"compile\"/>
+    </artifact:mvn>
+  </target>"
+	 ANT_MAVEN_SUBPROJECTS='depends="build-websensor"'
+      	 ANT_WEBSENSOR_FILESET='<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
+	 ANT_WEBSENSOR_SOURCEPATH='<sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
+	 ANT_WEBSENSOR_SRC='<src path="${basedir}/ptolemy/apps/websensor"/>'
+      fi
+   else
+       { echo "$as_me:$LINENO: WARNING: ant did not find the maven-ant-tasks*.jar file,
+    so we will not build in $PTII/ptolemy/apps/websensor.
+    maven-ant-tasks-*.jar is available from
+    https://maven.apache.org/ant-tasks/download.html" >&5
+echo "$as_me: WARNING: ant did not find the maven-ant-tasks*.jar file,
+    so we will not build in $PTII/ptolemy/apps/websensor.
+    maven-ant-tasks-*.jar is available from
+    https://maven.apache.org/ant-tasks/download.html" >&2;}
+   fi
+   rm -f maven-ant-tasks-test.xml
+else
+    { echo "$as_me:$LINENO: WARNING: The ant and/or mvn binaries could not be found,
+    so we will not build in $PTII/ptolemy/apps/websensor." >&5
+echo "$as_me: WARNING: The ant and/or mvn binaries could not be found,
+    so we will not build in $PTII/ptolemy/apps/websensor." >&2;}
+fi
+
 
 #--------------------------------------------------------------------
 #       Boost is used by Mescal, which is not shipped with
@@ -12357,6 +12529,14 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Packages to exclude from Ant targets that call javadoc
 
 
+# Variables used in build.xml by Ant to run Mav
+
+
+
+
+
+
+
 # Path of directories that contain source, used by the Ant's build rule.
 
 
@@ -13775,6 +13955,8 @@ JAR!$JAR$ac_delim
 JARSIGNER!$JARSIGNER$ac_delim
 JAVAWS!$JAVAWS$ac_delim
 KEYTOOL!$KEYTOOL$ac_delim
+ANT!$ANT$ac_delim
+MVN!$MVN$ac_delim
 CC!$CC$ac_delim
 CFLAGS!$CFLAGS$ac_delim
 LDFLAGS!$LDFLAGS$ac_delim
@@ -13802,6 +13984,12 @@ ANT_ALWAYS_EXCLUDE!$ANT_ALWAYS_EXCLUDE$ac_delim
 ANT_CLASSPATH!$ANT_CLASSPATH$ac_delim
 ANT_EXCLUDE!$ANT_EXCLUDE$ac_delim
 ANT_JAVADOC_EXCLUDEPACKAGENAMES!$ANT_JAVADOC_EXCLUDEPACKAGENAMES$ac_delim
+ANT_MAVEN_ARTIFACT!$ANT_MAVEN_ARTIFACT$ac_delim
+ANT_MAVEN_SUBPROJECTS!$ANT_MAVEN_SUBPROJECTS$ac_delim
+ANT_MAVEN_BUILD_WEBSENSOR!$ANT_MAVEN_BUILD_WEBSENSOR$ac_delim
+ANT_WEBSENSOR_FILESET!$ANT_WEBSENSOR_FILESET$ac_delim
+ANT_WEBSENSOR_SOURCEPATH!$ANT_WEBSENSOR_SOURCEPATH$ac_delim
+ANT_WEBSENSOR_SRC!$ANT_WEBSENSOR_SRC$ac_delim
 ANT_SRC!$ANT_SRC$ac_delim
 CALTROP_DIR!$CALTROP_DIR$ac_delim
 CHIC_DIR!$CHIC_DIR$ac_delim
@@ -13818,14 +14006,6 @@ ECLIPSE_CLASSPATHENTRY_LIBS!$ECLIPSE_CLASSPATHENTRY_LIBS$ac_delim
 IMAGEJ_JAR!$IMAGEJ_JAR$ac_delim
 JAI_JARS!$JAI_JARS$ac_delim
 JAR_INDEX!$JAR_INDEX$ac_delim
-JAVA_SYSTEM_JAR!$JAVA_SYSTEM_JAR$ac_delim
-JAVA3D_JARS!$JAVA3D_JARS$ac_delim
-JAVACC!$JAVACC$ac_delim
-JAVACC_DIR!$JAVACC_DIR$ac_delim
-JAVACV_JAR!$JAVACV_JAR$ac_delim
-JAVAX_CRYPTO_JAR!$JAVAX_CRYPTO_JAR$ac_delim
-JDOCBREAKITERATOR!$JDOCBREAKITERATOR$ac_delim
-JDOCSOURCEFLAGS!$JDOCSOURCEFLAGS$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -13867,6 +14047,14 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+JAVA_SYSTEM_JAR!$JAVA_SYSTEM_JAR$ac_delim
+JAVA3D_JARS!$JAVA3D_JARS$ac_delim
+JAVACC!$JAVACC$ac_delim
+JAVACC_DIR!$JAVACC_DIR$ac_delim
+JAVACV_JAR!$JAVACV_JAR$ac_delim
+JAVAX_CRYPTO_JAR!$JAVAX_CRYPTO_JAR$ac_delim
+JDOCBREAKITERATOR!$JDOCBREAKITERATOR$ac_delim
+JDOCSOURCEFLAGS!$JDOCSOURCEFLAGS$ac_delim
 JDOCTAG!$JDOCTAG$ac_delim
 JDOCTAGLET!$JDOCTAGLET$ac_delim
 JINI_DIR!$JINI_DIR$ac_delim
@@ -13956,14 +14144,6 @@ PTJAVAMAIL_JARS!$PTJAVAMAIL_JARS$ac_delim
 PTJAVAMAIL_PACKAGES!$PTJAVAMAIL_PACKAGES$ac_delim
 PTJMF_DIR!$PTJMF_DIR$ac_delim
 PTJMF_PACKAGES!$PTJMF_PACKAGES$ac_delim
-PTJNI_ARCHITECTURE!$PTJNI_ARCHITECTURE$ac_delim
-PTJNI_INCLUDE!$PTJNI_INCLUDE$ac_delim
-PTJNI_DL_LIBRARY!$PTJNI_DL_LIBRARY$ac_delim
-PTJNI_LIB_ARCHITECTURE!$PTJNI_LIB_ARCHITECTURE$ac_delim
-PTJNI_NO_CYGWIN!$PTJNI_NO_CYGWIN$ac_delim
-PTJNI_GCC_SHARED_FLAG!$PTJNI_GCC_SHARED_FLAG$ac_delim
-PTJNI_SHAREDLIBRARY_CFLAG!$PTJNI_SHAREDLIBRARY_CFLAG$ac_delim
-PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -14005,6 +14185,14 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTJNI_ARCHITECTURE!$PTJNI_ARCHITECTURE$ac_delim
+PTJNI_INCLUDE!$PTJNI_INCLUDE$ac_delim
+PTJNI_DL_LIBRARY!$PTJNI_DL_LIBRARY$ac_delim
+PTJNI_LIB_ARCHITECTURE!$PTJNI_LIB_ARCHITECTURE$ac_delim
+PTJNI_NO_CYGWIN!$PTJNI_NO_CYGWIN$ac_delim
+PTJNI_GCC_SHARED_FLAG!$PTJNI_GCC_SHARED_FLAG$ac_delim
+PTJNI_SHAREDLIBRARY_CFLAG!$PTJNI_SHAREDLIBRARY_CFLAG$ac_delim
+PTJNI_SHAREDLIBRARY_LDFLAG!$PTJNI_SHAREDLIBRARY_LDFLAG$ac_delim
 PTJNI_SHAREDLIBRARY_PREFIX!$PTJNI_SHAREDLIBRARY_PREFIX$ac_delim
 PTJNI_SHAREDLIBRARY_SUFFIX!$PTJNI_SHAREDLIBRARY_SUFFIX$ac_delim
 PTJNI_SHAREDLIBRARY_SUFFIX2!$PTJNI_SHAREDLIBRARY_SUFFIX2$ac_delim
@@ -14081,7 +14269,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 74; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 82; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
