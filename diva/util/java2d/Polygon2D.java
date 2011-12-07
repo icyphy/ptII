@@ -26,10 +26,13 @@
  */
 package diva.util.java2d;
 
+
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -75,97 +78,21 @@ public abstract class Polygon2D implements Shape {
     }
 
     /** Return true if the given point is inside the polygon.
-     * This method uses a straight-forward algorithm, where a point
-     * is taken to be inside the polygon if a horizontal line
-     * extended from the point to infinity intersects an odd number
-     * of segments.
      */
     public boolean contains(double x, double y) {
-        int crossings = 0;
-
-        if (_coordCount == 0) {
-            return false;
+        // This method creates a java.awt.geom.Area and calls contains()
+        // on it.
+        // The previous implementation failed if the polygon had a vertical or horizontal
+        // edge with the same value as one of the arguments.
+        // See diva/util/java2d/test/junit/Polygon2DJUnitTest.java
+        Path2D path = (this instanceof Polygon2D.Float) ? new Path2D.Float() : new Path2D.Double();
+        path.moveTo(getX(0), getY(0));
+        for (int i = 1; i < getVertexCount(); i++) {
+            path.lineTo(getX(i), getY(i));
         }
-
-        // Iterate over all vertices
-        int i = 1;
-
-        for (; i < getVertexCount();) {
-            double x1 = getX(i - 1);
-            double x2 = getX(i);
-            double y1 = getY(i - 1);
-            double y2 = getY(i);
-
-            // Billy Hinners found the following bugs:
-
-            // "I'll give a brief explanation of the two problems. For a little
-            // background, though, the algorithm works by counting the number of
-            // times a horizontal ray from the specified x, y to infinity in the
-            // positive direction intersects segments of the polygon. If odd, it
-            // returns true, if even, false."
-
-            // "The first problem was that the algorithm didn't
-            // correctly handle the case where the x, y pair shares
-            // the same y value as a horizontal segment of the
-            // polygon. In that case, it counted the segment before
-            // the horizontal segment and the horizontal segment,
-            // thereby counting what should be one intersection as
-            // two. My fix was simply to skip horizontal segments
-            // because either they don't intersect at all, or they get
-            // counted by the preceding segment."
-
-            // "The second problem also occurred when x, y shared the
-            // y value with one of the polygon vertices, but it was
-            // independent of horizontal segments.  If the y value was
-            // shared with the second vertex of the segment and the
-            // specified x value fell to the left of the first vertex
-            // n the segment and to the right of the second vertex,
-            // the algorithm ncorrectly counted an intersection. In
-            // this case, another check was needed to ensure the x
-            // value fell to the left of the second vertex."
-
-            // Skip horizontal segments - either they don't intersect or
-            // they're counted by the previous segment
-            if (y1 == y2) {
-                continue;
-            }
-
-            // Crossing if lines intersect
-            if ((x < x1) || (x < x2)) {
-                if (y == y2) {
-                    if (x < x2) {
-                        crossings++;
-                    }
-                } else if (y == y1) {
-                    // do nothing, so that two adjacent segments
-                    // don't both get counted
-                } else if (Line2D.linesIntersect(x, y, Math.max(x1, x2), y, x1,
-                        y1, x2, y2)) {
-                    crossings++;
-                }
-            }
-
-            i++;
-        }
-
-        // Final segment
-        double x1 = getX(i - 1);
-        double y1 = getY(i - 1);
-        double x2 = getX(0);
-        double y2 = getY(0);
-
-        // Crossing if lines intersect
-        if ((x < x1) || (x < x2)) {
-            if (Line2D
-                    .linesIntersect(x, y, Math.max(x1, x2), y, x1, y1, x2, y2)
-                    && (y != y1)) {
-                crossings++;
-            }
-        }
-
-        // True if odd number of crossings
-        // FindBugs: Check for oddness that won't work for negative numbers
-        return (crossings % 2) != 0;
+        path.closePath();
+        Area area = new Area(path);
+        return area.contains(x, y );
     }
 
     /** Return true if the given point is inside the polygon.

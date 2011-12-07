@@ -32,7 +32,7 @@ ME =		diva/util/java2d
 
 # PTSVG_DIR is set to svg in $PTII/mk/ptII.mk by configure
 # if Batik SVG jar files were found
-DIRS =		$(PTSVG_DIR)
+DIRS =		$(PTSVG_DIR) test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
