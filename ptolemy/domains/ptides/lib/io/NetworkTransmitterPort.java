@@ -41,8 +41,11 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeLattice;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -82,6 +85,8 @@ public class NetworkTransmitterPort extends PtidesPort {
         platformDelayBound = new Parameter(this, "platformDelayBound");
         platformDelayBound.setExpression("0.0");
         platformDelayBound.setTypeEquals(BaseType.DOUBLE); 
+        
+        admissionControlFunction = new StringParameter(this, "admissionControlFunction"); 
     }
     
     /** Return the custom shape for this port.
@@ -108,7 +113,9 @@ public class NetworkTransmitterPort extends PtidesPort {
     
     /** Platform delay bound parameter that defaults to the double value 0.0. */
     public Parameter platformDelayBound;
-     
+    
+    /** Admission control function parameter that defaults to the double value 0.0. */
+    public Parameter admissionControlFunction;
  
     /** Send new Recordtoken with timestamp, microstep and the original token
      *  as the payload to actors outside Ptides platforms.
@@ -134,19 +141,21 @@ public class NetworkTransmitterPort extends PtidesPort {
         }
     }
     
-    public Token convert(Token token) throws IllegalActionException { 
-        return token;
-    }
     
-    
-    /** Override Type checking with empty method. Otherwise the conversion
-     *  to a RecordToken which is performed in the send method causes errors
-     *  in the simulaiton.
-     *  FIXME: Find better solution for type checking.
+    /** Override Type checking to compare type of payload with resolvedType. 
+     *  FIXME: Is this right?
      *  @param token Token to be type-checked.
      */
     protected void _checkType(Token token) throws IllegalActionException {
-        // do nothing
+        int compare = TypeLattice.compare((((RecordToken)token).get(payload)).getType(), _resolvedType);
+
+        if ((compare == CPO.HIGHER) || (compare == CPO.INCOMPARABLE)) {
+            throw new IllegalActionException(this,
+                    "Run-time type checking failed. Token " + token
+                            + " with type " + token.getType()
+                            + " is incompatible with port type: "
+                            + _resolvedType.toString());
+        }  
     }
     
     ///////////////////////////////////////////////////////////////////
