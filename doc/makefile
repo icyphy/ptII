@@ -1280,7 +1280,7 @@ ojdcheck.htm:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=../vendors/findbugs-1.3.8
+FINDBUGS=../vendors/findbugs-2.0.0-rc1
 
 # findbugs.xml is special to findbugs, if we use findbugs.xml, we get:
 # Warning: could not load plugin file:/c:/cxh/ptII/vendors/findbugs-1.3.1/plugin/coreplugin.jar: java.security.PrivilegedActionException: edu.umd.cs.findbugs.PluginException: Couldn't parse "findbugs.xml"
@@ -1299,10 +1299,21 @@ ptII.fb:
 		done; \
 	fi
 
-# -effort:max was causing us to run out of memory
-FINDBUGS_ARGS = -maxHeap 2000 -experimental -effort:max -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fb
+ptII.fbp:
+	echo "<Project projectName=\"ptII\">" > ptII.fbp
+	echo "$(CLASSPATH)" | awk -v CLASSPATHSEPARATOR=$(CLASSPATHSEPARATOR) '{nf=split($$0, f, CLASSPATHSEPARATOR); for(i=1;i<=nf;i++) {if (length(f[i]) > 0 && f[i] != ".") {printf(" <AuxClasspathEntry>%s</AuxClasspathEntry>\n", f[i])}}}' >> ptII.fbp
+	if [ -d "$(JXTA_DIR)" ]; then \
+		for file in `ls $(JXTA_DIR)/*.jar`; do \
+		echo " <AuxClasspathEntry>$$file</AuxClasspathEntry>" >> ptII.fbp; \
+		done; \
+	fi
+	echo " <SrcDir>$(PTII)</SrcDir>" >> ptII.fbp
+	echo "</Project>" >> ptII.fbp
 
-findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
+# -effort:max was causing us to run out of memory
+FINDBUGS_ARGS = -maxHeap 3000 -experimental -effort:default -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fbp 
+
+findbugs.htm:  ptII.fb ptII.fbp findbugs-exclude.xml makefile
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
 	    echo "Invoking findbugs program to create $@, please wait."; \
 	    "$(FINDBUGS)/bin/findbugs" \
