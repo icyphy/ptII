@@ -35,7 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -77,8 +79,10 @@ public class SensorPort extends PtidesPort {
         timestampCorrection.setTypeEquals(BaseType.DOUBLE);
         timestampCorrection.setExpression("0.0");
         
-        timestampCorrection = new Parameter(this, "valueCorrection"); 
-        driver = new Parameter(this, "driver");
+        valueCorrection = new StringParameter(this, "valueCorrection");  
+        
+        driver = new FileParameter(this, "driver");
+        
              
     }
     
