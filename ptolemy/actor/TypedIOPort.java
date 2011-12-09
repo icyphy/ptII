@@ -873,7 +873,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     ////                         private variables                 ////
     private Type _declaredType = BaseType.UNKNOWN;
 
-    private Type _resolvedType = BaseType.UNKNOWN;
+    protected Type _resolvedType = BaseType.UNKNOWN;
 
     private TypeTerm _typeTerm = null;
 
