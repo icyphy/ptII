@@ -59,7 +59,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
  * Export a model to a web page.
  * Usage:
  * <pre>
- *   java -classpath $PTII ptolemy.vergil.basic.ExportToWeb \
+ *   java -classpath $PTII ptolemy.vergil.basic.export.html.ExportToWeb \
  *      modelFile \
  *      directoryName
  * </pre>
@@ -69,8 +69,19 @@ import ptolemy.vergil.basic.BasicGraphFrame;
  * that are placed in the specified directory. The index.html file
  * in that directory is the main entry point. Note that the model
  * has to have parameters set for a finite run, or invoking this
- * will not return.
+ * will not return. To run the model, specify -run before the modelFile.
+ * To generate a Ptolemy-style web page using server-side includes,
+ * then also give the option -Dptolemy.ptII.usePtWebsite=true.
+ * This must be given before the class name,
+ * ptolemy.vergil.basic.export.html.ExportToWeb. I.e.,
  *
+ * <pre>
+ *   java -Dptolemy.ptII.usePtWebsite=true \
+ *      -classpath $PTII \
+ *      ptolemy.vergil.basic.export.html.ExportToWeb \
+ *      modelFile \
+ *      directoryName
+ * </pre>
  * @author Christopher Brooks and Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.1
