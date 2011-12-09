@@ -1280,7 +1280,7 @@ ojdcheck.htm:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=../vendors/findbugs-2.0.0-rc1
+FINDBUGS=../vendors/findbugs-1.3.8
 
 # findbugs.xml is special to findbugs, if we use findbugs.xml, we get:
 # Warning: could not load plugin file:/c:/cxh/ptII/vendors/findbugs-1.3.1/plugin/coreplugin.jar: java.security.PrivilegedActionException: edu.umd.cs.findbugs.PluginException: Couldn't parse "findbugs.xml"
@@ -1311,7 +1311,7 @@ ptII.fbp:
 	echo "</Project>" >> ptII.fbp
 
 # -effort:max was causing us to run out of memory
-FINDBUGS_ARGS = -maxHeap 3000 -experimental -effort:default -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fbp 
+FINDBUGS_ARGS = -maxHeap 2000 -experimental -effort:max -textui -include findbugs-include.xml -exclude findbugs-exclude.xml -project ptII.fb
 
 findbugs.htm:  ptII.fb ptII.fbp findbugs-exclude.xml makefile
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
