@@ -462,6 +462,16 @@ public final class NamedList implements Cloneable, Serializable {
     public int size() {
         return _namedList.size();
     }
+    
+    /** Return a string description of the list.
+     *  @return A string description of the list.
+     */
+    public String toString() {
+        if (_namedList != null) {
+            return _namedList.toString();
+        }
+        return "[]";
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
