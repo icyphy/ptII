@@ -43,6 +43,10 @@
 </property>
 
 <!------------------------------------------->
+<property name="CopyJavaScriptFiles" class="ptolemy.vergil.basic.export.html.CopyJavaScriptFiles">
+</property>
+
+<!------------------------------------------->
       </group>
     ?>
   </configure>

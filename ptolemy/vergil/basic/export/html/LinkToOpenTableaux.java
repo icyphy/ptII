@@ -49,6 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.export.HTMLExportable;
 
 
@@ -216,6 +217,13 @@ public class LinkToOpenTableaux extends DefaultIconLink implements WebExportable
                 }
                 ((HTMLExportable) frame).writeHTML(subDirectory);
                 exporter.defineAreaAttribute(object, "href", name + "/index.html", true);
+                // Add to table of contents file if we are using the Ptolemy website infrastructure.
+                boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
+                if (usePtWebsite) {
+                    exporter.addContent("toc.htm", false,
+                            " <li><a " + name + "/index.html" + ">"
+                            + ExportHTMLAction._getTitleText(object) + "</a></li>");
+                }
             } else if (frame instanceof ImageExportable) {
                 gifFile = new File(directory, name + ".gif");
                 OutputStream gifOut = new FileOutputStream(gifFile);

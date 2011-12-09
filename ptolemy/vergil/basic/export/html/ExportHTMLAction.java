@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -59,7 +58,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
@@ -76,96 +74,13 @@ import diva.graph.GraphController;
  *  HTML page that displays that GIF image. In addition, it
  *  creates a map of the locations of actors in the GIF image
  *  and actions associated with each of the actors.
- *  The following actions are supported:
- *  <b>FIXME: The following is obsolete!!! Update it.</b>
- *  <ul>
- *  <li> A mouse-over handler that, by default, displays parameter
- *       values in a table when the mouse passes over an actor.
- *       This default can be overridden by inserting into the
- *       actor a parameter named <i>_onMouseOverText</i>. The
- *       value of that parameter provides HTML text that will
- *       be displayed on mouse over instead of the parameter
- *       value table. This text can reference variables in scope
- *       using the usual mechanisms for string-valued parameters.
- *       For example, if the actor has a parameter named <i>p</i>,
- *       then its value can be displayed by setting
- *       <i>_onMouseOverText</i> to "value of p: $(this.p)".
- *       <p>
- *       If instead (or in addition) the actor
- *       has a parameter named <i>_onMouseOverAction</i>, then
- *       the value of that parameter provides a JavaScript
- *       command that will be invoked on mouse over.
- *       For example, if the value of <i>_onMouseOverAction</i>
- *       is a string "writeText('value of p: $(this.p)')", then
- *       the effect will be the same as in the example above.
- *       The writeText command is defined by default
- *       header text, which can be overridden to provide
- *       other JavaScript function definitions (see below)
- *       <p>
- *  <li> A click-on handler that responds to user clicks on an
- *       object in the model. If there is no customization of this
- *       action in the model, then by default, upon a click,
- *       the web page will display any open windows associated
- *       with the object. Specifically, if the object is a plotter,
- *       for example, and a plot window is open, then upon clicking
- *       on the plot, the user will see an image of the plot in
- *       a lightbox. If the object is a composite actor that has
- *       an open window, then clicking on the composite actors
- *       will take the viewer to a new HTML page showing the
- *       inside of the composite actor.
- *       <p>
- *       This behavior can be customized in a number of ways.
- *       If an object in the model contains a parameter named
- *       <i>_onClickLinkTo</i>, then the value of this parameter
- *       specifies a URL to go to in response to a click.
- *       If there is no <i>_onClickLinkTo</i> but there is an
- *       <i>_onClickLightBox</i> parameter, then a click on
- *       object will display the HTML specified by the value
- *       of the <i>_onClickLightBox</i> parameter in a
- *       lightbox (a kind of popup that appears in front
- *       of the current HTML page).
- *  </ul>
- *  <p>
- *  In addition to the actions on the regions of the GIF
- *  image, the model can specify text to include in the
- *  header of the HTML file, HTML text to put
- *  before the GIF image, and HTML text to put after the
- *  GIF image.  These are done as follows:
- *  <ul>
- *  <li> Text to include in the header of the HTML file
- *       can be specified by inserting into the model a
- *       <i>_headerText</i> parameter. If no such parameter
- *       is provided, then the following header text is
- *       inserted in the file:
-<pre>
-&lt;script type="text/javascript"&gt;
-function writeText(text) {
-  document.getElementById("afterImage").innerHTML = text;
-}
-&lt;/script&gt;
-</pre>
- *         Notice that this defines a function <i>writeText</i>
- *         which can used to insert text into a document element
- *         with ID "afterImage" (see below).
- *         <p>
- *  <li> Text to include before the image in the HTML file
- *       can be specified by inserting into the model a
- *       <i>_beforeImage</i> parameter. If no such parameter
- *       is provided, then the following text is
- *       inserted in the file before the image:
- *       <pre>&lt;h1&gt;modelName&lt;/h1&gt;</pre>
- *       where <i>modelName</i>
- *       is the name of the model.
- *  <li> Text to include after the image in the HTML file
- *       can be specified by inserting into the model a
- *       <i>_afterImage</i> parameter. If no such parameter
- *       is provided, then the following text is
- *       inserted in the file after the image:
- <pre>
- &lt;p id="afterImage"&gt;Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).&lt;/p&gt;
- </pre>
- *       Notice that defines the document element with ID afterImage.
- *  </ul>
+ *  The default content of the web page and the actions
+ *  associated with the image map are defined by instances
+ *  of {@link WebExportable} that have been inserted at
+ *  the top level of the current {@link Configuration}.
+ *  The model may customize both the web page content and
+ *  the actions in the image map by inserting into the model
+ *  instances of {@link WebExportable}.
  *
  * <p>The following JVM properties affect the output:</p>
  * <dl>
@@ -378,13 +293,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  cloned into the model, so these provide default behavior,
      *  for example defining links to any open composite actors
      *  or plot windows.
-     *
-     *  <p>If the "ptolemy.ptII.exportHTML.usePtWebsite" property is set to true,
+     *  <p>
+     *  If the "ptolemy.ptII.exportHTML.usePtWebsite" property is set to true,
      *  e.g. by invoking with -Dptolemy.ptII.usePtWebsite=true,
      *  then the html files will have Ptolemy website specific Server Side Includes (SSI)
      *  code and use the JavaScript and fancybox files from the Ptolemy website.
      *  In addition, a toc.htm file will be created to aid in navigation.
-     *  This facility is not likely to be portable to other websites.</p>
+     *  This facility is not likely to be portable to other websites.
+     *  </p>
      *
      *  @param directory The directory in which to put any associated files.
      *  @exception IOException If unable to write associated files.
@@ -417,28 +333,32 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         // The following try...finally block ensures that the index and toc files
         // get closed even if an exception occurs. It also resets _exportDirectory.
         PrintWriter index = null;
-        PrintWriter toc = null;
         try {
             _exportDirectory = directory;
 
+            // Clone instances of WebExportable from the Configuration
+            // into the model. These are removed in the finally clause
+            // of the try block.
             _provideDefaultContent();
 
-            // Next, collect the web content specified by the model.
+            // Next, collect the web content specified by the instances
+            // of WebExportable contained by the model.
             List<WebExportable> exportables = model.attributeList(WebExportable.class);
             for (WebExportable exportable : exportables) {
                 exportable.provideContent(this);
             }
             
             // If a title has been specified and set to show, then
-            // add it to the start section at the beginning.
+            // add it to the start HTML section at the beginning.
             if (_showTitleInHTML) {
                 _start.add(0, "<h1>");
                 _start.add(1, _title);
                 _start.add(2, "</h1>\n");
             }
 
-            // Next, collect the web content specified by the contents of the model.
-            // This looks for outside web content.
+            // Next, collect the web content specified by the contained
+            // objects of the model.
+            // This looks for outside web content for each object.
             Iterator<NamedObj> contentsIterator = model.containedObjectsIterator();
             while (contentsIterator.hasNext()) {
                 NamedObj containedObject = contentsIterator.next();
@@ -450,160 +370,85 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
             // Next, create an HTML file.
 	    // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
-	    // Side Includes (SSI) and use JavaScript libraries from the
-	    // Ptolemy website.  FIXME: this is a bit of a hack, we should
+	    // Side Includes (SSI).  FIXME: this is a bit of a hack, we should
 	    // use templates instead.
 	    boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
 
 	    Writer indexWriter = new FileWriter(new File(directory, "index.html"));
 	    index = new PrintWriter(indexWriter);
 
-	    // FIXME: Use the mechanism of writing to a file instead of this!!
-	    Writer tocWriter = new FileWriter(new File(directory, "toc.htm"));
-	    toc = new PrintWriter(tocWriter);
-
 	    // Generate a header that will pass the HTML validator at
 	    // http://validator.w3.org/
-
 	    // We use println so as to get the correct eol character for
 	    // the local platform.
-
 	    index.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
 	    index.println("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en-US\" lang=\"en-US\">");
 	    index.println("<html>");
 	    index.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"/>");
 
-	    // If non-empty, then the path to the SSI files on the ptolemy site
-	    //String ssiRoot = "";
-	    String ssiRoot = "http://ptolemy.eecs.berkeley.edu";
+	    // Define the path to the SSI files on the ptolemy site.
+	    String ssiRoot = "http://ptolemy.org/";
 	    if (usePtWebsite) {
-	        if (!_printedSSIMessage) {
-	            _printedSSIMessage = true;
-	            System.out.println("The ptolemy.ptII.exportHTML.usePtWebsite property is true, generating Ptolemy website SSI code.");
-	        }
 	        // FIXME: this absolute path is not very safe.  The
 	        // problem is that we don't know where $PTII is located on
 	        // the website.
 	        index.println("<link href=\""
 	                + ssiRoot
-	                + "/ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
+	                + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
 	    }
 
 	    // Title needed for the HTML validator.
 	    index.println("<title>" + _title + "</title>");
 
 	    if (usePtWebsite) {
+	        // Reference the server-side includes.
 	        index.println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
 	        index.println("<!--#include virtual=\"toc.htm\" -->");
 	        index.println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
 	    }
 
-	    // Include Ptolemy-specific JavaScript,
-	    // jquery and fancybox. The following files are needed:
-	    // The first three of these should be the JavaScript files to include,
-	    // and the fourth should be the CSS file.
-	    // The rest are image files to copy over.
-	    // FIXME: I don't like the hardwired version numbers here.
-	    String[] filenames = {
-	            "jquery-1.4.3.min.js",
-	            "jquery.fancybox-1.3.4.pack.js",
-	            "jquery.fancybox-1.3.4.css",
-                    "pt-1.0.0.js",
-	            "blank.gif",
-	            "fancybox.png",
-	            "fancybox-y.png",
-	            "fancybox-x.png",
-	            "fancy_title_right.png",
-	            "fancy_title_over.png",
-	            "fancy_title_main.png",
-	            "fancy_title_left.png",
-	            "fancy_shadow_w.png",
-	            "fancy_shadow_sw.png",
-	            "fancy_shadow_se.png",
-	            "fancy_shadow_s.png",
-	            "fancy_shadow_nw.png",
-	            "fancy_shadow_ne.png",
-	            "fancy_shadow_n.png",
-	            "fancy_shadow_e.png",
-	            "fancy_nav_right.png",
-	            "fancy_nav_left.png",
-	            "fancy_loading.png",
-	            "fancy_close.png",
-	            "javascript-license.htm"
-	    };
-
-	    // Copy Javascript source files into destination directory,
-	    // if they are available. The files are under an MIT license,
-	    // which is compatible with the Ptolemy license.
-	    // For jquery, we could use a CDS (content delivery service) instead
-	    // of copying the file.
-	    String jsDirectoryName = "$CLASSPATH/ptolemy/vergil/basic/export/html/javascript/";
-	    File jsDirectory = FileUtilities.nameToFile(
-	            jsDirectoryName, null);
-	    boolean warn = true;
-	    // We assume that if the directory exists, then the files exist.
-	    if (!usePtWebsite && jsDirectory.isDirectory()) {
-	        warn = false;
-	        // System.out.println("Copying files into the js directory.");
-	        // Copy files into the "javascript" directory.
-	        File jsTargetDirectory = new File(directory, "javascript");
-	        if (jsTargetDirectory.exists() && !jsTargetDirectory.isDirectory()) {
-	            jsTargetDirectory.renameTo(new File(directory, "javascript.bak"));
-	        }
-	        if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
-	            warn = true;
-	        } else {
-	            // Copy css, JavaScript, and image files.
-	            for (String filename : filenames) {
-	                URL lightboxFile = FileUtilities
-	                        .nameToURL(
-	                                jsDirectoryName + filename,
-	                                null, null);
-	                FileUtilities.binaryCopyURLToFile(lightboxFile, new File(
-	                        jsTargetDirectory, filename));
-	            }
-	        }
-	    }
-	    if (!usePtWebsite && warn) {
-	        MessageHandler
-	        .message("Warning: Cannot find required JavaScript, CSS, and image files"
-	                + " for lightbox effect implemented by the fancybox"
-	                + " package. Perhaps your Ptolemy II"
-	                + " installation does not include them.");
-	    }
-
 	    if (usePtWebsite) {
-	        toc.println("<div id=\"menu\">");
-	        toc.println("<ul>");
-	        toc.println("<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
-	        toc.println("</ul>");
-	        toc.println("");
-	        toc.println("<ul>");
-	        toc.println(" <li><a href=\"../index.html\">Up</a></li>");
-	        toc.println("</ul>");
-	        toc.println("<ul>");
+	        addContent("toc.htm", false, "<div id=\"menu\">");
+	        addContent("toc.htm", false, "<ul>");
+	        addContent("toc.htm", false, "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
+	        addContent("toc.htm", false, "</ul>");
+	        addContent("toc.htm", false, "");
+	        addContent("toc.htm", false, "<ul>");
+	        addContent("toc.htm", false, " <li><a href=\"../index.html\">Up</a></li>");
+	        addContent("toc.htm", false, "</ul>");
+	        addContent("toc.htm", false, "<ul>");
 	    }
-
-	    // Now write the HTML.
 	    
-	    // Include required script files.
-	    // Use either the files we copied above, or use the Ptolemy website.
-	    String jsLibrary = "";
-	    if (usePtWebsite) {
-	        // If we are using SSI, then use one location for the JavaScript and CSS and image files.
-	        jsLibrary = ssiRoot + "/";
+	    // Reference required script files.
+	    // If the model contains an instanceof CopyJavaScriptFiles, then
+	    // the required files will have been copied into a directory called
+	    // "javascript" in the top-level directory of the export.
+	    // Otherwise, we want to reference these files at http://ptolemy.org/.
+	    // If the usePtWebsite property is true, then reference the files
+	    // at http://ptolemy.org/ whether the property is true or not.
+	    String jsLibrary = ssiRoot;
+	    if (!usePtWebsite) {
+	        // If the model or container above it in the hierarchy has
+	        // an instance of CopyJavaScriptFiles in it, then set up the
+	        // references to refer to the copied files rather than the
+	        // website files.
+	        // FIXME: This can fail if we export a submodel only but
+	        // the enclosing model has an instance of CopyJavaScriptFiles!
+	        String copiedLibrary = _findCopiedLibrary(model, "");
+	        if (copiedLibrary != null) {
+	            jsLibrary = copiedLibrary;
+	        }
 	    }
-	    // FIXME: The following is not going to work with SSI. Christopher? Where are the files?
             // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
-	    index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + filenames[0] + "\"></script>");
-            index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + filenames[1] + "\"></script>");
-            index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + filenames[2] + "\" media=\"screen\"/>");
-            index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + filenames[3] + "\"></script>");
+	    index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[0] + "\"></script>");
+            index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[1] + "\"></script>");
+            index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
+            index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[3] + "\"></script>");
             // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
             // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
 
             // Next, create the image map.
-            String map = _createImageMap(directory, toc);
+            String map = _createImageMap(directory);
 
 	    // Write the main part of the HTML file.
             _printHTML(index, "head");
@@ -617,19 +462,33 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                         + "<a href=\"../" + _sanitizedModelName + ".jnlp\">WebStart version</a>.");
             }
 	    // Put the image in.
-
 	    index.println("<img src=\"" + _sanitizedModelName
 	            + ".gif\" usemap=\"#iconmap\"/>");
 	    index.println(map);
             _printHTML(index, "end");
             
+	    if (!usePtWebsite) {
+	        index.println("</body>");
+	        index.println("</html");
+	    } else {
+	        index.println("<!-- /body -->");
+	        index.println("<!-- /html -->");
+	        index.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
+
+	        addContent("toc.htm", false, " </ul>");
+	        addContent("toc.htm", false, "</ul>");
+	        addContent("toc.htm", false, "</div><!-- /#menu -->");
+	    }
+	    
             // If _contents contains any entry other than head, start, or end,
             // then interpret that entry as a file name to write to.
             for (String key : _contents.keySet()) {
                 if (!key.equals("end") && !key.equals("head") && !key.equals("start")) {
                     // NOTE: A RESTful version of this would create a resource
                     // that could be addressed by a URL. For now, we just
-                    // write to a file.
+                    // write to a file. Java documentation doesn't say
+                    // whether the following overwrites a pre-existing file,
+                    // but it does seem to do that, so I assume that's what it does.
                     Writer fileWriter = new FileWriter(new File(directory, key));
                     PrintWriter printWriter = new PrintWriter(fileWriter);
                     List<String> contents = _contents.get(key);
@@ -639,30 +498,55 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                     printWriter.close();
                 }
             }
-
-	    if (!usePtWebsite) {
-	        index.println("</body>");
-	        index.println("</html");
-	    } else {
-	        index.println("<!-- /body -->");
-	        index.println("<!-- /html -->");
-	        index.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
-
-	        toc.println(" </ul>");
-	        toc.println("</ul>");
-	        toc.println("</div><!-- /#menu -->");
-	    }
 	} finally {
 	    _exportDirectory = null;
 	    _removeDefaultContent();
-	    if (toc != null) {
-		toc.close();
-	    }
 	    if (index != null) {
 		index.close(); // Without this, the output file may be empty
 	    }
 	}
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** List of filenames needed by jquery and fancybox.
+     *  These are automatically provided to every exported web page
+     *  either by referencing the ptolemy.org website (the default)
+     *  or by copying the files into the target directory (if the
+     *  model contains an instance of CopyJavaScriptFiles).
+     *  The first three of these should be the JavaScript files to include,
+     *  and the fourth should be the CSS file.
+     *  The rest are image files to copy over.
+     */
+    // FIXME: I don't like the hardwired version numbers here.
+    public static String[] FILENAMES = {
+            "jquery-1.4.3.min.js",
+            "jquery.fancybox-1.3.4.pack.js",
+            "jquery.fancybox-1.3.4.css",
+            "pt-1.0.0.js",
+            "blank.gif",
+            "fancybox.png",
+            "fancybox-y.png",
+            "fancybox-x.png",
+            "fancy_title_right.png",
+            "fancy_title_over.png",
+            "fancy_title_main.png",
+            "fancy_title_left.png",
+            "fancy_shadow_w.png",
+            "fancy_shadow_sw.png",
+            "fancy_shadow_se.png",
+            "fancy_shadow_s.png",
+            "fancy_shadow_nw.png",
+            "fancy_shadow_ne.png",
+            "fancy_shadow_n.png",
+            "fancy_shadow_e.png",
+            "fancy_nav_right.png",
+            "fancy_nav_left.png",
+            "fancy_loading.png",
+            "fancy_close.png",
+            "javascript-license.htm"
+    };
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -671,13 +555,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  HTML files or subdirectories.
      *  @param directory The directory into which to write any HTML
      *   that is created as a side effect.
-     *  @param toc The table of contents file to write to, or null
-     *   to not write to the table of contents.
      *  @throws PrinterException If writing to the toc file fails.
      *  @throws IOException If IO fails.
      *  @throws IllegalActionException If reading parameters fails.
      */
-    protected String _createImageMap(File directory, PrintWriter toc)
+    protected String _createImageMap(File directory)
             throws IllegalActionException, IOException, PrinterException {
         StringBuffer result = new StringBuffer();
         result.append("<map name=\"iconmap\">\n");
@@ -710,13 +592,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                     + "\""
                     + attributeString
                     + "/>\n");
-
-            // FIXME: factor out toc using callbacks as well.
-            /*
-            if (toc != null && linkTo.length() > 1) {
-                toc.println(" <li><a " + linkTo + ">" + _getTitleText(location.object) + "</a></li>");
-            }
-            */
         }
         result.append("</map>\n");
         return result.toString();
@@ -773,7 +648,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @return A title for the object.
      *  @throws IllegalActionException If accessing the title attribute fails..
      */
-    protected String _getTitleText(NamedObj object) throws IllegalActionException {
+    protected static String _getTitleText(NamedObj object) throws IllegalActionException {
         // If the object contains an IconLink parameter, then use that instead of the default.
         // If it has more than one, then just use the first one.
         List<Title> links = object.attributeList(Title.class);
@@ -789,11 +664,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         return object.getName();
     }
     
-    /** Provide default HTML content and insert any
+    /** Provide default HTML content by cloning any
      *  default WebExportable attributes provided by
      *  the configuration into the model.
-     *  For default HTML content, this inserts a title at
-     *  the beginning of the start position.
      *  @throws IllegalActionException If cloning a configuration attribute fails.
      */
     protected void _provideDefaultContent() throws IllegalActionException {
@@ -820,8 +693,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                 }
             }
         }
-        // FIXME: Find the configuration entries
-        // One for title: <h1>Ptolemy II Model: Foo</h1>
     }    
     
     /** Remove default HTML content, which includes all instances of
@@ -963,6 +834,29 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         return result;
     }
     
+    /** If the specified model contains an instance of CopyJavaScriptFiles,
+     *  then return the specified path. Otherwise, any container above
+     *  the specified model in the hierarchy contains an instance of
+     *  CopyJavaScriptFiles, then return a path of the form "../../"
+     *  repeated as many times as necessary to get to the path of the
+     *  copied files. If there is no instance of CopyJavaScriptFiles,
+     *  then return null.
+     *  @param model The model.
+     *  @param path The path so far.
+     */
+    private String _findCopiedLibrary(NamedObj model, String path) {
+        List<CopyJavaScriptFiles> copy = model.attributeList(CopyJavaScriptFiles.class);
+        if (copy != null && copy.size() > 0) {
+            return path;
+        }
+        NamedObj container = model.getContainer();
+        if (container == null) {
+            // Got to the top level without finding an instance of CopyJavaScriptFiles.
+            return null;
+        }
+        return _findCopiedLibrary(container, "../" + path);
+    }
+    
     /** Print the HTML in the _contents structure corresponding to the
      *  specified position to the specified writer. Each item in the
      *  _contents structure is written on one line.
@@ -993,9 +887,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
     /** Content of the head section. */
     private LinkedList<String> _head;
-    
-    /** True if we have printed the message about SSI. */
-    private static boolean _printedSSIMessage;
     
     /** Indicator of whether title should be shown in HTML. */
     private boolean _showTitleInHTML = false;

@@ -54,6 +54,7 @@ PTCLASSALLJARS = \
 
 JSRCS = \
 	AreaEventType.java \
+	CopyJavaScriptFiles.java \
 	DefaultIconLink.java \
 	DefaultIconScript.java \
 	DefaultTitle.java \
