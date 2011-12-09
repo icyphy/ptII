@@ -44,6 +44,7 @@ DIRS =		CompositeQM \
 		PtidesPreemptEDFOnePlatformThreePathsRealDelay \
 		PowerManagementUnitSamplingWithoutCurrentLocalTime \
 		PrintingPress \
+		PtidesPorts \
 		PtidesSynchrophasor \
 		TREX
 
@@ -76,6 +77,7 @@ PTCLASSALLJARS = \
 	PowerManagementUnitSamplingWithoutCurrentLocalTime/PowerManagementUnitSamplingWithoutCurrentLocalTime.jar \
 	PrintingPress/PrintingPress.jar \
 	TREX/TREX.jar \
+	PtidesPorts/PtidesPorts.jar \
 	PtidesSynchrophasor/PtidesSynchrophasor.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
