@@ -1,4 +1,6 @@
 /*
+ Interface that defines platform specific behavior of the video actor.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -31,16 +33,45 @@ import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// VideoInterface
-
+/**
+ * Interface that defines platform specific behavior of the video actor.
+ * @author Anar Huseynov
+ * @version $Id$ 
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public interface VideoInterface extends PortablePlaceable {
 
+    /**
+     * Initialize the interface.
+     * @param video the video whose interface is initialized.
+     */
     public void init(Video video);
 
+    /**
+     * Callback for video.initialize()
+     * @throws IllegalActionException if there is problem initializing.
+     */
     public void initialize() throws IllegalActionException;
 
+    /**
+     * Callback for video.stop()
+     */
     public void stop();
 
+    /**
+     * Callback for video.fire()
+     * @throws IllegalActionException if there is problem initializing.
+     */
     public void fire() throws IllegalActionException;
 
+    /**
+     * Callback for video.updateBoundingBox(float, float, float, float)
+     * @param x1 top left x
+     * @param y1 top left y
+     * @param x2 bottom right x
+     * @param y2 bottom right y
+     */
     public void updateBoundingBox(float x1, float y1, float x2, float y2);
 }

@@ -1,4 +1,6 @@
 /*
+ Empty implementation of the VideoInterface for JavaSE platform.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -32,35 +34,61 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// JavaSEVideo
 
+/**
+ * Empty implementation of the VideoInterface for JavaSE platform.
+ * @author Anar Huseynov
+ * @version $Id$ 
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class VideoJavaSE implements VideoInterface {
 
+    /** Empty implementation.
+     * @param container The container to hold the actor.
+     */
     public void place(PortableContainer container) {
-        // TODO Auto-generated method stub
-
     }
 
+    /**
+     * Initialize the interface - empty implementation.
+     * @param video the video whose interface is initialized.
+     */
     public void init(Video video) {
-        // TODO Auto-generated method stub
 
     }
 
+    /**
+     * Callback for video.initialize() - empty implementation.
+     * @throws IllegalActionException if there is problem initializing.
+     */
     public void initialize() throws IllegalActionException {
-        // TODO Auto-generated method stub
 
     }
 
+    /**
+     * Callback for video.stop() - empty implementation.
+     */
     public void stop() {
-        // TODO Auto-generated method stub
 
     }
 
+    /**
+     * Callback for video.fire() - empty implementation.
+     * @throws IllegalActionException if there is problem initializing.
+     */
     public void fire() throws IllegalActionException {
-        // TODO Auto-generated method stub
 
     }
 
+    /**
+     * Callback for video.updateBoundingBox(float, float, float, float) - empty implementation.
+     * @param x1 top left x
+     * @param y1 top left y
+     * @param x2 bottom right x
+     * @param y2 bottom right y
+     */
     public void updateBoundingBox(float x1, float y1, float x2, float y2) {
-        // TODO Auto-generated method stub
 
     }
 

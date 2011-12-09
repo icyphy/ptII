@@ -1,4 +1,11 @@
 /*
+ This class output a video frame as ByteArrayToken via its output port
+ from a camera.
+ 
+ The interface implementation contains logic how to do this.  It also
+ accepts bounding box coordinates that need to be overlayed on top 
+ of the video.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -39,42 +46,90 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 //// Video
 
+/**
+ * This class output a video frame as ByteArrayToken via its output port
+ * from a camera.
+ *
+ * The interface implementation contains logic how to do this.  It also
+ * accepts bounding box coordinates that need to be overlayed on top 
+ * of the video.
+ * @author Anar Huseynov
+ * @version $Id$ 
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class Video extends TypedAtomicActor implements PortablePlaceable {
 
-    public TypedIOPort _output;
-    protected VideoInterface _interface = PtolemyInjector.getInjector()
-            .getInstance(VideoInterface.class);
+    /**
+     * The output port for the video frames.
+     */
+    public TypedIOPort output;
 
+    /**
+     * Create new instance of the Video.
+     * @param container The parent container.
+     * @param name The name of the actor.
+     * @throws IllegalActionException if there is a problem instantiating the object.
+     * @throws NameDuplicationException if there is a problem instantiating the object.
+     */
     public Video(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _output = new TypedIOPort(this, "output", false, true);
-        _output.setTypeEquals(BaseType.GENERAL);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.GENERAL);
         _interface.init(this);
     }
 
+    /**
+     * Place the actor into provided container.
+     * Actually implementation is contained within interface implementation.
+     */
     public void place(PortableContainer container) {
         _interface.place(container);
     }
 
+    /** Initialize the actor.
+     * Actually implementation is contained within interface implementation.
+     */
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _interface.initialize();
     }
 
+    /** Stop the actor.
+     * Actually implementation is contained within interface implementation.
+     */
     @Override
     public void stop() {
         super.stop();
         _interface.stop();
     }
 
+    /** Fire the actor.
+     * Actually implementation is contained within interface implementation.
+     */
     @Override
     public void fire() throws IllegalActionException {
         _interface.fire();
     }
-    
+
+    /** Update the bounding box coordinatess
+     * Actually implementation is contained within interface implementation.
+     * @param x1 top left x
+     * @param y1 top left y
+     * @param x2 bottom right x
+     * @param y2 bottom right y
+     */
     public void updateBoundingBox(float x1, float y1, float x2, float y2) {
-    	_interface.updateBoundingBox(x1, y1, x2, y2);
+        _interface.updateBoundingBox(x1, y1, x2, y2);
     }
+
+    /**
+     * The interface implementation.
+     */
+    protected VideoInterface _interface = PtolemyInjector.getInjector()
+            .getInstance(VideoInterface.class);
+
 }

@@ -1,4 +1,7 @@
 /*
+ ImageWriter accepts ByteArrayTokens from its input stream, writes 
+ them as a temp file and passes absolute path to the file via its output to Matlab.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -43,24 +46,40 @@ import ptserver.data.ByteArrayToken;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageWriter
-
+/**
+ * ImageWriter accepts ByteArrayTokens from its input stream, writes 
+ * them as a temp file and passes absolute path to the file via its output to Matlab.
+ * @author Anar Huseynov
+ * @version $Id$ 
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class ImageWriter extends TypedAtomicActor {
 
-    private TypedIOPort input;
-    private TypedIOPort output;
-
+    /**
+     * Create new instance of the ImageWriter.
+     * @param container The parent container.
+     * @param name The name of the actor.
+     * @throws IllegalActionException if there is a problem instantiating the object.
+     * @throws NameDuplicationException if there is a problem instantiating the object.
+     */
     public ImageWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(BaseType.GENERAL);
-        output = new TypedIOPort(this, "ouput", false, true);
-        output.setTypeEquals(BaseType.STRING);
+        _input = new TypedIOPort(this, "input", true, false);
+        _input.setTypeEquals(BaseType.GENERAL);
+        _output = new TypedIOPort(this, "ouput", false, true);
+        _output.setTypeEquals(BaseType.STRING);
     }
 
+    /**
+     * Read one ByteArrayToken from the input port, write the byte array to 
+     * a temp file and send the file name via its output port.
+     */
     @Override
     public boolean postfire() throws IllegalActionException {
-        ByteArrayToken token = (ByteArrayToken) input.get(0);
+        ByteArrayToken token = (ByteArrayToken) _input.get(0);
         ByteArrayInputStream stream = new ByteArrayInputStream(token.getArray());
 
         CompositeEntity container = (CompositeEntity) this.getContainer();
@@ -76,10 +95,20 @@ public class ImageWriter extends TypedAtomicActor {
                 f.write(val);
             }
             f.close();
-            output.send(0, new StringToken(temp.getAbsolutePath()));
+            _output.send(0, new StringToken(temp.getAbsolutePath()));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalActionException(this, e,
+                    "Problem writing temp file");
         }
         return super.postfire();
     }
+
+    /**
+     * The input port accepting byte array tokens.
+     */
+    private TypedIOPort _input;
+    /**
+     * The output port outputting absolute path to a temp file.
+     */
+    private TypedIOPort _output;
 }

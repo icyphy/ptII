@@ -30,6 +30,7 @@ package ptserver.communication;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -756,7 +757,7 @@ public class ProxyModelInfrastructure {
 
     /** The period between sending ping tokens.
      */
-    private static final int _PING_PERIOD = 1000;
+    private static final int _PING_PERIOD;
 
     /** Size of the thread pool.
      */
@@ -764,7 +765,7 @@ public class ProxyModelInfrastructure {
 
     /** Token publishing period in milliseconds.
      */
-    private static final int _PERIOD = 100;
+    private static final int _PERIOD;
 
     /** The maximum latency before forcing the proxy sinks to sleepl.
      */
@@ -788,4 +789,23 @@ public class ProxyModelInfrastructure {
      * Flag used to prevent recursive exception events.
      */
     private boolean _firedExceptionEvent = false;
+
+    static {
+        ResourceBundle config = ResourceBundle
+                .getBundle("ptserver.PtolemyServerConfig");
+        int val;
+        try {
+            val = Integer.parseInt(config.getString("PING_PERIOD"));
+        } catch (Throwable e) {
+            val = 1000;
+        }
+        _PING_PERIOD = val;
+
+        try {
+            val = Integer.parseInt(config.getString("PERIOD"));
+        } catch (Throwable e) {
+            val = 100;
+        }
+        _PERIOD = val;
+    }
 }
