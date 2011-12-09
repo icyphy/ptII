@@ -71,12 +71,12 @@ import ptolemy.vergil.basic.BasicGraphFrame;
  * has to have parameters set for a finite run, or invoking this
  * will not return. To run the model, specify -run before the modelFile.
  * To generate a Ptolemy-style web page using server-side includes,
- * then also give the option -Dptolemy.ptII.usePtWebsite=true.
+ * then also give the option -Dptolemy.ptII.exportHTML.usePtWebsite=true.
  * This must be given before the class name,
  * ptolemy.vergil.basic.export.html.ExportToWeb. I.e.,
  *
  * <pre>
- *   java -Dptolemy.ptII.usePtWebsite=true \
+ *   java -Dptolemy.ptII.exportHTML.usePtWebsite=true \
  *      -classpath $PTII \
  *      ptolemy.vergil.basic.export.html.ExportToWeb \
  *      modelFile \

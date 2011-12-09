@@ -84,7 +84,7 @@ import diva.graph.GraphController;
  *
  * <p>The following JVM properties affect the output:</p>
  * <dl>
- * <dt>	-Dptolemy.ptII.usePtWebsite=true<.dt>
+ * <dt>	-Dptolemy.ptII.exportHTML.usePtWebsite=true<.dt>
  * <dd> Include Ptolemy Website (<a href="http://ptolemy.org">http://ptolemy.org</a>)
  * specific Side Includes (SSI) and use JavaScript libraries from the
  * Ptolemy website.</dd>
