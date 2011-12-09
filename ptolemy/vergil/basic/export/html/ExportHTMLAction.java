@@ -26,14 +26,12 @@
  */
 package ptolemy.vergil.basic.export.html;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PrinterException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,31 +40,25 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
-import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.data.expr.StringParameter;
+import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.domains.modal.kernel.FSMActor;
-import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.modal.ModalModel;
-import ptolemy.gui.ImageExportable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Instantiable;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -199,7 +191,7 @@ function writeText(text) {
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (eal)
  */
-public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
+public class ExportHTMLAction extends AbstractAction implements HTMLExportable, WebExporter {
 
     /** Create a new action to export HTML.
      *  @param basicGraphFrame The Vergil window to export.
@@ -214,7 +206,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Export an HTML image map.
+    /** Export a web page.
      *  @param e The event that triggered this action.
      */
     public void actionPerformed(ActionEvent e) {
@@ -287,26 +279,108 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         }
     }
 
+    /** Add HTML content at the specified position.
+     *  The position is expected to be one of "head", "start", "end",
+     *  or anything else. In the latter case, the value
+     *  of the position attribute is a filename
+     *  into which the content is written.
+     *  If <i>onceOnly</i> is true, then if identical content has
+     *  already been added to the specified position, then it is not
+     *  added again.
+     *  @param position The position for the content.
+     *  @param onceOnly True to prevent duplicate content.
+     *  @param content The content to add.
+     */
+    public void addContent(String position, boolean onceOnly, String content) {
+        List<String> contents = _contents.get(position);
+        if (contents == null) {
+            contents = new LinkedList<String>();
+            _contents.put(position, contents);
+        }
+        if (onceOnly) {
+            // Check to see whether contents are already present.
+            if (contents.contains(content)) {
+                return;
+            }
+        }
+        contents.add(content);
+    }
+
+    /** Define an attribute to be included in the HTML area element
+     *  corresponding to the region of the image map covered by
+     *  the specified object. For example, if an <i>attribute</i> "href"
+     *  is added, where the <i>value</i> is a URI, then the
+     *  area in the image map for the specified object will include
+     *  a hyperlink to the specified URI. If the specified object
+     *  already has a value for the specified attribute, then
+     *  the previous value is replaced by the new one.
+     *  If the specified attribute is "default", then all attributes
+     *  associated with the object are cleared.
+     *  <p>
+     *  This method is a callback method that may be performed
+     *  by attributes of class {@link WebExportable} when their
+     *  {@link WebExportable#defineAreaAttributes(WebExporter)} method
+     *  is called by this exporter.
+     *  @param object The object for which area elements are being added.
+     *  @param attribute The attribute to add to the area element.
+     *  @param value The value of the attribute.
+     *  @param overwrite If true, overwrite any previously defined value for
+     *   the specified attribute. If false, then do nothing if there is already
+     *   an attribute with the specified name.
+     *  @return True if the specified attribute and value was defined (i.e.,
+     *   if there was a previous value, it was overwritten).
+     */
+    public boolean defineAreaAttribute(
+            NamedObj object, String attribute, String value, boolean overwrite) {
+        HashMap<String,String> areaTable = _areaAttributes.get(object);
+        if (areaTable == null) {
+            // No previously defined table. Add one.
+            areaTable = new HashMap<String,String>();
+            _areaAttributes.put(object, areaTable);
+        }
+        if (overwrite || areaTable.get(attribute) == null) {
+            areaTable.put(attribute, _escapeString(value));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /** During invocation of {@link #writeHTML(File)}, return the directory being written to.
+     *  @return The directory being written to.
+     */
+    public File getExportDirectory() {
+        return _exportDirectory;
+    }
+
+    /** The frame (window) being exported to HTML.
+     *  @return The frame provided to the constructor.
+     */
+    public PtolemyFrame getFrame() {
+        return _basicGraphFrame;
+    }
+
+    /** Set the title to be used for the page being exported.
+     *  @param title The title.
+     *  @param showInHTML True to produce an HTML title prior to the model image.
+     */
+    public void setTitle(String title, boolean showInHTML) {
+        _title = StringUtilities.escapeForXML(title);
+        _showTitleInHTML = showInHTML;
+    }
+
     /** Write an HTML page based on the current view of the model
      *  to the specified destination directory. The file will be
      *  named "index.html," and supporting files, including at
      *  least a gif image showing the contents currently visible in
-     *  the graph frame, will be created. If there are any plot windows
-     *  open or any composite actors open, then gif and/or HTML will
-     *  be generated for those as well and linked to the gif image
-     *  created for this frame.
-     *  <p>
-     *  The generated page has a header with the name of the model,
-     *  a reference to a GIF image file with name equal to the name
-     *  of the model with a ".gif" extension appended, and a script
-     *  that reacts when the mouse is moved over an actor by
-     *  displaying a table with the parameter values of the actor.
-     *  The gif image is assumed to have been generated with the
-     *  current view using the
-     *  {@link ptolemy.vergil.basic.BasicGraphFrame#writeImage(OutputStream, String)}
-     *  method.</p>
+     *  the graph frame, will be created. Any instances of
+     *  {@link WebExportable} in the configuration are first
+     *  cloned into the model, so these provide default behavior,
+     *  for example defining links to any open composite actors
+     *  or plot windows.
      *
      *  <p>If the "ptolemy.ptII.exportHTML.usePtWebsite" property is set to true,
+     *  e.g. by invoking with -Dptolemy.ptII.usePtWebsite=true,
      *  then the html files will have Ptolemy website specific Server Side Includes (SSI)
      *  code and use the JavaScript and fancybox files from the Ptolemy website.
      *  In addition, a toc.htm file will be created to aid in navigation.
@@ -315,7 +389,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      *  @param directory The directory in which to put any associated files.
      *  @exception IOException If unable to write associated files.
      *  @exception PrinterException If unable to write associated files.
-     * @throws IllegalActionException 
+     *  @throws IllegalActionException If reading parameters fails.
      */
     public void writeHTML(File directory) throws PrinterException, IOException, IllegalActionException {
         // First, create the gif file showing whatever the current
@@ -330,13 +404,51 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         } finally {
             out.close();
         }
+        // Initialize the data structures into which content is collected.
+        _areaAttributes = new HashMap<NamedObj,HashMap<String,String>>();
+        _contents = new HashMap<String,List<String>>();
+        _end = new LinkedList<String>();
+        _head = new LinkedList<String>();
+        _start = new LinkedList<String>();
+        _contents.put("head", _head);
+        _contents.put("start", _start);
+        _contents.put("end", _end);
+        
+        // The following try...finally block ensures that the index and toc files
+        // get closed even if an exception occurs. It also resets _exportDirectory.
+        PrintWriter index = null;
+        PrintWriter toc = null;
+        try {
+            _exportDirectory = directory;
 
-	PrintWriter index = null;
-	PrintWriter toc = null;
-	try {
+            _provideDefaultContent();
 
-	    // Next, create an HTML file.
+            // Next, collect the web content specified by the model.
+            List<WebExportable> exportables = model.attributeList(WebExportable.class);
+            for (WebExportable exportable : exportables) {
+                exportable.provideContent(this);
+            }
+            
+            // If a title has been specified and set to show, then
+            // add it to the start section at the beginning.
+            if (_showTitleInHTML) {
+                _start.add(0, "<h1>");
+                _start.add(1, _title);
+                _start.add(2, "</h1>\n");
+            }
 
+            // Next, collect the web content specified by the contents of the model.
+            // This looks for outside web content.
+            Iterator<NamedObj> contentsIterator = model.containedObjectsIterator();
+            while (contentsIterator.hasNext()) {
+                NamedObj containedObject = contentsIterator.next();
+                exportables = containedObject.attributeList(WebExportable.class);
+                for (WebExportable exportable : exportables) {
+                    exportable.provideOutsideContent(this);
+                }
+            }
+
+            // Next, create an HTML file.
 	    // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
 	    // Side Includes (SSI) and use JavaScript libraries from the
 	    // Ptolemy website.  FIXME: this is a bit of a hack, we should
@@ -346,6 +458,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	    Writer indexWriter = new FileWriter(new File(directory, "index.html"));
 	    index = new PrintWriter(indexWriter);
 
+	    // FIXME: Use the mechanism of writing to a file instead of this!!
 	    Writer tocWriter = new FileWriter(new File(directory, "toc.htm"));
 	    toc = new PrintWriter(tocWriter);
 
@@ -376,9 +489,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	                + "/ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
 	    }
 
-	    // Needed for the HTML validator.
-	    index.println("<title>" + StringUtilities.escapeForXML(_getTitleText(model))
-	            + "</title>");
+	    // Title needed for the HTML validator.
+	    index.println("<title>" + _title + "</title>");
 
 	    if (usePtWebsite) {
 	        index.println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
@@ -490,46 +602,13 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
             // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
             // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
 
-	    // Collect HTML text to insert at various points in the output file.
-	    StringBuffer header = new StringBuffer();
-            StringBuffer start = new StringBuffer();
-            
-            // Always start with the title.
-            start.append("<h1>" + _getTitleText(model) + "</h1>\n");
-            
-            StringBuffer end = new StringBuffer();
-	    List<HTMLText> texts = model.attributeList(HTMLText.class);
-	    if (texts != null && texts.size() > 0) {
-	        for(HTMLText text : texts) {
-	            String position = text.textPosition.stringValue();
-	            if (position.equals("header")) {
-	                header.append(text.getContent());
-	                header.append("\n");
-	            } else if (position.equals("start")) {
-	                start.append(text.getContent());
-                        start.append("\n");
-                    } else if (position.equals("end")) {
-                        end.append(text.getContent());
-                        end.append("\n");
-                    } else {
-                        throw new IllegalActionException(text,
-                                "Unrecognized textPosition value: " + position);
-                    }
-	        }
-	    }	    
-	                
-            // Insert the default end text if none was given.
-            if (end.length() == 0) {
-                end.append("<p id=\"afterImage\">Mouse over the actors to see their parameters. Click on composites and plotters to reveal their contents (if provided).</p>\n");
-            }
-
             // Next, create the image map.
             String map = _createImageMap(directory, toc);
 
 	    // Write the main part of the HTML file.
-	    index.println(header.toString());
+            _printHTML(index, "head");
 	    index.println("</head><body>");
-	    index.println(start.toString());
+            _printHTML(index, "start");
 
 	    boolean linkToJNLP = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
             if (linkToJNLP && model.getContainer() == null) {
@@ -540,9 +619,26 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	    // Put the image in.
 
 	    index.println("<img src=\"" + _sanitizedModelName
-	            + ".gif\" usemap=\"#actormap\"/>");
+	            + ".gif\" usemap=\"#iconmap\"/>");
 	    index.println(map);
-	    index.println(end);
+            _printHTML(index, "end");
+            
+            // If _contents contains any entry other than head, start, or end,
+            // then interpret that entry as a file name to write to.
+            for (String key : _contents.keySet()) {
+                if (!key.equals("end") && !key.equals("head") && !key.equals("start")) {
+                    // NOTE: A RESTful version of this would create a resource
+                    // that could be addressed by a URL. For now, we just
+                    // write to a file.
+                    Writer fileWriter = new FileWriter(new File(directory, key));
+                    PrintWriter printWriter = new PrintWriter(fileWriter);
+                    List<String> contents = _contents.get(key);
+                    for (String line : contents) {
+                        printWriter.println(line);                        
+                    }
+                    printWriter.close();
+                }
+            }
 
 	    if (!usePtWebsite) {
 	        index.println("</body>");
@@ -557,6 +653,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 	        toc.println("</div><!-- /#menu -->");
 	    }
 	} finally {
+	    _exportDirectory = null;
+	    _removeDefaultContent();
 	    if (toc != null) {
 		toc.close();
 	    }
@@ -582,134 +680,50 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
     protected String _createImageMap(File directory, PrintWriter toc)
             throws IllegalActionException, IOException, PrinterException {
         StringBuffer result = new StringBuffer();
-        result.append("<map name=\"actormap\">\n");
-
-        // Create a table of effigies associated with any
-        // open submodel or plot.
-        Map<NamedObj, PtolemyEffigy> openEffigies = new HashMap<NamedObj, PtolemyEffigy>();
-        Tableau myTableau = _basicGraphFrame.getTableau();
-        Effigy myEffigy = (Effigy) myTableau.getContainer();
-        List<PtolemyEffigy> effigies = myEffigy.entityList(PtolemyEffigy.class);
-        for (PtolemyEffigy effigy : effigies) {
-            openEffigies.put(effigy.getModel(), effigy);
-        }
+        result.append("<map name=\"iconmap\">\n");
+        
+        // Iterate over the icons.
         List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
         for (IconVisibleLocation location : iconLocations) {
-            // Create a table with parameter values for the actor.
-            String mouseOverAction = _getMouseOverAction(location.object);
-
-            // If the actor customizes the click-on action with its own
-            // link, then use that link.
-            String linkTo = _getClickOnLink(location.object, directory);
-
-            // If the behavior has not been customized in the model,
-            // then the default behavior is to provide a link to
-            // any open tableaux. If the the frame associated with
-            // the tableau implements
-            // HTMLExportable, then this is an ordinary link to
-            // the HTML exported by the frame. If it instead
-            // implements ImageExportable, then this a link that
-            // brings up the image in a lightbox.
-            if (linkTo == null) {
-                PtolemyEffigy effigy = openEffigies.get(location.object);
-                if (effigy != null) {
-                    // _linkToText() recursively calls writeHTML();
-                    linkTo = _linkToText(effigy, directory);
-                } else {
-                    // Default is empty.
-                    linkTo = "";
-                    if (location.object instanceof State) {
-                        // In a ModalModel, location.object is a State
-                        // inside the _Controller.  But the effigy is stored
-                        // under the refinements of that state, which have the
-                        // same container as the _Controller.
-                        try {
-                            TypedActor[] refinements = ((State) location.object)
-                                    .getRefinement();
-                            // FIXME: There may be more
-                            // than one refinement. How to open all of them?
-                            // We have only one link. For now, just open the first one.
-                            if (refinements != null && refinements.length > 0) {
-                                effigy = openEffigies
-                                        .get((NamedObj) refinements[0]);
-                                if (effigy != null) {
-                                    linkTo = _linkToText(effigy, directory);
-                                }
-                            }
-                        } catch (IllegalActionException e) {
-                            // Ignore errors here. Just don't export this refinement.
-                        }
-                    } else if (location.object instanceof Instantiable) {
-                        // There is no open effigy, but the object might
-                        // be an instance of a class where the class definition
-                        // is open. Look for that.
-                        Instantiable parent = ((Instantiable) location.object)
-                                .getParent();
-                        if (parent instanceof NamedObj) {
-                            Effigy classEffigy = Configuration
-                                    .findEffigy((NamedObj) parent);
-                            if (classEffigy instanceof PtolemyEffigy) {
-                                linkTo = _linkToText((PtolemyEffigy) classEffigy,
-                                        directory);
-                            }
-                        }
+            // This string will have at least one space at the start and the end.
+            StringBuffer attributeString = new StringBuffer();
+            attributeString.append(" ");
+            HashMap<String,String> areaAttributes = _areaAttributes.get(location.object);
+            if (areaAttributes != null) {
+                for (String key : areaAttributes.keySet()) {
+                    String value = areaAttributes.get(key);
+                    // If the value is empty, omit the entry.
+                    if (value != null && !value.trim().equals("")) {
+                        attributeString.append(key);
+                        attributeString.append("=\"");
+                        attributeString.append(StringUtilities.escapeString(value));
+                        attributeString.append("\" ");
                     }
                 }
             }
-            
-            // Get the title to associate with the object.
-            // This defaults to the name of the object.
-            String title = _getTitleText(location.object);
-
+                        
             // Write the name of the actor followed by the table.
             result.append("<area shape=\"rect\" coords=\""
                     + (int) location.topLeftX + "," + (int) location.topLeftY
                     + "," + (int) location.bottomRightX + ","
                     + (int) location.bottomRightY
-                    + "\" onmouseover="
-                    + mouseOverAction
-                    + " "
-                    + linkTo
-                    + " title=\""
-                    + StringUtilities.escapeString(title)
-                    + "\"/>\n");
+                    + "\""
+                    + attributeString
+                    + "/>\n");
 
+            // FIXME: factor out toc using callbacks as well.
+            /*
             if (toc != null && linkTo.length() > 1) {
                 toc.println(" <li><a " + linkTo + ">" + _getTitleText(location.object) + "</a></li>");
             }
+            */
         }
         result.append("</map>\n");
         return result.toString();
     }
     
-    /** If the specified object customizes the link to follow upon
-     *  clicking on that object, then return that link-to HTML text
-     *  here. This will normally have one of the following forms:
-     *  <pre>
-     *     href="linkvalue" target="targetvalue"
-     *  <pre>
-     *  or
-     *  <pre>
-     *     href="linkvalue" class="classname" 
-     *  <pre>
-     *  The customization is done by inserting an instance of
-     *  {@see IconLink} into the object.
-     *  @return Custom link reference, or null if there is no customization.
-     *  @throws IllegalActionException If accessing the customization attributes fails.
-     *  @throws IOException If a file operation fails.
-     */
-    protected String _getClickOnLink(NamedObj object, File directory) throws IllegalActionException, IOException {
-        // If the object contains an IconLink parameter, then use that instead of the default.
-        // If it has more than one, then just use the first one.
-        List<IconLink> links = object.attributeList(IconLink.class);
-        if (links != null && links.size() > 0) {
-            return links.get(0).getContent();
-        }
-        return null;
-    }
-    
     /** Return a list of data structures with one entry for each visible
-     *  entity plus the director, if there is one. Each data structure contains
+     *  entity and attribute. Each data structure contains
      *  a reference to the entity and the coordinates
      *  of the upper left corner and lower right corner of the main
      *  part of its icon (not including decorations like the name
@@ -724,10 +738,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
      */
     protected List<IconVisibleLocation> _getIconVisibleLocations() {
         List<IconVisibleLocation> result = new LinkedList<IconVisibleLocation>();
-
         Rectangle2D viewSize = _basicGraphFrame.getVisibleRectangle();
-        // System.out.println("Visible rectangle: " + viewSize);
-
         JCanvas canvas = _basicGraphFrame.getJGraph().getGraphPane()
                 .getCanvas();
         AffineTransform transform = canvas.getCanvasPane()
@@ -739,186 +750,20 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
 
         NamedObj model = _basicGraphFrame.getModel();
         if (model instanceof CompositeEntity) {
-            // FIXME: Should include attributes as well, at least directors.
             List<Entity> entities = ((CompositeEntity) model).entityList();
             for (Entity entity : entities) {
-                Locatable location = null;
-                try {
-                    location = (Locatable) entity.getAttribute("_location",
-                            Locatable.class);
-                } catch (IllegalActionException e1) {
-                    // NOTE: What to do here? For now, ignoring the node.
-                }
-                if (location != null) {
-                    GraphController controller = _basicGraphFrame.getJGraph()
-                            .getGraphPane().getGraphController();
-                    Figure figure = controller.getFigure(location);
-
-                    if (figure != null) {
-                        Point2D figureOrigin = figure.getOrigin();
-
-                        // NOTE: Calling getBounds() on the figure itself yields an
-                        // inaccurate bounds, for some reason.
-                        // Weirdly, to get the size right, we need to use the shape.
-                        // But to get the location right, we need the other!
-                        Rectangle2D figureBounds = figure.getShape().getBounds2D();
-                        
-                        // If the figure is composite, use the background figure 
-                        // for the bounds instead.
-                        if (figure instanceof CompositeFigure) {
-                            figure = ((CompositeFigure) figure).getBackgroundFigure();
-                            figureBounds = figure.getShape().getBounds2D();
-                        }
-                        boolean isCentered = false;
-                        if (figure instanceof BasicFigure) {
-                            isCentered = ((BasicFigure) figure).isCentered();
-                        }
-
-                        double iconX = figureOrigin.getX() + figureBounds.getX();
-                        double iconY = figureOrigin.getY() + figureBounds.getY();
-                        
-                        IconVisibleLocation i = new IconVisibleLocation();
-                        i.object = entity;
-
-                        // Calculate the location of the icon relative to the visible rectangle.
-                        i.topLeftX = iconX * scaleX + translateX;
-                        i.topLeftY = iconY  * scaleY + translateY;
-                        i.bottomRightX = (iconX + figureBounds.getWidth()) * scaleX + translateX;
-                        i.bottomRightY = (iconY + figureBounds.getHeight()) * scaleY + translateY;
-                        
-                        // Correction needed if the figure is centered (sadly...
-                        // that's how AWT APIs work, I guess... you have to guess what it means).
-                        if (isCentered) {
-                            double widthOffset = figureBounds.getWidth()/2.0;
-                            double heightOffset = figureBounds.getHeight()/2.0;
-                            i.topLeftX -= widthOffset;
-                            i.topLeftY -= heightOffset;
-                            i.bottomRightX -= widthOffset;
-                            i.bottomRightY -= heightOffset;
-                        }
-
-                        if (i.bottomRightX < 0.0 || i.bottomRightY < 0.0
-                                || i.topLeftX > viewSize.getWidth()
-                                || i.topLeftY > viewSize.getHeight()) {
-                            // Icon is out of view.
-                            continue;
-                        } else {
-                            // Clip the rectangle so it does not include any portion
-                            // that is not in the visible rectangle.
-                            if (i.topLeftX < 0.0) {
-                                i.topLeftX = 0.0;
-                            }
-                            if (i.topLeftY < 0.0) {
-                                i.topLeftY = 0.0;
-                            }
-                            if (i.bottomRightX > viewSize.getWidth()) {
-                                i.bottomRightX = viewSize.getWidth();
-                            }
-                            if (i.bottomRightY > viewSize.getHeight()) {
-                                i.bottomRightY = viewSize.getHeight();
-                            }
-                            // Add the data to the result list.
-                            result.add(i);
-                        }
-                    }
-                }
+                _addRectangle(result, viewSize, scaleX, scaleY, translateX,
+                        translateY, entity);
             }
+        }
+        List<Attribute> attributes = ((CompositeEntity) model).attributeList();
+        for (Attribute attribute : attributes) {
+            _addRectangle(result, viewSize, scaleX, scaleY, translateX,
+                    translateY, attribute);
         }
         return result;
     }
-    
-    /** Return JavaScript text for the mouse over action for the
-     *  specified object. By default this returns a writeText
-     *  command that produces an HTML header followed by a table
-     *  showing the parameter names and value of the specified
-     *  object. If, however, the object contains a Settable
-     *  Attribute named _onMouseOverAction, then it returns
-     *  instead the string representation of that attribute.
-     *  If the object contains a Settable
-     *  Attribute named _onMouseOverText, then it returns
-     *  instead a JavaScript writeText() command with the
-     *  text being the value provided by that parameter.
-     *  If it has both parameters, _onMouseOverAction dominates.
-     *  @param object The object.
-     *  @return Mouse over command.
-     *  @throws IllegalActionException If accessing the attribute
-     *   causes an error.
-     */
-    protected String _getMouseOverAction(NamedObj object) throws IllegalActionException {
-        Attribute action = object.getAttribute("_onMouseOverAction", StringParameter.class);
-        if (action != null) {
-            String value = ((StringParameter)action).stringValue();
-            value = StringUtilities.escapeForXML(value);            
-            return "\"" + value + "\"";
-        }
-        String text = null;
-        Attribute textSpec = object.getAttribute("_onMouseOverText", StringParameter.class);
-        if (textSpec != null) {
-            String value = ((StringParameter)textSpec).stringValue();
-            text = StringUtilities.escapeForXML(value);
-            // Bizarrely, escaping all characters except newlines work.
-            // Newlines need to be converted to \n.
-            // No idea why so many backslashes are required below.
-            text = text.replaceAll("&#10;", "\\\\\\n");
-        }
-        if (text == null) {
-            // NOTE: The following needs to not include any newlines.
-            text = "<h2>"
-                    + object.getName()
-                    + "</h2>"
-                    + _getParameterTable(object).toString();
-        }
-        return "\"writeText('"
-                + text
-                + "')\"";
-    }
 
-    /** Get an HTML table describing the parameters of the object.
-     *  @param object The Ptolemy object to return a table for.
-     *  @return An HTML table displaying the parameter values for the
-     *   specified object, or the string "Has no parameters" if the
-     *   object has no parameters.
-     */
-    protected String _getParameterTable(NamedObj object) {
-        StringBuffer table = new StringBuffer();
-        List<Settable> parameters = object.attributeList(Settable.class);
-        boolean hasParameter = false;
-        for (Settable parameter : parameters) {
-            if (parameter.getVisibility().equals(Settable.FULL)) {
-                hasParameter = true;
-                table.append("<tr><td>");
-                table.append(parameter.getName());
-                table.append("</td><td>");
-                String expression = parameter.getExpression();
-                expression = StringUtilities.escapeForXML(expression);
-                expression = expression.replaceAll("'", "\\\\'");
-                if (expression.length() == 0) {
-                    expression = "&nbsp;";
-                }
-                table.append(expression);
-                table.append("</td><td>");
-                String value = parameter.getValueAsString();
-                value = StringUtilities.escapeForXML(value);
-                value = value.replaceAll("'", "\\\\'");
-                if (value.length() == 0) {
-                    value = "&nbsp;";
-                }
-                table.append(value);
-                table.append("</td></tr>");
-            }
-        }
-        if (hasParameter) {
-            table.insert(0, "<table border=&quot;1&quot;>"
-                    + "<tr><td><b>Parameter</b></td>"
-                    + "<td><b>Expression</b></td>"
-                    + "<td><b>Value</b></td></tr>");
-            table.append("</table>");
-        } else {
-            table.append("Has no parameters.");
-        }
-        return table.toString();
-    }
-    
     /** Return the title of the specified object. If it contains a parameter
      *  of class {@see Title}, then return the title specified by that class.
      *  Otherwise, if the object is an instance of FSMActor contained by
@@ -943,73 +788,223 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable {
         }
         return object.getName();
     }
+    
+    /** Provide default HTML content and insert any
+     *  default WebExportable attributes provided by
+     *  the configuration into the model.
+     *  For default HTML content, this inserts a title at
+     *  the beginning of the start position.
+     *  @throws IllegalActionException If cloning a configuration attribute fails.
+     */
+    protected void _provideDefaultContent() throws IllegalActionException {
+        Configuration configuration = _basicGraphFrame.getConfiguration();
+        if (configuration != null) {
+            // Any instances of WebExportable contained by the
+            // configuration are cloned into the model.
+            NamedObj model = _basicGraphFrame.getModel();
+            List<WebExportable> exportables = configuration.attributeList(WebExportable.class);
+            for (WebExportable exportable : exportables) {
+                if (exportable instanceof Attribute) {
+                    try {
+                        Attribute clone = (Attribute)((Attribute)exportable).clone(model.workspace());
+                        clone.setName(model.uniqueName(clone.getName()));
+                        clone.setContainer(model);
+                        clone.setPersistent(false);
+                    } catch (CloneNotSupportedException e) {
+                        throw new InternalErrorException("Can't clone WebExportable attribute in Configuration: " 
+                                + ((Attribute)exportable).getName());
+                    } catch (NameDuplicationException e) {
+                        throw new InternalErrorException("Failed to generate unique name for attribute in Configuration: " 
+                                + ((Attribute)exportable).getName());
+                    }
+                }
+            }
+        }
+        // FIXME: Find the configuration entries
+        // One for title: <h1>Ptolemy II Model: Foo</h1>
+    }    
+    
+    /** Remove default HTML content, which includes all instances of
+     *  WebExportable that are not persistent.
+     *  @throws IllegalActionException If removing the attribute fails.
+     */
+    protected void _removeDefaultContent() throws IllegalActionException {
+        NamedObj model = _basicGraphFrame.getModel();
+        List<WebExportable> exportables = model.attributeList(WebExportable.class);
+        for (WebExportable exportable : exportables) {
+            if (exportable instanceof Attribute) {
+                Attribute attribute = (Attribute)exportable;
+                if (!attribute.isPersistent()) {
+                    try {
+                        attribute.setContainer(null);
+                    } catch (NameDuplicationException e) {
+                        throw new InternalErrorException(e);
+                    }
+                }
+            }
+        }
+    }    
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    /** The associated Vergil frame. */
+    protected final BasicGraphFrame _basicGraphFrame;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** For the specified effigy, return HTML text for a link
-     *  if the effigy has any open tableaux, and those have frames
-     *  that implement either HTMLExportable or ImageExportable.
-     *  As a side effect, this may generate HTML files in the specified
-     *  directory.
-     *  @param effigy The effigy.
-     *  @param directory The directory into which to write any HTML.
-     *  @return The link to HTML, or an empty string if there is none.
-     *  @exception IOException If unable to create required HTML files.
-     *  @exception PrinterException If unable to create required HTML files.
-     * @throws IllegalActionException If something goes wrong.
-     *  @exception FileNotFoundException
+    /** Add to the specified result list the bounds of the icon
+     *  for the specified object.
+     *  @param result The list to add to.
+     *  @param viewSize The view size.
+     *  @param scaleX The x scaling factor.
+     *  @param scaleY The y scaling factor.
+     *  @param translateX The x translation.
+     *  @param translateY The y translation.
+     *  @param object The object to add.
      */
-    private String _linkToText(PtolemyEffigy effigy, File directory)
-            throws IOException, PrinterException, IllegalActionException {
-        String linkTo = "";
-        NamedObj object = effigy.getModel();
-        File gifFile;
-        // Look for any open tableaux for the object.
-        List<Tableau> tableaux = effigy.entityList(Tableau.class);
-        // If there are multiple tableaux open, use only the first one.
-        if (tableaux.size() > 0) {
-            String name = object.getName();
-            Frame frame = tableaux.get(0).getFrame();
-            // If it's a composite actor, export HTML.
-            if (frame instanceof HTMLExportable) {
-                File subDirectory = new File(directory, name);
-                if (subDirectory.exists()) {
-                    if (!subDirectory.isDirectory()) {
-                        // Move file out of the way.
-                        File backupFile = new File(directory, name + ".bak");
-                        subDirectory.renameTo(backupFile);
+    private void _addRectangle(List<IconVisibleLocation> result,
+            Rectangle2D viewSize, double scaleX, double scaleY,
+            double translateX, double translateY, NamedObj object) {
+        Locatable location = null;
+        try {
+            location = (Locatable) object.getAttribute("_location",
+                    Locatable.class);
+        } catch (IllegalActionException e1) {
+            // NOTE: What to do here? For now, ignoring the node.
+        }
+        if (location != null) {
+            GraphController controller = _basicGraphFrame.getJGraph()
+                    .getGraphPane().getGraphController();
+            Figure figure = controller.getFigure(location);
+
+            if (figure != null) {
+                Point2D figureOrigin = figure.getOrigin();
+
+                // NOTE: Calling getBounds() on the figure itself yields an
+                // inaccurate bounds, for some reason.
+                // Weirdly, to get the size right, we need to use the shape.
+                // But to get the location right, we need the other!
+                Rectangle2D figureBounds = figure.getShape().getBounds2D();
+                
+                // If the figure is composite, use the background figure 
+                // for the bounds instead.
+                if (figure instanceof CompositeFigure) {
+                    figure = ((CompositeFigure) figure).getBackgroundFigure();
+                    figureBounds = figure.getShape().getBounds2D();
+                }
+                boolean isCentered = false;
+                if (figure instanceof BasicFigure) {
+                    isCentered = ((BasicFigure) figure).isCentered();
+                }
+
+                double iconX = figureOrigin.getX() + figureBounds.getX();
+                double iconY = figureOrigin.getY() + figureBounds.getY();
+                
+                IconVisibleLocation i = new IconVisibleLocation();
+                i.object = object;
+
+                // Calculate the location of the icon relative to the visible rectangle.
+                i.topLeftX = iconX * scaleX + translateX;
+                i.topLeftY = iconY  * scaleY + translateY;
+                i.bottomRightX = (iconX + figureBounds.getWidth()) * scaleX + translateX;
+                i.bottomRightY = (iconY + figureBounds.getHeight()) * scaleY + translateY;
+                
+                // Correction needed if the figure is centered (sadly...
+                // that's how AWT APIs work, I guess... you have to guess what it means).
+                if (isCentered) {
+                    double widthOffset = figureBounds.getWidth()/2.0;
+                    double heightOffset = figureBounds.getHeight()/2.0;
+                    i.topLeftX -= widthOffset;
+                    i.topLeftY -= heightOffset;
+                    i.bottomRightX -= widthOffset;
+                    i.bottomRightY -= heightOffset;
+                }
+
+                if (i.bottomRightX < 0.0 || i.bottomRightY < 0.0
+                        || i.topLeftX > viewSize.getWidth()
+                        || i.topLeftY > viewSize.getHeight()) {
+                    return;
+                } else {
+                    // Clip the rectangle so it does not include any portion
+                    // that is not in the visible rectangle.
+                    if (i.topLeftX < 0.0) {
+                        i.topLeftX = 0.0;
                     }
-                } else if (!subDirectory.mkdir()) {
-                    throw new IOException("Unable to create directory "
-                            + subDirectory);
+                    if (i.topLeftY < 0.0) {
+                        i.topLeftY = 0.0;
+                    }
+                    if (i.bottomRightX > viewSize.getWidth()) {
+                        i.bottomRightX = viewSize.getWidth();
+                    }
+                    if (i.bottomRightY > viewSize.getHeight()) {
+                        i.bottomRightY = viewSize.getHeight();
+                    }
+                    // Add the data to the result list.
+                    result.add(i);
                 }
-                ((HTMLExportable) frame).writeHTML(subDirectory);
-                linkTo = "href=\"" + name + "/index.html\"";
-            } else if (frame instanceof ImageExportable) {
-                gifFile = new File(directory, name + ".gif");
-                OutputStream gifOut = new FileOutputStream(gifFile);
-                try {
-                    ((ImageExportable) frame).writeImage(gifOut, "gif");
-                } finally {
-                    gifOut.close();
-                }
-                // Strangely, the clas has to be "iframe".
-                // I don't understand why it can't be "lightbox".
-                linkTo = "href=\"" + name + ".gif\"" + " class=\"iframe\"";
             }
         }
-        return linkTo;
+    }
+    
+    /** Escape strings for inclusion as the value of HTML attribute.
+     *  @param string The string to escape.
+     *  @return Escaped string.
+     */
+    private String _escapeString(String string) {
+        // This method is abstracted because it's not really clear
+        // what should be escaped.
+        String result = StringUtilities.escapeForXML(string);
+        // Bizarrely, escaping all characters except newlines work.
+        // Newlines need to be converted to \n.
+        // No idea why so many backslashes are required below.
+        // result = result.replaceAll("&#10;", "\\\\\\n");
+        return result;
+    }
+    
+    /** Print the HTML in the _contents structure corresponding to the
+     *  specified position to the specified writer. Each item in the
+     *  _contents structure is written on one line.
+     *  @param writer The writer to print to.
+     *  @param position The position.
+     */
+    private void _printHTML(PrintWriter writer, String position) {
+        List<String> contents = _contents.get(position);
+        for (String content : contents) {
+            writer.println(content);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
+    
+    /** Data structure storing area attributes to for each Ptolemy II object. */
+    private HashMap<NamedObj,HashMap<String,String>> _areaAttributes;
 
-    /** The associated Vergil frame. */
-    private final BasicGraphFrame _basicGraphFrame;
+    /** Content added by position. */
+    private HashMap<String,List<String>> _contents;
+    
+    /** Content of the end section. */
+    private LinkedList<String> _end;
 
+    /** The directory into which we are writing. */
+    private File _exportDirectory;
+
+    /** Content of the head section. */
+    private LinkedList<String> _head;
+    
     /** True if we have printed the message about SSI. */
     private static boolean _printedSSIMessage;
+    
+    /** Indicator of whether title should be shown in HTML. */
+    private boolean _showTitleInHTML = false;
+    
+    /** Content of the start section. */
+    private LinkedList<String> _start;
+    
+    /** The title of the page. */
+    private String _title = "Ptolemy II model";
 
     // The sanitized modelName
     private String _sanitizedModelName;

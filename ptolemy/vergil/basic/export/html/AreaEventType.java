@@ -40,21 +40,23 @@ import ptolemy.kernel.util.NamedObj;
  * A parameter used to specify the event type actions associated
  * with an area in an HTML image map. This parameter offers the following events:
  *  <ul>
- *  <li><b>onblur</b>: Script to be run when an element loses focus.
- *  <li><b>onclick</b>: Script to be run on a mouse click.
- *  <li><b>ondblclick</b>: Script to be run on a mouse double-click.
- *  <li><b>onfocus</b>: Script to be run when an element gets focus.
- *  <li><b>onmousedown</b>: Script to be run when mouse button is pressed.
- *  <li><b>onmousemove</b>: Script to be run when mouse pointer moves.
- *  <li><b>onmouseout</b>: Script to be run when mouse pointer moves out of an element.
- *  <li><b>onmouseover</b>: Script to be run when mouse pointer moves over an element.
- *  <li><b>onmouseup</b>: Script to be run when mouse button is released.
- *  <li><b>onkeydown</b>: Script to be run when a key is pressed.
- *  <li><b>onkeypress</b>: Script to be run when a key is pressed and released.
- *  <li><b>onkeyup</b>: Script to be run when a key is released.
+ *  <li><b>onblur</b>: Command to be run when an element loses focus.
+ *  <li><b>onclick</b>: Command to be run on a mouse click.
+ *  <li><b>ondblclick</b>: Command to be run on a mouse double-click.
+ *  <li><b>onfocus</b>: Command to be run when an element gets focus.
+ *  <li><b>onmousedown</b>: Command to be run when mouse button is pressed.
+ *  <li><b>onmousemove</b>: Command to be run when mouse pointer moves.
+ *  <li><b>onmouseout</b>: Command to be run when mouse pointer moves out of an element.
+ *  <li><b>onmouseover</b>: Command to be run when mouse pointer moves over an element.
+ *  <li><b>onmouseup</b>: Command to be run when mouse button is released.
+ *  <li><b>onkeydown</b>: Command to be run when a key is pressed.
+ *  <li><b>onkeypress</b>: Command to be run when a key is pressed and released.
+ *  <li><b>onkeyup</b>: Command to be run when a key is released.
  *  </ul>
  *  These are the events supported by the HTML area tag.
- *  The default value is "onmouseover".
+ *  The default value is "onmouseover". It is not clear how
+ *  these areas get the focus, so the focus and key commands do not
+ *  appear to be useful.
  *
  * @author Edward A. Lee
  * @version $Id$

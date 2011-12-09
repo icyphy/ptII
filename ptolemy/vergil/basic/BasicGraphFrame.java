@@ -922,6 +922,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return getJGraph().getSize();
     }
 
+    /** During invocation of {@link #writeHTML(File)}, return the directory being written to.
+     *  @return The directory being written to.
+     */
+    public File getExportDirectory() {
+        return _exportDirectory;
+    }
+
+    /** The frame (window) being exported to HTML.
+     *  @return This frame.
+     */
+    public PtolemyFrame getFrame() {
+        return this;
+    }
+
     /** Return the JGraph instance that this view uses to represent the
      *  ptolemy model.
      *  @return the JGraph.
@@ -1314,10 +1328,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      * @throws IllegalActionException If something goes wrong accessing the model.
      */
     public void writeHTML(File directory) throws PrinterException, IOException, IllegalActionException {
-        if (_exportHTMLAction != null) {
-            ((HTMLExportable) _exportHTMLAction).writeHTML(directory);
-        } else {
-            throw new IOException("Export to Web not supported.");
+        try {
+            _exportDirectory = directory;
+            if (_exportHTMLAction != null) {
+                ((HTMLExportable) _exportHTMLAction).writeHTML(directory);
+            } else {
+                throw new IOException("Export to Web not supported.");
+            }
+        } finally {
+            _exportDirectory = null;
         }
     }
 
@@ -2857,6 +2876,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Directory into which writeHTML() is writing. */
+    private File _exportDirectory = null;
+    
     /** A layer adapter to handle the mousePressed event. */
     private MousePressedLayerAdapter _mousePressedLayerAdapter;
 

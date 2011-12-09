@@ -1,0 +1,42 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ExportExample3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 951, 768}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[738, 658]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2125907990315">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.807108626202, 277.8198881789152}">
+    </property>
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="3.44">
+            <display name="Object spacing"/>
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.html.Title" value="Test of Various Web Export Capabilities">
+        <property name="showTitleInHTML" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests various export to HTML capabilities.&#10;The title above should appear twice, once in the HTML and&#10;once in the model image.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
+        </property>
+    </property>
+    <property name="HTMLText" class="ptolemy.vergil.basic.export.html.HTMLText" value="Text here will, by default, go at the start of the exported HTML document. You can change it to go at the end, in the header, or in a separate HTML file.">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 185.0]">
+        </property>
+    </property>
+    <property name="HTMLText2" class="ptolemy.vergil.basic.export.html.HTMLText" value="&lt;h2&gt;This text goes after the gif image, with HTML formatting.&lt;/h2&gt;">
+        <property name="textPosition" class="ptolemy.vergil.basic.export.html.HTMLTextPosition" value="end">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 225.0]">
+        </property>
+    </property>
+</entity>

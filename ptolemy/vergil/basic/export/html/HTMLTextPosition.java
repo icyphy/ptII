@@ -41,10 +41,12 @@ import ptolemy.kernel.util.NamedObj;
  * The parameter offers the following possibilities:
  *  <ul>
  *  <li><b>end</b>: Put the text at the end of the HTML file.
- *  <li><b>header</b>: Put the text in the header section.
+ *  <li><b>head</b>: Put the text in the header section.
  *  <li><b>start</b>: Put the text at the start of the body section.
+ *  <li><i>anything_else</i>: Put the text in a separate HTML file
+ *   named <i>anything_else</i>.
  *  </ul>
- *  The default is "end".
+ *  The default is "start".
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -63,10 +65,10 @@ public class HTMLTextPosition extends StringParameter {
     public HTMLTextPosition(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+                
         addChoice("end");
-        addChoice("header");
+        addChoice("head");
         addChoice("start");
-        setExpression("end");
+        setExpression("start");
     }
 }

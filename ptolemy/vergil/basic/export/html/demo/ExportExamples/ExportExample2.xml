@@ -1,0 +1,172 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ExportExample2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 951, 768}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[738, 658]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2125907990315">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.807108626202, 277.8198881789152}">
+    </property>
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="3.44">
+            <display name="Object spacing"/>
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This would normally have the default mouseover action,&#10;which displays below the parameter values in a table,&#10;but the default overrides that to write 'this is an entity'.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 130.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This overrides the default mouseover action to&#10;write 'sample text' below the default text below,&#10;and to clear it on mouse out.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 210.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This overrides the default mouseover action to&#10;do nothing at all.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 295.0]">
+        </property>
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.html.Title" value="Test of Various Web Export Capabilities">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is just like ExportExample1, except that the default&#10;mouseover action does not display anything, and mousing over&#10;an attribute displays the text 'this is an attribute' (and clears&#10;it on mouse exit).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This overrides the default to display 'click'&#10;when the mouse is clicked, and to clear the&#10;display when the mouse is double clicked.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 365.0]">
+        </property>
+    </property>
+    <property name="DefaultIconScript" class="ptolemy.vergil.basic.export.html.DefaultIconScript" value="writeText('this is an entity')">
+        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};">
+        </property>
+        <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 450.0]">
+        </property>
+    </property>
+    <property name="DefaultIconScript2" class="ptolemy.vergil.basic.export.html.DefaultIconScript" value="writeText('this is an attribute')">
+        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};">
+        </property>
+        <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;">
+        </property>
+        <property name="include" class="ptolemy.data.expr.StringParameter" value="Attributes">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 500.0]">
+        </property>
+    </property>
+    <property name="DefaultIconScript3" class="ptolemy.vergil.basic.export.html.DefaultIconScript" value="writeText('')">
+        <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseout">
+        </property>
+        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};">
+        </property>
+        <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;">
+        </property>
+        <property name="include" class="ptolemy.data.expr.StringParameter" value="Attributes">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 525.0]">
+        </property>
+    </property>
+    <property name="DefaultIconScript4" class="ptolemy.vergil.basic.export.html.DefaultIconScript" value="writeText('')">
+        <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseout">
+        </property>
+        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};">
+        </property>
+        <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 475.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 470}">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 160}">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 235.0]">
+        </property>
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeMyText('sample text')">
+            <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeMyText(text) {&#10;    document.getElementById(&quot;xyz&quot;).innerHTML = text;&#10;};">
+            </property>
+            <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;xyz&quot;&gt;&lt;/p&gt;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{175, 245}">
+            </property>
+        </property>
+        <property name="IconScript2" class="ptolemy.vergil.basic.export.html.IconScript" value="writeMyText('')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseout">
+            </property>
+            <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeMyText(text) {&#10;    document.getElementById(&quot;xyz&quot;).innerHTML = text;&#10;};">
+            </property>
+            <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;xyz&quot;&gt;&lt;/p&gt;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 240}">
+            </property>
+        </property>
+    </entity>
+    <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 315.0]">
+        </property>
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
+            <property name="script" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="endText" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{175, 245}">
+            </property>
+        </property>
+    </entity>
+    <entity name="Ramp4" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 390.0]">
+        </property>
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeMyText('click')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onclick">
+            </property>
+            <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeMyText(text) {&#10;    document.getElementById(&quot;xyz&quot;).innerHTML = text;&#10;};">
+            </property>
+            <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;xyz&quot;&gt;&lt;/p&gt;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{175, 245}">
+            </property>
+        </property>
+        <property name="IconScript2" class="ptolemy.vergil.basic.export.html.IconScript" value="writeMyText('')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="ondblclick">
+            </property>
+            <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeMyText(text) {&#10;    document.getElementById(&quot;xyz&quot;).innerHTML = text;&#10;};">
+            </property>
+            <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;xyz&quot;&gt;&lt;/p&gt;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{180, 240}">
+            </property>
+        </property>
+    </entity>
+</entity>

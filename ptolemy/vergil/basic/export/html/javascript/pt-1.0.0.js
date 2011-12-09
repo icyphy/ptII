@@ -1,9 +1,6 @@
 /* JavaScript library for Ptolemy Export to Web functionality.
  *
  */
-function writeText(text) {
-  document.getElementById("afterImage").innerHTML = text;
-};
 // The following anonymous function will be executed when the document
 // is "ready" (but images are not necessarily loaded).
 // JQuery ensures that the DOM object is fully constructed.

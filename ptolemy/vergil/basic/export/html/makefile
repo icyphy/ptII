@@ -54,6 +54,9 @@ PTCLASSALLJARS = \
 
 JSRCS = \
 	AreaEventType.java \
+	DefaultIconLink.java \
+	DefaultIconScript.java \
+	DefaultTitle.java \
 	ExportHTMLAction.java \
 	ExportToWeb.java \
 	HTMLText.java \
@@ -61,7 +64,10 @@ JSRCS = \
 	IconLink.java \
 	IconScript.java \
 	LinkTarget.java \
-	Title.java
+	ParameterDisplayIconScript.java \
+	Title.java \
+	WebExportable.java \
+	WebExporter.java
 
 EXTRA_SRCS =	$(JSRCS)
 

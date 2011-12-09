@@ -28,7 +28,9 @@
 
 package ptolemy.vergil.basic.export.html;
 
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 
 
 ///////////////////////////////////////////////////////////////////
@@ -42,14 +44,35 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public interface WebExportable {
+public interface WebExportable extends Nameable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the content to export to the web.
-     *  @return Content to export to the web.
-     *  @throws IllegalActionException If getting the content fails.
+    /** Provide content to the specified web exporter to be
+     *  included in a web page for the container of this object.
+     *  This may include, for example, HTML or header
+     *  content, including for example JavaScript definitions that
+     *  may be needed by the area attributes.
+     *  @throws IllegalActionException If something is wrong with the
+     *   specification of outside content.
      */
-    public String getContent() throws IllegalActionException;
+    public void provideContent(WebExporter exporter) throws IllegalActionException;
+
+    /** Provide content to the specified web exporter to be
+     *  included in a web page for the container of
+     *  the container of this object. For example, if this
+     *  object is contained by an {@link Entity}, then 
+     *  this method provides content for a web page for the container
+     *  of the entity.
+     *  This may include, for example, attributes for
+     *  the area element for the portion of the image
+     *  map corresponding to the container of this object.
+     *  But it can also include any arbitrary HTML or header
+     *  content, including for example JavaScript definitions that
+     *  may be needed by the area attributes.
+     *  @throws IllegalActionException If something is wrong with the
+     *   specification of outside content.
+     */
+    public void provideOutsideContent(WebExporter exporter) throws IllegalActionException;
 }

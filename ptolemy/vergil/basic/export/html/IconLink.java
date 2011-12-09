@@ -34,7 +34,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.ValueIcon;
 import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
@@ -112,24 +111,41 @@ public class IconLink extends StringParameter implements WebExportable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a string of the form:
-     *  <pre>
-     *     href="linkvalue" target="targetvalue"
-     *  <pre>
-     *  or
-     *  <pre>
-     *     href="linkvalue" class="classname" 
-     *  <pre>
-     *  where <i>linkvalue</i> is the string value of this parameter,
-     *  <i>targetvalue</i> or <i>classname</i> is given
-     *  by the <i>linkTarget</i> parameter.
-     *  @return Text to insert into an anchor or area command in HTML.
-     *  @throws IllegalActionException If evaluating the parameter fails.
+    /** Provide content to the specified web exporter to be
+     *  included in a web page for the container of this object.
+     *  This class provides only outside content, so this method
+     *  does nothing.
+     *  @param exporter The exporter.
+     *  @throws IllegalActionException If a subclass throws it.
      */
-    public String getContent() throws IllegalActionException {
-        return "href=\""
-        	+ StringUtilities.escapeString(stringValue())
-        	+ "\" "
-        	+ linkTarget.getModifier();
+    public void provideContent(WebExporter exporter) throws IllegalActionException {
+        // This class does not provide content.
+    }
+
+    /** Provide content to the specified web exporter to be
+     *  included in a web page for the container of this object.
+     *  This class defines an href attribute to associate with
+     *  the area of the image map corresonding to its container.
+     *  @throws IllegalActionException If evaluating the value
+     *   of this parameter fails.
+     */
+    public void provideOutsideContent(WebExporter exporter) throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container != null) {
+            // Last argument specifies to overwrite any previous value defined.
+            if (!stringValue().trim().equals("")) {
+                exporter.defineAreaAttribute(container, "href", stringValue(), true);
+                String targetValue = linkTarget.stringValue();
+                if (!targetValue.trim().equals("")) {
+                    if (targetValue.equals("_lightbox")) {
+                        // Strangely, the class has to be "iframe".
+                        // I don't understand why it can't be "lightbox".
+                        exporter.defineAreaAttribute(container, "class", "iframe", true);
+                    } else {
+                        exporter.defineAreaAttribute(container, "target", targetValue, true);
+                    }
+                }
+            }
+        }
     }
 }

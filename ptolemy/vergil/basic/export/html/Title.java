@@ -42,14 +42,15 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.TextIcon;
 import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
@@ -58,13 +59,14 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 //// Title
 /**
  * Attribute specifying a title for a model or a component in a model.
- * This attribute renders more suitably for a title than a normal annotation.
+ * This attribute provides a visual title in the model,
+ * rendered more suitably for a title than a normal annotation.
  * Moreover, if you export to web, this is used as the title for the
- * containing component.
- * <p>
- * In vergil, double click to edit the title text. Right click and
- * select Customize->Configure to change the appearance of the title
- * (or altnatively, Alt-click).
+ * containing component and for any exported web page.
+ * By default, the title is not shown on the web page except
+ * as part of the image of the model. If you wish for the title
+ * to also be shown in the HTML text before the image, then set
+ * the <i>showTitleInHTML</i> parameter to true.
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -90,6 +92,10 @@ public class Title extends StringParameter implements WebExportable {
         _icon = new TextIcon(this, "_icon");
         _icon.setPersistent(false);
         _icon.setIconText("title");
+        
+        showTitleInHTML = new Parameter(this, "showTitleInHTML");
+        showTitleInHTML.setExpression("false");
+        showTitleInHTML.setTypeEquals(BaseType.BOOLEAN);
 
         textSize = new Parameter(this, "textSize");
         textSize.setExpression("24");
@@ -145,6 +151,16 @@ public class Title extends StringParameter implements WebExportable {
 
         // The following ensures that double click edits the text of the title.
         new VisibleParameterEditorFactory(this, "_editorFactory");
+        
+        // Add a small icon.
+        ConfigurableAttribute smallIcon = new ConfigurableAttribute(this, "_smallIconDescription");
+        try {
+            smallIcon.configure(null, null,
+                    "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">title</text></svg>");
+        } catch (Exception e) {
+            // Show exception on the console. Should not occur.
+            e.printStackTrace();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -168,6 +184,14 @@ public class Title extends StringParameter implements WebExportable {
      *  This defaults to false.
      */
     public Parameter italic;
+    
+    /** If set to true, then the title given by this parameter
+     *  will be shown in the HTML prior to the image of the model
+     *  (as well as in the image of the model, if it is visible
+     *  when the export to web occurs). This is a boolean that
+     *  defaults to false.
+     */
+    public Parameter showTitleInHTML;
 
     /** The text color.  This is a string representing an array with
      *  four elements, red, green, blue, and alpha, where alpha is
@@ -245,26 +269,6 @@ public class Title extends StringParameter implements WebExportable {
         return result;
     }
 
-    /** Return a string of the form:
-     *  <pre>
-     *     href="linkvalue" target="targetvalue"
-     *  <pre>
-     *  or
-     *  <pre>
-     *     href="linkvalue" class="classname" 
-     *  <pre>
-     *  where <i>linkvalue</i> is the string value of this parameter,
-     *  <i>targetvalue</i> or <i>classname</i> is given
-     *  by the <i>linkTarget</i> parameter.
-     *  @return Text to insert into an anchor or area command in HTML.
-     *  @throws IllegalActionException If evaluating the parameter fails.
-     */
-    public String getContent() throws IllegalActionException {
-        return "title=\""
-                + StringUtilities.escapeString(stringValue())
-                + "\"";
-    }
-    
     /** Move this object to the first position in the list
      *  of attributes of the container. This overrides the base
      *  class to create  an attribute named "_renderFirst" and to
@@ -321,6 +325,41 @@ public class Title extends StringParameter implements WebExportable {
         }
 
         return super.moveToLast();
+    }
+    
+    /** Provide content to the specified web exporter to be
+     *  included in a web page for the container of this object.
+     *  This may include, for example, HTML or header
+     *  content, including for example JavaScript definitions that
+     *  may be needed by the area attributes.
+     *  @throws IllegalActionException If evaluating the string value fails.
+     */
+    public void provideContent(WebExporter exporter) throws IllegalActionException {
+        exporter.setTitle(stringValue(),
+                ((BooleanToken)showTitleInHTML.getToken()).booleanValue());
+    }
+
+    /** Provide content to the specified web exporter to be
+     *  included in a web page for the container of
+     *  the container of this object. For example, if this
+     *  object is contained by an {@link Entity}, then 
+     *  this method provides content for a web page for the container
+     *  of the entity.
+     *  This may include, for example, attributes for
+     *  the area element for the portion of the image
+     *  map corresponding to the container of this object.
+     *  But it can also include any arbitrary HTML or header
+     *  content, including for example JavaScript definitions that
+     *  may be needed by the area attributes.
+     *  @throws IllegalActionException If something is wrong with the
+     *   specification of outside content.
+     */
+    public void provideOutsideContent(WebExporter exporter) throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container != null) {
+            // The last argument forces an overwrite of previously defined title.
+            exporter.defineAreaAttribute(container, "title", stringValue(), true);
+        }
     }
     
     /** Override the base class to set the text to be displayed

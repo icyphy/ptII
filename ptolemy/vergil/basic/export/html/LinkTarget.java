@@ -73,24 +73,4 @@ public class LinkTarget extends StringParameter {
         addChoice("_top");
         setExpression("_lightbox");
     }
-    
-    /** Return the modifier to append to an href anchor corresponding
-     *  to the selected option. This will be of the form
-     *  'class="x"' or 'target="y"', where x is "iframe" if
-     *  "_iframe" is selected, and y is whatever is selected otherwise.
-     * 
-     *  @return The modifier to use in an href anchor.
-     *  @throws IllegalActionException If the current value cannot
-     *   be evaluated.
-     */
-    public String getModifier() throws IllegalActionException {
-        String value = stringValue();
-        if (value.equals("_lightbox")) {
-            // Strangely, the class has to be "iframe".
-            // I don't understand why it can't be "lightbox".
-            return "class=\"iframe\"";
-        } else {
-            return "target=\"" + value + "\"";
-        }
-    }
 }

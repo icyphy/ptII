@@ -92,19 +92,34 @@ public class HTMLText extends StringParameter implements WebExportable {
      *  <li><b>end</b>: Put the text at the end of the HTML file.
      *  <li><b>header</b>: Put the text in the header section.
      *  <li><b>start</b>: Put the text at the start of the body section.
+     *  <li><i>anything_else</i>: Put the text in a separate HTML file
+     *   named <i>anything_else</i>.
      *  </ul>
-     *  The default is "end".
+     *  The default is "start".
      */
     public HTMLTextPosition textPosition;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the content to export to the web.
-     *  @return Content to export to the web.
-     *  @throws IllegalActionException If evaluating the parameter fails.
+    /** Provide content to the specified web exporter to be
+     *  included in a web page for the container of this object.
+     *  This may include, for example, HTML or header
+     *  content, including for example JavaScript definitions that
+     *  may be needed by the area attributes.
+     *  @throws IllegalActionException If parameters cannot be evaluated.
      */
-    public String getContent() throws IllegalActionException {
-        return stringValue();
+    public void provideContent(WebExporter exporter) throws IllegalActionException {
+        String content = stringValue();
+        String position = textPosition.stringValue();
+        exporter.addContent(position, false, content);
+    }
+
+    /** Provide content to the specified web exporter to be
+     *  included in a web page for the container of this object.
+     *  This class does not provide any such content.
+     */
+    public void provideOutsideContent(WebExporter exporter) {
+        // This class does not provide outside content.
     }
 }
