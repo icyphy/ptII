@@ -653,6 +653,9 @@ public class TypedIOPort extends IOPort implements Typeable {
             // Note: we are careful here to set the type before notifying
             // type listeners.
             Type oldType = _resolvedType;
+
+            // FIXME: Why don't we have the same check here that we have
+            // in initialize() where we handled StructuredTypes?
             _resolvedType = _declaredType;
 
             if (!oldType.equals(_declaredType)) {
@@ -856,8 +859,18 @@ public class TypedIOPort extends IOPort implements Typeable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The resolved type of the port. The value of this variable is
+     * set by {@link #initialize(Object)}, {@link #setTypeEquals()},
+     * {@link #setValue(Object)}.
+     */
+    protected Type _resolvedType = BaseType.UNKNOWN;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Notify the type listener about type change.
+
+    /** Notify the type listener about type change. */
     private void _notifyTypeListener(Type oldType, Type newType) {
         if (_typeListeners.size() > 0) {
             TypeEvent event = new TypeEvent(this, oldType, newType);
@@ -872,8 +885,6 @@ public class TypedIOPort extends IOPort implements Typeable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Type _declaredType = BaseType.UNKNOWN;
-
-    protected Type _resolvedType = BaseType.UNKNOWN;
 
     private TypeTerm _typeTerm = null;
 
