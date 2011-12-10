@@ -1,6 +1,6 @@
-# Makefile for the ptolemy/vergil/basic/export/html package
+# Makefile for Ptolemy II Curriculum demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,13 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-
-ME =		ptolemy/vergil/basic/export/html
-
-DIRS =		demo javascript test
+ME =		ptolemy/vergil/basic/export/html/demo/Curriculum
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -44,57 +41,54 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	html
-PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	Curriculum
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	javascript/javascript.jar
-
-JSRCS = \
-	AreaEventType.java \
-	CopyJavaScriptFiles.java \
-	DefaultIconLink.java \
-	DefaultIconScript.java \
-	DefaultTitle.java \
-	ExportHTMLAction.java \
-	ExportToWeb.java \
-	HTMLText.java \
-	HTMLTextPosition.java \
-	IconLink.java \
-	IconScript.java \
-	LinkTarget.java \
-	LinkToOpenTableaux.java \
-	ParameterDisplayIconScript.java \
-	Title.java \
-	WebExportable.java \
-	WebExporter.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	utilityWebExport.xml
+	Curriculum.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	javascript test
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	$(PTCLASSJAR) \
-	'ExportHTMLAction$$IconVisibleLocation.class' \
-	'ExportHTMLAction$$1.class' \
-	'ExportToWeb$$1.class' \
-	'ExportToWeb$$2.class' \
-	'ExportToWeb$$3.class'
+OPTIONAL_FILES =
 
-JCLASS= $(JSRCS:%.java=%.class)
+JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
+	@echo "To run the applet only, run 'make demo_applet'"
+	@echo "To run the application only, run 'make demo_application'"
+
+install: all
+
+# Run the demo in all its different formats
+# Run demo_application first so that we generate Curriculum.xml
+demo: demo_applet demo_application demo_ptolemy demo_vergil
+
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH="$(CLASSPATH)" appletviewer Curriculum.htm
+
+demo_application: $(PTCLASSJAR)
+	CLASSPATH="$(CLASSPATH)" \
+	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
+		-class ptolemy.domains.sdf.demo.Curriculum.Curriculum
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Curriculum.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Curriculum.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
