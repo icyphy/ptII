@@ -476,9 +476,11 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     GraphModel model = getGraphModel();
                     Object semanticObject = model.getSemanticObject(candidate);
 
+                    // For some strange reason, this used to avoid doing
+                    // layout for class definitions, with the following clause:
+                    //  && !((Entity) semanticObject).isClassDefinition()
                     if (candidate instanceof Locatable
-                            && semanticObject instanceof Entity
-                            && !((Entity) semanticObject).isClassDefinition()) {
+                            && semanticObject instanceof Entity) {
                         return true;
                     } else {
                         return false;
