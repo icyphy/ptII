@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NoisySinewave" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 30, 813, 510}, maximized=false}">
     </property>
@@ -55,15 +55,27 @@
         </property>
     </property>
     <class name="NoisySinewave" extends="ptolemy.actor.lib.Sinewave">
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 450]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 466]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 161, 811, 568}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={231, 461, 897, 576}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.0, 225.0}">
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 15.0]">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 120.0">
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+            </property>
+        </property>
+        <property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 70.0]">
+            </property>
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 233.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 120.0]">
         </property>
         <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -81,13 +93,13 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 30.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 30.0]">
             </property>
         </property>
         <property name="annotation_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The objects highlighted in pink are&#10;defined in the superclass. Such objects&#10;cannot be removed in this derived class.&#10;Their parameters can be changed, however.&#10;This implies that they can be moved and&#10;can be assigned custom icons. To examine&#10;the superclass, right click on the&#10;background and select &quot;Open Base Class&quot;.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 70.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 45.0]">
             </property>
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
@@ -288,15 +300,15 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 345.0">
             </property>
         </entity>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation_1_2" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="noisy" relation="relation7"/>
-        <link port="AddSubtract2.plus" relation="relation5"/>
         <link port="AddSubtract2.plus" relation="relation3"/>
+        <link port="AddSubtract2.plus" relation="relation_1_2"/>
         <link port="AddSubtract2.output" relation="relation7"/>
-        <link port="Gaussian.output" relation="relation5"/>
+        <link port="Gaussian.output" relation="relation_1_2"/>
     </class>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
@@ -305,7 +317,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 195]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 235.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -321,7 +333,7 @@
         </configure>
     </entity>
     <entity name="InstanceOfNoisySinewave" class="NoisySinewave">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 220.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 220.0]">
         </property>
         <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
         </property>
@@ -341,7 +353,7 @@
         </port>
     </entity>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 290.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
