@@ -224,6 +224,8 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                         StringParameter constraintExpression = new StringParameter(
                                 this,
                                 createConstraintParameterName((NamedObj) actorPort));
+                        // Include no constraints by default.
+                        constraintExpression.setExpression(NO_CONSTRAINTS);
                         _constraintTermExpressions.add(constraintExpression);
                     }
 
@@ -234,6 +236,8 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             StringParameter constraintExpression = new StringParameter(
                                     this,
                                     createConstraintParameterName((NamedObj) actorAttribute));
+                            // Include no constraints by default.
+                            constraintExpression.setExpression(NO_CONSTRAINTS);
                             _constraintTermExpressions
                                     .add(constraintExpression);
                         }
