@@ -1637,6 +1637,30 @@ public class PtidesBasicDirector extends DEDirector {
         return causalityInterface.getDependency(input, output);
     }
 
+    /** Return the value stored in a parameter associated with
+     *  the input port.
+     *  Used for deviceDelay, deviceDelayBound, networkDelayBound, 
+     *  platformDelay and sourcePlatformDelay. 
+     *  FIXME: specialized ports do contain the parameters, don't
+     *  have to get the attribute with the string! For now leave it
+     *  that way to support older models that do not use PtidesPorts.
+     *  @param port The port the deviceDelay is associated with.
+     *  @return the value of the deviceDelay parameter if the parameter is not
+     *  null. Otherwise return null.
+     *  @exception IllegalActionException If the token of the deviceDelay
+     *  parameter cannot be evaluated.
+     */
+    protected static Double _getDoubleParameterValue(IOPort port, String parameterName)
+            throws IllegalActionException {
+        Parameter parameter = (Parameter) ((NamedObj) port)
+                .getAttribute(parameterName);
+        if (parameter != null) {
+            return Double.valueOf(((DoubleToken) parameter.getToken())
+                    .doubleValue());
+        }
+        return null;
+    } 
+    
     /** Return a MoML string describing the icon appearance for a Ptides
      *  director that is currently executing the specified actor.
      *  The returned MoML can include a sequence of instances of
@@ -2892,30 +2916,6 @@ public class PtidesBasicDirector extends DEDirector {
         }
         return null;
     }
-
-    /** Return the value stored in a parameter associated with
-     *  the input port.
-     *  Used for deviceDelay, deviceDelayBound, networkDelayBound, 
-     *  platformDelay and sourcePlatformDelay. 
-     *  FIXME: specialized ports do contain the parameters, don't
-     *  have to get the attribute with the string! For now leave it
-     *  that way to support older models that do not use PtidesPorts.
-     *  @param port The port the deviceDelay is associated with.
-     *  @return the value of the deviceDelay parameter if the parameter is not
-     *  null. Otherwise return null.
-     *  @exception IllegalActionException If the token of the deviceDelay
-     *  parameter cannot be evaluated.
-     */
-    private static Double _getDoubleParameterValue(IOPort port, String parameterName)
-            throws IllegalActionException {
-        Parameter parameter = (Parameter) ((NamedObj) port)
-                .getAttribute(parameterName);
-        if (parameter != null) {
-            return Double.valueOf(((DoubleToken) parameter.getToken())
-                    .doubleValue());
-        }
-        return null;
-    } 
 
     /** Return the model time of the enclosing director, which is our model
      *  of time in the physical environment. Note this oracle physical time

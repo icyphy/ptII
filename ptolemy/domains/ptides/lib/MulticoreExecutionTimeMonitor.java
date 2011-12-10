@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.lib;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.gui.Plotter;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
@@ -214,12 +216,12 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
         // Plot event as new point.
         y = getOffset(actor, core);
         if (scheduleEvent == ExecutionEventType.START) {
-            y += 0.6;
+            y += 0.66;
             _parallelMonitor.coreStarts(x);
         } else if (scheduleEvent == ExecutionEventType.STOP) {
             _parallelMonitor.coreStops(x);
         } else if (scheduleEvent == ExecutionEventType.PREEMPTED) {
-            y += 0.4;  
+            y += 0.33;  
             _parallelMonitor.coreStops(x);
         }
         point[0] = x;
@@ -232,7 +234,7 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
                 plot.setXLabel(""); // Needed for padding to captions.
                 // Show parallel monitoring results in caption.
                 plot.clearCaptions();
-                plot.addCaptionLine(_parallelMonitor.toString());
+                plot.addCaptionLine("Time spend with number of active cores:" + _parallelMonitor.toString());
                 plot.fillPlot();
             }
         };
@@ -291,13 +293,35 @@ public class MulticoreExecutionTimeMonitor extends Plotter implements
             
             if(monitorActor) {
                 _actors.add(actor);
+                
             } 
             
         }
         
+        Collections.sort(_actors, new Comparator<Actor>() {
+            public int compare(Actor a1, Actor a2) {
+                Parameter a1Dataset = (Parameter)
+                ((NamedObj)a1).getAttribute("dataset");
+                Parameter a2Dataset = (Parameter)
+                ((NamedObj)a2).getAttribute("dataset");
+                if(a1Dataset != null && a2Dataset != null) {
+                    try {
+                        int i1 = ((IntToken)a1Dataset.getToken()).intValue();
+                        int i2 = ((IntToken)a2Dataset.getToken()).intValue();
+                        if(i1 < i2) {
+                            return -1;
+                        }  
+                    } catch (IllegalActionException e) {
+                    }
+                    
+                }
+                return 1;
+            }});
+
         // Initialize plot.
         if(plot == null) {
             plot = _newPlot();
+            plot.setGrid(true);
         }
         
         if ((_getImplementation().getFrame() == null) && ((_getImplementation().getPlatformContainer() == null))) {

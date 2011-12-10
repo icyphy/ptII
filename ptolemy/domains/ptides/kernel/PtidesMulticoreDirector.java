@@ -32,17 +32,24 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.ptides.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.SuperdenseDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.lib.ExecutionTimeListener;
 import ptolemy.domains.ptides.lib.ExecutionTimeListener.ExecutionEventType;
+import ptolemy.domains.ptides.lib.io.ActuatorPort;
+import ptolemy.domains.ptides.lib.io.NetworkReceiverPort;
+import ptolemy.domains.ptides.lib.io.NetworkTransmitterPort;
+import ptolemy.domains.ptides.lib.io.PtidesPort;
+import ptolemy.domains.ptides.lib.io.SensorPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -64,8 +71,8 @@ import java.util.Stack;
 //// PtidesMulticoreDirector
 /**
  *  This director simulates the execution of the Ptides programming model
- *  on multi-core platforms. The goal is to provide a framework for evaluation
- *  of different multi-core execution strategies.
+ *  on multicore platforms. The goal is to provide a framework for evaluation
+ *  of different multicore execution strategies.
  *
  *  @author Michael Zimmer
  *  @version $Id$
@@ -74,7 +81,7 @@ import java.util.Stack;
  *  @Pt.AcceptedRating Red (mzimmer)
  *
  */
-public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {    
+public class PtidesMulticoreDirector extends PtidesBasicDirector {    
 
     /** Construct a PtidesMulticoreDirector in the given container with 
      *  the given name. Parameters for the director are also initialized.
@@ -97,10 +104,9 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     /** The number of cores available for event processing (actor firing). */
     public Parameter coresForEventProcessing;
     
-    /** If true, safe-to-process analysis will only consider trigger ports.
-     * Parameter "isTrigger" must be set to false on a port to have it not
-     * be considered a trigger port.
-     * TODO: Better way to change scheduling options?
+    /** If true, safe-to-process analysis will consider trigger ports, making
+     * it more optimistic. Parameter "isTrigger" must be set to false on a port
+     * to have it not be considered a trigger port.
      */
     public Parameter considerTriggerPorts;
     
@@ -108,13 +114,17 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     ////                         public methods                    ////
     
     /** Initialize all the actors and variables. Perform static analysis on 
-     *  superdense dependencies between ports in the topology.
-     *  @exception IllegalActionException If the initialize() method of
-     *  the super class throws it.
+     *  superdense dependencies between input ports in the topology.
+     *  @exception IllegalActionException If any of the methods contained
+     *  in initialize() throw it.
      */
-    public void initialize() throws IllegalActionException {     
+    public void initialize() throws IllegalActionException  {     
         super.initialize();
+        _inputPortsForPureEvent = new HashMap<TypedIOPort, Set<TypedIOPort>>();
+        _relativeDeadlineForPureEvent = new HashMap<TypedIOPort, Double>();
         _calculateSuperdenseDependenices();
+        _calculateDelayOffsetsTriggerOnly();
+        _calculateRelativeDeadlines();
         // Create a stack to contain currently processing events on each core.
         int cores = ((IntToken)coresForEventProcessing.getToken()).intValue();
         _currentlyProcessingEvents = 
@@ -128,12 +138,152 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
+    /** After an actor has fired, check if it produced any tokens destined
+     * for outside the platform.  If it did, remove from event queue and
+     * call _transferOutputs().
+     * @exception IllegalActionException If cannot set tag or transfer outputs.
+     */
+    protected void _actorFired() throws IllegalActionException {
+        int eventIndex = 0;
+        synchronized (_eventQueue) {
+            while (eventIndex < _eventQueue.size()) {
+                PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
+                        .get(eventIndex);
+                if (nextEvent.ioPort() != null &&
+                        nextEvent.ioPort().isOutput()) {
+                    PtidesEvent ptidesEvent = ((PtidesListEventQueue)
+                            _eventQueue).take(eventIndex);
+                    setTag(ptidesEvent.timeStamp(), ptidesEvent.microstep());
+                    _transferOutputs(nextEvent.ioPort());
+                } else {
+                    // This event index should point to the next event if no
+                    // event is taken from the event queue.
+                    eventIndex++;
+                }
+            }
+        }
+    }
+    
+    /** Calculate the delay offset for each input port. If the parameter 
+     * 'considerTriggerPorts' is true, then only paths through trigger ports 
+     * are considered. The delay offset is used in safe-to-process analysis
+     * to know when no future events can occur at a sensor or network 
+     * receiver port that can result in an event arriving at an input port
+     * with an earlier timestamp than the event currently there.
+     * @exception IllegalActionException If cannot set 'delayOffset' parameter
+     * for an input port.
+     */
+    protected void _calculateDelayOffsetsTriggerOnly() 
+            throws IllegalActionException {
+          
+        // Calculate delayOffset to each input port.
+        for(TypedIOPort port : _inputPorts) {
+            
+            // Disallow SensorPort and NetworkReceiverPort.
+            if(port instanceof SensorPort || 
+                    port instanceof NetworkReceiverPort) {
+                continue;
+            }
+            
+            // Find minimum delay offset from all sensor or network receiver 
+            // input ports to the input port group of this port.
+            double delayOffset = Double.POSITIVE_INFINITY;
+            for(TypedIOPort inputPort : _inputPorts) {
+                // Only allow SensorPort and NetworkReceiverPort.
+                if(!(inputPort instanceof SensorPort || 
+                        inputPort instanceof NetworkReceiverPort)) {
+                    continue;
+                }
+                double deviceDelayBound = _getDoubleParameterValue(
+                        inputPort, "deviceDelayBound");
+                SuperdenseDependency minDelay = 
+                    SuperdenseDependency.OPLUS_IDENTITY;
+                // Find minimum path to input port group.
+                for(TypedIOPort groupPort : _inputPortGroups.get(port)) {
+                    minDelay = (SuperdenseDependency)minDelay.oPlus(
+                            _getSuperdenseDependencyPair(
+                            inputPort, groupPort, true));
+                }
+                    
+                // Check if best so far.
+                double thisDelayOffset = minDelay.timeValue()
+                        - deviceDelayBound;
+                if(thisDelayOffset < delayOffset) {
+                    delayOffset = thisDelayOffset;
+                }           
+            }
+            _setDelayOffset(port, delayOffset);
+        }
+    }
+    
+    /** Calculate the relative deadline for each input port. The relative
+     * deadline is used along with the timestamp of the event at the input port
+     * to determine the earliest time that this event may cause for an event 
+     * that needs to be output at an actuator or network transmitter.
+     * @exception IllegalActionException If cannot set 'relativeDeadline2'
+     * parameter or cannot get device delay bound.
+     */
+    protected void _calculateRelativeDeadlines() 
+            throws IllegalActionException {
+        
+        // Calculate relativeDeadline for each input port.
+        for(TypedIOPort port : _inputPorts) {
+            
+            // Disallow SensorPort and NetworkReceiverPort.
+            if(port instanceof SensorPort || 
+                    port instanceof NetworkReceiverPort) {
+                continue;
+            }
+            
+            // Find minimum model time delay path from the input
+            // port to any actuator or network transmitter.
+            double relativeDeadline = Double.POSITIVE_INFINITY;
+            for(TypedIOPort outputPort : _inputPorts) {
+                // Only allow ActuatorPort and NetworkTransmitterPort.
+                if(!(outputPort instanceof ActuatorPort || 
+                        outputPort instanceof NetworkTransmitterPort)) {
+                    continue;
+                }
+                double deviceDelayBound = 
+                    _getDoubleParameterValue(outputPort, "deviceDelayBound");
+                SuperdenseDependency minDelay = 
+                            _getSuperdenseDependencyPair(
+                            port, outputPort, false);  
+                    
+                // Check if best so far.
+                double thisRelativeDeadline = minDelay.timeValue()
+                        - deviceDelayBound;
+                if(thisRelativeDeadline < relativeDeadline) {
+                    relativeDeadline = thisRelativeDeadline;
+                }     
+            }
+            _setRelativeDeadline(port, relativeDeadline);
+        }
+        
+        // Set relative deadlines for pure events.
+        // FIXME: may need to be modified to handle pure events which update
+        // state.
+        for(TypedIOPort port : _inputPortsForPureEvent.keySet()) {
+            Double relativeDeadline = Double.POSITIVE_INFINITY;
+            for(TypedIOPort connectedPort : _inputPortsForPureEvent.get(port)) 
+            {
+                Double thisRelativeDeadline =
+                    _getRelativeDeadline(connectedPort);
+                if(thisRelativeDeadline.compareTo(
+                        relativeDeadline) < 0) {
+                    relativeDeadline = thisRelativeDeadline;
+                }
+            }
+            _relativeDeadlineForPureEvent.put(port, relativeDeadline);
+        }
+    }
+
     /** Calculate the superdense dependency (minimum model time delay) between
-     * a source input port and the input port group of a destination input 
-     * port. The Floyd-Warshall algorithm is used to calculate the minimum 
-     * model time delay paths.
+     * all source and destination input ports. The Floyd-Warshall algorithm is 
+     * used to calculate the minimum model time delay paths.
      * @exception IllegalActionException If the container is not a
      * TypedCompositeActor. 
+     * TODO: Assumes all channels have same dependency as multiport.
      */
     protected void _calculateSuperdenseDependenices() 
             throws IllegalActionException {
@@ -149,17 +299,63 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                     " is not a TypedCompositeActor");
         }
 
-        // Initialize HashMap.
+        // Initialize HashMaps. These will end up being identical if parameter
+        // 'considerTriggerPorts' is false.
         _superdenseDependencyPair = 
+            new HashMap<TypedIOPort, Map<TypedIOPort,SuperdenseDependency>>();
+        _superdenseDependencyPairTriggerOnly = 
             new HashMap<TypedIOPort, Map<TypedIOPort,SuperdenseDependency>>();
         
         // Create a list for all input ports. A List is needed since Set does 
         // not make any guarantees on iteration order.
-        List<TypedIOPort> inputPorts = new ArrayList<TypedIOPort>();
+        _inputPorts = new ArrayList<TypedIOPort>();
         
+        // Store input port groups for all input ports.
+        _inputPortGroups = new
+                HashMap<TypedIOPort, Set<TypedIOPort>>();
+        
+        // Get boolean value of parameter to ignore non-trigger ports.
+        boolean considerTrigger = ((BooleanToken)considerTriggerPorts.
+                getToken()).booleanValue(); 
+        
+        // Find all input ports (consider actuator and network transmitter 
+        // ports as input ports as well) and add connections to other inputs.
+        // This will build a weighted directed graph.
+        
+        // Add sensor, actuator, and network ports.
+        for(TypedIOPort port : (List<TypedIOPort>)
+                ((TypedCompositeActor)getContainer()).portList()) {
+            
+            // Only allow ports which are PtidesPorts.
+            if(!(port instanceof PtidesPort)) {
+                throw new IllegalActionException(port, 
+                        port.getFullName() + 
+                        " is not a PtidesPort");
+            }
+
+            _addInputPort(port);
+            
+            // Add path from sensor or network input port to connected 
+            // input ports. These connections have a weight of 0.
+            if(port instanceof SensorPort || 
+                    port instanceof NetworkReceiverPort) {
+
+                for(IOPort connectedPort : (List<IOPort>)
+                        (port.insideSinkPortList())) {
+                    _putSuperdenseDependencyPair(port, 
+                            (TypedIOPort)connectedPort, 
+                            SuperdenseDependency.OTIMES_IDENTITY, false);
+                    _putSuperdenseDependencyPair(port, 
+                            (TypedIOPort)connectedPort, 
+                            SuperdenseDependency.OTIMES_IDENTITY, true);
+                }
+            }
+        }
+       
         // Calculate superdense dependency from each input port of an
-        // actor to the input ports of immediate predecessor actors.
-        // This builds a directed graph.
+        // actor to the input ports of immediate predecessor actors (or
+        // actuators or network transmitters) using causality interface 
+        // of the actor.
         for(Actor actor : (List<Actor>)((TypedCompositeActor) 
                 getContainer()).deepEntityList()) {
 
@@ -168,40 +364,16 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
             for(TypedIOPort inputPort: 
                     (List<TypedIOPort>)(actor.inputPortList())) {
                 
-                // Ignore input if not connected to anything.
+                // Ignore input if it's not connected to anything.
                 if(!inputPort.isOutsideConnected()) {
                     continue;
                 }
-                
-                // Ignore if not a trigger input.
-                // TODO: to use this method to find deadlines and delay offsets, this
-                // would need to be removed and have algorithm operate on two 
-                // separate maps.
-                if(((BooleanToken)considerTriggerPorts.getToken()) 
-                        .booleanValue()) {
-                    Parameter isTrigger = (Parameter)
-                        inputPort.getAttribute("isTrigger");
-                    if(isTrigger != null && 
-                            !((BooleanToken)isTrigger.getToken()).
-                            booleanValue()) {
-                        continue;
-                    }
-                }
 
-                // Initialize nested HashMap.
-                _superdenseDependencyPair.put(inputPort, 
-                        new HashMap<TypedIOPort,SuperdenseDependency>());
-                
-                // Add input port to list.
-                inputPorts.add(inputPort);
-                
-                // Set dependency with self.
-                _putSuperdenseDependencyPair(inputPort, inputPort, 
-                        SuperdenseDependency.OTIMES_IDENTITY);
+                _addInputPort(inputPort);
     
                 for(TypedIOPort outputPort: 
                         (List<TypedIOPort>)(actor.outputPortList())) {
-                    // Superdense dependency between input port and output
+                    // Get superdense dependency between input port and output
                     // port of current actor.
                     SuperdenseDependency minDelay = 
                         (SuperdenseDependency) actorCausality.getDependency(
@@ -209,129 +381,234 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                     // Only if dependency exists...
                     if(!minDelay.equals(
                             SuperdenseDependency.OPLUS_IDENTITY)) {
+                        // Add connected input ports if this input port can
+                        // produce pure events.
+                        if(!minDelay.equals(
+                                SuperdenseDependency.OTIMES_IDENTITY)) {
+                            if(!_inputPortsForPureEvent.containsKey(inputPort)) 
+                            {
+                                _inputPortsForPureEvent.put(
+                                        inputPort, new HashSet<TypedIOPort>());
+                            }
+                            _inputPortsForPureEvent.get(inputPort).addAll(
+                                    (List<TypedIOPort>)
+                                    outputPort.deepConnectedPortList());
+                        }
                         // Set input port pair for all connected ports.
                         // Assumes no delay from connections.
                         for(TypedIOPort connectedPort: 
                                 (List<TypedIOPort>)
                                 outputPort.deepConnectedPortList()) {
-                            // Exclude ports which aren't input ports.
-                            //TODO: is this the right check?
-                            if(connectedPort.isInput()) {
-                                /*
-                                _debug(inputPort.getName(dir) + "->" + 
-                                            connectedPort.getName(dir) + ": " +
-                                            minDelay.timeValue() + " (" + 
-                                            minDelay.indexValue() + ")");
-                                */
+                            _putSuperdenseDependencyPair(inputPort, 
+                                    connectedPort, minDelay, false);
+                            if(!considerTrigger || 
+                                    _isTriggerPort(inputPort)) {
                                 _putSuperdenseDependencyPair(inputPort, 
-                                        connectedPort, minDelay);
+                                        connectedPort, minDelay, true);
                             }
-                        }
-                    } else {
-                        //_debug("no dependency");
-                    }
+                        }    
+                        // Find input port group.
+                        for(TypedIOPort inPort: 
+                                (List<TypedIOPort>)(actor.inputPortList())) {
+                            minDelay = (SuperdenseDependency) actorCausality
+                                    .getDependency(inPort, outputPort);
+                            if(!minDelay.equals(
+                                    SuperdenseDependency.OPLUS_IDENTITY)) {
+                                _inputPortGroups.get(inputPort).add(inPort);
+                            }
+                        }                      
+                    } 
                 }
-            }
+            }    
         }
         
         // Floyd-Warshall algorithm. This finds the minimum model time delay
         // between all input ports.
-        for(TypedIOPort k : inputPorts) {
-            for(TypedIOPort i : inputPorts) {
-                for(TypedIOPort j : inputPorts) {
+        for(TypedIOPort k : _inputPorts) {
+            for(TypedIOPort i : _inputPorts) {
+                for(TypedIOPort j : _inputPorts) {
                     SuperdenseDependency ij, ik, kj;
-                    ij = _getSuperdenseDependencyPair(i, j);
-                    ik = _getSuperdenseDependencyPair(i, k);
-                    kj = _getSuperdenseDependencyPair(k, j);
+                    // All input ports.
+                    ij = _getSuperdenseDependencyPair(i, j, false);
+                    ik = _getSuperdenseDependencyPair(i, k, false);
+                    kj = _getSuperdenseDependencyPair(k, j, false);
                     // Check if i->k->j is better than i->j.
                     if(ij.compareTo(ik.oTimes(kj)) == 
                             SuperdenseDependency.GREATER_THAN) {
                         _putSuperdenseDependencyPair(i, j, 
-                                (SuperdenseDependency) ik.oTimes(kj));
+                                (SuperdenseDependency) ik.oTimes(kj), false);
+                    }
+                    // Only trigger input ports.
+                    ij = _getSuperdenseDependencyPair(i, j, true);
+                    ik = _getSuperdenseDependencyPair(i, k, true);
+                    kj = _getSuperdenseDependencyPair(k, j, true);
+                    // Check if i->k->j is better than i->j.
+                    if(ij.compareTo(ik.oTimes(kj)) == 
+                            SuperdenseDependency.GREATER_THAN) {
+                        _putSuperdenseDependencyPair(i, j, 
+                                (SuperdenseDependency) ik.oTimes(kj), true);
                     }
                 }
             }
         }
         
-        // Currently have the superdense dependency from each source input 
-        // port to every destination input port, not the input port group
-        // of the destination input port. Find input port groups and fix this.
-        for(Actor actor : (List<Actor>)((TypedCompositeActor) 
-                getContainer()).deepEntityList()) {
-            
-            CausalityInterface actorCausality = actor.getCausalityInterface();
-
-            for(TypedIOPort outputPort: 
-                    (List<TypedIOPort>)(actor.outputPortList())) {      
-                
-                Set<TypedIOPort> inputPortGroup = new HashSet<TypedIOPort>();
-    
-                for(TypedIOPort inputPort: 
-                        (List<TypedIOPort>)(actor.inputPortList())) {
-                    // Superdense dependency between input port and output
-                    // port of current actor.
-                    SuperdenseDependency minDelay = 
-                        (SuperdenseDependency) actorCausality.getDependency(
-                        inputPort, outputPort);
-                    // Only if dependency exists...
-                    if(!minDelay.equals(
-                            SuperdenseDependency.OPLUS_IDENTITY)) {                     
-                        inputPortGroup.add(inputPort);   
-                    } 
-                }
-                
-                // Go through all source input ports and find the superdense
-                // dependency to the current destination input port group of
-                // this actor.
-                // FIXME: If an actor has non-disjoint input port groups, then
-                // the value stored may depend on the order in which input
-                // port groups are visited.
-                for(TypedIOPort srcPort : inputPorts) {
-                    SuperdenseDependency min = 
-                        SuperdenseDependency.OPLUS_IDENTITY;
-                    for(TypedIOPort destPort : inputPortGroup) {
-                        min = (SuperdenseDependency) min.oPlus(
-                                    _getSuperdenseDependencyPair(
-                                            srcPort, destPort));
-                    }
-                    if(!min.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
-                        for(TypedIOPort destPort : inputPortGroup) {
-                            _putSuperdenseDependencyPair(
-                                    srcPort, destPort, min);
-                        }
-                    }
-                }
-            }
-        }
-
+        // Print debug table.
         if(_debugging) {
             StringBuffer buf = new StringBuffer();
             buf.append("\t");
-            for(TypedIOPort srcPort : inputPorts) {
+            for(TypedIOPort srcPort : _inputPorts) {
                 buf.append(srcPort.getName(getContainer()) + "\t");
             }
             _debug(buf.toString());
-            for(TypedIOPort srcPort : inputPorts) {
+            for(TypedIOPort srcPort : _inputPorts) {
                 buf = new StringBuffer();
                 buf.append(srcPort.getName(getContainer()) + "\t");
-                for(TypedIOPort destPort : inputPorts) {
-                    buf.append(_getSuperdenseDependencyPair(srcPort, destPort)
+                for(TypedIOPort destPort : _inputPorts) {
+                    buf.append(_getSuperdenseDependencyPair(
+                            srcPort, destPort, false)
                             .timeValue() + "(" +
-                            _getSuperdenseDependencyPair(srcPort, destPort)
+                            _getSuperdenseDependencyPair(
+                            srcPort, destPort, false) 
                             .indexValue() + ")\t"); 
                 }
-                _debug(buf.toString());
-            }
+                _debug(buf.toString()); 
+                buf = new StringBuffer();
+                buf.append(srcPort.getName(getContainer()) + "\t");
+                for(TypedIOPort destPort : _inputPorts) {
+                    buf.append(_getSuperdenseDependencyPair(
+                            srcPort, destPort, true)
+                            .timeValue() + "(" +
+                            _getSuperdenseDependencyPair(
+                            srcPort, destPort, true) 
+                            .indexValue() + ")\t"); 
+                }
+                _debug(buf.toString()); 
+            }  
         }
     } 
     
     /** Model time is only used for correct execution of actors and the
      * scheduler will determine whether another event can be fired in
      * the current firing of the platform, so this method isn't needed.
+     * By always returning true, _getNextActorToFire() will be called which
+     * runs the scheduler.
      *  @return true Always.
      */
     protected boolean _checkForNextEvent() {
         return true;
+    }
+    
+    /** Put a pure event into the event queue to schedule the given actor to
+     *  fire at the specified timestamp.
+     *  @param actor Actor to be fired.
+     *  @param time Time to fire actor at event.
+     *  @param defaultMicrostep Ignored in this base class.
+     *  @exception IllegalActionException If the time argument is less than
+     *  the current model time, or the depth of the actor has not be calculated,
+     *  or the new event can not be enqueued.
+     */
+    protected void _enqueueEvent(Actor actor, Time time, int defaultMicrostep)
+            throws IllegalActionException {
+        if ((_eventQueue == null)
+                    || ((_disabledActors != null) && _disabledActors
+                                .contains(actor))) {
+            return;
+        }
+        
+        // Reset the microstep to 1.
+        int microstep = 1;
+        
+        if (time.compareTo(getModelTime()) == 0) {
+            // If during initialization, do not increase the microstep.
+            // This is based on the assumption that an actor only requests
+            // one firing during initialization. In fact, if an actor requests
+            // several firings at the same time,
+            // only the first request will be granted.
+            if (_isInitializing) {
+                microstep = _microstep;
+            } else {
+                microstep = _microstep + 1;
+            }
+        } else if (time.compareTo(getModelTime()) < 0) {
+            throw new IllegalActionException(actor,
+                    "Attempt to queue an event in the past:"
+                            + " Current time is " + getModelTime()
+                            + " while event time is " + time);
+        }
+        
+        int depth = _getDepthOfActor(actor);
+        
+        if (_debugging) {
+            _debug("enqueue a pure event: ", ((NamedObj) actor).getName(),
+                    "time = " + time + " microstep = " + microstep
+                            + " depth = " + depth);
+        }
+
+        IOPort causalPort = _lastPtidesEvent.ioPort();
+        
+        Time absoluteDeadline = time.add(
+                _relativeDeadlineForPureEvent.get(causalPort));
+        
+        PtidesEvent newEvent = new PtidesEvent(actor, causalPort, time,
+                microstep, depth, absoluteDeadline);
+        _eventQueue.put(newEvent);
+}
+    
+    /** Return the absolute deadline for an event. If the event is a trigger
+     * event, it's the timestamp added to the relative deadline for the port.
+     * If it's a pure event, the absolute deadline was already calculated
+     * when the event was created.
+     * @param event The event.
+     * @return Absolute deadline for the event.
+     * @exception IllegalActionException If cannot get absolute or relative 
+     * deadline.
+     */
+    protected Time _getAbsoluteDeadline(PtidesEvent event) 
+            throws IllegalActionException {
+        if(event.isPureEvent()) {
+            return event.absoluteDeadline();
+        } else {
+            return event.timeStamp().add(
+                    _getRelativeDeadline((TypedIOPort) event.ioPort()));
+        } 
+    }
+    
+    /** Return the value of the 'delayOffset' parameter for an input port.
+     * @param port Input port.
+     * @return Delay offset of input port for safe-to-process analysis.
+     * @exception IllegalActionException If cannot read parameter.
+     */
+    protected Double _getDelayOffset(TypedIOPort port) 
+            throws IllegalActionException {
+        
+        Parameter parameter = (Parameter)port.getAttribute("delayOffset2");
+        if(parameter != null) {
+            return ((DoubleToken)parameter.getToken()).doubleValue();
+        } else {
+            throw new IllegalActionException(port,
+                    "delayOffset2 parameter does not exist at port " +
+                    port.getFullName() + ".");
+        }
+    }
+    
+    /** Return the value of the 'relativeDeadline2' parameter for an input 
+     * port.
+     * @param port Input port.
+     * @return Relative Deadline of input port.
+     * @exception IllegalActionException If cannot read parameter.
+     */
+    protected Double _getRelativeDeadline(TypedIOPort port) 
+            throws IllegalActionException {
+        
+        Parameter parameter = 
+                (Parameter)port.getAttribute("relativeDeadline2");
+        if(parameter != null) {
+            return ((DoubleToken)parameter.getToken()).doubleValue();
+        } else {
+            throw new IllegalActionException(port,
+                    "relativeDeadline2 parameter does not exist at port " +
+                    port.getFullName() + ".");
+        }
     }
     
     /** Return the actor to fire in this iteration, or null if no actor should
@@ -340,8 +617,8 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
      * is based on the assumption that an actor only produces events when it
      * is done firing, not during firing. Since _checkForNextEvent() always
      * returns true, this method will keep being called until it returns null.  
-     * @exception IllegalActionException If getPlatformPhysicalTag() throws it.
-     * 
+     * @exception IllegalActionException If getPlatformPhysicalTag() throws it
+     * or missed firing actor at correct time.
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
         
@@ -389,11 +666,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                             ExecutionEventType.START, i);
                     }
                     // Used for pure events.
-                    _saveEventInformation(processingEvent.events);
-                    _lastActorFired = eventToFire.actor();
-                    // Keep PtidesBasicDirector happy.
-                    _lastExecutionTime = executionPhysicalTag.timestamp;
-                    
+                    _lastPtidesEvent = eventToFire;
                     // Return actor to fire.
                     return eventToFire.actor();
                 // Missed it!
@@ -422,7 +695,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
              
         return null;
     }
-    
+
     /** Return an event which is safe-to-process and should be processed next.
      *  If no such event exists, null is returned. In this implementation, the
      *  event that should be processed next is the safe-to-process event that
@@ -430,9 +703,9 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
      *  ordering. Note that this method does not modify the event
      *  queue.
      *  @return Safe event to process.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException If _safeToProcess throws it.
      */
-    protected PtidesEvent _getNextSafeEvent() throws IllegalActionException {
+    protected PtidesEvent _getNextSafeEvent() throws IllegalActionException  {
 
         // Safe-to-process may set a time when scheduler should be run again.
         _nextRunScheduler = null;
@@ -447,17 +720,6 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         // Return first event in <AD, T, I, D> order that is safe-to-process.
         for(PtidesEvent event : EDF) {
             if(_safeToProcess(event)) {
-                //_takeAllSameTagEventsFromQueue.
-                // TODO: improve _takeAllSameTagEventsFromQueue to
-                // not require _peekingIndex and remove this code.
-                for(int i = 0; i < _eventQueue.size(); i++) {
-                    if(((PtidesListEventQueue)_eventQueue).get(i).equals(
-                            event)) {
-                        _peekingIndex = i;
-                        break;
-                    }
-                }
-                // End code to remove.
                 return event;
             }
         }
@@ -474,36 +736,96 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
 
     }
     
-    /** Return the superdense dependency between a source input port and the
-     * input port group of a destination input port. If the mapping does not
-     * exist, it is assumed to be SuperdenseDependency.OPLUS_IDENTITY.
+    /** Return the superdense dependency between a source and a destination 
+     * input port. If the mapping does not exist, it is assumed to be 
+     * SuperdenseDependency.OPLUS_IDENTITY.
      * @param source Source input port.
      * @param destination Destination input port.
+     * @param triggerOnly Only consider paths through trigger ports. 
      * @return Superdense dependency.
      */
     protected SuperdenseDependency _getSuperdenseDependencyPair(
-            TypedIOPort source, TypedIOPort destination) {
-        if(_superdenseDependencyPair.containsKey(source) &&
-                _superdenseDependencyPair.get(source).containsKey(destination))
+            TypedIOPort source, TypedIOPort destination, boolean triggerOnly) {
+        Map<TypedIOPort, Map<TypedIOPort,SuperdenseDependency>> pair;
+        if(triggerOnly) {
+            pair = _superdenseDependencyPairTriggerOnly;        
+        } else {
+            pair = _superdenseDependencyPair;
+        }
+        if(pair.containsKey(source) &&
+                pair.get(source).containsKey(destination))
         {
-            return _superdenseDependencyPair.get(source).get(destination);
+            return pair.get(source).get(destination);
         } else {
             return SuperdenseDependency.OPLUS_IDENTITY;
         }
     }
     
-    /** Store the superdense dependency between a source input port and the
-     * input port group of a destination input port. If the mapping does not
-     * exist, it is assumed to be SuperdenseDependency.OPLUS_IDENTITY.
+    /** Return whether a port is considered a trigger port. Assumes trigger 
+     * port by default.
+     * @param port Input port.
+     * @return True if trigger port, false otherwise.
+     * @exception IllegalActionException Cannot read parameter.
+     */
+    protected boolean _isTriggerPort(TypedIOPort port) 
+            throws IllegalActionException {
+        //TODO: part of analysis instead of parameter?
+        boolean isTrigger = true;
+        Parameter isTriggerParameter = (Parameter)
+                port.getAttribute("isTrigger");
+        if(isTriggerParameter != null) {
+            isTrigger = ((BooleanToken)isTriggerParameter.getToken())
+                    .booleanValue();
+        }
+        return isTrigger;
+    }
+    /** Store the superdense dependency between a source and destination input 
+     * port. If the mapping does not exist, it is assumed to be 
+     * SuperdenseDependency.OPLUS_IDENTITY.
      * @param source Source input port.
      * @param destination Destination input port.
+     * @param triggerOnly Only consider paths through trigger ports.
      * @param dependency Superdense dependency.
      */
     protected void _putSuperdenseDependencyPair(TypedIOPort source, 
-            TypedIOPort destination, SuperdenseDependency dependency) {
-        if(!dependency.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
-            _superdenseDependencyPair.get(source).put(destination, dependency);
+            TypedIOPort destination, SuperdenseDependency dependency,
+            boolean triggerOnly) {
+        Map<TypedIOPort, Map<TypedIOPort,SuperdenseDependency>> pair;
+        if(triggerOnly) {
+            pair = _superdenseDependencyPairTriggerOnly;        
+        } else {
+            pair = _superdenseDependencyPair;
         }
+        if(!dependency.equals(SuperdenseDependency.OPLUS_IDENTITY)) {
+            pair.get(source).put(destination, dependency);
+        }
+    }
+
+    
+    /** Remove all events with the same tag and at the same actor from the
+     * event queue.
+     * @param event The event.
+     * @return A list of all events with same tag and at the same actor as the
+     * event.
+     */
+    protected List<PtidesEvent> _removeEventsFromQueue(PtidesEvent event) {
+        List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
+        int i = 0;
+        while(i < _eventQueue.size()) {
+            PtidesEvent eventInQueue = 
+                    ((PtidesListEventQueue)_eventQueue).get(i);
+            // If event has same tag and destined to same actor, remove from
+            // queue.
+            // TODO: or input port group?
+            if(eventInQueue.hasTheSameTagAs(event) && 
+                    eventInQueue.actor().equals(event.actor())) {
+                eventList.add(eventInQueue);
+                ((PtidesListEventQueue)_eventQueue).take(i);
+                continue; 
+            }
+            i++;
+        }
+        return eventList;
     }
     
     /** Decide whether an event should begin processing at the provided
@@ -514,9 +836,10 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
      * This method is responsible for taking overhead execution times into
      * account.
      * @param executionPhysicalTag Current execution physical time.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException If _getNextSafeEvent() throws it.
      */
-    protected void _runScheduler(Tag executionPhysicalTag) throws IllegalActionException {
+    protected void _runScheduler(Tag executionPhysicalTag) 
+            throws IllegalActionException {
         
         _debug("Scheduler running @ " + executionPhysicalTag);
         
@@ -545,7 +868,8 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                 }
             }
             
-            // TODO: preemption
+            // Preempt the event with latest deadline if selected event has
+            // earlier deadline.
             if(coreToProcessOn == null) {
                 EDFComparator comparator = new EDFComparator();
                 // Find processing event with latest deadline.
@@ -569,8 +893,14 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                     _debug("preempt " + latestEvent.actor().getName());
                     coreToProcessOn = latestCore;
                     // Execution time of event causing preemption.
-                    Time executionTime = new Time(this, _getExecutionTime(
-                            nextEvent.ioPort(), nextEvent.actor()));
+                    // TODO: better way for execution time for pure event?
+                    Time executionTime;
+                    if(nextEvent.isPureEvent()) {
+                        executionTime = new Time(this, _getExecutionTime(
+                                null, nextEvent.actor()));
+                    } else 
+                        executionTime = new Time(this, _getExecutionTime(
+                                nextEvent.ioPort(), nextEvent.actor()));
                     // Add this to all the finish times on the core.
                     for(ProcessingPtidesEvents events : latestCore) {
                         events.finishTime = 
@@ -596,15 +926,21 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
             // Remove events with same tag and destination input port
             // group from event queue.
             List<PtidesEvent> eventList = 
-                    _takeAllSameTagEventsFromQueue(nextEvent);
+                    _removeEventsFromQueue(nextEvent);
             // Find execution time of actor which event fires.
-            Time executionTime = new Time(this, _getExecutionTime(
-                    nextEvent.ioPort(), nextEvent.actor()));
-            //double executionTime = _getExecutionTime(
-            //        nextEvent.ioPort(), nextEvent.actor());
+            // TODO: better way for execution time for pure event?
+            // Currently the execution time of the actor is used.
+            Time executionTime;
+            if(nextEvent.isPureEvent()) {
+                executionTime = new Time(this, _getExecutionTime(
+                        null, nextEvent.actor()));
+            } else 
+                executionTime = new Time(this, _getExecutionTime(
+                        nextEvent.ioPort(), nextEvent.actor()));  
             Time finishTime = 
                     executionPhysicalTag.timestamp.add(executionTime);
-            _debug(executionPhysicalTag.timestamp + "+" + executionTime + "=" + finishTime);
+            _debug(executionPhysicalTag.timestamp + "+" + executionTime 
+                    + "=" + finishTime);
             // Record events as processing.
             ProcessingPtidesEvents events = new ProcessingPtidesEvents(
                     eventList, executionPhysicalTag, finishTime);
@@ -627,7 +963,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
      * passed the timestamp of the event minus the delayOffset, then no
      * later events arriving at a sensor/network port can reach the input
      * port group of the event with an earlier timestamp, and the event
-     * may be safe-to-process. In multi-core, an additional check is required
+     * may be safe-to-process. In multicore, an additional check is required
      * since a currently processing event MAY causally affect the event 
      * (the processing event may eventually cause an event to arrive at the 
      * input port group of the event with an earlier timestamp). A subclass
@@ -640,14 +976,12 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     protected boolean _safeToProcess(PtidesEvent event) 
             throws IllegalActionException {
 
-        //TODO: write test cases
-        //TODO: _timedInterruptTimes not implemented (used for scheduling
-        // overhead)
-        
-        double delayOffset = 0;
-        if(!event.isPureEvent()) {
-            _getDelayOffset(event.ioPort(),
-                    event.channel(), false);
+        double delayOffset;
+        if(event.isPureEvent()) {
+            // FIXME: This is not correct if pure event updates state.
+            delayOffset = Double.POSITIVE_INFINITY;
+        } else {
+            delayOffset = _getDelayOffset((TypedIOPort)event.ioPort());
         }
         
         // If the platform time has not passed the timestamp of the event 
@@ -680,16 +1014,18 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
                 // all have their destination port in same input port group.
                 PtidesEvent processingEvent = 
                     processingEvents.events.get(0);
-                // FIXME: ioport of a pure event?
-                assert(!event.isPureEvent());
-                if(_getSuperdenseDependencyPair(
-                        (TypedIOPort) processingEvent.ioPort(), 
-                        (TypedIOPort) event.ioPort()) !=
-                        SuperdenseDependency.OPLUS_IDENTITY) {
-                    // Assume scheduler is run again when event finishes
-                    // processing, so no need to request refiring.
-                    return false;
+                for(TypedIOPort groupPort : _inputPortGroups.get(
+                        (TypedIOPort)event.ioPort())) {
+                    if(_getSuperdenseDependencyPair(
+                            (TypedIOPort) processingEvent.ioPort(), 
+                            groupPort, true) !=
+                            SuperdenseDependency.OPLUS_IDENTITY) {
+                        // Assume scheduler is run again when event finishes
+                        // processing, so no need to request refiring.
+                        return false;
+                    }
                 }
+                
             }  
         }
         
@@ -698,7 +1034,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     
     /** Do nothing. When plotting execution times for multicore, the core
      * id is needed, which this method does not provide.
-     * TODO: PtidesBasicDirector should be modified to not call this method.
+     * TODO: PtidesBasicDirector could be modified to not call this method.
      */
     protected void _sendExecutionTimeEvent(Actor actor, double time,
             ExecutionEventType event) {
@@ -715,7 +1051,6 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
             ExecutionEventType event, int core) {
         _debug(actor + " " + time + " " + event + " " + core);
         
-     
         if (_executionTimeListeners != null) {
             for (ExecutionTimeListener listener : _executionTimeListeners) {
                 listener.event(actor, time, event, core);
@@ -723,9 +1058,65 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         }
         
     }
+    
+    /** Set the value of the 'delayOffset' parameter for an input port.
+     * @param port Input port.
+     * @param delatOffset Delay offset for safe-to-process analysis.
+     * @exception IllegalActionException If cannot set parameter.
+     */
+    protected void _setDelayOffset(TypedIOPort port, Double delayOffset) 
+            throws IllegalActionException {
+        
+        DoubleToken token = new DoubleToken(delayOffset);    
+        Parameter parameter = (Parameter)port.getAttribute("delayOffset2");
+        if(parameter == null) {
+            try {
+                parameter = new Parameter(port, "delayOffset2", token);
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(port,
+                        "delayOffset2 parameter already exists at " +
+                        port.getFullName() + ".");
+            }
+        } else {
+            parameter.setToken(token);
+        }
+
+
+    }
+    
+    /** Set the value of the 'relativeDeadline' parameter for an input port.
+     * @param port Input port.
+     * @param delatOffset Relative deadline for input port.
+     * @exception IllegalActionException If cannot set parameter.
+     */
+    protected void _setRelativeDeadline(TypedIOPort port, 
+            Double relativeDeadline) throws IllegalActionException {
+        DoubleToken token = new DoubleToken(relativeDeadline);    
+        Parameter parameter = 
+                (Parameter)port.getAttribute("relativeDeadline2");
+        if(parameter == null) {
+            try {
+                parameter = new Parameter(port, "relativeDeadline2", token);
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(port,
+                        "relativeDeadline2 parameter already exists at " +
+                        port.getFullName() + ".");
+            }
+        } else {
+            parameter.setToken(token);
+        }
+    }
         
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+    
+    /** List of all input ports in the model (actuator and network transmitter
+     * ports are also considered input ports).
+     */
+    protected List<TypedIOPort> _inputPorts;
+    
+    /** Map an input port to a set which is its input port group. */
+    protected Map<TypedIOPort, Set<TypedIOPort>> _inputPortGroups;
     
     /** Store the superdense dependency between pairs of input ports using 
      * nested Maps. Providing the source input as a key will return a Map 
@@ -734,6 +1125,17 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
      */
     protected Map<TypedIOPort, Map<TypedIOPort,SuperdenseDependency>> 
             _superdenseDependencyPair;
+
+    /** Store the superdense dependency between pairs of input ports using 
+     * nested Maps, where only paths through trigger ports are considered. 
+     * If trigger ports are to not be considered, this will be the same as
+     * _superdenseDependencyPair.
+     * Providing the source input as a key will return a Map value, where the 
+     * destination input port can be used as a key to return the superdense
+     * dependency. 
+     */
+    protected Map<TypedIOPort, Map<TypedIOPort,SuperdenseDependency>> 
+            _superdenseDependencyPairTriggerOnly;
     
     /** Store a stack of currently processing events for each core. Each
      * event can be a collection of ptides events with the same tag and 
@@ -745,6 +1147,28 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    private void _addInputPort(TypedIOPort inputPort) {
+        
+        // Initialize nested HashMaps.
+        _superdenseDependencyPair.put(inputPort, 
+                new HashMap<TypedIOPort,SuperdenseDependency>());
+        _superdenseDependencyPairTriggerOnly.put(inputPort,
+                new HashMap<TypedIOPort,SuperdenseDependency>());
+        
+        // Add input port to list.
+        _inputPorts.add(inputPort);
+        
+        // Initialize input port groups.
+        _inputPortGroups.put(inputPort, new HashSet<TypedIOPort>());;
+        
+        // Set dependency with self.
+        _putSuperdenseDependencyPair(inputPort, inputPort, 
+                SuperdenseDependency.OTIMES_IDENTITY, false);
+        _putSuperdenseDependencyPair(inputPort, inputPort, 
+                SuperdenseDependency.OTIMES_IDENTITY, true);
+        
+    }
     
     /** Initialize parameters to default values. */
     private void _initParameters() {    
@@ -774,6 +1198,19 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
      */
     private Time _nextRunScheduler;
     
+    /** Connected input ports for an input port which may produce a pure 
+     * event. Used to calculate _relativeDeadlineForPureEvent. 
+     */
+    private Map<TypedIOPort, Set<TypedIOPort>> _inputPortsForPureEvent;
+    
+    /** Store the last PtidesEvent that was fired. */
+    private PtidesEvent _lastPtidesEvent;
+    
+    /** Map the input port where an event caused a pure event to the relative
+     * deadline for that pure event.
+     */
+    private Map<TypedIOPort, Double> _relativeDeadlineForPureEvent;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     
@@ -853,9 +1290,7 @@ public class PtidesMulticoreDirector extends PtidesPreemptiveEDFDirector {
         protected Tag startTag;
         
         /** Execution physical time when processing will finish. */
-        // TODO: modify with preemption
         protected Time finishTime;
     }
         
-    
 }
