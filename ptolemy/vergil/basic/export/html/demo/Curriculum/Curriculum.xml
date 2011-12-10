@@ -18,13 +18,13 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 1219, 796}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 1223, 798}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1006, 686]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1010, 688]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4001281153188">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{433.2528387200342, 303.424160537308}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{434.6812794306506, 304.1383808926164}">
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="_relationSize" class="ptolemy.data.expr.Parameter" value="4">
@@ -49,52 +49,6 @@
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
         <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="3.44">
             <display name="Object spacing"/>
-        </property>
-    </property>
-    <property name="start text" class="ptolemy.vergil.basic.export.html.HTMLText" value="&lt;h1&gt;EECS Undergraduate Curriculum, UC Berkeley&lt;/h1&gt;">
-        <property name="textPosition" class="ptolemy.vergil.basic.export.html.HTMLTextPosition" value="start">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">www</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-            <property name="height" class="ptolemy.data.expr.Parameter" value="5">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 645.0]">
-        </property>
-    </property>
-    <property name="end text" class="ptolemy.vergil.basic.export.html.HTMLText" value="&lt;h2&gt;&lt;p id=&quot;afterImage&quot;&gt;Mouse over the courses to replace this text with the course title.&lt;/p&gt;&lt;/h2&gt;">
-        <property name="textPosition" class="ptolemy.vergil.basic.export.html.HTMLTextPosition" value="end">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">www</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-            <property name="height" class="ptolemy.data.expr.Parameter" value="5">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 665.0]">
         </property>
     </property>
     <property name="eeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
@@ -445,6 +399,30 @@
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[690.0, 517.0]">
         </property>
     </property>
+    <property name="title" class="ptolemy.vergil.basic.export.html.DefaultTitle" value="EECS Undergraduate Curriculum, UC Berkeley">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 640.0]">
+        </property>
+    </property>
+    <property name="DefaultIconScript" class="ptolemy.vergil.basic.export.html.DefaultIconScript" value="writeText('Mouse over the courses to replace this text with the course title.')">
+        <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseout">
+        </property>
+        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};">
+        </property>
+        <property name="endText" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 660.0]">
+        </property>
+    </property>
+    <property name="DefaultIconScript2" class="ptolemy.vergil.basic.export.html.DefaultIconScript" value="writeText('Mouse over the courses to replace this text with the course title.')">
+        <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+        </property>
+        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};">
+        </property>
+        <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;Mouse over the courses to replace this text with the course title.&lt;/p&gt;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 680.0}">
+        </property>
+    </property>
     <entity name="20" class="ptolemy.domains.curriculum.Course">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -452,7 +430,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 145.0}">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Structure and Interpretation of Signals and Systems">
         </property>
@@ -468,7 +448,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 180.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Microelectronic Circuits">
         </property>
@@ -484,7 +466,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 480.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Structure and Interpretation of Computer Programs">
         </property>
@@ -500,7 +484,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 480.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Data Structures">
         </property>
@@ -516,7 +502,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 390.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Machine Structures">
         </property>
@@ -532,7 +520,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 360.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Discrete Mathematics and Probability Theory">
         </property>
@@ -548,7 +538,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 420.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Components and Design Techniques for DigitalSystems">
         </property>
@@ -564,7 +556,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 420.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Computer Architecture and Engineering">
         </property>
@@ -580,7 +574,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 420.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="User Interface Design and Development">
         </property>
@@ -596,7 +592,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 265.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Multivariable Calculus">
         </property>
@@ -612,7 +610,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 300.0}">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Linear Algebra and Differential Equations">
         </property>
@@ -628,7 +628,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 335.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Discrete Mathematics">
         </property>
@@ -644,7 +646,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 410.0}">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Operating Systems and System Programming">
         </property>
@@ -660,7 +664,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 440.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Programming Languages and Compilers">
         </property>
@@ -676,7 +682,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 470.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Software Engineering">
         </property>
@@ -692,7 +700,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 500.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Efficient Algorithms and Intractable Problems">
         </property>
@@ -708,7 +718,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 500.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Computability and Complexity">
         </property>
@@ -724,7 +736,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 450.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Foundations of Computer Graphics">
         </property>
@@ -740,7 +754,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 530.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Database Systems">
         </property>
@@ -756,7 +772,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 480.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Artificial Intelligence">
         </property>
@@ -821,7 +839,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 195.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Physics for Scientists and Engineers">
         </property>
@@ -837,7 +857,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 230.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Physics for Scientists and Engineers">
         </property>
@@ -853,7 +875,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 115.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Electronic Techniques for Engineering">
         </property>
@@ -869,7 +893,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 180.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Power Electronics">
         </property>
@@ -885,7 +911,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 180.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Microelectronic Devices and Circuits">
         </property>
@@ -901,7 +929,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 75.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://sis.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_name=Mathematics&amp;p_number=1A">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
@@ -919,7 +949,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 110.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Calculus">
         </property>
@@ -935,7 +967,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 330.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Electromagnetic Fields and Waves">
         </property>
@@ -951,7 +985,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 230.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Physics for Scientists and Engineers">
         </property>
@@ -967,7 +1003,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 230.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Optical Engineering">
         </property>
@@ -983,7 +1021,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 150.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Signals and Systems">
         </property>
@@ -999,7 +1039,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 90.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Communication Systems">
         </property>
@@ -1015,7 +1057,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 360.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Communication Networks">
         </property>
@@ -1031,7 +1075,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 120.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Digital Signal Processing">
         </property>
@@ -1047,7 +1093,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 150.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Robotics">
         </property>
@@ -1063,7 +1111,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 180.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Feedback Control">
         </property>
@@ -1128,7 +1178,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 120.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Integrated-Circuit Devices">
         </property>
@@ -1146,7 +1198,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 120.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Semiconductor Electronics">
         </property>
@@ -1162,7 +1216,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 240.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Linear Integrated Circuits">
         </property>
@@ -1178,7 +1234,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 270.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Digital Integrated Circuits">
         </property>
@@ -1194,7 +1252,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 240.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Integrated Circuits for Communications">
         </property>
@@ -1210,7 +1270,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 220.0}">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Microfabrication Technology">
         </property>
@@ -1228,7 +1290,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 280.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introductory Microcomputer Interfacing Laboratory">
         </property>
@@ -1244,7 +1308,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 250.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introductory Electronic Transducer Laboratory">
         </property>
@@ -1260,7 +1326,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{725.0, 300.0}">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Mechatronic Design Laboratory">
         </property>
@@ -1276,7 +1344,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 480.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Programming">
         </property>
@@ -1341,7 +1411,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 85.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Digital Electronics">
         </property>
@@ -1359,7 +1431,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 85.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Digital Electronics Laboratory">
         </property>
@@ -1375,9 +1449,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 85.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
-        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Signals and Systems">
+        <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Probability and Random Processes">
         </property>
         <property name="icon link" class="ptolemy.vergil.basic.export.html.IconLink" value="http://sis.berkeley.edu/catalog/gcc_search_sends_request/?p_dept_cd=EL ENG&amp;p_number=$(this.getName())">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
@@ -1393,7 +1469,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 210.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Neural and Nonlinear Information Processing">
         </property>
@@ -1411,7 +1489,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 270.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Image Processing and Reconstruction Tomography">
         </property>
@@ -1427,7 +1507,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 390.0]">
         </property>
-        <property name="_onMouseOverText" class="ptolemy.data.expr.StringParameter" value="$title">
+        <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeText('$title')">
+            <property name="eventType" class="ptolemy.vergil.basic.export.html.AreaEventType" value="onmouseover">
+            </property>
         </property>
         <property name="title" class="ptolemy.vergil.basic.export.html.Title" value="Introduction to Embedded Systems">
         </property>
