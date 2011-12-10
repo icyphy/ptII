@@ -44,7 +44,9 @@ import ptolemy.kernel.util.NamedObj;
  * with icons in model. Putting this attribute into a model causes
  * the icons of entities, attributes, or both, to be assigned a
  * default hyperlink to the URI given by <i>linkTarget</i>.
- * A typical use of this would be to set its string value
+ * This will replace any configuration default link that 
+ * includes the same objects, and
+ * targets the same instanceOf possibilities.
  *
  * @author Edward A. Lee
  * @version $Id$

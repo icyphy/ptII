@@ -666,7 +666,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     
     /** Provide default HTML content by cloning any
      *  default WebExportable attributes provided by
-     *  the configuration into the model.
+     *  the configuration into the model. In the case
+     *  of {@link DefaultIconScript} and {@link DefaultIconLink}
+     *  objects, if the model contains one with the same event
+     *  type, then the one from the configuration is not used.
      *  @throws IllegalActionException If cloning a configuration attribute fails.
      */
     protected void _provideDefaultContent() throws IllegalActionException {
@@ -678,11 +681,56 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             List<WebExportable> exportables = configuration.attributeList(WebExportable.class);
             for (WebExportable exportable : exportables) {
                 if (exportable instanceof Attribute) {
+                    boolean foundOverride = false;
+                    if (exportable instanceof DefaultIconScript) {
+                        // Check whether the script provided by the model overrides the
+                        // one given in the configurations. It does if the eventType matches
+                        // and it either includes the same objects (Entities or Attributes) or
+                        // it includes all objects, and the instancesOf that is specifies matches.
+                        String eventType = ((DefaultIconScript)exportable).eventType.stringValue();
+                        String include = ((DefaultIconScript)exportable).include.stringValue();
+                        String instancesOf = ((DefaultIconScript)exportable).instancesOf.stringValue();
+                        List<DefaultIconScript> defaults = model.attributeList(DefaultIconScript.class);
+                        for (DefaultIconScript script : defaults) {
+                            if (script.eventType.stringValue().equals(eventType) &&
+                                    (script.include.stringValue().equals(include)
+                                    || script.include.stringValue().toLowerCase().equals("all"))
+                                    && script.instancesOf.stringValue().equals(instancesOf)) {
+                                // Skip this default from the configuration.
+                                foundOverride = true;
+                                break;
+                            }
+                        }
+                    } else if (exportable instanceof DefaultIconLink) {
+                        // Check whether the link default provided by the model overrides the
+                        // one given in the configurations. It does if 
+                        // it either includes the same objects (Entities or Attributes) or
+                        // it includes all objects, and the instancesOf that is specifies matches.
+                        String include = ((DefaultIconLink)exportable).include.stringValue();
+                        String instancesOf = ((DefaultIconLink)exportable).instancesOf.stringValue();
+                        List<DefaultIconLink> defaults = model.attributeList(DefaultIconLink.class);
+                        for (DefaultIconLink script : defaults) {
+                            if ((script.include.stringValue().equals(include)
+                                    || script.include.stringValue().toLowerCase().equals("all"))
+                                    && script.instancesOf.stringValue().equals(instancesOf)) {
+                                // Skip this default from the configuration.
+                                foundOverride = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (foundOverride) {
+                        continue;
+                    }
                     try {
                         Attribute clone = (Attribute)((Attribute)exportable).clone(model.workspace());
                         clone.setName(model.uniqueName(clone.getName()));
                         clone.setContainer(model);
                         clone.setPersistent(false);
+                        // Make sure this appears earlier in the list of attributes
+                        // than any contained by the model. The ones in the model should
+                        // override the ones provided by the configuration.
+                        clone.moveToFirst();
                     } catch (CloneNotSupportedException e) {
                         throw new InternalErrorException("Can't clone WebExportable attribute in Configuration: " 
                                 + ((Attribute)exportable).getName());

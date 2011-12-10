@@ -45,11 +45,16 @@ import ptolemy.kernel.util.NamedObj;
  * the icons of entities, attributes, or both, to be assigned a
  * default action of type given by <i>eventType</i>, where the
  * action is defined by the value of this parameter.
+ * This will replace any configuration default that targets
+ * the same event type, includes the same objects, and
+ * targets the same instanceOf possibilities.
+ * <p>
  * A typical use of this would be to set its string value
  * to something like "foo(args)" where foo is a JavaScript function
  * defined in the <i>script</i> parameter.
  * You can also provide HTML text to insert into the start or
  * end sections of the container's web page.
+ * </p>
  *
  * @author Edward A. Lee
  * @version $Id$
