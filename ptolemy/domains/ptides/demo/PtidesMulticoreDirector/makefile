@@ -48,7 +48,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	PtidesMulticoreDirector.xml 
+	PtidesMulticoreDirector.xml \
+	PtidesMulticoreDirectorSafeToProcess.xml \
+	PtidesMulticoreDirectorSafeToProcessPlot.png
+	
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

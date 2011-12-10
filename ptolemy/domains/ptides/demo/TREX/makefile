@@ -48,10 +48,11 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	T-Rex-network-v1.xml \
-	T-Rex-noNetwork-v1.xml \
+	TREXNoNetworkV1.xml \
+	TREXNoNetworkAllDigital.xml \
+	TREXNetworkV1.xml \
+	TREXPtidesMulticoreDirector.xml \
 	TREX.xml \
-	T-Rex-noNetworkALLDIG.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="T-Rex-PtidesMulticoreDirector" class="ptolemy.actor.TypedCompositeActor">
+<entity name="PtidesMulticoreDirectorTREX" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 25, 1322, 850}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 16, 1280, 850}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1099, 734]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1057, 734]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{549.5000000000001, 367.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{528.5000000000001, 367.0}">
     </property>
     <property name="tapeToCutAngle" class="ptolemy.data.expr.Parameter" value="pi">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -59,11 +59,11 @@
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4000e-6">
         </property>
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="10e-3">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1000e-6">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0}">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{100e-6}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{0.6}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 260.0}">
@@ -72,14 +72,14 @@
     <entity name="DiscreteClock3" class="ptolemy.actor.lib.DiscreteClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4000e-6">
         </property>
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1000e-6">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="10000e-6">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 325.0]">
         </property>
     </entity>
     <entity name="DiscreteClock4" class="ptolemy.actor.lib.DiscreteClock">
@@ -87,25 +87,25 @@
         </property>
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1000e-6">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{100e-6}">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 410.0]">
         </property>
     </entity>
     <entity name="ContactControllerMicro" class="ptolemy.actor.TypedCompositeActor">
         <display name="contactControllerMicro"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 270.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 0, 1295, 860}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 0, 1176, 780}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1072, 744]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[953, 664]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8439174140734">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{556.3193615705135, 412.906329685258}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{485.8148323265833, 365.5083268321956}">
         </property>
         <property name="tapeToCutAngle" class="ptolemy.data.expr.Parameter" value="tapeToCutAngle">
         </property>
@@ -128,70 +128,54 @@
             </property>
         </property>
         <property name="PtidesMulticoreDirector" class="ptolemy.domains.ptides.kernel.PtidesMulticoreDirector">
-            <property name="coresForEventProcessing" class="ptolemy.data.expr.Parameter" value="4">
+            <property name="coresForEventProcessing" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 10.0}">
+            <property name="considerTriggerPorts" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 40.0]">
             </property>
         </property>
         <property name="executionTime" class="ptolemy.data.expr.Parameter" value="6e-6">
         </property>
-        <port name="port" class="ptolemy.actor.TypedIOPort">
+        <port name="armContactSEN" class="ptolemy.domains.ptides.lib.io.SensorPort">
             <property name="input"/>
-            <display name="armContactSEN"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, 160.0}">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 160.0]">
             </property>
         </port>
-        <port name="port2" class="ptolemy.actor.TypedIOPort">
+        <port name="tapeDetectorSEN" class="ptolemy.domains.ptides.lib.io.SensorPort">
             <property name="input"/>
-            <display name="reservePaperRadiusSEN"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, 395.0}">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 220.0]">
             </property>
         </port>
-        <port name="port3" class="ptolemy.actor.TypedIOPort">
+        <port name="reservePaperRadiusSEN" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 395.0]">
+            </property>
+        </port>
+        <port name="topDeadCenterSEN" class="ptolemy.domains.ptides.lib.io.SensorPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 485.0]">
+            </property>
+        </port>
+        <port name="contactACT" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
             <property name="output"/>
-            <display name="contactACT"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{765.0, 220.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 220.0]">
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+            <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="2.0E-4">
             </property>
         </port>
-        <port name="port4" class="ptolemy.actor.TypedIOPort">
+        <port name="cutACT" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
             <property name="output"/>
-            <display name="cutACT"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{771.5, 305.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 305.0]">
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{Infinity}">
+            <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="2.0E-4">
             </property>
         </port>
-        <port name="topDeadCenterSEN" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, 485.0}">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="port5" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="tapeDetectorSEN"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, 220.0}">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="port6" class="ptolemy.actor.TypedIOPort">
+        <port name="reservePaperVelocityACT" class="ptolemy.domains.ptides.lib.io.ActuatorPort">
             <property name="output"/>
-            <display name="reservePaperVelocityACT"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{885.0, 485.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 485.0]">
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="2.0E-4">
             </property>
         </port>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -214,6 +198,8 @@
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
+                </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
         </entity>
@@ -242,6 +228,8 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
                 </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
         </entity>
         <entity name="Const3" class="ptolemy.actor.lib.Const">
@@ -265,22 +253,7 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
                 </property>
-            </port>
-        </entity>
-        <entity name="ActuatorSetup" class="ptolemy.domains.ptides.lib.ActuatorSetup">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 220.0]">
-            </property>
-            <property name="deviceId" class="ptolemy.data.expr.StringParameter" value="contact">
-            </property>
-            <property name="devicePortId" class="ptolemy.data.expr.StringParameter" value="XS1_PORT_1E">
-            </property>
-            <property name="InterruptHandlerID" class="ptolemy.data.expr.Parameter" value="180">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{2.0E-4}">
-                </property>
-                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
         </entity>
@@ -299,27 +272,12 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="6e-6">
                 </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
             <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
-                </property>
-            </port>
-        </entity>
-        <entity name="SensorHandler" class="ptolemy.domains.ptides.lib.SensorHandler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 160.0}">
-            </property>
-            <property name="InterruptHandlerID" class="ptolemy.data.expr.Parameter" value="156">
-            </property>
-            <property name="deviceId" class="ptolemy.data.expr.StringParameter" value="armContact">
-            </property>
-            <property name="devicePortId" class="ptolemy.data.expr.StringParameter" value="XS1_PORT_1A">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
-                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="-Infinity">
                 </property>
             </port>
         </entity>
@@ -333,6 +291,8 @@
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
+                </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
         </entity>
@@ -348,6 +308,8 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
                 </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
             <port name="divide" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -355,6 +317,8 @@
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
+                </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
         </entity>
@@ -372,6 +336,8 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5e-6">
                 </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -381,6 +347,8 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="4e-6">
+                </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
         </entity>
@@ -416,6 +384,8 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
                 </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
         </entity>
         <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
@@ -431,6 +401,8 @@
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
+                </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="divide" class="ptolemy.actor.TypedIOPort">
@@ -457,6 +429,8 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="6e-6">
                 </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
             <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
@@ -482,6 +456,8 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5e-6">
                 </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -491,6 +467,8 @@
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="3e-6">
+                </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
         </entity>
@@ -505,6 +483,8 @@
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
+                </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
         </entity>
@@ -521,6 +501,8 @@
                 <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
+                </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
             <port name="divide" class="ptolemy.actor.TypedIOPort">
@@ -546,90 +528,7 @@
                 </property>
                 <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="2.0E-4">
                 </property>
-            </port>
-        </entity>
-        <entity name="SensorHandler2" class="ptolemy.domains.ptides.lib.SensorHandler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 220.0}">
-            </property>
-            <property name="InterruptHandlerID" class="ptolemy.data.expr.Parameter" value="157">
-            </property>
-            <property name="deviceId" class="ptolemy.data.expr.StringParameter" value="tapeDetect">
-            </property>
-            <property name="devicePortId" class="ptolemy.data.expr.StringParameter" value="XS1_PORT_1B">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
-                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="-Infinity">
-                </property>
-            </port>
-        </entity>
-        <entity name="SensorHandler3" class="ptolemy.domains.ptides.lib.SensorHandler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 390.0}">
-            </property>
-            <property name="InterruptHandlerID" class="ptolemy.data.expr.Parameter" value="158">
-            </property>
-            <property name="deviceId" class="ptolemy.data.expr.StringParameter" value="reservePaper">
-            </property>
-            <property name="devicePortId" class="ptolemy.data.expr.StringParameter" value="XS1_PORT_1C">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
-                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="-Infinity">
-                </property>
-            </port>
-        </entity>
-        <entity name="SensorHandler4" class="ptolemy.domains.ptides.lib.SensorHandler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 485.0}">
-            </property>
-            <property name="InterruptHandlerID" class="ptolemy.data.expr.Parameter" value="162">
-            </property>
-            <property name="deviceId" class="ptolemy.data.expr.StringParameter" value="topDead">
-            </property>
-            <property name="devicePortId" class="ptolemy.data.expr.StringParameter" value="XS1_PORT_1D">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
-                </property>
-                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="-Infinity">
-                </property>
-            </port>
-        </entity>
-        <entity name="ActuatorSetup2" class="ptolemy.domains.ptides.lib.ActuatorSetup">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{680.0, 305.0}">
-            </property>
-            <property name="deviceId" class="ptolemy.data.expr.StringParameter" value="cut">
-            </property>
-            <property name="devicePortId" class="ptolemy.data.expr.StringParameter" value="XS1_PORT_1F">
-            </property>
-            <property name="InterruptHandlerID" class="ptolemy.data.expr.Parameter" value="181">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{2.0E-4}">
-                </property>
-                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-            </port>
-        </entity>
-        <entity name="ActuatorSetup3" class="ptolemy.domains.ptides.lib.ActuatorSetup">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{815.0, 485.0}">
-            </property>
-            <property name="deviceId" class="ptolemy.data.expr.StringParameter" value="reserve">
-            </property>
-            <property name="devicePortId" class="ptolemy.data.expr.StringParameter" value="XS1_PORT_1G">
-            </property>
-            <property name="InterruptHandlerID" class="ptolemy.data.expr.Parameter" value="182">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{2.0E-4}">
-                </property>
-                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
             </port>
         </entity>
@@ -648,6 +547,8 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="8e-6">
                 </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
             <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
@@ -657,12 +558,14 @@
                 </property>
                 <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.5e-6">
                 </property>
+                <property name="delayOffset2" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
         </entity>
         <entity name="MulticoreExecutionTimeMonitor" class="ptolemy.domains.ptides.lib.MulticoreExecutionTimeMonitor">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1448, 40, 1722, 1019}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={244, 0, 1036, 780}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1706, 960]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1020, 721]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 30.0]">
             </property>
@@ -671,83 +574,150 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>MulticoreExecutionTimeMonitor</title>
+<caption>Time spend with number of active cores:[0=0.0035980000000000005, 1=3.5899999999999994E-4, 2=4.2999999999999636E-5]</caption>
+<xLabel></xLabel>
 <xRange min="0.0" max="0.0040"/>
-<yRange min="-16.6" max="108.19999999999999"/>
+<yRange min="-6.32" max="65.30000000000001"/>
 <yTicks>
-  <tick label="Const" position="0.0"/>
-  <tick label="Const2" position="1.0"/>
-  <tick label="Const3" position="2.0"/>
-  <tick label="ActuatorSetup" position="3.0"/>
-  <tick label="TimeDelay" position="4.0"/>
-  <tick label="SensorHandler" position="5.0"/>
-  <tick label="TimeGap" position="6.0"/>
-  <tick label="MultiplyDivide" position="7.0"/>
+  <tick label="TimeDelay3" position="0.0"/>
+  <tick label="TrueGate" position="1.0"/>
+  <tick label="MultiplyDivide3" position="2.0"/>
+  <tick label="Merge" position="3.0"/>
+  <tick label="Register2" position="4.0"/>
+  <tick label="TimeDelay2" position="5.0"/>
+  <tick label="MultiplyDivide2" position="6.0"/>
+  <tick label="LogicFunction" position="7.0"/>
   <tick label="Register" position="8.0"/>
-  <tick label="LogicFunction" position="9.0"/>
-  <tick label="MultiplyDivide2" position="10.0"/>
-  <tick label="TimeDelay2" position="11.0"/>
-  <tick label="Register2" position="12.0"/>
-  <tick label="Merge" position="13.0"/>
-  <tick label="MultiplyDivide3" position="14.0"/>
-  <tick label="TrueGate" position="15.0"/>
-  <tick label="SensorHandler2" position="16.0"/>
-  <tick label="SensorHandler3" position="17.0"/>
-  <tick label="SensorHandler4" position="18.0"/>
-  <tick label="ActuatorSetup2" position="19.0"/>
-  <tick label="ActuatorSetup3" position="20.0"/>
-  <tick label="TimeDelay3" position="21.0"/>
-  <tick label="Const" position="23.0"/>
-  <tick label="Const2" position="24.0"/>
-  <tick label="Const3" position="25.0"/>
-  <tick label="ActuatorSetup" position="26.0"/>
+  <tick label="MultiplyDivide" position="9.0"/>
+  <tick label="TimeGap" position="10.0"/>
+  <tick label="TimeDelay" position="11.0"/>
+  <tick label="Const3" position="12.0"/>
+  <tick label="Const2" position="13.0"/>
+  <tick label="Const" position="14.0"/>
+  <tick label="TimeDelay3" position="16.0"/>
+  <tick label="TrueGate" position="17.0"/>
+  <tick label="MultiplyDivide3" position="18.0"/>
+  <tick label="Merge" position="19.0"/>
+  <tick label="Register2" position="20.0"/>
+  <tick label="TimeDelay2" position="21.0"/>
+  <tick label="MultiplyDivide2" position="22.0"/>
+  <tick label="LogicFunction" position="23.0"/>
+  <tick label="Register" position="24.0"/>
+  <tick label="MultiplyDivide" position="25.0"/>
+  <tick label="TimeGap" position="26.0"/>
   <tick label="TimeDelay" position="27.0"/>
-  <tick label="SensorHandler" position="28.0"/>
-  <tick label="TimeGap" position="29.0"/>
-  <tick label="MultiplyDivide" position="30.0"/>
-  <tick label="Register" position="31.0"/>
-  <tick label="LogicFunction" position="32.0"/>
-  <tick label="MultiplyDivide2" position="33.0"/>
-  <tick label="TimeDelay2" position="34.0"/>
-  <tick label="Register2" position="35.0"/>
-  <tick label="Merge" position="36.0"/>
-  <tick label="MultiplyDivide3" position="37.0"/>
-  <tick label="TrueGate" position="38.0"/>
-  <tick label="SensorHandler2" position="39.0"/>
-  <tick label="SensorHandler3" position="40.0"/>
-  <tick label="SensorHandler4" position="41.0"/>
-  <tick label="ActuatorSetup2" position="42.0"/>
-  <tick label="ActuatorSetup3" position="43.0"/>
-  <tick label="TimeDelay3" position="44.0"/>
+  <tick label="Const3" position="28.0"/>
+  <tick label="Const2" position="29.0"/>
+  <tick label="Const" position="30.0"/>
+  <tick label="TimeDelay3" position="32.0"/>
+  <tick label="TrueGate" position="33.0"/>
+  <tick label="MultiplyDivide3" position="34.0"/>
+  <tick label="Merge" position="35.0"/>
+  <tick label="Register2" position="36.0"/>
+  <tick label="TimeDelay2" position="37.0"/>
+  <tick label="MultiplyDivide2" position="38.0"/>
+  <tick label="LogicFunction" position="39.0"/>
+  <tick label="Register" position="40.0"/>
+  <tick label="MultiplyDivide" position="41.0"/>
+  <tick label="TimeGap" position="42.0"/>
+  <tick label="TimeDelay" position="43.0"/>
+  <tick label="Const3" position="44.0"/>
+  <tick label="Const2" position="45.0"/>
   <tick label="Const" position="46.0"/>
-  <tick label="Const2" position="47.0"/>
-  <tick label="Const3" position="48.0"/>
-  <tick label="ActuatorSetup" position="49.0"/>
-  <tick label="TimeDelay" position="50.0"/>
-  <tick label="SensorHandler" position="51.0"/>
-  <tick label="TimeGap" position="52.0"/>
-  <tick label="MultiplyDivide" position="53.0"/>
-  <tick label="Register" position="54.0"/>
-  <tick label="LogicFunction" position="55.0"/>
-  <tick label="MultiplyDivide2" position="56.0"/>
-  <tick label="TimeDelay2" position="57.0"/>
-  <tick label="Register2" position="58.0"/>
-  <tick label="Merge" position="59.0"/>
-  <tick label="MultiplyDivide3" position="60.0"/>
-  <tick label="TrueGate" position="61.0"/>
-  <tick label="SensorHandler2" position="62.0"/>
-  <tick label="SensorHandler3" position="63.0"/>
-  <tick label="SensorHandler4" position="64.0"/>
-  <tick label="ActuatorSetup2" position="65.0"/>
-  <tick label="ActuatorSetup3" position="66.0"/>
-  <tick label="TimeDelay3" position="67.0"/>
+  <tick label="TimeDelay3" position="0.0"/>
+  <tick label="TrueGate" position="1.0"/>
+  <tick label="MultiplyDivide3" position="2.0"/>
+  <tick label="Merge" position="3.0"/>
+  <tick label="Register2" position="4.0"/>
+  <tick label="TimeDelay2" position="5.0"/>
+  <tick label="MultiplyDivide2" position="6.0"/>
+  <tick label="LogicFunction" position="7.0"/>
+  <tick label="Register" position="8.0"/>
+  <tick label="MultiplyDivide" position="9.0"/>
+  <tick label="TimeGap" position="10.0"/>
+  <tick label="TimeDelay" position="11.0"/>
+  <tick label="Const3" position="12.0"/>
+  <tick label="Const2" position="13.0"/>
+  <tick label="Const" position="14.0"/>
+  <tick label="TimeDelay3" position="16.0"/>
+  <tick label="TrueGate" position="17.0"/>
+  <tick label="MultiplyDivide3" position="18.0"/>
+  <tick label="Merge" position="19.0"/>
+  <tick label="Register2" position="20.0"/>
+  <tick label="TimeDelay2" position="21.0"/>
+  <tick label="MultiplyDivide2" position="22.0"/>
+  <tick label="LogicFunction" position="23.0"/>
+  <tick label="Register" position="24.0"/>
+  <tick label="MultiplyDivide" position="25.0"/>
+  <tick label="TimeGap" position="26.0"/>
+  <tick label="TimeDelay" position="27.0"/>
+  <tick label="Const3" position="28.0"/>
+  <tick label="Const2" position="29.0"/>
+  <tick label="Const" position="30.0"/>
+  <tick label="TimeDelay3" position="32.0"/>
+  <tick label="TrueGate" position="33.0"/>
+  <tick label="MultiplyDivide3" position="34.0"/>
+  <tick label="Merge" position="35.0"/>
+  <tick label="Register2" position="36.0"/>
+  <tick label="TimeDelay2" position="37.0"/>
+  <tick label="MultiplyDivide2" position="38.0"/>
+  <tick label="LogicFunction" position="39.0"/>
+  <tick label="Register" position="40.0"/>
+  <tick label="MultiplyDivide" position="41.0"/>
+  <tick label="TimeGap" position="42.0"/>
+  <tick label="TimeDelay" position="43.0"/>
+  <tick label="Const3" position="44.0"/>
+  <tick label="Const2" position="45.0"/>
+  <tick label="Const" position="46.0"/>
+  <tick label="TimeDelay3" position="0.0"/>
+  <tick label="TrueGate" position="1.0"/>
+  <tick label="MultiplyDivide3" position="2.0"/>
+  <tick label="Merge" position="3.0"/>
+  <tick label="Register2" position="4.0"/>
+  <tick label="TimeDelay2" position="5.0"/>
+  <tick label="MultiplyDivide2" position="6.0"/>
+  <tick label="LogicFunction" position="7.0"/>
+  <tick label="Register" position="8.0"/>
+  <tick label="MultiplyDivide" position="9.0"/>
+  <tick label="TimeGap" position="10.0"/>
+  <tick label="TimeDelay" position="11.0"/>
+  <tick label="Const3" position="12.0"/>
+  <tick label="Const2" position="13.0"/>
+  <tick label="Const" position="14.0"/>
+  <tick label="TimeDelay3" position="0.0"/>
+  <tick label="TrueGate" position="1.0"/>
+  <tick label="MultiplyDivide3" position="2.0"/>
+  <tick label="Merge" position="3.0"/>
+  <tick label="Register2" position="4.0"/>
+  <tick label="TimeDelay2" position="5.0"/>
+  <tick label="MultiplyDivide2" position="6.0"/>
+  <tick label="LogicFunction" position="7.0"/>
+  <tick label="Register" position="8.0"/>
+  <tick label="MultiplyDivide" position="9.0"/>
+  <tick label="TimeGap" position="10.0"/>
+  <tick label="TimeDelay" position="11.0"/>
+  <tick label="Const3" position="12.0"/>
+  <tick label="Const2" position="13.0"/>
+  <tick label="Const" position="14.0"/>
+  <tick label="TimeDelay3" position="16.0"/>
+  <tick label="TrueGate" position="17.0"/>
+  <tick label="MultiplyDivide3" position="18.0"/>
+  <tick label="Merge" position="19.0"/>
+  <tick label="Register2" position="20.0"/>
+  <tick label="TimeDelay2" position="21.0"/>
+  <tick label="MultiplyDivide2" position="22.0"/>
+  <tick label="LogicFunction" position="23.0"/>
+  <tick label="Register" position="24.0"/>
+  <tick label="MultiplyDivide" position="25.0"/>
+  <tick label="TimeGap" position="26.0"/>
+  <tick label="TimeDelay" position="27.0"/>
+  <tick label="Const3" position="28.0"/>
+  <tick label="Const2" position="29.0"/>
+  <tick label="Const" position="30.0"/>
 </yTicks>
 </plot>?>
             </configure>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
@@ -759,7 +729,7 @@
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="{250.0, 220.0}">
+            <vertex name="vertex1" value="[260.0, 220.0]">
             </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -767,10 +737,6 @@
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -790,48 +756,38 @@
         </relation>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation25" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="port" relation="relation2"/>
-        <link port="port2" relation="relation18"/>
-        <link port="port3" relation="relation"/>
-        <link port="port4" relation="relation22"/>
-        <link port="topDeadCenterSEN" relation="relation20"/>
-        <link port="port5" relation="relation17"/>
-        <link port="port6" relation="relation24"/>
+        <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="armContactSEN" relation="relation2"/>
+        <link port="tapeDetectorSEN" relation="relation5"/>
+        <link port="reservePaperRadiusSEN" relation="relation11"/>
+        <link port="topDeadCenterSEN" relation="relation17"/>
+        <link port="contactACT" relation="relation"/>
+        <link port="cutACT" relation="relation9"/>
+        <link port="reservePaperVelocityACT" relation="relation18"/>
         <link port="Const.output" relation="relation8"/>
         <link port="Const.trigger" relation="relation3"/>
         <link port="Const2.output" relation="relation10"/>
         <link port="Const2.trigger" relation="relation13"/>
         <link port="Const3.output" relation="relation14"/>
         <link port="Const3.trigger" relation="relation3"/>
-        <link port="ActuatorSetup.input" relation="relation9"/>
-        <link port="ActuatorSetup.output" relation="relation"/>
         <link port="TimeDelay.input" relation="relation13"/>
-        <link port="TimeDelay.output" relation="relation9"/>
-        <link port="SensorHandler.input" relation="relation2"/>
-        <link port="SensorHandler.output" relation="relation11"/>
-        <link port="TimeGap.input" relation="relation21"/>
+        <link port="TimeDelay.output" relation="relation"/>
+        <link port="TimeGap.input" relation="relation17"/>
         <link port="TimeGap.output" relation="relation3"/>
         <link port="MultiplyDivide.multiply" relation="relation8"/>
         <link port="MultiplyDivide.divide" relation="relation3"/>
@@ -846,34 +802,24 @@
         <link port="MultiplyDivide2.multiply" relation="relation15"/>
         <link port="MultiplyDivide2.output" relation="relation6"/>
         <link port="TimeDelay2.input" relation="relation6"/>
-        <link port="TimeDelay2.output" relation="relation23"/>
-        <link port="Register2.input" relation="relation19"/>
+        <link port="TimeDelay2.output" relation="relation18"/>
+        <link port="Register2.input" relation="relation11"/>
         <link port="Register2.output" relation="relation7"/>
         <link port="Register2.trigger" relation="relation15"/>
         <link port="Merge.input" relation="relation10"/>
-        <link port="Merge.input" relation="relation11"/>
+        <link port="Merge.input" relation="relation2"/>
         <link port="Merge.output" relation="relation12"/>
         <link port="MultiplyDivide3.multiply" relation="relation14"/>
         <link port="MultiplyDivide3.multiply" relation="relation3"/>
         <link port="MultiplyDivide3.output" relation="relation25"/>
         <link port="TrueGate.input" relation="relation16"/>
         <link port="TrueGate.output" relation="relation13"/>
-        <link port="SensorHandler2.input" relation="relation17"/>
-        <link port="SensorHandler2.output" relation="relation5"/>
-        <link port="SensorHandler3.input" relation="relation18"/>
-        <link port="SensorHandler3.output" relation="relation19"/>
-        <link port="SensorHandler4.input" relation="relation20"/>
-        <link port="SensorHandler4.output" relation="relation21"/>
-        <link port="ActuatorSetup2.input" relation="relation26"/>
-        <link port="ActuatorSetup2.output" relation="relation22"/>
-        <link port="ActuatorSetup3.input" relation="relation23"/>
-        <link port="ActuatorSetup3.output" relation="relation24"/>
         <link port="TimeDelay3.input" relation="relation13"/>
-        <link port="TimeDelay3.output" relation="relation26"/>
+        <link port="TimeDelay3.output" relation="relation9"/>
         <link port="TimeDelay3.delay" relation="relation25"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={900, 619, 342, 245}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={682, 523, 342, 245}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
@@ -881,7 +827,7 @@
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={920, 123, 342, 245}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={682, 123, 342, 245}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
@@ -889,7 +835,7 @@
         </property>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={922, 368, 342, 245}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={682, 368, 342, 245}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
@@ -929,20 +875,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[840.0, 330.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -961,26 +893,40 @@
         <vertex name="vertex1" value="{695.0, 365.0}">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DiscreteClock.output" relation="relation"/>
     <link port="DiscreteClock2.output" relation="relation2"/>
     <link port="DiscreteClock3.output" relation="relation3"/>
     <link port="DiscreteClock4.output" relation="relation4"/>
-    <link port="ContactControllerMicro.port" relation="relation"/>
-    <link port="ContactControllerMicro.port2" relation="relation2"/>
-    <link port="ContactControllerMicro.port3" relation="relation8"/>
-    <link port="ContactControllerMicro.port4" relation="relation9"/>
-    <link port="ContactControllerMicro.topDeadCenterSEN" relation="relation3"/>
-    <link port="ContactControllerMicro.port5" relation="relation4"/>
-    <link port="ContactControllerMicro.port6" relation="relation10"/>
+    <link port="ContactControllerMicro.armContactSEN" relation="relation"/>
+    <link port="ContactControllerMicro.tapeDetectorSEN" relation="relation2"/>
+    <link port="ContactControllerMicro.reservePaperRadiusSEN" relation="relation3"/>
+    <link port="ContactControllerMicro.topDeadCenterSEN" relation="relation4"/>
+    <link port="ContactControllerMicro.contactACT" relation="relation5"/>
+    <link port="ContactControllerMicro.cutACT" relation="relation8"/>
+    <link port="ContactControllerMicro.reservePaperVelocityACT" relation="relation9"/>
     <link port="Display.input" relation="relation11"/>
     <link port="Display2.input" relation="relation7"/>
     <link port="Display3.input" relation="relation6"/>
     <link port="CurrentTime.output" relation="relation11"/>
-    <link port="CurrentTime.trigger" relation="relation8"/>
+    <link port="CurrentTime.trigger" relation="relation5"/>
     <link port="CurrentTime2.output" relation="relation7"/>
-    <link port="CurrentTime2.trigger" relation="relation9"/>
+    <link port="CurrentTime2.trigger" relation="relation8"/>
     <link port="CurrentTime3.output" relation="relation6"/>
-    <link port="CurrentTime3.trigger" relation="relation10"/>
+    <link port="CurrentTime3.trigger" relation="relation9"/>
     <link port="Test.input" relation="relation11"/>
     <link port="Test2.input" relation="relation7"/>
     <link port="Test3.input" relation="relation6"/>
