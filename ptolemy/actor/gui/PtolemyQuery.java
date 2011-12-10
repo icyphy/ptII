@@ -934,9 +934,22 @@ public class PtolemyQuery extends Query implements QueryListener,
             if (settables == null || settables.size() == 0) {
                 super._addPair(name, label, widget, entry);
             } else {
-                HierarchicalConfigurer configurer = new HierarchicalConfigurer(
-                        PtolemyQuery.this, name, _addingStyledEntryFor, widget);
-                super._addPair(name, label, configurer, entry);
+                // Check to make sure at least one of the contained
+                // parameters is visible.
+                boolean foundOne = false;
+                for (Settable settable : settables) {
+                    if (Configurer.isVisible((NamedObj)_addingStyledEntryFor, settable)) {
+                        foundOne = true;
+                        break;
+                    }
+                }
+                if (foundOne) {
+                    HierarchicalConfigurer configurer = new HierarchicalConfigurer(
+                            PtolemyQuery.this, name, _addingStyledEntryFor, widget);
+                    super._addPair(name, label, configurer, entry);
+                } else {
+                    super._addPair(name, label, widget, entry);
+                }
             }
         } else {
             super._addPair(name, label, widget, entry);
