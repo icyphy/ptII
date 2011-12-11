@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
@@ -597,7 +598,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         package protected methods         ////
 
     /** List of filenames needed by jquery and fancybox.
      *  These are automatically provided to every exported web page
@@ -609,7 +610,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  The rest are image files to copy over.
      */
     // FIXME: I don't like the hardwired version numbers here.
-    public static String[] FILENAMES = {
+    // Findbugs wants this package protected and final.
+    final static String[] FILENAMES = {
             "jquery-1.4.3.min.js",
             "jquery.fancybox-1.3.4.pack.js",
             "jquery.fancybox-1.3.4.css",
@@ -661,8 +663,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             attributeString.append(" ");
             HashMap<String,String> areaAttributes = _areaAttributes.get(location.object);
             if (areaAttributes != null) {
-                for (String key : areaAttributes.keySet()) {
-                    String value = areaAttributes.get(key);
+                //for (String key : areaAttributes.keySet()) {
+                //    String value = areaAttributes.get(key);
+                for (Map.Entry<String,String> entry : areaAttributes.entrySet()) {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
                     // If the value is empty, omit the entry.
                     if (value != null && !value.trim().equals("")) {
                         attributeString.append(key);

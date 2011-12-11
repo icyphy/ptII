@@ -59,7 +59,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class ParameterDisplayIconScript extends DefaultIconScript implements WebExportable {
+public class ParameterDisplayIconScript extends DefaultIconScript {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -151,7 +151,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript implements Web
         String command = "writeText('<h2>"
                 + object.getName()
                 + "</h2>"
-                + getParameterTable(object).toString()
+                + getParameterTable(object)
                 + "')";
         // Last argument specifies to not overwrite any previous definition.
         if (exporter.defineAreaAttribute(object, "onmouseover", command, false)) {

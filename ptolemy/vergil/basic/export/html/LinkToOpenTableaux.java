@@ -82,7 +82,7 @@ import ptolemy.vergil.basic.export.HTMLExportable;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class LinkToOpenTableaux extends DefaultIconLink implements WebExportable {
+public class LinkToOpenTableaux extends DefaultIconLink {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -171,8 +171,9 @@ public class LinkToOpenTableaux extends DefaultIconLink implements WebExportable
                     }
                 }
             }
-        } catch (Exception exception) {
-            throw new IllegalActionException(this, exception, "Failed to generate sub-web-page. ");
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to generate sub-web-page. ");
         }
     }
     
@@ -209,7 +210,11 @@ public class LinkToOpenTableaux extends DefaultIconLink implements WebExportable
                     if (!subDirectory.isDirectory()) {
                         // Move file out of the way.
                         File backupFile = new File(directory, name + ".bak");
-                        subDirectory.renameTo(backupFile);
+                        if (!subDirectory.renameTo(backupFile)) {
+                            throw new IOException("Failed to rename \""
+                                    + subDirectory + "\" to \""
+                                    + backupFile + "\""); 
+                        }
                     }
                 } else if (!subDirectory.mkdir()) {
                     throw new IOException("Unable to create directory "

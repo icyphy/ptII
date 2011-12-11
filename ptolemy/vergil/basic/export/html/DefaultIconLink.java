@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DefaultIconLink extends IconLink implements WebExportable {
+public class DefaultIconLink extends IconLink {
 
     /** Create an instance of this parameter.
      *  @param container The container.

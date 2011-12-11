@@ -114,7 +114,12 @@ public class CopyJavaScriptFiles extends Attribute implements WebExportable {
             File directory = exporter.getExportDirectory();
             File jsTargetDirectory = new File(directory, "javascript");
             if (jsTargetDirectory.exists() && !jsTargetDirectory.isDirectory()) {
-                jsTargetDirectory.renameTo(new File(directory, "javascript.bak"));
+                File jsBackupDirectory = new File(directory, "javascript.bak");
+                if (!jsTargetDirectory.renameTo(jsBackupDirectory)) {
+                    // It is ok to ignore this.
+                    System.out.println("Failed to rename \"" + jsTargetDirectory 
+                            + "\" to \"" + jsBackupDirectory + "\"");
+                }
             }
             if (!jsTargetDirectory.exists() && !jsTargetDirectory.mkdir()) {
                 MessageHandler

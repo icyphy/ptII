@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DefaultIconScript extends IconScript implements WebExportable {
+public class DefaultIconScript extends IconScript {
 
     /** Create an instance of this parameter.
      *  @param container The container.
