@@ -26,18 +26,21 @@
  */
 package ptolemy.vergil.basic.export.html;
 
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -46,10 +49,12 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
+import ptolemy.actor.gui.BrowserEffigy;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.modal.ModalModel;
+import ptolemy.gui.PtGUIUtilities;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -121,64 +126,138 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Export a web page.
+    /** Export a web page.  Under Mac OS X, use java.awt.FileDialog.
+     *  Under other OS's, use javax.swing.JFileChooser. Under Mac OS
+     *  X, see {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} for
+     *  how to select between the two.  Other OS's must use
+     *  JFileChooser because FileDialog can only select directories
+     *  under Mac OS X.
      *  @param e The event that triggered this action.
      */
     public void actionPerformed(ActionEvent e) {
-        // Open a file chooser to select a folder to write to.
-        JFileChooser fileDialog = new JFileChooser();
-        fileDialog
-                .addChoosableFileFilter(new BasicGraphFrame.FolderFileFilter());
-        fileDialog.setDialogTitle("Choose a directory to write HTML...");
-        fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
+        String title = "Choose a directory to write HTML...";
         File modelDirectory = _basicGraphFrame.getLastDirectory();
-        if (modelDirectory != null) {
-            fileDialog.setCurrentDirectory(modelDirectory);
-        } else {
-            // The default on Windows is to open at user.home, which is
-            // typically an absurd directory inside the O/S installation.
-            // So we use the current directory instead.
-            String cwd = StringUtilities.getProperty("user.dir");
+        File directory = null;
+        if (PtGUIUtilities.useFileDialog() && PtGUIUtilities.macOSLookAndFeel()) {
+            // Usually, Mac OS X uses FileDialog
 
-            if (cwd != null) {
-                fileDialog.setCurrentDirectory(new File(cwd));
+            FileDialog fileDialog;
+            try {
+                // Mac Specific: allow the user to select a directory.
+                // Note that apple.awt.fileDialogForDirectories only
+                // works with FileDialog.LOAD, not FileDialog.SAVE.
+                // See
+                // https://developer.apple.com/library/mac/#documentation/Java/Reference/Java_PropertiesRef/Articles/JavaSystemProperties.html
+                System.setProperty("apple.awt.fileDialogForDirectories", "true");
+                fileDialog = new FileDialog(_basicGraphFrame,
+                        title,
+                        FileDialog.LOAD);
+                boolean fail = false;
+                if (modelDirectory != null) {
+                    try {
+                        fileDialog.setDirectory(modelDirectory.getCanonicalPath());
+                    } catch (IOException ex) {
+                        fail = true;
+                    }
+                }
+                if (fail || modelDirectory == null) {
+                    // The default on Windows is to open at user.home, which is
+                    // typically an absurd directory inside the O/S installation.
+                    // So we use the current directory instead.
+                    // This will throw a security exception in an applet.
+                    // FIXME: we should support users under applets opening files
+                    // on the server.
+                    String currentWorkingDirectory = StringUtilities
+                        .getProperty("user.dir");
+
+                    if (currentWorkingDirectory != null) {
+                        fileDialog.setDirectory(currentWorkingDirectory);
+                    }
+                }
+
+                fileDialog.setFilenameFilter(new DirectoryFilter());
+
+                fileDialog.show();
+            } finally {
+                System.setProperty("apple.awt.fileDialogForDirectories", "false");
+            }
+
+            if (fileDialog.getFile() == null) {
+                // User selected "Cancel".
+                return;
+            }
+
+            directory = new File(fileDialog.getDirectory(), fileDialog.getFile());
+
+        } else {
+            // Usually, non Mac OS X uses JFileChooser.
+            // Open a file chooser to select a folder to write to.
+            JFileChooser fileDialog = new JFileChooser();
+            fileDialog
+                .addChoosableFileFilter(new BasicGraphFrame.FolderFileFilter());
+            fileDialog.setDialogTitle(title);
+            fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+
+            if (modelDirectory != null) {
+                fileDialog.setCurrentDirectory(modelDirectory);
+            } else {
+                // The default on Windows is to open at user.home, which is
+                // typically an absurd directory inside the O/S installation.
+                // So we use the current directory instead.
+                String cwd = StringUtilities.getProperty("user.dir");
+                
+                if (cwd != null) {
+                    fileDialog.setCurrentDirectory(new File(cwd));
+                }
+            }
+            int returnVal = fileDialog.showDialog(_basicGraphFrame, "Export HTML");
+            
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                directory = fileDialog.getSelectedFile();
             }
         }
-        int returnVal = fileDialog.showDialog(_basicGraphFrame, "Export HTML");
 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File directory = fileDialog.getSelectedFile();
+        if (directory != null) {
+            File indexFile = new File(directory, "index.html");
             if (directory.exists()) {
-                if (directory.isDirectory()) {
-                    if (!MessageHandler.yesNoQuestion("Directory exists: "
-                            + directory + ". Overwrite contents?")) {
+                if (indexFile.exists()) {
+                    if (!MessageHandler.yesNoQuestion("\"" + indexFile
+                                    + "\" exists. Overwrite contents?")) {
                         MessageHandler.message("HTML export canceled.");
                         return;
                     }
-                } else {
+                }
+                if (!directory.isDirectory()) {
+                    // Previously, if directory existed and was a directory, we would always pop
+                    // up a dialog stating that the directory existed and that the contents would
+                    // be overwritten.  This seems excessive because the dialog will always
+                    // be shown.
                     if (!MessageHandler
-                            .yesNoQuestion("File exists with the same name. Overwrite file?")) {
+                            .yesNoQuestion("\"" + directory
+                                    + "\" is a file, not a directory. Delete the file named \""
+                                    + directory + "\" and create a directory with that name?")) {
                         MessageHandler.message("HTML export canceled.");
                         return;
                     }
                     if (!directory.delete()) {
-                        MessageHandler.message("Unable to delete file.");
+                        MessageHandler.message("Unable to delete file \"" + directory + "\".");
                         return;
                     }
                     if (!directory.mkdir()) {
-                        MessageHandler.message("Unable to create directory.");
+                        MessageHandler.message("Unable to create directory \"" + directory + "\".");
                         return;
                     }
                 }
             } else {
                 if (!directory.mkdir()) {
-                    MessageHandler.message("Unable to create directory.");
+                    MessageHandler.message("Unable to create directory \"" + directory + "\".");
                     return;
                 }
             }
-            // At this point, file is a directory and we have permission
-            // to overwrite its contents.
+
+            // At this point, file is a directory and we have
+            // permission to overwrite its contents.
             try {
                 _basicGraphFrame.writeHTML(directory);
             } catch (IOException ex) {
@@ -190,6 +269,16 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             } catch (IllegalActionException e2) {
                 MessageHandler.error("Error occurred accessing model.", e2);
                 return;
+            }
+            if (MessageHandler.yesNoQuestion("Open \"" + indexFile + "\" in a browser?")) {
+                Configuration configuration = _basicGraphFrame.getConfiguration();
+                try {
+                    URL indexURL = new URL(indexFile.toURI().toURL().toString() + "#in_browser");
+                    configuration.openModel(indexURL, indexURL, indexURL.toExternalForm(),
+                            BrowserEffigy.staticFactory);
+                } catch (Throwable throwable) {
+                    MessageHandler.error("Failed to open \"" + indexFile + "\".", throwable);
+                }
             }
         }
     }
@@ -950,6 +1039,20 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    /** A FilenameFilter that looks for directories.
+     */
+    private static class DirectoryFilter implements FilenameFilter {
+        /** Tests if the specified file in a directory is a directory.
+         *  @param dir The directory in which the file is contained.
+         *  @param name The name of the file in question.
+         *  @return true if the file is a directory.
+         */
+        public boolean accept(File dir, String name) {
+            File file = new File(dir, name);
+            return file.isDirectory();
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// IconVisibleLocation
