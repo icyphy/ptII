@@ -353,6 +353,27 @@ public class ClassChanges extends MoMLFilterSimple {
                     "ptolemy.actor.TypedCompositeActor");
         }
 
+        // Look for Kepler's NamedOjbIdReferralList, and if we don't find it, then
+        // add it to the filter.  This makes it much easier to open
+        // Kepler models in Ptolemy.
+        try {
+            Class.forName("org.kepler.moml.NamedObjIdReferralList");
+        } catch (ClassNotFoundException ex) {
+            _classChanges.put("org.kepler.moml.NamedObjIdReferralList",
+                    "ptolemy.kernel.util.StringAttribute");
+        }
+
+
+        // Look for Kepler's SemanticType, and if we don't find it, then
+        // add it to the filter.  This makes it much easier to open
+        // Kepler models in Ptolemy.
+        try {
+            Class.forName("org.kepler.sms.SemanticType");
+        } catch (ClassNotFoundException ex) {
+                _classChanges.put("org.kepler.sms.SemanticType",
+                    "ptolemy.kernel.util.StringAttribute");
+        }
+
         _classChanges.put("ptolemy.data.unit.UnitAttribute",
                 "ptolemy.moml.unit.UnitAttribute");
 
