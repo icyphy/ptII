@@ -1,5 +1,5 @@
 /* Platform time monitor.
-@Copyright (c) 2008-2011 The Regents of the University of California.
+@Copyright (c) 2011 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -100,10 +100,28 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
     /** The plotter. */
     public Plot plot;
     
-    private List<Actor> _platforms;
-
     ///////////////////////////////////////////////////////////////////
     //                           public methods                      //
+
+    /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with this actor.
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new Bus.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        PlatformTimeMonitor newObject = (PlatformTimeMonitor) super
+                .clone(workspace); 
+	newObject._platforms = new ArrayList();
+        return newObject;
+    }
 
     /** The event is displayed.
      *  @param actor The actor where the event happened. This parameter can be
@@ -145,25 +163,6 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
         event(actor, time, event, 0);  
     }
 
-    /** Clone this actor into the specified workspace. The new actor is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is a new actor with the same ports as the original, but
-     *  no connections and no container.  A container must be set before
-     *  much can be done with this actor.
-     *
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If cloned ports cannot have
-     *   as their container the cloned entity (this should not occur), or
-     *   if one of the attributes cannot be cloned.
-     *  @return A new Bus.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        PlatformTimeMonitor newObject = (PlatformTimeMonitor) super
-                .clone(workspace); 
-        return newObject;
-    }
-
     /** Initialize the plot and the legend. The legend will be created for all
      *  nodes and actors.
      */
@@ -201,6 +200,7 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     //                   private variables                           //
 
+    private List<Actor> _platforms;
     private double _previousX = 0.0;
     private double _previousY = 0.0;
 
@@ -271,5 +271,4 @@ public class PlatformTimeMonitor extends TypedAtomicActor implements
             }
         }
     }
-
 }
