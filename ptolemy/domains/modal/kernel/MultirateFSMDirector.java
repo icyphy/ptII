@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  states are assumed to have only non-preemptive transitions. When a modal
  model reaches a transient state, it will progress through that state to the
  next state until it encounters a state with a refinement. This procedure is
- done in the preinitialize() method and the postfire() method. Hence each
+ done in the initialize() method and the postfire() method. Hence each
  time when a modal model is fired, the current state always has a state
  refinement.
  <p>
@@ -275,12 +275,7 @@ public class MultirateFSMDirector extends FSMDirector {
         return Time.NEGATIVE_INFINITY;
     }
 
-    /** Initialize the modal model. If this method is called immediately
-     *  after preinitialize(), initialize the mode controller and all the
-     *  refinements. If this is a reinitialization, it typically means this
-     *  is a sub-layer MultirateFSMDirector and a "reset" has been called
-     *  at the upper-level MultirateFSMDirector. This method will then
-     *  reinitialize all the refinements in the sub-layer. Notify updates
+    /** Initialize the mode controller and all the refinements. Notify updates
      *  of port rates to the upper level director, and invalidate the upper
      *  level schedule.
      *  @exception IllegalActionException If the refinement has no or more
@@ -288,67 +283,94 @@ public class MultirateFSMDirector extends FSMDirector {
      *   associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        State currentState;
         FSMActor controller = getController();
-        currentState = controller.currentState();
-
         State initialState = controller.getInitialState();
+        _setCurrentState(initialState);
 
-        if (!_reinitialize) {
-            super.initialize();
-            _reinitialize = true;
+        // The initial state may be transient.
+        // Move through it to a non-transient state.
+        // NOTE: The following will throw an exception if
+        // the state does not have a refinement, so after
+        // this call, we can assume the state has a refinement.
+        State currentState = _getNonTransientState();
+        _setCurrentState(currentState);
 
-            if (initialState != currentState) {
-                // Initial state is a transient (null) state.
-                // Set the next intransient state as the current state.
-                _setCurrentState(currentState);
-                _setCurrentConnectionMap();
-                _currentLocalReceiverMap = (Map) _localReceiverMaps
-                        .get(currentState);
+        // Check that the state has a refinement.
+        // FIXME: Should allow it to be a final state?
+        TypedActor[] currentRefinements = currentState.getRefinement();
+        if ((currentRefinements == null) || (currentRefinements.length != 1)) {
+            throw new IllegalActionException(this,
+                    "Current state is required to have exactly one refinement: "
+                            + controller.currentState().getName());
+        }
+
+        // Update the consumption and production rates.
+        TypedCompositeActor currentRefinement = (TypedCompositeActor) (currentRefinements[0]);
+        Director refinementDir = currentRefinement.getDirector();
+        if (refinementDir instanceof MultirateFSMDirector) {
+            refinementDir.initialize();
+        }
+
+        /*boolean inputRateChanged = */
+        _updateInputTokenConsumptionRates(currentRefinement);
+        /* boolean outputRateChanged = */
+        _updateOutputTokenProductionRates(currentRefinement);
+        // Tell the upper level scheduler that the current schedule
+        // is no longer valid.
+        // FIXME: Apparently, this can't work because that
+        // director is in the middle of an iteration.
+        /*
+         if (inputRateChanged || outputRateChanged) {
+         CompositeActor actor = _getEnclosingDomainActor();
+         Director director = actor.getExecutiveDirector();
+         director.invalidateSchedule();
+         }*/
+
+        // Declare reconfiguration constraints on the ports of the
+        // actor.  The constraints indicate that the ports are
+        // reconfigured whenever any refinement rate parameter of
+        // a corresponding port is reconfigured.  Additionally,
+        // all rate parameters are reconfigured every time the
+        // controller makes a state transition, unless the
+        // corresponding refinement rate parameters are constant,
+        // and have the same value.  (Note that the controller
+        // itself makes transitions less often if its executive director
+        // is an HDFFSMDirector, which is a subclass of MultirateFSMDirector.
+        ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
+                .getAnalysis(this);
+        CompositeActor model = (CompositeActor) getContainer();
+
+        for (Iterator ports = model.portList().iterator(); ports.hasNext();) {
+            IOPort port = (IOPort) ports.next();
+
+            if (!(port instanceof ParameterPort)) {
+                if (port.isInput()) {
+                    _declareReconfigurationDependencyForRefinementRateVariables(
+                            analysis, port, "tokenConsumptionRate");
+                }
+
+                if (port.isOutput()) {
+                    _declareReconfigurationDependencyForRefinementRateVariables(
+                            analysis, port, "tokenProductionRate");
+                    _declareReconfigurationDependencyForRefinementRateVariables(
+                            analysis, port, "tokenInitProduction");
+                }
             }
-        } else {
-            // This is a sub-layer MultirateFSMDirector.
-            // Reinitialize all the refinements in the sub-layer
-            // MultirateFSMDirector and recompute the schedule.
-            super.initialize();
+        }
 
-            // NOTE: The following will throw an exception if
-            // the state does not have a refinement, so after
-            // this call, we can assume the state has a refinement.
-            currentState = _getNonTransientState();
-
-            TypedActor[] currentRefinements = currentState.getRefinement();
-
-            if ((currentRefinements == null)
-                    || (currentRefinements.length != 1)) {
-                throw new IllegalActionException(this,
-                        "Multiple refinements are not supported."
-                                + " Found multiple refinements in: "
-                                + currentState.getName());
-            }
-
-            TypedCompositeActor currentRefinement = (TypedCompositeActor) (currentRefinements[0]);
-            Director refinementDir = currentRefinement.getDirector();
-
-            if (refinementDir instanceof MultirateFSMDirector) {
-                refinementDir.initialize();
-            }
-
-            /*boolean inputRateChanged = */
-            _updateInputTokenConsumptionRates(currentRefinement);
-
-            /* boolean outputRateChanged = */
-            _updateOutputTokenProductionRates(currentRefinement);
-
-            // Tell the upper level scheduler that the current schedule
-            // is no longer valid.
-
-            /*
-             if (inputRateChanged || outputRateChanged) {
-             CompositeActor actor = _getEnclosingDomainActor();
-             Director director = actor.getExecutiveDirector();
-             director.invalidateSchedule();
-             }*/
+        // Reinitialize all the refinements in the sub-layer
+        // MultirateFSMDirector and recompute the schedule.
+        // Note that this will reset the initial state, so we
+        // have to correct it after.
+        super.initialize();
+        // Make the correction if necessary.
+        if (initialState != currentState) {
+            // Initial state is a transient (null) state.
+            // Set the next intransient state as the current state.
+            _setCurrentState(currentState);
+            _setCurrentConnectionMap();
+            _currentLocalReceiverMap = (Map) _localReceiverMaps
+                    .get(currentState);
         }
     }
 
@@ -432,75 +454,6 @@ public class MultirateFSMDirector extends FSMDirector {
     public boolean postfire() throws IllegalActionException {
         boolean controllerPostfire = makeStateTransition();
         return _refinementPostfire && controllerPostfire && !_finishRequested;
-    }
-
-    /** Preinitialize all actors deeply contained by the container
-     *  of this director. Find the "non-transient initial state", which is the
-     *  first non-transient state reached from the initial state. Propagate the
-     *  consumption and production rates of the non-transient initial state out
-     *  to corresponding ports of the container of this director.
-     *  @exception IllegalActionException If there is no controller, or if the
-     *   non-transient initial state has no or more than one refinement, or if
-     *   the preinitialize() method of one of the associated actors throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        _reinitialize = false;
-        _getEnclosingDomainActor();
-
-        FSMActor controller = getController();
-        State initialState = controller.getInitialState();
-        _setCurrentState(initialState);
-
-        // NOTE: The following will throw an exception if
-        // the state does not have a refinement, so after
-        // this call, we can assume the state has a refinement.
-        State currentState = _getNonTransientState();
-        super.preinitialize();
-        _setCurrentState(currentState);
-
-        TypedActor[] currentRefinements = currentState.getRefinement();
-
-        if ((currentRefinements == null) || (currentRefinements.length != 1)) {
-            throw new IllegalActionException(this,
-                    "Current state is required to have exactly one refinement: "
-                            + controller.currentState().getName());
-        }
-
-        TypedCompositeActor currentRefinement = (TypedCompositeActor) (currentRefinements[0]);
-        _updateInputTokenConsumptionRates(currentRefinement);
-        _updateOutputTokenProductionRates(currentRefinement);
-
-        // Declare reconfiguration constraints on the ports of the
-        // actor.  The constraints indicate that the ports are
-        // reconfigured whenever any refinement rate parameter of
-        // a corresponding port is reconfigured.  Additionally,
-        // all rate parameters are reconfigured every time the
-        // controller makes a state transition, unless the
-        // corresponding refinement rate parameters are constant,
-        // and have the same value.  (Note that the controller
-        // itself makes transitions less often if its executive director
-        // is an HDFFSMDirector, which is a subclass of MultirateFSMDirector.
-        ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
-                .getAnalysis(this);
-        CompositeActor model = (CompositeActor) getContainer();
-
-        for (Iterator ports = model.portList().iterator(); ports.hasNext();) {
-            IOPort port = (IOPort) ports.next();
-
-            if (!(port instanceof ParameterPort)) {
-                if (port.isInput()) {
-                    _declareReconfigurationDependencyForRefinementRateVariables(
-                            analysis, port, "tokenConsumptionRate");
-                }
-
-                if (port.isOutput()) {
-                    _declareReconfigurationDependencyForRefinementRateVariables(
-                            analysis, port, "tokenProductionRate");
-                    _declareReconfigurationDependencyForRefinementRateVariables(
-                            analysis, port, "tokenInitProduction");
-                }
-            }
-        }
     }
 
     /** Return a boolean to indicate whether a ModalModel under control
@@ -935,11 +888,6 @@ public class MultirateFSMDirector extends FSMDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /** A flag indicating whether the initialize method is called due
-     *  to reinitialization.
-     */
-    protected boolean _reinitialize;
 
     /** The returned value of the postfire() method of the currentRefinement.
      */
