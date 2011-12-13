@@ -1,3 +1,33 @@
+/* This actor implements a quantity manager that is a composite actor.
+
+@Copyright (c) 2011-2011 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in all
+copies of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
+
+
+ */
+
 package ptolemy.actor.lib.qm;
 
 import java.util.ArrayList;
@@ -53,31 +83,89 @@ import ptolemy.kernel.util.Workspace;
  */
 public class CompositeQuantityManager extends TypedCompositeActor implements QuantityManager {
 
-    
+    /** Construct a TypedCompositeActor in the default workspace with no
+     *  container and an empty string as its name. Add the actor to the
+     *  workspace directory.  You should set the local director or
+     *  executive director before attempting to send data to the actor or
+     *  to execute it. Increment the version number of the workspace.
+     */
     public CompositeQuantityManager() throws IllegalActionException, NameDuplicationException {
         super();
         _initialize();
     }
 
+    /** Construct a TypedCompositeActor in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.  You should set the local director or
+     *  executive director before attempting to send data to the actor
+     *  or to execute it. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
     public CompositeQuantityManager(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace); 
         _initialize();
     }
     
+    /** Construct a TypedCompositeActor with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This actor will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.  This actor will have no
+     *  local director initially, and its executive director will be simply
+     *  the director of the container.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public CompositeQuantityManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
         _initialize();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+    
+    /** The color associated with this actor used to highlight other
+     *  actors or connections that use this quantity manager. The default value
+     *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
+     */
+    public ColorAttribute color;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    private void _initialize() throws IllegalActionException, NameDuplicationException { 
-        color = new ColorAttribute(this, "_color");
-        color.setExpression("{1.0,0.0,0.0,1.0}");
-        _listeners = new ArrayList();
-        _outputMappings = new HashMap();
+    /** If the attribute is <i>color</i>, then update the highlighting colors
+     *  in the model.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the service time is negative.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == color) {
+            // FIXME not implemented yet.
+        }
+        super.attributeChanged(attribute);
     }
 
-    
+
+    /** Other getReceiver method has to be used. 
+     *  @param receiver Target receiver.
+     *  @throws IllegalActionException Thrown because this method
+     *  cannot be used. 
+     */
+    public Receiver getReceiver(Receiver receiver)
+            throws IllegalActionException { 
+        throw new IllegalActionException(receiver.getContainer(), "Cannot create receiver" +
+                        "without specifying port of CompositeQM.");
+    }    
     
     /** Create a receiver to mediate a communication via the specified receiver. This
      *  receiver is linked to a specific port of the quantity manager.
@@ -112,17 +200,6 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         return intermediateReceiver;
     }
     
-
-    /** Add a quantity manager monitor to the list of listeners.
-     *  @param monitor The quantity manager monitor.
-     */
-    public void registerListener(QuantityManagerMonitor monitor) {
-        if (_listeners == null) {
-            _listeners = new ArrayList<QuantityManagerListener>();
-        }
-        _listeners.add(monitor);
-    }
-
     /** Initialize the actor.
      *  @exception IllegalActionException Thrown by super class.
      */
@@ -131,48 +208,11 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         _tokenCount = 0;
     }
 
-    /** Notify the monitor that an event happened.
-     *  @param source The source actor that caused the event in the
-     *      quantity manager.
-     *  @param messageId The ID of the message that caused the event in
-     *      the quantity manager.
-     *  @param messageCnt The amount of messages currently being processed
-     *      by the quantity manager.
-     *  @param eventType Type of event.
-     */
-    public void sendQMTokenEvent(Actor source, int messageId, int messageCnt,
-            EventType eventType) {
-        if (_listeners != null) {
-            Iterator listeners = _listeners.iterator();
-            while (listeners.hasNext()) {
-                ((QuantityManagerListener) listeners.next()).event(this,
-                        source, messageId, messageCnt, getDirector()
-                                .getModelTime().getDoubleValue(), eventType);
-            }
-        }
-    }
 
-    /** The color associated with this actor used to highlight other
-     *  actors or connections that use this quantity manager. The default value
-     *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
-     */
-    public ColorAttribute color;
-
-    /** If the attribute is <i>color</i>, then update the highlighting colors
-     *  in the model.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the service time is negative.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == color) {
-            // FIXME not implemented yet.
-        }
-        super.attributeChanged(attribute);
-    }
    
-    
-    
+    /** Override the fire and change the transferring of outputs
+     *  to transfer data from output ports to target receivers. 
+     */
     public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("Calling fire()");
@@ -238,14 +278,17 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         }
  
     }
-
-    private Map<IOPort, List<Receiver>> _outputMappings;
     
-    /** Listeners registered to receive events from this object. */
-    private ArrayList<QuantityManagerListener> _listeners;
 
-    /** Amount of tokens currently being processed by the switch. */
-    protected int _tokenCount;
+    /** Add a quantity manager monitor to the list of listeners.
+     *  @param monitor The quantity manager monitor.
+     */
+    public void registerListener(QuantityManagerMonitor monitor) {
+        if (_listeners == null) {
+            _listeners = new ArrayList<QuantityManagerListener>();
+        }
+        _listeners.add(monitor);
+    }
 
     /** Reset.
      */
@@ -253,19 +296,42 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         // FIXME what to do here?
     }
 
+
+    /** Notify the monitor that an event happened.
+     *  @param source The source actor that caused the event in the
+     *      quantity manager.
+     *  @param messageId The ID of the message that caused the event in
+     *      the quantity manager.
+     *  @param messageCnt The amount of messages currently being processed
+     *      by the quantity manager.
+     *  @param eventType Type of event.
+     */
+    public void sendQMTokenEvent(Actor source, int messageId, int messageCnt,
+            EventType eventType) {
+        if (_listeners != null) {
+            Iterator listeners = _listeners.iterator();
+            while (listeners.hasNext()) {
+                ((QuantityManagerListener) listeners.next()).event(this,
+                        source, messageId, messageCnt, getDirector()
+                                .getModelTime().getDoubleValue(), eventType);
+            }
+        }
+    }
+    
+
     /** Use other sendToken method.
      */
     public void sendToken(Receiver source, Receiver receiver, Token token) throws IllegalActionException {
         throw new IllegalActionException(this, "Port must be specified");
     }
     
-    /**
-     * 
-     * @param source
-     * @param receiver
-     * @param token
-     * @param port
-     * @throws IllegalActionException
+    /** Intermediate Receiver sends token to this quantity manager which puts 
+     *  the token to the right port. 
+     *  @param source
+     *  @param receiver 
+     *  @param token Token that is sent.
+     *  @param port Input port that should get the token.
+     *  @throws IllegalActionException
      */
     public void sendToken(Receiver source, Receiver receiver, Token token, IOPort port)
             throws IllegalActionException {
@@ -281,16 +347,35 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         }
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    
+    /** Amount of tokens currently being processed by the qm. */
+    protected int _tokenCount;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
 
-    /** Other getReceiver method has to be used. 
-     *  @param receiver Target receiver.
-     *  @throws IllegalActionException Thrown because this method
-     *  cannot be used. 
+    /** Initialize color and private lists. 
+     * @throws IllegalActionException If color attribute cannot be initialized.
+     * @throws NameDuplicationException If color attribute cannot be initialized.
      */
-    public Receiver getReceiver(Receiver receiver)
-            throws IllegalActionException { 
-        throw new IllegalActionException(receiver.getContainer(), "Cannot create receiver" +
-        		"without specifying port of CompositeQM.");
+    private void _initialize() throws IllegalActionException, NameDuplicationException { 
+        color = new ColorAttribute(this, "_color");
+        color.setExpression("{1.0,0.0,0.0,1.0}");
+        _listeners = new ArrayList();
+        _outputMappings = new HashMap();
     }
     
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Store mapping of output port to target receivers. */
+    private Map<IOPort, List<Receiver>> _outputMappings;
+    
+    /** Listeners registered to receive events from this object. */
+    private ArrayList<QuantityManagerListener> _listeners;
+    
+
 }
