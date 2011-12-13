@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{430.0000000000001, 200.0000000000001}">
     </property>
-    <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
+    <entity name="MatlabExpression" class="ptserver.actor.matlab.Expression">
         <property name="expression" class="ptolemy.data.expr.StringParameter" value="output = process(input, iteration, bb)">
         </property>
         <property name="get1x1asScalars" class="ptolemy.data.expr.Parameter" value="true">
