@@ -1482,6 +1482,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/verification \
 	$(REMOTE1PTIIDIST)/lbnl \
 	$(REMOTE1PTIIDIST)/lbnl/actor/lib \
+	$(REMOTE1PTIIDIST)/diva/util/java2d/ \
 	$(REMOTE1PTIIDIST)/doc/books/design/modal \
 	$(REMOTE1PTIIDIST)/doc/books/design/time \
 	$(REMOTE1PTIIDIST)/doc/books/embedded/concurrent \
