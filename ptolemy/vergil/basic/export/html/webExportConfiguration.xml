@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- input this file at the top level of a configuration to get -->
+<!-- Export to Web capability with defaults suitable for Ptolemy II models. -->
+<group>
+  <!-- Add support for exporting HTML. -->
+  <!-- Used in BasicGraphFrame.java -->
+  <property name="_exportHTMLActionClassName"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.export.html.ExportHTMLAction"/>
+            
+  <!-- Add default script for exporting HTML. -->
+  <property name="_parameterDisplayIconScript"
+            class="ptolemy.vergil.basic.export.html.ParameterDisplayIconScript"/>
+ 
+  <!-- Add default links to open tableaux to use on export to HTML. -->
+  <property name="_linkToOpenTableaux"
+            class="ptolemy.vergil.basic.export.html.LinkToOpenTableaux"/>
+ 
+  <!-- Provide model name as the default title on export to HTML. -->
+  <property name="_defaultTitle"
+            class="ptolemy.vergil.basic.export.html.DefaultTitle"/>
+</group>

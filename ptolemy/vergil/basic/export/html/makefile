@@ -72,7 +72,8 @@ JSRCS = \
 	WebExporter.java
 
 OTHER_FILES_TO_BE_JARED = \
-	utilityWebExport.xml
+	utilityWebExport.xml \
+	webExportConfiguration.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
