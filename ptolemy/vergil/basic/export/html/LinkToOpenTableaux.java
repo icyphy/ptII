@@ -35,8 +35,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
@@ -96,6 +98,24 @@ public class LinkToOpenTableaux extends DefaultIconLink {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Provide content to the specified web exporter to be
+     *  included in a web page for the container of this object.
+     *  This overrides the base class to ensure that each class
+     *  definition is exported only once.
+     *  @throws IllegalActionException If a subclass throws it.
+     */
+    public void provideContent(WebExporter exporter) throws IllegalActionException {
+        try {
+            _exportedClassDefinitions = new HashSet<NamedObj>();
+            super.provideContent(exporter);
+        } finally {
+            _exportedClassDefinitions = null;
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
     /** Override the base class to generate a web page or an image
@@ -133,7 +153,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
         try {
             if (effigy != null) {
                 // _linkTo() recursively calls writeHTML();
-                _linkTo(exporter, effigy, object, exporter.getExportDirectory());
+                _linkTo(exporter, effigy, object, object, exporter.getExportDirectory());
             } else {
                 // If the object is a State, we still have work to do.
                 if (object instanceof State) {
@@ -150,7 +170,7 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                             effigy = openEffigies.get((NamedObj) refinements[0]);
                             if (effigy != null) {
                                 // _linkTo() recursively calls writeHTML();
-                                _linkTo(exporter, effigy, (NamedObj) refinements[0], exporter.getExportDirectory());
+                                _linkTo(exporter, effigy, (NamedObj) refinements[0], (NamedObj) refinements[0], exporter.getExportDirectory());
                             }
                         }
                     } catch (IllegalActionException e) {
@@ -162,11 +182,20 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                     // is open. Look for that.
                     Instantiable parent = ((Instantiable) object).getParent();
                     if (parent instanceof NamedObj) {
-                        Effigy classEffigy = Configuration
-                                .findEffigy((NamedObj) parent);
-                        if (classEffigy instanceof PtolemyEffigy) {
-                            // _linkTo() recursively calls writeHTML();
-                            _linkTo(exporter, (PtolemyEffigy)classEffigy, (NamedObj) parent, exporter.getExportDirectory());
+                        // Avoid doing the export of a class definition multiple times.
+                        if (_exportedClassDefinitions.contains(parent)) {
+                            // Have already exported the class definition. Just
+                            // need to add the hyperlink.
+                            exporter.defineAreaAttribute(object, "href", parent.getName() + "/index.html", true);
+                        } else {
+                            // Have not exported the class definition. Do so now.
+                            _exportedClassDefinitions.add((NamedObj) parent);
+                            Effigy classEffigy = Configuration
+                                    .findEffigy((NamedObj) parent);
+                            if (classEffigy instanceof PtolemyEffigy) {
+                                // _linkTo() recursively calls writeHTML();
+                                _linkTo(exporter, (PtolemyEffigy)classEffigy, object, (NamedObj) parent, exporter.getExportDirectory());
+                            }
                         }
                     }
                 }
@@ -188,20 +217,23 @@ public class LinkToOpenTableaux extends DefaultIconLink {
      *  directory.
      *  @param exporter The exporter.
      *  @param effigy The effigy.
-     *  @param object The Ptolemy II object.
+     *  @param sourceObject The source Ptolemy II object (link from).
+     *  @param destinationObject The destination object (link to, same as sourceObject,
+     *   or alternatively, a class definition for sourceObject).
      *  @param directory The directory into which to write any HTML.
      *  @exception IOException If unable to create required HTML files.
      *  @exception PrinterException If unable to create required HTML files.
      *  @throws IllegalActionException If something goes wrong.
      */
-    private void _linkTo(WebExporter exporter, PtolemyEffigy effigy, NamedObj object, File directory)
+    private void _linkTo(WebExporter exporter, PtolemyEffigy effigy, 
+            NamedObj sourceObject, NamedObj destinationObject, File directory)
             throws IOException, PrinterException, IllegalActionException {
         File gifFile;
         // Look for any open tableaux for the object.
         List<Tableau> tableaux = effigy.entityList(Tableau.class);
         // If there are multiple tableaux open, use only the first one.
         if (tableaux.size() > 0) {
-            String name = object.getName();
+            String name = destinationObject.getName();
             Frame frame = tableaux.get(0).getFrame();
             // If it's a composite actor, export HTML.
             if (frame instanceof HTMLExportable) {
@@ -221,13 +253,13 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                             + subDirectory);
                 }
                 ((HTMLExportable) frame).writeHTML(subDirectory);
-                exporter.defineAreaAttribute(object, "href", name + "/index.html", true);
+                exporter.defineAreaAttribute(sourceObject, "href", name + "/index.html", true);
                 // Add to table of contents file if we are using the Ptolemy website infrastructure.
                 boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
                 if (usePtWebsite) {
                     exporter.addContent("toc.htm", false,
                             " <li><a " + name + "/index.html" + ">"
-                            + ExportHTMLAction._getTitleText(object) + "</a></li>");
+                            + ExportHTMLAction._getTitleText(destinationObject) + "</a></li>");
                 }
             } else if (frame instanceof ImageExportable) {
                 gifFile = new File(directory, name + ".gif");
@@ -239,9 +271,15 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                 }
                 // Strangely, the class has to be "iframe".
                 // I don't understand why it can't be "lightbox".
-                exporter.defineAreaAttribute(object, "href", name + ".gif", true);
-                exporter.defineAreaAttribute(object, "class", "iframe", true);
+                exporter.defineAreaAttribute(sourceObject, "href", name + ".gif", true);
+                exporter.defineAreaAttribute(sourceObject, "class", "iframe", true);
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** A set of class definitions for which an export has already occurred. */
+    private Set<NamedObj> _exportedClassDefinitions;
 }
