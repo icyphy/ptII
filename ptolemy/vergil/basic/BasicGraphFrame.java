@@ -1163,81 +1163,78 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
-    /** Open a file browser and save the given entity in the file specified
-     *  by the user.
-     *  @param entity The entity to save.
-     *  @exception Exception If there is a problem saving the component.
-     *  @since Ptolemy 4.0
-     */
-    public void saveComponentInFile(Entity entity) throws Exception {
-        // NOTE: This mirrors similar code in Top and TableauFrame, but
-        // I can't find any way to re-use that code, since the details
-        // are slightly different at each step here.
-        JFileChooser fileDialog = new JFileChooser();
-        fileDialog.setDialogTitle("Save actor as...");
+//     /** Open a file browser and save the given entity in the file specified
+//      *  by the user.
+//      *  @param entity The entity to save.
+//      *  @exception Exception If there is a problem saving the component.
+//      *  @since Ptolemy 4.0
+//      */
+//     public void saveComponentInFile(Entity entity) throws Exception {
+//         // FIXME: This method is probably no
+//         // NOTE: This mirrors similar code in Top and TableauFrame, but
+//         // I can't find any way to re-use that code, since the details
+//         // are slightly different at each step here.
 
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            // The default on Windows is to open at user.home, which is
-            // typically not what we want.
-            // So we use the current directory instead.
-            // This will fail with a security exception in applets.
-            String currentWorkingDirectory = StringUtilities
-                    .getProperty("user.dir");
+//         JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+//         Color background = null;
+//         PtFileChooser ptFileChooser = null;
 
-            if (currentWorkingDirectory != null) {
-                fileDialog
-                        .setCurrentDirectory(new File(currentWorkingDirectory));
-            }
-        }
+//         try {
+//             background = jFileChooserBugFix.saveBackground();
+//             ptFileChooser = new PtFileChooser(this,
+//                     "Save Component as...",
+//                     JFileChooser.SAVE_DIALOG);
+//             ptFileChooser.setCurrentDirectory(_directory);
+//             // Hmm, is getCurrentDirectory necessary here?
+//             ptFileChooser.setSelectedFile(new File(ptFileChooser.getCurrentDirectory(),
+//                             entity.getName() + ".xml"));
 
-        fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                entity.getName() + ".xml"));
+//             int returnVal = ptFileChooser.showDialog(this,
+//                     "Save");
+//             if (returnVal == JFileChooser.APPROVE_OPTION) {
+//                 // We set _directory below.
+//                 File file = ptFileChooser.getSelectedFile();
 
-        // Show the dialog.
-        int returnVal = fileDialog.showSaveDialog(this);
+//                 if (!_confirmFile(entity, file)) {
+//                     return;
+//                 }
 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fileDialog.getSelectedFile();
+//                 // Record the selected directory.
+//                 _directory = ptFileChooser.getCurrentDirectory();
 
-            if (!_confirmFile(entity, file)) {
-                return;
-            }
+//                 java.io.FileWriter fileWriter = null;
 
-            // Record the selected directory.
-            _directory = fileDialog.getCurrentDirectory();
+//                 try {
+//                     fileWriter = new java.io.FileWriter(file);
 
-            java.io.FileWriter fileWriter = null;
+//                     // Make sure the entity name saved matches the file name.
+//                     String name = entity.getName();
+//                     String filename = file.getName();
+//                     int period = filename.indexOf(".");
 
-            try {
-                fileWriter = new java.io.FileWriter(file);
+//                     if (period > 0) {
+//                         name = filename.substring(0, period);
+//                     } else {
+//                         name = filename;
+//                     }
 
-                // Make sure the entity name saved matches the file name.
-                String name = entity.getName();
-                String filename = file.getName();
-                int period = filename.indexOf(".");
+//                     fileWriter.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+//                             + "<!DOCTYPE " + entity.getElementName() + " PUBLIC "
+//                             + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+//                             + "    \"http://ptolemy.eecs.berkeley.edu"
+//                             + "/xml/dtd/MoML_1.dtd\">\n");
 
-                if (period > 0) {
-                    name = filename.substring(0, period);
-                } else {
-                    name = filename;
-                }
-
-                fileWriter.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                        + "<!DOCTYPE " + entity.getElementName() + " PUBLIC "
-                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                        + "    \"http://ptolemy.eecs.berkeley.edu"
-                        + "/xml/dtd/MoML_1.dtd\">\n");
-
-                entity.exportMoML(fileWriter, 0, name);
-            } finally {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
-            }
-        }
-    }
+//                     entity.exportMoML(fileWriter, 0, name);
+//                 } finally {
+//                     if (fileWriter != null) {
+//                         fileWriter.close();
+//                     }
+//                 }
+//             }
+//         } finally {
+//             jFileChooserBugFix.restoreBackground(background);
+//         }
+//     }
 
     /** Save the given entity in the user library in the given
      *  configuration.
