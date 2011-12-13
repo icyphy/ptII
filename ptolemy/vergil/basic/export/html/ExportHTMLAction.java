@@ -162,6 +162,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 directory = ptFileChooser.getSelectedFile();
+                _basicGraphFrame.setLastDirectory(directory.getParentFile());
             }
         } finally {
             try {
