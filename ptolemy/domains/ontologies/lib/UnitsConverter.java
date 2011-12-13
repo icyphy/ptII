@@ -96,8 +96,8 @@ public class UnitsConverter extends Transformer {
         inputUnitConcept = new StringAttribute(this, "inputUnitConcept");
         outputUnitConcept = new StringAttribute(this, "outputUnitConcept");
 
-        transformOnLeft = new Parameter(this, "scaleOnLeft");
-        transformOnLeft.setExpression("true");
+        scaleOnLeft = new Parameter(this, "scaleOnLeft");
+        scaleOnLeft.setExpression("true");
 
         conversionLabel = new StringAttribute(this, "conversionLabel");
         conversionLabel.setVisibility(Settable.NONE);
@@ -135,7 +135,7 @@ public class UnitsConverter extends Transformer {
      *  on the left. The default value is a boolean token of value true.
      *  Setting is to false will multiply the factor on the right.
      */
-    public Parameter transformOnLeft;
+    public Parameter scaleOnLeft;
 
     /** The unitSystem ontology solver in the model that contains the unitSystem
      *  ontology.
@@ -187,17 +187,19 @@ public class UnitsConverter extends Transformer {
 
                 Token valueSIUnits = null;
 
-                if (((BooleanToken) transformOnLeft.getToken()).booleanValue()) {
-                    // Scale on the left.
-                    // Transform the input value from its original units to the SI units for this dimension.
+                if (((BooleanToken) scaleOnLeft.getToken()).booleanValue()) {
+                    // Scale on the left.  Transform the input value
+                    // from its original units to the SI units for
+                    // this dimension.
                     valueSIUnits = inputFactor.multiply(in.add(inputOffset));
 
                     // Transform the value in SI units to the specified output units.
                     result = outputFactor.divideReverse(valueSIUnits).subtract(
                             outputOffset);
                 } else {
-                    // Scale on the right.
-                    // Transform the input value from its original units to the SI units for this dimension.
+                    // Scale on the right.  Transform the input value
+                    // from its original units to the SI units for
+                    // this dimension.
                     valueSIUnits = in.add(inputOffset).multiply(inputFactor);
 
                     // Transform the value in SI units to the specified output units.
