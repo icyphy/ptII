@@ -28,6 +28,7 @@
 
 package ptolemy.vergil.basic.export.html;
 
+import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -69,6 +70,10 @@ public class HTMLText extends StringParameter implements WebExportable {
         
         textPosition = new HTMLTextPosition(this, "textPosition");
         
+        TextStyle style = new TextStyle(this, "style");
+        style.height.setExpression("20");
+        style.width.setExpression("60");
+
         // Add parameters that ensure this is rendered correctly in Vergil.
         new SingletonAttribute(this, "_hideName");
         new ValueIcon(this, "_icon");
