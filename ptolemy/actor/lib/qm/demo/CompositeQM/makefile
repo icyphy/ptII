@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Ptides Demo
+# Makefile for Ptolemy II actor.lib.net Datagram demo 
 #
-# @Authors: Christopher Hylands (makefile only)
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: 
+# @Version: $Id$
 #
-# @Copyright (c) 2000-2011 The Regents of the University of California.
+# @Copyright (c) 1998-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptides/demo/CompositeQM
+ME =		ptolemy/actor/lib/qm/demo/CompositeQM
 
-# Root of the Java directory
-ROOT =		../../../../..
+DIRS =
+
+# Root of the Ptolemy II directory
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -41,43 +43,38 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	CompositeQM
+PTPACKAGE =	CompositeQM
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS =
+# Keep this list alphabetized.
+JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
 	CompositeQM.xml 
 
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
-	@echo "To run all the demos, run 'make demo'"
+all: jclass
+	@echo "To run the demos, run 'make demo'"
 
+install: jclass jars
 
-install: all
-
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) appletviewer 
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" CompositeQM.xml
-
-demo_vergil:
-	"$(PTII)/bin/vergil" CompositeQM.xml
+demo:
+	vergil CompositeQM.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -31,8 +31,7 @@
 
 ME =		ptolemy/domains/ptides/demo
 
-DIRS =		CompositeQM \
-		PtidesBasicDistributedPowerPlant\
+DIRS =	PtidesBasicDistributedPowerPlant\
 		PtidesBasicMixedSimulator PtidesBasicMultiPlatformTDMA \
 		PtidesBasicOnePlatform PtidesBasicPowerPlant \
 		PtidesBasicTwoPlatformsNetworkSensorEvents \
@@ -62,7 +61,6 @@ PTPACKAGE = 	demo
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	CompositeQM/CompositeQM.jar \
 	PtidesBasicDistributedPowerPlant/PtidesBasicDistributedPowerPlant.jar \
 	PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.jar \
 	PtidesBasicMultiPlatformTDMA/PtidesBasicMultiPlatformTDMA.jar \
