@@ -26,6 +26,7 @@
  */
 package ptolemy.vergil.basic.export.html;
 
+import java.awt.Color;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
@@ -55,7 +56,10 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.modal.ModalModel;
+import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.PtGUIUtilities;
+import ptolemy.gui.PtFileChooser;
+import ptolemy.gui.PtFilenameFilter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -139,83 +143,29 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         String title = "Choose a directory to write HTML...";
         File modelDirectory = _basicGraphFrame.getLastDirectory();
         File directory = null;
-        if (PtGUIUtilities.useFileDialog() && PtGUIUtilities.macOSLookAndFeel()) {
-            // Usually, Mac OS X uses FileDialog
 
-            FileDialog fileDialog;
-            try {
-                // Mac Specific: allow the user to select a directory.
-                // Note that apple.awt.fileDialogForDirectories only
-                // works with FileDialog.LOAD, not FileDialog.SAVE.
-                // See
-                // https://developer.apple.com/library/mac/#documentation/Java/Reference/Java_PropertiesRef/Articles/JavaSystemProperties.html
-                System.setProperty("apple.awt.fileDialogForDirectories", "true");
-                fileDialog = new FileDialog(_basicGraphFrame,
-                        title,
-                        FileDialog.LOAD);
-                boolean fail = false;
-                if (modelDirectory != null) {
-                    try {
-                        fileDialog.setDirectory(modelDirectory.getCanonicalPath());
-                    } catch (IOException ex) {
-                        fail = true;
-                    }
-                }
-                if (fail || modelDirectory == null) {
-                    // The default on Windows is to open at user.home, which is
-                    // typically an absurd directory inside the O/S installation.
-                    // So we use the current directory instead.
-                    // This will throw a security exception in an applet.
-                    // FIXME: we should support users under applets opening files
-                    // on the server.
-                    String currentWorkingDirectory = StringUtilities
-                        .getProperty("user.dir");
-
-                    if (currentWorkingDirectory != null) {
-                        fileDialog.setDirectory(currentWorkingDirectory);
-                    }
-                }
-
-                fileDialog.setFilenameFilter(new DirectoryFilter());
-
-                fileDialog.show();
-            } finally {
-                System.setProperty("apple.awt.fileDialogForDirectories", "false");
-            }
-
-            if (fileDialog.getFile() == null) {
-                // User selected "Cancel".
-                return;
-            }
-
-            directory = new File(fileDialog.getDirectory(), fileDialog.getFile());
-
-        } else {
-            // Usually, non Mac OS X uses JFileChooser.
-            // Open a file chooser to select a folder to write to.
-            JFileChooser fileDialog = new JFileChooser();
-            fileDialog
-                .addChoosableFileFilter(new BasicGraphFrame.FolderFileFilter());
-            fileDialog.setDialogTitle(title);
-            fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-
-            if (modelDirectory != null) {
-                fileDialog.setCurrentDirectory(modelDirectory);
-            } else {
-                // The default on Windows is to open at user.home, which is
-                // typically an absurd directory inside the O/S installation.
-                // So we use the current directory instead.
-                String cwd = StringUtilities.getProperty("user.dir");
-                
-                if (cwd != null) {
-                    fileDialog.setCurrentDirectory(new File(cwd));
-                }
-            }
-            int returnVal = fileDialog.showDialog(_basicGraphFrame, "Export HTML");
+        // Swap backgrounds and avoid white boxes in "common places" dialog
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+        Color background = null;
+        PtFileChooser ptFileChooser = null;
+        try {
+            ptFileChooser = new PtFileChooser(_basicGraphFrame, title,
+                JFileChooser.OPEN_DIALOG);
+            ptFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            ptFileChooser.setCurrentDirectory(modelDirectory);
+            ptFileChooser.addChoosableFileFilter(new DirectoryFilter());
+            int returnVal = ptFileChooser.showDialog(_basicGraphFrame, "Export HTML");
             
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                directory = fileDialog.getSelectedFile();
+                directory = ptFileChooser.getSelectedFile();
+            }
+        } finally {
+            try {
+                if (ptFileChooser != null) {
+                    ptFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                }
+            } finally {
+                jFileChooserBugFix.restoreBackground(background);
             }
         }
 
@@ -1047,7 +997,17 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
     /** A FilenameFilter that looks for directories.
      */
-    private static class DirectoryFilter implements FilenameFilter {
+    private static class DirectoryFilter extends PtFilenameFilter {
+        // This class has two accept() methods so that it can be used with
+        // both FileDialogs and JFileChoosers.
+
+        /** Tests if the specified file in a directory is a directory.
+         *  @param file The file to be checked.
+         *  @return true if the file is a directory.
+         */
+        public boolean accept(File file) {
+            return file.isDirectory();
+        }
         /** Tests if the specified file in a directory is a directory.
          *  @param dir The directory in which the file is contained.
          *  @param name The name of the file in question.
@@ -1056,6 +1016,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         public boolean accept(File dir, String name) {
             File file = new File(dir, name);
             return file.isDirectory();
+        }
+
+        /** A description of this FilenameFilter.
+         *  @return The string "Directories".
+         */
+        public String getDescription() {
+            // For FileFilter
+            return "Directories";
         }
     }
 
