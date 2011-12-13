@@ -48,8 +48,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.parameters.ParameterPort; 
-import ptolemy.data.Token;
-import ptolemy.domains.de.kernel.DEReceiver;
+import ptolemy.data.Token; 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -181,8 +180,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         //intermediateReceiver.setContainer(port);
         
         if (((IOPort)receiver.getContainer()).isOutput()) {
-            Receiver[][] result = new Receiver[1][1];
-            Receiver r = new DEReceiver(((IOPort)receiver.getContainer()));
+            Receiver[][] result = new Receiver[1][1]; 
             List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
             occurrences.add(result);
             ((IOPort)receiver.getContainer())._localReceiversTable = new HashMap<IORelation, List<Receiver[][]>>();
