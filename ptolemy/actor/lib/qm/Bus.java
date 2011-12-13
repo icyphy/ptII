@@ -33,6 +33,7 @@ package ptolemy.actor.lib.qm;
 import java.util.HashMap;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
@@ -113,6 +114,18 @@ public class Bus extends MonitoredQuantityManager {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver);
         return intermediateReceiver;
+    }
+    
+    /** Create a receiver to mediate a communication via the specified receiver. This
+     *  receiver is linked to a specific port of the quantity manager.
+     *  @param receiver Receiver whose communication is to be mediated.
+     *  @param port Port of the quantity manager.
+     *  @return A new receiver.
+     *  @exception IllegalActionException If the receiver cannot be created.
+     */
+    public Receiver getReceiver(Receiver receiver, IOPort port)
+            throws IllegalActionException {
+        return getReceiver(receiver);
     }
 
     /** If the attribute is <i>serviceTime</i>, then ensure that the value

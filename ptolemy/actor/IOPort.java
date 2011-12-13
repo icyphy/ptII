@@ -49,12 +49,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ptolemy.actor.lib.qm.CompositeQuantityManager;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Parameter; 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -533,6 +532,7 @@ public class IOPort extends ComponentPort {
         newObject._widthEqualToParameter = new HashSet<Parameter>();
         newObject._widthEqualToPort = new HashSet<IOPort>();
         newObject._defaultWidth = -1;
+        newObject._qmList = new ArrayList();
 
         return newObject;
     }
@@ -1592,6 +1592,13 @@ public class IOPort extends ComponentPort {
             // Check validity of cached version
             if (isOpaque() && (_farReceiversVersion == _workspace.getVersion())) {
                 return _farReceivers;
+            }
+            
+            if (_farReceiver != null) {
+                Receiver[][] farReceivers = new Receiver[1][1];
+                farReceivers[0][0] = _farReceiver;
+                _farReceivers = farReceivers;
+                return farReceivers;
             }
 
             // If not an opaque port or Cache is not valid.  Reconstruct it.
@@ -4320,7 +4327,7 @@ public class IOPort extends ComponentPort {
                 if (object instanceof QuantityManager) {
                     result = ((QuantityManager)object).getReceiver(result);
                 } else if (object instanceof IOPort) {
-                    result = ((CompositeQuantityManager)((IOPort)object).getContainer())
+                    result = ((QuantityManager)((IOPort)object).getContainer())
                             .getReceiver(result, ((IOPort)object));
                 }
             }
@@ -4330,29 +4337,32 @@ public class IOPort extends ComponentPort {
                         .sourcePortList().get(0)).getContainer();
             }
         } else {
-            if (isOutput() && this.getContainer() instanceof CompositeActor
-                    && qmList.size() > 0) {
-                throw new IllegalActionException(this, "This quantity manager can" +
-                		" only be used at ports with receivers on the same" +
-                		" hierarchy level as the quantity manager. Specifying" +
-                		" a quantity manager on an output port of a composite" +
-                		" actor means wrapping the inside receiver of the port" +
-                		" and thus mediating the inside connection.");
-            }
+//            if (isOutput() && this.getContainer() instanceof CompositeActor
+//                    && qmList.size() > 0) {
+//                throw new IllegalActionException(this, "This quantity manager can" +
+//                                " only be used at ports with receivers on the same" +
+//                                " hierarchy level as the quantity manager. Specifying" +
+//                                " a quantity manager on an output port of a composite" +
+//                                " actor means wrapping the inside receiver of the port" +
+//                                " and thus mediating the inside connection.");
+//            }
             for (int i = 0; i < qmList.size(); i++) {
                 Object object = qmList.get(i);
                 if (object instanceof QuantityManager) {
                     result = ((QuantityManager)object).getReceiver(result);
-                } else if (object instanceof IOPort) {
-                    result = ((CompositeQuantityManager)((IOPort)object).getContainer())
-                            .getReceiver(result, ((IOPort)object));
+                } else if (object instanceof IOPort) {  
+                    IntermediateReceiver ir = (IntermediateReceiver) ((QuantityManager)((IOPort)object).getContainer())
+                        .getReceiver(result, ((IOPort)object));
+                    _farReceiver = ir;
                 } 
             }
         }
-        // TODO what if isInput && isOutput??
-
+        // FIXME what if isInput && isOutput??
+        
         return result;
     }
+    
+    private IntermediateReceiver _farReceiver;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

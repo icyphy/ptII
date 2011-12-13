@@ -9,23 +9,15 @@ import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Executable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.IntermediateReceiver;
-import ptolemy.actor.NoRoomException;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.sched.FixedPointDirector;
-import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.RecordToken;
+import ptolemy.actor.parameters.ParameterPort; 
 import ptolemy.data.Token;
 import ptolemy.domains.de.kernel.DEReceiver;
 import ptolemy.kernel.CompositeEntity;
@@ -64,55 +56,58 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     
     public CompositeQuantityManager() throws IllegalActionException, NameDuplicationException {
         super();
-        color = new ColorAttribute(this, "_color");
-        color.setExpression("{1.0,0.0,0.0,1.0}");
+        _initialize();
     }
 
     public CompositeQuantityManager(Workspace workspace) throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-        color = new ColorAttribute(this, "_color");
-        color.setExpression("{1.0,0.0,0.0,1.0}");
+        super(workspace); 
+        _initialize();
     }
     
     public CompositeQuantityManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        super(container, name); 
+        _initialize();
+    }
+
+    private void _initialize() throws IllegalActionException, NameDuplicationException { 
         color = new ColorAttribute(this, "_color");
         color.setExpression("{1.0,0.0,0.0,1.0}");
         _listeners = new ArrayList();
-        
-
+        _outputMappings = new HashMap();
     }
 
-
-    /** Create an intermediate receiver that wraps a given receiver.
-     *  @param receiver The receiver that is being wrapped.
-     *  @param port The port that will receive tokens from the receiver
-     *  being wrapped. 
-     *  @return A new intermediate receiver.
-     *  @exception IllegalActionException Not thrown in this class but may be thrown in derived classes.
+    
+    
+    /** Create a receiver to mediate a communication via the specified receiver. This
+     *  receiver is linked to a specific port of the quantity manager.
+     *  @param receiver Receiver whose communication is to be mediated.
+     *  @param port Port of the quantity manager.
+     *  @return A new receiver.
+     *  @exception IllegalActionException If the receiver cannot be created.
      */
     public IntermediateReceiver getReceiver(Receiver receiver, IOPort port)
             throws IllegalActionException {
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver, port);
-        IOPort outPort = null;
-        for (int i = 0; i < outputPortList().size(); i++) {
-            if (((IOPort)this.outputPortList().get(i)).getName().equals(port.getName() + "Out")) {
-                outPort = (IOPort)this.outputPortList().get(i);
-            }
-        }
-        if (outPort == null) {
-            throw new IllegalActionException(this, "No matching outPort for " + 
-                    port.getName() + " available.");
-        }
-        if (outPort._localReceiversTable == null) {
+        //intermediateReceiver.setContainer(port);
+        
+        if (((IOPort)receiver.getContainer()).isOutput()) {
             Receiver[][] result = new Receiver[1][1];
-            Receiver r = new DEReceiver(outPort);
+            Receiver r = new DEReceiver(((IOPort)receiver.getContainer()));
             List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
             occurrences.add(result);
-            outPort._localReceiversTable = new HashMap<IORelation, List<Receiver[][]>>();
-            outPort._localReceiversTable.put(new IORelation(), occurrences);
+            ((IOPort)receiver.getContainer())._localReceiversTable = new HashMap<IORelation, List<Receiver[][]>>();
+            ((IOPort)receiver.getContainer())._localReceiversTable.put(new IORelation(), occurrences);
+        } else {
+            List<Receiver> list = _outputMappings.get(port);
+            if (list == null) {
+                list = new ArrayList();
+            }
+            if (!list.contains(receiver)) {
+                list.add(receiver);
+            }
+            _outputMappings.put(port, list);
         } 
         return intermediateReceiver;
     }
@@ -231,11 +226,11 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
             while (outports.hasNext() && !_stopRequested) {
                 IOPort p = (IOPort) outports.next();
                 if (p.getInsideReceivers()[0][0].hasToken()) {
-                    RecordToken token = (RecordToken) p.getInsideReceivers()[0][0].get();
-                    ObjectToken receiverToken = (ObjectToken) token.get("receiver");
-                    Receiver receiver = (Receiver) receiverToken.getValue();
-                    Token payload = (Token) token.get("payload");
-                    receiver.put(payload);
+                    List<Receiver> receivers = _outputMappings.get(p);
+                    Token token = p.getInsideReceivers()[0][0].get();
+                    for (Receiver receiver : receivers) {
+                        receiver.put(token);
+                    } 
                 }
             } 
         } finally {
@@ -244,40 +239,58 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
  
     }
 
+    private Map<IOPort, List<Receiver>> _outputMappings;
+    
     /** Listeners registered to receive events from this object. */
     private ArrayList<QuantityManagerListener> _listeners;
 
     /** Amount of tokens currently being processed by the switch. */
     protected int _tokenCount;
 
-    @Override
+    /** Reset.
+     */
     public void reset() { 
+        // FIXME what to do here?
     }
 
+    /** Use other sendToken method.
+     */
     public void sendToken(Receiver source, Receiver receiver, Token token) throws IllegalActionException {
         throw new IllegalActionException(this, "Port must be specified");
     }
     
-    
-    
+    /**
+     * 
+     * @param source
+     * @param receiver
+     * @param token
+     * @param port
+     * @throws IllegalActionException
+     */
     public void sendToken(Receiver source, Receiver receiver, Token token, IOPort port)
             throws IllegalActionException {
-        prefire(); // has to be done such that the director gets the current time
-        String[] labels = {"receiver", "payload"};
-        ObjectToken receiverToken = new ObjectToken(receiver);
-        Token[] values = {receiverToken, token};
-        RecordToken recordToken = new RecordToken(labels, values);
-        for (int i = 0; i < port.insidePortList().size(); i++) { 
-            ((IOPort)port.insidePortList().get(i)).getReceivers()[0][0].put(recordToken);
-            ((CompositeActor)getContainer()).getDirector().fireAtCurrentTime(this);
-        } 
+        if (port.isInput()) {
+            prefire(); // has to be done such that the director gets the current time
+            for (int i = 0; i < port.insidePortList().size(); i++) { 
+                ((IOPort)port.insidePortList().get(i)).getReceivers()[0][0].put(token);
+                ((CompositeActor)getContainer()).getDirector().fireAtCurrentTime(this);
+            } 
+        } else {
+            throw new IllegalActionException(this, 
+                    "Outputs should be sent to target receivers in the fire, not in this method!");
+        }
     }
     
 
-    @Override
+    /** Other getReceiver method has to be used. 
+     *  @param receiver Target receiver.
+     *  @throws IllegalActionException Thrown because this method
+     *  cannot be used. 
+     */
     public Receiver getReceiver(Receiver receiver)
             throws IllegalActionException { 
-        return null;
+        throw new IllegalActionException(receiver.getContainer(), "Cannot create receiver" +
+        		"without specifying port of CompositeQM.");
     }
     
 }

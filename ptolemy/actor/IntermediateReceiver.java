@@ -166,9 +166,9 @@ public class IntermediateReceiver extends AbstractReceiver {
     ////                         private variables                 ////
 
     /** Target receiver that is wrapped by this intermediate receiver.  */
-    private Receiver _receiver;
+    protected Receiver _receiver;
     
-    private IOPort _port;
+    protected IOPort _port;
 
     /** Quantity manager that receives tokens from this receiver. */
     public QuantityManager quantityManager;

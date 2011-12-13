@@ -32,6 +32,7 @@ package ptolemy.actor.lib.qm;
 
 import java.util.Hashtable;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.IntermediateReceiver;
 import ptolemy.actor.QuantityManager;
 import ptolemy.actor.Receiver;
@@ -149,6 +150,18 @@ public class TTESwitch extends MonitoredQuantityManager {
             _receiverType.put(receiver, timeTriggered);
         }
         return intermediateReceiver;
+    }
+    
+    /** Create a receiver to mediate a communication via the specified receiver. This
+     *  receiver is linked to a specific port of the quantity manager.
+     *  @param receiver Receiver whose communication is to be mediated.
+     *  @param port Port of the quantity manager.
+     *  @return A new receiver.
+     *  @exception IllegalActionException If the receiver cannot be created.
+     */
+    public Receiver getReceiver(Receiver receiver, IOPort port)
+            throws IllegalActionException {
+        return getReceiver(receiver);
     }
 
     /** Clone this actor into the specified workspace. The new actor is
