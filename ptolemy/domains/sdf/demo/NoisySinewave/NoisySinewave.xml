@@ -25,7 +25,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor is a class definition, indicated by the blue halo. It is&#10;ignored by the director, and serves as a declaration. To create an&#10;instance of this class, right click on the class definition and select&#10;&quot;Create Instance&quot; (or type Ctrl-N). To see the class definition, look inside.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 85.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 85.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -75,7 +75,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 233.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
         </property>
         <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
