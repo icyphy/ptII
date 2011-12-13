@@ -85,7 +85,9 @@ MISC_FILES =	javascript test
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	doc \
 	$(PTCLASSJAR) \
+	'ExportHTMLAction$$DirectoryFilter.class' \
 	'ExportHTMLAction$$IconVisibleLocation.class' \
 	'ExportHTMLAction$$1.class' \
 	'ExportToWeb$$1.class' \

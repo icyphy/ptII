@@ -1,6 +1,15 @@
 ptII/doc/uml/README.txt
 Version: $Id$
 
+In general, UML diagrams should be near the corresponding code.
+
+There is a list of tools at
+http://embedded.eecs.berkeley.edu/dopcenter/faq/115.html
+
+ArgoUML at http://argouml.tigris.org/ seems to be a good choice.
+
+
+
 The Ptolemy II UML diagrams are in a separate cvs repository.
 As of 8/05, these diagrams were in Visio 5, which can be read by
 Visio 2000, but not really edited.
