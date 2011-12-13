@@ -1012,57 +1012,62 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Import a design pattern into the current design.
      */
     public void importDesignPattern() {
-        JFileChooser fileDialog = new JFileChooser();
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+        Color background = null;
+        PtFileChooser ptFileChooser = null;
 
-        if (_fileFilter != null) {
-            fileDialog.addChoosableFileFilter(_fileFilter);
-        }
+        try {
+            background = jFileChooserBugFix.saveBackground();
+            ptFileChooser = new PtFileChooser(this,
+                    "Select a design pattern file.",
+                    JFileChooser.OPEN_DIALOG);
+            //if (_fileFilter != null) {
+            //    ptFileChooser.addChoosableFileFilter(_fileFilter);
+            //}
 
-        fileDialog.setDialogTitle("Select a design pattern file.");
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            String currentWorkingDirectory = StringUtilities
-                    .getProperty("user.dir");
-            if (currentWorkingDirectory != null) {
-                fileDialog
-                        .setCurrentDirectory(new File(currentWorkingDirectory));
-            }
-        }
+            ptFileChooser.setCurrentDirectory(_directory);
 
-        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            _directory = fileDialog.getCurrentDirectory();
-            NamedObj model = null;
-            try {
-                File file = fileDialog.getSelectedFile().getCanonicalFile();
-                URL url = file.toURI().toURL();
-                MoMLParser parser = new MoMLParser();
-                MoMLParser.purgeModelRecord(url);
-                model = parser.parse(url, url);
-                MoMLParser.purgeModelRecord(url);
-            } catch (Exception e) {
-                report(new IllegalActionException(null, e,
-                        "Error reading input"));
-            }
-            if (model != null) {
-                Attribute attribute = model
+            int returnVal = ptFileChooser.showDialog(this,
+                    "Import");
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                _directory = ptFileChooser.getCurrentDirectory();
+                NamedObj model = null;
+                File file = null;
+                try {
+                    file = ptFileChooser.getSelectedFile().getCanonicalFile();
+                    URL url = file.toURI().toURL();
+                    MoMLParser parser = new MoMLParser();
+                    MoMLParser.purgeModelRecord(url);
+                    model = parser.parse(url, url);
+                    MoMLParser.purgeModelRecord(url);
+                } catch (Exception e) {
+                    report(new IllegalActionException(getModel(), e,
+                                    "Error reading input file \"" + file + "\"."));
+                }
+                if (model != null) {
+                    Attribute attribute = model
                         .getAttribute("_alternateGetMomlAction");
-                String className = DesignPatternGetMoMLAction.class.getName();
-                if (attribute == null
-                        || !(attribute instanceof StringAttribute)
-                        || !((StringAttribute) attribute).getExpression()
-                                .equals(className)) {
-                    report(new IllegalActionException(
-                            "The model is not a design pattern."));
-                } else {
-                    String moml = new DesignPatternGetMoMLAction().getMoml(
-                            model, model.getName());
-                    NamedObj context = getModel();
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            context, moml);
-                    context.requestChange(request);
+                    String className = DesignPatternGetMoMLAction.class.getName();
+                    if (attribute == null
+                            || !(attribute instanceof StringAttribute)
+                            || !((StringAttribute) attribute).getExpression()
+                            .equals(className)) {
+                        report(new IllegalActionException(
+                                        "The model \"" + file
+                                        + "\" is not a design pattern."));
+                    } else {
+                        String moml = new DesignPatternGetMoMLAction().getMoml(
+                                model, model.getName());
+                        NamedObj context = getModel();
+                        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                context, moml);
+                        context.requestChange(request);
+                    }
                 }
             }
+        } finally {
+            jFileChooserBugFix.restoreBackground(background);
         }
     }
 
