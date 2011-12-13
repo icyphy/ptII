@@ -120,7 +120,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
             }
         }
         if (hasParameter) {
-            table.insert(0, "<table border=&quot;1&quot;>"
+            table.insert(0, "<table border=\"1\">"
                     + "<tr><td><b>Parameter</b></td>"
                     + "<td><b>Expression</b></td>"
                     + "<td><b>Value</b></td></tr>");
