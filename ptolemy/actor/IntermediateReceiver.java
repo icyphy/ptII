@@ -72,6 +72,15 @@ public class IntermediateReceiver extends AbstractReceiver {
         quantityManager = qm;
         _port = port;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables               ////
+    
+    /** Quantity manager that receives tokens from this receiver. */
+    public QuantityManager quantityManager;
+
+    /** The source actor that sent a token to this receiver. */
+    public Actor source;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -158,18 +167,12 @@ public class IntermediateReceiver extends AbstractReceiver {
     public void setContainer(IOPort port) throws IllegalActionException {
         _receiver.setContainer(port);
     }
-
-    /** The source actor that sent a token to this receiver. */
-    public Actor source;
-
+     
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     /** Target receiver that is wrapped by this intermediate receiver.  */
     protected Receiver _receiver;
     
     protected IOPort _port;
-
-    /** Quantity manager that receives tokens from this receiver. */
-    public QuantityManager quantityManager;
 }
