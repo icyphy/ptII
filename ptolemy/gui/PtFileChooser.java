@@ -138,6 +138,16 @@ public class PtFileChooser extends Container {
         }
     }
 
+    /** Return the current directory.
+     *  @return The current directory.   
+     */   
+    public File getCurrentDirectory() {
+        if (_useFileDialog) {
+            return new File(_fileDialog.getDirectory());
+        } else {
+            return _jFileChooser.getCurrentDirectory();
+        }
+    }
     /** Return the selected file as an absolute File (a File that is not relative).
      *  @return the selected file.
      */
@@ -231,6 +241,17 @@ public class PtFileChooser extends Container {
         }
     }
 
+    /** Set the selected file.
+     *  @param file The file to be selected
+     */
+    public void setSelectedFile(File file) {
+        if (_useFileDialog) {
+            _fileDialog.setFile(file.getName());
+        } else {
+            _jFileChooser.setSelectedFile(file);
+        }
+    }
+
     /** Show the dialog.
      *  @param parent Ignored with FileDialog, used with JFileChooser.
      *  @param approveButtonText The text for the approve button if JFileChooser is used.
@@ -275,4 +296,3 @@ public class PtFileChooser extends Container {
     private boolean _useFileDialog;
 
 }
-

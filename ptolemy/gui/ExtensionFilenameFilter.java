@@ -27,7 +27,7 @@
  * facility. Licensee represents and warrants that it will not use or
  * redistribute the Software for such purposes.
  */
-package diva.gui;
+package ptolemy.gui;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -50,7 +50,7 @@ import javax.swing.filechooser.FileFilter;
  *
  * <pre>
  *     JFileChooser chooser = new JFileChooser();
- *     ExtensionFileFilter filter = new ExtensionFileFilter(
+ *     ExtensionFilenameFilter filter = new ExtensionFilenameFilter(
  *                   new String{"gif", "jpg"}, "JPEG & GIF Images")
  *     chooser.addChoosableFileFilter(filter);
  *     chooser.showOpenDialog(this);
@@ -64,21 +64,11 @@ import javax.swing.filechooser.FileFilter;
  * and extends javax.swing.FilenameFilter.</p>
  *
  * @version $Id$
- * @deprecated Use ptolemy.gui.ExtensionFilenameFilter because it can be used with PtFileChooser
  * @author Jeff Dinkins
  */
-public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
-    //private static String TYPE_UNKNOWN = "Type Unknown";
-
-    //private static String HIDDEN_FILE = "Hidden File";
-
-    private Hashtable filters = null;
-
-    private String description = null;
-
-    private String fullDescription = null;
-
-    private boolean useExtensionsInDescription = true;
+public class ExtensionFilenameFilter extends PtFilenameFilter {
+    // This is a duplicate of diva.gui.ExtensionFileFilter because
+    // we want to be able to use PtFileChooser with this filter.
 
     /**
      * Creates a file filter. If no filters are added, then all
@@ -86,7 +76,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      *
      * @see #addExtension(String)
      */
-    public ExtensionFileFilter() {
+    public ExtensionFilenameFilter() {
         this((String) null, (String) null);
     }
 
@@ -96,7 +86,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      *
      * @see #addExtension(String)
      */
-    public ExtensionFileFilter(String extension) {
+    public ExtensionFilenameFilter(String extension) {
         this(extension, null);
     }
 
@@ -109,7 +99,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      *
      * @see #addExtension(String)
      */
-    public ExtensionFileFilter(String extension, String description) {
+    public ExtensionFilenameFilter(String extension, String description) {
         this(new String[] { extension }, description);
     }
 
@@ -122,7 +112,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      *
      * @see #addExtension(String)
      */
-    public ExtensionFileFilter(String[] filters) {
+    public ExtensionFilenameFilter(String[] filters) {
         this(filters, null);
     }
 
@@ -135,8 +125,8 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      *
      * @see #addExtension(String)
      */
-    public ExtensionFileFilter(String[] filters, String description) {
-        this.filters = new Hashtable(filters.length);
+    public ExtensionFilenameFilter(String[] filters, String description) {
+        _filters = new Hashtable(filters.length);
 
         for (int i = 0; i < filters.length; i++) {
             // add filters one by one
@@ -151,7 +141,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      *  @param extensions A list of extensions, each of which is
      *   a String.
      */
-    public ExtensionFileFilter(List extensions) {
+    public ExtensionFilenameFilter(List extensions) {
         Iterator extensionsIterator = extensions.iterator();
         while (extensionsIterator.hasNext()) {
             String matchExtension = (String) extensionsIterator.next();
@@ -179,7 +169,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
 
             String extension = getExtension(f);
 
-            if ((extension != null) && (filters.get(extension) != null)) {
+            if ((extension != null) && (_filters.get(extension) != null)) {
                 return true;
             }
         }
@@ -209,7 +199,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
             extension = name.substring(i + 1).toLowerCase();
         }
 
-        if ((extension != null) && (filters.get(extension) != null)) {
+        if ((extension != null) && (_filters.get(extension) != null)) {
             return true;
         }
         return false;
@@ -222,8 +212,8 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      * Added by Heloise Hse
      */
     public String getDefaultExtension() {
-        if (filters.size() == 1) {
-            return (String) filters.keys().nextElement();
+        if (_filters.size() == 1) {
+            return (String) _filters.keys().nextElement();
         } else {
             return null;
         }
@@ -261,12 +251,12 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
             return;
         }
 
-        if (filters == null) {
-            filters = new Hashtable(5);
+        if (_filters == null) {
+            _filters = new Hashtable(5);
         }
 
-        filters.put(extension.toLowerCase(), this);
-        fullDescription = null;
+        _filters.put(extension.toLowerCase(), this);
+        _fullDescription = null;
     }
 
     /**
@@ -279,21 +269,21 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      * @see FileFilter#getDescription()
      */
     public String getDescription() {
-        if (fullDescription == null) {
-            if ((description == null) || isExtensionListInDescription()) {
-                if (description != null) {
-                    fullDescription = description;
+        if (_fullDescription == null) {
+            if ((_description == null) || isExtensionListInDescription()) {
+                if (_description != null) {
+                    _fullDescription = _description;
                 } else {
-                    fullDescription = "";
+                    _fullDescription = "";
                 }
 
-                //fullDescription += " (";
+                //_fullDescription += " (";
 
                 StringBuffer result = new StringBuffer();
-                //Iterator extensions = filters.values().iterator();
-                Enumeration extensions = filters.keys();
+                //Iterator extensions = _filters.values().iterator();
+                Enumeration extensions = _filters.keys();
                 int extensionNumber = 1;
-                int size = filters.size();
+                int size = _filters.size();
 
                 while (extensions.hasMoreElements()) {
                     String extension = (String) extensions.nextElement();
@@ -310,27 +300,27 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
                 }
 
                 result.append(" files");
-                fullDescription += result;
+                _fullDescription += result;
 
                 // // build the description from the extension list
-                // Enumeration extensions = filters.keys();
+                // Enumeration extensions = _filters.keys();
 
                 // if (extensions != null) {
-                //     fullDescription += ("." + (String) extensions.nextElement());
+                //     _fullDescription += ("." + (String) extensions.nextElement());
 
                 //     while (extensions.hasMoreElements()) {
-                //         fullDescription += (", " + (String) extensions
+                //         _fullDescription += (", " + (String) extensions
                 //                 .nextElement());
                 //     }
                 // }
 
-                //fullDescription += ")";
+                //_fullDescription += ")";
             } else {
-                fullDescription = description;
+                _fullDescription = _description;
             }
         }
 
-        return fullDescription;
+        return _fullDescription;
     }
 
     /**
@@ -342,8 +332,8 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      * @see #isExtensionListInDescription()
      */
     public void setDescription(String description) {
-        this.description = description;
-        fullDescription = null;
+        _description = description;
+        _fullDescription = null;
     }
 
     /**
@@ -357,8 +347,8 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      * @see #isExtensionListInDescription()
      */
     public void setExtensionListInDescription(boolean b) {
-        useExtensionsInDescription = b;
-        fullDescription = null;
+        _useExtensionsInDescription = b;
+        _fullDescription = null;
     }
 
     /**
@@ -371,7 +361,7 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
      * @see #getDescription()
      */
     public boolean isExtensionListInDescription() {
-        return useExtensionsInDescription;
+        return _useExtensionsInDescription;
     }
 
     /**
@@ -382,4 +372,14 @@ public class ExtensionFileFilter extends FileFilter implements FilenameFilter {
     public String toString() {
         return getDescription();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+    private Hashtable _filters = null;
+
+    private String _description = null;
+
+    private String _fullDescription = null;
+
+    private boolean _useExtensionsInDescription = true;
 }

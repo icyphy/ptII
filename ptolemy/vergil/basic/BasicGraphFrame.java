@@ -90,6 +90,7 @@ import javax.swing.filechooser.FileFilter;
 import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.gui.BrowserEffigy;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyFrame;
@@ -107,9 +108,11 @@ import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.ImageExportable;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.MemoryCleaner;
+import ptolemy.gui.PtFileChooser;
 import ptolemy.gui.Query;
 import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentEntity;
@@ -3126,60 +3129,54 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         ////                         public methods                   ////
 
         /** Export an image.
+         *   
+         *  <p> Under Mac OS X, use java.awt.FileDialog.
+         *  Under other OS's, use javax.swing.JFileChooser. Under Mac OS
+         *  X, see {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} for
+         *  how to select between the two.</p>
+         *
          *  @param e The event that triggered this action.
          */
         public void actionPerformed(ActionEvent e) {
             JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
             Color background = null;
+            PtFileChooser ptFileChooser = null;
             try {
                 background = jFileChooserBugFix.saveBackground();
 
-                JFileChooser fileDialog = new JFileChooser();
-                fileDialog.setDialogTitle("Specify a file to write to.");
+                ptFileChooser = new PtFileChooser(BasicGraphFrame.this,
+                        "Specify a " + _formatName + " file to be written.",
+                        JFileChooser.SAVE_DIALOG);
+
+                ptFileChooser.setSelectedFile(new File(getModel().getName() + "." + _formatName));
                 LinkedList extensions = new LinkedList();
                 extensions.add(_formatName);
-                fileDialog
-                        .addChoosableFileFilter(new diva.gui.ExtensionFileFilter(
+                ptFileChooser
+                        .addChoosableFileFilter(new ExtensionFilenameFilter(
                                 extensions));
+                ptFileChooser.setCurrentDirectory(_directory);
 
-                if (_directory != null) {
-                    fileDialog.setCurrentDirectory(_directory);
-                } else {
-                    // The default on Windows is to open at user.home, which is
-                    // typically an absurd directory inside the O/S installation.
-                    // So we use the current directory instead.
-                    // This will throw a security exception in an applet.
-                    // FIXME: we should support users under applets opening files
-                    // on the server.
-                    String currentWorkingDirectory = StringUtilities
-                            .getProperty("user.dir");
-                    if (currentWorkingDirectory != null) {
-                        fileDialog.setCurrentDirectory(new File(
-                                currentWorkingDirectory));
-                    }
-                }
-
-                int returnVal = fileDialog.showDialog(BasicGraphFrame.this,
+                int returnVal = ptFileChooser.showDialog(BasicGraphFrame.this,
                         "Export " + _formatName.toUpperCase());
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    _directory = fileDialog.getCurrentDirectory();
-                    File file = fileDialog.getSelectedFile().getCanonicalFile();
+                    _directory = ptFileChooser.getCurrentDirectory();
+                    File imageFile = ptFileChooser.getSelectedFile().getCanonicalFile();
 
-                    if (file.getName().indexOf(".") == -1) {
+                    if (imageFile.getName().indexOf(".") == -1) {
                         // If the user has not given the file an extension, add it
-                        file = new File(file.getAbsolutePath() + "."
+                        imageFile = new File(imageFile.getAbsolutePath() + "."
                                 + _formatName);
                     }
-                    if (file.exists()) {
-                        if (!MessageHandler.yesNoQuestion("Overwrite "
-                                + file.getName() + "?")) {
+                    if (imageFile.exists()) {
+                        if (!MessageHandler.yesNoQuestion("Overwrite \""
+                                + imageFile.getName() + "\"?")) {
                             return;
                         }
                     }
                     OutputStream out = null;
                     try {
-                        out = new FileOutputStream(file);
+                        out = new FileOutputStream(imageFile);
                         getJGraph().exportImage(out, _formatName);
                     } finally {
                         if (out != null) {
@@ -3187,12 +3184,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         }
                     }
 
-                    // Open the PNG file.
-                    // FIXME: We don't do the right thing with PNG files.
-                    // It just opens in a text editor.
-                    // _read(file.toURI().toURL());
-                    MessageHandler.message("Image file exported to "
-                            + file.getName());
+                    // Open the image file.
+                    if (MessageHandler.yesNoQuestion("Open \"" + imageFile.getCanonicalPath()
+                                    + "\" in a browser?")) {
+                        Configuration configuration = getConfiguration();
+                        try {
+                            URL imageURL = new URL(imageFile.toURI().toURL().toString()
+                                    + "#in_browser");
+                            configuration.openModel(imageURL, imageURL, imageURL.toExternalForm(),
+                                    BrowserEffigy.staticFactory);
+                        } catch (Throwable throwable) {
+                            MessageHandler.error("Failed to open \""
+                                    + imageFile.getName() + "\".", throwable);
+                        }
+                    }
                 }
             } catch (Exception ex) {
                 MessageHandler.error("Export to " + _formatName.toUpperCase()

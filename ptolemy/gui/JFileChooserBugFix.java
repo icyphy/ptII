@@ -48,13 +48,12 @@ import javax.swing.text.html.StyleSheet;
  be called so that the background is properly set.  Then, in a finally
  clause, restoreBackground() should be called.  For example:
  <pre>
-
   // Swap backgrounds and avoid white boxes in "common places" dialog
   JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
   Color background = null;
   try {
       background = jFileChooserBugFix.saveBackground();
-      JFileChooser fileDialog = new JFileChooser();
+      PtFileChooser ptFileChooser = new PtFileChooser();
       // Do the usual JFileChooser song and dance . . .
   } finally {
       jFileChooserBugFix.restoreBackground(background);
