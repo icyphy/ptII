@@ -74,6 +74,3 @@ public class PtFilenameFilter extends FileFilter implements FilenameFilter {
         return "All Files";
     }
 }
-
-
-

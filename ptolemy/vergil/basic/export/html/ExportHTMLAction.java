@@ -131,16 +131,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Export a web page.  Under Mac OS X, use java.awt.FileDialog.
+    /** Export a web page.  
+     *   
+     *  <p> Under Mac OS X, use java.awt.FileDialog.
      *  Under other OS's, use javax.swing.JFileChooser. Under Mac OS
      *  X, see {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} for
      *  how to select between the two.  Other OS's must use
      *  JFileChooser because FileDialog can only select directories
-     *  under Mac OS X.
+     *  under Mac OS X.</p>
+     *
      *  @param e The event that triggered this action.
      */
     public void actionPerformed(ActionEvent e) {
-        String title = "Choose a directory to write HTML...";
         File modelDirectory = _basicGraphFrame.getLastDirectory();
         File directory = null;
 
@@ -149,8 +151,10 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         Color background = null;
         PtFileChooser ptFileChooser = null;
         try {
-            ptFileChooser = new PtFileChooser(_basicGraphFrame, title,
-                JFileChooser.OPEN_DIALOG);
+            background = jFileChooserBugFix.saveBackground();
+            ptFileChooser = new PtFileChooser(_basicGraphFrame,
+                    "Specify a directory in which to write HTML...",
+                    JFileChooser.OPEN_DIALOG);
             ptFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             ptFileChooser.setCurrentDirectory(modelDirectory);
             ptFileChooser.addChoosableFileFilter(new DirectoryFilter());

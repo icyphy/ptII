@@ -384,6 +384,11 @@ public class ExportImage {
      *  -Dptolemy.ptII.exportHTML.usePtWebsite=true
      *  </pre>
      *
+     *  <p>Note that the Ptolemy menus will not appear unless you view
+     * the page with a web server that has Server Side Includes (SSI)
+     * enabled and has the appropriate scripts.  Also, the index.html
+     * file must be executable.</p>
+     *
      *  <p>Include a link to the a
      *  <code><i>sanitizedModelName</i>.jnlp</code> file, set the
      *  "ptolemy.ptII.exportHTML.linkToJNLP" property to true.</p>

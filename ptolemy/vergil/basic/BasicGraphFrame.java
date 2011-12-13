@@ -112,6 +112,7 @@ import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.ImageExportable;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.MemoryCleaner;
+import ptolemy.gui.PtGUIUtilities;
 import ptolemy.gui.PtFileChooser;
 import ptolemy.gui.Query;
 import ptolemy.gui.Top;
@@ -3170,7 +3171,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         imageFile = new File(imageFile.getAbsolutePath() + "."
                                 + _formatName);
                     }
-                    if (imageFile.exists()) {
+                    // The Mac OS X FileDialog will ask if we want to save before this point.
+                    if (imageFile.exists() && !PtGUIUtilities.useFileDialog()) {
                         if (!MessageHandler.yesNoQuestion("Overwrite \""
                                 + imageFile.getName() + "\"?")) {
                             return;

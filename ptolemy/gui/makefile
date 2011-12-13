@@ -52,6 +52,7 @@ JSRCS = \
 	CancelException.java \
 	CloseListener.java \
 	ComponentDialog.java \
+	ExtensionFilenameFilter.java \
 	GraphicalMessageHandler.java \
 	ImageExportable.java \
 	JFileChooserBugFix.java \
@@ -59,6 +60,8 @@ JSRCS = \
 	MacOSXAdapter.java \
 	MemoryCleaner.java \
 	MessageHandler.java \
+	PtFileChooser.java \
+	PtFilenameFilter.java \
 	PtGUIUtilities.java \
 	Query.java \
 	QueryChooser.java \

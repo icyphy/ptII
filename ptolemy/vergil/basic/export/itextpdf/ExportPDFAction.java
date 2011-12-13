@@ -37,15 +37,22 @@ import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URL;
 import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
+import ptolemy.actor.gui.BrowserEffigy;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.JFileChooserBugFix;
+import ptolemy.gui.PtGUIUtilities;
+import ptolemy.gui.PtFileChooser;
 import ptolemy.gui.Top;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.BasicGraphFrame;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Rectangle;
@@ -112,6 +119,10 @@ public class ExportPDFAction extends AbstractAction {
 
     /** Export PDF to a file.
      *  This uses the iText library at http://itextpdf.com/.
+     *
+     *  <p>If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns true
+     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
+     *  {@link #_saveAsJFileChooserComponent()} is used.</p>
      */
     private void _exportPDF() {
         Dimension size = _frame.getContentSize();
@@ -130,57 +141,49 @@ public class ExportPDFAction extends AbstractAction {
         Document document = new Document(pageSize);
         JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
         Color background = null;
+        PtFileChooser ptFileChooser = null;
         try {
             background = jFileChooserBugFix.saveBackground();
 
-            JFileChooser fileDialog = new JFileChooser();
-            fileDialog.setDialogTitle("Specify a file to write to.");
+            ptFileChooser = new PtFileChooser(_frame,
+                    "Specify a pdf file to be written.",
+                    JFileChooser.SAVE_DIALOG);
+
             LinkedList extensions = new LinkedList();
             extensions.add("pdf");
-            fileDialog.addChoosableFileFilter(new diva.gui.ExtensionFileFilter(
-                    extensions));
+            ptFileChooser
+                .addChoosableFileFilter(new ExtensionFilenameFilter(
+                                extensions));
 
-            // FIXME: _directory is protected in BasicGraphFrame
-            //if (_directory != null) {
-            //    fileDialog.setCurrentDirectory(_directory);
-            //} else {
-            // The default on Windows is to open at user.home, which is
-            // typically an absurd directory inside the O/S installation.
-            // So we use the current directory instead.
-            // This will throw a security exception in an applet.
-            // FIXME: we should support users under applets opening files
-            // on the server.
-            String currentWorkingDirectory = StringUtilities
-                    .getProperty("user.dir");
-            if (currentWorkingDirectory != null) {
-                fileDialog
-                        .setCurrentDirectory(new File(currentWorkingDirectory));
+            BasicGraphFrame basicGraphFrame = null;
+            if (_frame instanceof BasicGraphFrame) {
+                basicGraphFrame = (BasicGraphFrame)_frame;
+                ptFileChooser.setCurrentDirectory(basicGraphFrame.getLastDirectory());
+                ptFileChooser.setSelectedFile(new File(basicGraphFrame.getModel().getName() + ".pdf"));
             }
-            //}
-
-            // Under Java 1.6 and Mac OS X, showSaveDialog ignores the filter.
-            //int returnVal = fileDialog.showSaveDialog(_frame);
-            int returnVal = fileDialog.showDialog(_frame, "Export PDF");
+            int returnVal = ptFileChooser.showDialog(_frame, "Export PDF");
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                // FIXME: _directory is protected in BasicGraphFrame
-                //_directory = fileDialog.getCurrentDirectory();
-                File file = fileDialog.getSelectedFile().getCanonicalFile();
+                if (basicGraphFrame != null) {
+                    basicGraphFrame.setLastDirectory(ptFileChooser.getCurrentDirectory());
+                }
+                File pdfFile = ptFileChooser.getSelectedFile().getCanonicalFile();
 
-                if (file.getName().indexOf(".") == -1) {
+                if (pdfFile.getName().indexOf(".") == -1) {
                     // If the user has not given the file an extension, add it
-                    file = new File(file.getAbsolutePath() + ".pdf");
+                    pdfFile = new File(pdfFile.getAbsolutePath() + ".pdf");
                 }
 
-                if (file.exists()) {
+                // The Mac OS X FileDialog will ask if we want to save before this point.
+                if (pdfFile.exists() && !PtGUIUtilities.useFileDialog()) {
                     if (!MessageHandler.yesNoQuestion("Overwrite "
-                            + file.getName() + "?")) {
+                            + pdfFile.getName() + "?")) {
                         return;
                     }
                 }
 
                 PdfWriter writer = PdfWriter.getInstance(document,
-                        new FileOutputStream(file));
+                        new FileOutputStream(pdfFile));
                 // To ensure Latex compatibility, use earlier PDF version.
                 writer.setPdfVersion(PdfWriter.VERSION_1_3);
                 document.open();
@@ -204,16 +207,36 @@ public class ExportPDFAction extends AbstractAction {
 
                 // Open the PDF file.
                 // FIXME: _read is protected in BasicGraphFrame
-                //_read(file.toURI().toURL());
-                MessageHandler
-                        .message("PDF file exported to " + file.getName());
+                //_read(pdfFile.toURI().toURL());
+                // Open the image pdfFile.
+                if (basicGraphFrame == null) {
+                    MessageHandler
+                        .message("PDF file exported to " + pdfFile.getName());
+                } else {
+                    if (MessageHandler.yesNoQuestion("Open \"" + pdfFile.getCanonicalPath()
+                                    + "\" in a browser?")) {
+                        Configuration configuration = basicGraphFrame.getConfiguration();
+                        try {
+                            URL imageURL = new URL(pdfFile.toURI().toURL().toString()
+                                    + "#in_browser");
+                            configuration.openModel(imageURL, imageURL, imageURL.toExternalForm(),
+                                BrowserEffigy.staticFactory);
+                        } catch (Throwable throwable) {
+                            MessageHandler.error("Failed to open \""
+                                    + pdfFile.getName() + "\".", throwable);
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
             MessageHandler.error("Export to PDF failed", e);
         } finally {
-            jFileChooserBugFix.restoreBackground(background);
+            try {
+                document.close();
+            } finally {
+                jFileChooserBugFix.restoreBackground(background);
+            }
         }
-        document.close();
     }
 
     ///////////////////////////////////////////////////////////////////
