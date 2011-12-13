@@ -197,7 +197,8 @@ public class BrowserEffigy extends Effigy {
             }
 
             if (contentType.startsWith("text/html")
-                    || contentType.startsWith("text/rtf")) {
+                    || contentType.startsWith("text/rtf")
+                    || contentType.startsWith("image/")) {
                 Effigy effigy = newBrowserEffigy(container, base, in);
                 return effigy;
             }
