@@ -38,21 +38,7 @@
 
   <!-- Add support for exporting HTML. -->
   <!-- Used in BasicGraphFrame.java -->
-  <property name="_exportHTMLActionClassName"
-            class="ptolemy.data.expr.StringParameter"
-            value="ptolemy.vergil.basic.export.html.ExportHTMLAction"/>
-            
-  <!-- Add default content for exporting HTML. -->
-  <property name="_parameterDisplayIconScript"
-            class="ptolemy.vergil.basic.export.html.ParameterDisplayIconScript"/>
- 
-  <!-- Add default links to open tableaux to use on export to HTML. -->
-  <property name="_linkToOpenTableaux"
-            class="ptolemy.vergil.basic.export.html.LinkToOpenTableaux"/>
- 
-  <!-- Provide model name as the default title on export to HTML. -->
-  <property name="_defaultTitle"
-            class="ptolemy.vergil.basic.export.html.DefaultTitle"/>
+  <input source="ptolemy/vergil/basic/export/html/webExportConfiguration.xml"/>
  
   <!-- Use the KIELER graph layout algorithms. -->
   <!--  Used in BasicGraphFrame.java-->
