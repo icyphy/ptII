@@ -1,4 +1,6 @@
 /*
+ This token holds a byte array and was created for performance reasons only.
+ 
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -31,24 +33,43 @@ import ptolemy.data.Token;
 ///////////////////////////////////////////////////////////////////
 //// ByteArrayToken
 
+/** The ByteArrayToken encapsulates a byte array. It was created primarily for
+ *  performance reasons in order to avoid instantiation of large amount of ByteTokens.
+ *  @author Anar Huseynov
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class ByteArrayToken extends Token {
 
+    /**
+     * Instantiate a ByteArrayToken with an empty byte array.
+     */
     public ByteArrayToken() {
         _array = new byte[0];
     }
 
+    /**
+     * Instantiate a ByteArrayToken with the provided array.
+     * @param array The array to wrap.
+     */
     public ByteArrayToken(byte[] array) {
         assert array != null : "Can't pass null arrays";
         _array = array;
     }
 
     /**
+     * Returns the byte array that this token wraps.
      * @return the array
      */
     public byte[] getArray() {
         return _array;
     }
 
+    /**
+     * The byte array the token wraps. 
+     */
     private final byte[] _array;
 
 }

@@ -1,4 +1,4 @@
-/*
+/* ByteArrayTokenHandler converts ByteArrayToken to/from byte stream.
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -36,8 +36,22 @@ import ptserver.data.ByteArrayToken;
 ///////////////////////////////////////////////////////////////////
 //// ByteArrayTokenHandler
 
+/** ByteArrayTokenHandler converts ByteArrayToken to/from byte stream.
+ * 
+ *  @author Anar Huseynov
+ *  @version $Id$ 
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (ahuseyno)
+ *  @Pt.AcceptedRating Red (ahuseyno)
+ */
 public class ByteArrayTokenHandler implements TokenHandler<ByteArrayToken> {
 
+    /** Write the ByteArrayToken to the output array.
+     *  @param token Token to be converted to bytes.
+     *  @param outputStream The stream to write to.
+     *  @exception IOException If the stream cannot be written.
+     *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
+     */
     public void convertToBytes(ByteArrayToken token,
             DataOutputStream outputStream) throws IOException,
             IllegalActionException {
@@ -45,6 +59,13 @@ public class ByteArrayTokenHandler implements TokenHandler<ByteArrayToken> {
         outputStream.write(token.getArray());
     }
 
+    /** Read a ByteArrayToken from the input stream.
+     *  @param inputStream The stream to read from.
+     *  @param tokenType The type of token to be parsed.
+     *  @return The populated BooleanToken object.
+     *  @exception IOException If the stream cannot be read.
+     *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
+     */
     public ByteArrayToken convertToToken(DataInputStream inputStream,
             Class<? extends ByteArrayToken> tokenType) throws IOException,
             IllegalActionException {
