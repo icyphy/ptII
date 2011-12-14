@@ -73,6 +73,11 @@ public class QMTest {
                                     throws IllegalActionException {
                                 return new IntermediateReceiver(this, receiver);
                             }
+
+ 			    public Receiver getReceiver(Receiver receiver, IOPort port)
+                                    throws IllegalActionException {
+                                return new IntermediateReceiver(this, receiver, port);
+                            }
                         };
                         new Parameter(port, "qm", new ObjectToken(
                                 quantityManager));
