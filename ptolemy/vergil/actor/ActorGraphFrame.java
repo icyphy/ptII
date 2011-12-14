@@ -27,11 +27,14 @@
  */
 package ptolemy.vergil.actor;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -47,11 +50,15 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.EffigyFactory;
+import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.JFileChooserBugFix;
+import ptolemy.gui.PtFileChooser;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -549,7 +556,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
     ///////////////////////////////////////////////////////////////////
     //// ImportLibraryAction
 
-    /** An action to import a library of components. */
+    /** An action to import a library of components.
+     */
     private class ImportLibraryAction extends AbstractAction {
         /** Create a new action to import a library of components. */
         public ImportLibraryAction() {
@@ -561,42 +569,73 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         /**
          * Import a library by first opening a file chooser dialog and then
          * importing the specified library.
+         * See {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration, File)}
+         * for information on the file format.
          */
         public void actionPerformed(ActionEvent e) {
-            // NOTE: this code is mostly copied from Top.
-            JFileChooser chooser = new JFileChooser();
-            chooser.setDialogTitle("Select a library");
+            JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+            Color background = null;
+            PtFileChooser ptFileChooser = null;
+            try {
+                background = jFileChooserBugFix.saveBackground();
+                ptFileChooser = new PtFileChooser(ActorGraphFrame.this,
+                        "Select a library to import",
+                        JFileChooser.OPEN_DIALOG);
 
-            if (getLastDirectory() != null) {
-                chooser.setCurrentDirectory(getLastDirectory());
-            } else {
-                // The default on Windows is to open at user.home, which is
-                // typically an absurd directory inside the O/S installation.
-                // So we use the current directory instead.
-                // FIXME: This will throw a security exception in an applet?
-                String cwd = StringUtilities.getProperty("user.dir");
+                ptFileChooser.setCurrentDirectory(getLastDirectory());
 
-                if (cwd != null) {
-                    chooser.setCurrentDirectory(new File(cwd));
-                }
-            }
+                int result = ptFileChooser.showDialog(ActorGraphFrame.this, "Open");
 
-            int result = chooser.showOpenDialog(ActorGraphFrame.this);
-
-            if (result == JFileChooser.APPROVE_OPTION) {
-                try {
-                    File file = chooser.getSelectedFile();
-
-                    PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        File file = ptFileChooser.getSelectedFile().getCanonicalFile();
+                        PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
                             .getContainer();
-                    Configuration configuration = (Configuration) effigy
+                        Configuration configuration = (Configuration) effigy
                             .toplevel();
-                    UserActorLibrary.openLibrary(configuration, file);
+                        UserActorLibrary.openLibrary(configuration, file);
 
-                    setLastDirectory(chooser.getCurrentDirectory());
-                } catch (Throwable throwable) {
-                    MessageHandler.error("Library import failed.", throwable);
+                        setLastDirectory(ptFileChooser.getCurrentDirectory());
+                    } catch (Throwable throwable) {
+                        MessageHandler.error("Library import failed.", throwable);
+                    }
                 }
+            } finally {
+                jFileChooserBugFix.restoreBackground(background);
+            }
+            try {
+                // FIXME: A bug prevents the left hand actor tree from updating.
+                // vergil.tree.VisibleTreeModel has valueForPathChanged()
+                // defined as an empty method, which could be the cause.
+
+                // So, we get the effigyFactory from the configuration, find
+                // the ActorGraphTableau Factory and create a primary Tableau.
+
+                // FIXME: It might be possible to just instantiate an ActorGraphTableau Factory.
+
+                // Code similar to TableauFrame._addMenus()
+                final Configuration configuration = getConfiguration();
+                EffigyFactory effigyFactory = (EffigyFactory) configuration
+                    .getEntity("effigyFactory");
+                List factoryList = effigyFactory
+                        .entityList(EffigyFactory.class);
+                Iterator factories = factoryList.iterator();
+                Effigy effigy = null;
+
+                // Loop through the factories until createEffigy() returns a non-null
+                // Effigy.  See EffigyFactory.createEffigy().
+
+                while (factories.hasNext() && effigy == null ) {
+                    final EffigyFactory factory = (EffigyFactory) factories
+                            .next();
+                    if (factory instanceof ptolemy.actor.gui.PtolemyEffigy.Factory) {
+                        final ModelDirectory directory = configuration.getDirectory();
+                        effigy = factory.createEffigy(directory);
+                        configuration.createPrimaryTableau(effigy);
+                    }
+                }
+            } catch (Throwable throwable) {
+                MessageHandler.error("Failed to open model.", throwable);
             }
         }
     }

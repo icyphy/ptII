@@ -145,11 +145,31 @@ public class UserActorLibrary {
      *  Open the MoML file at the given location as a new library in
      *  the actor library for this application.
      *
-     *  An alternate class can be used to build the library if reading
+     *  <p>An alternate class can be used to build the library if reading
      *  the MoML is not desired.  The class must extend
      *  ptolemy.moml.LibraryBuilder and the _alternateLibraryBuilder
      *  property must be set with the 'value' set to the class that
-     *  extends LibraryBuilder.
+     *  extends LibraryBuilder.</p>
+     *
+     *  <p>A library of components is a .xml file that defines a MoML Class
+     *  that extends ptolemy.moml.EntityLibrary, for example, the following
+     *  file creates a library called "MyActors" that has an XYPlotter
+     *  in the library:</p>
+     *  <pre>
+     *  &lt;?xml version="1.0" standalone="no"?&gt;
+     *  &lt;!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+     *      "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+     *  &lt;class name="MyActors" extends="ptolemy.moml.EntityLibrary"&gt;
+     *    &lt;configure&gt;
+     *      &lt;group&gt;
+     *         &lt;entity name="XY Plotter" class="ptolemy.actor.lib.gui.XYPlotter"/&gt;
+     *      &lt;/group&gt;
+     *    &lt;/configure&gt;  
+     *  &lt;/class&gt;
+     *  </pre>
+     *  
+     *  <p>Note that one restriction is to see the new library, one must
+     *  open a new Graph viewer (New -&gt; Graph).</p>
      *
      *  @param configuration The configuration where we look for the
      *  actor library.
