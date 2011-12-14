@@ -58,7 +58,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  This director extends FSMDirector by supporting production and consumption
  of multiple tokens on a port in a firing. This director assumes that every
- state has exactly one refinement, with one exception. A state may have no
+ state has exactly one refinement, with one exception. 
+ <p>
+ A state may have no
  refinement if upon being entered, it has an outgoing transition with a guard
  that is true. This will be treated as a "transient state." Transient states
  can have preemptive and non-preemptive transitions, while non-transient
@@ -454,6 +456,71 @@ public class MultirateFSMDirector extends FSMDirector {
     public boolean postfire() throws IllegalActionException {
         boolean controllerPostfire = makeStateTransition();
         return _refinementPostfire && controllerPostfire && !_finishRequested;
+    }
+
+    /** Preinitialize all actors deeply contained by the container
+     *  of this director. Find the "non-transient initial state", which is the
+     *  first non-transient state reached from the initial state. Propagate the
+     *  consumption and production rates of the non-transient initial state out
+     *  to corresponding ports of the container of this director.
+     *  @exception IllegalActionException If there is no controller, or if the
+     *   non-transient initial state has no or more than one refinement, or if
+     *   the preinitialize() method of one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        // The following is just a check to make sure the top-level
+        // director is not a MultirateFSMDirector. It will throw
+        // an exception if it is.
+        _getEnclosingDomainActor();
+
+        super.preinitialize();
+
+        FSMActor controller = getController();
+        State initialState = controller.currentState();
+
+        TypedActor[] currentRefinements = initialState.getRefinement();
+
+        if ((currentRefinements == null) || (currentRefinements.length != 1)) {
+            throw new IllegalActionException(this,
+                    "Initial state is required to have exactly one refinement: "
+                            + initialState.getName());
+        }
+
+        TypedCompositeActor currentRefinement = (TypedCompositeActor) (currentRefinements[0]);
+        _updateInputTokenConsumptionRates(currentRefinement);
+        _updateOutputTokenProductionRates(currentRefinement);
+
+        // Declare reconfiguration constraints on the ports of the
+        // actor.  The constraints indicate that the ports are
+        // reconfigured whenever any refinement rate parameter of
+        // a corresponding port is reconfigured.  Additionally,
+        // all rate parameters are reconfigured every time the
+        // controller makes a state transition, unless the
+        // corresponding refinement rate parameters are constant,
+        // and have the same value.  (Note that the controller
+        // itself makes transitions less often if its executive director
+        // is an HDFFSMDirector, which is a subclass of MultirateFSMDirector.
+        ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
+                .getAnalysis(this);
+        CompositeActor model = (CompositeActor) getContainer();
+
+        for (Iterator ports = model.portList().iterator(); ports.hasNext();) {
+            IOPort port = (IOPort) ports.next();
+
+            if (!(port instanceof ParameterPort)) {
+                if (port.isInput()) {
+                    _declareReconfigurationDependencyForRefinementRateVariables(
+                            analysis, port, "tokenConsumptionRate");
+                }
+
+                if (port.isOutput()) {
+                    _declareReconfigurationDependencyForRefinementRateVariables(
+                            analysis, port, "tokenProductionRate");
+                    _declareReconfigurationDependencyForRefinementRateVariables(
+                            analysis, port, "tokenInitProduction");
+                }
+            }
+        }
     }
 
     /** Return a boolean to indicate whether a ModalModel under control
