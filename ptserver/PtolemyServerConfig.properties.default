@@ -10,3 +10,7 @@ SERVLET_PORT=8081
 LOG_FILENAME=PtolemyServer.log
 #absolute path to the directory where the model files are stored 
 MODELS_DIRECTORY=
+#period between pings
+PING_PERIOD = 1000
+#period between sending token batches
+PERIOD = 100

@@ -103,7 +103,7 @@ public class ProxyModelInfrastructure {
                 String message, Throwable exception);
 
         /**
-         * Notify the listener about server event received from the remote ProxyModelInfrastructure
+         * Notify the listener about server event received from the remote ProxyModelInfrastructure.
          * @param proxyModelInfrastructure The proxyModelInfrastructure that received the event
          * @param event The remote event
          */
@@ -170,6 +170,7 @@ public class ProxyModelInfrastructure {
     /** Add ProxyModelListener in order to listen for the model events such as
      *  model expiration or exception events.
      *  @param listener The listener to add.
+     *  @see ProxyModelInfrastructure#removeProxyModelListener(ProxyModelListener)
      */
     public void addProxyModelListener(ProxyModelListener listener) {
         if (_modelListeners.contains(listener)) {
@@ -349,6 +350,7 @@ public class ProxyModelInfrastructure {
 
     /** Unsubscribe the listener from the model events.
      *  @param listener The listener to remove.
+     *  @see ProxyModelInfrastructure.#addProxyModelListener(ProxyModelListener)
      */
     public void removeProxyModelListener(ProxyModelListener listener) {
         _modelListeners.remove(listener);

@@ -82,6 +82,7 @@ public class RemoteEventToken extends Token {
     }
 
     /** Initialize the token when an exception has occurred.
+     *  @param message The accompanying message to explain the event.
      *  @param exception Exception thrown by the active simulation.
      */
     public RemoteEventToken(String message, Throwable exception) {

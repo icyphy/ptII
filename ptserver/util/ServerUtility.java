@@ -172,6 +172,17 @@ public class ServerUtility {
         return false;
     }
 
+    /**
+     * Merge the model with layout.
+     * @param model The model to merge.
+     * @param layout The layout to merge.
+     * @param classesToMerge The classes that need to be merged.
+     * @param namedObjectsToMerge The named objects that need to be merged.
+     * @return the merged model.
+     * @exception IllegalActionException if there is a problem merging the model.
+     * @exception NameDuplicationException if there is a problem merging the model.
+     * @exception CloneNotSupportedException if there is a problem merging the model.
+     */
     public static CompositeEntity mergeModelWithLayout(CompositeEntity model,
             CompositeEntity layout,
             HashSet<Class<? extends Attribute>> classesToMerge,
@@ -188,6 +199,17 @@ public class ServerUtility {
         return model;
     }
 
+    /**
+     * Merge the model with layout.
+     * @param modelURL The URL to the model.
+     * @param layoutURL The URL to the layout.
+     * @param classesToMerge The classes that need to be merged.
+     * @param namedObjectsToMerge The named objects that need to be merged.
+     * @return the merged model.
+     * @exception IllegalActionException if there is a problem merging the model.
+     * @exception NameDuplicationException if there is a problem merging the model.
+     * @exception CloneNotSupportedException if there is a problem merging the model.
+     */
     public static CompositeEntity mergeModelWithLayout(URL modelURL,
             URL layoutURL, HashSet<Class<? extends Attribute>> classesToMerge,
             HashSet<String> namedObjectsToMerge) throws IllegalActionException,
@@ -198,6 +220,18 @@ public class ServerUtility {
                 namedObjectsToMerge);
     }
 
+    /**
+     * Merge the model with layout.
+     * @param modelURL The URL to the model.
+     * @param layoutURL The URL to the layout.
+     * @param classesToMerge The classes that need to be merged.
+     * @param namedObjectsToMerge The named objects that need to be merged.
+     * @return the merged model.
+     * @exception MalformedURLException if there is a problem merging the model.
+     * @exception IllegalActionException if there is a problem merging the model.
+     * @exception NameDuplicationException if there is a problem merging the model.
+     * @exception CloneNotSupportedException if there is a problem merging the model.
+     */
     public static CompositeEntity mergeModelWithLayout(String modelURL,
             String layoutURL,
             HashSet<Class<? extends Attribute>> classesToMerge,
@@ -241,6 +275,13 @@ public class ServerUtility {
         return fullName.substring(fullName.substring(1).indexOf(".") + 2);
     }
 
+    /**
+     * Validate the model and layout and return list of errors that might prevent
+     * merging.
+     * @param modelURL The URL of the model.
+     * @param layoutURL The URL of the layout.
+     * @return the list of the layout validation errors.
+     */
     public LayoutValidationErrors validateModelAndLayout(String modelURL,
             String layoutURL) {
         // Open the two models
@@ -384,7 +425,7 @@ public class ServerUtility {
      * @param targetModel The target model to be updated.
      * @param classesToMerge Contains the classes of attributes to be included when merging. If
      *  this is null, every attribute not present in the target model will be added.
-     * @param namedObjectsToMerge TODO
+     * @param namedObjectsToMerge The list of named objects to be merged
      *  @exception IllegalActionException If an attribute could not be added to the target model.
      * @throws CloneNotSupportedException 
      */

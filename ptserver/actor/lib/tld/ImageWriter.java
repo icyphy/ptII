@@ -67,11 +67,20 @@ public class ImageWriter extends TypedAtomicActor {
     public ImageWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _input = new TypedIOPort(this, "input", true, false);
-        _input.setTypeEquals(BaseType.GENERAL);
-        _output = new TypedIOPort(this, "ouput", false, true);
-        _output.setTypeEquals(BaseType.STRING);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setTypeEquals(BaseType.GENERAL);
+        output = new TypedIOPort(this, "ouput", false, true);
+        output.setTypeEquals(BaseType.STRING);
     }
+
+    /**
+     * The input port accepting byte array tokens.
+     */
+    public TypedIOPort input;
+    /**
+     * The output port outputting absolute path to a temp file.
+     */
+    public TypedIOPort output;
 
     /**
      * Read one ByteArrayToken from the input port, write the byte array to 
@@ -79,7 +88,7 @@ public class ImageWriter extends TypedAtomicActor {
      */
     @Override
     public boolean postfire() throws IllegalActionException {
-        ByteArrayToken token = (ByteArrayToken) _input.get(0);
+        ByteArrayToken token = (ByteArrayToken) input.get(0);
         ByteArrayInputStream stream = new ByteArrayInputStream(token.getArray());
 
         CompositeEntity container = (CompositeEntity) this.getContainer();
@@ -95,7 +104,7 @@ public class ImageWriter extends TypedAtomicActor {
                 f.write(val);
             }
             f.close();
-            _output.send(0, new StringToken(temp.getAbsolutePath()));
+            output.send(0, new StringToken(temp.getAbsolutePath()));
         } catch (IOException e) {
             throw new IllegalActionException(this, e,
                     "Problem writing temp file");
@@ -103,12 +112,4 @@ public class ImageWriter extends TypedAtomicActor {
         return super.postfire();
     }
 
-    /**
-     * The input port accepting byte array tokens.
-     */
-    private TypedIOPort _input;
-    /**
-     * The output port outputting absolute path to a temp file.
-     */
-    private TypedIOPort _output;
 }

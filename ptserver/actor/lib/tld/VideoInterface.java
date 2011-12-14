@@ -50,24 +50,24 @@ public interface VideoInterface extends PortablePlaceable {
     public void init(Video video);
 
     /**
-     * Callback for video.initialize()
+     * Callback for video.initialize().
      * @throws IllegalActionException if there is problem initializing.
      */
     public void initialize() throws IllegalActionException;
 
     /**
-     * Callback for video.stop()
+     * Callback for video.stop().
      */
     public void stop();
 
     /**
-     * Callback for video.fire()
+     * Callback for video.fire().
      * @throws IllegalActionException if there is problem initializing.
      */
     public void fire() throws IllegalActionException;
 
     /**
-     * Callback for video.updateBoundingBox(float, float, float, float)
+     * Callback for video.updateBoundingBox(float, float, float, float).
      * @param x1 top left x
      * @param y1 top left y
      * @param x2 bottom right x

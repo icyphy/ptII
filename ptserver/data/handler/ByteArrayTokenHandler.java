@@ -30,7 +30,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptserver.data.ByteArrayToken;
 
 ///////////////////////////////////////////////////////////////////
@@ -49,12 +48,11 @@ public class ByteArrayTokenHandler implements TokenHandler<ByteArrayToken> {
     /** Write the ByteArrayToken to the output array.
      *  @param token Token to be converted to bytes.
      *  @param outputStream The stream to write to.
-     *  @exception IOException If the stream cannot be written.
+     *  @throws IOException If the stream cannot be written.
      *  @see ptserver.data.handler.TokenHandler#convertToBytes(ptolemy.data.Token, java.io.DataOutputStream)
      */
     public void convertToBytes(ByteArrayToken token,
-            DataOutputStream outputStream) throws IOException,
-            IllegalActionException {
+            DataOutputStream outputStream) throws IOException {
         outputStream.writeInt(token.getArray().length);
         outputStream.write(token.getArray());
     }
@@ -67,8 +65,7 @@ public class ByteArrayTokenHandler implements TokenHandler<ByteArrayToken> {
      *  @see ptserver.data.handler.TokenHandler#convertToToken(java.io.DataInputStream, Class)
      */
     public ByteArrayToken convertToToken(DataInputStream inputStream,
-            Class<? extends ByteArrayToken> tokenType) throws IOException,
-            IllegalActionException {
+            Class<? extends ByteArrayToken> tokenType) throws IOException {
         int length = inputStream.readInt();
         byte[] array = new byte[length];
         inputStream.readFully(array);

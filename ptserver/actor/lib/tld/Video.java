@@ -62,11 +62,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class Video extends TypedAtomicActor implements PortablePlaceable {
 
     /**
-     * The output port for the video frames.
-     */
-    public TypedIOPort output;
-
-    /**
      * Create new instance of the Video.
      * @param container The parent container.
      * @param name The name of the actor.
@@ -80,6 +75,11 @@ public class Video extends TypedAtomicActor implements PortablePlaceable {
         output.setTypeEquals(BaseType.GENERAL);
         _interface.init(this);
     }
+
+    /**
+     * The output port for the video frames.
+     */
+    public TypedIOPort output;
 
     /**
      * Place the actor into provided container.

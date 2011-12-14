@@ -61,7 +61,7 @@ public class ProxyModelAdapter implements ProxyModelListener {
     }
 
     /**
-     * Notify the listener about server event received from the remote ProxyModelInfrastructure
+     * Notify the listener about server event received from the remote ProxyModelInfrastructure.
      * @param proxyModelInfrastructure The proxyModelInfrastructure that received the event
      * @param event The remote event
      */
