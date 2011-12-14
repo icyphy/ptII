@@ -61,7 +61,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 145.0]">
         </property>
     </entity>
-    <entity name="bb" class="ptolemy.actor.lib.Expression">
+    <entity name="bb" class="ptserver.matlab.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[126, 66, 205, 122]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
