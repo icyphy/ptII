@@ -28,6 +28,8 @@
 package ptolemy.vergil.actor;
 
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -173,6 +175,87 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         _debugMenuListener = null;
 
         super.dispose();
+    }
+
+    /** Import a library by first opening a file chooser dialog and
+     *  then importing the specified library.  See {@link
+     *  ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration,
+     *  File)} for information on the file format.  This method opens
+     *  up a new blank graph viewer so that the new library is
+     *  visible.
+     *  @param lastDirectory The last directory opened, usually the
+     *  value of getDirectory().
+     *  @param frame The frame of the owner of the file chooser.
+     *  @param configuration  The Ptolemy configuration.
+     *  @return the last directory opened.
+     */
+    public static File importLibrary(File lastDirectory, Frame frame, Configuration configuration) {
+        // This method is static so that other frames such as OntologySolverGraphFrame
+        // can use it.
+        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+        Color background = null;
+        PtFileChooser ptFileChooser = null;
+        try {
+            background = jFileChooserBugFix.saveBackground();
+            ptFileChooser = new PtFileChooser(frame,
+                    "Select a library to import",
+                    JFileChooser.OPEN_DIALOG);
+
+            ptFileChooser.setCurrentDirectory(lastDirectory);
+
+            int result = ptFileChooser.showDialog(frame, "Open");
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                try {
+                    File file = ptFileChooser.getSelectedFile().getCanonicalFile();
+                    //PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
+                    //    .getContainer();
+                    //Configuration configuration = (Configuration) effigy
+                    //    .toplevel();
+                    UserActorLibrary.openLibrary(configuration, file);
+                    lastDirectory = ptFileChooser.getCurrentDirectory();
+                } catch (Throwable throwable) {
+                    MessageHandler.error("Library import failed.", throwable);
+                }
+            }
+        } finally {
+            jFileChooserBugFix.restoreBackground(background);
+        }
+        try {
+            // FIXME: A bug prevents the left hand actor tree from updating.
+            // vergil.tree.VisibleTreeModel has valueForPathChanged()
+            // defined as an empty method, which could be the cause.
+
+            // So, we get the effigyFactory from the configuration, find
+            // the ActorGraphTableau Factory and create a primary Tableau.
+
+            // FIXME: It might be possible to just instantiate an ActorGraphTableau Factory.
+
+            // Code similar to TableauFrame._addMenus()
+            //final Cnfiguration configuration = getConfiguration();
+            EffigyFactory effigyFactory = (EffigyFactory) configuration
+                .getEntity("effigyFactory");
+            List factoryList = effigyFactory
+                .entityList(EffigyFactory.class);
+            Iterator factories = factoryList.iterator();
+            Effigy effigy = null;
+
+            // Loop through the factories until createEffigy() returns a non-null
+            // Effigy.  See EffigyFactory.createEffigy().
+
+            while (factories.hasNext() && effigy == null ) {
+                final EffigyFactory factory = (EffigyFactory) factories
+                    .next();
+                if (factory instanceof ptolemy.actor.gui.PtolemyEffigy.Factory) {
+                    final ModelDirectory directory = configuration.getDirectory();
+                    effigy = factory.createEffigy(directory);
+                    configuration.createPrimaryTableau(effigy);
+                }
+            }
+        } catch (Throwable throwable) {
+            MessageHandler.error("Failed to open model.", throwable);
+        }
+        return lastDirectory;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -573,70 +656,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
          * for information on the file format.
          */
         public void actionPerformed(ActionEvent e) {
-            JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
-            Color background = null;
-            PtFileChooser ptFileChooser = null;
-            try {
-                background = jFileChooserBugFix.saveBackground();
-                ptFileChooser = new PtFileChooser(ActorGraphFrame.this,
-                        "Select a library to import",
-                        JFileChooser.OPEN_DIALOG);
-
-                ptFileChooser.setCurrentDirectory(getLastDirectory());
-
-                int result = ptFileChooser.showDialog(ActorGraphFrame.this, "Open");
-
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    try {
-                        File file = ptFileChooser.getSelectedFile().getCanonicalFile();
-                        PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
-                            .getContainer();
-                        Configuration configuration = (Configuration) effigy
-                            .toplevel();
-                        UserActorLibrary.openLibrary(configuration, file);
-
-                        setLastDirectory(ptFileChooser.getCurrentDirectory());
-                    } catch (Throwable throwable) {
-                        MessageHandler.error("Library import failed.", throwable);
-                    }
-                }
-            } finally {
-                jFileChooserBugFix.restoreBackground(background);
-            }
-            try {
-                // FIXME: A bug prevents the left hand actor tree from updating.
-                // vergil.tree.VisibleTreeModel has valueForPathChanged()
-                // defined as an empty method, which could be the cause.
-
-                // So, we get the effigyFactory from the configuration, find
-                // the ActorGraphTableau Factory and create a primary Tableau.
-
-                // FIXME: It might be possible to just instantiate an ActorGraphTableau Factory.
-
-                // Code similar to TableauFrame._addMenus()
-                final Configuration configuration = getConfiguration();
-                EffigyFactory effigyFactory = (EffigyFactory) configuration
-                    .getEntity("effigyFactory");
-                List factoryList = effigyFactory
-                        .entityList(EffigyFactory.class);
-                Iterator factories = factoryList.iterator();
-                Effigy effigy = null;
-
-                // Loop through the factories until createEffigy() returns a non-null
-                // Effigy.  See EffigyFactory.createEffigy().
-
-                while (factories.hasNext() && effigy == null ) {
-                    final EffigyFactory factory = (EffigyFactory) factories
-                            .next();
-                    if (factory instanceof ptolemy.actor.gui.PtolemyEffigy.Factory) {
-                        final ModelDirectory directory = configuration.getDirectory();
-                        effigy = factory.createEffigy(directory);
-                        configuration.createPrimaryTableau(effigy);
-                    }
-                }
-            } catch (Throwable throwable) {
-                MessageHandler.error("Failed to open model.", throwable);
-            }
+            setLastDirectory(ActorGraphFrame.importLibrary(getLastDirectory(),
+                            ActorGraphFrame.this,
+                            getConfiguration()));
         }
     }
 

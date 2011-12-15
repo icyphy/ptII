@@ -60,10 +60,12 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.basic.IconController;
+
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
@@ -344,6 +346,7 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
     /** An action to import a library of components. */
     private class ImportLibraryAction extends AbstractAction {
+        // FIXME: This code is duplicated from ActorGraphFrame.
         /** Create a new action to import a library of components. */
         public ImportLibraryAction() {
             super("Import Library");
@@ -351,48 +354,19 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
         }
 
-        /** Import a library by first opening a file chooser dialog and then
-         *  importing the specified library.
-         *  @param e The event that is received to be reacted to.
+        /**
+         * Import a library by first opening a file chooser dialog and then
+         * importing the specified library.
+         * See {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration, File)}
+         * for information on the file format.
          */
         public void actionPerformed(ActionEvent e) {
-            // NOTE: this code is mostly copied from Top.
-            JFileChooser chooser = new JFileChooser();
-            chooser.setDialogTitle("Select a library");
-
-            if (getLastDirectory() != null) {
-                chooser.setCurrentDirectory(getLastDirectory());
-            } else {
-                // The default on Windows is to open at user.home, which is
-                // typically an absurd directory inside the O/S installation.
-                // So we use the current directory instead.
-                // FIXME: This will throw a security exception in an applet?
-                String cwd = StringUtilities.getProperty("user.dir");
-
-                if (cwd != null) {
-                    chooser.setCurrentDirectory(new File(cwd));
-                }
-            }
-
-            int result = chooser.showOpenDialog(OntologySolverGraphFrame.this);
-
-            if (result == JFileChooser.APPROVE_OPTION) {
-                try {
-                    File file = chooser.getSelectedFile();
-
-                    PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
-                            .getContainer();
-                    Configuration configuration = (Configuration) effigy
-                            .toplevel();
-                    UserActorLibrary.openLibrary(configuration, file);
-
-                    setLastDirectory(chooser.getCurrentDirectory());
-                } catch (Throwable throwable) {
-                    MessageHandler.error("Library import failed.", throwable);
-                }
-            }
+            setLastDirectory(ActorGraphFrame.importLibrary(getLastDirectory(),
+                            OntologySolverGraphFrame.this,
+                            getConfiguration()));
         }
     }
+
 
     ///////////////////////////////////////////////////////////////////
     //// InsertOntologyAction
@@ -628,7 +602,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             }
         }
     }
-
     ///////////////////////////////////////////////////////////////////
     //// SaveInLibraryAction
 
