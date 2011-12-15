@@ -149,8 +149,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
             _rightComponent.unregisterKeyboardAction(ks);
         }
         _insertOntologyAction = null;
-        _saveInLibraryAction = null;
-        _importLibraryAction = null;
         _instantiateAttributeAction = null;
         _instantiateEntityAction = null;
         _layoutAction = null;
@@ -172,9 +170,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         helpFile = "ptolemy/configs/doc/vergilOntologySolverEditorHelp.htm";
 
         _insertOntologyAction = new InsertOntologyAction();
-
-        _saveInLibraryAction = new SaveInLibraryAction();
-        _importLibraryAction = new ImportLibraryAction();
         _instantiateAttributeAction = new InstantiateAttributeAction();
         _instantiateEntityAction = new InstantiateEntityAction();
     }
@@ -190,10 +185,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         _menubar.add(_graphMenu);
         _addLayoutMenu(_graphMenu);
 
-        GUIUtilities.addHotKey(_getRightComponent(), _saveInLibraryAction);
-        GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
-        GUIUtilities.addHotKey(_getRightComponent(), _importLibraryAction);
-        GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
         GUIUtilities.addMenuItem(_graphMenu, _instantiateAttributeAction);
         GUIUtilities.addHotKey(_getRightComponent(),
                 _instantiateAttributeAction);
@@ -270,12 +261,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
     /** The ontology menu. */
     protected JMenu _ontologyMenu;
 
-    /** The action for saving the current model in a library. */
-    protected Action _saveInLibraryAction;
-
-    /** The action for importing a library of components. */
-    protected Action _importLibraryAction;
-
     /** The action for inserting an ontology into the ontology solver model. */
     protected Action _insertOntologyAction;
 
@@ -340,33 +325,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
     ///////////////////////////////////////////////////////////////////
     ////                  private inner classes                    ////
-
-    ///////////////////////////////////////////////////////////////////
-    //// ImportLibraryAction
-
-    /** An action to import a library of components. */
-    private class ImportLibraryAction extends AbstractAction {
-        // FIXME: This code is duplicated from ActorGraphFrame.
-        /** Create a new action to import a library of components. */
-        public ImportLibraryAction() {
-            super("Import Library");
-            putValue("tooltip", "Import a library into the Palette");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
-        }
-
-        /**
-         * Import a library by first opening a file chooser dialog and then
-         * importing the specified library.
-         * See {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration, File)}
-         * for information on the file format.
-         */
-        public void actionPerformed(ActionEvent e) {
-            setLastDirectory(ActorGraphFrame.importLibrary(getLastDirectory(),
-                            OntologySolverGraphFrame.this,
-                            getConfiguration()));
-        }
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     //// InsertOntologyAction
@@ -599,48 +557,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         context, moml);
                 context.requestChange(request);
-            }
-        }
-    }
-    ///////////////////////////////////////////////////////////////////
-    //// SaveInLibraryAction
-
-    /** An action to save the current model in a library. */
-    private class SaveInLibraryAction extends AbstractAction {
-        /** Create a new action to save a model in a library. */
-        public SaveInLibraryAction() {
-            super("Save In Library");
-            putValue("tooltip", "Save as a Component in Library");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
-        }
-
-        /** Create a new instance of the current model in the actor library of
-         *  the configuration.
-         *  @param e The event that is received to be reacted to.
-         */
-        public void actionPerformed(ActionEvent e) {
-            PtolemyEffigy effigy = (PtolemyEffigy) getTableau().getContainer();
-            NamedObj object = effigy.getModel();
-
-            if (object == null) {
-                return;
-            }
-
-            if (!(object instanceof Entity)) {
-                throw new KernelRuntimeException("Could not save in "
-                        + "library, '" + object + "' is not an Entity");
-            }
-
-            Entity entity = (Entity) object;
-            Configuration configuration = (Configuration) effigy.toplevel();
-            try {
-                UserActorLibrary.saveComponentInLibrary(configuration, entity);
-            } catch (Exception ex) {
-                // We catch exceptions here because this method used to
-                // not throw Exceptions, and we don't want to break
-                // compatibility.
-                MessageHandler.error("Failed to save \"" + entity.getName()
-                        + "\".");
             }
         }
     }
