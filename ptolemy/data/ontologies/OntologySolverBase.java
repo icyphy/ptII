@@ -43,7 +43,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Node;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.kernel.Configurer;
+import ptolemy.domains.modal.kernel.Configurer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

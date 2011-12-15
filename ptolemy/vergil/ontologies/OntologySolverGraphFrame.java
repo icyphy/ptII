@@ -37,30 +37,24 @@ import java.net.MalformedURLException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.actor.ActorGraphFrame.InstantiateAttributeAction;
+import ptolemy.vergil.actor.ActorGraphFrame.InstantiateEntityAction;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
@@ -170,8 +164,10 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
         helpFile = "ptolemy/configs/doc/vergilOntologySolverEditorHelp.htm";
 
         _insertOntologyAction = new InsertOntologyAction();
-        _instantiateAttributeAction = new InstantiateAttributeAction();
-        _instantiateEntityAction = new InstantiateEntityAction();
+        _instantiateAttributeAction = new InstantiateAttributeAction(this,
+                "ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute");
+        _instantiateEntityAction = new InstantiateEntityAction(this,
+                "ptolemy.data.ontologies.Ontology");
     }
 
     /** Create the menus that are used by this frame. It is essential that
@@ -275,15 +271,6 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The most recent class name for instantiating an attribute. */
-    private String _lastAttributeClassName = "ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute";
-
-    /** The most recent class name for instantiating an entity. */
-    private String _lastEntityClassName = "ptolemy.data.ontologies.Ontology";
-
-    /** The most recent location for instantiating a class. */
-    private String _lastLocation = "";
 
     /** Prototype ontology for rendering. */
     private static Location _prototypeOntology;
@@ -426,138 +413,5 @@ public class OntologySolverGraphFrame extends ExtendedGraphFrame implements
          *  selecting an ontology file.
          */
         private File _ontologyDirectory;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// InstantiateAttributeAction
-
-    /** An action to instantiate an attribute given a class name. */
-    private class InstantiateAttributeAction extends AbstractAction {
-        /** Create a new action to instantiate an entity. */
-        public InstantiateAttributeAction() {
-            super("Instantiate Attribute");
-            putValue("tooltip", "Instantiate an attribute by class name");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_A));
-        }
-
-        /** Instantiate a class by first opening a dialog to get a class name and
-         *  then issuing a change request.
-         *  @param e The event that is received to be reacted to.
-         */
-        public void actionPerformed(ActionEvent e) {
-            Query query = new Query();
-            query.setTextWidth(60);
-            query.addLine("class", "Class name", _lastAttributeClassName);
-
-            ComponentDialog dialog = new ComponentDialog(
-                    OntologySolverGraphFrame.this, "Instantiate Attribute",
-                    query);
-
-            if (dialog.buttonPressed().equals("OK")) {
-                // Get the associated Ptolemy model.
-                GraphController controller = getJGraph().getGraphPane()
-                        .getGraphController();
-                AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                        .getGraphModel();
-                NamedObj context = model.getPtolemyModel();
-
-                _lastAttributeClassName = query.getStringValue("class");
-
-                // Find the root for the instance name.
-                String rootName = _lastAttributeClassName;
-                int period = rootName.lastIndexOf(".");
-
-                if ((period >= 0) && (rootName.length() > (period + 1))) {
-                    rootName = rootName.substring(period + 1);
-                }
-
-                // Use the center of the screen as a location.
-                Rectangle2D bounds = getVisibleCanvasRectangle();
-                double x = bounds.getWidth() / 2.0;
-                double y = bounds.getHeight() / 2.0;
-
-                // Use the "auto" namespace group so that name collisions
-                // are automatically avoided by appending a suffix to the name.
-                String moml = "<group name=\"auto\"><property name=\""
-                        + rootName + "\" class=\"" + _lastAttributeClassName
-                        + "\"><property name=\"_location\" "
-                        + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
-                        + ", " + y + "\"></property></property></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, moml);
-                context.requestChange(request);
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// InstantiateEntityAction
-
-    /** An action to instantiate an entity given a class name. */
-    private class InstantiateEntityAction extends AbstractAction {
-        /** Create a new action to instantiate an entity. */
-        public InstantiateEntityAction() {
-            super("Instantiate Entity");
-            putValue("tooltip", "Instantiate an entity by class name");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
-        }
-
-        /** Instantiate a class by first opening a dialog to get a class name and
-         *  then issuing a change request.
-         *  @param e The event that is received to be reacted to.
-         */
-        public void actionPerformed(ActionEvent e) {
-            Query query = new Query();
-            query.setTextWidth(60);
-            query.addLine("class", "Class name", _lastEntityClassName);
-            query.addLine("location", "Location (URL)", _lastLocation);
-
-            ComponentDialog dialog = new ComponentDialog(
-                    OntologySolverGraphFrame.this, "Instantiate Entity", query);
-
-            if (dialog.buttonPressed().equals("OK")) {
-                // Get the associated Ptolemy model.
-                GraphController controller = getJGraph().getGraphPane()
-                        .getGraphController();
-                AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
-                        .getGraphModel();
-                NamedObj context = model.getPtolemyModel();
-
-                _lastEntityClassName = query.getStringValue("class");
-                _lastLocation = query.getStringValue("location");
-
-                // Find the root for the instance name.
-                String rootName = _lastEntityClassName;
-                int period = rootName.lastIndexOf(".");
-
-                if ((period >= 0) && (rootName.length() > (period + 1))) {
-                    rootName = rootName.substring(period + 1);
-                }
-
-                // Use the center of the screen as a location.
-                Rectangle2D bounds = getVisibleCanvasRectangle();
-                double x = bounds.getWidth() / 2.0;
-                double y = bounds.getHeight() / 2.0;
-
-                // If a location is given, construct MoML to
-                // specify a "source".
-                String source = "";
-
-                if (!(_lastLocation.trim().equals(""))) {
-                    source = " source=\"" + _lastLocation.trim() + "\"";
-                }
-
-                // Use the "auto" namespace group so that name collisions
-                // are automatically avoided by appending a suffix to the name.
-                String moml = "<group name=\"auto\"><entity name=\"" + rootName
-                        + "\" class=\"" + _lastEntityClassName + "\"" + source
-                        + "><property name=\"_location\" "
-                        + "class=\"ptolemy.kernel.util.Location\" value=\"" + x
-                        + ", " + y + "\"></property></entity></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        context, moml);
-                context.requestChange(request);
-            }
-        }
     }
 }
