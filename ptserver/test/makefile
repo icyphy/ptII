@@ -49,7 +49,6 @@ TCL_SRCS = \
 
 JSRCS = \
 	JavaSESysOutActor.java \
-	QMTest.java \
 	StringAttributeWidget.java \
 	SysOutActor.java \
 	SysOutActorInterface.java
