@@ -77,14 +77,20 @@ public class DocBuilder extends Attribute {
         super(container, name);
         cleanFirst = new Parameter(this, "cleanFirst");
         cleanFirst.setTypeEquals(BaseType.BOOLEAN);
-        cleanFirst.setExpression("false");
+        
+        cleanFirst.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
     /** If true, then clean before building documentation.  The default
-     *  value is false.
+     *  value is true because if a user is adding an actor, then the 
+     *  codeDoc/tree.html, codeDoc/ptolemy/actor/lib/Ramp.xml, 
+     *  and codeDoc/ptolemy/actor/lib/RampIdx.xml files might already
+     *  exist.  It is safer to force a clean each time because the
+     *  makefile does not accurately capture the dependencies between
+     *  .java sources and .html, .xml and Idx.xml files.
      */
     public Parameter cleanFirst;
 
