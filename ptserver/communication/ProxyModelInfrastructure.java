@@ -170,7 +170,7 @@ public class ProxyModelInfrastructure {
     /** Add ProxyModelListener in order to listen for the model events such as
      *  model expiration or exception events.
      *  @param listener The listener to add.
-     *  @see ProxyModelInfrastructure#removeProxyModelListener(ProxyModelListener)
+     *  @see #removeProxyModelListener(ProxyModelListener)
      */
     public void addProxyModelListener(ProxyModelListener listener) {
         if (_modelListeners.contains(listener)) {
@@ -350,7 +350,7 @@ public class ProxyModelInfrastructure {
 
     /** Unsubscribe the listener from the model events.
      *  @param listener The listener to remove.
-     *  @see ProxyModelInfrastructure.#addProxyModelListener(ProxyModelListener)
+     *  @see #addProxyModelListener(ProxyModelListener)
      */
     public void removeProxyModelListener(ProxyModelListener listener) {
         _modelListeners.remove(listener);
