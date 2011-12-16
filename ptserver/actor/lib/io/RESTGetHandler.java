@@ -231,7 +231,7 @@ public class RESTGetHandler extends TypedAtomicActor {
      * @return  A list of all named objects corresponding to the request
      * contained by the resource parameter.  Can be empty.  Will return an empty
      * list if the request is malformed.
-     * @exception  If the resource is improperly formatted
+     * @exception IllegalActionException If the resource is improperly formatted
      */
     protected List<NamedObj> findResources() throws IllegalActionException {
         Vector<NamedObj> containers = new Vector<NamedObj>();
@@ -351,11 +351,13 @@ public class RESTGetHandler extends TypedAtomicActor {
      * containedObject begins with an underscore, then the name is not
      * added to the list.</p>
      *
+     * @param obj The Ptolemy object to list contained resources for.
      * @return A list of URIs for all contained objects
      * @exception IllegalActionException If the ignoreNamedObjsStartingWithUnderscores
      * parmeter cannot be read.
      */
-    protected List<String> listContainedResources(NamedObj obj) throws IllegalActionException {
+    protected List<String> listContainedResources(NamedObj obj)
+            throws IllegalActionException {
         ArrayList<String> containedResources = new ArrayList();
 
         // The URI of an object is its full name with forward slashes instead
@@ -366,8 +368,9 @@ public class RESTGetHandler extends TypedAtomicActor {
         Iterator objIterator = obj.containedObjectsIterator();
         while (objIterator.hasNext()) {
             NamedObj nextObj = (NamedObj) objIterator.next();
-            if (! (((BooleanToken) ignoreNamedObjsStartingWithUnderscores.getToken()).booleanValue()
-                            && nextObj.getName().startsWith("_"))) {
+            if (!(((BooleanToken) ignoreNamedObjsStartingWithUnderscores
+                    .getToken()).booleanValue() && nextObj.getName()
+                    .startsWith("_"))) {
                 containedResources.add("http:/"
                         + nextObj.getFullName().replace(".", "/"));
             }
