@@ -286,6 +286,11 @@ public class Configurer extends JPanel implements CloseListener {
                                 if (isVisible(_object, parameter)) {
                                     int derivedLevel = ((NamedObj) parameter)
                                             .getDerivedLevel();
+                                    // This has the side effect of
+                                    // setting to false the flag that
+                                    // indicates whether the value of
+                                    // this object overrides some
+                                    // inherited value.
                                     ((NamedObj) parameter)
                                             .setDerivedLevel(derivedLevel);
                                 }
