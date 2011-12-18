@@ -23,9 +23,9 @@
     </servlet>
     
     <!-- Instructs the Dispatcher servlet to intercept requests for any 
-    	 helloptolemy URL.  (Other options are e.g. /*.html or /*.jsp or 
+    	 websensor URL.  (Other options are e.g. /*.html or /*.jsp or 
     	 similar  
-    	 **Note - see helloptolemy-servlet for mapping of a handler for static
+    	 **Note - see websensor-servlet for mapping of a handler for static
     	 resources such as .js files or images -->
     <servlet-mapping>
     	<servlet-name>websensor</servlet-name> 

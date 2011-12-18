@@ -38,15 +38,19 @@ pageEncoding="ISO-8859-1"%>
 
 <!-- Load jQuery and jQueryMobile script stylesheets and libraries.  
 	 Note that jQuery must come before jQueryMobile 
-	 These statements load them from online, but it is also fine to load from
-	 a local copy.  A local copy is included for reference - both the 
-	 human-readable version and the .min.js version for smaller footprint --> 
-<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.css" />
-<script src="http://code.jquery.com/jquery-1.7.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.0rc2/jquery.mobile-1.0rc2.min.js"></script>
+	 Use online version to avoid problems rendering icons.  The files are 
+	 included in the repository for reference.  The local version could be used
+	 so that an internet connection is not required if testing from localhost.
+	 Both the human-readable version and the .min.js version for smaller 
+	 footprint are in the repository, though the web app only needs one version 
+	 to run.
+	 Note that jQuery 1.7 is available, but there are currently problems with
+	 that version and jQueryMobile.  jQuery 1.6.4 is the latest version 
+	 supported. --> 
 
-<!-- Load custom Javascript functions -->
-<script type-"text/javascript" src="/websensor/static/js/themes/std/view/sensorReading.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
 
 <title>Websensor </title>
 
@@ -56,6 +60,7 @@ pageEncoding="ISO-8859-1"%>
 </head>
 
 <body>
+<!-- data-theme, see: http://jquerymobile.com/test/docs/content/content-themes.html -->
 <div data-role="page"> 
 	<div data-role="header">
 		<!-- The 'type' variable is added by the controller -->

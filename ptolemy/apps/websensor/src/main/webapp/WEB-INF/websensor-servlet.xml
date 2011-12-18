@@ -46,7 +46,7 @@
 	     That saves time, since otherwise Spring would require a bean to be 
 	     defined for each one of those in this file -->
     <mvc:annotation-driven /> 
-    <context:component-scan base-package="org.berkeley.websensor.controller" />  
+    <context:component-scan base-package="org.ptolemy.websensor.controller" />  
     
     <!--  Map all requests for files in the /static/ directory to the 
     	  ResourceHttpRequestHandler
@@ -101,19 +101,19 @@
    
    <!-- Declare individual sensors as beans 
    		Set the properties of the sensors using the setter methods -->
-   <bean id="temperatureSensor" class="org.berkeley.websensor.lib.Sensor">
+   <bean id="temperatureSensor" class="org.ptolemy.websensor.lib.Sensor">
    		<property name="interval" value="1 hour" />
    		<property name="type" value="Temperature" />
    		<property name="unit" value="degC" />
    </bean>
    
-   <bean id="humiditySensor" class="org.berkeley.websensor.lib.Sensor">
+   <bean id="humiditySensor" class="org.ptolemy.websensor.lib.Sensor">
    		<property name="interval" value="1 hour" />
    		<property name="type" value="Humidity" />
    		<property name="unit" value="%" />
    </bean>
    
-   <bean id="pressureSensor" class="org.berkeley.websensor.lib.Sensor">
+   <bean id="pressureSensor" class="org.ptolemy.websensor.lib.Sensor">
    		<property name="interval" value="1 hour" />
    		<property name="type" value="Pressure" />
    		<property name="unit" value="mbar" />
@@ -121,7 +121,7 @@
    
    <!-- Declare the SensorController and load the sensor beans into it -->
      
-   <bean id="sensorController" class="org.berkeley.websensor.controller.SensorController">
+   <bean id="sensorController" class="org.ptolemy.websensor.controller.SensorController">
    <!--  The name "sensors" here matches the setter in the class, setSensors(Sensors[]) -->	
    		<property name="sensors"> 
    			<list>
