@@ -1,4 +1,4 @@
-A# Ptolemy II makefile
+# Ptolemy II makefile
 #
 # @Version: $Id$
 #
