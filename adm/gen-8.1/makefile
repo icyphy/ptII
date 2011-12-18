@@ -1433,6 +1433,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/hoc \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/string \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java/modular \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci \
