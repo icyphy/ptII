@@ -41,6 +41,7 @@ import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.mo
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.data.BooleanToken;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -102,7 +103,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
 
         List<IOPort> inputPorts = _myController.inputPortList();
         for (int i = 0; i < inputPorts.size(); i++) {
-            IOPort inputPort = inputPorts.get(i);
+            TypedIOPort inputPort = (TypedIOPort)inputPorts.get(i);
             if (!inputPort.isOutput()) {
                 generateTransferInputsCode(inputPort, code);
             }
@@ -138,7 +139,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         for (int i = 0; i < outputPorts.size(); i++) {
             IOPort outputPort = outputPorts.get(i);
 
-            generateTransferOutputsCode(outputPort, code);
+            generateTransferOutputsCode((TypedIOPort)outputPort, code);
 
         }
         code.append(getCodeGenerator()
@@ -184,22 +185,29 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
          *  @param code The string buffer that the generated code is appended to.
          *  @exception IllegalActionException If thrown while transferring tokens.
          */
-    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
+    public void generateTransferInputsCode(TypedIOPort inputPort, StringBuffer code)
             throws IllegalActionException {
 
         //FIXME Figure out how to deal with multiports
         List<IOPort> connectedPorts = inputPort.sinkPortList();
         for (int i = 0; i < connectedPorts.size(); i++) {
-            IOPort t = connectedPorts.get(i);
+            TypedIOPort t = (TypedIOPort)connectedPorts.get(i);
             if (t.isInput()) {
-                code.append(_getName(t.getFullName()) + " = ");
-                //code.append(getCodeGenerator().generateVariableName(t));
+                code.append(_getName(t,
+                                StringUtilities.sanitizeName(t.getFullName()))
+                            + " = ");
             }
         }
         String name = inputPort.getFullName();
         int i = name.indexOf("_Controller");
         name = name.substring(0, i) + name.substring(i + 12);
-        code.append(_getName(inputPort.getFullName()) + " = " + _getName(name)
+        code.append(//_getName(inputPort.getFullName()) + " = "
+		    // FIXME: Defaulting to buffer size 1.
+                _getName(inputPort,
+                        StringUtilities.sanitizeName(inputPort.getFullName()))
+                + " = "
+                + _getName(inputPort,
+                        StringUtilities.sanitizeName(name))
                 + "; ");
         //code.append(getCodeGenerator().generateVariableName(inputPort) + " = " + _getName(name)
         //        + "; ");
@@ -212,7 +220,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+    public void generateTransferOutputsCode(TypedIOPort outputPort, StringBuffer code)
             throws IllegalActionException {
 
         NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
@@ -235,12 +243,11 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                 //code.append("@" + name);
                 //code.append(getReference(name) + " = ");
                 //code.append(getReference("@" + name));
-                code.append(_compositeActorAdapter.getReference(name, false,
-                        executive) + " = ");
-                code.append(_compositeActorAdapter.getReference("@" + name,
-                        false, executive));
-                code.append(";" + _eol);
-
+                code.append(
+                        _compositeActorAdapter.getReference(name, false, executive)
+                        + " = "
+                        + _compositeActorAdapter.getReference("@" + name, false, executive)
+                        + ";");
             }
         }
 
@@ -306,8 +313,13 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                         String destination = source.substring(0, l)
                                 + "__Controller" + source.substring(k);
                         //update controller outputs
-                        code.append(_eol + destination + " = " + source + ";"
-                                + _eol);
+                        code.append(_eol
+                                // destination
+                                + _getName((TypedIOPort)outputPort, "_" + destination)
+                                + " = "
+                                //+ source
+                                + _getName((TypedIOPort)outputPort, "_" + source)
+                                + ";" + _eol);
                     }
 
                 }
@@ -332,7 +344,7 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
     *  @exception IllegalActionException If thrown while reading or writing
     *   offsets, or getting the buffer size, or if the rate is less than 0.
     */
-    protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
+    protected void _updatePortOffset(TypedIOPort port, StringBuffer code, int rate)
             throws IllegalActionException {
         if (_debugging) {
             _debug("_updatePortOffset in Modal controller called");
@@ -350,15 +362,20 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
 
         for (int i = 0; i < rec.length; i++) {
             for (int j = 0; j < rec[i].length; j++) {
-                str = rec[i][j].toString();
-                str = str.substring(str.indexOf("{") + 2, str.lastIndexOf("."));
-                str = str.replace('.', '_');
-
+                //str = rec[i][j].toString();
+                //str = str.substring(str.indexOf("{") + 2, str.lastIndexOf("."));
+                //str = str.replace('.', '_');
+                code.append(getCodeGenerator()
+                        .comment("MC: updatePortOffsets: " + rec[i][j].getContainer().getFullName()));
+                String portName = StringUtilities.sanitizeName(rec[i][j].getContainer().getFullName());
+                str = _getName((TypedIOPort)rec[i][j].getContainer(),
+                        portName);
                 code.append(str + " = ");
             }
         }
 
-        code.append(portHelper.getDisplayName() + ";" + _eol);
+        //code.append(portHelper.getDisplayName() + ";" + _eol);
+        code.append(_getName(port, StringUtilities.sanitizeName(port.getFullName())) + ";" + _eol);
     }
 
     /** Update the offsets of the buffers associated with the ports connected
@@ -493,10 +510,17 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                 .comment("End of create controller variables"));
     }
 
-    private String _getName(String name) {
-        String newName = name.substring(1);
-        newName = newName.replace(".", "_");
-        return newName;
+    private String _getName(TypedIOPort port, String portName) throws IllegalActionException {
+        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
+                .booleanValue()) {
+            String newName = portName.substring(1);
+            newName = newName.replace(".", "_");
+            return newName;
+        } else {
+            // FIXME: Defaulting to buffer size 1.
+            return getCodeGenerator().generatePortName(port, portName.substring(1),
+                    1);
+        }
     }
 
     /**

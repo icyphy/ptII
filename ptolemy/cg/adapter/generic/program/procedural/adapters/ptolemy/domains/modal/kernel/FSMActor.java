@@ -35,6 +35,7 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -51,6 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMActor
@@ -266,15 +268,20 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                         }
                         getCodeGenerator().getAdapter(fsmActor);
                     }
+
                     ParseTreeCodeGenerator parseTreeCodeGenerator = getTemplateParser()
                             .getParseTreeCodeGenerator();
+
                     parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
                             _scope);
 
                     codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
 
-                    //FIXME: For some reason a call to evaluateParseTree and generateFireCode appends (false == true)
-                    // instead of modelError == true so the code below will temporarily take it's place
+                    //FIXME: For some reason a call to
+                    // evaluateParseTree and generateFireCode appends
+                    // (false == true) instead of modelError == true
+                    // so the code below will temporarily take it's
+                    // place
                     /** A set that contains all variables in the model whose values can be
                      *  changed during execution.
                      */
@@ -636,6 +643,19 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
 
+    private String _getName(TypedIOPort port, String portName) throws IllegalActionException {
+        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
+                .booleanValue()) {
+            String newName = portName.substring(1);
+            newName = newName.replace(".", "_");
+            return newName;
+        } else {
+            // FIXME: Defaulting to buffer size 1.
+            return getCodeGenerator().generatePortName(port, portName.substring(1),
+                    1);
+        }
+    }
+
     /** This class implements a scope, which is used to generate the
      *  parsed expressions in target language.
      */
@@ -663,7 +683,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
 
             // try input port
             while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort) inputPorts.next();
+                TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
 
                 StringBuffer code = new StringBuffer();
                 boolean found = false;
@@ -671,7 +691,8 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 // try input port name only
                 if (name.equals(generateSimpleName(inputPort))) {
                     found = true;
-                    code.append(generateName(inputPort));
+                    //code.append(generateName(inputPort));
+                    code.append(_getName(inputPort, StringUtilities.sanitizeName(inputPort.getFullName())));
                     if (inputPort.isMultiport()) {
                         code.append("[0]");
                     }
@@ -794,6 +815,7 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                     .getPortScope().identifierSet();
         }
     }
+
 
     private static class OutgoingRelations implements TransitionRetriever {
         // Findbugs wants this to be static.
