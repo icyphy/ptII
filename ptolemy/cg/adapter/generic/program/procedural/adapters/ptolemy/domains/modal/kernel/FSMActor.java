@@ -84,40 +84,6 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate the fire code of the associated FSMActor.  It provides
-     *  generateTransitionCode(StringBuffer, TransitionRetriever) with an
-     *  anonymous class implementing a method which returns an iterator of
-     *  all outgoing transitions of the current state.
-     *
-     *  @return The generated fire code.
-     *  @exception IllegalActionException If thrown while generating
-     *  firing code.
-     */
-    protected String _generateFireCode() throws IllegalActionException {
-
-        StringBuffer code = new StringBuffer();
-        code.append(super._generateFireCode());
-        code.append(getCodeGenerator()
-                .comment("FSMActor._generateFireCode()"));
-
-//        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
-
-//         // FIXME: not handling multirate inputs yet.
-//         // FIXME: how should we handle in-out ports?
-//         for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
-//             for (int channel = 0; !input.isOutput()
-//                     && channel < input.getWidth(); channel++) {
-
-//                 code.append("$get(" + generateSimpleName(input) + ", "
-//                         + channel + ")" + _eol);
-//             }
-//         }
-
-        generateTransitionCode(code, new OutgoingRelations());
-
-        return processCode(code.toString());
-    }
-
     /** Generate the initialize code of the associated FSMActor. It
      *  generates code for initializing current state with initial
      *  state, and initializing current configuration of the container
@@ -166,10 +132,6 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
             codeStream.appendCodeBlock("defineState", args);
         }
         return processCode(codeStream.toString());
-    }
-
-    private Object _generateStateConstantLabel(State state) {
-        return "STATE_" + generateName(state);
     }
 
     /** Generate code for making transition. It generates code for both choice
@@ -610,6 +572,40 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Generate the fire code of the associated FSMActor.  It provides
+     *  generateTransitionCode(StringBuffer, TransitionRetriever) with an
+     *  anonymous class implementing a method which returns an iterator of
+     *  all outgoing transitions of the current state.
+     *
+     *  @return The generated fire code.
+     *  @exception IllegalActionException If thrown while generating
+     *  firing code.
+     */
+    protected String _generateFireCode() throws IllegalActionException {
+
+        StringBuffer code = new StringBuffer();
+        code.append(super._generateFireCode());
+        code.append(getCodeGenerator()
+                .comment("FSMActor._generateFireCode()"));
+
+//        ptolemy.domains.modal.kernel.FSMActor fsmActor = (ptolemy.domains.modal.kernel.FSMActor) getComponent();
+
+//         // FIXME: not handling multirate inputs yet.
+//         // FIXME: how should we handle in-out ports?
+//         for (IOPort input : (List<IOPort>) fsmActor.inputPortList()) {
+//             for (int channel = 0; !input.isOutput()
+//                     && channel < input.getWidth(); channel++) {
+
+//                 code.append("$get(" + generateSimpleName(input) + ", "
+//                         + channel + ")" + _eol);
+//             }
+//         }
+
+        generateTransitionCode(code, new OutgoingRelations());
+
+        return processCode(code.toString());
+    }
+
     /** Generate code for updating current state of this FSMActor. The
      *  states are numbered according to the order in the list
      *  returned by entityList().
@@ -641,20 +637,8 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
     protected PortScope _scope = new PortScope();
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods.                    ////
+    ////                     inner classes                         ////
 
-    private String _getName(TypedIOPort port, String portName) throws IllegalActionException {
-        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
-                .booleanValue()) {
-            String newName = portName.substring(1);
-            newName = newName.replace(".", "_");
-            return newName;
-        } else {
-            // FIXME: Defaulting to buffer size 1.
-            return getCodeGenerator().generatePortName(port, portName.substring(1),
-                    1);
-        }
-    }
 
     /** This class implements a scope, which is used to generate the
      *  parsed expressions in target language.
@@ -691,8 +675,10 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
                 // try input port name only
                 if (name.equals(generateSimpleName(inputPort))) {
                     found = true;
-                    //code.append(generateName(inputPort));
-                    code.append(_getName(inputPort, StringUtilities.sanitizeName(inputPort.getFullName())));
+                    // FIXME: Defaulting to buffer size 1.
+                    code.append(getCodeGenerator().generatePortName(inputPort,
+                                    StringUtilities.sanitizeName(inputPort.getFullName()).substring(1),
+                                    1));
                     if (inputPort.isMultiport()) {
                         code.append("[0]");
                     }
@@ -814,6 +800,14 @@ public class FSMActor extends NamedProgramCodeGeneratorAdapter {
             return ((ptolemy.domains.modal.kernel.FSMActor) getComponent())
                     .getPortScope().identifierSet();
         }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private Object _generateStateConstantLabel(State state) {
+        return "STATE_" + generateName(state);
     }
 
 

@@ -193,24 +193,26 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
         for (int i = 0; i < connectedPorts.size(); i++) {
             TypedIOPort t = (TypedIOPort)connectedPorts.get(i);
             if (t.isInput()) {
-                code.append(_getName(t,
-                                StringUtilities.sanitizeName(t.getFullName()))
+                // FIXME: Defaulting to buffer size 1.
+                code.append(getCodeGenerator().generatePortName(t,
+                                StringUtilities.sanitizeName(t.getFullName()).substring(1),
+                                1)
                             + " = ");
             }
         }
         String name = inputPort.getFullName();
         int i = name.indexOf("_Controller");
         name = name.substring(0, i) + name.substring(i + 12);
-        code.append(//_getName(inputPort.getFullName()) + " = "
-		    // FIXME: Defaulting to buffer size 1.
-                _getName(inputPort,
-                        StringUtilities.sanitizeName(inputPort.getFullName()))
+        code.append( // FIXME: Defaulting to buffer size 1.
+                getCodeGenerator().generatePortName(inputPort,
+                        StringUtilities.sanitizeName(inputPort.getFullName()).substring(1),
+                        1)
                 + " = "
-                + _getName(inputPort,
-                        StringUtilities.sanitizeName(name))
+                // FIXME: Defaulting to buffer size 1.
+                + getCodeGenerator().generatePortName(inputPort,
+                        StringUtilities.sanitizeName(name).substring(1),
+                        1)
                 + "; ");
-        //code.append(getCodeGenerator().generateVariableName(inputPort) + " = " + _getName(name)
-        //        + "; ");
 
     }
 
@@ -314,11 +316,15 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                                 + "__Controller" + source.substring(k);
                         //update controller outputs
                         code.append(_eol
-                                // destination
-                                + _getName((TypedIOPort)outputPort, "_" + destination)
+                                // FIXME: Defaulting to buffer size 1.
+                                + getCodeGenerator().generatePortName((TypedIOPort)outputPort,
+                                        destination,
+                                        1)
                                 + " = "
-                                //+ source
-                                + _getName((TypedIOPort)outputPort, "_" + source)
+                                // FIXME: Defaulting to buffer size 1.
+                                + getCodeGenerator().generatePortName((TypedIOPort)outputPort,
+                                        source,
+                                        1)
                                 + ";" + _eol);
                     }
 
@@ -368,14 +374,19 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
                 code.append(getCodeGenerator()
                         .comment("MC: updatePortOffsets: " + rec[i][j].getContainer().getFullName()));
                 String portName = StringUtilities.sanitizeName(rec[i][j].getContainer().getFullName());
-                str = _getName((TypedIOPort)rec[i][j].getContainer(),
-                        portName);
+                // FIXME: Defaulting to buffer size 1.
+                str = getCodeGenerator().generatePortName((TypedIOPort)rec[i][j].getContainer(),
+                        portName.substring(1),
+                        1);
                 code.append(str + " = ");
             }
         }
 
         //code.append(portHelper.getDisplayName() + ";" + _eol);
-        code.append(_getName(port, StringUtilities.sanitizeName(port.getFullName())) + ";" + _eol);
+        // FIXME: Defaulting to buffer size 1.
+        code.append(getCodeGenerator().generatePortName(port,
+                        StringUtilities.sanitizeName(port.getFullName()).substring(1),
+                        1) + ";" + _eol);
     }
 
     /** Update the offsets of the buffers associated with the ports connected
@@ -508,19 +519,6 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
 
         code.append(getCodeGenerator()
                 .comment("End of create controller variables"));
-    }
-
-    private String _getName(TypedIOPort port, String portName) throws IllegalActionException {
-        if (!((BooleanToken) getCodeGenerator().variablesAsArrays.getToken())
-                .booleanValue()) {
-            String newName = portName.substring(1);
-            newName = newName.replace(".", "_");
-            return newName;
-        } else {
-            // FIXME: Defaulting to buffer size 1.
-            return getCodeGenerator().generatePortName(port, portName.substring(1),
-                    1);
-        }
     }
 
     /**

@@ -590,8 +590,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /**
      * Generate sanitized name for the given port.
-     * This method is used when the {@link #variablesAsArrays}
-     * parameter is true.
+     * If the {@link #variablesAsArrays} parameter is true, then
+     * a reference into an array of the appropriate type (ports_int[],
+     * ports_double[] etc.) is returned.  Otherwise, the name of
+     * the port with any underscores converted to periods is returned.
      * See {@link ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel.SDFDirector#generateInitializeCode()} for where the arrays are initialized.
      * @param port The port for which the name is generated.
      * @param portName The sanitized name of the port.
@@ -600,6 +602,16 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     public String generatePortName(TypedIOPort port, String portName,
             int bufferSize) {
+
+        try {
+            if (!((BooleanToken) variablesAsArrays.getToken())
+                    .booleanValue()) {
+                return portName.replace(".", "_");
+            }
+        } catch (IllegalActionException ex) {
+            // Ignore
+            ex.printStackTrace();
+        }
 
         // Generate the port name as an element in array.
         // This is done to make the generate java file easier to compile.
@@ -694,7 +706,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
 
 
-    /** Generate sanitized name for the given port.
+    /** Generate sanitized name for the given Ptolemy IOPort.
+     * This method returns an array reference in to an array of Ptolemy
+     * ports.  This method is used with AutoAdapter, most code
+     * uses generatePortName() above.
      * This method is used when the {@link #variablesAsArrays}
      * parameter is true.
      * @param container The actor that contains the port, which may be null.
