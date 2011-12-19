@@ -1797,6 +1797,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         _overloadedFunctions = new CodeStream(functionDir + "add.j", this);
         _overloadedFunctions.parse(functionDir + "equals.j");
+        _overloadedFunctions.parse(functionDir + "modulo.j");
         _overloadedFunctions.parse(functionDir + "multiply.j");
         _overloadedFunctions.parse(functionDir + "divide.j");
         _overloadedFunctions.parse(functionDir + "subtract.j");

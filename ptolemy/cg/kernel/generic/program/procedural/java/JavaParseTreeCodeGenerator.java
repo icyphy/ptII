@@ -1235,7 +1235,17 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                     result.append("/" + _childCode);
                 }
             } else if (operator.kind == PtParserConstants.MODULO) {
-                result.append("%" + _childCode);
+            	 if (type != null) {
+                     result = new StringBuffer("$modulo_"
+                             + _codeGenType(resultType) + "_"
+                             + _codeGenType(type) + "(" + result.toString()
+                             + ", " + _childCode + ")");
+
+                     resultType = resultType.divide(type);
+
+                 } else {
+                     result.append("%" + _childCode);
+                 }
             }
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
