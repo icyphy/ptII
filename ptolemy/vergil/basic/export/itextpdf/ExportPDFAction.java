@@ -121,8 +121,8 @@ public class ExportPDFAction extends AbstractAction {
      *  This uses the iText library at http://itextpdf.com/.
      *
      *  <p>If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns true
-     *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
-     *  {@link #_saveAsJFileChooserComponent()} is used.</p>
+     *  then a java.awt.FileDialog is used, otherwise a javax.swing.JFileChooser
+     *  is used.</p>
      */
     private void _exportPDF() {
         Dimension size = _frame.getContentSize();

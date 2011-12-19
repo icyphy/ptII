@@ -102,7 +102,7 @@ public class ShadowHighlighter extends BasicHighlighter {
      *  @param figure The figure, ignored in this method.
      *  @return A new instance of the ShadowHighlighter class.
      */
-    public FigureDecorator newInstance(Figure f) {
+    public FigureDecorator newInstance(Figure figure) {
         return new ShadowHighlighter(getPaint(), getHalo(), getComposite(), getStroke());
     }
 

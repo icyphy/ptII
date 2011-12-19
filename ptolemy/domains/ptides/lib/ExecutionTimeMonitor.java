@@ -107,7 +107,9 @@ public class ExecutionTimeMonitor extends TypedAtomicActor implements
     /** The event is displayed.
      *  @param actor The actor where the event happened. This parameter can be
      *     null if the event is TRANSFEROUTPUT or TRANSFERINPUT.
-     *  @param time The physical time when the event happened.
+     *  @param oracleTime The oracle time when the event happened.
+     *  @param physicalTime The physical time when the event happened.
+     *  @param modelTime The model time when the event happened.
      *  @param scheduleEvent The type of the event.
      */
     public void event(final Actor actor, double oracleTime,

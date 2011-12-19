@@ -2339,9 +2339,8 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Send an execution time event to all listeners.
      *  @param actor Actor that produced an execution time event.
-     *  @param time Time when the event occurred.
      *  @param event Type of the event.
-     * @throws IllegalActionException If cannot get physical time.
+     *  @exception IllegalActionException If the physical time cannot be determined.
      */
     protected void _sendExecutionTimeEvent(Actor actor,
             ExecutionEventType event) throws IllegalActionException {
@@ -2860,8 +2859,8 @@ public class PtidesBasicDirector extends DEDirector {
     }
     
     /** Check that actual deviceDelay is not bigger than the bound.
-     *  @param Port to be checked.
-     *  @exception IllegalActionException Thrown if parameters of port cannot be read.
+     *  @param port The Port to be checked.
+     *  @exception IllegalActionException If the parameters of the port cannot be read.
      */
     private void _checkDeviceDelay(TypedIOPort port) throws IllegalActionException {
         Double deviceDelay = _getDoubleParameterValue(port, "deviceDelay");

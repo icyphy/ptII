@@ -951,7 +951,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     
     /** Get the directory that was last accessed by this window.
      *  @return The directory last accessed.
-     *  @see #setLastDirectory(FIle)
+     *  @see #setLastDirectory(File)
      */
     public File getLastDirectory() {
         // NOTE: This method is necessary because we wish to have

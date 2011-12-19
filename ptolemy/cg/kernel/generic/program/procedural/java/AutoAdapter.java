@@ -2192,7 +2192,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Generate sanitized name for the given port.
-     * This method is used when the {@link #variablesAsArrays}
+     * This method is used when the
+     * {@link ptolemy.cg.kernel.generic.program.ProgramCodeGenerator#variablesAsArrays}
      * parameter is true.
      * @param portName The sanitized name of the port
      * @return The name of the port as an array element.
@@ -2215,7 +2216,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Generate a name for the given actor.
-     * This method is used when the {@link #variablesAsArrays}
+     * This method is used when the
+     * {@link ptolemy.cg.kernel.generic.program.ProgramCodeGenerator#variablesAsArrays}
      * parameter is true.
      * @param container The container of the TypedCompositeActor
      * @param actorName The sanitized name of the typedCompositeActor

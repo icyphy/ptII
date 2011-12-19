@@ -862,8 +862,8 @@ public class TypedIOPort extends IOPort implements Typeable {
     ////                         private variables                 ////
 
     /** The resolved type of the port. The value of this variable is
-     * set by {@link #initialize(Object)}, {@link #setTypeEquals()},
-     * {@link #setValue(Object)}.
+     * set when the InequalityTerm methods initialize(Object), setTypeEquals(),
+     * and setValue(Object) are called.
      */
     protected Type _resolvedType = BaseType.UNKNOWN;
 

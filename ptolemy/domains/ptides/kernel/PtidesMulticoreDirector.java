@@ -1061,7 +1061,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
     
     /** Set the value of the 'delayOffset' parameter for an input port.
      * @param port Input port.
-     * @param delatOffset Delay offset for safe-to-process analysis.
+     * @param delayOffset Delay offset for safe-to-process analysis.
      * @exception IllegalActionException If cannot set parameter.
      */
     protected void _setDelayOffset(TypedIOPort port, Double delayOffset) 
@@ -1086,7 +1086,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
     
     /** Set the value of the 'relativeDeadline' parameter for an input port.
      * @param port Input port.
-     * @param delatOffset Relative deadline for input port.
+     * @param delayOffset Relative deadline for input port.
      * @exception IllegalActionException If cannot set parameter.
      */
     protected void _setRelativeDeadline(TypedIOPort port, 

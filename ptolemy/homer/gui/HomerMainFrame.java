@@ -506,7 +506,7 @@ public class HomerMainFrame extends JFrame {
 
     /** Return if the object argument is a label widget.
      *  A label widget is an object that is an Attribute that contains
-     *  a {@link ptolemy.kernel.HomerMainFrame#TAB_NODE} and the
+     *  a {@link ptolemy.kernel.Constants#TAB_NODE} and the
      *  value of the TAB_NODE is the name of the container of the
      *  object.
      *  @param object The object to be checked.
