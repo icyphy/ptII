@@ -71,8 +71,8 @@ import java.util.Stack;
 //// PtidesMulticoreDirector
 /**
  *  This director simulates the execution of the Ptides programming model
- *  on multicore platforms. The goal is to provide a framework for evaluation
- *  of different multicore execution strategies.
+ *  on multicore execution platforms. The goal is to provide a framework for 
+ *  evaluation of different multicore execution strategies.
  *
  *  @author Michael Zimmer
  *  @version $Id$
@@ -100,6 +100,14 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
    
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
+    
+    /** If true, the dependency check between the tags of two events for 
+     * safe-to-process analysis will be reduced to a binary check for either
+     * a finite or infinite minimum model time delay path. This is more
+     * conservative, but would reduce data storage overhead on execution
+     * platforms.
+     */
+    public Parameter binaryDependencyCheck;
     
     /** The number of cores available for event processing (actor firing). */
     public Parameter coresForEventProcessing;
@@ -498,6 +506,49 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
         return true;
     }
     
+    /** Return true if the 'source' event cannot causally affect the 'event'
+     * event. This method will consider the 'considerTriggerPorts' and
+     * 'binaryDependencyCheck' parameters.
+     * @param source Event which may causally affect event being checked.
+     * @param event Event being checked.
+     * @return True if 'source' cannot causally affect 'event'.
+     * @exception IllegalActionException If cannot read parameter.
+     */
+    protected boolean _dependencyCheck(PtidesEvent source, PtidesEvent event) 
+            throws IllegalActionException {
+        
+        boolean binary = ((BooleanToken)binaryDependencyCheck.
+                getToken()).booleanValue();
+        
+        // Find minimum model time delay path to input port group.
+        SuperdenseDependency path = 
+            SuperdenseDependency.OPLUS_IDENTITY;
+        for(TypedIOPort groupPort : _inputPortGroups.get(
+                (TypedIOPort)event.ioPort())) {
+            path = (SuperdenseDependency) path.oPlus(
+                    _getSuperdenseDependencyPair(
+                    (TypedIOPort) source.ioPort(), 
+                    groupPort, true));
+        }
+        
+        if(binary) {
+            // Return false if finite dependency exists.
+            if(path != SuperdenseDependency.OPLUS_IDENTITY) {          
+                return false;
+            }
+        } else {
+            // Return false if event can arrive with earlier or equal tag.
+            int compare = source.timeStamp().add(
+                    path.timeValue()).compareTo(event.timeStamp());
+            if(compare < 0 || ((compare == 0) && (
+                    (source.microstep() + path.indexValue())
+                     <= event.microstep()))) {
+                return false;
+            }
+        }
+        return true;
+        
+    }
     /** Put a pure event into the event queue to schedule the given actor to
      *  fire at the specified timestamp.
      *  @param actor Actor to be fired.
@@ -1014,19 +1065,36 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
                 // all have their destination port in same input port group.
                 PtidesEvent processingEvent = 
                     processingEvents.events.get(0);
-                for(TypedIOPort groupPort : _inputPortGroups.get(
-                        (TypedIOPort)event.ioPort())) {
-                    if(_getSuperdenseDependencyPair(
-                            (TypedIOPort) processingEvent.ioPort(), 
-                            groupPort, true) !=
-                            SuperdenseDependency.OPLUS_IDENTITY) {
-                        // Assume scheduler is run again when event finishes
-                        // processing, so no need to request refiring.
-                        return false;
-                    }
+                if(!_dependencyCheck(processingEvent, event)) {
+                    return false;
                 }
-                
             }  
+        }
+        
+
+        if(!((BooleanToken)considerTriggerPorts.
+                getToken()).booleanValue()) {
+            return true;
+        }
+        // If non-trigger ports are ignored, an event which causally affects 
+        // this event may have failed safe to process, so this event must not 
+        // be safe to process.
+        // Put events in EDF order <absolute deadline, tag, microstep, depth>.
+        List<PtidesEvent> EDF = new ArrayList<PtidesEvent>(_eventQueue.size());
+        for(int i = 0; i < _eventQueue.size(); i++) {
+            EDF.add(((PtidesListEventQueue)_eventQueue).get(i));
+        }        
+        Collections.sort(EDF, new EDFComparator());
+        for(PtidesEvent earlierEvent : EDF) {
+            // If no earlier events causally affect the event, then safe
+            // to process.
+            if(earlierEvent.equals(event)) {
+                return true;
+            }
+            if(!_dependencyCheck(earlierEvent, event)) {
+                return false;
+            }
+
         }
         
         return true;
@@ -1173,10 +1241,16 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
     /** Initialize parameters to default values. */
     private void _initParameters() {    
         try {
+            
             coresForEventProcessing = 
                     new Parameter(this, "coresForEventProcessing");
-            coresForEventProcessing.setExpression("4");
+            coresForEventProcessing.setExpression("2");
             coresForEventProcessing.setTypeEquals(BaseType.INT); 
+            
+            binaryDependencyCheck = 
+                    new Parameter(this, "binaryDependencyCheck");
+            binaryDependencyCheck.setExpression("false");
+            binaryDependencyCheck.setTypeEquals(BaseType.BOOLEAN);
             
             considerTriggerPorts = 
                     new Parameter(this, "considerTriggerPorts");
