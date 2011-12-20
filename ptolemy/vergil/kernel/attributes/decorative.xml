@@ -38,6 +38,7 @@
 <property name="Arc" class="ptolemy.vergil.kernel.attributes.ArcAttribute"/>
 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute"/>
 <property name="_shadowColor" class="ptolemy.actor.gui.ColorAttribute">
+  <display name="ShadowColor"/>
   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
   <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}"/>
