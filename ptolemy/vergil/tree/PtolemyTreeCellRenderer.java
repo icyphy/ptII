@@ -54,6 +54,26 @@ import ptolemy.vergil.icon.XMLIcon;
  @Pt.AcceptedRating Red (johnr)
  */
 public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
+    
+    /** Construct a tree cell renderer that shows the expression value
+     *  of any object that implements {@link Settable}.
+     */
+    public PtolemyTreeCellRenderer() {
+        this(true);
+    }
+    
+    /** Construct a tree cell renderer that shows the expression value
+     *  of any object that implements {@link Settable}.
+     *  @param showSettableValues If true, show the expression value
+     *   for any object that implements {@link Settable}.
+     */
+    public PtolemyTreeCellRenderer(boolean showSettableValues) {
+        _showSettableValues = showSettableValues;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public method                     ////
+
     /** Create a new rendition for the given object.  The rendition is
      *  the default provided by the base class with the text set to
      *  the name of the node (if it is an object implementing Nameable).
@@ -84,10 +104,12 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 
             if (object instanceof Settable) {
                 StringBuffer buffer = new StringBuffer();
-                buffer.append(object.getName());
-                buffer.append("=");
-                buffer.append(((Settable) object).getExpression());
-                component.setText(buffer.toString().replace('\n', ' '));
+                buffer.append(object.getDisplayName());
+                if (_showSettableValues) {
+                    buffer.append("=");
+                    buffer.append(((Settable) object).getExpression().replace('\n', ' '));
+                }
+                component.setText(buffer.toString());
             } else {
                 component.setText(object.getName());
             }
@@ -101,9 +123,18 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 // a small icon description is it rendered in the tree.
                 List iconList = object.attributeList(EditorIcon.class);
 
+                // jkillian removed the first condition (iconList.size() > 0), saying:
+                // Removed iconList.size() > 0 condition from the if-clause because
+                // it cached a blank image when an icon wasn't defined and then always
+                // entered the block in subsequent repaints.  This caused the icon
+                // to disappear in Homer when dragging attributes onto the canvas.
+                // Doing so didn't seem to affect the tree display in Vergil.
+                //
+                // The last statement is wrong. The result is that icons do not
+                // display in the library. Hence, I've reversed the change. EAL 12/15/11.
                 if ((iconList.size() > 0)
-                        || (object.getAttribute("_iconDescription") != null)
-                        || (object.getAttribute("_smallIconDescription") != null)) {
+                      || (object.getAttribute("_iconDescription") != null)
+                      || (object.getAttribute("_smallIconDescription") != null)) {
                     // NOTE: this code is similar to that in IconController.
                     EditorIcon icon = null;
 
@@ -159,4 +190,10 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 
         return component;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variable                  ////
+
+    /** Indicator of whether to show expression values of Settables. */
+    private boolean _showSettableValues;
 }
