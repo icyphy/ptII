@@ -162,173 +162,173 @@ public class VariableDelaySwitch extends BasicSwitch {
         // IP header =20 bytes
         
         
-        _switchFabricQueue = new TreeSet();
+        //        _switchFabricQueue = new TreeSet();
     }
     
-        public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
-        if (attribute == channelBandwidth) {
-            int value = ((IntToken) channelBandwidth.getToken())
-                    .intValue();
-            if (value <= 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have negative or zero channel bandwidth: " + value);
-            }
-            _channelBandwidth = value;
-        } else if (attribute == unitTokenSize) {
-            int value = ((IntToken) unitTokenSize.getToken())
-                    .intValue();
-            if (value <= 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have negative or zero packet size: " + value);
-            }
-            _unitTokenSize = value;
-        } else if( attribute == allowPDV){
-            boolean value = ((BooleanToken) allowPDV
-                    .getToken()).booleanValue();
-            _allowPDV = value;
-        } else if( attribute == allowPriority){
-            boolean value = ((BooleanToken) allowPriority
-                    .getToken()).booleanValue();
-            _allowPriority = value;
-        }
-        super.attributeChanged(attribute);
-    }
+//         public void attributeChanged(Attribute attribute)
+//         throws IllegalActionException {
+//         if (attribute == channelBandwidth) {
+//             int value = ((IntToken) channelBandwidth.getToken())
+//                     .intValue();
+//             if (value <= 0) {
+//                 throw new IllegalActionException(this,
+//                         "Cannot have negative or zero channel bandwidth: " + value);
+//             }
+//             _channelBandwidth = value;
+//         } else if (attribute == unitTokenSize) {
+//             int value = ((IntToken) unitTokenSize.getToken())
+//                     .intValue();
+//             if (value <= 0) {
+//                 throw new IllegalActionException(this,
+//                         "Cannot have negative or zero packet size: " + value);
+//             }
+//             _unitTokenSize = value;
+//         } else if( attribute == allowPDV){
+//             boolean value = ((BooleanToken) allowPDV
+//                     .getToken()).booleanValue();
+//             _allowPDV = value;
+//         } else if( attribute == allowPriority){
+//             boolean value = ((BooleanToken) allowPriority
+//                     .getToken()).booleanValue();
+//             _allowPriority = value;
+//         }
+//         super.attributeChanged(attribute);
+//     }
     
-    /** Move tokens from the input queue to the switch fabric, move tokens
-     *  from the switch fabric queue to the output queues and send tokens from the
-     *  output queues to the target receivers. When moving tokens between
-     *  queues the appropriate delays are considered.
-     *  @exception IllegalActionException If the token cannot be sent to
-     *  target receiver.
-     */
-    public void fire() throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
-        // In a continuous domain this actor could be fired before any token has
-        // been received; _nextTimeFree could be null.
-        if (_nextFireTime != null && currentTime.compareTo(_nextFireTime) == 0) {
+//     /** Move tokens from the input queue to the switch fabric, move tokens
+//      *  from the switch fabric queue to the output queues and send tokens from the
+//      *  output queues to the target receivers. When moving tokens between
+//      *  queues the appropriate delays are considered.
+//      *  @exception IllegalActionException If the token cannot be sent to
+//      *  target receiver.
+//      */
+//     public void fire() throws IllegalActionException {
+//         Time currentTime = getDirector().getModelTime();
+//         // In a continuous domain this actor could be fired before any token has
+//         // been received; _nextTimeFree could be null.
+//         if (_nextFireTime != null && currentTime.compareTo(_nextFireTime) == 0) {
 
-            // move tokens from input queue to switch fabric
-            double _priorityDelay = 0.0;
-            double _packetSizeDelay = 0.0;
+//             // move tokens from input queue to switch fabric
+//             double _priorityDelay = 0.0;
+//             double _packetSizeDelay = 0.0;
             
             
-            TimedEvent event;
-            for (int i = 0; i < _numberOfPorts; i++) {
-                if (_inputTokens.get(i).size() > 0) {
-                    event = _inputTokens.get(i).first();
-                    if (event.timeStamp.compareTo(currentTime) == 0) {
-                        Time lastTimeStamp = currentTime;
-                        if (_switchFabricQueue.size() > 0) {
-                            lastTimeStamp = _switchFabricQueue.last().timeStamp;
-                        }
-                        // TIMING MODIFICATIONS //
-                        Object[] _tokenContent = (Object[])event.contents;
+//             TimedEvent event;
+//             for (int i = 0; i < _numberOfPorts; i++) {
+//                 if (_inputTokens.get(i).size() > 0) {
+//                     event = _inputTokens.get(i).first();
+//                     if (event.timeStamp.compareTo(currentTime) == 0) {
+//                         Time lastTimeStamp = currentTime;
+//                         if (_switchFabricQueue.size() > 0) {
+//                             lastTimeStamp = _switchFabricQueue.last().timeStamp;
+//                         }
+//                         // TIMING MODIFICATIONS //
+//                         Object[] _tokenContent = (Object[])event.contents;
                         
-                        RecordToken TCPFrame = (RecordToken)_tokenContent[1];
+//                         RecordToken TCPFrame = (RecordToken)_tokenContent[1];
                         
-                        // actual content
-                        RecordToken tokens = (RecordToken)TCPFrame.get("tokens");
+//                         // actual content
+//                         RecordToken tokens = (RecordToken)TCPFrame.get("tokens");
                         
-                        RecordToken TCPHeader = (RecordToken)TCPFrame.get("TCPlabel");
+//                         RecordToken TCPHeader = (RecordToken)TCPFrame.get("TCPlabel");
                         
-                        if( tokens == null || TCPHeader == null){
-                            throw new IllegalActionException(this, "Token structure must"
-                                    + "contain a tokens and a TCPHeader field");
-                        }
+//                         if( tokens == null || TCPHeader == null){
+//                             throw new IllegalActionException(this, "Token structure must"
+//                                     + "contain a tokens and a TCPHeader field");
+//                         }
                         
-                        /* priority is carried as a part of the options field
-                        of the TCP header */
-                        IntToken recordPriority = ((IntToken)TCPHeader.get("options"));
-                        //IntToken value = (IntToken)record.get("priority");
-                        // get priority value
-                        // subtract the 'priority' token from the record.
-                        int numberOfTokens = tokens.length();
+//                         /* priority is carried as a part of the options field
+//                         of the TCP header */
+//                         IntToken recordPriority = ((IntToken)TCPHeader.get("options"));
+//                         //IntToken value = (IntToken)record.get("priority");
+//                         // get priority value
+//                         // subtract the 'priority' token from the record.
+//                         int numberOfTokens = tokens.length();
                         
-                        double packetLength = numberOfTokens*_unitTokenSize + TCPHeaderSize;
-                        // get priority value
-                        if(recordPriority == null){
-                            // disallow priority
-                            _allowPriority = false;
-                        }
-                        // apply priority related delay
-                        if( true == _allowPDV)
-                        {
+//                         double packetLength = numberOfTokens*_unitTokenSize + TCPHeaderSize;
+//                         // get priority value
+//                         if(recordPriority == null){
+//                             // disallow priority
+//                             _allowPriority = false;
+//                         }
+//                         // apply priority related delay
+//                         if( true == _allowPDV)
+//                         {
                             
-                                if ( packetLength > 0.0){
+//                                 if ( packetLength > 0.0){
                                     
-                                    _packetSizeDelay = packetLength/_channelBandwidth;
-                                }
-                                else
-                                {
-                                    _packetSizeDelay = 0.0;
-                                }
-                        } 
-                        else{
-                                _packetSizeDelay = 0;
-                        }
+//                                     _packetSizeDelay = packetLength/_channelBandwidth;
+//                                 }
+//                                 else
+//                                 {
+//                                     _packetSizeDelay = 0.0;
+//                                 }
+//                         } 
+//                         else{
+//                                 _packetSizeDelay = 0;
+//                         }
                         
-                       if(true == _allowPriority){
-                           int _priority = recordPriority.intValue();
-                           _priorityDelay = _priority/1000.0;
-                           //_priorityDelay = ((DoubleToken)recordPriority.divide(new DoubleToken(10.0))).doubleValue();
-                       }
-                       else{
-                          //
-                       }
-                        _switchFabricQueue.add(new TimedEvent(lastTimeStamp
-                                .add(_switchFabricDelay+_priorityDelay+_packetSizeDelay), event.contents));
-                        _inputTokens.get(i).remove(event);
-                    }
-                }
-            }
+//                        if(true == _allowPriority){
+//                            int _priority = recordPriority.intValue();
+//                            _priorityDelay = _priority/1000.0;
+//                            //_priorityDelay = ((DoubleToken)recordPriority.divide(new DoubleToken(10.0))).doubleValue();
+//                        }
+//                        else{
+//                           //
+//                        }
+//                         _switchFabricQueue.add(new TimedEvent(lastTimeStamp
+//                                 .add(_switchFabricDelay+_priorityDelay+_packetSizeDelay), event.contents));
+//                         _inputTokens.get(i).remove(event);
+//                     }
+//                 }
+//             }
 
-            // move tokens from switch fabric to output queue
+//             // move tokens from switch fabric to output queue
 
-            if (_switchFabricQueue.size() > 0) {
-                event = _switchFabricQueue.first();
-                if (event.timeStamp.compareTo(currentTime) == 0) {
-                    Object[] output = (Object[]) event.contents;
-                    Receiver receiver = (Receiver) output[0];
+//             if (_switchFabricQueue.size() > 0) {
+//                 event = _switchFabricQueue.first();
+//                 if (event.timeStamp.compareTo(currentTime) == 0) {
+//                     Object[] output = (Object[]) event.contents;
+//                     Receiver receiver = (Receiver) output[0];
 
-                    Actor actor;
-                    if (receiver instanceof IntermediateReceiver) {
-                        actor = (Actor) ((IntermediateReceiver) receiver).quantityManager;
-                    } else {
-                        actor = (Actor) receiver.getContainer().getContainer();
-                    }
-                    int actorPort = _actorPorts.get(actor);
-                    Time lastTimeStamp = currentTime;
-                    if (_outputTokens.get(actorPort).size() > 0) {
-                        lastTimeStamp = _outputTokens.get(actorPort).last().timeStamp;
-                    }
-                    _outputTokens.get(actorPort).add(
-                            new TimedEvent(lastTimeStamp
-                                    .add(_outputBufferDelay), event.contents));
-                    _switchFabricQueue.remove(event);
-                }
-            }
+//                     Actor actor;
+//                     if (receiver instanceof IntermediateReceiver) {
+//                         actor = (Actor) ((IntermediateReceiver) receiver).quantityManager;
+//                     } else {
+//                         actor = (Actor) receiver.getContainer().getContainer();
+//                     }
+//                     int actorPort = _actorPorts.get(actor);
+//                     Time lastTimeStamp = currentTime;
+//                     if (_outputTokens.get(actorPort).size() > 0) {
+//                         lastTimeStamp = _outputTokens.get(actorPort).last().timeStamp;
+//                     }
+//                     _outputTokens.get(actorPort).add(
+//                             new TimedEvent(lastTimeStamp
+//                                     .add(_outputBufferDelay), event.contents));
+//                     _switchFabricQueue.remove(event);
+//                 }
+//             }
 
-            // send tokens to target receiver
+//             // send tokens to target receiver
 
-            for (int i = 0; i < _numberOfPorts; i++) {
-                if (_outputTokens.get(i).size() > 0) {
-                    event = _outputTokens.get(i).first();
-                    if (event.timeStamp.compareTo(currentTime) == 0) {
-                        Object[] output = (Object[]) event.contents;
-                        Receiver receiver = (Receiver) output[0];
-                        Token token = (Token) output[1];
-                        _sendToReceiver(receiver, token);
-                        _outputTokens.get(i).remove(event);
-                    }
-                }
-            }
+//             for (int i = 0; i < _numberOfPorts; i++) {
+//                 if (_outputTokens.get(i).size() > 0) {
+//                     event = _outputTokens.get(i).first();
+//                     if (event.timeStamp.compareTo(currentTime) == 0) {
+//                         Object[] output = (Object[]) event.contents;
+//                         Receiver receiver = (Receiver) output[0];
+//                         Token token = (Token) output[1];
+//                         _sendToReceiver(receiver, token);
+//                         _outputTokens.get(i).remove(event);
+//                     }
+//                 }
+//             }
 
-            if (_debugging) {
-                _debug("At time " + currentTime + ", completing send");
-            }
-        }
-    }
+//             if (_debugging) {
+//                 _debug("At time " + currentTime + ", completing send");
+//             }
+//         }
+//     }
    
 
     
