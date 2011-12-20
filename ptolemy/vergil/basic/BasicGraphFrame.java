@@ -112,8 +112,8 @@ import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.ImageExportable;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.MemoryCleaner;
-import ptolemy.gui.PtGUIUtilities;
 import ptolemy.gui.PtFileChooser;
+import ptolemy.gui.PtGUIUtilities;
 import ptolemy.gui.Query;
 import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentEntity;
@@ -140,7 +140,6 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLVariableChecker;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.export.HTMLExportable;
 import ptolemy.vergil.icon.DesignPatternIcon;
 import ptolemy.vergil.kernel.AttributeNodeModel;
@@ -2237,7 +2236,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // The ptinyViewer configuration uses this.
         if ((CompositeEntity) configuration.getEntity("actor library") != null) {
             _libraryModel = new VisibleTreeModel(_topLibrary);
-            _library = new PTree(_libraryModel);
+            // Second arguments prevents parameter values from showing in the library.
+            _library = new PTree(_libraryModel, false);
             _library.setRootVisible(false);
             _library.setBackground(BACKGROUND_COLOR);
 

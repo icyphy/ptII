@@ -53,8 +53,8 @@ import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 
 /**
- This class provides a tree view of a ptolemy model, showing only the
- entities of the model.  The class supports drag-and-drop.
+ This class provides a tree view of a ptolemy model.
+ The class supports drag-and-drop.
 
  @author Steve Neuendorffer and Edward A. Lee, contributor: Sean Riddle
  @version $Id$
@@ -64,13 +64,24 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
  */
 public class PTree extends JTree {
     /** Create a new tree that is rooted at the given entity.
+     *  This constructor creates a tree that shows the expression
+     *  value for any object that implements {@link Settable}.
      *  @param model The model that is the root of the tree.
      */
     public PTree(TreeModel model) {
+        this(model, true);
+    }
+
+    /** Create a new tree that is rooted at the given entity.
+     *  @param model The model that is the root of the tree.
+     *  @param showSettableValues If true, show the expression value
+     *   for any object that implements {@link Settable}.
+     */
+    public PTree(TreeModel model, boolean showSettableValues) {
         // The use of EntityTreeModel here is what restricts the
         // tree to displaying only entities.
         super(model);
-        setCellRenderer(new PtolemyTreeCellRenderer());
+        setCellRenderer(new PtolemyTreeCellRenderer(showSettableValues));
         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
                 this, DnDConstants.ACTION_COPY_OR_MOVE,
                 new PTreeDragGestureListener());
