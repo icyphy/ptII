@@ -26,15 +26,12 @@
  */
 package ptolemy.vergil.basic.export.html;
 
-import java.awt.Color;
-import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PrinterException;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -43,28 +40,35 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.BrowserEffigy;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyFrame;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.data.BooleanToken;
 import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.modal.ModalModel;
-import ptolemy.gui.JFileChooserBugFix;
-import ptolemy.gui.PtGUIUtilities;
-import ptolemy.gui.PtFileChooser;
-import ptolemy.gui.PtFilenameFilter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -91,6 +95,14 @@ import diva.graph.GraphController;
  *  The model may customize both the web page content and
  *  the actions in the image map by inserting into the model
  *  instances of {@link WebExportable}.
+ *  <p>
+ *  If the model contains an instance of
+ *  {@link WebExportParameters}, then that instance
+ *  defines parameters of the export. If not, but
+ *  the current configuration contains one, then that
+ *  instance defines the the parameters. Otherwise,
+ *  the defaults in {@link WebExportParameters}
+ *  are used.
  *
  * <p>The following JVM properties affect the output:</p>
  * <dl>
@@ -110,7 +122,7 @@ import diva.graph.GraphController;
  * for detailed instructions about how to create web pages on the
  * Ptolemy website for models.</p>
  *
- * @author  Edward A. Lee, Contributor: Christopher Brooks
+ * @author Christopher Brooks and Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Yellow (eal)
@@ -132,109 +144,63 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     ////                         public methods                    ////
 
     /** Export a web page.  
-     *   
-     *  <p> Under Mac OS X, use java.awt.FileDialog.
-     *  Under other OS's, use javax.swing.JFileChooser. Under Mac OS
-     *  X, see {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} for
-     *  how to select between the two.  Other OS's must use
-     *  JFileChooser because FileDialog can only select directories
-     *  under Mac OS X.</p>
-     *
      *  @param e The event that triggered this action.
      */
     public void actionPerformed(ActionEvent e) {
-        File modelDirectory = _basicGraphFrame.getLastDirectory();
-        File directory = null;
-
-        // Swap backgrounds and avoid white boxes in "common places" dialog
-        JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
-        Color background = null;
-        PtFileChooser ptFileChooser = null;
+        NamedObj model = _basicGraphFrame.getModel();
+        WebExportParameters defaultParameters = null;
+        boolean restoreBlankDirectoryName = false;
         try {
-            background = jFileChooserBugFix.saveBackground();
-            ptFileChooser = new PtFileChooser(_basicGraphFrame,
-                    "Specify a directory in which to write HTML...",
-                    JFileChooser.OPEN_DIALOG);
-            ptFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            ptFileChooser.setCurrentDirectory(modelDirectory);
-            ptFileChooser.addChoosableFileFilter(new DirectoryFilter());
-            int returnVal = ptFileChooser.showDialog(_basicGraphFrame, "Export HTML");
+            List<WebExportParameters> defaultParameterList = model.attributeList(WebExportParameters.class);
+            if (defaultParameterList == null || defaultParameterList.size() == 0) {
+                defaultParameterList = _basicGraphFrame.getConfiguration().attributeList(WebExportParameters.class);
+                if (defaultParameterList == null || defaultParameterList.size() == 0) {
+                    defaultParameters = new WebExportParameters(model, model.uniqueName("_defaultWebExportParameters"));
+                    if (defaultParameters.directoryToExportTo.getExpression().trim().equals("")) {
+                        // Directory is blank. Use the sanitized model name.
+                        defaultParameters.directoryToExportTo.setExpression(
+                                StringUtilities.sanitizeName(model.getName()));
+                    }
+                    // We want this new attribute to look as if it were part of
+                    // its container's class definition so that it does not get
+                    // exported to MoML unless it changes in some way, e.g. one
+                    // of the parameter values it contains changes.
+                    defaultParameters.setDerivedLevel(1);
+                }
+            }
+            if (defaultParameters == null) {
+                defaultParameters = defaultParameterList.get(0);
+            }
+            EditParametersDialog dialog = new EditParametersDialog(_basicGraphFrame, defaultParameters,
+                    "Export to Web for " + model.getName());
+            if (!dialog.buttonPressed().equals("Commit")) {
+                return;
+            }
             
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                directory = ptFileChooser.getSelectedFile();
-                _basicGraphFrame.setLastDirectory(directory.getParentFile());
+            // If the directory is blank (it won't be unless the user
+            // set it to be), then change it to match the santized name
+            // of the model.
+            if (defaultParameters.directoryToExportTo.getExpression().trim().equals("")) {
+                // Make sure the finally clause below restores the blank value.
+                restoreBlankDirectoryName = true;
+                defaultParameters.directoryToExportTo.setExpression(
+                        StringUtilities.sanitizeName(model.getName()));
             }
+            
+            final File directory = defaultParameters.directoryToExportTo.asFile();
+
+            // directory should not be null, but check just in case.
+            if (directory != null) {
+                boolean run = ((BooleanToken)defaultParameters.runBeforeExport.getToken()).booleanValue();
+                boolean open = ((BooleanToken)defaultParameters.openCompositesBeforeExport.getToken()).booleanValue();
+                boolean show = ((BooleanToken)defaultParameters.showInBrowser.getToken()).booleanValue();
+                exportToWeb(directory, _basicGraphFrame, run, open, show);
+            }
+        } catch (KernelException ex) {
+            MessageHandler.error("Unable to export HTML.", ex);
         } finally {
-            try {
-                if (ptFileChooser != null) {
-                    ptFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                }
-            } finally {
-                jFileChooserBugFix.restoreBackground(background);
-            }
-        }
-
-        if (directory != null) {
-            File indexFile = new File(directory, "index.html");
-            if (directory.exists()) {
-                if (indexFile.exists()) {
-                    if (!MessageHandler.yesNoQuestion("\"" + indexFile
-                                    + "\" exists. Overwrite contents?")) {
-                        MessageHandler.message("HTML export canceled.");
-                        return;
-                    }
-                }
-                if (!directory.isDirectory()) {
-                    // Previously, if directory existed and was a directory, we would always pop
-                    // up a dialog stating that the directory existed and that the contents would
-                    // be overwritten.  This seems excessive because the dialog will always
-                    // be shown.
-                    if (!MessageHandler
-                            .yesNoQuestion("\"" + directory
-                                    + "\" is a file, not a directory. Delete the file named \""
-                                    + directory + "\" and create a directory with that name?")) {
-                        MessageHandler.message("HTML export canceled.");
-                        return;
-                    }
-                    if (!directory.delete()) {
-                        MessageHandler.message("Unable to delete file \"" + directory + "\".");
-                        return;
-                    }
-                    if (!directory.mkdir()) {
-                        MessageHandler.message("Unable to create directory \"" + directory + "\".");
-                        return;
-                    }
-                }
-            } else {
-                if (!directory.mkdir()) {
-                    MessageHandler.message("Unable to create directory \"" + directory + "\".");
-                    return;
-                }
-            }
-
-            // At this point, file is a directory and we have
-            // permission to overwrite its contents.
-            try {
-                _basicGraphFrame.writeHTML(directory);
-            } catch (IOException ex) {
-                MessageHandler.error("Unable to export HTML.", ex);
-                return;
-            } catch (PrinterException e1) {
-                MessageHandler.error("Failed to created associated files.", e1);
-                return;
-            } catch (IllegalActionException e2) {
-                MessageHandler.error("Error occurred accessing model.", e2);
-                return;
-            }
-            if (MessageHandler.yesNoQuestion("Open \"" + indexFile + "\" in a browser?")) {
-                Configuration configuration = _basicGraphFrame.getConfiguration();
-                try {
-                    URL indexURL = new URL(indexFile.toURI().toURL().toString() + "#in_browser");
-                    configuration.openModel(indexURL, indexURL, indexURL.toExternalForm(),
-                            BrowserEffigy.staticFactory);
-                } catch (Throwable throwable) {
-                    MessageHandler.error("Failed to open \"" + indexFile + "\".", throwable);
-                }
+            if (defaultParameters != null && restoreBlankDirectoryName) {
+                defaultParameters.directoryToExportTo.setExpression("");
             }
         }
     }
@@ -304,6 +270,134 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         } else {
             return false;
         }
+    }
+    
+    /** Export an HTML page and associated subpages to the specified directory.
+     *  This method should be invoked in the swing thread.
+     *  It will invoke a separate thread to run the model and do the export.
+     *  @param directory The directory to write to.
+     *  @param graphFrame The frame containing a model to export.
+     *  @param run If true, run the model before exporting.
+     *  @param open If true, open submodels before exporting.
+     *  @param show If true, show the resulting web page in a browser after exporting.
+     *  @return The thread that is spawned to (optionally) run and export the model,
+     *   or null if the export is cancelled.
+     */
+    public static Thread exportToWeb(
+            final File directory,
+            final BasicGraphFrame graphFrame,
+            final boolean run,
+            final boolean open,
+            final boolean show) {
+        // See whether the directory has a file called index.html.
+        final File indexFile = new File(directory, "index.html");
+        if (directory.exists()) {
+            // Previously, if directory existed and was a directory, we would always pop
+            // up a dialog stating that the directory existed and that the contents would
+            // be overwritten.  This seems excessive because the dialog will always
+            // be shown.
+            if (indexFile.exists()) {
+                if (!MessageHandler.yesNoQuestion("\"" + directory
+                        + "\" exists and contains an index.html file. Overwrite contents?")) {
+                    MessageHandler.message("HTML export canceled.");
+                    return null;
+                }
+            }
+            if (!directory.isDirectory()) {
+                if (!MessageHandler
+                        .yesNoQuestion("\"" + directory
+                                + "\" is a file, not a directory. Delete the file named \""
+                                + directory + "\" and create a directory with that name?")) {
+                    MessageHandler.message("HTML export canceled.");
+                    return null;
+                }
+                if (!directory.delete()) {
+                    MessageHandler.message("Unable to delete file \"" + directory + "\".");
+                    return null;
+                }
+                if (!directory.mkdir()) {
+                    MessageHandler.message("Unable to create directory \"" + directory + "\".");
+                    return null;
+                }
+            }
+        } else {
+            if (!directory.mkdir()) {
+                MessageHandler.message("Unable to create directory \"" + directory + "\".");
+                return null;
+            }
+        }
+
+        final Set<Tableau> tableauxToClose = new HashSet<Tableau>();
+        try {
+            // Open submodels, if appropriate.
+            if (open) {
+                CompositeActor model = (CompositeActor)graphFrame.getModel();
+                Effigy masterEffigy = Configuration.findEffigy(model);
+                List<Entity> entities = model.entityList();
+                for (Entity entity : entities) {
+                    _openEntity(entity, tableauxToClose, masterEffigy, graphFrame);
+                }
+            }
+        } catch (Exception ex) {
+            MessageHandler.error("Unable to export to web.", ex);
+            throw new RuntimeException(ex);
+        }
+        // Running the model has to occur in a new thread, or the whole
+        // process could hang (if the model doesn't return). So finish in a new thread.
+        // That thread will, in turn, have to again invoke the swing event thread
+        // to close any tableaux that were opened above.
+        // It does not wait for the close to complete before finishing itself.
+        Runnable exportAction = new Runnable() {
+            public void run() {
+                CompositeActor model = (CompositeActor)graphFrame.getModel();
+                
+                // If parameters are set to run the model, then do that.
+                if (run && model instanceof CompositeActor) {
+                    // Run the model.
+                    try {
+                        Manager manager = model.getManager();
+                        if (manager == null) {
+                            manager = new Manager(model.workspace(),
+                                    "MyManager");
+                            model.setManager(manager);
+                        }
+                        manager.execute();
+                        
+                        // Export to web.
+                        graphFrame.writeHTML(directory);
+                    } catch (Exception ex) {
+                        MessageHandler.error("Model execution failed.", ex);
+                        throw new RuntimeException(ex);
+                    } finally {
+                        Runnable closeTableaux = new Runnable() {
+                            public void run() {
+                                for (Tableau tableau : tableauxToClose) {
+                                    tableau.close();
+                                }                                
+                            }
+                        };
+                        SwingUtilities.invokeLater(closeTableaux);
+                    }
+                }
+                                
+                // Finally, if requested, show the exported page.
+                if (show) {
+                    Configuration configuration = graphFrame.getConfiguration();
+                    try {
+                        URL indexURL = new URL(indexFile.toURI().toURL().toString() + "#in_browser");
+                        configuration.openModel(indexURL, indexURL, indexURL.toExternalForm(),
+                                BrowserEffigy.staticFactory);
+                    } catch (Throwable throwable) {
+                        MessageHandler.error("Failed to open \"" + indexFile + "\".", throwable);
+                        throw new RuntimeException(throwable);
+                    }
+                }
+            }
+        };
+        // Invoke the new thread.
+        Thread result = new Thread(exportAction);
+        result.start();
+        return result;
     }
 
     /** During invocation of {@link #writeHTML(File)}, return the directory being written to.
@@ -954,6 +1048,62 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         return _findCopiedLibrary(container, "../" + path);
     }
     
+    /** Open a composite entity, if it is not already open,
+     *  and recursively open any composite
+     *  entities or state refinements that it contains.
+     *  @param entity The entity to open.
+     *  @param tableauxToClose A list of tableaux are newly opened.
+     *  @param masterEffigy The top-level effigy for the modeling being exported.
+     *  @param graphFrame The graph frame.
+     *  @exception IllegalActionException If opening fails.
+     *  @exception NameDuplicationException Not thrown.
+     */
+    private static void _openComposite(CompositeEntity entity,
+            Set<Tableau> tableauxToClose, Effigy masterEffigy, BasicGraphFrame graphFrame)
+           throws IllegalActionException, NameDuplicationException {
+        
+        Configuration configuration = graphFrame.getConfiguration();
+        Effigy effigy = configuration.getEffigy(entity);
+
+        if (effigy != null) {
+            // Effigy exists. See whether it has an open tableau.
+            List<Tableau> tableaux = effigy.entityList(Tableau.class);
+            if (tableaux == null || tableaux.size() == 0) {
+                // No open tableau. Open one.
+                tableauxToClose.add(configuration.createPrimaryTableau(effigy));
+            }
+        } else {
+            // No pre-existing effigy.
+            Tableau tableau = configuration.openModel(entity);
+            tableauxToClose.add(tableau);
+        }
+        List<Entity> entities = (entity).entityList();
+        for (Entity inside : entities) {
+            _openEntity(inside, tableauxToClose, masterEffigy, graphFrame);
+        }
+    }
+
+    /** Open the specified entity using the specified configuration.
+     *  This method will recursively descend through the model, opening
+     *  every composite actor and every state refinement.
+     *  @param entity The entity to open.
+     *  @param tableauxToClose A list of tableaux are newly opened.
+     *  @param masterEffigy The top-level effigy for the modeling being exported.
+     *  @param graphFrame The graph frame.
+     */
+    private static void _openEntity(
+            Entity entity, Set<Tableau> tableauxToClose, Effigy masterEffigy, BasicGraphFrame graphFrame)
+            throws IllegalActionException, NameDuplicationException {
+        if (entity instanceof CompositeEntity) {
+            _openComposite((CompositeEntity) entity, tableauxToClose, masterEffigy, graphFrame);
+        } else if (entity instanceof State) {
+            TypedActor[] refinements = ((State) entity).getRefinement();
+            for (TypedActor refinement : refinements) {
+                _openComposite((CompositeEntity) refinement, tableauxToClose, masterEffigy, graphFrame);
+            }
+        }
+    }
+
     /** Print the HTML in the _contents structure corresponding to the
      *  specified position to the specified writer. Each item in the
      *  _contents structure is written on one line.
@@ -996,41 +1146,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
     // The sanitized modelName
     private String _sanitizedModelName;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** A FilenameFilter that looks for directories.
-     */
-    private static class DirectoryFilter extends PtFilenameFilter {
-        // This class has two accept() methods so that it can be used with
-        // both FileDialogs and JFileChoosers.
-
-        /** Tests if the specified file in a directory is a directory.
-         *  @param file The file to be checked.
-         *  @return true if the file is a directory.
-         */
-        public boolean accept(File file) {
-            return file.isDirectory();
-        }
-        /** Tests if the specified file in a directory is a directory.
-         *  @param dir The directory in which the file is contained.
-         *  @param name The name of the file in question.
-         *  @return true if the file is a directory.
-         */
-        public boolean accept(File dir, String name) {
-            File file = new File(dir, name);
-            return file.isDirectory();
-        }
-
-        /** A description of this FilenameFilter.
-         *  @return The string "Directories".
-         */
-        public String getDescription() {
-            // For FileFilter
-            return "Directories";
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     //// IconVisibleLocation

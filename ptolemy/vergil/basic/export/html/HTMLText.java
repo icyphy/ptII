@@ -28,14 +28,18 @@
 
 package ptolemy.vergil.basic.export.html;
 
+import java.awt.Color;
+
 import ptolemy.actor.gui.style.TextStyle;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.kernel.util.ConfigurableAttribute;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.vergil.icon.ValueIcon;
+import ptolemy.vergil.icon.TextIcon;
 import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 
@@ -43,12 +47,11 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 //// HTMLText
 /**
  * Attribute for inserting HTML text into the page exported by Export to Web.
- * Drag this icon into the background of a model, and specify the HTML text to
+ * Drag its icon onto the background of a model, and specify the HTML text to
  * export (double click on the attribute to set the text).
- * By default, this text will be placed after the image for the model,
- * but you can change the position by setting the <i>textPosition</i>
- * parameter. To set the <i>textPosition</i> parameter, Alt-click or
- * right-click and select Customize->Configure.
+ * By default, this text will be placed before the image for the model,
+ * after the title,  * but you can change the position by setting the <i>textPosition</i>
+ * parameter.
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -68,29 +71,44 @@ public class HTMLText extends StringParameter implements WebExportable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
+        _icon = new TextIcon(this, "_icon");
+        _icon.setTextColor(Color.RED);
+        _icon.setIconText("H");
+        
+        displayText = new StringParameter(this, "displayText");
+        displayText.setExpression("HTML Text for Export to Web");
+
         textPosition = new HTMLTextPosition(this, "textPosition");
         
-        TextStyle style = new TextStyle(this, "style");
-        style.height.setExpression("20");
-        style.width.setExpression("60");
+        height = new Parameter(this, "height");
+        height.setTypeEquals(BaseType.INT);
+        height.setExpression("20");
+        
+        width = new Parameter(this, "width");
+        width.setTypeEquals(BaseType.INT);
+        width.setExpression("60");
 
-        // Add parameters that ensure this is rendered correctly in Vergil.
+        TextStyle style = new TextStyle(this, "style");
+        style.height.setExpression("height");
+        style.width.setExpression("width");
+
         new SingletonAttribute(this, "_hideName");
-        new ValueIcon(this, "_icon");
-        ConfigurableAttribute smallIcon = new ConfigurableAttribute(this, "_smallIconDescription");
-        try {
-            smallIcon.configure(null, null,
-                    "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">html</text></svg>");
-        } catch (Exception e) {
-            // Show exception on the console. Should not occur.
-            e.printStackTrace();
-        }
         new VisibleParameterEditorFactory(this, "_editorFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
     
+    /** Parameter giving the text to display in the Ptolemy model.
+     *  This defaults to "HTML Text for Export to Web".
+     */
+    public StringParameter displayText;
+    
+    /** Parameter specifying the height of the editing box.
+     *  This is an int that defaults to 20.
+     */
+    public Parameter height;
+
     /** Parameter specifying the position into which to export HTML text.
      * The parameter offers the following possibilities:
      *  <ul>
@@ -103,10 +121,27 @@ public class HTMLText extends StringParameter implements WebExportable {
      *  The default is "start".
      */
     public HTMLTextPosition textPosition;
+    
+    /** Parameter specifying the width of the editing box.
+     *  This is an int that defaults to 60.
+     */
+    public Parameter width;
 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to update the icon.
+     *  @param attribute The attribute that changed.
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == displayText) {
+            _icon.setText(displayText.stringValue());
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+    
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
      *  This may include, for example, HTML or header
@@ -127,4 +162,10 @@ public class HTMLText extends StringParameter implements WebExportable {
     public void provideOutsideContent(WebExporter exporter) {
         // This class does not provide outside content.
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Icon. */
+    private TextIcon _icon;
 }

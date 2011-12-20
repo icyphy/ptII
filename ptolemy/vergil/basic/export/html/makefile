@@ -69,6 +69,7 @@ JSRCS = \
 	ParameterDisplayIconScript.java \
 	Title.java \
 	WebExportable.java \
+	WebExportParameters.java \
 	WebExporter.java
 
 OTHER_FILES_TO_BE_JARED = \
