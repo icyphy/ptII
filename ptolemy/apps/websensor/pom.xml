@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.berkeley</groupId>
+  <groupId>org.ptolemy</groupId>
   <artifactId>websensor</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
@@ -131,22 +131,10 @@
     		<artifactId>jackson-mapper-asl</artifactId>
     		<version>1.8.5</version>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId> net.sf.spring-json </groupId>
-			<artifactId> spring-json </artifactId>
-			<version> 1.3.0 </version>
-		</dependency>	
-		
-		<dependency>
-			<groupId> net.sf.sojo </groupId>
-			<artifactId> sojo-optional </artifactId>
-			<version> 0.5.0 </version>
-		</dependency>
-		 -->
 		  
   </dependencies>
   <build>
+  	<outputDirectory>target/classes</outputDirectory>
     <finalName>websensor</finalName>
     <plugins>
        <plugin>
@@ -158,6 +146,23 @@
                <target>1.5</target>
            </configuration>
        </plugin>
+       
+       <plugin>
+  			<groupId>org.mortbay.jetty</groupId>
+  			<artifactId>jetty-maven-plugin</artifactId>
+  			<version> 8.0.4.v20111024 </version>
+  			<configuration>
+  				<!--  Scan for changes every 10 seconds -->
+                <scanIntervalSeconds>10</scanIntervalSeconds>
+            	<webAppConfig>
+            		<!--  Instructs Jetty to deploy this app to /websensor/
+            			  Should default to /${project.artifactId} but this is 
+            			  not working? -->
+                	<contextPath>/websensor </contextPath>
+           		</webAppConfig>
+        	</configuration>
+		</plugin>
+		
     </plugins>
   </build>
 </project>

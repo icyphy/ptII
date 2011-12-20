@@ -26,10 +26,18 @@
     	 websensor URL.  (Other options are e.g. /*.html or /*.jsp or 
     	 similar  
     	 **Note - see websensor-servlet for mapping of a handler for static
-    	 resources such as .js files or images -->
+    	 resources such as .js files or images -->    	 
     <servlet-mapping>
     	<servlet-name>websensor</servlet-name> 
     	<url-pattern>/ </url-pattern> 
   	</servlet-mapping>
+  
+  	
+  	<!-- The welcome file that shows for the base URL, e.g.
+  	     http://localhost:8080/websensor will return this file 
+  	     FIXME:  Currently not working! -->
+  	<welcome-file-list>
+  		<welcome-file> index.jsp </welcome-file>
+  	</welcome-file-list>
   	  
 </web-app>
