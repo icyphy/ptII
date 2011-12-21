@@ -195,8 +195,9 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
             Receiver[][] result = new Receiver[1][1]; 
             List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
             occurrences.add(result);
-            ((IOPort)receiver.getContainer()).localReceiversTable = new HashMap<IORelation, List<Receiver[][]>>();
-            ((IOPort)receiver.getContainer()).localReceiversTable.put(new IORelation(), occurrences);
+            HashMap<IORelation, List<Receiver[][]>> map = new HashMap<IORelation, List<Receiver[][]>>();
+            map.put(new IORelation(), occurrences);
+            ((IOPort)receiver.getContainer()).setLocalReceiversTable(map);
         } else {
             List<Receiver> list = _outputMappings.get(port);
             if (list == null) {
