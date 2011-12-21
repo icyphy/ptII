@@ -27,12 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-//as
 package ptolemy.actor.lib.qm_ptides;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.TreeSet;
-import java.util.Iterator;
 
 import ptolemy.data.RecordToken;
 import ptolemy.actor.Director;
@@ -44,61 +39,15 @@ import ptolemy.actor.lib.qm.QuantityManagerListener.EventType;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.Port;
-
-/** A {@link QuantityManager} actor that, when its
- *  {@link #sendToken(Receiver, Receiver, Token)} method is called, sends
- *  the token with the earliest timestamp to the corresponding output
- *  port. This quantity manager is used on
- *  FIXME: Fix the comments, it's cp from BasicSwitch.java right now
- *  
- ports by setting a parameter with an ObjectToken that refers
- *  to this QuantityManager at the port. Note that the name of this
- *  parameter is irrelevant.
- *
- *  <p>This quantity manager implements a simple switch. It has a parameter
- *  specifying the number of ports. On each port, an actor is connected.
- *  Note that these ports are not represented as ptolemy actor ports.
- *  This actor can send tokens to the switch and receive tokens from the
- *  switch. The mapping of ports to actors is done via parameters of this
- *  quantity manager.
- *
- *  <p>Internally, this switch has a buffer for every input, a buffer
- *  for the switch fabric and a buffer for every output. The delays
- *  introduced by the buffers are configured via parameters. Tokens are
- *  processed simultaneously on the buffers.
- *
- *  <p> This switch implements a very basic switch fabric consisting
- *  of a FIFO queue.
- *
- *  @author 
- *  @version 
- *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating 
- *  @Pt.AcceptedRating 
- */
-
-
 import ptolemy.actor.lib.qm.BasicSwitch;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  * 
@@ -124,13 +73,7 @@ public class VariableDelaySwitch extends BasicSwitch {
             throw new IllegalActionException(this, "No director!");
         }
         
-        
-        // TODO Auto-generated constructor stub
-        
-        // ignore this input buffer delay, if
-        inputBufferDelay.setExpression("0.2");
-        inputBufferDelay.setTypeEquals(BaseType.DOUBLE);
-        _inputBufferDelay = 0.2;
+        // input, output and switch fabric delays are defined and set by parent class
         
         // in bps
         channelBandwidth = new Parameter(this, "Channel Bandwidth (in bps)");
@@ -150,212 +93,177 @@ public class VariableDelaySwitch extends BasicSwitch {
         _allowPDV = true;
         
         allowPriority = new Parameter(this,"Allow Priority Routing");
-        allowPriority.setExpression("true");
+        allowPriority.setExpression("false");
         allowPriority.setTypeEquals(BaseType.BOOLEAN);
-        _allowPriority = true;
+        _allowPriority = false;
         
-        
-        
-        
-        //IPv4
-        // TCP header = 20 bytes
-        // IP header =20 bytes
-        
-        
-        //        _switchFabricQueue = new TreeSet();
     }
-    
-//         public void attributeChanged(Attribute attribute)
-//         throws IllegalActionException {
-//         if (attribute == channelBandwidth) {
-//             int value = ((IntToken) channelBandwidth.getToken())
-//                     .intValue();
-//             if (value <= 0) {
-//                 throw new IllegalActionException(this,
-//                         "Cannot have negative or zero channel bandwidth: " + value);
-//             }
-//             _channelBandwidth = value;
-//         } else if (attribute == unitTokenSize) {
-//             int value = ((IntToken) unitTokenSize.getToken())
-//                     .intValue();
-//             if (value <= 0) {
-//                 throw new IllegalActionException(this,
-//                         "Cannot have negative or zero packet size: " + value);
-//             }
-//             _unitTokenSize = value;
-//         } else if( attribute == allowPDV){
-//             boolean value = ((BooleanToken) allowPDV
-//                     .getToken()).booleanValue();
-//             _allowPDV = value;
-//         } else if( attribute == allowPriority){
-//             boolean value = ((BooleanToken) allowPriority
-//                     .getToken()).booleanValue();
-//             _allowPriority = value;
-//         }
-//         super.attributeChanged(attribute);
-//     }
-    
-//     /** Move tokens from the input queue to the switch fabric, move tokens
-//      *  from the switch fabric queue to the output queues and send tokens from the
-//      *  output queues to the target receivers. When moving tokens between
-//      *  queues the appropriate delays are considered.
-//      *  @exception IllegalActionException If the token cannot be sent to
-//      *  target receiver.
-//      */
-//     public void fire() throws IllegalActionException {
-//         Time currentTime = getDirector().getModelTime();
-//         // In a continuous domain this actor could be fired before any token has
-//         // been received; _nextTimeFree could be null.
-//         if (_nextFireTime != null && currentTime.compareTo(_nextFireTime) == 0) {
 
-//             // move tokens from input queue to switch fabric
-//             double _priorityDelay = 0.0;
-//             double _packetSizeDelay = 0.0;
+    ///////////////////////////////////////////////////////////////////
+    ////                public variables                           ////
+    /* channel bandwidth in bits/second */
+    public Parameter channelBandwidth;
+    
+    /* size of one data token in bits */
+    public Parameter unitTokenSize;
+    
+    /* boolean to enable/disable packet-length dependent input delay */
+    public Parameter allowPDV;
+
+    /* boolean to enable/disable priority dependent input delay */
+    public Parameter allowPriority;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+   public void attributeChanged(Attribute attribute)
+        throws IllegalActionException {
+        if (attribute == channelBandwidth) {
+            int value = ((IntToken) channelBandwidth.getToken())
+                    .intValue();
+            if (value <= 0) {
+                throw new IllegalActionException(this,
+                        "Cannot have negative or zero channel bandwidth: " + value);
+            }
+            _channelBandwidth = value;
+        } else if (attribute == unitTokenSize) {
+            int value = ((IntToken) unitTokenSize.getToken())
+                    .intValue();
+            if (value <= 0) {
+                throw new IllegalActionException(this,
+                        "Cannot have negative or zero packet size: " + value);
+            }
+            _unitTokenSize = value;
+        } else if( attribute == allowPDV){
+            boolean value = ((BooleanToken) allowPDV
+                    .getToken()).booleanValue();
+            _allowPDV = value;
+        } else if( attribute == allowPriority){
+            boolean value = ((BooleanToken) allowPriority
+                    .getToken()).booleanValue();
+            _allowPriority = value;
+        }
+        super.attributeChanged(attribute);
+    }
+
+
+    /** Initiate a send of the specified token to the specified
+     *  receiver. This method will schedule a refiring of this actor
+     *  if there is not one already scheduled. Additional input delays 
+     *  are calculated and added to the timing constraints here.
+     *  @param source Sender of the token.
+     *  @param receiver The sending receiver.
+     *  @param token The token to send.
+     *  @exception IllegalActionException If the refiring request fails.
+     *  
+     */
+    public void sendToken(Receiver source, Receiver receiver, Token token)
+            throws IllegalActionException {
+        Time currentTime = getDirector().getModelTime();
+        // FIXME add Continuous support.
+
+        IntermediateReceiver ir = (IntermediateReceiver) source;
+
+        int actorPortId = 0;
+        if (ir.source != null) {
+            Actor sender = ir.source;
+            actorPortId = _actorPorts.get(sender);
+        } else {
+            throw new IllegalActionException(this, "The receiver " + receiver
+                    + "does not have a source");
+        }
+
+        Time lastTimeStamp = currentTime;
+        if (_inputTokens.get(actorPortId).size() > 0) {
+            lastTimeStamp = _inputTokens.get(actorPortId).last().timeStamp;
+        }
+        
+        /* calculate and add input buffer delays */
+        double _priorityDelay = 0.0;
+        double _packetSizeDelay = 0.0;
+        
+            RecordToken TCPFrame = (RecordToken)token;
+            // get payload 
+            RecordToken tokens = (RecordToken)TCPFrame.get("tokens");
+            RecordToken TCPHeader = (RecordToken)TCPFrame.get("TCPlabel");
+            
+            if( tokens == null || TCPHeader == null){
+                throw new IllegalActionException(this, "Token structure must"
+                        + "contain a tokens and a TCPHeader field");
+            }
+            
+            /* priority is carried as a part of the options field
+            of the TCP header */
+            
+            int numberOfTokens = tokens.length();
+            double packetLength = numberOfTokens*_unitTokenSize + TCPHeaderSize;
+            // get priority value
             
             
-//             TimedEvent event;
-//             for (int i = 0; i < _numberOfPorts; i++) {
-//                 if (_inputTokens.get(i).size() > 0) {
-//                     event = _inputTokens.get(i).first();
-//                     if (event.timeStamp.compareTo(currentTime) == 0) {
-//                         Time lastTimeStamp = currentTime;
-//                         if (_switchFabricQueue.size() > 0) {
-//                             lastTimeStamp = _switchFabricQueue.last().timeStamp;
-//                         }
-//                         // TIMING MODIFICATIONS //
-//                         Object[] _tokenContent = (Object[])event.contents;
+            if( true == _allowPDV)
+            {
+                
+                    if ( packetLength > 0.0){
                         
-//                         RecordToken TCPFrame = (RecordToken)_tokenContent[1];
-                        
-//                         // actual content
-//                         RecordToken tokens = (RecordToken)TCPFrame.get("tokens");
-                        
-//                         RecordToken TCPHeader = (RecordToken)TCPFrame.get("TCPlabel");
-                        
-//                         if( tokens == null || TCPHeader == null){
-//                             throw new IllegalActionException(this, "Token structure must"
-//                                     + "contain a tokens and a TCPHeader field");
-//                         }
-                        
-//                         /* priority is carried as a part of the options field
-//                         of the TCP header */
-//                         IntToken recordPriority = ((IntToken)TCPHeader.get("options"));
-//                         //IntToken value = (IntToken)record.get("priority");
-//                         // get priority value
-//                         // subtract the 'priority' token from the record.
-//                         int numberOfTokens = tokens.length();
-                        
-//                         double packetLength = numberOfTokens*_unitTokenSize + TCPHeaderSize;
-//                         // get priority value
-//                         if(recordPriority == null){
-//                             // disallow priority
-//                             _allowPriority = false;
-//                         }
-//                         // apply priority related delay
-//                         if( true == _allowPDV)
-//                         {
-                            
-//                                 if ( packetLength > 0.0){
-                                    
-//                                     _packetSizeDelay = packetLength/_channelBandwidth;
-//                                 }
-//                                 else
-//                                 {
-//                                     _packetSizeDelay = 0.0;
-//                                 }
-//                         } 
-//                         else{
-//                                 _packetSizeDelay = 0;
-//                         }
-                        
-//                        if(true == _allowPriority){
-//                            int _priority = recordPriority.intValue();
-//                            _priorityDelay = _priority/1000.0;
-//                            //_priorityDelay = ((DoubleToken)recordPriority.divide(new DoubleToken(10.0))).doubleValue();
-//                        }
-//                        else{
-//                           //
-//                        }
-//                         _switchFabricQueue.add(new TimedEvent(lastTimeStamp
-//                                 .add(_switchFabricDelay+_priorityDelay+_packetSizeDelay), event.contents));
-//                         _inputTokens.get(i).remove(event);
-//                     }
-//                 }
-//             }
+                        _packetSizeDelay = packetLength/_channelBandwidth;
+                    }
+                    else
+                    {
+                        _packetSizeDelay = 0.0;
+                    }
+            } 
+            else{
+                    _packetSizeDelay = 0.0;
+            }
+            
+            IntToken recordPriority = ((IntToken)TCPHeader.get("options"));
+            if(true == _allowPriority && recordPriority != null){
+               int _priority = recordPriority.intValue();
+               _priorityDelay = _priority/1000.0;
+            }
+            else{
+              //
+               _priorityDelay = 0.0;
+            }
+           
+           
+         // in addition to the static _inputBufferDelay, packet-specific delays calculated and added  
+        _inputTokens.get(actorPortId).add(
+                new TimedEvent(lastTimeStamp.add(_inputBufferDelay + _priorityDelay + _packetSizeDelay),
+                        new Object[] { receiver, token }));
+        _tokenCount++;
+        sendQMTokenEvent((Actor) source.getContainer().getContainer(), 0,
+                _tokenCount, EventType.RECEIVED);
+        _scheduleRefire();
 
-//             // move tokens from switch fabric to output queue
-
-//             if (_switchFabricQueue.size() > 0) {
-//                 event = _switchFabricQueue.first();
-//                 if (event.timeStamp.compareTo(currentTime) == 0) {
-//                     Object[] output = (Object[]) event.contents;
-//                     Receiver receiver = (Receiver) output[0];
-
-//                     Actor actor;
-//                     if (receiver instanceof IntermediateReceiver) {
-//                         actor = (Actor) ((IntermediateReceiver) receiver).quantityManager;
-//                     } else {
-//                         actor = (Actor) receiver.getContainer().getContainer();
-//                     }
-//                     int actorPort = _actorPorts.get(actor);
-//                     Time lastTimeStamp = currentTime;
-//                     if (_outputTokens.get(actorPort).size() > 0) {
-//                         lastTimeStamp = _outputTokens.get(actorPort).last().timeStamp;
-//                     }
-//                     _outputTokens.get(actorPort).add(
-//                             new TimedEvent(lastTimeStamp
-//                                     .add(_outputBufferDelay), event.contents));
-//                     _switchFabricQueue.remove(event);
-//                 }
-//             }
-
-//             // send tokens to target receiver
-
-//             for (int i = 0; i < _numberOfPorts; i++) {
-//                 if (_outputTokens.get(i).size() > 0) {
-//                     event = _outputTokens.get(i).first();
-//                     if (event.timeStamp.compareTo(currentTime) == 0) {
-//                         Object[] output = (Object[]) event.contents;
-//                         Receiver receiver = (Receiver) output[0];
-//                         Token token = (Token) output[1];
-//                         _sendToReceiver(receiver, token);
-//                         _outputTokens.get(i).remove(event);
-//                     }
-//                 }
-//             }
-
-//             if (_debugging) {
-//                 _debug("At time " + currentTime + ", completing send");
-//             }
-//         }
-//     }
-   
+        if (_debugging) {
+            _debug("At time " + getDirector().getModelTime()
+                    + ", initiating send to "
+                    + receiver.getContainer().getFullName() + ": " + token);
+        
+        }
+        
+    }
 
     
-   // private TreeSet<TimedEvent> _switchFabricQueue;
+    ///////////////////////////////////////////////////////////////////////
+    ////                protected variables                           ////
+    
     
     //channel bandwidth that will be used to determine the delay (in bits/sec)
-    
     protected int _channelBandwidth;
+    
     //unit token size in bits
     protected int _unitTokenSize;
+    
     //allow or disallow input buffer packet delay variation
     protected boolean _allowPDV;
+    
     //allow or disallow priority switching
     protected boolean _allowPriority;
+    
+    //default header size for TCP
     protected static final int TCPHeaderSize = 160;
 
-    // user-defined parameters to govern input buffer delay adjustments
-    public Parameter channelBandwidth;
-    public Parameter unitTokenSize;
-    public Parameter allowPDV;
-    public Parameter allowPriority;
+
 }
-    
-                
-                
-                
-            
-        
-            
-        
