@@ -83,7 +83,8 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     /**
      * Creates a file filter that accepts files with the given extension.
      * Example: new ExtensionFileFilter("jpg");
-     *
+     * @param extension The file name extension with no leading period
+     * ('.').
      * @see #addExtension(String)
      */
     public ExtensionFilenameFilter(String extension) {
@@ -96,7 +97,9 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      *
      * Note that the "." before the extension is not needed. If
      * provided, it will be ignored.
-     *
+     * @param extension The file name extension with no leading period
+     * ('.').
+     * @param description A description of this file filter.
      * @see #addExtension(String)
      */
     public ExtensionFilenameFilter(String extension, String description) {
@@ -109,7 +112,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      *
      * Note that the "." before the extension is not needed and
      * will be ignored.
-     *
+     * @param An array of file extensions.
      * @see #addExtension(String)
      */
     public ExtensionFilenameFilter(String[] filters) {
@@ -123,6 +126,8 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * Note that the "." before the extension is not needed and will be
      * ignored.
      *
+     * @param An array of file extensions.
+     * @description A description of this file filter.
      * @see #addExtension(String)
      */
     public ExtensionFilenameFilter(String[] filters, String description) {
@@ -141,7 +146,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      *  @param extensions A list of extensions, each of which is
      *   a String.
      */
-    public ExtensionFilenameFilter(List extensions) {
+    public ExtensionFilenameFilter(List<String> extensions) {
         Iterator extensionsIterator = extensions.iterator();
         while (extensionsIterator.hasNext()) {
             String matchExtension = (String) extensionsIterator.next();
@@ -155,8 +160,10 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      *
      * <p>Files that begin with "." are ignored.</p>
      *
-     * <p>This method is used by javax.swing.JFileChoosers,
-     *
+     * <p>This method is used by javax.swing.JFileChoosers.
+     * @param f The file to be checked.
+     * @return True if the argument is a directory or if the the extension
+     * of the file matches one of the extensions.
      * @see #accept(File, String)
      * @see #getExtension(File)
      * @see FileFilter#accept(File)
@@ -176,6 +183,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
 
         return false;
     }
+
 
     /**
      * Return true if this file should be shown in the directory pane,
@@ -206,45 +214,17 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     }
 
     /**
-     * If the filter contains only one extension, return the extension
-     * name.  Otherwise, return null.
-     *
-     * Added by Heloise Hse
-     */
-    public String getDefaultExtension() {
-        if (_filters.size() == 1) {
-            return (String) _filters.keys().nextElement();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Return the extension portion of the file's name .
-     */
-    public String getExtension(File f) {
-        if (f != null) {
-            String filename = f.getName();
-            int i = filename.lastIndexOf('.');
-
-            if ((i > 0) && (i < (filename.length() - 1))) {
-                return filename.substring(i + 1).toLowerCase();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Adds a filetype "dot" extension to filter against.
+     * Add a filetype "dot" extension to filter against.
      *
      * For example: the following code will create a filter that filters
      * out all files except those that end in ".jpg" and ".tif":
-     *
+     * <pre>
      *   ExtensionFileFilter filter = new ExtensionFileFilter();
      *   filter.addExtension("jpg");
      *   filter.addExtension("tif");
-     *
+     * </pre>
      * Note that the "." before the extension is not needed and will be ignored.
+     * @param extension The extension to be added.
      */
     public void addExtension(String extension) {
         if (extension == null) {
@@ -260,9 +240,24 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     }
 
     /**
-     * Returns the human readable description of this filter. For
+     * If the filter contains only one extension, return the extension
+     * name.  Otherwise, return null.
+     * @return The default extension.
+     */
+    public String getDefaultExtension() {
+	// Added by Heloise Hse
+        if (_filters.size() == 1) {
+            return (String) _filters.keys().nextElement();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Return the human readable description of this filter. For
      * example: "JPEG and GIF Image Files (*.jpg, *.gif)"
      *
+     * @return The human readable description of this filter.
      * @see #setDescription(String)
      * @see #setExtensionListInDescription(boolean)
      * @see #isExtensionListInDescription()
@@ -323,11 +318,47 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
         return _fullDescription;
     }
 
+
     /**
-     * Sets the human readable description of this filter. For
+     * Return the extension portion of the file's name.
+     * @param f The file.
+     * @return the extension portion of the name of the file or null
+     * if the argument is null.
+     */
+    public String getExtension(File f) {
+        if (f != null) {
+            String filename = f.getName();
+            int i = filename.lastIndexOf('.');
+
+            if ((i > 0) && (i < (filename.length() - 1))) {
+                return filename.substring(i + 1).toLowerCase();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Return true if the extension list (.jpg, .gif, etc) should
+     * show up in the human readable description.
+     *
+     * Only relevant if a description was provided in the constructor
+     * or using setDescription();
+     *
+     * @return True if the extension list (.jpg, .gif, etc) should
+     * show up in the human readable description.
+     * @see #getDescription()
+     */
+    public boolean isExtensionListInDescription() {
+        return _useExtensionsInDescription;
+    }
+
+    /**
+     * Set the human readable description of this filter. For
      * example: filter.setDescription("Gif and JPG Images");
      *
-     * @see #setDescription(String)
+     * @param description The human readable description of this
+     * filter.
+     * @see #getDescription()
      * @see #setExtensionListInDescription(boolean)
      * @see #isExtensionListInDescription()
      */
@@ -337,11 +368,11 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     }
 
     /**
-     * Determines whether the extension list (.jpg, .gif, etc) should
+     * Determine whether the extension list (.jpg, .gif, etc) should
      * show up in the human readable description.
      *
-     * Only relevant if a description was provided in the constructor
-     * or using setDescription();
+     * This method is only relevant if a description was provided in
+     * the constructor or using setDescription();
      *
      * @see #getDescription()
      * @see #isExtensionListInDescription()
@@ -349,19 +380,6 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     public void setExtensionListInDescription(boolean b) {
         _useExtensionsInDescription = b;
         _fullDescription = null;
-    }
-
-    /**
-     * Returns whether the extension list (.jpg, .gif, etc) should
-     * show up in the human readable description.
-     *
-     * Only relevant if a description was provided in the constructor
-     * or using setDescription();
-     *
-     * @see #getDescription()
-     */
-    public boolean isExtensionListInDescription() {
-        return _useExtensionsInDescription;
     }
 
     /**

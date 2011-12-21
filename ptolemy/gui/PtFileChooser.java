@@ -140,6 +140,7 @@ public class PtFileChooser extends Container {
 
     /** Return the current directory.
      *  @return The current directory.   
+     *  @see #setCurrentDirectory()
      */   
     public File getCurrentDirectory() {
         if (_useFileDialog) {
@@ -150,6 +151,7 @@ public class PtFileChooser extends Container {
     }
     /** Return the selected file as an absolute File (a File that is not relative).
      *  @return the selected file.
+     *  @see #setSelectedFile(File)
      */
     public File getSelectedFile() {
         if (_useFileDialog) {
@@ -158,10 +160,12 @@ public class PtFileChooser extends Container {
             return _jFileChooser.getSelectedFile();
         }
     }
+
     /** Set the current directory.
      *  If the directory parameter is null, then the value of the "user.dir"   
      *  property is used.
      *  @param directory The current directory. 
+     *  @see #getCurrentDirectory()
      */
     public void setCurrentDirectory(File directory) {
         boolean fail = false;
@@ -243,6 +247,7 @@ public class PtFileChooser extends Container {
 
     /** Set the selected file.
      *  @param file The file to be selected
+     *  @see #getSelectedFile()
      */
     public void setSelectedFile(File file) {
         if (_useFileDialog) {

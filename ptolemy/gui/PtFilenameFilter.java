@@ -47,7 +47,7 @@ import javax.swing.filechooser.FileFilter;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class PtFilenameFilter extends FileFilter implements FilenameFilter {
-    /** Return true if the file is acceptable
+    /** Return true if the file is acceptable.
      *  @param file The file to be checked.
      *  @return true if the file is acceptable
      */   
@@ -56,7 +56,7 @@ public class PtFilenameFilter extends FileFilter implements FilenameFilter {
         return true;
     }
 
-    /** Return true if the file is acceptable
+    /** Return true if the file is acceptable.
      *  @param directory The directory that contains the file.
      *  @param name The name of the file.
      *  @return true if the file is acceptable.
