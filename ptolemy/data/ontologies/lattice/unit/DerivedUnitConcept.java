@@ -399,7 +399,7 @@ public class DerivedUnitConcept extends UnitConcept {
         List<BaseUnitConcept>[] arrayOfBaseUnitLists = baseComponentUnits
                 .get(baseDimension);
 
-        if (baseDimensionMapExponentValue != 0) {
+        //if (baseDimensionMapExponentValue != 0) {
             if (arrayOfBaseUnitLists == null) {
                 arrayOfBaseUnitLists = new ArrayList[] {
                         new ArrayList<BaseUnitConcept>(),
@@ -417,7 +417,7 @@ public class DerivedUnitConcept extends UnitConcept {
             }
 
             baseComponentUnits.put(baseDimension, arrayOfBaseUnitLists);
-        }
+        //}
     }
 
     /** Update the base component units map with the set of base units from
