@@ -4,7 +4,7 @@
 <entity name="DerivedUnitConceptTestCase" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 352, 739, 480}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 352, 749, 486}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[526, 370]">
     </property>
@@ -15,7 +15,7 @@
     <property name="DimensionAnalysis" class="ptolemy.data.ontologies.lattice.DeltaConstraintSolver">
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
         </property>
-        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter">
+        <property name="_trainedConceptRecordArray" class="ptolemy.data.expr.Parameter" value="{{Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.MultiplyDivide.output&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.Display.input&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.AddSubtract.minus&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.AddSubtract.plus&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.DistanceCovered.value&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.Duration.value&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.Const.value&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.Display.columnsDisplayed&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.AddSubtract.output&quot;}, {Concept = &quot;Time_hr&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.MultiplyDivide.divide&quot;}, {Concept = &quot;Velocity_mph&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.Const.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.Display.suppressBlankLines&quot;}, {Concept = &quot;Position_mi&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.MultiplyDivide.multiply&quot;}, {Concept = &quot;Position_mi&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.DistanceCovered.output&quot;}, {Concept = &quot;Time_hr&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.Duration.output&quot;}, {Concept = &quot;Unknown&quot;, NamedObj = &quot;.DerivedUnitConceptTestCase.Display.rowsDisplayed&quot;}}">
         </property>
         <property name="DisplayActions" class="ptolemy.data.ontologies.gui.DeltaConstraintSolverDisplayActions">
         </property>
@@ -440,7 +440,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 310.0]">
         </property>
     </property>
-    <property name="DimensionAnalysis::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.output &gt;= Velocity_m_per_sec">
+    <property name="DimensionAnalysis::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.output &gt;= Velocity_mph">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -456,6 +456,8 @@
         </property>
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 45.0]">
         </property>
     </property>

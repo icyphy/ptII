@@ -425,10 +425,14 @@ public class DerivedUnitConcept extends UnitConcept {
      *  @param baseUnitsMap The base component units map to be updated.
      *  @param baseUnitsMapFromDerivedUnit The base component units map from another
      *   derived unit concept to be added to the baseUnitsMap.
+     *  @param derivedDimensionExponent The exponent of the derived dimension.
+     *  @exception IllegalActionException Thrown if the derivedDimensionExponent
+     *   is zero, which should never be the case if this method is called.
      */
     private static void _addDerivedUnit(
             Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]> baseUnitsMap,
-            Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]> baseUnitsMapFromDerivedUnit) {
+            Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]> baseUnitsMapFromDerivedUnit,
+            int derivedDimensionExponent) throws IllegalActionException {
 
         for (Map.Entry<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]> baseUnitsMapEntry : baseUnitsMapFromDerivedUnit
                 .entrySet()) {
@@ -439,13 +443,33 @@ public class DerivedUnitConcept extends UnitConcept {
             List<BaseUnitConcept>[] arrayOfBaseUnitsLists = baseUnitsMap
                     .get(baseDimension);
 
-            if (arrayOfBaseUnitsLists == null) {
-                arrayOfBaseUnitsLists = arrayOfBaseUnitsListsFromDerivedUnit;
+            if (derivedDimensionExponent > 0) {
+                if (arrayOfBaseUnitsLists == null) {
+                    arrayOfBaseUnitsLists = arrayOfBaseUnitsListsFromDerivedUnit;
+                } else {                
+                    arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX]
+                                          .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
+                    arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]
+                                          .addAll(arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
+                }
+            // If the derived dimension's exponent is negative, then the array of units lists must swap
+            // the positive and negative units lists arrays.
+            } else if (derivedDimensionExponent < 0) {
+                if (arrayOfBaseUnitsLists == null) {
+                    arrayOfBaseUnitsLists = arrayOfBaseUnitsListsFromDerivedUnit;
+                    List<BaseUnitConcept> tempList = new ArrayList<BaseUnitConcept>(arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]);
+                    arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX] = arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX];
+                    arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX] = tempList;
+                } else {                  
+                    arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]
+                                          .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
+                    arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX]
+                                          .addAll(arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
+                }
             } else {
-                arrayOfBaseUnitsLists[POSITIVE_EXPONENT_INDEX]
-                        .addAll(arrayOfBaseUnitsListsFromDerivedUnit[POSITIVE_EXPONENT_INDEX]);
-                arrayOfBaseUnitsLists[NEGATIVE_EXPONENT_INDEX]
-                        .addAll(arrayOfBaseUnitsListsFromDerivedUnit[NEGATIVE_EXPONENT_INDEX]);
+                throw new IllegalActionException("Dimension exponent value " +
+                		"should never be zero because then it would " +
+                		"not have an entry in the dimension map.");
             }
             baseUnitsMap.put(baseDimension, arrayOfBaseUnitsLists);
         }
@@ -587,7 +611,7 @@ public class DerivedUnitConcept extends UnitConcept {
                             DerivedDimensionRepresentativeConcept
                                     .deriveComponentBaseDimensionsMap(unitDimensionMap));
                     _addDerivedUnit(baseComponentUnitsSeparateExponents,
-                            derivedUnitBaseComponentSeparateExponents);
+                            derivedUnitBaseComponentSeparateExponents, exponent);
                 } else {
                     throw new IllegalActionException("A unit concept must be "
                             + "either a BaseUnitConcept "
