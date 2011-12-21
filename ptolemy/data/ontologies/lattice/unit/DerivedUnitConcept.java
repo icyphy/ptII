@@ -384,40 +384,35 @@ public class DerivedUnitConcept extends UnitConcept {
      *  @param baseUnit The base unit concept to be added to the map.
      *  @param exponentValue The exponent value for the base unit concept to be
      *   added to the map.
-     *  @param baseDimensionMapExponentValue The exponent value of the base
-     *   dimension for the base unit to be added to the map.
      *  @exception IllegalActionException Thrown if the exponentValue passed in is
      *   zero, because it should be either positive or negative.
      */
     private static void _addBaseUnit(
             Map<BaseDimensionRepresentativeConcept, List<BaseUnitConcept>[]> baseComponentUnits,
-            BaseUnitConcept baseUnit, int exponentValue,
-            int baseDimensionMapExponentValue) throws IllegalActionException {
+            BaseUnitConcept baseUnit, int exponentValue) throws IllegalActionException {
 
         BaseDimensionRepresentativeConcept baseDimension = (BaseDimensionRepresentativeConcept) baseUnit
                 .getDimension();
         List<BaseUnitConcept>[] arrayOfBaseUnitLists = baseComponentUnits
                 .get(baseDimension);
 
-        //if (baseDimensionMapExponentValue != 0) {
-            if (arrayOfBaseUnitLists == null) {
-                arrayOfBaseUnitLists = new ArrayList[] {
-                        new ArrayList<BaseUnitConcept>(),
-                        new ArrayList<BaseUnitConcept>() };
-            }
+        if (arrayOfBaseUnitLists == null) {
+            arrayOfBaseUnitLists = new ArrayList[] {
+                    new ArrayList<BaseUnitConcept>(),
+                    new ArrayList<BaseUnitConcept>() };
+        }
 
-            if (exponentValue > 0) {
-                arrayOfBaseUnitLists[POSITIVE_EXPONENT_INDEX].add(baseUnit);
-            } else if (exponentValue < 0) {
-                arrayOfBaseUnitLists[NEGATIVE_EXPONENT_INDEX].add(baseUnit);
-            } else {
-                throw new IllegalActionException("Exponent value should not "
-                        + "be zero since it was taken from a "
-                        + "dimension in the map.");
-            }
+        if (exponentValue > 0) {
+            arrayOfBaseUnitLists[POSITIVE_EXPONENT_INDEX].add(baseUnit);
+        } else if (exponentValue < 0) {
+            arrayOfBaseUnitLists[NEGATIVE_EXPONENT_INDEX].add(baseUnit);
+        } else {
+            throw new IllegalActionException("Exponent value should not "
+                    + "be zero since it was taken from a "
+                    + "dimension in the map.");
+        }
 
-            baseComponentUnits.put(baseDimension, arrayOfBaseUnitLists);
-        //}
+        baseComponentUnits.put(baseDimension, arrayOfBaseUnitLists);
     }
 
     /** Update the base component units map with the set of base units from
@@ -591,15 +586,8 @@ public class DerivedUnitConcept extends UnitConcept {
             int exponent = dimensionMap.get(dimension).intValue();
             for (UnitConcept unit : unitsList) {
                 if (unit instanceof BaseUnitConcept) {
-                    Integer baseExponentInteger = baseDimensionMap
-                            .get(dimension);
-                    int baseDimensionMapExponent = 0;
-                    if (baseExponentInteger != null) {
-                        baseDimensionMapExponent = baseExponentInteger;
-                    }
                     _addBaseUnit(baseComponentUnitsSeparateExponents,
-                            (BaseUnitConcept) unit, exponent,
-                            baseDimensionMapExponent);
+                            (BaseUnitConcept) unit, exponent);
                 } else if (unit instanceof DerivedUnitConcept) {
                     DerivedDimensionRepresentativeConcept unitDimension = (DerivedDimensionRepresentativeConcept) unit
                             .getDimension();
