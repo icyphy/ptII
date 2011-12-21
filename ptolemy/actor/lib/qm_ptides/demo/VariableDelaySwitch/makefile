@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/qm/demo/Bus
+ME =		ptolemy/domains/ptides/lib/qm/demo/VariableDelaySwitch
 
 DIRS =
 
