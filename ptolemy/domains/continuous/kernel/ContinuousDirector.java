@@ -1274,9 +1274,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         return suggestedStep;
     }
 
-    /** Resume the actor at the specified time. If the actor has not
-     *  been suspended since the last call to initialize(), then this
-     *  has no effect.
+    /** Suspend the actor at the specified time. This will first call
+     *  {@link #resume(Time)} and then record the suspend time.
      *  @exception IllegalActionException If the suspend cannot be completed.
      */
     public void suspend(Time time) throws IllegalActionException {
