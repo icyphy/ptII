@@ -1,6 +1,6 @@
 /* This actor implements a receiver that adds functionality to another receiver.
 
-@Copyright (c) 2011-2011 The Regents of the University of California.
+@Copyright (c) 2011 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -67,6 +67,12 @@ public class IntermediateReceiver extends AbstractReceiver {
         quantityManager = qm;
     }
     
+    /** Construct an intermediate receiver with no container that wraps the
+     *  specified receiver using the specified quantity manager.
+     *  @param qm The quantity manager that receives tokens received by this receiver.
+     *  @param receiver The receiver wrapped by this intermediate receiver.
+     *  @param port The port wrapped by this intermediate receiver
+     */
     public IntermediateReceiver(QuantityManager qm, Receiver receiver, IOPort port) {
         _receiver = receiver;
         quantityManager = qm;
@@ -74,7 +80,7 @@ public class IntermediateReceiver extends AbstractReceiver {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables               ////
+    ////                         public variables                  ////
     
     /** Quantity manager that receives tokens from this receiver. */
     public QuantityManager quantityManager;
@@ -174,5 +180,6 @@ public class IntermediateReceiver extends AbstractReceiver {
     /** Target receiver that is wrapped by this intermediate receiver.  */
     protected Receiver _receiver;
     
+    /** The port. */
     protected IOPort _port;
 }

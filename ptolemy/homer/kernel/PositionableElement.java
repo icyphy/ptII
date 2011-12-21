@@ -62,6 +62,24 @@ public abstract class PositionableElement {
     ///////////////////////////////////////////////////////////////////
     ////                public methods                             ////
 
+    /** Add the visual representation of the element to the provided
+     *  container.
+     * 
+     *  @param container The container to place the representation in.
+     *  @exception IllegalActionException If the element cannot be added
+     *  to the container. 
+     */
+    public abstract void addToContainer(PortableContainer container)
+            throws IllegalActionException;
+
+    /** Get the underlying element.
+     * 
+     *  @return The Ptolemy element with Android specific location information.
+     */
+    public NamedObj getElement() {
+        return _element;
+    }
+
     /** Get the location of the element.
      * 
      *  @return Return the location object of the element.
@@ -75,6 +93,23 @@ public abstract class PositionableElement {
         // Check whether the location information is valid.
         location.validateLocation();
         return location;
+    }
+
+    /** Get the location of the element.
+     * 
+     *  @return Return the location object of the element.
+     *  @see #setTab(String)
+     */
+    public String getTab() {
+        Settable tag = ((Settable) _element
+                .getAttribute(HomerConstants.TAB_NODE));
+
+        // If the tab is not set, return default
+        if (tag == null) {
+            return HomerConstants.TAG;
+        }
+
+        return tag.getExpression();
     }
 
     /** Set the location of this element's representation.
@@ -138,41 +173,6 @@ public abstract class PositionableElement {
         }
 
         tabAttribute.setExpression(tag);
-    }
-
-    /** Get the location of the element.
-     * 
-     *  @return Return the location object of the element.
-     *  @see setTab(String)
-     */
-    public String getTab() {
-        Settable tag = ((Settable) _element
-                .getAttribute(HomerConstants.TAB_NODE));
-
-        // If the tab is not set, return default
-        if (tag == null) {
-            return HomerConstants.TAG;
-        }
-
-        return tag.getExpression();
-    }
-
-    /** Add the visual representation of the element to the provided
-     *  container.
-     * 
-     *  @param container The container to place the representation in.
-     *  @exception IllegalActionException If the element cannot be added
-     *  to the container. 
-     */
-    public abstract void addToContainer(PortableContainer container)
-            throws IllegalActionException;
-
-    /** Get the underlying element.
-     * 
-     *  @return The Ptolemy element with Android specific location information.
-     */
-    public NamedObj getElement() {
-        return _element;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -289,9 +289,6 @@ public class ExternalIOPortController extends AttributeController {
         return false;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
     /** Given a port, return a reasonable tooltip message for that port.
      *  @param port The port.
      *  @return The name, type, and whether it's a multiport.
@@ -327,7 +324,9 @@ public class ExternalIOPortController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
+    ////                         protected members                 ////
+
+    /** The font used to label a port. */
     protected static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 
     ///////////////////////////////////////////////////////////////////

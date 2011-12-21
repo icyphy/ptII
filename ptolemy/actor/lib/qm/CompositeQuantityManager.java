@@ -87,6 +87,10 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  workspace directory.  You should set the local director or
      *  executive director before attempting to send data to the actor or
      *  to execute it. Increment the version number of the workspace.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
      */
     public CompositeQuantityManager() throws IllegalActionException, NameDuplicationException {
         super();
@@ -101,6 +105,10 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      *  or to execute it. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
      */
     public CompositeQuantityManager(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace); 
@@ -133,8 +141,9 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     ////                         public variables                  ////
     
     /** The color associated with this actor used to highlight other
-     *  actors or connections that use this quantity manager. The default value
-     *  is the color red described by the expression {1.0,0.0,0.0,1.0}.
+     *  actors or connections that use this quantity manager. The
+     *  default value is the color red described by the expression
+     *  {1.0,0.0,0.0,1.0}.
      */
     public ColorAttribute color;
     
@@ -155,15 +164,18 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     }
 
 
-    /** Other getReceiver method has to be used. 
+    /** Create a receiver to mediate a communication via the specified receiver.
      *  @param receiver Target receiver.
-     *  @throws IllegalActionException Thrown because this method
-     *  cannot be used. 
+     *  @return never returned
+     *  @throws IllegalActionException Always thrown because this
+     *  method cannot be used because a receiver cannot be created
+     *  without specifying a port of a CompositeQuantityManager.
      */
     public Receiver getReceiver(Receiver receiver)
             throws IllegalActionException { 
-        throw new IllegalActionException(receiver.getContainer(), "Cannot create receiver" +
-                        "without specifying port of CompositeQM.");
+        throw new IllegalActionException(receiver.getContainer(),
+					 "Cannot create receiver" +
+					 "without specifying a port of a CompositeQuantityManager.");
     }    
     
     /** Create a receiver to mediate a communication via the specified receiver. This
@@ -318,8 +330,15 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
     
 
     /** Use other sendToken method.
+     *  @param source Receiver that sent the token.  Ignored in this method.
+     *  @param receiver The receiver for which this quantity manager is mediating
+     *   communication.  Ignored in this method.
+     *  @param token The token for the communication to mediate.
+     *  Ignored in this method.
+     *  @exception IllegalActionException Always thrown because a port must be specified
      */
-    public void sendToken(Receiver source, Receiver receiver, Token token) throws IllegalActionException {
+    public void sendToken(Receiver source, Receiver receiver, Token token)
+	throws IllegalActionException {
         throw new IllegalActionException(this, "Port must be specified");
     }
     

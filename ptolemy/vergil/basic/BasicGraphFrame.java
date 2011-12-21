@@ -1538,6 +1538,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Add a layout menu.
+     *  @param graphMenu The menu to which to add the layout menu.
+     */
+    protected void _addLayoutMenu(JMenu graphMenu) {
+        // The layout action is created by BasicGraphFrame.
+        if (_layoutAction != null) {
+            // If we are running with -ptinyViewer, then the layout facility
+            // might not be present.
+            GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
+            GUIUtilities.addMenuItem(graphMenu, _layoutAction);
+            if (_layoutConfigDialogAction != null) {
+                GUIUtilities.addMenuItem(graphMenu, _layoutConfigDialogAction);
+            }
+            graphMenu.addSeparator();
+        }
+    }
+
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {
@@ -1591,20 +1608,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         GUIUtilities.addMenuItem(_viewMenu, _zoomFitAction);
         GUIUtilities.addHotKey(_getRightComponent(), _zoomOutAction);
         GUIUtilities.addMenuItem(_viewMenu, _zoomOutAction);
-    }
-
-    protected void _addLayoutMenu(JMenu graphMenu) {
-        // The layout action is created by BasicGraphFrame.
-        if (_layoutAction != null) {
-            // If we are running with -ptinyViewer, then the layout facility
-            // might not be present.
-            GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
-            GUIUtilities.addMenuItem(graphMenu, _layoutAction);
-            if (_layoutConfigDialogAction != null) {
-                GUIUtilities.addMenuItem(graphMenu, _layoutConfigDialogAction);
-            }
-            graphMenu.addSeparator();
-        }
     }
 
     /** Return true if any element of the specified list is implied.

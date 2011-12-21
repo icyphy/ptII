@@ -183,10 +183,9 @@ public class LiveSoundCommon {
 
     /** Convert a byte array of audio samples in linear signed PCM big endian
      * format into a double array of audio samples (-1, 1) range.
+     * @param doubleArray The resulting array of doubles.
      * @param byteArray  The linear signed pcm big endian byte array
      * formatted array representation of audio data.
-     * @param bytesPerSample Number of bytes per sample. Supported
-     * bytes per sample by this method are 8, 16, 24, 32.
      * @return Two dimensional array holding audio samples.
      * For each channel, m, doubleArray[m] is a single dimensional
      * array containing samples for channel m.
@@ -245,8 +244,7 @@ public class LiveSoundCommon {
      *  array representation of <i>doubleArray</i>. The length of
      *  the returned array is (doubleArray[i].length*bytesPerSample*channels).
      */
-    protected byte[] _doubleArrayToByteArray(double[][] doubleArray)
-            throws IllegalArgumentException {
+    protected byte[] _doubleArrayToByteArray(double[][] doubleArray) {
         // This method is most efficient if repeated calls pass the same size
         // array. In this case, it does not re-allocate the byte array that
         // it returns, but rather reuses the same array on the heap.

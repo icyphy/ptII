@@ -132,6 +132,7 @@ public class SnapConstraint implements PointConstraint {
 
     /** Return the resolution for this instance.
      *  @return The global default resolution.
+     *  @see #setResolution(double)
      */
     public double getResolution() {
         return _resolution;
@@ -146,6 +147,7 @@ public class SnapConstraint implements PointConstraint {
 
     /** Set the resolution for this instance.
      *  @param resolution The new resolution.
+     *  @see #getResolution()
      */
     public void setResolution(double resolution) {
         _resolution = resolution;

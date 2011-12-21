@@ -109,6 +109,8 @@ public class ArcAttribute extends FilledShapeAttribute {
 
     /** React to changes in attribute values.
      *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If thrown while getting the
+     *  value of an attribute.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
