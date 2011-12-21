@@ -508,6 +508,7 @@ public class IOPort extends ComponentPort {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IOPort newObject = (IOPort) super.clone(workspace);
+        newObject.localReceiversTable = null;
         newObject._insideInputVersion = -1;
         newObject._insideOutputVersion = -1;
         newObject._width = 0;
@@ -520,7 +521,6 @@ public class IOPort extends ComponentPort {
         newObject._localReceiversVersion = -1;
         newObject._localInsideReceivers = null;
         newObject._localInsideReceiversVersion = -1;
-        newObject._localReceiversTable = null;
         newObject._insideReceivers = null;
         newObject._insideReceiversVersion = -1;
         newObject._numberOfSinksVersion = -1;
@@ -586,12 +586,12 @@ public class IOPort extends ComponentPort {
         // Create the hashtable of lists of receivers in this port, keyed by
         // relation.  This replaces any previous table, so we first remove
         // the receivers that are currently in the table.
-        if (_localReceiversTable != null) {
-            for (IORelation relation : _localReceiversTable.keySet()) {
+        if (localReceiversTable != null) {
+            for (IORelation relation : localReceiversTable.keySet()) {
                 _removeReceivers(relation);
             }
         }
-        _localReceiversTable = new HashMap<IORelation, List<Receiver[][]>>();
+        localReceiversTable = new HashMap<IORelation, List<Receiver[][]>>();
         // Make sure _localReceivers is updated next time it is accessed.
         _localReceiversVersion = -1;
         _insideReceiversVersion = -1;
@@ -637,14 +637,14 @@ public class IOPort extends ComponentPort {
                     // of occurrences for this relation.  Otherwise,
                     // we create a new list with one element.
                     // EAL 7/30/99.
-                    if (_localReceiversTable.containsKey(relation)) {
-                        List<Receiver[][]> occurrences = _localReceiversTable
+                    if (localReceiversTable.containsKey(relation)) {
+                        List<Receiver[][]> occurrences = localReceiversTable
                                 .get(relation);
                         occurrences.add(result);
                     } else {
                         List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
                         occurrences.add(result);
-                        _localReceiversTable.put(relation, occurrences);
+                        localReceiversTable.put(relation, occurrences);
                     }
 
                     if ((myWidth == 1) && madeOne) {
@@ -678,14 +678,14 @@ public class IOPort extends ComponentPort {
                     // of occurrences for this relation.  Otherwise,
                     // we create a new list with one element.
                     // EAL 7/30/99.
-                    if (_localReceiversTable.containsKey(relation)) {
-                        List<Receiver[][]> occurrences = _localReceiversTable
+                    if (localReceiversTable.containsKey(relation)) {
+                        List<Receiver[][]> occurrences = localReceiversTable
                                 .get(relation);
                         occurrences.add(result);
                     } else {
                         List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
                         occurrences.add(result);
-                        _localReceiversTable.put(relation, occurrences);
+                        localReceiversTable.put(relation, occurrences);
                     }
                 }
             }
@@ -3485,15 +3485,15 @@ public class IOPort extends ComponentPort {
      *  @param index The index number of the link to remove.
      */
     public void unlink(int index) {
-        // Override the base class to update _localReceiversTable.
+        // Override the base class to update localReceiversTable.
         try {
             _workspace.getWriteAccess();
 
             Relation toDelete = (Relation) _relationsList.get(index);
 
-            if ((toDelete != null) && (_localReceiversTable != null)) {
+            if ((toDelete != null) && (localReceiversTable != null)) {
                 _removeReceivers(toDelete);
-                _localReceiversTable.remove(toDelete);
+                localReceiversTable.remove(toDelete);
                 _localReceiversVersion = -1;
             }
 
@@ -3521,9 +3521,9 @@ public class IOPort extends ComponentPort {
             _workspace.getWriteAccess();
             super.unlink(relation);
 
-            if (_localReceiversTable != null) {
+            if (localReceiversTable != null) {
                 _removeReceivers(relation);
-                _localReceiversTable.remove(relation);
+                localReceiversTable.remove(relation);
                 _localReceiversVersion = -1;
                 _insideReceiversVersion = -1;
             }
@@ -3543,18 +3543,18 @@ public class IOPort extends ComponentPort {
         try {
             _workspace.getWriteAccess();
 
-            // NOTE: Can't just clear the _localReceiversTable because
+            // NOTE: Can't just clear the localReceiversTable because
             // that would unlink inside relations as well.
-            if (_localReceiversTable != null) {
+            if (localReceiversTable != null) {
                 // Have to clone the local receivers table to avoid
                 // a ConcurrentModificationException.
-                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) (_localReceiversTable
+                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) (localReceiversTable
                         .clone());
 
                 for (IORelation relation : clonedMap.keySet()) {
                     if (!isInsideLinked(relation)) {
                         _removeReceivers(relation);
-                        _localReceiversTable.remove(relation);
+                        localReceiversTable.remove(relation);
                         _localReceiversVersion = -1;
                         _insideReceiversVersion = -1;
                     }
@@ -3577,19 +3577,19 @@ public class IOPort extends ComponentPort {
         try {
             _workspace.getWriteAccess();
 
-            // NOTE: Can't just clear the _localReceiversTable because
+            // NOTE: Can't just clear the localReceiversTable because
             // that would unlink inside relations as well.
-            if (_localReceiversTable != null) {
+            if (localReceiversTable != null) {
                 // Have to clone the local receivers table to avoid
                 // a ConcurrentModificationException.
-                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) (_localReceiversTable
+                HashMap<IORelation, List<Receiver[][]>> clonedMap = (HashMap<IORelation, List<Receiver[][]>>) (localReceiversTable
                         .clone());
 
                 for (IORelation relation : clonedMap.keySet()) {
 
                     if (isInsideLinked(relation)) {
                         _removeReceivers(relation);
-                        _localReceiversTable.remove(relation);
+                        localReceiversTable.remove(relation);
                         _localReceiversVersion = -1;
                         _insideReceiversVersion = -1;
                     }
@@ -3614,16 +3614,16 @@ public class IOPort extends ComponentPort {
      *  @param index The index number of the link to remove.
      */
     public void unlinkInside(int index) {
-        // Override the base class to update _localReceiversTable.
+        // Override the base class to update localReceiversTable.
         try {
             _workspace.getWriteAccess();
 
             Relation toDelete = (Relation) _insideLinks.get(index);
 
             if (toDelete != null) {
-                if (_localReceiversTable != null) {
+                if (localReceiversTable != null) {
                     _removeReceivers(toDelete);
-                    _localReceiversTable.remove(toDelete);
+                    localReceiversTable.remove(toDelete);
                     _insideReceiversVersion = -1;
                 }
             }
@@ -3648,9 +3648,9 @@ public class IOPort extends ComponentPort {
             _workspace.getWriteAccess();
             super.unlinkInside(relation);
 
-            if (_localReceiversTable != null) {
+            if (localReceiversTable != null) {
                 _removeReceivers(relation);
-                _localReceiversTable.remove(relation);
+                localReceiversTable.remove(relation);
                 _insideReceiversVersion = -1;
             }
 
@@ -3678,6 +3678,10 @@ public class IOPort extends ComponentPort {
      *  remotely connected to this port (if any).
      */
     public static final int REMOTERECEIVERS = 2048;
+
+    /** Lists of local receivers, indexed by relation. */
+    public HashMap<IORelation, List<Receiver[][]>> localReceiversTable;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -4254,8 +4258,8 @@ public class IOPort extends ComponentPort {
      */
     protected void _removeReceivers(Relation relation) {
         boolean removed = false;
-        if (_localReceiversTable != null) {
-            List<Receiver[][]> receivers = _localReceiversTable.get(relation);
+        if (localReceiversTable != null) {
+            List<Receiver[][]> receivers = localReceiversTable.get(relation);
             if (receivers != null) {
                 Iterator<Receiver[][]> iterator = receivers.iterator();
                 while (iterator.hasNext()) {
@@ -4536,15 +4540,15 @@ public class IOPort extends ComponentPort {
         // If the port is opaque, return the local Receivers for the
         // relation.
         if (opaque) {
-            // If _localReceiversTable is null, then createReceivers()
+            // If localReceiversTable is null, then createReceivers()
             // hasn't been called, so there is nothing to return.
-            if (_localReceiversTable == null) {
+            if (localReceiversTable == null) {
                 return _EMPTY_RECEIVER_ARRAY;
             }
 
-            if (_localReceiversTable.containsKey(relation)) {
+            if (localReceiversTable.containsKey(relation)) {
                 // Get the list of receivers for this relation.
-                List<?> list = _localReceiversTable.get(relation);
+                List<?> list = localReceiversTable.get(relation);
 
                 try {
                     result = (Receiver[][]) (list.get(occurrence));
@@ -4739,9 +4743,6 @@ public class IOPort extends ComponentPort {
     private transient Receiver[][] _insideReceivers;
 
     private transient long _insideReceiversVersion = -1;
-
-    // Lists of local receivers, indexed by relation.
-    public HashMap<IORelation, List<Receiver[][]>> _localReceiversTable;
 
     // A cache of the number of sinks, since it's expensive to compute.
     private transient int _numberOfSinks;

@@ -1,6 +1,6 @@
 /* This actor implements a quantity manager that is a composite actor.
 
-@Copyright (c) 2011-2011 The Regents of the University of California.
+@Copyright (c) 2011 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -183,8 +183,8 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
             Receiver[][] result = new Receiver[1][1]; 
             List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
             occurrences.add(result);
-            ((IOPort)receiver.getContainer())._localReceiversTable = new HashMap<IORelation, List<Receiver[][]>>();
-            ((IOPort)receiver.getContainer())._localReceiversTable.put(new IORelation(), occurrences);
+            ((IOPort)receiver.getContainer()).localReceiversTable = new HashMap<IORelation, List<Receiver[][]>>();
+            ((IOPort)receiver.getContainer()).localReceiversTable.put(new IORelation(), occurrences);
         } else {
             List<Receiver> list = _outputMappings.get(port);
             if (list == null) {
