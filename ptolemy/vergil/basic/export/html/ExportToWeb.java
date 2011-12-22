@@ -28,8 +28,10 @@
 
 package ptolemy.vergil.basic.export.html;
 
+import java.awt.Color;
 import java.io.File;
 import java.net.URI;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
@@ -75,6 +77,9 @@ import ptolemy.vergil.basic.BasicGraphFrame;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class ExportToWeb {
+    
+    /////////////////////////////////////////////////////////////////////
+    ////                      public methods                         ////
 
     /** Export a model to a web page.
      *  @param modelFileName A Ptolemy model in MoML format.
@@ -89,7 +94,9 @@ public class ExportToWeb {
             final String destinationDirectory, final boolean run)
             throws Exception {
         // Open the model. The following code executes in the swing
-        // event thread.
+        // event thread, but it spawns another thread to run the model.
+        // We will need to wait for that thread to terminate before
+        // exiting.
         Runnable openModelAction = new Runnable() {
             public void run() {
                 try {
@@ -104,14 +111,27 @@ public class ExportToWeb {
                         throw new Exception("No model to export.");
                     }
                     BasicGraphFrame graphFrame = BasicGraphFrame.getBasicGraphFrame(modelToExport);
-
-                    final File directory = new File(destinationDirectory);
-                    Thread thread = ExportHTMLAction.exportToWeb(directory, graphFrame, run, true, true);
                     
-                    // Need to wait for the thread spawned by the above to exit.
-                    if (thread != null) {
-                        thread.join();
+                    ExportParameters parameters;
+                    List<WebExportParameters> exportParameters = modelToExport.attributeList(WebExportParameters.class);
+                    if (exportParameters == null || exportParameters.size() == 0) {
+                        parameters = exportParameters.get(exportParameters.size() - 1).getExportParameters();
+                    } else {
+                        parameters = new ExportParameters(new File(destinationDirectory));
+                        parameters.backgroundColor = Color.white;
+                        parameters.openCompositesBeforeExport = true;
+                        parameters.showInBrowser = true;
+                        // FIXME: Should the following be a command-line option?
+                        parameters.copyJavaScriptFiles = false;
                     }
+                    if (run) {
+                        // This may override the value specified in the model.
+                        parameters.runBeforeExport = true;
+                    }
+                    
+                    // Do the export.
+                    ExportHTMLAction.exportToWeb(graphFrame, parameters);
+                    
                 } catch (Throwable throwable) {
                     System.out.println("Failed to open " + modelFileName
                             + ".\n" + throwable.getMessage());
@@ -120,6 +140,8 @@ public class ExportToWeb {
             }
         };
         SwingUtilities.invokeAndWait(openModelAction);
+        // Need to wait for the thread spawned by the above to exit.
+        ExportHTMLAction.waitForExportToComplete();
     }
 
     /** Export a model as an image.

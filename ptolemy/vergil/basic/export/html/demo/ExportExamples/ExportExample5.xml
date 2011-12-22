@@ -4,13 +4,13 @@
 <entity name="ExportExample5" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 1067, 574}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 30, 1199, 577}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[854, 464]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[986, 467]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7591566093819">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{324.7299523662318, 148.7759105215827}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{362.2479309521121, 149.62859185308}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
         <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="3.44">
@@ -29,14 +29,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 30.0]">
         </property>
     </property>
-    <property name="CopyJavaScriptFiles" class="ptolemy.vergil.basic.export.html.CopyJavaScriptFiles">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 70.0]">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model has its WebExportParameters.copyJavaScriptFile parameter set to&#10;true, so exporting this to a web page causes one copy of the JavaScript and&#10;image files to be created with the web page, making the page standalone&#10;(not relying on http://ptolemy.org).  It also is set to run the model and&#10;open all submodels before exporting.  To test, export to web, then check&#10;that all the links work.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 75.0]">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Because of the CopyJavaScriptFile parameter above, exporting this&#10;to a web page causes one copy of the JavaScript and image files&#10;to be created with the web page, making the page standalone&#10;(not relying on http://ptolemy.org). Open the submodel, run&#10;the model, and export to web, then check that all the links work.">
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.html.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 90.0]">
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -65,7 +77,7 @@
             </property>
         </port>
         <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={590, 353, 500, 344}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={670, 570, 500, 344}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>

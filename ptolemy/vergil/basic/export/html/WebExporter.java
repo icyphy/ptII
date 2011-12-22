@@ -87,10 +87,11 @@ public interface WebExporter {
     public boolean defineAreaAttribute(
             NamedObj object, String attribute, String value, boolean overwrite);
 
-    /** During invocation of {@link #writeHTML(File)}, return the directory being written to.
+    /** During invocation an export, return
+     *  the parameters of the export. If not currently doing an export, return null.
      *  @return The directory being written to.
      */
-    public File getExportDirectory();
+    public ExportParameters getExportParameters();
 
     /** The frame (window) being exported.
      *  @return The frame being exported.

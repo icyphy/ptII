@@ -28,15 +28,37 @@
         </property>
     </property>
     <property name="HTMLText" class="ptolemy.vergil.basic.export.html.HTMLText" value="Text here will be in a separate HTML file called foo.html">
+        <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Content for external file foo.html">
+        </property>
         <property name="textPosition" class="ptolemy.vergil.basic.export.html.HTMLTextPosition" value="foo.html">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 145.0]">
         </property>
     </property>
     <property name="HTMLText2" class="ptolemy.vergil.basic.export.html.HTMLText" value="&lt;p&gt;This text goes after the gif image, with a &lt;a href=&quot;foo.html&quot;&gt;link to the file foo.html&lt;/a&gt;.&lt;/p&gt;">
+        <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Content to go below the image with a link to foo.html">
+        </property>
         <property name="textPosition" class="ptolemy.vergil.basic.export.html.HTMLTextPosition" value="end">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 180.0]">
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.html.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
         </property>
     </property>
 </entity>

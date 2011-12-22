@@ -140,7 +140,8 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLVariableChecker;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.basic.export.HTMLExportable;
+import ptolemy.vergil.basic.export.html.ExportParameters;
+import ptolemy.vergil.basic.export.html.HTMLExportable;
 import ptolemy.vergil.icon.DesignPatternIcon;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -925,13 +926,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return getJGraph().getSize();
     }
 
-    /** During invocation of {@link #writeHTML(File)}, return the directory being written to.
-     *  @return The directory being written to.
-     */
-    public File getExportDirectory() {
-        return _exportDirectory;
-    }
-
     /** The frame (window) being exported to HTML.
      *  @return This frame.
      */
@@ -1332,17 +1326,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @exception PrinterException If unable to write associated files.
      * @throws IllegalActionException If something goes wrong accessing the model.
      */
-    public void writeHTML(File directory) throws PrinterException, IOException, IllegalActionException {
-        try {
-            _exportDirectory = directory;
+    public void writeHTML(ExportParameters parameters)
+            throws PrinterException, IOException, IllegalActionException {
             if (_exportHTMLAction != null) {
-                ((HTMLExportable) _exportHTMLAction).writeHTML(directory);
+                ((HTMLExportable) _exportHTMLAction).writeHTML(parameters);
             } else {
                 throw new IOException("Export to Web not supported.");
             }
-        } finally {
-            _exportDirectory = null;
-        }
     }
 
     /** Write an image to the specified output stream in the specified format.
@@ -1746,7 +1736,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     }
                 }
 
-                // Deal with the HTML Action first.
+                // Deal with the HTML Action next.
+                // Look in the configuration for the action class name.
+                // If there is none, then there will be no Export to Web.
                 StringParameter exportHTMLActionClassNameParameter = (StringParameter) configuration
                         .getAttribute("_exportHTMLActionClassName",
                                 StringParameter.class);
@@ -1831,7 +1823,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         // Next do the export HTML action.
         if (_exportHTMLAction != null) {
-            // Insert the Export PDF item.
+            // Insert the Export to Web item.
             exportItem = new JMenuItem(_exportHTMLAction);
             exportMenu.add(exportItem);
         }
@@ -2885,9 +2877,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Directory into which writeHTML() is writing. */
-    private File _exportDirectory = null;
-    
     /** A layer adapter to handle the mousePressed event. */
     private MousePressedLayerAdapter _mousePressedLayerAdapter;
 

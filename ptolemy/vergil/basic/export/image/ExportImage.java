@@ -52,6 +52,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.export.html.ExportParameters;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportImage
@@ -286,7 +287,8 @@ public class ExportImage {
                                             + directory);
                                 }
                             }
-                            _basicGraphFrame.writeHTML(directory);
+                            ExportParameters parameters = new ExportParameters(directory);
+                            _basicGraphFrame.writeHTML(parameters);
                             System.out.println("Exported html to "
                                     + StringUtilities.getProperty("user.dir") + "/"
                                     + directory + "/index.html");

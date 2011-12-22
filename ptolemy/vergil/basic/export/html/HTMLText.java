@@ -28,19 +28,9 @@
 
 package ptolemy.vergil.basic.export.html;
 
-import java.awt.Color;
-
-import ptolemy.actor.gui.style.TextStyle;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.vergil.icon.TextIcon;
-import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 
 ///////////////////////////////////////////////////////////////////
@@ -50,8 +40,10 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * Drag its icon onto the background of a model, and specify the HTML text to
  * export (double click on the attribute to set the text).
  * By default, this text will be placed before the image for the model,
- * after the title,  * but you can change the position by setting the <i>textPosition</i>
- * parameter.
+ * after the title, but you can change the position by setting the
+ * <i>textPosition</i> parameter. You can also separately control what
+ * text is displayed in the model, or make the attribute disappear altogether
+ * in the model (for this, just set <i>displayText</i> to an empty string).
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -59,7 +51,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class HTMLText extends StringParameter implements WebExportable {
+public class HTMLText extends WebContent {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -70,44 +62,11 @@ public class HTMLText extends StringParameter implements WebExportable {
     public HTMLText(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        _icon = new TextIcon(this, "_icon");
-        _icon.setTextColor(Color.RED);
-        _icon.setIconText("H");
-        
-        displayText = new StringParameter(this, "displayText");
-        displayText.setExpression("HTML Text for Export to Web");
-
         textPosition = new HTMLTextPosition(this, "textPosition");
-        
-        height = new Parameter(this, "height");
-        height.setTypeEquals(BaseType.INT);
-        height.setExpression("20");
-        
-        width = new Parameter(this, "width");
-        width.setTypeEquals(BaseType.INT);
-        width.setExpression("60");
-
-        TextStyle style = new TextStyle(this, "style");
-        style.height.setExpression("height");
-        style.width.setExpression("width");
-
-        new SingletonAttribute(this, "_hideName");
-        new VisibleParameterEditorFactory(this, "_editorFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
-    /** Parameter giving the text to display in the Ptolemy model.
-     *  This defaults to "HTML Text for Export to Web".
-     */
-    public StringParameter displayText;
-    
-    /** Parameter specifying the height of the editing box.
-     *  This is an int that defaults to 20.
-     */
-    public Parameter height;
 
     /** Parameter specifying the position into which to export HTML text.
      * The parameter offers the following possibilities:
@@ -122,25 +81,8 @@ public class HTMLText extends StringParameter implements WebExportable {
      */
     public HTMLTextPosition textPosition;
     
-    /** Parameter specifying the width of the editing box.
-     *  This is an int that defaults to 60.
-     */
-    public Parameter width;
-
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Override the base class to update the icon.
-     *  @param attribute The attribute that changed.
-     */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
-        if (attribute == displayText) {
-            _icon.setText(displayText.stringValue());
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
     
     /** Provide content to the specified web exporter to be
      *  included in a web page for the container of this object.
@@ -162,10 +104,4 @@ public class HTMLText extends StringParameter implements WebExportable {
     public void provideOutsideContent(WebExporter exporter) {
         // This class does not provide outside content.
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Icon. */
-    private TextIcon _icon;
 }

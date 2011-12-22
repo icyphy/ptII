@@ -29,6 +29,7 @@
 package ptolemy.vergil.basic.export.html;
 
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -37,6 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.util.FileUtilities;
+import ptolemy.util.StringUtilities;
 
 
 ///////////////////////////////////////////////////////////////////
@@ -64,7 +67,9 @@ public class WebExportParameters extends Attribute {
     public WebExportParameters(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
+        _parameters = new ExportParameters();
+
         directoryToExportTo = new FileParameter(this, "directoryToExportTo");
         Parameter allowFiles = new Parameter(directoryToExportTo, "allowFiles");
         allowFiles.setExpression("false");
@@ -86,6 +91,10 @@ public class WebExportParameters extends Attribute {
         showInBrowser = new Parameter(this, "showInBrowser");
         showInBrowser.setTypeEquals(BaseType.BOOLEAN);
         showInBrowser.setExpression("true");
+        
+        copyJavaScriptFiles = new Parameter(this, "copyJavaScriptFiles");
+        copyJavaScriptFiles.setTypeEquals(BaseType.BOOLEAN);
+        copyJavaScriptFiles.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,6 +104,14 @@ public class WebExportParameters extends Attribute {
      *  to use the background color of the model.
      */
     public ColorAttribute backgroundColor;
+    
+    /** If true, then make an exported web page stand alone.
+     *  Instead of referencing JavaScript and image files on the
+     *  ptolemy.org website, if this parameter is true, then the
+     *  required files will be copied into the target directory.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter copyJavaScriptFiles;
     
     /** The directory to export to. If a relative name is given,
      *  then it is relative to the location of the model file.
@@ -127,6 +144,48 @@ public class WebExportParameters extends Attribute {
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** React to a change in an attribute.  This method updates the
+     *  local data structure provided by {@link #getExportParameters()}.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == backgroundColor) {
+            _parameters.backgroundColor = backgroundColor.asColor();
+        } else if (attribute == copyJavaScriptFiles) {
+            _parameters.copyJavaScriptFiles
+                    = ((BooleanToken)copyJavaScriptFiles.getToken()).booleanValue();
+        } else if (attribute == directoryToExportTo) {
+            _parameters.directoryToExportTo = directoryToExportTo.asFile();
+        } else if (attribute == openCompositesBeforeExport) {
+            _parameters.openCompositesBeforeExport
+                    = ((BooleanToken)openCompositesBeforeExport.getToken()).booleanValue();
+        } else if (attribute == runBeforeExport) {
+            _parameters.runBeforeExport
+                    = ((BooleanToken)runBeforeExport.getToken()).booleanValue();
+        } else if (attribute == showInBrowser) {
+            _parameters.showInBrowser
+                = ((BooleanToken)showInBrowser.getToken()).booleanValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
+    /** Return the current parameter values in a data structure.
+     *  If a file name has not been specified, then substitute the
+     *  sanitized model name.
+     *  @return The current parameter values.
+     */
+    public ExportParameters getExportParameters() {
+        if (_parameters.directoryToExportTo == null) {
+            _parameters.directoryToExportTo = FileUtilities.nameToFile(
+                    StringUtilities.sanitizeName(getContainer().getName()), 
+                    directoryToExportTo.getBaseDirectory());
+        }
+        return _parameters;
+    }
 
     /** Return true if the parameter values are different from the defaults.
      *  @return True if the parameter values are different from the defaults.
@@ -134,4 +193,10 @@ public class WebExportParameters extends Attribute {
     public boolean parametersChanged() {
         return !_isMoMLSuppressed(1);
     }
+        
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    /** The current parameter values. */
+    private ExportParameters _parameters;
 }

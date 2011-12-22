@@ -59,8 +59,7 @@ PTAUXALLJARS = \
 
 # Note that itextpdf/itextpdf.jar is optional
 
-JSRCS = \
-	HTMLExportable.java
+JSRCS =
 
 EXTRA_SRCS =	$(JSRCS)
 

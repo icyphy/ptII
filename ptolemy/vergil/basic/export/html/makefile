@@ -54,11 +54,11 @@ PTCLASSALLJARS = \
 
 JSRCS = \
 	AreaEventType.java \
-	CopyJavaScriptFiles.java \
 	DefaultIconLink.java \
 	DefaultIconScript.java \
 	DefaultTitle.java \
 	ExportHTMLAction.java \
+	ExportParameters.java \
 	ExportToWeb.java \
 	HTMLText.java \
 	HTMLTextPosition.java \
@@ -68,8 +68,10 @@ JSRCS = \
 	LinkToOpenTableaux.java \
 	ParameterDisplayIconScript.java \
 	Title.java \
+	WebContent.java \
 	WebExportable.java \
 	WebExportParameters.java \
+	WebExportable.java \
 	WebExporter.java
 
 OTHER_FILES_TO_BE_JARED = \

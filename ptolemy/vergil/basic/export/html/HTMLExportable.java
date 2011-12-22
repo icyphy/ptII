@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.vergil.basic.export;
+package ptolemy.vergil.basic.export.html;
 
 import java.awt.print.PrinterException;
 import java.io.File;
@@ -48,15 +48,16 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface HTMLExportable {
 
-    /** Export to HTML in the specified directory.
+    /** Export to HTML as given by the parameters.
      *  Implementers should write an "index.html" file plus any
-     *  required supporting files in the specified directory.
+     *  required supporting files in the directory given in the parameters.
      *  The caller is responsible for checking with the user whether
      *  any contents of the specified directory can be overwritten.
-     *  @param directory The directory in which to put the files.
+     *  @param parameters The parameters for the export.
      *  @exception IOException If unable to write any files.
      *  @exception PrinterException If unable to write associated files.
      *  @exception IllegalActionException If something goes wrong.
      */
-    public void writeHTML(File directory) throws PrinterException, IOException, IllegalActionException;
+    public void writeHTML(ExportParameters parameters)
+            throws PrinterException, IOException, IllegalActionException;
 }
