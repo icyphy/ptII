@@ -72,6 +72,7 @@ SHELL_FILES = \
 	ptplot \
 	ptstartjini \
 	ptolemy \
+	ptweb \
 	pxgraph \
 	soot \
 	tinicomm \

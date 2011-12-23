@@ -1013,6 +1013,12 @@ and run:
 	javastartupclass=ptolemy.plot.plotml.EditablePlotMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
+    ptweb)
+	help="Export a model to html files."
+	invokeHelp="Usage: $commandname [commonOptions] [-run] model targetDirectory"
+	javastartupclass=ptolemy.vergil.basic.export.html.ExportToWeb
+	javasourcedir=ptolemy/vergil/basic/export/html
+	;;
     pxgraph)
 	help="Plotter compatible with old X11 pxgraph"
 	invokeHelp="Usage: $commandname [commonOptions] [pxgraphOptions] [pxgraphOrASCIIFile]"
