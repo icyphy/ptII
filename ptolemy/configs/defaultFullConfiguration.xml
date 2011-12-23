@@ -168,11 +168,10 @@
             <input source="ptolemy/configs/cosimulation.xml"/>
             <input source="ptolemy/actor/lib/database/database.xml"/>
             <input source="ptolemy/actor/designs/designPatterns.xml"/>
-            <input source="ptolemy/actor/lib/esoteric.xml"/>
             <input source="ptolemy/domains/domains.xml"/>
-	    <!-- Fuzzy does not work: problem dragging ->
-            <!-- input source="ptolemy/actor/lib/logic/fuzzy/fuzzy.xml"/ -->
-        <!-- Graph transformation library -->
+            <input source="ptolemy/actor/lib/esoteric.xml"/>
+            <input source="ptolemy/actor/lib/fmi/fmi.xml"/>
+            <!-- Graph transformation library -->
             <input source="ptolemy/configs/gtActorLibrary.xml"/>
  	    <!-- GR depends on the 3D graphics package of Java being present-->
             <input source="ptolemy/domains/gr/gr.xml"/>
