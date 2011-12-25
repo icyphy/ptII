@@ -26,11 +26,24 @@
  */
 package ptolemy.domains.modal.kernel;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
 
-/** An interface for actors that can be suspended and resumed.
+/** An interface for directors that can be suspended and resumed.
+ *  If a director implements this interface, then when it is used
+ *  inside a modal model, when the modal model exists its mode,
+ *  it will call {@link #suspend(Time)}. When it re-enters
+ *  the model, it will call {@link #resume(Time)}. At the time
+ *  of the call to {@link #resume(Time)}, it is up to an implementer
+ *  of this method to increment its accumulated suspend time by
+ *  the time that has elapsed since the last call to
+ *  {@link #suspend(Time)}. That accumulated suspend time should
+ *  be returned by the {@link  #accumulatedSuspendTime()}.
+ *  Note also that it is up to an implementer of this method
+ *  to adjust calls to {@link Director#fireAt(ptolemy.actor.Actor, Time, int)}
+ *  on the enclosing director to offset by the accumulated suspend time.
 
  @author Edward A. Lee
  @version $Id$
@@ -55,7 +68,7 @@ public interface Suspendable extends Executable {
      *  @exception IllegalActionException If the resume cannot be completed.
      */
     public void resume(Time time) throws IllegalActionException;
-
+    
     /** Suspend the actor at the specified time.
      *  If the actor is already suspended, then it remains suspended
      *  but the accumulated suspend time is incremented by the time

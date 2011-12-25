@@ -378,6 +378,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
         // If there is no executive director, use the
         // this fireAt() call to advance time.
+        // NOTE: This will set _currentOffset to null.
         setModelTime(time);
         return time;
     }
@@ -692,6 +693,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         _resetOutputReceivers();
 
         // Suspend the refinements of all non-initial states at the start time.
+        // NOTE: Perhaps this could be avoided by doing a suspend in the loop
+        // over refinements above.
         List<State> states = getController().entityList();
         for (State state : states) {
             if (((BooleanToken) state.isInitialState.getToken()).booleanValue()) {
@@ -700,8 +703,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             TypedActor[] refinements = state.getRefinement();
             if (refinements != null) {
                 for (TypedActor refinement : refinements) {
-                    if (refinement instanceof Suspendable) {
-                        ((Suspendable) refinement).suspend(_currentTime);
+                    Director refinementDirector = refinement.getDirector();
+                    if (refinementDirector instanceof Suspendable) {
+                        ((Suspendable) refinementDirector).suspend(_currentTime);
                     }
                 }
             }
@@ -798,7 +802,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         // clear this runtime list of ports to remember that a token has passed thru
         _hadToken.clear();
-
+        
         return result && !_stopRequested && !_finishRequested;
     }
 

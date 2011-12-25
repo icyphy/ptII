@@ -28,16 +28,13 @@ package ptolemy.domains.modal.modal;
 
 import java.util.List;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.util.Time;
 import ptolemy.domains.modal.kernel.ContainmentExtender;
 import ptolemy.domains.modal.kernel.RefinementActor;
 import ptolemy.domains.modal.kernel.State;
-import ptolemy.domains.modal.kernel.Suspendable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -68,8 +65,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class Refinement extends TypedCompositeActor implements RefinementActor,
-        Suspendable {
+public class Refinement extends TypedCompositeActor implements RefinementActor {
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -93,16 +89,6 @@ public class Refinement extends TypedCompositeActor implements RefinementActor,
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return the accumulated time that the actor has been suspended
-     *  since the last call to initialize(), or null if it has never
-     *  been suspended.
-     *  @return The total time between calls to suspend and subsequent
-     *   calls to resume, or null if the actor has not been suspended.
-     */
-    public Time accumulatedSuspendTime() {
-        return _accumulatedSuspendTime;
-    }
 
     /** Perform no action but throw an IllegalActionException because a
      *  refinement cannot be created in an arbitrary actor-oriented refinement.
@@ -158,19 +144,6 @@ public class Refinement extends TypedCompositeActor implements RefinementActor,
         return null;
     }
 
-    /** Initialize this actor.  If this actor is opaque, invoke the
-     *  initialize() method of its local director. Set the accumulated
-     *  suspend time to zero.
-     *  @exception IllegalActionException If there is no director, or
-     *  if the director's initialize() method throws it, or if the
-     *  actor is not opaque.
-     */
-    public void initialize() throws IllegalActionException {
-        _accumulatedSuspendTime = null;
-        _lastSuspendTime = null;
-        super.initialize();
-    }
-
     /** Create a new port with the specified name in the container of
      *  this refinement, which in turn creates a port in this refinement
      *  all other refinements, and the controller.
@@ -224,47 +197,6 @@ public class Refinement extends TypedCompositeActor implements RefinementActor,
         } finally {
             _mirrorDisable = false;
             _workspace.doneWriting();
-        }
-    }
-
-    /** Resume the actor at the specified time. If the actor has not
-     *  been suspended since the last call to initialize(), then this
-     *  has no effect. If this actor has a director that implements
-     *  Suspendable, then this method is also delegated to it.
-     *  @param time The time at which the actor is resumed.
-     *  @exception IllegalActionException  If the resume cannot be completed.
-     */
-    public void resume(Time time) throws IllegalActionException {
-        if (_lastSuspendTime != null) {
-            if (_accumulatedSuspendTime == null) {
-                _accumulatedSuspendTime = time.subtract(_lastSuspendTime);
-            } else {
-                _accumulatedSuspendTime = _accumulatedSuspendTime.add(time
-                        .subtract(_lastSuspendTime));
-            }
-            _lastSuspendTime = null;
-        }
-        Director director = getDirector();
-        if (director instanceof Suspendable) {
-            ((Suspendable) director).resume(time);
-        }
-    }
-
-    /** Suspend the actor at the specified time.
-     *  If the actor is already suspended, then it remains suspended
-     *  but the accumulated suspend time is incremented by the time
-     *  since it was last suspended. If the actor contains a director
-     *  that implements Suspendable, then its suspend() method is also
-     *  called.
-     *  @param time The time at which the actor is suspended.
-     *  @exception IllegalActionException If the suspend cannot be completed.
-     */
-    public void suspend(Time time) throws IllegalActionException {
-        resume(time);
-        _lastSuspendTime = time;
-        Director director = getDirector();
-        if (director instanceof Suspendable) {
-            ((Suspendable) director).suspend(time);
         }
     }
 
@@ -350,19 +282,4 @@ public class Refinement extends TypedCompositeActor implements RefinementActor,
 
     /** Indicator that we are processing a newPort request. */
     protected boolean _mirrorDisable = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Accumulated time that this actor has been suspended since
-     *  initialize().
-     */
-    private Time _accumulatedSuspendTime;
-
-    /** The environment time when this refinement was last suspended
-     *  (that is, the enclosing state was exited). This is null if
-     *  the actor has not been suspended since initialize() or
-     *  resume() has been called more recently than suspend().
-     */
-    private Time _lastSuspendTime;
 }

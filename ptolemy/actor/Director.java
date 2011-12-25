@@ -560,7 +560,8 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Get the start time of the model. This base class returns
-     *  a Time object with 0.0 as the value of the start time.
+     *  the current time of the enclosing director, if there is one,
+     *  and otherwise returns a Time object with 0.0 as the value.
      *  Subclasses need to override this method to get a different
      *  start time.
      *  For example, CT director and DE director use the value of
@@ -570,6 +571,15 @@ public class Director extends Attribute implements Executable {
      *   is invalid.
      */
     public Time getModelStartTime() throws IllegalActionException {
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Nameable containersContainer = container.getContainer();
+            if (isEmbedded() && (containersContainer instanceof CompositeActor)) {
+                // The container is an embedded model.
+                return ((CompositeActor) containersContainer)
+                        .getDirector().getModelTime();
+            }
+        }
         return new Time(this);
     }
 
@@ -725,27 +735,11 @@ public class Director extends Attribute implements Executable {
         // Reset the flag that causes postfire() to return false.
         _finishRequested = false;
 
+        setModelTimeToStartTime();
+
+        // Initialize the contained actors.
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
-            Nameable containersContainer = container.getContainer();
-
-            // Initialize the current time.
-            // NOTE: Some (weird) directors pretend they are not embedded even
-            // if they are (e.g. in Ptides), so we call _isEmbedded() to give
-            // the subclass the option of pretending it is not embedded.
-            if (isEmbedded() && (containersContainer instanceof CompositeActor)) {
-                // The container is an embedded model.
-                Time currentTime = ((CompositeActor) containersContainer)
-                        .getDirector().getModelTime();
-                _currentTime = currentTime;
-            } else {
-                // The container is at the top level.
-                // There is no reason to set the current time to 0.0.
-                // Instead, it has to be set to start time of a model.
-                _currentTime = getModelStartTime();
-            }
-
-            // Initialize the contained actors.
             Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
 
@@ -1006,7 +1000,7 @@ public class Director extends Attribute implements Executable {
             attribute.validate();
         }
         // preinitialize protected variables.
-        _currentTime = getModelStartTime();
+        setModelTimeToStartTime();
         _stopRequested = false;
         _finishRequested = false;
 
@@ -1216,6 +1210,15 @@ public class Director extends Attribute implements Executable {
         } else {
             // the new time is equal to the current time, do nothing.
         }
+    }
+
+    /** Set the current model time to equals the start time of the model.
+     *  This base class sets current time to the value returned by
+     *  {@link #getModelStartTime()}.
+     *  @exception IllegalActionException If getModelStartTime() throws it.
+     */
+    public void setModelTimeToStartTime() throws IllegalActionException {
+        _currentTime = getModelStartTime();
     }
 
     /** Request that the director cease execution altogether.
@@ -1712,7 +1715,7 @@ public class Director extends Attribute implements Executable {
             timeResolution.setVisibility(Settable.NONE);
 
             // Make sure getCurrentTime() never returns null.
-            _currentTime = new Time(this, Double.NEGATIVE_INFINITY);
+            _currentTime = Time.NEGATIVE_INFINITY;
         } catch (Throwable throwable) {
             // This is the only place to create
             // the timeResolution parameter, no exception should ever

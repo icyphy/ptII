@@ -127,8 +127,7 @@ import ptolemy.kernel.util.Workspace;
  The parameters of this director are:
  <ul>
  <li> <i>startTime</i>: The start time of the
- execution. This parameter has no effect if
- this director is not at the top-level of a model.</li>
+ execution.</li>
 
  <li> <i>stopTime</i>: The stop time of the execution.
  When the current time reaches this value, postfire() will return false.
@@ -280,10 +279,12 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public StringParameter ODESolver;
 
-    /** Starting time of the execution. The default value is 0.0,
-     *  and the type is double. This parameter has no effect if
-     *  this director is used inside an enclosing ContinuousDirector and
-     *  after the simulation starts.
+    /** Starting time of the execution. The default value is blank,
+     *  which indicates that the start time should be the current
+     *  time of the environment when initialize() is invoked, or,
+     *  if this is at the top level and there is no environment, the
+     *  start time should be 0.0.
+     *  The type is double.
      */
     public Parameter startTime;
 
@@ -724,7 +725,11 @@ public class ContinuousDirector extends FixedPointDirector implements
             Director executiveDirector = ((CompositeActor) container)
                     .getExecutiveDirector();
             if (executiveDirector != null) {
-                return executiveDirector.getModelNextIterationTime();
+                Time result = executiveDirector.getModelNextIterationTime();
+                // Adjust the time if necessary.
+                if (_accumulatedSuspendTime != null) {
+                    result = result.subtract(_accumulatedSuspendTime);
+                }
             }
         }
         return Time.POSITIVE_INFINITY;
@@ -755,6 +760,9 @@ public class ContinuousDirector extends FixedPointDirector implements
     }
 
     /** Initialize model after type resolution.
+     *  If a start time has been explicitly set, then set the start
+     *  time to that value. Otherwise, inherit if from the enviroment,
+     *  if there is one, and set it to 0.0 otherwise.
      *  In addition to calling the initialize() method of the super class,
      *  this method records the current system time as the "real" starting
      *  time of the execution. This starting time is used when the
@@ -764,6 +772,18 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
+        
+        DoubleToken startTimeValue = (DoubleToken) startTime.getToken();
+        if (startTimeValue == null) {
+            if (isEmbedded()) {
+                _startTime = ((Actor) getContainer()).getExecutiveDirector()
+                        .getModelTime();
+            } else {
+                _startTime = new Time(this);
+            }
+        } else {
+            _startTime = new Time(this, startTimeValue.doubleValue());
+        }
 
         // In case we are being reinitialized by a reset transition,
         // clear the breakpoint table. This must be done before
@@ -834,8 +854,18 @@ public class ContinuousDirector extends FixedPointDirector implements
 
         // NOTE: If we are being reinitialized during execution (e.g. because
         // of a reset transition), then our current local time is set to match
-        // the environment time.
-        _accumulatedSuspendTime = _zeroTime;
+        // the environment time if startTime is blank (the default), meaning that
+        // start time is inherited from the environment. Otherwise, the accumulated
+        // suspend time should be set to the difference between the current time
+        // of the environment and the start time. In either case, this is the
+        // difference between the current time and the environment time.
+        if (isEmbedded()) {
+            Time environmentTime = ((Actor) getContainer()).getExecutiveDirector()
+                    .getModelTime();
+            setAccumulatedSuspendTime(environmentTime.subtract(_currentTime));
+        } else {
+            setAccumulatedSuspendTime(_zeroTime);
+        }
         _lastSuspendTime = null;
     }
 
@@ -960,6 +990,23 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  local variables cannot be initialized.
      */
     public void preinitialize() throws IllegalActionException {
+        // Have to initialize the _startTime variable before super.preinitialize()
+        // because otherwise _currentTime will be set to null.
+        DoubleToken startTimeValue = (DoubleToken) startTime.getToken();
+        if (startTimeValue == null) {
+            if (isEmbedded()) {
+                _startTime = ((Actor) getContainer()).getExecutiveDirector()
+                        .getModelTime();
+            } else {
+                _startTime = new Time(this);
+            }
+        } else {
+            _startTime = new Time(this, startTimeValue.doubleValue());
+        }
+        
+        _accumulatedSuspendTime = null;
+        _lastSuspendTime = null;
+
         super.preinitialize();
         // Time objects can only be instantiated after super.preinitialize()
         // is called, where the time resolution is resolved.
@@ -1049,10 +1096,10 @@ public class ContinuousDirector extends FixedPointDirector implements
     public void resume(Time time) throws IllegalActionException {
         if (_lastSuspendTime != null) {
             if (_accumulatedSuspendTime == null) {
-                _accumulatedSuspendTime = time.subtract(_lastSuspendTime);
+                setAccumulatedSuspendTime(time.subtract(_lastSuspendTime));
             } else {
-                _accumulatedSuspendTime = _accumulatedSuspendTime.add(time
-                        .subtract(_lastSuspendTime));
+                setAccumulatedSuspendTime(_accumulatedSuspendTime.add(time
+                        .subtract(_lastSuspendTime)));
             }
             _lastSuspendTime = null;
         }
@@ -1082,6 +1129,27 @@ public class ContinuousDirector extends FixedPointDirector implements
                     .next();
             actor.rollBackToCommittedState();
         }
+    }
+    
+    /** Set the accumulated suspend time.
+     *  @exception IllegalActionException If the specified value is less
+     *   than the previous accumulated suspend time (accumulated suspend
+     *   time must be non-decreasing).
+     */
+    public void setAccumulatedSuspendTime(Time time) throws IllegalActionException {
+        if (_accumulatedSuspendTime != null) {
+            if (time.compareTo(_accumulatedSuspendTime) < 0) {
+                throw new IllegalActionException(this, "Accumulated suspend time cannot decrease." +
+                        " Previous value was: " + _accumulatedSuspendTime +
+                        ". Proposed new value is " + time);
+            }
+        /* Allow arbitrary offsets if the accumulated suspend time has never been set.
+        } else if (time.compareTo(new Time(this)) < 0) {
+            throw new IllegalActionException(this, "Accumulated suspend time cannot be negative." +
+                    ". Proposed new value is " + time);
+        */
+        }
+        _accumulatedSuspendTime = time;
     }
 
     /** Set a new value to the current time of the model. This overrides
@@ -1159,6 +1227,37 @@ public class ContinuousDirector extends FixedPointDirector implements
                                 + ", but state has been committed.");
             }
             rollBackToCommittedState();
+        }
+    }
+
+    /** Set the current model time to equal the start time of the model.
+     *  This class sets current time to the value returned by
+     *  {@link #getModelStartTime()}, and also adjusts the accumulated
+     *  suspend time offset accordingly.
+     *  @see #accumulatedSuspendTime()
+     *  @exception IllegalActionException If getModelStartTime() throws it.
+     */
+    public void setModelTimeToStartTime() throws IllegalActionException {
+        // The accumulated suspend time should equal the difference
+        // between the environment time (if there is an environment)
+        // and the new model start time.
+        Time startTime = getModelStartTime();
+        Time environmentTime = null;
+        if (isEmbedded()) {
+            CompositeActor container = (CompositeActor)getContainer();
+            Director enclosingDirector = container.getExecutiveDirector();
+            if (enclosingDirector != null) {
+                environmentTime = enclosingDirector.getModelTime();
+                if (environmentTime != null) {
+                    setAccumulatedSuspendTime(environmentTime.subtract(startTime));
+                }
+            }
+        }
+        super.setModelTimeToStartTime();
+        if (_debugging) {
+            _debug("--- Set time to start time: " + _currentTime
+                    + ", and updated accumulated suspend time to "
+                    + _accumulatedSuspendTime);
         }
     }
 
@@ -1306,6 +1405,30 @@ public class ContinuousDirector extends FixedPointDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Request a firing of the container of this director at the specified time
+     *  and microstep
+     *  and throw an exception if the executive director does not agree to
+     *  do it at the requested time. This overrides the base class to adjust
+     *  the requested time by the accumulated suspend time.
+     *  @param time The requested time.
+     *  @param microstep The requested microstep.
+     *  @return The time that the executive director indicates it will fire this
+     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
+     *   if there is no executive director.
+     *  @exception IllegalActionException If the director does not
+     *   agree to fire the actor at the specified time, or if there
+     *   is no director.
+     */
+    protected Time _fireContainerAt(Time time, int microstep)
+            throws IllegalActionException {
+        if (_accumulatedSuspendTime != null) {
+            Time result = super._fireContainerAt(time.add(_accumulatedSuspendTime), microstep);
+            return result.subtract(_accumulatedSuspendTime);
+        } else {
+            return super._fireContainerAt(time, microstep);
+        }
+    }
+
     /** Return the current step size.
      *  @return The current step size.
      */
@@ -1326,8 +1449,8 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     protected void _initParameters() {
         try {
+            // Default is blank.
             startTime = new Parameter(this, "startTime");
-            startTime.setExpression("0.0");
             startTime.setTypeEquals(BaseType.DOUBLE);
 
             stopTime = new Parameter(this, "stopTime");
@@ -1636,13 +1759,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         _maxStepSize = ((DoubleToken) maxStepSize.getToken()).doubleValue();
         _currentStepSize = _initStepSize;
 
-        if (isEmbedded()) {
-            _startTime = ((Actor) getContainer()).getExecutiveDirector()
-                    .getModelStartTime();
-        } else {
-            _startTime = new Time(this,
-                    ((DoubleToken) startTime.getToken()).doubleValue());
-        }
         _stopTime = new Time(this,
                 ((DoubleToken) stopTime.getToken()).doubleValue());
         _iterationBeginTime = _startTime;
@@ -1857,14 +1973,24 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Set the time and step size to match that of the enclosing director.
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         _currentStepSize = enclosingDirector._currentStepSize;
-        _currentTime = enclosingDirector._currentTime
-                .subtract(_accumulatedSuspendTime);
-        if (_debugging) {
-            _debug("-- Setting current time to " + _currentTime
-                    + ", which aligns with the enclosing director's time of "
-                    + enclosingDirector._currentTime
-                    + ", given the accumulated suspend time of "
-                    + _accumulatedSuspendTime);
+        if (_accumulatedSuspendTime != null) {
+            _currentTime = enclosingDirector._currentTime
+                    .subtract(_accumulatedSuspendTime);
+            if (_debugging) {
+                _debug("-- Setting current time to " + _currentTime
+                        + ", which aligns with the enclosing director's time of "
+                        + enclosingDirector._currentTime
+                        + ", given the accumulated suspend time of "
+                        + _accumulatedSuspendTime);
+            }
+            _iterationBeginTime = enclosingDirector._iterationBeginTime
+                    .subtract(_accumulatedSuspendTime);
+        } else {
+            _currentTime = enclosingDirector._currentTime;
+            if (_debugging) {
+                _debug("-- Setting current time to " + _currentTime);
+            }
+            _iterationBeginTime = enclosingDirector._iterationBeginTime;
         }
         // FIXME: Probably shouldn't make the index match that of the environment!
         // There may have been suspensions happening. So what should the index be?
@@ -1880,8 +2006,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             */
         }
 
-        _iterationBeginTime = enclosingDirector._iterationBeginTime
-                .subtract(_accumulatedSuspendTime);
         _iterationBeginIndex = enclosingDirector._iterationBeginIndex;
 
         // If we have passed the stop time, then return false.
@@ -1923,6 +2047,12 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Note that time has already been automatically adjusted with the
         // accumulated suspend time.
         Time outTime = executiveDirector.getModelTime();
+        
+        // Adjust by the accumulated suspend time, if appropriate.
+        if (_accumulatedSuspendTime != null) {
+            outTime = outTime.subtract(_accumulatedSuspendTime);
+        }
+
         int localTimeExceedsOutsideTime = _currentTime.compareTo(outTime);
         if (localTimeExceedsOutsideTime > 0) {
             ///////////////////////////////////////////////////////////////
@@ -2008,7 +2138,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
             // We should set current time to the environment time and set
             // the step size to zero.
-            _currentTime = outTime;
             if (_debugging) {
                 _debug("-- Setting current time to match enclosing non-ContinuousDirector: "
                         + _currentTime + ", and step size to 0.0.");
@@ -2024,6 +2153,10 @@ public class ContinuousDirector extends FixedPointDirector implements
             // time of the environment during this next integration step.
             Time environmentNextIterationTime = executiveDirector
                     .getModelNextIterationTime();
+            // Adjust the time if necessary.
+            if (_accumulatedSuspendTime != null) {
+                environmentNextIterationTime = environmentNextIterationTime.subtract(_accumulatedSuspendTime);
+            }
             Time localTargetTime = _iterationBeginTime.add(_currentStepSize);
             if (environmentNextIterationTime.compareTo(localTargetTime) < 0) {
                 _currentStepSize = environmentNextIterationTime.subtract(

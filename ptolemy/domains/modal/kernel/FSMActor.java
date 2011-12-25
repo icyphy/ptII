@@ -1304,9 +1304,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         Actor[] refinements = _currentState.getRefinement();
         if (refinements != null) {
             for (Actor stateRefinement : refinements) {
+                Director refinementDirector = stateRefinement.getDirector();
                 if (_lastChosenTransitions.size() != 0
-                        && stateRefinement instanceof Suspendable) {
-                    ((Suspendable) stateRefinement).suspend(environmentTime);
+                        && refinementDirector instanceof Suspendable) {
+                    ((Suspendable) refinementDirector).suspend(environmentTime);
                 }
             }
         }
@@ -1320,8 +1321,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         .getRefinement();
                 if (destinationRefinements != null) {
                     for (TypedActor destinationRefinement : destinationRefinements) {
-                        if (destinationRefinement instanceof Suspendable) {
-                            ((Suspendable) destinationRefinement)
+                        Director refinementDirector = destinationRefinement.getDirector();
+                        if (refinementDirector instanceof Suspendable) {
+                            ((Suspendable) refinementDirector)
                                     .resume(environmentTime);
                         }
                     }
@@ -2426,7 +2428,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _currentConnectionMap = (Map) _connectionMaps.get(_currentState);
     }
 
-    /** If the specified refinement implements Suspendable, then set
+    /** If the specified refinement's director implements Suspendable, then set
      *  its current time equal to the current environment time minus
      *  the refinement's total accumulated suspension time. Otherwise,
      *  set current time to match that of the environment. If there is
@@ -2434,7 +2436,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @param refinement The refinement.
      *  @exception IllegalActionException If setModelTime() throws it.
      */
-    private void _setTimeForRefinement(Actor refinement)
+    protected void _setTimeForRefinement(Actor refinement)
             throws IllegalActionException {
         Actor container = (Actor) getContainer();
         Director director = getDirector();
@@ -2445,10 +2447,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         Director executiveDirector = container.getExecutiveDirector();
         if (executiveDirector != null) {
             Time environmentTime = executiveDirector.getModelTime();
-            if (refinement instanceof Suspendable) {
+            /* FIXME: This is now handled by the director.
+            Director refinementDirector = refinement.getDirector();
+            if (refinementDirector instanceof Suspendable) {
                 // Adjust current time to be the environment time minus
                 // the accumulated suspended time of the refinement.
-                Time suspendedTime = ((Suspendable) refinement)
+                Time suspendedTime = ((Suspendable) refinementDirector)
                         .accumulatedSuspendTime();
                 if (suspendedTime != null) {
                     director.setModelTime(environmentTime.subtract(suspendedTime));
@@ -2456,6 +2460,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     return;
                 }
             }
+            */
             director.setModelTime(environmentTime);
         }
     }
