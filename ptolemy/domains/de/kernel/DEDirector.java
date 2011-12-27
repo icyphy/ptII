@@ -1192,6 +1192,12 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // then there are no events on the event queue with this
         // model time, and hence, if there are also no input events,
         // then there is nothing to do, and we can return false.
+        /* The following is no longer correct.
+         * We need to ensure that postfire() is invoked so that fireAt()
+         * gets called. Although fireAt() should have already been called
+         * for pending events in the event queue, it may need to be done again
+         * because we may have been suspending when the resulting fire occurred.
+         * EAL 9/18/09
         if (!nextEventTime.equals(modelTime)) {
             // If the event timestamp is greater than the model timestamp,
             // we check if there's any external input.
@@ -1209,12 +1215,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                 }
             }
 
-            /* The following is no longer correct.
-             * We need to ensure that postfire() is invoked so that fireAt()
-             * gets called. Although fireAt() should have already been called
-             * for pending events in the event queue, it may need to be done again
-             * because we may have been suspending when the resulting fire occurred.
-             * EAL 9/18/09
             if (!hasInput) {
                 // If there is no internal event, it is not the correct
                 // time to fire.
@@ -1223,8 +1223,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                 // For example, a DE model in a Giotto model.
                 result = false;
             }
-            */
         }
+        */
 
         if (_debugging) {
             _debug("Prefire returns true.");
