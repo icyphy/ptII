@@ -480,6 +480,7 @@ BCVTBPACKAGES = \
 	ptolemy.actor.gui.properties \
 	ptolemy.actor.gui.ptjacl \
 	ptolemy.actor.lib.embeddedJava \
+	ptolemy.actor.lib.fmi \
 	ptolemy.actor.lib.image \
 	ptolemy.actor.lib.io \
 	ptolemy.actor.lib.jopio \
@@ -542,7 +543,8 @@ PTIDES_PACKAGES = \
 	ptolemy.domains.ptides.kernel \
 	ptolemy.domains.ptides.lib \
 	ptolemy.domains.ptides.lib.io \
-	ptolemy.domains.ptides.lib.luminary
+	ptolemy.domains.ptides.lib.luminary \
+	ptolemy.domains.ptides.lib.qm
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
