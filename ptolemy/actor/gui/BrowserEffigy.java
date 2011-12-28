@@ -112,8 +112,9 @@ public class BrowserEffigy extends Effigy {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** A reference to the most recently created factor for this effigy.
-     *  This is provided for use by HTMLViewer when following hyperlinks
+    /** A reference to the most recently created factory for this effigy.
+     *  This is provided for use by HTMLViewer and Configuration
+     *  when following hyperlinks
      *  that specify that they should be opened by a browser.
      */
     public static BrowserEffigy.Factory staticFactory = null;
