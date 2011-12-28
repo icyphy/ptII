@@ -129,7 +129,7 @@ public class AbstractTextAttribute extends VisibleAttribute {
     public Parameter bold;
 
     /** A boolean parameter that controls whether the origin of the text is
-     *  center (if true) or north-west.
+     *  center (if true) or north-west. This defaults to false.
      */
     public Parameter center;
 
