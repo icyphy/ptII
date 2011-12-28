@@ -92,8 +92,10 @@ echo "Errors during the build and test process in ptII:" >> $mailmsg
 echo "" >> $mailmsg
 echo "To see the complete build and test log, see:" >> $mailmsg
 if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" -o "`hostname`" = "sisyphus.eecs.berkeley.edu" ]; then
+    echo "http://chess.eecs.berkeley.edu/ptexternal/nightly/builds/ptIInightly-latest.htm" >> $mailmsg
+    echo "The complete log is at" >> $mailmsg
     echo "http://chess.eecs.berkeley.edu/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
-    echo " or, if you have a full account on gigascale, do" >> $mailmsg
+    echo " or, if you have a full account on `hostname`, do" >> $mailmsg
     echo "scp `hostname`:/home/bldmastr/ptII/adm/logs/ptIInightly.txt /tmp" >> $mailmsg
 else
     echo "$ptbuildlog on `hostname`" >> $mailmsg
