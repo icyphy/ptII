@@ -41,12 +41,12 @@ import ptolemy.kernel.util.NamedObj;
  This is an attribute that can create an editor for interactively
  configuring its container. If you place an instance of this class
  inside a Ptolemy II object, then when a user double clicks on the
- object or selects Configure from the context menu, instead of
+ object, instead of
  the default behavior (which is to edit parameters), the createEditor()
  method of this class is called.
  <p>
  This differs from EditorPaneFactory
- in that it is responsible to every aspect of creating the editor.
+ in that it is responsible for every aspect of creating the editor.
  Thus, it has to create a top-level window, rather than just a pane
  to insert in a top-level window.
  <p>
