@@ -62,11 +62,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 15.0]">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[631, 482]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 817, 564}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 844, 592}, maximized=false}">
     </property>
     <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -142,12 +142,12 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 420.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 445.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.5, 241.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -167,6 +167,31 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Select &quot;Run Window&quot; from the View menu to execute the model,&#10;-or click on the red triangle in the toolbar.&#10;-Try changing the parameters in the run window or on the diagram.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 375.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also MaximumEntropySpectrum.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 445.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 455}">
+            </property>
         </property>
     </property>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
@@ -247,7 +272,7 @@
     <entity name="Frequency Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={526, 295, 508, 293}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={526, 295, 500, 282}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
         </property>
@@ -283,7 +308,7 @@
     <entity name="Time Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 299, 508, 291}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 299, 500, 280}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 236]">
         </property>

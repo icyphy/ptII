@@ -831,7 +831,41 @@ public class Configuration extends CompositeEntity implements
             // No previous effigy exists that is identified by this URL.
             // Find an effigy factory to read it.
             if (factory == null) {
-                factory = (EffigyFactory) getEntity("effigyFactory");
+                // Check to see whether the URL includes the special
+                // target "#in_browser", and if so, use a BrowserEffigy factory.
+                // NOTE: This used to be handled only by HTMLViewer, but
+                // this limited where the #in_browser notation could be used.
+                // The following is adapted from HTMLViewer.
+                
+                // NOTE: It would be nice to use target="_browser" or some
+                // such, but this doesn't work. Targets aren't
+                // seen unless the link is inside a frame,
+                // regrettably.  An alternative might be to
+                // use the "userInfo" part of the URL,
+                // defined at http://www.ncsa.uiuc.edu/demoweb/url-primer.html
+                boolean useBrowser = false;
+                String ref = in.getRef();
+                if (ref != null) {
+                    useBrowser = ref.equals("in_browser");
+                }
+                String protocol = in.getProtocol();
+                if (protocol != null) {
+                    // Suggested mailto: extension from Paul Lieverse.
+                    // Unfortunately, it doesn't work for me on a Mac.
+                    // Leaving it here in case it works for someone else.
+                    useBrowser |= protocol.equals("mailto");
+                }
+                if (useBrowser) {
+                    if (BrowserEffigy.staticFactory == null) {
+                        // The following will set BrowserEffigy.staticFactory.
+                        new BrowserEffigy.Factory(this, "browserEffigyFactory");
+                    }
+                    factory = BrowserEffigy.staticFactory;
+                } else {                
+                    // Not a browser or mailto URL.
+                    // Get an effigy factory from this configuration.
+                    factory = (EffigyFactory) getEntity("effigyFactory");
+                }
             }
 
             if (factory == null) {

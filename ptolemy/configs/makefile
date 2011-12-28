@@ -113,6 +113,7 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityFileParameter.xml \
 	utilityFsmModalModal.xml \
 	utilityIntRangeParameter.xml \
+	utilityLiveLink.xml \
 	utilityModalModel.xml \
 	utilityNameParameter.xml \
 	utilityParameter.xml \

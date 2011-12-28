@@ -116,6 +116,7 @@ JSRCS = \
 	JNLPUtilities.java \
 	JVMTableau.java \
 	LevelSkippingTableauFactory.java \
+	LiveLink.java \
 	LocationAttribute.java \
 	MatrixPane.java \
 	MatrixTokenTableau.java \
