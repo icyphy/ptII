@@ -338,7 +338,14 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.TextAttribute",
                 null);
 
+	// Classes that import ptolemy.vergil.icon.ValueIcon
+        _graphicalClasses.put("ptolemy.vergil.basic.export.html.DefaultTitle", null);
+	// HTMLText extends WebContent which imports ValueIcon
+        _graphicalClasses.put("ptolemy.vergil.basic.export.html.HTMLText", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.html.IconLink", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.html.IconScript", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.Title", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.html.WebContent", null);
 
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 null);
