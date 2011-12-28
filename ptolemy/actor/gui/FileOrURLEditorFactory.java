@@ -177,7 +177,7 @@ public class FileOrURLEditorFactory extends EditorFactory {
     public Component createEditorPane() {
         JPanel panel = new JPanel();
         JTextArea textArea = new JTextArea(
-                "To edit name of the file that contains the parameters, select "
+                "To specify the name of the file that contains the parameters, select "
                         + "\""
                         + _moreButtons[0]
                         + "\".  To edit the file itself that contains the parameters,"
