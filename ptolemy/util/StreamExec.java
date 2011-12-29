@@ -185,6 +185,14 @@ public class StreamExec implements ExecuteCommands {
         _commands = commands;
     }
 
+    /** Determine whether the last subprocess is waited for or not.
+     *  @param waitForLastSubprocess True if the {@link #start()}
+     *  method should wait for the last subprocess to finish.
+     */
+    public void setWaitForLastSubprocess(boolean waitForLastSubprocess) {
+        _waitForLastSubprocess = waitForLastSubprocess;
+    }
+
     /** Set the working directory of the subprocess.
      *  @param workingDirectory The working directory of the
      *  subprocess.  If this argument is null, then the subprocess is
@@ -194,7 +202,10 @@ public class StreamExec implements ExecuteCommands {
         _workingDirectory = workingDirectory;
     }
 
-    /** Start running the commands. */
+    /** Start running the commands.
+     *  By default, the start() method returns after the last subprocess
+     *  finishes.  See {@#setWaitForLastSubprocess()}.
+     */
     public void start() {
         String returnValue = _executeCommands();
         updateStatusBar(returnValue);
@@ -356,19 +367,21 @@ public class StreamExec implements ExecuteCommands {
                     errorGobbler.start();
                     outputGobbler.start();
 
-                    try {
-                        _subprocessReturnCode = _process.waitFor();
+                    if (commands.hasNext() || _waitForLastSubprocess) {
+                        try {
+                            _subprocessReturnCode = _process.waitFor();
 
-                        synchronized (this) {
-                            _process = null;
-                        }
+                            synchronized (this) {
+                                _process = null;
+                            }
 
-                        if (_subprocessReturnCode != 0) {
-                            break;
+                            if (_subprocessReturnCode != 0) {
+                                break;
+                            }
+                        } catch (InterruptedException interrupted) {
+                            stderr("InterruptedException: " + interrupted);
+                            throw interrupted;
                         }
-                    } catch (InterruptedException interrupted) {
-                        stderr("InterruptedException: " + interrupted);
-                        throw interrupted;
                     }
                 }
             } catch (final IOException io) {
@@ -456,6 +469,9 @@ public class StreamExec implements ExecuteCommands {
 
     /** The return code of the last Runtime.exec() command. */
     private int _subprocessReturnCode;
+
+    /** True if we should wait for the last subprocess. */
+    private boolean _waitForLastSubprocess = true;
 
     /** The working directory of the subprocess.  If null, then
      *  the subprocess is executed in the working directory of the current
