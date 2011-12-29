@@ -115,6 +115,7 @@ public class ServletTest {
     @Test
     public void openSimulation() throws Exception {
         int simulations = _ptolemyServer.numberOfSimulations();
+        System.out.println("ServletTest.openSimulation(): simulations: " + simulations);
         _response = _openRemoteModel();
 
         assertNotNull(_response);

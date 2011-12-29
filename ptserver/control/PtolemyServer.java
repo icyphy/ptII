@@ -81,9 +81,10 @@ import ptserver.data.TokenParser.HandlerData;
  *  also launches a separate process for the MQTT broker which is used
  *  for transmitting tokens between the client and server.  
  *
- * <p>PtolemyServer uses mosquitto from <a href="http://mosquitto.org/download/#in_browser">http://mosquitto.org/download</a>.</p>
+ * <p>PtolemyServer uses mosquitto from
+ * <a href="http://mosquitto.org/download/#in_browser">http://mosquitto.org/download</a>.</p>
  *
- * <p>Under Windows, there is a mosquitto binary.</p>
+ * <p>Under Windows, there is a mosquitto binary available for download.</p>
  * <p>Under Mac OS X:</p>
  * <ol>
  * <li>Install cmake from <a href="http://www.cmake.org/cmake/resources/software.html#in_browser">http://www.cmake.org/cmake/resources/software.html</a> or from
@@ -105,6 +106,15 @@ import ptserver.data.TokenParser.HandlerData;
  * </li>
  * </ol>
  *
+ * <p>This class requires that the mosquitto binary be running.  Under Mac OS X:</p>
+ * <pre>
+ * /usr/local/sbin/mosquitto &amp;
+ * </pre>
+ *
+ * <p>See the tests in $PTII/ptserver/test/junit for simple code that
+ * uses this class.</p>
+ * 
+ * 
  * @author Justin Killian
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -147,11 +157,19 @@ public final class PtolemyServer implements IServerManager {
     }
 
     /** Create the singleton with non-default configuration values.
+     *   
+     *  <p>If any of the parameters are null, then values in the
+     *  ptserver.PtolemyServerConfig resource are checked.  Typically, this file
+     *  may be found as $PTII/ptserver/PtolemyServerConfig.properties.</p>
+     *
      *  @param servletPort The port on which the servlet operates.
      *  @param brokerPath The path to the broker executable.
      *  @param brokerAddress The host address of the MQTT broker.
      *  @param brokerPort The port of the broker.
      *  @param modelDirectory The root directory of where model files are stored.
+     *  If the value of the modelDirectory is not a directory, then a directory relative
+     *  to the value of the ptolemy.ptII.dir (aka $PTII) property is checked.
+     *  If that directory does not exist, then $PTII/ptserver/demo is used.
      *  @exception IllegalActionException If the server could not be created.
      */
     public static synchronized void createInstance(int servletPort,
@@ -164,7 +182,8 @@ public final class PtolemyServer implements IServerManager {
     /** Download the selected model to the client.
      *  @param url URL of the model file.
      *  @return Byte array containing the model data.
-     *  @exception IllegalActionException If the server encountered an error opening the model file.
+     *  @exception IllegalActionException If the server encountered an
+     *  error opening the model file.
      */
     public byte[] downloadModel(String url) throws IllegalActionException {
         byte[] modelData = null;
@@ -343,14 +362,26 @@ public final class PtolemyServer implements IServerManager {
         return tokenHandlerMap;
     }
 
-    /** Initialize the Ptolemy server, set up the servlet host, and wait for simulation requests. 
-     *  The following optional command line switches may be used with their accompanying value: 
+    /** Initialize the Ptolemy server, set up the servlet host, and
+     * wait for simulation requests.
+     *   
+     * <p>This class requires that the mosquitto binary be running.  See the class comment
+     * for information about building, installing and invoking mosquitto.</p>
+     * 
+     *  <p>The following optional command line switches may be used with their accompanying value: 
      *  -servlet_port, -broker_path (if launching local broker), -broker_address, -broker_port, 
      *  and -model_dir. The port numbers must be integers, the broker path must be the path 
-     *  to the MQTT broker executable, and the broker address must be the host address.
+     *  to the MQTT broker executable, and the broker address must be the host address. 
+     *  The default values for the command line switches is read from the values in the
+     *  ptserver.PtolemyServerConfig resource.  Typically, this file
+     *  may be found as $PTII/ptserver/PtolemyServerConfig.properties.</p>
      *  
-     *  For example: java -classpath ptserver.PtolemyServer -broker_address
-     *  192.168.125.169 -broker_port 1883
+     *  <p>For example:</p>
+     *  <pre>
+     *  java -classpath java -classpath $PTII:${PTII}/ptserver/lib/hessian-4.0.7.jar:${PTII}/ptserver/lib/jetty-all-7.4.1.v20110513.jar:${PTII}/ptserver/lib/servlet-api-2.5.jar:${PTII}/ptserver/lib/wmqtt.jar \
+     *      ptserver.control.PtolemyServer \
+     *      -broker_address 192.168.125.169 -broker_port 1883
+     *  </pre>
      * 
      *  @param args Optional command line arguments.
      *  @exception IllegalActionException If the server could not be launched.
@@ -648,11 +679,19 @@ public final class PtolemyServer implements IServerManager {
     /** Create an instance of the Ptolemy server. This class is a singleton so
      *  only one instance should ever exist at a time.  An embedded servlet container
      *  is initialized for the servlet (synchronous command handler).
+     *
+     *  <p>If any of the parameters are null, then values in the
+     *  ptserver.PtolemyServerConfig resource are checked.  Typically, this file
+     *  may be found as $PTII/ptserver/PtolemyServerConfig.properties.</p>
+     *
      *  @param servletPort The port on which the servlet operates.
      *  @param brokerPath The path to the broker executable.
      *  @param brokerAddress The host address of the MQTT broker.
      *  @param brokerPort The port of the broker.
      *  @param modelDirectory The root directory of where model files are stored.
+     *  If the value of the modelDirectory is not a directory, then a directory relative
+     *  to the value of the ptolemy.ptII.dir (aka $PTII) property is checked.  
+     *  If that directory does not exist, then $PTII/ptserver/demo is used.
      *  @exception IllegalActionException If the server was unable to load the default 
      *  configuration from the resource file.
      */
@@ -714,8 +753,26 @@ public final class PtolemyServer implements IServerManager {
             }, 1000, 1000);
             File file = new File(_modelsDirectory);
             if (!file.isDirectory()) {
-                throw new IllegalArgumentException("Models directory \""
-                        + _modelsDirectory + "\" is invalid directory/path");
+                String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
+                file = new File(ptII, _modelsDirectory);
+                if (!file.isDirectory()) {
+                    File oldFile = file;
+                    file = new File (ptII, "ptserver" + File.separator + "demo");
+                    if (!file.isDirectory()) {
+                        throw new IllegalArgumentException("Models directory \""
+                                + _modelsDirectory + "\" is invalid directory/path."
+                                + " (Also tried \"" + oldFile + "\" and \""
+                                + file + "\".");
+                    } else {
+                        System.out.println("Setting models directory to " 
+                                + _modelsDirectory);
+                        _modelsDirectory = file.getCanonicalPath();
+                    }
+                } else {
+                    _modelsDirectory = file.getCanonicalPath();
+                    System.out.println("Setting models directory to " 
+                            + _modelsDirectory);
+                }
             }
         } catch (Throwable e) {
             _handleException("Unable to initialize Ptolemy server.", e);

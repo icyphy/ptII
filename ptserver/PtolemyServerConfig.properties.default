@@ -1,16 +1,19 @@
-#path to broker executable (if running locally)
+# Path to broker executable (if running locally).
 BROKER_PATH=
-#address of the broker
+# Address of the broker.
 BROKER_ADDRESS=localhost
-#port number of the broker
+# Port number of the broker.
 BROKER_PORT=1883
-#port number to run servlet on
+# Port number to run servlet on.
 SERVLET_PORT=8081
-#name to save server logs
+# Name to save server logs.
 LOG_FILENAME=PtolemyServer.log
-#absolute path to the directory where the model files are stored 
+# Absolute path to the directory where the model files are stored.
+# If the value of the modelDirectory is not a directory, then a directory relative
+# to the value of the ptolemy.ptII.dir (aka $PTII) property is checked.  
+# If that directory does not exist, then $PTII/ptserver/demo is used.
 MODELS_DIRECTORY=
-#period between pings
+# Period between pings in milliseconds.
 PING_PERIOD = 1000
-#period between sending token batches
+# Period between sending token batches in milliseconds.
 PERIOD = 100

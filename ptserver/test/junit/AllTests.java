@@ -26,6 +26,8 @@
  */
 package ptserver.test.junit;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -45,5 +47,15 @@ import org.junit.runners.Suite;
         RemoteModelTest.class, FileDownloadTest.class, TypeParserTest.class,
         RESTGetHandlerTest.class })
 public class AllTests {
+    /** Start the mosquitto process. */
+    @BeforeClass
+    public static void startMosquitto() {
+        System.out.println("AllTests.startMosquitto()");
+    }
 
+    /** Stop the mosquitto process. */
+    @AfterClass
+    public static void stopMosquitto() {
+        System.out.println("AllTests.stopMosquitto()");
+    }
 }

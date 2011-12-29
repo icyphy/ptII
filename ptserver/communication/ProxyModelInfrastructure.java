@@ -554,8 +554,16 @@ public class ProxyModelInfrastructure {
      */
     private void _setUpMQTT(String address) throws MqttException {
         _mqttClient = MqttClient.createMqttClient(address, null);
-        _mqttClient.connect(getTicket().getTicketID() + _modelType, true,
-                (short) 10);
+        String topic = getTicket().getTicketID() + _modelType;
+        try {
+            _mqttClient.connect(topic, true, (short) 10);
+        } catch (MqttException ex) {
+            MqttException exception = new MqttException("Failed to connect to topic \""
+                    + topic + "\".  Perhaps the mosquitto daemon is not running? "
+                    + "See $PTII/ptserver/control/PtolemyServer.java.");
+            exception.initCause(ex);
+            throw exception;
+        }
         _tokenPublisher.setMqttClient(_mqttClient);
         _tokenPublisher.setTopic(_publishingTopic);
         _mqttClient.registerSimpleHandler(new TokenListener(this));
