@@ -764,15 +764,13 @@ public final class PtolemyServer implements IServerManager {
                                 + " (Also tried \"" + oldFile + "\" and \""
                                 + file + "\".");
                     } else {
-                        System.out.println("Setting models directory to " 
-                                + _modelsDirectory);
                         _modelsDirectory = file.getCanonicalPath();
                     }
                 } else {
                     _modelsDirectory = file.getCanonicalPath();
-                    System.out.println("Setting models directory to " 
-                            + _modelsDirectory);
                 }
+                System.out.println("models directory is "
+                        + _modelsDirectory);
             }
         } catch (Throwable e) {
             _handleException("Unable to initialize Ptolemy server.", e);

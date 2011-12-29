@@ -12,7 +12,7 @@ LOG_FILENAME=PtolemyServer.log
 # If the value of the modelDirectory is not a directory, then a directory relative
 # to the value of the ptolemy.ptII.dir (aka $PTII) property is checked.  
 # If that directory does not exist, then $PTII/ptserver/demo is used.
-MODELS_DIRECTORY=
+MODELS_DIRECTORY=ptserver/demo
 # Period between pings in milliseconds.
 PING_PERIOD = 1000
 # Period between sending token batches in milliseconds.

@@ -26,17 +26,24 @@
  */
 package ptserver.test.junit;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import ptolemy.util.StreamExec;
+import ptolemy.kernel.util.IllegalActionException;
+
+import ptserver.control.PtolemyServer;
 //////////////////////////////////////////////////////////////////////////
 //// AllTests
 /**
  * Test suite of the ptserver.
  * 
- * @author Anar Huseynov
+ * @author Anar Huseynov, contributor: Christopher Brooks
  * @version $Id$ 
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ahuseyno)
@@ -47,15 +54,29 @@ import org.junit.runners.Suite;
         RemoteModelTest.class, FileDownloadTest.class, TypeParserTest.class,
         RESTGetHandlerTest.class })
 public class AllTests {
+
     /** Start the mosquitto process. */
     @BeforeClass
-    public static void startMosquitto() {
+    public static void startMosquitto() throws IllegalActionException {
         System.out.println("AllTests.startMosquitto()");
+        _exec = new StreamExec();
+        List<String> commands = new LinkedList<String>();
+
+        // FIXME: This probably won't work under Windows.
+        commands.add("/usr/local/sbin/mosquitto");
+
+        _exec.setCommands(commands);
+        _exec.setWaitForLastSubprocess(false);
+        _exec.start();
     }
 
     /** Stop the mosquitto process. */
     @AfterClass
     public static void stopMosquitto() {
         System.out.println("AllTests.stopMosquitto()");
+        _exec.cancel();
     }
+
+    /** Execute the mosquitto daemon. */
+    private static StreamExec _exec;
 }
