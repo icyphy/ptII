@@ -26,6 +26,9 @@
  */
 package ptserver.test.junit;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +37,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StreamExec;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -55,10 +59,25 @@ import ptserver.control.PtolemyServer;
         RESTGetHandlerTest.class })
 public class AllTests {
 
-    /** Start the mosquitto process. */
+    /** Copy ptserver/PtolemyServerConfig.properties.default and start
+     * the mosquitto process.
+     */
     @BeforeClass
-    public static void startMosquitto() throws IllegalActionException {
+    public static void startMosquitto() throws IllegalActionException, IOException {
         System.out.println("AllTests.startMosquitto()");
+
+        URL defaultConfigURL = FileUtilities.nameToURL(
+                "$CLASSPATH/ptserver/PtolemyServerConfig.properties.default", null, null);
+        File configFile = FileUtilities.nameToFile(
+                "$CLASSPATH/ptserver/PtolemyServerConfig.properties", null);
+        if (configFile.exists() && !configFile.delete()) {
+            System.out.println("Problem deleting " + configFile);
+        }
+        FileUtilities.binaryCopyURLToFile(defaultConfigURL, configFile);
+        System.out.println("AllTests.startMosquitto(): Copied "
+                + defaultConfigURL + " to " +  configFile);
+        
+
         _exec = new StreamExec();
         List<String> commands = new LinkedList<String>();
 
