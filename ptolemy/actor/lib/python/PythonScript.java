@@ -172,13 +172,14 @@ class Main :
 
  <p>As of November, 2011 $PTII/lib/jython.jar was based on Jython 2.5.2.</p>
 
+ <p>See <a href="https://kepler-project.org/developers/reference/python-and-kepler#in_browser">Python and Kepler notes</a>.</p>
+
+
  @author Xiaojun Liu
  @version $Id$
  @since Ptolemy II 2.3
  @Pt.ProposedRating Yellow (liuxj)
  @Pt.AcceptedRating Red (reviewmoderator)
- @see <a href="https://kepler-project.org/developers/reference/python-and-kepler">Python and Kepler notes</a>.
-
  */
 public class PythonScript extends TypedAtomicActor {
     /** Construct an actor with the given container and name.

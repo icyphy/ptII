@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NamedObj;
  * for a Ptolemy II model. The {@link #writeHTML(File)} method
  * of this interface is intended to be used to generate web pages.
  * The rest of the methods of this interface are used primarily
- * by classes that implement {@link WebExportable} to provide
+ * by classes that implement {@link ptolemy.vergil.basic.export.html.WebExportable} to provide
  * content for the exported web page.
  *
  * @author Edward A. Lee

@@ -140,7 +140,7 @@ public class PtFileChooser extends Container {
 
     /** Return the current directory.
      *  @return The current directory.   
-     *  @see #setCurrentDirectory()
+     *  @see #setCurrentDirectory(File)
      */   
     public File getCurrentDirectory() {
         if (_useFileDialog) {

@@ -842,7 +842,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  Note that this does not include chosen immediate transitions
      *  from the destination of the returned transition.
      *  @return The last chosen transition from the current state.
-     *  @deprecated Use {@link getLastChosenTransitions()} instead.
+     *  @deprecated Use {@link #getLastChosenTransitions()} instead.
      *  @see #setLastChosenTransition(Transition)
      */
     public Transition getLastChosenTransition() {

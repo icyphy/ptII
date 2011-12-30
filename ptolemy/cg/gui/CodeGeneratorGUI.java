@@ -120,26 +120,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         caveatsPanel.add(messageArea);
 
         JButton moreInfoButton = new JButton("More Info");
-        moreInfoButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                try {
-                    Configuration configuration = getConfiguration();
-
-                    // FIXME: Customize to the particular code generator.
-                    // Use Thread.currentThread() so that this code will
-                    // work under WebStart.
-                    URL infoURL = Thread.currentThread()
-                            .getContextClassLoader()
-                            .getResource("ptolemy/cg/README.html");
-
-                    configuration.openModel(null, infoURL,
-                            infoURL.toExternalForm());
-                } catch (Exception ex) {
-                    throw new InternalErrorException(codeGenerator, ex,
-                            "Failed to open doc/codegen.htm: ");
-                }
-            }
-        });
+        moreInfoButton.addActionListener(new MoreInfoButtonActionListener());
         caveatsPanel.add(moreInfoButton);
 
         JPanel upper = new JPanel();
@@ -244,4 +225,32 @@ public class CodeGeneratorGUI extends PtolemyFrame {
             }
         });
     }
+
+    /** Open the help file at ptolemy/cg/README.html. **/
+    private class MoreInfoButtonActionListener implements ActionListener {
+        /** Open the help file at ptolemy/cg/README.html.
+         *  @param evt The event.
+         */
+        public void actionPerformed(ActionEvent evt) {
+            try {
+                // This class cannot be static because we get the
+                // configuration and model.
+                Configuration configuration = getConfiguration();
+
+                // FIXME: Customize to the particular code generator.
+                // Use Thread.currentThread() so that this code will
+                // work under WebStart.
+                URL infoURL = Thread.currentThread()
+                    .getContextClassLoader()
+                    .getResource("ptolemy/cg/README.html");
+
+                configuration.openModel(null, infoURL,
+                        infoURL.toExternalForm());
+            } catch (Exception ex) {
+                throw new InternalErrorException(getModel(), ex,
+                        "Failed to open doc/codegen.htm: ");
+            }
+        }
+    }
+
 }

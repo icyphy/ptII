@@ -127,7 +127,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * ignored.
      *
      * @param filters An array of file extensions.
-     * @description A description of this file filter.
+     * @param description A description of this file filter.
      * @see #addExtension(String)
      */
     public ExtensionFilenameFilter(String[] filters, String description) {
