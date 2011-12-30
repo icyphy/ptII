@@ -1,7 +1,8 @@
-# Makefile for ptserver - a system that allows execution of models on handheld devices
+# Makefile for docs for ptserver - a system that allows execution of models on handheld devices
+#
+# @Authors: Christopher Brooks (makefile only), based on a file by Thomas M. Parks
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
@@ -27,69 +28,56 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptserver
+ME =		ptserver/doc/
 
-DIRS =		actor communication control doc data test util
+DIRS =
 
-# Root of Ptolemy II directory
-ROOT =		..
+# Root of the Java directory
+ROOT =		../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTSERVER_JARS)
-
 # Used to build jar files
-PTPACKAGE = 	ptserver
-PTCLASSJAR =
+PTPACKAGE = 	doc
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# All the .class files necessary to run a Ptolemy II domain applet
-PTCLASSALLJARS = \
-	actor/actor.jar \
-	communication/communication.jar \
-	control/control.jar \
-	data/data.jar \
-	util/util.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	PtolemyServerUsers.properties \
-	PtolemyServerUsers.properties.default \
-	PtolemyServerConfig.properties.default
+	Actor_Porting_Guide.pdf \
+	Android_User_Manual.pdf \
+	Homer_User_Manual.pdf \
+	Installation_Guide.pdf \
+	MasterDesignPlan.pdf \
+	Requirements_List.xls \
+	SRS.pdf \
 
-EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED) \
-	findbugs-excludes.xml \
-	findbugs-includes.xml \
-	checkstyle-ptserver.xml
-
-# Keep this list alphabetized.
-JSRCS = \
+EXTRA_SRCS = \
+	MasterDesignPlan.doc \
+	SRS.doc \
+	handsimdroid architecture.graffle \
+	handsimdroid architecture.pdf \
+	handsimdroid architecture.vdx \
+	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
-	actor \
-	build.xml \
-	communication \
-	control \
-	data \
-	demo \
-	doc \
-	lib \
-	test \
-	util
+MISC_FILES =	$(DIRS)
 
-OPTIONAL_FILES = \
-	PtolemyServerConfig.properties
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass $(EXTRA_SRCS)
-install: jclass jars
+all: jclass $(DERIVED_FILES)
 
-# Include rules for directories that contain only subdirectories.
+install: all jars
+
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
