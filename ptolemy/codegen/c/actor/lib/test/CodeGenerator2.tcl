@@ -106,3 +106,9 @@ test CodeGenerator-5.2 {Test problem where generating code for a Pub/Sub with Cl
     catch [set application [java::new ptolemy.moml.MoMLSimpleApplication auto/PublisherTestSubscriber14.xml]] errMsg
     [$application getClass] getName
 } {ptolemy.moml.MoMLSimpleApplication} {Known Failure: after calling setContainer(null), we need to also call purgeModelRecord}
+
+# Purge the model record now for PublisherTestSubscriber14.xml so that when the JUnit tests
+# run the model in the same JVM, we don't get this error.
+$parser purgeModelRecord $modelURL
+
+java::new ptolemy.moml.MoMLSimpleApplication /Users/cxh/ptII/ptolemy/codegen/c/actor/lib/test/auto/PublisherTestSubscriber14.xml
