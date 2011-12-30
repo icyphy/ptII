@@ -49,10 +49,10 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Actor_Porting_Guide.pdf \
-	Android_User_Manual.pdf \
-	Homer_User_Manual.pdf \
-	Installation_Guide.pdf \
+	ActorPortingGuide.pdf \
+	AndroidUserManual.pdf \
+	HomerUserManual.pdf \
+	InstallationGuide.pdf \
 	MasterDesignPlan.pdf \
 	Requirements_List.xls \
 	SRS.pdf \
@@ -60,9 +60,9 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	MasterDesignPlan.doc \
 	SRS.doc \
-	handsimdroid architecture.graffle \
-	handsimdroid architecture.pdf \
-	handsimdroid architecture.vdx \
+	handsimdroidArchitecture.graffle \
+	handsimdroidArchitecture.pdf \
+	handsimdroidArchitecture.vdx \
 	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
