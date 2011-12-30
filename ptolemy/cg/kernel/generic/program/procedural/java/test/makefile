@@ -72,7 +72,7 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	ActorWithPrivateParameterTest.xml \
-	AllSDF.tcl \
+	AllSDFDotTcl \
 	findAllSDFTests
 
 #$(JGRAPHICAL_TESTS)

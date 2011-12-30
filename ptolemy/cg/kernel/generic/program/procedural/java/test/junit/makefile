@@ -37,7 +37,7 @@ ME =		ptolemy/cg/kernel/generic/program/procedural/java/test/junit
 ROOT =		../../../../../../../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

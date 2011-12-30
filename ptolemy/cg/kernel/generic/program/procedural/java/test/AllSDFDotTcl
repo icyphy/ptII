@@ -1,4 +1,5 @@
-# Test AutoAdapter
+# Test AutoAdapter  This filename is does end in .tcl so that the junit tests don't run it.
+#
 #
 # @Author: Christopher Brooks
 #
