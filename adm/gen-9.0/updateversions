@@ -1,0 +1,17 @@
+#!/bin/sh
+# $Id: updateversions 47965 2008-01-26 17:29:50Z cxh $
+# Update the versions of various files
+# Usage updateversions oldVersion newVersion files . . .
+
+oldVersion=$1
+newVersion=$2
+shift;shift
+tmpfile=/tmp/updateversions.$$
+
+for file in $@
+do
+	sed "s/$oldVersion/$newVersion/g" $file > $tmpfile
+	diff $file $tmpfile
+	mv $tmpfile $file
+done
+rm -f $tmpfile

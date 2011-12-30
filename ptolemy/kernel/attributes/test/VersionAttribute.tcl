@@ -4,7 +4,7 @@
 #
 # @Version: $Id$ 
 #
-# @Copyright (c) 2001-2009 The Regents of the University of California.
+# @Copyright (c) 2001-2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -55,7 +55,7 @@ test VersionAttribute-1.0 {Constructor} {
     set result2 [$v toString]
     set result3 [$v getExpression]
     list $result1 $result2 $result3
-} {{ptolemy.kernel.attributes.VersionAttribute {.my NamedObj.my Version}} {ptolemy.kernel.attributes.VersionAttribute {.my NamedObj.my Version}} 8.1.devel}
+} {{ptolemy.kernel.attributes.VersionAttribute {.my NamedObj.my Version}} {ptolemy.kernel.attributes.VersionAttribute {.my NamedObj.my Version}} 9.0.devel}
 
 
 test VersionAttribute-2.0 {compareTo} {
@@ -82,6 +82,7 @@ test VersionAttribute-2.0 {compareTo} {
 	    "8.0-devel" "8.0-alpha" "8.0.beta" "8.0.1" \
 	    "8.1-devel" "8.1-alpha" "8.1.beta" "8.1.1" \
 	    "9.0-devel" "9.0-alpha" "9.0.beta" "9.0.1" \
+	    "9.1-devel" "9.1-alpha" "9.1.beta" "9.1.1" \
 	    [$CURRENT_VERSION getExpression] \
 	    ]
     foreach testValue $testValues {
@@ -94,7 +95,7 @@ test VersionAttribute-2.0 {compareTo} {
 		[$CURRENT_VERSION compareTo $v]]
     }
     list $results
-} {{{1.0 8.1.devel -1 1} {1.0.0 8.1.devel -1 1} {1.0-beta 8.1.devel -1 1} {2.0 8.1.devel -1 1} {2.0-devel 8.1.devel -1 1} {2.0.alpha 8.1.devel -1 1} {2.0_beta 8.1.devel -1 1} {2.0-build003 8.1.devel -1 1} {2.0-release-1 8.1.devel -1 1} {3.0 8.1.devel -1 1} {3.0-devel 8.1.devel -1 1} {3.0-alpha 8.1.devel -1 1} {3.1 8.1.devel -1 1} {4 8.1.devel -1 1} {4.1 8.1.devel -1 1} {5.0 8.1.devel -1 1} {5.1 8.1.devel -1 1} {5.1-alpha 8.1.devel -1 1} {5.1-beta 8.1.devel -1 1} {5.2 8.1.devel -1 1} {5.2-alpha 8.1.devel -1 1} {5.2-beta 8.1.devel -1 1} {6.0-devel 8.1.devel -1 1} {6.0-alpha 8.1.devel -1 1} {6.0.beta 8.1.devel -1 1} {6.0.1 8.1.devel -1 1} {7.0-devel 8.1.devel -1 1} {7.0-alpha 8.1.devel -1 1} {7.0.beta 8.1.devel -1 1} {7.0.1 8.1.devel -1 1} {8.0-devel 8.1.devel -1 1} {8.0-alpha 8.1.devel -1 1} {8.0.beta 8.1.devel -1 1} {8.0.1 8.1.devel -1 1} {8.1-devel 8.1.devel 0 0} {8.1-alpha 8.1.devel -1 1} {8.1.beta 8.1.devel -1 1} {8.1.1 8.1.devel -1 1} {9.0-devel 8.1.devel 1 -1} {9.0-alpha 8.1.devel 1 -1} {9.0.beta 8.1.devel 1 -1} {9.0.1 8.1.devel 1 -1} {8.1.devel 8.1.devel 0 0}}}
+} {{{1.0 9.0.devel -1 1} {1.0.0 9.0.devel -1 1} {1.0-beta 9.0.devel -1 1} {2.0 9.0.devel -1 1} {2.0-devel 9.0.devel -1 1} {2.0.alpha 9.0.devel -1 1} {2.0_beta 9.0.devel -1 1} {2.0-build003 9.0.devel -1 1} {2.0-release-1 9.0.devel -1 1} {3.0 9.0.devel -1 1} {3.0-devel 9.0.devel -1 1} {3.0-alpha 9.0.devel -1 1} {3.1 9.0.devel -1 1} {4 9.0.devel -1 1} {4.1 9.0.devel -1 1} {5.0 9.0.devel -1 1} {5.1 9.0.devel -1 1} {5.1-alpha 9.0.devel -1 1} {5.1-beta 9.0.devel -1 1} {5.2 9.0.devel -1 1} {5.2-alpha 9.0.devel -1 1} {5.2-beta 9.0.devel -1 1} {6.0-devel 9.0.devel -1 1} {6.0-alpha 9.0.devel -1 1} {6.0.beta 9.0.devel -1 1} {6.0.1 9.0.devel -1 1} {7.0-devel 9.0.devel -1 1} {7.0-alpha 9.0.devel -1 1} {7.0.beta 9.0.devel -1 1} {7.0.1 9.0.devel -1 1} {8.0-devel 9.0.devel -1 1} {8.0-alpha 9.0.devel -1 1} {8.0.beta 9.0.devel -1 1} {8.0.1 9.0.devel -1 1} {8.1-devel 9.0.devel -1 1} {8.1-alpha 9.0.devel -1 1} {8.1.beta 9.0.devel -1 1} {8.1.1 9.0.devel -1 1} {9.0-devel 9.0.devel 0 0} {9.0-alpha 9.0.devel -1 1} {9.0.beta 9.0.devel -1 1} {9.0.1 9.0.devel -1 1} {9.1-devel 9.0.devel 1 -1} {9.1-alpha 9.0.devel 1 -1} {9.1.beta 9.0.devel 1 -1} {9.1.1 9.0.devel 1 -1} {9.0.devel 9.0.devel 0 0}}}
 
 
 test VersionAttribute-3.0 {clone: This used to throw an exception because of NamedObj.clone() was not checking for final fields.} {
@@ -111,7 +112,7 @@ test VersionAttribute-3.0 {clone: This used to throw an exception because of Nam
 
 test VersionAttribute-3.0 {majorCurrentVersion} {
     java::call ptolemy.kernel.attributes.VersionAttribute majorCurrentVersion
-} {8.1}
+} {9.0}
 
 test VersionAttribute-4.0 {Delete a RequireVersion when we have a VersionAttribute and a RequireVersion} {
     # VersionAttribute.equals() has a bug where if we have two VersionAttributes, then only the
@@ -130,7 +131,7 @@ test VersionAttribute-4.0 {Delete a RequireVersion when we have a VersionAttribu
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="my NamedObj" class="ptolemy.kernel.util.NamedObj">
-    <property name="versionAttribute" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="versionAttribute" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
 </entity>
 }}
