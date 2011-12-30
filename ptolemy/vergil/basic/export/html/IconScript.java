@@ -30,13 +30,9 @@ package ptolemy.vergil.basic.export.html;
 
 import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.vergil.icon.ValueIcon;
-import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 
 ///////////////////////////////////////////////////////////////////
@@ -59,7 +55,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class IconScript extends StringParameter implements WebExportable {
+public class IconScript extends WebContent implements WebExportable {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -71,6 +67,9 @@ public class IconScript extends StringParameter implements WebExportable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
+        _icon.setIconText("S");
+        displayText.setExpression("Web page script to run on containers icon.");
+
         eventType = new AreaEventType(this, "eventType");
         
         script = new StringParameter(this, "script");
@@ -84,19 +83,6 @@ public class IconScript extends StringParameter implements WebExportable {
         endText = new StringParameter(this, "endText");
         style = new TextStyle(endText, "style");
         style.height.setExpression("5");
-
-        // Add parameters that ensure this is rendered correctly in Vergil.
-        new SingletonAttribute(this, "_hideName");
-        new ValueIcon(this, "_icon");
-        ConfigurableAttribute smallIcon = new ConfigurableAttribute(this, "_smallIconDescription");
-        try {
-            smallIcon.configure(null, null,
-                    "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">html</text></svg>");
-        } catch (Exception e) {
-            // Show exception on the console. Should not occur.
-            e.printStackTrace();
-        }
-        new VisibleParameterEditorFactory(this, "_editorFactory");
     }
 
     ///////////////////////////////////////////////////////////////////

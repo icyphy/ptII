@@ -140,8 +140,6 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLVariableChecker;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.basic.export.html.ExportParameters;
-import ptolemy.vergil.basic.export.html.HTMLExportable;
 import ptolemy.vergil.icon.DesignPatternIcon;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.toolbox.MenuItemFactory;

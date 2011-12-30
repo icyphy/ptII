@@ -40,6 +40,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.ExportParameters;
 
 
 ///////////////////////////////////////////////////////////////////

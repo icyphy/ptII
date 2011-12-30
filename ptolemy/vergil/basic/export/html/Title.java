@@ -91,7 +91,7 @@ public class Title extends StringParameter implements WebExportable {
         
         _icon = new TextIcon(this, "_icon");
         _icon.setPersistent(false);
-        _icon.setIconText("title");
+        _icon.setIconText("T");
         
         showTitleInHTML = new Parameter(this, "showTitleInHTML");
         showTitleInHTML.setExpression("false");

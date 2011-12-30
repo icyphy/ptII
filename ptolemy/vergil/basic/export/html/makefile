@@ -58,7 +58,6 @@ JSRCS = \
 	DefaultIconScript.java \
 	DefaultTitle.java \
 	ExportHTMLAction.java \
-	ExportParameters.java \
 	ExportToWeb.java \
 	HTMLExportable.java \
 	HTMLText.java \
@@ -71,8 +70,8 @@ JSRCS = \
 	Title.java \
 	WebContent.java \
 	WebExportable.java \
-	WebExportParameters.java \
 	WebExportable.java \
+	WebExportParameters.java \	
 	WebExporter.java
 
 OTHER_FILES_TO_BE_JARED = \

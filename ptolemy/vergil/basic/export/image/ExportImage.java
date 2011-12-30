@@ -52,7 +52,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.basic.export.html.ExportParameters;
+import ptolemy.vergil.basic.ExportParameters;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportImage

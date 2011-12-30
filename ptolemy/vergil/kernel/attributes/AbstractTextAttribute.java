@@ -43,6 +43,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.TextIcon;
 
@@ -118,11 +119,31 @@ public class AbstractTextAttribute extends VisibleAttribute {
         center = new Parameter(this, "center");
         center.setToken(BooleanToken.FALSE);
         center.setTypeEquals(BaseType.BOOLEAN);
+        center.setVisibility(Settable.EXPERT);
+        
+        anchor = new StringParameter(this, "anchor");
+        anchor.setExpression("northwest");
+        anchor.addChoice("center");
+        anchor.addChoice("east");
+        anchor.addChoice("north");
+        anchor.addChoice("northeast");
+        anchor.addChoice("northwest");
+        anchor.addChoice("south");
+        anchor.addChoice("sountheast");
+        anchor.addChoice("southwest");
+        anchor.addChoice("west");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** Indication of which point of the text should be aligned to the
+     *  grid. The possible values are "center", "east", "north", 
+     *  "northeast", "northwest" (the default), "south", "sountheast",
+     *  "southwest", or "west".
+     */
+    public StringParameter anchor;
+    
     /** A boolean indicating whether the font should be bold.
      *  This defaults to false.
      */
@@ -166,6 +187,27 @@ public class AbstractTextAttribute extends VisibleAttribute {
         if (attribute == center) {
             if (((BooleanToken) center.getToken()).booleanValue()) {
                 _icon.setAnchor(SwingConstants.CENTER);
+            } else {
+                _icon.setAnchor(SwingConstants.NORTH_WEST);
+            }
+        } else if (attribute == anchor) {
+            String anchorValue = anchor.stringValue();
+            if (anchorValue.equals("center")) {
+                _icon.setAnchor(SwingConstants.CENTER);
+            } else if (anchorValue.equals("east")) {
+                _icon.setAnchor(SwingConstants.EAST);
+            } else if (anchorValue.equals("north")) {
+                _icon.setAnchor(SwingConstants.NORTH);
+            } else if (anchorValue.equals("northeast")) {
+                _icon.setAnchor(SwingConstants.NORTH_EAST);
+            } else if (anchorValue.equals("south")) {
+                _icon.setAnchor(SwingConstants.SOUTH);
+            } else if (anchorValue.equals("southeast")) {
+                _icon.setAnchor(SwingConstants.SOUTH_EAST);
+            } else if (anchorValue.equals("southwest")) {
+                _icon.setAnchor(SwingConstants.SOUTH_WEST);
+            } else if (anchorValue.equals("west")) {
+                _icon.setAnchor(SwingConstants.WEST);
             } else {
                 _icon.setAnchor(SwingConstants.NORTH_WEST);
             }

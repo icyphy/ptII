@@ -28,7 +28,6 @@ package ptolemy.vergil.basic.export.html;
 
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PrinterException;
 import java.io.File;
@@ -76,10 +75,10 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
-import diva.canvas.CompositeFigure;
+import ptolemy.vergil.basic.ExportParameters;
+import ptolemy.vergil.basic.HTMLExportable;
 import diva.canvas.Figure;
 import diva.canvas.JCanvas;
-import diva.canvas.toolbox.BasicFigure;
 import diva.graph.GraphController;
 
 /** An Action that works with BasicGraphFrame to export HTML.
@@ -174,7 +173,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             ExportParameters parameters = defaultParameters.getExportParameters();
             // Set the copy directory target to null to indicate that no copying
             // of files has happened.
-            parameters._jsCopier = null;
+            parameters.setJSCopier(null);
             exportToWeb(_basicGraphFrame, parameters);
         } catch (KernelException ex) {
             MessageHandler.error("Unable to export HTML.", ex);
@@ -364,7 +363,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                                 }
                             }
                         }
-                        parameters._jsCopier = graphFrame.getModel();
+                        parameters.setJSCopier(graphFrame.getModel());
                     }
                 }
             }
@@ -647,7 +646,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 	        // FIXME: This can fail if we export a submodel only but
 	        // the enclosing model has its copyJavaScriptFiles parameter
 	        // set to true!
-	        String copiedLibrary = _findCopiedLibrary(model, "", parameters._jsCopier);
+	        String copiedLibrary = _findCopiedLibrary(model, "", parameters.getJSCopier());
 	        if (copiedLibrary != null) {
 	            jsLibrary = copiedLibrary;
 	        }
@@ -1018,8 +1017,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             Figure figure = controller.getFigure(location);
 
             if (figure != null) {
-                Point2D figureOrigin = figure.getOrigin();
-
                 // NOTE: Calling getBounds() on the figure itself yields an
                 // inaccurate bounds, for some reason.
                 // Weirdly, to get the size right, we need to use the shape.
@@ -1027,39 +1024,33 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
                 Rectangle2D figureBounds = figure.getShape().getBounds2D();
                 
                 // If the figure is composite, use the background figure 
-                // for the bounds instead.
+                // for the bounds instead.  NOTE: This seems to be a mistake.
+                // The size and position information yielded appears to have
+                // no relationship to reality.
+                /*
                 if (figure instanceof CompositeFigure) {
                     figure = ((CompositeFigure) figure).getBackgroundFigure();
                     figureBounds = figure.getShape().getBounds2D();
                 }
-                boolean isCentered = false;
-                if (figure instanceof BasicFigure) {
-                    isCentered = ((BasicFigure) figure).isCentered();
-                }
-
-                double iconX = figureOrigin.getX() + figureBounds.getX();
-                double iconY = figureOrigin.getY() + figureBounds.getY();
-                
+                */
+                // Populate the data structure with bound information
+                // relative to the visible rectangle.
+                // Sadly, neither the figureOrigin nor the figureBounds
+                // tells us where the figure is.  So we have quite a bit
+                // of work to do.
+                // First, get the width of the figure.
+                // This is the only variable that does not depend
+                // on the anchor.
+                double width = figureBounds.getWidth();
+                double height = figureBounds.getHeight();
                 IconVisibleLocation i = new IconVisibleLocation();
                 i.object = object;
-
-                // Calculate the location of the icon relative to the visible rectangle.
-                i.topLeftX = iconX * scaleX + translateX;
-                i.topLeftY = iconY  * scaleY + translateY;
-                i.bottomRightX = (iconX + figureBounds.getWidth()) * scaleX + translateX;
-                i.bottomRightY = (iconY + figureBounds.getHeight()) * scaleY + translateY;
+                i.topLeftX = figureBounds.getX() * scaleX + translateX - _PADDING;
+                i.topLeftY = figureBounds.getY() * scaleY + translateY - _PADDING;
+                i.bottomRightX = i.topLeftX + (width * scaleX) + 2*_PADDING;
+                i.bottomRightY = i.topLeftY + (height * scaleY) + 2*_PADDING;
                 
-                // Correction needed if the figure is centered (sadly...
-                // that's how AWT APIs work, I guess... you have to guess what it means).
-                if (isCentered) {
-                    double widthOffset = figureBounds.getWidth()/2.0;
-                    double heightOffset = figureBounds.getHeight()/2.0;
-                    i.topLeftX -= widthOffset;
-                    i.topLeftY -= heightOffset;
-                    i.bottomRightX -= widthOffset;
-                    i.bottomRightY -= heightOffset;
-                }
-
+                // If the rectangle is not visible, no more to do.
                 if (i.bottomRightX < 0.0 || i.bottomRightY < 0.0
                         || i.topLeftX > viewSize.getWidth()
                         || i.topLeftY > viewSize.getHeight()) {
@@ -1206,8 +1197,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     /** Content of the end section. */
     private LinkedList<String> _end;
 
+    /** Indicator that an export is in progress. */
+    private static boolean _exportInProgress = false;
+
     /** Content of the head section. */
     private LinkedList<String> _head;
+    
+    /** Padding around figures for bounding box. */
+    private static double _PADDING = 4.0;
     
     /** The parameters of the current export, if there is one. */
     private ExportParameters _parameters;
@@ -1218,14 +1215,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     /** Content of the start section. */
     private LinkedList<String> _start;
     
-    /** The title of the page. */
-    private String _title = "Ptolemy II model";
-
     /** The sanitized modelName */
     private String _sanitizedModelName;
     
-    /** Indicator that an export is in progress. */
-    private static boolean _exportInProgress = false;
+    /** The title of the page. */
+    private String _title = "Ptolemy II model";
 
     ///////////////////////////////////////////////////////////////////
     //// IconVisibleLocation

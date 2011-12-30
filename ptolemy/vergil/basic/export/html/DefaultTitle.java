@@ -35,13 +35,9 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.vergil.icon.ValueIcon;
-import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 
 ///////////////////////////////////////////////////////////////////
@@ -58,7 +54,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DefaultTitle extends StringParameter implements WebExportable {
+public class DefaultTitle extends WebContent implements WebExportable {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -69,6 +65,9 @@ public class DefaultTitle extends StringParameter implements WebExportable {
     public DefaultTitle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        _icon.setIconText("T");
+        displayText.setExpression("Default title to give to icons in the model.");
                 
         showTitleInHTML = new Parameter(this, "showTitleInHTML");
         showTitleInHTML.setExpression("true");
@@ -82,19 +81,6 @@ public class DefaultTitle extends StringParameter implements WebExportable {
         include.setExpression("Entities");
         
         instancesOf = new StringParameter(this, "instancesOf");
-        
-        // Add parameters that ensure this is rendered correctly in Vergil.
-        new SingletonAttribute(this, "_hideName");
-        new ValueIcon(this, "_icon");
-        ConfigurableAttribute smallIcon = new ConfigurableAttribute(this, "_smallIconDescription");
-        try {
-            smallIcon.configure(null, null,
-                    "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">title</text></svg>");
-        } catch (Exception e) {
-            // Show exception on the console. Should not occur.
-            e.printStackTrace();
-        }
-        new VisibleParameterEditorFactory(this, "_editorFactory");
     }
 
     ///////////////////////////////////////////////////////////////////

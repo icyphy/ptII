@@ -28,14 +28,9 @@
 
 package ptolemy.vergil.basic.export.html;
 
-import ptolemy.data.expr.StringParameter;
-import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.vergil.icon.ValueIcon;
-import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 
 ///////////////////////////////////////////////////////////////////
@@ -46,14 +41,22 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * link is displayed.
  * <p>
  * To use this, drag it onto an icon in your model. Then double
- * click on that icon to set the URL to link to. At the current time,
- * Vergil provides no mechanism to modify the <i>linkTarget</i>
- * parameter. To work around that, we provide the two most useful
- * values for this parameter in the WebExport library.
- * Specifically, the <i>icon iframe</i> attribute in that library
- * brings up the link in lightbox. The <i>icon link</i> attribute
- * follows the link using the browser's default (which may replace
- * the current view or open in a new tab).
+ * click on that icon to set the URL to link to. The <i>linkTarget</i>
+ * parameter specifies whether the link should be opened in a
+ * new browser window (the default), in the same browser window,
+ * in a lightbox, etc.
+ * <p>
+ * Note that this attribute can be used in combination with
+ * {@link LiveLink}. The latter provides a hyperlink that works
+ * within Vergil, whereas this attribute provides a hyperlink
+ * that works in an exported HTML page.  For example,
+ * LiveLink might be used to provide a hyperlink to another
+ * model (a pointer to its MoML file), so that double clicking
+ * on the container of the LiveLink attribute opens the other
+ * model. If that container also contains an instance of
+ * IconLink, then when the model is exported to a web page,
+ * the container's icon can become a link to the exported page
+ * for the other model.
  *
  * @author Edward A. Lee
  * @version $Id$
@@ -61,7 +64,7 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class IconLink extends StringParameter implements WebExportable {
+public class IconLink extends WebContent implements WebExportable {
 
     /** Create an instance of this parameter.
      *  @param container The container.
@@ -73,22 +76,15 @@ public class IconLink extends StringParameter implements WebExportable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
+        _icon.setIconText("L");
+        displayText.setExpression("http://ptolemy.org");
+        height.setExpression("1");
+
         linkTarget = new LinkTarget(this, "linkTarget");
         // Note that the default value and choices are set
         // in the above constructor call.
         
-        // Add parameters that ensure this is rendered correctly in Vergil.
-        new SingletonAttribute(this, "_hideName");
-        new ValueIcon(this, "_icon");
-        ConfigurableAttribute smallIcon = new ConfigurableAttribute(this, "_smallIconDescription");
-        try {
-            smallIcon.configure(null, null,
-                    "<svg><text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">link</text></svg>");
-        } catch (Exception e) {
-            // Show exception on the console. Should not occur.
-            e.printStackTrace();
-        }
-        new VisibleParameterEditorFactory(this, "_editorFactory");
+        setExpression("http://ptolemy.org");
     }
 
     ///////////////////////////////////////////////////////////////////

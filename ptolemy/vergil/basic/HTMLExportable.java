@@ -26,10 +26,9 @@
 
  */
 
-package ptolemy.vergil.basic.export.html;
+package ptolemy.vergil.basic;
 
 import java.awt.print.PrinterException;
-import java.io.File;
 import java.io.IOException;
 
 import ptolemy.kernel.util.IllegalActionException;

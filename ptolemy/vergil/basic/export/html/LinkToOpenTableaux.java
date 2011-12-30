@@ -52,6 +52,8 @@ import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.ExportParameters;
+import ptolemy.vergil.basic.HTMLExportable;
 
 
 ///////////////////////////////////////////////////////////////////

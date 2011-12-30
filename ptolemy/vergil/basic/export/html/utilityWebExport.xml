@@ -23,6 +23,9 @@
 </property>
 
 <!------------------------------------------->
+<input source="ptolemy/configs/utilityLiveLink.xml"/>
+
+<!------------------------------------------->
 <property name="IconScript" class="ptolemy.vergil.basic.export.html.IconScript" value="writeMyText('sample text')">
   <property name="script" value="function writeMyText(text) {&#10;    document.getElementById(&quot;xyz&quot;).innerHTML = text;&#10;};"/>
   <property name="endText" value="<p id=&quot;xyz&quot;></p>"/>

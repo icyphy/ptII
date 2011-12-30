@@ -55,8 +55,10 @@ import ptolemy.util.MessageHandler;
  a text annotation in a model with text something like
  "See also Foo", where "Foo" is the name of another
  related model. Drag an instance of this LiveLink attribute
- onto the text annotation, and double click on the text
- annotation to set the file name for the model Foo.
+ onto the text annotation. Alt double click (or right click
+ and select Configure) on the text
+ annotation to set the file name for the model Foo to
+ link to a file or a URL to link to a web page.
  The file name can be relative to the location of
  the model containing the annotation. It can also
  have any of the forms supported by

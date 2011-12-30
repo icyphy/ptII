@@ -40,6 +40,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.ExportParameters;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportToWeb
