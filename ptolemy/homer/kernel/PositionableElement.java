@@ -85,7 +85,7 @@ public abstract class PositionableElement {
      *  @return Return the location object of the element.
      *  @exception IllegalActionException If the location of the element
      *  is not defined.
-     *  @see #setLocation(HomerLocation)
+     *  @see #setLocation(int, int, int, int)
      */
     public HomerLocation getLocation() throws IllegalActionException {
         HomerLocation location = (HomerLocation) getElement().getAttribute(

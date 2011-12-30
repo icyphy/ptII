@@ -50,14 +50,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.actor.lib.qm.BasicSwitch;
 
 /**
- * 
  * A {@link QuantityManager} actor that applies packet-size and priority 
  * dependent delay to incoming packets. Intended to use with RecordTokens only.
  * Assumes record token includes the encapsulated packages with a label "packets"
  * and a TCP header with label "TCPlabel"
  * 
  * @author Ilge Akkaya
- * @version
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (ilgea)
  * @Pt.AcceptedRating

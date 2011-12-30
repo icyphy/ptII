@@ -54,7 +54,8 @@ public interface WebExportable extends Nameable {
      *  This may include, for example, HTML or header
      *  content, including for example JavaScript definitions that
      *  may be needed by the area attributes.
-     *  @throws IllegalActionException If something is wrong with the
+     *  @param exporter The web exporter to be used.
+     *  @exception IllegalActionException If something is wrong with the
      *   specification of outside content.
      */
     public void provideContent(WebExporter exporter) throws IllegalActionException;

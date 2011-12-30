@@ -1154,7 +1154,7 @@ public class PtidesMulticoreDirector extends PtidesBasicDirector {
     
     /** Set the value of the 'relativeDeadline' parameter for an input port.
      * @param port Input port.
-     * @param delayOffset Relative deadline for input port.
+     * @param relativeDeadline Relative deadline for input port.
      * @exception IllegalActionException If cannot set parameter.
      */
     protected void _setRelativeDeadline(TypedIOPort port, 

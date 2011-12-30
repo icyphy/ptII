@@ -53,13 +53,12 @@ public class ExportParameters {
     
     /** Construct an instance of this data structure with
      *  default values, which are 
-     *  null for backgroundColor,
-     *  false for copyJavaScriptFiles,
-     *  null for directoryToExportTo,
-     *  false for openCompositesBeforeExport,
-     *  false for runBeforeExport,
-     *  and true for showInBrowser.
-     *  @param directoryToExportTo The directory to export to.
+     *  <br/> null for backgroundColor,
+     *  <br/> false for copyJavaScriptFiles,
+     *  <br/> null for directoryToExportTo,
+     *  <br/> false for openCompositesBeforeExport,
+     *  <br/> false for runBeforeExport,
+     *  <br/> and true for showInBrowser.
      */
     protected ExportParameters() {
         this(null);
@@ -67,11 +66,11 @@ public class ExportParameters {
 
     /** Construct an instance of this data structure with
      *  default values, which are 
-     *  null for backgroundColor,
-     *  false for copyJavaScriptFiles,
-     *  false for openCompositesBeforeExport,
-     *  false for runBeforeExport,
-     *  and true for showInBrowser.
+     *  <br/> null for backgroundColor,
+     *  <br/> false for copyJavaScriptFiles,
+     *  <br/> false for openCompositesBeforeExport,
+     *  <br/> false for runBeforeExport,
+     *  <br/> and true for showInBrowser.
      *  @param directoryToExportTo The directory to export to.
      */
     public ExportParameters(File directoryToExportTo) {

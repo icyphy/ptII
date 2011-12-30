@@ -1320,7 +1320,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  The gif image is assumed to have been generated with the
      *  current view using the {@link #writeImage(OutputStream, String)}
      *  method.
-     *  @param directory The directory in which to put any associated files.
+     *  @param exportParameters The parameters that control the export.
      *  @exception IOException If unable to write associated files, or if the
      *   current configuration does not support it.
      *  @exception PrinterException If unable to write associated files.
@@ -1342,7 +1342,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  that exports an image of a model.
      *  @param stream The output stream to write to.
      *  @param format The image format to generate.
-     *  @see #writeHTML(File)
+     *  @see #writeHTML(ExportParameters)
      *  @exception IOException If writing to the stream fails.
      *  @exception PrinterException  If the specified format is not supported.
      */

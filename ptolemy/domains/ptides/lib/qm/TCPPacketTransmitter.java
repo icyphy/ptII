@@ -77,11 +77,11 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  wrapup, the remaining tokens(if any) are sent to the output.
  *
  *  @author Ilge Akkaya
- *  @version 
- *  @since Ptolemy II 8.0
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating 
  *  @Pt.AcceptedRating
-*/
+ */
 public class TCPPacketTransmitter extends OutputDevice {
 
     public TCPPacketTransmitter(CompositeEntity container, String name)
@@ -110,6 +110,7 @@ public class TCPPacketTransmitter extends OutputDevice {
         _tokenValues = new ArrayList<Token>();
         _packetLength = 0;
     }
+
     public void attributeChanged(Attribute attribute)
         throws IllegalActionException {
         if (attribute == defaultFrameSize) {
@@ -136,25 +137,22 @@ public class TCPPacketTransmitter extends OutputDevice {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                     public variables                 ////
+    ////                     public variables                      ////
 
-    /* the data input port */
+    /* The data input port. */
     public TypedIOPort input;
 
-    /* the data output port */
+    /* The data output port. */
     public TypedIOPort output;
     
-    /* Default TCP Packet size parameter */
+    /* Default TCP Packet size parameter. */
     public Parameter defaultFrameSize;
     
-    /* Default TCP Packet priority parameter */
+    /* Default TCP Packet priority parameter. */
     public Parameter priority;
     
-    /* User-Defined frame size port parameter*/
+    /* User-Defined frame size port parameter. */
     public PortParameter frameSize;
-    
-    
-    
     
     
     /** Fill-in and return fields of the TCP header as a RecordToken
@@ -162,8 +160,10 @@ public class TCPPacketTransmitter extends OutputDevice {
      */
     public RecordToken getTCPHeader() throws IllegalActionException
     {
-        String[] TCPHeaderLabels = new String[] {sourcePort, destinationPort, sequenceNumber, acknowledgementNumber,
-                offsetControlBits, windowSize, checksum, urgentPointer,options}; 
+        String[] TCPHeaderLabels = new String[] {sourcePort, destinationPort,
+                                                 sequenceNumber, acknowledgementNumber,
+                                                 offsetControlBits, windowSize,
+                                                 checksum, urgentPointer,options}; 
         short sourcePortContents = 0;
         short destinationPortContents = 0;
         int sequenceNumberContents = 0;

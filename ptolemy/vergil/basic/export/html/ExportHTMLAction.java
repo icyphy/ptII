@@ -221,7 +221,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  <p>
      *  This method is a callback method that may be performed
      *  by attributes of class {@link WebExportable} when their
-     *  {@link WebExportable#defineAreaAttributes(WebExporter)} method
+     *  {@link WebExportable#provideOutsideContact(WebExporter)} method
      *  is called by this exporter.
      *  @param object The object for which area elements are being added.
      *  @param attribute The attribute to add to the area element.
@@ -263,12 +263,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  this complete, then it can call {@link #waitForExportToComplete()}.
      *  This is synchronized to ensure that only one export can be in progress at a time.
      *  </p>
-     *  @param directory The directory to write to.
      *  @param graphFrame The frame containing a model to export.
-     *  @param run If true, run the model before exporting.
-     *  @param open If true, open submodels before exporting.
-     *  @param show If true, show the resulting web page in a browser after exporting.
-     *  @param copy If true, copy JavaScript and image files into the target directory,
+     *  @param parameters The parameters that control the export.
      *   making the exported web page independent of the ptolemy.org site.
      *  @return The thread that is spawned to (optionally) run and export the model,
      *   or null if the export is cancelled.
@@ -276,7 +272,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     public static synchronized void exportToWeb(
             final BasicGraphFrame graphFrame,
             final ExportParameters parameters) {
-        
         try {
             
             if (parameters.directoryToExportTo == null) {
@@ -518,7 +513,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  This facility is not likely to be portable to other websites.
      *  </p>
      *
-     *  @param directory The directory in which to put any associated files.
+     *  @param parameters The parameters that control the export.
      *  @exception IOException If unable to write associated files.
      *  @exception PrinterException If unable to write associated files.
      *  @throws IllegalActionException If reading parameters fails.
@@ -868,6 +863,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  a ModalModel, then return the
      *  name of its container, not the name of the FSMActor.
      *  Otherwise, return the name of the object.
+     *  @param object The object.
      *  @return A title for the object.
      *  @throws IllegalActionException If accessing the title attribute fails..
      */

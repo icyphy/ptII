@@ -65,7 +65,7 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
 public class PTree extends JTree {
     /** Create a new tree that is rooted at the given entity.
      *  This constructor creates a tree that shows the expression
-     *  value for any object that implements {@link Settable}.
+     *  value for any object that implements {@link ptolemy.kernel.util.Settable}.
      *  @param model The model that is the root of the tree.
      */
     public PTree(TreeModel model) {
@@ -75,7 +75,7 @@ public class PTree extends JTree {
     /** Create a new tree that is rooted at the given entity.
      *  @param model The model that is the root of the tree.
      *  @param showSettableValues If true, show the expression value
-     *   for any object that implements {@link Settable}.
+     *   for any object that implements {@link ptolemy.kernel.util.Settable}.
      */
     public PTree(TreeModel model, boolean showSettableValues) {
         // The use of EntityTreeModel here is what restricts the

@@ -1,7 +1,7 @@
 /* TCPPacketReceiver simulates a device that resolves variable-size
- * TCP packets to release their token contents
+ TCP packets to release their token contents
 
-@Copyright (c) 2008-2011 The Regents of the University of California.
+@Copyright (c) 2011 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -74,8 +74,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *   
  *
  *  @author Ilge Akkaya
- *  @version 
- *  @since Ptolemy II 8.0
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating 
  *  @Pt.AcceptedRating
 */
@@ -194,26 +194,26 @@ public class TCPPacketReceiver extends InputDevice {
     }
     
 
-  /*  *//** Return the type constraints of this actor. The type constraint is
-     *  that the input RecordToken has two fields, a "TCPlabel" of type
-     *  double and a "tokens" of type Token[].
-     *  @return a list of Inequality.
-     *
-     *//*
-    public Set<Inequality> typeConstraints() {
-        String[] labels = { TCPlabel, tokens };
-        Type[] types = { BaseType.RECORD, BaseType.RECORD };
-        RecordType type = new RecordType(labels, types);
-        input.setTypeAtMost(type);
+//   /** Return the type constraints of this actor. The type constraint is
+//    *  that the input RecordToken has two fields, a "TCPlabel" of type
+//    *  double and a "tokens" of type Token[].
+//    *  @return a list of Inequality.
+//    *
+//    *//*
+//     public Set<Inequality> typeConstraints() {
+//         String[] labels = { TCPlabel, tokens };
+//         Type[] types = { BaseType.RECORD, BaseType.RECORD };
+//         RecordType type = new RecordType(labels, types);
+//         input.setTypeAtMost(type);
 
-        HashSet typeConstraints = new HashSet<Inequality>();
-        Inequality inequality = new Inequality(new PortFunction(),
-                output.getTypeTerm());
-        typeConstraints.add(inequality);
-        return typeConstraints;
-    }*/
+//         HashSet typeConstraints = new HashSet<Inequality>();
+//         Inequality inequality = new Inequality(new PortFunction(),
+//                 output.getTypeTerm());
+//         typeConstraints.add(inequality);
+//         return typeConstraints;
+//     }*/
     
-///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     // This is fashioned after RecordDisassembler.

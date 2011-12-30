@@ -186,9 +186,6 @@ public class LiveSoundCommon {
      * @param doubleArray The resulting array of doubles.
      * @param byteArray  The linear signed pcm big endian byte array
      * formatted array representation of audio data.
-     * @return Two dimensional array holding audio samples.
-     * For each channel, m, doubleArray[m] is a single dimensional
-     * array containing samples for channel m.
      */
     protected void _byteArrayToDoubleArray(double[][] doubleArray,
             byte[] byteArray) {
