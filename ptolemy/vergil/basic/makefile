@@ -106,6 +106,7 @@ OPTIONAL_FILES = \
 	'BasicGraphController$$SchematicContextMenuFactory.class' \
 	'BasicGraphController$$UnitSolverDialogAction.class' \
 	'BasicGraphFrame$$1.class' \
+	'BasicGraphFrame$$2.class' \
 	'BasicGraphFrame$$ExportHTMLAction.class' \
 	'BasicGraphFrame$$ExportImageAction.class' \
 	'BasicGraphFrame$$FolderFileFilter.class' \
@@ -117,6 +118,7 @@ OPTIONAL_FILES = \
 	'BasicGraphFrame$$DocumentationMenuItemFactory.class' \
 	'BasicGraphFrame$$EditPreferencesAction.class' \
 	'BasicGraphFrame$$ElementInLinkType.class' \
+	'BasicGraphFrame$$LayoutConfigDialogAction.class' \
 	'BasicGraphFrame$$LinkElementProperties.class' \
 	'BasicGraphFrame$$MoveToBackAction$$1.class' \
 	'BasicGraphFrame$$MoveToBackAction.class' \
@@ -148,6 +150,7 @@ OPTIONAL_FILES = \
 	'IconController$$IconRenderer$$1.class' \
 	'IconController$$IconRenderer.class' \
 	'LocatableNodeDragInteractor$$1.class' \
+	'LocatableNodeDragInteractor$$2.class' \
 	'MoMLModelAttributeController$$LookInsideAction$$1.class' \
 	'MoMLModelAttributeController$$LookInsideAction.class' \
 	'PtolemyLayoutAction$$PtolemyLayout.class' \

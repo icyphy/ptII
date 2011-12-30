@@ -111,6 +111,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	PublisherSubscriber2class.xml \
 	PublisherSubscriberChannelChange.xml \
 	PublisherSubscriberInClass.xml \
+	PublisherTestSubscriberToleranceRange.xml \
 	pubsubplot \
 	pubsubs \
 	runModels \

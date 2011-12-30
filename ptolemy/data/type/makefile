@@ -151,6 +151,8 @@ OPTIONAL_FILES = \
 	'SizedMatrixType$$LongMatrixType.class' \
 	'RecordType$$1.class' \
 	'RecordType$$FieldType.class' \
+	'TupleType$$1.class' \
+	'TupleType$$FieldTypeTerm.class' \
 	'TypeLattice$$1.class' \
 	'TypeLattice$$TheTypeLattice.class' \
 	'UnionType$$1.class' \

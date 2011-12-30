@@ -96,11 +96,14 @@ OTHER_FILES_TO_BE_JARED = \
 	MatrixJoinIcon.xml \
 	MatrixSplitIcon.xml \
 	Periodogram.xml \
+	PeriodogramIcon.xml \
 	RepeatIcon.xml \
 	SequenceToArrayIcon.xml \
 	SmoothedPeriodogram.xml \
 	SmoothedSpectrum.xml \
+	SmoothedPeriodogramIcon.xml \
 	Spectrum.gif \
+	Spectrum.tiff \
 	Spectrum.xml \
 	SpectrumIcon.xml \
 	SpectrumPlot.xml \

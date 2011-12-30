@@ -101,6 +101,7 @@ OPTIONAL_FILES = \
 	'ActorController$$OpenInstanceAction.class' \
 	'ActorController$$SaveInLibraryAction.class' \
 	'ActorEditorGraphController$$1.class' \
+	'ActorEditorGraphController$$2.class' \
 	'ActorEditorGraphController$$LinkCreator.class' \
 	'ActorEditorGraphController$$ListenToActorFactory.class' \
 	'ActorEditorGraphController$$NewRelationAction.class' \
@@ -112,6 +113,7 @@ OPTIONAL_FILES = \
 	'ActorGraphFrame$$ImportLibraryAction.class' \
 	'ActorGraphFrame$$InstantiateAttributeAction.class' \
 	'ActorGraphFrame$$InstantiateEntityAction.class' \
+	'ActorGraphFrame$$InstantiatePortAction.class' \
 	'ActorGraphFrame$$LayoutAction.class' \
 	'ActorGraphFrame$$SaveInLibraryAction.class' \
 	'ActorGraphModel$$ExternalPortModel.class' \
@@ -126,6 +128,7 @@ OPTIONAL_FILES = \
 	'ActorInstanceController$$1.class' \
 	'ActorInstanceController$$2.class' \
 	'ActorInstanceController$$ConvertToClassAction.class' \
+	'ActorViewerGraphController$$EntityLayout.class' \
 	'ClassDefinitionController$$1.class' \
 	'ClassDefinitionController$$2.class' \
 	'ClassDefinitionController$$ConvertToInstanceAction.class' \

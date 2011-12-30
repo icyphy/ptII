@@ -78,6 +78,8 @@ OPTIONAL_FILES = \
 	'PtidesNoPhysicalTimeDirector$$DoubleTimedEvent.class' \
 	'PtidesNoPhysicalTimeDirector$$RealTimeEvent.class' \
 	'PtidesNoPhysicalTimeDirector$$Tag.class' \
+	'PtidesMulticoreDirector$$EDFComparator.class' \
+	'PtidesMulticoreDirector$$ProcessingPtidesEvents.class' \
 	'PtidesBasicDirector$$DoubleTimedEvent.class' \
 	'PtidesBasicDirector$$ExecutionTimedEvent.class' \
 	'PtidesBasicDirector$$PortDependency.class' \

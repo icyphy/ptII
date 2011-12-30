@@ -70,7 +70,13 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'LayoutHint$$LayoutHintItem.class'
+	'ApplyLayoutRequest$$ConnectionEntry.class' \
+	'ApplyLayoutRequest$$CurveEntry.class' \
+	'ApplyLayoutRequest$$LocationEntry.class' \
+	'LayoutHint$$1.class' \
+	'LayoutHint$$LayoutHintItem.class' \
+	'Parameters$$1.class' \
+	'UndoLayoutAction$$ConnectionHintEntry.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -101,10 +101,14 @@ EXTRA_SRCS = \
 	.classpath.in \
 	.eclipse.epf \
 	README.txt \
+	build.default.xml \
+	build.xml \
+	build.xml.in \
 	copyright.htm \
 	copyright.txt \
 	configure.in \
 	configure \
+	jars.xml \
 	plugin.xml \
 	pom.xml \
 	vergil.jnlp.in \

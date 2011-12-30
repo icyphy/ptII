@@ -79,7 +79,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	io luminary test
+MISC_FILES =	io luminary qm test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -87,6 +87,10 @@ OPTIONAL_FILES = \
 	doc \
 	'ExecutionTimeListener$$ExecutionEventType.class' \
 	'ExecutionTimeMonitor$$SchedulePlotterEditorFactory.class' \
+	'MulticoreExecutionTimeMonitor$$1.class' \
+	'MulticoreExecutionTimeMonitor$$2.class' \
+	'MulticoreExecutionTimeMonitor$$3.class' \
+	'MulticoreExecutionTimeMonitor$$ParallelMonitor.class' \
 	'NetworkReceiver$$1.class' \
 	'NetworkReceiver$$PortFunction.class' \
 	'ScheduleListener$$ScheduleEventType.class' \

@@ -281,7 +281,7 @@ OTHER_FILES_TO_BE_JARED = \
 	GaussianIcon.xml \
 	IIRIcon.xml \
 	MicrostepDelayIcon.xml \
-    MultiplexorIcon.xml \
+	MultiplexorIcon.xml \
 	TriangularIcon.xml \
 	PowerEstimate.xml \
 	ResettableTimerIcon.xml \
@@ -342,6 +342,7 @@ OPTIONAL_FILES = \
 	jmf \
 	jni \
 	joystick \
+	mail \
 	opencv \
 	reactable \
 	'AbsoluteValue$$1.class' \

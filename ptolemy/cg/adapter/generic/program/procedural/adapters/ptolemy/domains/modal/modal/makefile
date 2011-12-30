@@ -61,7 +61,8 @@ JSRCS = \
 	State.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ModalController.j 
+	ModalController.c \
+	ModalController.j
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -73,7 +74,11 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo \
+	kernel \
+	'ModalController$$1.class' \
+	'ModalController$$NonPreemptiveTransitions.class' \
+	'ModalController$$PreemptiveTransitions.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

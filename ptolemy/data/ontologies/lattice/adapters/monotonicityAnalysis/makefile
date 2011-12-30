@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/ontologies/lattice/adapters/monotonicityAnalysis
 
-DIRS = 		actor data
+DIRS = 		actor data test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
@@ -71,7 +71,8 @@ MISC_FILES = $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'MonotonicityCounterexamples$$ConceptPair.class'
+	'MonotonicityCounterexamples$$ConceptPair.class' \
+	'MonotonicityCounterexamples$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

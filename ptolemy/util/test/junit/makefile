@@ -52,14 +52,18 @@ JSRCS = \
 	JUnitCGJavaTestBase.java \
 	TclTests.java
 
-TCL_SRCS = \
-
+TCL_SRCS =
 
 # Shell scripts that should be made executable
 SCRIPTS = \
+	javachdir \
+	updateJUnitCGJavaTest \
 	updateJUnitTclTest
 
-EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS)
+EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS) \
+	JUnitCGJavaTest.java.in \
+	makefile.in
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -70,6 +74,11 @@ MISC_FILES = \
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'AutoCGCTests$$1.class' \
+	'AutoCGJavaTests$$1.class' \
+	'AutoKnownFailedTests$$1.class' \
+	'AutoTests$$1.class' \
+	'TclTests$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

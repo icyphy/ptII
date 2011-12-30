@@ -293,6 +293,7 @@ OPTIONAL_FILES = \
 	'PtolemyQuery$$3.class' \
 	'PtolemyQuery$$4.class' \
 	'PtolemyQuery$$5.class' \
+	'PtolemyQuery$$HierarchicalConfigurer.class' \
 	'PtolemyTop$$ViewMenuListener.class' \
 	'RunTableau$$Factory.class' \
 	'RunTableau$$RunFrame.class' \

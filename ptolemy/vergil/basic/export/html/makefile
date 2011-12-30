@@ -60,6 +60,7 @@ JSRCS = \
 	ExportHTMLAction.java \
 	ExportParameters.java \
 	ExportToWeb.java \
+	HTMLExportable.java \
 	HTMLText.java \
 	HTMLTextPosition.java \
 	IconLink.java \

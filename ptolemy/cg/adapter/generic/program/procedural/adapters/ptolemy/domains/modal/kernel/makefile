@@ -59,7 +59,8 @@ JSRCS = FSMActor.java \
         FSMDirector.java
 
 OTHER_FILES_TO_BE_JARED = \
-	FSMActor.j
+	FSMActor.j \
+	FSMActor.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

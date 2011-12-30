@@ -70,7 +70,8 @@ OPTIONAL_FILES = \
 	'ExportImage$$3.class' \
 	'ExportImage$$4.class' \
 	'ExportImage$$5.class' \
-	'ExportImage$$6.class'
+	'ExportImage$$6.class' \
+	'ExportImage$$7.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
