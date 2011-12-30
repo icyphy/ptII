@@ -60,6 +60,7 @@ EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 JSRCS = \
 	AttributeStyleWidget.java \
 	GlassPaneWidget.java \
+	MinSizeInterface.java \
 	NamedObjectIconWidget.java \
 	NamedObjectImageWidget.java \
 	NamedObjectWidget.java \

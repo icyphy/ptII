@@ -50,6 +50,7 @@ EXAMPLE_MODELS = \
 	BreweryWireless.xml
 
 OTHER_FILES_TO_BE_JARED = \
+	$(EXAMPLE_MODELS)
 	AbstractTank.xml \
 	Tank.xml
 
