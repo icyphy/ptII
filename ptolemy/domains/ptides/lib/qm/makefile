@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2011-2011 The Regents of the University of California.
+# @Copyright (c) 2011 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -34,7 +34,7 @@ ME =            ptolemy.domains.ptides.lib.qm
 DIRS = 		demo
 
 # Root of the Java directory
-ROOT =          ../../../..
+ROOT =          ../../../../..
 
 # JYTHON_JAR is set in $PTII/mk/ptII.mk by running configure
 CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)
@@ -44,17 +44,15 @@ CONFIG =        $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     qm_ptides
+PTPACKAGE =     qm
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = \
-	VariableDelaySwitch.xml
+OTHER_FILES_TO_BE_JARED =
 
 JSRCS = \
 	VariableDelaySwitch.java \
 	TCPPacketReceiver.java \
 	TCPpacketTransmitter.java 
-	
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
