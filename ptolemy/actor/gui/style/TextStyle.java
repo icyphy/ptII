@@ -96,7 +96,7 @@ public class TextStyle extends ParameterEditorStyle {
      */
     public Parameter height;
 
-    /** The width (in lines) of the text box. This is an integer
+    /** The width (in characters) of the text box. This is an integer
      *  that defaults to 30.
      */
     public Parameter width;
