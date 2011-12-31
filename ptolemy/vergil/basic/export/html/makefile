@@ -71,7 +71,7 @@ JSRCS = \
 	WebContent.java \
 	WebExportable.java \
 	WebExportable.java \
-	WebExportParameters.java \	
+	WebExportParameters.java \
 	WebExporter.java
 
 OTHER_FILES_TO_BE_JARED = \
