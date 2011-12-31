@@ -125,6 +125,9 @@ test PlotBox-5.1 {getColorByName} {
 } {java.awt.Color[r=255,g=0,b=0]}
 
 
+# This sleep is necessary to avoid a deadlock in the nightly build
+java::call Thread sleep 500
+
 test PlotBox-6.1 {setButtons} {
     # This repaint is needed to avoid a deadlock in the nightly junit tests.
     $plot repaint
