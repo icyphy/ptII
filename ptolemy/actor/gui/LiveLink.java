@@ -29,7 +29,6 @@ package ptolemy.actor.gui;
 
 import java.awt.Frame;
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 
 import ptolemy.data.expr.FileParameter;
@@ -37,8 +36,6 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.ValueListener;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -47,9 +44,11 @@ import ptolemy.util.MessageHandler;
 /**
  An attribute that provides a link to a specified URL.
  This can be contained by any Ptolemy II object, and when a
- user double clicks on that object, the result is to open
- the specified URL. To set the URL, you either Alt-click
- on the object or right click and select Configure.
+ user double clicks on the icon for that object, the result is to open
+ the specified URL. To set the URL, you either Alt-double click
+ on the container, right click on an icon
+ for this parameter and select Configure,
+ or right click on the container and select Configure.
  <p>
  A common way to use this attribute is to put
  a text annotation in a model with text something like
@@ -80,7 +79,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class LiveLink extends EditorFactory implements Settable {
+public class LiveLink extends FileParameter implements Editable {
 
     /** Construct a factory with the specified container and name.
      *  @param container The container.
@@ -94,27 +93,27 @@ public class LiveLink extends EditorFactory implements Settable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        fileOrURL = new FileParameter(this, "fileOrURL");
-        fileOrURL.setExpression("http://ptolemy.org#in_browser");
-        fileOrURL.setVisibility(Settable.EXPERT);
+        setExpression("http://ptolemy.org#in_browser");
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The file name or URL to which to link. By default, this
-     *  is "http://ptolemy.org#in_browser".
-     */
-    public FileParameter fileOrURL;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Delegate to the contained fileOrUL parameter. */
-    public void addValueListener(ValueListener listener) {
-        fileOrURL.addValueListener(listener);
-    }
     
+    /** Create an editor.
+     *  This editor will have no parent window.
+     */
+    public void createEditor() {
+        createEditor(null, null);
+    }
+
+    /** Create an editor for configuring the specified object.
+     *  This editor will have no parent window.
+     *  @param object The object to configure.
+     */
+    public void createEditor(NamedObj object) {
+        createEditor(object, null);
+    }
+
     /** Create a doc viewer for the specified object with the
      *  specified parent window.
      *  @param object The object to configure, which is required to
@@ -134,56 +133,10 @@ public class LiveLink extends EditorFactory implements Settable {
             if (attributes != null && attributes.size() > 0) {
                 base = (attributes.get(0)).getURL();
             }
-            URL toOpen = fileOrURL.asURL();
+            URL toOpen = asURL();
             configuration.openModel(base, toOpen, toOpen.toExternalForm());
         } catch (Exception e) {
             MessageHandler.error("Unable to open specified URI", e);
         }
     }
-
-    /** Delegate to the contained fileOrUL parameter. */
-    public String getDefaultExpression() {
-        return fileOrURL.getDefaultExpression();
-    }
-
-    /** Delegate to the contained fileOrUL parameter. */
-    public String getExpression() {
-        return fileOrURL.getExpression();
-    }
-
-    /** Delegate to the contained fileOrUL parameter. */
-    public String getValueAsString() {
-        return fileOrURL.getValueAsString();
-    }
-
-    /** Delegate to the contained fileOrUL parameter. */
-    public Visibility getVisibility() {
-        return _visibility;
-    }
-
-    /** Delegate to the contained fileOrUL parameter. */
-    public void removeValueListener(ValueListener listener) {
-        fileOrURL.removeValueListener(listener);        
-    }
-
-    /** Delegate to the contained fileOrUL parameter. */
-    public void setExpression(String expression) throws IllegalActionException {
-        fileOrURL.setExpression(expression);        
-    }
-
-    /** Delegate to the contained fileOrUL parameter. */
-    public void setVisibility(Visibility visibility) {
-        _visibility = visibility;
-    }
-
-    /** Delegate to the contained fileOrUL parameter. */
-    public Collection validate() throws IllegalActionException {
-        return fileOrURL.validate();
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
-
-    /** Visibility of this attribute. */
-    private Visibility _visibility = Settable.FULL;
 }

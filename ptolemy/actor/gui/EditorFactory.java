@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
-public abstract class EditorFactory extends Attribute {
+public abstract class EditorFactory extends Attribute implements Editable {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
