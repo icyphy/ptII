@@ -532,7 +532,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             File gifFile = new File(parameters.directoryToExportTo, _sanitizedModelName + ".gif");
             OutputStream out = new FileOutputStream(gifFile);
             try {
-                _basicGraphFrame.writeImage(out, "gif");
+                _basicGraphFrame.writeImage(out, "gif", parameters.backgroundColor);
             } finally {
                 out.close();
             }
