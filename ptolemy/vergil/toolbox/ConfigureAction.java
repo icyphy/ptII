@@ -36,7 +36,7 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.Editable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import diva.gui.GUIUtilities;
@@ -128,7 +128,7 @@ public class ConfigureAction extends FigureAction {
      *   none.
      */
     protected void _openDialog(Frame parent, NamedObj target, ActionEvent event) {
-        List attributeList = target.attributeList(EditorFactory.class);
+        List<Editable> attributeList = target.attributeList(Editable.class);
         boolean altKeyPressed = false;
         if (event != null) {
             altKeyPressed = (event.getModifiers() & ActionEvent.ALT_MASK) != 0;
@@ -140,7 +140,7 @@ public class ConfigureAction extends FigureAction {
                 && !event.getActionCommand().equals("Configure")) {
 
             // Use the last editor factory if there is more than one.
-            EditorFactory factory = (EditorFactory) attributeList.get(attributeList.size()-1);
+            Editable factory = attributeList.get(attributeList.size()-1);
             factory.createEditor(target, parent);
         } else {
             new EditParametersDialog(parent, target);
