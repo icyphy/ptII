@@ -79,8 +79,8 @@ public class TextAttribute extends AbstractTextAttribute implements RelativeLoca
         text.setExpression("Double click to edit text.");
 
         TextStyle style = new TextStyle(text, "_style");
-        style.height.setExpression("20");
-        style.width.setExpression("80");
+        style.height.setExpression("15");
+        style.width.setExpression("40");
     }
 
     ///////////////////////////////////////////////////////////////////
