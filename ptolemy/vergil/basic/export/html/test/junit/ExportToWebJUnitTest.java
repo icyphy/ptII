@@ -28,6 +28,7 @@
 
 package ptolemy.vergil.basic.export.html.test.junit;
 
+import ptolemy.util.FileUtilities;
 import ptolemy.vergil.basic.export.html.ExportToWeb;
 
 ///////////////////////////////////////////////////////////////////
@@ -88,10 +89,12 @@ public class ExportToWebJUnitTest {
      */
     protected void _exportToWebTest(final String modelFileName,
             final String directoryName) throws Exception {
+        FileUtilities.deleteDirectory(directoryName);
         String args [] = new String[3];
         args[0] = "-run";
         args[1] = modelFileName;
         args[2] = directoryName;
         ExportToWeb.main(args);
+        FileUtilities.deleteDirectory(directoryName);
     }
 }

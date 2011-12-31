@@ -219,8 +219,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  associated with the object are cleared.
      *  <p>
      *  This method is a callback method that may be performed
-     *  by attributes of class {@link WebExportable} when their
-     *  {@link WebExportable#provideOutsideContact(WebExporter)} method
+     *  by attributes of class {@link ptolemy.vergil.basic.export.html.WebExportable} when their
+     *  {@link ptolemy.vergil.basic.export.html.WebExportable#provideOutsideContact(WebExporter)} method
      *  is called by this exporter.
      *  @param object The object for which area elements are being added.
      *  @param attribute The attribute to add to the area element.
@@ -265,8 +265,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @param graphFrame The frame containing a model to export.
      *  @param parameters The parameters that control the export.
      *   making the exported web page independent of the ptolemy.org site.
-     *  @return The thread that is spawned to (optionally) run and export the model,
-     *   or null if the export is cancelled.
+
      */
     public static synchronized void exportToWeb(
             final BasicGraphFrame graphFrame,
@@ -857,7 +856,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     }
 
     /** Return the title of the specified object. If it contains a parameter
-     *  of class {@see Title}, then return the title specified by that class.
+     *  of class {@link Title}, then return the title specified by that class.
      *  Otherwise, if the object is an instance of FSMActor contained by
      *  a ModalModel, then return the
      *  name of its container, not the name of the FSMActor.

@@ -115,7 +115,7 @@ public class ExportToWeb {
                     
                     ExportParameters parameters;
                     List<WebExportParameters> exportParameters = modelToExport.attributeList(WebExportParameters.class);
-                    if (exportParameters == null || exportParameters.size() == 0) {
+                    if (exportParameters != null && exportParameters.size() != 0) {
                         parameters = exportParameters.get(exportParameters.size() - 1).getExportParameters();
                     } else {
                         parameters = new ExportParameters(new File(destinationDirectory));
@@ -136,6 +136,7 @@ public class ExportToWeb {
                 } catch (Throwable throwable) {
                     System.out.println("Failed to open " + modelFileName
                             + ".\n" + throwable.getMessage());
+                    throwable.printStackTrace();
                     return;
                 }
             }
@@ -154,15 +155,15 @@ public class ExportToWeb {
      *  <p>Usage:</p>
      *  <p> To save a gif:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.ExportToWeb model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.html.ExportToWeb model.xml
      *  </pre>
      *  <p>or, to save a png:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.ExportToWeb png model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.html.ExportToWeb png model.xml
      *  </pre>
      *  <p>or, to run the model and then save a png:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.ExportToWeb -run png model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.html.ExportToWeb -run png model.xml
      *  </pre>
      *
      *  @param args The arguments for the export image operation.
@@ -177,7 +178,7 @@ public class ExportToWeb {
      */
     public static void main(String args[]) {
         String usage = "Usage: java -classpath $PTII "
-                + "ptolemy.vergil.basic.ExportToWeb "
+                + "ptolemy.vergil.basic.export.html.ExportToWeb "
                 + "[-run] model.xml directory";
         boolean run = false;
         String modelFileName = null;
