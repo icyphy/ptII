@@ -126,6 +126,7 @@ test PlotBox-5.1 {getColorByName} {
 
 
 # This sleep is necessary to avoid a deadlock in the nightly build
+java::call Thread yield
 java::call Thread sleep 500
 
 test PlotBox-6.1 {setButtons} {
