@@ -124,6 +124,34 @@ public class FileUtilities {
         return _binaryReadStream(sourceURL.openStream());
     }
 
+    /**
+     * Delete a directory and all of its content.
+     * @param filepath The path for the directory or file to be deleted.
+     * @return false if one or more files or directories cannot be deleted.
+     */
+    public static boolean deleteDirectory(String filepath) {
+        boolean returnValue = true;
+        File path = new File(filepath);
+
+        if (path.exists()) {
+            File[] files = path.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    FileUtilities.deleteDirectory(files[i].getAbsolutePath());
+                    if (!files[i].delete()) {
+                        returnValue = false;
+                    }
+                } else {
+                    // The returned value is intentionally ignored.
+                    if (!files[i].delete()) {
+                        returnValue = false;
+                    }
+                }
+            }
+        }
+        return returnValue;
+    }
+
     /** Extract a jar file into a directory.  This is a trivial
      *  implementation of the <code>jar -xf</code> command.
      *  @param jarFileName The name of the jar file to extract

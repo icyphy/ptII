@@ -46,6 +46,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.migration.MigrateModelsManager;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -93,15 +94,9 @@ public class TestMigrateModelsManager {
                     + "migrationResults.csv"));
 
         } catch (IOException e) {
-
             fail("Failed to migrate models - " + e.getMessage());
-
         } finally {
-
-            deleteDirectory(directoryPath);
-            File file = new File(directoryPath);
-            file.delete();
-
+            _cleanup(directoryPath);
         }
     }
 
@@ -131,11 +126,7 @@ public class TestMigrateModelsManager {
         } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
         } finally {
-
-            deleteDirectory(directoryPath);
-            File file = new File(directoryPath);
-            file.delete();
-
+            _cleanup(directoryPath);
         }
 
     }
@@ -185,11 +176,8 @@ public class TestMigrateModelsManager {
         } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
         } finally {
-            deleteDirectory(directoryPath);
-            File file = new File(directoryPath);
-            file.delete();
+            _cleanup(directoryPath);
         }
-
     }
 
     /**
@@ -237,12 +225,8 @@ public class TestMigrateModelsManager {
         } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
         } finally {
-
-            deleteDirectory(directoryPath);
-            File file = new File(directoryPath);
-            file.delete();
+            _cleanup(directoryPath);
         }
-
     }
 
     /**
@@ -294,12 +278,8 @@ public class TestMigrateModelsManager {
         } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
         } finally {
-
-            deleteDirectory(directoryPath);
-            File file = new File(directoryPath);
-            file.delete();
+            _cleanup(directoryPath);
         }
-
     }
 
     /**
@@ -327,11 +307,7 @@ public class TestMigrateModelsManager {
         } catch (Exception e) {
             fail("Failed to migrate models - " + e.getMessage());
         } finally {
-
-            deleteDirectory(directoryPath);
-            File file = new File(directoryPath);
-            file.delete();
-
+            _cleanup(directoryPath);
         }
     }
 
@@ -466,25 +442,9 @@ public class TestMigrateModelsManager {
         return directoryPath;
     }
 
-    /**
-     * Delete a directory and all of its content.
-     * @param filepath The path for the directory or file to be deleted.
-     */
-    private void deleteDirectory(String filepath) {
-        File path = new File(filepath);
-
-        if (path.exists()) {
-            File[] files = path.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    deleteDirectory(files[i].getAbsolutePath());
-                    files[i].delete();
-                } else {
-                    // The returned value is intentionally ignored.
-                    files[i].delete();
-                }
-            }
-        }
+    private void _cleanup(String directoryPath) {
+        FileUtilities.deleteDirectory(directoryPath);
+        File file = new File(directoryPath);
+        file.delete();
     }
-
 }
