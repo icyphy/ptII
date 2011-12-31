@@ -1346,7 +1346,36 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     public void writeImage(OutputStream stream, String format)
             throws PrinterException, IOException {
-        getJGraph().exportImage(stream, format);
+        writeImage(stream, format, null);
+    }
+
+    /** Write an image to the specified output stream in the specified format with
+     *  the specified background color.
+     *  Supported formats include at least "gif" and "png", standard image file formats.
+     *  The image is a rendition of the current view of the model.
+     *  <p>{@link ptolemy.vergil.basic.export.image.ExportImage} is a standalone class
+     *  that exports an image of a model.
+     *  @param stream The output stream to write to.
+     *  @param format The image format to generate.
+     *  @param background The background color, or null to use the current color.
+     *  @see #writeHTML(ExportParameters)
+     *  @exception IOException If writing to the stream fails.
+     *  @exception PrinterException  If the specified format is not supported.
+     */
+    public void writeImage(OutputStream stream, String format, Color background)
+            throws PrinterException, IOException {
+        JCanvas canvas = getJGraph().getGraphPane().getCanvas();
+        Color previousBackground = canvas.getBackground();
+        try {
+            if (background != null) {
+                canvas.setBackground(background);
+            }
+            getJGraph().exportImage(stream, format);
+        } finally {
+            if (background != null) {
+                canvas.setBackground(previousBackground);
+            }
+        }
     }
 
     /** Zoom in or out to magnify by the specified factor, from the current
