@@ -126,6 +126,8 @@ test PlotBox-5.1 {getColorByName} {
 
 
 test PlotBox-6.1 {setButtons} {
+    # This repaint is needed to avoid a deadlock in the nightly junit tests.
+    $plot repaint
     $plot setButtons false
     $plot repaint
     $plot setButtons true
