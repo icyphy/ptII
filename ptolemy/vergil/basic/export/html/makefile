@@ -59,7 +59,6 @@ JSRCS = \
 	DefaultTitle.java \
 	ExportHTMLAction.java \
 	ExportToWeb.java \
-	HTMLExportable.java \
 	HTMLText.java \
 	HTMLTextPosition.java \
 	IconLink.java \
