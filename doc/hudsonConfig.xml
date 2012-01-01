@@ -88,7 +88,9 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
 pwd
 ./configure
 Xvfb :2 -screen 0 1024x768x24 &amp;                                                                                            
-export DISPLAY=localhost:2.0 </command>
+export DISPLAY=localhost:2.0
+cp /var/lib/hudson/jobs/ptII/config.xml /var/lib/hudson/jobs/ptII/workspace/doc/hudsonConfig.xml
+svn commit -m &quot;Update from hudson build&quot; /var/lib/hudson/jobs/ptII/workspace/doc/hudsonConfig.xml</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Ant>
       <targets>-debug -p</targets>
