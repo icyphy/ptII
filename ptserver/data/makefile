@@ -60,6 +60,7 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 # Keep this list alphabetized.
 JSRCS = \
 	AttributeChangeToken.java \
+	ByteArrayToken.java \
 	CommunicationToken.java \
 	PingToken.java \
 	PongToken.java \

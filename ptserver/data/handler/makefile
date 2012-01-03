@@ -61,6 +61,7 @@ JSRCS = \
 	ArrayTokenHandler.java \
 	AttributeChangeTokenHandler.java \
 	BooleanTokenHandler.java \
+	ByteArrayTokenHandler.java \
 	CommunicationTokenHandler.java \
 	ComplexMatrixTokenHandler.java \
 	ComplexTokenHandler.java \

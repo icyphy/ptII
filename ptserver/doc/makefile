@@ -59,6 +59,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	MasterDesignPlan.doc \
+	RequirementsList.xls \
 	SRS.doc \
 	handsimdroidArchitecture.graffle \
 	handsimdroidArchitecture.pdf \
