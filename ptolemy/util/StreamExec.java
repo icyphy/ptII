@@ -204,7 +204,7 @@ public class StreamExec implements ExecuteCommands {
 
     /** Start running the commands.
      *  By default, the start() method returns after the last subprocess
-     *  finishes.  See {@#setWaitForLastSubprocess()}.
+     *  finishes.  {@see #setWaitForLastSubprocess()}.
      */
     public void start() {
         String returnValue = _executeCommands();
@@ -213,7 +213,7 @@ public class StreamExec implements ExecuteCommands {
     }
 
     /** Append the text message to stderr.  A derived class could
-     *  append to a StringBuffer.  @link{JTextAreaExec} appends to a
+     *  append to a StringBuffer.  {@link ptolemy.gui.JTextAreaExec} appends to a
      *  JTextArea. The output automatically gets a trailing newline
      *  appended.
      *  @param text The text to append to standard error.
@@ -224,7 +224,7 @@ public class StreamExec implements ExecuteCommands {
     }
 
     /** Append the text message to the output.  A derived class could
-     *  append to a StringBuffer.  @link{JTextAreaExec} appends to a
+     *  append to a StringBuffer.  {@link ptolemy.gui.JTextAreaExec} appends to a
      *  JTextArea.
      *  The output automatically gets a trailing newline appended.
      *  @param text The text to append to standard out.

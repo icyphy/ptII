@@ -219,9 +219,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  associated with the object are cleared.
      *  <p>
      *  This method is a callback method that may be performed
-     *  by attributes of class {@link ptolemy.vergil.basic.export.html.WebExportable} when their
-     *  {@link ptolemy.vergil.basic.export.html.WebExportable#provideOutsideContact(WebExporter)} method
-     *  is called by this exporter.
+     *  by attributes of class
+     *  {@link ptolemy.vergil.basic.export.html.WebExportable}
+     *  when their
+     *  {@link ptolemy.vergil.basic.export.html.WebExportable#provideOutsideContent(WebExporter)}
+     *  method is called by this exporter.</p>
+     *
      *  @param object The object for which area elements are being added.
      *  @param attribute The attribute to add to the area element.
      *  @param value The value of the attribute.
@@ -249,7 +252,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     
     /** Export an HTML page and associated subpages for the specified
      *  graph frame as given by the parameters. After setting everything
-     *  up, this method will delegate to the {@link BasicGraphFrame#writeHTML(File, WebExportParameters)}
+     *  up, this method will delegate to the {@link BasicGraphFrame#writeHTML(ExportParameters)}
      *  method, which in turn will delegate back to an instance of this class, ExportHTMLAction.
      *  <p>
      *  This method should be invoked in the swing thread.

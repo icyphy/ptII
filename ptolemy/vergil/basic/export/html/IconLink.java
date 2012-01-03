@@ -47,10 +47,10 @@ import ptolemy.kernel.util.NamedObj;
  * in a lightbox, etc.
  * <p>
  * Note that this attribute can be used in combination with
- * {@link LiveLink}. The latter provides a hyperlink that works
+ * {@link LinkToOpenTableaux}. The latter provides a hyperlink that works
  * within Vergil, whereas this attribute provides a hyperlink
  * that works in an exported HTML page.  For example,
- * LiveLink might be used to provide a hyperlink to another
+ * LinkToOpenTableaux might be used to provide a hyperlink to another
  * model (a pointer to its MoML file), so that double clicking
  * on the container of the LiveLink attribute opens the other
  * model. If that container also contains an instance of

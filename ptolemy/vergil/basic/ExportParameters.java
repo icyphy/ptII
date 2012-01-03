@@ -60,7 +60,6 @@ public class ExportParameters {
      *  false for openCompositesBeforeExport,
      *  false for runBeforeExport,
      *  and true for showInBrowser.
-     *  @param directoryToExportTo The directory to export to.
      */
     public ExportParameters() {
         this(null);
