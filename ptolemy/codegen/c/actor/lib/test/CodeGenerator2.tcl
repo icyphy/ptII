@@ -111,4 +111,4 @@ test CodeGenerator-5.2 {Test problem where generating code for a Pub/Sub with Cl
 # run the model in the same JVM, we don't get this error.
 $parser purgeModelRecord $modelURL
 
-java::new ptolemy.moml.MoMLSimpleApplication /Users/cxh/ptII/ptolemy/codegen/c/actor/lib/test/auto/PublisherTestSubscriber14.xml
+java::new ptolemy.moml.MoMLSimpleApplication $PTII/ptolemy/codegen/c/actor/lib/test/auto/PublisherTestSubscriber14.xml
