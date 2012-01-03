@@ -54,7 +54,6 @@ OTHER_FILES_TO_BE_JARED = \
 	HomerUserManual.pdf \
 	InstallationGuide.pdf \
 	MasterDesignPlan.pdf \
-	Requirements_List.xls \
 	SRS.pdf \
 
 EXTRA_SRCS = \
