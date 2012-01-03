@@ -1,30 +1,30 @@
 /* Run the Tcl tests under JUnit.
 
- Copyright (c) 2011 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2011 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
- */
+*/
 
 package ptolemy.util.test.junit;
 
@@ -36,6 +36,8 @@ import java.lang.reflect.Method;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,119 +73,142 @@ import org.junit.runner.RunWith;
 @RunWith(JUnitParamsRunner.class)
 public class TclTests {
 
-	/**
-	 * Return a two dimensional array of arrays of strings that name the .tcl files
-	 * to be executed. If there are no .tcl files, return a list with one element that
-         * has the value of the {@link #THERE_ARE_NO_TCL_TESTS} field.
-	 * 
-	 * @return The List of tcl tests.
-         * @exception IOException If there is a problem accessing the auto/ directory.
-	 */
-	public Object[] parametersForRunTclFile() throws IOException {
-		String[] tclFiles = new File(".").list(new FilenameFilter() {
-			/**
-			 * Return true if the file name ends with .tcl and is not
-			 * alljtests.tcl or testDefs.tcl
-			 * 
-			 * @param directory
-			 *            Ignored
-			 * @param name
-			 *            The name of the file.
-			 * @return true if the file name ends with .xml or .moml
-			 */
-			public boolean accept(File directory, String name) {
-				String fileName = name.toLowerCase();
-				if (fileName.endsWith(".tcl")) {
-                                    // alljsimpletests.tcl calls exit,
-                                    // which results in JUnit
-                                    // producing
-                                    // "junit.framework.AssertionFailedError:
-                                    // Forked Java VM exited
-                                    // abnormally. Please note the
-                                    // time in the report does not
-                                    // reflect the time until the VM
-                                    // exit."
+    /**
+     * Return a two dimensional array of arrays of strings that name the .tcl files
+     * to be executed. If there are no .tcl files, return a list with one element that
+     * has the value of the {@link #THERE_ARE_NO_TCL_TESTS} field.
+     * 
+     * @return The List of tcl tests.
+     * @exception IOException If there is a problem accessing the auto/ directory.
+     */
+    public Object[] parametersForRunTclFile() throws IOException {
+        String[] tclFiles = new File(".").list(new FilenameFilter() {
+                /**
+                 * Return true if the file name ends with .tcl and is not
+                 * alljtests.tcl or testDefs.tcl
+                 * 
+                 * @param directory
+                 *            Ignored
+                 * @param name
+                 *            The name of the file.
+                 * @return true if the file name ends with .xml or .moml
+                 */
+                public boolean accept(File directory, String name) {
+                    String fileName = name.toLowerCase();
+                    if (fileName.endsWith(".tcl")) {
+                        // alljsimpletests.tcl calls exit,
+                        // which results in JUnit
+                        // producing
+                        // "junit.framework.AssertionFailedError:
+                        // Forked Java VM exited
+                        // abnormally. Please note the
+                        // time in the report does not
+                        // reflect the time until the VM
+                        // exit."
 
-                                    if (!fileName.endsWith("alljsimpletests.tcl")
-                                            && !fileName.endsWith("alljtests.tcl")
-                                            && !fileName.endsWith("testdefs.tcl")) {
-						return true;
-					}
-				}
-				return false;
-			}
-		});
+                        if (!fileName.endsWith("alljsimpletests.tcl")
+                                && !fileName.endsWith("alljtests.tcl")
+                                && !fileName.endsWith("testdefs.tcl")) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            });
 
-		if (tclFiles.length > 0) {
-			int i = 0;
-			Object[][] data = new Object[tclFiles.length][1];
-			for (String tclFile : tclFiles) {
-				data[i++][0] = new File(tclFile).getCanonicalPath();
-			}
-			return data;
-		} else {
-			return new Object[][] { { THERE_ARE_NO_TCL_TESTS } };
-		}
-	}
+        if (tclFiles.length > 0) {
+            int i = 0;
+            Object[][] data = new Object[tclFiles.length][1];
+            for (String tclFile : tclFiles) {
+                data[i++][0] = new File(tclFile).getCanonicalPath();
+            }
+            return data;
+        } else {
+            return new Object[][] { { THERE_ARE_NO_TCL_TESTS } };
+        }
+    }
 
-	/**
-	 * Find the tcl.lang.Interp class and its interp(String) method.
-	 * 
-	 * @exception Throwable
-	 *                If the class, constructor or method cannot be found. or if
-	 *                the Interp cannot be instantiated.
-	 */
-	@Before
-	public void setUp() throws Throwable {
-		_interpClass = Class.forName("tcl.lang.Interp");
-		_interp = _interpClass.newInstance();
-		_evalFileMethod = _interpClass.getMethod("evalFile", String.class);
+    /**
+     * Find the tcl.lang.Interp class and its interp(String) method.
+     * 
+     * @exception Throwable
+     *                If the class, constructor or method cannot be found. or if
+     *                the Interp cannot be instantiated.
+     */
+    @Before
+    public void setUp() throws Throwable {
+        _interpClass = Class.forName("tcl.lang.Interp");
+        _interp = _interpClass.newInstance();
+        _evalFileMethod = _interpClass.getMethod("evalFile", String.class);
 
-	}
+        _tclObjectClass = Class.forName("tcl.lang.TclObject");
+        Class arguments [] = {String.class, String.class, Integer.TYPE};
+        _getVarMethod = _interpClass.getMethod("getVar", arguments);
+    }
 
-	/**
-	 * Run a tclFile.
-	 * 
-	 * @exception Throwable
-	 *                If thrown while executing the tclFile.
-	 * @param tclFile
-	 *            The full path to the .tcl file to be executed. If tclFileh
-	 *            ends with the value of the {@link #THERE_ARE_NO_TCL_TESTS},
-	 *            then the method returns immediately.
-	 */
-	@Test
-	@Parameters
-	public void RunTclFile(String tclFile) throws Throwable {
-		if (tclFile.endsWith(THERE_ARE_NO_TCL_TESTS)) {
-			System.out.println("No tcl tests in "
-					+ System.getProperty("user.dir"));
-			System.out.flush();
-			return;
-		}
-		System.out.println(tclFile);
-		System.out.flush();
-		_evalFileMethod.invoke(_interp, new Object[] { tclFile });
-	}
+    /**
+     * Run a tclFile.
+     * 
+     * @exception Throwable
+     *                If thrown while executing the tclFile.
+     * @param tclFile
+     *            The full path to the .tcl file to be executed. If tclFile
+     *            ends with the value of the {@link #THERE_ARE_NO_TCL_TESTS},
+     *            then the method returns immediately.
+     */
+    @Test
+    @Parameters
+    public void RunTclFile(String tclFile) throws Throwable {
+        if (tclFile.endsWith(THERE_ARE_NO_TCL_TESTS)) {
+            System.out.println("No tcl tests in "
+                    + System.getProperty("user.dir"));
+            System.out.flush();
+            return;
+        }
+        System.out.println(tclFile);
+        System.out.flush();
+        _evalFileMethod.invoke(_interp, new Object[] { tclFile });
 
-	// /////////////////////////////////////////////////////////////////
-	// // private variables ////
+        // Get the value of the Tcl FAILED global variable.
+        Object tclObject = _getVarMethod.invoke(_interp,
+                new Object [] {
+                    "FAILED", (String) null, 1 /*TCL.GLOBAL_ONLY*/
+                });
+        // If the Tcl FAILED global variable is not equal to 0, then
+        // add a failure.
+        String zero = "0";
+        Assert.assertArrayEquals(tclObject.toString().getBytes(), zero.getBytes());
+    }
 
-	/**
-	 * The tcl.lang.Interp class. We use reflection her to avoid false
-	 * dependencies if auto/ does not exist.
-	 */
-	private static Class _interpClass;
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
 
-	/**
-	 * The tcl.lang.Interp object upon which we invoke evalFile(String).
-	 */
-	private Object _interp;
+    /** The tcl.lang.Interp.evalFile(String) method. */
+    private static Method _evalFileMethod;
 
-	private static Method _evalFileMethod;
+    /** The tcl.lang.Interp.getVar(String name1, String name2, int flags) method. */
+    private static Method _getVarMethod;
 
-	/**
-	 * A special string that is passed when there are no tcl tests. This is
-	 * necessary to avoid an exception in the JUnitParameters.
-	 */
-	protected final static String THERE_ARE_NO_TCL_TESTS = "ThereAreNoTclTests";
+    /**
+     * The tcl.lang.Interp class. We use reflection here to avoid false
+     * dependencies if auto/ does not exist.
+     */
+    private static Class _interpClass;
+
+    /**
+     * The tcl.lang.Interp object upon which we invoke evalFile(String).
+     */
+    private Object _interp;
+
+    /**
+     * The tcl.lang.TclObject class. We use reflection here to avoid false
+     * dependencies if auto/ does not exist.
+     */
+    private static Class _tclObjectClass;
+
+    /**
+     * A special string that is passed when there are no tcl tests. This is
+     * necessary to avoid an exception in the JUnitParameters.
+     */
+    protected final static String THERE_ARE_NO_TCL_TESTS = "ThereAreNoTclTests";
 }
