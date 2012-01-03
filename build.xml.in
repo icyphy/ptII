@@ -163,7 +163,9 @@ For example:
 	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
       </classpath>
       <doclet name="com.sun.tools.doclets.doccheck.DocCheck" path="vendors/sun/doccheck1.2b2/doccheck.jar" />
-      <fileset dir="${basedir}"/>
+      <packageset dir="${basedir}" defaultexcludes="yes">
+	<patternset refid="ptII.excludes" />
+      </packageset>	
       @ANT_WEBSENSOR_FILESET@
     </javadoc>
   </target>
