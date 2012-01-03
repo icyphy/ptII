@@ -339,11 +339,15 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 null);
 
 	// Classes that import ptolemy.vergil.icon.ValueIcon
+        _graphicalClasses.put("ptolemy.vergil.basic.export.html.DefaultIconLink", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.html.DefaultIconScript", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.DefaultTitle", null);
 	// HTMLText extends WebContent which imports ValueIcon
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.HTMLText", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.IconLink", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.IconScript", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.html.LinkToOpenTableaux", null);
+        _graphicalClasses.put("ptolemy.vergil.basic.export.html.ParameterDisplayIconScript", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.Title", null);
         _graphicalClasses.put("ptolemy.vergil.basic.export.html.WebContent", null);
 
