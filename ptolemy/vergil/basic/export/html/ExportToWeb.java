@@ -39,6 +39,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
 
@@ -153,33 +154,27 @@ public class ExportToWeb {
      *  environment under Linux, install Xvfb.</p>
      *
      *  <p>Usage:</p>
-     *  <p> To save a gif:</p>
+     *  <p> To export a model in a directory named "model":</p>
      *  <pre>
      *   java -classpath $PTII ptolemy.vergil.basic.export.html.ExportToWeb model.xml
      *  </pre>
-     *  <p>or, to save a png:</p>
+     *  <p>or, to run the model and then export a model in a directory named MyDirectory:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.export.html.ExportToWeb png model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.html.ExportToWeb -run model.xml MyDirectory
      *  </pre>
-     *  <p>or, to run the model and then save a png:</p>
+     *  <p>or, to print a usage message:
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.export.html.ExportToWeb -run png model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.html.ExportToWeb -help
      *  </pre>
      *
      *  @param args The arguments for the export image operation.
      *  The arguments should be in the format:
-     *  [-run] [-save] [GIF|gif|PNG|png] model.xml.
-     *
-     *  @exception args If there is 1 argument, then it names a
-     *  Ptolemy MoML file and the model is exported as a .gif file.
-     *  If there are two arguments, then the first argument names
-     *  a format, current formats are GIF, gif, PNG and png and
-     *  the second argument names a Ptolemy MoML file.
+     *  <code>[-help] | [-run] model.xml [directory]</code>
      */
     public static void main(String args[]) {
         String usage = "Usage: java -classpath $PTII "
                 + "ptolemy.vergil.basic.export.html.ExportToWeb "
-                + "[-run] model.xml directory";
+                + "[-help] | [-run] model.xml [directory]";
         boolean run = false;
         String modelFileName = null;
         String directoryName = null;
@@ -188,22 +183,34 @@ public class ExportToWeb {
             if (args[i].equalsIgnoreCase("-run")) {
                 run = true;
             } else {
-                if (modelFileName == null) {
-                    modelFileName = args[i];
+                if (args[i].equalsIgnoreCase("-help")) {
+                    System.out.println(usage);
+                    StringUtilities.exit(0);
                 } else {
-                    directoryName = args[i];
+                    if (modelFileName == null) {
+                        modelFileName = args[i];
+                    } else {
+                        directoryName = args[i];
+                    }
                 }
             }
         }
         if (modelFileName == null || args.length > 3) {
             System.err.println("Wrong number of arguments");
             System.err.println(usage);
-            System.exit(3);
+            // Use StringUtilities.exit() so that we can test unit test this code
+            // and avoid FindBugs warnings about System.exit().
+            StringUtilities.exit(3);
         }
 
         // Default directory name matches the model file name without the extension.
         if (directoryName == null) {
             int dot = modelFileName.lastIndexOf(".");
+            if (dot == -1) {
+                System.err.println("The model file name argument \""
+                        + "\" does not have a dot (.) and a directory name was not specified.");
+                StringUtilities.exit(4);
+            }
             directoryName = modelFileName.substring(0, dot);
         }
 
@@ -211,8 +218,8 @@ public class ExportToWeb {
             (new ExportToWeb()).exportToWeb(modelFileName, directoryName, run);
         } catch (Exception ex) {
             ex.printStackTrace();
-            System.exit(5);
+            StringUtilities.exit(5);
         }
-        System.exit(0);
+        StringUtilities.exit(0);
     }
 }
