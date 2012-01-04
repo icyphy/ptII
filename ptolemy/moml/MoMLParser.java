@@ -2856,6 +2856,21 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 boolean skip = false;
 
+                if (source.equals("ptolemy/configs/properties/propertiesAttributeLibrary.xml")) {
+                    // Certain models such as the ee149 models like
+                    // eecs149/src/reading/io/Models/TimerInterrupt.xml
+                    // had a StateLibrary entity that included
+                    // '<input source="ptolemy/configs/properties/propertiesAttributeLibrary.xml"...'
+                    // This file is part of the properties work that was removed.
+                    // It is a bit of a bug that FSM Editors have a StateLibrary entity that
+                    // does inputs at all.
+
+                    // Our fix here is to skip the input and mark this as modified.
+                    skip = true;
+                    // FIXME: this does not seem to have any effect?
+                    setModified(true);
+                }
+
                 if (inputFileNamesToSkip != null) {
                     // If inputFileNamesToSkip contains a string
                     // that matches the end of source, then skip
