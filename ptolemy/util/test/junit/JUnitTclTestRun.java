@@ -1,4 +1,4 @@
-/* An actor that outputs a sequence with a given step in values.
+/* Run Tcl Tests using JUnit
 
  Copyright (c) 2010-2011 The Regents of the University of California.
  All rights reserved.
@@ -34,7 +34,7 @@ import tcl.lang.Interp;
 import tcl.lang.TclException;
 
 ///////////////////////////////////////////////////////////////////
-//// JUnitTclTest
+//// JUnitTclTestRun
 /**
  * Run the Tcl tests under JUnit.
  * <p>
@@ -75,7 +75,7 @@ import tcl.lang.TclException;
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class JUnitTclTest {
+public class JUnitTclTestRun {
 	/**
 	 * Run a test.
 	 * <p>

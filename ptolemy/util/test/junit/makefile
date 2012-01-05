@@ -47,6 +47,7 @@ JSRCS = \
 	AutoTests.java \
 	AutoKnownFailedTests.java \
 	JUnitTclTest.java \
+	JUnitTclTestRun.java \
 	JUnitTclTestBase.java \
 	JUnitCGCTestBase.java \
 	JUnitCGJavaTestBase.java \
@@ -82,11 +83,26 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
+tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.util.test.junit.JUnitTclTest)
+
+
 # Do make sources so that we ensure that the subdirectories are checked out
 all:  jclass sources $(MISC_SRCS)
 	-chmod a+x $(SCRIPTS)
 
 install: all
+
+test_java: jclass
+
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+#test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS)
+#	$(JTCLSH) alljtests.tcl
+
 
 
 # Get the rest of the rules

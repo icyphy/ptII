@@ -186,14 +186,14 @@ if {[java::call System getProperty "line.separator"] != "\n"} {
 }
 
 test StringUtilities-3.8.1 {getProperty in a sandbox: property not accessible } {
-    catch {ptjaclPolicy user_name.tcl} error
+    catch {ptjaclPolicy policy/userName.tcl} error
     list $error
 } {{{java.lang.SecurityException: Could not find 'user.name' System property}}} $knownError
 
 test StringUtilities-3.8.2 {getProperty in a sandbox: property accessible } {
     set canonicalPTII \
 	[[[java::new java.io.File $PTII] getCanonicalFile] getPath]
-    set r [lindex [ptjaclPolicy ptolemy_ptII_dir.tcl] 0]
+    set r [lindex [ptjaclPolicy policy/ptolemyPtIIDir.tcl] 0]
     set r [string range $r 0 [expr [string length $canonicalPTII] -1]]	
     puts "'$canonicalPTII' == '$r'"
     expr {$canonicalPTII == $r}

@@ -64,8 +64,10 @@ test XSLTUtilities-1.1 {Call main} {
     # Get rid of leading spaces
     #regsub -all {^( )+} $results3 {} results4
     regsub -all "\n *" $results3 "\n" results4
+    regsub -all { standalone="no"} $results4 {} results5
+    regsub -all {utf-8} $results5 {UTF-8} results6
 
-    list $results4
+    list $results6
 } {{<?xml version="1.0" encoding="UTF-8"?>
 <WMBasicEdit>
 <Attributes>
@@ -103,7 +105,9 @@ test XSLTUtilities-2.1 {test parse and toString} {
     # Get rid of leading spaces
     #regsub -all {^[ ]*} $results3 {} results4
     regsub -all "\n *" $results3 "\n" results4
-    list $results4
+    regsub -all { standalone="no"} $results4 {} results5
+    regsub -all {utf-8} $results5 {UTF-8} results6
+    list $results6
 } {{<?xml version="1.0" encoding="UTF-8"?>
 <WMBasicEdit>
 <Attributes>
@@ -129,9 +133,13 @@ test XSLTUtilities-3.1 {transform(Document, String) using a copy} {
 			    transform $inputDocument copy.xsl]
     set outputString [java::call ptolemy.util.XSLTUtilities toString \
 			  $outputDocument]
+    regsub -all { standalone="no"} $outputString {} results5
+    regsub -all {utf-8} $results5 {UTF-8} results6
 
+    regsub -all { standalone="no"} $inputString {} input5
+    regsub -all {utf-8} $input5 {UTF-8} input6
     # diffText is defined in ptII/util/testsuite/testDefs.tcl
-    diffText $inputString $outputString
+    diffText $input6 $results6
 } {}
 
 
@@ -156,7 +164,10 @@ test XSLTUtilities-3.2 {Call transform(Document, List) using local files} {
     #regsub -all {^[ ]*} $results3 {} results4
     regsub -all "\n *" $results3 "\n" results4
 
-    list $results4
+    regsub -all { standalone="no"} $results4 {} results5
+    regsub -all {utf-8} $results5 {UTF-8} results6
+
+    list $results6
 } {{<?xml version="1.0" encoding="UTF-8"?>
 <WMBasicEdit>
 <Attributes>
@@ -196,7 +207,10 @@ test XSLTUtilities-3.3 {Call transform(Document, List) using files found in the 
     #regsub -all {^[ ]*} $results3 {} results4
     regsub -all "\n *" $results3 "\n" results4
 
-    list $results4
+    regsub -all { standalone="no"} $results4 {} results5
+    regsub -all {utf-8} $results5 {UTF-8} results6
+
+    list $results6
 } {{<?xml version="1.0" encoding="UTF-8"?>
 <WMBasicEdit>
 <Attributes>
