@@ -40,7 +40,7 @@ if {[info procs jdkCapture] == "" } then {
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-set VERBOSE 1
+# set VERBOSE 1
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
@@ -103,7 +103,7 @@ test ExportImage-2.1-o {Test -o: Generate a png in a different directory} {
     set results [list [file exists $outputFileName] [expr {[file size $outputFileName] > 1}]]
     file delete -force $outputFileName
     list $results
-} {1 1}
+} {{1 1}}
 
 
 test ExportImage-2.1-web {Test -web: Generate an html file} {
