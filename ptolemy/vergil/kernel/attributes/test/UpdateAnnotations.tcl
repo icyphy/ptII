@@ -96,7 +96,7 @@ test UpdateAnnotation-1.1 {Fix an old style annotation} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Expression" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -115,11 +115,13 @@ test UpdateAnnotation-1.1 {Fix an old style annotation} {
         </property>
         <property name="center" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="anchor" class="ptolemy.data.expr.StringParameter" value="northwest">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model repeatedly evaluates an expression, a function of two ramp&#10;signals, slow and fast. Try right clicking on the expr actor, select&#10;&quot;Configure&quot; and change it to &quot;cos(slow)*cos(fast)&quot; and then run&#10;the demo with View-&gt;Run Window-&gt;Go. Other interesting alternatives&#10;include:&#10;    &quot;cos(fast*cos(slow))&quot;&#10;    &quot;0.2*slow + cos(fast)&quot;">
             <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="15">
                 </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
         </property>
@@ -175,7 +177,7 @@ test UpdateAnnotation-1.2 {Fix an old style author annotation} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Expression" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="AnnotationUpdated" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -194,11 +196,13 @@ test UpdateAnnotation-1.2 {Fix an old style author annotation} {
         </property>
         <property name="center" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="anchor" class="ptolemy.data.expr.StringParameter" value="northwest">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
             <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="15">
                 </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
         </property>
