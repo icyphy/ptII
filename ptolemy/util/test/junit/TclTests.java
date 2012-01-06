@@ -31,13 +31,15 @@ package ptolemy.util.test.junit;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 
-import org.junit.Assert;
+import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,6 +74,30 @@ import org.junit.runner.RunWith;
  */
 @RunWith(JUnitParamsRunner.class)
 public class TclTests {
+
+    /**
+     * Call the Tcl doneTests command to print out the number of errors.
+     * 
+     * @exception Throwable
+     *                If the class, constructor or method cannot be found. or if
+     *                the Interp cannot be instantiated.
+     */
+    @AfterClass
+    public static void doneTests() throws Throwable {
+        
+        // util/testsuite/testDefs.tcl doneTests tcl command checks
+        // the value of the reallyExit tcl variable.  If reallyExit is
+        // not present or 1, then ::tycho::TopLevel::exitProgram is
+        // called.  We don't want that because it prints an error
+        // message, so we set reallyExit to 0.
+        _setVarMethod.invoke(_interp, new Object [] {"reallyExit",
+                                                     _tclObjectZero,
+                                                     1 /*TCL.GLOBAL_ONLY*/});
+
+        // Invoke the doneTests Tcl command which prints the number of
+        // tests.
+        _evalMethod.invoke(_interp, new Object[] { "doneTests", 0 });
+    }
 
     /**
      * Return a two dimensional array of arrays of strings that name the .tcl files
@@ -129,24 +155,6 @@ public class TclTests {
     }
 
     /**
-     * Find the tcl.lang.Interp class and its interp(String) method.
-     * 
-     * @exception Throwable
-     *                If the class, constructor or method cannot be found. or if
-     *                the Interp cannot be instantiated.
-     */
-    @Before
-    public void setUp() throws Throwable {
-        _interpClass = Class.forName("tcl.lang.Interp");
-        _interp = _interpClass.newInstance();
-        _evalFileMethod = _interpClass.getMethod("evalFile", String.class);
-
-        _tclObjectClass = Class.forName("tcl.lang.TclObject");
-        Class arguments [] = {String.class, String.class, Integer.TYPE};
-        _getVarMethod = _interpClass.getMethod("getVar", arguments);
-    }
-
-    /**
      * Run a tclFile.
      * 
      * @exception Throwable
@@ -170,18 +178,23 @@ public class TclTests {
         _evalFileMethod.invoke(_interp, new Object[] { tclFile });
 
         // Get the value of the Tcl FAILED global variable.
+        // We check for non-zero results for *each* .tcl file.
         Object tclObject = _getVarMethod.invoke(_interp,
                 new Object [] {
                     "FAILED", (String) null, 1 /*TCL.GLOBAL_ONLY*/
                 });
         // If the Tcl FAILED global variable is not equal to 0, then
         // add a failure.
-        String zero = "0";
-        Assert.assertArrayEquals(tclObject.toString().getBytes(), zero.getBytes());
+        int failed = Integer.parseInt(tclObject.toString());
+        assertEquals("Number of failed tests is non-zero",
+                failed, 0);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
+
+    /** The tcl.lang.Interp.eval(String, int) method. */
+    private static Method _evalMethod;
 
     /** The tcl.lang.Interp.evalFile(String) method. */
     private static Method _evalFileMethod;
@@ -198,7 +211,10 @@ public class TclTests {
     /**
      * The tcl.lang.Interp object upon which we invoke evalFile(String).
      */
-    private Object _interp;
+    private static Object _interp;
+
+    /** The tcl.lang.Interp.setVar(String name1, String name2, int flags) method. */
+    private static Method _setVarMethod;
 
     /**
      * The tcl.lang.TclObject class. We use reflection here to avoid false
@@ -207,8 +223,51 @@ public class TclTests {
     private static Class _tclObjectClass;
 
     /**
+     * A tcl.lang.TclObject that has the integer value 0.
+     * Used when we call the doneTests Tcl method.
+     */
+    private static Object _tclObjectZero;
+
+    /**
      * A special string that is passed when there are no tcl tests. This is
      * necessary to avoid an exception in the JUnitParameters.
      */
     protected final static String THERE_ARE_NO_TCL_TESTS = "ThereAreNoTclTests";
+
+    // We place initialization of the _interp in a static block so
+    // that it happens once per directory of tcl files.  The doneTests() method
+    // prints the number of test case failures for us.
+    static {
+        try {
+            _interpClass = Class.forName("tcl.lang.Interp");
+            _interp = _interpClass.newInstance();
+
+            _evalMethod = _interpClass.getMethod("eval",
+                    new Class [] {String.class, Integer.TYPE});
+
+            _evalFileMethod = _interpClass.getMethod("evalFile", String.class);
+
+            _getVarMethod = _interpClass.getMethod("getVar",
+                    new Class [] {String.class, String.class, Integer.TYPE});
+
+            _tclObjectClass = Class.forName("tcl.lang.TclObject");
+            _setVarMethod = _interpClass.getMethod("setVar",
+                    new Class [] {String.class, _tclObjectClass, Integer.TYPE});
+
+            // Create a TclObject with value 0 for use with the doneTests Tcl proc.
+            Class tclIntegerClass = Class.forName("tcl.lang.TclInteger");
+            Method newInstanceTclIntegerMethod = tclIntegerClass.getMethod("newInstance",
+                    new Class [] {Integer.TYPE});
+
+            _tclObjectZero = newInstanceTclIntegerMethod.invoke(null, 
+                    new Object [] {Integer.valueOf(0)});
+
+        } catch (Throwable throwable) {
+            // Exceptions sometimes get marked as multiple failures here so
+            // we print the stack to aid debugging.
+            throwable.printStackTrace();
+            throw new RuntimeException(throwable);
+        }
+    }
+
 }
