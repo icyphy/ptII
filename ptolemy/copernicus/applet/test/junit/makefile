@@ -37,7 +37,9 @@ ME =		ptolemy/copernicus/applet/test/junit
 ROOT =		../../../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)
+#Certain models such as ct/lib/test/auto/ModalLLSTest.xml need diva
+#Include tools.jar so that sun.security.tools.SignatureFile is found
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(TOOLS_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
