@@ -108,7 +108,7 @@ test ClassUtilities-3.1 {lookupClassAsResource} {
     set ptIIFile [java::new java.io.File $PTII]
     set ptIIURL [[$ptIIFile getCanonicalFile ] toURL]
 
-    #puts "ClassUtilities-3.1: [$resourceURL toString] [$ptIIURL toString]"
+    puts "ClassUtilities-3.1: [$resourceURL toString] [$ptIIURL toString]"
     $resourceURL sameFile $ptIIURL
 } {1}
 
