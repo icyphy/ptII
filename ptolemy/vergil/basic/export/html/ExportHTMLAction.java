@@ -268,7 +268,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @param graphFrame The frame containing a model to export.
      *  @param parameters The parameters that control the export.
      *   making the exported web page independent of the ptolemy.org site.
-
      */
     public static synchronized void exportToWeb(
             final BasicGraphFrame graphFrame,
@@ -535,8 +534,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             File gifFile = new File(parameters.directoryToExportTo, _sanitizedModelName + ".gif");
             OutputStream out = new FileOutputStream(gifFile);
             try {
-                java.awt.Toolkit.getDefaultToolkit().sync();                     
-                System.out.println("ExportHTMLAction.writeHTML(): After sync()");
                 _basicGraphFrame.writeImage(out, "gif", parameters.backgroundColor);
             } finally {
                 out.close();

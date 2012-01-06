@@ -80,24 +80,22 @@ Command line arguments are:
  -help      Print this message.
  -copyJavaScriptFiles  Copy .js files.  Useful only with -web and htm* format.
  -force     Delete the target file or directory before generating the results.
- -o|-out directory     The directory in which to export the file(s).
  -open      Open the generated file.
  -openComposites       Open any composites before exporting the model.
  -run       Run the model before exporting. -web and htm*: plots are also generated.
  -save      Save the model before closing.
- -web  Common web export args. Short for: -force -copyJavaScriptFiles -open -openComposites -run htm.
+ -web  Common web export args. Short for: -force -copyJavaScriptFiles -open -openComposites htm.
  -whiteBackground      Set the background color to white.
  GIF|gif|HTM*|htm*|PNG|png The file format.
  model.xml  The Ptolemy model. (Required)
 }}
 
-
-test ExportModel-2.1-o {Test -o: Generate a png in a different directory} {
+test ExportModel-2.1-directory {Test -o: Generate a png in a different directory} {
     set outputFile [java::call java.io.File createTempFile ExportModel .png]
     set outputFileName [$outputFile toString]
     puts $outputFileName
     set modelFile $PTII/ptolemy/moml/demo/modulation.xml
-    set args [java::new {String[]} {5} [list {-force} {-o} $outputFileName {png} $modelFile]]
+    set args [java::new {String[]} {4} [list {-force} {png} $modelFile $outputFileName]]
     
     java::call ptolemy.vergil.basic.export.ExportModel main $args
     set results [list [file exists $outputFileName] [expr {[file size $outputFileName] > 1}]]

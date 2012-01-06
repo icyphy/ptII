@@ -1322,15 +1322,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @exception IOException If unable to write associated files, or if the
      *   current configuration does not support it.
      *  @exception PrinterException If unable to write associated files.
-     * @throws IllegalActionException If something goes wrong accessing the model.
+     *  @exception IllegalActionException If something goes wrong accessing the model.
      */
     public void writeHTML(ExportParameters parameters)
             throws PrinterException, IOException, IllegalActionException {
-            if (_exportHTMLAction != null) {
-                ((HTMLExportable) _exportHTMLAction).writeHTML(parameters);
-            } else {
-                throw new IOException("Export to Web not supported.");
-            }
+        if (_exportHTMLAction != null) {
+            ((HTMLExportable) _exportHTMLAction).writeHTML(parameters);
+        } else {
+            throw new IOException("Export to Web not supported.");
+        }
     }
 
     /** Write an image to the specified output stream in the specified format.

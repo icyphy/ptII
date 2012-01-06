@@ -54,9 +54,11 @@ import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.BasicModelErrorHandler;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
+import ptolemy.vergil.basic.export.html.ExportHTMLAction;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportModel
@@ -162,11 +164,14 @@ public class ExportModel {
         if (formatName.toLowerCase().startsWith("htm")) {
             if (outputFileOrDirectory != null) {
                 temporaryHTMLDirectory = new File(outputFileOrDirectory);
+                temporaryImageFile = new File(outputFileOrDirectory
+                        + File.separator + "index.html");
             } else {
                 temporaryHTMLDirectory = new File(model[0].getName());
+                temporaryImageFile = new File(model[0].getName()
+                        + File.separator + "index.html");
+
             }
-            temporaryImageFile = new File(model[0].getName()
-                    + File.separator + "index.html");
         } else {
             String suffix =  "." + formatName.toLowerCase();
             if (outputFileOrDirectory != null) {
@@ -196,13 +201,13 @@ public class ExportModel {
             // Delete the directory containing the .html file or 
             // delete the image file.
             if (formatName.toLowerCase().startsWith("htm")) {
-                if (htmlDirectory.delete()) {
+                if (!FileUtilities.deleteDirectory(htmlDirectory)) {
                     System.err.println("Could not delete \""
                             + htmlDirectory + "\".");
                 }
             } else {
                 // A gif/jpg/png file
-                if (imageFile.delete()) {
+                if (!imageFile.delete()) {
                     System.err.println("Could not delete \""
                             + imageFile + "\".");
                 }
@@ -375,7 +380,7 @@ public class ExportModel {
                             // is the same.  This could be a mistake.
                             ExportParameters parameters = new ExportParameters(htmlDirectory);
                             parameters.copyJavaScriptFiles = copyJavaScriptFiles;
-                            _basicGraphFrame.writeHTML(parameters);
+                            ExportHTMLAction.exportToWeb(_basicGraphFrame, parameters);
                             System.out.println("Exported "
                                     + htmlDirectory + "/index.html");
                         } else {
@@ -467,7 +472,7 @@ public class ExportModel {
      *  <dd>Save the model before closing.</dd>
      *  <dt>-web</dt>
      *  <dd>Common settings for exporting to the web. Short for: <code>-force
-     *  -copyJavaScriptFiles -open -openComposites -run htm</code>.</dd>
+     *  -copyJavaScriptFiles -open -openComposites htm</code>.</dd>
      *  <dt>-whiteBackground</dt>
      *  <dd>Set the background color to white.</dd>
      *  <dt>[GIF|gif|HTM*|htm*|PNG|png]</dt>
@@ -503,7 +508,7 @@ public class ExportModel {
      *  </pre>
      *
      *  <p>Standard setting for exporting to html can be invoked with <code>-web</code>,
-     *  which is like <code>-copyJavaScriptFiles -open -openComposites -run htm</code>.</p>
+     *  which is like <code>-copyJavaScriptFiles -open -openComposites htm</code>.</p>
      *  <pre>
      *   java -classpath $PTII ptolemy.vergil.basic.export.ExportModel -web model.xml
      *  </pre>
@@ -560,13 +565,12 @@ public class ExportModel {
             + " -help      Print this message." + eol
             + " -copyJavaScriptFiles  Copy .js files.  Useful only with -web and htm* format." + eol
             + " -force     Delete the target file or directory before generating the results." + eol
-            + " -o|-out directory     The directory in which to export the file(s)." + eol
             + " -open      Open the generated file." + eol
             + " -openComposites       Open any composites before exporting the model." + eol
             + " -run       Run the model before exporting. -web and htm*: plots are also generated."
             + eol
             + " -save      Save the model before closing." + eol
-            + " -web  Common web export args. Short for: -force -copyJavaScriptFiles -open -openComposites -run htm."
+            + " -web  Common web export args. Short for: -force -copyJavaScriptFiles -open -openComposites htm."
             + eol
             + " -whiteBackground      Set the background color to white." + eol
             + " GIF|gif|HTM*|htm*|PNG|png The file format." + eol
@@ -587,7 +591,7 @@ public class ExportModel {
         String formatName = "GIF";
         boolean openResults = false;
         boolean openComposites = false;
-        String outputDirectory = null;
+        String outputFileOrDirectory = null;
         boolean outputDirectoryIsNextArgument = false;
         boolean run = false;
         boolean save = false;
@@ -600,13 +604,12 @@ public class ExportModel {
         } else {
             // FIXME: this is a lame way to process arguments.
             for (int i = 0; i < args.length; i++) {
-                if (outputDirectoryIsNextArgument) {
-                    outputDirectoryIsNextArgument = false;
-                    outputDirectory = args[i];
-                } else if (args[i].equals("-help")
+                if (args[i].equals("-help")
                         || args[i].equals("--help")
                         || args[i].equals("-h")) {
                     System.out.println(usage);
+                    // Use StringUtilities.exit() so that we can test unit test this code
+                    // and avoid FindBugs warnings about System.exit().
                     StringUtilities.exit(0);
                     return;
                 } else if (args[i].equals("-force")) {
@@ -616,9 +619,6 @@ public class ExportModel {
                     openResults = true;
                 } else if (args[i].equals("-openComposites")) {
                     openComposites = true;
-                } else if (args[i].equals("-o")
-                        || args[i].equals("-out")) {
-                    outputDirectoryIsNextArgument = true;
                 } else if (args[i].equals("-run")) {
                     run = true;
                 } else if (args[i].equals("-save")) {
@@ -637,56 +637,55 @@ public class ExportModel {
                     web = true;
                     copyJavaScriptFiles = true;
                     formatName = "htm";
-                    run = true;
                     openResults = true;
                     openComposites = true;
                     whiteBackground = true;
                 } else if (args[i].equals("-whiteBackground")) {
                     whiteBackground = true;
                 } else {
-                    if (modelFileName != null) {
-                        throw new IllegalArgumentException("modelFileName already specified as "
-                                + modelFileName + "?  Don't understand "
-                                + args[i]+ eol + usage);
-                    }
                     if (args[i].startsWith("-")) {
                         throw new IllegalArgumentException("The model file name "
                                 + "cannot begin with a '-', the argument was: "
                                 + args[i]);
                     }
-                    if (i != (args.length - 1)) {
+                    if (i < (args.length - 2)) {
                         throw new IllegalArgumentException("The model file name "
-                                + "should be the last argument. "
+                                + "should be the last or second to last argument. "
                                 + "The last argument was: " + args[i]);
                     }
-                    modelFileName = args[i];
+                    if (modelFileName != null) {
+                        outputFileOrDirectory = args[i];
+                    } else {
+                        modelFileName = args[i];
+                    }
                 }
             }
         }
         try {
             // FIXME: Should we use ExportParameter here?
             new ExportModel().exportModel(copyJavaScriptFiles, force, formatName, modelFileName,
-                    run, openComposites, openResults, outputDirectory, save, whiteBackground);
+                    run, openComposites, openResults, outputFileOrDirectory, save, whiteBackground);
 
         } catch (Exception ex) {
             ex.printStackTrace();
             StringUtilities.exit(5);
         }
-         try {
-             Thread.sleep(10000);
-         } catch (Throwable ex) {
-             //Ignore
-         }
         StringUtilities.exit(0);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Sleep the current thread, which is usually not the Swing Event
      *  Dispatch Thread.
      */
     protected static void _sleep() {
-        // FIXME: we should be able to call 
-        // Toolkit.getDefaultToolkit().sync(); 
-        // but that does not do it.
+        // FIXME: The problem is that we need to wait for all the
+        // images to load before getting the images. 
+
+        // FIXME: we should be able to call
+        // Toolkit.getDefaultToolkit().sync(); but that does not do
+        // it.
         try {
              Thread.sleep(1000);
         } catch (Throwable ex) {

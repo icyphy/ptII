@@ -1016,8 +1016,9 @@ and run:
     ptweb)
 	help="Export a model to html files."
 	invokeHelp="Usage: $commandname [commonOptions] [-run] model targetDirectory"
-	javastartupclass=ptolemy.vergil.basic.export.html.ExportToWeb
-	javasourcedir=ptolemy/vergil/basic/export/html
+	javastartupclass=ptolemy.vergil.basic.export.ExportModel
+	javasourcedir=ptolemy/vergil/basic/export
+	applicationflags="-web"
 	;;
     pxgraph)
 	help="Plotter compatible with old X11 pxgraph"
