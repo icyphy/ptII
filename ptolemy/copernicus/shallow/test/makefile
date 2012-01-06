@@ -58,7 +58,7 @@ JSIMPLE_TESTS = \
 # Don't add $(JSIMPLE_TESTS) to JLONG_TESTS, the JSIMPLE_TESTS are
 # automatically run when make test_long is run.
 JLONG_TESTS = \
-	Shallow.tcl
+	long/Shallow.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -75,7 +75,7 @@ EXTRA_SRCS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl junit
+MISC_FILES =	alljtests.tcl long junit
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
