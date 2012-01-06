@@ -58,7 +58,6 @@ JSRCS = \
 	DefaultIconScript.java \
 	DefaultTitle.java \
 	ExportHTMLAction.java \
-	ExportToWeb.java \
 	HTMLText.java \
 	HTMLTextPosition.java \
 	IconLink.java \
@@ -91,10 +90,7 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ExportHTMLAction$$DirectoryFilter.class' \
 	'ExportHTMLAction$$IconVisibleLocation.class' \
-	'ExportHTMLAction$$1.class' \
-	'ExportToWeb$$1.class' \
-	'ExportToWeb$$2.class' \
-	'ExportToWeb$$3.class'
+	'ExportHTMLAction$$1.class'
 
 JCLASS= $(JSRCS:%.java=%.class)
 

@@ -169,8 +169,17 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
 
             // Put a destination paragraph in the end section of the HTML.
             exporter.addContent("end", true, 
-                    "<p id=\"afterImage\">Mouse over the icons to see their parameters. " +
-                    "Click on composites and plotters to reveal their contents (if provided).</p>\n");
+                    "<div id=\"afterImage\">\n"
+                    + "  <script>\n"
+                    + "     writeText('Mouse over the icons to see their parameters. "
+                    + "Click on composites and plotters to reveal their contents (if provided).');\n"
+                    + "  </script>\n"
+                    + "  <noscript>\n"
+                    + "     Your browser does not support JavaScript so moving the mouse\n"
+                    + "     over the actors will not display their parameters. To enable\n"
+                    + "     JavaScript, consult the security preferences of your browser.\n"
+                    + "  </noscript>\n"
+                    + "</div>");
         }
     }
 

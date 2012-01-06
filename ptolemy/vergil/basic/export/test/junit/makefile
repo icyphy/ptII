@@ -1,4 +1,4 @@
-# Makefile for the JUnit Export Image Tests
+# Makefile for the JUnit Export Model Tests
 #
 # @Authors: Christopher Brooks
 #
@@ -30,10 +30,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/vergil/basic/export/image/test/junit
+ME =		ptolemy/vergil/basic/export/test/junit
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../../..
+ROOT =		../../../../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)
@@ -76,7 +76,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	(cd ..;	CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.image.test.junit.JUnitTclTest)
+	(cd ..;	CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.JUnitTclTest)
 
 test_java: jclass
 

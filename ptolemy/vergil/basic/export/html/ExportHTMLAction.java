@@ -535,6 +535,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             File gifFile = new File(parameters.directoryToExportTo, _sanitizedModelName + ".gif");
             OutputStream out = new FileOutputStream(gifFile);
             try {
+                java.awt.Toolkit.getDefaultToolkit().sync();                     
+                System.out.println("ExportHTMLAction.writeHTML(): After sync()");
                 _basicGraphFrame.writeImage(out, "gif", parameters.backgroundColor);
             } finally {
                 out.close();
@@ -677,7 +679,9 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             }
 	    // Put the image in.
 	    index.println("<img src=\"" + _sanitizedModelName
-	            + ".gif\" usemap=\"#iconmap\"/>");
+	            + ".gif\" usemap=\"#iconmap\" "
+                    // The HTML Validator at http://validator.w3.org/check wants an alt tag
+                    + "alt=\"" + _sanitizedModelName + "model\"/>");
 	    index.println(map);
             _printHTML(index, "end");
             
@@ -778,7 +782,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
     protected String _createImageMap(File directory)
             throws IllegalActionException, IOException, PrinterException {
         StringBuffer result = new StringBuffer();
-        result.append("<map name=\"iconmap\">\n");
+        // The HTML Validator at http://validator.w3.org/check wants an id tag.
+        result.append("<map name=\"iconmap\" id=\"iconmapid\">\n");
         
         // Iterate over the icons.
         List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();

@@ -1,4 +1,4 @@
-# Tests for the ExportImage.tcl
+# Tests for the ExportModel.tcl
 #
 # @Author: Christopher Brooks
 #
@@ -56,26 +56,26 @@ if {[info procs jdkCapture] == "" } then {
 
 java::call System setProperty ptolemy.ptII.doNotExit true
 
-test ExportImage-1.1 {Generate a gif} {
+test ExportModel-1.1 {Generate a gif} {
     if {[file exists modulation.gif]} {
 	file delete -force modulation.gif
     }
     set modelFile $PTII/ptolemy/moml/demo/modulation.xml
     set args [java::new {String[]} {1} [list $modelFile]]
-    java::call ptolemy.vergil.basic.export.image.ExportImage main $args
+    java::call ptolemy.vergil.basic.export.ExportModel main $args
     set results [file exists modulation.gif]
     file delete -force modulation.gif
     list $results
 } {1}
 
-test ExportImage-2.1-h {Test -h: Generate a help message} {
+test ExportModel-2.1-h {Test -h: Generate a help message} {
     set args [java::new {String[]} {1} [list {-h}]]
     jdkCapture {
-	java::call ptolemy.vergil.basic.export.image.ExportImage main $args
+	java::call ptolemy.vergil.basic.export.ExportModel main $args
     } results
     list $results
 } {{Usage:
-java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage [-help|-h|--help] | [-copyJavaScript] [-force] [-open] [-openComposites] [-run] [-save] [-web] [-whiteBackground] [GIF|gif|HTM*|htm*|PNG|png] model.xml
+java -classpath $PTII ptolemy.vergil.basic.export.ExportModel [-help|-h|--help] | [-copyJavaScript] [-force] [-open] [-openComposites] [-run] [-save] [-web] [-whiteBackground] [GIF|gif|HTM*|htm*|PNG|png] model.xml
 Command line arguments are: 
  -help      Print this message.
  -copyJavaScriptFiles  Copy .js files.  Useful only with -web and htm* format.
@@ -92,27 +92,27 @@ Command line arguments are:
 }}
 
 
-test ExportImage-2.1-o {Test -o: Generate a png in a different directory} {
-    set outputFile [java::call java.io.File createTempFile ExportImage .png]
+test ExportModel-2.1-o {Test -o: Generate a png in a different directory} {
+    set outputFile [java::call java.io.File createTempFile ExportModel .png]
     set outputFileName [$outputFile toString]
     puts $outputFileName
     set modelFile $PTII/ptolemy/moml/demo/modulation.xml
     set args [java::new {String[]} {5} [list {-force} {-o} $outputFileName {png} $modelFile]]
     
-    java::call ptolemy.vergil.basic.export.image.ExportImage main $args
+    java::call ptolemy.vergil.basic.export.ExportModel main $args
     set results [list [file exists $outputFileName] [expr {[file size $outputFileName] > 1}]]
     file delete -force $outputFileName
     list $results
 } {{1 1}}
 
 
-test ExportImage-2.1-web {Test -web: Generate an html file} {
+test ExportModel-2.1-web {Test -web: Generate an html file} {
     if {[file exists modulation]} { 
 	file delete -force modulation
     }
     set modelFile $PTII/ptolemy/moml/demo/modulation.xml
     set args [java::new {String[]} {2} [list {-web} $modelFile]]
-    java::call ptolemy.vergil.basic.export.image.ExportImage main $args
+    java::call ptolemy.vergil.basic.export.ExportModel main $args
     set results [file exists modulation/index.html]
     file delete -force modulation
     list $results

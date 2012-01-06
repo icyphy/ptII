@@ -1,4 +1,4 @@
-# Makefile for testing image exports
+# Makefile for testing model exports
 #
 # @Authors: Christopher Brooks
 #
@@ -30,13 +30,13 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/vergil/basic/export/image/test
+ME =		ptolemy/vergil/basic/export/test
 
 # PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
 DIRS =		$(PTJUNIT_DIR)
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -54,7 +54,7 @@ JSRCS =
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JSIMPLEL_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
-	ExportImage.tcl
+	ExportModel.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

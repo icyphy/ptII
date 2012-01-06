@@ -1,6 +1,6 @@
-/* Export a model as an image or set of html files.
+/* Export a model as an image or set of html files. 
 
- Copyright (c) 2011 The Regents of the University of California.
+ Copyright (c) 2011-2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -26,8 +26,9 @@
 
  */
 
-package ptolemy.vergil.basic.export.image;
+package ptolemy.vergil.basic.export;
 
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -58,7 +59,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.ExportParameters;
 
 ///////////////////////////////////////////////////////////////////
-//// ExportImage
+//// ExportModel
 /**
  * Export a model as an image or set of html files.
  *
@@ -75,7 +76,7 @@ import ptolemy.vergil.basic.ExportParameters;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class ExportImage {
+public class ExportModel {
     /** Export an image of a model to a file or directory.
      *  The image is written to a file or directory with the same name as the model.
      *  If formatName starts with "HTM" or "htm", then a directory with the
@@ -118,7 +119,7 @@ public class ExportImage {
      *  @exception Exception Thrown if there is a problem reading the model
      *  or exporting the image.
      */
-    public void exportImage(final boolean copyJavaScriptFiles, final boolean force,
+    public void exportModel(final boolean copyJavaScriptFiles, final boolean force,
             final String formatName,
             final String modelFileName, final boolean run, final boolean openComposites,
             final boolean openResults, final String outputFileOrDirectory,
@@ -355,10 +356,11 @@ public class ExportImage {
 
 
         // Export images
-        Runnable exportImageAction = new Runnable() {
+        Runnable exportModelAction = new Runnable() {
             public void run() {
                 try {
                     OutputStream out = null;
+
                     try {
                         if (formatName.toLowerCase().equals("htm")) {
                             if (!htmlDirectory.isDirectory()) {
@@ -399,7 +401,7 @@ public class ExportImage {
                 }
             }
         };
-        SwingUtilities.invokeAndWait(exportImageAction);
+        SwingUtilities.invokeAndWait(exportModelAction);
         _sleep();
 
         if (openResults) {
@@ -479,41 +481,41 @@ public class ExportImage {
      *  <p>Typical usage:</p>
      *  <p> To save a gif:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.ExportModel model.xml
      *  </pre>
      *
      *  <p>or, to save the current view of model in HTML format without any plots:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage htm model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.ExportModel htm model.xml
      *  </pre>
      *
      *  <p>or, to run the model and save the current view of model in
      *  HTML format with any plots:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage -run htm model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.ExportModel -run htm model.xml
      *  </pre>
      *
      *  <p>or, to run the model, open any composites and save the
      *  current view of model and the composites HTML format with any
      *  plots:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage -run -openComposites htm model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.ExportModel -run -openComposites htm model.xml
      *  </pre>
      *
      *  <p>Standard setting for exporting to html can be invoked with <code>-web</code>,
      *  which is like <code>-copyJavaScriptFiles -open -openComposites -run htm</code>.</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage -web model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.ExportModel -web model.xml
      *  </pre>
      *
      *  <p>or, to save a png:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage png model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.ExportModel png model.xml
      *  </pre>
      *
      *  <p>or, to run the model and then save a png:</p>
      *  <pre>
-     *   java -classpath $PTII ptolemy.vergil.basic.export.image.ExportImage -run png model.xml
+     *   java -classpath $PTII ptolemy.vergil.basic.export.ExportModel -run png model.xml
      *  </pre>
      *
      *  <p>To set the background to white, invoke with
@@ -551,7 +553,7 @@ public class ExportImage {
         String eol = System.getProperty("line.separator");
         String usage = "Usage:" + eol
             + "java -classpath $PTII "
-            + "ptolemy.vergil.basic.export.image.ExportImage "
+            + "ptolemy.vergil.basic.export.ExportModel "
             + "[-help|-h|--help] | [-copyJavaScript] [-force] [-open] [-openComposites] "
             + "[-run] [-save] [-web] [-whiteBackground] [GIF|gif|HTM*|htm*|PNG|png] model.xml" + eol
             + "Command line arguments are: " + eol
@@ -663,13 +665,18 @@ public class ExportImage {
         }
         try {
             // FIXME: Should we use ExportParameter here?
-            new ExportImage().exportImage(copyJavaScriptFiles, force, formatName, modelFileName,
+            new ExportModel().exportModel(copyJavaScriptFiles, force, formatName, modelFileName,
                     run, openComposites, openResults, outputDirectory, save, whiteBackground);
 
         } catch (Exception ex) {
             ex.printStackTrace();
             StringUtilities.exit(5);
         }
+         try {
+             Thread.sleep(10000);
+         } catch (Throwable ex) {
+             //Ignore
+         }
         StringUtilities.exit(0);
     }
 
@@ -677,11 +684,14 @@ public class ExportImage {
      *  Dispatch Thread.
      */
     protected static void _sleep() {
-         try {
+        // FIXME: we should be able to call 
+        // Toolkit.getDefaultToolkit().sync(); 
+        // but that does not do it.
+        try {
              Thread.sleep(1000);
-         } catch (Throwable ex) {
-             //Ignore
-         }
+        } catch (Throwable ex) {
+            //Ignore
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
