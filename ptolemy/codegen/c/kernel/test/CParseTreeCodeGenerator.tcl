@@ -37,6 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs sdfModel] == "" } then {
+    source [file join $PTII util testsuite models.tcl]
+}
+
 proc parseTreeTest {expression} {
     set ptParser [java::new ptolemy.data.expr.PtParser]
     set parseTree [$ptParser generateParseTree $expression]
