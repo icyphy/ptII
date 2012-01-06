@@ -49,7 +49,7 @@ if {[info procs sootCodeGeneration] == "" } then {
 
 # Generate code for all the xml files in a directory.
 proc autoAppletCG {autoDirectory} {
-    global KNOWN_FAILED	
+    global KNOWN_FAILED	PTII 
     foreach file [glob $autoDirectory/*.xml] {
 	if { [string last FileWriter2.xml $file] != -1 \
 		|| [string last Legiotto.xml $file] != -1 \
@@ -61,7 +61,8 @@ proc autoAppletCG {autoDirectory} {
 	}
 	puts "---- testing $file"
 	test "Auto" "Automatic test in file $file" {
-	    set elapsedTime [time {sootCodeGeneration $file Applet 1000}]
+	    global PTII 
+	    set elapsedTime [time {sootCodeGeneration $PTII $file Applet 1000}]
 	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
 	    list {}
 	} {{}}
@@ -72,7 +73,7 @@ proc autoAppletCG {autoDirectory} {
 # Generate code all the demos where a demo model has the name 
 # demo/Foo/Foo.xml thus avoiding running scripts like demo/Foo/xxx.xml
 proc autoAppletDemoCG {autoDirectory} {
-    global KNOWN_FAILED	
+    global KNOWN_FAILED	PTII
     set i 0
     foreach directory [glob $autoDirectory/*/demo/*] {
 	set base [file tail $directory]
@@ -89,7 +90,8 @@ proc autoAppletDemoCG {autoDirectory} {
 	    incr i
 	    puts "---- $i testing $file"
 	    test "Auto-$i" "Automatic test in file $file" {
-	        set elapsedTime [time {sootCodeGeneration $file Applet 1000}]
+		global PTII 
+	        set elapsedTime [time {sootCodeGeneration $PTII $file Applet 1000}]
 	        puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
 	        list {}
 	    } {{}}
