@@ -187,7 +187,7 @@ public class TclTests {
         // add a failure.
         int failed = Integer.parseInt(tclObject.toString());
         assertEquals("Number of failed tests is non-zero",
-                failed, 0);
+                0, failed);
     }
 
     ///////////////////////////////////////////////////////////////////
