@@ -37,11 +37,12 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[string compare test [info procs evaluate]] == 1} then { 
+    source Functions.tcl
+} {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
-
-# 
-#
 
 proc evaluateTree {root} {
     set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
