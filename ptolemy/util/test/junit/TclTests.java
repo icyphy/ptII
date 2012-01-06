@@ -179,16 +179,34 @@ public class TclTests {
 
         // Get the value of the Tcl FAILED global variable.
         // We check for non-zero results for *each* .tcl file.
-        Object tclObject = _getVarMethod.invoke(_interp,
+        Object newFailedCountTclObject = _getVarMethod.invoke(_interp,
                 new Object [] {
                     "FAILED", (String) null, 1 /*TCL.GLOBAL_ONLY*/
                 });
-        // If the Tcl FAILED global variable is not equal to 0, then
-        // add a failure.
-        int failed = Integer.parseInt(tclObject.toString());
-        assertEquals("Number of failed tests is non-zero",
-                0, failed);
+        int newFailed = Integer.parseInt(newFailedCountTclObject.toString());
+        int lastFailed = Integer.parseInt(_failedTestCount.toString());
+
+	// We only report if the number of test failures has increased.
+	// this prevents us from reporting cascading errors if the
+	// first .tcl file has a failure.
+	_failedTestCount = _newInstanceTclIntegerMethod.invoke(null, 
+                    new Object [] {Integer.valueOf(newFailed)});
+
+        // If the Tcl FAILED global variable is not equal to the
+        // previous number of failures, then add a failure.
+        assertEquals("Number of failed tests is has increased.",
+                lastFailed, newFailed);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected variables                    ////
+
+    /**
+     * A special string that is passed when there are no tcl tests. This is
+     * necessary to avoid an exception in the JUnitParameters.
+     */
+    protected final static String THERE_ARE_NO_TCL_TESTS = "ThereAreNoTclTests";
+
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
@@ -198,6 +216,11 @@ public class TclTests {
 
     /** The tcl.lang.Interp.evalFile(String) method. */
     private static Method _evalFileMethod;
+
+    /** The number of failed tests.  Each .tcl file tests to see if
+     * the number has increased.
+     */
+    private static Object _failedTestCount;
 
     /** The tcl.lang.Interp.getVar(String name1, String name2, int flags) method. */
     private static Method _getVarMethod;
@@ -213,6 +236,9 @@ public class TclTests {
      */
     private static Object _interp;
 
+    /** The newInstance() method of the tcl.lang.TclInteger class. */
+    private static Method _newInstanceTclIntegerMethod;
+	
     /** The tcl.lang.Interp.setVar(String name1, String name2, int flags) method. */
     private static Method _setVarMethod;
 
@@ -227,12 +253,6 @@ public class TclTests {
      * Used when we call the doneTests Tcl method.
      */
     private static Object _tclObjectZero;
-
-    /**
-     * A special string that is passed when there are no tcl tests. This is
-     * necessary to avoid an exception in the JUnitParameters.
-     */
-    protected final static String THERE_ARE_NO_TCL_TESTS = "ThereAreNoTclTests";
 
     // We place initialization of the _interp in a static block so
     // that it happens once per directory of tcl files.  The doneTests() method
@@ -256,10 +276,13 @@ public class TclTests {
 
             // Create a TclObject with value 0 for use with the doneTests Tcl proc.
             Class tclIntegerClass = Class.forName("tcl.lang.TclInteger");
-            Method newInstanceTclIntegerMethod = tclIntegerClass.getMethod("newInstance",
+            _newInstanceTclIntegerMethod = tclIntegerClass.getMethod("newInstance",
                     new Class [] {Integer.TYPE});
 
-            _tclObjectZero = newInstanceTclIntegerMethod.invoke(null, 
+            _tclObjectZero = _newInstanceTclIntegerMethod.invoke(null, 
+                    new Object [] {Integer.valueOf(0)});
+
+	    _failedTestCount = _newInstanceTclIntegerMethod.invoke(null, 
                     new Object [] {Integer.valueOf(0)});
 
         } catch (Throwable throwable) {
