@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MaximumEntropySpectrum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[764, 369]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[802, 385]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
@@ -52,7 +52,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 10.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 977, 479}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 1015, 495}, maximized=false}">
     </property>
     <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -129,47 +129,13 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 210.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 235.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.0, 184.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.0, 192.5}">
     </property>
-    <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
-        <property name="order" class="ptolemy.data.expr.Parameter" value="ARorder">
-        </property>
-        <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="2^log2numInputs">
-        </property>
-        <property name="AnnotationUpdated_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_hideAllParameters" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-            </property>
-            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-            <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
-            </property>
-            <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor estimates the power spectrum of an input using&#10;the maximum-entropy method.  This method estimates the autocorrelation,&#10;then constructs a minimum-mean-square-error (MMSE) linear predictor&#10;for that autocorrelation.  The frequency response of the prediction&#10;error filter is then found and inverted to yield the power spectral&#10;estimate. The number of inputs required to produce any output is a&#10;parameter, and the number of outputs produced will be 2^(log2resolution).&#10;The order parameter specifies the number of coefficients of linear&#10;predictor. The output represents frequencies from -pi to pi&#10;radians per second, centered at zero frequency, in decibels (dB).">
-                <property name="_style" class="ptolemy.actor.gui.style.TextStyle">
-                    <property name="height" class="ptolemy.data.expr.Parameter" value="20">
-                    </property>
-                    <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                    </property>
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 91.0}">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 225.0]">
-        </property>
-    </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -330,6 +296,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 165.0]">
         </property>
     </entity>
+    <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
+        <property name="order" class="ptolemy.data.expr.Parameter" value="ARorder">
+        </property>
+        <property name="numberOfInputs" class="ptolemy.data.expr.Parameter" value="2^log2numInputs">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 240.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -348,10 +322,8 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="MaximumEntropySpectrum.input" relation="relation7"/>
-    <link port="MaximumEntropySpectrum.output" relation="relation9"/>
     <link port="Spectrum.input" relation="relation7"/>
     <link port="Spectrum.output" relation="relation3"/>
     <link port="Gaussian.output" relation="relation6"/>
@@ -365,9 +337,11 @@
     <link port="AddSubtract.output" relation="relation7"/>
     <link port="SequencePlotter.input" relation="relation3"/>
     <link port="SequencePlotter.input" relation="relation2"/>
-    <link port="SequencePlotter.input" relation="relation9"/>
+    <link port="SequencePlotter.input" relation="relation10"/>
     <link port="IIR.input" relation="relation6"/>
     <link port="IIR.output" relation="relation8"/>
     <link port="SmoothedPeriodogram.input" relation="relation7"/>
     <link port="SmoothedPeriodogram.output" relation="relation2"/>
+    <link port="MaximumEntropySpectrum.input" relation="relation7"/>
+    <link port="MaximumEntropySpectrum.output" relation="relation10"/>
 </entity>
