@@ -51,6 +51,14 @@ import ptolemy.moml.MoMLParser;
  @Pt.AcceptedRating Red (cxh)
  */
 public class RemoveGraphicalClasses extends MoMLFilterSimple {
+    /** Construct a filter that removes graphical classes.
+     */	
+    public RemoveGraphicalClasses() {
+	if (_graphicalClasses == null) {
+	    initialize();
+	}
+    }
+
     /** Clear the map of graphical classes to be removed.
      */
     public static void clear() {
@@ -83,6 +91,9 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
      */
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue, String xmlFile) {
+	if (_graphicalClasses == null) {
+	    initialize();
+	}
         // If the nightly build is failing with messages like:
         // " X connection to foo:0 broken (explicit kill or server shutdown)."
         // Try uncommenting the next lines to see what is being
@@ -114,122 +125,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
             StringBuffer currentCharData, String xmlFile) throws Exception {
     }
 
-    /** Read in a MoML file, remove graphical classes and
-     *  write the results to standard out.
-     *  <p> For example, to remove the graphical classes from
-     *  a file called <code>RemoveGraphicalClasses.xml</code>
-     *  <pre>
-     *  java -classpath "$PTII" ptolemy.moml.filter.RemoveGraphicalClasses test/RemoveGraphicalClasses.xml &gt; output.xml
-     *  </pre>
-     *  @param args An array of one string
-     *  <br> The name of the MoML file to be cleaned.
-     *  @exception Exception If there is a problem reading or writing
-     *  a file.
-     */
-    public static void main(String[] args) throws Exception {
-        try {
-            // The HandSimDroid work in $PTII/ptserver uses dependency
-            // injection to determine which implementation actors such as
-            // Const and Display to use.  This method reads the
-            // ptolemy/actor/ActorModule.properties file.</p>
-            ActorModuleInitializer.initializeInjector();
-
-            MoMLParser parser = new MoMLParser();
-
-            // The list of filters is static, so we reset it in case there
-            // filters were already added.
-            MoMLParser.setMoMLFilters(null);
-
-            // Add the backward compatibility filters.
-            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-
-            MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
-            MoMLParser.addMoMLFilter(new HideAnnotationNames());
-            NamedObj topLevel = parser.parseFile(args[0]);
-            System.out.println(topLevel.exportMoML());
-        } catch (Throwable throwable) {
-            System.err.println("Failed to filter \"" + args[0] + "\"");
-            throwable.printStackTrace();
-            System.exit(1);
-        }
-    }
-
-    /** Remove a class to be filtered.
-     *  @param className The name of the class to be filtered
-     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
-     *  @see #put(String, String)
-     */
-    public void remove(String className) {
-        // ptolemy.copernicus.kernel.MakefileGenerator
-        // so as to filter out the GeneratorAttribute
-        _graphicalClasses.remove(className);
-    }
-
-    /** Add a class to be filtered for and its replacement if the class
-     *  is found.  If the replacement is null, then the rest of the
-     *  attribute is skipped.  Note that if you add a class with
-     *  this method, then you must remove it with {@link #remove(String)},
-     *  calling 'new RemoveGraphicalClasses' will not remove a class
-     *  that was added with this method.
-     *  @param className The name of the class to be filtered
-     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
-     *  @param replacement The name of the class to be used if
-     *  className is found.  If this argument is null then the
-     *  rest of the attribute is skipped.
-     *  @see #remove(String)
-     */
-    public void put(String className, String replacement) {
-        // ptolemy.copernicus.kernel.KernelMain call this method
-        // so as to filter out the GeneratorAttribute
-        _graphicalClasses.put(className, replacement);
-    }
-
-    /** Set to true if we should removed classes that start with
-     *  ptolemy.domains.gr.
-     *  @param removeGR True if we should remove classes that start
-     *  with ptolemy.domains.gr.
-     */
-    public void setRemoveGR(boolean removeGR) {
-        _removeGR = removeGR;
-    }
-
-    /** Return a string that describes what the filter does.
-     *  @return the description of the filter that ends with a newline.
-     */
-    public String toString() {
-        StringBuffer results = new StringBuffer(getClass().getName()
-                + ": Remove or replace classes that are graphical.\n"
-                + "This filter is used by the nightly build, and\n"
-                + "can be used to run applets so that files like\n"
-                + "diva.jar do not need to be downloaded.\n"
-                + "The following actors are affected:\n");
-        Iterator classNames = _graphicalClasses.keySet().iterator();
-
-        while (classNames.hasNext()) {
-            String oldClassName = (String) classNames.next();
-            String newClassName = (String) _graphicalClasses.get(oldClassName);
-
-            if (newClassName == null) {
-                results.append(oldClassName + " will be removed\n");
-            } else {
-                results.append(oldClassName + " will be replaced by "
-                        + newClassName + "\n");
-            }
-        }
-
-        return results.toString();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Map of actor names a HashMap of graphical classes to their
-     *  non-graphical counterparts, usually either
-     *  ptolemy.kernel.util.Attribute or null.
-     */
-    private static HashMap _graphicalClasses;
-
-    static {
+    /** Initialize the set of classes to remove. */
+    public static void initialize() {
         _graphicalClasses = new HashMap();
 
         // Alphabetical by key class
@@ -463,6 +360,121 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         _graphicalClasses.put("ptolemy.actor.lib.gui.MatrixViewer",
                 "ptolemy.actor.lib.Discard");
     }
+
+    /** Read in a MoML file, remove graphical classes and
+     *  write the results to standard out.
+     *  <p> For example, to remove the graphical classes from
+     *  a file called <code>RemoveGraphicalClasses.xml</code>
+     *  <pre>
+     *  java -classpath "$PTII" ptolemy.moml.filter.RemoveGraphicalClasses test/RemoveGraphicalClasses.xml &gt; output.xml
+     *  </pre>
+     *  @param args An array of one string
+     *  <br> The name of the MoML file to be cleaned.
+     *  @exception Exception If there is a problem reading or writing
+     *  a file.
+     */
+    public static void main(String[] args) throws Exception {
+        try {
+            // The HandSimDroid work in $PTII/ptserver uses dependency
+            // injection to determine which implementation actors such as
+            // Const and Display to use.  This method reads the
+            // ptolemy/actor/ActorModule.properties file.</p>
+            ActorModuleInitializer.initializeInjector();
+
+            MoMLParser parser = new MoMLParser();
+
+            // The list of filters is static, so we reset it in case there
+            // filters were already added.
+            MoMLParser.setMoMLFilters(null);
+
+            // Add the backward compatibility filters.
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+
+            MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
+            MoMLParser.addMoMLFilter(new HideAnnotationNames());
+            NamedObj topLevel = parser.parseFile(args[0]);
+            System.out.println(topLevel.exportMoML());
+        } catch (Throwable throwable) {
+            System.err.println("Failed to filter \"" + args[0] + "\"");
+            throwable.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    /** Remove a class to be filtered.
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @see #put(String, String)
+     */
+    public void remove(String className) {
+        // ptolemy.copernicus.kernel.MakefileGenerator
+        // so as to filter out the GeneratorAttribute
+        _graphicalClasses.remove(className);
+    }
+
+    /** Add a class to be filtered for and its replacement if the class
+     *  is found.  If the replacement is null, then the rest of the
+     *  attribute is skipped.  Note that if you add a class with
+     *  this method, then you must remove it with {@link #remove(String)},
+     *  calling 'new RemoveGraphicalClasses' will not remove a class
+     *  that was added with this method.
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @param replacement The name of the class to be used if
+     *  className is found.  If this argument is null then the
+     *  rest of the attribute is skipped.
+     *  @see #remove(String)
+     */
+    public void put(String className, String replacement) {
+        // ptolemy.copernicus.kernel.KernelMain call this method
+        // so as to filter out the GeneratorAttribute
+        _graphicalClasses.put(className, replacement);
+    }
+
+    /** Set to true if we should removed classes that start with
+     *  ptolemy.domains.gr.
+     *  @param removeGR True if we should remove classes that start
+     *  with ptolemy.domains.gr.
+     */
+    public void setRemoveGR(boolean removeGR) {
+        _removeGR = removeGR;
+    }
+
+    /** Return a string that describes what the filter does.
+     *  @return the description of the filter that ends with a newline.
+     */
+    public String toString() {
+        StringBuffer results = new StringBuffer(getClass().getName()
+                + ": Remove or replace classes that are graphical.\n"
+                + "This filter is used by the nightly build, and\n"
+                + "can be used to run applets so that files like\n"
+                + "diva.jar do not need to be downloaded.\n"
+                + "The following actors are affected:\n");
+        Iterator classNames = _graphicalClasses.keySet().iterator();
+
+        while (classNames.hasNext()) {
+            String oldClassName = (String) classNames.next();
+            String newClassName = (String) _graphicalClasses.get(oldClassName);
+
+            if (newClassName == null) {
+                results.append(oldClassName + " will be removed\n");
+            } else {
+                results.append(oldClassName + " will be replaced by "
+                        + newClassName + "\n");
+            }
+        }
+
+        return results.toString();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Map of actor names a HashMap of graphical classes to their
+     *  non-graphical counterparts, usually either
+     *  ptolemy.kernel.util.Attribute or null.
+     */
+    private static HashMap _graphicalClasses;
 
     /** True if we should remove the GR domain. */
     private boolean _removeGR = false;
