@@ -28,6 +28,7 @@
 
 package ptolemy.vergil.basic.export;
 
+import java.awt.Color;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -161,7 +162,8 @@ public class ExportModel {
 
         // Use the model name as the basis for the directory containing
         // the html or as the basis for the image file.
-        if (formatName.toLowerCase().startsWith("htm")) {
+        final boolean isHTM = formatName.toLowerCase().startsWith("htm");
+        if (isHTM) {
             if (outputFileOrDirectory != null) {
                 temporaryHTMLDirectory = new File(outputFileOrDirectory);
                 temporaryImageFile = new File(outputFileOrDirectory
@@ -200,7 +202,7 @@ public class ExportModel {
         if (force) {
             // Delete the directory containing the .html file or 
             // delete the image file.
-            if (formatName.toLowerCase().startsWith("htm")) {
+            if (isHTM) {
                 if (!FileUtilities.deleteDirectory(htmlDirectory)) {
                     System.err.println("Could not delete \""
                             + htmlDirectory + "\".");
@@ -258,7 +260,7 @@ public class ExportModel {
             _sleep();
         }
 
-        if (openComposites) {
+        if (openComposites && !isHTM) {
             // Optionally open any composites.
             Runnable openCompositesAction = new Runnable() {
                 public void run() {
@@ -289,8 +291,10 @@ public class ExportModel {
             _sleep();
         }
 
-        if (whiteBackground) {
-            // Optionally set the background to white.
+        if (whiteBackground && !isHTM) {
+            // Optionally set the background to white.  The
+            // ExportParameters facility handles this for us for
+            // exporting htm.
             Runnable whiteBackgroundAction = new Runnable() {
                 public void run() {
                     try {
@@ -379,6 +383,13 @@ public class ExportModel {
                             // However, we that here so that export images and export htm
                             // is the same.  This could be a mistake.
                             ExportParameters parameters = new ExportParameters(htmlDirectory);
+                            if (whiteBackground) {
+                                // Set the background of any submodels that are opened.
+                                parameters.backgroundColor = Color.white;
+                            }
+                            if (openComposites) {
+                                parameters.openCompositesBeforeExport = true;
+                            }
                             parameters.copyJavaScriptFiles = copyJavaScriptFiles;
                             ExportHTMLAction.exportToWeb(_basicGraphFrame, parameters);
                             System.out.println("Exported "
@@ -533,11 +544,19 @@ public class ExportModel {
      *  <pre>
      *  -Dptolemy.ptII.exportHTML.usePtWebsite=true
      *  </pre>
+     *  <p>For example:</p>
+     *  <pre>
+     *  export JAVAFLAGS=-Dptolemy.ptII.exportHTML.usePtWebsite=true
+     *  $PTII/bin/ptweb $PTII/ptolemy/moml/demo/modulation.xml
+     *  </pre>
+     *
+     *  <p>To include a link to a <code><i>sanitizedModelName</i>.jnlp</code> file,
+     *  set -Dptolemy.ptII.exportHTML.linkToJNLP=true.</p>
      *
      *  <p>Note that the Ptolemy menus will not appear unless you view
      * the page with a web server that has Server Side Includes (SSI)
-     * enabled and has the appropriate scripts.  Also, the index.html
-     * file must be executable.</p>
+     * enabled and has the appropriate scripts.  Also, the .html
+     * files must be executable.</p>
      *
      *  <p>Include a link to the a
      *  <code><i>sanitizedModelName</i>.jnlp</code> file, set the
@@ -574,7 +593,14 @@ public class ExportModel {
             + eol
             + " -whiteBackground      Set the background color to white." + eol
             + " GIF|gif|HTM*|htm*|PNG|png The file format." + eol
-            + " model.xml  The Ptolemy model. (Required)";
+            + " model.xml  The Ptolemy model. (Required)" + eol
+            + "To export html suitable for the Ptolemy website, invoke " + eol
+            + "Java with -Dptolemy.ptII.exportHTML.usePtWebsite=true" + eol
+            + "For example:" + eol
+            + "export JAVAFLAGS=-Dptolemy.ptII.exportHTML.usePtWebsite=true" + eol
+            + "$PTII/bin/ptweb $PTII/ptolemy/moml/demo/modulation.xml" + eol
+            + "To include a link to a sanitizedModelName.jnlp file," + eol
+            + "set -Dptolemy.ptII.exportHTML.linkToJNLP=true";
 
         if (args.length == 0) {
             // FIXME: we should get the list of acceptable format names from

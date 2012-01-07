@@ -88,6 +88,13 @@ Command line arguments are:
  -whiteBackground      Set the background color to white.
  GIF|gif|HTM*|htm*|PNG|png The file format.
  model.xml  The Ptolemy model. (Required)
+To export html suitable for the Ptolemy website, invoke 
+Java with -Dptolemy.ptII.exportHTML.usePtWebsite=true
+For example:
+export JAVAFLAGS=-Dptolemy.ptII.exportHTML.usePtWebsite=true
+$PTII/bin/ptweb $PTII/ptolemy/moml/demo/modulation.xml
+To include a link to a sanitizedModelName.jnlp file,
+set -Dptolemy.ptII.exportHTML.linkToJNLP=true
 }}
 
 test ExportModel-2.1-directory {Test -o: Generate a png in a different directory} {
