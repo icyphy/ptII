@@ -263,9 +263,15 @@ public class LinkToOpenTableaux extends DefaultIconLink {
                 // Add to table of contents file if we are using the Ptolemy website infrastructure.
                 boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
                 if (usePtWebsite) {
-                    exporter.addContent("toc.htm", false,
-                            " <li><a " + name + "/index.html" + ">"
-                            + ExportHTMLAction._getTitleText(destinationObject) + "</a></li>");
+                    String destinationTitle = ExportHTMLAction._getTitleText(destinationObject);
+                    if (destinationTitle.length() > 16) {
+                        //Truncate the text so that it does not overflow the toc.
+                        destinationTitle = destinationTitle.substring(0,16) + ".";
+                    }
+                    exporter.addContent("tocContents", false,
+                            " <li><a href=\"" + name + "/index.html" + "\">"
+                            + destinationTitle
+                            + "</a></li>");
                 }
             } else if (frame instanceof ImageExportable) {
                 gifFile = new File(parameters.directoryToExportTo, name + ".gif");

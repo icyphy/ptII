@@ -170,7 +170,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
             // Put a destination paragraph in the end section of the HTML.
             exporter.addContent("end", true, 
                     "<div id=\"afterImage\">\n"
-                    + "  <script>\n"
+                    + "  <script type=\"text/javascript\">\n"
                     + "     writeText('Mouse over the icons to see their parameters. "
                     + "Click on composites and plotters to reveal their contents (if provided).');\n"
                     + "  </script>\n"

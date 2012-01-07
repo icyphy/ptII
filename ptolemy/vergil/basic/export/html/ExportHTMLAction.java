@@ -193,6 +193,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  @param content The content to add.
      */
     public void addContent(String position, boolean onceOnly, String content) {
+        // FIXME: This should be a list of StringBuffers, not Strings.
         List<String> contents = _contents.get(position);
         if (contents == null) {
             contents = new LinkedList<String>();
@@ -520,6 +521,13 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      */
     public void writeHTML(ExportParameters parameters)
             throws PrinterException, IOException, IllegalActionException {
+        // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
+        // Side Includes (SSI).  FIXME: this is a bit of a hack, we should
+        // use templates instead.
+        boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
+
+        File indexFile = new File(parameters.directoryToExportTo, "index.html");
+
         // The following try...finally block ensures that the index and toc files
         // get closed even if an exception occurs. It also resets _parameters.
         PrintWriter index = null;
@@ -581,12 +589,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             }
 
             // Next, create an HTML file.
-	    // Invoke with -Dptolemy.ptII.usePtWebsite=true to get Server
-	    // Side Includes (SSI).  FIXME: this is a bit of a hack, we should
-	    // use templates instead.
-	    boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
-
-	    Writer indexWriter = new FileWriter(new File(parameters.directoryToExportTo, "index.html"));
+	    Writer indexWriter = new FileWriter(indexFile);
 	    index = new PrintWriter(indexWriter);
 
 	    // Generate a header that will pass the HTML validator at
@@ -600,37 +603,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 
 	    // Define the path to the SSI files on the ptolemy site.
 	    String ssiRoot = "http://ptolemy.org/";
-	    if (usePtWebsite) {
-	        // FIXME: this absolute path is not very safe.  The
-	        // problem is that we don't know where $PTII is located on
-	        // the website.
-	        index.println("<link href=\""
-	                + ssiRoot
-	                + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
-	    }
 
-	    // Title needed for the HTML validator.
-	    index.println("<title>" + _title + "</title>");
-
-	    if (usePtWebsite) {
-	        // Reference the server-side includes.
-	        index.println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
-	        index.println("<!--#include virtual=\"toc.htm\" -->");
-	        index.println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
-	    }
-
-	    if (usePtWebsite) {
-	        addContent("toc.htm", false, "<div id=\"menu\">");
-	        addContent("toc.htm", false, "<ul>");
-	        addContent("toc.htm", false, "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
-	        addContent("toc.htm", false, "</ul>");
-	        addContent("toc.htm", false, "");
-	        addContent("toc.htm", false, "<ul>");
-	        addContent("toc.htm", false, " <li><a href=\"../index.html\">Up</a></li>");
-	        addContent("toc.htm", false, "</ul>");
-	        addContent("toc.htm", false, "<ul>");
-	    }
-	    
 	    // Reference required script files.
 	    // If the model contains an instanceof CopyJavaScriptFiles, then
 	    // the required files will have been copied into a directory called
@@ -652,10 +625,28 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 	            jsLibrary = copiedLibrary;
 	        }
 	    }
+
+            index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
+
+
+	    if (usePtWebsite) {
+	        // FIXME: this absolute path is not very safe.  The
+	        // problem is that we don't know where $PTII is located on
+	        // the website.
+	        index.println("<link href=\""
+	                + ssiRoot
+	                + "ptolemyII/ptIIlatest/ptII/doc/default.css\" rel=\"stylesheet\" type=\"text/css\"/>");
+	    }
+
+	    // Title needed for the HTML validator.
+	    index.println("<title>" + _title + "</title>");
+
             // NOTE: Due to a bug somewhere (browser, Javascript, etc.), can't end this with />. Have to use </script>.
 	    index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[0] + "\"></script>");
             index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[1] + "\"></script>");
-            index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
+
+            // FILENAMES[2] is a stylesheet <link, so it goes in the head, see above.
+
             index.println("<script type=\"text/javascript\" src=\"" + jsLibrary + "javascript/" + FILENAMES[3] + "\"></script>");
             // Could alternatively use a CDS (Content Delivery Service) for the JavaScript library for jquery.
             // index.println("<script type=\"text/javascript\" src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js\"></script>");
@@ -664,8 +655,21 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             String map = _createImageMap(parameters.directoryToExportTo);
 
 	    // Write the main part of the HTML file.
+            // 
             _printHTML(index, "head");
-	    index.println("</head><body>");
+
+            //------ <head>...</head> above here
+	    if (usePtWebsite) {
+	        // Reference the server-side includes.
+                // toppremenu.htm includes </head>...<body>
+	        index.println("<!--#include virtual=\"/ssi/toppremenu.htm\" -->");
+	        index.println("<!--#include virtual=\"toc.htm\" -->");
+	        index.println("<!--#include virtual=\"/ssi/toppostmenu.htm\" -->");
+	    } else {
+                // The Ptolemy website headers include the closing </head> and <body tag>
+                index.println("</head><body>");
+            }
+
             _printHTML(index, "start");
 
 	    boolean linkToJNLP = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.linkToJNLP"));
@@ -684,13 +688,31 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             
 	    if (!usePtWebsite) {
 	        index.println("</body>");
-	        index.println("</html");
+	        index.println("</html>");
 	    } else {
 	        index.println("<!-- /body -->");
 	        index.println("<!-- /html -->");
 	        index.println("<!--#include virtual=\"/ssi/bottom.htm\" -->");
 
-	        addContent("toc.htm", false, " </ul>");
+                // Start the top of the toc.htm file.
+	        addContent("toc.htm", false, "<div id=\"menu\">");
+	        addContent("toc.htm", false, "<ul>");
+	        addContent("toc.htm", false, "<li><a href=\"/index.htm\">Ptolemy Home</a></li>");
+	        addContent("toc.htm", false, "</ul>");
+	        addContent("toc.htm", false, "");
+	        addContent("toc.htm", false, "<ul>");
+	        addContent("toc.htm", false, " <li><a href=\"../index.html\">Up</a></li>");
+	        addContent("toc.htm", false, "</ul>");
+	        addContent("toc.htm", false, "<ul>");
+
+                // Get the toc contents and stuff it into toc.htm.
+                List<String> contents = _contents.get("tocContents");
+                if (contents != null) {
+                    for (String line : contents) {
+                        addContent("toc.htm", false, line);
+                    }
+                }
+
 	        addContent("toc.htm", false, "</ul>");
 	        addContent("toc.htm", false, "</div><!-- /#menu -->");
 	    }
@@ -698,7 +720,8 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             // If _contents contains any entry other than head, start, or end,
             // then interpret that entry as a file name to write to.
             for (String key : _contents.keySet()) {
-                if (!key.equals("end") && !key.equals("head") && !key.equals("start")) {
+                if (!key.equals("end") && !key.equals("head")
+                        && !key.equals("start") && !key.equals("tocContents")) {
                     // NOTE: A RESTful version of this would create a resource
                     // that could be addressed by a URL. For now, we just
                     // write to a file. Java documentation doesn't say
@@ -719,6 +742,12 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 	    if (index != null) {
 		index.close(); // Without this, the output file may be empty
 	    }
+            if (usePtWebsite) {
+                if (!indexFile.setExecutable(true, false /*ownerOnly*/)) {
+                    System.err.println("Could not make " + indexFile
+                            + "executable.");
+                }
+            }
 	}
     }
     
@@ -786,17 +815,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         List<IconVisibleLocation> iconLocations = _getIconVisibleLocations();
         for (IconVisibleLocation location : iconLocations) {
             // This string will have at least one space at the start and the end.
-            StringBuffer attributeString = new StringBuffer();
-            attributeString.append(" ");
+            StringBuffer attributeString = new StringBuffer(" ");
+            String title = "Actor";  // Default in case there is no title key.
             HashMap<String,String> areaAttributes = _areaAttributes.get(location.object);
             if (areaAttributes != null) {
-                //for (String key : areaAttributes.keySet()) {
-                //    String value = areaAttributes.get(key);
                 for (Map.Entry<String,String> entry : areaAttributes.entrySet()) {
                     String key = entry.getKey();
                     String value = entry.getValue();
                     // If the value is empty, omit the entry.
                     if (value != null && !value.trim().equals("")) {
+                        if (key.equals("title")) {
+                            title = StringUtilities.escapeString(value);
+                        }
                         attributeString.append(key);
                         attributeString.append("=\"");
                         attributeString.append(StringUtilities.escapeString(value));
@@ -806,13 +836,14 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             }
                         
             // Write the name of the actor followed by the table.
-            result.append("<area shape=\"rect\" coords=\""
+            result.append(
+                    "<area shape=\"rect\" coords=\""
                     + (int) location.topLeftX + "," + (int) location.topLeftY
                     + "," + (int) location.bottomRightX + ","
                     + (int) location.bottomRightY
-                    + "\""
+                    + "\"\n"
                     + attributeString
-                    + "/>\n");
+                    + "alt=\"" + title + "\"/>\n");
         }
         result.append("</map>\n");
         return result.toString();
