@@ -178,6 +178,7 @@ public class ParameterDisplayIconScript extends DefaultIconScript {
                     + "     Your browser does not support JavaScript so moving the mouse\n"
                     + "     over the actors will not display their parameters. To enable\n"
                     + "     JavaScript, consult the security preferences of your browser.\n"
+                    + "     <br/>See <a href=\"http://support.microsoft.com/gp/howtoscript\"><code>http://support.microsoft.com/gp/howtoscript</code></a> for details.\n"
                     + "  </noscript>\n"
                     + "</div>");
         }
