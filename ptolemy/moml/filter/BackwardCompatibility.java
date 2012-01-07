@@ -61,13 +61,22 @@ public class BackwardCompatibility {
         _filterList.add(filter);
     }
 
-    /** Return a list where each element of the list is a
-     *  MoMLFilter to be applied to handle backward compatibility.
+    /** Return a shallow copy of the list where each element of the
+     *  list is a MoMLFilter to be applied to handle backward
+     *  compatibility.
      *
      *  @return a list of all the filters.
      */
     public static List allFilters() {
-        return _filterList;
+        // Return a clone of the list and not the list itself.
+        // The reason is that callers might add to the list
+        // and we don't want to modify the base list.
+        // To replicate, use:
+        //  cd moml/filter/test
+        //  $PTII/bin/ptjacl
+        //  source ActorIndex.tcl
+        //  source GRColorChanges.tcl 
+        return (List)((LinkedList)_filterList).clone();
     }
 
     /** Clear the list of filters.
