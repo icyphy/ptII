@@ -31,7 +31,7 @@ package ptolemy.vergil.basic.export.html.test.junit;
 import java.io.File;
 
 import ptolemy.util.FileUtilities;
-import ptolemy.vergil.basic.export.html.ExportToWeb;
+import ptolemy.vergil.basic.export.ExportModel;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportToWebUnitTest
@@ -96,7 +96,7 @@ public class ExportToWebJUnitTest {
         args[0] = "-run";
         args[1] = modelFileName;
         args[2] = directoryName;
-        ExportToWeb.main(args);
+        ExportModel.main(args);
         FileUtilities.deleteDirectory(new File(directoryName));
     }
 }
