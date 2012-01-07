@@ -85,6 +85,13 @@ public class TclTests {
     @AfterClass
     public static void doneTests() throws Throwable {
         
+        if (_tclFileCount == 0) {
+            // No .tcl files were found, so testDefs.tcl, which
+            // defines the Tcl doneTests command has *not* been
+            // sourced.  So, we return.
+            return;
+        }
+
         // util/testsuite/testDefs.tcl doneTests tcl command checks
         // the value of the reallyExit tcl variable.  If reallyExit is
         // not present or 1, then ::tycho::TopLevel::exitProgram is
@@ -96,7 +103,30 @@ public class TclTests {
 
         // Invoke the doneTests Tcl command which prints the number of
         // tests.
-        _evalMethod.invoke(_interp, new Object[] { "doneTests", 0 });
+        try {
+            _evalMethod.invoke(_interp, new Object[] { "doneTests", 0 });
+        } catch (Throwable throwable) {
+            if (!_tclExceptionClass.isInstance(throwable.getCause())) {
+                throw throwable;
+            } else {
+                Integer completionCode = (Integer)_getCompletionCodeMethod.invoke(throwable.getCause(), new Object [] {});
+                if (completionCode.intValue() == 1 /** TCL.ERROR */) { 
+                    // The completion code was 1, which means that the
+                    // command could not be completed successfully.
+
+                    // The Tcl errorInfo global variable will have information
+                    // about what went wrong.
+                    Object errorInfoTclObject = _getVarMethod.invoke(_interp,
+                            new Object [] {
+                                "errorInfo", (String) null, 1 /*TCL.GLOBAL_ONLY*/
+                            });
+                    throw new Exception ("Evaluating the Tcl method \"doneTests\" "
+                            + "resulted in a TclException being thrown.\nThe Tcl "
+                            + "errorInfo global variable has the value:\n"
+                            + errorInfoTclObject);
+                }
+            }
+        }
     }
 
     /**
@@ -173,6 +203,10 @@ public class TclTests {
             System.out.flush();
             return;
         }
+        // Keep track of the number of Tcl files evaluated
+        // If 1 or more files were evaluated, then we call doneTests.
+        _tclFileCount++;
+
         System.out.println(tclFile);
         System.out.flush();
         _evalFileMethod.invoke(_interp, new Object[] { tclFile });
@@ -222,6 +256,9 @@ public class TclTests {
      */
     private static Object _failedTestCount;
 
+    /** The tcl.lang.TclException.getCompletionCode() method. */
+    private static Method _getCompletionCodeMethod;
+
     /** The tcl.lang.Interp.getVar(String name1, String name2, int flags) method. */
     private static Method _getVarMethod;
 
@@ -241,6 +278,14 @@ public class TclTests {
 	
     /** The tcl.lang.Interp.setVar(String name1, String name2, int flags) method. */
     private static Method _setVarMethod;
+
+    /** The tcl.lang.TclException class. **/
+    private static Class _tclExceptionClass;
+
+    /** Keep track of the number of Tcl files evaluated
+     * If 1 or more files were evaluated, then we call doneTests.
+     */
+    private static int _tclFileCount = 0;
 
     /**
      * The tcl.lang.TclObject class. We use reflection here to avoid false
@@ -278,6 +323,11 @@ public class TclTests {
             Class tclIntegerClass = Class.forName("tcl.lang.TclInteger");
             _newInstanceTclIntegerMethod = tclIntegerClass.getMethod("newInstance",
                     new Class [] {Integer.TYPE});
+
+            _tclExceptionClass = Class.forName("tcl.lang.TclException");
+
+            _getCompletionCodeMethod = _tclExceptionClass.getMethod("getCompletionCode",
+                    new Class [] {});
 
             _tclObjectZero = _newInstanceTclIntegerMethod.invoke(null, 
                     new Object [] {Integer.valueOf(0)});
