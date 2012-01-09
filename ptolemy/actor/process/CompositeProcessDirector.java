@@ -39,6 +39,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -696,6 +697,11 @@ public class CompositeProcessDirector extends ProcessDirector {
                     } else {
                         // There are no actors that are blocked on a communication
                         // (send or receive) to the outside world.
+                        if (_inputBranchController == null) {
+                            throw new InternalErrorException(this, null,
+                                    "_inputBranchController was null?  Perhaps initialize() "
+                                    + "was not called?");
+                        }
                         if (_inputBranchController.isBlocked()) {
                             while (!_outputBranchController.isBlocked()) {
                                 try {
