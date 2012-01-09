@@ -49,6 +49,9 @@ import ptolemy.media.javasound.LiveSound;
  @Pt.AcceptedRating Red (vogel)
  */
 public class SoftClip {
+    /** Perform real-time capture, processing and playback of audio data.
+     *  @param args Not used.
+     */
     public static void main(String[] args) {
         ActorModuleInitializer.initializeInjector();
 

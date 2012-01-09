@@ -33,21 +33,24 @@ import ptolemy.media.javasound.SoundWriter;
 
 ////////////////////////////////////////////////////
 
-/** This is a simple application that demonstrates the use of SoundReader
- and SoundWriter by performing soft clipping on an input sound file.
-
-
- Samples are read from a sound file specified as a URL, simple
- *  processing is performed on the audio date, and the processed data is written to a sound file.
- *  For this application, the processing consists
- *  of a simple soft clipping operation.
- @author Brian K. Vogel
- @version $Id$
- @since Ptolemy II 2.0
- @Pt.ProposedRating Red (vogel)
- @Pt.AcceptedRating Red (vogel)
+/** A simple application that demonstrates the use of SoundReader and
+ *  SoundWriter by performing soft clipping on an input sound file.
+ *
+ *  <p>Samples are read from a sound file specified as a URL, simple
+ *  processing is performed on the audio data, and the processed data
+ *  is written to a sound file.  For this application, the processing
+ *  consists of a simple soft clipping operation.</p>
+ * @author Brian K. Vogel
+ * @version $Id$
+ * @since Ptolemy II 2.0
+ * @Pt.ProposedRating Red (vogel)
+ * @Pt.AcceptedRating Red (vogel)
  */
 public class ReaderProcessWriter {
+    /** Read samples from a sound file, process the data using a soft
+     * clipping algorithm and write the results.
+     * @param args Not used.
+     */
     public static void main(String[] args) {
         // Set this to "true" to turn on debugging information.
         boolean _debug = true;

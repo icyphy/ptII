@@ -30,6 +30,8 @@ package ptolemy.kernel.test.junit;
 
 import static org.junit.Assert.assertArrayEquals;
 import ptolemy.kernel.test.ExampleSystem;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
 //// ExampleSystemJUnitTest
@@ -45,9 +47,13 @@ public class ExampleSystemJUnitTest {
     /**
      * Create the example system and compare the value returned by the
      * toString() method to the known good results.
+     * @exception IllegalActionException If thrown while constructing
+     * the example system.
+     * @exception NameDuplicationException If there is already an example system
+     * in the default workspace.
      */
     @org.junit.Test
-    public void run() throws Exception {
+    public void run() throws IllegalActionException, NameDuplicationException {
         ExampleSystem example = new ExampleSystem();
 
         String knownGood = "----Methods of ComponentRelation----" + _eol

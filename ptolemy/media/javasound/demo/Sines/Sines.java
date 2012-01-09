@@ -43,6 +43,9 @@ import ptolemy.media.javasound.SoundPlayback;
  @Pt.AcceptedRating Red (vogel)
  */
 public class Sines {
+    /** Synthesize and play a simple harmonic signal using additive synthesis.
+     *  @param args Not used.
+     */
     public static void main(String[] args) {
         // The pitch of the signal to synthesize.
         double fundamental_Hz = 220;

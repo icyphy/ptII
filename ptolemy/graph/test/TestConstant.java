@@ -69,7 +69,7 @@ public class TestConstant implements InequalityTerm {
     }
 
     /** Return the information of this term. The information is a
-     *  String of the form: <name>(constant)_<value>
+     *  String of the form: <i>name</i>(constant)_</i>value</i>.
      *  @return A String
      */
     public String getInfo() {

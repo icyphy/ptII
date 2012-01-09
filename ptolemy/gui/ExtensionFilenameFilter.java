@@ -161,6 +161,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * <p>Files that begin with "." are ignored.</p>
      *
      * <p>This method is used by javax.swing.JFileChoosers.
+     *
      * @param f The file to be checked.
      * @return True if the argument is a directory or if the the extension
      * of the file matches one of the extensions.
@@ -195,6 +196,8 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      *
      * @param directory The directory in which the file was found.
      * @param name The name of the file.
+     * @return Return true if this file should be shown in the directory pane,
+     * false if it shouldn't.
      * @see #accept(File)
      * @see #getExtension(File)
      * @see FileFilter#accept(File)
@@ -374,11 +377,13 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * This method is only relevant if a description was provided in
      * the constructor or using setDescription();
      *
+     * @param useExtensionListInDescription True if the list of extensions
+     * should appear in the human readable description.
      * @see #getDescription()
      * @see #isExtensionListInDescription()
      */
-    public void setExtensionListInDescription(boolean b) {
-        _useExtensionsInDescription = b;
+    public void setExtensionListInDescription(boolean useExtensionListInDescription) {
+        _useExtensionsInDescription = useExtensionListInDescription;
         _fullDescription = null;
     }
 

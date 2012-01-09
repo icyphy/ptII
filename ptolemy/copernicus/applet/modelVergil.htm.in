@@ -6,13 +6,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 <link href="@codeBase@/doc/default.css" rel="stylesheet" type="text/css"/>
 <title>@sanitizedModelName@</title>
-</head>
-<body>
+<!-- /head -->
+<!-- body -->
+
+<!--#include virtual="/ssi/toppremenu.htm" -->
+<!--#include virtual="toc.htm" -->
+<!--#include virtual="/ssi/toppostmenu.htm" -->
+
 <h1>@sanitizedModelName@</h1>
 This page contains an applet that should appear as a separate window.
 <p>@documentation@</p>
 
-<!-- All of the controls of the applet should be visible when the
+ <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
 <center>
 <!-- PT SIMPLE APPLET CONVERTER -->
@@ -34,5 +39,7 @@ applet is displayed on a XGA screen-->
 </applet>
 <!-- /PT SIMPLE APPLET CONVERTER -->
 </center>
-</body>
-</html>
+
+<!-- /body -->
+<!-- /html -->
+<!--#include virtual="/ssi/bottom.htm" -->

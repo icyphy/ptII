@@ -76,7 +76,7 @@ public class TestVariable implements InequalityTerm {
     }
 
     /** Return the information of this term. The information is a
-     *  String of the form: <name>(variable)_<value>
+     *  String of the form: <i>name</i>(variable)_<i>value</i>.
      *  @return A String
      */
     public String getInfo() {

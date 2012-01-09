@@ -114,7 +114,7 @@ import diva.graph.GraphController;
  * </dl>
  *
  * <p>Typically, JVM properties are set when Java is invoked.  
- * {@link ptolemy.vergil.basic.export.image.ExportImage} can be called with these
+ * {@link ptolemy.vergil.basic.export.ExportModel} can be called with these
  * properties set to create Ptolemy website specific web pages.</p>
  *
  * <p> See <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport</a>
