@@ -224,6 +224,7 @@ COREPACKAGES = \
 	ptolemy.vergil.actor \
 	ptolemy.vergil.actor.lib \
 	ptolemy.vergil.basic \
+	ptolemy.vergil.basic.export \
 	ptolemy.vergil.basic.export.html \
 	ptolemy.vergil.basic.export.image \
 	ptolemy.vergil.basic.layout \
