@@ -61,6 +61,12 @@ set classheader {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
+# Reset the parser just in case a previous test caused problems.
+set parser [java::new ptolemy.moml.MoMLParser]
+$parser resetAll
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+java::call ptolemy.moml.filter.RemoveGraphicalClasses initialize
+
 ######################################################################
 ####
 #

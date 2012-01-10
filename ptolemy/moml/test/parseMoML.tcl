@@ -119,3 +119,6 @@ test parseMoML-3.0 {parse a file that has Const that calls parseMoML} {
 </entity>
 }}
 
+$parser resetAll
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+java::call ptolemy.moml.filter.RemoveGraphicalClasses initialize
