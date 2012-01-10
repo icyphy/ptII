@@ -79,7 +79,7 @@ test ASTFormatter-1.1 {Convert the SwimmingPool example} {
  COPYRIGHTENDKEY
 
  */
-package ptolemy.backtrack.ast.test;
+package ptolemy.backtrack.eclipse.ast.test;
 
 
 public class ASTTest {
@@ -97,4 +97,4 @@ public class ASTTest {
 
 }
 
-}}
+} {}}
