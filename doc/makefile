@@ -226,7 +226,6 @@ COREPACKAGES = \
 	ptolemy.vergil.basic \
 	ptolemy.vergil.basic.export \
 	ptolemy.vergil.basic.export.html \
-	ptolemy.vergil.basic.export.image \
 	ptolemy.vergil.basic.layout \
 	ptolemy.vergil.basic.layout.kieler \
 	ptolemy.vergil.debugger \
