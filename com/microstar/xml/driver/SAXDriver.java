@@ -104,7 +104,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
 
     /**
      * Set the entity resolver for this parser.
-     * @param handler The object to receive entity events.
+     * @param resolver The object to receive resolve entity events.
      */
     public void setEntityResolver(EntityResolver resolver) {
         this.entityResolver = resolver;

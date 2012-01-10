@@ -112,7 +112,7 @@ public class ExportModel {
      *
      *  @param openResults open the resulting image file or web page.
      *
-     *  @param outputDirectoryOrFile If non-null, then the file or directory
+     *  @param outputFileOrDirectory If non-null, then the file or directory
      *  in which to generate the file(s).
      *
      *  @param save True if the model should be saved after being run.  This
