@@ -69,7 +69,7 @@ if the operation is not supported (for example, delete).
 @since Ptolemy II 8.0
 @Pt.ProposedRating Red (ltrnc)
 @Pt.AcceptedRating Red (ltrnc)
-@see ptolemy.vergil.basic.export.html.ExportToWeb
+@see ptolemy.vergil.basic.export.ExportModel
 */
 public class RESTGetHandler extends TypedAtomicActor {
 
