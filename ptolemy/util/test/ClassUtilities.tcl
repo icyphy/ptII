@@ -109,7 +109,14 @@ test ClassUtilities-3.1 {lookupClassAsResource} {
     set ptIIURL [[$ptIIFile getCanonicalFile ] toURL]
 
     puts "ClassUtilities-3.1: [$resourceURL toString] [$ptIIURL toString]"
-    $resourceURL sameFile $ptIIURL
+
+    # Sigh.  When running the junit cobertura code coverage target,
+    # resourceURL will end in 'reports/instrumented'
+    set resourceURLString [$resourceURL toString]
+    regsub {reports/instrumented/} $resourceURLString {} resourceURLString2
+    set resourceURL2 [java::new java.net.URL $resourceURLString2]
+
+    $resourceURL2 sameFile $ptIIURL
 } {1}
 
 ######################################################################
