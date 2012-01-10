@@ -204,7 +204,7 @@ public class StreamExec implements ExecuteCommands {
 
     /** Start running the commands.
      *  By default, the start() method returns after the last subprocess
-     *  finishes. See {@link #setWaitForLastSubprocess()}.
+     *  finishes. See {@link #setWaitForLastSubprocess(boolean)}.
      */
     public void start() {
         String returnValue = _executeCommands();
