@@ -48,10 +48,10 @@ if {[string compare jdkCapture [info procs jdkCapture]] == 1} then {
 
 test ASTFormatter-1.1 {Convert the SwimmingPool example} {
     set args [java::new {String[]} 1 [list "ASTTest.java"]]
-    jdkCapture {
-	java::call ptolemy.backtrack.ast.ASTFormatter main $args
-    } stdout
-    list $stdout
+    jdkCaptureOutAndErr {
+	java::call ptolemy.backtrack.eclipse.ast.ASTFormatter main $args
+    } stdout stderr
+    list $stdout $stderr
 } {{/*
 
  Copyright (c) 2005 The Regents of the University of California.
