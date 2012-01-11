@@ -345,8 +345,16 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             if (javaHome != null) {
                 libjvmAbsoluteDirectory = javaHome + "/../Libraries";
             }
+        } else if (platform.equals("linux")) {
+	    String osArch = StringUtilities.getProperty("os.arch");
+            if (javaHome != null && osName != null) {
+                libjvmAbsoluteDirectory = javaHome + "/jre/lib/" 
+		    + osArch + "/server";
+            }
+            getCodeGenerator().addInclude(
+                    "-I\"" + javaHome + "/include/" + platform + "\"");
         } else {
-            // Solaris, Linux etc.
+            // Solaris
             getCodeGenerator().addInclude(
                     "-I\"" + javaHome + "/include/" + platform + "\"");
         }
