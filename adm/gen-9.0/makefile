@@ -1446,6 +1446,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/search \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/setup \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/basic/layout/kieler \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/basic/export \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil
 
 # Directories we run make in before running make in the NONJSALLDIRS
