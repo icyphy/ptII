@@ -47,8 +47,15 @@ if {[info procs jdkCapture] == "" } then {
 # The list of filters is static, so we reset it in case there
 # filters were already added.
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+
 java::call ptolemy.moml.MoMLParser addMoMLFilters \
-[java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+# Remove ptolemy.vergil.icon.BoxedValueIcon
+java::call ptolemy.moml.filter.RemoveGraphicalClasses initialize
+set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+java::call ptolemy.moml.MoMLParser addMoMLFilter $filter
+
 
 
 test UserActorLibrary-0.1 {Read in the configuration} { 
