@@ -263,6 +263,8 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 			     {runCommand "longTest"}} {
     global relativePathToPTII
 
+    puts "java.class.path: [java::call System getProperty java.class.path]"
+    puts "Contents of $PTII/ptolemy/copernicus/kernel [exec ls $PTII/ptolemy/copernicus/kernel/]"
     if {[file extension $modelPath] == ""} {
 	set model [file tail $modelPath]
     } else {
@@ -464,7 +466,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	    }
 	}
 	# -q means do not echo the command being run
-	set args [list -q $modelPath \
+	set args [list -v $modelPath \
 		      "-codeGenerator" $codeGenerator \
 		      "-compile" "true" \
 		      "-outputDirectory" "../cg/$modelName"]
