@@ -217,7 +217,16 @@ test UtilityFunctions-6.1 {Test getenv(String)} {
     set results [$tree evaluateParseTree]
     set stringResults [java::cast ptolemy.data.StringToken $results]
     set ptIIFromEnvironmentAsURL [[[java::new java.io.File [$stringResults stringValue]] getCanonicalFile] toURL]
-    $ptIIAsURL sameFile $ptIIFromEnvironmentAsURL
+
+    puts "UtilityFunctions-6.1: [$ptIIAsURL toString] [$ptIIFromEnvironmentAsURL toString]"
+
+    # Sigh.  When running the junit cobertura code coverage target,
+    # ptIIFromEnvironmentAsURL will end in 'reports/instrumented'
+    set resourceURLString [$ptIIFromEnvironmentAsURL toString]
+    regsub {reports/instrumented/} $resourceURLString {} resourceURLString2
+    set resourceURL2 [java::new java.net.URL $resourceURLString2]
+
+    $ptIIAsURL sameFile $resourceURL2
 } {1}
 
 ######################################################################
