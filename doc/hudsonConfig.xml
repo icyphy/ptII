@@ -140,9 +140,9 @@
       <external-property>
         <originalValue class="hudson.plugins.setenv.SetEnvBuildWrapper">
           <localVarText>DISPLAY=localhost:2.0
-PTII=${WORKSPACE}              
-LD_LIBRARY_PATH=${WORKSPACE}/lbnl/lib/util:${WORKSPACE}/lib:/usr/local/matlab-r2008a/bin/glnxa64:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/lib:${LD_LIBRARY_PATH}
-CLASSPATH=/usr/java/JMF-2.1.1e/lib/jmf.jar:/usr/java/jai-1_1_3/lib/jai_codec.jar:/usr/java/jai-1_1_3/lib/jai_core.jar:/usr/java/jai-1_1_3/lib/mlibwrapper_jai.jar
+PTII=${WORKSPACE}
+LD_LIBRARY_PATH=${WORKSPACE}/lbnl/lib/util:${WORKSPACE}/lib:/usr/local/matlab-r2008a/bin/glnxa64:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/lib:/usr/local/lib:${LD_LIBRARY_PATH}
+CLASSPATH=/usr/java/JMF-2.1.1e/lib/jmf.jar:/usr/java/jai-1_1_3/lib/jai_codec.jar:/usr/java/jai-1_1_3/lib/jai_core.jar:/usr/java/jai-1_1_3/lib/mlibwrapper_jai.jar:.
 PATH=${PATH}:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/bin:/usr/local/sbin
 TOSROOT=${WORKSPACE}/vendors/ptinyos/tinyos-1.x
 TOSDIR=${WORKSPACE}/vendors/ptinyos/tinyos-1.x/tos
@@ -151,7 +151,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
 </localVarText>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
+        <modified>true</modified>
       </external-property>
     </entry>
     <entry>
