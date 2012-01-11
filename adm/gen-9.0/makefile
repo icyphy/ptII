@@ -1370,8 +1370,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/curriculum \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/cgc \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn \
@@ -1534,6 +1532,8 @@ NONJSALLDIRS = \
 	ptolemy/cg/kernel/generic/program/procedural/java/modular \
 	ptolemy/copernicus/interpreted \
 	ptolemy/copernicus/shallow \
+	ptolemy/domains/giotto \
+	ptolemy/domains/giotto/cgc \
 	ptolemy/kernel \
 	ptolemy/moml \
 	ptolemy/util \
