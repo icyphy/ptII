@@ -307,10 +307,12 @@ foreach i $configs {
 
     test "$i-3.1" "Test to see if $i contains any actors whose type constraints don't clone" {
 	    set results [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
+	    # FIXME: Need to call this twice to find problems with RecordAssembler.
+	    set results2 [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
    	    # Don't call return as the last line of a test proc, since return
 	    # throws an exception.
-	    list $results
-    } {{}}
+	    list $results $results2
+    } {{} {}}
 
 
     test "$i-4.1" "Test to see if $i contains any actors that might not drag and drop properly by creating ChangeRequests " {
