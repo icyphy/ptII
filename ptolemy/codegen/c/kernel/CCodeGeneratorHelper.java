@@ -347,7 +347,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             }
         } else if (platform.equals("linux")) {
 	    String osArch = StringUtilities.getProperty("os.arch");
-            if (javaHome != null && osName != null) {
+            if (javaHome != null && osArch != null) {
                 libjvmAbsoluteDirectory = javaHome + "/jre/lib/" 
 		    + osArch + "/server";
             }
