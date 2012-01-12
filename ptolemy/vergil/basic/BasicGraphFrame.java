@@ -1723,100 +1723,91 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         JMenu exportMenu = (JMenu) fileMenuItems[_EXPORT_MENU_INDEX];
         exportMenu.setEnabled(true);
 
-        try {
-            // Get the "export PDF" action classname from the configuration.
-            // This may or many not be included because it depends on GPL'd code,
-            // and hence cannot be included included in any pure BSD distribution.
-            // NOTE: Cannot use getConfiguration() because the configuration is
-            // not set when this method is called. Hence, we assume that there
-            // is only one configuration, or that if there are multiple configurations
-            // in this execution, that the first one will determine whether PDF
-            // export is provided.
-            Configuration configuration = (Configuration) Configuration
-                    .configurations().get(0);
-            // NOTE: Configuration should not be null, but just in case:
-            if (configuration != null) {
-		try {
-		    // Deal with the PDF Action first.
-		    StringParameter exportPDFActionClassNameParameter = (StringParameter) configuration
-                        .getAttribute("_exportPDFActionClassName",
-				      StringParameter.class);
+        // Get the "export PDF" action classname from the configuration.
+        // This may or many not be included because it depends on GPL'd code,
+        // and hence cannot be included included in any pure BSD distribution.
+        // NOTE: Cannot use getConfiguration() because the configuration is
+        // not set when this method is called. Hence, we assume that there
+        // is only one configuration, or that if there are multiple configurations
+        // in this execution, that the first one will determine whether PDF
+        // export is provided.
+        Configuration configuration = (Configuration) Configuration
+            .configurations().get(0);
+        // NOTE: Configuration should not be null, but just in case:
+        if (configuration != null) {
+            try {
+                // Deal with the PDF Action first.
+                StringParameter exportPDFActionClassNameParameter = (StringParameter) configuration
+                    .getAttribute("_exportPDFActionClassName",
+                            StringParameter.class);
 
-		    if (exportPDFActionClassNameParameter != null) {
-			if (_exportPDFAction == null) {
-			    String exportPDFActionClassName = exportPDFActionClassNameParameter
-                                .stringValue();
-			    try {
-				Class exportPDFActionClass = Class
-                                    .forName(exportPDFActionClassName);
-				Constructor exportPDFActionConstructor = exportPDFActionClass
-                                    .getDeclaredConstructor(Top.class);
-				_exportPDFAction = (AbstractAction) exportPDFActionConstructor
-                                    .newInstance(this);
-			    } catch (Throwable throwable) {
-				throw new InternalErrorException(
-								 null,
-								 throwable,
-								 "Failed to construct export PDF class \""
-								 + exportPDFActionClassName
-								 + "\", which was read from the configuration.");
-			    }
-			}
-		    }
-		} catch (Throwable throwable) {
-		    // We do not want to abort at this point because the worst
-		    // case is that we will have no Export PDF in the menu.
-		    // That is better than preventing the user from opening a model.
-		    System.err
-			.println("Warning: Tried to create the Export PDF menu item, but failed: "
-				 + throwable);
-		}
+                if (exportPDFActionClassNameParameter != null) {
+                    if (_exportPDFAction == null) {
+                        String exportPDFActionClassName = exportPDFActionClassNameParameter
+                            .stringValue();
+                        try {
+                            Class exportPDFActionClass = Class
+                                .forName(exportPDFActionClassName);
+                            Constructor exportPDFActionConstructor = exportPDFActionClass
+                                .getDeclaredConstructor(Top.class);
+                            _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+                                .newInstance(this);
+                        } catch (Throwable throwable) {
+                            throw new InternalErrorException(
+                                    null,
+                                    throwable,
+                                    "Failed to construct export PDF class \""
+                                    + exportPDFActionClassName
+                                    + "\", which was read from the configuration.");
+                        }
+                    }
+                }
+            } catch (Throwable throwable) {
+                // We do not want to abort at this point because the worst
+                // case is that we will have no Export PDF in the menu.
+                // That is better than preventing the user from opening a model.
+                System.err
+                    .println("Warning: Tried to create the Export PDF menu item, but failed: "
+                            + throwable);
+            }
 
-		try { 
-		    // Deal with the HTML Action next.
-		    // Look in the configuration for the action class name.
-		    // If there is none, then there will be no Export to Web.
-		    StringParameter exportHTMLActionClassNameParameter = (StringParameter) configuration
-                        .getAttribute("_exportHTMLActionClassName",
-                                StringParameter.class);
+            try { 
+                // Deal with the HTML Action next.
+                // Look in the configuration for the action class name.
+                // If there is none, then there will be no Export to Web.
+                StringParameter exportHTMLActionClassNameParameter = (StringParameter) configuration
+                    .getAttribute("_exportHTMLActionClassName",
+                            StringParameter.class);
 
-		    if (exportHTMLActionClassNameParameter != null) {
-			if (_exportHTMLAction == null) {
-			    String exportHTMLActionClassName = exportHTMLActionClassNameParameter
-                                .stringValue();
-			    try {
-				Class exportHTMLActionClass = Class
-                                    .forName(exportHTMLActionClassName);
-				Constructor exportHTMLActionConstructor = exportHTMLActionClass
-                                    .getDeclaredConstructor(BasicGraphFrame.class);
-				_exportHTMLAction = (AbstractAction) exportHTMLActionConstructor
-                                    .newInstance(this);
-			    } catch (Throwable throwable) {
-				throw new InternalErrorException(
+                if (exportHTMLActionClassNameParameter != null) {
+                    if (_exportHTMLAction == null) {
+                        String exportHTMLActionClassName = exportHTMLActionClassNameParameter
+                            .stringValue();
+                        try {
+                            Class exportHTMLActionClass = Class
+                                .forName(exportHTMLActionClassName);
+                            Constructor exportHTMLActionConstructor = exportHTMLActionClass
+                                .getDeclaredConstructor(BasicGraphFrame.class);
+                            _exportHTMLAction = (AbstractAction) exportHTMLActionConstructor
+                                .newInstance(this);
+                        } catch (Throwable throwable) {
+                            throw new InternalErrorException(
                                     null,
                                     throwable,
                                     "Failed to construct export HTML class \""
-                                            + exportHTMLActionClassName
-                                            + "\", which was read from the configuration.");
-			    }
-			}
-		    }
-		} catch (Throwable throwable) {
-		    // We do not want to abort at this point because the worst
-		    // case is that we will have no Export to Web in the menu.
-		    // That is better than preventing the user from opening a model.
-		    System.err
-			.println("Warning: Tried to create the Export to Web menu item, but failed: "
+                                    + exportHTMLActionClassName
+                                    + "\", which was read from the configuration.");
+                        }
+                    }
+                }
+            } catch (Throwable throwable) {
+                // We do not want to abort at this point because the worst
+                // case is that we will have no Export to Web in the menu.
+                // That is better than preventing the user from opening a model.
+                System.err
+                    .println("Warning: Tried to create the Export to Web menu item, but failed: "
                             + throwable);
-		}
-	    }
-        } catch (Exception ex) {
-            // We do not want to abort at this point because the worst
-            // case is that we will have no Export PDF and Export to Web menu items.
-            // That is better than preventing the user from opening a model.
-            System.err
-                    .println("Warning: Tried to create the Export PDF and Export to Web menu items, but failed: "
-                            + ex);
+            }
         }
 
         // Uncomment the next block to have Export PDF *ALWAYS* enabled.
