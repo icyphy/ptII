@@ -10151,6 +10151,9 @@ echo "${ECHO_T}'$PTJNI_SHAREDLIBRARY_CFLAG'" >&6; }; fi
 echo $ECHO_N "checking for the proper shared library link flag... $ECHO_C" >&6; }
             case "`uname -s`" in
                 CYGWIN_*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
+		Darwin)  if test "`uname -m`" = "x86_64"; then
+		             PTJNI_SHAREDLIBRARY_LDFLAG=-m64
+			 fi;;
 	        Linux)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
 	        SunOS)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
 	        *) PTJNI_SHAREDLIBRARY_LDFLAG=;;
