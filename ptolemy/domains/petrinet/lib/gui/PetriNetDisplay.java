@@ -87,8 +87,8 @@ public class PetriNetDisplay extends Display implements PetriNetDisplayer {
      * class throws it.
      */
     public void openDisplay() throws IllegalActionException {
-        if (!initialized) {
-            initialized = true;
+        if (!_initialized) {
+            _initialized = true;
             _openWindow();
         }
         JTextArea textArea = (JTextArea) _getImplementation().getTextArea();

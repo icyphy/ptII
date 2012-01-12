@@ -121,7 +121,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
         textArea.append(value);
 
         // Append a newline character.
-        if (value.length() > 0 || !_display.isSuppressBlankLines) {
+        if (value.length() > 0 || !_display._isSuppressBlankLines) {
             textArea.append("\n");
         }
 

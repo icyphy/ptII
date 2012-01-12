@@ -142,12 +142,6 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
      */
     public TypedIOPort input;
 
-    /** Indicator that the display window has been opened. */
-    public boolean initialized = false;
-
-    /** The flag indicating whether the blank lines will be suppressed. */
-    public boolean isSuppressBlankLines = false;
-
     /** The vertical size of the display, in rows. This contains an
      *  integer, and defaults to 10.
      */
@@ -206,7 +200,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
 
             }
         } else if (attribute == suppressBlankLines) {
-            isSuppressBlankLines = ((BooleanToken) suppressBlankLines
+            _isSuppressBlankLines = ((BooleanToken) suppressBlankLines
                     .getToken()).booleanValue();
         } else if (attribute == title) {
             _getImplementation().setTitle(title.stringValue());
@@ -244,8 +238,7 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-
-        initialized = false;
+        _initialized = false;
     }
 
     /** Specify the container into which this object should be placed.
@@ -274,14 +267,14 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
             String value = _getInputString(i);
             if (value != null) {
                 // Do not open the display until there is a token.
-                if (!initialized) {
-                    initialized = true;
+                if (!_initialized) {
+                    _initialized = true;
                     _openWindow();
                 }
                 _implementation.display(value);
             }
 
-            else if (!isSuppressBlankLines) {
+            else if (!_isSuppressBlankLines) {
                 // There is no input token on this channel, so we
                 // output a blank line.
                 _implementation.display("\n");
@@ -424,6 +417,15 @@ public class Display extends TypedAtomicActor implements PortablePlaceable {
     protected void _openWindow() throws IllegalActionException {
         _implementation.openWindow();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+
+    /** Indicator that the display window has been opened. */
+    protected boolean _initialized = false;
+
+    /** The flag indicating whether the blank lines will be suppressed. */
+    protected boolean _isSuppressBlankLines = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
