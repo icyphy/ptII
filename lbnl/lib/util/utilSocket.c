@@ -479,11 +479,12 @@ int establishclientsocket(const char *const docname){
     f1 = fopen ("utilSocket.log", "w");
   if (f1 == NULL){
     fprintf(stderr, "Could not open file '%s'\n", "utilSocket.log");
-    return -1;
+    return -3;
   }
   else
     fprintf(f1, "utilSocket: Establishing socket based on file %s.\n", docname);
 #endif
+  fflush(f1);
   hostname = malloc(BUFFER_LENGTH);
   if (hostname == NULL) {
     perror("malloc failed in establishclientsocket.");
@@ -532,7 +533,7 @@ int establishclientsocket(const char *const docname){
     fprintf(f1, "Error: Could not find a usable WinSock DLL.\n");
     fprintf(f1, "WSAGetLastError = %d\n", WSAGetLastError());
 #endif
-    return -1;
+    return -4;
   }
   /* Confirm that the WinSock DLL supports 2.2.*/
   /* Note that if the DLL supports versions greater    */
@@ -547,7 +548,7 @@ int establishclientsocket(const char *const docname){
     fprintf(f1, "Error: Could not find a usable WinSock DLL for requested version.\n");
 #endif
     WSACleanup( );
-    return -1;
+    return -5;
   }
 #ifdef NDEBUG
   fprintf(f1, "WinSock DLL is acceptable.\n");
@@ -575,7 +576,7 @@ int establishclientsocket(const char *const docname){
         fprintf(f1, "Error setting socket option keep alive.\n");
         fprintf(f1, "Error flag errno = %d.\n", errno);
 #endif
-        return -1;
+        return -6;
       }
 
   if (sockfd < 0){
@@ -587,13 +588,35 @@ int establishclientsocket(const char *const docname){
   //////////////////////////////////////////////////////
   // establish server address
   server = gethostbyname(hostname);
-  free(hostname);
   if (server == NULL) {
 #ifdef NDEBUG
-    fprintf(f1,"Error, no such host\n");
+    fprintf(f1,"Error, no such host: %s\n", hostname);
+#ifdef __APPLE__
+    fprintf(f1,"gethostbyname(%s) returned %d, which means '%s'\n", hostname, h_errno, hstrerror(h_errno));
+#endif // __APPLE__
+#endif // NDEBUG
+
+    server = gethostbyname("localhost");
+    if (server == NULL) {
+#ifdef NDEBUG
+      fprintf(f1,"Error, no such host: %s\n", "localhost");
+#ifdef __APPLE__
+      fprintf(f1,"gethostbyname(%s) returned %d, which means '%s'\n", "localhost", h_errno, hstrerror(h_errno));
+#endif // __APPLE__
+#endif // NDEBUG
+      free(hostname);
+      return -7;
+    } else {
+#ifdef NDEBUG
+      fprintf(f1,"Warning: gethostbyname(\"%s\") returned null, but gethostbyname(\"localhost\") returned non-null.\n", hostname);
+      fprintf(f1,"This sometimes happens on a Mac.\n");
 #endif
-    return -1;
+      fprintf(stderr,"Warning: gethostbyname(\"%s\") returned null, but gethostbyname(\"localhost\") returned non-null.\n", hostname);
+      fprintf(stderr,"This sometimes happens on a Mac.\n");
+    }
   }
+  free(hostname);
+
   serverIP = inet_ntoa(*(struct in_addr *)*server->h_addr_list);
   memset((char *) &serAdd, '\0', sizeof(serAdd));
   serAdd.sin_family = AF_INET;
@@ -605,15 +628,15 @@ int establishclientsocket(const char *const docname){
   retVal = connect(sockfd, (const struct sockaddr*)&serAdd, sizeof(serAdd));
   if ( retVal < 0){
 #ifdef _MSC_VER
-    fprintf(stderr, "Error when connecting to socket: WSAGetLastError = %d\n", WSAGetLastError());
+    fprintf(stderr, "Error when connecting to socket %d on %s: WSAGetLastError = %d\n", portNo, serverIP, WSAGetLastError());
 #else
-    fprintf(stderr, "Error when connecting to socket: %s\n",  strerror(errno));
+    fprintf(stderr, "Error when connecting to socket %d on %s: %s\n",  portNo, serverIP, strerror(errno));
 #endif
 #ifdef NDEBUG
 #ifdef _MSC_VER
-    fprintf(f1, "Error when connecting to socket: WSAGetLastError = %d\n", WSAGetLastError());
+    fprintf(f1, "Error when connecting to socket %d on %s: WSAGetLastError = %d\n", portNo, serverIP, WSAGetLastError());
 #else
-    fprintf(f1, "Error when connecting to socket: %s\n",  strerror(errno));
+    fprintf(f1, "Error when connecting to socket %d on %s: %s\n",  portNo, serverIP, strerror(errno));
 #endif
 #endif
     return retVal;

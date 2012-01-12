@@ -105,10 +105,15 @@ clean: ptmatlab_clean
 include $(ROOT)/mk/ptcommon.mk
 
 C_DEBUG=-g
-# $(PTJNI_SHAREDLIBRARY_LDFLAG) is needed for 64 bit linux, it is set to -fPIC
+# If NDEBUG is defined, then utilSocket.c will create utilSocket.log
+# and add debugging messages to it.
+#C_DEFINES=-DNDEBUG
+# $(PTJNI_SHAREDLIBRARY_LDFLAG) is needed for 64 bit Linux, it is set to -fPIC
+# $(PTJNI_SHAREDLIBRARY_LDFLAG) is needed for 64 bit Mac OS X, it is set to -m64
 $(PTLIB): $(CSRCS) $(HSRCS)
 	"$(PTCC)" -shared $(PTJNI_GCC_SHARED_FLAG) \
 		$(C_DEBUG) \
+		$(C_DEFINES) \
 		$(PTJNI_SHAREDLIBRARY_LDFLAG) \
 		-o $@ \
 		-I.. -I $(LIBEXPAT_INCLUDE_DIR) \
