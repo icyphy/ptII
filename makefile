@@ -60,7 +60,7 @@ PTPACKAGE = 	ptII
 #  svn cp gen-N.M gen-N.O
 # and update the versions in gen-N.O/makefile and the .xml files
 # On the sisyphus.eecs server, update ~bldmastr/adm/makefile.sisyphus
-PTVERSION =	8.1.devel
+PTVERSION =	9.0.devel
 PTCLASSJAR =
 
 
