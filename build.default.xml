@@ -299,6 +299,20 @@ For example:
     <mkdir dir="${ptII.reports}/ojdcheck" />
   </target>
 
+  <target name="jars"
+	  description="Create jar files." >
+    <subant antfile="jars.xml"
+	    buildpath="${basedir}"
+	    target="jars" />
+  </target>
+
+  <target name="jars.clean"
+	  description="Remove all the jar files created by 'ant jars'." >
+    <subant antfile="jars.xml"
+	    buildpath="${basedir}"
+	    target="jars.clean" />
+  </target>
+
   <target name="javadoc"
 	  depends="javadoc.actorIndex, javadoc.base"
 	  description="Generate javadoc including actor documentation and actor/demo index." /> 
@@ -554,6 +568,13 @@ For example:
     </junit>
 
     <cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
+  </target>
+
+  <target name="update"
+	  description="Update the tree from the SVN repository." >
+    <exec executable="svn">
+      <arg value="update"/>
+    </exec>
   </target>
 
   <target name="vergil" depends="build-project"
