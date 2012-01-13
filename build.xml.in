@@ -206,10 +206,6 @@ For example:
     <mkdir dir="${ptII.reports}/ojdcheck" />
   </target>
 
-  <target name="jars">
-    <echo> Run ant -f jars.xml jars</echo>
-  </target>	  
-
   <target name="jars"
 	  description="Create jar files." >
     <subant antfile="jars.xml"
