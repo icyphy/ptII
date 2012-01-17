@@ -54,7 +54,6 @@
     <include name="ptolemy/actor/lib/python/python.jar" />
     <include name="ptolemy/actor/lib/security/demo/demo.jar" />
     <include name="ptolemy/actor/parameters/demo/demo.jar" />
-    <include name="ptolemy/actor/ptalon/antlr/antlr.jar" />
     <include name="ptolemy/actor/ptalon/demo/demo.jar" />
     <include name="ptolemy/actor/ptalon/gt/demo/demo.jar" />
     <include name="ptolemy/actor/ptalon/gt/gt.jar" />
@@ -163,6 +162,7 @@
     <include name="ptolemy/moml/demo/demo.jar" />
     <include name="ptolemy/plot/plotapplication.jar" />
     <include name="ptolemy/ptsupport.jar" />
+    <include name="ptolemy/vergil/basic/export/exportFull.jar" />
     <include name="ptolemy/vergil/basic/layout/layout.jar" />
     <include name="ptolemy/vergil/fsm/fmv/fmv.jar" />
     <include name="ptolemy/vergil/gt/gt.jar" />
@@ -215,27 +215,6 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="doc/img/*.png"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/vergil/basic/layout/layout.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/vergil/basic/layout/layout.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/layout/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/layout/img/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/layout/img/*.png"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/layout/kieler/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/layout/kieler/*.htm"/>
       </fileset>
     </jar>
 
@@ -670,25 +649,7 @@
 	<include name="ptolemy/vergil/basic/*.class"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/export/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/basic/img/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/layout/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/layout/img/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/layout/img/*.png"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/layout/kieler/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/basic/layout/kieler/*.htm"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/debugger/*.class"/>
@@ -710,27 +671,6 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/icon/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/javascript/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/javascript/css/*.css"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/javascript/css/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/javascript/css/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/javascript/images/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/javascript/js/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/vergil/javascript/js/*.js"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/kernel/*.class"/>
@@ -761,6 +701,46 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/vergil/unit/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/vergil/basic/export/exportFull.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/basic/export/exportFull.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/export/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/export/html/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/export/html/javascript/*.css"/>
+	<include name="ptolemy/vergil/basic/export/html/javascript/*.htm"/>
+	<include name="ptolemy/vergil/basic/export/html/javascript/*.gif"/>
+	<include name="ptolemy/vergil/basic/export/html/javascript/*.js"/>
+	<include name="ptolemy/vergil/basic/export/html/javascript/*.png"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/vergil/basic/layout/layout.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/basic/layout/layout.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/layout/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/layout/img/*.gif"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/layout/img/*.png"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/layout/kieler/*.class"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/basic/layout/kieler/*.htm"/>
       </fileset>
     </jar>
 
@@ -4705,48 +4685,6 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/actor/ptalon/antlr/antlr.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/ptalon/antlr/antlr.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="antlr/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/ASdebug/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/actions/cpp/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/actions/csharp/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/actions/java/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/actions/python/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/build/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/collections/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/collections/impl/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/debug/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/debug/misc/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="antlr/preprocessor/*.class"/>
-      </fileset>
-    </jar>
-
     <!-- ptolemy/actor/ptalon/demo/demo.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/ptalon/demo/demo.jar"
@@ -4831,6 +4769,10 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/ptalon/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/ptalon/antlr/LICENSE.txt"/>
+	<include name="ptolemy/actor/ptalon/antlr/README.txt"/>
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/ptalon/lib/*.class"/>
