@@ -1223,7 +1223,7 @@ key_list:
 		$(STOREPASSWORD)
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII8.0/jnlp-$(PTVERSION)
+DIST_BASE = ptolemyII/ptII9.0/jnlp-$(PTVERSION)
 DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
@@ -1253,7 +1253,7 @@ jnlp_dist_nightly:
 	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
 
 # Used to update gr and codeDoc.jar
-DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII8.0/$(PTVERSION)
+DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII9.0/$(PTVERSION)
 update_gr_codeDoc:
 	scp ptolemy/domains/gr/gr.jar $(WEBSERVER):$(DIST_JAR)/ptolemy/domains/gr
 	ssh $(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf ../../jnlp-$(PTVERSION)/signed/doc/codeDoc.jar"
@@ -1675,16 +1675,16 @@ osgi_demo_test:
 # 1. To build all the jars and copy them to the webserver:
 #   First: create the directory on bennett.  You must have an ssh account on bennett
 #   and be in the ptolemy group:
-#     ssh bennett "mkdir ~ptII/ptweb/ptolemyII/ptII8.1/jnlp-modularSemantics"
+#     ssh bennett "mkdir ~ptII/ptweb/ptolemyII/ptII9.0/jnlp-modularSemantics"
 #   Then, run these commands:
 #     cd $PTII
 #     ant build javadoc
 #     ant -f jars.xml jars
 #     rm -rf signed
 #   
-#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-modularSemantics jnlp_dist
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxxx" DIST_BASE=ptolemyII/ptII9.0/jnlp-modularSemantics jnlp_dist
 
-# This will create /export/home/pt0/ptweb/ptolemyII/ptII8.1/jnlp-modularSemantics
+# This will create /export/home/pt0/ptweb/ptolemyII/ptII9.0/jnlp-modularSemantics
 #
 # 2. Set up ptII/ptKeystore.properties to contain the path to the keystore,
 # the passwords and the alias.  This file is used by copernicus to create signed jars.
@@ -1699,11 +1699,11 @@ osgi_demo_test:
 #   make book_real_clean JNLP_MODEL_DIRECTORY=ptolemy/demo/FuelSystem JNLP_MODEL=FuelSystem
 #
 # 5. To create a JNLP file for one model and upload it:
-#   make JNLP_MODEL=FuelSystem JNLP_MODEL_DIRECTORY=ptolemy/demo/FuelSystem KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-modularSemantics book_dist_update
+#   make JNLP_MODEL=FuelSystem JNLP_MODEL_DIRECTORY=ptolemy/demo/FuelSystem KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII9.0/jnlp-modularSemantics book_dist_update
 #
 # 6. To create JNLP files for all the models listed in the $(EXAMPLE_MODELS) makefile variable:
 #   cd $PTII/doc/books/11/modularSemantics
-#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.1/jnlp-modularSemantics jnlps
+#   make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII9.0/jnlp-modularSemantics jnlps
 
 
 # The name of the model, without the .xml extension.
@@ -1790,7 +1790,7 @@ $(HTML_MODEL):
 
 # Update the website, create links.
 update_html_model: html_model
-	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - $(JNLP_MODEL)) | ssh $(WEBSERVER) "cd /export/home/pt0/ptweb/ptolemyII/ptII8.0/jnlp-ptides/$(JNLP_MODEL_DIRECTORY); rm -rf $(JNLP_MODEL); tar -xf -; cd $(JNLP_MODEL); ln -s $(JNLP_MODEL).htm index.htm; ln -s $(JNLP_MODEL).htm index.html"
+	(cd $(JNLP_MODEL_DIRECTORY); tar -cf - $(JNLP_MODEL)) | ssh $(WEBSERVER) "cd /export/home/pt0/ptweb/ptolemyII/ptII9.0/jnlp-ptides/$(JNLP_MODEL_DIRECTORY); rm -rf $(JNLP_MODEL); tar -xf -; cd $(JNLP_MODEL); ln -s $(JNLP_MODEL).htm index.htm; ln -s $(JNLP_MODEL).htm index.html"
 
 # We have two sets (!) of jar files: unsigned for applets and signed for JNLP Web Start
 #
