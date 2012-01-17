@@ -58,7 +58,7 @@ deprecated, but shipped for backward compatiblity.</text></svg></configure>
         </property>
     </entity>
     <entity name="Reader" class="ptolemy.actor.lib.Reader">
-        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="asURL(property(&quot;java.io.tmpdir&quot;)) + &quot;FileWriter1Output.txt&quot;">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="asURL(property(&quot;java.io.tmpdir&quot;)) + &quot;FileWriter1Output-&quot; + property(&quot;user.name&quot;) + &quot;.txt&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[179.375, 157.5]">
         </property>
