@@ -32,6 +32,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -104,6 +106,18 @@ public class AutoTests {
                             for (String modelFile : modelFiles) {
 				data[i++][0] = new File("auto/" + modelFile).getCanonicalPath();
                             }
+                            // Sort the files so that we execute the tests in
+                            // a predictable order.  Tests in ptolemy/actor/lib/test/auto
+                            // need this
+                            Arrays.sort(data, new Comparator<Object[]>() {
+                                        @Override
+                                            public int compare(final Object[] entry1,
+                                                    final Object[] entry2) {
+                                            final String file1 = (String)entry1[0];
+                                            final String file2 = (String)entry2[0];
+                                            return file1.compareTo(file2);
+                                        }
+                                    });
                             return data;
                         } else {
                             return new Object[][] { { THERE_ARE_NO_AUTO_TESTS } };
