@@ -37,7 +37,8 @@ ME =		ptolemy/actor/lib/test/junit
 ROOT =		../../../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)
+# Some of the tests use the psdf domain, which requires mapss.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(PSDF_DIR)/mapss.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
