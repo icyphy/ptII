@@ -46,16 +46,26 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class AttributeChanged extends Entity {
-    public Parameter param;
 
-    private double _param;
-
+    /** Construct a test class for the attributeChanged() method.
+     *  @param name The name of this object.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
     public AttributeChanged(String name) throws NameDuplicationException,
             IllegalActionException {
         super(name);
         param = new Parameter(this, "param", new DoubleToken(1.0));
     }
 
+    /** The parameter to test. */
+    public Parameter param;
+
+    /** Update the cached value of the parameter.
+     *  @param attribute The attribute that might be param.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == param) {
@@ -63,7 +73,12 @@ public class AttributeChanged extends Entity {
         }
     }
 
+    /** Return the cached value of the parameter.
+     *  @return the cached value of the parameter.
+     */
     public double getParamValue() {
         return _param;
     }
+
+    private double _param;
 }

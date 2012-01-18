@@ -105,7 +105,8 @@ public class ValidatingXMLParser extends DefaultHandler {
         }
     }
 
-    /** Resolve an entity by checking for http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd
+    /** Resolve an entity by checking for
+     *  http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd
      *  and, if found, return the value of MoMLParser.MoML_1.dtd.
      */
     public static class MoMLEntityResolver implements EntityResolver {
@@ -115,6 +116,7 @@ public class ValidatingXMLParser extends DefaultHandler {
          *  @return If systemID equals http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd
          *  then return an InputSource based on the value of MoMLParser.MoML_DTD_1,
          *  otherwise return null.
+         *  @exception SAXException If the MoML DTD cannot be created.
          */
         public InputSource resolveEntity(String publicID, String systemID)
                 throws SAXException {

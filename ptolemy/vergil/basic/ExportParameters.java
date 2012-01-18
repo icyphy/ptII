@@ -109,6 +109,9 @@ public class ExportParameters {
      *  Note that this would ideally be protected, as it is used
      *  only by ExportHTMLAction, but to avoid package dependencies,
      *  we have to make it public.
+     *  @return The directory into which JavaScript and related files
+     *  have been copied, or null if they are not being copied.
+     *  @see #setJSCopier(NamedObj)
      */
     public NamedObj getJSCopier() {
         return _jsCopier;
@@ -120,6 +123,9 @@ public class ExportParameters {
      *  Note that this would ideally be protected, as it is used
      *  only by ExportHTMLAction, but to avoid package dependencies,
      *  we have to make it public.
+     *  @param copier The directory into which JavaScript and related files
+     *  have been copied, or null if they are not being copied.
+     *  @see #getJSCopier()
      */
     public void setJSCopier(NamedObj copier) {
         _jsCopier = copier;

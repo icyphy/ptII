@@ -1132,6 +1132,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     }
     
     /** Set the accumulated suspend time.
+     *  @param The accumulated suspend time.   
      *  @exception IllegalActionException If the specified value is less
      *   than the previous accumulated suspend time (accumulated suspend
      *   time must be non-decreasing).

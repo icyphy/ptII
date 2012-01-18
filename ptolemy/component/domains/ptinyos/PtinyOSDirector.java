@@ -34,7 +34,9 @@ import ptolemy.kernel.util.IllegalActionException;
 //// PtinyOSDirector
 
 /**
- FIXME
+ Stub for component implementation of the PtinyOS model of computation.
+ 
+ Not currently used. 
 
  @author Yang Zhao and Edward A. Lee
  @version $Id$

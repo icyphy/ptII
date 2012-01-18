@@ -260,7 +260,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
     }
 
     /** Return the pipe advertisement.
-     *  @param The pipe advertisement.
+     *  @param str The pipe advertisement.
+     *  @return The pipe advertisement.
      */
     public PipeAdvertisement getPipeAdvertisement(String str) {
         PipeAdvertisement pipeAdv = null;

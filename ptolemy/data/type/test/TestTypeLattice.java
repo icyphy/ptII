@@ -48,6 +48,11 @@ public class TestTypeLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Create many threads and call bottom on the basic TypeLattice.
+     *  @param args Ignored
+     *  @exception Exception If there is a problem creating the threads
+     *  or calling bottom() on the TypeLattice.
+     */
     public static void main(String[] args) throws Exception {
         for (int i = 0; i < 1000; i++) {
             Thread thread = new Thread(new Runnable() {
