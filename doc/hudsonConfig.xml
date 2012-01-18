@@ -261,10 +261,20 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
                 <subject>$PROJECT_DEFAULT_SUBJECT</subject>
                 <body>$PROJECT_DEFAULT_CONTENT</body>
                 <sendToDevelopers>true</sendToDevelopers>
-                <includeCulprits>false</includeCulprits>
+                <includeCulprits>true</includeCulprits>
                 <sendToRecipientList>true</sendToRecipientList>
               </email>
             </hudson.plugins.emailext.plugins.trigger.FailureTrigger>
+            <hudson.plugins.emailext.plugins.trigger.SuccessTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>true</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.SuccessTrigger>
           </configuredTriggers>
           <contentType>default</contentType>
           <defaultSubject>$DEFAULT_SUBJECT</defaultSubject>
