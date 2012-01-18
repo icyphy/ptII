@@ -110,6 +110,7 @@ PTII_TOPDIR=	.cshrc \
 		.classpath.in \
 		.classpath.default \
 		.eclipse.epf \
+		.project \
 		README.txt \
 		bin \
 		build.default.xml \
