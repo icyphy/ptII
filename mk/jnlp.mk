@@ -780,7 +780,7 @@ vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(JAR)" -uf $(BCVTB_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(BCVTB_MAIN_JAR)`; \
-	cp -p $(BCVTB_MAIN_JAR) `dirname $(SIGNED_DIR)/$(BCVTB_MAIN_JAR)`; \
+	cp -p $(BCVTB_MAIN_JAR) `dirname $(SIGNED_DIR)/$(BCVTB_MAIN_JAR)`
 	@echo "# Signing $(SIGNED_DIR)/$(BCVTB_MAIN_JAR)"
 	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
@@ -817,7 +817,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(JAR)" -uf $(DSP_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
-	cp -p $(DSP_MAIN_JAR) `dirname $(SIGNED_DIR)/$(DSP_MAIN_JAR)`; \
+	cp -p $(DSP_MAIN_JAR) `dirname $(SIGNED_DIR)/$(DSP_MAIN_JAR)`
 	@echo "# Signing $(SIGNED_DIR)/$(DSP_MAIN_JAR)"
 	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
@@ -856,7 +856,7 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(JAR)" -uf $(HYBRID_SYSTEMS_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(HYBRID_SYSTEMS_MAIN_JAR)`; \
-	cp -p $(HYBRID_SYSTEMS_MAIN_JAR) `dirname $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)`; \
+	cp -p $(HYBRID_SYSTEMS_MAIN_JAR) `dirname $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)`
 	@echo "# Signing $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)"
 	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
@@ -891,7 +891,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(JAR)" -uf $(PTINY_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
-	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
+	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`
 	@echo "# Signing $(SIGNED_DIR)/$(PTINY_MAIN_JAR)"
 	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
@@ -926,7 +926,7 @@ vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(JAR)" -uf $(PTINY_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
-	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
+	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`
 	@echo "# Signing $(SIGNED_DIR)/$(PTINY_MAIN_JAR)"
 	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
@@ -962,7 +962,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(JAR)" -uf $(PTINY_SANDBOX_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_SANDBOX_MAIN_JAR)`; \
-	cp -p $(PTINY_SANDBOX_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)`; \
+	cp -p $(PTINY_SANDBOX_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)`
 	@echo "# Signing $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)"
 	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
@@ -1001,7 +1001,7 @@ vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(JAR)" -uf $(SPACE_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(SPACE_MAIN_JAR)`; \
-	cp -p $(SPACE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(SPACE_MAIN_JAR)`; \
+	cp -p $(SPACE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(SPACE_MAIN_JAR)`
 	@echo "# Signing $(SIGNED_DIR)/$(SPACE_MAIN_JAR)"
 	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
@@ -1039,7 +1039,7 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(JAR)" -uf $(VISUAL_SENSE_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(VISUAL_SENSE_MAIN_JAR)`; \
-	cp -p $(VISUAL_SENSE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)`; \
+	cp -p $(VISUAL_SENSE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)`
 	@echo "# Signing $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)"
 	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
@@ -1077,7 +1077,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	"$(JAR)" -uf $(FULL_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
-	cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`; \
+	cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`
 	ls -l $@
 	@echo "# Signing $(SIGNED_DIR)/$(FULL_MAIN_JAR)"
 	@"$(JARSIGNER)" \
@@ -1104,7 +1104,7 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
 			cp -p $$x `dirname $(SIGNED_DIR)/$$x`; \
 		fi; \
 		echo "# Signing $(SIGNED_DIR)/$$x"; \
-		@"$(JARSIGNER)" \
+		"$(JARSIGNER)" \
 			-keystore "$(KEYSTORE)" \
 			$(STOREPASSWORD) \
 			$(KEYPASSWORD) \
