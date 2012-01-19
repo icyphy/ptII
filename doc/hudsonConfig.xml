@@ -255,16 +255,36 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
         <originalValue class="hudson.plugins.emailext.ExtendedEmailPublisher">
           <recipientList>cxh@eecs.berkeley.edu</recipientList>
           <configuredTriggers>
+            <hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>true</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.UnstableTrigger>
             <hudson.plugins.emailext.plugins.trigger.FailureTrigger>
               <email>
                 <recipientList></recipientList>
                 <subject>$PROJECT_DEFAULT_SUBJECT</subject>
                 <body>$PROJECT_DEFAULT_CONTENT</body>
-                <sendToDevelopers>true</sendToDevelopers>
-                <includeCulprits>true</includeCulprits>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
                 <sendToRecipientList>true</sendToRecipientList>
               </email>
             </hudson.plugins.emailext.plugins.trigger.FailureTrigger>
+            <hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>true</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.StillFailingTrigger>
             <hudson.plugins.emailext.plugins.trigger.SuccessTrigger>
               <email>
                 <recipientList></recipientList>
@@ -275,6 +295,26 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
                 <sendToRecipientList>true</sendToRecipientList>
               </email>
             </hudson.plugins.emailext.plugins.trigger.SuccessTrigger>
+            <hudson.plugins.emailext.plugins.trigger.FixedTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>true</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.FixedTrigger>
+            <hudson.plugins.emailext.plugins.trigger.StillUnstableTrigger>
+              <email>
+                <recipientList></recipientList>
+                <subject>$PROJECT_DEFAULT_SUBJECT</subject>
+                <body>$PROJECT_DEFAULT_CONTENT</body>
+                <sendToDevelopers>false</sendToDevelopers>
+                <includeCulprits>false</includeCulprits>
+                <sendToRecipientList>true</sendToRecipientList>
+              </email>
+            </hudson.plugins.emailext.plugins.trigger.StillUnstableTrigger>
           </configuredTriggers>
           <contentType>default</contentType>
           <defaultSubject>$DEFAULT_SUBJECT</defaultSubject>
