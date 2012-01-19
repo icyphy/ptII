@@ -335,6 +335,7 @@ public class LabelFigure extends AbstractFigure {
 
             repaint();
             translate(oldpt.getX() - newpt.getX(), oldpt.getY() - newpt.getY());
+            _cachedBounds = null;
             repaint();
         }
     }
@@ -377,6 +378,7 @@ public class LabelFigure extends AbstractFigure {
     public void setPadding(double padding) {
         _padding = padding;
         setAnchor(_anchor);
+        _cachedBounds = null;
     }
 
     /**
