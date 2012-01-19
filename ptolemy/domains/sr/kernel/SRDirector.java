@@ -112,8 +112,22 @@ import ptolemy.kernel.util.Workspace;
  time by this amount in each invocation of postfire().
  If it is not at the top level, then it refuses to fire
  at times that do not match a multiple of the <i>period</i>
- (by returning false in prefire()), and if it fires, it calls
- fireAt(currentTime + period) in postfire().
+ (by returning false in prefire()).
+ If it fires, then in postfire() it calls
+ fireAt(currentTime + period) in postfire() to request
+ the next firing.
+  </p><p>
+ Note that currentTime, as usual, means local time.
+ If this director is inside a modal model, then that current
+ time may lag behind the time of the environment in which
+ the modal model executes because time does not elapse while
+ a mode is inactive. In fact, time may bounce around, since
+ if a <i>startTime</i> is specified and the modal model has
+ a reset transition, then local time may be reinitialized
+ to the start time during execution. Moreover, if the
+ <i>startTime</i> of this director inside a modal is greater
+ than the start time of the enclosing director, then local
+ time may actually be <i>ahead</i> of environment time.
  </p><p>
  This behavior gives an interesting use of SR within DE or
  Continuous. In particular, if set a period other than 0.0,
@@ -200,13 +214,18 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      */
     public Parameter period;
     
-    /** Starting time of the execution. The default value is blank,
+    /** Value of local time set when this director is initialized.
+     *  The default value is blank,
      *  which indicates that the start time should be the current
      *  time of the environment when initialize() is invoked, or,
      *  if this is at the top level and there is no environment, the
      *  start time will be 0.0. Note that if the period is 0.0,
-     *  then time will not be incremented here (though the
+     *  then time will not be incremented by this director (though the
      *  environment may increment time).
+     *  Note further that if <i>startTime</i> is given a value
+     *  that is different from the start time of the enclosing
+     *  director, then local time may be ahead of or behind
+     *  environment time.
      *  The type is double.
      */
     public Parameter startTime;
