@@ -927,7 +927,7 @@ public class TMDirector extends Director implements TimedDirector {
         // Enqueue a refire for the container of this director.
         // Note that this will throw an exception if the executive director
         // cannot honor it precisely.
-        _fireContainerAt(time);
+        fireContainerAt(time);
     }
 
     ///////////////////////////////////////////////////////////////////

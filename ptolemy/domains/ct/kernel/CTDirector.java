@@ -431,10 +431,10 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *   agree to fire the actor at the specified time, or if there
      *   is no director.
      */
-    protected Time _fireContainerAt(Time time) throws IllegalActionException {
+    public Time fireContainerAt(Time time) throws IllegalActionException {
         // Since this director does not really understand microsteps, use microstep
         // 1 so that it can work with DE.
-        return _fireContainerAt(time, 1);
+        return fireContainerAt(time, 1);
     }
 
     /** Return the breakpoint table. The result can be null if the breakpoint
@@ -622,7 +622,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
             Time time = (Time) getBreakPoints().first();
             // The following will throw an exception if the enclosing director
             // does not respect the fireAt() request exactly.
-            _fireContainerAt(time);
+            fireContainerAt(time);
         }
 
         boolean postfireReturns = _postfireReturns && !_stopRequested

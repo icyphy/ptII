@@ -850,7 +850,7 @@ public class HSModalDirector extends FSMDirector implements
             }
 
             // If we are not at the top level of the hierarchy, request a refiring.
-            _fireContainerAt(getModelTime());
+            fireContainerAt(getModelTime());
 
             Director executiveDirector = ((CompositeActor) getContainer())
                     .getExecutiveDirector();

@@ -566,7 +566,7 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug("Set the stop time as a breakpoint: " + getModelStopTime());
         }
 
-        _fireContainerAt(getModelStopTime());
+        fireContainerAt(getModelStopTime());
 
         _initialStatesNotReady = true;
 

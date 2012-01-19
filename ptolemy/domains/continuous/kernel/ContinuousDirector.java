@@ -49,7 +49,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.modal.kernel.Suspendable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -212,7 +211,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class ContinuousDirector extends FixedPointDirector implements
         TimedDirector, ContinuousStatefulComponent,
-        ContinuousStepSizeController, Suspendable {
+        ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException
@@ -231,7 +230,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         super(container, name);
         _initParameters();
         setScheduler(new ContinuousScheduler(this, "scheduler"));
-        _zeroTime = new Time(this, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -297,16 +295,6 @@ public class ContinuousDirector extends FixedPointDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the accumulated time that the actor has been suspended
-     *  since the last call to initialize(), or null if it has never
-     *  been suspended.
-     *  @return The total time between calls to suspend and subsequent
-     *   calls to resume, or null if the actor has not been suspended.
-     */
-    public Time accumulatedSuspendTime() {
-        return _accumulatedSuspendTime;
-    }
-
     /** React to a change in an attribute. If the changed attribute
      *  matches a parameter of the director, then the corresponding
      *  local copy of the parameter value will be updated.
@@ -366,10 +354,8 @@ public class ContinuousDirector extends FixedPointDirector implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ContinuousDirector newObject = (ContinuousDirector) super
                 .clone(workspace);
-        newObject._accumulatedSuspendTime = null;
         newObject._breakpoints = null;
         newObject._enclosingContinuousDirectorVersion = -1L;
-        newObject._lastSuspendTime = null;
         newObject._ODESolver = null;
         newObject._statefulComponents = new LinkedList();
         newObject._statefulComponentsVersion = -1L;
@@ -685,56 +671,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         return _errorTolerance;
     }
 
-    /** Return the next time of interest in the model being executed by
-     *  this director or the director of any enclosing model up the
-     *  hierarchy. If this director is at the top level, then this
-     *  default implementation simply returns infinity, indicating
-     *  that this director has no interest in any future time.
-     *  If this director is not at the top level, then return
-     *  whatever the enclosing director returns.
-     *  <p>
-     *  This method is useful for domains that perform
-     *  speculative execution (such as Continuous itself).
-     *  Such a domain in a hierarchical
-     *  model (i.e. CT inside DE) uses this method to determine how far
-     *  into the future to execute. This is simply an optimization that
-     *  reduces the likelihood of having to roll back.
-     *  <p>
-     *  The base class implementation in Director is almost right,
-     *  but not quite, because at the top level it returns current
-     *  time. However, this director should not constrain any director
-     *  below it from speculatively executing into the future.
-     *  Instead, it assumes that any director below it implements
-     *  a strict actor semantics.  Note in particular that the
-     *  implementation below would block time advancement in
-     *  a Continuous in DE in Continuous model because the
-     *  top-level model will usually only invoke the DE model
-     *  during a zero-step execution, which means that the returned
-     *  next iteration time will always be current time, which will
-     *  force the inside Continuous director to have a zero step
-     *  size always.
-     *  @return The next time of interest.
-     *  @see #getModelTime()
-     */
-    public Time getModelNextIterationTime() {
-        NamedObj container = getContainer();
-        // NOTE: the container may not be a composite actor.
-        // For example, the container may be an entity as a library,
-        // where the director is already at the top level.
-        if (container instanceof CompositeActor) {
-            Director executiveDirector = ((CompositeActor) container)
-                    .getExecutiveDirector();
-            if (executiveDirector != null) {
-                Time result = executiveDirector.getModelNextIterationTime();
-                // Adjust the time if necessary.
-                if (_accumulatedSuspendTime != null) {
-                    result = result.subtract(_accumulatedSuspendTime);
-                }
-            }
-        }
-        return Time.POSITIVE_INFINITY;
-    }
-
     /** Return the start time. If this director is not at the top level, then
      *  this method returns the start time of the executive director.
      *  Otherwise, it returns the value given by the <i>startTime</i>
@@ -827,15 +763,15 @@ public class ContinuousDirector extends FixedPointDirector implements
             // the maximum of _startTime and the current time as the
             // first firing time.
             if (_startTime.compareTo(_currentTime) >= 0) {
-                _fireContainerAt(_startTime, 0);
+                fireContainerAt(_startTime, 0);
             } else {
                 // Use a microstep of 1 here on the assumption
                 // that initialization could create discontinuities.
-                _fireContainerAt(_currentTime, 1);
+                fireContainerAt(_currentTime, 1);
             }
             if (!_stopTime.isInfinite()
                     && _stopTime.compareTo(_currentTime) >= 0) {
-                _fireContainerAt(_stopTime);
+                fireContainerAt(_stopTime);
             }
         }
         // Set a breakpoint with index 0 for the stop time.
@@ -859,14 +795,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         // suspend time should be set to the difference between the current time
         // of the environment and the start time. In either case, this is the
         // difference between the current time and the environment time.
-        if (isEmbedded()) {
-            Time environmentTime = ((Actor) getContainer()).getExecutiveDirector()
-                    .getModelTime();
-            setAccumulatedSuspendTime(environmentTime.subtract(_currentTime));
-        } else {
-            setAccumulatedSuspendTime(_zeroTime);
-        }
-        _lastSuspendTime = null;
     }
 
     /** Return true if all step size control actors agree that the current
@@ -1004,9 +932,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             _startTime = new Time(this, startTimeValue.doubleValue());
         }
         
-        _accumulatedSuspendTime = null;
-        _lastSuspendTime = null;
-
         super.preinitialize();
         // Time objects can only be instantiated after super.preinitialize()
         // is called, where the time resolution is resolved.
@@ -1094,15 +1019,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the fireAt() request throws it.
      */
     public void resume(Time time) throws IllegalActionException {
-        if (_lastSuspendTime != null) {
-            if (_accumulatedSuspendTime == null) {
-                setAccumulatedSuspendTime(time.subtract(_lastSuspendTime));
-            } else {
-                setAccumulatedSuspendTime(_accumulatedSuspendTime.add(time
-                        .subtract(_lastSuspendTime)));
-            }
-            _lastSuspendTime = null;
-        }
+        super.resume(time);
         // Request a firing at the current time to ensure that
         // we restart here.
         fireAt(null, _currentTime);
@@ -1131,28 +1048,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
     
-    /** Set the accumulated suspend time.
-     *  @param The accumulated suspend time.   
-     *  @exception IllegalActionException If the specified value is less
-     *   than the previous accumulated suspend time (accumulated suspend
-     *   time must be non-decreasing).
-     */
-    public void setAccumulatedSuspendTime(Time time) throws IllegalActionException {
-        if (_accumulatedSuspendTime != null) {
-            if (time.compareTo(_accumulatedSuspendTime) < 0) {
-                throw new IllegalActionException(this, "Accumulated suspend time cannot decrease." +
-                        " Previous value was: " + _accumulatedSuspendTime +
-                        ". Proposed new value is " + time);
-            }
-        /* Allow arbitrary offsets if the accumulated suspend time has never been set.
-        } else if (time.compareTo(new Time(this)) < 0) {
-            throw new IllegalActionException(this, "Accumulated suspend time cannot be negative." +
-                    ". Proposed new value is " + time);
-        */
-        }
-        _accumulatedSuspendTime = time;
-    }
-
     /** Set a new value to the current time of the model. This overrides
      *  the base class to allow time to move backwards (to support rollback)
      *  and to discard any breakpoints in the breakpoint table that are
@@ -1228,37 +1123,6 @@ public class ContinuousDirector extends FixedPointDirector implements
                                 + ", but state has been committed.");
             }
             rollBackToCommittedState();
-        }
-    }
-
-    /** Set the current model time to equal the start time of the model.
-     *  This class sets current time to the value returned by
-     *  {@link #getModelStartTime()}, and also adjusts the accumulated
-     *  suspend time offset accordingly.
-     *  @see #accumulatedSuspendTime()
-     *  @exception IllegalActionException If getModelStartTime() throws it.
-     */
-    public void setModelTimeToStartTime() throws IllegalActionException {
-        // The accumulated suspend time should equal the difference
-        // between the environment time (if there is an environment)
-        // and the new model start time.
-        Time startTime = getModelStartTime();
-        Time environmentTime = null;
-        if (isEmbedded()) {
-            CompositeActor container = (CompositeActor)getContainer();
-            Director enclosingDirector = container.getExecutiveDirector();
-            if (enclosingDirector != null) {
-                environmentTime = enclosingDirector.getModelTime();
-                if (environmentTime != null) {
-                    setAccumulatedSuspendTime(environmentTime.subtract(startTime));
-                }
-            }
-        }
-        super.setModelTimeToStartTime();
-        if (_debugging) {
-            _debug("--- Set time to start time: " + _currentTime
-                    + ", and updated accumulated suspend time to "
-                    + _accumulatedSuspendTime);
         }
     }
 
@@ -1374,15 +1238,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         return suggestedStep;
     }
 
-    /** Suspend the actor at the specified time. This will first call
-     *  {@link #resume(Time)} and then record the suspend time.
-     *  @exception IllegalActionException If the suspend cannot be completed.
-     */
-    public void suspend(Time time) throws IllegalActionException {
-        resume(time);
-        _lastSuspendTime = time;
-    }
-
     /** Override the base class to do nothing. The fire() method of
      *  this director handles transferring inputs.
      *  @param port The port to transfer tokens from.
@@ -1405,30 +1260,6 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Request a firing of the container of this director at the specified time
-     *  and microstep
-     *  and throw an exception if the executive director does not agree to
-     *  do it at the requested time. This overrides the base class to adjust
-     *  the requested time by the accumulated suspend time.
-     *  @param time The requested time.
-     *  @param microstep The requested microstep.
-     *  @return The time that the executive director indicates it will fire this
-     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
-     *   if there is no executive director.
-     *  @exception IllegalActionException If the director does not
-     *   agree to fire the actor at the specified time, or if there
-     *   is no director.
-     */
-    protected Time _fireContainerAt(Time time, int microstep)
-            throws IllegalActionException {
-        if (_accumulatedSuspendTime != null) {
-            Time result = super._fireContainerAt(time.add(_accumulatedSuspendTime), microstep);
-            return result.subtract(_accumulatedSuspendTime);
-        } else {
-            return super._fireContainerAt(time, microstep);
-        }
-    }
 
     /** Return the current step size.
      *  @return The current step size.
@@ -1832,12 +1663,12 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_currentStepSize == 0.0) {
             // We assume the enclosing director will
             // post this firing request at the next microstep.
-            _fireContainerAt(_currentTime);
+            fireContainerAt(_currentTime);
         } else if (_breakpoints.size() > 0) {
             // Request a firing at the time of the first breakpoint.
             SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
                     .first();
-            _fireContainerAt(nextBreakpoint.timestamp(), nextBreakpoint.index());
+            fireContainerAt(nextBreakpoint.timestamp(), nextBreakpoint.index());
         }
 
         return postfireResult;
@@ -1853,7 +1684,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // at the current time.
         if (_commitIsPending) {
             _commitIsPending = false;
-            _fireContainerAt(_currentTime, 0);
+            fireContainerAt(_currentTime, 0);
 
             // Commit the current state and postfire all actors.
             boolean result = _commit();
@@ -1879,7 +1710,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             // the breakpoint table.
             // The following will throw an exception if the enclosing director
             // does not respect the fireAt() request exactly.
-            _fireContainerAt(_currentTime, 0);
+            fireContainerAt(_currentTime, 0);
             // When that firing occurs, we want the index to be 0.
             _index = 0;
             _commitIsPending = true;
@@ -1906,7 +1737,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             // However, it could be that the current iteration is actually
             // a deferred commit, in which case local time has advanced
             // and we don't need to request a refiring at the current time.
-            _fireContainerAt(_currentTime, 0);
+            fireContainerAt(_currentTime, 0);
 
             // The following call will increment the index if the current step
             // size is zero, and set it to zero otherwise. At the top level,
@@ -2353,11 +2184,6 @@ public class ContinuousDirector extends FixedPointDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The accumulated suspend time relative to an eclosing ContinuousDirector,
-     *  calculated as a side effect of calling _enclosingContinuousDirector().
-     */
-    private Time _accumulatedSuspendTime;
-
     /** A table for breakpoints. */
     private TotallyOrderedSet _breakpoints;
 
@@ -2391,13 +2217,6 @@ public class ContinuousDirector extends FixedPointDirector implements
 
     /** The index of the time at which the current integration step began. */
     private int _iterationBeginIndex;
-
-    /** The environment time when this refinement was last suspended
-     *  (that is, the enclosing state was exited). This is null if
-     *  the actor has not been suspended since initialize() or
-     *  resume() has been called more recently than suspend().
-     */
-    private Time _lastSuspendTime;
 
     /** The maximum iterations for implicit ODE solver to resolve states. */
     private int _maxIterations;
@@ -2437,7 +2256,4 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** The local flag variable indicating whether the we have tried
      *  the time resolution as the integration step size. */
     private boolean _triedTheMinimumStepSize = false;
-
-    /** Time with value 0.0. */
-    private Time _zeroTime;
 }

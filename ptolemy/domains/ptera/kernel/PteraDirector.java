@@ -1295,7 +1295,7 @@ public class PteraDirector extends Director implements TimedDirector,
     private void _requestFiring() throws IllegalActionException {
         if (!_eventQueue.isEmpty()) {
             Time time = _eventQueue.get(0).timeStamp;
-            _fireContainerAt(time);
+            fireContainerAt(time);
         }
     }
 

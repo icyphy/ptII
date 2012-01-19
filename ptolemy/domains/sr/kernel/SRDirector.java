@@ -193,9 +193,23 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  amount in its postfire() method. If it is not at the top
      *  level, then it will call fireAt() on the enclosing executive
      *  director with the argument being the current time plus the
-     *  specified period.
+     *  specified period.  In addition,
+     *  if it is not at the top level, then it refuses to fire
+     *  at times that do not match a multiple of the <i>period</i>
+     *  (by returning false in prefire()).
      */
     public Parameter period;
+    
+    /** Starting time of the execution. The default value is blank,
+     *  which indicates that the start time should be the current
+     *  time of the environment when initialize() is invoked, or,
+     *  if this is at the top level and there is no environment, the
+     *  start time will be 0.0. Note that if the period is 0.0,
+     *  then time will not be incremented here (though the
+     *  environment may increment time).
+     *  The type is double.
+     */
+    public Parameter startTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -266,6 +280,19 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
         }
     }
 
+    /** Return the start time. If this director is not at the top level, then
+     *  this method returns the start time of the executive director.
+     *  Otherwise, it returns the value given by the <i>startTime</i>
+     *  parameter. This will be null before preinitialize()
+     *  is called.
+     *  @return The start time.
+     *  @exception IllegalActionException If the enclosing director throws it.
+     */
+    public final Time getModelStartTime() throws IllegalActionException {
+        // This method is final for performance reason.
+        return _startTime;
+    }
+
     /** Initialize the director and all deeply contained actors by calling
      *  the super.initialize() method.
      *  If the <i>period</i> parameter is greater than zero, then
@@ -274,8 +301,44 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
+        DoubleToken startTimeValue = (DoubleToken) startTime.getToken();
+        if (startTimeValue == null) {
+            if (isEmbedded()) {
+                _startTime = ((Actor) getContainer()).getExecutiveDirector()
+                        .getModelTime();
+            } else {
+                _startTime = new Time(this);
+            }
+        } else {
+            _startTime = new Time(this, startTimeValue.doubleValue());
+        }
+
         super.initialize();
         _periodicDirectorHelper.initialize();
+        
+        // In preinitialize(), _startTime was set to the start time of
+        // the executive director. However, this invocation of initialize()
+        // may be occurring later in the execution of a model, as a result
+        // for example of a reset transition. In that case, _startTime
+        // may be in the past relative to the environment time.
+        // The super.initialize() call above should have set our
+        // current time to match the environment time, so we use
+        // the maximum of _startTime and the current time as the
+        // first firing time.
+        // NOTE: If we are being reinitialized during execution (e.g. because
+        // of a reset transition), then our current local time is set to match
+        // the environment time if startTime is blank (the default), meaning that
+        // start time is inherited from the environment. Otherwise, the accumulated
+        // suspend time should be set to the difference between the current time
+        // of the environment and the start time. In either case, this is the
+        // difference between the current time and the environment time.
+        if (_startTime.compareTo(_currentTime) >= 0) {
+            fireContainerAt(_startTime, 1);
+        } else {
+            // Use a microstep of 1 here on the assumption
+            // that initialization could create discontinuities.
+            fireContainerAt(_currentTime, 1);
+        }
     }
 
     /** Return the value of the period as a double.
@@ -301,6 +364,30 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      */
     public boolean prefire() throws IllegalActionException {
         return super.prefire() && _periodicDirectorHelper.prefire();
+    }
+
+    /** Preinitialize the model for an execution. This method is
+     *  called only once for each simulation.
+     *
+     *  @exception IllegalActionException If the super class throws it, or
+     *  local variables cannot be initialized.
+     */
+    public void preinitialize() throws IllegalActionException {
+        // Have to initialize the _startTime variable before super.preinitialize()
+        // because otherwise _currentTime will be set to null.
+        DoubleToken startTimeValue = (DoubleToken) startTime.getToken();
+        if (startTimeValue == null) {
+            if (isEmbedded()) {
+                _startTime = ((Actor) getContainer()).getExecutiveDirector()
+                        .getModelTime();
+            } else {
+                _startTime = new Time(this);
+            }
+        } else {
+            _startTime = new Time(this, startTimeValue.doubleValue());
+        }
+        
+        super.preinitialize();
     }
 
     /** Call postfire() on all contained actors that were fired on the last
@@ -335,6 +422,10 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
+        // Default is blank.
+        startTime = new Parameter(this, "startTime");
+        startTime.setTypeEquals(BaseType.DOUBLE);
+
         period = new Parameter(this, "period");
         period.setTypeEquals(BaseType.DOUBLE);
         period.setExpression("0.0");
@@ -347,4 +438,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
 
     /** Helper class supporting the <i>period</i> parameter. */
     private PeriodicDirectorHelper _periodicDirectorHelper;
+    
+    /** The cached value of the startTime parameter. */
+    private Time _startTime;
 }

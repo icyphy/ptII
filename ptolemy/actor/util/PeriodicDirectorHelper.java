@@ -334,21 +334,18 @@ public class PeriodicDirectorHelper {
     private Time _fireContainerAt(Time time) throws IllegalActionException {
         Actor container = (Actor) _director.getContainer();
         if (container != null) {
-            Director director = container.getExecutiveDirector();
-            if (director != null) {
-                Time result = director.fireAt(container, time);
-                if (!result.equals(time)) {
-                    throw new IllegalActionException(_director,
-                            "Timing incompatibility error: "
-                                    + director.getName()
-                                    + " is unable to fire "
-                                    + container.getName()
-                                    + " at the requested time: " + time
-                                    + ". It responds it will fire it at: "
-                                    + result + ".");
-                }
-                return result;
+            // Use microstep 1 because periodic directors are always discrete.
+            Time result = ((Director)_director).fireContainerAt(time, 1);
+            if (!result.equals(time)) {
+                throw new IllegalActionException(_director,
+                        "Timing incompatibility error: "
+                                + " enclosing director is unable to fire "
+                                + container.getName()
+                                + " at the requested time: " + time
+                                + ". It responds it will fire it at: "
+                                + result + ".");
             }
+            return result;
         }
         return new Time((Director) _director, Double.NEGATIVE_INFINITY);
     }

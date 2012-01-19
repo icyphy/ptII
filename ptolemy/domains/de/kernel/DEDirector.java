@@ -607,7 +607,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             // Note that if the enclosing director is ignoring fireAt(),
             // or if it cannot refire at exactly the requested time,
             // then the following will throw an exception.
-            result = _fireContainerAt(result, index);
+            result = fireContainerAt(result, index);
         }
         synchronized (_eventQueue) {
             if (!_delegateFireAt) {
@@ -675,6 +675,30 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         fireAt(actor, time.add(getModelTime()));
     }
 
+    /** Request a firing of the container of this director at the specified time
+     *  and microstep
+     *  and throw an exception if the executive director does not agree to
+     *  do it at the requested time. This overrides the base class to adjust
+     *  the requested time by the accumulated suspend time.
+     *  @param time The requested time.
+     *  @param microstep The requested microstep.
+     *  @return The time that the executive director indicates it will fire this
+     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
+     *   if there is no executive director.
+     *  @exception IllegalActionException If the director does not
+     *   agree to fire the actor at the specified time, or if there
+     *   is no director.
+     */
+    public Time fireContainerAt(Time time, int microstep)
+            throws IllegalActionException {
+        if (_accumulatedSuspendTime != null) {
+            Time result = super.fireContainerAt(time.add(_accumulatedSuspendTime), microstep);
+            return result.subtract(_accumulatedSuspendTime);
+        } else {
+            return super.fireContainerAt(time, microstep);
+        }
+    }
+    
     /** Return a causality interface for the composite actor that
      *  contains this director. This base class returns an
      *  instance of {@link CausalityInterfaceForComposites}, but
@@ -1006,7 +1030,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // 2. The event queue is not empty, but the current time exceeds
         // the stop time.
         if (moreOutputsToTransfer) {
-            _fireContainerAt(_currentTime);
+            fireContainerAt(_currentTime);
         } else if (_noMoreActorsToFire
                 && (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
             if (_debugging) {
@@ -1941,30 +1965,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         return 0;
     }
 
-    /** Request a firing of the container of this director at the specified time
-     *  and microstep
-     *  and throw an exception if the executive director does not agree to
-     *  do it at the requested time. This overrides the base class to adjust
-     *  the requested time by the accumulated suspend time.
-     *  @param time The requested time.
-     *  @param microstep The requested microstep.
-     *  @return The time that the executive director indicates it will fire this
-     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
-     *   if there is no executive director.
-     *  @exception IllegalActionException If the director does not
-     *   agree to fire the actor at the specified time, or if there
-     *   is no director.
-     */
-    protected Time _fireContainerAt(Time time, int microstep)
-            throws IllegalActionException {
-        if (_accumulatedSuspendTime != null) {
-            Time result = super._fireContainerAt(time.add(_accumulatedSuspendTime), microstep);
-            return result.subtract(_accumulatedSuspendTime);
-        } else {
-            return super._fireContainerAt(time, microstep);
-        }
-    }
-    
     /** Return the depth of an actor.
      *  @param actor An actor whose depth is requested.
      *  @return An integer indicating the depth of the given actor.
@@ -2516,7 +2516,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         }
 
         // Enqueue a pure event to fire the container of this director.
-        _fireContainerAt(nextEvent.timeStamp(), nextEvent.microstep());
+        fireContainerAt(nextEvent.timeStamp(), nextEvent.microstep());
     }
 
     ///////////////////////////////////////////////////////////////////
