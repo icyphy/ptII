@@ -659,22 +659,17 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *   time must be non-decreasing).
      */
     public void setAccumulatedSuspendTime(Time time) throws IllegalActionException {
-        /* These checks are not valid because during a reinitialize of a modal
-         * model, we may want to reset the current time to match the environment
+        /* NOTE: These checks are not valid because during a reinitialize of a modal
+         * model, because we may want to reset the current time to match the environment
          * time, in which case, the accumulated suspend time has to be set to zero.
-         * In addition, if the accumulated suspend time has never been set before,
-         * there is no reason it shouldn't be possible to make it negative.
+         */
         if (_accumulatedSuspendTime != null) {
             if (time.compareTo(_accumulatedSuspendTime) < 0) {
                 throw new IllegalActionException(this, "Accumulated suspend time cannot decrease." +
                         " Previous value was: " + _accumulatedSuspendTime +
                         ". Proposed new value is " + time);
             }
-        } else if (time.compareTo(new Time(this)) < 0) {
-            throw new IllegalActionException(this, "Accumulated suspend time cannot be negative." +
-                    ". Proposed new value is " + time);
         }
-        */
         _accumulatedSuspendTime = time;
     }
 
@@ -710,7 +705,9 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
             if (enclosingDirector != null) {
                 environmentTime = enclosingDirector.getModelTime();
                 if (environmentTime != null) {
-                    setAccumulatedSuspendTime(environmentTime.subtract(startTime));
+                    // Do not use setAccumulatedSuspendTime() here because we might
+                    // be reducing accumulated suspend time if we are in a modal model.
+                    _accumulatedSuspendTime = environmentTime.subtract(startTime);
                 }
             }
         }
