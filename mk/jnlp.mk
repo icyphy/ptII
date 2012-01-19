@@ -637,6 +637,7 @@ VISUAL_SENSE_JNLP_JARS =	\
 # Include ddf.jar because codegen needs it
 ALL_NON_APPLICATION_JNLP_JARS = \
 	$(NATIVE_SIGNED_LIB_JARS) \
+	$(BCVTB_ONLY_JNLP_JARS) \
 	$(CORE_JNLP_JARS) \
 	$(DOC_CODEDOC_JAR) \
 	$(FULL_ONLY_JNLP_JARS) \
@@ -780,7 +781,8 @@ vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(BCVTB_MAIN_JAR)`; \
 	cp -p $(BCVTB_MAIN_JAR) `dirname $(SIGNED_DIR)/$(BCVTB_MAIN_JAR)`; \
-	"$(JARSIGNER)" \
+	@echo "# Signing $(SIGNED_DIR)/$(BCVTB_MAIN_JAR)"
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -816,7 +818,8 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
 	cp -p $(DSP_MAIN_JAR) `dirname $(SIGNED_DIR)/$(DSP_MAIN_JAR)`; \
-	"$(JARSIGNER)" \
+	@echo "# Signing $(SIGNED_DIR)/$(DSP_MAIN_JAR)"
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -854,7 +857,8 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(HYBRID_SYSTEMS_MAIN_JAR)`; \
 	cp -p $(HYBRID_SYSTEMS_MAIN_JAR) `dirname $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)`; \
-	"$(JARSIGNER)" \
+	@echo "# Signing $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)"
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -888,7 +892,8 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
 	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
-	"$(JARSIGNER)" \
+	@echo "# Signing $(SIGNED_DIR)/$(PTINY_MAIN_JAR)"
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -922,7 +927,8 @@ vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
 	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
-	"$(JARSIGNER)" \
+	@echo "# Signing $(SIGNED_DIR)/$(PTINY_MAIN_JAR)"
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -957,7 +963,8 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_SANDBOX_MAIN_JAR)`; \
 	cp -p $(PTINY_SANDBOX_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)`; \
-	"$(JARSIGNER)" \
+	@echo "# Signing $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)"
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -995,7 +1002,8 @@ vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(SPACE_MAIN_JAR)`; \
 	cp -p $(SPACE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(SPACE_MAIN_JAR)`; \
-	"$(JARSIGNER)" \
+	@echo "# Signing $(SIGNED_DIR)/$(SPACE_MAIN_JAR)"
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -1032,7 +1040,8 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(VISUAL_SENSE_MAIN_JAR)`; \
 	cp -p $(VISUAL_SENSE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)`; \
-	"$(JARSIGNER)" \
+	@echo "# Signing $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)"
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -1070,7 +1079,8 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
 	cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`; \
 	ls -l $@
-	"$(JARSIGNER)" \
+	@echo "# Signing $(SIGNED_DIR)/$(FULL_MAIN_JAR)"
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -1082,7 +1092,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 # problems with cvs and applets.
 jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
 jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
-	set $(ALL_NON_APPLICATION_JNLP_JARS); \
+	@set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		if [ ! -f $$x ]; then \
 			echo "Warning: $$x does not exist, skipping."; \
@@ -1094,7 +1104,7 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
 			cp -p $$x `dirname $(SIGNED_DIR)/$$x`; \
 		fi; \
 		echo "# Signing $(SIGNED_DIR)/$$x"; \
-		"$(JARSIGNER)" \
+		@"$(JARSIGNER)" \
 			-keystore "$(KEYSTORE)" \
 			$(STOREPASSWORD) \
 			$(KEYPASSWORD) \
@@ -1102,7 +1112,7 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
 	done;
 
 sign_jar: 
-	"$(JARSIGNER)" \
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -1767,7 +1777,7 @@ $(JNLP_FILE_FIXED): $(JNLP_FILE)
 		"$(JAR)" -cvf ../$(JNLP_JAR) .)
 	rm -rf tmpjar
 	# Signing the jar file
-	"$(JARSIGNER)" \
+	@"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -1868,3 +1878,129 @@ ant.jars.body:
 
 ant.footer:
 	@echo "</project>"
+
+
+# Someone with very little understanding of Java removed the certificates from the
+# Java 3D jar files on download.java.net
+# Web Start files that use Java3D will now fail with:
+#
+# exception: Found unsigned entry in resource: http://download.java.net/media/java3d/webstart/release/j3d/1.5.2/j3dcore.jar.
+# com.sun.deploy.net.JARSigningException: Found unsigned entry in resource: http://download.java.net/media/java3d/webstart/release/j3d/1.5.2/j3dcore.jar
+#
+# See http://www.java.net/forum/topic/javadesktop/java-desktop-technologies/java-3d/unsigned-entry-j3dcorejar#comment-818570
+#
+# A solution is documented at the above link.
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_3d
+WEBSTART=$(HOME)/webstart
+JAVA3D = $(WEBSTART)/java3d
+sign_j3d: $(JAVA3D)
+	@set `find $(JAVA3D) -name "*.jar"`; \
+	for x do \
+		echo $$x; \
+		"$(JARSIGNER)" \
+		-keystore "$(KEYSTORE)" \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		$$x $(KEYALIAS); \
+	done
+
+java3d: $(JAVA3D)
+$(JAVA3D):
+	wget -m -np http://download.java.net/media/java3d/webstart/release/j3d/1.5.2/
+	mkdir $(JAVA3D);
+	mv download.java.net/media/java3d/webstart/release/j3d $(JAVA3D)/
+	rm -rf download.java.net
+	wget http://download.java.net/media/java3d/webstart/release/vecmath/1.5.2/vecmath.jar
+	mkdir -p $(JAVA3D)/vecmath/1.5.2
+	mv vecmath.jar $(JAVA3D)/vecmath/1.5.2
+
+
+JAI = $(WEBSTART)/jai
+sign_jai: $(JAI)
+	@set `find $(JAI) -name "*.jar"`; \
+	for x do \
+		echo $$x; \
+		"$(JARSIGNER)" \
+		-keystore "$(KEYSTORE)" \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		$$x $(KEYALIAS); \
+	done
+
+jai: $(JAI)
+$(JAI):
+	wget -m -np http://download.java.net/media/jai/webstart/release/1.1.3/
+	mkdir $(JAI)
+	mv download.java.net/media/jai/webstart/release/1.1.3 $(JAI)
+jai_update:
+	(cd $(JAI)/..; tar -cf - jai) | ssh bennett "cd ~ptII/ptweb/ptolemyII; tar -xf -"
+
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_jogl
+JOGL = $(WEBSTART)/jogl
+sign_jogl: $(JOGL)
+	set `find $(JOGL) -name "*.jar"`; \
+	for x do \
+		echo $$x; \
+		"$(JARSIGNER)" \
+		-keystore "$(KEYSTORE)" \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		$$x $(KEYALIAS); \
+	done
+
+jogl: $(JOGL)/jogl-natives-windows-i586.jar
+$(JOGL): 
+	mkdir -p $(JOGL)
+
+$(JOGL)/jogl.jnlp: $(JOGL)
+	if [ ! -f $@ ]; then \
+		echo "Downloading jogl.jnlp"; \
+		cd $(JOGL); wget http://download.java.net/media/jogl/builds/archive/jsr-231-webstart-current/jogl.jnlp; \
+	fi
+
+$(JOGL)/jogl-natives-windows-i586.jar: $(JOGL)/jogl.jnlp
+	set `grep .jar $(JOGL)/jogl.jnlp | awk -F \" '{print $$2}' | sort | uniq`; \
+	for x do \
+		cd $(JOGL); \
+		echo $$x; \
+		wget http://download.java.net/media/jogl/builds/archive/jsr-231-webstart-current/$$x; \
+        done
+
+jogl_update:
+	(cd $(JOGL)/..; tar -cf - jogl) | ssh bennett "cd ~ptII/ptweb/ptolemyII; tar -xf -"
+
+
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" sign_gluegen-rt
+GLUEGEN_RT = $(WEBSTART)/gluegen-rt
+sign_gluegen-rt: $(GLUEGEN_RT)
+	set `find $(GLUEGEN_RT) -name "*.jar"`; \
+	for x do \
+		echo $$x; \
+		"$(JARSIGNER)" \
+		-keystore "$(KEYSTORE)" \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		$$x $(KEYALIAS); \
+	done
+
+gluegen-rt: $(GLUEGEN_RT)/gluegen-rt-natives-windows-i586.jar
+$(GLUEGEN_RT): 
+	mkdir -p $(GLUEGEN_RT)
+
+$(GLUEGEN_RT)/gluegen-rt.jnlp: $(GLUEGEN_RT)
+	if [ ! -f $@ ]; then \
+		echo "Downloading gluegen-rt.jnlp"; \
+		cd $(GLUEGEN_RT); wget http://download.java.net/media/gluegen/webstart/gluegen-rt.jnlp; \
+	fi
+
+$(GLUEGEN_RT)/gluegen-rt-natives-windows-i586.jar: $(GLUEGEN_RT)/gluegen-rt.jnlp
+	set `grep .jar $(GLUEGEN_RT)/gluegen-rt.jnlp | awk -F \" '{print $$2}' | sort | uniq`; \
+	for x do \
+		cd $(GLUEGEN_RT); \
+		echo $$x; \
+		wget http://download.java.net/media/gluegen/webstart/$$x; \
+        done
+
+gluegen-rt_update:
+	(cd $(GLUEGEN_RT)/..; tar -cf - gluegen-rt) | ssh bennett "cd ~ptII/ptweb/ptolemyII; tar -xf -"
+
