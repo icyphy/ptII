@@ -454,7 +454,7 @@ public final class PtolemyServer implements IServerManager {
         try {
             // Generate a unique ticket for the request.
             ticket = Ticket.generateTicket(modelUrl, layoutUrl);
-            while (_requests.contains(ticket)) {
+            while (_requests.containsKey(ticket)) {
                 ticket = Ticket.generateTicket(modelUrl, layoutUrl);
             }
 
