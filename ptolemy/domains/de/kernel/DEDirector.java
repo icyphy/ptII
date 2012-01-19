@@ -313,11 +313,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      */
     public Parameter minBinCount;
 
-    /** The start time of model. By default, this is blank, which
+    /** The local time of model when this director is initialized.
+     *  By default, this is blank, which
      *  indicates that the start time is the current time of the enclosing
      *  director when initialize() is invoked, or 0.0 if there is no
      *  enclosing director. This can be set to a double value to explicitly
      *  specify a start time.
+     *  Note that if <i>startTime</i> is given a value
+     *  that is different from the start time of the enclosing
+     *  director, then local time may be ahead of or behind
+     *  environment time during execution.
      */
     public Parameter startTime;
 
