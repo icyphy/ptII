@@ -51,7 +51,17 @@ if {[info procs jdkCapture] == "" } then {
 test UserActorLibrary-100.0 {call setContainer, which calls _remoteEntity} {
     # Run this test last
     set directory [$configuration getDirectory]
+
+    # StringUtilities.exit() checks to see if this property is present
+    java::call System clearProperty ptolemy.ptII.doNotExit
+
+    # The Manager uses this property to help us test the Exit actor.
     java::call System setProperty ptolemy.ptII.exitAfterWrapup true
+
     catch {$directory setContainer [java::null]} errMsg
+
+    # Reset the property
+    java::call System setProperty ptolemy.ptII.doNotExit true
+
     list $errMsg	
 } {{java.lang.RuntimeException: Normally, we would exit here because Manager.exitAfterWrapup() was called.  However, because the ptolemy.ptII.exitAfterWrapup property is set, we throw this exception instead.}}
