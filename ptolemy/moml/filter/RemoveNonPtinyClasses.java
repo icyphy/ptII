@@ -32,6 +32,7 @@ import java.util.Iterator;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RemoveNonPtinyClasses
@@ -140,7 +141,7 @@ public class RemoveNonPtinyClasses extends MoMLFilterSimple {
         } catch (Throwable throwable) {
             System.err.println("Failed to filter \"" + args[0] + "\"");
             throwable.printStackTrace();
-            System.exit(1);
+            StringUtilities.exit(1);
         }
     }
 

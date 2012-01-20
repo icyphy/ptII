@@ -118,7 +118,7 @@ public class XSLTUtilities {
                     + "ptolemy.util.XSLTUtilities inputFile "
                     + "xslFile1 [xslFile2 . . .] outputFile "
                     + "[exportMoMLDTD]");
-            System.exit(2);
+            StringUtilities.exit(2);
         }
 
         // Make sure we can write the output first

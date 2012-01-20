@@ -389,7 +389,7 @@ public class HTMLAbout {
             System.err.println("Usage: [demoFileName [outputFilename]\n"
                     + "demoFileName defaults to " + demoFileName + "\n"
                     + "outputFileName defaults to " + outputFileName + "\n");
-            System.exit(3);
+            StringUtilities.exit(3);
         }
         if (args.length >= 1) {
             demoFileName = args[0];

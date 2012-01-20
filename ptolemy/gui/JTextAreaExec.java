@@ -305,7 +305,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                         JFrame jFrame = new JFrame("JTextAreaExec Example");
                         WindowListener windowListener = new WindowAdapter() {
                             public void windowClosing(WindowEvent e) {
-                                System.exit(0);
+                                StringUtilities.exit(0);
                             }
                         };
 

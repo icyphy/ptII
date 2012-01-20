@@ -48,6 +48,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ShellTextArea
@@ -187,7 +188,7 @@ public class ShellTextArea extends JPanel {
                         JFrame jFrame = new JFrame("ShellTextArea Example");
                         WindowListener windowListener = new WindowAdapter() {
                             public void windowClosing(WindowEvent e) {
-                                System.exit(0);
+                                StringUtilities.exit(0);
                             }
                         };
 

@@ -35,6 +35,7 @@ import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// PtExecuteApplication
@@ -168,7 +169,7 @@ public class PtExecuteApplication extends MoMLApplication {
             } catch (InterruptedException e) {
             }
         }
-        System.exit(_exitValue);
+        StringUtilities.exit(_exitValue);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -52,6 +52,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.RemoveNonPtinyClasses;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// VergilApplication
@@ -179,7 +180,7 @@ public class VergilApplication extends MoMLApplication {
         MessageHandler.error(argsBuffer.toString(), throwable);
 
         try {
-            System.exit(0);
+            StringUtilities.exit(0);
         } catch (SecurityException ex) {
             System.out.println("Warning: Failed to call System.exit()."
                     + "(-sandbox always causes this)");
@@ -258,7 +259,7 @@ public class VergilApplication extends MoMLApplication {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

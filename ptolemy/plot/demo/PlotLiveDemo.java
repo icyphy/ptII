@@ -34,6 +34,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import ptolemy.plot.PlotLive;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// PlotLiveDemo
@@ -108,7 +109,7 @@ public class PlotLiveDemo extends PlotLive {
                     frame.addWindowListener(new WindowAdapter() {
                         public void windowClosing(WindowEvent event) {
                             plotLiveDemo.stop();
-                            System.exit(0);
+                            StringUtilities.exit(0);
                         }
                     });
                     frame.getContentPane().add("Center", plotLiveDemo);

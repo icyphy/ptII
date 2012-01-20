@@ -30,6 +30,7 @@ package ptolemy.actor.gui;
 import java.net.URL;
 
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyApplication
@@ -88,7 +89,7 @@ public class PtolemyApplication extends MoMLApplication {
             new PtolemyApplication(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
-            System.exit(1);
+            StringUtilities.exit(1);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -98,7 +99,7 @@ public class PtolemyApplication extends MoMLApplication {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

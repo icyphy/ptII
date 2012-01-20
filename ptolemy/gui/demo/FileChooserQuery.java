@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// FileChooserQuery
@@ -115,7 +116,7 @@ public class FileChooserQuery extends JFrame implements QueryListener {
 
                         frame.addWindowListener(new WindowAdapter() {
                             public void windowClosing(WindowEvent e) {
-                                System.exit(0);
+                                StringUtilities.exit(0);
                             }
                         });
 

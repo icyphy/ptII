@@ -46,6 +46,7 @@ import javax.swing.KeyStroke;
 
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplication;
+import ptolemy.util.StringUtilities;
 import sun.audio.AudioPlayer;
 
 ///////////////////////////////////////////////////////////////////
@@ -129,7 +130,7 @@ public class AudioViewer extends PlotApplication {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

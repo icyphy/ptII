@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// HistogramMLApplication
@@ -127,7 +128,7 @@ public class HistogramMLApplication extends PlotMLApplication {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

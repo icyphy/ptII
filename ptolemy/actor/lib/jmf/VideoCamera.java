@@ -167,8 +167,7 @@ public class VideoCamera extends Source implements ControllerListener {
             }
         } else if (evt instanceof EndOfMediaEvent) {
             _processor.close();
-
-            //System.exit(0);
+            //StringUtilities.exit(0);
         }
     }
 

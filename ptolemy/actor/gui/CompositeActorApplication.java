@@ -45,6 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// CompositeActorApplication
@@ -102,7 +103,7 @@ public class CompositeActorApplication {
             application.waitForFinish();
         } catch (Exception ex) {
             System.err.println(KernelException.stackTraceToString(ex));
-            System.exit(0);
+            StringUtilities.exit(0);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -112,7 +113,7 @@ public class CompositeActorApplication {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 
@@ -206,7 +207,7 @@ public class CompositeActorApplication {
                             // FIXME: is this right?  We need
                             // to exit if all the windows are closed?
                             if (_openCount == 0) {
-                                System.exit(0);
+                                StringUtilities.exit(0);
                             }
                         }
                     }

@@ -44,6 +44,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import ptolemy.util.StringUtilities;
+
 //////////////////////////////////////////////////////////////////////////
 //// PitchSlider
 
@@ -136,7 +138,7 @@ public class PitchSlider extends JFrame {
         //Add a listener for window events
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                System.exit(0);
+                StringUtilities.exit(0);
             }
         });
     }

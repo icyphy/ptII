@@ -31,6 +31,7 @@ import java.io.FileWriter;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.util.StringUtilities;
 import ptolemy.util.XSLTUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -124,7 +125,7 @@ public class HSIFUtilities {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.hsif.HSIFUtilities HSIFInputFile "
                     + "MoMLOutputFile");
-            System.exit(2);
+            StringUtilities.exit(2);
         } else {
             HSIFToMoML(args[0], args[1]);
         }

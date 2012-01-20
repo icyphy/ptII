@@ -1,6 +1,8 @@
 // Test.java
 package ptolemy.apps.jni.pthreads;
 
+import ptolemy.util.StringUtilities;
+
 class Test {
     long c = 0;
 
@@ -15,7 +17,7 @@ class Test {
             System.out.println("Done loading test");
         } catch (Throwable throwable) {
             System.err.println("System.loadLibrary (): " + throwable);
-            System.exit(1);
+            StringUtilities.exit(1);
         }
     }
 
@@ -44,7 +46,7 @@ class Main {
             System.in.read();
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(1);
+            StringUtilities.exit(1);
         }
 
         test.stop();

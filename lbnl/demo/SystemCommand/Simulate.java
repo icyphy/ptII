@@ -82,6 +82,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import ptolemy.util.StringUtilities;
+
 /** Class that will be called by the SystemCommand actor using
   * a system call to the java virtual machine.
   *
@@ -104,7 +106,7 @@ class Simulate {
         // Make sure that we have three arguments
         if (args.length != 3) {
             System.err.println("Error: This program requires three arguments.");
-            System.exit(1);
+            StringUtilities.exit(1);
         }
         // Write arguments to standard output
         System.out.println("Time = " + args[0]);
@@ -121,7 +123,7 @@ class Simulate {
             fos.close();
         } catch (IOException e) {
             System.err.println("Unable to write to file");
-            System.exit(1);
+            StringUtilities.exit(1);
         }
     }
 }

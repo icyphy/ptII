@@ -732,11 +732,11 @@ public abstract class Top extends JFrame {
             int result = _queryForSave();
             _exitResult = result;
             if ((result == _SAVED) || (result == _DISCARDED)) {
-                System.exit(0);
+                StringUtilities.exit(0);
             }
         } else {
             // Window is not modified, so just exit.
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

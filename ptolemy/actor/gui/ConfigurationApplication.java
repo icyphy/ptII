@@ -403,7 +403,7 @@ public class ConfigurationApplication implements ExecutionListener {
             // Be sure to print the stack trace so that
             // "$PTII/bin/moml -foo" prints something.
             System.err.print(KernelException.stackTraceToString(throwable));
-            System.exit(1);
+            StringUtilities.exit(1);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -413,7 +413,7 @@ public class ConfigurationApplication implements ExecutionListener {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

@@ -46,6 +46,7 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.plot.EditablePlot;
 import ptolemy.plot.PlotBox;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// EditablePlotMLApplication
@@ -174,7 +175,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

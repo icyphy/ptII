@@ -35,6 +35,7 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLSimpleApplication;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.StringUtilities;
 
 /**
  Test unloading a model.
@@ -121,7 +122,7 @@ public class UnloadModelTest extends MoMLSimpleApplication {
         } catch (Throwable ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();
-            System.exit(1);
+            StringUtilities.exit(1);
         }
     }
 

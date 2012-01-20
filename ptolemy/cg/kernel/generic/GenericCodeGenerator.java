@@ -352,7 +352,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             try {
                 manager.preinitializeAndResolveTypes();
                 //System.out.println(((CompositeActor)container).toplevel().exportMoML());
-                //System.exit(5);
+                //StringUtilities.exit(5);
                 returnValue = _generateCode(code);
             } finally {
                 // We call wrapup here so that the state gets set to idle.

@@ -164,7 +164,7 @@ public class Connector extends MoMLApplication {
                 } catch (Throwable t) {
                     MessageHandler.error("Command failed", t);
                     System.err.print(KernelException.stackTraceToString(t));
-                    System.exit(1);
+                    StringUtilities.exit(1);
                 }
             }
         });
@@ -1057,7 +1057,7 @@ public class Connector extends MoMLApplication {
     protected void _parseArgs(final String[] args) throws Exception {
         if (args.length == 0) {
             System.out.println(_usage());
-            System.exit(0);
+            StringUtilities.exit(0);
         }
 
         super._parseArgs(args);

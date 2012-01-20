@@ -31,6 +31,7 @@ import javax.swing.UIManager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.VergilApplication;
 import thales.actor.gui.SingleWindowHTMLViewer;
 
@@ -66,7 +67,7 @@ public class SingleWindowApplication extends VergilApplication {
             new SingleWindowApplication(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
-            System.exit(0);
+            StringUtilities.exit(0);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -76,7 +77,7 @@ public class SingleWindowApplication extends VergilApplication {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

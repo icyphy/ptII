@@ -27,6 +27,8 @@
  */
 package ptolemy.actor.lib.test;
 
+import ptolemy.util.StringUtilities;
+
 //////////////////////////////////////////////////////////////////////////
 //// ReturnNonZero
 
@@ -42,6 +44,6 @@ public class ReturnNonZero {
 
     public static void main(String[] args) {
         System.out.println("Hello world");
-        System.exit(1);
+        StringUtilities.exit(1);
     }
 }

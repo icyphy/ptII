@@ -34,6 +34,8 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+import ptolemy.util.StringUtilities;
+
 ///////////////////////////////////////////////////////////////////
 //// TreeEditor
 
@@ -58,7 +60,7 @@ public class TreeEditor extends JFrame {
         // Handle window closing by exiting the application.
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                System.exit(0);
+                StringUtilities.exit(0);
             }
         });
 

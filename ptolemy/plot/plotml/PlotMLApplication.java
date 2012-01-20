@@ -42,6 +42,7 @@ import javax.swing.SwingUtilities;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplication;
 import ptolemy.plot.PlotBox;
+import ptolemy.util.StringUtilities;
 
 import com.microstar.xml.XmlException;
 
@@ -134,7 +135,7 @@ public class PlotMLApplication extends PlotApplication {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

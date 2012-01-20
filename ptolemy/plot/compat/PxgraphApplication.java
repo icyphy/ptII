@@ -130,7 +130,7 @@ public class PxgraphApplication extends PlotApplication {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

@@ -34,6 +34,7 @@ import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.domains.modal.kernel.ia.InterfaceAutomaton;
 import ptolemy.domains.modal.kernel.ia.StatePair;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// AlternatingSimulation
@@ -166,6 +167,6 @@ public class AlternatingSimulation {
         System.out.println("super_automaton.xml and sub_automaton.xml "
                 + "are the MoML files for the super and sub automata. "
                 + "They must be present.");
-        System.exit(1);
+        StringUtilities.exit(1);
     }
 }

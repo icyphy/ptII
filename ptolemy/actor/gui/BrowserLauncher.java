@@ -144,7 +144,7 @@ public class BrowserLauncher {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

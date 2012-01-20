@@ -203,7 +203,7 @@ public class PlotApplication extends PlotFrame {
             } catch (InterruptedException e) {
             }
 
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 
@@ -389,7 +389,7 @@ public class PlotApplication extends PlotFrame {
             // Strangely, calling _close() here sends javac into
             // an infinite loop (in jdk 1.1.4).
             //              _close();
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 }

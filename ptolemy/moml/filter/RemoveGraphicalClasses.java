@@ -33,6 +33,7 @@ import java.util.Iterator;
 import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RemoveGraphicalClasses
@@ -397,7 +398,7 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         } catch (Throwable throwable) {
             System.err.println("Failed to filter \"" + args[0] + "\"");
             throwable.printStackTrace();
-            System.exit(1);
+            StringUtilities.exit(1);
         }
     }
 

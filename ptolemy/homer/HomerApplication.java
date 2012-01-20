@@ -37,6 +37,7 @@ import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.homer.gui.HomerMainFrame;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.VergilErrorHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -94,7 +95,7 @@ public class HomerApplication extends MoMLApplication {
             });
         } catch (Throwable ex) {
             MessageHandler.error("Command failed", ex);
-            System.exit(0);
+            StringUtilities.exit(0);
         }
     }
 

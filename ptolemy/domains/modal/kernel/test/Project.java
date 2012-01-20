@@ -31,6 +31,7 @@ import java.net.URL;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.domains.modal.kernel.ia.InterfaceAutomaton;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// Project
@@ -102,7 +103,7 @@ public class Project {
                             + "test.Project <first_automaton.xml> <second_automaton.xml>");
             System.out.println("This program computes the projection of the "
                     + "first automaton to the second one.");
-            System.exit(1);
+            StringUtilities.exit(1);
         } else {
             try {
                 new Project(args[0], args[1]);

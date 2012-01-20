@@ -67,6 +67,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 /**
  Implementation of a recursive algorithm to match a pattern to any subgraph of a
@@ -127,7 +128,7 @@ public class GraphMatcher extends GraphAnalyzer {
                 .equalsIgnoreCase("-A")))) {
             System.err.println("USAGE: java [-A] "
                     + GraphMatcher.class.getName() + " <rule.xml> <host.xml>");
-            System.exit(1);
+            StringUtilities.exit(1);
         }
 
         final boolean all = args.length == 3 && args[0].equalsIgnoreCase("-A");
