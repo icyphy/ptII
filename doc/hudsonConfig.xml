@@ -157,13 +157,8 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
     <entry>
       <string>hudson-tasks-Mailer</string>
       <external-property>
-        <originalValue class="hudson.tasks.Mailer">
-          <recipients>cxh@eecs.berkeley.edu</recipients>
-          <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
-          <sendToIndividuals>false</sendToIndividuals>
-        </originalValue>
         <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
+        <modified>true</modified>
       </external-property>
     </entry>
     <entry>
@@ -316,7 +311,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
               </email>
             </hudson.plugins.emailext.plugins.trigger.StillUnstableTrigger>
           </configuredTriggers>
-          <contentType>default</contentType>
+          <contentType>text/html</contentType>
           <defaultSubject>$DEFAULT_SUBJECT</defaultSubject>
           <defaultContent>$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:
 
