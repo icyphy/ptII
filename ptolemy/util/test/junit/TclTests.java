@@ -304,6 +304,9 @@ public class TclTests {
     // prints the number of test case failures for us.
     static {
         try {
+            // ptolemy.util.StringUtilities.exit() checks ptolemy.ptII.doNotExit.
+            System.setProperty("ptolemy.ptII.doNotExit", "true");
+
             _interpClass = Class.forName("tcl.lang.Interp");
             _interp = _interpClass.newInstance();
 
