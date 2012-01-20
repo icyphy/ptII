@@ -317,9 +317,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
 
 Check console output at $BUILD_URL to view the results.
 
-$FAILED_TESTS
-
-$CHANGES</defaultContent>
+${JELLY_SCRIPT}</defaultContent>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
