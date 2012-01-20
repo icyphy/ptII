@@ -35,16 +35,20 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
-set VERBOSE 1
+#set VERBOSE 1
 
 set testCase {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+<entity name="testCase" class="ptolemy.actor.TypedCompositeActor">
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" value="2"/>
-    </propery>
+    </property>
     <entity name="ramp" class="ptolemy.actor.lib.Ramp"></entity>
     <entity name="rec" class="ptolemy.actor.lib.Recorder"></entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation"/>
@@ -52,36 +56,39 @@ set testCase {<?xml version="1.0" standalone="no"?>
     <link port="rec.input" relation="r"/>
 </entity>
 }
-
 ######################################################################
 ####
 #
-test CompositeActorApplication-1.0 {test constructor} {
-    set empty [java::new {java.lang.String[]} 0]
-    set app [java::new ptolemy.actor.gui.CompositeActorApplication $empty]
+test CompositeActorApplication-1.0 {test main with no arguments} {
+    set empty [java::new {java.lang.String[]} 0 {}]
+    java::call ptolemy.actor.gui.CompositeActorApplication main $empty
     list {}
     # success is just not throwing an exception.
 } {{}}
 
-test CompositeActorApplication-1.1 {test add} {
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set top [java::cast ptolemy.actor.CompositeActor [$parser parse $testCase]]
-    $app add $top
+test CompositeActorApplication-1.05 {test main with a file} {
+    java::call System setProperty ptolemy.ptII.doNotExit true
+    set topArgs [java::new {java.lang.String[]} 3 {-test -class ptolemy.actor.gui.test.TestModel} ]
+    java::call ptolemy.actor.gui.CompositeActorApplication main $topArgs
     list {}
     # success is just not throwing an exception.
 } {{}}
 
-test CompositeActorApplication-1.2 {execute it} {
+test CompositeActorApplication-1.1 {test startRun} {
+    set app [java::new ptolemy.actor.gui.CompositeActorApplication]
+    $app processArgs $topArgs
+    set top [java::cast ptolemy.actor.CompositeActor [[$app models] get 0]]
     $app startRun $top
+    $app close
     list {}
     # success is just not throwing an exception.
 } {{}}
 
-test CompositeActorApplication-1.3 {wait for execution to finish} {
-    $app waitForFinish
-    set rec [java::cast ptolemy.actor.lib.Recorder [$top getEntity rec]]
-    listToStrings [$rec getHistory 0]
-} {0 1}
+#test CompositeActorApplication-1.3 {wait for execution to finish} {
+#    $app waitForFinish
+#    set rec [java::cast ptolemy.actor.lib.Recorder [$testCase getEntity rec]]
+#    listToStrings [$rec getHistory 0]
+#} {0 1}
 
 test CompositeActorApplication-1.4 {test stopRun} {
     set iter [java::cast ptolemy.data.expr.Parameter \
@@ -89,46 +96,69 @@ test CompositeActorApplication-1.4 {test stopRun} {
     $iter setExpression {-1}
     $app startRun $top
     $app stopRun $top
+    $app close
     $app waitForFinish
+    list {}
     # success here is returning (not hanging).
-} {}
+} {{}}
 
 #########################################################################
 
 test CompositeActorApplication-2.0 {test command line options} {
     set cmdArgs [java::new {java.lang.String[]} 2 {{-version} {-help}}]
-    set app [java::new ptolemy.actor.gui.CompositeActorApplication $cmdArgs]
-    list {}
-    # success is just not throwing an exception.
-} {{}}
+    jdkCapture {
+	java::call ptolemy.actor.gui.CompositeActorApplication main $cmdArgs
+    } stdout
+    regsub  {.*ms. Memory:.*$} $stdout {XX ms. Memory: YY} result2
+    regsub  {^Version.*$} $result2 {VersionXXX} result3
+    regsub {.*Usage:} $result3 {XXXUsage:} result4
+
+    list $result4
+} {{XX ms. Memory: YY
+VersionXXX
+XXXUsage: ptolemy [ options ]
+
+Options that take values:
+ -class <classname>
+ -<parameter name> <parameter value>
+
+Boolean flags:
+ -help -test -version
+}}
 
 test CompositeActorApplication-2.1 {test invalid command line options} {
     set cmdArgs [java::new {java.lang.String[]} 2 {{-foo} {-help}}]
-    catch {set app [java::new ptolemy.actor.gui.CompositeActorApplication $cmdArgs]} \
-            msg
+    set app2_1 [java::new ptolemy.actor.gui.CompositeActorApplication]
+    catch {$app2_1 processArgs $cmdArgs} \
+	msg
+    $app2_1 close
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Unrecognized option: -foo}}
 
 test CompositeActorApplication-2.2 {test invalid class name} {
     set cmdArgs [java::new {java.lang.String[]} 2 \
             {{-class} {ptolemy.actor.gui.test.bogon}}]
-    catch {set app [java::new ptolemy.actor.gui.CompositeActorApplication $cmdArgs]} \
-            msg
-    list $msg
-} {{java.lang.ClassNotFoundException: ptolemy.actor.gui.test.bogon}}
+    set app2_2 [java::new ptolemy.actor.gui.CompositeActorApplication]
+    jdkCaptureErr {
+	catch {$app2_2 processArgs $cmdArgs} msg
+    } err
+    list [string range $msg 0 92] $err
+} {{ptolemy.kernel.util.IllegalActionException: Could not find class ptolemy.actor.gui.test.bogon} {}}
 
 test CompositeActorApplication-2.3 {test valid class name} {
-    set cmdArgs [java::new {java.lang.String[]} 4 \
-            {{-class} {ptolemy.actor.gui.test.TestModel} \
+    set cmdArgs [java::new {java.lang.String[]} 5 \
+		     {{-test} {-class} {ptolemy.actor.gui.test.TestModel} \
             {-class} {ptolemy.actor.gui.test.TestModel}}]
-    # The model execution is started in the constructor below...
-    set app [java::new ptolemy.actor.gui.CompositeActorApplication $cmdArgs]
-    set models [listToObjects [$app models]]
+    set app2_3 [java::new ptolemy.actor.gui.CompositeActorApplication]
+    $app2_3 processArgs $cmdArgs
+    set models [$app2_3 models]
     set result {}
-    $app waitForFinish
-    foreach model $models {
-        set modelc [java::cast ptolemy.actor.gui.test.TestModel $model]
-        lappend result [listToStrings [$modelc getResults]]
-    }
+    # The 0 means don't print dots.
+    sleep 2 0
+    $app2_3 waitForFinish
+    set modelc [java::cast ptolemy.actor.gui.test.TestModel [$models get 0]]
+    lappend result [listToStrings [$modelc getResults]]
+    set modelc [java::cast ptolemy.actor.gui.test.TestModel [$models get 1]]
+    lappend result [listToStrings [$modelc getResults]]
     list $result
 } {{{0 1 2} {0 1 2}}}

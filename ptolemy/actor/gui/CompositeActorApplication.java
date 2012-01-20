@@ -92,6 +92,17 @@ public class CompositeActorApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Close any ModeFrames opened in processArgs() 
+     */   
+    public void close() {
+        // Mainly used for testing.
+        for (ModelFrame frame : _frames) {
+            if (frame != null) {
+                frame.close();
+            }
+        }
+    }
+
     /** Create a new application with the specified command-line arguments.
      *  @param args The command-line arguments.
      */
@@ -100,21 +111,28 @@ public class CompositeActorApplication {
 
         try {
             application.processArgs(args);
+            // If the -test arg was set, then exit after 2 seconds.
+            if (_test) {
+                try {
+                    Thread.sleep(2000);
+                    application.close();
+                } catch (InterruptedException e) {
+                }
+                StringUtilities.exit(0);
+            }
             application.waitForFinish();
         } catch (Exception ex) {
             System.err.println(KernelException.stackTraceToString(ex));
             StringUtilities.exit(0);
         }
+    }
 
-        // If the -test arg was set, then exit after 2 seconds.
-        if (_test) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-            }
-
-            StringUtilities.exit(0);
-        }
+    /** Return the list of models.
+     *  @return The list of models passed in as arguments.   
+     */
+    public List<CompositeActor> models() {
+        // Used primarily for testing.
+        return _models;
     }
 
     /** Parse the command-line arguments, creating models as specified.
@@ -129,7 +147,7 @@ public class CompositeActorApplication {
             Iterator models = _models.iterator();
 
             while (models.hasNext()) {
-                startRun((CompositeActor) models.next());
+                _frames.add(startRun((CompositeActor) models.next()));
             }
         }
     }
@@ -174,7 +192,7 @@ public class CompositeActorApplication {
      *  @param model The model to execute.
      *  @see ptolemy.actor.Manager#startRun()
      */
-    public synchronized void startRun(CompositeActor model) {
+    public synchronized ModelFrame startRun(CompositeActor model) {
         // This method is synchronized so that it can atomically modify
         // the count of executing processes.
         // NOTE: If you modify this method, please be sure that it
@@ -193,10 +211,11 @@ public class CompositeActorApplication {
             }
         }
 
+        ModelFrame frame = null;
         if (hasPlaceable) {
             // The model has an entity that is Placeable, so create a frame.
             try {
-                ModelFrame frame = new ModelFrame(model);
+                frame = new ModelFrame(model);
                 _openCount++;
                 frame.addWindowListener(new WindowAdapter() {
                     public void windowClosed(WindowEvent event) {
@@ -236,6 +255,7 @@ public class CompositeActorApplication {
             report("Model " + model.getFullName() + " cannot be executed "
                     + "because it does not have a manager.");
         }
+        return frame;
     }
 
     /** If the specified model has a manager and is executing, then
@@ -311,7 +331,13 @@ public class CompositeActorApplication {
                 MoMLParser parser = new MoMLParser();
                 String string = "<entity name=\"toplevel\" class=\"" + arg
                         + "\"/>";
-                CompositeActor model = (CompositeActor) parser.parse(string);
+                CompositeActor model = null;
+                try {
+                    model = (CompositeActor) parser.parse(string);
+                } catch (Throwable ex) {
+                    throw new IllegalActionException(null, ex,
+                            "Could not find class " + arg);
+                }
 
                 // Temporary hack because cloning doesn't properly clone
                 // type constraints.
@@ -449,7 +475,7 @@ public class CompositeActorApplication {
     protected String _commandTemplate = "ptolemy [ options ]";
 
     /** The list of all the models. */
-    protected List _models = new LinkedList();
+    protected List<CompositeActor> _models = new LinkedList<CompositeActor>();
 
     /** The count of currently open windows. */
     protected int _openCount = 0;
@@ -461,6 +487,9 @@ public class CompositeActorApplication {
     ////                         private variables                 ////
     // Flag indicating that the previous argument was -class.
     private boolean _expectingClass = false;
+
+    // List of ModelFrames created processArgs();
+    private List<ModelFrame> _frames = new LinkedList<ModelFrame>();
 
     // List of parameter names seen on the command line.
     private List _parameterNames = new LinkedList();
