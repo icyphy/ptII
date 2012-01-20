@@ -39,20 +39,26 @@ if {[info procs jdkCapture] == "" } then {
     source [file join $PTII util testsuite jdktools.tcl]
 }
 # Uncomment this to get a full report, or set in your Tcl shell window.
-# set VERBOSE 1
+#set VERBOSE 1
+
+# StringUtilities.exit() checks the ptolemy.ptII.doNotExit property
+java::call System setProperty ptolemy.ptII.doNotExit true
+
+set USER [java::call System getProperty user.name]
+
 
 ########################################
 #### pxgraphFiles
 # Create two test files pxgraphfile1 pxgraphfile2
 #
 proc pxgraphFiles {} {
-    global pxgraphfile1 pxgraphfile2 tcl_platform
+    global pxgraphfile1 pxgraphfile2 tcl_platform USER
     if { $tcl_platform(host_platform) == "windows"} {
-	set pxgraphfile1 pxgraphfile1.plt
-	set pxgraphfile2 pxgraphfile2.plt
+	set pxgraphfile1 pxgraphfile1-${USER}.plt
+	set pxgraphfile2 pxgraphfile2-${USER}.plt
     } else {
-	set pxgraphfile1 /tmp/pxgraphfile1.plt
-	set pxgraphfile2 /tmp/pxgraphfile2.plt
+	set pxgraphfile1 /tmp/pxgraphfile1-${USER}.plt
+	set pxgraphfile2 /tmp/pxgraphfile2-${USER}.plt
     }
 
     set fd [open $pxgraphfile1 w]
@@ -616,11 +622,21 @@ test Pxgraph-2.21 {Flags: -tk (Ticks)} {
 </plot>
 }
 
+
 test Pxgraph-2.22 {Flags: -v (Version)} {
-    global pxgraphfile1
-    jdkCapture [pxgraphTest  -v $pxgraphfile1] results
-    set results
-} {}
+    set args [java::new {String[]} 1 {-v}]
+    
+    jdkCaptureOutAndErr {
+	java::new ptolemy.plot.compat.PxgraphApplication $args
+    } results err2_22
+    regsub {Version .*, Build.*} $results {Version XXX, Build YYY} results2 
+    list $results2
+} {{Version XXX, Build YYY
+}}
+
+# Sleep so that things can catch up
+# The 0 arg means print no dots.
+sleep 1 0
 
 ######################################################################
 ####
@@ -631,8 +647,8 @@ test Pxgraph-3.1 {Options: -bd <color> (Unsupported)} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
-<dataset name="Set 0">
+<!-- Ptolemy plot, version XXX -->
+<dataset>
 <m x="0.0" y="0.0"/>
 <p x="1.0" y="1.0"/>
 <p x="2.0" y="2.0"/>
@@ -648,7 +664,7 @@ test Pxgraph-3.2 {Options: -bg <color> } {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <dataset>
 <m x="0.0" y="0.0"/>
 <p x="1.0" y="1.0"/>
@@ -665,7 +681,7 @@ test Pxgraph-3.3 {Options: -brb <base> (Unsupported)} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <default connected="no"/>
 <barGraph width="0.5" offset="0.05"/>
 <dataset>
@@ -683,7 +699,7 @@ test Pxgraph-3.4 { Options -brw <width> } {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <default connected="no"/>
 <barGraph width="0.8" offset="0.0"/>
 <dataset>
@@ -702,7 +718,7 @@ test Pxgraph-3.5 {Options:  -fg <color> } {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <dataset>
 <m x="0.0" y="0.0"/>
 <p x="1.0" y="1.0"/>
@@ -718,7 +734,7 @@ test Pxgraph-3.6 {Options:  -gw <pixels> (Unsupported)} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <dataset>
 <m x="0.0" y="0.0"/>
 <p x="1.0" y="1.0"/>
@@ -735,7 +751,7 @@ test Pxgraph-3.7 {Options:  -lf <label fontname> } {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <dataset>
 <m x="0.0" y="0.0"/>
 <p x="1.0" y="1.0"/>
@@ -751,7 +767,7 @@ test Pxgraph-3.8 {Options:  -lx <xl,xh>} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <xRange min="0.5" max="1.5"/>
 <dataset>
 <m x="0.0" y="0.0"/>
@@ -768,7 +784,7 @@ test Pxgraph-3.9 {Options:  -ly <yl,yh>} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <yRange min="0.5" max="1.5"/>
 <dataset>
 <m x="0.0" y="0.0"/>
@@ -785,7 +801,7 @@ test Pxgraph-3.10 {Options:  -lx <xl,xh>  -ly <yl,yh> } {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <xRange min="0.5" max="1.5"/>
 <yRange min="0.5" max="1.5"/>
 <dataset>
@@ -803,7 +819,7 @@ test Pxgraph-3.11 {Options: -t <title> } {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <title>This is the Title</title>
 <dataset>
 <m x="0.0" y="0.0"/>
@@ -821,7 +837,7 @@ test Pxgraph-3.12 {Options: -tf <fontname> } {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <dataset>
 <m x="0.0" y="0.0"/>
 <p x="1.0" y="1.0"/>
@@ -837,7 +853,7 @@ test Pxgraph-3.13 {Options: -x -y} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <xLabel>Years</xLabel>
 <yLabel>$ Profit</yLabel>
 <dataset>
@@ -855,7 +871,7 @@ test Pxgraph-3.14 {Option: -zg <color> (Unsupported)} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <dataset>
 <m x="0.0" y="0.0"/>
 <p x="1.0" y="1.0"/>
@@ -871,7 +887,7 @@ test Pxgraph-3.15 {Option: -zw <width> (Unsupported)} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <dataset>
 <m x="0.0" y="0.0"/>
 <p x="1.0" y="1.0"/>
@@ -887,7 +903,7 @@ test Pxgraph-3.16 {Option: =WxH+X+Y} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <dataset>
 <m x="0.0" y="0.0"/>
 <p x="1.0" y="1.0"/>
@@ -910,7 +926,7 @@ test Pxgraph-4.1 {Test out file args} {
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <title>Software Downloads</title>
 <xLabel>Year</xLabel>
 <yLabel>Downloads</yLabel>
@@ -973,16 +989,18 @@ test Pxgraph-4.1 {Test out file args} {
 </plot>
 }
 
-test Pxgraph-4.1 {Test out file args} {
+test Pxgraph-4.2 {Test out file args} {
     # Test out file args
     pxgraphTest  http://ptolemy.eecs.berkeley.edu/java/ptplot/demo/data.plt
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version XXX -->
 <title>My Plot</title>
 <xLabel>X Axis</xLabel>
 <yLabel>Y Axis</yLabel>
+<xRange min="0.0" max="4.0"/>
+<yRange min="-4.0" max="4.0"/>
 <xTicks>
   <tick label="zero" position="0.0"/>
   <tick label="one" position="1.0"/>
@@ -994,14 +1012,14 @@ test Pxgraph-4.1 {Test out file args} {
 <noGrid/>
 <noColor/>
 <default connected="no" marks="various"/>
-<dataset name="dot">
+<dataset connected="yes" name="dot">
 <m x="0.0" y="-4.0"/>
 <p x="1.0" y="-3.0"/>
 <p x="2.0" y="-2.0"/>
 <p x="3.0" y="-1.0"/>
 <p x="4.0" y="0.0"/>
 </dataset>
-<dataset name="cross">
+<dataset connected="yes" name="cross">
 <m x="0.0" y="-3.5"/>
 <p x="1.0" y="-2.5"/>
 <p x="2.0" y="-1.5"/>
@@ -1080,44 +1098,71 @@ test Pxgraph-5.1 {Ptolemy Example} {
     pxgraphTest  -binary -t "Integrator Demo" -P \
 	    -x n =800x400+0+0 -1 control -0 final \
 	    ../demo/data/integrator1.plt ../demo/data/integrator2.plt
-} {# Ptolemy plot, version 2.0
-TitleText: Integrator Demo
-XLabel: n
-Marks: dots
-Marks: various
-DataSet: final
-move: 0.0, 0.0
-1.0, 1.0
-2.0, 2.700000047683716
-3.0, 4.889999866485596
-4.0, 7.422999858856201
-5.0, 5.0
-6.0, 9.5
-7.0, 13.649999618530273
-8.0, 17.55500030517578
-9.0, 21.28849983215332
-10.0, 24.90195083618164
-11.0, 11.0
-12.0, 19.700000762939453
-13.0, 26.790000915527344
-14.0, 32.75299835205078
-15.0, 37.927101135253906
-16.0, 42.54896926879883
-17.0, 17.0
-18.0, 29.899999618530273
-19.0, 39.93000030517578}
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
+<plot>
+<!-- Ptolemy plot, version XXX -->
+<title>Integrator Demo</title>
+<xLabel>n</xLabel>
+<default marks="dots"/>
+<dataset name="final">
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.700000047683716"/>
+<p x="3.0" y="4.889999866485596"/>
+<p x="4.0" y="7.422999858856201"/>
+<p x="5.0" y="5.0"/>
+<p x="6.0" y="9.5"/>
+<p x="7.0" y="13.649999618530273"/>
+<p x="8.0" y="17.55500030517578"/>
+<p x="9.0" y="21.28849983215332"/>
+<p x="10.0" y="24.90195083618164"/>
+<p x="11.0" y="11.0"/>
+<p x="12.0" y="19.700000762939453"/>
+<p x="13.0" y="26.790000915527344"/>
+<p x="14.0" y="32.75299835205078"/>
+<p x="15.0" y="37.927101135253906"/>
+<p x="16.0" y="42.54896926879883"/>
+<p x="17.0" y="17.0"/>
+<p x="18.0" y="29.899999618530273"/>
+<p x="19.0" y="39.93000030517578"/>
+</dataset>
+<dataset name="control">
+<m x="0.0" y="2.0"/>
+<p x="1.0" y="4.0"/>
+<p x="2.0" y="6.0"/>
+<p x="3.0" y="8.0"/>
+<p x="4.0" y="10.0"/>
+<p x="5.0" y="12.0"/>
+<p x="6.0" y="2.0"/>
+<p x="7.0" y="4.0"/>
+<p x="8.0" y="6.0"/>
+<p x="9.0" y="8.0"/>
+<p x="10.0" y="10.0"/>
+<p x="11.0" y="12.0"/>
+<p x="12.0" y="2.0"/>
+<p x="13.0" y="4.0"/>
+<p x="14.0" y="6.0"/>
+<p x="15.0" y="8.0"/>
+<p x="16.0" y="10.0"/>
+<p x="17.0" y="12.0"/>
+<p x="18.0" y="2.0"/>
+<p x="19.0" y="4.0"/>
+</dataset>
+</plot>
+}
 
 ######################################################################
 ####
 #
 test Pxgraph-6.1 {Reusedatasets} {
-    global pxgraphfile3 pxgraphfile4 tcl_platform
+    global pxgraphfile3 pxgraphfile4 tcl_platform USER
     if { $tcl_platform(host_platform) == "windows"} {
-	set pxgraphfile3 pxgraphfile3.plt
-	set pxgraphfile4 pxgraphfile4.plt
+	set pxgraphfile3 pxgraphfile3-${USER}.plt
+	set pxgraphfile4 pxgraphfile4-${USER}.plt
     } else {
-	set pxgraphfile3 /tmp/pxgraphfile3.plt
-	set pxgraphfile4 /tmp/pxgraphfile4.plt
+	set pxgraphfile3 /tmp/pxgraphfile3-${USER}.plt
+	set pxgraphfile4 /tmp/pxgraphfile4-${USER}.plt
     }
 
     set fd [open $pxgraphfile3 w]

@@ -36,7 +36,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-set VERBOSE 1
+#set VERBOSE 1
 
 ######################################################################
 ####
@@ -359,4 +359,4 @@ test PlotBox-21.1 {setWrap} {
 # Close the window
 $frame dispose
 
-unset VERBOSE
+#set VERBOSE 0

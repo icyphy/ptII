@@ -42,6 +42,9 @@ if {[info procs jdkCapture] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+# StringUtilities.exit() checks the ptolemy.ptII.doNotExit property
+java::call System setProperty ptolemy.ptII.doNotExit true
+
 ########################################
 #### histogramFiles
 # Create two test files histogramfile1 histogramfile2
