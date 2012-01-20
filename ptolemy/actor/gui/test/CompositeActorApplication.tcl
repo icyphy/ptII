@@ -109,13 +109,12 @@ test CompositeActorApplication-2.0 {test command line options} {
     jdkCapture {
 	java::call ptolemy.actor.gui.CompositeActorApplication main $cmdArgs
     } stdout
-    regsub  {.*ms. Memory:.*$} $stdout {XX ms. Memory: YY} result2
+    regsub  {.*ms. Memory:.*} $stdout {} result2
     regsub  {^Version.*$} $result2 {VersionXXX} result3
     regsub {.*Usage:} $result3 {XXXUsage:} result4
 
     list $result4
-} {{XX ms. Memory: YY
-VersionXXX
+} {{VersionXXX
 XXXUsage: ptolemy [ options ]
 
 Options that take values:
