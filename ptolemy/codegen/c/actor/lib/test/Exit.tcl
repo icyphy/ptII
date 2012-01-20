@@ -41,9 +41,17 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test Exit-1.1 {} {
-    #The Manager uses this property to help us test the Exit actor.
+    # StringUtilities.exit() checks to see if this property is present
+    java::call System clearProperty ptolemy.ptII.doNotExit
+
+    # The Manager uses this property to help us test the Exit actor.
     java::call System setProperty ptolemy.ptII.exitAfterWrapup true
+
     catch {java::new ptolemy.actor.gui.MoMLSimpleApplication Exit.xml} errMsg
+
+    # Reset the property
+    java::call System setProperty ptolemy.ptII.doNotExit true
+
     list $errMsg
 } {{java.lang.RuntimeException: Normally, we would exit here because Manager.exitAfterWrapup() was called.  However, because the ptolemy.ptII.exitAfterWrapup property is set, we throw this exception instead.}}
 
