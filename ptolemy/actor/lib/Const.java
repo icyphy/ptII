@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
  If the trigger port is connected, then this actor fires only if a token is
  provided on any channel of the trigger port. The value of that token
  does not matter. Specifically, if there is no such token, the prefire()
- method returns false.
+ method returns false.</p>
 
  @author Yuhong Xiong, Edward A. Lee
  @version $Id$
@@ -89,6 +89,13 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
      *  By default, it contains an IntToken with value 1.  If the
      *  type of this token is changed during the execution of a model,
      *  then the director will be asked to redo type resolution.
+     *
+     *  <p>The Ptolemy II Expression language defines the syntax
+     *  for this parameter.  In Vergil, documentation is available
+     *  via the Help button in the Edit Parameters window.  Documentation
+     *  is available on-line at
+     *  <a href="http://http://ptolemy.berkeley.edu/ptolemyII/designdoc.htm#in_browser">http://ptolemy.berkeley.edu/ptolemyII/designdoc.htm</a>.
+     *  </p>
      */
     public Parameter value;
 
