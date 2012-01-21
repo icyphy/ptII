@@ -324,7 +324,7 @@ ${JELLY_SCRIPT}
 
 &lt;h2&gt;New Script&lt;/h2&gt;
 
-${JELLY_SCRIPT template=&quot;html-with-health-and-console&quot;}</defaultContent>
+${JELLY_SCRIPT, template=&quot;html-with-health-and-console&quot;}</defaultContent>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
