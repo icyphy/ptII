@@ -148,7 +148,6 @@ JSRCS = \
 	BusDisassembler.java \
 	ClassWrapper.java \
 	Clock.java \
-	ClockSensor.java \
 	Commutator.java \
 	ComputeHistogram.java \
 	ConfigurationSelect.java \
