@@ -86,12 +86,16 @@ proc pxgraphTest { args } {
 	    {java.io.PrintStream java.io.OutputStream} $stream]
     set plotFrame [java::cast ptolemy.plot.PlotFrame $pxgraph ]
     set plot [java::field $plotFrame plot]
+
+    set toolkit [java::call java.awt.Toolkit getDefaultToolkit]
+    $toolkit sync
+
     $plot write $printStream "Usually, the DTD would go here"
     $printStream flush
     set results [$stream toString]
     set thread [java::call Thread currentThread ]
-    # sleep 0.1 seconds
-    $thread sleep 100
+    # sleep 0.5 seconds
+    $thread sleep 500
     $pxgraph dispose
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \
@@ -165,6 +169,11 @@ test Pxgraph-1.3 {Test set labeling} {
 </dataset>
 </plot>
 }
+
+# Sleep so that things can catch up
+set thread [java::call Thread currentThread ]
+# sleep 0.5 seconds
+$thread sleep 500
 
 test Pxgraph-1.4 {Test set labeling} {
     global pxgraphfile1 pxgraphfile2
@@ -635,8 +644,10 @@ test Pxgraph-2.22 {Flags: -v (Version)} {
 }}
 
 # Sleep so that things can catch up
-# The 0 arg means print no dots.
-sleep 1 0
+set thread [java::call Thread currentThread ]
+# sleep 0.5 seconds
+$thread sleep 500
+
 
 ######################################################################
 ####

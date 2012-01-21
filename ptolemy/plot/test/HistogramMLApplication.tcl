@@ -95,15 +95,21 @@ proc histogramTest { args } {
     set plotFrame [java::cast ptolemy.plot.PlotFrame $histogram ]
     set plot [java::field $plotFrame plot]
     if {[llength $args] == 0} {
+	puts "histogramTest: setting seed to 1"
+	[java::cast ptolemy.plot.Histogram $plot] clear true
 	[java::cast ptolemy.plot.Histogram $plot] setSeed 1
 	$histogram samplePlot
     }
+
+    set toolkit [java::call java.awt.Toolkit getDefaultToolkit]
+    $toolkit sync
+
     $plot write $printStream "Usually, the DTD would go here"
     $printStream flush
     set results [$stream toString]
     set thread [java::call Thread currentThread ]
-    # sleep 0.1 seconds
-    $thread sleep 100
+    # sleep 0.5 seconds
+    $thread sleep 500
     $histogram dispose
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \

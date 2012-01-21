@@ -46,8 +46,8 @@ proc plotApplicationTest { args } {
     set jargs [java::new {String[]} [llength $args] $args ]
     set plotapp [java::new ptolemy.plot.PlotApplication $jargs]
     set thread [java::call Thread currentThread ]
-    # sleep 2 seconds
-    $thread sleep 2000
+    # sleep 0.5 seconds
+    $thread sleep 500
     $plotapp dispose
 }
 
