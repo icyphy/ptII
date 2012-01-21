@@ -22,6 +22,8 @@
 <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
 </entity>
 
+<entity name="TopLevelCurrentTime" class="ptolemy.actor.lib.TopLevelCurrentTime"/>
+
 <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave"/>
 
 <!-- entity name="TriggeredClock"
