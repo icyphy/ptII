@@ -313,11 +313,18 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
           </configuredTriggers>
           <contentType>text/html</contentType>
           <defaultSubject>$DEFAULT_SUBJECT</defaultSubject>
-          <defaultContent>$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:
+          <defaultContent>&lt;h2&gt;$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS&lt;/h2&gt;
 
-Check console output at $BUILD_URL to view the results.
+&lt;p&gt;Check console output at &lt;a href=&quot;$BUILD_URL&quot;&gt;$BUILD_URL&lt;/a&gt; to view the results.&lt;/p&gt;
 
-${JELLY_SCRIPT}</defaultContent>
+&lt;p&gt;&lt;a href=&quot;http://sisyphus.eecs.berkeley.edu:8080/job/ptII/lastCompletedBuild/testReport/&quot;&gt;Test Report&lt;/a&gt;.&lt;/p&gt;
+
+
+${JELLY_SCRIPT}
+
+&lt;h2&gt;New Script&lt;/h2&gt;
+
+${JELLY_SCRIPT template=&quot;html-with-health-and-console&quot;}</defaultContent>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
