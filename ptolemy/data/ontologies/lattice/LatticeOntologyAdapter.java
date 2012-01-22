@@ -104,7 +104,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
-        _constraintAttributes();
+        _constrainAttributes();
 
         _addSubHelperConstraints();
 
@@ -284,7 +284,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * attribute and sets a default constraint between the root AST node and
      * its attribute, if the attribute was parseable.
      */
-    protected void _constraintAttributes() {
+    protected void _constrainAttributes() {
 
         for (Attribute attribute : _getPropertyableAttributes()) {
 
@@ -293,16 +293,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
 
                 // Take care of actors without nodes, e.g. MonitorValue actors without previous execution
                 if (node != null) {
-                    LatticeOntologyASTNodeAdapter astAdapter = ((LatticeOntologySolver) _solver)
-                            .getAdapter(node);
-
-                    List list = new ArrayList();
-                    list.add(node);
-
-                    _constrainObject(astAdapter.interconnectConstraintType,
-                            attribute, list);
-                    //setSameAs(attribute, getParseTree(attribute));
-                    //setAtLeast(attribute, getParseTree(attribute));
+                    setSameAs(attribute, node);
                 }
 
             } catch (IllegalActionException ex) {
