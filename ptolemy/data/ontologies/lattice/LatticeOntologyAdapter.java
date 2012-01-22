@@ -216,37 +216,22 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
                 || !AtomicActor.class.isInstance(getComponent())) {
             return;
         }
-
-        boolean constraintSource = actorConstraintType == ConstraintType.SOURCE_GE_SINK;
-
         
-        List<IOPort> portList1 = constraintSource ? ((AtomicActor) getComponent())
-                .inputPortList() : ((AtomicActor) getComponent())
-                .outputPortList();
-
-        List<IOPort> portList2 = constraintSource ? ((AtomicActor) getComponent())
-                .outputPortList() : ((AtomicActor) getComponent())
-                .inputPortList();
-
-        Iterator<IOPort> ports = portList1.iterator();
-        
-        while (ports.hasNext()) {
-            IOPort port = (IOPort) ports.next();
-            _constrainObject(actorConstraintType, port, portList2);
+        if (interconnectConstraintType == null) {
+            interconnectConstraintType = actorConstraintType;
         }
+                
+        List<IOPort> inputPorts = ((AtomicActor) getComponent()).inputPortList();
+        List<IOPort> outputPorts = ((AtomicActor) getComponent()).outputPortList();
 
-        boolean constrainPortConnectionSources = isConstraintSource();
-        for (TypedIOPort port : (List<TypedIOPort>) _getConstrainedPorts(constrainPortConnectionSources)) {
+        _constrainObjectLists(actorConstraintType, inputPorts, outputPorts);
 
-            // Add default constraints for multiports with more than one channel.
-            if ((port).isMultiport() && (port).getWidth() > 1) {
-                _constrainObject(
-                        interconnectConstraintType,
-                        port,
-                        _getConstraintingPorts(constrainPortConnectionSources,
-                                port));
+        for (IOPort inputSink : inputPorts) {
+            List<IOPort> previousOutputs = _getSourcePortList(inputSink);
+            for (IOPort source : previousOutputs) {
+                _constrainSingleObject(interconnectConstraintType, source, inputSink);
             }
-        }//*/
+        }
     }
 
     /**
@@ -310,27 +295,67 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      *
      * @see ConstraintType
      * @param constraintType The given ConstraintType to be used for the default constraints
-     * @param source The given object that represents the sink for the default constraints
-     * @param sinkList The list of objects passed in as a {@linkplain List} that
+     * @param sink The given object that represents the sink for the default constraints
+     * @param sourceList The list of objects passed in as a {@linkplain List} that
      * represents the sources for the default constraints
      * @exception IllegalActionException If an exception is thrown
      */
     protected void _constrainObject(ConstraintType constraintType,
-            Object source, List sinkList) throws IllegalActionException {
+            Object sink, List sourceList) throws IllegalActionException {
 
         // Not sure why this next line is needed, but there are test cases
         // that depend on this behavior.             FIXME: Investigate why
         if (constraintType == null) constraintType = ConstraintType.SOURCE_GE_SINK;
 
-        for (Object sink : sinkList) {
+        for (Object source : sourceList) {
             switch (constraintType) {
                 case NONE: break;
                 case EQUALS: setSameAs(source, sink); break;
-                case SINK_GE_SOURCE: //setAtLeast(sink, source); break;
-                case SOURCE_GE_SINK: setAtLeast(source, sink); break;
+                case SINK_GE_SOURCE: //setAtLeast(source, sink); break;
+                case SOURCE_GE_SINK: setAtLeast(sink, source); break;
             }
         }
     }
+
+    /** Set the default constraint between the given list of source objects
+     *  and list of sink objects based on the given constraintType.
+     *
+     * @see ConstraintType
+     * @param constraintType The given ConstraintType to be used for the default constraint
+     * @param sourceList A list of source objects
+     * @param sinkList A list of sink objects
+     * @exception IllegalActionException If an exception is thrown
+     */
+    protected void _constrainObjectLists(ConstraintType constraintType,
+            List sourceList, List sinkList)
+            throws IllegalActionException {
+        for (Object source : sourceList) {
+            for (Object sink : sinkList) {
+                _constrainSingleObject(constraintType, source, sink);
+            }
+        }
+        
+    }
+
+    /** Set the default constraint between the given source and sink object 
+     *  based on the given constraintType.
+     *
+     * @see ConstraintType
+     * @param constraintType The given ConstraintType to be used for the default constraint
+     * @param source The source object for the default constraints
+     * @param sink The sink object for the default constraints
+     * @exception IllegalActionException If an exception is thrown
+     */
+    protected void _constrainSingleObject(ConstraintType constraintType,
+            Object source, Object sink) throws IllegalActionException {
+        switch (constraintType) {
+            case NONE: break;
+            case EQUALS: setSameAs(source, sink); break;
+            case SINK_GE_SOURCE: setAtLeast(sink, source); break;
+            case SOURCE_GE_SINK: setAtLeast(source, sink); break;
+        }
+    }
+    
 
     /**
      * Return the list of constrained ports given the flag whether source or

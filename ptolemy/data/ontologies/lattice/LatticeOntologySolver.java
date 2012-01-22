@@ -379,12 +379,12 @@ public class LatticeOntologySolver extends OntologySolver {
         // ensure that the constraint list it returns is valid.
         toplevelAdapter.reinitialize();
 
-        toplevelAdapter._addDefaultConstraints(_getConstraintType());
-
         // FIXME: have to generate the connection every time
         // because the model structure can changed.
         // (i.e. adding or removing connections.)
         toplevelAdapter._setConnectionConstraintType(_getConstraintType());
+        
+        toplevelAdapter._addDefaultConstraints(_getConstraintType());
 
         _initialConstraintList = toplevelAdapter.constraintList();
     }
