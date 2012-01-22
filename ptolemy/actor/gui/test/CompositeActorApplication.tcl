@@ -123,6 +123,7 @@ Options that take values:
 
 Boolean flags:
  -help -test -version
+
 }}
 
 test CompositeActorApplication-2.1 {test invalid command line options} {
