@@ -27,10 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.actor.injection.ActorModuleInitializer;
-import ptolemy.actor.injection.PortableContainer;
-import ptolemy.actor.injection.PortablePlaceable;
-import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -57,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bilung)
  */
-public class Const extends LimitedFiringSource implements PortablePlaceable {
+public class Const extends LimitedFiringSource {
     /** Construct a constant source with the given container and name.
      *  Create the <i>value</i> parameter, initialize its value to
      *  the default value of an IntToken with value 1.
@@ -126,56 +122,5 @@ public class Const extends LimitedFiringSource implements PortablePlaceable {
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, value.getToken());
-        _getImplementation().setValue(value.getToken());
     }
-
-    /** Place the visual representation of the actor into the specified container.
-     *  @param container The container in which to place the object, or
-     *   null to specify that there is no current container.
-     */
-    public void place(PortableContainer container) {
-        _getImplementation().place(container);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Get the right instance of the implementation depending upon the
-     *  of the dependency specified through dependency injection.
-     *  If the instance has not been created, then it is created.
-     *  If the instance already exists then return the same. 
-     *
-     *	<p>This code is used as part of the dependency injection needed for the
-     *  HandSimDroid project, see $PTII/ptserver.  This code uses dependency
-     *  inject to determine what implementation to use at runtime.
-     *  This method eventually reads ptolemy/actor/ActorModule.properties.
-     *  {@link ptolemy.actor.injection.ActorModuleInitializer#initializeInjector()}
-     *  should be called before this method is called.  If it is not
-     *  called, then a message is printed and initializeInjector() is called.</p>
-     *  @return the implementation.
-     */
-    private TextFieldContainerInterface _getImplementation() {
-        if (_implementation == null) {
-	    if (PtolemyInjector.getInjector() == null) {
-		System.err.println("Warning: main() did not call "
-			       + "ActorModuleInitializer.initializeInjector(), "
-			       + "so Const is calling it for you.");
-		ActorModuleInitializer.initializeInjector();
-	    }
-            _implementation = PtolemyInjector.getInjector().getInstance(
-                    TextFieldContainerInterface.class);
-        }
-        return _implementation;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Implementation of the ConstInterface.  This code is used as part
-     *  of the dependency injection needed for the HandSimDroid project, see
-     *  $PTII/ptserver.  Note that if you get a NullPointerException here,
-     *  then the solution is to have your main() method call
-     *  ActorModuleInitializer.initializeInjector().
-     */
-    private TextFieldContainerInterface _implementation;
 }

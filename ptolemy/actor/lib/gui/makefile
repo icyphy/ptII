@@ -56,6 +56,7 @@ JSRCS = \
 	ArrayPlotterXY.java \
 	ArrowKeyProbe.java \
 	ArrowKeySensor.java \
+	ConstPlaceable.java \
 	DisplayJavaSE.java \
 	BarGraph.java \
 	Display.java \
