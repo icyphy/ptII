@@ -209,7 +209,31 @@ public class TclTests {
 
         System.out.println(tclFile);
         System.out.flush();
-        _evalFileMethod.invoke(_interp, new Object[] { tclFile });
+        try {
+            _evalFileMethod.invoke(_interp, new Object[] { tclFile });
+        } catch (Throwable throwable) {
+            if (!_tclExceptionClass.isInstance(throwable.getCause())) {
+                throw throwable;
+            } else {
+                Integer completionCode = (Integer)_getCompletionCodeMethod.invoke(throwable.getCause(), new Object [] {});
+                if (completionCode.intValue() == 1 /** TCL.ERROR */) { 
+                    // The completion code was 1, which means that the
+                    // command could not be completed successfully.
+
+                    // The Tcl errorInfo global variable will have information
+                    // about what went wrong.
+                    Object errorInfoTclObject = _getVarMethod.invoke(_interp,
+                            new Object [] {
+                                "errorInfo", (String) null, 1 /*TCL.GLOBAL_ONLY*/
+                            });
+                    throw new Exception ("Evaluating the Tcl file \""
+                            + tclFile
+                            + "\"resulted in a TclException being thrown.\nThe Tcl "
+                            + "errorInfo global variable has the value:\n"
+                            + errorInfoTclObject);
+                }
+            }
+        }
 
         // Get the value of the Tcl FAILED global variable.
         // We check for non-zero results for *each* .tcl file.
