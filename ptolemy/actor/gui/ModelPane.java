@@ -546,6 +546,13 @@ public class ModelPane extends JPanel implements CloseListener {
 
                 if (object instanceof Placeable) {
                     ((Placeable) object).place(null);
+                } else if (object instanceof PortablePlaceable) {
+                    // The bug was that if we did:
+                    // 1. $PTII/bin/vergil $PTII/ptolemy/domains/sdf/demo/Spectrum/Spectrum.xml
+                    // 2. Ran the model, the two plots came up
+                    // 3. View -> Run Window.
+                    // 4. BUG: the two plots were not closed.
+                    ((PortablePlaceable) object).place(null);
                 }
             }
         }

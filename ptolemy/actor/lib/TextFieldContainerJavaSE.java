@@ -51,7 +51,10 @@ public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
     public void place(PortableContainer container) {
         _textfield = new JTextField();
         _textfield.setText("\t\t");
-        container.add(_textfield);
+        if (container != null) {
+            // If container is null, should we do what DisplayJavaSE.place() does?
+            container.add(_textfield);
+        }
         _textfield.setEditable(false);
     }
 
