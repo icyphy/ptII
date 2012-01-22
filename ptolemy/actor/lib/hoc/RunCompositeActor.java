@@ -30,8 +30,6 @@ package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
 
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
