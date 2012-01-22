@@ -110,10 +110,4 @@ public class AutoTests extends ModelTests {
         System.out.flush();
         _applicationConstructor.newInstance(fullPath);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
-
-    /** The MoMLSimpleApplication(String) constructor. */
-    protected static Constructor _applicationConstructor;
 }

@@ -290,7 +290,7 @@ public class TclTests {
      * The tcl.lang.Interp class. We use reflection here to avoid false
      * dependencies if auto/ does not exist.
      */
-    private static Class _interpClass;
+    private static Class<?> _interpClass;
 
     /**
      * The tcl.lang.Interp object upon which we invoke evalFile(String).
@@ -304,7 +304,7 @@ public class TclTests {
     private static Method _setVarMethod;
 
     /** The tcl.lang.TclException class. **/
-    private static Class _tclExceptionClass;
+    private static Class<?> _tclExceptionClass;
 
     /** Keep track of the number of Tcl files evaluated
      * If 1 or more files were evaluated, then we call doneTests.
@@ -315,7 +315,7 @@ public class TclTests {
      * The tcl.lang.TclObject class. We use reflection here to avoid false
      * dependencies if auto/ does not exist.
      */
-    private static Class _tclObjectClass;
+    private static Class<?> _tclObjectClass;
 
     /**
      * A tcl.lang.TclObject that has the integer value 0.
@@ -328,6 +328,10 @@ public class TclTests {
     // prints the number of test case failures for us.
     static {
         try {
+            // ptolemy.actor.lib.test.NonStrictTest checks isRunningNightlyBuild and
+            // throws an exception if trainingMode is true.
+            System.setProperty("ptolemy.ptII.isRunningNightlyBuild", "true");
+
             // ptolemy.util.StringUtilities.exit() checks ptolemy.ptII.doNotExit.
             System.setProperty("ptolemy.ptII.doNotExit", "true");
 
@@ -347,7 +351,7 @@ public class TclTests {
                     new Class [] {String.class, _tclObjectClass, Integer.TYPE});
 
             // Create a TclObject with value 0 for use with the doneTests Tcl proc.
-            Class tclIntegerClass = Class.forName("tcl.lang.TclInteger");
+            Class<?> tclIntegerClass = Class.forName("tcl.lang.TclInteger");
             _newInstanceTclIntegerMethod = tclIntegerClass.getMethod("newInstance",
                     new Class [] {Integer.TYPE});
 

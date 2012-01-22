@@ -59,13 +59,31 @@ public class ModelTests {
     /**
      * Return a two dimensional array of arrays of strings that name the model
      * to be executed. If auto/ does not exist, or does not contain files that
-     * end with .xml or .moml, return a list with one element that is empty.
+     * end with .xml or .moml, return a list with one element that contains
+     * the value of the THERE_ARE_NO_AUTO_TESTS variable.
      * 
      * @return The List of model names in auto/
      * @exception IOException If there is a problem accessing the auto/ directory.
      */
     public Object[] modelValues() throws IOException {
-        File auto = new File("auto/");
+        return modelValues("auto/", THERE_ARE_NO_AUTO_TESTS);
+    }
+
+    /**
+     * Return a two dimensional array of arrays of strings that name the model
+     * to be executed. If directory does not exist, or does not contain files that
+     * end with .xml or .moml, return a list with the value of the message parameter. 
+     * 
+     * @param directory The directory, which is usually either "auto/" or
+     * "auto/knownFailedTests/".
+     * @param message The message to use if the directory contains no
+     * *.xml or *.moml files.
+     * @return The List of model names in the directory.
+     * @exception IOException If there is a problem accessing the directory.
+     */
+    public Object[] modelValues(String directory, String message)
+            throws IOException {
+        File auto = new File(directory);
         if (auto.isDirectory()) {
             String[] modelFiles = auto.list(new FilenameFilter() {
                     /**
@@ -87,11 +105,12 @@ public class ModelTests {
             Object[][] data = new Object[modelFiles.length][1];
             if (modelFiles.length > 0) {
                 for (String modelFile : modelFiles) {
-                    data[i++][0] = new File("auto/" + modelFile).getCanonicalPath();
+                    data[i++][0] = new File(directory + modelFile).getCanonicalPath();
                 }
                 // Sort the files so that we execute the tests in
                 // a predictable order.  Tests in ptolemy/actor/lib/test/auto
-                // need this
+                // need this.  File.list() returns files in a different order
+                // on different platforms.  So much for write once, run everywhere.
                 Arrays.sort(data, new Comparator<Object[]>() {
                             @Override
                                 public int compare(final Object[] entry1,
@@ -103,10 +122,10 @@ public class ModelTests {
                         });
                 return data;
             } else {
-                return new Object[][] { { THERE_ARE_NO_AUTO_TESTS } };
+                return new Object[][] { {message} };
             }
         }
-        return new Object[][] { { THERE_ARE_NO_AUTO_TESTS } };
+        return new Object[][] { { message } };
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,11 +135,29 @@ public class ModelTests {
      * The application class. We use reflection here to avoid false dependencies
      * if auto/ does not exist.
      */
-    protected static Class _applicationClass;
+    protected static Class<?> _applicationClass;
+
+    /** The application constructor. */
+    protected static Constructor _applicationConstructor;
 
     /**
      * A special string that is passed when there are no known failed tests.
      * This is necessary to avoid an exception in the JUnitParameters.
      */
     protected final static String THERE_ARE_NO_AUTO_TESTS = "ThereAreNoAutoTests";
+
+    /**
+     * A special string that is passed when there are no known failed tests.
+     * This is necessary to avoid an exception in the JUnitParameters.
+     */
+    protected final static String THERE_ARE_NO_KNOWN_FAILED_TESTS = "ThereAreNoKnowFailedTests";
+
+    static {
+        // ptolemy.actor.lib.test.NonStrictTest checks isRunningNightlyBuild and
+        // throws an exception if trainingMode is true.
+        System.setProperty("ptolemy.ptII.isRunningNightlyBuild", "true");
+
+        // ptolemy.util.StringUtilities.exit() checks ptolemy.ptII.doNotExit.
+        System.setProperty("ptolemy.ptII.doNotExit", "true");
+    }
 }

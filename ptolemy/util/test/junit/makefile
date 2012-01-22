@@ -42,18 +42,22 @@ include $(CONFIG)
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
-	AutoCGTests.java \
+	AutoCGCKnownFailedTests.java \
 	AutoCGCTests.java \
+	AutoCGJavaKnownFailedTests.java \
 	AutoCGJavaTests.java \
-	AutoTests.java \
+	AutoCGKnownFailedTests.java \
+	AutoCGTests.java \
 	AutoKnownFailedTests.java \
-	JUnitTclTest.java \
-	JUnitTclTestRun.java \
-	JUnitTclTestBase.java \
+	AutoTests.java \
 	JUnitCGCTestBase.java \
 	JUnitCGJavaTestBase.java \
+	JUnitTclTest.java \
+	JUnitTclTestBase.java \
+	JUnitTclTestRun.java \
+	ModelKnownFailedTests.java \
 	ModelTests.java \
-	TclTests.java
+	TclTests.java \
 
 TCL_SRCS =
 
@@ -81,6 +85,8 @@ OPTIONAL_FILES = \
 	'AutoCGJavaTests$$1.class' \
 	'AutoKnownFailedTests$$1.class' \
 	'AutoTests$$1.class' \
+	'ModelTests$$1.class' \
+	'ModelTests$$2.class' \
 	'TclTests$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

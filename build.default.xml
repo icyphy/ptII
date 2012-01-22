@@ -171,6 +171,10 @@
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/KielerJUnitTest.*" />
+    <exclude name="**/ptolemy/util/test/junit/AutoCGTests.*" />
+    <exclude name="**/ptolemy/util/test/junit/AutoCGKnownFailedTests.*" />
+    <exclude name="**/ptolemy/util/test/junit/ModelKnownFailedTests.*" />
+    <exclude name="**/ptolemy/util/test/junit/ModelTests.*" />
     <exclude name="**/lbnl/actor/lib/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptserver/test/junit/FileDownloadTest.*" />
     <exclude name="**/ptserver/test/junit/JUnitTclTest.*" />
