@@ -221,12 +221,17 @@ void top() {
 # because the test relies on SDFDirector being built and actors being present.
 test CodeGenerator-13.1 {main -help} {
 
+    set previousDoNotExit \
+	[java::call ptolemy.util.StringUtilities getProperty \
+	     ptolemy.ptII.doNotExit]
+
     set previousExitAfterWrapup \
 	[java::call ptolemy.util.StringUtilities getProperty \
 	     ptolemy.ptII.exitAfterWrapup]
 
     set args [java::new {String[]} 1  {-help}]
-	java::call System setProperty ptolemy.ptII.exitAfterWrapup false
+    java::call System clearProperty ptolemy.ptII.doNotExit
+    java::call System setProperty ptolemy.ptII.exitAfterWrapup false
     jdkCapture {
 	catch {
 	    java::call ptolemy.codegen.kernel.CodeGenerator main $args
@@ -238,8 +243,11 @@ test CodeGenerator-13.1 {main -help} {
 	    java::call ptolemy.codegen.kernel.CodeGenerator main $args
 	} errMsg2
     } result2
+
     java::call System setProperty ptolemy.ptII.exitAfterWrapup \
-	previousExitAfterWrapup
+	$previousExitAfterWrapup
+    java::call System setProperty ptolemy.ptII.doNotExit $previousDoNotExit
+
     list $errMsg $result1 $errMsg2 [string range $result2 0 6]
 } {{java.lang.Exception: Failed to parse "-help"} {Usage: ptcg [ options ] [file ...]
 
