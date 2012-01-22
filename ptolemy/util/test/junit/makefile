@@ -42,6 +42,7 @@ include $(CONFIG)
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
+	AutoCGTests.java \
 	AutoCGCTests.java \
 	AutoCGJavaTests.java \
 	AutoTests.java \
@@ -51,6 +52,7 @@ JSRCS = \
 	JUnitTclTestBase.java \
 	JUnitCGCTestBase.java \
 	JUnitCGJavaTestBase.java \
+	ModelTests.java \
 	TclTests.java
 
 TCL_SRCS =

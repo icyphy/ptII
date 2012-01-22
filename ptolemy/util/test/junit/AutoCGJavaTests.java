@@ -74,44 +74,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Red (cxh)
  */
 @RunWith(JUnitParamsRunner.class)
-public class AutoCGJavaTests {
-
-    /**
-     * Return a two dimensional array of arrays of strings that name the model
-     * to be executed. If auto/ does not exist, or does not contain files that
-     * end with .xml or .moml, return a list with one element that is empty.
-     * 
-     * @return The List of model names in auto/
-     * @exception IOException If there is a problem accessing the auto/ directory.
-     */
-    public Object[] modelValues() throws IOException {
-        File auto = new File("auto/");
-        if (auto.isDirectory()) {
-            String[] modelFiles = auto.list(new FilenameFilter() {
-                    /**
-                     * Return true if the file name ends with .xml or .moml
-                     * 
-                     * @param directory
-                     *            Ignored
-                     * @param name
-                     *            The name of the file.
-                     * @return true if the file name ends with .xml or .moml
-                     */
-                    public boolean accept(File directory, String name) {
-                        String fileName = name.toLowerCase();
-                        return fileName.endsWith(".xml")
-                            || fileName.endsWith(".moml");
-                    }
-                });
-            int i = 0;
-            Object[][] data = new Object[modelFiles.length][1];
-            for (String modelFile : modelFiles) {
-                data[i++][0] = new File("auto/" + modelFile).getCanonicalPath();
-            }
-            return data;
-        }
-        return new Object[][] { { THERE_ARE_NO_AUTO_TESTS } };
-    }
+public class AutoCGJavaTests extends AutoCGTests {
 
     /**
      * Find the ptolemy.cg.kernel.generic.GenericCodeGenerator class
@@ -122,61 +85,7 @@ public class AutoCGJavaTests {
      */
     @Before
     public void setUp() throws Throwable {
-        _applicationClass = Class.forName("ptolemy.cg.kernel.generic.GenericCodeGenerator");
-        
-        _cgDirectory = new File(StringUtilities.getProperty("user.home") + "/cg");
-
-        Class[] argTypes = new Class[] { String[].class };
-        _generateCodeMethod = _applicationClass.getMethod("generateCode", argTypes);
-    }
-
-    /** 
-     *  Generate, compile and run code for a model.
-     *  The 
-     *  @param fullPath  
-     *            The full path to the model file to be executed. If the
-     *            fullPath ends with the value of the
-     *            {@link #THERE_ARE_NO_AUTO_TESTS}, then the method returns
-     *            immediately.
-     * @param generateInSubdirectory If true, then generate the code in 
-     * in a subdirectory of ~/cg/.
-     * @param inline If true, then generate inline code.
-     * @param maximumLinesPerBlock The maximum number of line of code generated
-     * per block
-     * @param variablesAsArrays If true, then try to save space by putting variables
-     * into arrays.
-     * @exception Throwable If thrown while generating, compiling or executing the compiled code.
-     */
-    public void runModel(String fullPath, boolean generateInSubdirectory,
-            boolean inline, int maximumLinesPerBlock, boolean variablesAsArrays) 
-            throws Throwable {
-        if (fullPath.endsWith(THERE_ARE_NO_AUTO_TESTS)) {
-            System.out.println("No auto/*.xml tests in "
-                    + StringUtilities.getProperty("user.dir"));
-            return;
-        }
-   
-        // Delete the ~/cg directory each time so that if the user generates code for
-        // a model using -generateInSubdirectory, we can still have gcc generate an
-        // executable with that name.
-        if (!FileUtilities.deleteDirectory(_cgDirectory)) {
-            System.out.println("Warning, failed to delete " + _cgDirectory);
-        }
-
-        System.out.println("----------------- AutoCG $PTII/bin/ptcg "
-                + "-language java -generateInSubdirectory "
-                + generateInSubdirectory + " -inline " + inline
-                + " -maximumLinesPerBlock " + maximumLinesPerBlock
-                + " -variablesAsArrays " + variablesAsArrays
-                + " " + fullPath);
-        String [] args = new String [] {
-            "-language", "java",
-            "-generateInSubdirectory", Boolean.toString(generateInSubdirectory),
-            "-inline", Boolean.toString(inline),
-            "-maximumLinesPerBlock", Integer.toString(maximumLinesPerBlock),
-            "-variablesAsArrays", Boolean.toString(variablesAsArrays),
-            fullPath};
-        _generateCodeMethod.invoke(null, (Object) args);
+        super.setUp();
     }
 
     /**
@@ -191,7 +100,7 @@ public class AutoCGJavaTests {
     @Test
     @Parameters(method = "modelValues")
     public void runModelInline(String fullPath) throws Throwable {
-        runModel(fullPath,
+        runModel(fullPath, "java",
                 false /* generateInSubdirectory */,
                 true /* inline */,
                 2500 /* maximumLinesPerBlock */,
@@ -210,7 +119,7 @@ public class AutoCGJavaTests {
     @Test
     @Parameters(method = "modelValues")
     public void runModelLarge(String fullPath) throws Throwable {
-        runModel(fullPath,
+        runModel(fullPath, "java",
                 true /* generateInSubdirectory */,
                 false /* inline */,
                 1 /* maximumLinesPerBlock */,
@@ -229,35 +138,10 @@ public class AutoCGJavaTests {
     @Test
     @Parameters(method = "modelValues")
     public void runModelNoInline(String fullPath) throws Throwable {
-        runModel(fullPath,
+        runModel(fullPath, "java",
                 false /* generateInSubdirectory */,
                 false /* inline */,
                 2500 /* maximumLinesPerBlock */,
                 false /*variablesAsArrays*/);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
-
-    /**
-     * The ptolemy.cg.kernel.generic.GenericCodeGenerator
-     * class. We use reflection here to avoid false dependencies
-     * if auto/ does not exist.
-     */
-    protected static Class _applicationClass;
-
-    /** The directory where the code is generated, usually $HOME/cg. */
-    protected static File _cgDirectory;
-
-    /** The GenericCodeGenerator.generateCode(String[]) method. */
-    protected static Method _generateCodeMethod;
-
-    /** The path to the .xml or .moml file that contains the model. */
-    protected String _modelFile;
-
-    /**
-     * A special string that is passed when there are no known failed tests.
-     * This is necessary to avoid an exception in the JUnitParameters.
-     */
-    protected final static String THERE_ARE_NO_AUTO_TESTS = "ThereAreNoAutoTests";
 }
