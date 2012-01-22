@@ -219,16 +219,17 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
 
         boolean constraintSource = actorConstraintType == ConstraintType.SOURCE_GE_SINK;
 
-        List<Object> portList1 = constraintSource ? ((AtomicActor) getComponent())
+        
+        List<IOPort> portList1 = constraintSource ? ((AtomicActor) getComponent())
                 .inputPortList() : ((AtomicActor) getComponent())
                 .outputPortList();
 
-        List<Object> portList2 = constraintSource ? ((AtomicActor) getComponent())
+        List<IOPort> portList2 = constraintSource ? ((AtomicActor) getComponent())
                 .outputPortList() : ((AtomicActor) getComponent())
                 .inputPortList();
 
-        Iterator ports = portList1.iterator();
-
+        Iterator<IOPort> ports = portList1.iterator();
+        
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
             _constrainObject(actorConstraintType, port, portList2);
@@ -245,7 +246,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
                         _getConstraintingPorts(constrainPortConnectionSources,
                                 port));
             }
-        }
+        }//*/
     }
 
     /**
@@ -318,33 +319,24 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      *
      * @see ConstraintType
      * @param constraintType The given ConstraintType to be used for the default constraints
-     * @param object The given object that represents the sink for the default constraints
-     * @param objectList The list of objects passed in as a {@linkplain List} that
+     * @param source The given object that represents the sink for the default constraints
+     * @param sinkList The list of objects passed in as a {@linkplain List} that
      * represents the sources for the default constraints
      * @exception IllegalActionException If an exception is thrown
      */
     protected void _constrainObject(ConstraintType constraintType,
-            Object object, List objectList) throws IllegalActionException {
+            Object source, List sinkList) throws IllegalActionException {
 
-        boolean isEquals = constraintType == ConstraintType.EQUALS;
+        // Not sure why this next line is needed, but there are test cases
+        // that depend on this behavior.             FIXME: Investigate why
+        if (constraintType == null) constraintType = ConstraintType.SOURCE_GE_SINK;
 
-        if (constraintType != ConstraintType.NONE) {
-            for (Object object2 : objectList) {
-
-                if (isEquals) {
-                    setSameAs(object, object2);
-
-                } else {
-                    if (object2 instanceof ASTPtRootNode) {
-                        if (constraintType == ConstraintType.SINK_GE_SOURCE) {
-                            setAtLeast(object, object2);
-                        } else {
-                            setAtLeast(object2, object);
-                        }
-                    } else {
-                        setAtLeast(object, object2);
-                    }
-                }
+        for (Object sink : sinkList) {
+            switch (constraintType) {
+                case NONE: break;
+                case EQUALS: setSameAs(source, sink); break;
+                case SINK_GE_SOURCE: //setAtLeast(sink, source); break;
+                case SOURCE_GE_SINK: setAtLeast(source, sink); break;
             }
         }
     }
