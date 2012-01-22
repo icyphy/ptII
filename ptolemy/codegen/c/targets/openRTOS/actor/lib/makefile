@@ -52,11 +52,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	gui/gui.jar
 
-JSRCS = \
-	MonitorValue.java
-
-OTHER_FILES_TO_BE_JARED = \
-	MonitorValue.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.c)

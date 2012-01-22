@@ -24,7 +24,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.targets.openRTOS.actor.lib;
+package ptolemy.codegen.c.targets.openRTOS.actor.lib.gui;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,7 +47,7 @@ public class MonitorValue extends CCodeGeneratorHelper {
      * Construct a MonitorValue helper.
      * @param actor The associated actor.
      */
-    public MonitorValue(ptolemy.actor.lib.MonitorValue actor) {
+    public MonitorValue(ptolemy.actor.lib.gui.MonitorValue actor) {
         super(actor);
     }
 
