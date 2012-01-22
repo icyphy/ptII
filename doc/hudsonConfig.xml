@@ -321,10 +321,7 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
 
 
 ${JELLY_SCRIPT}
-
-&lt;h2&gt;New Script&lt;/h2&gt;
-
-${JELLY_SCRIPT, template=&quot;html-with-health-and-console&quot;}</defaultContent>
+</defaultContent>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>true</modified>
