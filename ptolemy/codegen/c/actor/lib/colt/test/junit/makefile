@@ -36,14 +36,17 @@ ME =		ptolemy/codegen/c/actor/lib/colt/test/junit
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../../..
 
+# $PTII/configure sets PTCOLT_JARS to include $PTII/vendors/misc/colt/colt.jar
+# and $PTII/lib/ptcolt.jar
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
+	JUnitCodegenCTest.java \
 	JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl
@@ -79,6 +82,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
 	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.codegen.c.actor.lib.colt.test.junit.JUnitTclTest)
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_C_ARGS) org.junit.runner.JUnitCore ptolemy.codegen.c.actor.lib.colt.test.junit.JUnitCodegenCTest)
 
 test_java: jclass
 

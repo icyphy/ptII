@@ -44,6 +44,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
+	JUnitCodegenCTest.java \
 	JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl
@@ -79,6 +80,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
 	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.codegen.c.actor.lib.gui.test.junit.JUnitTclTest)
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_C_ARGS) org.junit.runner.JUnitCore ptolemy.codegen.c.actor.lib.gui.test.junit.JUnitCodegenCTest)
 
 test_java: jclass
 

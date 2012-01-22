@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/java
 
-DIRS =		kernel actor domains
+DIRS =		kernel actor domains junit
 
 # Root of the Java directory
 ROOT =		../../..

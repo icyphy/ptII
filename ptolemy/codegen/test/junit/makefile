@@ -44,6 +44,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
+	JUnitCodegenCTest.java \
+	AutoCodegenCKnownFailedTests.java \
+	AutoCodegenCTests.java \
+	AutoCodegenJavaKnownFailedTests.java \
+	AutoCodegenJavaTests.java \
+	AutoCodegenKnownFailedTests.java \
+	AutoCodegenTests.java \
+	JUnitCodegenCTestBase.java \
+	JUnitCodegenJavaTestBase.java \
 	JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl
@@ -64,7 +73,11 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES = \
+	JUnitCodegenCTest.java.in \
+	JUnitCodegenJavaTest.java.in \
+	updateJUnitCodegenCTest \
+	updateJUnitCodegenJavaTest
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -79,6 +92,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
 	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.codegen.test.junit.JUnitTclTest)
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_C_ARGS) org.junit.runner.JUnitCore ptolemy.codegen.test.junit.JUnitCodegenCTest)
 
 test_java: jclass
 
