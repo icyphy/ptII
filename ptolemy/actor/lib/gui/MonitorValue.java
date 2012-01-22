@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.lib;
+package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.injection.PortableContainer;

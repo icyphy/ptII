@@ -395,6 +395,11 @@ public class ClassChanges extends MoMLFilterSimple {
 
         _classChanges.put("ptolemy.actor.lib.GetCurrentMicrostep",
                 "ptolemy.actor.lib.CurrentMicrostep");
+
+        // Moved MonitorValue into the gui package.
+        _classChanges.put("ptolemy.actor.lib.MonitorValue",
+                "ptolemy.actor.lib.gui.MonitorValue");
+
     }
 
     // Set of class names that are obsolete and should be simply

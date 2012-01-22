@@ -186,7 +186,6 @@ JSRCS = \
 	Maximum.java \
 	MicrostepDelay.java \
 	Minimum.java \
-	MonitorValue.java \
 	MovingAverage.java \
 	MovingMaximum.java \
 	Multiplexor.java \
@@ -236,8 +235,6 @@ JSRCS = \
 	Synchronizer.java \
 	Test.java \
 	TestExceptionHandler.java \
-	TextFieldContainerInterface.java \
-	TextFieldContainerJavaSE.java \
 	ThrowException.java \
 	ThrowModelError.java \
 	TimeDelay.java \

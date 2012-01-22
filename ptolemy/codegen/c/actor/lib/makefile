@@ -105,7 +105,6 @@ JSRCS = \
 	LookupTable.java \
 	Maximum.java \
 	Minimum.java \
-	MonitorValue.java \
 	MovingAverage.java \
 	MultiplyDivide.java \
 	NonStrictTest.java \
@@ -178,7 +177,6 @@ OTHER_FILES_TO_BE_JARED = \
 	LookupTable.c \
 	Maximum.c \
 	Minimum.c \
-	MonitorValue.c \
 	MovingAverage.c \
 	MultiplyDivide.c \
 	NonStrictTest.c \

@@ -64,6 +64,7 @@ JSRCS = \
 	HistogramPlotter.java \
 	InteractiveShell.java \
 	MatrixViewer.java \
+	MonitorValue.java \
 	Plotter.java \
 	PlotterBase.java \
 	PlotterBaseJavaSE.java \
@@ -73,6 +74,8 @@ JSRCS = \
 	SequenceScope.java \
 	SketchedSource.java \
 	SliderSource.java \
+	TextFieldContainerInterface.java \
+	TextFieldContainerJavaSE.java \
 	TimedPlotter.java \
 	TimedScope.java \
 	XYPlotter.java \

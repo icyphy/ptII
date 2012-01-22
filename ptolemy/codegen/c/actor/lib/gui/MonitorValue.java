@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.MonitorValue
+/* A helper class for ptolemy.actor.lib.gui.MonitorValue
 
  Copyright (c) 2005-2009 The Regents of the University of California.
  All rights reserved.
@@ -34,7 +34,7 @@ import java.util.Set;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
-/** A helper class for ptolemy.actor.lib.MonitorValue.
+/** A helper class for ptolemy.actor.lib.gui.MonitorValue.
  *
  *  @author Gang Zhou
  *  @version $Id$
@@ -47,7 +47,7 @@ public class MonitorValue extends CCodeGeneratorHelper {
     /** Construct a MonitorValue helper.
      *  @param actor the associated actor
      */
-    public MonitorValue(ptolemy.actor.lib.MonitorValue actor) {
+    public MonitorValue(ptolemy.actor.lib.gui.MonitorValue actor) {
         super(actor);
     }
 
@@ -67,7 +67,7 @@ public class MonitorValue extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        ptolemy.actor.lib.MonitorValue actor = (ptolemy.actor.lib.MonitorValue) getComponent();
+        ptolemy.actor.lib.gui.MonitorValue actor = (ptolemy.actor.lib.gui.MonitorValue) getComponent();
 
         String type = codeGenType(actor.input.getType());
         if (!isPrimitive(type)) {

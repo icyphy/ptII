@@ -32,7 +32,6 @@ import ptolemy.actor.injection.PortableContainer;
 import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.actor.injection.PtolemyInjector;
 import ptolemy.actor.lib.Const;
-import ptolemy.actor.lib.TextFieldContainerInterface;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

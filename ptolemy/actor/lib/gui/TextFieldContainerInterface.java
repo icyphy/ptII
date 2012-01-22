@@ -1,4 +1,6 @@
-/*  JavaSE implementation of the TextFieldContainerInterface. 
+/*  
+ The instance of this class would be able to visualize the value of a token
+ within a text field that is placed into a container.
  
  Copyright (c) 2011 The Regents of the University of California.
  All rights reserved.
@@ -24,53 +26,34 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.lib;
 
-import javax.swing.JTextField;
+package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.injection.PortableContainer;
 import ptolemy.data.Token;
 
-//////////////////////////////////////////////////////////////////////////
-//// TextFieldContainerJavaSE
+///////////////////////////////////////////////////////////////////
+//// TextFieldContainerInterface
+
 /**
-JavaSE implementation of the TextFieldContainerInterface. 
-
-@author Ishwinder Singh
-@version $Id$
-@since @since Ptolemy II 8.1
-@Pt.ProposedRating Red (ishwinde)
-@Pt.AcceptedRating Red (ishwinde)
-*/
-
-public class TextFieldContainerJavaSE implements TextFieldContainerInterface {
+ * The instance of this class would be able to visualize the value of a token
+ * within a text field that is placed into a container.  MonitorValue and Const are
+ * two classes using it.
+ * @author Ishwinder Singh
+ * @version $Id$ 
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (ahuseyno)
+ * @Pt.AcceptedRating Red (ahuseyno)
+ */
+public interface TextFieldContainerInterface {
 
     /** Place the visual representation of the actor into the specified container.
      *  @param container The container in which to place the object
      */
-    public void place(PortableContainer container) {
-        _textfield = new JTextField();
-        _textfield.setText("\t\t");
-        if (container != null) {
-            // If container is null, should we do what DisplayJavaSE.place() does?
-            container.add(_textfield);
-        }
-        _textfield.setEditable(false);
-    }
+    void place(PortableContainer container);
 
     /** Set the text to the value of the token.
-     * @param value The Parameter containing the value
+     * @param token The token containing the value
      */
-    public void setValue(Token value) {
-        if (_textfield != null) {
-            _textfield.setText(value.toString());
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Text field for displaying the value
-    private JTextField _textfield;
-
+    void setValue(Token token);
 }
