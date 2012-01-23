@@ -73,6 +73,8 @@
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/KielerJUnitTest.*" />
+    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenTests.*" />
+    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenKnownFailedTests.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoCGTests.*" />
     <exclude name="**/ptolemy/util/test/junit/AutoCGKnownFailedTests.*" />
     <exclude name="**/ptolemy/util/test/junit/ModelKnownFailedTests.*" />
