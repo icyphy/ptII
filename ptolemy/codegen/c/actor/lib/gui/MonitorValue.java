@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.codegen.c.actor.lib;
+package ptolemy.codegen.c.actor.lib.gui;
 
 import java.util.ArrayList;
 import java.util.Set;
