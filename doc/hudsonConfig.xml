@@ -433,6 +433,10 @@ export PTII=$WORKSPACE
           <hudson.tasks.Shell>
             <command>$WORKSPACE/adm/bin/killXServer</command>
           </hudson.tasks.Shell>
+          <hudson.tasks.Shell>
+            <command>cd $PTII/adm/gen-9.0
+make USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm JAR=/usr/bin/jar clean all src.jar test_setup</command>
+          </hudson.tasks.Shell>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
       </describable-list-property>
