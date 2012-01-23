@@ -37,7 +37,7 @@ import java.util.ResourceBundle;
 //// ActorModuleInitializer
 /**
  * Initializer of the PtolemyInjector with Java SE specific actor interface to
- * implementation mappings.  The module uses ptolemy.actor.JavaSEActorModule.properties
+ * implementation mappings.  This class reads the ptolemy.actor.ActorModule.properties
  * file to initialize the PtolemyModule.
  * @author Anar Huseynov
  * @version $Id$ 
@@ -66,7 +66,7 @@ public class ActorModuleInitializer {
 
     /**
      * Initialize the PtolemyInjector using module definitions from
-     * ptolemy.actor.JavaSEActorModule.properties file.
+     * the ptolemy.actor.ActorModule.properties file.
      */
     public synchronized static void initializeInjector() {
         if (!_isInitialized) {
