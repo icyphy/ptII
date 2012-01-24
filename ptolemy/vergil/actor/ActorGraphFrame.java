@@ -158,11 +158,16 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
             System.out.println("ActorGraphFrame.dispose() : " + this.getName());
         }
 
-        KeyStroke[] keyStroke = _rightComponent.getRegisteredKeyStrokes();
-        int count = keyStroke.length;
-        for (int i = 0; i < count; i++) {
-            KeyStroke ks = keyStroke[i];
-            _rightComponent.unregisterKeyboardAction(ks);
+        if (_rightComponent != null) {
+            // A bug with Graph -> Save In Library resulted in creating a 
+            // Composite that would fail to open because dispose would throw
+            // a NPE because _rightComponent was null.
+            KeyStroke[] keyStroke = _rightComponent.getRegisteredKeyStrokes();
+            int count = keyStroke.length;
+            for (int i = 0; i < count; i++) {
+                KeyStroke ks = keyStroke[i];
+                _rightComponent.unregisterKeyboardAction(ks);
+            }
         }
         _saveInLibraryAction = null;
         _importLibraryAction = null;
