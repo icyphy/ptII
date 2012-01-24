@@ -178,6 +178,8 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
 					 "without specifying a port of a CompositeQuantityManager.");
     }    
     
+    private boolean _receiversInvalid = true;
+    
     /** Create a receiver to mediate a communication via the specified receiver. This
      *  receiver is linked to a specific port of the quantity manager.
      *  @param receiver Receiver whose communication is to be mediated.
@@ -187,6 +189,11 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      */
     public IntermediateReceiver getReceiver(Receiver receiver, IOPort port)
             throws IllegalActionException {
+        System.out.println(receiver + "  " + port + "  " + _outputMappings);
+        if (_receiversInvalid) {
+            _outputMappings.clear();
+            _receiversInvalid = false;
+        }
         IntermediateReceiver intermediateReceiver = new IntermediateReceiver(
                 this, receiver, port);
         //intermediateReceiver.setContainer(port);
@@ -202,6 +209,15 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
             List<Receiver> list = _outputMappings.get(port);
             if (list == null) {
                 list = new ArrayList();
+            } else {
+                // Some receivers are removed in the IOPort class; remove 'dead'
+                // receivers here too. 
+                List<Receiver> copy = new ArrayList<Receiver>(list);
+                for (Receiver listReceiver : copy) {
+                    if (listReceiver.getContainer() == null) {
+                        list.remove(listReceiver);
+                    }
+                }
             }
             if (!list.contains(receiver)) {
                 list.add(receiver);
@@ -216,6 +232,7 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        
         _tokenCount = 0;
     }
 
@@ -300,10 +317,16 @@ public class CompositeQuantityManager extends TypedCompositeActor implements Qua
         }
         _listeners.add(monitor);
     }
+    
+    @Override
+    public void preinitialize() throws IllegalActionException { 
+        _receiversInvalid = true;
+        super.preinitialize();
+    }
 
     /** Reset.
      */
-    public void reset() { 
+    public void reset() {  
         // FIXME what to do here?
     }
 
