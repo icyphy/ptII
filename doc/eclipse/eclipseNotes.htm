@@ -7,8 +7,22 @@
 </head>
 <body>
 <h1>Notes about Eclipse and Ptolemy II</h1>
+<h2>Contents</h2>
+<ul>
+ <li><a href="VersionControl">VersionControl</a>
+ <ul>
+   <li><a href="#synchronizing">Synchronizing with the repository</a></li>
+   <li><a href="#restoring">Restoring a file from the repository</a></li>
+   <li><a href="#copying">Copying Files</a></li>
+ </ul>
+ </li>
+ <li><a href="#debugTclTests">Debugging Tcl Tests</a></li>
+ <li><a href="#Troubleshooting">Troubleshooting</a></li>
+ <li><a href="#AddingAnActor">Adding an actor in Eclipse</a></li>
+</ul>
 
-<h3>Synchronizing with the repository</h3>
+<h2><a name="VersionControl">VersionControl</a></h2>
+<h3><a name="synchronizing">Synchronizing with the repository</a></h3>
 
 <ol>
 <li>In the Navigator view scroll/open until you see the resource
@@ -18,20 +32,20 @@
 <li>Select the Incoming, Outgoing, or Incoming/Outgoing menu bar icon as appropriate
 </ol>
 
-<h3>Restoring a file from the repository</h3>
+<h3><a name="restoring">Restoring a file from the repository</a></h3>
 <ol>
 <li>In the Navigator view scroll/open until you see the resource (directory or file) to be restored.
 <li>Right click that resource and select Replace With->Latest From Head.
 </ol>
 
-<h3>Copying Files</h3>
+<h3><a name="copying">Copying Files</a></h3>
 Usually, it is better to extend Java classes than to copy them, but sometimes copying files
 under Subversion is useful.  To copy files, use the <code>svn cp</code> command.  Do
 not drag and drop directories as the directories contain a <code>.svn</code> directory
 that will have settings for the source location.  Instead, use <code>svn cp</code>.
 See also <code>svn mv</code>.
 
-<h3><a name="#debugTclTests">Debugging Tcl Tests</a></h3>
+<h2><a name="#debugTclTests">Debugging Tcl Tests</a></h2>
 See <a href="testing.htm">Testing Ptolemy II</a> for details.
 <ol>
 <li> In Eclipse, go to Run -&gt; Debug Configurations
@@ -62,7 +76,7 @@ You may further register a breakpoint to do more diagnosis.
 
 <h2><a name="Troubleshooting">Troubleshooting</a></h2>
 
-<h3>Preferences</h3>
+<h3><a name="preferences">Preferences</a></h3>
 If you have already used Eclipse and you would like to start over with
 new projects and preferences, remove the <code>workspace</code> directory in the
 Eclipse directory.  The <code>workspace</code> directory will only
@@ -106,8 +120,13 @@ change Start in property and then pin that shortcut to my start menu.
 
 <!--/eclipseSimple-->
 
-<h2>Instructions for adding an actor in Eclipse</h2>
-Based on text by Mehran Meschian.
+<h2><a name="AddingAnActor">Adding an actor in Eclipse</a></h2>
+
+<p>Based on text by Mehran Meschian.  See
+also
+<a href="../coding/addinganactor.htm">Adding An Actor to Ptolemy II</a>
+at <code>$PTII/doc/coding/addinganactor.htm</code>.</p>
+
 <p>In this example, we copy <code>ptolemy/actor/lib/Ramp.java</code> and create a new actor
 called <code>Ramp2</code>
 <ol>
