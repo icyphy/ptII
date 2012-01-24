@@ -113,7 +113,8 @@ test CompositeActorApplication-2.0 {test command line options} {
     regsub  {^Version.*$} $result2 {VersionXXX} result3
     regsub {.*Usage:} $result3 {XXXUsage:} result4
 
-    list [string trimright $result4]
+    # FIXME: sometimes there is a newline before VersionXXX orafter -version?
+    list [string range $result4 [string first VersionXXX $result4] [expr {[string last -version $result4] + [string length {-version}]}]]
 } {{VersionXXX
 XXXUsage: ptolemy [ options ]
 
@@ -122,7 +123,8 @@ Options that take values:
  -<parameter name> <parameter value>
 
 Boolean flags:
- -help -test -version}}
+ -help -test -version
+}}
 
 test CompositeActorApplication-2.1 {test invalid command line options} {
     set cmdArgs [java::new {java.lang.String[]} 2 {{-foo} {-help}}]
