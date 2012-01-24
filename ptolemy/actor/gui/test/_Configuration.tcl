@@ -56,6 +56,10 @@ test Configuration-1.0 {Read in the configuration} {
 			      [java::null] \
 			      [java::null]]
 
+    java::call ptolemy.moml.MoMLParser purgeModelRecord [$configurationURL toString]
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser resetAll
+
     if {[info vars configuration] == ""} {
 	set configuration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration $configurationURL]
     }

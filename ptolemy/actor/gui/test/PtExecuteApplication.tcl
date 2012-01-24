@@ -40,6 +40,10 @@ if {[string compare test [info procs test]] == 1} then {
 
 java::call System setProperty ptolemy.ptII.doNotExit true
 
+java::call ptolemy.moml.MoMLParser purgeModelRecord test.xml
+set parser [java::new ptolemy.moml.MoMLParser]
+$parser resetAll
+
 ######################################################################
 ####
 #
@@ -69,9 +73,12 @@ test PtExecuteApplication-1.1 {check result of running the model} {
 	    $modelc setContainer [java::null]
 	}
     }
-    java::call ptolemy.moml.MoMLParser purgeModelRecord test.xml
     list $result
 } {{{0 1 2}}}
+
+java::call ptolemy.moml.MoMLParser purgeModelRecord test.xml
+set parser [java::new ptolemy.moml.MoMLParser]
+$parser resetAll
 
 ######################################################################
 ####
@@ -86,7 +93,10 @@ test PtExecuteApplication-1.2 {check parameter handling} {
     $app runModels
     $app waitForFinish
     foreach model $models {
-        set modelc [java::cast ptolemy.actor.CompositeActor $model]
+        set modelc [java::cast ptolemy.kernel.CompositeEntity $model]
+	if [java::instanceof $modelc ptolemy.actor.gui.Configuration] {
+	    continue
+	}
 	puts [$modelc getFullName]
         set rec [java::cast ptolemy.actor.lib.Recorder \
                 [$modelc getEntity "rec"]]
@@ -98,7 +108,7 @@ test PtExecuteApplication-1.2 {check parameter handling} {
 } {{{0 4 8}}}
 
 set parser [java::new ptolemy.moml.MoMLParser]
-$parser reset
+$parser resetAll
 
 sleep 2 0
 test PtExecuteApplication-1.3 {check parameter handling} {
@@ -109,7 +119,10 @@ test PtExecuteApplication-1.3 {check parameter handling} {
     $app runModels
     $app waitForFinish
     foreach model $models {
-        set modelc [java::cast ptolemy.actor.CompositeActor $model]
+        set modelc [java::cast ptolemy.kernel.CompositeEntity $model]
+	if [java::instanceof $modelc ptolemy.actor.gui.Configuration] {
+	    continue
+	}
         set rec [java::cast ptolemy.actor.lib.Recorder \
                 [$modelc getEntity "rec"]]
 	lappend result [listToStrings [$rec getHistory 0]]

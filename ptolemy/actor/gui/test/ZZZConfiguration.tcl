@@ -44,16 +44,16 @@ if {[info procs jdkCapture] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-
 ######################################################################
 ####
 #
-test UserActorLibrary-100.0 {call setContainer, which calls _remoteEntity} {
+test ZZZConfiguration-100.0 {call setContainer, which calls _remoteEntity} {
     # Run this test last
     set directory [$configuration getDirectory]
 
-    # StringUtilities.exit() checks to see if this property is present
-    java::call System clearProperty ptolemy.ptII.doNotExit
+    # StringUtilities.exit() checks to see if this property is has a length > 0
+    java::call System setProperty ptolemy.ptII.doNotExit {}
+    #java::call System clearProperty ptolemy.ptII.doNotExit
 
     # The Manager uses this property to help us test the Exit actor.
     java::call System setProperty ptolemy.ptII.exitAfterWrapup true

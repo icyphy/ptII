@@ -113,7 +113,7 @@ test CompositeActorApplication-2.0 {test command line options} {
     regsub  {^Version.*$} $result2 {VersionXXX} result3
     regsub {.*Usage:} $result3 {XXXUsage:} result4
 
-    list $result4
+    list [string trimright $result4]
 } {{VersionXXX
 XXXUsage: ptolemy [ options ]
 
@@ -122,9 +122,7 @@ Options that take values:
  -<parameter name> <parameter value>
 
 Boolean flags:
- -help -test -version
-
-}}
+ -help -test -version}}
 
 test CompositeActorApplication-2.1 {test invalid command line options} {
     set cmdArgs [java::new {java.lang.String[]} 2 {{-foo} {-help}}]
