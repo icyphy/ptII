@@ -97,7 +97,7 @@ OPTIONAL_FILES = \
 # that don't get compiled when we compile the test .java files
 # in this directory
 JCLASS_DEPENDENCIES = \
-	$(ROOT)/ptolemy/actor/lib/TextFieldContainerJavaSE.class \
+	$(ROOT)/ptolemy/actor/lib/gui/TextFieldContainerJavaSE.class \
 	$(ROOT)/ptolemy/actor/lib/gui/DisplayInterface.class \
 	$(ROOT)/ptolemy/actor/lib/gui/DisplayJavaSE.class \
 	$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseInterface.class \
@@ -128,8 +128,8 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl $(JCLASS_DEPENDENCIES)
 	$(JTCLSH) alljtests.tcl
 
-$(ROOT)/ptolemy/actor/lib/TextFieldContainerJavaSE.class:
-	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) TextFieldContainerJavaSE.class)
+$(ROOT)/ptolemy/actor/lib/gui/TextFieldContainerJavaSE.class:
+	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) TextFieldContainerJavaSE.class)
 $(ROOT)/ptolemy/actor/lib/gui/DisplayInterface.class:
 	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) DisplayInterface.class)
 $(ROOT)/ptolemy/actor/lib/gui/DisplayJavaSE.class:
