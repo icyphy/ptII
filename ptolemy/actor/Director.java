@@ -1084,11 +1084,6 @@ public class Director extends Attribute implements Executable {
             _debug(getFullName(), "Preinitializing ...");
         }
 
-        // In case the preinitialize() method of any actor
-        // access current time, set the start time.
-        // This will be repeated in initialize().
-        setModelTimeToStartTime();
-
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
@@ -1102,8 +1097,11 @@ public class Director extends Attribute implements Executable {
             Settable attribute = (Settable) attributes.next();
             attribute.validate();
         }
-        // preinitialize protected variables.
+        // In case the preinitialize() method of any actor
+        // access current time, set the start time.
+        // This will be repeated in initialize().
         setModelTimeToStartTime();
+        // preinitialize protected variables.
         _stopRequested = false;
         _finishRequested = false;
 
