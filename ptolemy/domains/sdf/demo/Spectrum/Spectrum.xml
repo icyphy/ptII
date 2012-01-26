@@ -33,7 +33,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 345.0]">
         </property>
     </property>
     <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -62,11 +62,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 15.0]">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[631, 482]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[670, 472]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 844, 592}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 883, 582}, maximized=false}">
     </property>
     <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -145,18 +145,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 445.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0290592855022">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.5, 241.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.5400390625, 241.2302005597015}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The blocks with red outlines are hierarchical.&#10;-Right click or Command-click (Mac) and &#10;  select &quot;Open Actor&quot;.&#10;-These generate sinusoids, one for the&#10;-signal and the other for the carrier">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Signa Source, Carrier Source, and Spectrum&#10;blocks are hierarchical. Right click or Command-&#10;click (Mac) and select &quot;Open Actor&quot; to view them.&#10;The source actors generate sinusoids, one for the&#10;signal and the other for the carrier.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 125.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -166,7 +166,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Select &quot;Run Window&quot; from the View menu to execute the model,&#10;-or click on the red triangle in the toolbar.&#10;-Try changing the parameters in the run window or on the diagram.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 370.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -226,7 +226,7 @@
         <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="noiseStandardDeviation">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 385.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 380.0]">
         </property>
     </entity>
     <entity name="Carrier Source" class="ptolemy.actor.lib.Sinewave">
@@ -253,7 +253,7 @@
             </property>
             <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 315.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -285,7 +285,7 @@
             </property>
             <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 250.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -296,9 +296,9 @@
     <entity name="Frequency Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={526, 295, 500, 282}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={526, 295, 489, 304}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[489, 260]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -306,7 +306,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 315.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -326,15 +326,15 @@
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 315.0]">
         </property>
     </entity>
     <entity name="Time Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 299, 500, 280}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 299, 468, 305}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 236]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[468, 261]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -342,7 +342,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 240.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -366,7 +366,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 315.0]">
         </property>
         <port name="signal" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -387,7 +387,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="325.0, 320.0">
+        <vertex name="vertex1" value="[385.0, 315.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
