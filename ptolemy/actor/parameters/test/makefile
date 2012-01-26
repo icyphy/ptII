@@ -53,6 +53,7 @@ JSRCS = \
 # alljtests.tcl works.
 JSIMPLE_TESTS = \
 	FilePortParameter.tcl \
+	ParameterPort.tcl \
 	ParameterSet.tcl \
 	ParameterSetModel.tcl \
 	SharedParameter.tcl 
