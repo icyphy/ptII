@@ -132,7 +132,7 @@ JCLASS_DEPENDENCIES = \
 	$(ROOT)/ptolemy/actor/lib/Const.class \
 	$(ROOT)/ptolemy/actor/lib/Recorder.class \
 	$(ROOT)/ptolemy/actor/lib/SequenceActor.class \
-	$(ROOT)/ptolemy/actor/lib/TextFieldContainerJavaSE.class \
+	$(ROOT)/ptolemy/actor/lib/gui/TextFieldContainerJavaSE.class \
 	$(ROOT)/ptolemy/actor/lib/gui/DisplayInterface.class \
 	$(ROOT)/ptolemy/actor/lib/gui/DisplayJavaSE.class \
 	$(ROOT)/ptolemy/actor/lib/gui/PlotterBaseInterface.class \
@@ -170,8 +170,8 @@ $(ROOT)/ptolemy/actor/lib/Recorder.class:
 	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) Recorder.class)
 $(ROOT)/ptolemy/actor/lib/SequenceActor.class:
 	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) SequenceActor.class)
-$(ROOT)/ptolemy/actor/lib/TextFieldContainerJavaSE.class:
-	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) TextFieldContainerJavaSE.class)
+$(ROOT)/ptolemy/actor/lib/gui/TextFieldContainerJavaSE.class:
+	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) TextFieldContainerJavaSE.class)
 $(ROOT)/ptolemy/actor/lib/gui/DisplayInterface.class:
 	(cd $(ROOT)/ptolemy/actor/lib/gui; $(MAKE) DisplayInterface.class)
 $(ROOT)/ptolemy/actor/lib/gui/DisplayJavaSE.class:
