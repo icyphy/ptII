@@ -37,7 +37,6 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -154,20 +153,7 @@ public abstract class SequencedModelDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the time value of the next iteration.
-     *  If this director is at the top level, then the returned value
-     *  is the current time plus the period. Otherwise, this method
-     *  delegates to the executive director.
-     *  @return The time of the next iteration.
-     */
-    public Time getModelNextIterationTime() {
-        if (!_isTopLevel()) {
-            return super.getModelNextIterationTime();
-        }
-        return _currentTime;
-    }
-
-    /** Code copied from StaticSchedulingDirector
+     /** Code copied from StaticSchedulingDirector
      *  FIXME:  Do we just want a SequencedModelDirector to be a subclass of
      *  StaticSchedulingDirector?  But, the complete schedule is not statically computable
      *  if control actors are present

@@ -669,14 +669,6 @@ public class ThreadedComposite extends MirrorComposite {
             return result;
         }
 
-        /** Return the current time, which is the most recent input frame processed
-         *  (or being processed) by the inside thread.
-         *  @return The current time.
-         */
-        public Time getModelTime() {
-            return _currentTime;
-        }
-
         /** Start the inside thread.
          *  @exception IllegalActionException If the initialize() method of
          *   one of the inside actors throws it.
@@ -1034,7 +1026,7 @@ public class ThreadedComposite extends MirrorComposite {
                         }
                         // Current time of the director should match the frame time.
                         // This is the view of time that should be presented to any inside actors.
-                        _currentTime = frame.time;
+                        setModelTime(frame.time);
 
                         if (_synchronizeToRealTime) {
                             long currentRealTime = System.currentTimeMillis();
@@ -1044,7 +1036,7 @@ public class ThreadedComposite extends MirrorComposite {
                             }
                             long realTimeMillis = currentRealTime
                                     - _realStartTime;
-                            long modelTimeMillis = Math.round(_currentTime
+                            long modelTimeMillis = Math.round(getModelTime()
                                     .getDoubleValue() * 1000.0);
                             if (realTimeMillis < modelTimeMillis) {
                                 try {
@@ -1096,7 +1088,7 @@ public class ThreadedComposite extends MirrorComposite {
                                 }
                             }
                         }
-                        Time responseTime = _currentTime.add(_delayValue);
+                        Time responseTime = getModelTime().add(_delayValue);
 
                         synchronized (ThreadedDirector.this) {
                             // If delay is UNDEFINED, then we have to now request a
@@ -1119,7 +1111,7 @@ public class ThreadedComposite extends MirrorComposite {
                                 } else {
                                     responseTime = ThreadedDirector.this
                                             .fireAt(ThreadedComposite.this,
-                                                    _currentTime);
+                                                    getModelTime());
                                 }
                                 _outputTimes.add(responseTime);
                             }
@@ -1137,7 +1129,7 @@ public class ThreadedComposite extends MirrorComposite {
                         }
                     } catch (InterruptedException e) {
                         // Post a stop frame.
-                        TokenFrame stopFrame = new TokenFrame(_currentTime,
+                        TokenFrame stopFrame = new TokenFrame(getModelTime(),
                                 null, TokenFrame.STOP);
                         synchronized (ThreadedDirector.this) {
                             _outputFrames.add(stopFrame);
@@ -1152,7 +1144,7 @@ public class ThreadedComposite extends MirrorComposite {
                             // exception will be thrown.
                             _exception = ex;
                             // Post a stop frame.
-                            TokenFrame stopFrame = new TokenFrame(_currentTime,
+                            TokenFrame stopFrame = new TokenFrame(getModelTime(),
                                     null, TokenFrame.STOP);
                             _outputFrames.add(stopFrame);
                             ThreadedDirector.this.notifyAll();

@@ -41,6 +41,8 @@ import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -104,13 +106,6 @@ import ptolemy.math.ExtendedMath;
  This is a shared parameter, which means
  that all instances of Director in the model will have the same value for
  this parameter. Changing one of them changes all of them.
- <p>
- The <i>timeResolution</i> parameter is not visible to the user
- by default. Subclasses can make it visible by calling
- <pre>
- timeResolution.setVisibility(Settable.FULL);
- </pre>
- in their constructors.
 
  @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
  @version $Id$
@@ -123,8 +118,10 @@ public class Director extends Attribute implements Executable {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public Director() {
+    public Director() throws IllegalActionException, NameDuplicationException {
         super();
         _addIcon();
         _initializeParameters();
@@ -156,8 +153,10 @@ public class Director extends Attribute implements Executable {
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this object.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public Director(Workspace workspace) {
+    public Director(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _addIcon();
         _initializeParameters();
@@ -165,6 +164,29 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
+
+    /** The local time of model when this director is initialized.
+     *  By default, this is blank, which
+     *  indicates that the start time is the current time of the enclosing
+     *  director when initialize() is invoked, or 0.0 if there is no
+     *  enclosing director. This can be set to a double value to explicitly
+     *  specify a start time.
+     *  Note that if <i>startTime</i> is given a value
+     *  that is different from the start time of the enclosing
+     *  director, then local time may be ahead of or behind
+     *  environment time during execution.
+     *  Also note that some directors do not advance time (including
+     *  PN and Rendezvous, for example), in which case, local time remains
+     *  at the start time value throughout the execution.
+     */
+    public Parameter startTime;
+
+    /** The stop time of the model. By default, this is blank, which
+     *  means that no stop time is specified. If a stop time is specified,
+     *  it must be a double, and when local time meets or exceeds the
+     *  stop time, then {@link #postfire()} returns false.
+     */
+    public Parameter stopTime;
 
     /** The time precision used by this director. All time values are
      *  rounded to the nearest multiple of this number. This is a double
@@ -200,7 +222,18 @@ public class Director extends Attribute implements Executable {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == timeResolution) {
+        if (attribute == startTime) {
+            DoubleToken startTimeValue = (DoubleToken) startTime.getToken();
+            if (startTimeValue == null) {
+                _startTime = null;
+            } else {
+                _startTime = new Time(this, startTimeValue.doubleValue());
+            }
+        } else if (attribute == stopTime) {
+            double stopTimeValue = ((DoubleToken) stopTime.getToken())
+                    .doubleValue();
+            _stopTime = new Time(this, stopTimeValue);
+        } else if (attribute == timeResolution) {
             // This is extremely frequently used, so cache the value.
             // Prevent this from changing during a run!
             double newResolution = ((DoubleToken) timeResolution.getToken())
@@ -244,6 +277,22 @@ public class Director extends Attribute implements Executable {
 
         super.attributeChanged(attribute);
     }
+    
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Director newObject = (Director) super.clone(workspace);
+        newObject._actorsFinishedExecution = null;
+        newObject._initializables = null;
+        newObject._localClock = new LocalClock(newObject);
+        newObject._zeroTime = new Time(newObject);
+        return newObject;
+    }
 
     /** Create the schedule for this director, if necessary.
      *  In this base class nothing is done.
@@ -252,7 +301,7 @@ public class Director extends Attribute implements Executable {
     public void createSchedule() throws IllegalActionException {
     }
 
-    /** Return a default dependency to use between input input
+    /** Return a default dependency to use between input
      *  ports and output ports.
      *  Director subclasses may override this if
      *  need specialized dependency. This base class
@@ -270,6 +319,17 @@ public class Director extends Attribute implements Executable {
         } else {
             return BooleanDependency.OTIMES_IDENTITY;
         }
+    }
+    
+    /** Return a boolean dependency representing a model-time delay
+     *  of the specified amount. This base clear returns
+     *  BooleanDependency.OTIMES_IDENTITY, which indicates a delay
+     *  but does not quantify the delay.
+     *  @param delay A non-negative delay.
+     *  @return A boolean dependency representing a delay.
+     */
+    public Dependency delayDependency(double delay) {
+        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Request that after the current iteration finishes postfire() returns
@@ -615,46 +675,41 @@ public class Director extends Attribute implements Executable {
                 return executiveDirector.getModelNextIterationTime();
             }
         }
-        return _currentTime;
+        return getModelTime();
     }
-
-    /** Get the start time of the model. This base class returns
-     *  the current time of the enclosing director, if there is one,
-     *  and otherwise returns a Time object with 0.0 as the value.
-     *  Subclasses need to override this method to get a different
-     *  start time.
-     *  For example, CT director and DE director use the value of
-     *  the <i>startTime</i> parameter to specify the real start time.
-     *  @return The start time of the model.
-     *  @exception IllegalActionException If the specified start time
-     *   is invalid.
+    
+    /** Return the start time parameter value, if it has been explicitly
+     *  set. Otherwise, return the current time of the enclosing director,
+     *  if there is one, and return a Time with value 0.0 otherwise.
+     *  @return the start time parameter value.
+     *  @throws IllegalActionException If the executive director throws it.
      */
-    public Time getModelStartTime() throws IllegalActionException {
-        Nameable container = getContainer();
-        if (container instanceof CompositeActor) {
-            Nameable containersContainer = container.getContainer();
-            if (isEmbedded() && (containersContainer instanceof CompositeActor)) {
-                // The container is an embedded model.
-                return ((CompositeActor) containersContainer)
-                        .getDirector().getModelTime();
+    public final Time getModelStartTime() throws IllegalActionException {
+        
+        // This method is final for performance reason.
+        if (_startTime == null) {
+            if (isEmbedded()) {
+                // This implementation assumes this method is only called
+                // during initialize. Is this a valid assumption?
+                return ((Actor) getContainer()).getExecutiveDirector()
+                        .getModelTime();
+            } else {
+                return _zeroTime;
             }
         }
-        return new Time(this);
+        return _startTime;
     }
 
-    /** Get the stop time of the model. This base class returns
-     *  a new Time object with Double.POSITIVE_INFINITY as the value of the
-     *  stop time.
-     *  Subclasses need to override this method to get a different
-     *  stop time.
-     *  For example, CT director and DE director use the value of
-     *  the stopTime parameter to specify the real stop time.
-     *  @return The stop time of the model.
-     *  @exception IllegalActionException If the specified stop time
-     *   is invalid.
+    /** Return the stop time parameter value, if it has been set,
+     *  and otherwise, return a time with value Double.POSITIVE_INFINITY.
+     *  @return the stop time parameter value.
+     * @throws IllegalActionException 
      */
-    public Time getModelStopTime() throws IllegalActionException {
-        return new Time(this, Double.POSITIVE_INFINITY);
+    public final Time getModelStopTime() throws IllegalActionException {
+        if (_stopTime != null) {
+            return _stopTime;
+        }
+        return Time.POSITIVE_INFINITY;
     }
 
     /** Return the current time object of the model being executed by this
@@ -667,7 +722,7 @@ public class Director extends Attribute implements Executable {
      *  @see #setModelTime(Time)
      */
     public Time getModelTime() {
-        return _currentTime;
+        return _localClock.getCurrentTime();
     }
 
     /** Return the next time of interest in the model being executed by
@@ -988,8 +1043,7 @@ public class Director extends Attribute implements Executable {
      *  director is ready to execute. It does <i>not</i>
      *  call prefire() on the contained actors.
      *  If this director is not at the top level of the hierarchy,
-     *  and the current time of the enclosing model is greater than the
-     *  current time of this director, then this base class updates
+     *  then this base class synchronizes
      *  current time to match that of the enclosing model.
      *  <p>
      *  In this base class, assume that the director is always ready to
@@ -1005,22 +1059,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Director: Called prefire().");
         }
-
-        Nameable container = getContainer();
-
-        if (container instanceof Actor) {
-            Director executiveDirector = ((Actor) container)
-                    .getExecutiveDirector();
-
-            if (executiveDirector != null) {
-                Time outTime = executiveDirector.getModelTime();
-
-                if (_currentTime.compareTo(outTime) < 0) {
-                    setModelTime(outTime);
-                }
-            }
-        }
-
+        _localClock.synchronizeToEnvironmentTime();
         return true;
     }
 
@@ -1044,6 +1083,11 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug(getFullName(), "Preinitializing ...");
         }
+
+        // In case the preinitialize() method of any actor
+        // access current time, set the start time.
+        // This will be repeated in initialize().
+        setModelTimeToStartTime();
 
         // First invoke initializable methods.
         if (_initializables != null) {
@@ -1245,16 +1289,14 @@ public class Director extends Attribute implements Executable {
 
     /** Set a new value to the current time of the model, where
      *  the new time must be no earlier than the current time.
-     *  Derived classes will likely override this method to ensure that
-     *  the time is valid.
-     *
      *  @exception IllegalActionException If the new time is less than
      *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
      *  @see #getModelTime()
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
-        int comparisonResult = _currentTime.compareTo(newTime);
+        Time currentTime = _localClock.getCurrentTime();
+        int comparisonResult = currentTime.compareTo(newTime);
 
         if (comparisonResult > 0) {
             throw new IllegalActionException(this, "Attempt to move current "
@@ -1264,8 +1306,7 @@ public class Director extends Attribute implements Executable {
             if (_debugging) {
                 _debug("==== Set current time to: " + newTime);
             }
-
-            _currentTime = newTime;
+            _localClock.setCurrentTime(newTime);
         } else {
             // the new time is equal to the current time, do nothing.
         }
@@ -1277,7 +1318,9 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If getModelStartTime() throws it.
      */
     public void setModelTimeToStartTime() throws IllegalActionException {
-        _currentTime = getModelStartTime();
+        // Do not call setModelTime() here because we may be setting
+        // time backwards.
+        _localClock.setCurrentTime(getModelStartTime());
     }
 
     /** Request that the director cease execution altogether.
@@ -1666,9 +1709,6 @@ public class Director extends Attribute implements Executable {
      */
     protected Set _actorsFinishedExecution;
 
-    /** The current time of the model. */
-    protected Time _currentTime;
-
     /** Indicator that finish() has been called. */
     protected boolean _finishRequested;
 
@@ -1677,8 +1717,14 @@ public class Director extends Attribute implements Executable {
      */
     protected transient List<Initializable> _initializables;
 
+    /** The clock that keeps track of current time of the model. */
+    protected LocalClock _localClock;
+
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
+
+    /** Time with value 0.0. */
+    protected Time _zeroTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1703,38 +1749,35 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    // Initialize parameters.
-    private void _initializeParameters() {
+    /** Initialize parameters. This is called by the constructor.
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
+    private void _initializeParameters() throws IllegalActionException, NameDuplicationException {
         // This must happen first before any time objects get created.
-        try {
-            timeResolution = new SharedParameter(this, "timeResolution",
-                    Director.class, "1E-10");
+        timeResolution = new SharedParameter(this, "timeResolution",
+                Director.class, "1E-10");
 
-            // Since by default directors have no time, this is
-            // invisible.
-            timeResolution.setVisibility(Settable.NONE);
+        _zeroTime = new Time(this, 0.0);
+        _localClock = new LocalClock(this);
 
-            // Make sure getCurrentTime() never returns null.
-            _currentTime = Time.NEGATIVE_INFINITY;
-        } catch (Throwable throwable) {
-            // This is the only place to create
-            // the timeResolution parameter, no exception should ever
-            // be thrown.
+        startTime = new Parameter(this, "startTime");
+        startTime.setTypeEquals(BaseType.DOUBLE);
 
-            // If we are rethrowing an exception, don't include it in
-            // the message, include it as a parameter to the throw so
-            // making that we don't have lots of duplicate info in
-            // the error message.
-
-            throw new InternalErrorException(this, throwable,
-                    "Cannot set timeResolution parameter");
-        }
+        stopTime = new Parameter(this, "stopTime");
+        stopTime.setExpression("Infinity");
+        stopTime.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Start time. */
+    private transient Time _startTime;
+
+    /** Stop time. */
+    private transient Time _stopTime;
+
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
-
 }

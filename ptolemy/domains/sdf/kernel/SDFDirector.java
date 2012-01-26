@@ -53,7 +53,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -406,7 +405,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
             if (periodValue > 0.0) {
                 return getModelTime().add(periodValue);
             } else {
-                return _currentTime;
+                return getModelTime();
             }
         } catch (IllegalActionException exception) {
             // This should have been caught by now.
@@ -890,7 +889,8 @@ public class SDFDirector extends StaticSchedulingDirector implements
         synchronizeToRealTime.setExpression("false");
         synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
-        timeResolution.setVisibility(Settable.FULL);
+        startTime.moveToLast();
+        stopTime.moveToLast();
         timeResolution.moveToLast();
 
         SDFScheduler scheduler = new SDFScheduler(this, uniqueName("Scheduler"));

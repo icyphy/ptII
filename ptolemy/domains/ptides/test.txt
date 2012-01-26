@@ -1,0 +1,857 @@
+making tests in ptolemy/domains/ptides/kernel
+making tests in ptolemy/domains/ptides/kernel/test
+making jclass in ptolemy/domains/ptides/kernel/test/junit
+CLASSPATH="../../../../..:/ptII/lib/diva.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell ../../../../../util/testsuite/auto.tcl
+no files matched glob pattern "auto/*.xml"
+CLASSPATH="../../../../..:/ptII/lib/diva.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell alljtests.tcl
+PtidesEvent.tcl
+dummy.tcl
+01/25/12 04:32:11
+Failed: 0  Total Tests: 18  ((Passed: 18, Newly Passed: 0)  Known Failed: 0) /ptII/ptolemy/domains/ptides/kernel/test
+if [ -d junit ]; then \
+	    (cd junit; make); \
+	fi
+CLASSPATH="../../../../../..:/ptII/lib/junit-4.8.2.jar:/ptII/lib/JUnitParams-0.3.0.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Dptolemy.ptII.doNotExit=true org.junit.runner.JUnitCore ptolemy.domains.ptides.kernel.test.junit.PtidesEventJUnitTest
+JUnit version 4.8.2
+.
+Time: 0.008
+
+OK (1 test)
+
+CLASSPATH="../../../../../..:/ptII/lib/junit-4.8.2.jar:/ptII/lib/JUnitParams-0.3.0.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Dptolemy.ptII.doNotExit=true org.junit.runner.JUnitCore ptolemy.domains.ptides.kernel.test.junit.JUnitTclTest
+JUnit version 4.8.2
+..No tcl tests in /ptII/ptolemy/domains/ptides/kernel/test/junit
+..No auto/knownFailedTests/*.xml tests in /ptII/ptolemy/domains/ptides/kernel/test/junit
+..No auto/*.xml tests in /ptII/ptolemy/domains/ptides/kernel/test/junit
+
+Time: 0.038
+
+OK (6 tests)
+
+making tests in ptolemy/domains/ptides/kernel/test/junit
+CLASSPATH="../../../../../..:/ptII/lib/junit-4.8.2.jar:/ptII/lib/JUnitParams-0.3.0.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Dptolemy.ptII.doNotExit=true org.junit.runner.JUnitCore ptolemy.domains.ptides.kernel.test.junit.PtidesEventJUnitTest
+JUnit version 4.8.2
+.
+Time: 0.007
+
+OK (1 test)
+
+CLASSPATH="../../../../../..:/ptII/lib/junit-4.8.2.jar:/ptII/lib/JUnitParams-0.3.0.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Dptolemy.ptII.doNotExit=true org.junit.runner.JUnitCore ptolemy.domains.ptides.kernel.test.junit.JUnitTclTest
+JUnit version 4.8.2
+..No tcl tests in /ptII/ptolemy/domains/ptides/kernel/test/junit
+..No auto/knownFailedTests/*.xml tests in /ptII/ptolemy/domains/ptides/kernel/test/junit
+..No auto/*.xml tests in /ptII/ptolemy/domains/ptides/kernel/test/junit
+
+Time: 0.018
+
+OK (6 tests)
+
+making tests in ptolemy/domains/ptides/lib
+making tests in ptolemy/domains/ptides/lib/io
+making tests in ptolemy/domains/ptides/lib/luminary
+making tests in ptolemy/domains/ptides/lib/qm
+making tests in ptolemy/domains/ptides/lib/test
+CLASSPATH="../../../../..:/ptII/lib/diva.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell ../../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/domains/ptides/lib/test/auto/SimplePtidesTest.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:13 PST 2012
+47 ms. Memory: 83008K Free: 79486K (96%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:13 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:13 PST 2012
+29 ms. Memory: 83008K Free: 78824K (95%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:13 PST 2012
+01/25/12 04:32:13
+Failed: 0  Total Tests: 2  ((Passed: 2, Newly Passed: 0)  Known Failed: 0) /ptII/ptolemy/domains/ptides/lib/test
+CLASSPATH="../../../../..:/ptII/lib/diva.jar:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell alljtests.tcl
+dummy.tcl
+dummy.tcl
+making tests in ptolemy/domains/ptides/demo
+making tests in ptolemy/domains/ptides/demo/PtidesBasicDistributedPowerPlant
+making tests in ptolemy/domains/ptides/demo/PtidesBasicMixedSimulator
+making tests in ptolemy/domains/ptides/demo/PtidesBasicMultiPlatformTDMA
+making tests in ptolemy/domains/ptides/demo/PtidesBasicOnePlatform
+making tests in ptolemy/domains/ptides/demo/PtidesBasicPowerPlant
+making tests in ptolemy/domains/ptides/demo/PtidesBasicTwoPlatformsNetworkSensorEvents
+making tests in ptolemy/domains/ptides/demo/PtidesPreemptEDFOnePlatformThreePathsRealDelay
+making tests in ptolemy/domains/ptides/demo/PtidesBasicTTE
+making tests in ptolemy/domains/ptides/demo/PtidesClockSynchronizationError
+making tests in ptolemy/domains/ptides/demo/PtidesMulticoreDirector
+making tests in ptolemy/domains/ptides/demo/PtidesNetworkLatencyTest
+making tests in ptolemy/domains/ptides/demo/PtidesPreemptEDFOnePlatformThreePathsRealDelay
+making tests in ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrentLocalTime
+making tests in ptolemy/domains/ptides/demo/PrintingPress
+making tests in ptolemy/domains/ptides/demo/PtidesPorts
+making tests in ptolemy/domains/ptides/demo/PtidesSynchrophasor
+making tests in ptolemy/domains/ptides/demo/TREX
+making tests in ptolemy/domains/ptides/test
+CLASSPATH="../../../..:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell ../../../../util/testsuite/auto.tcl
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicContinuous.xml (Known Failure) 
+306 ms. Memory: 83008K Free: 71507K (86%)
+!!!! Auto was marked as failing, but now passes
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicContinuous2.xml (Known Failure) 
+26 ms. Memory: 83008K Free: 80818K (97%)
+!!!! Auto was marked as failing, but now passes
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicMixedSimulator.xml (Known Failure) 
+70 ms. Memory: 83008K Free: 73687K (89%)
+!!!! Auto was marked as failing, but now passes
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicSafeToProcessInsideOpaque.xml (Known Failure) 
+16 ms. Memory: 83008K Free: 66824K (81%)
+Exception in thread "Thread-6" java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:343)
+Caused by: ptolemy.kernel.util.IllegalActionException: missed deadline at the actuator. The deadline is 3.0, and the platform physical time is 3.5
+  in .PtidesBasicSafeToProcessInsideOpaque.Platform2.actuator
+	at ptolemy.domains.ptides.kernel.PtidesBasicDirector._transferOutputs(PtidesBasicDirector.java:2757)
+	at ptolemy.actor.Director.transferOutputs(Director.java:1478)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:469)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1858)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:442)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:458)
+	at ptolemy.actor.Manager.iterate(Manager.java:742)
+	at ptolemy.actor.Manager.execute(Manager.java:351)
+	at ptolemy.actor.Manager.run(Manager.java:1111)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1641)
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicSafeToProcessInsideOpaque.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsEventDifferByMicrostep.xml (Known Failure) 
+4912 ms. Memory: 83008K Free: 68043K (82%)
+Exception in thread "Thread-7" java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:343)
+Caused by: ptolemy.kernel.util.IllegalActionException: missed deadline at the actuator. The deadline is 3.0, and the platform physical time is 4.9
+  in .PtidesBasicTwoPlatformsEventDifferByMicrostep.CompositeActor2.port
+	at ptolemy.domains.ptides.kernel.PtidesBasicDirector._transferOutputs(PtidesBasicDirector.java:2757)
+	at ptolemy.actor.Director.transferOutputs(Director.java:1478)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:469)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1858)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:442)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:458)
+	at ptolemy.actor.Manager.iterate(Manager.java:742)
+	at ptolemy.actor.Manager.execute(Manager.java:351)
+	at ptolemy.actor.Manager.run(Manager.java:1111)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1641)
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsEventDifferByMicrostep.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsNetworkDelaySensor.xml (Known Failure) 
+Warning: '.PtidesBasicTwoPlatformsNetworkDelaySensor.Test' The test produced only 0 tokens, yet the correctValues parameter was expecting 10 tokens.
+19 ms. Memory: 83008K Free: 73807K (89%)
+Exception in thread "Thread-9" java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:343)
+Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
+Value was: {microstep = 1, payload = 1, timestamp = 2.0}. Should have been: {microstep = 0, payload = 1, timestamp = 2.0}
+  in .PtidesBasicTwoPlatformsNetworkDelaySensor.Test
+	at ptolemy.actor.lib.Test.fire(Test.java:292)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1858)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:442)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:458)
+	at ptolemy.actor.Manager.iterate(Manager.java:742)
+	at ptolemy.actor.Manager.execute(Manager.java:351)
+	at ptolemy.actor.Manager.run(Manager.java:1111)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1641)
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsNetworkDelaySensor.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsNetworkSensor.xml (Known Failure) 
+19 ms. Memory: 83008K Free: 80018K (96%)
+Exception in thread "Thread-10" java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:343)
+Caused by: ptolemy.kernel.util.IllegalActionException: missed deadline at the actuator. The deadline is 2.0, and the platform physical time is 2.5
+  in .PtidesBasicTwoPlatformsNetworkSensor.Platform.actuator
+	at ptolemy.domains.ptides.kernel.PtidesBasicDirector._transferOutputs(PtidesBasicDirector.java:2757)
+	at ptolemy.actor.Director.transferOutputs(Director.java:1478)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:469)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1858)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:442)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:458)
+	at ptolemy.actor.Manager.iterate(Manager.java:742)
+	at ptolemy.actor.Manager.execute(Manager.java:351)
+	at ptolemy.actor.Manager.run(Manager.java:1111)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1641)
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesBasicTwoPlatformsNetworkSensor.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesPreemptEDFFeedback2.xml (Known Failure) 
+Warning: '.PtidesPreemptEDFFeedback2.CompositeActor.Test' is in training mode, set the trainingMode parameter to false before checking in
+Warning: '.PtidesPreemptEDFFeedback2.Test' is in training mode, set the trainingMode parameter to false before checking in
+Warning: '.PtidesPreemptEDFFeedback2.Test2' is in training mode, set the trainingMode parameter to false before checking in
+NonStrictTest: .PtidesPreemptEDFFeedback2.Test: exponent of 10.1 is 1.0043213737826426, which cannot be compared with the previous tolerance. The new tolerance is 1.010000000000001E-8.
+147 ms. Memory: 83008K Free: 66118K (80%)
+!!!! Auto was marked as failing, but now passes
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesPreemptEDFMixedSimulator.xml (Known Failure) 
+23 ms. Memory: 83008K Free: 77773K (94%)
+Exception in thread "Thread-12" java.lang.RuntimeException: Execution failed
+	at ptolemy.moml.MoMLSimpleApplication$UnloadThread.run(MoMLSimpleApplication.java:343)
+Caused by: java.lang.NullPointerException
+	at ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector._getSmallestDeadlineSafeEventFromQueue(PtidesPreemptiveEDFDirector.java:399)
+	at ptolemy.domains.ptides.kernel.PtidesPreemptiveEDFDirector._getNextSafeEvent(PtidesPreemptiveEDFDirector.java:355)
+	at ptolemy.domains.ptides.kernel.PtidesBasicDirector._getNextActorToFire(PtidesBasicDirector.java:1972)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1720)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:442)
+	at ptolemy.domains.ptides.kernel.PtidesBasicDirector.fire(PtidesBasicDirector.java:668)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:458)
+	at ptolemy.domains.de.kernel.DEDirector._fire(DEDirector.java:1858)
+	at ptolemy.domains.de.kernel.DEDirector.fire(DEDirector.java:442)
+	at ptolemy.actor.CompositeActor.fire(CompositeActor.java:458)
+	at ptolemy.actor.Manager.iterate(Manager.java:742)
+	at ptolemy.actor.Manager.execute(Manager.java:351)
+	at ptolemy.actor.Manager.run(Manager.java:1111)
+	at ptolemy.actor.Manager$PtolemyRunThread.run(Manager.java:1641)
+
+
+==== Auto Automatic test in file $PTII/ptolemy/domains/ptides/test/auto/knownFailedTests/PtidesPreemptEDFMixedSimulator.xml
+.... Test generated KNOWN error:
+To see the results, start up ptjacl, do  'set showKnownFailures true'
+       and then resource the .tcl file
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicActuator.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:21 PST 2012
+23 ms. Memory: 83008K Free: 70062K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:21 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:21 PST 2012
+19 ms. Memory: 83008K Free: 68746K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:21 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicCausalityInterface.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:21 PST 2012
+22 ms. Memory: 83008K Free: 72268K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+20 ms. Memory: 83008K Free: 71027K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicCausalityInterface2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+23 ms. Memory: 83008K Free: 72014K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+18 ms. Memory: 83008K Free: 70206K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicCausalityInterface3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+14 ms. Memory: 83008K Free: 74301K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+17 ms. Memory: 83008K Free: 72990K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicContinuous.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+8 ms. Memory: 83008K Free: 73498K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+7 ms. Memory: 83008K Free: 73233K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicFeedback.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+33 ms. Memory: 83008K Free: 72097K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+33 ms. Memory: 83008K Free: 68800K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicFeedback2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+64 ms. Memory: 83008K Free: 69637K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+58 ms. Memory: 83008K Free: 80202K (97%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicFeedbackminDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+29 ms. Memory: 83008K Free: 71666K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+29 ms. Memory: 83008K Free: 68440K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicMicrostep.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+8 ms. Memory: 83008K Free: 75256K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+7 ms. Memory: 83008K Free: 75006K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicMixedSimulator.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+22 ms. Memory: 83008K Free: 70693K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:22 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:22 PST 2012
+21 ms. Memory: 83008K Free: 69198K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicModelDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+9 ms. Memory: 83008K Free: 77133K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+6 ms. Memory: 83008K Free: 76614K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicMultiPlatformTDMA.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+80 ms. Memory: 83008K Free: 70162K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+86 ms. Memory: 83008K Free: 64532K (78%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicMultiPlatformTDMA2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+64 ms. Memory: 83008K Free: 69443K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+69 ms. Memory: 83008K Free: 63578K (77%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+17 ms. Memory: 83008K Free: 69973K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+13 ms. Memory: 83008K Free: 68953K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform1.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+13 ms. Memory: 83008K Free: 73342K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+11 ms. Memory: 83008K Free: 71975K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+11 ms. Memory: 83008K Free: 72715K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+11 ms. Memory: 83008K Free: 71633K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:23 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:23 PST 2012
+13 ms. Memory: 83008K Free: 72920K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+12 ms. Memory: 83008K Free: 71826K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform4.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+17 ms. Memory: 83008K Free: 70602K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+13 ms. Memory: 83008K Free: 69502K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform5.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+11 ms. Memory: 83008K Free: 71854K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+10 ms. Memory: 83008K Free: 70746K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform6.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+12 ms. Memory: 83008K Free: 71776K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+10 ms. Memory: 83008K Free: 70940K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform7.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+10 ms. Memory: 83008K Free: 73169K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+8 ms. Memory: 83008K Free: 72011K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatform8.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+28 ms. Memory: 83008K Free: 68637K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+24 ms. Memory: 83008K Free: 66065K (80%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatformCausalLoop.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+13 ms. Memory: 83008K Free: 71192K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+11 ms. Memory: 83008K Free: 70070K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatformRealTime.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+14 ms. Memory: 83008K Free: 74503K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+10 ms. Memory: 83008K Free: 73339K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatformThreePathsRealDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+21 ms. Memory: 83008K Free: 70032K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+22 ms. Memory: 83008K Free: 68035K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicOnePlatformminDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+12 ms. Memory: 83008K Free: 72634K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+10 ms. Memory: 83008K Free: 71791K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:24 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicPreemptDeadline.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:24 PST 2012
+14 ms. Memory: 83008K Free: 73082K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+12 ms. Memory: 83008K Free: 71681K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicPreemptOnePlatform.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+11 ms. Memory: 83008K Free: 73412K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+11 ms. Memory: 83008K Free: 72258K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicPreemptOnePlatformThreePathsRealDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+20 ms. Memory: 83008K Free: 71650K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+16 ms. Memory: 83008K Free: 69690K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicPreemptOnePlatformTwoPaths.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+10 ms. Memory: 83008K Free: 74437K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+10 ms. Memory: 83008K Free: 73326K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicPreemptOnePlatformTwoPathsRealDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+14 ms. Memory: 83008K Free: 74589K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+10 ms. Memory: 83008K Free: 73478K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSafeToProcessInsideTransparent.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+7 ms. Memory: 83008K Free: 75159K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+6 ms. Memory: 83008K Free: 74326K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSafeToProcessTwoPaths.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+11 ms. Memory: 83008K Free: 71754K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+10 ms. Memory: 83008K Free: 70644K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSchedulingOverhead.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+8 ms. Memory: 83008K Free: 75980K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+7 ms. Memory: 83008K Free: 75139K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensor.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+8 ms. Memory: 83008K Free: 76805K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+8 ms. Memory: 83008K Free: 75684K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorModelDelayOnly.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+11 ms. Memory: 83008K Free: 76168K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+9 ms. Memory: 83008K Free: 75030K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorNoDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+6 ms. Memory: 83008K Free: 77060K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+7 ms. Memory: 83008K Free: 75938K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorPhysicalDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+13 ms. Memory: 83008K Free: 75308K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+11 ms. Memory: 83008K Free: 73906K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSensorActuatorRealTimeDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+9 ms. Memory: 83008K Free: 76140K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+9 ms. Memory: 83008K Free: 74730K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:25 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncError.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:25 PST 2012
+12 ms. Memory: 83008K Free: 73828K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+9 ms. Memory: 83008K Free: 72706K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncError2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+11 ms. Memory: 83008K Free: 73056K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+11 ms. Memory: 83008K Free: 71631K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncError3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+10 ms. Memory: 83008K Free: 73362K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+10 ms. Memory: 83008K Free: 72197K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncErrorNetworkDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+13 ms. Memory: 83008K Free: 71724K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+15 ms. Memory: 83008K Free: 70550K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncErrorNetworkDelay2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+13 ms. Memory: 83008K Free: 71626K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+11 ms. Memory: 83008K Free: 70200K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicSyncErrorNetworkDelay3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+6 ms. Memory: 83008K Free: 75938K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+5 ms. Memory: 83008K Free: 75368K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkSensorEvent.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+13 ms. Memory: 83008K Free: 70836K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+12 ms. Memory: 83008K Free: 69126K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingFeedbackNoDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+27 ms. Memory: 83008K Free: 68935K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+22 ms. Memory: 83008K Free: 65818K (79%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+13 ms. Memory: 83008K Free: 72927K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+13 ms. Memory: 83008K Free: 70742K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+16 ms. Memory: 83008K Free: 72326K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+15 ms. Memory: 83008K Free: 69932K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingNoDelay3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+22 ms. Memory: 83008K Free: 71722K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+17 ms. Memory: 83008K Free: 69090K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:26 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicTwoPlatformNetworkingWithDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:26 PST 2012
+16 ms. Memory: 83008K Free: 70741K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+16 ms. Memory: 83008K Free: 68113K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicVariableDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+4 ms. Memory: 83008K Free: 76321K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+5 ms. Memory: 83008K Free: 75545K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicVariableDelay2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+4 ms. Memory: 83008K Free: 76596K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+4 ms. Memory: 83008K Free: 75819K (91%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicVariableDelayAndRamp.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+9 ms. Memory: 83008K Free: 73507K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+9 ms. Memory: 83008K Free: 72472K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesBasicVariableDelayAndRamp2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+9 ms. Memory: 83008K Free: 73136K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+8 ms. Memory: 83008K Free: 72082K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesClockSynchronizationError.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+6 ms. Memory: 83008K Free: 74450K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+5 ms. Memory: 83008K Free: 73615K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesClockSynchronizationError2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+6 ms. Memory: 83008K Free: 74674K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+6 ms. Memory: 83008K Free: 73603K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesClockSynchronizationError3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+8 ms. Memory: 83008K Free: 74559K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+7 ms. Memory: 83008K Free: 73488K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:27 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesDistributedBasicPowerPlant.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:27 PST 2012
+340 ms. Memory: 83008K Free: 76384K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+374 ms. Memory: 83008K Free: 68109K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesMulticoreDirectorSimple1.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+15 ms. Memory: 83008K Free: 70096K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+13 ms. Memory: 83008K Free: 68558K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesNetworkLatencyTest.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+19 ms. Memory: 83008K Free: 70822K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+18 ms. Memory: 83008K Free: 68455K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPlatformDelayParameterEDF.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+14 ms. Memory: 83008K Free: 71183K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+13 ms. Memory: 83008K Free: 69754K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFDeadline.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+11 ms. Memory: 83008K Free: 71985K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+10 ms. Memory: 83008K Free: 70571K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFDeadline2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+23 ms. Memory: 83008K Free: 68370K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+22 ms. Memory: 83008K Free: 65811K (79%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:28 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFDeadline3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:28 PST 2012
+16 ms. Memory: 83008K Free: 71782K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+16 ms. Memory: 83008K Free: 70388K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFFeedback.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+33 ms. Memory: 83008K Free: 70250K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+37 ms. Memory: 83008K Free: 65820K (79%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatform.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+11 ms. Memory: 83008K Free: 73823K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+10 ms. Memory: 83008K Free: 72507K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatform2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+17 ms. Memory: 83008K Free: 71450K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+15 ms. Memory: 83008K Free: 69849K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatform3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+17 ms. Memory: 83008K Free: 72120K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+17 ms. Memory: 83008K Free: 70230K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatformThreePathsRealDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+17 ms. Memory: 83008K Free: 70209K (85%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+19 ms. Memory: 83008K Free: 68310K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatformTwoPaths.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+10 ms. Memory: 83008K Free: 73275K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+9 ms. Memory: 83008K Free: 72192K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFOnePlatformTwoPathsRealDelay.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+10 ms. Memory: 83008K Free: 73338K (88%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+13 ms. Memory: 83008K Free: 72249K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFPrempt.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+7 ms. Memory: 83008K Free: 74340K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+7 ms. Memory: 83008K Free: 73794K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFPrempt2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+7 ms. Memory: 83008K Free: 74495K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+6 ms. Memory: 83008K Free: 73949K (89%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:29 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFTwoAddSub.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:29 PST 2012
+322 ms. Memory: 83008K Free: 72483K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:30 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:30 PST 2012
+356 ms. Memory: 83008K Free: 79983K (96%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:30 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptEDFTwoAddSub2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:30 PST 2012
+42 ms. Memory: 83008K Free: 77330K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:30 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:30 PST 2012
+39 ms. Memory: 83008K Free: 72018K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:30 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:30 PST 2012
+12 ms. Memory: 83008K Free: 71292K (86%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:30 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:30 PST 2012
+11 ms. Memory: 83008K Free: 69816K (84%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:30 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform10.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:30 PST 2012
+46 ms. Memory: 83008K Free: 66126K (80%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:30 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:30 PST 2012
+45 ms. Memory: 83008K Free: 77124K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform2.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+18 ms. Memory: 83008K Free: 68016K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+17 ms. Memory: 83008K Free: 65593K (79%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform3.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+16 ms. Memory: 83008K Free: 68197K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+17 ms. Memory: 83008K Free: 66036K (80%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform4.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+17 ms. Memory: 83008K Free: 68246K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+16 ms. Memory: 83008K Free: 65816K (79%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform5.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+16 ms. Memory: 83008K Free: 68187K (82%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+18 ms. Memory: 83008K Free: 65765K (79%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform6.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+39 ms. Memory: 83008K Free: 65219K (79%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+45 ms. Memory: 83008K Free: 76160K (92%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform7.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+17 ms. Memory: 83008K Free: 68802K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+15 ms. Memory: 83008K Free: 66303K (80%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform8.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+15 ms. Memory: 83008K Free: 69130K (83%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+15 ms. Memory: 83008K Free: 66761K (80%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:31 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFOnePlatform9.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:31 PST 2012
+135 ms. Memory: 83008K Free: 64714K (78%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:32 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:32 PST 2012
+113 ms. Memory: 83008K Free: 77607K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:32 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/PtidesPreemptUserEDFTwoAddSub.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:32 PST 2012
+25 ms. Memory: 83008K Free: 77613K (94%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:32 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:32 PST 2012
+24 ms. Memory: 83008K Free: 72062K (87%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:32 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicModalExample.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:32 PST 2012
+10 ms. Memory: 83008K Free: 64522K (78%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:32 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:32 PST 2012
+10 ms. Memory: 83008K Free: 78942K (95%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:32 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicMultiPlatformPowerSupply.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:32 PST 2012
+1009 ms. Memory: 83008K Free: 74354K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:33 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:33 PST 2012
+999 ms. Memory: 83008K Free: 59314K (71%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:34 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicPowerPlant.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:34 PST 2012
+225 ms. Memory: 83008K Free: 74672K (90%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:35 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:35 PST 2012
+219 ms. Memory: 83008K Free: 67163K (81%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:35 PST 2012
+------------------ testing $PTII/ptolemy/domains/ptides/test/auto/TIIPtidesBasicPowerPlantHeartbeat.xml
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:35 PST 2012
+68 ms. Memory: 83008K Free: 66284K (80%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:35 PST 2012
+auto.tcl: Setting watchdog for 200 seconds at Wed Jan 25 16:32:35 PST 2012
+72 ms. Memory: 83008K Free: 77512K (93%)
+util.testsuite.WatchDog.cancel(): canceling Wed Jan 25 16:32:35 PST 2012
+01/25/12 04:32:35
+Failed: 0  Total Tests: 191  ((Passed: 186, Newly Passed: 4)  Known Failed: 5) /ptII/ptolemy/domains/ptides/test
+CLASSPATH="../../../..:/ptII/lib/ptjacl.jar" "/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java" -Xmx1000M  "-Dptolemy.ptII.dir=/ptII"  tcl.lang.Shell alljtests.tcl
+dummy.tcl
+dummy.tcl

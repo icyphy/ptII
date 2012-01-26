@@ -191,8 +191,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * string as its name. The director is added to the list of
      * objects in the workspace. Increment the version number of the
      * workspace.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public FSMDirector() {
+    public FSMDirector() throws IllegalActionException, NameDuplicationException {
         super();
         _createAttribute();
     }
@@ -201,10 +203,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * Construct a director in the workspace with an empty name. The
      * director is added to the list of objects in the
      * workspace. Increment the version number of the workspace.
-     *
      * @param workspace The workspace of this director.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public FSMDirector(Workspace workspace) {
+    public FSMDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _createAttribute();
     }
@@ -460,7 +463,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             List enabledTransitions = controller
                     .enabledTransitions(transitionList, false);
             if (enabledTransitions.size() > 0) {
-                return _currentTime;
+                return getModelTime();
             }
             // The result returned below needs to be adjusted by the current offset.
             Time result = super.getModelNextIterationTime();
@@ -705,7 +708,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 for (TypedActor refinement : refinements) {
                     Director refinementDirector = refinement.getDirector();
                     if (refinementDirector instanceof Suspendable) {
-                        ((Suspendable) refinementDirector).suspend(_currentTime);
+                        ((Suspendable) refinementDirector).suspend(getModelTime());
                     }
                 }
             }
@@ -889,7 +892,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *                Not thrown in this base class.
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
-        _currentTime = newTime;
+        _localClock.setCurrentTime(newTime);
         // If you are setting model time to an offset, then you should
         // override the following after the call to here.
         _currentOffset = null;

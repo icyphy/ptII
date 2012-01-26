@@ -49,7 +49,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -437,7 +436,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         if (isEmbedded()) {
             Time environmentTime = ((Actor) getContainer()).getExecutiveDirector()
                     .getModelTime();
-            setAccumulatedSuspendTime(environmentTime.subtract(_currentTime));
+            setAccumulatedSuspendTime(environmentTime.subtract(getModelTime()));
         } else {
             setAccumulatedSuspendTime(_zeroTime);
         }
@@ -614,7 +613,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
             }
             setModelTime(outTime);
             if (_debugging) {
-                _debug("-- Setting current time to " + _currentTime
+                _debug("-- Setting current time to " + getModelTime()
                         + ", which aligns with the enclosing director's time of "
                         + executiveDirector.getModelTime()
                         + ", given the accumulated suspend time of "
@@ -713,7 +712,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         }
         super.setModelTimeToStartTime();
         if (_debugging) {
-            _debug("--- Set time to start time: " + _currentTime
+            _debug("--- Set time to start time: " + getModelTime()
                     + ", and updated accumulated suspend time to "
                     + _accumulatedSuspendTime);
         }
@@ -1077,7 +1076,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         synchronizeToRealTime.setExpression("false");
         synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
-        timeResolution.setVisibility(Settable.FULL);
         timeResolution.moveToLast();
 
         FixedPointScheduler scheduler = new FixedPointScheduler(this,

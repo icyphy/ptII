@@ -119,8 +119,10 @@ public class CTMultiSolverDirector extends CTDirector {
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      *  All the parameters take their default values.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public CTMultiSolverDirector() {
+    public CTMultiSolverDirector() throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -147,8 +149,10 @@ public class CTMultiSolverDirector extends CTDirector {
      *  Increment the version number of the workspace.
      *  All the parameters take their default values.
      *  @param workspace The workspace of this object.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public CTMultiSolverDirector(Workspace workspace) {
+    public CTMultiSolverDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -756,24 +760,6 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     public void setInitialStatesNotReady() {
         _initialStatesNotReady = true;
-    }
-
-    /** Set a new value to the current time of the model, where the new
-     *  time can be earlier than the current time to support rollback.
-     *  This overrides the setCurrentTime() in the Director base class.
-     *  This is a critical parameter in an execution, and the
-     *  actors are not supposed to call it.
-     *  @param newTime The new current simulation time.
-     */
-    public final void setModelTime(Time newTime) {
-        // This method is final for performance reason.
-        // NOTE: this feature is necessary for the CTMixedSignalDirector
-        // and CTEmbeddedDirector to roll back.
-        if (_debugging) {
-            _debug("----- Setting current time to " + newTime);
-        }
-
-        _currentTime = newTime;
     }
 
     /** Call the postfire() method on all continuous actors in the schedule.

@@ -30,6 +30,7 @@ package ptolemy.domains.continuous.lib;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Gaussian;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -97,6 +98,11 @@ public class BandlimitedNoise extends Gaussian {
         bandwidth = new Parameter(this, "bandwidth");
         bandwidth.setTypeEquals(BaseType.DOUBLE);
         bandwidth.setExpression("10.0");
+        
+        // Move the mean port to first and hide the trigger port.
+        // It makes no sense to trigger this actor.
+        mean.getPort().moveToFirst();
+        new Parameter(trigger, "_hide", BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -36,10 +36,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TimedDirector;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.actor.util.BooleanDependency;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.GeneralComparator;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TotallyOrderedSet;
@@ -54,7 +51,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -137,14 +133,16 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Green (hyzheng)
  */
 public abstract class CTDirector extends StaticSchedulingDirector implements
-        TimedDirector, CTGeneralDirector {
+        CTGeneralDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      *  All the parameters take their default values. A CTScheduler
      *  is created.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public CTDirector() {
+    public CTDirector() throws IllegalActionException, NameDuplicationException {
         this(null);
     }
 
@@ -185,8 +183,10 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *  All the parameters take their default values. A CTScheduler
      *  is created.
      *  @param workspace The workspace of this object.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public CTDirector(Workspace workspace) {
+    public CTDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _initParameters();
 
@@ -231,16 +231,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      */
     public Parameter minStepSize;
 
-    /** Starting time of the simulation. The default value is 0.0,
-     *  and the type is double.
-     */
-    public Parameter startTime;
-
-    /** Stop time of the simulation. The default value is Infinity,
-     *  and the type is double.
-     */
-    public Parameter stopTime;
-
     /** Indicator whether the execution will synchronize to real time. The
      *  default value is false, and the type is boolean.
      */
@@ -267,12 +257,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
             _debug("Updating CTDirector parameter: ", attribute.getName());
         }
 
-        if (attribute == startTime) {
-            _startTimeValue = ((DoubleToken) startTime.getToken())
-                    .doubleValue();
-        } else if (attribute == stopTime) {
-            _stopTimeValue = ((DoubleToken) stopTime.getToken()).doubleValue();
-        } else if (attribute == initStepSize) {
+        if (attribute == initStepSize) {
             double value = ((DoubleToken) initStepSize.getToken())
                     .doubleValue();
 
@@ -360,15 +345,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         CTDirector newObject = (CTDirector) super.clone(workspace);
         newObject._breakpoints = new TotallyOrderedSet(new GeneralComparator());
         return newObject;
-    }
-
-    /** Return a boolean dependency representing a model-time delay
-     *  of the specified amount.
-     *  @param delay A non-negative delay.
-     *  @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Override the fire() method of the super class. This method is
@@ -531,22 +507,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      */
     public Time getModelNextIterationTime() {
         return getIterationBeginTime().add(getCurrentStepSize());
-    }
-
-    /** Return the start time.
-     *  @return the start time.
-     */
-    public final Time getModelStartTime() {
-        // This method is final for performance reason.
-        return _startTime;
-    }
-
-    /** Return the stop time.
-     *  @return the stop time.
-     */
-    public final Time getModelStopTime() {
-        // This method is final for performance reason.
-        return _stopTime;
     }
 
     /** Return the suggested next step size. The suggested step size is
@@ -778,18 +738,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         _initializeLocalVariables();
 
         super.preinitialize();
-
-        // Time objects can only be initialized at the end of this method after
-        // the time scale and time resolution are evaluated.
-        // NOTE: Time resolution is provided by the preinitialize() method in
-        // the super class (Director). So, this method must be called
-        // after the super.preinitialize() is called.
-        // NOTE: _timeBase is not initialized here but in the initialize()
-        // method instead in order to provide more accurate real-time
-        // information.
-        _startTime = new Time(this, _startTimeValue);
-        _stopTime = new Time(this, _stopTimeValue);
-        _iterationBeginTime = _startTime;
+        _iterationBeginTime = getModelStartTime();
     }
 
     /** Set the current step size. Only CT directors can call this method.
@@ -804,6 +753,23 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
 
         _currentStepSize = stepSize;
     }
+    
+    /** Set a new value to the current time of the model, where
+     *  the new time must be no earlier than the current time.
+     *  This method overrides the base class to allow time to move
+     *  backwards.
+     *  @exception IllegalActionException If the new time is less than
+     *   the current time returned by getCurrentTime().
+     *  @param newTime The new current simulation time.
+     *  @see #getModelTime()
+     */
+    public void setModelTime(Time newTime) throws IllegalActionException {
+        if (_debugging) {
+            _debug("==== Set current time to: " + newTime);
+        }
+        _localClock.setCurrentTime(newTime);
+    }
+
 
     /** Set the suggested next step size. If the argument is larger than
      *  the maximum step size, then set the suggested next step size to
@@ -844,14 +810,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      */
     protected void _initParameters() {
         try {
-            startTime = new Parameter(this, "startTime");
-            startTime.setExpression("0.0");
-            startTime.setTypeEquals(BaseType.DOUBLE);
-
-            stopTime = new Parameter(this, "stopTime");
-            stopTime.setExpression("Infinity");
-            stopTime.setTypeEquals(BaseType.DOUBLE);
-
             initStepSize = new Parameter(this, "initStepSize");
             initStepSize.setExpression("0.1");
             initStepSize.setTypeEquals(BaseType.DOUBLE);
@@ -879,8 +837,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
             synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
             synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
-
-            timeResolution.setVisibility(Settable.FULL);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error: " + e);
@@ -1000,8 +956,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         _minStepSize = ((DoubleToken) minStepSize.getToken()).doubleValue();
         _valueResolution = ((DoubleToken) valueResolution.getToken())
                 .doubleValue();
-        _startTimeValue = ((DoubleToken) startTime.getToken()).doubleValue();
-        _stopTimeValue = ((DoubleToken) stopTime.getToken()).doubleValue();
 
         _currentSolver = null;
         _prefiredActors = new HashSet();
@@ -1064,15 +1018,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
 
     // Collection of actors that have been prefired()
     private Set _prefiredActors = new HashSet();
-
-    // Local copies of parameters.
-    private Time _startTime;
-
-    private double _startTimeValue;
-
-    private Time _stopTime;
-
-    private double _stopTimeValue;
 
     private double _suggestedNextStepSize;
 

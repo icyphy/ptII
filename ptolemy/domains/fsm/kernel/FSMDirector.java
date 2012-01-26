@@ -126,8 +126,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public FSMDirector() {
+    public FSMDirector() throws IllegalActionException, NameDuplicationException {
         super();
         _createAttribute();
     }
@@ -136,8 +138,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this director.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public FSMDirector(Workspace workspace) {
+    public FSMDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _createAttribute();
     }
@@ -438,7 +442,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             List enabledTransitions = controller
                     .enabledTransitions(transitionList);
             if (enabledTransitions.size() > 0) {
-                return _currentTime;
+                return getModelTime();
             }
             return super.getModelNextIterationTime();
         } catch (IllegalActionException e) {
@@ -823,19 +827,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         if (container != null) {
             container.setModelErrorHandler(this);
         }
-    }
-
-    /** Set a new value to the current time of the model, where
-     *  the new time can be earlier than the current time.
-     *  It allows the set time to be earlier than the current time.
-     *  This feature is needed when switching between timed and untimed
-     *  models.
-     *
-     *  @param newTime The new current simulation time.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void setModelTime(Time newTime) throws IllegalActionException {
-        _currentTime = newTime;
     }
 
     /** Transfer data from the input port of the container to the ports

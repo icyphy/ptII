@@ -622,7 +622,7 @@ public class RealTimeComposite extends MirrorComposite {
                 return ((Actor) getContainer()).getExecutiveDirector()
                         .getModelTime();
             } else {
-                return _currentTime;
+                return super.getModelTime();
             }
         }
 
@@ -974,7 +974,7 @@ public class RealTimeComposite extends MirrorComposite {
                         }
                         // Current time of the director should match the frame time.
                         // This is the view of time that should be presented to any inside actors.
-                        _currentTime = frame.time;
+                        _localClock.setCurrentTime(frame.time);
 
                         // Note that there may not be any tokens here, since there
                         // may not be any inputs. We still want to iterate the

@@ -32,10 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.TimedDirector;
-import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CalendarQueue;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.kernel.CompositeEntity;
@@ -107,7 +104,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (mudit)
  @Pt.AcceptedRating Green (davisj)
  */
-public class TimedPNDirector extends PNDirector implements TimedDirector {
+public class TimedPNDirector extends PNDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -122,7 +119,6 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     public TimedPNDirector() throws IllegalActionException,
             NameDuplicationException {
         super();
-        timeResolution.setVisibility(Settable.FULL);
     }
 
     /**Construct a director in the  workspace with an empty name.
@@ -140,7 +136,6 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     public TimedPNDirector(Workspace workspace) throws IllegalActionException,
             NameDuplicationException {
         super(workspace);
-        timeResolution.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the given container with the given name.
@@ -161,7 +156,6 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     public TimedPNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        timeResolution.setVisibility(Settable.FULL);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -191,15 +185,6 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
                 new TimedEvent.TimeComparator());
         newObject._delayBlockCount = 0;
         return newObject;
-    }
-
-    /** Return a boolean dependency representing a model-time delay
-     *  of the specified amount.
-     *  @param delay A non-negative delay.
-     *  @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Suspend the calling process until the time has advanced to at least the

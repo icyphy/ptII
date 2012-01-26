@@ -621,7 +621,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  of the current model time.
      */
     public Tag getModelTag() {
-        return new Tag(_currentTime, _microstep);
+        return new Tag(getModelTime(), _microstep);
     }
 
     /** Get the simulated platform physical time of the environment, which is the oracle
@@ -879,7 +879,7 @@ public class PtidesBasicDirector extends DEDirector {
      *
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
-        int comparisonResult = _currentTime.compareTo(newTime);
+        int comparisonResult = getModelTime().compareTo(newTime);
 
         if (comparisonResult > 0) {
             if (_debugging) {
@@ -893,7 +893,7 @@ public class PtidesBasicDirector extends DEDirector {
         } else {
             // the new time is equal to the current time, do nothing.
         }
-        _currentTime = newTime;
+        _localClock.setCurrentTime(newTime);
     }
 
     /** Set the timestamp and microstep of the current time.
@@ -2347,7 +2347,7 @@ public class PtidesBasicDirector extends DEDirector {
         double oracleTime = _getOraclePhysicalTag().timestamp.getDoubleValue(); 
         double physicalTime = getPlatformPhysicalTag(platformTimeClock).timestamp
         .getDoubleValue(); 
-        double modelTime = _currentTime.getDoubleValue();
+        double modelTime = getModelTime().getDoubleValue();
         if (_executionTimeListeners != null) {
             for (ExecutionTimeListener listener : _executionTimeListeners) {
                 listener.event(actor, oracleTime, physicalTime, modelTime, event);
@@ -2550,7 +2550,7 @@ public class PtidesBasicDirector extends DEDirector {
             if (compare > 0) {
                 break;
             } else if (compare == 0) {
-                Time lastModelTime = _currentTime;
+                Time lastModelTime = getModelTime();
                 int lastMicrostep = _microstep;
                 _realTimeInputEventQueue.poll();
 //                if (_isNetworkInputPort(realTimeEvent.port)) {
@@ -2587,7 +2587,7 @@ public class PtidesBasicDirector extends DEDirector {
             inputDelay = 0.0;
         }
         if (inputDelay == 0.0) {
-            Time lastModelTime = _currentTime;
+            Time lastModelTime = getModelTime();
             int lastMicrostep = _microstep;
             // If transferring a network input, make it always safe to process.
             if (_isNetworkInputPort(port)) {
@@ -2739,7 +2739,7 @@ public class PtidesBasicDirector extends DEDirector {
         // Deadline of an actuation event is the timestamp subtracted by the
         // deviceDelay (d_a) at the actuators.
         Double actuatorDeviceDelay = _getDoubleParameterValue(port, "deviceDelay");
-        Time deadline = _currentTime;
+        Time deadline = getModelTime();
         if (actuatorDeviceDelay != null) {
             deadline = deadline.subtract(actuatorDeviceDelay);
         }
@@ -2787,14 +2787,14 @@ public class PtidesBasicDirector extends DEDirector {
                         // A real time actuation event does not need to save the
                         // timestamp.
                         RealTimeEvent tokenEvent = new RealTimeEvent(port, i,
-                                t, new Tag(_currentTime, _microstep), null);
+                                t, new Tag(getModelTime(), _microstep), null);
                         _realTimeOutputEventQueue.add(tokenEvent);
                         // Wait until platform physical time is equal to the
                         // timestamp of the event to transfer the output to the
                         // actuator. Notice even though the deadline of the
                         // event is timestamp - d_a, the time of actuation
                         // occurs at physical time equal to the timestamp.
-                        _fireAtPlatformTime(_currentTime, platformTimeClock);
+                        _fireAtPlatformTime(getModelTime(), platformTimeClock);
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.

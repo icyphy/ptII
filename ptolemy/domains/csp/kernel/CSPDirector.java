@@ -36,10 +36,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.CompositeProcessDirector;
-import ptolemy.actor.util.BooleanDependency;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -48,7 +45,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
@@ -118,25 +114,26 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Green (kienhuis)
  @see ptolemy.actor.Director
  */
-public class CSPDirector extends CompositeProcessDirector implements
-        TimedDirector {
+public class CSPDirector extends CompositeProcessDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public CSPDirector() {
+    public CSPDirector() throws IllegalActionException, NameDuplicationException {
         super();
-        timeResolution.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this object.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public CSPDirector(Workspace workspace) {
+    public CSPDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        timeResolution.setVisibility(Settable.FULL);
     }
 
     /** Construct a director in the given container with the given name.
@@ -155,7 +152,6 @@ public class CSPDirector extends CompositeProcessDirector implements
     public CSPDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        timeResolution.setVisibility(Settable.FULL);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -186,15 +182,6 @@ public class CSPDirector extends CompositeProcessDirector implements
         newObject._actorsDelayed = 0;
         newObject._delayedActorList = new LinkedList();
         return newObject;
-    }
-
-    /** Return a boolean dependency representing a model-time delay
-     *  of the specified amount.
-     *  @param delay A non-negative delay.
-     *  @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Reset flags to initialize values.

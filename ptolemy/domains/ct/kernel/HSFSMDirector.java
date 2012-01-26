@@ -77,8 +77,10 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public HSFSMDirector() {
+    public HSFSMDirector() throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -103,8 +105,10 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this director.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public HSFSMDirector(Workspace workspace) {
+    public HSFSMDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 

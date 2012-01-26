@@ -35,23 +35,18 @@ import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.ProcessThread;
-import ptolemy.actor.util.BooleanDependency;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -112,8 +107,7 @@ import ptolemy.kernel.util.Workspace;
  * @see ptolemy.domains.dde.kernel.FeedBackDelay
  * @see ptolemy.domains.dde.kernel.NullToken
  */
-public class DDEDirector extends CompositeProcessDirector implements
-        TimedDirector {
+public class DDEDirector extends CompositeProcessDirector {
     /**
      * Construct a DDEDirector in the default workspace with an empty string as
      * its name. The director is added to the list of objects in the workspace.
@@ -128,8 +122,7 @@ public class DDEDirector extends CompositeProcessDirector implements
         super();
 
         double value = PrioritizedTimedQueue.ETERNITY;
-        stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
-        timeResolution.setVisibility(Settable.FULL);
+        stopTime.setToken(new DoubleToken(value));
     }
 
     /**
@@ -147,8 +140,7 @@ public class DDEDirector extends CompositeProcessDirector implements
         super(workspace);
 
         double value = PrioritizedTimedQueue.ETERNITY;
-        stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
-        timeResolution.setVisibility(Settable.FULL);
+        stopTime.setToken(new DoubleToken(value));
     }
 
     /**
@@ -172,33 +164,11 @@ public class DDEDirector extends CompositeProcessDirector implements
         super(container, name);
 
         double value = PrioritizedTimedQueue.ETERNITY;
-        stopTime = new Parameter(this, "stopTime", new DoubleToken(value));
-        timeResolution.setVisibility(Settable.FULL);
+        stopTime.setToken(new DoubleToken(value));
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /**
-     * The stopTime parameter specifies the completion time of a model's
-     * execution. During the initialize() method the value of this parameter is
-     * passed to all receivers governed by this director. The default value of
-     * stopTime is <I>PrioritizedTimedQueue.ETERNITY</I> indicating that
-     * execution will continue indefinitely.
-     */
-    public Parameter stopTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return a boolean dependency representing a model-time delay
-     *  of the specified amount.
-     *  @param delay A non-negative delay.
-     *  @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return BooleanDependency.OTIMES_IDENTITY;
-    }
 
     /**
      * Schedule an actor to be fired at the specified time. If the thread that

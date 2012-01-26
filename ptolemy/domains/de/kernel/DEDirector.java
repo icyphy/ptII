@@ -39,14 +39,11 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
-import ptolemy.actor.TimedDirector;
-import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -240,12 +237,14 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 public class DEDirector extends Director implements SuperdenseTimeDirector,
-        TimedDirector, Suspendable {
+        Suspendable {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public DEDirector() {
+    public DEDirector() throws IllegalActionException, NameDuplicationException {
         super();
         _initParameters();
     }
@@ -254,8 +253,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this object.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public DEDirector(Workspace workspace) {
+    public DEDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _initParameters();
     }
@@ -313,24 +314,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      */
     public Parameter minBinCount;
 
-    /** The local time of model when this director is initialized.
-     *  By default, this is blank, which
-     *  indicates that the start time is the current time of the enclosing
-     *  director when initialize() is invoked, or 0.0 if there is no
-     *  enclosing director. This can be set to a double value to explicitly
-     *  specify a start time.
-     *  Note that if <i>startTime</i> is given a value
-     *  that is different from the start time of the enclosing
-     *  director, then local time may be ahead of or behind
-     *  environment time during execution.
-     */
-    public Parameter startTime;
-
-    /** The stop time of the model.  This parameter must contain a
-     *  DoubleToken. The value defaults to Infinity.
-     */
-    public Parameter stopTime;
-
     /** Specify whether the execution stops when the queue is empty.
      *  This parameter must contain a
      *  BooleanToken. If this parameter is true, the
@@ -384,18 +367,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == startTime) {
-            DoubleToken startTimeValue = (DoubleToken) startTime.getToken();
-            if (startTimeValue == null) {
-                _startTime = null;
-            } else {
-                _startTime = new Time(this, startTimeValue.doubleValue());
-            }
-        } else if (attribute == stopTime) {
-            double stopTimeValue = ((DoubleToken) stopTime.getToken())
-                    .doubleValue();
-            _stopTime = new Time(this, stopTimeValue);
-        } else if (attribute == stopWhenQueueIsEmpty) {
+        if (attribute == stopWhenQueueIsEmpty) {
             _stopWhenQueueIsEmpty = ((BooleanToken) stopWhenQueueIsEmpty
                     .getToken()).booleanValue();
         } else if (attribute == synchronizeToRealTime) {
@@ -430,15 +402,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         newObject._realStartTime = 0;
         newObject._stopFireRequested = false;
         return newObject;
-    }
-
-    /** Return a boolean dependency representing a model-time delay
-     *  of the specified amount.
-     *  @param delay A non-negative delay.
-     *  @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Return a string that describes the depths of actors and their ports.
@@ -787,36 +750,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         return aFutureTime;
     }
 
-    /** Return the start time parameter value, if it has been explicitly
-     *  set. Otherwise, return the current time of the enclosing director,
-     *  if there is one, and return a Time with value 0.0 otherwise.
-     *  @return the start time parameter value.
-     *  @throws IllegalActionException If the executive director throws it.
-     */
-    public final Time getModelStartTime() throws IllegalActionException {
-        
-        // This method is final for performance reason.
-        if (_startTime == null) {
-            if (isEmbedded()) {
-                // This implementation assumes this method is only called
-                // during initialize. Is this a valid assumption?
-                return ((Actor) getContainer()).getExecutiveDirector()
-                        .getModelTime();
-            } else {
-                return _zeroTime;
-            }
-        }
-        return _startTime;
-    }
-
-    /** Return the stop time parameter value.
-     *  @return the stop time parameter value.
-     */
-    public final Time getModelStopTime() {
-        // This method is final for performance reason.
-        return _stopTime;
-    }
-
     /** Return the system time at which the model begins executing.
      *  That is, the system time (in milliseconds) when the initialize()
      *  method of the director is called.
@@ -849,10 +782,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  the specified time resolution. To avoid this loss, use the
      *  {@link #getModelStopTime()} instead.</p>
      *  @return the stop time.
+     *  @throws IllegalActionException If getModelStopTime() throws it.
      *  @deprecated As Ptolemy II 4.1, use {@link #getModelStopTime()}
      *  instead.
      */
-    public final double getStopTime() {
+    public final double getStopTime() throws IllegalActionException {
         // This method is final for performance reason.
         return getModelStopTime().getDoubleValue();
     }
@@ -926,8 +860,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // a guideline for an embedded Continuous model to know how much
         // further to integrate into future. But only do this if the
         // stop time is finite.
-        if (!_stopTime.isPositiveInfinite()) {
-            fireAt((Actor) getContainer(), _stopTime, 1);
+        Time stopTime = getModelStopTime();
+        if (!stopTime.isPositiveInfinite()) {
+            fireAt((Actor) getContainer(), stopTime, 1);
         }
 
         if (isEmbedded() && !_eventQueue.isEmpty()) {
@@ -957,7 +892,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         if (isEmbedded()) {
             Time environmentTime = ((Actor) getContainer()).getExecutiveDirector()
                     .getModelTime();
-            setAccumulatedSuspendTime(environmentTime.subtract(_currentTime));
+            setAccumulatedSuspendTime(environmentTime.subtract(getModelTime()));
         } else {
             setAccumulatedSuspendTime(_zeroTime);
         }
@@ -1035,7 +970,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // 2. The event queue is not empty, but the current time exceeds
         // the stop time.
         if (moreOutputsToTransfer) {
-            fireContainerAt(_currentTime);
+            fireContainerAt(getModelTime());
         } else if (_noMoreActorsToFire
                 && (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
             if (_debugging) {
@@ -1131,7 +1066,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             }
             setModelTime(outTime);
             if (_debugging) {
-                _debug("-- Setting current time to " + _currentTime
+                _debug("-- Setting current time to " + getModelTime()
                         + ", which aligns with the enclosing director's time of "
                         + executiveDirector.getModelTime()
                         + ", given the accumulated suspend time of "
@@ -1417,7 +1352,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         }
         super.setModelTimeToStartTime();
         if (_debugging) {
-            _debug("--- Set time to start time: " + _currentTime
+            _debug("--- Set time to start time: " + getModelTime()
                     + ", and updated accumulated suspend time to "
                     + _accumulatedSuspendTime);
         }
@@ -2457,16 +2392,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     private void _initParameters() {
         _verbose = true;
         try {
-            
-            _zeroTime = new Time(this, 0.0);
-
-            startTime = new Parameter(this, "startTime");
-            startTime.setTypeEquals(BaseType.DOUBLE);
-
-            stopTime = new Parameter(this, "stopTime");
-            stopTime.setExpression("Infinity");
-            stopTime.setTypeEquals(BaseType.DOUBLE);
-
             stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty");
             stopWhenQueueIsEmpty.setExpression("true");
             stopWhenQueueIsEmpty.setTypeEquals(BaseType.BOOLEAN);
@@ -2490,7 +2415,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             binCountFactor.setTypeEquals(BaseType.INT);
             binCountFactor.setVisibility(Settable.EXPERT);
 
-            timeResolution.setVisibility(Settable.FULL);
             timeResolution.moveToLast();
             
             enforceMicrostepSemantics = new Parameter(this, "enforceMicrostepSemantics");
@@ -2560,12 +2484,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0;
 
-    /** Start time. */
-    private transient Time _startTime;
-
-    /** Stop time. */
-    private transient Time _stopTime;
-
     /** Decide whether the simulation should be stopped when there's no more
      *  events in the global event queue. By default, its value is 'true',
      *  meaning that the simulation will stop under that circumstances.
@@ -2579,9 +2497,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      */
     private boolean _synchronizeToRealTime;
     
-    /** Time with value 0.0. */
-    private Time _zeroTime;
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

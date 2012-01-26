@@ -40,12 +40,9 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TimedDirector;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.sched.Scheduler;
-import ptolemy.actor.util.BooleanDependency;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -194,7 +191,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (chf)
  @Pt.AcceptedRating Yellow (vogel)
  */
-public class DTDirector extends SDFDirector implements TimedDirector {
+public class DTDirector extends SDFDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -244,15 +241,6 @@ public class DTDirector extends SDFDirector implements TimedDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return a boolean dependency representing a model-time delay
-     *  of the specified amount.
-     *  @param delay A non-negative delay.
-     *  @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return BooleanDependency.OTIMES_IDENTITY;
-    }
 
     /** Go through the schedule and iterate every actor with calls to
      *  prefire() , fire() , and postfire().  If this director is not
@@ -600,17 +588,6 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     public void setActorLocalTime(Time newTime, Actor actor) {
         //DTActor dtActor = (DTActor) _allActorsTable.get(actor);
         //dtActor.localTime = newTime;
-    }
-
-    /** Set a new value to the current time of the model, where
-     *  the new time may be earlier than the current time.
-     *  Setting the time back to the past is allowed in DT.
-     *
-     *  @param newTime The new current simulation time.
-     */
-    public void setModelTime(Time newTime) {
-        // _currentTime is inherited from base Director
-        _currentTime = newTime;
     }
 
     /** Override the base class to ensure that the scheduler is an
@@ -1148,14 +1125,15 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      *    - create a new receiver table to cache all receivers contained
      *    - set default number of iterations
      *    - set period value
+     * @throws IllegalActionException If initializing time fails.
      */
-    private void _init() {
+    private void _init() throws IllegalActionException {
         // Change the default period.
         period.setExpression("1.0");
         _reset();
     }
 
-    private void _reset() {
+    private void _reset() throws IllegalActionException {
         _actorTable = new ArrayList();
         _receiverTable = new ArrayList();
         _allActorsTable = new Hashtable();

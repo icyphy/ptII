@@ -47,10 +47,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TimedDirector;
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.util.BooleanDependency;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.RecordToken;
@@ -109,8 +106,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (tfeng)
  @see DEDirector
  */
-public class PteraDirector extends Director implements TimedDirector,
-        ValueListener {
+public class PteraDirector extends Director implements ValueListener {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -205,15 +201,6 @@ public class PteraDirector extends Director implements TimedDirector,
         newObject._eventsListeningToVariables = new HashMap<Variable, Set<TimedEvent>>();
         newObject._initializedRefinements = new HashSet<TypedActor>();
         return newObject;
-    }
-
-    /** Return a boolean dependency representing a model-time delay
-     *  of the specified amount.
-     *  @param delay A non-negative delay.
-     *  @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Find the first occurrence of the given event in the event queue. If
@@ -890,7 +877,7 @@ public class PteraDirector extends Director implements TimedDirector,
         if (_isInController()) {
             PteraModalModel modalModel = (PteraModalModel) getContainer()
                     .getContainer();
-            _currentTime = modalModel.getDirector().getModelTime();
+            _localClock.setCurrentTime(modalModel.getDirector().getModelTime());
 
             Iterator<?> entities = controller.deepEntityList().iterator();
             List<Event> initialEvents = new LinkedList<Event>();
@@ -927,7 +914,7 @@ public class PteraDirector extends Director implements TimedDirector,
                         arguments = new RecordToken(tokenNames, tokenValues);
                     }
                 }
-                TimedEvent newEvent = new TimedEvent(event, _currentTime,
+                TimedEvent newEvent = new TimedEvent(event, getModelTime(),
                         arguments, null, false);
                 _addEvent(newEvent);
             }
@@ -935,7 +922,7 @@ public class PteraDirector extends Director implements TimedDirector,
                 _requestFiring();
             }
         } else {
-            TimedEvent newEvent = new TimedEvent(controller, _currentTime,
+            TimedEvent newEvent = new TimedEvent(controller, getModelTime(),
                     null, null, false);
             _addEvent(newEvent);
             _initializedRefinements.add(controller);

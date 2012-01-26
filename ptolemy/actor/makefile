@@ -93,6 +93,7 @@ JSRCS = \
 	InvariantViolationException.java \
 	IntermediateReceiver.java \
 	LazyTypedCompositeActor.java \
+	LocalClock.java \
 	Mailbox.java \
 	Manager.java \
 	NoRoomException.java \
@@ -106,7 +107,6 @@ JSRCS = \
 	StreamExecutionListener.java \
 	SuperdenseTimeDirector.java \
 	TimedActor.java \
-	TimedDirector.java \
 	TokenGotEvent.java \
 	TokenGotListener.java \
 	TokenSentEvent.java \

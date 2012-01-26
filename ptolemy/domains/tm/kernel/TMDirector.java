@@ -37,10 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TimedDirector;
-import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CalendarQueue;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -56,7 +53,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -138,12 +134,14 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (janneck)
  @see ptolemy.domains.de.kernel.DEEvent
  */
-public class TMDirector extends Director implements TimedDirector {
+public class TMDirector extends Director {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public TMDirector() {
+    public TMDirector() throws IllegalActionException, NameDuplicationException {
         super();
         _initParameters();
     }
@@ -152,8 +150,10 @@ public class TMDirector extends Director implements TimedDirector {
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this object.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public TMDirector(Workspace workspace) {
+    public TMDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _initParameters();
     }
@@ -193,17 +193,6 @@ public class TMDirector extends Director implements TimedDirector {
      *  assumption in Synchronous/Reactive models).
      */
     public Parameter defaultTaskExecutionTime;
-
-    /** Starting time of the simulation. The default value is 0.0, of
-     *  type DoubleToken.
-     */
-    public Parameter startTime;
-
-    /** The stop time of the model, only effective when this director
-     *  is at the top level.  This parameter is of type double.
-     *  The value defaults to Double.MAX_VALUE.
-     */
-    public Parameter stopTime;
 
     /** Indicating whether the execution synchronizes to the
      *  real time. This parameter has default value false, of type boolean.
@@ -247,21 +236,7 @@ public class TMDirector extends Director implements TimedDirector {
             _debug("Updating TMDirector parameter", attribute.getName());
         }
 
-        if (attribute == stopTime) {
-            double stopTimeValue = ((DoubleToken) stopTime.getToken())
-                    .doubleValue();
-
-            if (stopTimeValue < 0.0) {
-                throw new IllegalActionException(this,
-                        " stopTime cannot be less than 0.");
-            }
-
-            _stopTime = new Time(this, stopTimeValue);
-        } else if (attribute == startTime) {
-            double startTimeValue = ((DoubleToken) startTime.getToken())
-                    .doubleValue();
-            _startTime = new Time(this, startTimeValue);
-        } else if (attribute == defaultTaskExecutionTime) {
+        if (attribute == defaultTaskExecutionTime) {
             if (((DoubleToken) defaultTaskExecutionTime.getToken())
                     .doubleValue() < 0.0) {
                 throw new IllegalActionException(this,
@@ -275,15 +250,6 @@ public class TMDirector extends Director implements TimedDirector {
         } else {
             super.attributeChanged(attribute);
         }
-    }
-
-    /** Return a boolean dependency representing a model-time delay
-     *  of the specified amount.
-     *  @param delay A non-negative delay.
-     *  @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Execute the model for one iteration. It first
@@ -305,7 +271,7 @@ public class TMDirector extends Director implements TimedDirector {
             _debug("Fire: ");
         }
 
-        _nextIterationTime = _stopTime;
+        _nextIterationTime = getModelStopTime();
 
         // First look at interrupt events.
         while (!_interruptQueue.isEmpty()) {
@@ -511,7 +477,7 @@ public class TMDirector extends Director implements TimedDirector {
                     + " request an interrupt in the past.");
         }
 
-        if (time.compareTo(_stopTime) <= 0) {
+        if (time.compareTo(getModelStopTime()) <= 0) {
             // create an interrupt event.
             DEEvent interruptEvent = new DEEvent(actor, time, 0, 0);
             _interruptQueue.put(interruptEvent);
@@ -748,7 +714,7 @@ public class TMDirector extends Director implements TimedDirector {
         }
 
         if (!isEmbedded()) {
-            if (getModelTime().compareTo(_stopTime) >= 0) {
+            if (getModelTime().compareTo(getModelStopTime()) >= 0) {
                 return false;
             }
 
@@ -883,15 +849,6 @@ public class TMDirector extends Director implements TimedDirector {
     // different defaults.
     private void _initParameters() {
         try {
-            _startTime = new Time(this);
-            _stopTime = new Time(this, Double.POSITIVE_INFINITY);
-
-            startTime = new Parameter(this, "startTime", new DoubleToken(
-                    _startTime.getDoubleValue()));
-            startTime.setTypeEquals(BaseType.DOUBLE);
-            stopTime = new Parameter(this, "stopTime", new DoubleToken(
-                    "Infinity"));
-            stopTime.setTypeEquals(BaseType.DOUBLE);
             preemptive = new Parameter(this, "preemptive", new BooleanToken(
                     false));
 
@@ -903,8 +860,6 @@ public class TMDirector extends Director implements TimedDirector {
             synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime", new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
-
-            timeResolution.setVisibility(Settable.FULL);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName()
                     + "fail to initialize parameters.");
@@ -957,9 +912,4 @@ public class TMDirector extends Director implements TimedDirector {
 
     // The real start time in milliseconds count.
     private long _realStartTime;
-
-    // Local caches of parameter values.
-    private Time _startTime;
-
-    private Time _stopTime;
 }

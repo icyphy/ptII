@@ -40,14 +40,11 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TimedDirector;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.actor.util.BooleanDependency;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -89,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
  @see GiottoReceiver
  */
 public class GiottoDirector extends StaticSchedulingDirector implements
-        TimedDirector, Decorator {
+        Decorator {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -162,15 +159,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         } else {
             super.attributeChanged(attribute);
         }
-    }
-
-    /** Return a boolean dependency representing a model-time delay
-     *  of the specified amount.
-     *  @param delay A non-negative delay.
-     *  @return A boolean dependency representing a delay.
-     */
-    public Dependency delayDependency(double delay) {
-        return BooleanDependency.OTIMES_IDENTITY;
     }
 
     /** Fire a complete iteration and advance time to the current time plus
@@ -887,8 +875,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
         synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime",
                 new BooleanToken(false));
-
-        timeResolution.setVisibility(Settable.FULL);
     }
 
     // Request that the container of this director be refired in the future.

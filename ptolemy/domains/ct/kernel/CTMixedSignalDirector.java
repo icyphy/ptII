@@ -94,8 +94,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      *  All the parameters take their default values.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public CTMixedSignalDirector() {
+    public CTMixedSignalDirector() throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -104,8 +106,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  Increment the version number of the workspace.
      *  All the parameters take their default values.
      *  @param workspace The workspace of this object.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public CTMixedSignalDirector(Workspace workspace) {
+    public CTMixedSignalDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 

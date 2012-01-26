@@ -87,8 +87,10 @@ public class GRDirector extends StaticSchedulingDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public GRDirector() {
+    public GRDirector() throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -98,8 +100,10 @@ public class GRDirector extends StaticSchedulingDirector {
      *  Increment the version number of the workspace.
      *
      *  @param workspace The workspace of this object.
+     *  @throws NameDuplicationException If construction of Time objects fails.
+     *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public GRDirector(Workspace workspace) {
+    public GRDirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
