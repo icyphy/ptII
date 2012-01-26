@@ -141,6 +141,11 @@ public class PortParameter extends Parameter {
             // If we get to here, we know the container is a ComponentEntity,
             // so the cast is safe.
             _port = new ParameterPort((ComponentEntity) container, name);
+            // Since we are creating a port here, and we might be
+            // contained by class definition somewhere above in the hierarchy,
+            // we have to make sure to propagate the existence of the
+            // port to any instances or derived classes.
+            _port.propagateExistence();
         }
     }
 
@@ -212,16 +217,6 @@ public class PortParameter extends Parameter {
         }
     }
 
-    /** Return the associated port.  Normally, there always is one,
-     *  but if setContainer() is called to change the container, then
-     *  this might return null. Also, during cloning, there is a
-     *  transient during which this may return null.
-     *  @return The associated port.
-     */
-    public ParameterPort getPort() {
-        return _port;
-    }
-
     /** Clone the parameter. This overrides the base class to remove
      *  the current association with a port.  It is assumed that the
      *  port will also be cloned, and when the containers are set of
@@ -239,6 +234,16 @@ public class PortParameter extends Parameter {
         // that port is cloned and the container of both is set.
         newObject._port = null;
         return newObject;
+    }
+
+    /** Return the associated port.  Normally, there always is one,
+     *  but if setContainer() is called to change the container, then
+     *  this might return null. Also, during cloning, there is a
+     *  transient during which this may return null.
+     *  @return The associated port.
+     */
+    public ParameterPort getPort() {
+        return _port;
     }
 
     /** Set the container of this parameter. If the container is different
