@@ -198,6 +198,10 @@ test Test-1.5 {Export} {
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="startTime" class="ptolemy.data.expr.Parameter">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
         </property>
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
