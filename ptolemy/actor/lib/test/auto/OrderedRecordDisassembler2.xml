@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="RecordDisassembler2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="OrderedRecordDisassembler2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -66,7 +66,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+    <entity name="OrderedRecordAssembler" class="ptolemy.actor.lib.OrderedRecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="252.0, 167.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -144,9 +144,9 @@
     </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="Ramp2.output" relation="relation3"/>
-    <link port="RecordAssembler.output" relation="relation4"/>
-    <link port="RecordAssembler.a" relation="relation"/>
-    <link port="RecordAssembler.b" relation="relation3"/>
+    <link port="OrderedRecordAssembler.output" relation="relation4"/>
+    <link port="OrderedRecordAssembler.a" relation="relation"/>
+    <link port="OrderedRecordAssembler.b" relation="relation3"/>
     <link port="RecordDisassembler.input" relation="relation4"/>
     <link port="RecordDisassembler.a" relation="relation2"/>
     <link port="RecordDisassembler.b" relation="relation5"/>
