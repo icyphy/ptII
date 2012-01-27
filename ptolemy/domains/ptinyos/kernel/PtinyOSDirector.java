@@ -2195,8 +2195,6 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             eventPort = new Parameter(this, "eventPort");
             eventPort.setExpression("commandPort + 1");
 
-            // Make timeResolution SharedParameter (from base class) visible.
-            timeResolution.setVisibility(Settable.FULL);
             timeResolution.moveToLast();
 
             // Set node ID to a starting value of 1.
