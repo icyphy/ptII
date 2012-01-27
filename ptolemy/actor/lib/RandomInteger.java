@@ -27,8 +27,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** Actor for generating random integers.
- *  Generated integers are uniformly sampled from the range of 32-bit integers.
+/** 
+ *  Generated integers that are uniformly sampled from the range of
+ *  32-bit integers.
  *
  *  @author Ben Lickly
  *  @version $Id$
@@ -78,7 +79,7 @@ public class RandomInteger extends RandomSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /** The random integer for the current iteration. */
     private int _current;
-
 }

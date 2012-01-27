@@ -18,6 +18,10 @@
 	  <doc>Create a sequence of gaussian random variables</doc>
 	</entity>
 
+        <entity name="RandomInteger" class="ptolemy.actor.lib.RandomInteger">
+          <doc>Create a sequence of integers that are uniformly sampled from the range 32-bit integers</doc>
+        </entity>
+
         <entity name="Rician" class="ptolemy.actor.lib.Rician">
           <doc>Create an array of rician random variables</doc>
         </entity>
