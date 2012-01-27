@@ -333,8 +333,14 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
             ProductLatticeOntologySolver solver, Object component)
             throws IllegalActionException {
         List<LatticeOntologyAdapter> tupleAdapters = new ArrayList<LatticeOntologyAdapter>();
-        List<Ontology> tupleOntologies = (solver.getOntology())
-                .getLatticeOntologies();
+        ProductLatticeOntology productOntology = solver.getOntology();
+        if (productOntology == null) {
+            throw new IllegalActionException(solver, "Can not apply a " +
+                    ProductLatticeOntologySolver.class.getSimpleName() +
+                    " that does not contain a " +
+                    ProductLatticeOntology.class.getSimpleName() + ".");
+        }
+        List<Ontology> tupleOntologies = productOntology.getLatticeOntologies();
         List<LatticeOntologySolver> containedSolvers = solver
                 .getAllContainedOntologySolvers();
 
