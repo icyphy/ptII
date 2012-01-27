@@ -32,7 +32,9 @@ package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -92,9 +94,11 @@ public class Gaussian extends RandomSource implements Rollbackable {
         output.setTypeEquals(BaseType.DOUBLE);
         mean = new PortParameter(this, "mean", new DoubleToken(0.0));
         mean.setTypeEquals(BaseType.DOUBLE);
+        new Parameter(mean.getPort(), "_showName", BooleanToken.TRUE);
         standardDeviation = new PortParameter(this, "standardDeviation");
         standardDeviation.setExpression("1.0");
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
+        new Parameter(standardDeviation.getPort(), "_showName", BooleanToken.TRUE);
     }
 
     /**     
