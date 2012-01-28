@@ -2697,6 +2697,14 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  has its container set to the specified container.
      *  This base class ensures that the returned object
      *  is in the same workspace as the container.
+     *  <p>
+     *  NOTE: Any object that creates objects in its
+     *  constructor that it does not contain must override
+     *  this method and call propagateExistence() on those
+     *  objects. Otherwise, those objects will not be
+     *  propagated to subclasses or instances when this
+     *  object is contained by a class definition.
+     *  See PortParameter for an example.
      *  @param container Object to contain the new object.
      *  @exception IllegalActionException If the object
      *   cannot be cloned.
