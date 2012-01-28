@@ -141,11 +141,6 @@ public class PortParameter extends Parameter {
             // If we get to here, we know the container is a ComponentEntity,
             // so the cast is safe.
             _port = new ParameterPort((ComponentEntity) container, name);
-            // Since we are creating a port here, and we might be
-            // contained by class definition somewhere above in the hierarchy,
-            // we have to make sure to propagate the existence of the
-            // port to any instances or derived classes.
-            _port.propagateExistence();
         }
     }
 
@@ -408,19 +403,38 @@ public class PortParameter extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    //    /** Check that the specified container is of a suitable class for
-    //     *  this parameter.
-    //     *  @param container The proposed container.
-    //     *  @exception IllegalActionException If the container is not an
-    //     *   instance of Entity.
-    //     */
-    //    protected void _checkContainer(Entity container)
-    //            throws IllegalActionException {
-    //        if (!(container instanceof Entity)) {
-    //            throw new IllegalActionException(this,
-    //                    "PortParameter can only be used in an instance of Entity.");
-    //        }
-    //    }
+    /** Propagate existence of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as the container
+     *  of this one, or an exception will be thrown. In this
+     *  base class, this object is cloned, and its name
+     *  is set to the same as this object.
+     *  Derived classes with a setContainer() method are
+     *  responsible for ensuring that this returned object
+     *  has its container set to the specified container.
+     *  This base class ensures that the returned object
+     *  is in the same workspace as the container.
+     *  @param container Object to contain the new object.
+     *  @exception IllegalActionException If the object
+     *   cannot be cloned.
+     *  @return A new object of the same class and name
+     *   as this one.
+     */
+    protected NamedObj _propagateExistence(NamedObj container)
+            throws IllegalActionException {
+        NamedObj result = super._propagateExistence(container);
+        
+        // Since we have created an associated port in the
+        // constructor, and since that port is not contained by
+        // this parameter, it will not automatically be propagated.
+        // If this parameter is contained by class definition
+        // somewhere above in the hierarchy, then not propagating
+        // the associated port is an error.
+        if (_port != null) {
+            _port.propagateExistence();
+        }
+        return result;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
