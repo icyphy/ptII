@@ -34,11 +34,11 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1080947727, 459623454, -41678190, 1056514498, 1387420108, -1780237967, -1031191208, -2086026611, -1892239206, 524613930, 1023372483, -307642385, -330836289, -1963853557, -1615501095, -416957837, -1385261825, 632519104, -128018429, -991107482}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1056015654, -1605640402, 920874680, -503980237, -164204528, 153697516, 1895981520, -396284676, 273573791, -1766223592, 564576814, 1331263051, -1915314015, -1951688763, -1380387253, 1336154078, -1064998593, 1206869290, 769398161, 965326805}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{345, 185}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 185.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
