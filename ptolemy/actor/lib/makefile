@@ -201,6 +201,7 @@ JSRCS = \
 	Pulse.java \
 	Quantizer.java \
 	Ramp.java \
+	RandomInteger.java \
 	RandomSource.java \
 	Reader.java \
 	RecordAssembler.java \
