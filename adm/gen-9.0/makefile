@@ -1338,8 +1338,11 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/fmv \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/ia \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/ontologies \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gt \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/parameters \
