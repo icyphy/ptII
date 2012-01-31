@@ -337,7 +337,11 @@ public class UserActorLibrary {
                                 + "\"" + entity.getName() + "\".");
             }
 
-            entity.exportMoML(buffer, 1);
+            if (entity.getName().trim().equals("")) {
+                entity.exportMoML(buffer, 1, "Unnamed");
+            } else {
+                entity.exportMoML(buffer, 1);
+            }
 
             ChangeRequest request = new MoMLChangeRequest(entity, library,
                     buffer.toString());
