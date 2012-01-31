@@ -128,8 +128,8 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
                 for (LatticeOntologySolver innerSolver : containedSolvers) {
                     Ontology innerOntology = innerSolver.getOntology();
                     if (innerOntology != null
-                            && innerOntology.getClassName().equals(
-                                    containedOntology.getClassName())) {
+                            && innerOntology.getName().equals(
+                                    containedOntology.getName())) {
                         return innerSolver;
                     }
                 }

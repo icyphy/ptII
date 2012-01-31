@@ -284,8 +284,8 @@ public class ProductLatticeOntology extends Ontology {
      */
     private boolean _conceptOntologiesDontMatch(List<Concept> conceptTuple) {
         for (int i = 0; i < _latticeOntologies.size(); i++) {
-            if (!conceptTuple.get(i).getOntology().getClassName()
-                    .equals(_latticeOntologies.get(i).getClassName())) {
+            if (!conceptTuple.get(i).getOntology().getName()
+                    .equals(_latticeOntologies.get(i).getName())) {
                 return true;
             }
         }

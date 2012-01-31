@@ -125,8 +125,8 @@ public class ProductLatticeConcept extends FiniteConcept {
             // FIXME: A single ontology could have multiple instances but we don't
             // have a defined equals() method for ontologies, so this hack of
             // comparing their Ptolemy class names is used.
-            if (innerConcept.getOntology().getClassName()
-                    .equals(ontology.getClassName())) {
+            if (innerConcept.getOntology().getName()
+                    .equals(ontology.getName())) {
                 return ontology.getConceptByString(innerConcept.toString());
             }
         }
