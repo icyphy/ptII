@@ -2634,7 +2634,9 @@ test_setup: setup_jar setup setup_mac_app_tar
 	java -jar $(PTSETUP).jar installerTest.xml
 	-pkill Xvfb
 	-pkill -9 Xvfb
-	rm -f /tmp/.X1-lock
+	# Ignore errors 
+	-ls -l /tmp/.X1-lock
+	-rm -rf /tmp/.X1-lock
 	Xvfb :1 -screen 0 1024x768x24 &
 	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:1.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` make -k PTII=`pwd` fast install tests)
 	-pkill Xvfb
