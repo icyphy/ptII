@@ -1138,7 +1138,7 @@ public class DTDirector extends SDFDirector {
         _receiverTable = new ArrayList();
         _allActorsTable = new Hashtable();
 
-        _localClock.setCurrentTime(_zeroTime);
+        _localClock.setLocalTime(_zeroTime);
         _formerTimeFired = new Time(this);
         _formerValidTimeFired = new Time(this);
 
