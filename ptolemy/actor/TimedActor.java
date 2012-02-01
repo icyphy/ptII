@@ -36,7 +36,6 @@ package ptolemy.actor;
  in time. Actors that implement this marker interface can only be executed
  by the directors that implement the TimedDirector interface.
 
- @see TimedDirector
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.1

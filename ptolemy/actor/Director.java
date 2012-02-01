@@ -558,7 +558,7 @@ public class Director extends Attribute implements Executable {
      *   is no director.
      */
     public Time fireContainerAt(Time time, int microstep)
-            throws IllegalActionException {
+            throws IllegalActionException { 
         Actor container = (Actor) getContainer();
         if (container != null) {
             Director director = container.getExecutiveDirector();
@@ -617,7 +617,8 @@ public class Director extends Attribute implements Executable {
      */
     public Time getEnvironmentTime() {
         Actor container = (Actor) getContainer();
-        if (container.getContainer() != null) {
+        // A TCL test runs into the first condition.
+        if (container != null && container.getContainer() != null) {
             Director executiveDirector = container.getExecutiveDirector();
             if (executiveDirector != null) {
                 return executiveDirector.getModelTime();
@@ -1413,7 +1414,7 @@ public class Director extends Attribute implements Executable {
     }
     
     /** Suspend the actor at the specified time. This will first call
-     *  {@link #resume(Time)} and then record the suspend time.
+     *  {@link #resume()} and then record the suspend time.
      *  @exception IllegalActionException If the suspend cannot be completed.
      */
     public void suspend() throws IllegalActionException {

@@ -575,11 +575,14 @@ public class TransformationRule extends MultiCompositeActor implements
                     + "$TransformationDirector");
         }
 
-        /** Do nothing.
+        /** Initialize clock. This is necessary for future calls to the prefire
+         *  method of the director.
          *
          *  @exception IllegalActionException Not thrown in this class.
          */
         public void initialize() throws IllegalActionException {
+            _localClock.resetLocalTime(getModelStartTime());
+            _localClock.start();
         }
 
         /** Set stop requested to be false and do nothing else.

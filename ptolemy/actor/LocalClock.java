@@ -62,9 +62,9 @@ public class LocalClock {
         _director = director;
         
         // Make sure getCurrentTime() never returns null.
-        _localTime = Time.NEGATIVE_INFINITY;
+        _localTime = _director._zeroTime;
         
-        _offset = new Time(_director);
+        _offset = _director._zeroTime;
         _drift = 1.0;
     }
 
@@ -73,7 +73,7 @@ public class LocalClock {
 
     /** Get current local time. If it has never been set, then this will return
      *  Time.NEGATIVE_INFINITY. The returned value may have been set by
-     *  either {@link #setCommittedTime(Time)} or {@link #setLocalTime(Time)}.
+     *  {@link #setLocalTime(Time)}.
      */
     public Time getLocalTime() {
         return _localTime;
@@ -138,8 +138,7 @@ public class LocalClock {
      *  This method asserts that the current local time is
      *  simultaneous with the current environment time.
      *  This method commits current local time.
-     *  @param drift New clock drift. 
-     *  @return new current time.
+     *  @param drift New clock drift.  
      *  @throws IllegalActionException If the specified drift is
      *   non-positive.
      */
@@ -206,7 +205,7 @@ public class LocalClock {
      *  time earlier than the last committed local time.
      *  @param time The new local time. 
      */
-    protected void resetLocalTime(Time time) {
+    public void resetLocalTime(Time time) {
         _localTime = time;
     } 
     
@@ -240,4 +239,5 @@ public class LocalClock {
      *  or resumption occurred.
      */
     private Time _lastCommitLocalTime;
+
 }

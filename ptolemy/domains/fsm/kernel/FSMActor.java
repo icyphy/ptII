@@ -964,7 +964,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return True, unless stop() has been called, in which case, false.
      *  @exception IllegalActionException If any action throws it.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException { 
         _commitLastChosenTransition();
         return !_reachedFinalState && !_stopRequested;
     }
@@ -2003,7 +2003,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
             }
             */
-            director.setModelTime(environmentTime);
+            Director refinementDirector = refinement.getDirector();
+            refinementDirector.setModelTime(environmentTime);
+            refinementDirector.resume();
         }
     }
     ///////////////////////////////////////////////////////////////////
