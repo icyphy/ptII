@@ -394,8 +394,9 @@ public class SDFDirector extends StaticSchedulingDirector implements
      *  is the current time plus the period. Otherwise, this method
      *  delegates to the executive director.
      *  @return The time of the next iteration.
+     *  @exception IllegalActionException If time objects cannot be created.
      */
-    public Time getModelNextIterationTime() {
+    public Time getModelNextIterationTime() throws IllegalActionException {
         if (!_isTopLevel()) {
             return super.getModelNextIterationTime();
         }

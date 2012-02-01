@@ -284,9 +284,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // Private variables.
         newObject._controller = null;
         newObject._controllerVersion = -1;
-        newObject._localReceiverMapsVersion = -1;
-
-        newObject._currentOffset = null;
+        newObject._localReceiverMapsVersion = -1; 
 
         return newObject;
     }
@@ -334,7 +332,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
         controller.fire();
     }
-
+    
     /**
      * Schedule a firing of the given actor at the given time
      * and microstep. If there exists an executive
@@ -360,28 +358,24 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException If thrown by the executive director.
      */
     public Time fireAt(Actor actor, Time time, int microstep)
-            throws IllegalActionException {
-        // Note that the actor parameter is ignored, because it does not
-        // matter which actor requests firing.
-        if (_currentOffset != null) {
-            time = time.add(_currentOffset);
-        }
-        Nameable container = getContainer();
-        if (container instanceof Actor) {
-            Actor modalModel = (Actor) container;
-            Director executiveDirector = modalModel.getExecutiveDirector();
-            if (executiveDirector != null) {
-                Time result = executiveDirector.fireAt(modalModel, time,
-                        microstep);
-                if (_currentOffset != null) {
-                    result = result.subtract(_currentOffset);
+            throws IllegalActionException { 
+        Actor container = (Actor) getContainer();
+        if (container != null) {
+            Director director = container.getExecutiveDirector();
+            if (director != null) {
+                if (_debugging) {
+                    _debug("**** Requesting that enclosing director refire me at "
+                            + time + " with microstep " + microstep);
                 }
-                return result;
+                // Translate the local time into an environment time.
+                Time environmentTime = _localClock.getEnvironmentTimeForLocalTime(time);
+                Time result = director.fireAt(container, environmentTime, microstep);
+                
+                // Translate the response from the environment into a local time.
+                return _localClock.getLocalTimeForEnvironmentTime(result);
             }
-        }
-        // If there is no executive director, use the
-        // this fireAt() call to advance time.
-        // NOTE: This will set _currentOffset to null.
+            
+        } 
         setModelTime(time);
         return time;
     }
@@ -466,10 +460,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 return getModelTime();
             }
             // The result returned below needs to be adjusted by the current offset.
-            Time result = super.getModelNextIterationTime();
-            if (_currentOffset != null) {
-                result = result.subtract(_currentOffset);
-            }
+            Time result = _localClock.getLocalTimeForEnvironmentTime(super.getModelNextIterationTime());
             return result;
         } catch (IllegalActionException e) {
             // Any exception here should have shown up before now.
@@ -707,9 +698,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             if (refinements != null) {
                 for (TypedActor refinement : refinements) {
                     Director refinementDirector = refinement.getDirector();
-                    if (refinementDirector instanceof Suspendable) {
-                        ((Suspendable) refinementDirector).suspend(getModelTime());
-                    }
+                    refinementDirector.suspend();
                 }
             }
         }
@@ -824,7 +813,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         if (_debugging) {
             _debug("Prefire called at time: " + getModelTime());
         }
-        // Set the current time based on the enclosing class.
         super.prefire();
         return getController().prefire();
     }
@@ -878,24 +866,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 }
             }
         }
-    }
-
-    /**
-     * Set a new value to the current time of the model, where the new
-     * time can be earlier than the current time. It allows the set
-     * time to be earlier than the current time. This feature is
-     * needed when switching between timed and untimed models.
-     *
-     * @param newTime
-     *            The new current simulation time.
-     * @exception IllegalActionException
-     *                Not thrown in this base class.
-     */
-    public void setModelTime(Time newTime) throws IllegalActionException {
-        _localClock.setCurrentTime(newTime);
-        // If you are setting model time to an offset, then you should
-        // override the following after the call to here.
-        _currentOffset = null;
     }
 
     /**
@@ -1320,10 +1290,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  for the current state.
      */
     protected Map _currentLocalReceiverMap = null;
-
-    /** The current offset indicating how far behind environment time local time is. */
-    protected Time _currentOffset;
-
+    
     /** The _indexOffset is set by FSMActor during initialization of
      *  destination refinements upon committing to a reset transition
      *  in order to ensure that the destination refinement views its

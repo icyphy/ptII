@@ -47,8 +47,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.modal.kernel.Suspendable;
+import ptolemy.data.type.BaseType; 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DebugListener;
@@ -236,8 +235,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Yellow (hyzheng)
  */
-public class DEDirector extends Director implements SuperdenseTimeDirector,
-        Suspendable {
+public class DEDirector extends Director implements SuperdenseTimeDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -333,16 +331,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the accumulated time that the actor has been suspended
-     *  since the last call to initialize(), or null if it has never
-     *  been suspended.
-     *  @return The total time between calls to suspend and subsequent
-     *   calls to resume, or null if the actor has not been suspended.
-     */
-    public Time accumulatedSuspendTime() {
-        return _accumulatedSuspendTime;
-    }
-
     /** Append the specified listener to the current set of debug listeners.
      *  If an event queue has been created, register the listener to that queue.
      *  @param listener The listener to be added to the list of listeners
@@ -390,13 +378,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DEDirector newObject = (DEDirector) super.clone(workspace);
-        newObject._accumulatedSuspendTime = null;
+        DEDirector newObject = (DEDirector) super.clone(workspace); 
         newObject._disabledActors = null;
         newObject._eventQueue = null;
         newObject._exceedStopTime = false;
-        newObject._isInitializing = false;
-        newObject._lastSuspendTime = null;
+        newObject._isInitializing = false; 
         newObject._microstep = 1;
         newObject._noMoreActorsToFire = false;
         newObject._realStartTime = 0;
@@ -643,30 +629,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         fireAt(actor, time.add(getModelTime()));
     }
 
-    /** Request a firing of the container of this director at the specified time
-     *  and microstep
-     *  and throw an exception if the executive director does not agree to
-     *  do it at the requested time. This overrides the base class to adjust
-     *  the requested time by the accumulated suspend time.
-     *  @param time The requested time.
-     *  @param microstep The requested microstep.
-     *  @return The time that the executive director indicates it will fire this
-     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
-     *   if there is no executive director.
-     *  @exception IllegalActionException If the director does not
-     *   agree to fire the actor at the specified time, or if there
-     *   is no director.
-     */
-    public Time fireContainerAt(Time time, int microstep)
-            throws IllegalActionException {
-        if (_accumulatedSuspendTime != null) {
-            Time result = super.fireContainerAt(time.add(_accumulatedSuspendTime), microstep);
-            return result.subtract(_accumulatedSuspendTime);
-        } else {
-            return super.fireContainerAt(time, microstep);
-        }
-    }
-    
     /** Return a causality interface for the composite actor that
      *  contains this director. This base class returns an
      *  instance of {@link CausalityInterfaceForComposites}, but
@@ -704,8 +666,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  in a DE model. If there is no event in the event queue, a positive
      *  infinity object is returned.
      *  @return The time stamp of the next event in the event queue.
+     * @throws IllegalActionException If Time object cannot be created.
      */
-    public Time getModelNextIterationTime() {
+    public Time getModelNextIterationTime() throws IllegalActionException {
         Time aFutureTime = Time.POSITIVE_INFINITY;
 
         // Record the model next iteration time as the tag of the the earliest
@@ -735,13 +698,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // Go through hierarchy to find the minimum step.
         Director executiveDirector = ((CompositeActor) getContainer())
                 .getExecutiveDirector();
-        if (executiveDirector != null) {
-            Time aFutureTimeOfUpperLevel = executiveDirector
-                    .getModelNextIterationTime();
-            // Adjust the time if necessary.
-            if (_accumulatedSuspendTime != null) {
-                aFutureTimeOfUpperLevel = aFutureTimeOfUpperLevel.subtract(_accumulatedSuspendTime);
-            }
+        if (executiveDirector != null) { 
+            
+            Time aFutureTimeOfUpperLevel = _localClock.getLocalTimeForEnvironmentTime(
+                    executiveDirector.getModelNextIterationTime());
+
             if (aFutureTime.compareTo(aFutureTimeOfUpperLevel) > 0) {
                 aFutureTime = aFutureTimeOfUpperLevel;
             }
@@ -881,21 +842,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         }
 
         _isInitializing = false;
-        
-        // NOTE: If we are being reinitialized during execution (e.g. because
-        // of a reset transition), then our current local time is set to match
-        // the environment time if startTime is blank (the default), meaning that
-        // start time is inherited from the environment. Otherwise, the accumulated
-        // suspend time should be set to the difference between the current time
-        // of the environment and the start time. In either case, this is the
-        // difference between the current time and the environment time.
-        if (isEmbedded()) {
-            Time environmentTime = ((Actor) getContainer()).getExecutiveDirector()
-                    .getModelTime();
-            setAccumulatedSuspendTime(environmentTime.subtract(getModelTime()));
-        } else {
-            setAccumulatedSuspendTime(_zeroTime);
-        }
     }
 
     /** Indicate that a schedule for the model may no longer be valid.
@@ -1054,26 +1000,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             _debug("DEDirector: Called prefire().");
         }
 
-        CompositeActor container = (CompositeActor) getContainer();
-        Director executiveDirector = ((Actor) container).getExecutiveDirector();
-        if (executiveDirector != null) {
-            Time outTime = executiveDirector.getModelTime();
-            // Adjust the time for accumulated suspend time.
-            if (_accumulatedSuspendTime != null) {
-                // NOTE: Cannot use setModelTime() here because we are setting time
-                // backwards.
-                outTime = outTime.subtract(_accumulatedSuspendTime);
-            }
-            setModelTime(outTime);
-            if (_debugging) {
-                _debug("-- Setting current time to " + getModelTime()
-                        + ", which aligns with the enclosing director's time of "
-                        + executiveDirector.getModelTime()
-                        + ", given the accumulated suspend time of "
-                        + _accumulatedSuspendTime);
-            }
-        }
-
+        super.prefire();
         // NOTE: The inside model does not need to have the same
         // microstep as that of the outside model (if it has one.)
         // However, an increment of microstep of the inside model must
@@ -1222,10 +1149,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                 ((IntToken) minBinCount.getToken()).intValue(),
                 ((IntToken) binCountFactor.getToken()).intValue(),
                 ((BooleanToken) isCQAdaptive.getToken()).booleanValue());
-        
-        // There is no accumulated suspend time.
-        _accumulatedSuspendTime = null;
-        _lastSuspendTime = null;
 
         // Add debug listeners.
         if (_debugListeners != null) {
@@ -1276,44 +1199,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         super.removeDebugListener(listener);
     }
 
-    /** Resume the actor at the specified time. If the actor has not
-     *  been suspended since the last call to initialize(), then this
-     *  has no effect.
-     *  @exception IllegalActionException If the fireAt() request throws it.
-     */
-    public void resume(Time time) throws IllegalActionException {
-        if (_lastSuspendTime != null) {
-            if (_accumulatedSuspendTime == null) {
-                setAccumulatedSuspendTime(time.subtract(_lastSuspendTime));
-            } else {
-                setAccumulatedSuspendTime(_accumulatedSuspendTime.add(time
-                        .subtract(_lastSuspendTime)));
-            }
-            _lastSuspendTime = null;
-        }
-    }
-
-    /** Set the accumulated suspend time.
-     *  @exception IllegalActionException If the specified value is less
-     *   than the previous accumulated suspend time (accumulated suspend
-     *   time must be non-decreasing).
-     */
-    public void setAccumulatedSuspendTime(Time time) throws IllegalActionException {
-        if (_accumulatedSuspendTime != null) {
-            if (time.compareTo(_accumulatedSuspendTime) < 0) {
-                throw new IllegalActionException(this, "Accumulated suspend time cannot decrease." +
-                        " Previous value was: " + _accumulatedSuspendTime +
-                        ". Proposed new value is " + time);
-            }
-        /* NOTE: Allow arbitrary suspend time if it has not been set before.
-        } else if (time.compareTo(_zeroTime) < 0) {
-            throw new IllegalActionException(this, "Accumulated suspend time cannot be negative." +
-                    ". Proposed new value is " + time);
-        */
-        }
-        _accumulatedSuspendTime = time;
-    }
-
     /** Set the superdense time index. This should only be
      *  called by an enclosing director.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -1326,38 +1211,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         }
         _microstep = index;
     }
-    
-    /** Set the current model time to equal the start time of the model.
-     *  This class sets current time to the value returned by
-     *  {@link #getModelStartTime()}, and also adjusts the accumulated
-     *  suspend time offset accordingly.
-     *  @see #accumulatedSuspendTime()
-     *  @exception IllegalActionException If getModelStartTime() throws it.
-     */
-    public void setModelTimeToStartTime() throws IllegalActionException {
-        // The accumulated suspend time should equal the difference
-        // between the environment time (if there is an environment)
-        // and the new model start time.
-        Time startTime = getModelStartTime();
-        Time environmentTime = null;
-        if (isEmbedded()) {
-            CompositeActor container = (CompositeActor)getContainer();
-            Director enclosingDirector = container.getExecutiveDirector();
-            if (enclosingDirector != null) {
-                environmentTime = enclosingDirector.getModelTime();
-                if (environmentTime != null) {
-                    setAccumulatedSuspendTime(environmentTime.subtract(startTime));
-                }
-            }
-        }
-        super.setModelTimeToStartTime();
-        if (_debugging) {
-            _debug("--- Set time to start time: " + getModelTime()
-                    + ", and updated accumulated suspend time to "
-                    + _accumulatedSuspendTime);
-        }
-    }
-
+        
     /** Request the execution of the current iteration to stop.
      *  This is similar to stopFire(), except that the current iteration
      *  is not allowed to complete.  This is useful if there is actor
@@ -1411,15 +1265,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
-    }
-
-    /** Suspend the actor at the specified time. This will first call
-     *  {@link #resume(Time)} and then record the suspend time.
-     *  @exception IllegalActionException If the suspend cannot be completed.
-     */
-    public void suspend(Time time) throws IllegalActionException {
-        resume(time);
-        _lastSuspendTime = time;
     }
 
     /** Transfer data from an input port of the container to the ports
@@ -2451,10 +2296,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The accumulated suspend time relative to an eclosing director.
-     */
-    private Time _accumulatedSuspendTime;
-
     /** Indicator that calls to fireAt() should be delegated
      *  to the executive director.
      */
@@ -2473,13 +2314,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
      *  has exceeded the stopTime.
      */
     private boolean _exceedStopTime = false;
-
-    /** The environment time when this refinement was last suspended
-     *  (that is, the enclosing state was exited). This is null if
-     *  the actor has not been suspended since initialize() or
-     *  resume() has been called more recently than suspend().
-     */
-    private Time _lastSuspendTime;
 
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0;

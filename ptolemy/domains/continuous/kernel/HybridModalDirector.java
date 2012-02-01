@@ -456,25 +456,7 @@ public class HybridModalDirector extends FSMDirector implements
      *  @exception IllegalActionException If thrown by the superclass.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("HybridModalDirector: Called prefire().");
-        }
-        // Set model time to match the enclosing director.
-        Nameable container = getContainer();
-        if (container instanceof Actor) {
-            Director executiveDirector = ((Actor) container)
-                    .getExecutiveDirector();
-            if (executiveDirector != null) {
-                Time outTime = executiveDirector.getModelTime();
-                setModelTime(outTime);
-                if (_debugging) {
-                    _debug("HybridModalDirector: Setting local current time to: "
-                            + outTime);
-                }
-            }
-        }
-
-        boolean result = true;
+        boolean result = super.prefire();
         // If any refinement is not ready to fire, stop prefiring the
         // remaining actors, call super.prefire(), and return false;
         State st = getController().currentState();
@@ -494,7 +476,7 @@ public class HybridModalDirector extends FSMDirector implements
                 }
             }
         }
-        return super.prefire() && result;
+        return result;
     }
 
     /** Return the minimum of the step sizes suggested by any
@@ -558,8 +540,10 @@ public class HybridModalDirector extends FSMDirector implements
 
     /** Roll back to committed state.
      *  This will roll back any actors that were fired in the current iteration.
+     *  @throws IllegalActionException If the rollback attempts to go
+     *   back further than the last committed time.
      */
-    public void rollBackToCommittedState() {
+    public void rollBackToCommittedState() throws IllegalActionException {
         Iterator actors = null;
         try {
             actors = new ActorsFiredIterator();

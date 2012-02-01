@@ -27,9 +27,24 @@
 package ptolemy.actor;
 
 import ptolemy.actor.util.Time;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.IllegalActionException;
 
-/** A clock that keeps track of model time at a level of the model hierarchy.
+/** A clock that keeps track of model time at a level of the model hierarchy
+ *  and relates it to the time of the enclosing model, if there is one. The time
+ *  of the enclosing model is referred to as the environment time. This
+ *  clock has a notion of local time and committed time. The committed time 
+ *  is "simultaneous" with the environment time.  
+ *  
+ *  The local time is
+ *  not allowed to move backwards past the committed time, but ahead
+ *  of that time, it can move around at will. 
+ *  <p>
+ *  There is no way of explicitly committing time, but 
+ *  several methods have the side effect of committing the current
+ *  local time. For example, {@link #setClockDrift(double)} will commit
+ *  the current local time and change the clock drift.  So will
+ *  {@link #start()} and {@link #stop()}
+ *  
 
  @author Ilge Akkaya, Patricia Derler, Edward A. Lee, Christos Stergiou, Michael Zimmer
  @version $Id$
@@ -47,49 +62,182 @@ public class LocalClock {
         _director = director;
         
         // Make sure getCurrentTime() never returns null.
-        _currentTime = Time.NEGATIVE_INFINITY;
+        _localTime = Time.NEGATIVE_INFINITY;
+        
+        _offset = new Time(_director);
+        _drift = 1.0;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public method                     ////
 
-    /** Get current time. If it has never been set, then this will return
-     *  Time.NEGATIVE_INFINITY.
+    /** Get current local time. If it has never been set, then this will return
+     *  Time.NEGATIVE_INFINITY. The returned value may have been set by
+     *  either {@link #setCommittedTime(Time)} or {@link #setLocalTime(Time)}.
      */
-    public Time getCurrentTime() {
-        return _currentTime;
+    public Time getLocalTime() {
+        return _localTime;
     }
     
-    /** Set current time.
-     *  @param time The new local time.
+    /** Get the environment time that corresponds to the given local time.
+     *  The given local time is required to be either equal to or
+     *  greater than the committed time when this method is called.
+     *  @param time The local Time.
+     *  @return The corresponding environment Time.
+     *  @throws IllegalActionException If the specified local time
+     *   is in the past, or if Time objects cannot be created.
      */
-    public void setCurrentTime(Time time) {
-        _currentTime = time;
-    }
-
-    /** If the associated director has an enclosing executive director,
-     *  then make the local time of this clock equal to that of the
-     *  executive director. Otherwise, do nothing.
-     */
-    public void synchronizeToEnvironmentTime() {
-        NamedObj container = _director.getContainer();
-        if (container instanceof Actor) {
-            Director executiveDirector = ((Actor) container)
-                    .getExecutiveDirector();
-
-            if (executiveDirector != null) {
-                Time outTime = executiveDirector.getModelTime();
-                _currentTime = outTime;
-            }
+    public Time getEnvironmentTimeForLocalTime(Time time) throws IllegalActionException {
+        if (time.compareTo(_lastCommitLocalTime) < 0) {
+            throw new IllegalActionException(
+                    "Cannot compute environment time for local time " 
+                    + time + " because "
+                    + "the last commit of the local time occured at " 
+                    + "local time " + _lastCommitLocalTime);
         }
+        // FIXME: Use the drift.
+        return time.add(_offset);
     }
+    
+    /** Get the local time that corresponds to the current environment time.
+     *  The current environment time is required to be greater than or equal
+     *  to the environment time corresponding to the last committed local time.
+     *  @return The corresponding local time.
+     *  @throws IllegalActionException If Time objects cannot be created, or
+     *   if the current environment time is less than the time
+     *   corresponding to the last committed local time.
+     */
+    public Time getLocalTimeForCurrentEnvironmentTime() throws IllegalActionException {   
+        return getLocalTimeForEnvironmentTime(_director.getEnvironmentTime()); 
+    }
+    
+    /** Get the local time that corresponds to the given environment time.
+     *  The given environment time is required to be greater than or equal
+     *  to the environment time corresponding to the last committed local time.
+     *  @param time The environment time.
+     *  @return The corresponding local time.
+     *  @throws IllegalActionException If the specified environment time
+     *   is less than the environment time corresponding to the last
+     *   committed local time, or if Time objects cannot be created.
+     */
+    public Time getLocalTimeForEnvironmentTime(Time time) throws IllegalActionException {
+        if (time.compareTo(_lastCommitEnvironmentTime) < 0) {
+            throw new IllegalActionException(
+                    "Cannot compute local time for environment time " 
+                    + time + " because "
+                    + "the last commit of the local time occured at " 
+                    + "local time " + _lastCommitLocalTime + " which " 
+                    + "corresponds to environment time " 
+                    + _lastCommitEnvironmentTime);
+        }
+        // FIXME: Use the drift.
+        return time.subtract(_offset);
+    }
+    
+    /** Set the new clock drift.
+     *  This method asserts that the current local time is
+     *  simultaneous with the current environment time.
+     *  This method commits current local time.
+     *  @param drift New clock drift. 
+     *  @return new current time.
+     *  @throws IllegalActionException If the specified drift is
+     *   non-positive.
+     */
+    public void setClockDrift(double drift) throws IllegalActionException {
+        Time environmentTime = _director.getEnvironmentTime();
+        if (drift <= 0.0) {
+            throw new IllegalActionException(_director,
+                    "Illegal clock drift: "
+                    + drift
+                    + ". Clock drift is required to be positive.");
+        }
+        _drift = drift; 
+        _lastCommitEnvironmentTime = environmentTime;
+        _lastCommitLocalTime = _localTime;
+    }
+    
+    /** Set local time without committing.
+     *  This is not allowed to set
+     *  time earlier than the last committed local time.
+     *  @param time The new local time.
+     *  @throws IllegalActionException If the specified time is
+     *   earlier than the current time.
+     */
+    public void setLocalTime(Time time) throws IllegalActionException {
+        if (_lastCommitLocalTime != null && time.compareTo(_lastCommitLocalTime) < 0) {
+            throw new IllegalActionException(_director,
+                    "Cannot set local time to "
+                    + time
+                    + ", which is earlier than the last committed current time "
+                    + _lastCommitLocalTime);
+        }
+        _localTime = time;
+    }
+    
+    /** Start the clock with the current drift as specified by the
+     *  last call to {@link #setClockDrift(double)}.
+     *  If {@link #setClockDrift(double)} has never been called, then
+     *  the drift is 1.0.
+     *  This method commits current local time.
+     */
+    public void start() {
+        Time environmentTime = _director.getEnvironmentTime();  
+        _offset = environmentTime.subtract(_localTime);  
+        _lastCommitEnvironmentTime = environmentTime; 
+        _lastCommitLocalTime = _localTime;
+    }
+    
+    /** Stop the clock. The current time will remain the
+     *  same as its current value until the next call to
+     *  {@link #start()}.
+     *  This method commits current local time.
+     */
+    public void stop() {
+        Time environmentTime = _director.getEnvironmentTime();
+        if (_lastCommitEnvironmentTime != null) {
+            _offset = _offset.add(environmentTime.subtract(_lastCommitEnvironmentTime));
+        }
+        _lastCommitEnvironmentTime = environmentTime;
+        _lastCommitLocalTime = _localTime;
+    }
+    
+    /** Set local time without committing.
+     *  This is allowed to set
+     *  time earlier than the last committed local time.
+     *  @param time The new local time. 
+     */
+    protected void resetLocalTime(Time time) {
+        _localTime = time;
+    } 
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
-
+    
     /** The current time of this clock. */
-    private Time _currentTime;
+    private Time _localTime;
     
     /** The associated director. */
     private Director _director;
+    
+    /** The current clock drift.
+     *  The drift is initialized to 1.0 which means that the
+     *  local time matches to the environment time.
+     */
+    private double _drift;
+        
+    /** The environment time minus the local time at the the point
+     *  at which a commit occurred.
+     *  By default, the offset is zero.
+     */
+    private Time _offset;
+    
+    /** The environment time at which a change to local time, drift,
+     *  or resumption occurred.
+     */
+    private Time _lastCommitEnvironmentTime;
+
+    /** The local time at which a change to local time, drift,
+     *  or resumption occurred.
+     */
+    private Time _lastCommitLocalTime;
 }

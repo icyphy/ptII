@@ -35,6 +35,7 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.LocalClock;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.GeneralComparator;
@@ -472,6 +473,13 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         return _iterationBeginTime;
     }
 
+    /** Return the local clock. This is used by the solvers.
+     *  @return The local clock.
+     */
+    public LocalClock getLocalClock() {
+        return _localClock;
+    }
+    
     /** Return the maximum number of iterations in a fixed point
      *  calculation. If the iteration has exceeded this number
      *  and the fixed point is still not found, then the algorithm
@@ -753,23 +761,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
 
         _currentStepSize = stepSize;
     }
-    
-    /** Set a new value to the current time of the model, where
-     *  the new time must be no earlier than the current time.
-     *  This method overrides the base class to allow time to move
-     *  backwards.
-     *  @exception IllegalActionException If the new time is less than
-     *   the current time returned by getCurrentTime().
-     *  @param newTime The new current simulation time.
-     *  @see #getModelTime()
-     */
-    public void setModelTime(Time newTime) throws IllegalActionException {
-        if (_debugging) {
-            _debug("==== Set current time to: " + newTime);
-        }
-        _localClock.setCurrentTime(newTime);
-    }
-
 
     /** Set the suggested next step size. If the argument is larger than
      *  the maximum step size, then set the suggested next step size to

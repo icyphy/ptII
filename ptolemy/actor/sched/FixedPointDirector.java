@@ -34,7 +34,6 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
@@ -43,12 +42,10 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.modal.kernel.Suspendable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -122,7 +119,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (eal)
  */
 public class FixedPointDirector extends StaticSchedulingDirector implements
-        SuperdenseTimeDirector, Suspendable {
+        SuperdenseTimeDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -198,16 +195,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the accumulated time that the actor has been suspended
-     *  since the last call to initialize(), or null if it has never
-     *  been suspended.
-     *  @return The total time between calls to suspend and subsequent
-     *   calls to resume, or null if the actor has not been suspended.
-     */
-    public Time accumulatedSuspendTime() {
-        return _accumulatedSuspendTime;
-    }
-
     /** Clone the director into the specified workspace. This calls the
      *  base class and then sets the attribute public members to refer
      *  to the attributes of the new director.
@@ -219,8 +206,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FixedPointDirector newObject = (FixedPointDirector) super
                 .clone(workspace);
-        newObject._accumulatedSuspendTime = null;
-        newObject._lastSuspendTime = null;
         newObject._receivers = new LinkedList();
 
         newObject._actorsAllowedToFire = new HashSet();
@@ -278,30 +263,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         }
     }
 
-    /** Request a firing of the container of this director at the specified time
-     *  and microstep
-     *  and throw an exception if the executive director does not agree to
-     *  do it at the requested time. This overrides the base class to adjust
-     *  the requested time by the accumulated suspend time.
-     *  @param time The requested time.
-     *  @param microstep The requested microstep.
-     *  @return The time that the executive director indicates it will fire this
-     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
-     *   if there is no executive director.
-     *  @exception IllegalActionException If the director does not
-     *   agree to fire the actor at the specified time, or if there
-     *   is no director.
-     */
-    public Time fireContainerAt(Time time, int microstep)
-            throws IllegalActionException {
-        if (_accumulatedSuspendTime != null) {
-            Time result = super.fireContainerAt(time.add(_accumulatedSuspendTime), microstep);
-            return result.subtract(_accumulatedSuspendTime);
-        } else {
-            return super.fireContainerAt(time, microstep);
-        }
-    }
-
     /** Return the current index of the director.
      *  The current index is a portion of the superdense time.
      *  Superdense time means that time is a real value and an index,
@@ -343,23 +304,12 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  force the inside Continuous director to have a zero step
      *  size always.
      *  @return The next time of interest.
+     *  @throws IllegalActionException If creating a Time object fails.
      *  @see #getModelTime()
      */
-    public Time getModelNextIterationTime() {
-        NamedObj container = getContainer();
-        // NOTE: the container may not be a composite actor.
-        // For example, the container may be an entity as a library,
-        // where the director is already at the top level.
-        if (container instanceof CompositeActor) {
-            Director executiveDirector = ((CompositeActor) container)
-                    .getExecutiveDirector();
-            if (executiveDirector != null) {
-                Time result = executiveDirector.getModelNextIterationTime();
-                // Adjust the time if necessary.
-                if (_accumulatedSuspendTime != null) {
-                    result = result.subtract(_accumulatedSuspendTime);
-                }
-            }
+    public Time getModelNextIterationTime() throws IllegalActionException {
+        if (isEmbedded()) {
+            return super.getModelNextIterationTime();
         }
         return Time.POSITIVE_INFINITY;
     }
@@ -430,16 +380,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         // because prefire() can be invoked multiple times in an iteration
         // (particularly if this is inside another FixedPointDirector).
         _resetAllReceivers();
-        
-        _lastSuspendTime = null;
-        
-        if (isEmbedded()) {
-            Time environmentTime = ((Actor) getContainer()).getExecutiveDirector()
-                    .getModelTime();
-            setAccumulatedSuspendTime(environmentTime.subtract(getModelTime()));
-        } else {
-            setAccumulatedSuspendTime(_zeroTime);
-        }
     }
 
     /** Return true if all the controlled actors' isFireFunctional()
@@ -595,81 +535,9 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     public boolean prefire() throws IllegalActionException {
         _synchronizeToRealTime();
         _postfireReturns = true;
-
-        // NOTE: super.prefire() is not of much use, because we want
-        // to set current time adjusted for accumulated suspend time.
-        
-        if (_debugging) {
-            _debug("DEDirector: Called prefire().");
-        }
-
-        CompositeActor container = (CompositeActor) getContainer();
-        Director executiveDirector = ((Actor) container).getExecutiveDirector();
-        if (executiveDirector != null) {
-            Time outTime = executiveDirector.getModelTime();
-            // Adjust the time for accumulated suspend time.
-            if (_accumulatedSuspendTime != null) {
-                outTime = outTime.subtract(_accumulatedSuspendTime);
-            }
-            setModelTime(outTime);
-            if (_debugging) {
-                _debug("-- Setting current time to " + getModelTime()
-                        + ", which aligns with the enclosing director's time of "
-                        + executiveDirector.getModelTime()
-                        + ", given the accumulated suspend time of "
-                        + _accumulatedSuspendTime);
-            }
-        }
-        return true;
-    }
-
-    /** Preinitialize the model for an execution. This method is
-     *  called only once for each simulation.
-     *  @exception IllegalActionException If the super class throws it, or
-     *  local variables cannot be initialized.
-     */
-    public void preinitialize() throws IllegalActionException {
-        _accumulatedSuspendTime = null;
-        _lastSuspendTime = null;
-        super.preinitialize();
-    }
-
-    /** Resume the actor at the specified time. If the actor has not
-     *  been suspended since the last call to initialize(), then this
-     *  has no effect.
-     *  @exception IllegalActionException If the fireAt() request throws it.
-     */
-    public void resume(Time time) throws IllegalActionException {
-        if (_lastSuspendTime != null) {
-            if (_accumulatedSuspendTime == null) {
-                setAccumulatedSuspendTime(time.subtract(_lastSuspendTime));
-            } else {
-                setAccumulatedSuspendTime(_accumulatedSuspendTime.add(time
-                        .subtract(_lastSuspendTime)));
-            }
-            _lastSuspendTime = null;
-        }
-    }
-
-    /** Set the accumulated suspend time.
-     *  @param The accumulated suspend time.   
-     *  @exception IllegalActionException If the specified value is less
-     *   than the previous accumulated suspend time (accumulated suspend
-     *   time must be non-decreasing).
-     */
-    public void setAccumulatedSuspendTime(Time time) throws IllegalActionException {
-        /* NOTE: These checks are not valid because during a reinitialize of a modal
-         * model, because we may want to reset the current time to match the environment
-         * time, in which case, the accumulated suspend time has to be set to zero.
-         */
-        if (_accumulatedSuspendTime != null) {
-            if (time.compareTo(_accumulatedSuspendTime) < 0) {
-                throw new IllegalActionException(this, "Accumulated suspend time cannot decrease." +
-                        " Previous value was: " + _accumulatedSuspendTime +
-                        ". Proposed new value is " + time);
-            }
-        }
-        _accumulatedSuspendTime = time;
+        // The following synchronizes to environment time, making
+        // any necessary adjustments for drift or offset of the local clock.
+        return super.prefire();
     }
 
     /** Set the superdense time index. This should only be
@@ -685,39 +553,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         _index = index;
     }
 
-    /** Set the current model time to equal the start time of the model.
-     *  This class sets current time to the value returned by
-     *  {@link #getModelStartTime()}, and also adjusts the accumulated
-     *  suspend time offset accordingly.
-     *  @see #accumulatedSuspendTime()
-     *  @exception IllegalActionException If getModelStartTime() throws it.
-     */
-    public void setModelTimeToStartTime() throws IllegalActionException {
-        // The accumulated suspend time should equal the difference
-        // between the environment time (if there is an environment)
-        // and the new model start time.
-        Time startTime = getModelStartTime();
-        Time environmentTime = null;
-        if (isEmbedded()) {
-            CompositeActor container = (CompositeActor)getContainer();
-            Director enclosingDirector = container.getExecutiveDirector();
-            if (enclosingDirector != null) {
-                environmentTime = enclosingDirector.getModelTime();
-                if (environmentTime != null) {
-                    // Do not use setAccumulatedSuspendTime() here because we might
-                    // be reducing accumulated suspend time if we are in a modal model.
-                    _accumulatedSuspendTime = environmentTime.subtract(startTime);
-                }
-            }
-        }
-        super.setModelTimeToStartTime();
-        if (_debugging) {
-            _debug("--- Set time to start time: " + getModelTime()
-                    + ", and updated accumulated suspend time to "
-                    + _accumulatedSuspendTime);
-        }
-    }
-
     /** Return an array of suggested directors to be used with
      *  ModalModel. Each director is specified by its full class
      *  name.  The first director in the array will be the default
@@ -730,15 +565,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
-    }
-
-    /** Suspend the actor at the specified time. This will first call
-     *  {@link #resume(Time)} and then record the suspend time.
-     *  @exception IllegalActionException If the suspend cannot be completed.
-     */
-    public void suspend(Time time) throws IllegalActionException {
-        resume(time);
-        _lastSuspendTime = time;
     }
 
     /** Transfer data from the specified input port of the
@@ -923,25 +749,9 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The accumulated suspend time relative to an enclosing director.
-     *  Normally, the accumulated suspend time is zero, which may be indicated
-     *  by this field being null. However, if this director is used inside
-     *  a modal model, then time stops advancing while the mode is inactive,
-     *  and this field keeps track of the total time that the director has
-     *  been dormant.
-     */
-    protected Time _accumulatedSuspendTime;
-
     /** The current index of the model. */
     protected int _index;
     
-    /** The environment time when this refinement was last suspended
-     *  (that is, the enclosing state was exited). This is null if
-     *  the actor has not been suspended since initialize() or
-     *  resume() has been called more recently than suspend().
-     */
-    protected Time _lastSuspendTime;
-
     /** List of all receivers this director has created. */
     protected List _receivers = new LinkedList();
 

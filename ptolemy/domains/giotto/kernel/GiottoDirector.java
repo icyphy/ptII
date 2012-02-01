@@ -540,6 +540,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
         // Set the initial time.
         setModelTime(_expectedNextIterationTime);
+        resume();
 
         _realStartTime = System.currentTimeMillis();
     }

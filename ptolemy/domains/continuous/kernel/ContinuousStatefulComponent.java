@@ -27,6 +27,8 @@
  */
 package ptolemy.domains.continuous.kernel;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 ////
 
@@ -42,6 +44,8 @@ package ptolemy.domains.continuous.kernel;
 public interface ContinuousStatefulComponent {
 
     /** Roll back to committed state.
+     *  @throws IllegalActionException If the rollback attempts to go
+     *   back further than the last committed time.
      */
-    public void rollBackToCommittedState();
+    public void rollBackToCommittedState() throws IllegalActionException;
 }

@@ -272,6 +272,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                 setModelTime(currentTime);
             }
         }
+        resume();
 
         _blockedReceivers.clear();
 

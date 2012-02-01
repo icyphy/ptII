@@ -421,11 +421,13 @@ public class Director extends Attribute implements Executable {
 
     /** Request a firing of the given actor at the given model
      *  time.  This base class ignores the request and returns a Time
-     *  with value Double.NEGATIVE_INFINITY, unless this director
+     *  with value equal to the current time, unless this director
      *  is embedded within a model (and has an executive director),
      *  in which case, this base class requests that the executive
      *  director fire the container of this director at the requested
-     *  time.
+     *  time, adjusted by the current offset and drift of the local clock.
+     *  It does this by delegating to {@link #fireContainerAt(Time, int)}
+     *  with the microstep argument set to 1.
      *  <p>
      *  The intent of this method is to request a firing of the actor
      *  at the specified time, but this implementation does not assure
@@ -453,7 +455,7 @@ public class Director extends Attribute implements Executable {
      *  default starting microstep. E.g., DE does this.
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
-     *  @return An instance of Time with value NEGATIVE_INFINITY, or
+     *  @return An instance of Time with the current time value, or
      *   if there is an executive director, the time at which the
      *   container of this director will next be fired
      *   in response to this request.
@@ -474,39 +476,26 @@ public class Director extends Attribute implements Executable {
     /** Request a firing of the given actor at the given model
      *  time with the given microstep. This method behaves exactly
      *  like {@link #fireAt(Actor, Time)}, except that it also
-     *  passes up to the executive director the microstep.
+     *  passes up to the executive director the microstep, if there
+     *  is one.
+     *  This default implementation just delegates to
+     *  {@link #fireContainerAt(Time, int)}
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
      *  @param microstep The requested microstep.
-     *  @return An instance of Time with value NEGATIVE_INFINITY, or
+     *  @return An instance of Time with the current time value, or
      *   if there is an executive director, the time at which the
      *   container of this director will next be fired
      *   in response to this request.
      *  @see #fireAtCurrentTime(Actor)
+     *  @see #fireContainerAt(Time)
      *  @exception IllegalActionException If there is an executive director
      *   and it throws it. Derived classes may choose to throw this
      *   exception for other reasons.
      */
     public Time fireAt(Actor actor, Time time, int microstep)
             throws IllegalActionException {
-        // If this director is enclosed within another model, then we
-        // pass the request up the chain. If the enclosing executive director
-        // respects fireAt(), this will result in the container of this
-        // director being iterated again at the requested time. This is
-        // reasonable, for example, in FSM, DE, SR, CT, or any domain that
-        // can safely fire actors other than the one that requested the
-        // refiring at the specified time.
-        if (isEmbedded()) {
-            CompositeActor container = (CompositeActor) getContainer();
-            return container.getExecutiveDirector().fireAt(container, time,
-                    microstep);
-        }
-        // If we are not embedded, then return a value indicating that the
-        // fireAt() request is being ignored. If the caller is OK with that,
-        // then no problem.
-        // All derived classes of Director for which the fireAt() method is
-        // useful, should override this behavior.
-        return new Time(this, Double.NEGATIVE_INFINITY);
+        return fireContainerAt(time, microstep);
     }
 
     /** Request a firing of the given actor at the current model time.
@@ -540,7 +529,7 @@ public class Director extends Attribute implements Executable {
      *  The requested microstep will be zero.
      *  @param time The requested time.
      *  @return The time that the executive director indicates it will fire this
-     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
+     *   director, or an instance of Time with value equal to current time
      *   if there is no executive director.
      *  @exception IllegalActionException If the director does not
      *   agree to fire the actor at the specified time, or if there
@@ -550,19 +539,19 @@ public class Director extends Attribute implements Executable {
         return fireContainerAt(time, 0);
     }
     
-    /** Request a firing of the container of this director at the specified time
-     *  and microstep
-     *  and throw an exception if the executive director does not agree to
+    /** Request a firing of the container of this director at the specified time,
+     *  adjusted by the current offset and drift of the local clock,
+     *  and the specified microstep.
+     *  Throw an exception if the executive director does not agree to
      *  do it at the requested time. If there is no executive director (this
      *  director is at the top level), then ignore the request and return
-     *  a Time with value Double.NEGATIVE_INFINITY.
-     *  This is a convenience method provided because several directors need it.
+     *  a Time with value equal to the current time.
      *  The microstep argument is used by directors that implement
      *  {@link SuperdenseTimeDirector}.
      *  @param time The requested time.
      *  @param microstep The requested microstep.
      *  @return The time that the executive director indicates it will fire this
-     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
+     *   director, or an instance of Time with value equal to current time
      *   if there is no executive director.
      *  @exception IllegalActionException If the director does not
      *   agree to fire the actor at the specified time, or if there
@@ -578,17 +567,20 @@ public class Director extends Attribute implements Executable {
                     _debug("**** Requesting that enclosing director refire me at "
                             + time + " with microstep " + microstep);
                 }
-                Time result = director.fireAt(container, time, microstep);
-                if (!result.equals(time)) {
+                // Translate the local time into an environment time.
+                Time environmentTime = _localClock.getEnvironmentTimeForLocalTime(time);
+                Time result = director.fireAt(container, environmentTime, microstep);
+                if (!result.equals(environmentTime)) {
                     throw new IllegalActionException(this, director.getName()
                             + " is unable to fire " + container.getName()
                             + " at the requested time: " + time
                             + ". It responds it will fire it at: " + result);
                 }
-                return result;
+                // Translate the response from the environment into a local time.
+                return _localClock.getLocalTimeForEnvironmentTime(result);
             }
         }
-        return new Time(this, Double.NEGATIVE_INFINITY);
+        return _localClock.getLocalTime();
     }
     
     /** Return a causality interface for the composite actor that
@@ -616,6 +608,22 @@ public class Director extends Attribute implements Executable {
      */
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
+    }
+    
+    /** Get current environment time.
+     *  This is the current time of the enclosing executive
+     *  director, if there is one, and null otherwise.
+     *  @return Environment time or null if the associated director is the top level director.
+     */
+    public Time getEnvironmentTime() {
+        Actor container = (Actor) getContainer();
+        if (container.getContainer() != null) {
+            Director executiveDirector = container.getExecutiveDirector();
+            if (executiveDirector != null) {
+                return executiveDirector.getModelTime();
+            }
+        } 
+        return _localClock.getLocalTime();
     }
 
     /** Return the error tolerance, if any, of this director.
@@ -661,9 +669,10 @@ public class Director extends Attribute implements Executable {
      *  value, if possible. For example, the DEDirector class returns the
      *  time value of the next event in the event queue.
      *  @return The time of the next iteration.
+     *  @exception IllegalActionException If time objects cannot be created.
      *  @see #getModelTime()
      */
-    public Time getModelNextIterationTime() {
+    public Time getModelNextIterationTime() throws IllegalActionException {
         NamedObj container = getContainer();
         // NOTE: the container may not be a composite actor.
         // For example, the container may be an entity as a library,
@@ -722,9 +731,9 @@ public class Director extends Attribute implements Executable {
      *  @see #setModelTime(Time)
      */
     public Time getModelTime() {
-        return _localClock.getCurrentTime();
+        return _localClock.getLocalTime();
     }
-
+    
     /** Return the next time of interest in the model being executed by
      *  this director. This method is useful for domains that perform
      *  speculative execution (such as CT).  Such a domain in a hierarchical
@@ -738,10 +747,11 @@ public class Director extends Attribute implements Executable {
      *  Note that this method is not made abstract to facilitate the use
      *  of the test suite.
      *  @return The time of the next iteration.
+     *  @exception IllegalActionException If Time objects cannot be created.
      *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelNextIterationTime}
      */
-    public double getNextIterationTime() {
+    public double getNextIterationTime() throws IllegalActionException {
         return getModelNextIterationTime().getDoubleValue();
     }
 
@@ -849,7 +859,8 @@ public class Director extends Attribute implements Executable {
         // Reset the flag that causes postfire() to return false.
         _finishRequested = false;
 
-        setModelTimeToStartTime();
+        _localClock.resetLocalTime(getModelStartTime());
+        _localClock.start();
 
         // Initialize the contained actors.
         Nameable container = getContainer();
@@ -1043,8 +1054,8 @@ public class Director extends Attribute implements Executable {
      *  director is ready to execute. It does <i>not</i>
      *  call prefire() on the contained actors.
      *  If this director is not at the top level of the hierarchy,
-     *  then this base class synchronizes
-     *  current time to match that of the enclosing model.
+     *  then this base class synchronizes to environment time, making
+     *  any necessary adjustments for drift or offset of the local clock. 
      *  <p>
      *  In this base class, assume that the director is always ready to
      *  be fired, and so return true. Domain directors should probably
@@ -1059,7 +1070,13 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Director: Called prefire().");
         }
-        _localClock.synchronizeToEnvironmentTime();
+        
+        setModelTime(_localClock.getLocalTimeForCurrentEnvironmentTime());
+        
+        if (_debugging) {
+            _debug("-- Setting current time to " + getModelTime());
+        } 
+ 
         return true;
     }
 
@@ -1098,9 +1115,12 @@ public class Director extends Attribute implements Executable {
             attribute.validate();
         }
         // In case the preinitialize() method of any actor
-        // access current time, set the start time.
-        // This will be repeated in initialize().
-        setModelTimeToStartTime();
+        // access current time, set the start time. This is required
+        // for instance in DDF.
+        // The following will be repeated in initialize().
+        _localClock.resetLocalTime(getModelStartTime()); 
+        _localClock.start();
+        
         // preinitialize protected variables.
         _stopRequested = false;
         _finishRequested = false;
@@ -1191,6 +1211,15 @@ public class Director extends Attribute implements Executable {
                 manager.requestInitialization(actor);
             }
         }
+    }
+    
+    /** Start or resume the actor, which means (re)start the local clock.
+     *  If the clock is not stopped then this
+     *  has no effect.
+     *  @exception IllegalActionException If the fireAt() request throws it.
+     */
+    public void resume() throws IllegalActionException { 
+        _localClock.start(); 
     }
 
     /** Specify the container.  If the specified container is an instance
@@ -1284,42 +1313,16 @@ public class Director extends Attribute implements Executable {
     public void setCurrentTime(double newTime) throws IllegalActionException {
         setModelTime(new Time(this, newTime));
     }
-
-    /** Set a new value to the current time of the model, where
-     *  the new time must be no earlier than the current time.
+    
+    /** Set a new value to the current time of the model.
      *  @exception IllegalActionException If the new time is less than
      *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
      *  @see #getModelTime()
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
-        Time currentTime = _localClock.getCurrentTime();
-        int comparisonResult = currentTime.compareTo(newTime);
-
-        if (comparisonResult > 0) {
-            throw new IllegalActionException(this, "Attempt to move current "
-                    + "time backwards. (new time = " + newTime
-                    + ") < (current time = " + getModelTime() + ")");
-        } else if (comparisonResult < 0) {
-            if (_debugging) {
-                _debug("==== Set current time to: " + newTime);
-            }
-            _localClock.setCurrentTime(newTime);
-        } else {
-            // the new time is equal to the current time, do nothing.
-        }
-    }
-
-    /** Set the current model time to equals the start time of the model.
-     *  This base class sets current time to the value returned by
-     *  {@link #getModelStartTime()}.
-     *  @exception IllegalActionException If getModelStartTime() throws it.
-     */
-    public void setModelTimeToStartTime() throws IllegalActionException {
-        // Do not call setModelTime() here because we may be setting
-        // time backwards.
-        _localClock.setCurrentTime(getModelStartTime());
-    }
+       _localClock.setLocalTime(newTime);
+    } 
 
     /** Request that the director cease execution altogether.
      *  This causes a call to stop() on all actors contained by
@@ -1407,6 +1410,14 @@ public class Director extends Attribute implements Executable {
      */
     public boolean supportMultirateFiring() {
         return false;
+    }
+    
+    /** Suspend the actor at the specified time. This will first call
+     *  {@link #resume(Time)} and then record the suspend time.
+     *  @exception IllegalActionException If the suspend cannot be completed.
+     */
+    public void suspend() throws IllegalActionException {
+        _localClock.stop();
     }
 
     /** Terminate any currently executing model with extreme prejudice.

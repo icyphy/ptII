@@ -69,8 +69,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.Typeable;
-import ptolemy.domains.modal.kernel.Suspendable;
+import ptolemy.data.type.Typeable; 
 import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
@@ -1971,31 +1970,42 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _inputTokenMap.put(name, token);
     }
 
-    /** If the specified refinement implements Suspendable, then set its
-     *  current time equal to the current environment time minus the refinement's
-     *  total accumulated suspension time. Otherwise, set current time to
-     *  match that of the environment. If there is no environment, do nothing.
+    /** If the specified refinement's director implements Suspendable, then set
+     *  its current time equal to the current environment time minus
+     *  the refinement's total accumulated suspension time. Otherwise,
+     *  set current time to match that of the environment. If there is
+     *  no environment, do nothing.
      *  @param refinement The refinement.
-
+     *  @exception IllegalActionException If setModelTime() throws it.
      */
-    private void _setTimeForRefinement(Actor refinement)
+    protected void _setTimeForRefinement(Actor refinement)
             throws IllegalActionException {
-        Time environmentTime = getExecutiveDirector().getModelTime();
-        Director director = refinement.getDirector();
-        if (refinement instanceof Suspendable) {
-            // Adjust current time to be the environment time minus
-            // the accumulated suspended time of the refinement.
-            Time suspendedTime = ((Suspendable) refinement)
-                    .accumulatedSuspendTime();
-
-            if (suspendedTime != null) {
-                director.setModelTime(environmentTime.subtract(suspendedTime));
-                return;
-            }
+        Actor container = (Actor) getContainer();
+        Director director = getDirector();
+        if (!(director instanceof FSMDirector)) {
+            throw new IllegalActionException(this,
+                    "State refinements are only supported within ModalModel.");
         }
-        director.setModelTime(environmentTime);
+        Director executiveDirector = container.getExecutiveDirector();
+        if (executiveDirector != null) {
+            Time environmentTime = executiveDirector.getModelTime();
+            /* FIXME: This is now handled by the director.
+            Director refinementDirector = refinement.getDirector();
+            if (refinementDirector instanceof Suspendable) {
+                // Adjust current time to be the environment time minus
+                // the accumulated suspended time of the refinement.
+                Time suspendedTime = ((Suspendable) refinementDirector)
+                        .accumulatedSuspendTime();
+                if (suspendedTime != null) {
+                    director.setModelTime(environmentTime.subtract(suspendedTime));
+                    ((FSMDirector)director)._currentOffset = suspendedTime;
+                    return;
+                }
+            }
+            */
+            director.setModelTime(environmentTime);
+        }
     }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

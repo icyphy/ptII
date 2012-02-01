@@ -877,7 +877,7 @@ public class PteraDirector extends Director implements ValueListener {
         if (_isInController()) {
             PteraModalModel modalModel = (PteraModalModel) getContainer()
                     .getContainer();
-            _localClock.setCurrentTime(modalModel.getDirector().getModelTime());
+            _localClock.setLocalTime(modalModel.getDirector().getModelTime());
 
             Iterator<?> entities = controller.deepEntityList().iterator();
             List<Event> initialEvents = new LinkedList<Event>();

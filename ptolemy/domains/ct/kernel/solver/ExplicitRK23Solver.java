@@ -277,7 +277,7 @@ public class ExplicitRK23Solver extends ODESolver {
         // defined on the current time, such as the CurrentTime actor.
         Time iterationBeginTime = director.getIterationBeginTime();
         double currentStepSize = director.getCurrentStepSize();
-        director.setModelTime(iterationBeginTime.add(currentStepSize
+        director.getLocalClock().setLocalTime(iterationBeginTime.add(currentStepSize
                 * _timeInc[_getRoundCount()]));
     }
 

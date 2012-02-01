@@ -1305,9 +1305,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (refinements != null) {
             for (Actor stateRefinement : refinements) {
                 Director refinementDirector = stateRefinement.getDirector();
-                if (_lastChosenTransitions.size() != 0
-                        && refinementDirector instanceof Suspendable) {
-                    ((Suspendable) refinementDirector).suspend(environmentTime);
+                if (_lastChosenTransitions.size() != 0) {
+                    refinementDirector.resume();
                 }
             }
         }
@@ -1322,10 +1321,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (destinationRefinements != null) {
                     for (TypedActor destinationRefinement : destinationRefinements) {
                         Director refinementDirector = destinationRefinement.getDirector();
-                        if (refinementDirector instanceof Suspendable) {
-                            ((Suspendable) refinementDirector)
-                                    .resume(environmentTime);
-                        }
+                        refinementDirector.resume();
                     }
                 }
             }
@@ -2428,11 +2424,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _currentConnectionMap = (Map) _connectionMaps.get(_currentState);
     }
 
-    /** If the specified refinement's director implements Suspendable, then set
-     *  its current time equal to the current environment time minus
-     *  the refinement's total accumulated suspension time. Otherwise,
-     *  set current time to match that of the environment. If there is
-     *  no environment, do nothing.
+    /** Set the refinements current time equal to the matching environment, 
+     *  or if there is no environment, do nothing.
      *  @param refinement The refinement.
      *  @exception IllegalActionException If setModelTime() throws it.
      */

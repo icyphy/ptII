@@ -516,7 +516,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     if (timeIncrement == 1.0) {
                         _isIntermediateStep = false;
                     }
-                    _localClock.setCurrentTime(_iterationBeginTime.add(_currentStepSize
+                    _localClock.setLocalTime(_iterationBeginTime.add(_currentStepSize
                             * timeIncrement));
                     _index = 0;
                     if (_debugging) {
@@ -944,8 +944,8 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  has no effect.
      *  @exception IllegalActionException If the fireAt() request throws it.
      */
-    public void resume(Time time) throws IllegalActionException {
-        super.resume(time);
+    public void resume() throws IllegalActionException {
+        super.resume();
         // Request a firing at the current time to ensure that
         // we restart here.
         fireAt(null, getModelTime());
@@ -954,11 +954,13 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Roll back all actors that implement ContinuousStatefulComponent
      *  to committed state, and set local model time to the start
      *  of the integration period.
+     *  @throws IllegalActionException If the rollback attempts to go
+     *   back further than the last committed time.
      */
-    public void rollBackToCommittedState() {
+    public void rollBackToCommittedState() throws IllegalActionException {
         // Restore the local view of model time to
         // the start of the integration step.
-        _localClock.setCurrentTime(_iterationBeginTime);
+        _localClock.setLocalTime(_iterationBeginTime);
         _index = _iterationBeginIndex;
 
         if (_debugging) {
@@ -1727,25 +1729,18 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Set the time and step size to match that of the enclosing director.
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         _currentStepSize = enclosingDirector._currentStepSize;
-        if (_accumulatedSuspendTime != null) {
-            _localClock.setCurrentTime(enclosingDirector.getModelTime()
-                    .subtract(_accumulatedSuspendTime));
-            if (_debugging) {
-                _debug("-- Setting current time to " + currentTime
-                        + ", which aligns with the enclosing director's time of "
-                        + enclosingDirector.getModelTime()
-                        + ", given the accumulated suspend time of "
-                        + _accumulatedSuspendTime);
-            }
-            _iterationBeginTime = enclosingDirector._iterationBeginTime
-                    .subtract(_accumulatedSuspendTime);
-        } else {
-            _localClock.setCurrentTime(enclosingDirector.getModelTime());
-            if (_debugging) {
-                _debug("-- Setting current time to " + currentTime);
-            }
-            _iterationBeginTime = enclosingDirector._iterationBeginTime;
+        // Do not use setCommittedTime on the following line because we
+        // are probably speculatively executing into the future.
+        _localClock.setLocalTime(_localClock.getLocalTimeForCurrentEnvironmentTime());
+        
+        if (_debugging) {
+            _debug("-- Setting current time to " + currentTime
+                    + ", which aligns with the enclosing director's time of "
+                    + enclosingDirector.getModelTime());
         }
+
+        _iterationBeginTime = _localClock.getLocalTimeForEnvironmentTime(enclosingDirector._iterationBeginTime);
+
         // FIXME: Probably shouldn't make the index match that of the environment!
         // There may have been suspensions happening. So what should the index be?
         // Here we set it to zero if the round is greater than zero. But what
@@ -1801,13 +1796,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         // Check the enclosing model time against the local model time.
         // Note that time has already been automatically adjusted with the
         // accumulated suspend time.
-        Time outTime = executiveDirector.getModelTime();
+        Time outTime = _localClock.getLocalTimeForCurrentEnvironmentTime(); 
+                executiveDirector.getModelTime();
         
-        // Adjust by the accumulated suspend time, if appropriate.
-        if (_accumulatedSuspendTime != null) {
-            outTime = outTime.subtract(_accumulatedSuspendTime);
-        }
-
         int localTimeExceedsOutsideTime = currentTime.compareTo(outTime);
         if (localTimeExceedsOutsideTime > 0) {
             ///////////////////////////////////////////////////////////////
@@ -1893,6 +1884,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
             // We should set current time to the environment time and set
             // the step size to zero.
+            // FIXME: This says it is setting current time, but unless
+            // a commit is pending, it is not. Should we just throw an exception here?
             if (_debugging) {
                 _debug("-- Setting current time to match enclosing non-ContinuousDirector: "
                         + currentTime + ", and step size to 0.0.");
@@ -1906,12 +1899,9 @@ public class ContinuousDirector extends FixedPointDirector implements
             // Adjust the step size to
             // make sure the time does not exceed the next iteration
             // time of the environment during this next integration step.
-            Time environmentNextIterationTime = executiveDirector
-                    .getModelNextIterationTime();
-            // Adjust the time if necessary.
-            if (_accumulatedSuspendTime != null) {
-                environmentNextIterationTime = environmentNextIterationTime.subtract(_accumulatedSuspendTime);
-            }
+            Time environmentNextIterationTime = _localClock.getLocalTimeForEnvironmentTime(executiveDirector
+                    .getModelNextIterationTime());
+
             Time localTargetTime = _iterationBeginTime.add(_currentStepSize);
             if (environmentNextIterationTime.compareTo(localTargetTime) < 0) {
                 _currentStepSize = environmentNextIterationTime.subtract(
