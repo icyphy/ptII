@@ -32,13 +32,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
-//// ProductLatticeOntologyASTNodeAdapter
+//// ProductLatticeOntologyCompositeAdapter
 
 /** A product lattice-based ontology adapter for composite actors whose
  *  constraints are derived from the component ontology solvers.
  *
  *  @author Charles Shelton
- *  @version $Id: ProductLatticeOntologyASTNodeAdapter.java 61458 2011-07-11 19:54:07Z cxh $
+ *  @version $Id: ProductLatticeOntologyCompositeAdapter.java 61458 2011-07-11 19:54:07Z cxh $
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
