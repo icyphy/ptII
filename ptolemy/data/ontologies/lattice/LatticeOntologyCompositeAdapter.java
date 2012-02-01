@@ -135,7 +135,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
         }
 
         // Set up inner composite connection constraints.
-        for (TypedIOPort port : (List<TypedIOPort>) _getConstrainedInsidePorts(isConstraintSource())) {
+        for (TypedIOPort port : (List<TypedIOPort>) _getConstrainedPorts(!isConstraintSource())) {
             _constrainObject(interconnectConstraintType, port,
                     port.insidePortList());
         }
@@ -143,19 +143,4 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
         return super.constraintList();
     }
 
-    /**
-     * Return the list of constrained ports given the flag
-     * whether source or sink ports should be constrained.
-     * If source ports are constrained, it returns the list
-     * of input ports of the associated actor; otherwise, it
-     * returns the list of output ports.
-     * @param constraintSource The flag that indicates whether
-     *  source or sink ports are constrained.
-     * @return The list of constrained ports.
-     */
-    protected List _getConstrainedInsidePorts(boolean constraintSource) {
-        Actor actor = (Actor) getComponent();
-        return constraintSource ? actor.inputPortList() : actor
-                .outputPortList();
-    }
 }
