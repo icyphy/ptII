@@ -29,7 +29,6 @@ package ptolemy.data.ontologies.lattice;
 
 import java.util.List;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
@@ -108,12 +107,23 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
 
     /** Return all constraints of this component.  The constraints is
      *  a list of inequalities.
-     *  @return A list of Inequality.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @return A list of Inequalities.
+     *  @exception IllegalActionException Thrown if _addInterConnectionConstraints()
+     *  has an error or if the superclass call to constraintList() has an error.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
+        _addInterConnectionConstraints();
+        return super.constraintList();
+    }
+    
+    /** Add all the constraints between actors inside the composite actor
+     *  referenced by this adapter.
+     *  @throws IllegalActionException Thrown if getAdapter() has an error
+     *   when it is called.
+     */
+    protected void _addInterConnectionConstraints() throws IllegalActionException {
         CompositeEntity actor = (CompositeEntity) getComponent();
-
+        
         // Set up inter-actor constraints.
         for (Entity entity : (List<Entity>) actor.entityList()) {
             LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) _solver
@@ -139,8 +149,6 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
             _constrainObject(interconnectConstraintType, port,
                     port.insidePortList());
         }
-
-        return super.constraintList();
     }
 
 }

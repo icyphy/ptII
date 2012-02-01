@@ -88,18 +88,16 @@ public class ProductLatticeOntologyASTNodeAdapter extends
      *  the constraints.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        if (!_useDefaultConstraints) {
-            for (LatticeOntologyAdapter adapter : _tupleAdapters) {
-                if (adapter != null) {
-                    Ontology adapterOntology = adapter.getSolver()
-                            .getOntology();
-                    adapter._addDefaultConstraints(adapter.getSolver()
-                            ._getConstraintType());
-                    ProductLatticeOntologyAdapter
-                            .addConstraintsFromTupleOntologyAdapter(
-                                    adapter.constraintList(), adapterOntology,
-                                    this);
-                }
+        for (LatticeOntologyAdapter adapter : _tupleAdapters) {
+            if (adapter != null) {
+                Ontology adapterOntology = adapter.getSolver()
+                .getOntology();
+                adapter._addDefaultConstraints(adapter.getSolver()
+                        ._getConstraintType());
+                ProductLatticeOntologyAdapter
+                .addConstraintsFromTupleOntologyAdapter(
+                        adapter.constraintList(), adapterOntology,
+                        this);
             }
         }
         return super.constraintList();

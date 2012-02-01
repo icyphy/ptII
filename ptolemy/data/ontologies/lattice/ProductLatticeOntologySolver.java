@@ -37,6 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
 //// ProductLatticeOntologySolver
@@ -64,6 +65,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
     public ProductLatticeOntologySolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        solverStrategy.setVisibility(Settable.NONE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,8 +149,10 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
      *  collecting the constraints.
      */
     public void initialize() throws IllegalActionException {
+        //reset();
         OntologySolverUtilities productLatticeSolverUtilities = getOntologySolverUtilities();
 
+        
         // Before calling initialize set all the sub ontology solvers to use the same shared utilities
         // object as the product lattice ontology solver.  This is necessary to keep track of
         // constraint relationships between Ptolemy expressions and the model elements that contain them.
@@ -161,6 +165,20 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
         }
 
         super.initialize();
+        /*
+        reset();
+        NamedObj toplevel = _toplevel();
+        LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
+
+        toplevelAdapter.reinitialize();
+        if (containedSolvers != null) {
+            for (LatticeOntologySolver innerSolver : containedSolvers) {
+                ProductLatticeOntologyAdapter.addConstraintsFromTupleOntologyAdapter(
+                        ((LatticeOntologyAdapter) innerSolver.getAdapter(toplevel)).constraintList(), innerSolver.getOntology(), toplevelAdapter);
+            }
+        }
+        _initialConstraintList = toplevelAdapter.constraintList();
+        */
     }
 
     /** Reset the solver. This removes the internal states of the
@@ -184,7 +202,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
                             .getAdapter(toplevel);
                     toplevelAdapter.reinitialize();
                     toplevelAdapter
-                            ._addDefaultConstraints(_getConstraintType());
+                            ._addDefaultConstraints(innerSolver._getConstraintType());
                     toplevelAdapter._setConnectionConstraintType(innerSolver
                             ._getConstraintType());
                 } catch (IllegalActionException e) {
@@ -236,7 +254,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
 
         if (adapter == null) {
             if (component instanceof CompositeEntity) {
-                adapter = new LatticeOntologyCompositeAdapter(this,
+                adapter = new ProductLatticeOntologyCompositeAdapter(this,
                         (CompositeEntity) component);
             } else if (component instanceof ASTPtRootNode) {
                 adapter = new ProductLatticeOntologyASTNodeAdapter(this,

@@ -93,16 +93,14 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
      *   the constraints.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        if (!_useDefaultConstraints) {
-            for (LatticeOntologyAdapter adapter : _tupleAdapters) {
-                if (adapter != null) {
-                    Ontology adapterOntology = adapter.getSolver()
-                            .getOntology();
-                    adapter._addDefaultConstraints(adapter.getSolver()
-                            ._getConstraintType());
-                    addConstraintsFromTupleOntologyAdapter(
-                            adapter.constraintList(), adapterOntology, this);
-                }
+        for (LatticeOntologyAdapter adapter : _tupleAdapters) {
+            if (adapter != null) {
+                Ontology adapterOntology = adapter.getSolver()
+                .getOntology();
+                adapter._addDefaultConstraints(adapter.getSolver()
+                        ._getConstraintType());
+                addConstraintsFromTupleOntologyAdapter(
+                        adapter.constraintList(), adapterOntology, this);
             }
         }
         return super.constraintList();
@@ -156,7 +154,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                     productLatticeOntologyAdapter.setAtLeast(greater, lesser);
                 }
 
-                // The lesser element is a concept function so it needs a wrapper for the product lattice ontology solver.
+            // The lesser element is a concept function so it needs a wrapper for the product lattice ontology solver.
             } else if (lesser instanceof ConceptFunction) {
                 String wrapperName = "wrapper_"
                         + ((ConceptFunction) lesser).getName();
@@ -187,10 +185,10 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                         new ConceptFunctionInequalityTerm(wrapperFunction,
                                 dependentTerms));
 
-                // Otherwise the lesser element is just another object in the model
-                // that needs a derived concept function to transform its concept
-                // value in the original latice into a derived product lattice
-                // concept value for the product lattice ontology solver.
+            // Otherwise the lesser element is just another object in the model
+            // that needs a derived concept function to transform its concept
+            // value in the original lattice into a derived product lattice
+            // concept value for the product lattice ontology solver.
             } else {
                 List<Ontology> domainOntologyList = new ArrayList<Ontology>(1);
                 domainOntologyList.add(sourceOntology);
