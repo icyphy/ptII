@@ -58,6 +58,17 @@ java::call ptolemy.moml.MoMLParser addMoMLFilter $filter
 
 
 
+
+
+
+set parser [java::new ptolemy.moml.MoMLParser]
+$parser reset
+
+# Set the error handler so that we can query for errors
+set errorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
+$parser setErrorHandler $errorHandler
+
+
 test UserActorLibrary-0.1 {Read in the configuration} { 
     set configurationURL [java::call ptolemy.util.FileUtilities nameToURL \
 			      {$CLASSPATH/ptolemy/actor/gui/test/testConfiguration.xml} \
@@ -66,23 +77,29 @@ test UserActorLibrary-0.1 {Read in the configuration} {
 
     if {[info vars configuration] == ""} {
 	set configuration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration $configurationURL]
+	# Open one model so that we don't exit.
+	$parser purgeModelRecord test.xml
+	set entity [java::cast ptolemy.kernel.CompositeEntity \
+			[$parser parseFile test.xml]]
+	set tableau [$configuration openModel $entity]
     }
     $configuration getFullName
 } {.configuration}
 
+
+# Set the user library to something temporary
+set userLibraryName testUserActorLibrary_OK_2_DELETE
+
 #
-# Test the UserActorLibrary.saveComponentInLibrary() method 
+# Test the UserActorLibrary.saveComponentInLibrary() method by saving a file 
 #
-proc testSaveComponentInLibrary { modelFile configuration } { 
-    # Set the user library to something temporary
-    set userLibraryName testUserActorLibrary_OK_2_DELETE
-    java::field ptolemy.actor.gui.UserActorLibrary \
-    	USER_LIBRARY_NAME $userLibraryName
-    set libraryName "[java::call ptolemy.util.StringUtilities preferencesDirectory]${userLibraryName}.xml"
-    file delete -force $libraryName
-    if [file exists $libraryName] {
-	error "$libraryName exists"
-    } 
+proc testSaveFileInLibrary { modelFile configuration } { 
+    global userLibraryName
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    $parser purgeAllModelRecords
+    #$parser purgeModelRecord $modelFile
+    resetUserLibrary $configuration $userLibraryName
 
     java::call ptolemy.actor.gui.UserActorLibrary openUserLibrary \
 	$configuration
@@ -92,13 +109,20 @@ proc testSaveComponentInLibrary { modelFile configuration } {
     $parser purgeModelRecord $modelFile
     set entity [$parser parseFile $modelFile]
 
+    return [testSaveComponentInLibrary $entity $configuration $userLibraryName]
+}
+
+proc testSaveComponentInLibrary {entity configuration userLibraryName} {
+    #java::call ptolemy.actor.gui.UserActorLibrary openUserLibrary \
+    #	$configuration
+
     java::call ptolemy.actor.gui.UserActorLibrary \
 	saveComponentInLibrary \
 	$configuration $entity
 
 
     # Save the library
-    set libraryInstance [$configuration getEntity "actor library.$userLibraryName"]
+    set libraryInstance [$configuration getEntity "actor library.${userLibraryName}"]
     set libraryTableau [$configuration openModel $libraryInstance]
     set libraryEffigy [java::cast ptolemy.actor.gui.PtolemyEffigy \
     			   [$libraryTableau getContainer]]
@@ -113,11 +137,43 @@ proc testSaveComponentInLibrary { modelFile configuration } {
     return $readbackEntity
 }
 
+proc resetUserLibrary {configuration userLibraryName } {
+    java::field ptolemy.actor.gui.UserActorLibrary \
+    	USER_LIBRARY_NAME $userLibraryName
+    set libraryName "[java::call ptolemy.util.StringUtilities preferencesDirectory]${userLibraryName}.xml"
+    file delete -force $libraryName
+    if [file exists $libraryName] {
+	error "$libraryName exists"
+    } 
+
+    set libraryInstance [$configuration getEntity "actor library.${userLibraryName}"]
+
+    set libraryTableau [java::null]
+    catch {set libraryTableau [$configuration openModel $libraryInstance]}
+    if {![java::isnull $libraryTableau]} {
+	set libraryEffigy [java::cast ptolemy.actor.gui.PtolemyEffigy \
+			       [$libraryTableau getContainer]]
+	set file [$libraryEffigy getWritableFile]
+	set directory [$configuration getDirectory]
+
+	set fileURL [[[java::new java.io.File $libraryName] toURI] toURL]
+	set libraryEffigy2 [$directory getEffigy [$fileURL toExternalForm]]
+	#set libraryEffigy [java::call ptolemy.actor.gui.Configuration findEffigy $libraryInstance]
+	$libraryEffigy2 setContainer [java::null]
+	$libraryInstance setContainer [java::null]
+
+	if {![java::isnull $file]} {
+	    set parser [java::new ptolemy.moml.MoMLParser]
+	    $parser purgeModelRecord [$file toURL]
+	}
+    }
+}
+
 ######################################################################
 ####
 #
 test UserActorLibrary-1.0 {} {
-    [testSaveComponentInLibrary test.xml $configuration] exportMoML
+    [testSaveFileInLibrary test.xml $configuration] exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -168,7 +224,7 @@ test UserActorLibrary-1.2 {Sinewave, which is a class} {
     set parser [java::new ptolemy.moml.MoMLParser]
 
     set entityLibrary [java::cast ptolemy.moml.EntityLibrary \
-			   [testSaveComponentInLibrary \
+			   [testSaveFileInLibrary \
 				../../lib/Sinewave.xml $configuration]]
     set restoredEntity [$entityLibrary getEntity Sinewave]
     
@@ -206,12 +262,57 @@ test UserActorLibrary-1.3 {model.xml, which has problems with hideName} {
 ####
 #
 test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkContainer() was throwing an exception, which was masking the real error  } {
+    global userLibraryName
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    $parser purgeAllModelRecords
+
+    set handler [java::new ptolemy.util.MessageHandler]
+    java::call ptolemy.util.MessageHandler setMessageHandler $handler
+
+    resetUserLibrary $configuration $userLibraryName
+    java::call ptolemy.actor.gui.UserActorLibrary openUserLibrary \
+    	$configuration
+
+    java::call ptolemy.actor.gui.UserActorLibrary saveComponentInLibrary  $configuration $entity2
+} {}
+
+######################################################################
+####
+#
+test UserActorLibrary-2.0 {A PortParameter in an unnamed entity} {
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor]
+    set portParameter [java::new ptolemy.actor.parameters.PortParameter $toplevel myPortParameter]
+    set errorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
+    $parser setErrorHandler [java::null]
+    set messageHandler [java::new ptolemy.util.test.RecorderMessageHandler]
+    java::call ptolemy.util.MessageHandler setMessageHandler $messageHandler
+    java::call ptolemy.actor.gui.UserActorLibrary \
+	saveComponentInLibrary \
+	$configuration $toplevel
+    list [$errorHandler getMessages] [$messageHandler getMessages]
+} {{} {}}
+
+
+######################################################################
+####
+#
+test UserActorLibrary-2.1 {A Ramp in an unnamed entity} {
+    global userLibraryName
 
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
-    set handler [java::new ptolemy.util.MessageHandler]
-    java::call ptolemy.util.MessageHandler setMessageHandler $handler
-    java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $entity2
+    $parser purgeAllModelRecords
+    resetUserLibrary $configuration $userLibraryName
+    java::call ptolemy.actor.gui.UserActorLibrary openUserLibrary \
+	$configuration
+
+    set toplevel2_1 [java::new ptolemy.actor.TypedCompositeActor]
+    set ramp [java::new ptolemy.actor.lib.Ramp $toplevel2_1 myRamp]
+    java::call ptolemy.actor.gui.UserActorLibrary \
+	saveComponentInLibrary \
+	$configuration $toplevel2_1
+
 } {}
 
 # The list of filters is static, so we reset it
