@@ -275,7 +275,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * @param node The given ASTPtRootNode.
      * @return The associated concept constraint adapter.
      * @exception IllegalActionException If an exception is thrown in the private
-     * _getHelper method
+     * _getAdapter method
      */
     public LatticeOntologyASTNodeAdapter getAdapter(ASTPtRootNode node)
             throws IllegalActionException {
@@ -289,7 +289,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * @param component The given component
      * @return The associated concept constraint adapter.
      * @exception IllegalActionException If an exception is thrown in the private
-     * _getHelper method
+     * _getAdapter method
      */
     public OntologyAdapter getAdapter(NamedObj component)
             throws IllegalActionException {
@@ -302,7 +302,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * @param object The given object.
      * @return The associated concept constraint adapter.
      * @exception IllegalActionException If an exception is thrown in the private
-     * _getHelper method
+     * _getAdapter method
      */
     public OntologyAdapter getAdapter(Object object)
             throws IllegalActionException {
@@ -750,20 +750,6 @@ public class LatticeOntologySolver extends OntologySolver {
         List<Inequality> conflicts = new ArrayList<Inequality>();
 
         try {
-            // Check declared properties across all connections.
-            //List propertyConflicts = topLevel._checkDeclaredProperties();
-            //conflicts.addAll(propertyConflicts);
-
-            /*
-             * // FIXME: this is the iterative approach. List constraintList =
-             * new ArrayList(); Iterator adapters =
-             * _adapterStore.values().iterator(); while (adapters.hasNext()) {
-             * PropertyConstraintHelper adapter = (PropertyConstraintHelper)
-             * adapters.next();
-             *
-             * constraintList.addAll(adapter.constraintList()); } //
-             */
-
             // NOTE: To view all property constraints, uncomment these.
             /*
              * Iterator constraintsIterator = constraintList.iterator(); while

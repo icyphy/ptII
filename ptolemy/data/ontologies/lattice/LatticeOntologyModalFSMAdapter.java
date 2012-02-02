@@ -186,7 +186,7 @@ public class LatticeOntologyModalFSMAdapter extends
             }
         }
 
-        return _union(_ownConstraints, _subHelperConstraints);
+        return _union(_ownConstraints, _subAdapterConstraints);
     }
 
     /** Return the list of parse tree root nodes that correspond to the

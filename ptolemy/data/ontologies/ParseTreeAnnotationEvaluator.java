@@ -163,37 +163,6 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
-    /* FIXME: Removing this method to aid in compilation
-     * --Ben 12/04/2009
-    public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException {
-
-        ((ASTPtRootNode) node.jjtGetChild(0)).visit(this);
-        Object leftChild = _evaluatedObject;
-
-        ((ASTPtRootNode) node.jjtGetChild(1)).visit(this);
-        Object rightChild = _evaluatedObject;
-
-        Token operator = node.getOperator();
-        if (operator.kind == PtParserConstants.EQUALS) {
-            ((PropertyHelper) _adapter).setSameAsManualAnnotation(
-                    leftChild, rightChild);
-
-        } else if (operator.kind == PtParserConstants.GTE) {
-            ((PropertyHelper) _adapter).setAtLeastManualAnnotation(
-                    leftChild, rightChild);
-
-        } else if (operator.kind == PtParserConstants.LTE) {
-            ((PropertyHelper) _adapter).setAtLeastManualAnnotation(
-                    rightChild, leftChild);
-
-        } else {
-            throw _unsupportedVisitException("operator not supported.");
-        }
-        _evaluatedObject = null;
-    }
-     */
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

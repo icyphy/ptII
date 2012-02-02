@@ -192,8 +192,8 @@ public abstract class OntologySolver extends OntologySolverBase implements
 
     /**
      * Return true if the specified property-able object is settable; otherwise
-     * false which means that its property has been set by
-     * PropertyHelper.setEquals().
+     * false which means that its concept has been set by
+     * OntologyAdapter.setEquals().
      * @param object The specified property-able object.
      * @return True if the specified property-able object is settable, otherwise
      * false.

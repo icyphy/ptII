@@ -89,7 +89,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
         _useDefaultConstraints = useDefaultConstraints;
         _solver = solver;
         _ownConstraints = new LinkedList<Inequality>();
-        _subHelperConstraints = new LinkedList<Inequality>();
+        _subAdapterConstraints = new LinkedList<Inequality>();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,9 +106,9 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
 
         _constrainAttributes();
 
-        _addSubHelperConstraints();
+        _addSubAdapterConstraints();
 
-        return _union(_ownConstraints, _subHelperConstraints);
+        return _union(_ownConstraints, _subAdapterConstraints);
     }
 
     /**
@@ -152,7 +152,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      */
     public void reinitialize() throws IllegalActionException {
         _ownConstraints = new LinkedList<Inequality>();
-        _subHelperConstraints = new LinkedList<Inequality>();
+        _subAdapterConstraints = new LinkedList<Inequality>();
         super.reinitialize();
     }
 
@@ -242,13 +242,13 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @exception IllegalActionException Thrown if there is any errors in
      * getting the sub adapters and gathering the constraints for each one.
      */
-    protected void _addSubHelperConstraints() throws IllegalActionException {
+    protected void _addSubAdapterConstraints() throws IllegalActionException {
         Iterator adapters = _getSubAdapters().iterator();
 
         while (adapters.hasNext()) {
             LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) adapters
                     .next();
-            _subHelperConstraints.addAll(adapter.constraintList());
+            _subAdapterConstraints.addAll(adapter.constraintList());
         }
     }
 
@@ -460,6 +460,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     protected boolean _useDefaultConstraints;
 
     /** The list of permanent property constraints. */
-    protected List<Inequality> _subHelperConstraints = null;
+    protected List<Inequality> _subAdapterConstraints = null;
 
 }

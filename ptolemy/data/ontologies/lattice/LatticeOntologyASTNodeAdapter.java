@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
-//// PropertyConstraintHelper
+//// LatticeOntoloyASTNodeAdapter
 
 /**
  A base class representing a property constraint adapter.
@@ -64,8 +64,8 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
      * @param solver  The lattice-based ontology solver for this adapter
      * @param node The given AST node
      * @exception IllegalActionException Thrown if
-     * PropertyConstraintHelper(NamedObj, ASTPtRootNode, boolean)
-     * throws it.
+     *  LatticeOntologyASTNodeAdapter(NamedObj, ASTPtRootNode, boolean)
+     *  throws it.
      */
     public LatticeOntologyASTNodeAdapter(LatticeOntologySolver solver,
             ASTPtRootNode node) throws IllegalActionException {
@@ -152,29 +152,8 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
             }
         }
 
-        return _union(_ownConstraints, _subHelperConstraints);
+        return _union(_ownConstraints, _subAdapterConstraints);
     }
-
-    //    /**
-    //     * @param node The given AST node.
-    //     * @return The term
-    //     * @exception IllegalActionException
-    //     */
-    //    public InequalityTerm[] getChildrenTerm(ptolemy.data.expr.ASTPtRootNode node) throws IllegalActionException {
-    //        InequalityTerm children[] =
-    //            new InequalityTerm[node.jjtGetNumChildren()];
-    //
-    //        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-    //            Object child = node.jjtGetChild(i);
-    //
-    //            PropertyConstraintASTNodeHelper adapter;
-    //
-    //            adapter = (PropertyConstraintASTNodeHelper) _solver.getHelper(child);
-    //            children[i] = adapter.getPropertyTerm(child);
-    //
-    //        }
-    //        return children;
-    //    }
 
     /**
      * Returns the component referenced by the given name in the given

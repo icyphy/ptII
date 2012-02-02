@@ -58,21 +58,21 @@ Constraints for a component in the model.
 (e.g. ASTPtRootNode, Sink, Entity, and FSMActor). A model component,
 in turn, may have one or multiple property-able objects. Each
 constraint is relevant to a property-able object. For example,
-the PropertyHelper associated with an actor may have each of its
+the PropertyAdapter associated with an actor may have each of its
 IOPorts as property-able.
 
 <p>A property-able object is an object that can be annotated with
 a Property object. Users can define different Property classes as
 part of their use-case definition.
 
-<p>Every PropertyHelper is associated a property
-solver. PropertyHelpers support hierarchical structuring. They may
+<p>Every PropertyAdapter is associated a property
+solver. PropertyAdapters support hierarchical structuring. They may
 have downward links to sub-adapters. This is helpful to construct
-PropertyHelper for hierarchical component in the model. For example, a
-PropertyHelper for the CompositeActor have all the contained actors'
+PropertyAdapter for hierarchical component in the model. For example, a
+PropertyAdapter for the CompositeActor have all the contained actors'
 adapters as its sub-adapters.
 
-<p>A PropertyHelper supports manual annotation. Users can define their
+<p>A PropertyAdapter supports manual annotation. Users can define their
 own annotation evaluator to evaluate property expressions and/or
 constraints.
 
@@ -115,15 +115,15 @@ public abstract class OntologyAdapter {
     }
 
     /**
-     * Return the name of the PropertyHelper. In this base class,
-     * return the concatenation of the prefix "Helper_" and the string
+     * Return the name of the PropertyAdapter. In this base class,
+     * return the concatenation of the prefix "Adapter_" and the string
      * representation of the component object. This method does not
      * guarantee uniqueness.
      *
-     * @return The name of the PropertyHelper.
+     * @return The name of the PropertyAdapter.
      */
     public String getName() {
-        return "Helper_" + _component.toString();
+        return "Adapter_" + _component.toString();
     }
 
     /**
@@ -153,7 +153,7 @@ public abstract class OntologyAdapter {
     }
 
     /**
-     * Reset and initialize the PropertyHelper. This clears any
+     * Reset and initialize the PropertyAdapter. This clears any
      * cached states and the resolved properties of the property-able
      * objects. This call is recursive, so every sub-adapter will be
      * reset and initialized after the call.
@@ -174,18 +174,6 @@ public abstract class OntologyAdapter {
                 if (_solver.isSettable(propertyable)) {
                     _solver.clearResolvedConcept(propertyable);
                 }
-
-                /* FIXME: Not doing display for now.
-                if (clearShowInfo) {
-                    // Clear the expression of the _showInfo attribute.
-                    // It will be updated later.
-                    StringParameter showAttribute = (StringParameter) namedObj
-                            .getAttribute("_showInfo");
-                    if (showAttribute != null) {
-                        showAttribute.setExpression("");
-                    }
-                }
-                */
             }
         }
 
@@ -196,7 +184,7 @@ public abstract class OntologyAdapter {
     }
 
     /**
-     * Associate this PropertyHelper with the specified component.
+     * Associate this PropertyAdapter with the specified component.
      *
      * @param component The specified component.
      * @see #getComponent
@@ -218,9 +206,9 @@ public abstract class OntologyAdapter {
     }
 
     /**
-     * Return the string representation of the PropertyHelper.
+     * Return the string representation of the PropertyAdapter.
      *
-     * @return The string representation of the PropertyHelper.
+     * @return The string representation of the PropertyAdapter.
      */
     public String toString() {
         return getName() + " " + super.toString();
@@ -252,16 +240,16 @@ public abstract class OntologyAdapter {
     }
 
     /**
-     * Return the list of PropertyHelpers for ASTPtRootNodes. These
+     * Return the list of PropertyAdapters for ASTPtRootNodes. These
      * ASTPtRootNodes are nodes of the parse tree constructed from
      * parsing the expression of every property-able Attribute.
      *
-     * @return The list of PropertyHelpers for ASTPtRootNodes.
+     * @return The list of PropertyAdapters for ASTPtRootNodes.
      * @exception IllegalActionException If the AST expression is not parseable
      */
     protected List<OntologyAdapter> _getASTNodeAdapters()
             throws IllegalActionException {
-        List<OntologyAdapter> astHelpers = new ArrayList<OntologyAdapter>();
+        List<OntologyAdapter> astAdapters = new ArrayList<OntologyAdapter>();
         ParseTreeASTNodeAdapterCollector collector = new ParseTreeASTNodeAdapterCollector();
 
         for (ASTPtRootNode root : _getAttributeParseTrees()) {
@@ -269,7 +257,7 @@ public abstract class OntologyAdapter {
                 //                try {
                 List<OntologyAdapter> adapters = collector.collectAdapters(
                         root, getSolver());
-                astHelpers.addAll(adapters);
+                astAdapters.addAll(adapters);
                 //                } catch (IllegalActionException ex) {
                 //                    // This means the expression is not parse-able.
                 //                    // FIXME: So, we will discard it for now.
@@ -277,7 +265,7 @@ public abstract class OntologyAdapter {
                 //                }
             }
         }
-        return astHelpers;
+        return astAdapters;
     }
 
     /** Return the list of parse trees for all settable Attributes

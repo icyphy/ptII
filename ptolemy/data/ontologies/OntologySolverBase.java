@@ -146,24 +146,24 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     }
 
     /**
-     * Return the list of all PropertyHelpers associated with this
+     * Return the list of all PropertyAdaptes associated with this
      * ontology solver.
      *
-     * @return The list of PropertyHelpers.
+     * @return The list of PropertyAdapters.
      * @exception IllegalActionException If there is an exception from getting
-     * all the subHelpers.
+     * all the subAdapters.
      */
     public List<OntologyAdapter> getAllAdapters() throws IllegalActionException {
         NamedObj topLevel = _toplevel();
         List<OntologyAdapter> result = new LinkedList<OntologyAdapter>();
-        List<OntologyAdapter> subHelpers = new LinkedList<OntologyAdapter>();
+        List<OntologyAdapter> subAdapters = new LinkedList<OntologyAdapter>();
 
         result.add(getAdapter(topLevel));
-        subHelpers.add(getAdapter(topLevel));
+        subAdapters.add(getAdapter(topLevel));
 
-        while (!subHelpers.isEmpty()) {
-            OntologyAdapter adapter = subHelpers.remove(0);
-            subHelpers.addAll(adapter._getSubAdapters());
+        while (!subAdapters.isEmpty()) {
+            OntologyAdapter adapter = subAdapters.remove(0);
+            subAdapters.addAll(adapter._getSubAdapters());
             result.add(adapter);
         }
 
@@ -191,7 +191,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
     /**
      * Return the set of all property-able objects obtained from
-     * all PropertyHelper.
+     * all PropertyAdapter.
      *
      * @return The set of all property-able objects.
      * @exception IllegalActionException Thrown if
@@ -447,16 +447,16 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the PropertyHelper for the specified component. This
-     *  instantiates a new PropertyHelper if it does not already exist
+    /** Return the PropertyAdapter for the specified component. This
+     *  instantiates a new PropertyAdapter if it does not already exist
      *  for the specified component. This method is static so it can be
      *  called in any subclass of OntologySolverBase regardless of how many
      *  classes are in between in the inheritance hierarchy.
      *
      *  @param component The specified component.
      *  @param solver The solver for which to get the adapter.
-     *  @return The PropertyHelper for the specified component.
-     *  @exception IllegalActionException Thrown if the PropertyHelper
+     *  @return The PropertyAdapter for the specified component.
+     *  @exception IllegalActionException Thrown if the PropertyAdapter
      *   cannot be instantiated.
      */
     protected static OntologyAdapter _getAdapter(Object component,
@@ -472,12 +472,6 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
             }
             return _getAdapter(((NamedObj) component).getContainer(), solver);
         }
-
-        /* FIXME
-        if (getContainer() instanceof OntologyComposite) {
-            _compileHelperClasses();
-        }
-        */
 
         String packageName = _getPackageName(solver);
         String defaultAdaptersPackageName = solver.getClass().getPackage()
@@ -598,14 +592,14 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     ////                         protected variables               ////
 
     /**
-     * The HashMap that caches components and their PropertyHelper objects.
+     * The HashMap that caches components and their PropertyAdapter objects.
      */
     protected HashMap<Object, OntologyAdapter> _adapterStore = new HashMap<Object, OntologyAdapter>();
 
     /**
      * The set of property-able objects that have non-settable property. A
      * non-settable property results from setting an object with a fixed
-     * property through PropertyHelper.setEquals().
+     * property through PropertyAdapter.setEquals().
      */
     protected HashSet<Object> _nonSettables = new HashSet<Object>();
 

@@ -162,8 +162,8 @@ public class ActorProductLatticeConstraintsDefinitionAdapter extends
         }
 
         _constrainAttributes();
-        _addSubHelperConstraints();
-        return _union(_ownConstraints, _subHelperConstraints);
+        _addSubAdapterConstraints();
+        return _union(_ownConstraints, _subAdapterConstraints);
     }
 
     ///////////////////////////////////////////////////////////////////
