@@ -80,6 +80,7 @@ JSRCS = \
 	ProductLatticeOntology.java \
 	ProductLatticeOntologyAdapter.java \
 	ProductLatticeOntologyASTNodeAdapter.java \
+	ProductLatticeOntologyCompositeAdapter.java \
 	ProductLatticeOntologySolver.java \
 	ProductLatticeWrapperConceptFunction.java \
 	SubtractConceptFunctionDefinition.java \

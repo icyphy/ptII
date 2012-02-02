@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  constraints are derived from the component ontology solvers.
  *
  *  @author Charles Shelton
- *  @version $Id: ProductLatticeOntologyCompositeAdapter.java 61458 2011-07-11 19:54:07Z cxh $
+ *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
