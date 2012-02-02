@@ -417,7 +417,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug("========= DE director fires at " + getModelTime()
+            _debug("========= " + this.getName() + " director fires at " + getModelTime()
                     + "  with microstep as " + _microstep);
         }
 
