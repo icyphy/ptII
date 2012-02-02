@@ -180,10 +180,7 @@ public class LocalClock {
      *  This method commits current local time.
      */
     public void start() {
-        Time environmentTime = _director.getEnvironmentTime();  
-        _offset = environmentTime.subtract(_localTime);  
-        _lastCommitEnvironmentTime = environmentTime; 
-        _lastCommitLocalTime = _localTime;
+        commit();
     }
     
     /** Stop the clock. The current time will remain the
@@ -192,12 +189,7 @@ public class LocalClock {
      *  This method commits current local time.
      */
     public void stop() {
-        Time environmentTime = _director.getEnvironmentTime();
-        if (_lastCommitEnvironmentTime != null) {
-            _offset = _offset.add(environmentTime.subtract(_lastCommitEnvironmentTime));
-        }
-        _lastCommitEnvironmentTime = environmentTime;
-        _lastCommitLocalTime = _localTime;
+        commit();
     }
     
     /** Set local time without committing.
@@ -208,6 +200,18 @@ public class LocalClock {
     public void resetLocalTime(Time time) {
         _localTime = time;
     } 
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Commit the current local time. 
+     */
+    private void commit() {
+        Time environmentTime = _director.getEnvironmentTime();  
+        _offset = environmentTime.subtract(_localTime);  
+        _lastCommitEnvironmentTime = environmentTime; 
+        _lastCommitLocalTime = _localTime;
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variable                  ////
