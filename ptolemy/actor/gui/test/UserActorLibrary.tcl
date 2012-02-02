@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2006-2009 The Regents of the University of California.
+# @Copyright (c) 2006-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $PTII/doc/coding/testing.html for more information.
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
@@ -58,6 +58,8 @@ java::call ptolemy.moml.MoMLParser addMoMLFilter $filter
 
 
 
+# Set the user library to something temporary
+set userLibraryName testUserActorLibrary_OK_2_DELETE
 
 
 
@@ -66,7 +68,12 @@ $parser reset
 
 # Set the error handler so that we can query for errors
 set errorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
-$parser setErrorHandler $errorHandler
+$parser setErrorHandler [java::null]
+
+# Set the message handler so that we can determine if the change request succeeded
+set messageHandler [java::new ptolemy.util.test.RecorderMessageHandler]
+java::call ptolemy.util.MessageHandler setMessageHandler $messageHandler
+
 
 
 test UserActorLibrary-0.1 {Read in the configuration} { 
@@ -87,22 +94,14 @@ test UserActorLibrary-0.1 {Read in the configuration} {
 } {.configuration}
 
 
-# Set the user library to something temporary
-set userLibraryName testUserActorLibrary_OK_2_DELETE
 
 #
-# Test the UserActorLibrary.saveComponentInLibrary() method by saving a file 
+# Test the UserActorLibrary.saveComponentInLibrary() method by saving a file. 
 #
 proc testSaveFileInLibrary { modelFile configuration } { 
     global userLibraryName
-    set parser [java::new ptolemy.moml.MoMLParser]
-    $parser reset
-    $parser purgeAllModelRecords
-    #$parser purgeModelRecord $modelFile
-    resetUserLibrary $configuration $userLibraryName
 
-    java::call ptolemy.actor.gui.UserActorLibrary openUserLibrary \
-	$configuration
+    resetUserLibrary $configuration $userLibraryName
 
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
@@ -112,6 +111,9 @@ proc testSaveFileInLibrary { modelFile configuration } {
     return [testSaveComponentInLibrary $entity $configuration $userLibraryName]
 }
 
+#
+# Test the UserActorLibrary.saveComponentInLibrary() method by saving an entity.
+#
 proc testSaveComponentInLibrary {entity configuration userLibraryName} {
     #java::call ptolemy.actor.gui.UserActorLibrary openUserLibrary \
     #	$configuration
@@ -137,7 +139,15 @@ proc testSaveComponentInLibrary {entity configuration userLibraryName} {
     return $readbackEntity
 }
 
+#
+# Reset the user library.
+#
 proc resetUserLibrary {configuration userLibraryName } {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    $parser purgeAllModelRecords
+
+    # Delete the file in ~/.ptolemyII
     java::field ptolemy.actor.gui.UserActorLibrary \
     	USER_LIBRARY_NAME $userLibraryName
     set libraryName "[java::call ptolemy.util.StringUtilities preferencesDirectory]${userLibraryName}.xml"
@@ -167,12 +177,18 @@ proc resetUserLibrary {configuration userLibraryName } {
 	    $parser purgeModelRecord [$file toURL]
 	}
     }
+
+    # Reopen the user library named by UserActorLibrary.USER_LIBRARY
+    java::call ptolemy.actor.gui.UserActorLibrary openUserLibrary \
+	$configuration
 }
 
 ######################################################################
 ####
 #
-test UserActorLibrary-1.0 {} {
+test UserActorLibrary-1.0 {Test saving test.xml in the User Actor Library} {
+    resetUserLibrary $configuration $userLibraryName
+
     [testSaveFileInLibrary test.xml $configuration] exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -262,15 +278,12 @@ test UserActorLibrary-1.3 {model.xml, which has problems with hideName} {
 ####
 #
 test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkContainer() was throwing an exception, which was masking the real error  } {
-    global userLibraryName
-    set parser [java::new ptolemy.moml.MoMLParser]
-    $parser reset
-    $parser purgeAllModelRecords
+
+    resetUserLibrary $configuration $userLibraryName
 
     set handler [java::new ptolemy.util.MessageHandler]
     java::call ptolemy.util.MessageHandler setMessageHandler $handler
 
-    resetUserLibrary $configuration $userLibraryName
     java::call ptolemy.actor.gui.UserActorLibrary openUserLibrary \
     	$configuration
 
@@ -281,12 +294,10 @@ test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkC
 ####
 #
 test UserActorLibrary-2.0 {A PortParameter in an unnamed entity} {
+    resetUserLibrary $configuration $userLibraryName
+
     set toplevel [java::new ptolemy.actor.TypedCompositeActor]
     set portParameter [java::new ptolemy.actor.parameters.PortParameter $toplevel myPortParameter]
-    set errorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
-    $parser setErrorHandler [java::null]
-    set messageHandler [java::new ptolemy.util.test.RecorderMessageHandler]
-    java::call ptolemy.util.MessageHandler setMessageHandler $messageHandler
     java::call ptolemy.actor.gui.UserActorLibrary \
 	saveComponentInLibrary \
 	$configuration $toplevel
@@ -298,22 +309,17 @@ test UserActorLibrary-2.0 {A PortParameter in an unnamed entity} {
 ####
 #
 test UserActorLibrary-2.1 {A Ramp in an unnamed entity} {
-    global userLibraryName
-
-    set parser [java::new ptolemy.moml.MoMLParser]
-    $parser reset
-    $parser purgeAllModelRecords
     resetUserLibrary $configuration $userLibraryName
-    java::call ptolemy.actor.gui.UserActorLibrary openUserLibrary \
-	$configuration
 
     set toplevel2_1 [java::new ptolemy.actor.TypedCompositeActor]
     set ramp [java::new ptolemy.actor.lib.Ramp $toplevel2_1 myRamp]
     java::call ptolemy.actor.gui.UserActorLibrary \
 	saveComponentInLibrary \
 	$configuration $toplevel2_1
+    list [$errorHandler getMessages] [$messageHandler getMessages]
+} {{} {}}
 
-} {}
+resetUserLibrary $configuration $userLibraryName
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
