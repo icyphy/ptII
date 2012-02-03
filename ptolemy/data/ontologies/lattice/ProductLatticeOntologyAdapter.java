@@ -208,7 +208,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
     }
 
     /** Return the component concept value for the specified ontology from the
-     *  given product lattice concept. The product latttice concept input
+     *  given product lattice concept. The product lattice concept input
      *  argument could be a {@link RecordConcept} of ProductLatticeConcepts,
      *  which requires special handling beyond what is done in
      *  {@link ProductLatticeConcept#getComponentConceptValue(Ontology)}.
