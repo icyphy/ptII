@@ -1306,7 +1306,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             for (Actor stateRefinement : refinements) {
                 Director refinementDirector = stateRefinement.getDirector();
                 if (_lastChosenTransitions.size() != 0) {
-                    refinementDirector.resume();
+                    refinementDirector.suspend();
                 }
             }
         }
