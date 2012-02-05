@@ -34,11 +34,15 @@ import java.util.List;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.util.StringUtilities;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicEllipse;
@@ -71,7 +75,19 @@ public class ValueIcon extends XMLIcon {
     public ValueIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        
+        displayWidth = new Parameter(this, "displayWidth");
+        displayWidth.setExpression("60");
+        displayWidth.setTypeEquals(BaseType.INT);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The number of characters to display. This is an integer, with
+     *  default value 60.
+     */
+    public Parameter displayWidth;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -97,7 +113,16 @@ public class ValueIcon extends XMLIcon {
         if (container instanceof Settable) {
             String name = container.getDisplayName();
             String value = ((Settable) container).getExpression();
-            LabelFigure label = new LabelFigure(name + ": " + value,
+            int width = 60;
+            try {
+                width = ((IntToken) displayWidth.getToken()).intValue();
+            } catch (IllegalActionException e) {
+                // This should not happen.
+            }
+            String truncated = StringUtilities
+                        .truncateString(value, width, 1);
+            LabelFigure label = new LabelFigure(name + ": " 
+                    + truncated,
                     _labelFont, 1.0, SwingConstants.SOUTH_WEST);
             background.add(label);
             return background;
