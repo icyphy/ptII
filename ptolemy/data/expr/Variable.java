@@ -1447,7 +1447,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // the cause, but this leads to very verbose error
             // error messages that are not very friendly.
             // throw new IllegalActionException(this, error, message.toString());
-            throw new IllegalActionException(message.toString());
+            throw new IllegalActionException(null, error, message.toString());
         }
 
         // NOTE: The call to _propagate() above has already done
