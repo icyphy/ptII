@@ -965,6 +965,34 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If any action throws it.
      */
     public boolean postfire() throws IllegalActionException { 
+        // Suspend all refinements of the current state, whether they were fired
+        // or not. This is important because if a preemptive transition was taken,
+        // then the refinement was not fired, but it should still be suspended.
+        Actor[] refinements = _currentState.getRefinement();
+        if (refinements != null) {
+            for (Actor stateRefinement : refinements) {
+                Director refinementDirector = stateRefinement.getDirector();
+                if (_lastChosenTransition != null) {
+                    refinementDirector.suspend();
+                }
+            }
+        }
+
+        // Notify all the refinements of the destination state that they are being
+        // resumed.
+        if (_lastChosenTransition != null) {            
+            State destinationState = _lastChosenTransition.destinationState();
+            if (destinationState != null) {
+                TypedActor[] destinationRefinements = destinationState
+                        .getRefinement();
+                if (destinationRefinements != null) {
+                    for (TypedActor destinationRefinement : destinationRefinements) {
+                        Director refinementDirector = destinationRefinement.getDirector();
+                        refinementDirector.resume();
+                    }
+                }
+            }
+        }
         _commitLastChosenTransition();
         return !_reachedFinalState && !_stopRequested;
     }
