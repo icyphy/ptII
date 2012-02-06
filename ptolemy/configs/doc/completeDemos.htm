@@ -124,11 +124,20 @@ Ptolemy II models that illustrate non-MoC oriented functionality
 <li><a href="#hoc">Higher Order Components</a></li>
 <li><a href="#modelTransformation">Model Transformation</a>
 <li> Code Generation
-  <ul>
-  <li><a href="#pnCodegen">C PN Code Generation</a>
-  <li><a href="#sdfCodegen">C SDF Code Generation</a>
-  <li><a href="#javaSDFCodegen">Java SDF Code Generation</a>
- </ul>
+  <ul> 
+    <li><a href="cg"><code>ptolemy/cg</code> Code Generation</a></li>
+    <ul>
+      <li><a href="#cgLib"><code>ptolemy/cg</code> Library demos</a></li>
+      <li><a href="#cgPtides"><code>ptolemy/cg</code> Ptides demos</a></li>
+    </ul>
+
+    <li><a href="#codegen"><code>ptolemy/codegen</code> Code Generation</a></li>
+    <ul>
+      <li><a href="#pnCodegen">C PN Code Generation</a>
+      <li><a href="#sdfCodegen">C SDF Code Generation</a>
+      <li><a href="#javaSDFCodegen">Java SDF Code Generation</a>
+    </ul>
+  </ul>
 <li><a href="#ontologies">Ontology Analysis</a>
 <li><a href="#noDomain">Models that have no domain</a>
 <!--vergilDocs-->
@@ -895,15 +904,48 @@ requires that JMF be installed:
 
 <!--/ptinyKeplerDocs-->
 <!-- Ptiny does not include codegen -->
+Ptolemy II has several generations of code generation facilities.  
+<br/><code>ptolemy/cg/</code> is the most recent facility.
+<br/><code>ptolemy/codegen</code> is the older facility.
 
-<h3><a name="pnCodegen">C PN Code Generation</a></h3>
+<h3><a name="cg"><code>ptolemy/cg</code></a></h3>
+Newer Ptolemy code generation demos that use files  in <code>ptolemy/cg</code>.
+
+<h4><a name="cgLib"><code>ptolemy/cg</code> Library demos</a></h4>
+<!-- Please keep the demos alphabetical -->
+<ul>
+<li><a href="../../cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.xml">CompiledCompositeActor</a></li>
+<li><a href="../../cg/lib/demo/ModularCG/ModularCG.xml">ModularCG</a></li>
+<li><a href="../../cg/lib/demo/ModularCGPubSub/ModularCGPubSub.xml">ModularCGPubSub</a></li>
+<li><a href="../../cg/lib/demo/Scale/Scale_c.xml">Scale_c</a></li>
+<li><a href="../../cg/lib/demo/Scale/Scale_java.xml">Scale_java</a></li>
+</ul>
+
+<h4><a name="cgPtides"><code>ptolemy/cg</code> Ptides demos</a></h4>
+<ul>
+<!-- Please keep the demos alphabetical -->
+<li><a href="../../cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/demo/OnePlatform/OnePlatform.xml">OnePlatform</a></li>
+</ul>
+
+<h4><a name="cgPtidesLuminary"><code>ptolemy/cg</code> Ptides Luminary demos</a></h4>
+<ul>
+<!-- Please keep the demos alphabetical -->
+<li><a href="../../cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo/Accumulator/Accumulator.xml">Accumulator</a></li>
+<li><a href="../../cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo/Speaker/Speaker.xml">Speaker</a></li>
+<li><a href="../../cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo/TimeTriggeredTunnelingBallDevice/TimeTriggeredTunnelingBallDevice.xml">TimeTriggeredTunnelingBallDevice</a></li>
+<li><a href="../../cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo/TunnelingBallDevice/TunnelingBallDevice.xml">TunnelingBallDevice</a></li>
+</ul>
+
+<h3><a name"codegen"><code>ptolemy/codegen</code></h3>
+Older Ptolemy code generation demos that use files  in <code>ptolemy/codegen</code>.
+<h4><a name="pnCodegen">C PN Code Generation</a></h4>
 <ul>
 <!-- Please keep the demos alphabetical -->
 <li><a href="../../codegen/c/domains/pn/demo/Gravitation/Gravitation.xml">Gravitation</a> 
 <li><a href="../../codegen/c/domains/pn/demo/PNButterfly/PNButterfly.xml">PN Butterfly</a> 
 </ul>
 
-<h3><a name="sdfCodegen">C SDF Code Generation</a></h3>
+<h4><a name="sdfCodegen">C SDF Code Generation</a></h4>
 <ul>
 <!-- Please keep the demos alphabetical -->
 <li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a>
@@ -920,7 +962,7 @@ Ptolemy II 8.0)
 
 </ul>
 
-<h3><a name="javaSDFCodegen">Java SDF Code Generation</a></h3>
+<h4><a name="javaSDFCodegen">Java SDF Code Generation</a></h4>
 <ul>
 <li><a href="../../codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/CompiledCompositeActor.xml">Expression demo with Java CompiledCompositeActor</a>    
 <li><a href="../../codegen/java/actor/lib/embeddedJava/demo/Scale/Scale.xml">Scale with Embedded Java</a>  
