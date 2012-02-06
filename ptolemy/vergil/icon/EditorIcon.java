@@ -94,7 +94,7 @@ import diva.gui.toolbox.FigureIcon;
  "Overridden parameters only", then some parameter values
  may be suppressed even if they are overridden. In particular,
  if an attribute contains a parameter named "_hide" with value
- true, then that parameter is now shown even if requested.
+ true, then that parameter is not shown even if requested.
  If the container of the attribute contains a parameter named
  "_hideAllParameters" with value true, then none of its
  parameters are shown.
