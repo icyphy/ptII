@@ -407,9 +407,14 @@ public class PtolemyQuery extends Query implements QueryListener,
             }
 
             if (!(foundStyle)) {
-                addLine(attribute.getName(), attribute.getDisplayName(),
-                        defaultValue, preferredBackgroundColor(attribute),
-                        preferredForegroundColor(attribute));
+                
+                // Make the text scrollable.
+                addTextArea(attribute.getName(), attribute.getDisplayName(),
+                defaultValue, preferredBackgroundColor(attribute),
+                preferredForegroundColor(attribute), 1, DEFAULT_ENTRY_WIDTH);
+//                addLine(attribute.getName(), attribute.getDisplayName(),
+//                        defaultValue, preferredBackgroundColor(attribute),
+//                        preferredForegroundColor(attribute));
 
                 // The style itself does this, so we don't need to do it again.
                 attachParameter(attribute, attribute.getName());
