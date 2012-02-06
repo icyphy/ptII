@@ -57,6 +57,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
@@ -129,8 +130,13 @@ public class Expression extends TypedAtomicActor {
         expression = new StringAttribute(this, "expression");
         expression.setExpression("");
 
+        // Do not show parameter value even if the preference
+        // "_showParameters" has value "Overridden parameters only".
         Parameter hide = new Parameter(expression, "_hide");
         hide.setExpression("true");
+        // Prevent the extra Configure button that would appear
+        // to change this.
+        hide.setVisibility(Settable.NONE);
 
         _setOutputTypeConstraint();
     }
