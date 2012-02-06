@@ -67,6 +67,16 @@ $CLASSPATH/ptolemy/caltrop/demo/FunctionClosures/FunctionClosures.xml
 $CLASSPATH/ptolemy/caltrop/demo/FunctionDefinition/FunctionDefinition.xml
 $CLASSPATH/ptolemy/caltrop/demo/Primes/Primes.xml
 $CLASSPATH/ptolemy/caltrop/demo/SDFDDI/SDFDDI.xml
+$CLASSPATH/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/demo/OnePlatform/OnePlatform.xml
+$CLASSPATH/ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo/Accumulator/Accumulator.xml
+$CLASSPATH/ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo/Speaker/Speaker.xml
+$CLASSPATH/ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo/TimeTriggeredTunnelingBallDevice/TimeTriggeredTunnelingBallDevice.xml
+$CLASSPATH/ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo/TunnelingBallDevice/TunnelingBallDevice.xml
+$CLASSPATH/ptolemy/cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.xml
+$CLASSPATH/ptolemy/cg/lib/demo/ModularCG/ModularCG.xml
+$CLASSPATH/ptolemy/cg/lib/demo/ModularCGPubSub/ModularCGPubSub.xml
+$CLASSPATH/ptolemy/cg/lib/demo/Scale/Scale_c.xml
+$CLASSPATH/ptolemy/cg/lib/demo/Scale/Scale_java.xml
 $CLASSPATH/ptolemy/codegen/c/domains/fsm/demo/Mod4Counter/Mod4Counter.xml
 $CLASSPATH/ptolemy/codegen/c/domains/pn/demo/Gravitation/Gravitation.xml
 $CLASSPATH/ptolemy/codegen/c/domains/pn/demo/PNButterfly/PNButterfly.xml
