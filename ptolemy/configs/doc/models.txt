@@ -111,7 +111,6 @@ $CLASSPATH/ptolemy/domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/HybridPlant.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/HybridPlant/RandomHybridPlant.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/Hysteresis.xml
-$CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/HysteresisWithBernoulliLosses.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/Hysteresis/HysteresisWithRandomLosses.xml
 $CLASSPATH/ptolemy/domains/continuous/demo/LevelCrossingDetector/LevelCrossingDetector.xml
