@@ -48,8 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Scale_c.xml \
-	Scale_java.xml
+	ScaleC.xml \
+	ScaleJava.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -75,7 +75,7 @@ install: all jars
 demo: demo_vergil
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Scale_java.xml
+	"$(PTII)/bin/vergil" ScaleC.xml ScaleJava.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
