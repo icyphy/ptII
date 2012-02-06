@@ -78,7 +78,7 @@ JSRCS = \
 	RelationNode.java \
 	RelationType.java \
 	State.java \
-	StateEvent.java \ 
+	StateEvent.java \
 	TransientState.java \
 	Transition.java
 
