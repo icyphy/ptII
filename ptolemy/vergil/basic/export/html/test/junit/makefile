@@ -76,7 +76,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
-tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java ../../../../../VergilInitializer.class #test_jsimple
 	CLASSPATH="$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.html.test.junit.ExportToWebJUnitTest
 
 test_java: jclass
@@ -88,6 +88,8 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
+../../../../../VergilInitializer.class: ../../../../../VergilInitializer.java
+	(cd ../../../../../; make VergilInitializer.class)
 
 
 # Get the rest of the rules
