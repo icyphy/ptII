@@ -404,6 +404,11 @@ The ID p is undefined.
 Error evaluating expression: p
   in .<Unnamed Object>.e2.p4
 Because:
+The ID p is undefined.
+Because:
+Error evaluating expression: p
+  in .<Unnamed Object>.e2.p4
+Because:
 The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.e2.p4
 Because:
@@ -521,10 +526,16 @@ test Parameter-15.4 {Changing container of parameter that depends on scope to an
 } {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
+The ID p is undefined.
+Because:
+Error evaluating expression: p
+  in .<Unnamed Object>.p3
+Because:
 The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.}}
+
 
 test Parameter-15.5 {Changing container of parameter depends on scope.} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
@@ -597,6 +608,11 @@ test Parameter-15.7 {Removing parameter invalidate dependants.} {
 } {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
+The ID p is undefined.
+Because:
+Error evaluating expression: p
+  in .<Unnamed Object>.p3
+Because:
 The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
@@ -625,10 +641,16 @@ test Parameter-15.8 {Changing container of container of parameter that depends o
 } {7 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
+The ID p is undefined.
+Because:
+Error evaluating expression: p
+  in .<Unnamed Object>.p3
+Because:
 The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.}}
+
 
 test Parameter-15.9 {Changing container of container of parameter that depends on outside scope from valid scope to invalid null scope} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]

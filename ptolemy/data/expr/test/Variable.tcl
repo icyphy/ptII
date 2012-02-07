@@ -429,6 +429,11 @@ test Variable-10.0 {Check setContainer} {
 } {{"a"} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P1
   in .E1.P2
 Because:
+The ID P1 is undefined.
+Because:
+Error evaluating expression: P1
+  in .E1.P2
+Because:
 The ID P1 is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P1
   in .E1.P2
 Because:
