@@ -1,10 +1,10 @@
 # Tests for the DDFDirector class
 #
-# @Author: Christophyer Brooks, based on SDFDirectory by Stephen Neuendorffer
+# @Author: Christopher Brooks, based on SDFDirectory by Stephen Neuendorffer
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2006 The Regents of the University of California.
+# @Copyright (c) 2004-2012 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -139,6 +139,7 @@ DDFDirector.initialize() finished.
 DDFDirector.prefire()
 iterationCount 0
 Director: Called prefire().
+-- Setting current time to 0.0
 DDFDirector.prefire() returns true.
 DDFDirector.fire()
 The actor .E1.Ramp will be iterated.
@@ -149,6 +150,7 @@ Director: Called postfire().
 DDFDirector.prefire()
 iterationCount 1
 Director: Called prefire().
+-- Setting current time to 0.0
 DDFDirector.prefire() returns true.
 DDFDirector.fire()
 The actor .E1.Consumer will be iterated.
@@ -159,6 +161,7 @@ Director: Called postfire().
 DDFDirector.prefire()
 iterationCount 2
 Director: Called prefire().
+-- Setting current time to 0.0
 DDFDirector.prefire() returns true.
 DDFDirector.fire()
 The actor .E1.Ramp will be iterated.
@@ -169,6 +172,7 @@ Director: Called postfire().
 DDFDirector.prefire()
 iterationCount 3
 Director: Called prefire().
+-- Setting current time to 0.0
 DDFDirector.prefire() returns true.
 DDFDirector.fire()
 The actor .E1.Consumer will be iterated.
@@ -179,6 +183,7 @@ Director: Called postfire().
 DDFDirector.prefire()
 iterationCount 4
 Director: Called prefire().
+-- Setting current time to 0.0
 DDFDirector.prefire() returns true.
 DDFDirector.fire()
 The actor .E1.Ramp will be iterated.
@@ -189,6 +194,7 @@ Director: Called postfire().
 DDFDirector.prefire()
 iterationCount 5
 Director: Called prefire().
+-- Setting current time to 0.0
 DDFDirector.prefire() returns true.
 DDFDirector.fire()
 The actor .E1.Consumer will be iterated.
