@@ -411,7 +411,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                 // Make the text scrollable.
                 addTextArea(attribute.getName(), attribute.getDisplayName(),
                 defaultValue, preferredBackgroundColor(attribute),
-                preferredForegroundColor(attribute), 1, DEFAULT_ENTRY_WIDTH);
+                preferredForegroundColor(attribute), 2, DEFAULT_ENTRY_WIDTH);
 //                addLine(attribute.getName(), attribute.getDisplayName(),
 //                        defaultValue, preferredBackgroundColor(attribute),
 //                        preferredForegroundColor(attribute));
