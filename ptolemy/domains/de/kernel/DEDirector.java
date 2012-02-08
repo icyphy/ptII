@@ -1732,6 +1732,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 // iterate all the channels of the current input port.
                 for (int i = 0; i < port.getWidth(); i++) {
                     if (port.hasToken(i)) {
+                        if (_debugging) {
+                            _debug("Port named " + port.getName() + " still has input on channel " + i
+                                    + ". Refire the actor.");
+                        }
                         refire = true;
 
                         // Found a channel that has input data,
