@@ -29,6 +29,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -80,10 +81,12 @@ public class Ramp extends SequenceSource {
     public Ramp(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        init = new Parameter(this, "init");
+        init = new PortParameter(this, "init");
         init.setExpression("0");
+        new Parameter(init.getPort(), "_showName", BooleanToken.TRUE);
         step = new PortParameter(this, "step");
         step.setExpression("1");
+        new Parameter(step.getPort(), "_showName", BooleanToken.TRUE);
 
         // set the type constraints.
         output.setTypeAtLeast(init);
@@ -105,7 +108,7 @@ public class Ramp extends SequenceSource {
      *  value will be the output on the next iteration.
      *  The default value of this parameter is the integer 0.
      */
-    public Parameter init;
+    public PortParameter init;
 
     /** The amount by which the ramp output is incremented on each iteration.
      *  The default value of this parameter is the integer 1.
@@ -163,6 +166,7 @@ public class Ramp extends SequenceSource {
      *  throws it.
      */
     public void fire() throws IllegalActionException {
+        init.update();
         super.fire();
         output.send(0, _stateToken);
     }
@@ -219,6 +223,7 @@ public class Ramp extends SequenceSource {
 
             try {
                 step.update();
+                init.update();
                 _stateToken = _stateToken.add(step.getToken());
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
