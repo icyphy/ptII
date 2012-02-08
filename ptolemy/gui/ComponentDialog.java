@@ -181,7 +181,7 @@ public class ComponentDialog extends JDialog {
 
         getContentPane().add(_optionPane);
         pack();
-        setResizable(resizable);
+        setResizable(true);
 
         if (owner != null) {
             setLocationRelativeTo(owner);

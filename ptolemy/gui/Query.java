@@ -795,6 +795,7 @@ public class Query extends JPanel {
         lbl.setBackground(_background);
 
         JTextArea textArea = new JTextArea(theValue, height, width);
+        textArea.setRows(Math.min(5, textArea.getLineCount()));
         textArea.setEditable(true);
         textArea.setBackground(background);
         textArea.setForeground(foreground);
