@@ -92,6 +92,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.BrowserEffigy;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
@@ -1625,6 +1626,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         GUIUtilities.addMenuItem(_viewMenu, _zoomFitAction);
         GUIUtilities.addHotKey(_getRightComponent(), _zoomOutAction);
         GUIUtilities.addMenuItem(_viewMenu, _zoomOutAction);
+        
+        _graphMenu = new JMenu("Graph");
+        _graphMenu.setMnemonic(KeyEvent.VK_G);
+        _menubar.add(_graphMenu);
+        GUIUtilities.addHotKey(_getRightComponent(), _findAction);
+        GUIUtilities.addMenuItem(_graphMenu, _findAction);
     }
 
     /** Return true if any element of the specified list is implied.
@@ -2351,6 +2358,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _cutAction = new CutAction();
         _copyAction = new CopyAction();
         _pasteAction = new PasteAction();
+        _findAction = new FindAction();
 
         // FIXME: vergil.kernel.AttributeController also defines context
         // menu choices that do the same thing.
@@ -2456,7 +2464,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         .getMenuShortcutKeyMask()));
         _layoutAction.putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
     }
-
 
     /** Return true if this is a design pattern.
      *  @return true if the model corresponding to this object
@@ -2794,6 +2801,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The export to PNG action. */
     protected Action _exportPNGAction;
+    
+    /** The find action. */
+    protected Action _findAction;
+
+    /** The graph menu. */
+    protected JMenu _graphMenu;
 
     /** The panner. Note that this variable
      *  can be null if the configuration does not have an entity named
@@ -3261,6 +3274,34 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         /**  The description of this filter. */
         public String getDescription() {
             return "Choose a Folder";
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// FindAction
+
+    /** Action to copy the current selection. */
+    protected class FindAction extends AbstractAction {
+        /** Create a new action to copy the current selection. */
+        public FindAction() {
+            super("Find");
+            putValue("tooltip",
+                    "Find occurrences of specified text.");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_F, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
+        }
+
+        /** Open a dialog to find the specified text. */
+        public void actionPerformed(ActionEvent e) {
+            DialogTableau dialogTableau = DialogTableau.createDialog(BasicGraphFrame.this,
+                    getConfiguration(), getEffigy(),
+                    SearchResultsDialog.class, (Entity) getModel());
+
+            if (dialogTableau != null) {
+                dialogTableau.show();
+            }
         }
     }
 

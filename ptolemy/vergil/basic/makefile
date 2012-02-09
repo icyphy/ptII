@@ -87,6 +87,7 @@ JSRCS = \
 	RelativeLocatable.java \
 	RemoveCustomDocumentationAction.java \
 	RunnableGraphController.java \
+	SearchResultsDialog.java \
 	WithIconGraphController.java
 
 EXTRA_SRCS =	$(JSRCS) \

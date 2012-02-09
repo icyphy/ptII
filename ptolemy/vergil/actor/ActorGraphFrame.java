@@ -295,9 +295,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
     protected void _addMenus() {
         super._addMenus();
 
-        _graphMenu = new JMenu("Graph");
-        _graphMenu.setMnemonic(KeyEvent.VK_G);
-        _menubar.add(_graphMenu);
+        _graphMenu.addSeparator();
         _addLayoutMenu(_graphMenu);
         
         // Only include the various actions if there is an actor library
@@ -442,9 +440,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
 
     /** Debug menu for this frame. */
     protected JMenu _debugMenu;
-
-    /** The graph menu. */
-    protected JMenu _graphMenu;
 
     /** The action for creating a level of hierarchy. */
     protected Action _createHierarchyAction;
