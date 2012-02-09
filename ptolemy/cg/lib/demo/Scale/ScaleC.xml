@@ -92,8 +92,6 @@
             </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="startTime" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
             </property>
             <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
@@ -109,15 +107,7 @@
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <property name=".Scale_c.SDF Director._Scale_c_EmbeddedActor_CodeGenerator_AutoAdded" class="ptolemy.kernel.DecoratedAttributesImplementation">
-            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="EmbeddedActor.CodeGenerator_AutoAdded">
-            </property>
-        </property>
-        <property name="SDF Director._Scale_c_EmbeddedActor_CodeGenerator_AutoAdded" class="ptolemy.kernel.DecoratedAttributesImplementation">
+        <property name="SDF Director._ScaleC_EmbeddedActor_CodeGenerator_AutoAdded" class="ptolemy.kernel.DecoratedAttributesImplementation">
             <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
