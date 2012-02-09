@@ -129,6 +129,11 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     /** The C code that specifies the function of this actor.  The
      *  default value is the code necessary to implement a identity
      *  function.
+     *  The contents of this parameter contains blocks of C code
+     *  that is invoked during various phases of execution.
+     * 
+     *  The syntax for <code>$put()</code> and other methods is
+     *  documented in $PTII/doc/codegen.htm.
      */
     public StringAttribute embeddedCCode;
 
