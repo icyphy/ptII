@@ -53,6 +53,7 @@ TCL_SRCS = \
 JSRCS = \
 	Diff.java \
 	InnerClassTest.java \
+	RecorderMessageHandler.java \
 	ThreadStreamExec.java
 
 JCLASS = $(JSRCS:%.java=%.class)
