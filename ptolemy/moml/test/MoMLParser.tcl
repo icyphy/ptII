@@ -467,7 +467,7 @@ test MoMLParser-1.5 {test with an actor} {
 set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
-        <property name=\"init\" class=\"ptolemy.data.expr.Parameter\" value=\"0\">
+        <property name=\"init\" class=\"ptolemy.actor.parameters.PortParameter\" value=\"0\">
         </property>
     </entity>
 </class>
@@ -531,7 +531,7 @@ set result {<?xml version="1.0" standalone="no"?>
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="top" extends="ptolemy.actor.TypedCompositeActor">
     <entity name="a" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
     </entity>
 </class>

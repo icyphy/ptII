@@ -423,7 +423,7 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
     <entity name="slow" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
@@ -433,7 +433,7 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
     <entity name="fast" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/10.0">
         </property>

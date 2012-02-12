@@ -211,7 +211,7 @@ test UserActorLibrary-1.0 {Test saving test.xml in the User Actor Library} {
                 <entity name="ramp" class="ptolemy.actor.lib.Ramp">
                     <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
-                    <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+                    <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
                     </property>
                     <property name="step" class="ptolemy.actor.parameters.PortParameter" value="step">
                     </property>
