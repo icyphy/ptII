@@ -47,6 +47,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
@@ -409,9 +410,10 @@ public class PtolemyQuery extends Query implements QueryListener,
             if (!(foundStyle)) {
                 
                 // Make the text scrollable.
-                addTextArea(attribute.getName(), attribute.getDisplayName(),
+                JTextArea area = addTextArea(attribute.getName(), attribute.getDisplayName(),
                 defaultValue, preferredBackgroundColor(attribute),
-                preferredForegroundColor(attribute), 2, DEFAULT_ENTRY_WIDTH);
+                preferredForegroundColor(attribute), 1, DEFAULT_ENTRY_WIDTH);
+                area.setRows(Math.min(5, area.getLineCount()));
 //                addLine(attribute.getName(), attribute.getDisplayName(),
 //                        defaultValue, preferredBackgroundColor(attribute),
 //                        preferredForegroundColor(attribute));

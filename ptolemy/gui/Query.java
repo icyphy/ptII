@@ -794,8 +794,7 @@ public class Query extends JPanel {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
-        JTextArea textArea = new JTextArea(theValue, height, width);
-        textArea.setRows(Math.min(5, textArea.getLineCount()));
+        JTextArea textArea = new JTextArea(theValue, height, width); 
         textArea.setEditable(true);
         textArea.setBackground(background);
         textArea.setForeground(foreground);
