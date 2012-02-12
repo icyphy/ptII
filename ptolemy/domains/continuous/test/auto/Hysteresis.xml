@@ -343,7 +343,7 @@ change the value of the constant.</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0033427671E-8">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 145.0]">
         </property>
