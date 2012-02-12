@@ -29,11 +29,8 @@ package ptolemy.vergil.basic;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -57,8 +54,8 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PtolemyDialog;
-import ptolemy.gui.PtGUIUtilities;
 import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -80,7 +77,8 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class SearchResultsDialog extends PtolemyDialog implements ListSelectionListener {
+public class SearchResultsDialog extends PtolemyDialog 
+        implements ListSelectionListener, QueryListener {
 
     /** Construct a dialog for search results.
      *  @param tableau The DialogTableau.
@@ -102,13 +100,14 @@ public class SearchResultsDialog extends PtolemyDialog implements ListSelectionL
         _query.addCheckBox("names", "Include names:", true);
         _query.addCheckBox("recursive", "Recursive search:", true);
         getContentPane().add(_query, BorderLayout.NORTH);
+        _query.addQueryListener(this);
 
         _resultsTableModel = new ResultsTableModel();
         _resultsTable = new JTable(_resultsTableModel);
         _resultsTable.setDefaultRenderer(NamedObj.class, new NamedObjRenderer());
         // If you change the height, then check that a few rows can be added.
         // Also, check the setRowHeight call below.
-        _resultsTable.setPreferredScrollableViewportSize(new Dimension(300, 600));
+        _resultsTable.setPreferredScrollableViewportSize(new Dimension(300, 300));
         
         ListSelectionModel selectionModel = _resultsTable.getSelectionModel();
         selectionModel.addListSelectionListener(this);
@@ -124,6 +123,17 @@ public class SearchResultsDialog extends PtolemyDialog implements ListSelectionL
         // Make the contents of the table scrollable and visible.
         JScrollPane scrollPane = new JScrollPane(_resultsTable);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
+        
+        _resultsTable.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent event) {
+                int code = event.getKeyCode();
+                if (code == KeyEvent.VK_ENTER) {
+                    _search();
+                } else if (code == KeyEvent.VK_ESCAPE) {
+                    _cancel();
+                }
+            }
+        });
 
         pack();
         setVisible(true);
@@ -131,6 +141,14 @@ public class SearchResultsDialog extends PtolemyDialog implements ListSelectionL
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Execute the search. This is called to 
+     *  notify this dialog that one of the search options has changed.
+     *  @param name The name of the query field that changed.
+     */
+    public void changed(String name) {
+        _search();
+    }
 
     /** Override to clear highlights. */
     public void dispose() {
@@ -312,7 +330,7 @@ public class SearchResultsDialog extends PtolemyDialog implements ListSelectionL
     ////                         private variables                 ////
 
     /** The color to use for the highlight. */
-    private static String _HIGHLIGHT_COLOR = "{0.7, 0.7, 1.0, 1.0}";
+    private static String _HIGHLIGHT_COLOR = "{0.6, 0.6, 1.0, 1.0}";
     
     /** Highlights that have been created. */
     private Set<Attribute> _highlights = new HashSet<Attribute>();
