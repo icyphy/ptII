@@ -37,6 +37,7 @@ import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -82,7 +83,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * value will be the output on the next iteration.
      * The default value of this parameter is the integer 0.
      */
-    public Parameter init;
+    public PortParameter init;
 
     /**     
      * The amount by which the ramp output is incremented on each iteration.
@@ -123,10 +124,12 @@ public class Ramp extends SequenceSource implements Rollbackable {
      */
     public Ramp(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        init = new Parameter(this, "init");
+        init = new PortParameter(this, "init");
         init.setExpression("0");
+        new Parameter(init.getPort(), "_showName", BooleanToken.TRUE);
         step = new PortParameter(this, "step");
         step.setExpression("1");
+        new Parameter(step.getPort(), "_showName", BooleanToken.TRUE);
         output.setTypeAtLeast(init);
         output.setTypeAtLeast(step);
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "+"width=\"60\" height=\"40\" "+"style=\"fill:white\"/>\n"+"<polygon points=\"-20,10 20,-10 20,10\" "+"style=\"fill:grey\"/>\n"+"</svg>\n");
@@ -178,6 +181,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
      * throws it.
      */
     public void fire() throws IllegalActionException  {
+        init.update();
         super.fire();
         output.send(0, _stateToken);
     }
@@ -226,6 +230,7 @@ public class Ramp extends SequenceSource implements Rollbackable {
             $ASSIGN$_resultArray(i, _stateToken);
             try {
                 step.update();
+                init.update();
                 $ASSIGN$_stateToken(_stateToken.add(step.getToken()));
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex, "Should not be thrown because we have already " + "verified that the tokens can be added");
