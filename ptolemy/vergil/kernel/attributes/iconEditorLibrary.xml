@@ -24,6 +24,10 @@
     <property name="x" value="40.0"/>
     <property name="y" value="0.0"/>
   </property>
+  <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+    <property name="x" value="40.0"/>
+    <property name="y" value="0.0"/>
+  </property>
   <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
     <property name="width" value="35"/>
     <property name="height" value="20"/>
