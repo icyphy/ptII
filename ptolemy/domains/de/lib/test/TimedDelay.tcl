@@ -89,6 +89,12 @@ test TimedDelay-3.2 {test with negative delay} {
   in .top.TimedDelay.delay
 Because:
 Cannot have negative delay: -1.0
+  in .top.TimedDelay
+Because:
+Error evaluating expression: -1.0
+  in .top.TimedDelay.delay
+Because:
+Cannot have negative delay: -1.0
   in .top.TimedDelay}}
 
 test TimedDelay-4.1 {test a self loop without a TimedDelay} {
