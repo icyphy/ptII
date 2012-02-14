@@ -230,9 +230,12 @@ public class Director extends Attribute implements Executable {
                 _startTime = new Time(this, startTimeValue.doubleValue());
             }
         } else if (attribute == stopTime) {
-            double stopTimeValue = ((DoubleToken) stopTime.getToken())
-                    .doubleValue();
-            _stopTime = new Time(this, stopTimeValue);
+            DoubleToken stopTimeValue = (DoubleToken) stopTime.getToken();
+            if (stopTimeValue != null) {
+                _stopTime = new Time(this, stopTimeValue.doubleValue());
+            } else {
+                _stopTime = null;
+            }
         } else if (attribute == timeResolution) {
             // This is extremely frequently used, so cache the value.
             // Prevent this from changing during a run!
@@ -1775,7 +1778,6 @@ public class Director extends Attribute implements Executable {
         startTime.setTypeEquals(BaseType.DOUBLE);
 
         stopTime = new Parameter(this, "stopTime");
-        stopTime.setExpression("Infinity");
         stopTime.setTypeEquals(BaseType.DOUBLE);
     }
 
