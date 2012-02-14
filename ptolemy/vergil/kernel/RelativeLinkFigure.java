@@ -36,9 +36,18 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.RelativeLocation;
+import ptolemy.vergil.basic.BasicGraphPane;
 import diva.canvas.AbstractFigure;
+import diva.canvas.CanvasComponent;
+import diva.canvas.CanvasPane;
 import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.graph.GraphController;
 
 /**
  * A figure for drawing a link between a relative locatable and its referenced object.
@@ -63,10 +72,9 @@ public class RelativeLinkFigure extends AbstractFigure {
     public RelativeLinkFigure(RelativeLocation location) {
         _relativeLocation = location;
         _line = new Line2D.Double();
-        String relativeToName = _relativeLocation.relativeTo.getExpression();
-        // If the relativeTo reference is empty, then the location is absolute.
-        if (relativeToName != null && relativeToName.length() > 0) {
-            _updateLine();
+        NamedObj relativeTo = _relativeLocation.getRelativeToNamedObj();
+        if (relativeTo != null) {
+            _updateLine(relativeTo);
         }
     }
 
@@ -88,9 +96,9 @@ public class RelativeLinkFigure extends AbstractFigure {
      */
     @Override
     public void paint(Graphics2D g) {
-        String relativeToName = _relativeLocation.relativeTo.getExpression();
-        if (relativeToName != null && relativeToName.length() > 0) {
-            _updateLine();
+        NamedObj relativeTo = _relativeLocation.getRelativeToNamedObj();
+        if (relativeTo != null) {
+            _updateLine(relativeTo);
             double distance = Math.sqrt(_line.x2 * _line.x2 + _line.y2 * _line.y2);
             if (distance <= RelativeLocation.BREAK_THRESHOLD) {
                 g.setColor(NORMAL_COLOR);
@@ -123,22 +131,113 @@ public class RelativeLinkFigure extends AbstractFigure {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _updateLine() {
-        // The line should span from the center of the parent object to the
-        // current location of the referenced object, which is at the negative
-        // relative location in the local transform.
-        double[] offset = _relativeLocation.getRelativeLocation();
-        _line.x2 = -offset[0];
-        _line.y2 = -offset[1];
-
+    /** Update the line to the specified object.
+     *  @param relativeTo The destination object.
+     */
+    private void _updateLine(NamedObj relativeTo) {
+        // The line goes from this object (number 1) to
+        // the remote object (number 2). The positions for
+        // these objects are as follows.
+        boolean success = false;
         if (getParent() instanceof CompositeFigure) {
-            Rectangle2D bounds = ((CompositeFigure) getParent())
+            Rectangle2D bounds1 = ((CompositeFigure) getParent())
                     .getBackgroundFigure().getBounds();
-            _line.x1 = bounds.getCenterX();
-            _line.y1 = bounds.getCenterY();
-        } else {
+            double left1 = bounds1.getX();
+            double center1 = bounds1.getX() + bounds1.getWidth()*0.5;
+            double right1 = bounds1.getX() + bounds1.getWidth();
+            
+            double top1 = bounds1.getY();
+            double middle1 = bounds1.getY() + bounds1.getHeight()*0.5;
+            double bottom1 = bounds1.getY() + bounds1.getHeight();
+
+            // Now find the destination.
+            // Unfortunately, this is rather hard to do.
+            Locatable location = null;
+            try {
+                location = (Locatable) relativeTo.getAttribute("_location",
+                        Locatable.class);
+            } catch (IllegalActionException e1) {
+                // Ignore and handle as if location is null.
+            }
+            CanvasComponent parent = getParent();
+            FigureLayer enclosingFigureLayer = null;
+            while (parent != null) {
+                if (parent instanceof FigureLayer) {
+                    enclosingFigureLayer = (FigureLayer)parent;
+                    break;
+                }
+                parent = parent.getParent();
+            }
+            if (location != null && enclosingFigureLayer != null) {
+                CanvasPane pane = enclosingFigureLayer.getCanvasPane();
+                if (pane instanceof BasicGraphPane) {
+                    GraphController controller = ((BasicGraphPane)pane).getGraphController();
+                    Figure figure = controller.getFigure(location);
+                    if (figure instanceof CompositeFigure) {
+                        figure = ((CompositeFigure)figure).getBackgroundFigure();
+                    }
+                    double[] offset = _relativeLocation.getRelativeLocation();
+                    Rectangle2D bounds2 = figure.getBounds();
+                    
+                    double left2 = -offset[0] + bounds2.getX();
+                    double center2 = -offset[0] + bounds2.getX() + bounds2.getWidth() * 0.5;
+                    double right2 = -offset[0] + bounds2.getX() + bounds2.getWidth();
+                    
+                    double top2 = -offset[1] + bounds2.getY();
+                    double middle2 = -offset[1] + bounds2.getY() + bounds2.getHeight() * 0.5;
+                    double bottom2 = -offset[1] + bounds2.getY() + bounds2.getHeight();
+
+                    // We have all the information we need for optimal placement.
+                    success = true;
+                    
+                    // There are five possible x positions.
+                    if (left1 > right2) {
+                        _line.x1 = left1;
+                        _line.x2 = right2;
+                    } else if (center1 > right2) {
+                        _line.x1 = center1;
+                        _line.x2 = right2;
+                    } else if (center1 > left2) {
+                        _line.x1 = center1;
+                        _line.x2 = center2;
+                    } else if (right1 > left2) {
+                        _line.x1 = center1;
+                        _line.x2 = left2;
+                    } else {
+                        _line.x1 = right1;
+                        _line.x2 = left2;
+                    }
+                    // There are five possible y positions.
+                    if (top1 > bottom2) {
+                        _line.y1 = top1;
+                        _line.y2 = bottom2;
+                    } else if (middle1 > bottom2) {
+                        _line.y1 = middle1;
+                        _line.y2 = bottom2;
+                    } else if (middle1 > top2) {
+                        _line.y1 = middle1;
+                        _line.y2 = middle2;
+                    } else if (bottom1 > top2) {
+                        _line.y1 = middle1;
+                        _line.y2 = top2;
+                    } else {
+                        _line.y1 = bottom1;
+                        _line.y2 = top2;
+                    }
+
+                    // FIXME: Do the same for y.
+                    _line.y1 = 0.0;
+                    _line.y2 = -offset[1];
+                }
+            }
+        }
+        if (!success) {
+            // Fallback connection.
             _line.x1 = 0;
             _line.y1 = 0;
+            double[] offset = _relativeLocation.getRelativeLocation();
+            _line.x2 = -offset[0];
+            _line.y2 = -offset[1];
         }
     }
     
