@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
@@ -227,11 +228,13 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                     dropTarget = _getObjectUnder(new Point2D.Double(dragEnd[0], dragEnd[1]),
                             selection);
                 }
+                // Check to see whether the target is an Entity, and if it is,
+                // then make the position relative to that entity. Also,
                 // Do not accept relative locatables as drop target!! This could lead
                 // to a cycle in the references, and ultimately to a stack overflow
                 // when trying to compute the positions!
                 // FIXME: Could make this check weaker by checking for cycles.
-                if (dropTarget != null && !(dropTarget instanceof RelativeLocatable)) {
+                if (dropTarget instanceof Entity && !(dropTarget instanceof RelativeLocatable)) {
                     // Set the new values for the relativeTo properties.
                     newRelativeTo = dropTarget.getName();
                     newRelativeToElementName = dropTarget.getElementName();
