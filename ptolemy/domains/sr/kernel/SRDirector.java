@@ -384,6 +384,10 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
         period.setExpression("0.0");
 
         _periodicDirectorHelper = new PeriodicDirectorHelper(this);
+        
+        // Put the stopTime at the end parameters, to encourage use
+        // of iterations instead.
+        stopTime.moveToLast();
     }
 
     ///////////////////////////////////////////////////////////////////
