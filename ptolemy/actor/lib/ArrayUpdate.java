@@ -1,4 +1,4 @@
-/* Append arrays together to form a larger array.
+/* Replace an element in an array with a new value.
 
  Copyright (c) 1998-2010 The Regents of the University of California.
  All rights reserved.
@@ -27,32 +27,34 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// ArrayAppend
+//// ArrayUpdate
 
 /**
- An actor that appends ArrayTokens together.  This actor has a single input
- multiport, and a single output port.  The types on the input and the output
- port must both be the same array type.  During each firing, this actor reads
- up to one ArrayToken from each channel of the input port and creates an
- ArrayToken of the same type on the output port.  If no token is available on
- a particular channel, then there will be no contribution to the output.
+ Replace an element in an array with a new value.  This actor reads an array from the
+ <i>input</i> port and sends a new array to the <i>output</i>
+ port with the specified element replaced by the specified value.
+ The type of the output array elements is the greater than or equal to
+ the type of the elements of the input array and the replacement value.
 
- @author Steve Neuendorffer
+ @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 1.0
- @Pt.ProposedRating Green (celaine)
- @Pt.AcceptedRating Green (cxh)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (eal)
  */
-public class ArrayAppend extends Transformer {
+public class ArrayUpdate extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -61,74 +63,80 @@ public class ArrayAppend extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ArrayAppend(CompositeEntity container, String name)
+    public ArrayUpdate(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // The input is a multiport.
-        input.setMultiport(true);
+        // Set parameters.
+        index = new PortParameter(this, "index");
+        index.setExpression("0");
+        new StringAttribute(index.getPort(), "_cardinal").setExpression("SOUTH");
+        new Parameter(index.getPort(), "_showName").setExpression("true");
+        
+        value = new PortParameter(this, "value");
+        value.setExpression("1");
+        new StringAttribute(value.getPort(), "_cardinal").setExpression("SOUTH");
+        new Parameter(value.getPort(), "_showName").setExpression("true");
 
         // Set type constraints.
         input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         output.setTypeAtLeast(input);
-        // FIXME: correct type constraint for length
-        output.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);
+        output.setTypeAtLeast(ArrayType.arrayOf(value));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The index into the input array at which to set the new value.
+     *  This is a non-negative integer that defaults to 0, and is
+     *  required to be less than the length of the input array.
+     */
+    public PortParameter index;
+
+    /** The value to insert into the array at the position given by
+     *  <i>index</i>.
+     */
+    public PortParameter value;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+     *  base class and then sets up the type constraints.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayAppend newObject = (ArrayAppend) (super.clone(workspace));
+        ArrayUpdate newObject = (ArrayUpdate) (super.clone(workspace));
 
         // Set the type constraints.
         newObject.input.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newObject.output.setTypeAtLeast(newObject.input);
-        newObject.output.setTypeAtLeast(ArrayType.ARRAY_UNSIZED_BOTTOM);
+        try {
+            newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.value));
+        } catch (IllegalActionException e) {
+            throw new CloneNotSupportedException("Failed to set type constraints on cloned actor.");
+        }
+        
         return newObject;
     }
 
-    /** Consume at most one ArrayToken from each channel of the input port
-     *  and produce a single ArrayToken on the output
-     *  port that contains all of the tokens contained in all of the
-     *  arrays read from the input. If all input arrays are empty,
-     *  or if there are no input arrays, then output an empty array
-     *  of the appropriate type.
-     *  @exception IllegalActionException If a runtime type conflict occurs,
-     *   or if there are no input channels.
+    /** Consume one array from the input port and send a subarray to
+     *  the output port, padding the subarray with zeros if necessary.
+     *  @exception IllegalActionException If any parameter value
+     *   is out of range.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        int width = input.getWidth();
-        if (width == 0) {
-            throw new IllegalActionException(this, "No input channels.");
-        }
-        // NOTE: Do not use System.arraycopy here because the
-        // arrays being appended may be subclasses of ArrayToken,
-        // so values have to be accessed via the getElement() method,
-        // which is overridden in the subclasses. Use the append()
-        // method of ArrayToken instead.
-        ArrayToken[] arraysToAppend = new ArrayToken[width];
-        int resultWidth = 0;
-        for (int i = 0; i < width; i++) {
-            if (input.hasToken(i)) {
-                ArrayToken token = (ArrayToken) input.get(i);
-                arraysToAppend[i] = token;
-                resultWidth += token.length();
-            }
-        }
-        if (resultWidth > 0) {
-            output.send(0, ArrayToken.append(arraysToAppend));
-        } else {
-            Type elementType = ((ArrayType)output.getType()).getElementType();
-            output.send(0, new ArrayToken(elementType));
+        index.update();
+        value.update();
+
+        if (input.hasToken(0)) {
+            ArrayToken inputValue = ((ArrayToken) input.get(0));
+            int indexValue = ((IntToken)index.getToken()).intValue();
+            output.send(0, inputValue.update(indexValue, value.getToken()));
         }
     }
 }

@@ -145,9 +145,7 @@ public class ArrayRemoveElement extends TypedAtomicActor {
             }
             Token result = null;
             if (outputSize > 0) {
-                Token[] copy = new Token[outputSize];
-                System.arraycopy(outputElements, 0, copy, 0, outputSize);
-                result = new ArrayToken(copy);
+                result = new ArrayToken(outputElements, outputSize);
             } else {
                 result = new ArrayToken(inputArray.getElementType());
             }

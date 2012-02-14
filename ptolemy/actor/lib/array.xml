@@ -23,6 +23,7 @@
 <entity name="ArraySum" class="ptolemy.actor.lib.ArraySum"/>
 <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements"/>
 <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence"/>
+<entity name="ArrayUpdate" class="ptolemy.actor.lib.ArrayUpdate"/>
 <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray"/>
 <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray"/>
 

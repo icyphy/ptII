@@ -139,6 +139,7 @@ JSRCS = \
 	ArraySort.java \
 	ArraySum.java \
 	ArrayToElements.java \
+	ArrayUpdate.java \
 	Average.java \
 	Bernoulli.java \
 	BooleanMultiplexor.java \
@@ -261,10 +262,13 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	AbsoluteValueIcon.xml \
-        AccumulatorIcon.png \
-        AccumulatorIcon.xml \
-        BernoulliIcon.xml \
-        BooleanMultiplexorIcon.xml \
+    AccumulatorIcon.png \
+    AccumulatorIcon.xml \
+    ArrayAppendIcon.xml \
+    ArrayExtractIcon.xml \
+    ArrayUpdateIcon.xml \
+    BernoulliIcon.xml \
+    BooleanMultiplexorIcon.xml \
 	BooleanSelectIcon.xml \
 	BooleanSwitchIcon.xml \
 	ChopMultirate.xml \
