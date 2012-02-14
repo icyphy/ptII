@@ -96,6 +96,7 @@ public class SearchResultsDialog extends PtolemyDialog
         
         _query = new Query();
         _query.addLine("text", "Find:", _previousSearchTerm);
+        _query.setColumns(3);
         _query.addCheckBox("values", "Include values:", true);
         _query.addCheckBox("names", "Include names:", true);
         _query.addCheckBox("recursive", "Recursive search:", true);
