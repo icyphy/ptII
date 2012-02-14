@@ -73,11 +73,11 @@ public class RelativeLocation extends Location {
     @Override
     public double[] getLocation() {
         double[] offset = super.getLocation();
-        String relativeToValue = relativeTo.getExpression();
-        if (relativeToValue.equals("") || offset == null) {
+        NamedObj relativeToObject = getRelativeToNamedObj();
+        if (relativeToObject == null || offset == null) {
             return offset;
         }
-        double[] relativeToLocation = _getRelativeToLocation(relativeToValue);
+        double[] relativeToLocation = _getRelativeToLocation(relativeToObject);
         if (relativeToLocation != null) {
             double[] result = new double[offset.length];
             for (int i = 0; i < offset.length; i++) {
@@ -108,6 +108,49 @@ public class RelativeLocation extends Location {
         return super.getLocation();
     }
 
+    /** If the <i>relativeTo</i> object exists, return it.
+     *  Otherwise, return null and clear the <i>relativeTo</i>
+     *  parameter value.
+     *  @return The relativeTo object, or null if it
+     *   does not exist.
+     */
+    public NamedObj getRelativeToNamedObj() {
+        String relativeToName = relativeTo.getExpression();
+        if (relativeToName.trim().equals("")) {
+            return null;
+        }
+        NamedObj result = null;
+        NamedObj container = getContainer();
+        if (container != null) {
+            NamedObj containersContainer = container.getContainer();
+            if (containersContainer instanceof CompositeEntity) {
+                CompositeEntity composite = (CompositeEntity) containersContainer;
+                String elementName = relativeToElementName.getExpression();
+                // The relativeTo object is not necessarily an Entity.
+                if (elementName.equals("property")) {
+                    result = composite.getAttribute(relativeToName);
+                } else if (elementName.equals("port")) {
+                    result = composite.getPort(relativeToName);
+                } else if (elementName.equals("relation")) {
+                    result = composite.getRelation(relativeToName);
+                } else {
+                    result = composite.getEntity(relativeToName);
+                }
+            }
+        }
+        if (result == null) {
+            // The relativeTo object could not be found, so the attributes holding
+            // the reference are no longer valid. Erase their content.
+            try {
+                relativeTo.setExpression("");
+                relativeToElementName.setExpression("");
+            } catch (IllegalActionException exception) {
+                throw new InternalErrorException(exception);
+            }
+        }
+        return result;
+    }
+    
     /** Set the location in some cartesian coordinate system, and notify
      *  the container and any value listeners of the new location. Setting
      *  the location involves maintaining a local copy of the passed
@@ -122,11 +165,12 @@ public class RelativeLocation extends Location {
      */
     @Override
     public void setLocation(double[] location) throws IllegalActionException {
-        String relativeToValue = relativeTo.getExpression();
-        if (relativeToValue.equals("")) {
+        NamedObj relativeToObject = getRelativeToNamedObj();
+        if (relativeToObject == null) {
             super.setLocation(location);
+            return;
         }
-        double[] relativeToLocation = _getRelativeToLocation(relativeToValue);
+        double[] relativeToLocation = _getRelativeToLocation(relativeToObject);
         if (relativeToLocation != null) {
             double[] result = new double[location.length];
             for (int i = 0; i < location.length; i++) {
@@ -146,44 +190,15 @@ public class RelativeLocation extends Location {
     
     /** If the <i>relativeTo</i> object exists, return its location.
      *  Otherwise, return null.
-     *  @param relativeToName The name of the relativeTo object.
+     *  @param relativeToObject The relativeTo object.
      *  @return The location of the relativeTo object, or null if it
      *   does not exist.
      */
-    private double[] _getRelativeToLocation(String relativeToName) {
-        NamedObj container = getContainer();
-        if (container != null) {
-            NamedObj containersContainer = container.getContainer();
-            if (containersContainer instanceof CompositeEntity) {
-                CompositeEntity composite = (CompositeEntity) containersContainer;
-                String elementName = relativeToElementName.getExpression();
-                // The relativeTo object is not necessarily an Entity.
-                NamedObj relativeToNamedObj;
-                if (elementName.equals("property")) {
-                    relativeToNamedObj = composite.getAttribute(relativeToName);
-                } else if (elementName.equals("port")) {
-                    relativeToNamedObj = composite.getPort(relativeToName);
-                } else if (elementName.equals("relation")) {
-                    relativeToNamedObj = composite.getRelation(relativeToName);
-                } else {
-                    relativeToNamedObj = composite.getEntity(relativeToName);
-                }
-                if (relativeToNamedObj != null) {
-                    List<Locatable> locatables = relativeToNamedObj.attributeList(Locatable.class);
-                    if (locatables.size() > 0) {
-                        _cachedReltoLoc = locatables.get(0).getLocation();
-                        return _cachedReltoLoc;
-                    }
-                }
-            }
-        }
-        // The relativeTo object could not be found, so the attributes holding
-        // the reference are no longer valid. Erase their content.
-        try {
-            relativeTo.setExpression("");
-            relativeToElementName.setExpression("");
-        } catch (IllegalActionException exception) {
-            throw new InternalErrorException(exception);
+    private double[] _getRelativeToLocation(NamedObj relativeToObject) {
+        List<Locatable> locatables = relativeToObject.attributeList(Locatable.class);
+        if (locatables.size() > 0) {
+            _cachedReltoLoc = locatables.get(0).getLocation();
+            return _cachedReltoLoc;
         }
         return null;
     }
