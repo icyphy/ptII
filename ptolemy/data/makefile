@@ -95,6 +95,7 @@ JSRCS = \
 	UnsignedByteToken.java \
 	UnsizedArrayToken.java \
 	UnsizedFixToken.java \
+	UpdatedArrayToken.java \
 	XMLToken.java
 
 EXTRA_SRCS =	$(JSRCS)
