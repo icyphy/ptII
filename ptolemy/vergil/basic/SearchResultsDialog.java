@@ -259,9 +259,12 @@ public class SearchResultsDialog extends PtolemyDialog
                 }
             }
             if (includeValues && object instanceof Settable) {
-                String value = ((Settable)object).getExpression();
-                if (value.contains(text)) {
-                    result.add(object);
+                Settable.Visibility visible = ((Settable)object).getVisibility();
+                if (!visible.equals(Settable.NONE) && !visible.equals(Settable.EXPERT)) { 
+                    String value = ((Settable)object).getExpression();
+                    if (value.contains(text)) {
+                        result.add(object);
+                    }
                 }
             }
             if (recursive) {
