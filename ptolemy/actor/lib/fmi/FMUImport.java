@@ -30,22 +30,30 @@ package ptolemy.actor.lib.fmi;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.zip.ZipInputStream;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
-import ptolemy.actor.TypedAtomicActor;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Entity;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.data.type.BaseType;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// FMUImport
@@ -58,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class FMUImport extends TypedAtomicActor {
+public class FMUImport extends TypedCompositeActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -115,7 +123,7 @@ public class FMUImport extends TypedAtomicActor {
      *  @exception IOException if the file cannot be opened, if there are problems reading
      *  the zip file or if there are problems creating the files or directories.
      */
-    private List _unzip(String zipFileName) throws IOException {
+    private List<File> _unzip(String zipFileName) throws IOException {
         BufferedOutputStream destination = null;
         FileInputStream fileInputStream = new FileInputStream(zipFileName);
         ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(fileInputStream));
@@ -124,7 +132,7 @@ public class FMUImport extends TypedAtomicActor {
         byte data[] = new byte[BUFFER];
         // FIXME: maybe put this in the tmp directory?
         String topDirectory = zipFileName.substring(0, zipFileName.length() - 4);
-        List files = new LinkedList();
+        List<File> files = new LinkedList<File>();
         try {
             while((entry = zipInputStream.getNextEntry()) != null) {
                 System.out.println("Extracting: " + entry);
@@ -149,7 +157,7 @@ public class FMUImport extends TypedAtomicActor {
                     }
                     destination.flush();
                     destination.close();
-                    files.add(destinationFile.getCanonicalPath());
+                    files.add(destinationFile);
                 }
             }
         } finally {
@@ -172,14 +180,191 @@ public class FMUImport extends TypedAtomicActor {
         // Unzip the fmuFile.  We probably need to do this
         // because we will need to load the shared library later.
         String fmuFileName = null;
-        List files = null;
+        List<File> files = null;
         try {
             fmuFileName = fmuFile.asFile().getCanonicalPath();
             files = _unzip(fmuFileName);
+            
+            // Find the modelDescription.xml file.
+            File modelDescriptionFile = null;
+            for (File file : files) {
+                if (file.getName().endsWith("modelDescription.xml")) {
+                    modelDescriptionFile = file;
+                    break;
+                }
+            }
+            if (modelDescriptionFile == null) {
+                throw new IllegalActionException(this, "File modelDescription.xml is missing from the fmu archive.");
+            }
+            // Read the modelDescription.xml file.
+            Document modelDescription = _parseXMLFile(modelDescriptionFile);
+            
+            // Create parameters and ports.
+            _traverseDOM(modelDescription);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to unzip \"" + fmuFileName + "\".");
         }
         System.out.println("FMUImport: created " + files.size() + " files.");
     }
+    
+    private Document _parseXMLFile(File xmlFile) throws IllegalActionException {
+        System.out.println("FMUImport: parsing " + xmlFile);
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        try {
+            // Using factory get an instance of document builder.
+            DocumentBuilder db = dbf.newDocumentBuilder();
+
+            // Parse using builder to get DOM representation of the XML file.
+            return db.parse(xmlFile.getCanonicalPath());
+        }catch(Exception pce) {
+            throw new IllegalActionException(this, pce, "Failed to parse " + xmlFile);
+        }
+    }
+    
+    /**
+     * Echo common attributes of a DOM2 Node and terminate output with an
+     * EOL character.
+     */
+    private void printlnCommon(Node n) {
+        System.out.print(" nodeName=\"" + n.getNodeName() + "\"");
+
+        String val = n.getNamespaceURI();
+        if (val != null) {
+            System.out.print(" uri=\"" + val + "\"");
+        }
+
+        val = n.getPrefix();
+        if (val != null) {
+            System.out.print(" pre=\"" + val + "\"");
+        }
+
+        val = n.getLocalName();
+        if (val != null) {
+            System.out.print(" local=\"" + val + "\"");
+        }
+
+        val = n.getNodeValue();
+        if (val != null) {
+            System.out.print(" nodeValue=");
+            if (val.trim().equals("")) {
+                // Whitespace
+                System.out.print("[WS]");
+            } else {
+                System.out.print("\"" + n.getNodeValue() + "\"");
+            }
+        }
+        System.out.println();
+    }
+
+    /**
+     * Indent to the current level in multiples of basicIndent
+     */
+    private void outputIndentation() {
+        for (int i = 0; i < indent; i++) {
+            System.out.print(basicIndent);
+        }
+    }
+
+    private void _traverseDOM(Node domNode) {
+        // Indent to the current level before printing anything
+        outputIndentation();
+
+        int type = domNode.getNodeType();
+        switch (type) {
+        case Node.ATTRIBUTE_NODE:
+            System.out.print("ATTR:");
+            printlnCommon(domNode);
+            break;
+        case Node.CDATA_SECTION_NODE:
+            System.out.print("CDATA:");
+            printlnCommon(domNode);
+            break;
+        case Node.COMMENT_NODE:
+            System.out.print("COMM:");
+            printlnCommon(domNode);
+            break;
+        case Node.DOCUMENT_FRAGMENT_NODE:
+            System.out.print("DOC_FRAG:");
+            printlnCommon(domNode);
+            break;
+        case Node.DOCUMENT_NODE:
+            System.out.print("DOC:");
+            printlnCommon(domNode);
+            break;
+        case Node.DOCUMENT_TYPE_NODE:
+            System.out.print("DOC_TYPE:");
+            printlnCommon(domNode);
+
+            // Print entities if any
+            NamedNodeMap nodeMap = ((DocumentType)domNode).getEntities();
+            indent += 2;
+            for (int i = 0; i < nodeMap.getLength(); i++) {
+                Entity entity = (Entity)nodeMap.item(i);
+                _traverseDOM(entity);
+            }
+            indent -= 2;
+            break;
+        case Node.ELEMENT_NODE:
+            System.out.print("ELEM:");
+            printlnCommon(domNode);
+
+            // Print attributes if any.  Note: element attributes are not
+            // children of ELEMENT_NODEs but are properties of their
+            // associated ELEMENT_NODE.  For this reason, they are printed
+            // with 2x the indent level to indicate this.
+            NamedNodeMap atts = domNode.getAttributes();
+            indent += 2;
+            for (int i = 0; i < atts.getLength(); i++) {
+                Node att = atts.item(i);
+                _traverseDOM(att);
+                if (domNode.getNodeName().equals("ModelVariables")) {
+                    // _createPortsAndParameters(att);
+                }
+            }
+            indent -= 2;
+            
+            break;
+        case Node.ENTITY_NODE:
+            System.out.print("ENT:");
+            printlnCommon(domNode);
+            break;
+        case Node.ENTITY_REFERENCE_NODE:
+            System.out.print("ENT_REF:");
+            printlnCommon(domNode);
+            break;
+        case Node.NOTATION_NODE:
+            System.out.print("NOTATION:");
+            printlnCommon(domNode);
+            break;
+        case Node.PROCESSING_INSTRUCTION_NODE:
+            System.out.print("PROC_INST:");
+            printlnCommon(domNode);
+            break;
+        case Node.TEXT_NODE:
+            System.out.print("TEXT:");
+            printlnCommon(domNode);
+            break;
+        default:
+            System.out.print("UNSUPPORTED NODE: " + type);
+            printlnCommon(domNode);
+            break;
+        }
+
+        // Print children if any
+        indent++;
+        for (Node child = domNode.getFirstChild(); child != null;
+             child = child.getNextSibling()) {
+            _traverseDOM(child);
+        }
+        indent--;
+    }
+    
+    /** Indent level */
+    private int indent = 0;
+
+    /** Indentation will be in multiples of basicIndent  */
+    private final String basicIndent = "  ";
+
 }
