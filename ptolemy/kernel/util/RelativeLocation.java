@@ -34,6 +34,7 @@ public class RelativeLocation extends Location {
         super(container, name);
 
         relativeTo = new StringAttribute(this, "relativeTo");
+        relativeTo.setVisibility(Settable.EXPERT);
         relativeToElementName = new StringAttribute(this, "relativeToElementName");
         relativeToElementName.setExpression("entity");
     }
