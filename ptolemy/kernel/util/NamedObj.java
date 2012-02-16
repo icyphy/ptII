@@ -1843,7 +1843,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  all the levels specified. Thus, a value of 1 indicates that the
      *  container of the object is a child, and that this object is
      *  implied by a like object in the parent of the container, for example.
-     *  If an object is implied, then normally has no persistent
+     *  If an object is implied, then it normally has no persistent
      *  representation when it is exported to MoML (unless it
      *  is overridden), and normally it cannot have its name or
      *  container changed.  An exception, however, is that the object
