@@ -46,6 +46,7 @@ import javax.swing.text.Document;
 
 import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.gui.UndoListener;
+import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// TextEditor
@@ -139,10 +140,17 @@ public class TextEditor extends TableauFrame implements DocumentListener,
 
     /** Get the background color.
      *  @return The background color of the scroll pane.
+     *  If _scrollPane is null, then null is returned.
      *  @see #setBackground(Color)
      */
     public Color getBackground() {
-        return _scrollPane.getBackground();
+        // Under Java 1.7 on the Mac, the _scrollbar is sometimes null.
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5574
+        if (_scrollPane != null) {
+            return _scrollPane.getBackground();
+        } else {
+            return null;
+        }
     }
 
     /** React to notification that there was an insert into the document.
