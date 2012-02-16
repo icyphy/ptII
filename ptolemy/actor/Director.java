@@ -164,7 +164,7 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
-
+    
     /** The local time of model when this director is initialized.
      *  By default, this is blank, which
      *  indicates that the start time is the current time of the enclosing
@@ -229,6 +229,7 @@ public class Director extends Attribute implements Executable {
             } else {
                 _startTime = new Time(this, startTimeValue.doubleValue());
             }
+            _localClock.resetLocalTime(getModelStartTime());
         } else if (attribute == stopTime) {
             DoubleToken stopTimeValue = (DoubleToken) stopTime.getToken();
             if (stopTimeValue != null) {
@@ -291,9 +292,9 @@ public class Director extends Attribute implements Executable {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Director newObject = (Director) super.clone(workspace);
         newObject._actorsFinishedExecution = null;
-        newObject._initializables = null;
-        newObject._localClock = new LocalClock(newObject);
-        newObject._zeroTime = new Time(newObject);
+        newObject._initializables = null;  
+        newObject._zeroTime = new Time(newObject);  
+        newObject._localClock = (LocalClock) _localClock.clone(workspace, newObject); 
         return newObject;
     }
 
@@ -619,14 +620,15 @@ public class Director extends Attribute implements Executable {
      *  @return Environment time or null if the associated director is the top level director.
      */
     public Time getEnvironmentTime() {
-        Actor container = (Actor) getContainer();
-        // A TCL test runs into the first condition.
-        if (container != null && container.getContainer() != null) {
-            Director executiveDirector = container.getExecutiveDirector();
-            if (executiveDirector != null) {
-                return executiveDirector.getModelTime();
-            }
-        } 
+        if (getContainer() instanceof Actor) {
+            Actor container = (Actor) getContainer(); 
+            if (container != null && container.getContainer() != null) {
+                Director executiveDirector = container.getExecutiveDirector();
+                if (executiveDirector != null) {
+                    return executiveDirector.getModelTime();
+                }
+            } 
+        }
         return _localClock.getLocalTime();
     }
 
@@ -1218,8 +1220,7 @@ public class Director extends Attribute implements Executable {
     }
     
     /** Start or resume the actor, which means (re)start the local clock.
-     *  If the clock is not stopped then this
-     *  has no effect.
+     *  If the clock is not stopped then this has no effect.
      *  @exception IllegalActionException If the fireAt() request throws it.
      */
     public void resume() throws IllegalActionException { 
@@ -1416,11 +1417,11 @@ public class Director extends Attribute implements Executable {
         return false;
     }
     
-    /** Suspend the actor at the specified time. This will first call
-     *  {@link #resume()} and then record the suspend time.
+    /** Suspend the actor at the specified time. This will stop the local 
+     *  clock.
      *  @exception IllegalActionException If the suspend cannot be completed.
      */
-    public void suspend() throws IllegalActionException {
+    public void suspend() {
         _localClock.stop();
     }
 
@@ -1772,7 +1773,8 @@ public class Director extends Attribute implements Executable {
                 Director.class, "1E-10");
 
         _zeroTime = new Time(this, 0.0);
-        _localClock = new LocalClock(this);
+        _localClock = new LocalClock(this, "LocalClock"); 
+        _localClock.setVisibility(Settable.NOT_EDITABLE);
 
         startTime = new Parameter(this, "startTime");
         startTime.setTypeEquals(BaseType.DOUBLE);
@@ -1783,7 +1785,7 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
     /** Start time. */
     private transient Time _startTime;
 
