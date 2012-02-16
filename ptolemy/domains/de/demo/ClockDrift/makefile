@@ -49,6 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \ 
 	ClockDrift.xml \
+	ClockDrifts.xml \
 	ClockDriftHierarchy.xml
 
 EXTRA_SRCS = \
