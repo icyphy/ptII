@@ -49,7 +49,7 @@ import org.w3c.dom.Node;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -104,7 +104,11 @@ public class FMUImport extends TypedCompositeActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fmuFile) {
-            _updateParameters();
+            try {
+                _updateParameters();
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(this, e, "Name duplication");
+            }
         }
 
         super.attributeChanged(attribute);
@@ -175,8 +179,9 @@ public class FMUImport extends TypedCompositeActor {
      *  <i>fmuFile<i> parameter cannot be unzipped or if there
      *  is a problem deleting any preexisting parameters or
      *  creating new parameters.
+     * @throws NameDuplicationException 
      */
-    private void _updateParameters() throws IllegalActionException {
+    private void _updateParameters() throws IllegalActionException, NameDuplicationException {
         // Unzip the fmuFile.  We probably need to do this
         // because we will need to load the shared library later.
         String fmuFileName = null;
@@ -267,7 +272,46 @@ public class FMUImport extends TypedCompositeActor {
         }
     }
 
-    private void _traverseDOM(Node domNode) {
+    private void _createPortsAndParameters(Node domNode) throws IllegalActionException, NameDuplicationException {
+        int type = domNode.getNodeType();
+        if (type == Node.ELEMENT_NODE) {
+            String name = "";
+            String value = "";
+            boolean foundParameter = false;
+            NamedNodeMap attributes = domNode.getAttributes();
+            for (int i = 0; i < attributes.getLength(); i++) {
+                Node attribute = attributes.item(i);
+                if (attribute.getNodeType() == Node.ATTRIBUTE_NODE){
+                    if (attribute.getNodeName().equals("name")) {
+                        name = attribute.getNodeValue();
+                        foundParameter = true;
+                    }
+                }
+                for (Node child = domNode.getFirstChild(); child != null;
+                        child = child.getNextSibling()) {
+                    if (!child.getNodeName().equals("Real")) {
+                        continue;
+                    }
+                    NamedNodeMap subattributes = child.getAttributes();
+                    for (int j = 0; j < subattributes.getLength(); j++) {
+                        Node subattribute = subattributes.item(i);
+                        if (subattribute.getNodeName().equals("start")) {
+                            value = subattribute.getNodeValue();
+                        }
+                    }
+                }
+            }
+            if (foundParameter) {
+                Parameter parameter = new Parameter(this, name);
+                parameter.setExpression(value);
+                // Prevent exporting this to MoML unless it has
+                // been overridden.
+                parameter.setDerivedLevel(1);
+            }
+        }
+    }
+
+    private void _traverseDOM(Node domNode) throws IllegalActionException, NameDuplicationException {
         // Indent to the current level before printing anything
         outputIndentation();
 
@@ -319,9 +363,6 @@ public class FMUImport extends TypedCompositeActor {
             for (int i = 0; i < atts.getLength(); i++) {
                 Node att = atts.item(i);
                 _traverseDOM(att);
-                if (domNode.getNodeName().equals("ModelVariables")) {
-                    // _createPortsAndParameters(att);
-                }
             }
             indent -= 2;
             
@@ -357,6 +398,9 @@ public class FMUImport extends TypedCompositeActor {
         for (Node child = domNode.getFirstChild(); child != null;
              child = child.getNextSibling()) {
             _traverseDOM(child);
+            if (child.getNodeName().equals("ScalarVariable")) {
+                _createPortsAndParameters(child);
+            }
         }
         indent--;
     }
