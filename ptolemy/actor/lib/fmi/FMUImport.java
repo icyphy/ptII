@@ -48,6 +48,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -98,7 +99,9 @@ public class FMUImport extends TypedCompositeActor {
 
     /** The Functional Mock-up Unit (FMU) file.
      *  The FMU file is a zip file that contains a file named "modelDescription.xml"
-     *  and any necessary shared libraries.
+     *  and any necessary shared libraries.  The file is read when this
+     *  actor is instantiated or when the file name changes.  The initial default
+     *  value is "fmuImport.fmu".
      */
     public FileParameter fmuFile;
 
@@ -148,13 +151,20 @@ public class FMUImport extends TypedCompositeActor {
             String name = "";
             String value = "";
             boolean foundParameter = false;
+            boolean foundPort = false;
             NamedNodeMap attributes = domNode.getAttributes();
             for (int i = 0; i < attributes.getLength(); i++) {
                 Node attribute = attributes.item(i);
                 if (attribute.getNodeType() == Node.ATTRIBUTE_NODE){
                     if (attribute.getNodeName().equals("name")) {
                         name = attribute.getNodeValue();
-                        foundParameter = true;
+                        foundPort = true;
+                    }
+                    if (attribute.getNodeName().equals("variability")) {
+                        name = attribute.getNodeValue();
+                        if (attribute.getNodeValue().equals("parameter"))
+                            foundPort = false;
+                            foundParameter = true;
                     }
                 }
                 for (Node child = domNode.getFirstChild(); child != null;
@@ -165,18 +175,26 @@ public class FMUImport extends TypedCompositeActor {
                     NamedNodeMap subattributes = child.getAttributes();
                     for (int j = 0; j < subattributes.getLength(); j++) {
                         Node subattribute = subattributes.item(i);
-                        if (subattribute.getNodeName().equals("start")) {
+                        if (subattribute != null
+                                && subattribute.getNodeName().equals("start")) {
                             value = subattribute.getNodeValue();
                         }
                     }
                 }
             }
             if (foundParameter) {
+                System.out.println("Creating parameter: " + name + " " + value);
                 Parameter parameter = new Parameter(this, name);
                 parameter.setExpression(value);
                 // Prevent exporting this to MoML unless it has
                 // been overridden.
                 parameter.setDerivedLevel(1);
+                foundParameter = false;
+            } else if (foundPort) {
+                System.out.println("Creating Port: " + name);
+                // FIXME: All output ports?
+                TypedIOPort port = new TypedIOPort(this, name, false, true);
+                port.setDerivedLevel(1);
             }
         }
     }
@@ -362,6 +380,7 @@ public class FMUImport extends TypedCompositeActor {
      *  the zip file or if there are problems creating the files or directories.
      */
     private List<File> _unzip(String zipFileName) throws IOException {
+        // FIXME: Use URLs, not files so that we can work from JarZip files.
         BufferedOutputStream destination = null;
         FileInputStream fileInputStream = new FileInputStream(zipFileName);
         ZipInputStream zipInputStream =
@@ -424,7 +443,20 @@ public class FMUImport extends TypedCompositeActor {
         String fmuFileName = null;
         List<File> files = null;
         try {
+            // FIXME: Use URLs, not files so that we can work from JarZip files.
+            
+            // Only read the file if the name has changed from the last time we
+            // read the file or if the modification time has changed.
             fmuFileName = fmuFile.asFile().getCanonicalPath();
+            if (fmuFileName == _fmuFileName) {
+                return;
+            }
+            _fmuFileName = fmuFileName;
+            long modificationTime = new File(fmuFileName).lastModified();
+            if (_fmuFileModificationTime == modificationTime) {
+                return;
+            }
+            _fmuFileModificationTime = modificationTime;
             files = _unzip(fmuFileName);
             
             // Find the modelDescription.xml file.
@@ -450,6 +482,20 @@ public class FMUImport extends TypedCompositeActor {
                     "Failed to unzip \"" + fmuFileName + "\".");
         }
     }
+
+    /** The name of the fmuFile.
+     *  The _fmuFileName field is set the first time we read
+     *  the file named by the <i>fmuFile</i> parameter.  The
+     *  file named by the <i>fmuFile</i> parameter is only read
+     *  if the name has changed or if the modification time of 
+     *  the file is later than the time the file was last read.
+     */
+    private String _fmuFileName = null;
+    
+    /** The modification time of the file named by the
+     *  <i>fmuFile</i> parameter the last time the file was read.
+     */
+    private long _fmuFileModificationTime = -1;
     
     /** Indent level */
     private int _indent = 0;
