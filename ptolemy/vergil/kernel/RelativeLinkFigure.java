@@ -34,6 +34,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -140,15 +141,27 @@ public class RelativeLinkFigure extends AbstractFigure {
         // these objects are as follows.
         boolean success = false;
         if (getParent() instanceof CompositeFigure) {
-            Rectangle2D bounds1 = ((CompositeFigure) getParent())
-                    .getBackgroundFigure().getBounds();
-            double left1 = bounds1.getX();
-            double center1 = bounds1.getX() + bounds1.getWidth()*0.5;
-            double right1 = bounds1.getX() + bounds1.getWidth();
+            CompositeFigure parentFigure = (CompositeFigure)getParent();
+            // NOTE: Calling getBounds() on the figure itself yields an
+            // inaccurate bounds, for some reason.
+            // Weirdly, to get the size right, we need to use the shape.
+            // But to get the location right, we need the other!
+            Rectangle2D bounds1 = parentFigure.getBackgroundFigure().getBounds();
+            Point2D origin1 = parentFigure.getBackgroundFigure().getOrigin();
+
+            double xOffset1 = origin1.getX();
+            // FIXME: Diva is a complete mystery. Offset doesn't work here, but works below.
+            xOffset1 = 0.0;
+            double left1 = bounds1.getX() - xOffset1;
+            double center1 = bounds1.getX() + bounds1.getWidth()*0.5 - xOffset1;
+            double right1 = bounds1.getX() + bounds1.getWidth() - xOffset1;
             
-            double top1 = bounds1.getY();
-            double middle1 = bounds1.getY() + bounds1.getHeight()*0.5;
-            double bottom1 = bounds1.getY() + bounds1.getHeight();
+            double yOffset1 = origin1.getY();
+            // FIXME: Diva is a complete mystery. Offset doesn't work here, but works below.
+            yOffset1 = 0.0;
+            double top1 = bounds1.getY() - yOffset1;
+            double middle1 = bounds1.getY() + bounds1.getHeight()*0.5 - yOffset1;
+            double bottom1 = bounds1.getY() + bounds1.getHeight() - yOffset1;
 
             // Now find the destination.
             // Unfortunately, this is rather hard to do.
@@ -177,15 +190,24 @@ public class RelativeLinkFigure extends AbstractFigure {
                         figure = ((CompositeFigure)figure).getBackgroundFigure();
                     }
                     double[] offset = _relativeLocation.getRelativeLocation();
-                    Rectangle2D bounds2 = figure.getBounds();
+                    // NOTE: Calling getBounds() on the figure itself yields an
+                    // inaccurate bounds, for some reason.
+                    // Weirdly, to get the size right, we need to use the shape.
+                    // But to get the location right, we need the other!
+                    Rectangle2D bounds2 = figure.getShape().getBounds2D();
                     
-                    double left2 = -offset[0] + bounds2.getX();
-                    double center2 = -offset[0] + bounds2.getX() + bounds2.getWidth() * 0.5;
-                    double right2 = -offset[0] + bounds2.getX() + bounds2.getWidth();
+                    Point2D origin2 = figure.getOrigin();
+                    double xOffset2 = origin2.getX();
+                    double left2 = -offset[0] + bounds2.getX() - xOffset2;
+                    double center2 = -offset[0] + bounds2.getX() + bounds2.getWidth() * 0.5 - xOffset2;
+                    double right2 = -offset[0] + bounds2.getX() + bounds2.getWidth() - xOffset2;
                     
-                    double top2 = -offset[1] + bounds2.getY();
-                    double middle2 = -offset[1] + bounds2.getY() + bounds2.getHeight() * 0.5;
-                    double bottom2 = -offset[1] + bounds2.getY() + bounds2.getHeight();
+                    double yOffset2 = origin2.getY();
+                    // FIXME: Diva is a complete mystery. Offset isn't right. Fudge it.
+                    yOffset2 += 11;
+                    double top2 = -offset[1] + bounds2.getY() - yOffset2;
+                    double middle2 = -offset[1] + bounds2.getY() + bounds2.getHeight() * 0.5 - yOffset2;
+                    double bottom2 = -offset[1] + bounds2.getY() + bounds2.getHeight() - yOffset2;
 
                     // We have all the information we need for optimal placement.
                     success = true;
@@ -224,10 +246,6 @@ public class RelativeLinkFigure extends AbstractFigure {
                         _line.y1 = bottom1;
                         _line.y2 = top2;
                     }
-
-                    // FIXME: Do the same for y.
-                    _line.y1 = 0.0;
-                    _line.y2 = -offset[1];
                 }
             }
         }
