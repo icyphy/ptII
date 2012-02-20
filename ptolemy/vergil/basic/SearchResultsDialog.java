@@ -95,11 +95,12 @@ public class SearchResultsDialog extends PtolemyDialog
         _target = target;
         
         _query = new Query();
-        _query.addLine("text", "Find:", _previousSearchTerm);
+        _query.addLine("text", "Find", _previousSearchTerm);
         _query.setColumns(3);
-        _query.addCheckBox("values", "Include values:", true);
-        _query.addCheckBox("names", "Include names:", true);
-        _query.addCheckBox("recursive", "Recursive search:", true);
+        _query.addCheckBox("values", "Include values", true);
+        _query.addCheckBox("names", "Include names", true);
+        _query.addCheckBox("recursive", "Recursive search", true);
+        _query.addCheckBox("case", "Case sensitive", false);
         getContentPane().add(_query, BorderLayout.NORTH);
         _query.addQueryListener(this);
 
@@ -226,7 +227,8 @@ public class SearchResultsDialog extends PtolemyDialog
         boolean includeValues = _query.getBooleanValue("values");
         boolean includeNames = _query.getBooleanValue("names");
         boolean recursiveSearch = _query.getBooleanValue("recursive");
-        Set<NamedObj>results = _find(_target, findText, includeValues, includeNames, recursiveSearch);
+        boolean caseSensitive = _query.getBooleanValue("case");
+        Set<NamedObj>results = _find(_target, findText, includeValues, includeNames, recursiveSearch, caseSensitive);
         _resultsTableModel.setContents(results);
     }
 
@@ -245,15 +247,23 @@ public class SearchResultsDialog extends PtolemyDialog
      *  @param includeValues True to search values of Settable objects.
      *  @param includeNames True to include names of objects.
      *  @param recursive True to search within objects immediately contained.
+     *  @param caseSensitive True to match the case.
      */
     protected Set<NamedObj> _find(
-            NamedObj container, String text, boolean includeValues, boolean includeNames, boolean recursive) {
+            NamedObj container, String text, boolean includeValues,
+            boolean includeNames, boolean recursive, boolean caseSensitive) {
+        if (!caseSensitive) {
+            text = text.toLowerCase();
+        }
         SortedSet<NamedObj> result = new TreeSet<NamedObj>(new NamedObjComparator());
         Iterator<NamedObj> objects = container.containedObjectsIterator();
         while (objects.hasNext()) {
             NamedObj object = objects.next();
             if (includeNames) {
                 String name = object.getName();
+                if (!caseSensitive) {
+                    name = name.toLowerCase();
+                }
                 if (name.contains(text)) {
                     result.add(object);
                 }
@@ -262,13 +272,16 @@ public class SearchResultsDialog extends PtolemyDialog
                 Settable.Visibility visible = ((Settable)object).getVisibility();
                 if (!visible.equals(Settable.NONE) && !visible.equals(Settable.EXPERT)) { 
                     String value = ((Settable)object).getExpression();
+                    if (!caseSensitive) {
+                        value = value.toLowerCase();
+                    }
                     if (value.contains(text)) {
                         result.add(object);
                     }
                 }
             }
             if (recursive) {
-                result.addAll(_find(object, text, includeValues, includeNames, recursive));
+                result.addAll(_find(object, text, includeValues, includeNames, recursive, caseSensitive));
             }
         }
         return result;
