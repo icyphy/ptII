@@ -230,6 +230,9 @@ public class SearchResultsDialog extends PtolemyDialog
         boolean caseSensitive = _query.getBooleanValue("case");
         Set<NamedObj>results = _find(_target, findText, includeValues, includeNames, recursiveSearch, caseSensitive);
         _resultsTableModel.setContents(results);
+        if (results.size() == 0) {
+            MessageHandler.message("No matches");
+        }
     }
 
     /** Create buttons.
