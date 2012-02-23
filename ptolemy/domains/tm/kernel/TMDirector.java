@@ -882,7 +882,7 @@ public class TMDirector extends Director {
         // Enqueue a refire for the container of this director.
         // Note that this will throw an exception if the executive director
         // cannot honor it precisely.
-        fireContainerAt(time);
+        fireContainerAt(time, 1);
     }
 
     ///////////////////////////////////////////////////////////////////
