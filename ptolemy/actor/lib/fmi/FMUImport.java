@@ -1,30 +1,30 @@
 /* Instantiate a Functional Mock-up Unit (FMU).
 
- Copyright (c) 2011-2012 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2011-2012 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
- */
+*/
 package ptolemy.actor.lib.fmi;
 
 import java.io.BufferedInputStream;
@@ -58,6 +58,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.JVMBitWidth;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// FMUImport
@@ -140,78 +142,78 @@ public class FMUImport extends TypedCompositeActor {
         super.fire();
     }
 
-//     /** Create ports and parameters
-//      * @param domNode The Node representation of the modelDescription.xml file
-//      * read in from the <i>fmuFile</i> parameter. 
-//      * @throws IllegalActionException If a port or parameter cannot be created.
-//      * @throws NameDuplicationException If there already exists a port or
-//      * parameter with the same name as the port or parameter to be created.
-//      */
-//     private void _createPortsAndParameters(Node domNode)
-//             throws IllegalActionException, NameDuplicationException {
-//         int type = domNode.getNodeType();
-//         if (type == Node.ELEMENT_NODE) {
-//             String name = "";
-//             String value = "";
-//             boolean foundParameter = false;
-//             boolean foundPort = false;
-//             NamedNodeMap attributes = domNode.getAttributes();
-//             for (int i = 0; i < attributes.getLength(); i++) {
-//                 Node attribute = attributes.item(i);
-//                 if (attribute.getNodeType() == Node.ATTRIBUTE_NODE){
-//                     if (attribute.getNodeName().equals("name")) {
-//                         name = attribute.getNodeValue();
-//                         foundPort = true;
-//                     }
-//                     if (attribute.getNodeName().equals("variability")) {
-//                         name = attribute.getNodeValue();
-//                         if (attribute.getNodeValue().equals("parameter"))
-//                             foundPort = false;
-//                             foundParameter = true;
-//                     }
-//                 }
-//                 for (Node child = domNode.getFirstChild(); child != null;
-//                         child = child.getNextSibling()) {
-//                     if (!child.getNodeName().equals("Real")) {
-//                         continue;
-//                     }
-//                     NamedNodeMap subattributes = child.getAttributes();
-//                     for (int j = 0; j < subattributes.getLength(); j++) {
-//                         Node subattribute = subattributes.item(i);
-//                         if (subattribute != null
-//                                 && subattribute.getNodeName().equals("start")) {
-//                             value = subattribute.getNodeValue();
-//                         }
-//                     }
-//                 }
-//             }
-//             if (foundParameter) {
-//                 System.out.println("Creating parameter: " + name + " " + value);
-//                 Parameter parameter = new Parameter(this, name);
-//                 parameter.setExpression(value);
-//                 // Prevent exporting this to MoML unless it has
-//                 // been overridden.
-//                 parameter.setDerivedLevel(1);
-//                 foundParameter = false;
-//             } else if (foundPort) {
-//                 System.out.println("Creating Port: " + name);
-//                 // FIXME: All output ports?
-//                 TypedIOPort port = new TypedIOPort(this, name, false, true);
-//                 port.setDerivedLevel(1);
-//             }
-//         }
-//     }
+    //     /** Create ports and parameters
+    //      * @param domNode The Node representation of the modelDescription.xml file
+    //      * read in from the <i>fmuFile</i> parameter. 
+    //      * @throws IllegalActionException If a port or parameter cannot be created.
+    //      * @throws NameDuplicationException If there already exists a port or
+    //      * parameter with the same name as the port or parameter to be created.
+    //      */
+    //     private void _createPortsAndParameters(Node domNode)
+    //             throws IllegalActionException, NameDuplicationException {
+    //         int type = domNode.getNodeType();
+    //         if (type == Node.ELEMENT_NODE) {
+    //             String name = "";
+    //             String value = "";
+    //             boolean foundParameter = false;
+    //             boolean foundPort = false;
+    //             NamedNodeMap attributes = domNode.getAttributes();
+    //             for (int i = 0; i < attributes.getLength(); i++) {
+    //                 Node attribute = attributes.item(i);
+    //                 if (attribute.getNodeType() == Node.ATTRIBUTE_NODE){
+    //                     if (attribute.getNodeName().equals("name")) {
+    //                         name = attribute.getNodeValue();
+    //                         foundPort = true;
+    //                     }
+    //                     if (attribute.getNodeName().equals("variability")) {
+    //                         name = attribute.getNodeValue();
+    //                         if (attribute.getNodeValue().equals("parameter"))
+    //                             foundPort = false;
+    //                             foundParameter = true;
+    //                     }
+    //                 }
+    //                 for (Node child = domNode.getFirstChild(); child != null;
+    //                         child = child.getNextSibling()) {
+    //                     if (!child.getNodeName().equals("Real")) {
+    //                         continue;
+    //                     }
+    //                     NamedNodeMap subattributes = child.getAttributes();
+    //                     for (int j = 0; j < subattributes.getLength(); j++) {
+    //                         Node subattribute = subattributes.item(i);
+    //                         if (subattribute != null
+    //                                 && subattribute.getNodeName().equals("start")) {
+    //                             value = subattribute.getNodeValue();
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //             if (foundParameter) {
+    //                 System.out.println("Creating parameter: " + name + " " + value);
+    //                 Parameter parameter = new Parameter(this, name);
+    //                 parameter.setExpression(value);
+    //                 // Prevent exporting this to MoML unless it has
+    //                 // been overridden.
+    //                 parameter.setDerivedLevel(1);
+    //                 foundParameter = false;
+    //             } else if (foundPort) {
+    //                 System.out.println("Creating Port: " + name);
+    //                 // FIXME: All output ports?
+    //                 TypedIOPort port = new TypedIOPort(this, name, false, true);
+    //                 port.setDerivedLevel(1);
+    //             }
+    //         }
+    //     }
     
-//     /**
-//      * Indent to the current level in multiples of _basicIndent.
-//      */
-//     private void _outputIndentation() {
-//         // Based on DomEcho.java from
-//         // http://docs.oracle.com/javase/tutorial/jaxp/dom/readingXML.html
-//         for (int i = 0; i < _indent; i++) {
-//             System.out.print(_basicIndent);
-//         }
-//     }
+    //     /**
+    //      * Indent to the current level in multiples of _basicIndent.
+    //      */
+    //     private void _outputIndentation() {
+    //         // Based on DomEcho.java from
+    //         // http://docs.oracle.com/javase/tutorial/jaxp/dom/readingXML.html
+    //         for (int i = 0; i < _indent; i++) {
+    //             System.out.print(_basicIndent);
+    //         }
+    //     }
     
     /** Read in a .xml file and return a Document.
      * 
@@ -237,143 +239,143 @@ public class FMUImport extends TypedCompositeActor {
         }
     }
     
-//     /**
-//      * Echo common attributes of a DOM2 Node and terminate output with an
-//      * EOL character.
-//      * @param n The node.
-//      */
-//     private void _printlnCommon (Node n) {
-//         // Based on DomEcho.java from
-//         // http://docs.oracle.com/javase/tutorial/jaxp/dom/readingXML.html
-//         System.out.print(" nodeName=\"" + n.getNodeName() + "\"");
+    //     /**
+    //      * Echo common attributes of a DOM2 Node and terminate output with an
+    //      * EOL character.
+    //      * @param n The node.
+    //      */
+    //     private void _printlnCommon (Node n) {
+    //         // Based on DomEcho.java from
+    //         // http://docs.oracle.com/javase/tutorial/jaxp/dom/readingXML.html
+    //         System.out.print(" nodeName=\"" + n.getNodeName() + "\"");
 
-//         String val = n.getNamespaceURI();
-//         if (val != null) {
-//             System.out.print(" uri=\"" + val + "\"");
-//         }
+    //         String val = n.getNamespaceURI();
+    //         if (val != null) {
+    //             System.out.print(" uri=\"" + val + "\"");
+    //         }
 
-//         val = n.getPrefix();
-//         if (val != null) {
-//             System.out.print(" pre=\"" + val + "\"");
-//         }
+    //         val = n.getPrefix();
+    //         if (val != null) {
+    //             System.out.print(" pre=\"" + val + "\"");
+    //         }
 
-//         val = n.getLocalName();
-//         if (val != null) {
-//             System.out.print(" local=\"" + val + "\"");
-//         }
+    //         val = n.getLocalName();
+    //         if (val != null) {
+    //             System.out.print(" local=\"" + val + "\"");
+    //         }
 
-//         val = n.getNodeValue();
-//         if (val != null) {
-//             System.out.print(" nodeValue=");
-//             if (val.trim().equals("")) {
-//                 // Whitespace
-//                 System.out.print("[WS]");
-//             } else {
-//                 System.out.print("\"" + n.getNodeValue() + "\"");
-//             }
-//         }
-//         System.out.println();
-//     }
+    //         val = n.getNodeValue();
+    //         if (val != null) {
+    //             System.out.print(" nodeValue=");
+    //             if (val.trim().equals("")) {
+    //                 // Whitespace
+    //                 System.out.print("[WS]");
+    //             } else {
+    //                 System.out.print("\"" + n.getNodeValue() + "\"");
+    //             }
+    //         }
+    //         System.out.println();
+    //     }
     
-//     /**
-//      * @param  
-//      */  
-//     private void _traverseDOM(Node domNode)
-//             throws IllegalActionException, NameDuplicationException {
-//         // Based on DomEcho.java from
-//         // http://docs.oracle.com/javase/tutorial/jaxp/dom/readingXML.html
-//         // Indent to the current level before printing anything
-//         _outputIndentation();
+    //     /**
+    //      * @param  
+    //      */  
+    //     private void _traverseDOM(Node domNode)
+    //             throws IllegalActionException, NameDuplicationException {
+    //         // Based on DomEcho.java from
+    //         // http://docs.oracle.com/javase/tutorial/jaxp/dom/readingXML.html
+    //         // Indent to the current level before printing anything
+    //         _outputIndentation();
 
-//         int type = domNode.getNodeType();
-//         switch (type) {
-//         case Node.ATTRIBUTE_NODE:
-//             System.out.print("ATTR:");
-//             _printlnCommon(domNode);
-//             break;
-//         case Node.CDATA_SECTION_NODE:
-//             System.out.print("CDATA:");
-//             _printlnCommon(domNode);
-//             break;
-//         case Node.COMMENT_NODE:
-//             System.out.print("COMM:");
-//             _printlnCommon(domNode);
-//             break;
-//         case Node.DOCUMENT_FRAGMENT_NODE:
-//             System.out.print("DOC_FRAG:");
-//             _printlnCommon(domNode);
-//             break;
-//         case Node.DOCUMENT_NODE:
-//             System.out.print("DOC:");
-//             _printlnCommon(domNode);
-//             break;
-//         case Node.DOCUMENT_TYPE_NODE:
-//             System.out.print("DOC_TYPE:");
-//             _printlnCommon(domNode);
+    //         int type = domNode.getNodeType();
+    //         switch (type) {
+    //         case Node.ATTRIBUTE_NODE:
+    //             System.out.print("ATTR:");
+    //             _printlnCommon(domNode);
+    //             break;
+    //         case Node.CDATA_SECTION_NODE:
+    //             System.out.print("CDATA:");
+    //             _printlnCommon(domNode);
+    //             break;
+    //         case Node.COMMENT_NODE:
+    //             System.out.print("COMM:");
+    //             _printlnCommon(domNode);
+    //             break;
+    //         case Node.DOCUMENT_FRAGMENT_NODE:
+    //             System.out.print("DOC_FRAG:");
+    //             _printlnCommon(domNode);
+    //             break;
+    //         case Node.DOCUMENT_NODE:
+    //             System.out.print("DOC:");
+    //             _printlnCommon(domNode);
+    //             break;
+    //         case Node.DOCUMENT_TYPE_NODE:
+    //             System.out.print("DOC_TYPE:");
+    //             _printlnCommon(domNode);
 
-//             // Print entities if any
-//             NamedNodeMap nodeMap = ((DocumentType)domNode).getEntities();
-//             _indent += 2;
-//             for (int i = 0; i < nodeMap.getLength(); i++) {
-//                 Entity entity = (Entity)nodeMap.item(i);
-//                 _traverseDOM(entity);
-//             }
-//             _indent -= 2;
-//             break;
-//         case Node.ELEMENT_NODE:
-//             System.out.print("ELEM:");
-//             _printlnCommon(domNode);
+    //             // Print entities if any
+    //             NamedNodeMap nodeMap = ((DocumentType)domNode).getEntities();
+    //             _indent += 2;
+    //             for (int i = 0; i < nodeMap.getLength(); i++) {
+    //                 Entity entity = (Entity)nodeMap.item(i);
+    //                 _traverseDOM(entity);
+    //             }
+    //             _indent -= 2;
+    //             break;
+    //         case Node.ELEMENT_NODE:
+    //             System.out.print("ELEM:");
+    //             _printlnCommon(domNode);
 
-//             // Print attributes if any.  Note: element attributes are not
-//             // children of ELEMENT_NODEs but are properties of their
-//             // associated ELEMENT_NODE.  For this reason, they are printed
-//             // with 2x the indent level to indicate this.
-//             NamedNodeMap atts = domNode.getAttributes();
-//             _indent += 2;
-//             for (int i = 0; i < atts.getLength(); i++) {
-//                 Node att = atts.item(i);
-//                 _traverseDOM(att);
-//             }
-//             _indent -= 2;
+    //             // Print attributes if any.  Note: element attributes are not
+    //             // children of ELEMENT_NODEs but are properties of their
+    //             // associated ELEMENT_NODE.  For this reason, they are printed
+    //             // with 2x the indent level to indicate this.
+    //             NamedNodeMap atts = domNode.getAttributes();
+    //             _indent += 2;
+    //             for (int i = 0; i < atts.getLength(); i++) {
+    //                 Node att = atts.item(i);
+    //                 _traverseDOM(att);
+    //             }
+    //             _indent -= 2;
             
-//             break;
-//         case Node.ENTITY_NODE:
-//             System.out.print("ENT:");
-//             _printlnCommon(domNode);
-//             break;
-//         case Node.ENTITY_REFERENCE_NODE:
-//             System.out.print("ENT_REF:");
-//             _printlnCommon(domNode);
-//             break;
-//         case Node.NOTATION_NODE:
-//             System.out.print("NOTATION:");
-//             _printlnCommon(domNode);
-//             break;
-//         case Node.PROCESSING_INSTRUCTION_NODE:
-//             System.out.print("PROC_INST:");
-//             _printlnCommon(domNode);
-//             break;
-//         case Node.TEXT_NODE:
-//             System.out.print("TEXT:");
-//             _printlnCommon(domNode);
-//             break;
-//         default:
-//             System.out.print("UNSUPPORTED NODE: " + type);
-//             _printlnCommon(domNode);
-//             break;
-//         }
+    //             break;
+    //         case Node.ENTITY_NODE:
+    //             System.out.print("ENT:");
+    //             _printlnCommon(domNode);
+    //             break;
+    //         case Node.ENTITY_REFERENCE_NODE:
+    //             System.out.print("ENT_REF:");
+    //             _printlnCommon(domNode);
+    //             break;
+    //         case Node.NOTATION_NODE:
+    //             System.out.print("NOTATION:");
+    //             _printlnCommon(domNode);
+    //             break;
+    //         case Node.PROCESSING_INSTRUCTION_NODE:
+    //             System.out.print("PROC_INST:");
+    //             _printlnCommon(domNode);
+    //             break;
+    //         case Node.TEXT_NODE:
+    //             System.out.print("TEXT:");
+    //             _printlnCommon(domNode);
+    //             break;
+    //         default:
+    //             System.out.print("UNSUPPORTED NODE: " + type);
+    //             _printlnCommon(domNode);
+    //             break;
+    //         }
 
-//         // Print children if any
-//         _indent++;
-//         for (Node child = domNode.getFirstChild(); child != null;
-//              child = child.getNextSibling()) {
-//             _traverseDOM(child);
-//             if (child.getNodeName().equals("ScalarVariable")) {
-//                 _createPortsAndParameters(child);
-//             }
-//         }
-//         _indent--;
-//     }
+    //         // Print children if any
+    //         _indent++;
+    //         for (Node child = domNode.getFirstChild(); child != null;
+    //              child = child.getNextSibling()) {
+    //             _traverseDOM(child);
+    //             if (child.getNodeName().equals("ScalarVariable")) {
+    //                 _createPortsAndParameters(child);
+    //             }
+    //         }
+    //         _indent--;
+    //     }
     
     /** Unzip a file.
      *  Based on http://java.sun.com/developer/technicalArticles/Programming/compression/
@@ -402,7 +404,7 @@ public class FMUImport extends TypedCompositeActor {
                 File destinationParent = destinationFile.getParentFile();
                 // If the directory does not exist, create it.
                 if (!destinationParent.isDirectory()
-                    && !destinationParent.mkdirs()) {
+                        && !destinationParent.mkdirs()) {
                     throw new IOException("Failed to create \""
                             + destinationParent + "\".");
                 }
@@ -441,10 +443,10 @@ public class FMUImport extends TypedCompositeActor {
      */
     private void _updateParameters()
             throws IllegalActionException, NameDuplicationException {
+
         // Unzip the fmuFile.  We probably need to do this
         // because we will need to load the shared library later.
         String fmuFileName = null;
-        List<File> files = null;
         try {
             // FIXME: Use URLs, not files so that we can work from JarZip files.
             
@@ -460,63 +462,123 @@ public class FMUImport extends TypedCompositeActor {
                 return;
             }
             _fmuFileModificationTime = modificationTime;
-            files = _unzip(fmuFileName);
+
+            FmiModelDescription fmiModelDescription = parseFMUFile(fmuFileName);
             
-            // Find the modelDescription.xml file.
-            File modelDescriptionFile = null;
-            for (File file : files) {
-                if (file.getName().endsWith("modelDescription.xml")) {
-                    modelDescriptionFile = file;
-                    break;
-                }
-            }
-            if (modelDescriptionFile == null) {
-                throw new IllegalActionException(this, "File modelDescription.xml is missing "
-                        + "from the fmu archive \""
-                        + fmuFileName + "\"/");
-            }
-            // Read the modelDescription.xml file.
-            Document document = _parseXMLFile(modelDescriptionFile);
-
-            Element root = document.getDocumentElement();
-
-            // Create parameters and ports.
-            //_traverseDOM(modelDescription);
-            FmiModelDescription fmiModelDescription = new FmiModelDescription();
-
-            // Handle the root attributes
-            if (root.hasAttribute("fmiVersion")) {
-                fmiModelDescription.setFmiVersion(root.getAttribute("fmiVersion"));
-            }
-            if (root.hasAttribute("modelName")) {
-                fmiModelDescription.setModelName(root.getAttribute("modelName"));
-            }
-            if (root.hasAttribute("guid")) {
-                fmiModelDescription.setModelName(root.getAttribute("guid"));
-            }
-            // FIXME: Handle numberOfContinuousStates, numberOfEventIndicators etc.
-            
-            // FIXME: handle typeDefinitions
-
-            // FIXME: handle DefaultExperiment
-           
-            // FIXME: handle Vendor annotations
-
-            // ModelVariables
-            // NodeList is not a list, it only has getLength() and item(). #fail.
-            NodeList scalarVariables = document
-                .getElementsByTagName("ScalarVariable");
-
-            for (int i = 0; i < scalarVariables.getLength(); i++) {
-                Element element = (Element) scalarVariables.item(i);
-                System.out.println("Would add " + element);
-                fmiModelDescription.addModelVariable(new ScalarVariable(this, element));
-            }
+            loadFMUSharedLibrary(fmiModelDescription, fmuFileName);
 
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to unzip \"" + fmuFileName + "\".");
+                    "Failed to unzip, read in or process \"" + fmuFileName + "\".");
         }
+    }
+
+    /** Read in a .fmu file and parse the modelDescription.xml file.
+     *  @param fmuFileName the .fmu file
+     *  @return An object that represents the structure of the modelDescriptionFile
+     */
+    public FmiModelDescription parseFMUFile(String fmuFileName)
+            throws IllegalActionException, NameDuplicationException {
+
+        List<File> files = null;
+        try {
+            files = _unzip(fmuFileName);
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to unzip, \"" + fmuFileName + "\".");
+        }
+
+        // Find the modelDescription.xml file.
+        File modelDescriptionFile = null;
+        for (File file : files) {
+            if (file.getName().endsWith("modelDescription.xml")) {
+                modelDescriptionFile = file;
+                break;
+            }
+        }
+        if (modelDescriptionFile == null) {
+            throw new IllegalActionException(this, "File modelDescription.xml is missing "
+                    + "from the fmu archive \""
+                    + fmuFileName + "\"/");
+        }
+
+            
+        // Read the modelDescription.xml file.
+        Document document = _parseXMLFile(modelDescriptionFile);
+
+        Element root = document.getDocumentElement();
+
+        // Create parameters and ports.
+        //_traverseDOM(modelDescription);
+        FmiModelDescription fmiModelDescription = new FmiModelDescription();
+
+        // Handle the root attributes
+        if (root.hasAttribute("fmiVersion")) {
+            fmiModelDescription.setFmiVersion(root.getAttribute("fmiVersion"));
+        }
+        if (root.hasAttribute("modelName")) {
+            fmiModelDescription.setModelName(root.getAttribute("modelName"));
+        }
+        if (root.hasAttribute("guid")) {
+            fmiModelDescription.setGuid(root.getAttribute("guid"));
+        }
+        // FIXME: Handle numberOfContinuousStates, numberOfEventIndicators etc.
+            
+        // FIXME: handle typeDefinitions
+
+        // FIXME: handle DefaultExperiment
+           
+        // FIXME: handle Vendor annotations
+
+        // ModelVariables
+        // NodeList is not a list, it only has getLength() and item(). #fail.
+        NodeList scalarVariables = document
+            .getElementsByTagName("ScalarVariable");
+
+        for (int i = 0; i < scalarVariables.getLength(); i++) {
+            Element element = (Element) scalarVariables.item(i);
+            System.out.println("Would add " + element);
+            fmiModelDescription.addModelVariable(new ScalarVariable(this, element));
+        }
+
+        return fmiModelDescription;
+    }
+    
+    
+    public void loadFMUSharedLibrary(FmiModelDescription fmiModelDescription, String fmuFileName) {
+        // Load the library
+        String topDirectory = fmuFileName.substring(0, fmuFileName.length() - 4);
+        String osName = StringUtilities.getProperty("os.name").toLowerCase();
+        String extension = ".so";
+        if (osName.startsWith("mac")) {
+            // JModelica seems to use darwin as the binary name
+            osName = "darwin";
+            // FIXME: OpenModelica uses something different.
+            extension = ".dylib";
+        } else if (osName.startsWith("Windows")) {
+            extension = ".dll";
+        }
+        String bitWidth = "64";
+        if (JVMBitWidth.is32Bit()) {
+            bitWidth = "32";
+        }
+        String library =  topDirectory + File.separator
+            + "binaries" + File.separator
+            + osName + bitWidth + File.separator
+            + fmiModelDescription.getModelName() + extension;
+        System.out.println("About to load " + library);
+        System.load(library);
+
+
+//         String glueLibrary = StringUtilities.getProperty("user.dir") + File.separator
+//             + toplevel().getName() + extension;
+
+//         System.out.println("About to load " + glueLibrary);
+//         System.load(glueLibrary);
+
+//         System.out.println("Done loading libraries");
+
+        //System.out.println("getVersion: " + ptolemy.actor.lib.fmi.demo.FMUBouncingBall.FMUBouncingBall.bouncingBall_fmiGetVersion());
     }
 
     /** The name of the fmuFile.
