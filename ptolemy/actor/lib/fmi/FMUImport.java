@@ -463,14 +463,14 @@ public class FMUImport extends TypedCompositeActor {
             }
             _fmuFileModificationTime = modificationTime;
 
-            FmiModelDescription fmiModelDescription = parseFMUFile(fmuFileName);
+            FMIModelDescription fmiModelDescription = parseFMUFile(fmuFileName);
             
             // Instantiate ports and parameters.
-            for (ScalarVariable scalar : fmiModelDescription.getModelVariables()) {
-                if (scalar.type instanceof FMURealType) {
-                    if (scalar.variability == ScalarVariable.Variability.parameter) {
+            for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
+                if (scalar.type instanceof FMIRealType) {
+                    if (scalar.variability == FMIScalarVariable.Variability.parameter) {
                         Parameter parameter = new Parameter(this, scalar.name);
-                        parameter.setExpression(Double.toString(((FMURealType)scalar.type).start));
+                        parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
                         // Prevent exporting this to MoML unless it has
                         // been overridden.
                         parameter.setDerivedLevel(1);
@@ -497,7 +497,7 @@ public class FMUImport extends TypedCompositeActor {
      *  @param fmuFileName the .fmu file
      *  @return An object that represents the structure of the modelDescriptionFile
      */
-    public FmiModelDescription parseFMUFile(String fmuFileName)
+    public FMIModelDescription parseFMUFile(String fmuFileName)
             throws IllegalActionException, NameDuplicationException {
 
         List<File> files = null;
@@ -530,17 +530,17 @@ public class FMUImport extends TypedCompositeActor {
 
         // Create parameters and ports.
         //_traverseDOM(modelDescription);
-        FmiModelDescription fmiModelDescription = new FmiModelDescription();
+        FMIModelDescription fmiModelDescription = new FMIModelDescription();
 
         // Handle the root attributes
         if (root.hasAttribute("fmiVersion")) {
-            fmiModelDescription.setFmiVersion(root.getAttribute("fmiVersion"));
+            fmiModelDescription.fmiVersion = root.getAttribute("fmiVersion");
         }
         if (root.hasAttribute("modelName")) {
-            fmiModelDescription.setModelName(root.getAttribute("modelName"));
+            fmiModelDescription.modelName = root.getAttribute("modelName");
         }
         if (root.hasAttribute("guid")) {
-            fmiModelDescription.setGuid(root.getAttribute("guid"));
+            fmiModelDescription.guid = root.getAttribute("guid");
         }
         // FIXME: Handle numberOfContinuousStates, numberOfEventIndicators etc.
             
@@ -552,19 +552,18 @@ public class FMUImport extends TypedCompositeActor {
 
         // ModelVariables
         // NodeList is not a list, it only has getLength() and item(). #fail.
-        NodeList scalarVariables = document
-            .getElementsByTagName("ScalarVariable");
+        NodeList scalarVariables = document.getElementsByTagName("ScalarVariable");
 
         for (int i = 0; i < scalarVariables.getLength(); i++) {
             Element element = (Element) scalarVariables.item(i);
-            fmiModelDescription.addModelVariable(new ScalarVariable(this, element));
+            fmiModelDescription.modelVariables.add(new FMIScalarVariable(this, element));
         }
 
         return fmiModelDescription;
     }
     
     
-    public void loadFMUSharedLibrary(FmiModelDescription fmiModelDescription, String fmuFileName) {
+    public void loadFMUSharedLibrary(FMIModelDescription fmiModelDescription, String fmuFileName) {
         // Load the library
         String topDirectory = fmuFileName.substring(0, fmuFileName.length() - 4);
         String osName = StringUtilities.getProperty("os.name").toLowerCase();
@@ -584,7 +583,7 @@ public class FMUImport extends TypedCompositeActor {
         String library =  topDirectory + File.separator
             + "binaries" + File.separator
             + osName + bitWidth + File.separator
-            + fmiModelDescription.getModelName() + extension;
+            + fmiModelDescription.modelName + extension;
         System.out.println("About to load " + library);
         System.load(library);
 

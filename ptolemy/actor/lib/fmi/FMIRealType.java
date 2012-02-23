@@ -1,4 +1,4 @@
-/* An FMU Real Type
+/* An Functional Mock-up Interface Real Type.
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -32,10 +32,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 ///////////////////////////////////////////////////////////////////
-//// FMUType
+//// FMIRealType
 
 /**
- * An FMU Type that represents a Real
+ * An Functional Mock-up Interface type that represents a Real.
  * 
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
@@ -46,13 +46,13 @@ import java.util.List;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FMURealType extends FMUType {
+public class FMIRealType extends FMIType {
 
     /** Construct a Real FMU variable.
      *  @param name The name of this variable.
      *  @param description A description of this variable.
      */
-    public FMURealType(String name, String description, Element element) {
+    public FMIRealType(String name, String description, Element element) {
         super(name, description);
         if (element.hasAttribute("start")) {
             start = Double.valueOf(element.getAttribute("start"));

@@ -50,12 +50,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	FMUImport.java \
-	FMURealType.java \
-	FMUType.java \
-	FmiModelDescription.java \
-	ModelVariables.java \
-	ScalarVariable.java
+	FMIModelDescription.java \
+	FMIRealType.java \
+	FMIScalarVariable.java \
+	FMIType.java \
+	FMUImport.java
 
 OTHER_FILES_TO_BE_JARED = \
 	fmi.xml

@@ -1,4 +1,4 @@
-/* An FMU ModelVariable.
+/* An Functional Mock-up Interface Type.
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -31,11 +31,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 ///////////////////////////////////////////////////////////////////
-//// ModelVariable
+//// FMIType
 
 /**
- * An object that represents the ModelVariable element of a
- * Functional Mock-up Interface .fmu XML file.
+ * An base class for Functional Mock-up Interface types like Real.
  * 
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
@@ -46,30 +45,20 @@ import java.util.List;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class ModelVariables {
+public abstract class FMIType {
 
-    /** Create a ModelVariable. */
-    public ModelVariables() {
-        _scalarVariables = new LinkedList<ScalarVariable>();
-    }
-
-    /** Add a ScalarVariable to the list of ScalarVariables for this ModelVariable.
-     *  @param scalarVariable The scalarVariable to be added.
-     *  @see #getScalarVariables()
+    /** Construct a variable.
+     *  @param name The name of this variable.
+     *  @param description A description of this variable.
      */
-    public void addScalarVariable(ScalarVariable scalarVariable) {
-        _scalarVariables.add(scalarVariable);
+    public FMIType(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
-    /** Return the list of ScalarVariables for this scalarDescription.
-     *  @return The list of scalarVariables.    
-     *  @see #addScalarVariables(ScalarVariable)
-     */   
-    public List<ScalarVariable> getScalarVariables() {
-        // FIXME: should we return a copy?
-        return _scalarVariables;
-    }
+    public String description;
 
-    // FIXME: Add other elements of a modelVariable;
-    private List<ScalarVariable> _scalarVariables;
+    public boolean fixed;
+
+    public String name;
 }

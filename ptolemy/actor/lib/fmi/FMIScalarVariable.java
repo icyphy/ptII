@@ -1,4 +1,4 @@
-/* An FMU ScalarVariable.
+/* An Functional Mock-up Interface ScalarVariable.
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -57,13 +57,13 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class ScalarVariable {
+public class FMIScalarVariable {
 
-    /** Create a ScalarVariable. */
-    public ScalarVariable() {
+    /** Create a FMIScalarVariable. */
+    public FMIScalarVariable() {
     }
 
-    public ScalarVariable(TypedCompositeActor container, Element element) 
+    public FMIScalarVariable(TypedCompositeActor container, Element element) 
             throws IllegalActionException, NameDuplicationException {
         name = element.getAttribute("name");
         description = element.getAttribute("description");
@@ -125,7 +125,7 @@ public class ScalarVariable {
             if (child instanceof Element) {
                 Element childElement = (Element) child;
                 if (childElement.getNodeName().equals("Real")) {
-                    type = new FMURealType(name, description, childElement);
+                    type = new FMIRealType(name, description, childElement);
                 } else {
                     throw new InternalErrorException("Child element " + element 
                             + " not implemented yet.");
@@ -149,7 +149,7 @@ public class ScalarVariable {
 
     public String name;
 
-    public FMUType type; 
+    public FMIType type; 
 
     public Variability variability;
 }

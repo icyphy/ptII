@@ -1,4 +1,4 @@
-/* A FMU ModelDescription.
+/* A Function Mock-up Interface ModelDescription.
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -72,118 +72,29 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class FmiModelDescription {
-
-    /** Add a ScalarVariable to the list of ModelVariables.
-     *  @param modelVariable the ScalarVariable to be added.
-     *  #getModelVariables()
-     */
-    public void addModelVariable(ScalarVariable modelVariable) {
-        _modelVariables.add(modelVariable);
-    }
-
-    /** Get the fmiVersion.
-     *  @return The fmiVersion
-     *  @see #setFmiVersion(String)
-     */
-    public String getFmiVersion() {
-        return _fmiVersion;
-    }
-
-    /** Get the FMI guid.
-     *  @return The guid.
-     *  @see #getModelName(String)
-     */
-    public String getGuid() {
-        return _guid;
-    }
-
-    /** Get the FMI modelIdentifier.
-     *  @return The modelIdentifier.
-     *  @see #getModelName(String)
-     */
-    public String getModelIdentifier() {
-        return _modelIdentifier;
-    }
-
-    /** Get the FMI modelName.
-     *  @return The modelName.
-     *  @see #getModelName(String)
-     */
-    public String getModelName() {
-        return _modelName;
-    }
-
-    /** Return the list of ModelVariables for this modelDescription.
-     *  @return The list of modelVariables.    
-     *  @see #addModelVariables(ModelVariable)
-     */   
-    public List<ScalarVariable> getModelVariables() {
-        // FIXME: should we return a copy?
-        return _modelVariables;
-    }
-
-    /** Set the fmiVersion.
-     *  @param version the new fmi version.
-     *  @see #getFmiVersion()
-     */
-    public void setFmiVersion(String version) {
-        _fmiVersion = version;
-    }
-
-    /** Set the FMI guid.
-     *  @param guid The FMI guid
-     *  @see #getModelName()
-     */
-    public void setGuid(String guid) {
-        _guid = guid;
-    }
-
-    /** Set the FMI modelIdentifier.
-     *  @param modelIdentifier The FMI modelIdentifier
-     *  @see #getModelName()
-     */
-    public void setModelIdentifier(String modelIdentifier) {
-        _modelIdentifier = modelIdentifier;
-    }
-
-    /** Set the FMI modelName.
-     *  @param modelName The FMI modelName
-     *  @see #getModelName()
-     */
-    public void setModelName(String modelName) {
-        _modelName = modelName;
-    }
-
-    /** Set the FMI ModelVariables
-     *  @param modelVariables The ModelVariables
-     *  @see #getModelVariables()
-     */
-    public void setModelVariables(List<ScalarVariable> modelVariables) {
-        _modelVariables = modelVariables;
-    }
+public class FMIModelDescription {
 
     // FIXME: numberOfContinuousStates, numberOfEventIndicators and anything else.
 
     /** The fmiVersion, typically the value of the fmiVersion
      * attribute from a .fmu file.
      */
-    private String _fmiVersion;
+    public String fmiVersion;
     
     /** The FMI guid, typically the value of the guid
      * attribute from a .fmu file.
      */
-    private String _guid;
+    public String guid;
 
     /** The FMI modelIdentifier, typically the value of the modelIdentifier
      * attribute from a .fmu file.
      */
-    private String _modelIdentifier;
+    public String modelIdentifier;
 
     /** The FMI modelName, typically the value of the modelName
      * attribute from a .fmu file.
      */
-    private String _modelName;
+    public String modelName;
 
-    private List<ScalarVariable> _modelVariables = new LinkedList<ScalarVariable>();
+    public List<FMIScalarVariable> modelVariables = new LinkedList<FMIScalarVariable>();
 }
