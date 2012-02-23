@@ -465,6 +465,26 @@ public class FMUImport extends TypedCompositeActor {
 
             FmiModelDescription fmiModelDescription = parseFMUFile(fmuFileName);
             
+            // Instantiate ports and parameters.
+            for (ScalarVariable scalar : fmiModelDescription.getModelVariables()) {
+                if (scalar.type instanceof FMURealType) {
+                    if (scalar.variability == ScalarVariable.Variability.parameter) {
+                        Parameter parameter = new Parameter(this, scalar.name);
+                        parameter.setExpression(Double.toString(((FMURealType)scalar.type).start));
+                        // Prevent exporting this to MoML unless it has
+                        // been overridden.
+                        parameter.setDerivedLevel(1);
+                    } {
+                        // FIXME: All output ports?
+                        TypedIOPort port = new TypedIOPort(this, scalar.name, false, true);
+                        port.setDerivedLevel(1);
+                    }
+                } else {
+                    throw new IllegalActionException("Don't know how to handle "
+                            + scalar.type);
+                }
+            }
+
             loadFMUSharedLibrary(fmiModelDescription, fmuFileName);
 
         } catch (IOException ex) {
@@ -537,7 +557,6 @@ public class FMUImport extends TypedCompositeActor {
 
         for (int i = 0; i < scalarVariables.getLength(); i++) {
             Element element = (Element) scalarVariables.item(i);
-            System.out.println("Would add " + element);
             fmiModelDescription.addModelVariable(new ScalarVariable(this, element));
         }
 

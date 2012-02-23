@@ -65,41 +65,67 @@ public class ScalarVariable {
 
     public ScalarVariable(TypedCompositeActor container, Element element) 
             throws IllegalActionException, NameDuplicationException {
-        _name = element.getAttribute("name");
-        _description = element.getAttribute("description");
-        // FIXME: alias, variability, causuality etc.
+        name = element.getAttribute("name");
+        description = element.getAttribute("description");
+        // FIXME: alias, causuality etc.
 
-        boolean foundParameter = false;
-        if (element.hasAttribute("variability")) {
-            String variability = element.getAttribute("variability");
-            
-            // FIXME: Other types of variability
-            if (variability.equals("parameter")) {
-                foundParameter = true;
+        if (element.hasAttribute("alias")) {
+            String attribute = element.getAttribute("alias");
+            if (attribute.equals("alias")) {
+                alias = Alias.alias;
+            } else if (attribute.equals("negatedAlias")) {
+                alias = Alias.negatedAlias;
+            } else if (attribute.equals("noAlias")) {
+                alias = Alias.noAlias;
+            } else {
+                throw new IllegalActionException("alias \"" + alias
+                        + "\" must be one of alias, negatedAlias or noAlias"
+                        + " in " + name + ", " + description); 
             }
         }
 
-        FMUType type = null;
+        if (element.hasAttribute("causality")) {
+            String attribute = element.getAttribute("casuality");
+            if (attribute.equals("input")) {
+                causality = Causality.input;
+            } else if (attribute.equals("internal")) {
+                causality = Causality.internal;
+            } else if (attribute.equals("output")) {
+                causality = Causality.output;
+            } else if (attribute.equals("none")) {
+                causality = Causality.none;
+            } else {
+                throw new IllegalActionException("causality \"" + causality
+                        + "\" must be one of input, internal, output or, none"
+                        + " in " + name + ", " + description); 
+            }
+        }
+
+        if (element.hasAttribute("variability")) {
+            String attribute = element.getAttribute("variability");
+            if (attribute.equals("constant")) {
+                variability = Variability.constant;
+            } else if (attribute.equals("continuous")) {
+                variability = Variability.continuous;
+            } else if (attribute.equals("discrete")) {
+                variability = Variability.discrete;
+            } else if (attribute.equals("parameter")) {
+                variability = Variability.parameter;
+            } else {
+                throw new IllegalActionException("variability \"" + variability
+                        + "\" must be one of constant, continuous, discrete or parameter "
+                        + " in " + name + ", " + description); 
+            }
+        }
+
+
         NodeList children = element.getChildNodes();  // NodeList. Worst. Ever.
         for (int i = 0; i < children.getLength(); i ++) {
             Node child = element.getChildNodes().item(i);
             if (child instanceof Element) {
                 Element childElement = (Element) child;
                 if (childElement.getNodeName().equals("Real")) {
-                    type = new FMURealType(_name, _description, childElement);
-                    // We could use FMURealType.start here
-
-                    if (foundParameter) {
-                        Parameter parameter = new Parameter(container, _name);
-                        parameter.setExpression(childElement.getAttribute("start"));
-                        // Prevent exporting this to MoML unless it has
-                        // been overridden.
-                        parameter.setDerivedLevel(1);
-                    } {
-                        // FIXME: All output ports?
-                        TypedIOPort port = new TypedIOPort(container, _name, false, true);
-                        port.setDerivedLevel(1);
-                    }
+                    type = new FMURealType(name, description, childElement);
                 } else {
                     throw new InternalErrorException("Child element " + element 
                             + " not implemented yet.");
@@ -108,43 +134,22 @@ public class ScalarVariable {
         }
     }
 
-    /** Get the description.
-     *  @return The description, which is typically documentation.
-     *  @see #setDescription(String)
-     */
-    public String getDescription() {
-        return _description;
-    }
+    public enum Alias {alias, negatedAlias, noAlias};
+    
+    public enum Causality {input, internal, output, none}
 
-    /** Get the name.
-     *  @return The name
-     *  @see #setName(String)
-     */
-    public String getName() {
-        return _name;
-    }
-
-    // FIXME: valueReference getters and setters? And others?
-
-    /** Set the description.
-     *  @param description the new description, which is typically
-     *  documentation.
-     *  @see #getDescription()
-     */
-    public void setDescription(String description) {
-        _description = description;
-    }
+    public enum Variability {constant, continuous, discrete, parameter}
 
 
-    /** Set the name.
-     *  @param name the new fmi name.
-     *  @see #getName()
-     */
-    public void setName(String name) {
-        _name = name;
-    }
+    public Alias alias;
 
-    private String _description;
+    public Causality causality;
 
-    private String _name;
+    public String description;
+
+    public String name;
+
+    public FMUType type; 
+
+    public Variability variability;
 }
