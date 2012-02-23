@@ -900,6 +900,10 @@ public class SDFDirector extends StaticSchedulingDirector implements
 
         // Subclasses may set this to null and handle this themselves.
         _periodicDirectorHelper = new PeriodicDirectorHelper(this);
+        
+        // Put the stopTime at the end parameters, to encourage use
+        // of iterations instead.
+        stopTime.moveToLast();
     }
 
     ///////////////////////////////////////////////////////////////////
