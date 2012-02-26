@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- $Id$ -->
+
+<project basedir="../../.." default="build" name="ptII" 
+	 xmlns:artifact="antlib:org.apache.maven.artifact.ant"
+	 >
+  <path id="fmi.classpath">
+    <pathelement location="${basedir}"/>
+    <pathelement location="${basedir}/lib/jna.jar"/>
+    <pathelement location="${basedir}/lib/jnaerator.jar"/>
+  </path>
+
+  <property name="debuglevel" value="source,lines,vars" />
+
+  <!-- fmu names the .fmu file to be opened.  The default is fmu/cs/bouncingBall.xml.  To use this, run 'ant fmu_cs -Dfmu=file.fmu'" -->
+  <property name="model" value="fmu/cs/bouncingBall.xml" />
+
+
+  <target name="build">
+    <echo message="${ant.project.name}: ${ant.file}" />
+    <javac debug="true"
+	   debuglevel="${debuglevel}"
+	   includeAntRuntime="false">
+      <src path="${basedir}/org/ptolemy/fmi" />
+      <classpath refid="fmi.classpath" />
+    </javac>
+  </target>
+
+  <target name="clean"
+	  description="Remove all the class files.">
+    <delete quiet="true">
+      <fileset dir="."
+	       includes="*.class" />
+    </delete>
+  </target>
+
+  <target name="run" depends="fmu_cs"/>
+
+  <target name="fmu_cs" depends="build"
+	  description="Run a co-simulation.  To use a specific .fmu file, run ant fmu_cs -Dfmu=file.fmu"
+	  >
+    <java classname="org.ptolemy.fmi.FMUCoSimulation"
+	  fork="true">
+      <classpath>
+	<path refid="fmi.classpath"/>
+      </classpath>
+      <arg line="${fmu}"/>
+    </java>
+  </target>
+</project>
