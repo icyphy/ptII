@@ -50,16 +50,24 @@ import static org.junit.Assert.assertArrayEquals;
  * @Pt.AcceptedRating Green (cxh)
  */
 public class FMUCoSimulationJUnitTest {
-    /**
-     * @exception Exception If there is a rpoblem reading the test.
+    /** Parse a Functional Mock-up Unit .fmu file, run it using co-simulation
+     *  and compare the results against a known good file.
+     *  
+     *  @param fmuFileName The absolute pathname of the .fmu file.  Absolute
+     *  pathnames are used because this test could be run from anywhere.
+     *  @param knownGoodFileName The absolute pathname of the known good results.
+     *  Note that when the test is run, the output includes the command that could
+     *  be run to create the known good file.
+     *  @exception Exception If there is a problem reading or executing the test
+     *  or if the results is not the same as the known good results.
      */
     public void cosimulate(String fmuFileName, String knownGoodFileName) throws Exception {
-        System.out.println("user.dir: " + System.getProperty("user.dir"));
         String resultsFileName = File.createTempFile("FMUCoSimulationJUnitTest", "csv").getCanonicalPath();
         System.out.println("To update " + knownGoodFileName + ", run:\n"
-                + "(cd ../../..; java -classpath lib/jna.jar:. org.ptolemy.fmi.FMUCoSimulation "
+                + "java -classpath \"" + topDirectory + "/lib/jna.jar:" + topDirectory
+                + "\" org.ptolemy.fmi.FMUCoSimulation "
                 + fmuFileName + " 1.0 0.1 false s "
-                + knownGoodFileName + ")");
+                + knownGoodFileName);
         FMUCoSimulation.simulate(fmuFileName,
                 1.0, 0.1, false /*logging*/, "s", resultsFileName);
 
@@ -68,18 +76,58 @@ public class FMUCoSimulationJUnitTest {
         assertArrayEquals(results.getBytes(), knownGood.getBytes());
     }
 
+    /** Co-simulate a test.
+     *  @param testName The name of the test with no file extension.
+     *  @exception Exception If there is a problem reading or executing the test
+     *  or if the results is not the same as the known good results.
+     */
+    public void cosimulate(String testName) throws Exception {
+        cosimulate(topDirectory + "/org/ptolemy/fmi/fmu/cs/" + testName + ".fmu",
+                topDirectory + "/org/ptolemy/fmi/test/junit/" + testName + ".csv");
+    }
+
     /** Run the bouncing ball co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */   
     @org.junit.Test
     public void runBouncingBall() throws Exception {
-        // FIXME: paths are relative to the directory where ant is run.
-        cosimulate("fmu/cs/bouncingBall.fmu",
-                "test/junit/bouncingBall.csv");
+        cosimulate("bouncingBall");
+    }
+
+    /** Run the dq co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */   
+    @org.junit.Test
+    public void runDq() throws Exception {
+        cosimulate("dq");
+    }
+
+    /** Run the inc co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */   
+    @org.junit.Test
+    public void runInc() throws Exception {
+        cosimulate("inc");
+    }
+
+    /** Run the values co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */   
+    @org.junit.Test
+    public void runValues() throws Exception {
+        cosimulate("values");
+    }
+
+    /** Run the vanDerPol co-simulation functional mock-up unit test.
+     *  @exception Exception If there is a problem reading or running the test.
+     */   
+    @org.junit.Test
+    public void runVanDerPol() throws Exception {
+        cosimulate("vanDerPol");
     }
 
     /** Run FMI co-simulation tests.
-     *  <p>To run these tests, either use ant or run:   
+     *  <p>To run these tests, either us <code>ant test</code' or run:   
      *  <code>(cd ../../..; java -classpath lib/jna.jar:lib/junit-4.8.2.jar:. org.ptolemy.fmi.test.junit.FMUCoSimulationJUnitTest)</code></p>
      *
      *  @param args Not used.
@@ -114,6 +162,17 @@ public class FMUCoSimulationJUnitTest {
         return results.toString();
     }
 
-    private static String _eol = System.getProperty("line.separator");
+    static String topDirectory;
+    static {
+        String userDir = System.getProperty("user.dir");
+        if (userDir.endsWith("org/ptolemy/fmi")) {
+            topDirectory = new File(userDir).getParentFile().getParentFile().getParentFile().toString();
+        } else if (userDir.endsWith("org/ptolemy/fmi/test/jni")) {
+            topDirectory = new File(userDir).getParentFile().getParentFile().getParentFile().getParentFile().getParentFile().toString();
+        } else {
+            topDirectory = userDir;
+        }
+    }
+
 
 }

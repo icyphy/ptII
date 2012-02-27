@@ -1,4 +1,4 @@
-/* An Functional Mock-up Interface Type.
+/* An Functional Mock-up Interface String Type.
 
  Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
@@ -32,10 +32,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 ///////////////////////////////////////////////////////////////////
-//// FMIType
+//// FMIStringType
 
 /**
- * An base class for Functional Mock-up Interface types like Real.
+ * An Functional Mock-up Interface type that represents a String.
  * 
  * <p>FMI documentation may be found at
  * <a href="http://www.modelisar.com/fmi.html">http://www.modelisar.com/fmi.html</a>.
@@ -46,28 +46,18 @@ import java.util.List;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public abstract class FMIType {
+public class FMIStringType extends FMIType {
 
-    /** Construct a variable.
+    /** Construct a String FMU variable.
      *  @param name The name of this variable.
      *  @param description A description of this variable.
-     *  @param element The XML Element that may contain a "fixed" element.
      */
-    public FMIType(String name, String description, Element element) {
-        this.name = name;
-        this.description = description;
-        if (element.hasAttribute("fixed")) {
-            fixed = Boolean.valueOf(element.getAttribute("fixed"));
+    public FMIStringType(String name, String description, Element element) {
+        super(name, description, element);
+        if (element.hasAttribute("start")) {
+            start = element.getAttribute("start");
         }
     }
 
-    /** A description of the type. */
-    public String description;
-
-    // FIXME: describe what this means.
-    /** True if the value is fixed. */
-    public boolean fixed;
-
-    /** The name of the type. */
-    public String name;
+    public String start;
 }

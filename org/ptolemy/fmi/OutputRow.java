@@ -144,7 +144,7 @@ public class OutputRow {
                 if (scalarVariable.type instanceof FMIRealType) {
                     DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
 
-                    Function function = nativeLibrary.getFunction(fmiModelDescription.modelName
+                    Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
                             + "_fmiGetReal");
                     int fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1), valueBuffer})).intValue();
                     double result = valueBuffer.get(0);

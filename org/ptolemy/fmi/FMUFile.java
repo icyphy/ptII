@@ -97,7 +97,7 @@ public class FMUFile {
         String library =  topDirectory + File.separator
             + "binaries" + File.separator
             + osName + bitWidth + File.separator
-            + fmiModelDescription.modelName + extension;
+            + fmiModelDescription.modelIdentifier + extension;
         String canonicalPath = new File(library).getCanonicalPath();
         return canonicalPath;
     }
@@ -155,11 +155,15 @@ public class FMUFile {
         if (root.hasAttribute("fmiVersion")) {
             fmiModelDescription.fmiVersion = root.getAttribute("fmiVersion");
         }
+        if (root.hasAttribute("modelIdentifier")) {
+            fmiModelDescription.modelIdentifier = root.getAttribute("modelIdentifier");
+        }
         if (root.hasAttribute("modelName")) {
             fmiModelDescription.modelName = root.getAttribute("modelName");
         }
         if (root.hasAttribute("guid")) {
             fmiModelDescription.guid = root.getAttribute("guid");
+            System.out.println("FMUFile guid: " + fmiModelDescription.guid);
         }
         // FIXME: Handle numberOfContinuousStates, numberOfEventIndicators etc.
             

@@ -58,7 +58,7 @@ public class FMIRealType extends FMIType {
      *  @param description A description of this variable.
      */
     public FMIRealType(String name, String description, Element element) {
-        super(name, description);
+        super(name, description, element);
         if (element.hasAttribute("start")) {
             start = Double.valueOf(element.getAttribute("start"));
         }

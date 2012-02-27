@@ -85,7 +85,7 @@ public class FMIScalarVariable {
         }
 
         if (element.hasAttribute("causality")) {
-            String attribute = element.getAttribute("casuality");
+            String attribute = element.getAttribute("causality");
             if (attribute.equals("input")) {
                 causality = Causality.input;
             } else if (attribute.equals("internal")) {
@@ -96,7 +96,7 @@ public class FMIScalarVariable {
                 causality = Causality.none;
             } else {
                 throw new IllegalArgumentException("causality \"" + attribute
-                        + "\" must be one of input, internal, output or, none"
+                        + "\" must be one of input, internal, output or none"
                         + " in " + name + ", " + description); 
             }
         }
@@ -128,11 +128,18 @@ public class FMIScalarVariable {
             Node child = element.getChildNodes().item(i);
             if (child instanceof Element) {
                 Element childElement = (Element) child;
-                if (childElement.getNodeName().equals("Real")) {
+                if (childElement.getNodeName().equals("Boolean")) {
+                    type = new FMIBooleanType(name, description, childElement);
+                } else if (childElement.getNodeName().equals("Integer")) {
+                    type = new FMIIntegerType(name, description, childElement);
+                } else if (childElement.getNodeName().equals("Real")) {
                     type = new FMIRealType(name, description, childElement);
+                } else if (childElement.getNodeName().equals("String")) {
+                    type = new FMIStringType(name, description, childElement);
                 } else {
-                    throw new IllegalArgumentException("Child element " + element 
-                            + " not implemented yet.");
+                    throw new IllegalArgumentException(element + ": Child element \""
+                            + childElement.getNodeName()
+                            + "\" not implemented yet.");
                 }
             }
         }
