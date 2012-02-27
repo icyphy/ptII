@@ -78,7 +78,7 @@ public class FMIScalarVariable {
             } else if (attribute.equals("noAlias")) {
                 alias = Alias.noAlias;
             } else {
-                throw new IllegalArgumentException("alias \"" + alias
+                throw new IllegalArgumentException("alias \"" + attribute
                         + "\" must be one of alias, negatedAlias or noAlias"
                         + " in " + name + ", " + description); 
             }
@@ -95,7 +95,7 @@ public class FMIScalarVariable {
             } else if (attribute.equals("none")) {
                 causality = Causality.none;
             } else {
-                throw new IllegalArgumentException("causality \"" + causality
+                throw new IllegalArgumentException("causality \"" + attribute
                         + "\" must be one of input, internal, output or, none"
                         + " in " + name + ", " + description); 
             }
@@ -116,7 +116,7 @@ public class FMIScalarVariable {
             } else if (attribute.equals("parameter")) {
                 variability = Variability.parameter;
             } else {
-                throw new IllegalArgumentException("variability \"" + variability
+                throw new IllegalArgumentException("variability \"" + attribute
                         + "\" must be one of constant, continuous, discrete or parameter "
                         + " in " + name + ", " + description); 
             }

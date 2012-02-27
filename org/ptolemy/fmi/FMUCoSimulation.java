@@ -66,25 +66,22 @@ public class FMUCoSimulation {
 
 
     public interface FMULibrary extends FMILibrary {
-        FMULibrary INSTANCE = (FMULibrary)
-            // FIXME: get this from the .fmu
-            // Also: update FMILibrary.JNA_LIBRARY_NAME
-            Native.loadLibrary("/Users/cxh/src/fmu/jna2/cs/binaries/darwin64/bouncingBall.dylib",
-                    FMULibrary.class);
-
-        public class fmiLogger implements FMICallbackLogger {
+        // We need a class that implement the interface because
+        // certain methods require interfaces as arguments, yet we
+        // need to have method bodies, so we need an actual class.
+        public class FMULogger implements FMICallbackLogger {
             // What to do about jni callbacks with varargs?  
             // See http://osdir.com/ml/java.jna.user/2008-08/msg00103.html
             // I'm getting an exception:
             // "Callback argument class [Lcom.sun.jna.Pointer; requires custom type conversion"
             public void apply(Pointer c, Pointer instanceName, int status, Pointer category, Pointer message, String ... parameters) {
-                System.out.println("Java fmiLogger, status: " + status);
-                System.out.println("Java fmiLogger, message: " + message.getString(0));
+                System.out.println("Java FMULogger, status: " + status);
+                System.out.println("Java FMULogger, message: " + message.getString(0));
             }
         }
         //http://markmail.org/message/6ssggt4q6lkq3hen
 
-        public class fmiAllocateMemory implements FMICallbackAllocateMemory {
+        public class FMUAllocateMemory implements FMICallbackAllocateMemory {
             public Pointer apply(NativeSizeT nobj, NativeSizeT size) {
                 int numberOfObjects = nobj.intValue();
                 if (numberOfObjects <= 0) {
@@ -111,31 +108,109 @@ public class FMUCoSimulation {
             }
         }
 
-        public class fmiFreeMemory implements FMICallbackFreeMemory {
+        public class FMUFreeMemory implements FMICallbackFreeMemory {
             public void apply(Pointer obj) {
                 System.out.println("Java fmiFreeMemory " + obj);
             }
         }
-	public class stepFinished implements FMIStepFinished {
+	public class FMUStepFinished implements FMIStepFinished {
             public void apply(Pointer c, int status) {
                 System.out.println("Java fmiStepFinished: " + c + " " + status);
             }
 	};
     }
 
+    /** Perform co-simulation using the named Functional Mock-up Unit (FMU) file.
+     *          
+     *  <p>Usage:</p>
+     *  <pre>
+     *  java -classpath ../../../lib/jna.jar:../../.. org.ptolemy.fmi.FMUCoSimulation \
+     *  file.fmu [endTime] [stepTime] [loggingOn] [csvSeparator] [outputFile]
+     *  </pre>
+     *
+     *  <p>The command line arguments have the following meaning:</p>
+     *  <dl>
+     *  <dt>file.fmu</dt>
+     *  <dd>The co-simulation Functional Mock-up Unit (FMU) file.  In FMI-1.0,
+     *  co-simulation fmu files contain a modelDescription.xml file that 
+     *  has an &lt;Implementation&gt; element.  Model exchange fmu files do not
+     *  have this element.</dd>
+     *  <dt>endTime</dt>
+     *  <dd>The endTime in seconds, defaults to 1.0.</dd>
+     *  <dt>stepTime</dt>
+     *  <dd>The time between steps in seconds, defaults to 0.1.</dd>
+     *  <dt>enableLogging</dt>
+     *  <dd>If "true", then enable logging.  The default is false.</dd>
+     *  <dt>outputFile</dt>
+     *  <dd>The name of the output file.  The default is results.csv</dd>
+     *  </dl>
+     *
+     *  <p>The format of the arguments is based on the fmusim command from the fmusdk
+     *  by QTronic Gmbh.</p>
+     *
+     *  @exception Exception If there is a problem parsing the .fmu file or invoking
+     *  the methods in the shared library.
+     */
     public static void main(String[] args) throws Exception {
         String fmuFileName = args[0];
+        double endTime = 1.0; // In seconds
+        double stepSize = 0.1; // In seconds
+        boolean enableLogging = false;
+        String csvSeparator = "c";
+        String outputFileName = "results.csv";
 
+        if (args.length >= 2) {
+            endTime = Double.valueOf(args[1]);
+        }
+        if (args.length >= 3) {
+            stepSize = Double.valueOf(args[2]);
+        }
+        if (args.length >= 4) {
+            enableLogging = Boolean.valueOf(args[3]);
+        }
+        if (args.length >= 5) {
+            if (! args[4].equals("c") 
+                    && ! args[4].equals ("s")) {
+                throw new Exception("The csvSeparator argument "
+                        + "must be either \"c\" or \"s\". "
+                        + "The value was \"" + args[4] + "\".");
+            }
+            csvSeparator = args[4];
+        }
+        if (args.length >= 5) {
+            outputFileName = args[5];
+        }
+
+        simulate(fmuFileName, endTime, stepSize, enableLogging, csvSeparator, outputFileName);
+    }
+
+    /** Perform co-simulation using the named Functional Mock-up Unit (FMU) file.
+     *  @param fmuFileName The pathname of the co-simulation .fmu file
+     *  @param endTime The ending time in seconds.
+     *  @param stepSize The step size in seconds.
+     *  @param enableLogging True if logging is enabled.
+     *  @param csvSeparator Control whether commas are used as a decimal point
+     *  and as a field separator in the output.  Acceptable values are "c" for comma
+     *  and "s" for semicolon.
+     *  @param outputFileName The output file.
+     *  @exception Exception If there is a problem parsing the .fmu file or invoking
+     *  the methods in the shared library.
+     */
+    public static void simulate(String fmuFileName, double endTime, double stepSize,
+            boolean enableLogging, String csvSeparator, String outputFileName) throws Exception {
+            
+
+        // Parse the .fmu file.
         FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
 
+        // Load the shared library.
         NativeLibrary nativeLibrary = NativeLibrary.getInstance(FMUFile.fmuSharedLibrary(
                         fmiModelDescription, fmuFileName));
 
         String modelName = fmiModelDescription.modelName;
-        Function function = nativeLibrary.getFunction(modelName + "_fmiGetVersion");
         
         // The URL of the fmu file.
-        String fmuLocation = null;  
+        String fmuLocation = new File(fmuFileName).toURI().toURL().toString();
         // The tool to use if we have tool coupling.
         String mimeType = "application/x-fmu-sharedlibrary";
         // Timeout in ms., 0 means wait forever.
@@ -146,11 +221,11 @@ public class FMUCoSimulation {
         byte interactive = 0;
         // Callbacks
         FMICallbackFunctions.ByValue callbacks = new FMICallbackFunctions.ByValue(
-                new FMULibrary.fmiLogger(),
-                new FMULibrary.fmiAllocateMemory(),
-                new FMULibrary.fmiFreeMemory(),
-                new FMULibrary.stepFinished());
-        // Turn off logging.
+                new FMULibrary.FMULogger(),
+                new FMULibrary.FMUAllocateMemory(),
+                new FMULibrary.FMUFreeMemory(),
+                new FMULibrary.FMUStepFinished());
+        // Turn off logging because of problems with varargs
         byte loggingOn = (byte)0;
 
         Function instantiateSlave = nativeLibrary.getFunction(modelName + "_fmiInstantiateSlave");
@@ -170,15 +245,14 @@ public class FMUCoSimulation {
         }
 
         double startTime = 0;
-        double endTime = 5.0;
         
-        function = nativeLibrary.getFunction(modelName + "_fmiInitializeSlave");
+        Function function = nativeLibrary.getFunction(modelName + "_fmiInitializeSlave");
         int fmiFlag = ((Integer)function.invoke(Integer.class,new Object[] {fmiComponent, startTime, (byte)1, endTime})).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException("Could not initialize slave: " + fmiFlag);
         }
         
-        File outputFile = new File("results.csv"); 
+        File outputFile = new File(outputFileName);
         PrintStream file = null;
         try {
             file = new PrintStream(outputFile);
@@ -189,7 +263,6 @@ public class FMUCoSimulation {
             OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, startTime, file, separator, Boolean.FALSE);
             // Loop until the time is greater than the end time.
             double time = startTime;
-            double stepSize = 0.1;
             function = nativeLibrary.getFunction(modelName + "_fmiDoStep");
             while (time < endTime) {
                 fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, time, stepSize, (byte)1})).intValue();
@@ -212,6 +285,6 @@ public class FMUCoSimulation {
 
         function = nativeLibrary.getFunction(modelName + "_fmiFreeSlaveInstance");
         fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent})).intValue();
-        System.out.println("Results are in " + outputFile);
+        System.out.println("Results are in " + outputFile.getCanonicalPath());
   }
 }

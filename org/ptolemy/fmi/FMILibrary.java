@@ -54,11 +54,6 @@ import java.nio.IntBuffer;
  * @Pt.AcceptedRating Red (cxh)
  */
 public interface FMILibrary extends Library {
-    // FIXME: get this from the .fmu
-    //public static final String JNA_LIBRARY_NAME = "bouncingBall2";
-    public static final String JNA_LIBRARY_NAME = "/Users/cxh/src/fmu/jna2/cs/binaries/darwin64/bouncingBall.dylib";
-    public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(FMILibrary.JNA_LIBRARY_NAME);
-    public static final FMILibrary INSTANCE = (FMILibrary)Native.loadLibrary(FMILibrary.JNA_LIBRARY_NAME, FMILibrary.class);
 
     /**
      * <i>native declaration : bouncingBall2.h:13</i><br>
