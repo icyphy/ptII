@@ -7,16 +7,17 @@
   <path id="fmi.classpath">
     <pathelement location="${basedir}"/>
     <pathelement location="${basedir}/lib/jna.jar"/>
-    <pathelement location="${basedir}/lib/jnaerator.jar"/>
   </path>
-
   <property name="debuglevel" value="source,lines,vars" />
 
-  <!-- fmu names the .fmu file to be opened.  The default is fmu/cs/bouncingBall.xml.  To use this, run 'ant fmu_cs -Dfmu=file.fmu'" -->
-  <property name="model" value="fmu/cs/bouncingBall.xml" />
+  <!-- The fmu property names the .fmu file to be opened. 
+       To choose different fmu files, run 'ant fmu_cs -Dfmu=file.fmu'"
+   -->
+  <property name="fmu" value="org/ptolemy/fmi/fmu/cs/bouncingBall.fmu" />
 
-
-  <target name="build">
+  <target name="build"
+	  description="Compile the java files."
+	  >
     <echo message="${ant.project.name}: ${ant.file}" />
     <javac debug="true"
 	   debuglevel="${debuglevel}"
@@ -27,9 +28,9 @@
   </target>
 
   <target name="clean"
-	  description="Remove all the class files.">
+	  description="Remove all the class files in org/ptolemy/fmi.">
     <delete quiet="true">
-      <fileset dir="."
+      <fileset dir="org/ptolemy/fmi"
 	       includes="*.class" />
     </delete>
   </target>
@@ -37,7 +38,7 @@
   <target name="run" depends="fmu_cs"/>
 
   <target name="fmu_cs" depends="build"
-	  description="Run a co-simulation.  To use a specific .fmu file, run ant fmu_cs -Dfmu=file.fmu"
+	  description="Run a co-simulation.  To use a specific .fmu file, run ant fmu_cs -Dfmu=org/ptolemy/fmi/fmu/cs/bouncingBall.fmu"
 	  >
     <java classname="org.ptolemy.fmi.FMUCoSimulation"
 	  fork="true">

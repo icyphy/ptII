@@ -35,7 +35,6 @@ import com.sun.jna.Platform;
 
 import org.ptolemy.fmi.FMILibrary.FMIStatus;
 import org.ptolemy.fmi.FMICallbackFunctions.ByValue;
-import com.ochafik.lang.jnaerator.runtime.NativeSize;
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Memory;
@@ -86,7 +85,7 @@ public class FMUCoSimulation {
         //http://markmail.org/message/6ssggt4q6lkq3hen
 
         public class fmiAllocateMemory implements FMICallbackAllocateMemory {
-            public Pointer apply(NativeSize nobj, NativeSize size) {
+            public Pointer apply(NativeSizeT nobj, NativeSizeT size) {
                 int numberOfObjects = nobj.intValue();
                 if (numberOfObjects <= 0) {
                     // instantiateModel() in fmuTemplate.c
@@ -125,10 +124,15 @@ public class FMUCoSimulation {
     }
 
     public static void main(String[] args) throws Exception {
-        FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile("/Users/cxh/src/fmu/fmusdk/fmu/cs/bouncingBall.fmu");
+        String fmuFileName = args[0];
 
-        NativeLibrary nativeLibrary = NativeLibrary.getInstance("/Users/cxh/src/fmu/jna2/cs/binaries/darwin64/bouncingBall.dylib");
-        Function function = nativeLibrary.getFunction("bouncingBall_fmiGetVersion");
+        FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+
+        NativeLibrary nativeLibrary = NativeLibrary.getInstance(FMUFile.fmuSharedLibrary(
+                        fmiModelDescription, fmuFileName));
+
+        String modelName = fmiModelDescription.modelName;
+        Function function = nativeLibrary.getFunction(modelName + "_fmiGetVersion");
         
         // The URL of the fmu file.
         String fmuLocation = null;  
@@ -149,10 +153,10 @@ public class FMUCoSimulation {
         // Turn off logging.
         byte loggingOn = (byte)0;
 
-        Function instantiateSlave = nativeLibrary.getFunction("bouncingBall_fmiInstantiateSlave");
+        Function instantiateSlave = nativeLibrary.getFunction(modelName + "_fmiInstantiateSlave");
         Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                 new Object [] {
-                    "bouncingBall",
+                    modelName,
                     "{8c4e810f-3df3-4a00-8276-176fa3c9f003}",
                     fmuLocation,
                     mimeType,
@@ -168,7 +172,7 @@ public class FMUCoSimulation {
         double startTime = 0;
         double endTime = 5.0;
         
-        function = nativeLibrary.getFunction("bouncingBall_fmiInitializeSlave");
+        function = nativeLibrary.getFunction(modelName + "_fmiInitializeSlave");
         int fmiFlag = ((Integer)function.invoke(Integer.class,new Object[] {fmiComponent, startTime, (byte)1, endTime})).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
             throw new RuntimeException("Could not initialize slave: " + fmiFlag);
@@ -186,7 +190,7 @@ public class FMUCoSimulation {
             // Loop until the time is greater than the end time.
             double time = startTime;
             double stepSize = 0.1;
-            function = nativeLibrary.getFunction("bouncingBall_fmiDoStep");
+            function = nativeLibrary.getFunction(modelName + "_fmiDoStep");
             while (time < endTime) {
                 fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, time, stepSize, (byte)1})).intValue();
 
@@ -203,10 +207,10 @@ public class FMUCoSimulation {
             }
          }
 
-        function = nativeLibrary.getFunction("bouncingBall_fmiTerminateSlave");
+        function = nativeLibrary.getFunction(modelName + "_fmiTerminateSlave");
         fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent})).intValue();
 
-        function = nativeLibrary.getFunction("bouncingBall_fmiFreeSlaveInstance");
+        function = nativeLibrary.getFunction(modelName + "_fmiFreeSlaveInstance");
         fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent})).intValue();
         System.out.println("Results are in " + outputFile);
   }

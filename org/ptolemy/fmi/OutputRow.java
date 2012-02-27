@@ -35,7 +35,6 @@ import com.sun.jna.Platform;
 
 import org.ptolemy.fmi.FMILibrary.FMIStatus;
 import org.ptolemy.fmi.FMICallbackFunctions.ByValue;
-import com.ochafik.lang.jnaerator.runtime.NativeSize;
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Memory;
@@ -55,7 +54,7 @@ import java.nio.IntBuffer;
 
 /**
  * <p>This method is a port of outputRow() from
- * fmusdk/src/shared/sim_support.c which has the following license
+ * fmusdk/src/shared/sim_support.c which has the following license:
  * <pre>
  * FMU SDK license 
  *
@@ -81,7 +80,7 @@ import java.nio.IntBuffer;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * </pre>
- * @author Christopher Brooks
+ * @author Christopher Brooks, based on sim_support.c by QTronic GmbH.
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -97,16 +96,14 @@ public class OutputRow {
             FMIModelDescription fmiModelDescription,
             Pointer fmiComponent, double time, 
             PrintStream file, char separator, Boolean header) {
-        int k;
+        int i,k;
         //         fmiReal r;
         //         fmiInteger i;
         //         fmiBoolean b;
         //         fmiString s;
         //         fmiValueReference vr;
-
-        int i;
     
-        // print first column
+        // Print the first column.
         if (header) {
             file.print("time");
         } else {
@@ -141,17 +138,15 @@ public class OutputRow {
                 }
             }
             else {
-                // output values
+                // Output values.
                 int valueReference = scalarVariable.valueReference;
                 IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
                 if (scalarVariable.type instanceof FMIRealType) {
                     DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
 
-                    // FMILibrary.INSTANCE.bouncingBall_fmiGetReal(fmiComponent,
-                    //        valueReferenceIntBuffer,
-                    //        new NativeSize(1), valueBuffer);
-                    Function function = nativeLibrary.getFunction("bouncingBall_fmiGetReal");
-                    int fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, valueReferenceIntBuffer, new NativeSize(1), valueBuffer})).intValue();
+                    Function function = nativeLibrary.getFunction(fmiModelDescription.modelName
+                            + "_fmiGetReal");
+                    int fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1), valueBuffer})).intValue();
                     double result = valueBuffer.get(0);
                             
                     if (separator==',') {
@@ -179,9 +174,9 @@ public class OutputRow {
                 //                     file.format("%cNoValueForType=%d", separator,sv->typeSpec->type);
 
             }
-        } // for
+        }
     
-        // terminate this row
+        // Terminate this row.
         file.format("\n"); 
     }
 }

@@ -28,7 +28,6 @@
 
 package org.ptolemy.fmi;
 import org.ptolemy.fmi.FMICallbackFunctions.ByValue;
-import com.ochafik.lang.jnaerator.runtime.NativeSize;
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
@@ -60,6 +59,7 @@ public interface FMILibrary extends Library {
     public static final String JNA_LIBRARY_NAME = "/Users/cxh/src/fmu/jna2/cs/binaries/darwin64/bouncingBall.dylib";
     public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(FMILibrary.JNA_LIBRARY_NAME);
     public static final FMILibrary INSTANCE = (FMILibrary)Native.loadLibrary(FMILibrary.JNA_LIBRARY_NAME, FMILibrary.class);
+
     /**
      * <i>native declaration : bouncingBall2.h:13</i><br>
      * enum values
@@ -97,7 +97,7 @@ public interface FMILibrary extends Library {
     };
     /// <i>native declaration : bouncingBall2.h:15</i>
     public interface FMICallbackAllocateMemory extends Callback {
-        Pointer apply(NativeSize nobj, NativeSize size);
+        Pointer apply(NativeSizeT nobj, NativeSizeT size);
     };
     /// <i>native declaration : bouncingBall2.h:16</i>
     public interface FMICallbackFreeMemory extends Callback {
@@ -125,79 +125,79 @@ public interface FMILibrary extends Library {
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiGetReal(fmiComponent, const fmiValueReference[], size_t, fmiReal[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:39</i><br>
-//      * @deprecated use the safer methods {@link #bouncingBall_fmiGetReal(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSize, java.nio.DoubleBuffer)} and {@link #bouncingBall_fmiGetReal(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSize, com.sun.jna.ptr.DoubleByReference)} instead
+//      * @deprecated use the safer methods {@link #bouncingBall_fmiGetReal(com.sun.jna.Pointer, java.nio.IntBuffer, org.ptolemy.fmi.NativeSizeT, java.nio.DoubleBuffer)} and {@link #bouncingBall_fmiGetReal(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, org.ptolemy.fmi.NativeSizeT, com.sun.jna.ptr.DoubleByReference)} instead
 //      */
 //     @Deprecated 
-//     int bouncingBall_fmiGetReal(Pointer c, IntByReference vr, NativeSize nvr, DoubleByReference value);
+//     int bouncingBall_fmiGetReal(Pointer c, IntByReference vr, NativeSizeT nvr, DoubleByReference value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiGetReal(fmiComponent, const fmiValueReference[], size_t, fmiReal[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:39</i>
 //      */
-//     int bouncingBall_fmiGetReal(Pointer c, IntBuffer vr, NativeSize nvr, DoubleBuffer value);
+//     int bouncingBall_fmiGetReal(Pointer c, IntBuffer vr, NativeSizeT nvr, DoubleBuffer value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiGetInteger(fmiComponent, const fmiValueReference[], size_t, fmiInteger[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:41</i><br>
-//      * @deprecated use the safer methods {@link #bouncingBall_fmiGetInteger(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSize, java.nio.IntBuffer)} and {@link #bouncingBall_fmiGetInteger(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSize, com.sun.jna.ptr.IntByReference)} instead
+//      * @deprecated use the safer methods {@link #bouncingBall_fmiGetInteger(com.sun.jna.Pointer, java.nio.IntBuffer, org.ptolemy.fmi.NativeSizeT, java.nio.IntBuffer)} and {@link #bouncingBall_fmiGetInteger(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, org.ptolemy.fmi.NativeSizeT, com.sun.jna.ptr.IntByReference)} instead
 //      */
 //     @Deprecated 
-//     int bouncingBall_fmiGetInteger(Pointer c, IntByReference vr, NativeSize nvr, IntByReference value);
+//     int bouncingBall_fmiGetInteger(Pointer c, IntByReference vr, NativeSizeT nvr, IntByReference value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiGetInteger(fmiComponent, const fmiValueReference[], size_t, fmiInteger[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:41</i>
 //      */
-//     int bouncingBall_fmiGetInteger(Pointer c, IntBuffer vr, NativeSize nvr, IntBuffer value);
+//     int bouncingBall_fmiGetInteger(Pointer c, IntBuffer vr, NativeSizeT nvr, IntBuffer value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiGetBoolean(fmiComponent, const fmiValueReference[], size_t, fmiBoolean[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:43</i><br>
-//      * @deprecated use the safer methods {@link #bouncingBall_fmiGetBoolean(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSize, java.nio.ByteBuffer)} and {@link #bouncingBall_fmiGetBoolean(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSize, com.sun.jna.Pointer)} instead
+//      * @deprecated use the safer methods {@link #bouncingBall_fmiGetBoolean(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSizeT, java.nio.ByteBuffer)} and {@link #bouncingBall_fmiGetBoolean(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSizeT, com.sun.jna.Pointer)} instead
 //      */
 //     @Deprecated 
-//     int bouncingBall_fmiGetBoolean(Pointer c, IntByReference vr, NativeSize nvr, Pointer value);
+//     int bouncingBall_fmiGetBoolean(Pointer c, IntByReference vr, NativeSizeT nvr, Pointer value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiGetBoolean(fmiComponent, const fmiValueReference[], size_t, fmiBoolean[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:43</i>
 //      */
-//     int bouncingBall_fmiGetBoolean(Pointer c, IntBuffer vr, NativeSize nvr, ByteBuffer value);
+//     int bouncingBall_fmiGetBoolean(Pointer c, IntBuffer vr, NativeSizeT nvr, ByteBuffer value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiGetString(fmiComponent, const fmiValueReference[], size_t, fmiString[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:45</i><br>
-//      * @deprecated use the safer methods {@link #bouncingBall_fmiGetString(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSize, com.sun.jna.ptr.PointerByReference)} and {@link #bouncingBall_fmiGetString(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSize, com.sun.jna.ptr.PointerByReference)} instead
+//      * @deprecated use the safer methods {@link #bouncingBall_fmiGetString(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSizeT, com.sun.jna.ptr.PointerByReference)} and {@link #bouncingBall_fmiGetString(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSizeT, com.sun.jna.ptr.PointerByReference)} instead
 //      */
 //     @Deprecated 
-//     int bouncingBall_fmiGetString(Pointer c, IntByReference vr, NativeSize nvr, PointerByReference value);
+//     int bouncingBall_fmiGetString(Pointer c, IntByReference vr, NativeSizeT nvr, PointerByReference value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiGetString(fmiComponent, const fmiValueReference[], size_t, fmiString[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:45</i>
 //      */
-//     int bouncingBall_fmiGetString(Pointer c, IntBuffer vr, NativeSize nvr, PointerByReference value);
+//     int bouncingBall_fmiGetString(Pointer c, IntBuffer vr, NativeSizeT nvr, PointerByReference value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiSetReal(fmiComponent, const fmiValueReference[], size_t, const fmiReal[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:47</i><br>
-//      * @deprecated use the safer methods {@link #bouncingBall_fmiSetReal(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSize, java.nio.DoubleBuffer)} and {@link #bouncingBall_fmiSetReal(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSize, com.sun.jna.ptr.DoubleByReference)} instead
+//      * @deprecated use the safer methods {@link #bouncingBall_fmiSetReal(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSizeT, java.nio.DoubleBuffer)} and {@link #bouncingBall_fmiSetReal(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSizeT, com.sun.jna.ptr.DoubleByReference)} instead
 //      */
 //     @Deprecated 
-//     int bouncingBall_fmiSetReal(Pointer c, IntByReference vr, NativeSize nvr, DoubleByReference value);
+//     int bouncingBall_fmiSetReal(Pointer c, IntByReference vr, NativeSizeT nvr, DoubleByReference value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiSetReal(fmiComponent, const fmiValueReference[], size_t, const fmiReal[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:47</i>
 //      */
-//     int bouncingBall_fmiSetReal(Pointer c, IntBuffer vr, NativeSize nvr, DoubleBuffer value);
+//     int bouncingBall_fmiSetReal(Pointer c, IntBuffer vr, NativeSizeT nvr, DoubleBuffer value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiSetInteger(fmiComponent, const fmiValueReference[], size_t, const fmiInteger[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:49</i><br>
-//      * @deprecated use the safer methods {@link #bouncingBall_fmiSetInteger(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSize, java.nio.IntBuffer)} and {@link #bouncingBall_fmiSetInteger(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSize, com.sun.jna.ptr.IntByReference)} instead
+//      * @deprecated use the safer methods {@link #bouncingBall_fmiSetInteger(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSizeT, java.nio.IntBuffer)} and {@link #bouncingBall_fmiSetInteger(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSizeT, com.sun.jna.ptr.IntByReference)} instead
 //      */
 //     @Deprecated 
-//     int bouncingBall_fmiSetInteger(Pointer c, IntByReference vr, NativeSize nvr, IntByReference value);
+//     int bouncingBall_fmiSetInteger(Pointer c, IntByReference vr, NativeSizeT nvr, IntByReference value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiSetInteger(fmiComponent, const fmiValueReference[], size_t, const fmiInteger[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:49</i>
 //      */
-//     int bouncingBall_fmiSetInteger(Pointer c, IntBuffer vr, NativeSize nvr, IntBuffer value);
+//     int bouncingBall_fmiSetInteger(Pointer c, IntBuffer vr, NativeSizeT nvr, IntBuffer value);
 //     /**
 //      * Original signature : <code>FMIStatus bouncingBall_fmiSetBoolean(fmiComponent, const fmiValueReference[], size_t, const fmiBoolean[])</code><br>
 //      * <i>native declaration : bouncingBall2.h:51</i><br>
-//      * @deprecated use the safer methods {@link #bouncingBall_fmiSetBoolean(com.sun.jna.Pointer, java.nio.IntBuffer, com.ochafik.lang.jnaerator.runtime.NativeSize, java.nio.ByteBuffer)} and {@link #bouncingBall_fmiSetBoolean(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, com.ochafik.lang.jnaerator.runtime.NativeSize, com.sun.jna.Pointer)} instead
+//      * @deprecated use the safer methods {@link #bouncingBall_fmiSetBoolean(com.sun.jna.Pointer, java.nio.IntBuffer, org.ptolemy.fmi.NativeSizeT, java.nio.ByteBuffer)} and {@link #bouncingBall_fmiSetBoolean(com.sun.jna.Pointer, com.sun.jna.ptr.IntByReference, org.ptolemy.fmi.NativeSizeT, com.sun.jna.Pointer)} instead
 //      */
 //     @Deprecated 
 //     int bouncingBall_fmiSetBoolean(Pointer c, IntByReference vr, NativeSize nvr, Pointer value);

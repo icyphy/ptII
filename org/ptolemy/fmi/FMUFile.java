@@ -69,13 +69,15 @@ import org.w3c.dom.NodeList;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class FMUFile {
-    /** Load in a shared library from a .fmu file.
+    /** Return the name of the shared library from a .fmu file.
      *  @param fmiModelDescription The representation of the model that was read
      *  in by {#parseFMUFile}.
      *  @param fmuFileName The .fmu file, used to find the directory where the shared library
      *  is located.
+     *  @return The canonical path of the shared library.
+     *  @exception IOException If thrown while determining the canonical path of the library.
      */
-    public static void loadFMUSharedLibrary(FMIModelDescription fmiModelDescription, String fmuFileName) {
+    public static String fmuSharedLibrary(FMIModelDescription fmiModelDescription, String fmuFileName) throws IOException {
         // Load the library
         String topDirectory = fmuFileName.substring(0, fmuFileName.length() - 4);
         String osName = System.getProperty("os.name").toLowerCase();
@@ -96,8 +98,8 @@ public class FMUFile {
             + "binaries" + File.separator
             + osName + bitWidth + File.separator
             + fmiModelDescription.modelName + extension;
-        System.out.println("About to load " + library);
-        System.load(library);
+        String canonicalPath = new File(library).getCanonicalPath();
+        return canonicalPath;
     }
 
     /** Read in a .fmu file and parse the modelDescription.xml file.
