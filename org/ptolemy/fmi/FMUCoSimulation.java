@@ -156,7 +156,7 @@ public class FMUCoSimulation {
         double endTime = 1.0; // In seconds
         double stepSize = 0.1; // In seconds
         boolean enableLogging = false;
-        String csvSeparator = "c";
+        char csvSeparator = ',';
         String outputFileName = "results.csv";
 
         if (args.length >= 2) {
@@ -169,15 +169,15 @@ public class FMUCoSimulation {
             enableLogging = Boolean.valueOf(args[3]);
         }
         if (args.length >= 5) {
-            if (! args[4].equals("c") 
-                    && ! args[4].equals ("s")) {
-                throw new Exception("The csvSeparator argument "
-                        + "must be either \"c\" or \"s\". "
-                        + "The value was \"" + args[4] + "\".");
+            if (args[4].equals("c")) {
+                csvSeparator = ',';
+            } else if (args[4].equals("s")) {
+                csvSeparator = ';';
+            } else {
+                csvSeparator = args[4].charAt(0);
             }
-            csvSeparator = args[4];
         }
-        if (args.length >= 5) {
+        if (args.length >= 6) {
             outputFileName = args[5];
         }
 
@@ -189,15 +189,14 @@ public class FMUCoSimulation {
      *  @param endTime The ending time in seconds.
      *  @param stepSize The step size in seconds.
      *  @param enableLogging True if logging is enabled.
-     *  @param csvSeparator Control whether commas are used as a decimal point
-     *  and as a field separator in the output.  Acceptable values are "c" for comma
-     *  and "s" for semicolon.
+     *  @param csvSeparator The character used for separating fields.
+     *  Note that sometimes the decimal point in floats is converted to ','.
      *  @param outputFileName The output file.
      *  @exception Exception If there is a problem parsing the .fmu file or invoking
      *  the methods in the shared library.
      */
     public static void simulate(String fmuFileName, double endTime, double stepSize,
-            boolean enableLogging, String csvSeparator, String outputFileName) throws Exception {
+            boolean enableLogging, char csvSeparator, String outputFileName) throws Exception {
             
 
         // Parse the .fmu file.
@@ -260,12 +259,11 @@ public class FMUCoSimulation {
         PrintStream file = null;
         try {
             file = new PrintStream(outputFile);
-            char separator = ',';
             System.out.println("FMUCoSimulation: about to write header");
             // Generate header row
-            OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, startTime, file, separator, Boolean.TRUE);  
+            OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, startTime, file, csvSeparator, Boolean.TRUE);  
             // Output the initial values.
-            OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, startTime, file, separator, Boolean.FALSE);
+            OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, startTime, file, csvSeparator, Boolean.FALSE);
             // Loop until the time is greater than the end time.
             double time = startTime;
             function = nativeLibrary.getFunction(modelIdentifier + "_fmiDoStep");
@@ -278,7 +276,7 @@ public class FMUCoSimulation {
                 }
                 time += stepSize;
                 // Generate a line for this step
-                OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, time, file, separator, Boolean.FALSE);
+                OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, time, file, csvSeparator, Boolean.FALSE);
             }
         } finally {            
             if (file != null) {

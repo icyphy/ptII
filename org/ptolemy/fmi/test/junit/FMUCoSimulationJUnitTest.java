@@ -66,13 +66,20 @@ public class FMUCoSimulationJUnitTest {
         System.out.println("To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar:" + topDirectory
                 + "\" org.ptolemy.fmi.FMUCoSimulation "
-                + fmuFileName + " 1.0 0.1 false s "
+                + fmuFileName + " 1.0 0.1 false c "
                 + knownGoodFileName);
         FMUCoSimulation.simulate(fmuFileName,
-                1.0, 0.1, false /*logging*/, "s", resultsFileName);
+                1.0, 0.1, false /*logging*/, ',' , resultsFileName);
 
         String results = FMUCoSimulationJUnitTest.readFile(resultsFileName);
         String knownGood = FMUCoSimulationJUnitTest.readFile(knownGoodFileName);
+        if (results.length() != knownGood.length()) {
+            throw new Exception(fmuFileName + ":results length "
+                    + results.length() + " != known good length "
+                    + knownGood.length()
+                    + "\nresults:\n" + results
+                    + "\nknownGood:\n" + knownGood);
+        }
         assertArrayEquals(results.getBytes(), knownGood.getBytes());
     }
 
@@ -152,7 +159,7 @@ public class FMUCoSimulationJUnitTest {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(dataInputStream));
             String line;
             while ((line = bufferedReader.readLine()) != null)   {
-                results.append(line);
+                results.append(line + lineSeparator);
             }
         } finally {
             if (dataInputStream != null) {
@@ -162,7 +169,10 @@ public class FMUCoSimulationJUnitTest {
         return results.toString();
     }
 
+    static String lineSeparator = "\n";
+
     static String topDirectory;
+
     static {
         String userDir = System.getProperty("user.dir");
         if (userDir.endsWith("org/ptolemy/fmi")) {
@@ -173,6 +183,4 @@ public class FMUCoSimulationJUnitTest {
             topDirectory = userDir;
         }
     }
-
-
 }

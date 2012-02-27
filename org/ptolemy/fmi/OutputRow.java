@@ -49,6 +49,7 @@ import com.sun.jna.ptr.PointerByReference;
 import java.io.File;
 import java.io.PrintStream;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 
@@ -102,13 +103,13 @@ public class OutputRow {
         //         fmiBoolean b;
         //         fmiString s;
         //         fmiValueReference vr;
-    
+
         // Print the first column.
         if (header) {
             file.print("time");
         } else {
             if (separator==',') {
-                file.format("%.16g", time);
+                file.format("%g", time);
             } else {
                 // separator is e.g. ';' or '\t'
                 file.format("%s", Double.toString(time).replace('.', ','));
@@ -141,9 +142,22 @@ public class OutputRow {
                 // Output values.
                 int valueReference = scalarVariable.valueReference;
                 IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
-                if (scalarVariable.type instanceof FMIRealType) {
-                    DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
+                if (scalarVariable.type instanceof FMIBooleanType) {
+                    // FIXME: how to handle booleans ?
+                    //                     fmu->getBoolean(c, &vr, 1, &b);
+                    //                     file.format("%c%d", separator, b);
 
+                } else if (scalarVariable.type instanceof FMIIntegerType) {
+                    // FIXME: handle Enumerations
+                    IntBuffer valueBuffer = IntBuffer.allocate(1);
+                    Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
+                            + "_fmiGetInteger");
+                    int fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1), valueBuffer})).intValue();
+                    int result = valueBuffer.get(0);
+                    file.format("%c%d", separator, result);
+
+                } else if (scalarVariable.type instanceof FMIRealType) {
+                    DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
                     Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
                             + "_fmiGetReal");
                     int fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1), valueBuffer})).intValue();
@@ -155,28 +169,35 @@ public class OutputRow {
                         // separator is e.g. ';' or '\t'
                         file.format("%c%s", separator, Double.toString(result).replace('.', ','));
                     }
+
+                } else if (scalarVariable.type instanceof FMIStringType) {
+                    // FIXME: what size to allocate??
+                    CharBuffer valueBuffer = CharBuffer.allocate(1);
+                    //char value[] = new char[1];
+                    PointerByReference pref = new PointerByReference();
+
+                    Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
+                            + "_fmiGetString");
+                    int fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1), pref})).intValue();
+                    //file.format("%c%s", separator, valueBuffer.toString());
+                    Pointer p = pref.getValue();
+                    file.format("%c%s", separator, p.getString(0));
+                } else {
+                    file.format("%cNoValueForType=%d", separator, scalarVariable.type);
                 }
-
-                //                 case elm_Integer:
-                //                 case elm_Enumeration:
-                //                     fmu->getInteger(c, &vr, 1, &i);
-                //                     file.format("%c%d", separator, i);
-                //                     break;
-                //                 case elm_Boolean:
-                //                     fmu->getBoolean(c, &vr, 1, &b);
-                //                     file.format("%c%d", separator, b);
-                //                     break;
-                //                 case elm_String:
-                //                     fmu->getString(c, &vr, 1, &s);
-                //                     file.format("%c%s", separator, s);
-                //                     break;
-                //                 default: 
-                //                     file.format("%cNoValueForType=%d", separator,sv->typeSpec->type);
-
             }
         }
     
         // Terminate this row.
         file.format("\n"); 
     }
+
+    private static String c2s(char b[]) {
+        // Converts C string to Java String
+        int len = 0;
+        while (b[len] != 0)
+            ++len;
+        return new String(b, 0, len);
+    }
+
 }
