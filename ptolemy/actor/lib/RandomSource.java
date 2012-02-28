@@ -225,7 +225,10 @@ public abstract class RandomSource extends Source {
         if (seedValue == 0L) {
             seedValue = System.currentTimeMillis() + hashCode();
         } else {
-            seedValue = seedValue + getFullName().hashCode();
+            // 2/27/2012 Derler: Random number generators should 
+            // produce the same values if the seed value is the 
+            // same. 
+            //seedValue = seedValue + getFullName().hashCode();
         }
         _random = new Random(seedValue);
         _needNewGenerator = false;
