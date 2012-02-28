@@ -33,6 +33,7 @@ import ptolemy.actor.lib.RandomSource;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -145,15 +146,17 @@ public abstract class ColtRandomSource extends RandomSource {
     /** Create the random number generator using current parameter values. */
     protected void _createGenerator() throws IllegalActionException {
         long seedValue = ((LongToken) (seed.getToken())).longValue();
-        _generatorSeed = seedValue;
-
-        if (seedValue == 0L) {
-            seedValue = System.currentTimeMillis() + hashCode();
+        Token token = privateSeed.getToken();
+        if (token != null) {
+            seedValue = ((LongToken) token).longValue();
+            _generatorSeed = seedValue;
         } else {
-            // Use getDisplayName() so that Colt actors that do not have
-            // ptolemy/cg templates will have the same results in both
-            // interpreted mode and in cg.
-            seedValue = seedValue + getDisplayName().hashCode();
+            _generatorSeed = seedValue;
+            if (seedValue == 0L) {
+                seedValue = System.currentTimeMillis() + hashCode();
+            } else {
+                seedValue = seedValue + getFullName().hashCode();
+            }
         }
 
         StringToken generatorToken = ((StringToken) generatorClass.getToken());

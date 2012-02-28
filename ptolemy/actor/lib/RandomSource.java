@@ -27,11 +27,17 @@
  */
 package ptolemy.actor.lib;
 
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Random;
 
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.LongToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -39,6 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// RandomSource
@@ -89,6 +96,9 @@ public abstract class RandomSource extends Source {
         seed = new SharedParameter(this, "seed", RandomSource.class, "0L");
         seed.setTypeEquals(BaseType.LONG);
 
+        privateSeed = new Parameter(this, "privateSeed");
+        privateSeed.setTypeEquals(BaseType.LONG);
+
         resetOnEachRun = new SharedParameter(this, "resetOnEachRun",
                 RandomSource.class, "false");
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
@@ -128,11 +138,24 @@ public abstract class RandomSource extends Source {
      *  This parameter contains a LongToken, initially with value 0.
      */
     public SharedParameter seed;
-
+    
+    /** This private seed overrides the shared seed parameter to specify a 
+     *  particular seed rather than using System.currentTimeMillis() or
+     *  hashCode() to compute the seed value. 
+     *  
+     *  By default, this parameter is empty, which means that the shared seed
+     *  parameter is used.
+     *  
+     *  WARNING: It is up to the user to make sure that different seed
+     *  values are used in different random number generators.
+     */
+    public Parameter privateSeed;
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute is <i>seed</i>
+    /** If the attribute is <i>seed</i> or <i>useThisSeed</i> 
      *  then create the base random number generator.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
@@ -146,9 +169,24 @@ public abstract class RandomSource extends Source {
             if (seedValue != _generatorSeed) {
                 _needNewGenerator = true;
             }
+        } else if (attribute == privateSeed) {
+            Token token = privateSeed.getToken();
+            if (token != null) {
+                long seedValue = ((LongToken) token).longValue();
+                
+                if (seedValue != _generatorSeed) {
+                    _needNewGenerator = true;
+                }
+            } else {
+                long seedValue = ((LongToken) (seed.getToken())).longValue();
+
+                if (seedValue != _generatorSeed) {
+                    _needNewGenerator = true;
+                }
+            }
         } else {
             super.attributeChanged(attribute);
-        }
+        } 
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -220,20 +258,23 @@ public abstract class RandomSource extends Source {
      */
     protected void _createGenerator() throws IllegalActionException {
         long seedValue = ((LongToken) (seed.getToken())).longValue();
-        _generatorSeed = seedValue;
-
-        if (seedValue == 0L) {
-            seedValue = System.currentTimeMillis() + hashCode();
+        Token token = privateSeed.getToken();
+        if (token != null) {
+            seedValue = ((LongToken) token).longValue();
+            _generatorSeed = seedValue;
         } else {
-            // 2/27/2012 Derler: Random number generators should 
-            // produce the same values if the seed value is the 
-            // same. 
-            //seedValue = seedValue + getFullName().hashCode();
+            _generatorSeed = seedValue;
+            if (seedValue == 0L) {
+                seedValue = System.currentTimeMillis() + hashCode();
+            } else {
+                seedValue = seedValue + getFullName().hashCode();
+            }
         }
+        
         _random = new Random(seedValue);
         _needNewGenerator = false;
         _needNew = true;
-    }
+    }   
 
     /** Generate a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -257,4 +298,5 @@ public abstract class RandomSource extends Source {
 
     /** The Random object. */
     protected Random _random;
+    
 }
