@@ -35,6 +35,8 @@ import com.sun.jna.Platform;
 
 import org.ptolemy.fmi.FMILibrary.FMIStatus;
 import org.ptolemy.fmi.FMICallbackFunctions.ByValue;
+import org.ptolemy.fmi.FMIScalarVariable.Alias;
+
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Memory;
@@ -118,10 +120,14 @@ public class OutputRow {
     
         // Print all other columns
         for (FMIScalarVariable scalarVariable : fmiModelDescription.modelVariables) {
-            // FIXME: deal with aliases
-            //if (getAlias(scalarVariable) != enu_noAlias) {
-            //    continue;
-            //}
+            if (scalarVariable.alias != null
+                    && scalarVariable.alias != Alias.noAlias) {
+                System.out.println("OutputRow: scalarVariable alias: " + scalarVariable.alias
+                        + " " + Alias.noAlias);
+                // If the scalarVariable has an alias, then skip it.
+                // In bouncingBall.fmu, g has an alias, so it is skipped.
+                continue;
+            }
             if (header) {
                 // output names only
                 if (separator==',') {

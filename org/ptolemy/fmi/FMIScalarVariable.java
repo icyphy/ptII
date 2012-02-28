@@ -69,13 +69,16 @@ public class FMIScalarVariable {
         description = element.getAttribute("description");
         // FIXME: alias, causuality etc.
 
+        alias = Alias.noAlias;
         if (element.hasAttribute("alias")) {
             String attribute = element.getAttribute("alias");
             if (attribute.equals("alias")) {
                 alias = Alias.alias;
             } else if (attribute.equals("negatedAlias")) {
+                // In bouncingBall, 'g' has a negatedAlias.
                 alias = Alias.negatedAlias;
             } else if (attribute.equals("noAlias")) {
+                // FIXME: I'm not sure if alias="noAlias" ever appears
                 alias = Alias.noAlias;
             } else {
                 throw new IllegalArgumentException("alias \"" + attribute
