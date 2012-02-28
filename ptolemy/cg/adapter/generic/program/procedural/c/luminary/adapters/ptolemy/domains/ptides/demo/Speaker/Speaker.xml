@@ -2,17 +2,17 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Speaker" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="PtidesTopLevelDirector" class="ptolemy.domains.ptides.kernel.PtidesTopLevelDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 60.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 5.0]">
         </property>
         <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="60">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 172, 823, 514}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 172, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -20,16 +20,22 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.6895517676767, 142.0894097222222}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="From the looks of it, this demo is not supposed to be run &#10;but it should illustrate how to build a platform with a &#10;'SongWrapper' actor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 145.0]">
+        </property>
+    </property>
     <property name="PtidyOSCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.ptidyos.PtidyOSCodeGenerator">
         <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.luminary">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 75.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 5.0]">
         </property>
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 95.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={266, 198, 812, 497}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={105, 223, 802, 493}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[589, 383]">
         </property>
@@ -60,6 +66,15 @@
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </port>
+            <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
         </entity>
         <entity name="SongWrapper" class="ptolemy.domains.ptides.lib.luminary.SongWrapper">
@@ -70,6 +85,10 @@
                 <property name="multiport"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
         </entity>
         <entity name="SpeakerOutputDevice" class="ptolemy.domains.ptides.lib.luminary.SpeakerOutputDevice">
@@ -79,11 +98,22 @@
                 <property name="input"/>
                 <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{1.0}">
                 </property>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
             </port>
         </entity>
         <entity name="GPInputHandler" class="ptolemy.domains.ptides.lib.luminary.GPInputHandler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 205.0]">
             </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="{0.0}">
+                </property>
+                <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="-Infinity">
+                </property>
+            </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>

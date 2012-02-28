@@ -178,7 +178,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="GPOutputDevice" class="ptolemy.domains.ptides.lib.luminary.GPOutputDevice">
+        <entity name="GPOutputDevice" class="ptolemy.domains.ptides.lib.luminary.GPOutputSetup">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[486.0269470214844, 215.94696044921875]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">

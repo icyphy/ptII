@@ -167,7 +167,7 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
                     "PtidyOSCodeGenerator can only "
                             + "work with Ptides directors.");
         }
-        return !((ptolemy.domains.ptides.kernel.PtidesBasicDirector) director)
+        return !(director)
                 .isEmbedded();
     }
 
