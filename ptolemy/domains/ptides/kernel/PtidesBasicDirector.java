@@ -3877,8 +3877,7 @@ public class PtidesBasicDirector extends DEDirector {
                         "Trying to update a clock that is neither "
                                 + "platform time clock or execution time clock.");
             }
-            double thisTimeResolution = ((DoubleToken) timeResolution
-                    .getToken()).doubleValue();
+            double thisTimeResolution = _localClock.getTimeResolution();
             if (Math.abs(_clockDrift - newClockDrift) > thisTimeResolution) {
                 // First update all the parameters in realTimeClock.
                 Time newOracleTime = _getOraclePhysicalTag().timestamp;
