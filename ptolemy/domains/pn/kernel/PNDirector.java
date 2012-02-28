@@ -563,6 +563,9 @@ public class PNDirector extends CompositeProcessDirector {
     /** The set of receivers blocked on a write to a receiver. */
     protected HashMap _writeBlockedQueues = new HashMap();
 
+    /** The list of all receivers that this director has created. */
+    protected LinkedList _receivers = new LinkedList();
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _init() throws IllegalActionException,
@@ -582,6 +585,5 @@ public class PNDirector extends CompositeProcessDirector {
     /** List of process listeners. */
     private LinkedList _processListeners = new LinkedList();
 
-    /** The list of all receivers that this director has created. */
-    private LinkedList _receivers = new LinkedList();
+    
 }
