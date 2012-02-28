@@ -886,8 +886,6 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         synchronizeToRealTime.setExpression("false");
         synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
-        timeResolution.moveToLast();
-
         FixedPointScheduler scheduler = new FixedPointScheduler(this,
                 uniqueName("Scheduler"));
         setScheduler(scheduler);
