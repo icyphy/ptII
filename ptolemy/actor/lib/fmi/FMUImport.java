@@ -201,7 +201,7 @@ public class FMUImport extends TypedCompositeActor {
                 }
             }
 
-            System.load(FMUFile.fmuSharedLibrary(fmiModelDescription, fmuFileName));
+            System.load(FMUFile.fmuSharedLibrary(fmiModelDescription));
 
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
