@@ -188,14 +188,6 @@ public class Director extends Attribute implements Executable {
      */
     public Parameter stopTime;
 
-    /** The time precision used by this director. All time values are
-     *  rounded to the nearest multiple of this number. This is a double
-     *  that defaults to "1E-10" which is 10<sup>-10</sup>.
-     *  This is a shared parameter, meaning that changing one instance
-     *  in a model results in all instances being changed.
-     */
-    public SharedParameter timeResolution;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -221,7 +213,7 @@ public class Director extends Attribute implements Executable {
      *   preinitialize()).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+            throws IllegalActionException { 
         if (attribute == startTime) {
             DoubleToken startTimeValue = (DoubleToken) startTime.getToken();
             if (startTimeValue == null) {
@@ -237,16 +229,22 @@ public class Director extends Attribute implements Executable {
             } else {
                 _stopTime = null;
             }
-        } else if (attribute == timeResolution) {
+        } else if (_localClock != null && attribute == _localClock.clockDrift) {
+            double drift; 
+            drift = ((DoubleToken) _localClock.clockDrift.getToken()).doubleValue();
+            if (drift != _localClock.getClockDrift()) {
+                _localClock.setClockDrift(drift);
+            } 
+        } else if (_localClock != null && attribute == _localClock.globalTimeResolution) { 
             // This is extremely frequently used, so cache the value.
             // Prevent this from changing during a run!
-            double newResolution = ((DoubleToken) timeResolution.getToken())
+            double newResolution = ((DoubleToken) _localClock.globalTimeResolution.getToken())
                     .doubleValue();
 
             // FindBugs reports this comparison as a problem, but it
             // is not an issue because we usually don't calculate
             // _timeResolution, we set it.
-            if (newResolution != _timeResolution) {
+            if (newResolution != _localClock.getTimeResolution()) {
                 NamedObj container = getContainer();
 
                 if (container instanceof Actor) {
@@ -275,7 +273,7 @@ public class Director extends Attribute implements Executable {
                                     + ExtendedMath.DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE);
                 }
 
-                _timeResolution = newResolution;
+                _localClock.setTimeResolution(newResolution);
             }
         }
 
@@ -801,7 +799,7 @@ public class Director extends Attribute implements Executable {
      */
     public final double getTimeResolution() {
         // This method is final for performance reason.
-        return _timeResolution;
+        return _localClock.getTimeResolution();
     }
 
     /** Return true if this director assumes and exports
@@ -1123,7 +1121,7 @@ public class Director extends Attribute implements Executable {
         // In case the preinitialize() method of any actor
         // access current time, set the start time. This is required
         // for instance in DDF.
-        // The following will be repeated in initialize().
+        // The following will be repeated in initialize(). 
         _localClock.resetLocalTime(getModelStartTime()); 
         _localClock.start();
         
@@ -1768,13 +1766,9 @@ public class Director extends Attribute implements Executable {
      *  @throws NameDuplicationException
      */
     private void _initializeParameters() throws IllegalActionException, NameDuplicationException {
-        // This must happen first before any time objects get created.
-        timeResolution = new SharedParameter(this, "timeResolution",
-                Director.class, "1E-10");
-
-        _zeroTime = new Time(this, 0.0);
         _localClock = new LocalClock(this, "LocalClock"); 
         _localClock.setVisibility(Settable.NOT_EDITABLE);
+        _zeroTime = new Time(this, 0.0);
 
         startTime = new Parameter(this, "startTime");
         startTime.setTypeEquals(BaseType.DOUBLE);
@@ -1792,6 +1786,4 @@ public class Director extends Attribute implements Executable {
     /** Stop time. */
     private transient Time _stopTime;
 
-    /** Time resolution cache, with a reasonable default value. */
-    private double _timeResolution = 1E-10;
 }

@@ -2263,8 +2263,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             binCountFactor.setExpression("2");
             binCountFactor.setTypeEquals(BaseType.INT);
             binCountFactor.setVisibility(Settable.EXPERT);
-
-            timeResolution.moveToLast();
             
             enforceMicrostepSemantics = new Parameter(this, "enforceMicrostepSemantics");
             enforceMicrostepSemantics.setExpression("false");
@@ -2283,7 +2281,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  @exception IllegalActionException If the queue is empty, or
      *   if the executive director does not respect the fireAt() call.
      */
-    private void _requestFiring() throws IllegalActionException {
+    protected void _requestFiring() throws IllegalActionException {
         DEEvent nextEvent = null;
         nextEvent = _eventQueue.get();
 

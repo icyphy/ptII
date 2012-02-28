@@ -891,8 +891,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
         synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
         startTime.moveToLast();
-        stopTime.moveToLast();
-        timeResolution.moveToLast();
+        stopTime.moveToLast(); 
 
         SDFScheduler scheduler = new SDFScheduler(this, uniqueName("Scheduler"));
         scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");
@@ -900,10 +899,6 @@ public class SDFDirector extends StaticSchedulingDirector implements
 
         // Subclasses may set this to null and handle this themselves.
         _periodicDirectorHelper = new PeriodicDirectorHelper(this);
-        
-        // Put the stopTime at the end parameters, to encourage use
-        // of iterations instead.
-        stopTime.moveToLast();
     }
 
     ///////////////////////////////////////////////////////////////////

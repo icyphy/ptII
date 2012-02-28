@@ -30,17 +30,22 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.event.ChangeListener;
+
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.AbstractSettableAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.ExtendedMath;
 
 /** A clock that keeps track of model time at a level of the model hierarchy
  *  and relates it to the time of the enclosing model, if there is one. The time
@@ -88,8 +93,30 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     public LocalClock(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init((Director)container);
+        _director = (Director) container;
+        globalTimeResolution = new SharedParameter(this, "globalTimeResolution",
+                Director.class, "1E-10");
+        globalTimeResolution.addValueListener(this);
+        
+        clockDrift = new Parameter(this, "clockRate");
+        clockDrift.setExpression("1.0");
+        clockDrift.setTypeEquals(BaseType.DOUBLE);
+        clockDrift.addValueListener(this);
+        
+        // Make sure getCurrentTime() never returns null.
+        _localTime = Time.NEGATIVE_INFINITY;
+        
+        _offset = _director._zeroTime;
+        _drift = 1.0; 
     }
+    
+    /** The time precision used by this director. All time values are
+     *  rounded to the nearest multiple of this number. This is a double
+     *  that defaults to "1E-10" which is 10<sup>-10</sup>.
+     *  This is a shared parameter, meaning that changing one instance
+     *  in a model results in all instances being changed.
+     */
+    public SharedParameter globalTimeResolution;
     
     /** The drift of the local clock with respect to the environment
      *  clock. If this is a top level director the clock drift has no
@@ -242,6 +269,16 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         return _visibility;
     }
     
+    /** Get the time resolution of the model. The time resolution is
+     *  the value of the <i>timeResolution</i> parameter. This is the
+     *  smallest time unit for the model.
+     *  @return The time resolution of the model.
+     */
+    public final double getTimeResolution() {
+        // This method is final for performance reason.
+        return _timeResolution;
+    }
+    
     /** Remove a listener from the list of listeners that is
      *  notified when the value of this variable changes.  If no such listener
      *  exists, do nothing.
@@ -308,6 +345,14 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         _visibility = visibility;
     }
     
+    /** Set time resolution.
+     *  @param timeResolution The new time resolution.
+     */
+    public void setTimeResolution(double timeResolution) {
+        _timeResolution = timeResolution;
+    }
+   
+        
     /** Start the clock with the current drift as specified by the
      *  last call to {@link #setClockDrift(double)}.
      *  If {@link #setClockDrift(double)} has never been called, then
@@ -336,21 +381,16 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     
     /** React to the change in the clock drift parameter.
      *  @param settable The object that has changed value.
+     * @throws IllegalActionException If Token cannot be parsed or time object
+     *    cannot be created.
      */
     public void valueChanged(Settable settable) {
-        if (settable == clockDrift) {
-            double drift;
-            try {
-                drift = ((DoubleToken) clockDrift.getToken()).doubleValue();
-                if (drift != getClockDrift()) {
-                    setClockDrift(drift);
-                }
-            } catch (IllegalActionException e) {
-                // This should not happen. 
-                e.printStackTrace();
-            } 
+        try {
+            _director.attributeChanged((Attribute) settable);
+        } catch (IllegalActionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -366,27 +406,6 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
             _lastCommitEnvironmentTime = environmentTime; 
             _lastCommitLocalTime = _localTime;
         }
-    }
-    
-    /** Create a local clock. 
-     *  @param director The associated director.
-     * @return 
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
-     */
-    private void _init(Director director) throws IllegalActionException, NameDuplicationException {
-        _director = director;
-        
-        // Make sure getCurrentTime() never returns null.
-        _localTime = Time.NEGATIVE_INFINITY;
-        
-        _offset = _director._zeroTime;
-        _drift = 1.0;
-        
-        clockDrift = new Parameter(this, "clockDrift");
-        clockDrift.setExpression("1.0");
-        clockDrift.setTypeEquals(BaseType.DOUBLE);
-        clockDrift.addValueListener(this);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -422,6 +441,9 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  By default, the offset is zero.
      */
     private Time _offset;
+
+    /** Time resolution cache, with a reasonable default value. */
+    private double _timeResolution = 1E-10;
     
     /** Listeners for changes in value. */
     private List<ValueListener> _valueListeners;
