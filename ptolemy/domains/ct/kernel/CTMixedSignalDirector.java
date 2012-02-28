@@ -417,14 +417,20 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         try {
             workspace().getReadAccess();
 
-            CompositeActor container = (CompositeActor) getContainer();
-
-            if (container.getExecutiveDirector() == null) {
-                _isTop = true;
-            } else {
-                _isTop = false;
-            }
-
+	    NamedObj couldBeEntityLibrary = getContainer();
+	    if (!(couldBeEntityLibrary instanceof CompositeActor)) {
+		// If we expand the configuration, then the container
+		// could be an EntityLibrary.  To replicate this,
+		// in vergil, open up Directors -> Classic Directors.
+		_isTop = false;
+	    } else {
+		CompositeActor container = (CompositeActor) couldBeEntityLibrary;
+		if (container.getExecutiveDirector() == null) {
+		    _isTop = true;
+		} else {
+		    _isTop = false;
+		}
+	    }
             _mutationVersion = version;
         } finally {
             workspace().doneReading();
