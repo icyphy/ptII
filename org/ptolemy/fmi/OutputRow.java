@@ -113,25 +113,24 @@ public class OutputRow {
             if (separator==',') {
                 file.format("%g", time);
             } else {
-                // separator is e.g. ';' or '\t'
+                // Separator is ';' or '\t'
+                // If the separator is not a comma, then replace the decimal place with a comma.
                 file.format("%s", Double.toString(time).replace('.', ','));
             }
         }
     
-        // Print all other columns
+        // Print all the other columns.
         for (FMIScalarVariable scalarVariable : fmiModelDescription.modelVariables) {
             if (scalarVariable.alias != null
                     && scalarVariable.alias != Alias.noAlias) {
-                System.out.println("OutputRow: scalarVariable alias: " + scalarVariable.alias
-                        + " " + Alias.noAlias);
                 // If the scalarVariable has an alias, then skip it.
                 // In bouncingBall.fmu, g has an alias, so it is skipped.
                 continue;
             }
             if (header) {
-                // output names only
+                // Output header names.
                 if (separator==',') {
-                    // treat array element, e.g. print a[1, 2] as a[1.2]
+                    // Treat array element, e.g. print a[1, 2] as a[1.2]
                     file.format("%c", separator);
                     // FIXME: Just do a replace()
                     char[] s = scalarVariable.name.toCharArray();
@@ -146,19 +145,30 @@ public class OutputRow {
             }
             else {
                 // Output values.
+                
+                // The value reference is an internal-use-only integer that refers to which variable we
+                // are to access.
                 int valueReference = scalarVariable.valueReference;
                 IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0, valueReference);
                 if (scalarVariable.type instanceof FMIBooleanType) {
-                    // FIXME: how to handle booleans ?
-                    //                     fmu->getBoolean(c, &vr, 1, &b);
-                    //                     file.format("%c%d", separator, b);
+                    // The FMI 1.0 spec defines Booleans as being 8 bits.
+                    ByteBuffer valueBuffer = ByteBuffer.allocate(1);
+                    Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
+                            + "_fmiGetBoolean");
+                    int fmiFlag = ((Integer)function.invokeInt(
+                                    new Object[] {fmiComponent, valueReferenceIntBuffer,
+                                                  new NativeSizeT(1), valueBuffer})).intValue();
+                    byte result = valueBuffer.get(0);
+                    file.format("%c%d", separator, result);
 
                 } else if (scalarVariable.type instanceof FMIIntegerType) {
-                    // FIXME: handle Enumerations
+                    // FIXME: handle Enumerations?
                     IntBuffer valueBuffer = IntBuffer.allocate(1);
                     Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
                             + "_fmiGetInteger");
-                    int fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1), valueBuffer})).intValue();
+                    int fmiFlag = ((Integer)function.invokeInt(
+                                    new Object[] {fmiComponent, valueReferenceIntBuffer,
+                                                  new NativeSizeT(1), valueBuffer})).intValue();
                     int result = valueBuffer.get(0);
                     file.format("%c%d", separator, result);
 
@@ -166,28 +176,31 @@ public class OutputRow {
                     DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
                     Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
                             + "_fmiGetReal");
-                    int fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1), valueBuffer})).intValue();
+                    int fmiFlag = ((Integer)function.invokeInt(
+                                    new Object[] {fmiComponent, valueReferenceIntBuffer,
+                                                  new NativeSizeT(1), valueBuffer})).intValue();
                     double result = valueBuffer.get(0);
                             
                     if (separator==',') {
                         file.format(",%.16g", result);
                     } else {
                         // separator is e.g. ';' or '\t'
+                        // If the separator is not a comma, then replace the decimal place with a comma.
                         file.format("%c%s", separator, Double.toString(result).replace('.', ','));
                     }
 
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     // FIXME: what size to allocate??
                     CharBuffer valueBuffer = CharBuffer.allocate(1);
-                    //char value[] = new char[1];
-                    PointerByReference pref = new PointerByReference();
+                    PointerByReference pointerByReference = new PointerByReference();
 
                     Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
                             + "_fmiGetString");
-                    int fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1), pref})).intValue();
-                    //file.format("%c%s", separator, valueBuffer.toString());
-                    Pointer p = pref.getValue();
-                    file.format("%c%s", separator, p.getString(0));
+                    int fmiFlag = ((Integer)function.invokeInt(
+                                    new Object[] {fmiComponent, valueReferenceIntBuffer,
+                                                  new NativeSizeT(1), pointerByReference})).intValue();
+                    Pointer pointer = pointerByReference.getValue();
+                    file.format("%c%s", separator, pointer.getString(0));
                 } else {
                     file.format("%cNoValueForType=%d", separator, scalarVariable.type);
                 }
@@ -197,13 +210,4 @@ public class OutputRow {
         // Terminate this row.
         file.format("\n"); 
     }
-
-    private static String c2s(char b[]) {
-        // Converts C string to Java String
-        int len = 0;
-        while (b[len] != 0)
-            ++len;
-        return new String(b, 0, len);
-    }
-
 }

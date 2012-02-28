@@ -83,9 +83,9 @@
       test.batch = ${test.batch}
 
     </echo>
-    <junit fork="yes"
-	   printsummary="withOutAndErr"
-	   showoutput="yes">
+    <junit fork="no"
+	   printsummary="on"
+	   showoutput="true">
       <classpath>
 	<path refid="fmi.classpath" />
       </classpath>
@@ -97,6 +97,7 @@
       </batchtest>
       <formatter type="${junit.formatter}" />
     </junit>
+    <echo message="See ${junit.output.dir} for test results." />
   </target>
 
 

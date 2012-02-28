@@ -72,14 +72,21 @@ public class FMUFile {
     /** Return the name of the shared library from a .fmu file.
      *  @param fmiModelDescription The representation of the model that was read
      *  in by {#parseFMUFile}.
-     *  @param fmuFileName The .fmu file, used to find the directory where the shared library
-     *  is located.
      *  @return The canonical path of the shared library.
      *  @exception IOException If thrown while determining the canonical path of the library.
      */
-    public static String fmuSharedLibrary(FMIModelDescription fmiModelDescription, String fmuFileName) throws IOException {
-        // Load the library
-        String topDirectory = fmuFileName.substring(0, fmuFileName.length() - 4);
+    public static String fmuSharedLibrary(FMIModelDescription fmiModelDescription) throws IOException {
+
+        // Find the modelDescription.xml file.
+        File modelDescriptionFile = null;
+        for (File file : fmiModelDescription.files) {
+            if (file.getName().endsWith("modelDescription.xml")) {
+                modelDescriptionFile = file;
+                break;
+            }
+        }
+
+        String topDirectory = modelDescriptionFile.getParent();
         String osName = System.getProperty("os.name").toLowerCase();
         String extension = ".so";
         if (osName.startsWith("mac")) {
@@ -151,6 +158,9 @@ public class FMUFile {
         // Create an object that represents the modelDescription.xml file
         FMIModelDescription fmiModelDescription = new FMIModelDescription();
 
+        // Save the list of files that were extracted for later use.
+        fmiModelDescription.files = files;
+
         // Handle the root attributes
         if (root.hasAttribute("fmiVersion")) {
             fmiModelDescription.fmiVersion = root.getAttribute("fmiVersion");
@@ -163,7 +173,6 @@ public class FMUFile {
         }
         if (root.hasAttribute("guid")) {
             fmiModelDescription.guid = root.getAttribute("guid");
-            System.out.println("FMUFile guid: " + fmiModelDescription.guid);
         }
         // FIXME: Handle numberOfContinuousStates, numberOfEventIndicators etc.
             
@@ -204,10 +213,10 @@ public class FMUFile {
         return true;
     }
 
-    /** Unzip a file.
+    /** Unzip a file into a temporary directory.
      *  Based on http://java.sun.com/developer/technicalArticles/Programming/compression/.
      *  @param zipFilename  The file to be unzipped.
-     *  @return a list of canonical paths to the files created
+     *  @return the list of files that were extracted.
      *  @exception IOException if the file cannot be opened, if there are problems reading
      *  the zip file or if there are problems creating the files or directories.
      */
@@ -220,12 +229,21 @@ public class FMUFile {
         ZipEntry entry;
         final int BUFFER = 2048;
         byte data[] = new byte[BUFFER];
-        // FIXME: maybe put this in the tmp directory?
-        String topDirectory = zipFileName.substring(0, zipFileName.length() - 4);
+
+        // Unzip in a temporary directory.
+        File topDirectoryFile = File.createTempFile("FMUFile", ".tmp");
+        topDirectoryFile.delete();
+        if (!topDirectoryFile.mkdir()) {
+            throw new IOException("Could not create directory "
+                    + topDirectoryFile);
+        }
+        topDirectoryFile.deleteOnExit();
+        String topDirectory = topDirectoryFile.getCanonicalPath();
+        System.out.println("Extracting to " + topDirectory);
         List<File> files = new LinkedList<File>();
         try {
             while((entry = zipInputStream.getNextEntry()) != null) {
-                System.out.println("Extracting: " + entry);
+                //System.out.println("Extracting: " + entry);
                 String entryName = entry.getName();
                 File destinationFile = new File(topDirectory, entryName);
                 File destinationParent = destinationFile.getParentFile();

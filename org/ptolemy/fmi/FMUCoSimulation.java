@@ -97,11 +97,11 @@ public class FMUCoSimulation {
                 memory.clear();
                 Pointer pointer = alignedMemory.share(0);
 
-                System.out.println("Java fmiAllocateMemory " + nobj + " " + size
-                        + "\n        memory: " + memory + " " +  + memory.SIZE + " " + memory.SIZE % 4
-                        + "\n alignedMemory: " + alignedMemory + " " + alignedMemory.SIZE + " " + alignedMemory.SIZE %4
-                        + "\n       pointer: " + pointer + " " + pointer.SIZE + " " + pointer.SIZE % 4
-                                   );
+//                System.out.println("Java fmiAllocateMemory " + nobj + " " + size);
+//                         + "\n        memory: " + memory + " " +  + memory.SIZE + " " + memory.SIZE % 4
+//                         + "\n alignedMemory: " + alignedMemory + " " + alignedMemory.SIZE + " " + alignedMemory.SIZE %4
+//                         + "\n       pointer: " + pointer + " " + pointer.SIZE + " " + pointer.SIZE % 4
+//                                    );
 
 
                 return pointer;
@@ -110,7 +110,7 @@ public class FMUCoSimulation {
 
         public class FMUFreeMemory implements FMICallbackFreeMemory {
             public void apply(Pointer obj) {
-                System.out.println("Java fmiFreeMemory " + obj);
+                //System.out.println("Java fmiFreeMemory " + obj);
             }
         }
 	public class FMUStepFinished implements FMIStepFinished {
@@ -203,8 +203,10 @@ public class FMUCoSimulation {
         FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
 
         // Load the shared library.
-        String sharedLibrary = FMUFile.fmuSharedLibrary(fmiModelDescription, fmuFileName);
-        System.out.println("FMUCoSimulation: about to load " + sharedLibrary);
+        String sharedLibrary = FMUFile.fmuSharedLibrary(fmiModelDescription);
+        if (enableLogging) {
+            System.out.println("FMUCoSimulation: about to load " + sharedLibrary);
+        }
         NativeLibrary nativeLibrary = NativeLibrary.getInstance(sharedLibrary);
 
         // The modelName may have spaces in it.   
@@ -229,7 +231,9 @@ public class FMUCoSimulation {
         // Turn off logging because of problems with varargs
         byte loggingOn = (byte)0;
 
-        System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInstantiateSlave");
+        if (enableLogging) {
+            System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInstantiateSlave");
+        }
         Function instantiateSlave = nativeLibrary.getFunction(modelIdentifier + "_fmiInstantiateSlave");
         Pointer fmiComponent = (Pointer) instantiateSlave.invoke(Pointer.class,
                 new Object [] {
@@ -248,7 +252,9 @@ public class FMUCoSimulation {
 
         double startTime = 0;
         
-        System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInitializeSlave");
+        if (enableLogging) {
+            System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInitializeSlave");
+        }
         Function function = nativeLibrary.getFunction(modelIdentifier + "_fmiInitializeSlave");
         int fmiFlag = ((Integer)function.invoke(Integer.class,new Object[] {fmiComponent, startTime, (byte)1, endTime})).intValue();
         if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
@@ -259,7 +265,9 @@ public class FMUCoSimulation {
         PrintStream file = null;
         try {
             file = new PrintStream(outputFile);
-            System.out.println("FMUCoSimulation: about to write header");
+            if (enableLogging) {
+                System.out.println("FMUCoSimulation: about to write header");
+            }
             // Generate header row
             OutputRow.outputRow(nativeLibrary, fmiModelDescription, fmiComponent, startTime, file, csvSeparator, Boolean.TRUE);  
             // Output the initial values.
@@ -268,7 +276,9 @@ public class FMUCoSimulation {
             double time = startTime;
             function = nativeLibrary.getFunction(modelIdentifier + "_fmiDoStep");
             while (time < endTime) {
-                System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiDoStep");
+                if (enableLogging) {
+                    System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiDoStep");
+                }
                 fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent, time, stepSize, (byte)1})).intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
@@ -284,13 +294,19 @@ public class FMUCoSimulation {
             }
          }
 
-        System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiTerminateSlave");
+        if (enableLogging) {
+            System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiTerminateSlave");
+        }
         function = nativeLibrary.getFunction(modelIdentifier + "_fmiTerminateSlave");
         fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent})).intValue();
 
-        System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiFreeSlaveInstance");
+        if (enableLogging) {
+            System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiFreeSlaveInstance");
+        }
         function = nativeLibrary.getFunction(modelIdentifier + "_fmiFreeSlaveInstance");
         fmiFlag = ((Integer)function.invokeInt(new Object[] {fmiComponent})).intValue();
-        System.out.println("Results are in " + outputFile.getCanonicalPath());
+        if (enableLogging) {
+            System.out.println("Results are in " + outputFile.getCanonicalPath());
+        }
   }
 }

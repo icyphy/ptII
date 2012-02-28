@@ -67,7 +67,6 @@ public class FMIScalarVariable {
     public FMIScalarVariable(Element element) {
         name = element.getAttribute("name");
         description = element.getAttribute("description");
-        // FIXME: alias, causuality etc.
 
         alias = Alias.noAlias;
         if (element.hasAttribute("alias")) {
@@ -87,6 +86,7 @@ public class FMIScalarVariable {
             }
         }
 
+        causality = Causality.none;
         if (element.hasAttribute("causality")) {
             String attribute = element.getAttribute("causality");
             if (attribute.equals("input")) {
@@ -133,6 +133,8 @@ public class FMIScalarVariable {
                 Element childElement = (Element) child;
                 if (childElement.getNodeName().equals("Boolean")) {
                     type = new FMIBooleanType(name, description, childElement);
+                } else if (childElement.getNodeName().equals("Enumeration")) {
+                    type = new FMIIntegerType(name, description, childElement);
                 } else if (childElement.getNodeName().equals("Integer")) {
                     type = new FMIIntegerType(name, description, childElement);
                 } else if (childElement.getNodeName().equals("Real")) {
