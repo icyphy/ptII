@@ -3,7 +3,7 @@ dnl	generate the file "configure", which is run to configure the
 dnl	Makefile in this directory.
 
 # Version: $Id$
-# Copyright (c) 1997-2011 The Regents of the University of California.
+# Copyright (c) 1997-2012 The Regents of the University of California.
 # All rights reserved. 
 #
 # Permission is hereby granted, without written agreement and without
@@ -2384,6 +2384,46 @@ fi
 
 if test -z "$PTJMF_DIR"; then
    updateExcludes "ptolemy/actor/lib/jmf/"
+fi
+
+
+#--------------------------------------------------------------------
+#       The Java Native Access (JNA) facility is used to call native code without JNI
+#	https://github.com/twall/jna
+#       
+#--------------------------------------------------------------------
+
+# PTFMI_DIR is set to fmi if jna.jar was found
+# $PTII/ptolemy/actor/lib/makefile uses PTFMI_DIR
+PTFMI_DIR=
+
+# PTFMI_PACKAGES is used in doc/makefile
+PTFMI_PACKAGES=
+
+# The location of the jna.jar file, typically $PTII/lib/jna.jar
+JNA_JAR=
+
+# We only beed look for jmf if $PTII/ptolemy/actor/lib/fmi exists
+JNA_USER_DIR="$PTII/ptolemy/actor/lib/fmi"
+if test ! -d "$JNA_USER_DIR"; then
+    PT_MSG_STATUS([$JNA_USER_DIR is not present,
+    so we need not find the JNA - The Java Native Access utility.])
+else
+    AC_MSG_CHECKING([for Java Native Access (JNA) jar])
+    if test -f "$PTII/lib/jna.jar"; then
+        PT_MSG_RESULT($PTII/lib/jna.jar)
+	JNA_JAR="$PTII/lib/jna.jar"
+	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi"
+        updateClasspath "$JNA_JAR"
+    else
+        AC_MSG_WARN([Failed to find $PTII/lib/jna.jar,
+    JNA is the Java Native Access interfaced, used by the 
+    Functional Mock-up Inteface actors in
+    ptolemy/actor/lib/fmi
+    These actors are optional, but require JNA.
+    For more information about JNA, see https://github.com/twall/jna])
+        updateExcludes "ptolemy/actor/lib/fmi/"
+    fi
 fi
 
 #--------------------------------------------------------------------
@@ -5487,6 +5527,13 @@ AC_SUBST(PTEXCEL_DIR)
 
 # PTEXCEL_PACKAGES is used in doc/makefile
 AC_SUBST(PTEXCEL_PACKAGES)
+
+# PTFMI_DIR is set to fmi if jna.jar was found
+# $PTII/ptolemy/actor/lib/makefile uses PTFMI_DIR
+AC_SUBST(PTFMI_DIR)
+
+# PTFMI_PACKAGES is used in doc/makefile
+AC_SUBST(PTFMI_PACKAGES)
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat

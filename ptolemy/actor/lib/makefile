@@ -34,13 +34,16 @@
 ME =		ptolemy/actor/lib
 
 # $PTII/configure looks for Colt and sets PTCOLT_DIR in
-# $PTII/mk/ptII.mk if was found.  Otherwise, PTCOLT_DIR is empty.
+# $PTII/mk/ptII.mk if it was found.  Otherwise, PTCOLT_DIR is empty.
 
 # $PTII/configure looks for ojdbc6.jar and sets PTDATABASE_DIR in
-# $PTII/mk/ptII.mk if was found.  Otherwise, PTDATABASE_DIR is empty.
+# $PTII/mk/ptII.mk if it was found.  Otherwise, PTDATABASE_DIR is empty.
 #
-# $PTII/configure looks for jxl.jar and sets PTEXCEP_DIR in
-# $PTII/mk/ptII.mk if was found.  Otherwise, PTEXCEL_DIR is empty.
+# $PTII/configure looks for jxl.jar and sets PTEXCEL_DIR in
+# $PTII/mk/ptII.mk if it was found.  Otherwise, PTEXCEL_DIR is empty.
+#
+# $PTII/configure looks for jna.jar and sets PTFMI_DIR in
+# $PTII/mk/ptII.mk if it was found.  Otherwise, PTFMI_DIR is empty.
 #
 # $PTII/configure looks for Java Advanced Imaging and sets PTJAI_DIR in
 # $PTII/mk/ptII.mk if was found.  Otherwise, PTJAI_DIR is empty.
@@ -63,10 +66,10 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for Open Computer Vision and sets PTOPENCV_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTOPENCV_DIR is empty.
 #
-DIRS = 		conversions embeddedJava fmi gui logic hoc image \
+DIRS = 		conversions embeddedJava gui logic hoc image \
 		javasound jni jopio net io xslt \
 		test comm qm security string tutorial vhdl video \
-		$(PTCOLT_DIR) $(PTDATABASE_DIR) \
+		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
 		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTOPENCV_DIR)
