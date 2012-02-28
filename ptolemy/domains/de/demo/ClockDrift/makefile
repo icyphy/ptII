@@ -50,7 +50,8 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \ 
 	ClockDrift.xml \
 	ClockDrifts.xml \
-	ClockDriftHierarchy.xml
+	ClockDriftHierarchy.xml \
+	SetClockDriftViaParameterOrPortParameter.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \ 

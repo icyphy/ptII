@@ -67,7 +67,7 @@
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="LocalClock" class="ptolemy.actor.LocalClock">
-                <property name="clockDrift" class="ptolemy.data.expr.Parameter" value="clockDrift">
+                <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockDrift">
                 </property>
             </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="clockValue">
