@@ -232,8 +232,11 @@ test CompositeActor-7.1 {Test clone and description} {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.E3.E5.WORMDIR._iconDescription} attributes {
             }}
             {ptolemy.actor.parameters.SharedParameter {.E3.E5.WORMDIR.timeResolution} 1.0E-10}
+            {ptolemy.actor.LocalClock {.E3.E5.WORMDIR.LocalClock} attributes {
+                {ptolemy.data.expr.Parameter {.E3.E5.WORMDIR.LocalClock.clockDrift} 1.0}
+            }}
             {ptolemy.data.expr.Parameter {.E3.E5.WORMDIR.startTime} value undefined}
-            {ptolemy.data.expr.Parameter {.E3.E5.WORMDIR.stopTime} Infinity}
+            {ptolemy.data.expr.Parameter {.E3.E5.WORMDIR.stopTime} value undefined}
         }}
     } ports {
     } classes {

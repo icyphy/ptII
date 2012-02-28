@@ -98,9 +98,13 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
     <property name="" class="ptolemy.actor.Director">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
         </property>
+        <property name="LocalClock" class="ptolemy.actor.LocalClock">
+            <property name="clockDrift" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
     <entity name="E1" class="ptolemy.actor.TypedCompositeActor">

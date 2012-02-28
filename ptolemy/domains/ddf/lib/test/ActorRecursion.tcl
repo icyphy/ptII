@@ -49,9 +49,13 @@ test ActorRecursion-1.1 {cover _exportMoML} {
     <property name="DDFDirector" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
         </property>
+        <property name="LocalClock" class="ptolemy.actor.LocalClock">
+            <property name="clockDrift" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>

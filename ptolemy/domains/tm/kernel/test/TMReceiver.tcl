@@ -139,7 +139,6 @@ Updating TMDirector parameter timeResolution
 Updating TMDirector parameter timeResolution
 Updating TMDirector parameter startTime
 Updating TMDirector parameter stopTime
-Updating TMDirector parameter stopTime
 Updating TMDirector parameter preemptive
 Updating TMDirector parameter defaultTaskExecutionTime
 Updating TMDirector parameter synchronizeToRealTime
