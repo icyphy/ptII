@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CSPSDFtest1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 364]">
     </property>
@@ -62,23 +62,15 @@
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="134.0, 140.0">
             </property>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
         </port>
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="134.0, 205.0">
             </property>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
         </port>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="394.0, 170.0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -109,7 +101,7 @@
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
@@ -120,7 +112,7 @@
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="10">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
