@@ -159,17 +159,24 @@ public class PlotterBaseJavaSE implements PlotterBaseInterface {
      */
     public void initWindowAndSizeProperties() throws IllegalActionException,
             NameDuplicationException {
-        _windowProperties = new WindowPropertiesAttribute(_plotterBase,
-                "_windowProperties");
-        // Note that we have to force this to be persistent because
-        // there is no real mechanism for the value of the properties
-        // to be updated when the window is moved or resized. By
-        // making it persistent, when the model is saved, the
-        // attribute will determine the current size and position
-        // of the window and save it.
-        _windowProperties.setPersistent(true);
-        _plotSize = new SizeAttribute(_plotterBase, "_plotSize");
-        _plotSize.setPersistent(true);
+        _windowProperties = (WindowPropertiesAttribute)
+                _plotterBase.getAttribute("_windowProperties", WindowPropertiesAttribute.class);
+        if (_windowProperties == null) {
+            _windowProperties = new WindowPropertiesAttribute(_plotterBase, "_windowProperties");
+            // Note that we have to force this to be persistent because
+            // there is no real mechanism for the value of the properties
+            // to be updated when the window is moved or resized. By
+            // making it persistent, when the model is saved, the
+            // attribute will determine the current size and position
+            // of the window and save it.
+            _windowProperties.setPersistent(true);
+        }
+        _plotSize = (SizeAttribute)
+                _plotterBase.getAttribute("_plotSize", SizeAttribute.class);
+        if (_plotSize == null) {
+            _plotSize = new SizeAttribute(_plotterBase, "_plotSize");
+            _plotSize.setPersistent(true);
+        }
     }
 
     /**

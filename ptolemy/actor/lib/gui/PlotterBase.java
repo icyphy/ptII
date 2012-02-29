@@ -50,6 +50,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -190,6 +191,12 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         PlotterBase newObject = (PlotterBase) super.clone(workspace);
         newObject.plot = null;
         newObject._implementation = null;
+        try {
+            newObject._getImplementation().initWindowAndSizeProperties();
+        } catch (KernelException e) {
+            // This should not occur.
+            throw new CloneNotSupportedException("Clone failed: " + e);
+        }
         return newObject;
     }
 
