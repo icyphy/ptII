@@ -405,8 +405,8 @@ pwd
 ./configure
 Xvfb :2 -screen 0 1024x768x24 &amp;                                                                                            
 export DISPLAY=localhost:2.0
-cp /var/lib/hudson/jobs/ptII/config.xml /var/lib/hudson/jobs/ptII/workspace.source/doc/hudsonConfig.xml
-svn commit -m &quot;Update from hudson build&quot; /var/lib/hudson/jobs/ptII/workspace.source/doc/hudsonConfig.xml</command>
+cp /var/lib/hudson/jobs/ptII/config.xml /var/lib/hudson/jobs/ptII/workspace/doc/hudsonConfig.xml
+svn commit -m &quot;Update from hudson build&quot; /var/lib/hudson/jobs/ptII/workspace/doc/hudsonConfig.xml</command>
           </hudson.tasks.Shell>
           <hudson.tasks.Ant>
             <targets>-debug -p</targets>
@@ -521,7 +521,7 @@ make USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/h
         <originalValue class="hudson.scm.SubversionSCM">
           <locations>
             <hudson.scm.SubversionSCM_-ModuleLocation>
-              <remote>https://bambi.millennium.berkeley.edu/projects/chess/ptII/trunk</remote>
+              <remote>https://source.eecs.berkeley.edu/svn/chess/ptII/trunk</remote>
               <local>.</local>
               <depthOption>infinity</depthOption>
               <ignoreExternalsOption>false</ignoreExternalsOption>
