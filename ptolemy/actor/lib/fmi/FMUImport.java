@@ -27,33 +27,13 @@
 */
 package ptolemy.actor.lib.fmi;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMIRealType;
 import org.ptolemy.fmi.FMIScalarVariable;
 import org.ptolemy.fmi.FMUFile;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
-import org.w3c.dom.Element;
-import org.w3c.dom.Entity;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -63,8 +43,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.util.JVMBitWidth;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// FMUImport
@@ -226,11 +204,4 @@ public class FMUImport extends TypedCompositeActor {
      *  <i>fmuFile</i> parameter the last time the file was read.
      */
     private long _fmuFileModificationTime = -1;
-    
-    /** Indent level */
-    private int _indent = 0;
-
-    /** Indentation will be in multiples of basicIndent  */
-    private final String _basicIndent = "  ";
-
 }

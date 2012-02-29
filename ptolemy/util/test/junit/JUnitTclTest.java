@@ -29,7 +29,6 @@
 
 package ptolemy.util.test.junit;
 
-import ptolemy.util.test.junit.JUnitTclTestBase;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest

@@ -32,9 +32,8 @@ import org.ptolemy.fmi.FMILibrary.FMICallbackAllocateMemory;
 import org.ptolemy.fmi.FMILibrary.FMICallbackFreeMemory;
 import org.ptolemy.fmi.FMILibrary.FMICallbackLogger;
 import org.ptolemy.fmi.FMILibrary.FMIStepFinished;
+
 import com.sun.jna.Structure;
-///////////////////////////////////////////////////////////////////
-//// FMICallbackFunctions
 
 /**
  * Functional Mock-up Interface (FMI) callback functions.

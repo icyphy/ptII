@@ -28,7 +28,6 @@
 
 package ptolemy.codegen.test.junit;
 
-import ptolemy.codegen.test.junit.JUnitCodegenCTestBase;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitCodegenCTest

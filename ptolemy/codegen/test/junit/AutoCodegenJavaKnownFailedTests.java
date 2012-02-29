@@ -28,11 +28,6 @@
 
 package ptolemy.codegen.test.junit;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.lang.reflect.Method;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 

@@ -28,19 +28,17 @@
 
 package ptolemy.util.test.junit;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
-
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

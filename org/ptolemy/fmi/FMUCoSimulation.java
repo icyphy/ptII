@@ -27,29 +27,13 @@
 */
 package org.ptolemy.fmi;
 
-import com.sun.jna.Function;
-import com.sun.jna.Library;
-import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
-import com.sun.jna.Platform;
-
-import org.ptolemy.fmi.FMILibrary.FMIStatus;
-import org.ptolemy.fmi.FMICallbackFunctions.ByValue;
-import com.sun.jna.Callback;
-import com.sun.jna.Library;
-import com.sun.jna.Memory;
-import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
-import com.sun.jna.ptr.DoubleByReference;
-import com.sun.jna.ptr.IntByReference;
-import com.sun.jna.ptr.PointerByReference;
 import java.io.File;
 import java.io.PrintStream;
-import java.nio.ByteBuffer;
-import java.nio.DoubleBuffer;
-import java.nio.IntBuffer;
+
+import com.sun.jna.Function;
+import com.sun.jna.Memory;
+import com.sun.jna.NativeLibrary;
+import com.sun.jna.Pointer;
 
 
 ///////////////////////////////////////////////////////////////////

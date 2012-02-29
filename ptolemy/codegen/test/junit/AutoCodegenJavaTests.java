@@ -28,20 +28,12 @@
 
 package ptolemy.codegen.test.junit;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.lang.reflect.Method;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import ptolemy.util.FileUtilities;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// AutoCodegenJavaTests

@@ -28,8 +28,6 @@
 package org.ptolemy.fmi;
 
 import org.w3c.dom.Element;
-import java.util.LinkedList;
-import java.util.List;
 
 ///////////////////////////////////////////////////////////////////
 //// FMIIntegerType

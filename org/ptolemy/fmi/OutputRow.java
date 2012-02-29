@@ -27,33 +27,18 @@
 */
 package org.ptolemy.fmi;
 
-import com.sun.jna.Function;
-import com.sun.jna.Library;
-import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
-import com.sun.jna.Platform;
-
-import org.ptolemy.fmi.FMILibrary.FMIStatus;
-import org.ptolemy.fmi.FMICallbackFunctions.ByValue;
-import org.ptolemy.fmi.FMIScalarVariable.Alias;
-
-import com.sun.jna.Callback;
-import com.sun.jna.Library;
-import com.sun.jna.Memory;
-import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
-import com.sun.jna.ptr.DoubleByReference;
-import com.sun.jna.ptr.IntByReference;
-import com.sun.jna.ptr.PointerByReference;
-
-import java.io.File;
 import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
+
+import org.ptolemy.fmi.FMIScalarVariable.Alias;
+
+import com.sun.jna.Function;
+import com.sun.jna.NativeLibrary;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
 
 /**
  * <p>This method is a port of outputRow() from
@@ -99,7 +84,7 @@ public class OutputRow {
             FMIModelDescription fmiModelDescription,
             Pointer fmiComponent, double time, 
             PrintStream file, char separator, Boolean header) {
-        int i,k;
+        int i;
         //         fmiReal r;
         //         fmiInteger i;
         //         fmiBoolean b;
@@ -189,9 +174,7 @@ public class OutputRow {
                         file.format("%c%s", separator, Double.toString(result).replace('.', ','));
                     }
 
-                } else if (scalarVariable.type instanceof FMIStringType) {
-                    // FIXME: what size to allocate??
-                    CharBuffer valueBuffer = CharBuffer.allocate(1);
+                } else if (scalarVariable.type instanceof FMIStringType) {       
                     PointerByReference pointerByReference = new PointerByReference();
 
                     Function function = nativeLibrary.getFunction(fmiModelDescription.modelIdentifier
