@@ -28,8 +28,6 @@
 
 package ptolemy.vergil.basic.export.html;
 
-import java.io.File;
-
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.ExportParameters;
