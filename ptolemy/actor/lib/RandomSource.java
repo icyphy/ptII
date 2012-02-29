@@ -27,10 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Random;
 
 import ptolemy.actor.parameters.SharedParameter;
@@ -45,7 +41,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// RandomSource
