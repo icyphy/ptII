@@ -23,9 +23,9 @@
 cp DOPCenter.png DOPCenter.png.orig
 
 # FIXME: we should not need to run ExportImage twice
-$PTII/bin/ptinvoke ptolemy.vergil.basic.export.image.ExportImage png -run -save $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
+$PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel png -run -save $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
 
-$PTII/bin/ptinvoke ptolemy.vergil.basic.export.image.ExportImage png $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
+$PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel png -run -save $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
 
 diff DOPCenter.png.orig DOPCenter.png
 status=$?
