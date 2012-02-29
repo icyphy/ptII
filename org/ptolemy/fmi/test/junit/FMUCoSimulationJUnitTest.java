@@ -175,7 +175,11 @@ public class FMUCoSimulationJUnitTest {
 
     static {
         String userDir = System.getProperty("user.dir");
-        if (userDir.endsWith("org/ptolemy/fmi")) {
+        // If the test was invoked with -Dptolemy.ptII.dir=${PTII}
+        String ptolemyPtIIDir = System.getProperty("ptolemy.ptII.dir");
+        if (ptolemyPtIIDir != null) { 
+            topDirectory = ptolemyPtIIDir;
+        } else if (userDir.endsWith("org/ptolemy/fmi")) {
             topDirectory = new File(userDir).getParentFile().getParentFile().getParentFile().toString();
         } else if (userDir.endsWith("org/ptolemy/fmi/test/jni")) {
             topDirectory = new File(userDir).getParentFile().getParentFile().getParentFile().getParentFile().getParentFile().toString();
