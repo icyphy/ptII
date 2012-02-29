@@ -732,6 +732,41 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         }
     }
 
+    /** Test that the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for arrays where where the distance between elements is reasonably
+     *  represented as a double. This class overrides the superclass to not
+     *  insist that the two array tokens be instances of the same class,
+     *  but rather that they just both be array tokens, and then defers to the
+     *  _isCloseTo() method.
+     *  @param token The token to test closeness of this token with.
+     *  @param epsilon  The value that we use to determine whether two
+     *   tokens are close.
+     *  @return A boolean token that contains the value true if the
+     *   value of this token is close to that of the argument token.
+     *  @exception IllegalActionException If the argument token and
+     *   this token are implemented in different classes.
+     */
+    public BooleanToken isCloseTo(Token token, double epsilon)
+            throws IllegalActionException {
+        if (!(token instanceof ArrayToken)) {
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("isCloseTo", this,
+                            token));
+        }
+
+        try {
+            return _isCloseTo(token, epsilon);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "isCloseTo", this, token));
+        }
+    }
+
     /** Return true if the token is nil, (aka null or missing).
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
