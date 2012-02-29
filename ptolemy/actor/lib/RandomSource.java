@@ -163,26 +163,16 @@ public abstract class RandomSource extends Source {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == seed) {
-            long seedValue = ((LongToken) (seed.getToken())).longValue();
-
+        if (attribute == seed || attribute == privateSeed) {
+            long seedValue;
+            Token privateSeedToken = privateSeed.getToken();
+            if (privateSeedToken != null) {
+                seedValue = ((LongToken) privateSeedToken).longValue();
+            } else {
+                seedValue = ((LongToken) seed.getToken()).longValue();
+            }
             if (seedValue != _generatorSeed) {
                 _needNewGenerator = true;
-            }
-        } else if (attribute == privateSeed) {
-            Token token = privateSeed.getToken();
-            if (token != null) {
-                long seedValue = ((LongToken) token).longValue();
-                
-                if (seedValue != _generatorSeed) {
-                    _needNewGenerator = true;
-                }
-            } else {
-                long seedValue = ((LongToken) (seed.getToken())).longValue();
-
-                if (seedValue != _generatorSeed) {
-                    _needNewGenerator = true;
-                }
             }
         } else {
             super.attributeChanged(attribute);
@@ -257,13 +247,15 @@ public abstract class RandomSource extends Source {
      *  seed Token.
      */
     protected void _createGenerator() throws IllegalActionException {
-        long seedValue = ((LongToken) (seed.getToken())).longValue();
-        Token token = privateSeed.getToken();
-        if (token != null) {
-            seedValue = ((LongToken) token).longValue();
+        long seedValue;
+        Token privateSeedToken = privateSeed.getToken();
+        if (privateSeedToken != null) {
+            seedValue = ((LongToken) privateSeedToken).longValue();
             _generatorSeed = seedValue;
         } else {
+            seedValue = ((LongToken) seed.getToken()).longValue();
             _generatorSeed = seedValue;
+
             if (seedValue == 0L) {
                 seedValue = System.currentTimeMillis() + hashCode();
             } else {
