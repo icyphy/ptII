@@ -2195,7 +2195,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             eventPort = new Parameter(this, "eventPort");
             eventPort.setExpression("commandPort + 1");
 
-            timeResolution.moveToLast();
+            //timeResolution.moveToLast();
 
             // Set node ID to a starting value of 1.
             // PtinyOSNodeParameter will autoincrement this value
