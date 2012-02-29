@@ -33,7 +33,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
@@ -573,10 +572,14 @@ public class Director extends Attribute implements Executable {
                 Time environmentTime = _localClock.getEnvironmentTimeForLocalTime(time);
                 Time result = director.fireAt(container, environmentTime, microstep);
                 if (!result.equals(environmentTime)) {
-                    throw new IllegalActionException(this, director.getName()
+                    throw new IllegalActionException(this, 
+                            "Timing incompatibility error: "
+                            + director.getName()
                             + " is unable to fire " + container.getName()
                             + " at the requested time: " + time
-                            + ". It responds it will fire it at: " + result);
+                            + ". It responds it will fire it at: "
+                            + result
+                            + ".");
                 }
                 // Translate the response from the environment into a local time.
                 return _localClock.getLocalTimeForEnvironmentTime(result);
