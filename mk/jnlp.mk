@@ -1256,7 +1256,7 @@ WEBSERVER=bennett
 jnlp_dist_update:
 	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
+		ssh $(WEBSERVER) "cd $(DIST_DIR); /usr/sfw/bin/gtar -xvpf -"
 	scp doc/webStartHelp.htm $(WEBSERVER):$(DIST_DIR)
 
 jnlp_dist_nightly:
