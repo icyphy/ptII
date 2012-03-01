@@ -155,6 +155,14 @@ public abstract class ColtRandomSource extends RandomSource {
             if (seedValue == 0L) {
                 seedValue = System.currentTimeMillis() + hashCode();
             } else {
+                // BTW - the reason to use the full name here is so that
+                // each random number generator generates a sequence
+                // of different random numbers.  If we use just the
+                // display name, then two actors that have the same
+                // name will generate the same sequence of numbers which
+                // is bad for Monte Carlo simulations.
+                // See privateSeed in RandomSource for an alternate
+                // way to set seeds.
                 seedValue = seedValue + getFullName().hashCode();
             }
         }
