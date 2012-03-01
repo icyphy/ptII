@@ -89,7 +89,12 @@ public abstract class RandomSource extends NamedProgramCodeGeneratorAdapter {
             args.add(Integer.toString(actor.hashCode()));
             codeStream.appendCodeBlock("setSeedBlock0", args);
         } else { // Use fixed seed + actorName.hashCode().
-
+            // BTW - the reason to use the full name here is so that
+            // each random number generator generates a sequence
+            // of different random numbers.  If we use just the
+            // display name, then two actors that have the same
+            // name will generate the same sequence of numbers which
+            // is bad for Monte Carlo simulations.
             args.add(Integer.toString(actor.getFullName().hashCode()));
             codeStream.appendCodeBlock("setSeedBlock1", args);
         }
