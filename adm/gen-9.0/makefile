@@ -921,11 +921,13 @@ htmlchek:
 	(cd $(PTIIDIST); PTII=$(PTIIDIST) make htmlchek) > $(PTIIDIST)/htmlchek.out 2>&1
 	(cd $(PTIIDIST); ls -d `cat htmlchekout.HREF | grep -v '#' | grep -v http: | grep -v mailto: | grep -v ftp:` | grep 'not found' 2>&1)
 
+nightly:
+
 # Stuff to do every night.
 # ptII's crontab runs ~ptII/adm/bin/ptIInightly, which runs 'make nightly'
 # when the remote jobs finish, the remotealldone rule is called, which
 # runs the ptIInightly-mail script.
-nightly: ptclean ptbuild \
+oldnightly: ptclean ptbuild \
 	clean all \
 	glimpse \
 	findchanges \
@@ -1121,6 +1123,13 @@ remote1local: $(PTII_FULL) $(GENLOGDIR)
 		remote1distjsall remote1distjsrestore remote1distjavadocs \
 		remote1done >& $(REMOTE1LOG)" &
 
+# Commands run by hudson
+hudson: 
+	$(MAKE) -k USER=hudson \
+	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
+	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
+	JAR=/usr/bin/jar
+	clean all jnlp src.jar setup test_setup update_andrews updateDOPCenterImage
 
 # caltrop requires -source 1.4, ptalon -source 1.5
 # Move remote1doc to after rebuild so that the Actor Index tool is built.
@@ -2900,12 +2909,6 @@ update_andrews:
 		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
-	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
-		$(PTEXTERNAL_NIGHTLY)/builds
-	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
-		$(PTEXTERNAL_NIGHTLY)/builds
-	-ssh andrews ln -s $(ANDREWS_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.txt \
-		$(PTEXTERNAL_NIGHTLY)/builds
 	# 
 	@echo "Create links for latest tars and logs"
 	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
@@ -2916,9 +2919,4 @@ update_andrews:
 		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest_setup_windows.exe
 	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.setup.mac.app.tar.gz
-	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
-		$(PTEXTERNAL_NIGHTLY)/builds/ptIInightly_mail-latest.txt
-	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
-		$(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-latest.htm
-	-ssh andrews ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-`date +%Y-%m-%d`.txt \
-		$(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-latest.txt
+
