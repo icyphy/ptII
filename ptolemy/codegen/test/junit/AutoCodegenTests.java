@@ -31,6 +31,8 @@ package ptolemy.codegen.test.junit;
 import java.io.File;
 import java.lang.reflect.Method;
 
+import org.junit.Assert;
+
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 import ptolemy.util.test.junit.ModelTests;
@@ -106,7 +108,14 @@ public class AutoCodegenTests extends ModelTests {
             "-generatorPackage", generatorPackage,
             "-inline", Boolean.toString(inline),
             fullPath};
-        _generateCodeMethod.invoke(null, (Object) args);
+        int returnValue = ((Integer)_generateCodeMethod.invoke(null, (Object) args)).intValue();
+        if (returnValue != 0) {
+            System.out.println("AutoCodegenTests: " + fullPath
+                   + ": Return value of the last command executed was not zero, it was: "
+                    + returnValue + ", marking this as a test failure.");
+            Assert.fail("Return value of the last command executed was not zero, it was: "
+                    + returnValue);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

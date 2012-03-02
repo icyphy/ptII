@@ -85,7 +85,7 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
     public void runModel(String fullPath, String language, boolean generateInSubdirectory,
             boolean inline, int maximumLinesPerBlock, boolean variablesAsArrays) 
             throws Throwable {
-        if (fullPath.endsWith(THERE_ARE_NO_AUTO_TESTS)) {
+        if (fullPath.endsWith(THERE_ARE_NO_KNOWN_FAILED_TESTS)) {
             System.out.println("No auto/*.xml tests in "
                     + StringUtilities.getProperty("user.dir"));
             return;
@@ -112,7 +112,11 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
             "-variablesAsArrays", Boolean.toString(variablesAsArrays),
             fullPath};
         try {
-            _generateCodeMethod.invoke(null, (Object) args);
+            int returnValue = ((Integer)_generateCodeMethod.invoke(null, (Object) args)).intValue();
+            if (returnValue != 0) {
+                System.out.("Known Failure: Return value of the last command executed was not zero, it was: "
+                        + returnValue);
+            }
         } catch (Throwable throwable) {
             System.out.println("Known Failure: " + throwable);
             throwable.printStackTrace();
