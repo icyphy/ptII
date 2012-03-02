@@ -536,6 +536,12 @@ See $PTII/doc/coding/maven.htm
       <version>0.7</version>
     </dependency>
 
+    <dependency>  <!-- $PTII/lib/jna.jar -->
+      <groupId>jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>3.4.0</version>
+    </dependency>
+
 
     <!-- jars have to be taken from ptII/lib -->
     <dependency> <!-- $PTII/lib/sootclasses.jar -->
