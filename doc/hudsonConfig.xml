@@ -411,7 +411,7 @@ svn commit -m &quot;Update from hudson build&quot; /var/lib/hudson/jobs/ptII/wor
           </hudson.tasks.Shell>
           <hudson.tasks.Ant>
             <targets>-debug -p</targets>
-            <antName>AntFromApache</antName>
+            <antName>(Default)</antName>
           </hudson.tasks.Ant>
           <hudson.tasks.Shell>
             <command># Ant does not compile lbnl C files yet
@@ -420,26 +420,26 @@ export PTII=$WORKSPACE
           </hudson.tasks.Shell>
           <hudson.tasks.Ant>
             <targets>clean build</targets>
-            <antName>AntFromApache</antName>
+            <antName>(Default)</antName>
             <properties>DISPLAY=localhost:2.0</properties>
           </hudson.tasks.Ant>
           <hudson.tasks.Ant>
             <targets>javadoc</targets>
-            <antName>AntFromApache</antName>
+            <antName>(Default)</antName>
           </hudson.tasks.Ant>
           <hudson.tasks.Ant>
             <targets>jars</targets>
-            <antName>AntFromApache</antName>
+            <antName>(Default)</antName>
             <buildFile>jars.xml</buildFile>
           </hudson.tasks.Ant>
           <hudson.tasks.Ant>
             <targets>test.cobertura</targets>
-            <antName>AntFromApache</antName>
+            <antName>(Default)</antName>
             <antOpts>-Dptolemy.ptII.doNotExit=true</antOpts>
           </hudson.tasks.Ant>
           <hudson.tasks.Ant>
             <targets>reports</targets>
-            <antName>AntFromApache</antName>
+            <antName>(Default)</antName>
           </hudson.tasks.Ant>
           <hudson.tasks.Shell>
             <command>$WORKSPACE/adm/bin/killXServer</command>
