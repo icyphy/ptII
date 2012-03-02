@@ -364,9 +364,10 @@ For example:
       test.batch = ${test.batch}
 
     </echo>
-    <junit fork="yes" <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
-	   <!-- on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout}">
