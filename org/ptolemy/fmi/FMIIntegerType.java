@@ -49,6 +49,8 @@ public class FMIIntegerType extends FMIType {
     /** Construct an Integerl FMU variable.
      *  @param name The name of this variable.
      *  @param description A description of this variable.
+     *  @param element The XML element whose attributes are used to
+     *  set the fields of this object.
      */
     public FMIIntegerType(String name, String description, Element element) {
         super(name, description, element);
@@ -57,5 +59,6 @@ public class FMIIntegerType extends FMIType {
         }
     }
 
+    /** The starting value of this integer. */ 
     public int start;
 }

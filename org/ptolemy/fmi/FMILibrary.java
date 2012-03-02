@@ -47,39 +47,122 @@ import com.sun.jna.Pointer;
 public interface FMILibrary extends Library {
 
     /**
-     * enum values
+     * An enumeration of status values returned by fmi*() methods.
      */
     public static interface FMIStatus {
+        /** The operation completed successfully. */
         public static final int fmiOK = (int)0;
+
+        /** The operation had a problem, but the computation may
+         *  continue.  The logger was called with further information.
+         */
         public static final int fmiWarning = (int)1;
+
+        /** Discard the current data and try again with a smaller
+         *  step size.  Only certain methods can return this
+         *  value, see the FMI documentation for details.
+         */
         public static final int fmiDiscard = (int)2;
+
+        /** The operation had a problem and fmiFreeModelInstance()
+         *  must be called.
+         */
         public static final int fmiError = (int)3;
+
+        /** All model instances are corrupted.  No fmi*() methods
+         *  may be called.
+         */
         public static final int fmiFatal = (int)4;
+        
+        /** The slave is still executing, but has returned.
+         */   
         public static final int fmiPending = (int)5;
     };
+
     /**
-     * enum values
+     * An enumeration of status information returned by a slave.
      */
     public static interface FMIStatusKind {
+        /** If fmiDoStep() returns fmiPending, then the master must
+         * call fmiGetStatus(..., fmiDoStepStatus) to determine if the
+         * slave has finished. 
+         */
         public static final int fmiDoStepStatus = (int)0;
+
+        /** If fmiDoStep() returns fmiPending, then 
+         *  fmiGetStringStatus(..., fmiPendingStatus,...) can be called
+         *  to get the status of the asynchronously executing
+         *  fmiDoStep().
+         */
         public static final int fmiPendingStatus = (int)1;
+
+        /** If fmiDoStep() returnd fmiDiscard, then calling
+         *  fmiGetRealStatus(..., fmiLastSuccessfulTime,...)
+         *  will return the time the last communication step
+         *  was successfully computed.
+         */
         public static final int fmiLastSuccessfulTime = (int)2;
     };
 
+    /** A callback for the fmiCallbackLogger() function.
+     *   
+     *  <p>Derived classes such as FMICallbackFunctions have a static classes
+     *  that extend this interface and implements Structure.ByReference
+     *  or Structure.ByValue.</p>
+     *
+     *  <p>For details about how Callbacks work in JNA, see
+     *  <a href="http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks">http://twall.github.com/jna/3.4.0/javadoc/overview-summary.html#callbacks</a>.
+     */   
     public interface FMICallbackLogger extends Callback {
+        /** Invoke the fmiCallbackLogger() function.
+         *  @param fmiComponent The fmiComponent
+         *  @param instanceName The name of the instance.
+         *  @param status One of FMIStatus.
+         *  @param category The category of the message, typically
+         *  defined by the tool that created the fmu.
+         *  @param message The message in printf format
+         *  @param parameters A variable number of parameters used
+         *  with message.
+         */
         // FIXME: Handle vargargs
-        void apply(Pointer c, Pointer instanceName, int status, Pointer category, Pointer message, String ... parameters);
+        void apply(Pointer fmiComponent, Pointer instanceName, int status, Pointer category, Pointer message, String ... parameters);
     };
 
+    /** A callback for the fmiCallbackAllocateMemory() function.
+     *  See the documentation for FMICallbackLogger above for details.
+     */   
     public interface FMICallbackAllocateMemory extends Callback {
-        Pointer apply(NativeSizeT nobj, NativeSizeT size);
+        /** Invoke the fmiCallbackAllocateMemory() function.
+         *  Each byte of the allocated memory should be set to 0.
+         *  @param numberOfObjects The number of objects to be allocated.
+         *  @param size The size of each object to be allocated.
+         */
+        Pointer apply(NativeSizeT numberOfObjects, NativeSizeT size);
     };
 
+    /** A callback for the fmiCallbackFreeMemory() function.
+     *  See the documentation for FMICallbackLogger above for details.
+     */   
     public interface FMICallbackFreeMemory extends Callback {
-        void apply(Pointer obj);
+        /** Free the object.
+         *  In Java, the Memory.finalize() method will free
+         *  up memory for you, so this method is a no-op.
+         *  @param object The object to be freed.  If the object
+         *  parameter is null, then take no action.
+         */   
+        void apply(Pointer object);
     };
 
+    /** A callback for the fmiStepFinished() method.
+     *  This method is optional. If present, it signals that
+     *  the computation of the communication step has completed.
+     *  See the documentation for FMICallbackLogger above for details.
+     */
     public interface FMIStepFinished extends Callback {
-        void apply(Pointer c, int status);
+        /** The step has finished.
+         *  @param fmiComponent The fmiComponent.
+         *  @param status One of FMIStatus.
+         */
+        void apply(Pointer fmiComponent, int status);
     };
 }

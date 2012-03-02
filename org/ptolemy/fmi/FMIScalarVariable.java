@@ -147,14 +147,63 @@ public class FMIScalarVariable {
         }
     }
 
-    /** Acceptable values for the alias xml attribute. */
-    public enum Alias {alias, negatedAlias, noAlias};
+    /** Acceptable values for the alias xml attribute.
+     *  Alias variables occur during assignment operations.   
+     */
+    public enum Alias {
+        /** This is an alias variable, use the valueReference handle
+         * to set or get the actual value.
+         */
+        alias,
+        /** This is an alias value, but the value returned must be
+         * negated.
+         */
+        negatedAlias,
+        /** This is not an alias (the default). */
+        noAlias
+    };
     
-    /** Acceptable values for the causality xml attribute. */
-    public enum Causality {input, internal, output, none}
+    /** Acceptable values for the causality xml attribute.
+     *  Causality defines the visibility of the variable from outside of the model.
+     */
+    public enum Causality {
+        /** The value is defined from the outside.  The value is
+         * initially the value of the start attribute.
+         */
+        input,
+        /** After initialization, a result may be stored.
+         *  However, the value cannot be used in a connection.   
+         *  The default Causality is "internal".
+         */
+        internal,
+        /** The value can be read from the outside with a connection.
+         */
+        output,
+        /** The value does not affect computation.  Typically, "none"
+         *  values are tool specific and used to enable logging.
+         */
+        none}
 
-    /** Acceptable values for the variability xml attribute. */
-    public enum Variability {constant, continuous, discrete, parameter}
+    /** Acceptable values for the variability xml attribute.
+     *  The variablity attribute defines when a value changes,
+     *  which determines when the value should be read. 
+     */
+    public enum Variability {
+        /** The value does not change.
+         */
+        constant,
+        /** The value changes at any moment.  A continuous
+         *  variable must be of type Real.
+         *  The default Variability is "continuous".
+         */
+        continuous,
+        /** The value only changes during initialization
+         *  and at event instances.   
+         */
+        discrete,
+        /** The value does not change after initailization.
+         */
+        parameter}
 
 
     /** The value of the alias xml attribute. */

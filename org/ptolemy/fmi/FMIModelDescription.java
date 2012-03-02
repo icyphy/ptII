@@ -88,5 +88,6 @@ public class FMIModelDescription {
      */
     public String modelName;
 
+    /** The list of ScalarVariable elements. */
     public List<FMIScalarVariable> modelVariables = new LinkedList<FMIScalarVariable>();
 }

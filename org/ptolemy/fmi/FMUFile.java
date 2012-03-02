@@ -106,7 +106,11 @@ public class FMUFile {
 
     /** Read in a .fmu file and parse the modelDescription.xml file.
      *  @param fmuFileName the .fmu file
-     *  @return An object that represents the structure of the modelDescriptionFile.xml file.
+     *  @return An object that represents the structure of the
+     *  modelDescriptionFile.xml file.
+     *  @exception IOException If the file cannot be unzipped or the
+     *  modelDescription.xml file contained by the fmuFileName zip
+     *  file cannot be parsed.
      */
     public static FMIModelDescription parseFMUFile(String fmuFileName)
             throws IOException {

@@ -54,6 +54,8 @@ public class FMIRealType extends FMIType {
     /** Construct a Real FMU variable.
      *  @param name The name of this variable.
      *  @param description A description of this variable.
+     *  @param element The XML element whose attributes are used to
+     *  set the fields of this object.
      */
     public FMIRealType(String name, String description, Element element) {
         super(name, description, element);

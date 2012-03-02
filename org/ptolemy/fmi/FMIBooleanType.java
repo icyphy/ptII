@@ -49,6 +49,8 @@ public class FMIBooleanType extends FMIType {
     /** Construct an Integerl FMU variable.
      *  @param name The name of this variable.
      *  @param description A description of this variable.
+     *  @param element The XML element whose attributes are used to
+     *  set the fields of this object.
      */
     public FMIBooleanType(String name, String description, Element element) {
         super(name, description, element);
@@ -57,5 +59,6 @@ public class FMIBooleanType extends FMIType {
         }
     }
 
+    /** The starting value of this boolean. */
     public boolean start;
 }

@@ -1,4 +1,4 @@
-/* Read a Functional Mock-up Unit .fmu file and invoke it as a co-simulation.
+/* A Java representation for a C type size_t, which is 32 or 64 bits.
 
    Copyright (c) 2012 The Regents of the University of California.
    All rights reserved.
@@ -28,7 +28,7 @@
 package org.ptolemy.fmi;
 import com.sun.jna.IntegerType;
 import com.sun.jna.Native;
-/** The C type size_t (32 or 64 bits).
+/** A Java representation for a C type size_t, which is 32 or 64 bits.
  * @author Christopher Brooks
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
@@ -40,6 +40,11 @@ public class NativeSizeT extends IntegerType {
         this(0);
     }
 
+    /** Construct size_t object with the given value.
+     *  The size is the size of the C size_t type,
+     *  which is typically 32 or 64 bytes.
+     *  @param value The given value.
+     */
     public NativeSizeT(long value) {
         super(Native.SIZE_T_SIZE, value); 
     }
