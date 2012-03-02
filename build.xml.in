@@ -363,7 +363,7 @@ For example:
       test.batch = ${test.batch}
 
     </echo>
-    <junit fork="no"
+    <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
