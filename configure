@@ -804,6 +804,7 @@ ANT_MAVEN_BUILD_WEBSENSOR
 ANT_MAVEN_SUBPROJECTS
 ANT_MAVEN_ARTIFACT
 ANT_JAVADOC_EXCLUDEPACKAGENAMES
+ANT_EXCLUDE_TESTS
 ANT_EXCLUDE
 ANT_CLASSPATH
 ANT_ALWAYS_EXCLUDE
@@ -4062,6 +4063,9 @@ ANT_EXCLUDE=''
 # Path of directories that contain source, used by the Ant's build rule.
 ANT_SRC=''
 
+# Paths of tests to exclude in Ant's build.xml
+ANT_EXCLUDE_TESTS=''
+
 # A shell function that adds its argument to the ECLIPSE_CLASSPATH_ENTRY_LIBS
 # and to ANT_CLASSPATH
 updateClasspath () {
@@ -4077,6 +4081,10 @@ updateExcludes () {
    ANT_EXCLUDE="$ANT_EXCLUDE <exclude name=\"$1\" />"
 }
 
+# A shell function that adds its arguments to ANT_EXCLUDE_TESTS.
+updateExcludeTests () {
+   ANT_EXCLUDE_TESTS="$ANT_EXCLUDE_TESTS <exclude name=\"$1\" />"
+}
 ########################################################################
 
 case "`uname -s`" in
@@ -6094,6 +6102,7 @@ $as_echo "$PTII/vendors/CUnit" >&6; }; fi
 $as_echo "$as_me: WARNING: Failed to find CUnit in /usr/local or
     $PTII/vendors/CUnit.
     CUnit is only necessary to test the C templates of the code generation facility" >&2;}
+    	        updateExcludeTests **/ptolemy/cg/kernel/generic/program/procedural/c/type/test/junit/JUnitTclTest.java
             fi
         fi
     fi
@@ -12149,6 +12158,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 
 # Paths to exclude in Ant's build.xml
+
+
+# Paths of tests to exclude in Ant's build.xml
 
 
 # Packages to exclude from Ant targets that call javadoc
