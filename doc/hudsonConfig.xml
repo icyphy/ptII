@@ -11,6 +11,13 @@
       </external-property>
     </entry>
     <entry>
+      <string>blockBuildWhenDownstreamBuilding</string>
+      <boolean-property>
+        <originalValue class="boolean">false</originalValue>
+        <propertyOverridden>false</propertyOverridden>
+      </boolean-property>
+    </entry>
+    <entry>
       <string>hudson-plugins-cobertura-CoberturaPublisher</string>
       <external-property>
         <originalValue class="hudson.plugins.cobertura.CoberturaPublisher">
@@ -71,23 +78,10 @@
       </external-property>
     </entry>
     <entry>
-      <string>blockBuildWhenDownstreamBuilding</string>
-      <boolean-property>
-        <originalValue class="boolean">false</originalValue>
-        <propertyOverridden>false</propertyOverridden>
-      </boolean-property>
-    </entry>
-    <entry>
       <string>org-hudsonci-plugins-snapshotmonitor-SnapshotTrigger</string>
       <trigger-property>
         <propertyOverridden>false</propertyOverridden>
       </trigger-property>
-    </entry>
-    <entry>
-      <string>org-hudsonci-plugins-snapshotmonitor-WatchedDependenciesProperty</string>
-      <base-property>
-        <propertyOverridden>false</propertyOverridden>
-      </base-property>
     </entry>
     <entry>
       <string>logRotator</string>
@@ -102,10 +96,10 @@
       </log-rotator-property>
     </entry>
     <entry>
-      <string>scmCheckoutRetryCount</string>
-      <integer-property>
+      <string>org-hudsonci-plugins-snapshotmonitor-WatchedDependenciesProperty</string>
+      <base-property>
         <propertyOverridden>false</propertyOverridden>
-      </integer-property>
+      </base-property>
     </entry>
     <entry>
       <string>blockBuildWhenUpstreamBuilding</string>
@@ -115,14 +109,20 @@
       </boolean-property>
     </entry>
     <entry>
-      <string>org-hudsonci-maven-plugin-dependencymonitor-DependencyNotifier</string>
+      <string>scmCheckoutRetryCount</string>
+      <integer-property>
+        <propertyOverridden>false</propertyOverridden>
+      </integer-property>
+    </entry>
+    <entry>
+      <string>hudson-plugins-git-GitPublisher</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
       </external-property>
     </entry>
     <entry>
-      <string>hudson-plugins-git-GitPublisher</string>
+      <string>org-hudsonci-maven-plugin-dependencymonitor-DependencyNotifier</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
@@ -143,7 +143,7 @@
 PTII=${WORKSPACE}
 LD_LIBRARY_PATH=${WORKSPACE}/lbnl/lib/util:${WORKSPACE}/lib:/usr/local/matlab-r2008a/bin/glnxa64:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/lib:/usr/local/lib:${LD_LIBRARY_PATH}
 CLASSPATH=/usr/java/JMF-2.1.1e/lib/jmf.jar:/usr/java/jai-1_1_3/lib/jai_codec.jar:/usr/java/jai-1_1_3/lib/jai_core.jar:/usr/java/jai-1_1_3/lib/mlibwrapper_jai.jar:.
-PATH=${PATH}:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/bin:/usr/local/sbin
+PATH=${PATH}:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/bin:/usr/local/sbin:/usr/local/bin
 TOSROOT=${WORKSPACE}/vendors/ptinyos/tinyos-1.x
 TOSDIR=${WORKSPACE}/vendors/ptinyos/tinyos-1.x/tos
 PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
@@ -162,13 +162,6 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
       </external-property>
     </entry>
     <entry>
-      <string>hudson-tasks-test-AggregatedTestResultPublisher</string>
-      <external-property>
-        <propertyOverridden>false</propertyOverridden>
-        <modified>false</modified>
-      </external-property>
-    </entry>
-    <entry>
       <string>cleanWorkspaceRequired</string>
       <boolean-property>
         <originalValue class="boolean">false</originalValue>
@@ -176,13 +169,8 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
       </boolean-property>
     </entry>
     <entry>
-      <string>hudson-tasks-junit-JUnitResultArchiver</string>
+      <string>hudson-tasks-test-AggregatedTestResultPublisher</string>
       <external-property>
-        <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
-          <testResults>reports/junit/*.xml</testResults>
-          <keepLongStdio>false</keepLongStdio>
-          <testDataPublishers/>
-        </originalValue>
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
       </external-property>
@@ -213,6 +201,18 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
       </external-property>
     </entry>
     <entry>
+      <string>hudson-tasks-junit-JUnitResultArchiver</string>
+      <external-property>
+        <originalValue class="hudson.tasks.junit.JUnitResultArchiver">
+          <testResults>reports/junit/*.xml</testResults>
+          <keepLongStdio>false</keepLongStdio>
+          <testDataPublishers/>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+        <modified>false</modified>
+      </external-property>
+    </entry>
+    <entry>
       <string>hudson-tasks-Fingerprinter</string>
       <external-property>
         <propertyOverridden>false</propertyOverridden>
@@ -227,6 +227,13 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
       </external-property>
     </entry>
     <entry>
+      <string>parametersDefinitionProperties</string>
+      <copy-write-list-property>
+        <originalValue class="hudson.util.CopyOnWriteList"/>
+        <propertyOverridden>false</propertyOverridden>
+      </copy-write-list-property>
+    </entry>
+    <entry>
       <string>hudson-tasks-JavadocArchiver</string>
       <external-property>
         <originalValue class="hudson.tasks.JavadocArchiver">
@@ -236,19 +243,6 @@ PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
       </external-property>
-    </entry>
-    <entry>
-      <string>parametersDefinitionProperties</string>
-      <copy-write-list-property>
-        <originalValue class="hudson.util.CopyOnWriteList"/>
-        <propertyOverridden>false</propertyOverridden>
-      </copy-write-list-property>
-    </entry>
-    <entry>
-      <string>customWorkspace</string>
-      <string-property>
-        <propertyOverridden>false</propertyOverridden>
-      </string-property>
     </entry>
     <entry>
       <string>hudson-plugins-emailext-ExtendedEmailPublisher</string>
@@ -334,6 +328,12 @@ ${JELLY_SCRIPT}
       </external-property>
     </entry>
     <entry>
+      <string>customWorkspace</string>
+      <string-property>
+        <propertyOverridden>false</propertyOverridden>
+      </string-property>
+    </entry>
+    <entry>
       <string>quietPeriod</string>
       <integer-property>
         <propertyOverridden>false</propertyOverridden>
@@ -366,6 +366,7 @@ mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:i
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=iText -DartifactId=iText -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/vendors/misc/itext/iText.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=jacl -DartifactId=jacl -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/lib/ptjacl.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=javajoystick -DartifactId=joystick -Dversion=0.7 -Dpackaging=jar -Dfile=$PTII/vendors/misc/joystick/Joystick.jar
+mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=jna -DartifactId=jna -Dversion=3.4.0 -Dpackaging=jar -Dfile=$PTII/lib/jna.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=jogl -DartifactId=gluegen-rt -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/vendors/sun/jogl/lib/gluegen-rt.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=jogl -DartifactId=jogl -Dversion=ptII -Dpackaging=jar -Dfile=$PTII/vendors/sun/jogl/lib/jogl.jar
 mvn -Dmaven.repo.local=/var/lib/hudson/jobs/ptII/workspace/.maven/repo install:install-file -DgroupId=junitparams -DartifactId=junitparams -Dversion=0.3.0 -Dpackaging=jar -Dfile=$PTII/lib/JUnitParams-0.3.0.jar
@@ -439,7 +440,7 @@ export PTII=$WORKSPACE
           </hudson.tasks.Shell>
           <hudson.tasks.Shell>
             <command>cd $PTII/adm/gen-9.0
-make USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm JAR=/usr/bin/jar clean all jnlp src.jar update_andrews</command>
+make USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm JAR=/usr/bin/jar hudson</command>
           </hudson.tasks.Shell>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
@@ -478,6 +479,28 @@ make USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/h
       </trigger-property>
     </entry>
     <entry>
+      <string>scm</string>
+      <scm-property>
+        <originalValue class="hudson.scm.SubversionSCM">
+          <locations>
+            <hudson.scm.SubversionSCM_-ModuleLocation>
+              <remote>https://source.eecs.berkeley.edu/svn/chess/ptII/trunk</remote>
+              <local>.</local>
+              <depthOption>infinity</depthOption>
+              <ignoreExternalsOption>false</ignoreExternalsOption>
+            </hudson.scm.SubversionSCM_-ModuleLocation>
+          </locations>
+          <excludedRegions></excludedRegions>
+          <includedRegions></includedRegions>
+          <excludedUsers></excludedUsers>
+          <excludedRevprop></excludedRevprop>
+          <excludedCommitMessages></excludedCommitMessages>
+          <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+        </originalValue>
+        <propertyOverridden>false</propertyOverridden>
+      </scm-property>
+    </entry>
+    <entry>
       <string>hudson-plugins-findbugs-FindBugsPublisher</string>
       <external-property>
         <originalValue class="hudson.plugins.findbugs.FindBugsPublisher">
@@ -514,28 +537,6 @@ make USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/h
         <propertyOverridden>false</propertyOverridden>
         <modified>false</modified>
       </external-property>
-    </entry>
-    <entry>
-      <string>scm</string>
-      <scm-property>
-        <originalValue class="hudson.scm.SubversionSCM">
-          <locations>
-            <hudson.scm.SubversionSCM_-ModuleLocation>
-              <remote>https://source.eecs.berkeley.edu/svn/chess/ptII/trunk</remote>
-              <local>.</local>
-              <depthOption>infinity</depthOption>
-              <ignoreExternalsOption>false</ignoreExternalsOption>
-            </hudson.scm.SubversionSCM_-ModuleLocation>
-          </locations>
-          <excludedRegions></excludedRegions>
-          <includedRegions></includedRegions>
-          <excludedUsers></excludedUsers>
-          <excludedRevprop></excludedRevprop>
-          <excludedCommitMessages></excludedCommitMessages>
-          <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
-        </originalValue>
-        <propertyOverridden>false</propertyOverridden>
-      </scm-property>
     </entry>
     <entry>
       <string>hudson-triggers-TimerTrigger</string>
