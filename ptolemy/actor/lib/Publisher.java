@@ -27,7 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -284,6 +286,54 @@ public class Publisher extends TypedAtomicActor {
         return newObject;
     }
 
+    /** Return a Set of Subscribers that are connected to this Publisher.
+     *  @return A Set of Subscribers that are connected to this Publisher
+     *  @exception IllegalActionException If thrown when a Manager is added to
+     *  the top level or if preinitialize() fails.
+     */
+    public Set<Subscriber> subscribers()
+            throws IllegalActionException {
+        // This method will be used by the gui so that the user can
+        // ask which Subscribers are connected to a Publisher.
+
+        Publisher._preinitializeThenWrapup(this);
+
+        Set<Subscriber> results = new HashSet<Subscriber>();
+
+        // For each port, find the Subscriber.
+        //for (IOPort port : output.deepConnectedInPortList()) {
+        Iterator ports = output.sinkPortList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
+            NamedObj container = port.getContainer();
+            if (container instanceof Subscriber) {
+                results.add((Subscriber) container);
+            } else {
+                // Handle ports in TypedComposites?
+                Receiver[][] receivers = port.getRemoteReceivers();
+                if (receivers != null) {
+                    for (int i = 0; i < receivers.length; i++) {
+                        if (receivers[i] != null) {
+                            for (int j = 0; j < receivers[i].length; j++) {
+                                if (receivers[i][j] != null) {
+                                    IOPort remotePort = receivers[i][j]
+                                            .getContainer();
+                                    if (remotePort != null) {
+                                        container = remotePort.getContainer();
+                                        if (container instanceof Subscriber) {
+                                            results.add((Subscriber) container);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return results;
+    }   
+
     /** Read at most one input token from each
      *  input channel and send it to the subscribers,
      *  if any.
@@ -339,6 +389,52 @@ public class Publisher extends TypedAtomicActor {
         super.setContainer(container);
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       package  protected methods          ////
+
+    /** Invoke preinitialize() and wrapup().  This method is used to
+     *  create connections for Publishers and Subscribers.
+     *  @param actor The actor to preinitialize().
+     *  @exception IllegalActionException If thrown when a Manager is added to
+     *  the top level or if preinitialize() fails.
+     */
+    static void _preinitializeThenWrapup(TypedAtomicActor actor)
+            throws IllegalActionException {
+        // This method is package protected do that Subscriber.publishers()
+        // can call it.
+
+        // If preinitialize() has not yet been called, then we don't
+        // yet know what Subscribers are using connected to the
+        // Publisher.
+        Manager manager = actor.getManager();
+        if (manager == null) {
+            CompositeActor toplevel = (CompositeActor) (actor.getContainer()
+                    .toplevel());
+            manager = new Manager(toplevel.workspace(), "PubManager");
+            toplevel.setManager(manager);
+        }
+        try {
+            // Create connections between Publishers and Subscribers.
+            manager.preinitializeAndResolveTypes();
+        } catch (KernelException ex) {
+            throw new IllegalActionException(actor, ex,
+                    "Failed to preinitialize() while trying to update the connected"
+                            + " Subscribers.");
+        } finally {
+            try {
+                manager.wrapup();
+            } catch (Throwable throwable) {
+                // The Exit actor causes Manager.wrapup() to throw this.
+                if (!manager.isExitingAfterWrapup()) {
+                    throw new IllegalActionException(actor, throwable,
+                            "Manager.wrapup() failed while trying to update the names"
+                                    + " of the connected Subscribers.");
+                }
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -351,6 +447,7 @@ public class Publisher extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+
     /** Update the channel name of any connected Subscribers.
      *  Note that the channel name of connected Subscription Aggregators
      *  are not updated.
@@ -362,88 +459,15 @@ public class Publisher extends TypedAtomicActor {
     private void _updateChannelNameOfConnectedSubscribers(
             String previousChannelName, String newChannelName)
             throws IllegalActionException {
-        // If preinitialize() has not yet been called, then we don't
-        // yet know what Subscribers are using connected to the
-        // Publisher.
-        Manager manager = getManager();
-        if (manager == null) {
-            CompositeActor toplevel = (CompositeActor) (getContainer()
-                    .toplevel());
-            manager = new Manager(toplevel.workspace(), "PubManager");
-            toplevel.setManager(manager);
-        }
-        try {
-            // Create connections between Publishers and Subscribers.
-            manager.preinitializeAndResolveTypes();
-        } catch (KernelException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to preinitialize() while trying to update the connected"
-                            + " Subscribers.");
-        } finally {
-            try {
-                manager.wrapup();
-            } catch (Throwable throwable) {
-                // The Exit actor causes Manager.wrapup() to throw this.
-                if (!manager.isExitingAfterWrapup()) {
-                    throw new IllegalActionException(this, throwable,
-                            "Manager.wrapup() failed while trying to update the names"
-                                    + " of the connected Subscribers.");
-                }
-            }
-        }
-        // For each Subscriber, go and change the channel name
-        //for (IOPort port : output.deepConnectedInPortList()) {
-        Iterator ports = output.sinkPortList().iterator();
-        while (ports.hasNext()) {
-            IOPort port = (IOPort) ports.next();
-            NamedObj container = port.getContainer();
-            if (container instanceof Subscriber) {
-                Subscriber subscriber = (Subscriber) container;
-                if (subscriber.channel.getExpression().equals(
-                        previousChannelName)) {
-                    // Avoid updating SubscriptionAggregators that have regular
-                    // expressions that are different than the Publisher channel name.
-                    subscriber.channel.setExpression(newChannelName);
-                    subscriber.attributeChanged(subscriber.channel);
-                }
-            } else {
-                Receiver[][] receivers = port.getRemoteReceivers();
-                if (receivers != null) {
-                    for (int i = 0; i < receivers.length; i++) {
-                        if (receivers[i] != null) {
-                            for (int j = 0; j < receivers[i].length; j++) {
-                                if (receivers[i][j] != null) {
-                                    IOPort remotePort = receivers[i][j]
-                                            .getContainer();
-                                    if (remotePort != null) {
-                                        container = remotePort.getContainer();
-                                        if (container instanceof Subscriber) {
-                                            Subscriber subscriber = (Subscriber) container;
-                                            if (subscriber.channel
-                                                    .getExpression()
-                                                    .equals(previousChannelName)) {
-                                                // Avoid updating
-                                                // SubscriptionAggregators
-                                                // that have regular
-                                                // expressions that
-                                                // are different than
-                                                // the Publisher
-                                                // channel name.
-                                                subscriber.channel
-                                                        .setExpression(newChannelName);
-                                                subscriber
-                                                        .attributeChanged(subscriber.channel);
 
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+        for (Subscriber subscriber : subscribers()) {
+            if (subscriber.channel.getExpression().equals(
+                            previousChannelName)) {
+                // Avoid updating SubscriptionAggregators that have regular
+                // expressions that are different than the Publisher channel name.
+                subscriber.channel.setExpression(newChannelName);
+                subscriber.attributeChanged(subscriber.channel);
             }
         }
     }
-
 }

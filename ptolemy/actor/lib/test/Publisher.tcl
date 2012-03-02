@@ -277,7 +277,10 @@ test Publisher-2.0 {Test deletion of a Publisher} {
     set r1 [[[java::cast ptolemy.actor.lib.Recorder $recorder] getLatest 0] toString]
 
     # Delete the second publisher
-    set publisher2 [$model getEntity "Publisher2"]
+    set publisher2 [java::cast ptolemy.actor.lib.Publisher [$model getEntity "Publisher2"]]
+
+    # listToFullNames is defined in enums.tcl
+    set subscribersBeforeDeletion [listToFullNames [$publisher2 subscribers]]
     $publisher2 setContainer [java::null]
 
     # This should not crash.  We used to get: 
@@ -287,8 +290,8 @@ test Publisher-2.0 {Test deletion of a Publisher} {
     $manager execute
 
     set r2 [[[java::cast ptolemy.actor.lib.Recorder $recorder] getLatest 0] toString]
-    list $r1 $r2
-} {2 1}
+    list $r1 $r2 $subscribersBeforeDeletion
+} {2 1 .SubscriptionAggregatorPublisherDelete.SubscriptionAggregator}
 
 
 test Publisher-3.0 {Test no publisher} {
@@ -320,6 +323,22 @@ proc getChannels {model} {
 		[getSubscriberChannel $model SubscriptionAggregator2]]
 }
 
+### publishers() and subscribers()
+proc getPublishers {model subscriberName} {
+    return [list $subscriberName [lsort [listToFullNames [[java::cast ptolemy.actor.lib.Subscriber [$model getEntity $subscriberName]] publishers]]]]
+}
+proc getSubscribers {model publisherName} {
+    return [list $publisherName [lsort [listToFullNames [[java::cast ptolemy.actor.lib.Publisher [$model getEntity $publisherName]] subscribers]]]]
+}
+proc getPublishersAndSubscribers {model} {
+    return [list [getSubscribers $model Publisher] "\n" \
+		[getSubscribers $model Publisher2] "\n" \
+		[getPublishers $model Subscriber] "\n" \
+		[getPublishers $model Subscriber2] "\n" \
+		[getPublishers $model SubscriptionAggregator] "\n" \
+		[getPublishers $model SubscriptionAggregator2]]
+}
+
 test Publisher-4.0 {Channel Name Change: the initial values} {
     set model [readModel PublisherSubscriberChannelChange.xml] 
 
@@ -329,6 +348,17 @@ test Publisher-4.0 {Channel Name Change: the initial values} {
 
     getChannels $model
 } {{Publisher channel3} {Publisher2 foo} {Subscriber channel3} {Subscriber2 foo} {SubscriptionAggregator channel3} {SubscriptionAggregator2 channel.*}}
+
+
+test Publisher-4.0.5 {Channel Name Change: the initial values} {
+    # Uses 4.0 above
+    getPublishersAndSubscribers $model
+} {{Publisher {.PublisherSubscriberChannelChange.Subscriber .PublisherSubscriberChannelChange.SubscriptionAggregator .PublisherSubscriberChannelChange.SubscriptionAggregator2}} {
+} {Publisher2 .PublisherSubscriberChannelChange.Subscriber2} {
+} {Subscriber .PublisherSubscriberChannelChange.Publisher} {
+} {Subscriber2 .PublisherSubscriberChannelChange.Publisher2} {
+} {SubscriptionAggregator .PublisherSubscriberChannelChange.Publisher} {
+} {SubscriptionAggregator2 .PublisherSubscriberChannelChange.Publisher}}
 
 test Publisher-4.1 {Channel Name Change: change the Publisher name} {
     set model [readModel PublisherSubscriberChannelChange.xml] 
@@ -343,9 +373,23 @@ test Publisher-4.1 {Channel Name Change: change the Publisher name} {
     $model setManager $manager 
     $manager execute
 
-    getChannels $model
-} {{Publisher channel4} {Publisher2 foo} {Subscriber channel4} {Subscriber2 foo} {SubscriptionAggregator channel4} {SubscriptionAggregator2 channel.*}}
+    # Test out the subscribers() method. listToFullNames is defined in enums.tcl
+    set subscribers [listToFullNames [$publisher subscribers]]
 
+    list "[getChannels $model]\n [lsort $subscribers]"
+} {{{Publisher channel4} {Publisher2 foo} {Subscriber channel4} {Subscriber2 foo} {SubscriptionAggregator channel4} {SubscriptionAggregator2 channel.*}
+ .PublisherSubscriberChannelChange.Subscriber .PublisherSubscriberChannelChange.SubscriptionAggregator .PublisherSubscriberChannelChange.SubscriptionAggregator2}}
+
+
+test Publisher-4.1.5 {test out subscribers() and publishers()} {
+    # Uses 4.1 above
+    getPublishersAndSubscribers $model
+} {{Publisher {.PublisherSubscriberChannelChange.Subscriber .PublisherSubscriberChannelChange.SubscriptionAggregator .PublisherSubscriberChannelChange.SubscriptionAggregator2}} {
+} {Publisher2 .PublisherSubscriberChannelChange.Subscriber2} {
+} {Subscriber .PublisherSubscriberChannelChange.Publisher} {
+} {Subscriber2 .PublisherSubscriberChannelChange.Publisher2} {
+} {SubscriptionAggregator .PublisherSubscriberChannelChange.Publisher} {
+} {SubscriptionAggregator2 .PublisherSubscriberChannelChange.Publisher}}
 
 test Publisher-4.2 {Channel Name Change: change the Publisher name in an Opaque model} {
     set model [readModel auto/PublisherSubscriberOpaque.xml]
@@ -358,11 +402,20 @@ test Publisher-4.2 {Channel Name Change: change the Publisher name in an Opaque 
     $channel setExpression "channel4"
     $publisher attributeChanged $channel
 
-
+    # Test out the subscribers() method. listToFullNames is defined in enums.tcl
+    set subscribers [listToFullNames [$publisher subscribers]]
 
     list [getPublisherChannel $model CompositeActor.CompositeActor.Publisher] \
-	[getSubscriberChannel $model CompositeActor.Subscriber]
-} {{CompositeActor.CompositeActor.Publisher channel4} {CompositeActor.Subscriber channel4}}
+	[getSubscriberChannel $model CompositeActor.Subscriber] \
+	$subscribers
+} {{CompositeActor.CompositeActor.Publisher channel4} {CompositeActor.Subscriber channel4} .PublisherSubscriberOpaque.CompositeActor.Subscriber}
+
+test Publisher-4.2.5 {test out subscribers() and publishers()} {
+    # Uses 4.2 above
+    list \
+	[getPublishers $model CompositeActor.Subscriber] "\n" \
+	[getSubscribers $model CompositeActor.CompositeActor.Publisher] "\n"
+} {}
 
 test Publisher-4.3 {Channel Name Change: change the Publisher name in an Opaque model} {
     # Run the model from 4.2
@@ -370,8 +423,6 @@ test Publisher-4.3 {Channel Name Change: change the Publisher name in an Opaque 
     $model setManager $manager 
     $manager execute
 } {}
-
-
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
