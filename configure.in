@@ -858,6 +858,9 @@ ANT_EXCLUDE=''
 # Path of directories that contain source, used by the Ant's build rule.
 ANT_SRC=''
 
+# Paths of tests to exclude in Ant's build.xml
+ANT_EXCLUDE_TESTS=''
+
 # A shell function that adds its argument to the ECLIPSE_CLASSPATH_ENTRY_LIBS
 # and to ANT_CLASSPATH
 updateClasspath () {
@@ -873,6 +876,10 @@ updateExcludes () {
    ANT_EXCLUDE="$ANT_EXCLUDE <exclude name=\"$1\" />"
 }
 
+# A shell function that adds its arguments to ANT_EXCLUDE_TESTS.
+updateExcludeTests () {
+   ANT_EXCLUDE_TESTS="$ANT_EXCLUDE_TESTS <exclude name=\"$1\" />"
+}
 ########################################################################
 
 case "`uname -s`" in
@@ -1444,6 +1451,7 @@ else
    	        AC_MSG_WARN([Failed to find CUnit in /usr/local or
     $PTII/vendors/CUnit.
     CUnit is only necessary to test the C templates of the code generation facility])
+    	        updateExcludeTests **/ptolemy/cg/kernel/generic/program/procedural/c/type/test/junit/JUnitTclTest.java
             fi
         fi
     fi
@@ -5169,6 +5177,9 @@ AC_SUBST(ANT_CLASSPATH)
 
 # Paths to exclude in Ant's build.xml
 AC_SUBST(ANT_EXCLUDE)
+
+# Paths of tests to exclude in Ant's build.xml
+AC_SUBST(ANT_EXCLUDE_TESTS)
 
 # Packages to exclude from Ant targets that call javadoc
 AC_SUBST(ANT_JAVADOC_EXCLUDEPACKAGENAMES)

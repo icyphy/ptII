@@ -71,6 +71,7 @@
 
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
+    @ANT_EXCLUDE_TESTS@
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/KielerJUnitTest.*" />
@@ -363,8 +364,9 @@ For example:
       test.batch = ${test.batch}
 
     </echo>
-    <junit fork="yes"
+    <junit fork="yes" <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
 	   jvm="ptolemy/util/test/junit/javachdir"
+	   <!-- on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
 	   timeout="${timeout}">
