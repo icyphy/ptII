@@ -63,7 +63,7 @@ public class RecorderMessageHandler extends MessageHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Show the specified message and throwable information and record
+    /** Show the specified message and throwable information and record.
      *
      *  @param info The message.
      *  @param throwable The throwable.

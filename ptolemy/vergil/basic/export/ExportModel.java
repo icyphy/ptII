@@ -662,6 +662,7 @@ public class ExportModel {
                 } else if (args[i].equals("-web")) {
                     web = true;
                     copyJavaScriptFiles = true;
+                    force = true;
                     formatName = "htm";
                     openResults = true;
                     openComposites = true;

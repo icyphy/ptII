@@ -251,6 +251,7 @@ public class SearchResultsDialog extends PtolemyDialog
      *  @param includeNames True to include names of objects.
      *  @param recursive True to search within objects immediately contained.
      *  @param caseSensitive True to match the case.
+     *  @return The list of objects in the model that match the specified search.
      */
     protected Set<NamedObj> _find(
             NamedObj container, String text, boolean includeValues,

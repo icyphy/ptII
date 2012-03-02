@@ -264,7 +264,7 @@ public class HomerMainFrame extends JFrame {
 
     /** Get the selected screen orientation.
      *  @return The screen orientation.
-     *  @see ptolemy.homer.gui#setOrientation(ScreenOrientation orientation)
+     *  @see #setOrientation(ScreenOrientation)
      */
     public ScreenOrientation getOrientation() {
         if (_screenPanel.getSceneTabs().getPreferredSize().height > _screenPanel

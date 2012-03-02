@@ -44,10 +44,10 @@ import ptolemy.plot.Plot;
 /**
  TwoPlotExample is a simple example that uses displays two plots side by side
  To compile and run this application, do the following:
- <code>
+ <pre>
  javac -classpath ../../.. TwoPlotExample.java
  java -classpath ../../.. ptolemy.plot.demo.TwoPlotExample
- </code>
+ </pre>
 
  @author Christopher Hylands
  @version $Id$

@@ -51,8 +51,8 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class ExportParameters {
     
-    /** Construct an instance of this data structure with
-     *  default values, which are 
+    /** Construct an instance of this data structure.
+     *  The default values are:
      *  <br/> null for backgroundColor,
      *  <br/> false for copyJavaScriptFiles,
      *  <br/> null for directoryToExportTo,
@@ -64,8 +64,8 @@ public class ExportParameters {
         this(null);
     }
 
-    /** Construct an instance of this data structure with
-     *  default values, which are 
+    /** Construct an instance of this data structure.
+     *  The default values are:
      *  <br/> null for backgroundColor,
      *  <br/> false for copyJavaScriptFiles,
      *  <br/> false for openCompositesBeforeExport,

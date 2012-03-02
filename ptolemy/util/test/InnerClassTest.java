@@ -27,7 +27,7 @@
  */
 package ptolemy.util.test;
 
-/** This class has an inner class so that we can test objectToSourceFileName
+/** This class has an inner class so that we can test objectToSourceFileName.
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2

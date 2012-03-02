@@ -175,5 +175,6 @@ public class BluetoothChannel extends LimitedRangeChannel {
 
     ///////////////////////////////////////////////////////////////////
     ////// public variable
+    /** True if the range should be increased. */
     public static boolean increaseRange = false;
 }

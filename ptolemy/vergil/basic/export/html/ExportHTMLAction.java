@@ -801,6 +801,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
      *  HTML files or subdirectories.
      *  @param directory The directory into which to write any HTML
      *   that is created as a side effect.
+     *  @return HTML that describes the image map.
      *  @throws PrinterException If writing to the toc file fails.
      *  @throws IOException If IO fails.
      *  @throws IllegalActionException If reading parameters fails.

@@ -116,6 +116,8 @@ public abstract class WebContent extends StringParameter implements WebExportabl
 
     /** Override the base class to update the icon.
      *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If thrown while setting the
+     *  icon text or by the superclass.
      */
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         if (attribute == displayText) {

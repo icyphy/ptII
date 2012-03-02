@@ -16,7 +16,11 @@ for argument in "$@"
 do
     if [ "$nextArgumentIsClass" = "true" ]; then
          directory=`echo $argument | awk -F . '{printf("%s", $1); for( i=2; i<(NF-1); i++) { printf("/%s", $i)} printf("\n")}'`
-        break
+	 if [ ! -d $directory ]; then
+             directory=`echo $argument | awk -F / '{printf("%s", $1); for( i=2; i<(NF-1); i++) { printf("/%s", $i)} printf("\n")}'`
+         fi	     
+	 echo "javachdir: directory = $directory"
+         break
     fi
     if [ "$argument" = "org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner" ]; then
         nextArgumentIsClass=true

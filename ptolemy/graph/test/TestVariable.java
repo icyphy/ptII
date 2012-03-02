@@ -85,6 +85,7 @@ public class TestVariable implements InequalityTerm {
 
     /** Return the String value of this term.
      *  @return a String
+     *  @see #setValue(Object)
      */
     public Object getValue() {
         return _value;
@@ -148,6 +149,7 @@ public class TestVariable implements InequalityTerm {
     /** Set the value of this variable to the specified String.
      *  @param e a String
      *  @exception GraphActionException not thrown
+     *  @see #getValue()
      */
     public void setValue(Object e) throws GraphActionException {
         if (isSettable()) {

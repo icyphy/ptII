@@ -69,7 +69,7 @@ public class TestConstant implements InequalityTerm {
     }
 
     /** Return the information of this term. The information is a
-     *  String of the form: <i>name</i>(constant)_</i>value</i>.
+     *  String of the form: <i>name</i>(constant)_<i>value</i>.
      *  @return A String
      */
     public String getInfo() {
@@ -78,6 +78,7 @@ public class TestConstant implements InequalityTerm {
 
     /** Return the constant String value of this term.
      *  @return a String
+     *  @see #setValue(Object)
      */
     public Object getValue() {
         return _value;
@@ -130,6 +131,7 @@ public class TestConstant implements InequalityTerm {
     /** Throw an Exception.
      *  @param e an Object. Ignored by this method.
      *  @exception GraphActionException always thrown.
+     *  @see #getValue()
      */
     public void setValue(Object e) throws GraphActionException {
         throw new GraphActionException("TestConstant.setValue: This term "

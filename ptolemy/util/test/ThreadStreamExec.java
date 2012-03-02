@@ -31,7 +31,7 @@ import java.util.List;
 
 import ptolemy.util.StreamExec;
 
-/** Wrap StreamExec in a thread
+/** Wrap StreamExec in a thread.
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2
@@ -39,15 +39,21 @@ import ptolemy.util.StreamExec;
  @Pt.AcceptedRating Red (cxh)
  */
 public class ThreadStreamExec extends Thread {
+    /** Consruct a ThreadStreamExec.
+     *  @param name The name of the streamExec.
+     *  @param args The commands to be invoked.
+     */
     public ThreadStreamExec(String name, List args) {
         super(name);
         streamExec = new StreamExec();
         streamExec.setCommands(args);
     }
 
+    /** Start the streamExec. */
     public void run() {
         streamExec.start();
     }
 
+    /** The stream. */
     public StreamExec streamExec;
 }

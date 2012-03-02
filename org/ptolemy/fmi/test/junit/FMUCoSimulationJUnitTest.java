@@ -134,7 +134,7 @@ public class FMUCoSimulationJUnitTest {
     }
 
     /** Run FMI co-simulation tests.
-     *  <p>To run these tests, either us <code>ant test</code' or run:   
+     *  <p>To run these tests, either us <code>ant test</code> or run:   
      *  <code>(cd ../../..; java -classpath lib/jna.jar:lib/junit-4.8.2.jar:. org.ptolemy.fmi.test.junit.FMUCoSimulationJUnitTest)</code></p>
      *
      *  @param args Not used.

@@ -143,6 +143,10 @@ public class OutputRow {
                     int fmiFlag = ((Integer)function.invokeInt(
                                     new Object[] {fmiComponent, valueReferenceIntBuffer,
                                                   new NativeSizeT(1), valueBuffer})).intValue();
+                    if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                        throw new RuntimeException("Could not get the boolean with valueReference "
+                                + valueReference + ": " + fmiFlag);
+                    }
                     byte result = valueBuffer.get(0);
                     file.format("%c%d", separator, result);
 
@@ -154,6 +158,10 @@ public class OutputRow {
                     int fmiFlag = ((Integer)function.invokeInt(
                                     new Object[] {fmiComponent, valueReferenceIntBuffer,
                                                   new NativeSizeT(1), valueBuffer})).intValue();
+                    if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                        throw new RuntimeException("Could not get the integer with valueReference "
+                                + valueReference + ": " + fmiFlag);
+                    }
                     int result = valueBuffer.get(0);
                     file.format("%c%d", separator, result);
 
@@ -164,8 +172,11 @@ public class OutputRow {
                     int fmiFlag = ((Integer)function.invokeInt(
                                     new Object[] {fmiComponent, valueReferenceIntBuffer,
                                                   new NativeSizeT(1), valueBuffer})).intValue();
+                    if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                        throw new RuntimeException("Could not get the real with valueReference "
+                                + valueReference + ": " + fmiFlag);
+                    }
                     double result = valueBuffer.get(0);
-                            
                     if (separator==',') {
                         file.format(",%.16g", result);
                     } else {
@@ -182,6 +193,10 @@ public class OutputRow {
                     int fmiFlag = ((Integer)function.invokeInt(
                                     new Object[] {fmiComponent, valueReferenceIntBuffer,
                                                   new NativeSizeT(1), pointerByReference})).intValue();
+                    if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                        throw new RuntimeException("Could not get the string with valueReference "
+                                + valueReference + ": " + fmiFlag);
+                    }
                     Pointer pointer = pointerByReference.getValue();
                     file.format("%c%s", separator, pointer.getString(0));
                 } else {
