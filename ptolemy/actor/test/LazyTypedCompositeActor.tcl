@@ -96,10 +96,10 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="" class="ptolemy.actor.Director">
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
-        </property>
         <property name="LocalClock" class="ptolemy.actor.LocalClock">
-            <property name="clockDrift" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+            </property>
+            <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter">
