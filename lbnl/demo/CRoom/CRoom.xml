@@ -2,10 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CRoom" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="(finalTime-startTime)/timeStep+1">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="(finalTime-modelStartTime)/timeStep+1">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -35,7 +35,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 60.0]">
         </property>
     </property>
-    <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="modelStartTime" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
@@ -137,7 +137,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 435.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={411, 81, 1070, 754}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={411, 81, 1075, 734}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[862, 624]">
     </property>
@@ -160,7 +160,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="TRoo1,  TRoo2, 10*y1, 10*y2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={877, 420, 560, 452}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={877, 420, 558, 435}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[558, 391]">
         </property>
@@ -176,7 +176,7 @@ This is for illustration purposes only and not needed by the above model.</text>
 <xLabel>time in s</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="21600.0"/>
-<yRange min="0.0" max="24.25632519563863"/>
+<yRange min="0.0" max="19.91604991234484"/>
 </plot>?>
         </configure>
     </entity>
@@ -273,7 +273,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
-    <entity name="RunTime" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="RunTime" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -290,7 +290,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 590.0}">
         </property>
     </entity>
-    <entity name="SimulationTime" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="SimulationTime" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
