@@ -114,7 +114,7 @@ public class AutoCGKnownFailedTests extends AutoCGTests {
         try {
             int returnValue = ((Integer)_generateCodeMethod.invoke(null, (Object) args)).intValue();
             if (returnValue != 0) {
-                System.out.("Known Failure: Return value of the last command executed was not zero, it was: "
+                System.out.println("Known Failure: Return value of the last command executed was not zero, it was: "
                         + returnValue);
             }
         } catch (Throwable throwable) {
