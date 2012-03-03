@@ -1128,7 +1128,7 @@ hudson:
 	$(MAKE) -k USER=hudson \
 	PTIIHOME=/var/lib/hudson/jobs/ptII/workspace \
 	PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm \
-	JAR=/usr/bin/jar
+	JAR=/usr/bin/jar \
 	clean all jnlp src.jar setup test_setup update_andrews updateDOPCenterImage
 
 # caltrop requires -source 1.4, ptalon -source 1.5
