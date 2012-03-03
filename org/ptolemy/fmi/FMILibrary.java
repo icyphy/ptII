@@ -136,6 +136,7 @@ public interface FMILibrary extends Library {
          *  Each byte of the allocated memory should be set to 0.
          *  @param numberOfObjects The number of objects to be allocated.
          *  @param size The size of each object to be allocated.
+         *  @return The allocated memory.
          */
         Pointer apply(NativeSizeT numberOfObjects, NativeSizeT size);
     };

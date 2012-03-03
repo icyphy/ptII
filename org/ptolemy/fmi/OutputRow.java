@@ -43,7 +43,7 @@ import com.sun.jna.ptr.PointerByReference;
 /**
  * <p>This method is a port of outputRow() from
  * fmusdk/src/shared/sim_support.c which has the following license:
- * <pre>
+ *
  * FMU SDK license 
  *
  * Copyright (c) 2008-2011, QTronic GmbH. All rights reserved.
@@ -67,7 +67,7 @@ import com.sun.jna.ptr.PointerByReference;
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * </pre>
+ *
  * @author Christopher Brooks, based on sim_support.c by QTronic GmbH.
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
@@ -79,6 +79,16 @@ public class OutputRow {
      *  for floating-point numbers.  Otherwise, the given separator
      *  (e.g. ';' or '\t') is to separate columns, and ',' is used as
      *  decimal dot in floating-point numbers.
+     *  @param nativeLibrary The native library that contains
+     *  the fmi*() functions to be invoked.
+     *  @param fmiModelDescription An object that represents the
+     *  modelDescription.xml file.
+     *  @param fmiComponent The component being invoked.
+     *  @param time The time of this row.
+     *  @param file The output file
+     *  @param separator The separator character.
+     *  @param header True if the header containing the column
+     *  names should be printed.
      */
     public static void outputRow(NativeLibrary nativeLibrary,
             FMIModelDescription fmiModelDescription,

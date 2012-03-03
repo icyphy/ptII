@@ -132,6 +132,8 @@ public class FMUCoSimulation {
      *  <p>The format of the arguments is based on the fmusim command from the fmusdk
      *  by QTronic Gmbh.</p>
      *
+     *  @param args The arguments: file.fmu [endTime] [stepTime]
+     *  [loggingOn] [csvSeparator] [outputFile]
      *  @exception Exception If there is a problem parsing the .fmu file or invoking
      *  the methods in the shared library.
      */
