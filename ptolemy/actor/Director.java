@@ -704,9 +704,13 @@ public class Director extends Attribute implements Executable {
         
         // This method is final for performance reason.
         if (_startTime == null) {
-            if (isEmbedded()) {
+            if (isEmbedded() && getContainer() instanceof Actor) {
                 // This implementation assumes this method is only called
                 // during initialize. Is this a valid assumption?
+
+                // If we are cloning a configuration, then the
+                // container might be a
+                // ptolemy.moml.EnitityLibrary, not an Actor.
                 Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
                 if (executiveDirector != null) {
                     return executiveDirector.getModelTime();
