@@ -339,7 +339,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void addDebugListener(DebugListener listener) {
         if (_eventQueue != null) {
-            _eventQueue.addDebugListener(listener);
+            synchronized(_eventQueue) {
+                _eventQueue.addDebugListener(listener);
+            }
         }
 
         super.addDebugListener(listener);
@@ -656,9 +658,12 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  Any further accesses to this event queue needs synchronization.
      *  @return The event queue.
      */
+    /* Appears to not be used, and seems dangerous anyway
+     * since accesses to the event queue need to be synchronized.
     public DEEventQueue getEventQueue() {
         return _eventQueue;
     }
+    */
 
     /** Return the timestamp of the next event in the queue.
      *  The next iteration time, for example, is used to estimate the
@@ -671,30 +676,31 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     public Time getModelNextIterationTime() throws IllegalActionException {
         Time aFutureTime = Time.POSITIVE_INFINITY;
 
-        // Record the model next iteration time as the tag of the the earliest
-        // event in the queue.
-        if (_eventQueue.size() > 0) {
-            aFutureTime = _eventQueue.get().timeStamp();
-        }
+        synchronized (_eventQueue) {
+            // Record the model next iteration time as the tag of the the earliest
+            // event in the queue.
+            if (_eventQueue.size() > 0) {
+                aFutureTime = _eventQueue.get().timeStamp();
+            }
 
-        // Iterate the event queue to find the earliest event with a bigger tag
-        // ((either timestamp or microstop). If such an event exists,
-        // use its time as the model next iteration time. If no such event
-        // exists, it means that the model next iteration time still needs to
-        // be resolved. In other words, the model next iteration time is
-        // just the current time.
-        Object[] events = _eventQueue.toArray();
-        for (int i = 0; i < events.length; i++) {
-            DEEvent event = (DEEvent) events[i];
-            Time eventTime = event.timeStamp();
-            int eventMicrostep = event.microstep();
-            if (eventTime.compareTo(getModelTime()) > 0
-                    || eventMicrostep > _microstep) {
-                aFutureTime = eventTime;
-                break;
+            // Iterate the event queue to find the earliest event with a bigger tag
+            // ((either timestamp or microstop). If such an event exists,
+            // use its time as the model next iteration time. If no such event
+            // exists, it means that the model next iteration time still needs to
+            // be resolved. In other words, the model next iteration time is
+            // just the current time.
+            Object[] events = _eventQueue.toArray();
+            for (int i = 0; i < events.length; i++) {
+                DEEvent event = (DEEvent) events[i];
+                Time eventTime = event.timeStamp();
+                int eventMicrostep = event.microstep();
+                if (eventTime.compareTo(getModelTime()) > 0
+                        || eventMicrostep > _microstep) {
+                    aFutureTime = eventTime;
+                    break;
+                }
             }
         }
-
         // Go through hierarchy to find the minimum step.
         Director executiveDirector = ((CompositeActor) getContainer())
                 .getExecutiveDirector();
@@ -776,72 +782,74 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
-        _eventQueue.clear();
+        synchronized (_eventQueue) {
+            _eventQueue.clear();
 
-        // Reset the following private variables.
-        _disabledActors = null;
-        _exceedStopTime = false;
-        _noMoreActorsToFire = false;
-        _realStartTime = System.currentTimeMillis();
-        _stopFireRequested = false;
+            // Reset the following private variables.
+            _disabledActors = null;
+            _exceedStopTime = false;
+            _noMoreActorsToFire = false;
+            _realStartTime = System.currentTimeMillis();
+            _stopFireRequested = false;
 
-        // Initialize the microstep to zero, even though
-        // DE normally wants to run with microstep 1 or higher.
-        // During initialization, some contained actors will request
-        // firings. One of those might be a Continuous subsystem,
-        // which will explicitly request a firing at microstep 0.
-        // Others will have their requests automatically set
-        // to microstep 1. Thus, with normal DE-only models,
-        // the only events in the event queue after initialization
-        // will all have microstep 1, and hence that is where the
-        // simulation will start.
-        _microstep = 0;
-        // This could be getting re-initialized during execution
-        // (e.g., if we are inside a modal model), in which case,
-        // if the enclosing director is a superdense time director,
-        // we should initialize to its microstep, not to our own.
-        // NOTE: Some (weird) directors pretend they are not embedded even
-        // if they are (e.g. in Ptides), so we call _isEmbedded() to give
-        // the subclass the option of pretending it is not embedded.
-        if (isEmbedded()) {
-            Nameable container = getContainer();
-            if (container instanceof CompositeActor) {
-                Director executiveDirector = ((CompositeActor) container)
-                        .getExecutiveDirector();
-                if (executiveDirector instanceof SuperdenseTimeDirector) {
-                    _microstep = ((SuperdenseTimeDirector) executiveDirector)
-                            .getIndex();
+            // Initialize the microstep to zero, even though
+            // DE normally wants to run with microstep 1 or higher.
+            // During initialization, some contained actors will request
+            // firings. One of those might be a Continuous subsystem,
+            // which will explicitly request a firing at microstep 0.
+            // Others will have their requests automatically set
+            // to microstep 1. Thus, with normal DE-only models,
+            // the only events in the event queue after initialization
+            // will all have microstep 1, and hence that is where the
+            // simulation will start.
+            _microstep = 0;
+            // This could be getting re-initialized during execution
+            // (e.g., if we are inside a modal model), in which case,
+            // if the enclosing director is a superdense time director,
+            // we should initialize to its microstep, not to our own.
+            // NOTE: Some (weird) directors pretend they are not embedded even
+            // if they are (e.g. in Ptides), so we call _isEmbedded() to give
+            // the subclass the option of pretending it is not embedded.
+            if (isEmbedded()) {
+                Nameable container = getContainer();
+                if (container instanceof CompositeActor) {
+                    Director executiveDirector = ((CompositeActor) container)
+                            .getExecutiveDirector();
+                    if (executiveDirector instanceof SuperdenseTimeDirector) {
+                        _microstep = ((SuperdenseTimeDirector) executiveDirector)
+                                .getIndex();
+                    }
                 }
             }
-        }
-        super.initialize();
+            super.initialize();
 
-        // Register the stop time as an event such that the model is
-        // guaranteed to stop at that time. This event also serves as
-        // a guideline for an embedded Continuous model to know how much
-        // further to integrate into future. But only do this if the
-        // stop time is finite.
-        Time stopTime = getModelStopTime();
-        if (!stopTime.isPositiveInfinite()) {
-            fireAt((Actor) getContainer(), stopTime, 1);
-        }
+            // Register the stop time as an event such that the model is
+            // guaranteed to stop at that time. This event also serves as
+            // a guideline for an embedded Continuous model to know how much
+            // further to integrate into future. But only do this if the
+            // stop time is finite.
+            Time stopTime = getModelStopTime();
+            if (!stopTime.isPositiveInfinite()) {
+                fireAt((Actor) getContainer(), stopTime, 1);
+            }
 
-        if (isEmbedded() && !_eventQueue.isEmpty()) {
-            // If the event queue is not empty and the container is not at
-            // the top level, ask the upper level director in the
-            // hierarchy to refire the container at the timestamp of
-            // the earliest event of the local event queue.
-            // This design allows the upper level director to keep a
-            // relatively short event queue.
-            _requestFiring();
-            // Indicate that fireAt() request should be passed
-            // up the chain if they are made before the next iteration.
-            _delegateFireAt = true;
-        } else {
-            _delegateFireAt = false;
-        }
+            if (isEmbedded() && !_eventQueue.isEmpty()) {
+                // If the event queue is not empty and the container is not at
+                // the top level, ask the upper level director in the
+                // hierarchy to refire the container at the timestamp of
+                // the earliest event of the local event queue.
+                // This design allows the upper level director to keep a
+                // relatively short event queue.
+                _requestFiring();
+                // Indicate that fireAt() request should be passed
+                // up the chain if they are made before the next iteration.
+                _delegateFireAt = true;
+            } else {
+                _delegateFireAt = false;
+            }
 
-        _isInitializing = false;
+            _isInitializing = false;
+        }
     }
 
     /** Indicate that a schedule for the model may no longer be valid.
@@ -903,39 +911,39 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     _microstep = 0;
                 }
             }
-        }
-        boolean stop = ((BooleanToken) stopWhenQueueIsEmpty.getToken())
-                .booleanValue();
+            boolean stop = ((BooleanToken) stopWhenQueueIsEmpty.getToken())
+                    .booleanValue();
 
-        // Request refiring and/or stop the model.
-        // There are two conditions to stop the model.
-        // 1. There are no more actors to be fired (i.e. event queue is
-        // empty), and either of the following conditions is satisfied:
-        //     a. the stopWhenQueueIsEmpty parameter is set to true.
-        //     b. the current model time equals the model stop time.
-        // 2. The event queue is not empty, but the current time exceeds
-        // the stop time.
-        if (moreOutputsToTransfer) {
-            fireContainerAt(getModelTime());
-        } else if (_noMoreActorsToFire
-                && (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
-            if (_debugging) {
-                _debug("No more actors to fire and time to stop.");
+            // Request refiring and/or stop the model.
+            // There are two conditions to stop the model.
+            // 1. There are no more actors to be fired (i.e. event queue is
+            // empty), and either of the following conditions is satisfied:
+            //     a. the stopWhenQueueIsEmpty parameter is set to true.
+            //     b. the current model time equals the model stop time.
+            // 2. The event queue is not empty, but the current time exceeds
+            // the stop time.
+            if (moreOutputsToTransfer) {
+                fireContainerAt(getModelTime());
+            } else if (_noMoreActorsToFire
+                    && (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
+                if (_debugging) {
+                    _debug("No more actors to fire and time to stop.");
+                }
+                _exceedStopTime = true;
+                result = false;
+            } else if (_exceedStopTime) {
+                // If the current time is bigger than the stop time,
+                // stop the model execution.
+                result = false;
+            } else if (isEmbedded() && !_eventQueue.isEmpty()) {
+                // If the event queue is not empty and the container is an
+                // embedded model, ask the upper level director in the
+                // hierarchy to refire the container at the timestamp of the
+                // first event of the local event queue.
+                // This design allows the upper level director (actually all
+                // levels in hierarchy) to keep a relatively short event queue.
+                _requestFiring();
             }
-            _exceedStopTime = true;
-            result = false;
-        } else if (_exceedStopTime) {
-            // If the current time is bigger than the stop time,
-            // stop the model execution.
-            result = false;
-        } else if (isEmbedded() && !_eventQueue.isEmpty()) {
-            // If the event queue is not empty and the container is an
-            // embedded model, ask the upper level director in the
-            // hierarchy to refire the container at the timestamp of the
-            // first event of the local event queue.
-            // This design allows the upper level director (actually all
-            // levels in hierarchy) to keep a relatively short event queue.
-            _requestFiring();
         }
         if (isEmbedded()) {
             // Indicate that fireAt() requests should be passed up the
@@ -1035,31 +1043,33 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         // If embedded, check the timestamp of the next event to decide
         // whether this director is ready to fire.
-        Time modelTime = getModelTime();
-        Time nextEventTime = Time.POSITIVE_INFINITY;
+        synchronized(_eventQueue) {
+            Time modelTime = getModelTime();
+            Time nextEventTime = Time.POSITIVE_INFINITY;
 
-        if (!_eventQueue.isEmpty()) {
-            DEEvent nextEvent = _eventQueue.get();
-            nextEventTime = nextEvent.timeStamp();
-        }
-
-        // If the model time is larger (later) than the first event
-        // in the queue, then
-        // catch up with the current model time by discarding
-        // the old events. Do not, however, discard events whose
-        // index but not time has passed.
-        while (modelTime.compareTo(nextEventTime) > 0) {
-            DEEvent skippedEvent = _eventQueue.take();
-            if (_debugging) {
-                _debug("Skipping event at time (" + nextEventTime
-                        + ") destined for actor "
-                        + skippedEvent.actor().getFullName());
-            }
             if (!_eventQueue.isEmpty()) {
                 DEEvent nextEvent = _eventQueue.get();
                 nextEventTime = nextEvent.timeStamp();
-            } else {
-                nextEventTime = Time.POSITIVE_INFINITY;
+            }
+
+            // If the model time is larger (later) than the first event
+            // in the queue, then
+            // catch up with the current model time by discarding
+            // the old events. Do not, however, discard events whose
+            // index but not time has passed.
+            while (modelTime.compareTo(nextEventTime) > 0) {
+                DEEvent skippedEvent = _eventQueue.take();
+                if (_debugging) {
+                    _debug("Skipping event at time (" + nextEventTime
+                            + ") destined for actor "
+                            + skippedEvent.actor().getFullName());
+                }
+                if (!_eventQueue.isEmpty()) {
+                    DEEvent nextEvent = _eventQueue.get();
+                    nextEventTime = nextEvent.timeStamp();
+                } else {
+                    nextEventTime = Time.POSITIVE_INFINITY;
+                }
             }
         }
         // NOTE: An alternative would be to throw an exception. This means that the
@@ -1193,7 +1203,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     public void removeDebugListener(DebugListener listener) {
         if (_eventQueue != null) {
-            _eventQueue.removeDebugListener(listener);
+            synchronized(_eventQueue) {
+                _eventQueue.removeDebugListener(listener);
+            }
         }
 
         super.removeDebugListener(listener);
@@ -1311,7 +1323,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _disabledActors = null;
-        _eventQueue.clear();
+        synchronized(_eventQueue) {
+            _eventQueue.clear();
+        }
         _noMoreActorsToFire = false;
         _microstep = 0;
     }
@@ -1459,7 +1473,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
 
         DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
-        _eventQueue.put(newEvent);
+        synchronized(_eventQueue) {
+            _eventQueue.put(newEvent);
+        }
     }
 
     /** Put a trigger event into the event queue. A trigger event is
@@ -1528,7 +1544,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         // Register this trigger event.
         DEEvent newEvent = new DEEvent(ioPort, getModelTime(), microstep, depth);
-        _eventQueue.put(newEvent);
+        synchronized(_eventQueue) {
+            _eventQueue.put(newEvent);
+        }
     }
 
     /** Advance the current model tag to that of the earliest event in
@@ -1900,60 +1918,53 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 // Otherwise, if the event queue is empty,
                 // a blocking read is performed on the queue.
                 // stopFire() needs to also cause this to fall out!
-                while (_eventQueue.isEmpty() && !_stopRequested
-                        && !_stopFireRequested) {
-                    if (_debugging) {
-                        _debug("Queue is empty. Waiting for input events.");
-                    }
-
-                    Thread.yield();
-
-                    synchronized (_eventQueue) {
-                        // Need to check _stopFireRequested again inside
-                        // the synchronized block, because it may have changed.
-                        if (_eventQueue.isEmpty() && !_stopRequested
-                                && !_stopFireRequested) {
-                            try {
-                                // NOTE: Release the read access held
-                                // by this thread to prevent deadlocks.
-                                // NOTE: If a ChangeRequest has been requested,
-                                // then _eventQueue.notifyAll() is called
-                                // and stopFire() is called, so we will stop
-                                // waiting for events. However,
-                                // CompositeActor used to call stopFire() before
-                                // queuing the change request, which created the risk
-                                // that the below wait() would be terminated by
-                                // a notifyAll() on _eventQueue with _stopFireRequested
-                                // having been set, but before the change request has
-                                // actually been filed.  See CompositeActor.requestChange().
-                                // Does this matter? It means that on the next invocation
-                                // of the fire() method, we could resume waiting on an empty queue
-                                // without having filed the change request. That filing will
-                                // no longer succeed in interrupting this wait, since
-                                // stopFire() has already been called. Only on the next
-                                // instance of change request would the first change
-                                // request get a chance to execute.
-                                workspace().wait(_eventQueue);
-                            } catch (InterruptedException e) {
-                                // If the wait is interrupted,
-                                // then stop waiting.
-                                break;
-                            }
+                synchronized (_eventQueue) {
+                    while (_eventQueue.isEmpty() && !_stopRequested
+                            && !_stopFireRequested) {
+                        if (_debugging) {
+                            _debug("Queue is empty. Waiting for input events.");
                         }
-                    } // Close synchronized block
-                } // Close the blocking read while loop
 
-                // To reach this point, either the event queue is not empty,
-                // or _stopRequested or _stopFireRequested is true, or an interrupted exception
-                // happened.
-                if (_eventQueue.isEmpty()) {
-                    // Stop is requested or this method is interrupted.
-                    // This can occur, for example, if a change has been requested.
-                    // jump out of the loop: LOOPLABEL::GetNextEvent
-                    return null;
-                }
-                // At least one event is found in the event queue.
-                nextEvent = _eventQueue.get();
+                        try {
+                            // NOTE: Release the read access held
+                            // by this thread to prevent deadlocks.
+                            // NOTE: If a ChangeRequest has been requested,
+                            // then _eventQueue.notifyAll() is called
+                            // and stopFire() is called, so we will stop
+                            // waiting for events. However,
+                            // CompositeActor used to call stopFire() before
+                            // queuing the change request, which created the risk
+                            // that the below wait() would be terminated by
+                            // a notifyAll() on _eventQueue with _stopFireRequested
+                            // having been set, but before the change request has
+                            // actually been filed.  See CompositeActor.requestChange().
+                            // Does this matter? It means that on the next invocation
+                            // of the fire() method, we could resume waiting on an empty queue
+                            // without having filed the change request. That filing will
+                            // no longer succeed in interrupting this wait, since
+                            // stopFire() has already been called. Only on the next
+                            // instance of change request would the first change
+                            // request get a chance to execute.
+                            workspace().wait(_eventQueue);
+                        } catch (InterruptedException e) {
+                            // If the wait is interrupted,
+                            // then stop waiting.
+                            break;
+                        }
+                    } // Close the blocking read while loop
+
+                    // To reach this point, either the event queue is not empty,
+                    // or _stopRequested or _stopFireRequested is true, or an interrupted exception
+                    // happened.
+                    if (_eventQueue.isEmpty()) {
+                        // Stop is requested or this method is interrupted.
+                        // This can occur, for example, if a change has been requested.
+                        // jump out of the loop: LOOPLABEL::GetNextEvent
+                        return null;
+                    }
+                    // At least one event is found in the event queue.
+                    nextEvent = _eventQueue.get();
+                } // Close synchronized block
             }
 
             // This is the end of the different behaviors of embedded and
@@ -2155,7 +2166,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     // However, there could be events with the same tag
                     // and different depths, e.g. a trigger event and a pure
                     // event going to the same actor.
-                    _eventQueue.take();
+                    synchronized (_eventQueue) {
+                        _eventQueue.take();
+                    }
                 } else {
                     // Next event has a future tag or a different destination.
                     break;
@@ -2283,7 +2296,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     protected void _requestFiring() throws IllegalActionException {
         DEEvent nextEvent = null;
-        nextEvent = _eventQueue.get();
+        synchronized (_eventQueue) {
+            nextEvent = _eventQueue.get();
+        }
 
         if (_debugging) {
             CompositeActor container = (CompositeActor) getContainer();
