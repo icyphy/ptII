@@ -184,6 +184,12 @@ test Test-1.5 {Export} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="LocalClock" class="ptolemy.actor.LocalClock">
+            <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+            </property>
+            <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -200,9 +206,7 @@ test Test-1.5 {Export} {
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
-        </property>
-        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
