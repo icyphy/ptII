@@ -34,7 +34,7 @@ ME =		ptolemy/domains/de/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		AssemblyLine Clock \
+DIRS =		AssemblyLine Clock ClockDrift \
 		Inspection LongRuns ModalModel \
 		QueueAndServer TimingParadox RealTimeComposite \
 		SmartSender VariableDelay
