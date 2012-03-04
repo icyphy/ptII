@@ -401,25 +401,27 @@ public class SearchResultsDialog extends PtolemyDialog
     class ResultsTableModel extends AbstractTableModel {
         
         /** Populate the _results list.
-         *  @param results The set of search results.
          */
         public ResultsTableModel() {
             _results = new NamedObj[0];
         }
 
         /** Return the number of columns, which is one.
+	 *  @return the number of columns, which is 1.   
          */
         public int getColumnCount() {
             return 1;
         }
 
         /** Get the number of rows.
+         *  @return the number of rows.
          */
         public int getRowCount() {
             return _results.length;
         }
 
         /** Get the column header name.
+	 *  @return The string "Found in (select to highlight)".   
          *  @see javax.swing.table.TableModel#getColumnName(int)
          */
         public String getColumnName(int col) {
@@ -429,6 +431,7 @@ public class SearchResultsDialog extends PtolemyDialog
         /** Get the value at a particular row and column.
          *  @param row The row.
          *  @param col The column.
+	 *  @return the value.
          */
         public Object getValueAt(int row, int col) {
             return _results[row];

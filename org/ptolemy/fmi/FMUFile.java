@@ -214,7 +214,7 @@ public class FMUFile {
 
     /** Unzip a file into a temporary directory.
      *  Based on http://java.sun.com/developer/technicalArticles/Programming/compression/.
-     *  @param zipFilename  The file to be unzipped.
+     *  @param zipFileName  The file to be unzipped.
      *  @return the list of files that were extracted.
      *  @exception IOException if the file cannot be opened, if there are problems reading
      *  the zip file or if there are problems creating the files or directories.
