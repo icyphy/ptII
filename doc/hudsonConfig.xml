@@ -143,7 +143,7 @@
 PTII=${WORKSPACE}
 LD_LIBRARY_PATH=${WORKSPACE}/lbnl/lib/util:${WORKSPACE}/lib:/usr/local/matlab-r2008a/bin/glnxa64:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/lib:/usr/local/lib:${LD_LIBRARY_PATH}
 CLASSPATH=/usr/java/JMF-2.1.1e/lib/jmf.jar:/usr/java/jai-1_1_3/lib/jai_codec.jar:/usr/java/jai-1_1_3/lib/jai_core.jar:/usr/java/jai-1_1_3/lib/mlibwrapper_jai.jar:.
-PATH=${PATH}:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/bin:/usr/local/sbin:/usr/local/bin
+PATH=/usr/local/bin:${PATH}:${WORKSPACE}/vendors/misc/dbxml-2.5.16/install/bin:/usr/local/sbin:/usr/local/bin
 TOSROOT=${WORKSPACE}/vendors/ptinyos/tinyos-1.x
 TOSDIR=${WORKSPACE}/vendors/ptinyos/tinyos-1.x/tos
 PTINYOS_MOMLROOT=${WORKSPACE}/vendors/ptinyos/moml
@@ -446,7 +446,7 @@ export PTII=$WORKSPACE
           </hudson.tasks.Shell>
           <hudson.tasks.Shell>
             <command>cd $PTII/adm/gen-9.0
-make USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm JAR=/usr/bin/jar hudson</command>
+make -k USER=hudson PTIIHOME=/var/lib/hudson/jobs/ptII/workspace PTIIADM=/var/lib/hudson/jobs/ptII/workspace/adm JAR=/usr/bin/jar hudson</command>
           </hudson.tasks.Shell>
         </originalValue>
         <propertyOverridden>false</propertyOverridden>
