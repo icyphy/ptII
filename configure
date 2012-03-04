@@ -7905,6 +7905,7 @@ $as_echo_n "checking for Java Native Access (JNA) jar... " >&6; }
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/lib/jna.jar" >&5
 $as_echo "$PTII/lib/jna.jar" >&6; }; fi
 	JNA_JAR="$PTII/lib/jna.jar"
+	PTFMI_DIR=fmi
 	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi"
         updateClasspath "$JNA_JAR"
     else
