@@ -462,7 +462,7 @@ PTEXCEL_PACKAGES=	@PTEXCEL_PACKAGES@
 PTFMI_DIR =		@PTFMI_DIR@
 
 # PTFMI_PACKAGES is used in doc/makefile
-PTFMI_PACKAGES =	@PTFMI_PACKAGES#
+PTFMI_PACKAGES =	@PTFMI_PACKAGES@
 
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
