@@ -450,7 +450,7 @@ public class SearchResultsDialog extends PtolemyDialog
          *  @param column The column number.
          *  @return false.
          */
-        public boolean isCellEditable(int row, int col) {
+        public boolean isCellEditable(int row, int column) {
             return false;
         }
         
