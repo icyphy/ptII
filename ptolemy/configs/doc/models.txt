@@ -212,6 +212,7 @@ $CLASSPATH/ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml
 $CLASSPATH/ptolemy/domains/de/demo/AssemblyLine/AssemblyLine.xml
 $CLASSPATH/ptolemy/domains/de/demo/Clock/Clock.xml
+$CLASSPATH/ptolemy/domains/de/demo/ClockDrift/ClockDrift.xml
 $CLASSPATH/ptolemy/domains/de/demo/Inspection/Inspection.xml
 $CLASSPATH/ptolemy/domains/de/demo/LongRuns/LongRuns.xml
 $CLASSPATH/ptolemy/domains/de/demo/ModalModel/ModalModel.xml
