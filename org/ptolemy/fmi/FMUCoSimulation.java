@@ -233,7 +233,7 @@ public class FMUCoSimulation {
                     callbacks,
                     loggingOn});
         if (fmiComponent.equals(Pointer.NULL)) {
-            new RuntimeException("Could not instantiate model.");
+            throw new RuntimeException("Could not instantiate model.");
         }
 
         double startTime = 0;

@@ -210,7 +210,7 @@ public class OutputRow {
                     Pointer pointer = pointerByReference.getValue();
                     file.format("%c%s", separator, pointer.getString(0));
                 } else {
-                    file.format("%cNoValueForType=%d", separator, scalarVariable.type);
+                    file.format("%cNoValueForType=%s", separator, scalarVariable.type.getClass().getName());
                 }
             }
         }

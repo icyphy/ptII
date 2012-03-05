@@ -154,18 +154,19 @@ public class FMUCoSimulationJUnitTest {
     public static String readFile(String fileName) throws IOException {
         FileInputStream fileInputStream = null; 
         DataInputStream dataInputStream = null;
+        BufferedReader bufferedReader = null;
         StringBuffer results = new StringBuffer();
         try {
             fileInputStream = new FileInputStream(fileName);
             dataInputStream = new DataInputStream(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(dataInputStream));
+            bufferedReader = new BufferedReader(new InputStreamReader(dataInputStream));
             String line;
             while ((line = bufferedReader.readLine()) != null)   {
                 results.append(line + lineSeparator);
             }
         } finally {
-            if (dataInputStream != null) {
-                dataInputStream.close();
+            if (bufferedReader != null) {
+                bufferedReader.close();
             }
         }
         return results.toString();

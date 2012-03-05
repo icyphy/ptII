@@ -59,7 +59,7 @@ public class FMIScalarVariable {
     }
 
     /** Create a ScalarVariable from an XML Element.
-     *  @element element The XML Element that contains attributes.
+     *  @param element The XML Element that contains attributes.
      */
     public FMIScalarVariable(Element element) {
         name = element.getAttribute("name");

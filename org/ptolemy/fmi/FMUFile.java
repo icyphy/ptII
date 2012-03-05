@@ -81,6 +81,11 @@ public class FMUFile {
             }
         }
 
+        if (modelDescriptionFile == null) {
+            throw new IOException("The .fmu file does not contain a modelDescription.xml file.");
+        }
+
+        // Determine the path to the shared object.
         String topDirectory = modelDescriptionFile.getParent();
         String osName = System.getProperty("os.name").toLowerCase();
         String extension = ".so";
@@ -231,7 +236,10 @@ public class FMUFile {
 
         // Unzip in a temporary directory.
         File topDirectoryFile = File.createTempFile("FMUFile", ".tmp");
-        topDirectoryFile.delete();
+        if (!topDirectoryFile.delete()) {
+            throw new IOException("Could not delete temporary file "
+                    + topDirectoryFile);
+        }
         if (!topDirectoryFile.mkdir()) {
             throw new IOException("Could not create directory "
                     + topDirectoryFile);
