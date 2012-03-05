@@ -506,6 +506,7 @@ For example:
     <cobertura-instrument todir="${instrumented.dir}">
       <fileset defaultexcludes="yes"
 	       dir="${basedir}">
+	<include name="org.ptolemy/**/*.class" />
 	<include name="ptolemy/**/*.class" />
 	<exclude name="**/test/*.class" />
 	<exclude name="**/junit/*.class" />
