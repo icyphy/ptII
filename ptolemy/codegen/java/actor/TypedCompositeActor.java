@@ -212,6 +212,8 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         // so many conditionals.
         if (!(compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor && ((BooleanToken) _codeGenerator.generateEmbeddedCode
                 .getToken()).booleanValue())) {
+            boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+                .booleanValue();
             if (!_codeGenerator.isTopLevel()) {
                 code.append(super.generateFireFunctionCode());
             } else {
@@ -223,6 +225,11 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
                         // Needed by
                         // ptolemy/codegen/java/domains/sdf/lib/test/auto/SampleDelay5.xml
                         code.append(super.generateFireFunctionCode());
+                     } else if (!inline) {
+                        // If we are generating non-inline code, then generate the fire function methods. 
+                        // Test case:
+                        // $PTII/bin/ptcodegen -generatorPackage ptolemy.codegen.java -inline false $PTII/ptolemy/codegen/test/auto/testCase.xml
+                         code.append(super.generateFireFunctionCode());
                     } else {
                         code.append(_codeGenerator
                                 .comment("Skipping creating top level here, thus avoiding duplicated code."));
