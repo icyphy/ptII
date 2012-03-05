@@ -29,6 +29,8 @@ package ptolemy.actor.lib.fmi;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMIRealType;
@@ -118,7 +120,7 @@ public class FMUImport extends TypedCompositeActor {
         super.attributeChanged(attribute);
     }
 
-    /** 
+    /**
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -157,10 +159,10 @@ public class FMUImport extends TypedCompositeActor {
             }
             _fmuFileModificationTime = modificationTime;
 
-            FMIModelDescription fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
+            _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
             
             // Instantiate ports and parameters.
-            for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
+            for (FMIScalarVariable scalar : _fmiModelDescription.modelVariables) {
                 if (scalar.type instanceof FMIRealType) {
                     if (scalar.variability == FMIScalarVariable.Variability.parameter) {
                         Parameter parameter = new Parameter(this, scalar.name);
@@ -178,18 +180,41 @@ public class FMUImport extends TypedCompositeActor {
                             + scalar.type);
                 }
             }
+            String library = null;
+            try {
+                library = FMUFile.fmuSharedLibrary(_fmiModelDescription);
+                System.out.println("About to load " + library);
+                System.load(library);
+            } catch (Throwable throwable) {
+                List<String> binariesFiles = new LinkedList<String>();
+                for (File file : _fmiModelDescription.files) {
+                    if (file.toString().indexOf("binaries") != -1) {
+                        binariesFiles.add(file.toString() + "\n");
+                    }
+                }
+                String message = "Failed to load the \""
+                        + library + "\" shared library, which was created "
+                        + "by unzipping \"" +
+                        fmuFile.asFile()
+                        + "\". Usually, this is because the .fmu file does "
+                        + "not contain a shared library for the current "
+                        + "architecture.  The fmu file contained the "
+                        + "following files with 'binaries' in the path:\n" 
+                        + binariesFiles;
+                System.out.println(this.getFullName() + ": "
+                        + message + "\n Original error:\n " 
+                        + throwable);
+                // Note that Variable.propagate() will handle this error and
+                // hide it.
+                throw new IllegalActionException(this, throwable, message);
+            }
 
-            System.load(FMUFile.fmuSharedLibrary(fmiModelDescription));
 
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to unzip, read in or process \"" + fmuFileName + "\".");
         }
     }
-
-    
-    
-
 
     /** The name of the fmuFile.
      *  The _fmuFileName field is set the first time we read
@@ -204,4 +229,9 @@ public class FMUImport extends TypedCompositeActor {
      *  <i>fmuFile</i> parameter the last time the file was read.
      */
     private long _fmuFileModificationTime = -1;
+
+    /** A representation of the fmiModelDescription element of a
+     *  Functional Mock-up Unit (FMU) file.
+     */
+    FMIModelDescription _fmiModelDescription;
 }
