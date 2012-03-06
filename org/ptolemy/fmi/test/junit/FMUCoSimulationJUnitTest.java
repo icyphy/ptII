@@ -106,34 +106,34 @@ public class FMUCoSimulationJUnitTest {
     /** Run the dq co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */   
-    // @org.junit.Test
-    // public void runDq() throws Exception {
-    //     cosimulate("dq");
-    // }
+    @org.junit.Test
+    public void runDq() throws Exception {
+        cosimulate("dq");
+    }
 
     /** Run the inc co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */   
-    //@org.junit.Test
-    //public void runInc() throws Exception {
-    //    cosimulate("inc");
-    //}
+    @org.junit.Test
+    public void runInc() throws Exception {
+       cosimulate("inc");
+    }
 
     /** Run the values co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */   
-    //@org.junit.Test
-    //public void runValues() throws Exception {
-    //    cosimulate("values");
-    //}
+    @org.junit.Test
+    public void runValues() throws Exception {
+       cosimulate("values");
+    }
 
     /** Run the vanDerPol co-simulation functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */   
-    // @org.junit.Test
-    // public void runVanDerPol() throws Exception {
-    //     cosimulate("vanDerPol");
-    // }
+    @org.junit.Test
+    public void runVanDerPol() throws Exception {
+        cosimulate("vanDerPol");
+    }
 
     /** Run FMI co-simulation tests.
      *  <p>To run these tests, either us <code>ant test</code> or run:   
