@@ -76,7 +76,8 @@ PTCLASSALLJARS = \
 	PrintingPress/PrintingPress.jar \
 	TREX/TREX.jar \
 	PtidesPorts/PtidesPorts.jar \
-	PtidesSynchrophasor/PtidesSynchrophasor.jar
+	PtidesSynchrophasor/PtidesSynchrophasor.jar \
+	SimplestPossiblePtidesModel/SimplestPossiblePtidesModel.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
