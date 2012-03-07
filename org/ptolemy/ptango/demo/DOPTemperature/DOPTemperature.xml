@@ -1,0 +1,275 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DOPTemperature" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/space/demo/DOPCenter/DOPCenter.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 115.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="25">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 580.0]">
+        </property>
+    </property>
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+            <display name="Background Color"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 615.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={73, 215, 1054, 614}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[841, 504]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{420.5, 252.0}">
+    </property>
+    <property name="Title" class="ptolemy.vergil.basic.export.html.Title" value="DOP Center Temperature">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 60.0]">
+        </property>
+    </property>
+    <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.html.WebExportParameters">
+        <property name="directoryToExportTo" class="ptolemy.data.expr.FileParameter" value="DOPTemperature">
+            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+        <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="runBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="showInBrowser" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="copyJavaScriptFiles" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+    </property>
+    <property name="DefaultIconScript" class="ptolemy.vergil.basic.export.html.DefaultIconScript" value="writeText('')">
+        <property name="script" class="ptolemy.data.expr.StringParameter" value="function writeText(text) {&#10;    document.getElementById(&quot;afterImage&quot;).innerHTML = text;&#10;};">
+        </property>
+        <property name="endText" class="ptolemy.data.expr.StringParameter" value="&lt;p id=&quot;afterImage&quot;&gt;&lt;/p&gt;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 575.0]">
+        </property>
+    </property>
+    <class name="CompositeActor" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 570.0]">
+        </property>
+        <property name="iconColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.7643769650755, 0.0, 0.2356230349245, 0.25}">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#BB00BB" y="20">-C-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 25.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={565, 25, 813, 510}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0, 0}">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="iconColor">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="size">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="size">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="iconColor">
+                </property>
+            </property>
+        </property>
+        <property name="size" class="ptolemy.data.expr.Parameter" value="60">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 50.0]">
+            </property>
+        </property>
+        <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+            <doc>Create a sequence of uniformly distributed random numbers</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.5, 102.5]">
+            </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{temperature, 0.0, 1.0-temperature, 0.25}">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.5, 177.5]">
+            </property>
+            <port name="temperature" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="iconColor">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 95.0]">
+            </property>
+        </entity>
+        <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 115.0]">
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[385.0, 160.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{175.0, 140.0}">
+            </vertex>
+        </relation>
+        <link port="Uniform.output" relation="relation2"/>
+        <link port="Expression.output" relation="relation3"/>
+        <link port="Expression.temperature" relation="relation2"/>
+        <link port="SetVariable.input" relation="relation3"/>
+        <link port="SequencePlotter.input" relation="relation2"/>
+    </class>
+    <entity name="InstanceOfCompositeActor" class="CompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 255.0]">
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="InstanceOfCompositeActor/SequencePlotter.gif">
+            <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Link to plot">
+            </property>
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{750, 255}">
+            </property>
+        </property>
+    </entity>
+    <entity name="InstanceOfCompositeActor2" class="CompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 325.0]">
+        </property>
+        <property name="size" class="ptolemy.data.expr.Parameter" value="120">
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="InstanceOfCompositeActor2/SequencePlotter.gif">
+            <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Link to plot">
+            </property>
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{625, 315}">
+            </property>
+        </property>
+    </entity>
+    <entity name="InstanceOfCompositeActor3" class="CompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 385.0]">
+        </property>
+        <property name="size" class="ptolemy.data.expr.Parameter" value="90">
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="InstanceOfCompositeActor3/SequencePlotter.gif">
+            <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Link to plot">
+            </property>
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{740, 405}">
+            </property>
+        </property>
+    </entity>
+    <entity name="InstanceOfCompositeActor4" class="CompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 315.0]">
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="InstanceOfCompositeActor4/SequencePlotter.gif">
+            <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Link to plot">
+            </property>
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{515, 320}">
+            </property>
+        </property>
+    </entity>
+    <entity name="InstanceOfCompositeActor5" class="CompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 380.0]">
+        </property>
+        <property name="size" class="ptolemy.data.expr.Parameter" value="90">
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="InstanceOfCompositeActor5/SequencePlotter.gif">
+            <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Link to plot">
+            </property>
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{410, 380}">
+            </property>
+        </property>
+    </entity>
+    <entity name="InstanceOfCompositeActor6" class="CompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 390.0]">
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.html.IconLink" value="InstanceOfCompositeActor6/SequencePlotter.gif">
+            <property name="displayText" class="ptolemy.data.expr.StringParameter" value="Link to plot">
+            </property>
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.html.LinkTarget" value="_lightbox">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{295, 385}">
+            </property>
+        </property>
+    </entity>
+</entity>

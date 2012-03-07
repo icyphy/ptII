@@ -1,0 +1,32 @@
+#!/bin/sh
+# $Id$
+# Export the DOPTemperature model to a web page
+
+# Start Xvfb, save the DOPCenter image, stop Xvfb
+
+model=$PTII/org/ptolemy/ptango/demo/DOPTemperature/DOPTemperature.xml
+
+modelDirectory=`dirname $model`
+cd $model
+
+modelBasename=`basename $model .xml`
+
+echo "Killing Xvfb"
+pkill Xvfb
+pkill -9 Xvfb
+rm -f /tmp/.X1-lock
+
+echo "Starting Xvfb"
+Xvfb :3 -screen 0 1024x768x24 &
+export DISPLAY=localhost:3.0
+
+echo "Loading $model, running it and exporting"
+
+java -classpath $PTII ptolemy.vergil.basic.export.ExportModel -web $model
+
+ls -l $modelBasename
+echo "Killing Xvfb"
+pkill Xvfb
+pkill -9 Xvfb
+rm -f /tmp/.X3-lock
+exit 0
