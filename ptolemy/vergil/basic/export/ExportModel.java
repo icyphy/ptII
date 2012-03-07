@@ -638,6 +638,8 @@ public class ExportModel {
                     // and avoid FindBugs warnings about System.exit().
                     StringUtilities.exit(0);
                     return;
+                } else if (args[i].equals("-copyJavaScriptFiles")) {
+                    copyJavaScriptFiles = true;
                 } else if (args[i].equals("-force")) {
                     force = true;
                 } else if (args[i].equals("-open")
