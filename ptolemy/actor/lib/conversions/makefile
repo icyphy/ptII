@@ -64,6 +64,7 @@ JSRCS = \
 	IntArrayToString.java \
 	UnsignedByteArrayToString.java \
 	InUnitsOf.java \
+	JSONToRecord.java \
 	LongToDouble.java \
 	PolarToCartesian.java \
 	PolarToComplex.java \
