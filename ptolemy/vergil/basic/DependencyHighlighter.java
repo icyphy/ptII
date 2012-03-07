@@ -146,7 +146,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
         }
         if (actor instanceof Actor) {
             moml.append("<entity name=\"");
-            moml.append(actor.getName());
+            moml.append(actor.getFullName());
             moml.append("\">");
             if (!clear) {
                 moml.append(highlightColor.exportMoML("_highlightColor"));
@@ -170,10 +170,19 @@ public class DependencyHighlighter extends NodeControllerFactory {
                 while (connectedPorts.hasNext()) {
                     IOPort otherPort = (IOPort) connectedPorts.next();
                     // Skip ports with the same polarity (input or output)
-                    // as the current port.
-                    if (port.isInput() && !otherPort.isOutput()
-                            || port.isOutput() && !otherPort.isInput()) {
-                        continue;
+                    // as the current port, or opposite polarity if the
+                    // container of the port is the same as the container
+                    // of the actor.
+                    if (otherPort.getContainer() == actor.getContainer()) {
+                        if (port.isInput() && !otherPort.isInput()
+                                || port.isOutput() && !otherPort.isOutput()) {
+                            continue;
+                        }
+                    } else {
+                        if (port.isInput() && !otherPort.isOutput()
+                                || port.isOutput() && !otherPort.isInput()) {
+                            continue;
+                        }
                     }
                     NamedObj higherActor = otherPort.getContainer();
                     _addHighlights(higherActor, moml, visited, forward, clear);
