@@ -13,33 +13,61 @@
 #   $PTII/ptolemy/vergil/basic/export/exportModelX11 MaximumEntropySpectrum.xml
 # The directory MaximumEntropySpectrum will contain the html files.
 
-if [ $# -ne 1 ]; then
-    echo "$0: Usage exportModelX11 model.mxl"
+usage="$0: Usage exportModelX11 [-ptweb] [-xvfb] model.mxl"
+if [ $# -gt 3 ]; then
+    echo $usage
     exit 2
 fi
+
+# Process args
+ptweb=no
+xvfb=no
+while [ $# -gt 1 ]
+do
+    case $1 in
+	-ptweb) ptweb=yes;;
+	-xvfb) xvfb=yes;;
+	-*) echo "Unrecognized argument $1"
+	   echo $usage
+	   exit 4;;
+    esac
+    shift
+done
 model=$1
+
+if [ $ptweb == "yes" ]; then
+    # ptolemy/vergil/basic/export/html/ExportHTMLAction.java reads these properties
+    # Unfortunately, the CHESS website handles .js files specially, so we use the .js files 
+    # from http://ptolemy.org instead.
+    javaDefines="-Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true"
+fi
 
 modelDirectory=`dirname $model`
 cd $modelDirectory
 
 modelBasename=`basename $model .xml`
 
-echo "Killing Xvfb"
-pkill Xvfb
-pkill -9 Xvfb
-rm -f /tmp/.X3-lock
+if [ $xvfb == "yes" ]; then
+    echo "Killing Xvfb"
+    pkill Xvfb
+    pkill -9 Xvfb
+    rm -f /tmp/.X3-lock
 
-echo "Starting Xvfb"
-Xvfb :3 -screen 0 1024x768x24 &
-export DISPLAY=localhost:3.0
+    echo "Starting Xvfb"
+    Xvfb :3 -screen 0 1024x768x24 &
+    export DISPLAY=localhost:3.0
+fi
 
 echo "Loading $model, running it and exporting"
 
-java -classpath $PTII ptolemy.vergil.basic.export.ExportModel htm -copyJavaScriptFiles -openComposites -run -force $model
+"${PTII}/bin/ptinvoke" $javaDefines ptolemy.vergil.basic.export.ExportModel htm -copyJavaScriptFiles -openComposites -run -force $model
 
 ls -l $modelBasename
-echo "Killing Xvfb"
-pkill Xvfb
-pkill -9 Xvfb
-rm -f /tmp/.X3-lock
+if [ $xvfb == "yes" ]; then
+    echo "Killing Xvfb"
+    pkill Xvfb
+    pkill -9 Xvfb
+    rm -f /tmp/.X3-lock
+fi
+
 exit 0
