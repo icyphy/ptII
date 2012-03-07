@@ -183,7 +183,10 @@ public class StaticSchedulingDirector extends Director {
                 //variableDeclarations.add(codeGenerator.generateFireFunctionVariableDeclaration((NamedObj)actor));
                 int count = firing.getIterationCount();
                 if (count > 1) {
-                    code.append("for (int i = 0; i < " + count + " ; i++) {"
+                    // for loops should have the loop initial declaration outside the for block.  Test case:
+                    // $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/DistributorMultipleTypes.xml
+                    code.append("{ int i = 0;" + _eol
+                            +"for (; i < " + count + " ; i++) {"
                             + _eol);
                 }
 
@@ -194,7 +197,8 @@ public class StaticSchedulingDirector extends Director {
                 _generateUpdatePortOffsetCode(code, actor);
 
                 if (count > 1) {
-                    code.append("}" + _eol);
+                    code.append("}" + _eol
+                            + "}" + _eol);
                 }
             }
         }
