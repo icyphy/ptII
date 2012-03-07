@@ -1,0 +1,45 @@
+#!/bin/sh
+# $Id$
+# Start up a X11 virtual frame buffer, export a model to a web page and stop the X11 virtual frame buffer.
+# 
+# This script is meant to be run from a cronjob.
+# Xvfb is a headless frame buffer, which means that a physical graphical display is not required.
+# This script requires Xvfb, which is most commonly found under Linux.
+# This script *might* work under Mac OS X if Xvfb is installed.
+# This script is not likely to work under Windows. 
+
+# Usage:
+#   cd $PTII/ptolemy/domains/sdf/demo/MaximumEntropySpectrum
+#   $PTII/ptolemy/vergil/basic/export/exportModelX11 MaximumEntropySpectrum.xml
+# The directory MaximumEntropySpectrum will contain the html files.
+
+if [ $# -ne 1 ]; then
+    echo "$0: Usage exportModelX11 model.mxl"
+    exit 2
+fi
+model=$1
+
+modelDirectory=`dirname $model`
+cd $modelDirectory
+
+modelBasename=`basename $model .xml`
+
+echo "Killing Xvfb"
+pkill Xvfb
+pkill -9 Xvfb
+rm -f /tmp/.X3-lock
+
+echo "Starting Xvfb"
+Xvfb :3 -screen 0 1024x768x24 &
+export DISPLAY=localhost:3.0
+
+echo "Loading $model, running it and exporting"
+
+java -classpath $PTII ptolemy.vergil.basic.export.ExportModel htm -copyJavaScriptFiles -openComposites -run -force $model
+
+ls -l $modelBasename
+echo "Killing Xvfb"
+pkill Xvfb
+pkill -9 Xvfb
+rm -f /tmp/.X3-lock
+exit 0
