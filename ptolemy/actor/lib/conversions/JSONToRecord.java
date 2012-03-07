@@ -203,7 +203,8 @@ public class JSONToRecord extends Converter {
                     secondQuoteIndex);
             
             // Create a new token, which is a NullToken by default
-            Token value = new NullToken();
+            // Findbugs was warning about a Dead Local Store here.
+            Token value = null;
             
             // The value is next in the JSON string.  It can be:
             // - Another JSON string, indicated by a curly brace {
