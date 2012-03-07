@@ -387,10 +387,10 @@ public class ExportModel {
                                 // Set the background of any submodels that are opened.
                                 parameters.backgroundColor = Color.white;
                             }
-                            if (openComposites) {
-                                parameters.openCompositesBeforeExport = true;
-                            }
                             parameters.copyJavaScriptFiles = copyJavaScriptFiles;
+                            parameters.openCompositesBeforeExport = openComposites;
+                            parameters.showInBrowser = openResults;
+
                             ExportHTMLAction.exportToWeb(_basicGraphFrame, parameters);
                             System.out.println("Exported "
                                     + htmlDirectory + "/index.html");
