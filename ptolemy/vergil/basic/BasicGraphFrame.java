@@ -791,9 +791,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
         _openGraphFrames.remove(this);
 
-        GraphPane pain = _jgraph.getGraphPane();
-        EventLayer fel = pain.getForegroundEventLayer();
-        fel.removeLayerListener(_mousePressedLayerAdapter);
+        if (_jgraph != null) {
+            GraphPane pane = _jgraph.getGraphPane();
+            EventLayer foregroundEventLayer = pane.getForegroundEventLayer();
+            foregroundEventLayer.removeLayerListener(_mousePressedLayerAdapter);
+        }
 
         //int removed =
         MemoryCleaner.removeActionListeners(_toolbar);
@@ -805,9 +807,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             getModel().removeChangeListener(this);
         }
 
-        _rightComponent.removeMouseWheelListener(this);
-        _rightComponent.removeMouseMotionListener(this);
-        _rightComponent.removeMouseListener(this);
+        if (_rightComponent != null) {
+            _rightComponent.removeMouseWheelListener(this);
+            _rightComponent.removeMouseMotionListener(this);
+            _rightComponent.removeMouseListener(this);
+        }
 
         if (_libraryContextMenuCreator != null) {
             _libraryContextMenuCreator.clear();
