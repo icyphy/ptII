@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PublisherSubscriberOpaque" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
@@ -85,6 +85,10 @@
                     </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{210, 200}">
+                </property>
+                <property name="DependencyHighlighter" class="ptolemy.vergil.basic.DependencyHighlighter">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{205, 200}">
+                    </property>
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
