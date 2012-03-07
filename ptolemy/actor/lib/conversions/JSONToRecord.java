@@ -1,24 +1,6 @@
-package ptolemy.actor.lib.conversions;
-
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.dde.kernel.NullToken;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 /* Converts a string containing JSON-formatted name/value pairs to a record.
 
- Copyright (c) 2000-2010 The Regents of the University of California.
+ Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,6 +26,25 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  */
 
+
+package ptolemy.actor.lib.conversions;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.dde.kernel.NullToken;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 /**
  An actor that converts a string containing JSON-formatted name/value pairs to 
  a record.  If the input string contains nested JSON objects, then a record
@@ -61,6 +62,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class JSONToRecord extends Converter {
 
+    /** Construct an actor that converts JSON-formatted name/value
+     *  pairs to a record.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public JSONToRecord(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -122,6 +132,8 @@ public class JSONToRecord extends Converter {
         // and manipulate with Javascript.  This would require including the
         // org.json library:
         // http://www.json.org/javadoc/org/json/JSONObject.html
+        //
+        // (BTW - $PTII/org/json/JSONObject.java is in the tree)
         //
         // The java.util.StringTokenizer class can extract a set of substrings
         // using a set of delimiters, but due to the ability to have nested
