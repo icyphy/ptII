@@ -78,10 +78,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 540.0]">
         </property>
     </property>
-    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 40.0}">
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 20.0]">
         </property>
     </property>
     <entity name="JSONToRecord" class="ptolemy.actor.lib.conversions.JSONToRecord">
@@ -276,7 +278,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 160.0}">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
