@@ -26,16 +26,21 @@
 
  */
 
-
 package ptolemy.actor.lib.conversions;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -54,12 +59,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  http://www.json.org/
 
  @author  Beth Latronico
+ @author  Marten Lohstroh
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (ltrnc)
  @Pt.AcceptedRating Red (ltrnc)
  */
-
 public class JSONToRecord extends Converter {
 
     /** Construct an actor that converts JSON-formatted name/value
@@ -94,8 +99,16 @@ public class JSONToRecord extends Converter {
         StringToken inputToken = (StringToken) input.get(0);
         _inputString = inputToken.stringValue();
 
-        RecordToken outputToken = _parseJSON() ;       
-        output.send(0, outputToken);
+        RecordToken outputToken;
+		try {
+			//outputToken = _parseJSON();
+			outputToken = _iterateJSONObject(new JSONObject(_inputString));
+			output.send(0, outputToken);
+		} catch (JSONException e) {
+            new IllegalActionException("Unable to parse JSON input, no " +
+            		"output sent.");
+		}       
+        
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -113,6 +126,111 @@ public class JSONToRecord extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     
+    /** Map an given value to the appropriate Token class and return the 
+     *  new Token.  
+     * @param value An Object representing some value
+     * @return A Token representing the given value object
+     * @throws JSONException 
+     * @throws IllegalActionException 
+     */
+    Token _mapValueToToken(Object value) throws IllegalActionException, 
+            JSONException {
+    	
+		// The value can be any of these types: 
+    	// Boolean, Number, String, or the JSONObject.NULL
+		
+		if (value instanceof JSONArray)
+			return _iterateJSONArray((JSONArray)value);
+		else if (value instanceof JSONObject)
+			return _iterateJSONObject((JSONObject)value);
+		else {
+		    if (value instanceof String)
+		        return new RecordToken((String)value);
+		    else if (value instanceof Boolean)
+	            return new BooleanToken((Boolean)value);
+		    else if (value instanceof Integer)
+	            return new IntToken((Integer)value);
+		    else if (value instanceof Double)
+		    	return new DoubleToken((Double)value);
+		    else if (value instanceof String)
+		    	return new StringToken((String)value);
+		    else
+			    throw new IllegalActionException("Unable to map value of" +
+		    " class " + value.getClass().toString() + " to token.");
+		} 
+
+    }
+    
+    /** Iterate over the elements inside a JSONArray and put them inside a 
+     *  new record token. Apply recursion for JSONObjects and JSONArrays.
+     * 
+     * @param inputString  The JSON-formatted string to extract a RecordToken 
+     * from
+     * @return A RecordToken containing fields and values corresponding to the
+     * JSON name and value pairs
+     * @throws JSONException 
+     * @throws IllegalActionException 
+     */
+    RecordToken _iterateJSONArray(JSONArray array) throws JSONException, 
+            IllegalActionException {
+    	ArrayList<String> names = new ArrayList<String>();
+        ArrayList<Token> values = new ArrayList<Token>();
+    	
+        Object value;
+        String name;
+        
+    	for (int i = 0; i < array.length(); ++i) {
+    		
+    		name = Integer.toString(i);
+        	value = array.get(i);
+        	// ignore empty records
+    		if (value == null || value.equals(JSONObject.NULL))
+    			continue;
+    		names.add(name);
+    		values.add(_mapValueToToken(value));
+    	}
+    	
+        return new RecordToken(names.toArray(new String[names.size()]), 
+                values.toArray(new Token[values.size()]));
+    }
+    
+    
+
+    /** Iterate over the elements inside a JSONObject and put them inside a 
+     *  new record token. Apply recursion for JSONObjects and JSONArrays.
+     * 
+     * @param inputString  The JSON-formatted string to extract a RecordToken 
+     * from
+     * @return A RecordToken containing fields and values corresponding to the
+     * JSON name and value pairs
+     * @throws JSONException 
+     * @throws IllegalActionException 
+     */
+    RecordToken _iterateJSONObject(JSONObject object) throws JSONException, 
+            IllegalActionException {
+    	ArrayList<String> names = new ArrayList<String>();
+        ArrayList<Token> values = new ArrayList<Token>();
+        
+        Object value;
+        String name;
+    	Iterator<?> i = object.keys();
+    	
+        while (i.hasNext()) {
+        	name = (String)i.next();
+        	value = object.get(name);
+        	// ignore empty records
+    		if (value == null || value.equals(JSONObject.NULL))
+    			continue;
+    		names.add(name);
+    		values.add(_mapValueToToken(value));
+        }
+    	
+        return new RecordToken(names.toArray(new String[names.size()]), 
+                values.toArray(new Token[values.size()]));
+    }
+    
+
+    
     /** Extract a RecordToken, which could contain nested RecordTokens,
      * from the given JSON-formatted String of name/value pairs.  
      * Throws an exception if the input string is not valid JSON.
@@ -121,8 +239,10 @@ public class JSONToRecord extends Converter {
      * from
      * @return A RecordToken containing fields and values corresponding to the
      * JSON name and value pairs
+     * @throws JSONException 
+     * @throws IllegalActionException 
      */
-    RecordToken _parseJSON() throws IllegalActionException {
+    RecordToken _parseJSON() throws JSONException, IllegalActionException {
         
         // This class directly converts a JSON formatted String to a Ptolemy II
         // RecordToken.  Some conversion notes:
@@ -140,6 +260,7 @@ public class JSONToRecord extends Converter {
         // JSON objects, this did not seem like a good fit to parse the complete
         // string
         
+    	
         // Regular expressions are used to check for valid JSON format
         // Strings are trimmed to remove leading and trailing whitespace
         // (removing all whitespace is incorrect since there may be a name
@@ -242,6 +363,7 @@ public class JSONToRecord extends Converter {
 
         return new RecordToken(names.toArray(new String[names.size()]), 
                 values.toArray(new Token[values.size()]));
+        
     }
 
     /** Parse the next value and return a Token containing this value.  Update
