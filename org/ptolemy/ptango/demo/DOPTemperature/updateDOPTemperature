@@ -7,7 +7,7 @@
 model=$PTII/org/ptolemy/ptango/demo/DOPTemperature/DOPTemperature.xml
 
 modelDirectory=`dirname $model`
-cd $model
+cd $modelDirectory
 
 modelBasename=`basename $model .xml`
 
