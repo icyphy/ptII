@@ -135,8 +135,6 @@ test TMReceiver-4.4 {put port that has a container} {
 
 } {{.top.TMDirector Preinitializing ...
 Updating TMDirector parameter _iconDescription
-Updating TMDirector parameter timeResolution
-Updating TMDirector parameter timeResolution
 Updating TMDirector parameter startTime
 Updating TMDirector parameter stopTime
 Updating TMDirector parameter preemptive
