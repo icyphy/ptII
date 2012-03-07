@@ -185,9 +185,9 @@ public class StaticSchedulingDirector extends Director {
                 if (count > 1) {
                     // for loops should have the loop initial declaration outside the for block.  Test case:
                     // $PTII/bin/ptcg -language c -generateInSubdirectory false -inline false -maximumLinesPerBlock 2500 -variablesAsArrays false $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/test/auto/DistributorMultipleTypes.xml
-                    code.append("{ int i = 0;" + _eol
-                            +"for (; i < " + count + " ; i++) {"
-                            + _eol);
+                    code.append("{" + _eol
+                            + "int i = 0;" + _eol
+                            + "for (; i < " + count + " ; i++) {" + _eol);
                 }
 
                 code.append(codeGenerator
