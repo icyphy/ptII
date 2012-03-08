@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="WirelessSoundDetection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 30, 1013, 759}, maximized=false}">
     </property>
@@ -232,7 +232,7 @@ GraphicalLocator)</text></svg></configure>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400, 324.5}">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="40.0">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -447,7 +447,7 @@ GraphicalLocator)</text></svg></configure>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2*PI/36">
             </property>
@@ -460,7 +460,7 @@ GraphicalLocator)</text></svg></configure>
         <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="PI/2.0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="PI/2.0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2*PI/36">
             </property>
