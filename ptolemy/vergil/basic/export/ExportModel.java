@@ -38,6 +38,9 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -230,6 +233,20 @@ public class ExportModel {
                         }
                         (model[0])
                                 .setModelErrorHandler(new BasicModelErrorHandler());
+                        _timer = new Timer(true);
+                        final Manager finalManager = manager;
+                        TimerTask doTimeToDie = new TimerTask() {                            
+                                public void run() {
+                                    System.out.println("ExportHTMLTimer went off after " 
+                                            + _timeToDie + " ms., calling manager.stop()");
+
+                                    finalManager.stop();
+                                }
+                            };
+                        System.out.println("Starting timer");
+                        _timer.schedule(doTimeToDie, _timeToDie);
+                        System.out.println("Starting timer: " + _timer);
+
                         manager.execute();
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -727,4 +744,10 @@ public class ExportModel {
 
     /** The BasicGraphFrame of the model. */
     private BasicGraphFrame _basicGraphFrame;
+
+    /** The Timer used to terminate a run. */
+    private static Timer _timer = null;
+
+    /** The number of milliseconds after which a run is terminated. */
+    private final static long _timeToDie = 30000;
 }
