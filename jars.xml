@@ -29,6 +29,7 @@
     <include name="ptolemy/actor/gui/jnlp/FullApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/HyVisualApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/PtinyApplication.jar" />
+    <include name="ptolemy/actor/gui/jnlp/PtinyKeplerApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/SpaceApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/VisualSenseApplication.jar" />
