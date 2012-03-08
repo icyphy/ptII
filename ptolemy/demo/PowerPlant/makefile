@@ -31,7 +31,7 @@
 
 ME =		ptolemy/demo/PowerPlant
 
-DIRS = 		PowerPlant
+DIRS =
 
 # Root of Ptolemy II directory
 ROOT =		../../..

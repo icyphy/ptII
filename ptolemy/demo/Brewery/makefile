@@ -31,7 +31,7 @@
 
 ME =		ptolemy/demo/Brewery
 
-DIRS = 		Brewery
+DIRS =
 
 # Root of Ptolemy II directory
 ROOT =		../../..
