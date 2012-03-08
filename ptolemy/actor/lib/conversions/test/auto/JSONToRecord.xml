@@ -4,13 +4,13 @@
 <entity name="JSONToRecord" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 163, 1468, 787}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 13, 1292, 787}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1245, 671]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1069, 671]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0092522658611">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{703.125, 342.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1424.6325757575755, 328.9431818181819}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Booleans">
@@ -45,7 +45,7 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Nested records&#10;TODO!">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[770.0, 635.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 595.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -86,7 +86,21 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 20.0]">
         </property>
     </property>
+    <property name="Annotation12" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test with RecordDisassembler">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1205.0, -35.0}">
+        </property>
+    </property>
+    <property name="Annotation13" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test on data and input with mismatching types&#10;(Double-click on JSONToRecord13 to see data parameter)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1215.0, 240.0]">
+        </property>
+    </property>
     <entity name="JSONToRecord" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;PtolemyIsGreat\&quot; : true }&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 160.0]">
         </property>
     </entity>
@@ -104,6 +118,8 @@
         </property>
     </entity>
     <entity name="JSONToRecord2" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;PtolemyIsFromStanford\&quot; : false }&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[311.25, 230.0]">
         </property>
     </entity>
@@ -121,6 +137,8 @@
         </property>
     </entity>
     <entity name="JSONToRecord3" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;IAmANull\&quot; : null }&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 325.0]">
         </property>
     </entity>
@@ -138,6 +156,8 @@
         </property>
     </entity>
     <entity name="JSONToRecord4" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;three\&quot; : 3 }&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 405.0]">
         </property>
     </entity>
@@ -155,6 +175,8 @@
         </property>
     </entity>
     <entity name="JSONToRecord5" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;pi\&quot; : 3.14 }&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 495.0]">
         </property>
     </entity>
@@ -172,6 +194,8 @@
         </property>
     </entity>
     <entity name="JSONToRecord6" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;mole\&quot; : 6.02e23 }&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 600.0]">
         </property>
     </entity>
@@ -202,6 +226,8 @@
         </property>
     </entity>
     <entity name="JSONToRecord7" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;}&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 695.0]">
         </property>
     </entity>
@@ -219,6 +245,8 @@
         </property>
     </entity>
     <entity name="JSONToRecord8" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;, \&quot;Readings\&quot;: 75.5}&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 110.0]">
         </property>
     </entity>
@@ -236,10 +264,14 @@
         </property>
     </entity>
     <entity name="JSONToRecord9" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;[{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;, \&quot;Readings\&quot;: 75.5}]&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 275.0]">
         </property>
     </entity>
     <entity name="JSONToRecord10" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;fibonacci\&quot; : [1, 1, 2, 3, 5] }&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[940.0, 385.0]">
         </property>
     </entity>
@@ -257,6 +289,8 @@
         </property>
     </entity>
     <entity name="JSONToRecord11" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;[{\&quot;uuid\&quot;: \&quot;b5c86c2a-7025-5af5-8c34-6bcc73740592\&quot;, \&quot;Readings\&quot;: [[1330872755000, 81.75], [1330872760000, 83.75]]}]&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 565.0]">
         </property>
     </entity>
@@ -345,7 +379,83 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{495, 325}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="Const12" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;, \&quot;Readings\&quot;: 75.5}&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1430.0, 35.0]">
+        </property>
+    </entity>
+    <entity name="JSONToRecord12" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;, \&quot;Readings\&quot;: 75.5}&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1305.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="Test12" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1595.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1410.0, 110.0]">
+        </property>
+        <port name="uuid" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="Readings" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test13" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{75.5}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="7.550000000000003E-8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1595.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="JSON data type has changed since model initialization.&#10;  in .JSONToRecord.JSONToRecord13">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1605.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="Const13" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;{ \&quot;PtolemyIsGreat\&quot; : true }&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1320.0, 320.0]">
+        </property>
+    </entity>
+    <entity name="JSONToRecord13" class="ptolemy.actor.lib.conversions.JSONToRecord">
+        <property name="data" class="ptolemy.data.expr.Parameter" value="&quot;{\&quot;uuid\&quot;: \&quot;6416334d-7fe8-5f64-9658-d0f9c07e44d9\&quot;, \&quot;Readings\&quot;: 75.5}&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1460.0, 320.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -392,6 +502,16 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="JSONToRecord.input" relation="relation"/>
     <link port="JSONToRecord.output" relation="relation2"/>
     <link port="Const.output" relation="relation"/>
@@ -436,4 +556,14 @@
     <link port="Test10.input" relation="relation20"/>
     <link port="Test11.input" relation="relation22"/>
     <link port="MonitorValue.input" relation="relation6"/>
+    <link port="Const12.output" relation="relation23"/>
+    <link port="JSONToRecord12.input" relation="relation23"/>
+    <link port="JSONToRecord12.output" relation="relation24"/>
+    <link port="Test12.input" relation="relation25"/>
+    <link port="RecordDisassembler.input" relation="relation24"/>
+    <link port="RecordDisassembler.uuid" relation="relation25"/>
+    <link port="RecordDisassembler.Readings" relation="relation26"/>
+    <link port="Test13.input" relation="relation26"/>
+    <link port="Const13.output" relation="relation27"/>
+    <link port="JSONToRecord13.input" relation="relation27"/>
 </entity>

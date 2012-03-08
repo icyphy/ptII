@@ -44,6 +44,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.dde.kernel.NullToken;
 import ptolemy.kernel.CompositeEntity;
@@ -80,9 +81,11 @@ public class JSONToRecord extends Converter {
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input.setTypeEquals(BaseType.STRING);
-        output.setTypeEquals(BaseType.RECORD);
+        data = new Parameter(this, "data");
+        data.setExpression("");
         
+        // Set the input type.  The output type is set in preinitialize()
+        input.setTypeEquals(BaseType.STRING);  
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -101,14 +104,19 @@ public class JSONToRecord extends Converter {
 
         RecordToken outputToken;
 		try {
-			//outputToken = _parseJSON();
-			outputToken = _iterateJSONObject(new JSONObject(_inputString));
+			outputToken = _parseJSON();
+			//outputToken = _iterateJSONObject(new JSONObject(_inputString));
+			// Check that the type of this token matches the type
+			// assigned to the output port in preinitialize()
+			if (!outputToken.getType().equals(output.getType())) {
+			    throw new IllegalActionException(this, "JSON data" +
+			       " type has changed since model initialization.");
+			}
 			output.send(0, outputToken);
 		} catch (JSONException e) {
             new IllegalActionException("Unable to parse JSON input, no " +
             		"output sent.");
-		}       
-        
+		}   
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -121,6 +129,37 @@ public class JSONToRecord extends Converter {
         }
 
         return super.prefire();
+    }
+    
+    /** Set the type for the output port based on the data parameter.  
+     *  (In the future the actor could read the data directly from a URL.)
+     *  This assumes that future data will have the same type signature. 
+     *  This assumption is checked in the fire() method.
+     *  @exception IllegalActionException Not thrown here
+     */
+    
+    
+    public void preinitialize() throws IllegalActionException {
+        
+        // Create a RecordToken from the value in the data parameter
+        // Start with a default empty record
+        Token token = data.getToken();
+        RecordToken value = new RecordToken();
+        
+        if (token != null && token instanceof StringToken) {
+            _inputString = ((StringToken)token).stringValue();
+            try {
+                value = _parseJSON();
+                // value = _iterateJSONObject(new JSONObject(_inputString));
+            } catch(IllegalActionException e) {
+                // Catch exception and proceed to default case
+            } catch(JSONException e) {
+                // Catch exception and proceed to default case
+            }
+        } 
+        // Set type to record's type (the empty record's type in default case)
+        output.setTypeEquals(value.getType());
+
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -501,6 +540,15 @@ public class JSONToRecord extends Converter {
     }
         return value;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         ports and parameters              ////
+    
+    /** A parameter containing sample JSON data with the same type 
+     *  signature as any data accepted by the input port. Used 
+     *  in the preinitialize method to calculate the output type.
+     */
+    public Parameter data;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
