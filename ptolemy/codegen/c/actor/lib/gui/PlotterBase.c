@@ -456,7 +456,7 @@ $actorSymbol(plotMLParserClass) = (*env)->FindClass
     (env, "ptolemy/plot/plotml/PlotMLParser");
 $actorSymbol(plotMLParserConstructor) = (*env)->GetMethodID
     (env, $actorSymbol(plotMLParserClass), "<init>",
-            "(Lptolemy/plot/Plot;)V");
+            "(Lptolemy/plot/PlotInterface;)V");
 $actorSymbol(plotMLParserObject) = (*env)->NewObject
     (env, $actorSymbol(plotMLParserClass),
             $actorSymbol(plotMLParserConstructor),
