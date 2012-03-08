@@ -1420,6 +1420,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.domains.space.Region", spaceJar);
         auxiliaryJarMap.put("ptolemy.domains.space.Room", spaceJar);
 
+        auxiliaryJarMap.put("ptolemy.vergil.kernel.attributes.TextAttribute",
+                "ptolemy/vergil/vergilApplet.jar");
+        auxiliaryJarMap.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
+                "ptolemy/vergil/vergilApplet.jar");
+
+
         // classes from data.property require tester.jar
         String propertiesJar = "ptolemy/data/properties/properties.jar";
         auxiliaryJarMap.put(
