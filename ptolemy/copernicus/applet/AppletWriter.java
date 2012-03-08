@@ -1719,11 +1719,21 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         String keyPassword = "this.is.the.keyPassword,change.it";
         String alias = "ptolemy";
 
-        String keystorePropertiesFileName = StringUtilities
+        String keystorePropertiesFileName = null;
+
+	// If called with -Dptolemy.ptII.ptKeystore=/Users/hudson/ptKeystore.properties
+	// then use that file as the property file, otherwise use $PTII/ptKeystore.properties
+	// We do this so that we don't accidentally check in the ptKeystore.properties file.
+	String ptKeystoreProperty = StringUtilities.getProperty("ptolemy.ptII.ptKeystore"); 
+	System.out.println("ptKeystoreProperty: " + ptKeystoreProperty);
+	if (!ptKeystoreProperty.equals("")) {
+	    keystorePropertiesFileName = ptKeystoreProperty;
+	} else {
+	    keystorePropertiesFileName = StringUtilities
                 .getProperty("ptolemy.ptII.dir")
                 + File.separator
                 + "ptKeystore.properties";
-
+	}
         Properties properties = new Properties();
         try {
             FileInputStream fileInputStream = null;
@@ -1733,7 +1743,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 System.out.println("Reading properties file: "
                         + keystorePropertiesFileName);
                 properties.load(fileInputStream);
-                System.out.println("Properties: " + properties);
+                //System.out.println("Properties: " + properties);
                 String property = null;
                 if ((property = properties.getProperty("keystoreFileName")) != null) {
                     keystoreFileName = property;
