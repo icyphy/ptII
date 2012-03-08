@@ -459,11 +459,11 @@ public class SearchResultsDialog extends PtolemyDialog
         }
 
         /** Get the column header name.
-	 *  @return The string "Found in (select to highlight)".   
+	 *  @return The string "Found in (select to highlight, double-click to open)".   
          *  @see javax.swing.table.TableModel#getColumnName(int)
          */
         public String getColumnName(int col) {
-            return "Found in (select to highlight):";
+            return "Found in (select to highlight, double-click to open):";
         }
 
         /** Get the value at a particular row and column.
