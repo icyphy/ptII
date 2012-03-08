@@ -31,6 +31,8 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -50,6 +52,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
@@ -137,6 +140,24 @@ public class SearchResultsDialog extends PtolemyDialog
             }
         });
 
+        _resultsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // TODO Auto-generated method stub
+                // super.mouseClicked(e);
+                int button = e.getButton();
+                int count = e.getClickCount();
+                if (button == MouseEvent.BUTTON1 && count == 2) {
+                    int[] selected = _resultsTable.getSelectedRows();
+                    for (int i = 0; i < selected.length; i++) {
+                        NamedObj selectedObject = (NamedObj) _resultsTableModel.getValueAt(selected[i], 0);
+                        _openResult(selectedObject);
+                    }
+                }
+            }
+        });
+        
+        
         pack();
         setVisible(true);
     }
@@ -215,6 +236,23 @@ public class SearchResultsDialog extends PtolemyDialog
         }
     }
 
+    /** Opens the nearest composite actor above the target in the hierarchy.
+     *  @param target The target.
+     */
+    protected void _openResult(final NamedObj target) {
+        NamedObj container = target.getContainer();
+        while (container != null && !(container instanceof CompositeActor)) {
+            container = container.getContainer();
+        }
+        if (container != null) {
+            try {
+                _configuration.openInstance(container);
+            } catch (Throwable throwable) {
+                MessageHandler.error("Failed to open container", throwable);
+            }
+        }
+    }
+    
     /** Perform a search and update the results table.
      */
     protected void _search() {
