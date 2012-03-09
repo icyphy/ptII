@@ -373,11 +373,15 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             final Set<Tableau> tableauxToClose = new HashSet<Tableau>();
             // Open submodels, if appropriate.
             if (parameters.openCompositesBeforeExport) {
-                CompositeActor model = (CompositeActor)graphFrame.getModel();
-                Effigy masterEffigy = Configuration.findEffigy(model);
-                List<Entity> entities = model.entityList();
-                for (Entity entity : entities) {
-                    _openEntity(entity, tableauxToClose, masterEffigy, graphFrame);
+                NamedObj model = graphFrame.getModel();
+                Effigy masterEffigy = Configuration.findEffigy(graphFrame.getModel());
+                if (model instanceof CompositeEntity) {
+                    // graphFrame.getModel() might return a
+                    // PteraController, which is not a CompositeActor.
+                    List<Entity> entities = ((CompositeEntity)model).entityList();
+                    for (Entity entity : entities) {
+                        _openEntity(entity, tableauxToClose, masterEffigy, graphFrame);
+                    }
                 }
             }
             // Running the model has to occur in a new thread, or the whole
@@ -388,16 +392,18 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             Runnable exportAction = new Runnable() {
                 public void run() {
                     try {
-                        CompositeActor model = (CompositeActor)graphFrame.getModel();
+                        // graphFrame.getModel() might return a
+                        // PteraController, which is not a CompositeActor.
+                        NamedObj model = graphFrame.getModel();
 
                         // If parameters are set to run the model, then do that.
                         if (parameters.runBeforeExport && model instanceof CompositeActor) {
                             // Run the model.
-                            Manager manager = model.getManager();
+                            Manager manager = ((CompositeActor)model).getManager();
                             if (manager == null) {
-                                manager = new Manager(model.workspace(),
+                                manager = new Manager(((CompositeActor)model).workspace(),
                                         "MyManager");
-                                model.setManager(manager);
+                                ((CompositeActor)model).setManager(manager);
                             }
                             manager.execute();
                         }
