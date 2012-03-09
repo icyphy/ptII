@@ -93,21 +93,21 @@ public class ExportModelJUnitTest {
 	// we remove the contents of the outputDirectory with the force parameter.
         String outputDirectory = ptolemyPtIIDir + "/" + modelDirectory + "/" + modelName;
 
-        boolean run = true;
-        if (_runDemo(modelPath)) {
-            run = false;
-        }
+        boolean openComposites = _openComposites(modelPath);
+        boolean run = _runDemo(modelPath);
 
-        System.out.println("####### $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -"
-                + run + " -openComposites -whiteBackground " + modelPath + " " + outputDirectory);
+        System.out.println("####### $PTII/bin/ptinvoke "
+                + "ptolemy.vergil.basic.export.ExportModel -force htm -"
+                + run + " -" + openComposites 
+                + " -whiteBackground " + modelPath + " " + outputDirectory);
 
         ExportModel exportModel = new ExportModel();
         exportModel.exportModel(false /* copyJavaScriptFiles */,
                 true /* force */,
                 "htm",
                 fullModelPath,
-                run /* run */,
-                true /* open composites */,
+                run,
+                openComposites,
                 false /* open results */,
                 outputDirectory,
                 false /* save */,
@@ -166,6 +166,23 @@ public class ExportModelJUnitTest {
         return data;
     }
 
+    /** Return true if we should open the composites.
+     */   
+    private boolean _openComposites(String modelPath) {
+        // Pathnames that should be skipped
+        String [] skip = {
+            // Fails with: Cannot render to more than 32 Canvas3Ds
+            "Gravitation.xml",
+            "GravitationWithCollisionDetection.xml"
+        };
+        for (int i = 0; i < skip.length; i++) {
+            if (modelPath.indexOf(skip[i]) != -1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /** Return true if we should run the demo.
      *  It does not make sense to run some demos.
      *  This method returns false for those demos.
@@ -173,7 +190,10 @@ public class ExportModelJUnitTest {
     private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
         String [] skip = {
-            "SMVLegacyCodeActor", "/SystemLevelType/"
+            "SMVLegacyCodeActor",
+            "SoundSpectrum.xml",
+            "SynthesizedVoice.xml",
+            "/SystemLevelType/"
         };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {
