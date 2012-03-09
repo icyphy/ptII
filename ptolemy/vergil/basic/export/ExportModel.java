@@ -243,12 +243,12 @@ public class ExportModel {
                                     finalManager.stop();
                                 }
                             };
-                        System.out.println("Starting timer");
                         _timer.schedule(doTimeToDie, _timeToDie);
-                        System.out.println("Starting timer: " + _timer);
-
-                        manager.execute();
-                        _timer.cancel();
+			try {
+			    manager.execute();
+			} finally {
+			    _timer.cancel();
+			}
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         throw new RuntimeException(ex);
