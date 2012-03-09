@@ -1,4 +1,4 @@
-/* JUnit test that exports most of the demos.
+/* JUnit test that exports the demos.
 
    Copyright (c) 2012 The Regents of the University of California.
    All rights reserved.
@@ -49,9 +49,9 @@ import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.export.ExportModel;
 
 ///////////////////////////////////////////////////////////////////
-//// ExportModelMostDemosJUnitTest
+//// ExportModelJUnitTest
 /**
- * JUnit test that exports most of the demos.
+ * JUnit test that exports the demos.
  *
  * <p>To run these tests, use:
  * <pre>
@@ -73,8 +73,8 @@ import ptolemy.vergil.basic.export.ExportModel;
  * @Pt.AcceptedRating Red (cxh)
  */
 @RunWith(JUnitParamsRunner.class)
-public class ExportModelMostDemosJUnitTest {
-    /** Export a model
+public class ExportModelJUnitTest {
+    /** Export a model.
      *  @param modelPath The model to be exported. The code is exported to
      *  the directory contained by the model.
      *  @exception Throwable If there is a problem reading or exporting the model.
@@ -93,13 +93,20 @@ public class ExportModelMostDemosJUnitTest {
 	// we remove the contents of the outputDirectory with the force parameter.
         String outputDirectory = ptolemyPtIIDir + "/" + modelDirectory + "/" + modelName;
 
-        System.out.println("####### $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -whiteBackground " + modelPath + " " + outputDirectory);
+        boolean run = true;
+        if (_runDemo(modelPath)) {
+            run = false;
+        }
+
+        System.out.println("####### $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -"
+                + run + " -openComposites -whiteBackground " + modelPath + " " + outputDirectory);
+
         ExportModel exportModel = new ExportModel();
         exportModel.exportModel(false /* copyJavaScriptFiles */,
                 true /* force */,
                 "htm",
                 fullModelPath,
-                true /* run */,
+                run /* run */,
                 true /* open composites */,
                 false /* open results */,
                 outputDirectory,
@@ -138,11 +145,7 @@ public class ExportModelMostDemosJUnitTest {
                             + "\".  Line was:\n" + line);
                 }
                 String modelPath = line.substring(prefix.length());
-                String modelFile = modelPath.substring(modelPath.lastIndexOf("/") + 1);
-                String modelName = modelFile.substring(0, modelFile.lastIndexOf("."));
-                if (_demoIsOk(modelPath)) {
-                    demos.add(modelPath);
-                }
+                demos.add(modelPath);
             }
         } catch (Exception ex) {
             IOException exception = new IOException("Failed to read \"" 
@@ -163,14 +166,14 @@ public class ExportModelMostDemosJUnitTest {
         return data;
     }
 
-    /** Return true if we should export the demo.
+    /** Return true if we should run the demo.
+     *  It does not make sense to run some demos.
+     *  This method returns false for those demos.
      */   
-    private boolean _demoIsOk(String modelPath) {
+    private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
         String [] skip = {
-            "/cg/", "/codegen/", "/ExecDemos/", "lbnl/", "/matlab/",
-            "SMVLegacyCodeActor", "/SystemLevelType/", "/taskpt/",
-            "/verification/"
+            "SMVLegacyCodeActor", "/SystemLevelType/"
         };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {

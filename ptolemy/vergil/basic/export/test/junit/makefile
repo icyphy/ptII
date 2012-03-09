@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	ExportModelMostDemosJUnitTest.java \
+	ExportModelJUnitTest.java \
 	JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl
@@ -77,7 +77,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 
 # COMPLETE_CLASSPATH and JUNIT_JAVA_ARGS are set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	(cd ..;	CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(COMPLETE_CLASSPATH)" "$(JAVA)" -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelMostDemosJUnitTest)
+	(cd ..;	CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(COMPLETE_CLASSPATH)" "$(JAVA)" -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest)
 	(cd ..;	CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.JUnitTclTest)
 
 test_java: jclass
