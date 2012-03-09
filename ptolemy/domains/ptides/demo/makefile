@@ -45,6 +45,7 @@ DIRS =	PtidesBasicDistributedPowerPlant\
 		PrintingPress \
 		PtidesPorts \
 		PtidesSynchrophasor \
+		SimplestPossiblePtidesModel \
 		TREX
 
 # Root of the Java directory
