@@ -480,10 +480,8 @@ public class Configuration extends CompositeEntity implements
         // Based on code by Chad Berkley.
         Configuration configuration = (Configuration) Configuration
                 .configurations().iterator().next();
-        // Get the directory from the configuration
-        ModelDirectory directory = (ModelDirectory) configuration
-                .getEntity("directory");
-
+        // Get the directory from the configuration.
+        ModelDirectory directory = (ModelDirectory) configuration.getDirectory();
         if (directory == null) {
             return;
         }

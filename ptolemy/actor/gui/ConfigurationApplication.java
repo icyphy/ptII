@@ -595,7 +595,7 @@ public class ConfigurationApplication implements ExecutionListener {
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
         // in the directory.
-        ComponentEntity directory = configuration.getEntity("directory");
+        ComponentEntity directory = configuration.getDirectory();
 
         if (directory instanceof ModelDirectory) {
             PtolemyEffigy effigy = null;
@@ -1130,7 +1130,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     //                     effigy.setModel(newModel);
                     //                     System.out.println("-class: effigy: " + effigy);
                     //                     ModelDirectory directory = (ModelDirectory) _configuration
-                    //                         .getEntity("directory");
+                    //                         .getDirectory();
                     //                     // Can't use names with dots, so we substitute.
                     //                     String safeName =
                     //                         StringUtilities.substitute(arg, ".","_" );
@@ -1186,8 +1186,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     // defer to it to read the model.  Otherwise,
                     // assume the file is an XML file.
                     if (_configuration != null) {
-                        ModelDirectory directory = (ModelDirectory) _configuration
-                                .getEntity("directory");
+                        ModelDirectory directory = (ModelDirectory) _configuration.getDirectory();
                         if (directory == null) {
                             throw new InternalErrorException(
                                     "No model directory!");
@@ -1309,8 +1308,7 @@ public class ConfigurationApplication implements ExecutionListener {
             String value = (String) values.next();
 
             boolean match = false;
-            ModelDirectory directory = (ModelDirectory) _configuration
-                    .getEntity("directory");
+            ModelDirectory directory = (ModelDirectory) _configuration.getDirectory();
 
             if (directory == null) {
                 throw new InternalErrorException("No model directory!");
@@ -1411,8 +1409,7 @@ public class ConfigurationApplication implements ExecutionListener {
             System.out.println("_printPDF: no configuration?");
             return;
         }
-        ModelDirectory directory = (ModelDirectory) _configuration
-                .getEntity(Configuration._DIRECTORY_NAME);
+        ModelDirectory directory = (ModelDirectory) _configuration.getDirectory();
         Iterator effigies = directory.entityList().iterator();
 
         while (effigies.hasNext()) {
