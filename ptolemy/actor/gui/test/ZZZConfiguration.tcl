@@ -63,5 +63,7 @@ test ZZZConfiguration-100.0 {call setContainer, which calls _remoteEntity} {
     # Reset the property
     java::call System setProperty ptolemy.ptII.doNotExit true
 
+    java::new ptolemy.actor.gui.ModelDirectory $configuration [java::field ptolemy.actor.gui.Configuration _DIRECTORY_NAME]
+
     list $errMsg	
 } {{java.lang.RuntimeException: Normally, we would exit here because Manager.exitAfterWrapup() was called.  However, because the ptolemy.ptII.exitAfterWrapup property is set, we throw this exception instead.}}

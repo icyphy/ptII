@@ -82,14 +82,28 @@ test UserActorLibrary-0.1 {Read in the configuration} {
 			      [java::null] \
 			      [java::null]]
 
-    if {[info vars configuration] == ""} {
-	set configuration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration $configurationURL]
-	# Open one model so that we don't exit.
-	$parser purgeModelRecord test.xml
-	set entity [java::cast ptolemy.kernel.CompositeEntity \
-			[$parser parseFile test.xml]]
-	set tableau [$configuration openModel $entity]
+    
+    if {[info vars configuration] != ""} {
+	# StringUtilities.exit() checks to see if this property is has a length > 0
+	java::call System setProperty ptolemy.ptII.doNotExit {}
+	#java::call System clearProperty ptolemy.ptII.doNotExit
+
+	# The Manager uses this property to help us test the Exit actor.
+	java::call System setProperty ptolemy.ptII.exitAfterWrapup true
+
+	$configuration setContainer [java::null]
+
+	# Reset the property
+	java::call System setProperty ptolemy.ptII.doNotExit true
+
     }
+    set configuration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration $configurationURL]
+    # Open one model so that we don't exit.
+    $parser purgeModelRecord test.xml
+    set entity [java::cast ptolemy.kernel.CompositeEntity \
+		    [$parser parseFile test.xml]]
+    set tableau [$configuration openModel $entity]
+
     $configuration getFullName
 } {.configuration}
 
