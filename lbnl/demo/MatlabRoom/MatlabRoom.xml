@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MatlabRoom" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -46,7 +46,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="(finalTime-startTime)/timeStep+1">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="(finalTime-modelStartTime)/timeStep+1">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -76,7 +76,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 30.0]">
         </property>
     </property>
-    <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="modelStartTime" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
@@ -110,7 +110,7 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={404, 120, 1100, 804}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={404, 120, 1105, 784}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[892, 674]">
     </property>
@@ -210,7 +210,7 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="RunTime" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="RunTime" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -227,7 +227,7 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 595.0]">
         </property>
     </entity>
-    <entity name="SimulationTime" class="ptolemy.actor.lib.MonitorValue">
+    <entity name="SimulationTime" class="ptolemy.actor.lib.gui.MonitorValue">
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
