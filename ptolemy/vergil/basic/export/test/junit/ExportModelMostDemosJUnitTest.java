@@ -82,14 +82,18 @@ public class ExportModelMostDemosJUnitTest {
     @Test
     @Parameters(method = "demos")
     public void RunExportModel(String modelPath) throws Throwable {
-        //String modelFile = modelPath.substring(modelPath.lastIndexOf("/") + 1);
-        System.out.println("####### Exporting " + modelPath);
+        String modelFile = modelPath.substring(modelPath.lastIndexOf("/") + 1);
+	String modelName = modelFile.substring(0, modelFile.lastIndexOf("."));
+
         String ptolemyPtIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
         String fullModelPath = ptolemyPtIIDir + "/" + modelPath;
 
         String modelDirectory = modelPath.substring(0, modelPath.lastIndexOf("/"));        
-        String outputDirectory = ptolemyPtIIDir + "/" + modelDirectory;
+	// A directory inside the current directory that contains the model because
+	// we remove the contents of the outputDirectory with the force parameter.
+        String outputDirectory = ptolemyPtIIDir + "/" + modelDirectory + "/" + modelName;
 
+        System.out.println("####### $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -openComposites -whiteBackground " + modelPath + " " + outputDirectory);
         ExportModel exportModel = new ExportModel();
         exportModel.exportModel(false /* copyJavaScriptFiles */,
                 true /* force */,
