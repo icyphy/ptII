@@ -1788,6 +1788,8 @@ $(JNLP_FILE_FIXED): $(JNLP_FILE)
 ######################################################
 #
 # Export an HTML version of the model
+# See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport
+#
 # The default is to run the model before exporting so that we capture the plot. 
 # However, the PrintingPress model has no plots.
 EXPORT_HTML_RUN=-run
