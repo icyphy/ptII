@@ -3557,10 +3557,14 @@ else
 	        if test -f "$PTJAVA_HOME/../Headers/jni.h"; then
 		    PTJNI_INCLUDE="$PTJAVA_HOME/../Headers"
                 else
-	            if test -f "/System/Library/Frameworks/JavaVM.framework/Headers/jni.h"; then
-		        PTJNI_INCLUDE="/System/Library/Frameworks/JavaVM.framework/Headers"
-                    else
-		        APPLE_JNI_PROBLEM="$PTJAVA_HOME/jni.h not found.
+		    if test -f "$PTJAVA_HOME/../include/jni.h"; then
+		       # Java 1.7.0_04-ea
+		       PTJNI_INCLUDE="$PTJAVA_HOME/../include"
+                    else 
+	                if test -f "/System/Library/Frameworks/JavaVM.framework/Headers/jni.h"; then
+		            PTJNI_INCLUDE="/System/Library/Frameworks/JavaVM.framework/Headers"
+                        else
+		            APPLE_JNI_PROBLEM="$PTJAVA_HOME/{Headers,include}/jni.h not found.
     Apple made a poor decision when shipping Java 1.6 
     and decided to *not* to include jni.h in the 1.6 installation, even though they
     include javah, which generates a .h that includes jni.h.  
@@ -3569,7 +3573,8 @@ else
        package, since it contains updated headers for the native
        JavaVM.framework and its sub-frameworks (8421130). The Java
        Developer package is available from http://connect.apple.com."
-		         AC_MSG_WARN([$APPLE_JNI_PROBLEM])
+		            AC_MSG_WARN([$APPLE_JNI_PROBLEM])
+                        fi
                      fi
                 fi
 	    else
