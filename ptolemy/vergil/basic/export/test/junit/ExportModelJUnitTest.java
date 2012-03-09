@@ -97,9 +97,11 @@ public class ExportModelJUnitTest {
         boolean run = _runDemo(modelPath);
 
         System.out.println("####### $PTII/bin/ptinvoke "
-                + "ptolemy.vergil.basic.export.ExportModel -force htm -"
-                + run + " -" + openComposites 
-                + " -whiteBackground " + modelPath + " " + outputDirectory);
+                + "ptolemy.vergil.basic.export.ExportModel -force htm "
+			   + (run ? "-run " : " ")
+			   + (openComposites ? "-openComposites " : " ")
+			   + " -whiteBackground " + modelPath
+			   + " $PTII/" + modelDirectory + "/" + modelName);
 
         ExportModel exportModel = new ExportModel();
         exportModel.exportModel(false /* copyJavaScriptFiles */,
@@ -190,14 +192,19 @@ public class ExportModelJUnitTest {
     private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
         String [] skip = {
+	    "CRoom.xml", // hangs.
+	    "HierarchyFlattening.xml", // gt
 	    "JMFJAI.xml",
 	    "KarplusStrong.xml",
+	    "PublisherTest", // gt
+	    "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
 	    "SerialPort.xml",
 	    "SimplePassPointer", // Only works on 32-bit
             "SMVLegacyCodeActor",
             "SoundSpectrum.xml",
             "SynthesizedVoice.xml",
-            "/SystemLevelType/",
+            "SystemLevelType",
+	    "TunnelingBallDevice",
 	    "VideoCapture.xml"
         };
         for (int i = 0; i < skip.length; i++) {
