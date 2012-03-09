@@ -234,7 +234,12 @@ public class FSMGraphFrame extends ExtendedGraphFrame implements ActionListener 
      *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {
-        getModel().removeDebugListener(_controller);
+        NamedObj model = getModel();
+        if (model != null) {
+            // The test that exports html was failing because model was sometimes null.
+            // Perhaps this needs some synchronization?
+            model.removeDebugListener(_controller);
+        }
         return super._close();
     }
 
