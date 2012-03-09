@@ -54,7 +54,7 @@
   <property name="test.name" value="ptolemy.actor.lib.test.junit.JUnitTclTest" />
 
   <!-- The timeout in seconds for findbugs and junit. -->
-  <property name="timeout" value="2000000" />
+  <property name="timeout" value="4000000" />
 
 
   <!-- Ant paths. Alphabetize, please -->
