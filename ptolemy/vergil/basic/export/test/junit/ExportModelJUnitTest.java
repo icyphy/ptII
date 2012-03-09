@@ -190,10 +190,15 @@ public class ExportModelJUnitTest {
     private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
         String [] skip = {
+	    "JMFJAI.xml",
+	    "KarplusStrong.xml",
+	    "SerialPort.xml",
+	    "SimplePassPointer", // Only works on 32-bit
             "SMVLegacyCodeActor",
             "SoundSpectrum.xml",
             "SynthesizedVoice.xml",
-            "/SystemLevelType/"
+            "/SystemLevelType/",
+	    "VideoCapture.xml"
         };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {
