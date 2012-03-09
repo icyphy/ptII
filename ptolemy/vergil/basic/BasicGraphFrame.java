@@ -1777,9 +1777,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // We do not want to abort at this point because the worst
                 // case is that we will have no Export PDF in the menu.
                 // That is better than preventing the user from opening a model.
-                System.err
-                    .println("Warning: Tried to create the Export PDF menu item, but failed: "
-                            + throwable);
+                //System.err
+                //    .println("Warning: Tried to create the Export PDF menu item, but failed: "
+                //            + throwable);
             }
 
             try { 
@@ -1815,9 +1815,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // We do not want to abort at this point because the worst
                 // case is that we will have no Export to Web in the menu.
                 // That is better than preventing the user from opening a model.
-                System.err
-                    .println("Warning: Tried to create the Export to Web menu item, but failed: "
-                            + throwable);
+                // System.err
+                //    .println("Warning: Tried to create the Export to Web menu item, but failed: "
+                //            + throwable);
             }
         }
 
