@@ -43,7 +43,8 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	JUnitTclTest.java \
+	ExportModelMostDemosJUnitTest.java \
+	JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
@@ -74,8 +75,9 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-# JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
+# COMPLETE_CLASSPATH and JUNIT_JAVA_ARGS are set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
+	(cd ..;	CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(COMPLETE_CLASSPATH)" "$(JAVA)" -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelMostDemosJUnitTest)
 	(cd ..;	CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.JUnitTclTest)
 
 test_java: jclass

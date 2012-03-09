@@ -248,6 +248,7 @@ public class ExportModel {
                         System.out.println("Starting timer: " + _timer);
 
                         manager.execute();
+                        _timer.cancel();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         throw new RuntimeException(ex);
