@@ -5955,6 +5955,16 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/actor/gui/jnlp/PtinyKeplerApplication.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/gui/jnlp/PtinyKeplerApplication.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+	<include name="ptolemy/actor/gui/jnlp/PtinyKeplerApplication.class"/>
+      </fileset>
+    </jar>
+
     <!-- ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar"
