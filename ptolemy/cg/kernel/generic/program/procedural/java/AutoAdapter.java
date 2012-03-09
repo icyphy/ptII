@@ -1779,16 +1779,21 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
 
         Relation relation = (Relation) linkedRelations.get(0);
-        List linkedPorts = relation.linkedPortList(port);
-        if (linkedPorts.size() > 1) {
-            System.out.println("Warning: AutoAdapter: port " + port.getFullName()
-                    + " has relation " + relation + ", which has " 
-                    + linkedPorts.size() + " linked ports, "
-                    + "which is more than 1.  The code only deals with the "
-                    + "first port.");
-        }
-        TypedIOPort remotePort = (TypedIOPort) linkedPorts.get(0);
+//        List linkedPorts = relation.linkedPortList(port);
+//         if (linkedPorts.size() > 1) {
+//             System.out.println("Warning: AutoAdapter: port " + port.getFullName()
+//                     + " has relation " + relation + ", which has " 
+//                     + linkedPorts.size() + " linked ports, "
+//                     + "which is more than 1.  The code only deals with the "
+//                     + "first port.");
+//         }
+        Iterator linkedPorts = relation.linkedPortList(port).iterator();
+        Set<String> instantiatedPort = new HashSet<String>();
+        HashMap<String,String> connectedPorts = new HashMap<String,String>();
+    while (linkedPorts.hasNext()) {
 
+        //TypedIOPort remotePort = (TypedIOPort) linkedPorts.get(0);
+        TypedIOPort remotePort = (TypedIOPort) linkedPorts.next();
 
         if (verbosityLevel > 3) {
             //code.append("System.out.println(\"AA1: " + port.getFullName().replace("$", "\\u0024") + " --> " + relation.getName() + " --> " + remotePort.getFullName().replace("$", "\\u0024") + "\");" + _eol);
@@ -1863,14 +1868,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
 
         // Instantiate the port and set its type.
-        if (!remoteIsAutoAdaptered /*&& !hasAutoConnectorRelation*/) {
+        if (!instantiatedPort.contains(escapedCodegenPortNameSymbol)
+                &&  !remoteIsAutoAdaptered /*&& !hasAutoConnectorRelation*/) {
+            instantiatedPort.add(escapedCodegenPortNameSymbol);
             // Ports that have a relation whose name starts with "autoConnector" will be created specially?
             // FIXME: maybe this should only be input or output ports that are autoConnector ports?
             if (verbosityLevel > 3) {
                 code.append("System.out.println(\"I1\");" + _eol); 
             }
-           code.append(
-                    escapedCodegenPortNameSymbol
+            code.append("if($containerSymbol().getPort(\""
+                    + AutoAdapter._externalPortName(port.getContainer(),
+                            codegenPortName).replace("$", "\\u0024")
+                    + "\") == null) {" + _eol
+                    + escapedCodegenPortNameSymbol
                     + " = new TypedIOPort($containerSymbol()"
                     // Need to deal with backslashes in port names, see
                     // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ActorWithPortNameProblemTest.xml
@@ -1885,7 +1895,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
                     + "    " + escapedCodegenPortNameSymbol
                     + ".setTypeEquals(" + _typeToBaseType(port.getType())
-                    + ");" + _eol);
+                    + ");" + _eol
+                    + "}" + _eol);
+            
         }
 
         boolean connectedAlready = false;
@@ -2002,7 +2014,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     String relationSetWidth = "";
                     if (moreThanOneRelation) {
                         _headerFiles.add("ptolemy.actor.TypedIORelation;");
-                        code.append("TypedIORelation " + relationSymbol 
+                        code.append("{" + _eol
+                                + "TypedIORelation " + relationSymbol 
                                 + " = null;" + _eol
                                 + portOrParameter + ".link(" + relationSymbol + ");" + _eol);
                         // FIXME: What about multiple relations?
@@ -2035,6 +2048,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                                     + (multiplePortParameter != null ? ".getPort()" : "")
                                     + ".link(" + relationSymbol + ");" + _eol);
                         } 
+                        code.append("}" + _eol);
                     } else {
                         if (port.isMultiport()) {
                             // Needed for
@@ -2143,13 +2157,22 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         } else {
             // !remoteIsAutoAdaptered
             if (!readingRemoteParameters) {
-                if (!connectedAlready) {
+                if (!connectedAlready && connectedPorts.get(escapedCodegenPortNameSymbol) == null) {
+                    connectedPorts.put(escapedCodegenPortNameSymbol, portOrParameter);
                     if (verbosityLevel > 3) {
                         code.append("    System.out.println(\"A1\");" + _eol);
                     }
-                    code.append("    $containerSymbol().connect(" + escapedCodegenPortNameSymbol
+                    // FIXME: This does not handle ports that have multiple connections
+                    // to the same port.
+                    // FIXME: We should not have to test connectivity, we should know
+                    // from the model whether we should call connect().
+                    code.append(/*"if (!" + escapedCodegenPortNameSymbol + ".isDeeplyConnected("
+                                  + portParameter + ")) {" + _eol 
+                                  + */
+                            "    $containerSymbol().connect(" + escapedCodegenPortNameSymbol
                             + ", " + portOrParameter
-                            + ");" + _eol);
+                            + ");" + _eol
+                            /*+ "}" + _eol*/);
                 }
             } else {
                 if (!connectedAlready) {
@@ -2185,7 +2208,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         + _typeToBaseType(port.getType()) + ");" + _eol);
             }
         }
-
+    }
         code.append("}" + _eol);
 
         return code.toString();
