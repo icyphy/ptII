@@ -1202,8 +1202,11 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             _openComposite((CompositeEntity) entity, tableauxToClose, masterEffigy, graphFrame);
         } else if (entity instanceof State) {
             TypedActor[] refinements = ((State) entity).getRefinement();
-            for (TypedActor refinement : refinements) {
-                _openComposite((CompositeEntity) refinement, tableauxToClose, masterEffigy, graphFrame);
+            // refinements could be null, see ptolemy/domains/ptides/demo/PtidesBasicPowerPlant/PtidesBasicPowerPlant.xml
+            if (refinements != null) {
+                for (TypedActor refinement : refinements) {
+                    _openComposite((CompositeEntity) refinement, tableauxToClose, masterEffigy, graphFrame);
+                }
             }
         }
     }
