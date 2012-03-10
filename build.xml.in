@@ -81,6 +81,8 @@
     <include name="**/ptolemy/codegen/test/junit/AutoCodegenJavaKnownFailedTests.*" /> 
     <include name="**/ptolemy/codegen/test/junit/AutoCodegenJavaTests.*" /> 
     <include name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
+    <include name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
+    <include name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
     <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
   </patternset>
 
@@ -92,6 +94,8 @@
     <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenJavaKnownFailedTests.*" />
     <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenJavaTests.*" />
     <exclude name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
     <exclude name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
   </patternset>
 
@@ -482,7 +486,7 @@ For example:
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
 	  <!-- Include the long running tests. -->
-	  <include name="${test.batch.long}" />
+	  <patternset refid="test.long.includes" />
 	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.excludes" />
 	</fileset>
