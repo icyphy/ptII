@@ -193,9 +193,11 @@ public class ExportModelJUnitTest {
         // Pathnames that should be skipped
         String [] skip = {
 	    "CRoom.xml", // hangs.
+	    "distributed/demo/Sleep/Sleep.xml", // Requires jini.
 	    "HierarchyFlattening.xml", // gt
 	    "JMFJAI.xml",
 	    "KarplusStrong.xml",
+	    "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
 	    "PublisherTest", // gt
 	    "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
 	    "SerialPort.xml",
