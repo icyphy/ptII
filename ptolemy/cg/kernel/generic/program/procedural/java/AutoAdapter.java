@@ -2631,16 +2631,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             boolean remoteIsAutoAdaptered = _isAutoAdaptered(remoteActor);
             StringBuffer message = new StringBuffer(
                     "Warning: custom actors "
-                    + " connected to more than one port the same level. Msg #2\n");
+                    + "connected to more than one port the same level. Msg #2\n");
             Iterator relations = port.linkedRelationList().iterator();
             while (relations.hasNext()) {
                 Relation r = (Relation) relations.next();
-                message.append(getComponent().getName() + " " + port.getName()
-                        + " " + r + _eol);
+                message.append("Component: "
+                        + getComponent().getName() + ", port: " + port.getName()
+                        + ", relation: " + r + " is connected to:" + _eol);
+                int i = 0;
                 Iterator ports = r.linkedPortList(port).iterator();
                 while (ports.hasNext()) {
                     Port p = (TypedIOPort) ports.next();
-                    message.append("    " + p + _eol);
+                    i++;
+                    message.append("     " + i + " " + p.getFullName() + _eol);
                     if (!_isAutoAdaptered(p.getContainer())) {
                         // If one of the remote actors is not auto
                         // adapatered, then mark this connection as
@@ -2650,7 +2653,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/test/auto/UnaryMathFunction.xml
                         // has a bunch of custom actors that share an input relation, but the input
                         // is a non-autoadapter actor.  We would like to preserve the connectivity.
-                        message.append("\nPort " + p.getFullName() + " is contained by an actor that is not an auto adapter.\n");
+                        message.append("       which is contained by an actor that is not an auto adapter.\n");
                         remoteIsAutoAdaptered = false;
                     }
                 }
