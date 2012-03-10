@@ -147,7 +147,9 @@ public class ExportModelJUnitTest {
                             + "\".  Line was:\n" + line);
                 }
                 String modelPath = line.substring(prefix.length());
-                demos.add(modelPath);
+		if (_openModel(modelPath)) {
+		    demos.add(modelPath);
+		}
             }
         } catch (Exception ex) {
             IOException exception = new IOException("Failed to read \"" 
@@ -185,6 +187,23 @@ public class ExportModelJUnitTest {
         return true;
     }
 
+
+    /** Return true if we should open the model.
+     */   
+    private boolean _openModel(String modelPath) {
+        // Pathnames that should be skipped
+        String [] skip = {
+	    "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+	    "SimplePassPointer", // Only works on 32-bit
+        };
+        for (int i = 0; i < skip.length; i++) {
+            if (modelPath.indexOf(skip[i]) != -1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /** Return true if we should run the demo.
      *  It does not make sense to run some demos.
      *  This method returns false for those demos.
@@ -199,12 +218,11 @@ public class ExportModelJUnitTest {
 	    "KarplusStrong.xml",
 	    "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
 	    "PublisherTest", // gt
-	    "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
 	    "SerialPort.xml",
-	    "SimplePassPointer", // Only works on 32-bit
             "SMVLegacyCodeActor",
             "SoundSpectrum.xml",
             "SynthesizedVoice.xml",
+	    "SystemCommand.xml", // Hangs.
             "SystemLevelType",
 	    "TunnelingBallDevice",
 	    "VideoCapture.xml"
