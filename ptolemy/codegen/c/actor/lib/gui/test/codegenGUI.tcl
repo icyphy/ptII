@@ -37,6 +37,9 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+#set VERBOSE 1
+
+
 # Open all the files in Vergil
 set files [glob auto/*.xml]
 set args [java::new {String[]} [llength $files] $files]
@@ -78,9 +81,9 @@ while {[$models hasNext]} {
 	    $watchDog cancel
 	}
 	list $returnValue
-    } {{}}
+    } {0}
 }
-puts "Sleeping for 20 seconds so that we can see the last test\n"
-sleep 20 0
+puts "Sleeping for 5 seconds so that we can see the last test\n"
+sleep 5 0
 # Print out stats
 doneTests
