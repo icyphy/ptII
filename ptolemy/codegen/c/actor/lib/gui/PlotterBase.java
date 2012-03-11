@@ -180,10 +180,15 @@ public class PlotterBase extends CCodeGeneratorHelper {
         // FIXME: this is a dumb way to leave the plot window open
         // when the program runs to the end. I need to figure out a
         // better way.
-        code.append("char $actorSymbol(temp)[80];" + _eol);
-        code.append("printf(\"type any key and then return to exit...\");"
-                + _eol);
-        code.append("scanf(\"%s\",$actorSymbol(temp));" + _eol);
+        // code.append("char $actorSymbol(temp)[80];" + _eol);
+        // code.append("printf(\"type any key and then return to exit...\");"
+        //         + _eol);
+        // code.append("scanf(\"%s\",$actorSymbol(temp));" + _eol);
+
+	// Sleep for 5 seconds so that we can run the nightly build
+	// and have the executables exit.
+	code.append("printf(\"Done. Sleeping for 5 seconds.\\n\");" + _eol);
+	code.append("sleep(5);" + _eol);
         code.append("exit(0);" + _eol);
         return processCode(CodeStream.indent(code.toString()));
     }
