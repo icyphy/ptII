@@ -59,6 +59,9 @@
   <!-- The timeout in seconds for long running junit tests. -->
   <property name="timeout.long" value="4000000" />
 
+  <!-- The timeout in seconds for longest running junit tests. -->
+  <property name="timeout.longest" value="7200000" />
+
 
   <!-- Ant paths. Alphabetize, please -->
   <path id="ptII.classpath">
@@ -72,32 +75,8 @@
     @ANT_EXCLUDE@
   </patternset>  
 
-  <!-- Include tests that take a long time to run.  Used in test.cobertura.
-       These tests should be excluded by test.long.excludes -->
-  <patternset id="test.long.includes">
-    <include name="**/JUnitCGJavaTest.*" />
-    <include name="**/ptolemy/codegen/test/junit/AutoCodegenCKnownFailedTests.*" /> 
-    <include name="**/ptolemy/codegen/test/junit/AutoCodegenCTests.*" /> 
-    <include name="**/ptolemy/codegen/test/junit/AutoCodegenJavaKnownFailedTests.*" /> 
-    <include name="**/ptolemy/codegen/test/junit/AutoCodegenJavaTests.*" /> 
-    <include name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
-    <include name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
-  </patternset>
-
-  <!-- Exclude long running tests. Used in test.cobertura -->
-  <patternset id="test.long.excludes">
-    <exclude name="**/JUnitCGJavaTest.*" />
-    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenCKnownFailedTests.*" />
-    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenCTests.*" />
-    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenJavaKnownFailedTests.*" />
-    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenJavaTests.*" />
-    <exclude name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
-    <exclude name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
-    <exclude name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
-  </patternset>
+  <!-- There are three categories of test, regular tests, long tests
+       and longest tests.  We have excludes for each category. -->
 
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
@@ -121,6 +100,43 @@
     <exclude name="**/ptserver/test/junit/TokenParserTest.*" />
     <exclude name="**/ptserver/test/junit/TypeParserTest.*" />
   </patternset>
+
+  <!-- Include tests that take a long time to run.
+       These tests should be excluded by test.long.excludes -->
+  <patternset id="test.long.includes">
+    <include name="**/JUnitCGJavaTest.*" />
+    <include name="**/ptolemy/codegen/test/junit/AutoCodegenCKnownFailedTests.*" /> 
+    <include name="**/ptolemy/codegen/test/junit/AutoCodegenCTests.*" /> 
+    <include name="**/ptolemy/codegen/test/junit/AutoCodegenJavaKnownFailedTests.*" /> 
+    <include name="**/ptolemy/codegen/test/junit/AutoCodegenJavaTests.*" /> 
+    <include name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
+    <include name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
+    <include name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
+  </patternset>
+
+  <!-- Exclude long running tests. -->
+  <patternset id="test.long.excludes">
+    <exclude name="**/JUnitCGJavaTest.*" />
+    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenCKnownFailedTests.*" />
+    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenCTests.*" />
+    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenJavaKnownFailedTests.*" />
+    <exclude name="**/ptolemy/codegen/test/junit/AutoCodegenJavaTests.*" />
+    <exclude name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
+  </patternset>
+
+  <!-- Include tests that take longest time to run.
+       These tests should be excluded by test.longest.excludes -->
+  <patternset id="test.longest.includes">
+    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
+  </patternset>
+
+  <!-- Exclude longest running tests. -->
+  <patternset id="test.longest.excludes">
+    <exclude name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
+  </patternset>
+
 
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
@@ -376,7 +392,7 @@ For example:
   <target name="run" depends="vergil"
 	  description="Invoke the Ptolemy II User Interface (alias for the vergil target)"/>
 
-  <target name="test" depends="build, test.short, test.long"
+  <target name="test" depends="build, test.short, test.long, test.longest"
 	  description="Build and run the all the junit tests." />
 
   <!-- Cobertura: code coverage tool -->
@@ -462,6 +478,8 @@ For example:
 	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
+	  <!-- Exclude the longest running tests -->
+	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
@@ -488,7 +506,37 @@ For example:
 	  <!-- Include the long running tests. -->
 	  <patternset refid="test.long.includes" />
 	  <patternset refid="ptII.excludes" />
+	  <!-- Exclude the longest running tests -->
+	  <patternset refid="test.longest.excludes" />
+	</fileset>
+      </batchtest>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
+    </junit>
+
+    <echo> Run the longest tests with timeout=${timeout.longest} </echo>
+    <junit fork="yes"
+	   forkmode="perTest"
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   maxmemory="1500m"
+	   printsummary="withOutAndErr"
+	   showoutput="no"
+	   timeout="${timeout.longest}">
+      <classpath>
+	<path location="${instrumented.dir}" />
+	<path refid="ptII.classpath" />
+	<path refid="cobertura.classpath" />
+      </classpath>
+      <formatter type="${junit.formatter}" />
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <!-- Include the long running tests. -->
+	  <patternset refid="test.longest.includes" />
+	  <patternset refid="ptII.excludes" />
 	  <patternset refid="test.excludes" />
+	  <!-- Exclude the long running tests -->
+	  <patternset refid="test.long.excludes" />
 	</fileset>
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
@@ -497,6 +545,7 @@ For example:
 
     <cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
   </target>
+
 
   <target name="test.long"
 	  description="Run the long-running junit tests in a directory or directories.">
@@ -513,8 +562,9 @@ For example:
          ant test.batch.long -Dtest.batch=ptolemy/domains/continuous/**/junit/*.java
       
       Various test targets are available:
-       test - builds and runs tests.short and tests.long.
+       test - builds and runs test.short, test.long and test.longest
        test.long - runs tests that are fairly long (called by the test target)
+       test.long - runs tests that are longest (called by the test target)
        test.report - runs batch of tests specified by a path with wildcards (output=files)
        test.short - runs tests that are fairly fast (called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
@@ -546,6 +596,56 @@ For example:
     </junit>
   </target>
 
+
+  <target name="test.longest"
+	  description="Run the longest-running junit tests in a directory or directories.">
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <echo>
+      ==test.longest==
+      This target runs test specified by a file name and generates
+      human readable output to stdout.
+
+      The default is to run all the longest-running tests.
+
+      To run different tests, use -Dtest.batch, for example:
+         ant test.batch.long -Dtest.batch=ptolemy/domains/continuous/**/junit/*.java
+      
+      Various test targets are available:
+       test - builds and runs test.short, test.long and test.longest
+       test.long - runs tests that are fairly long (called by the test target)
+       test.long - runs tests that are longest (called by the test target)
+       test.report - runs batch of tests specified by a path with wildcards (output=files)
+       test.short - runs tests that are fairly fast (called by the test target)
+       test.single target runs single test specified by its class name (output=stdout)
+
+      test.batch.long = ${test.batch.long}
+
+    </echo>
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <!-- Set filtertrace to off so that we see the junit stackframes -->
+      <batchtest filtertrace="off">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <!-- Include the longest running tests. -->
+	  <patternset refid="test.longest.includes" />
+	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.excludes" />
+	</fileset>
+      </batchtest>
+      <formatter type="plain" usefile="off" />
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+    </junit>
+  </target>
+
   <target name="test.report" depends="build, initReports"
 	  description="Run the all the junit tests by path (**/junit/*.java), results in $PTII/reports.">
     <echo>
@@ -558,8 +658,11 @@ For example:
       To change format Use -Djunit.formatter=xml|brief|plain|failure, default is xml.
 
       Various test targets are available:
-       test target run batch of tests specified by a path with wildcards (output=stdout)
-       test.report target runs batch of tests specified by a path with wildcards (output=files)
+       test - builds and runs test.short, test.long and test.longest
+       test.long - runs tests that are fairly long (called by the test target)
+       test.long - runs tests that are longest (called by the test target)
+       test.report - runs batch of tests specified by a path with wildcards (output=files)
+       test.short - runs tests that are fairly fast (called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
 
       test.batch = ${test.batch}
@@ -600,8 +703,9 @@ For example:
          ant test.short -Dtest.batch=ptolemy/domains/continuous/**/junit/*.java
       
       Various test targets are available:
-       test - runs batch of tests specified by a path with wildcards (output=stdout)
+       test - builds and runs test.short, test.long and test.longest
        test.long - runs tests that are fairly long (called by the test target)
+       test.long - runs tests that are longest (called by the test target)
        test.report - runs batch of tests specified by a path with wildcards (output=files)
        test.short - runs tests that are fairly fast (called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
@@ -630,6 +734,8 @@ For example:
 	  <patternset refid="test.excludes" />
 	  <!-- Exclude the long running tests -->
 	  <patternset refid="test.long.excludes" />
+	  <!-- Exclude the longest running tests -->
+	  <patternset refid="test.longest.excludes" />
 	</fileset>
       </batchtest>
       <formatter type="plain" usefile="off" />
@@ -647,8 +753,9 @@ For example:
          ant test.single -Dtest.name=ptolemy.kernel.util.junit.ExampleSystemJUnitTest
 
       Various test targets are available:
-       test - runs batch of tests specified by a path with wildcards (output=stdout)
+       test - builds and runs test.short, test.long and test.longest
        test.long - runs tests that are fairly long (called by the test target)
+       test.long - runs tests that are longest (called by the test target)
        test.report - runs batch of tests specified by a path with wildcards (output=files)
        test.short - runs tests that are fairly fast (called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
@@ -658,7 +765,7 @@ For example:
     <junit fork="yes"
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
-	   showoutput="off"
+	   showoutput="yes"
 	   timeout="${timeout}">
       <classpath>
 	<path refid="ptII.classpath" />
