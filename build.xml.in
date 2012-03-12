@@ -569,7 +569,7 @@ For example:
        test.short - runs tests that are fairly fast (called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
 
-      test.batch.long = ${test.batch.long}
+      timeout = ${timeout.longest} milliseconds
 
     </echo>
     <junit fork="yes" 
@@ -619,14 +619,14 @@ For example:
        test.short - runs tests that are fairly fast (called by the test target)
        test.single target runs single test specified by its class name (output=stdout)
 
-      test.batch.long = ${test.batch.long}
+      timeout = ${timeout.longest} milliseconds
 
     </echo>
     <junit fork="yes" 
 	   jvm="ptolemy/util/test/junit/javachdir"
 	   printsummary="withOutAndErr"
 	   showoutput="yes"
-	   timeout="${timeout.long}">
+	   timeout="${timeout.longest}">
       <classpath>
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
@@ -650,7 +650,7 @@ For example:
 	  description="Run the all the junit tests by path (**/junit/*.java), results in $PTII/reports.">
     <echo>
       ==test.report==
-      This target runs all the tests (short and long) and generates
+      This target runs all the tests (short, long, longest) and generates
       ${junit.formatter} output in ${junit.output.dir}.
  
       To run different tests, use -Dtest.batch, for example:
@@ -711,6 +711,7 @@ For example:
        test.single target runs single test specified by its class name (output=stdout)
 
       test.batch = ${test.batch}
+      timeout = ${timeout} milliseconds
 
     </echo>
     <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
