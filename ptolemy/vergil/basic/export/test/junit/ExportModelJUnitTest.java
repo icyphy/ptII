@@ -41,10 +41,12 @@ import java.util.List;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ptolemy.kernel.util.KernelException;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.export.ExportModel;
 
@@ -96,7 +98,8 @@ public class ExportModelJUnitTest {
         boolean openComposites = _openComposites(modelPath);
         boolean run = _runDemo(modelPath);
 
-        System.out.println("####### $PTII/bin/ptinvoke "
+	_count++;
+        System.out.println("####### " + _count + " $PTII/bin/ptinvoke "
                 + "ptolemy.vergil.basic.export.ExportModel -force htm "
 			   + (run ? "-run " : " ")
 			   + (openComposites ? "-openComposites " : " ")
@@ -104,16 +107,24 @@ public class ExportModelJUnitTest {
 			   + " $PTII/" + modelDirectory + "/" + modelName);
 
         ExportModel exportModel = new ExportModel();
-        exportModel.exportModel(false /* copyJavaScriptFiles */,
-                true /* force */,
-                "htm",
-                fullModelPath,
-                run,
-                openComposites,
-                false /* open results */,
-                outputDirectory,
-                false /* save */,
-                true /* whitebackground */);
+	try {
+	    exportModel.exportModel(false /* copyJavaScriptFiles */,
+				    true /* force */,
+				    "htm",
+				    fullModelPath,
+				    run,
+				    openComposites,
+				    false /* open results */,
+				    outputDirectory,
+				    false /* save */,
+				    true /* whitebackground */);
+	} catch (Throwable throwable) {
+	    // If exporting html throws an exception, then that is a
+	    // test failure, not a test error.
+	    Assert.fail("Exporting HTML for " + modelPath
+			+ " failed: \n"
+			+ KernelException.stackTraceToString(throwable));
+	}
     }
 
     /**
@@ -193,8 +204,16 @@ public class ExportModelJUnitTest {
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
         String [] skip = {
+	    //"luminary/adapters/ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // TypeConflict 
+	    //"luminary/adapters/ptolemy/domains/ptides/demo/Accumulator/Accumulator.xml", // TypeConflict
+	    //"ModularCGPubSub.xml", //Can't find the publisher for "channel".
+	    //"MonotonicityAnalysis.xml", // Expected '{x = General}' but got '{x = NonMonotonic_{<o...
+	    //"ptalon/gt/demo/Adder/Adder.xml", // "Channel index 0 is out of range, because width is only 0."
 	    "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
 	    "SimplePassPointer", // Only works on 32-bit
+	    "MatlabWirelessSoundDetection.xml", // Hangs.
+	    //"ModeReference.xml", // "Cannot call invokeAndWait from the event dispatcher thread"
+	    //"Signature.xml", // Keystore is not present.
         };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {
@@ -213,19 +232,24 @@ public class ExportModelJUnitTest {
         String [] skip = {
 	    "CRoom.xml", // hangs.
 	    "distributed/demo/Sleep/Sleep.xml", // Requires jini.
+	    "domains/gr", // "Cannot render to more than 32 Canvas3Ds",
+			  // need to close ViewScreen3D by adding a ViewScreen3D Tableau.
+	    "GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
 	    "HierarchyFlattening.xml", // gt
+	    "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
 	    "JMFJAI.xml",
 	    "KarplusStrong.xml",
 	    "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
 	    "PublisherTest", // gt
 	    "SerialPort.xml",
+	    "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
             "SMVLegacyCodeActor",
             "SoundSpectrum.xml",
             "SynthesizedVoice.xml",
 	    "SystemCommand.xml", // Hangs.
             "SystemLevelType",
 	    "TunnelingBallDevice",
-	    "VideoCapture.xml"
+	    "VideoCapture.xml",
         };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {
@@ -234,4 +258,7 @@ public class ExportModelJUnitTest {
         }
         return true;
     }
+
+    /** Number of models exported. */
+    private static int _count = 0;
 }
