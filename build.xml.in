@@ -60,7 +60,7 @@
   <property name="timeout.long" value="4000000" />
 
   <!-- The timeout in seconds for longest running junit tests. -->
-  <property name="timeout.longest" value="7200000" />
+  <property name="timeout.longest" value="10800000" />
 
 
   <!-- Ant paths. Alphabetize, please -->
@@ -112,6 +112,7 @@
     <include name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
     <include name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
     <include name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
+    <include name="**/ptolemy/plot/test/junit/JUnitTclTest*" />
   </patternset>
 
   <!-- Exclude long running tests. -->
@@ -124,6 +125,7 @@
     <exclude name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/domains/continuous/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/domains/de/test/junit/JUnitTclTest*" />
+    <exclude name="**/ptolemy/plot/test/junit/JUnitTclTest*" />
   </patternset>
 
   <!-- Include tests that take longest time to run.
