@@ -12,10 +12,10 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
     <property name="Wireless Director" class="ptolemy.domains.wireless.kernel.WirelessDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, -110.0]">
         </property>
@@ -202,7 +202,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="3">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="64">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="65">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -673,7 +673,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 165.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -862,7 +862,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -922,7 +922,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -961,7 +961,7 @@
                         <link port="MonitorValue.input" relation="relation2"/>
                     </entity>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -1065,7 +1065,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 210.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -1329,7 +1329,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -1439,7 +1439,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -1795,7 +1795,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 95.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -1808,7 +1808,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 960.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -1821,7 +1821,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 290.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue3" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue3" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -2652,7 +2652,7 @@
             <link port="ini.NextState" relation="NextStateRelation"/>
             <link port="ini.Comm" relation="CommRelation"/>
         </entity>
-        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -2665,7 +2665,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1495.0, -570.0]">
             </property>
         </entity>
-        <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -2787,7 +2787,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="64">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="65">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -3258,7 +3258,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 165.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -3447,7 +3447,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -3507,7 +3507,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -3546,7 +3546,7 @@
                         <link port="MonitorValue.input" relation="relation2"/>
                     </entity>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -3650,7 +3650,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 210.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -3914,7 +3914,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -4024,7 +4024,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -4380,7 +4380,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 95.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -4393,7 +4393,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 960.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -4406,7 +4406,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 290.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue3" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue3" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -5237,7 +5237,7 @@
             <link port="ini.NextState" relation="NextStateRelation"/>
             <link port="ini.Comm" relation="CommRelation"/>
         </entity>
-        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -5250,7 +5250,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1495.0, -570.0]">
             </property>
         </entity>
-        <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -5368,11 +5368,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 90, NoH = 2, Requester = 12, Responder = 6, SeqN = 58}, Sender = 5, Type = &quot;RREP&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 90, NoH = 2, Requester = 12, Responder = 6, SeqN = 59}, Sender = 5, Type = &quot;RREP&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="4">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="65">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="67">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -5393,7 +5393,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1425.0, -900.0]">
             </property>
         </property>
-        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 6, NoH = 1, SeqN = 58}}">
+        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 6, NoH = 1, SeqN = 59}}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -5843,7 +5843,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 165.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -6032,7 +6032,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -6092,7 +6092,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -6131,7 +6131,7 @@
                         <link port="MonitorValue.input" relation="relation2"/>
                     </entity>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -6235,7 +6235,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 210.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -6499,7 +6499,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -6609,7 +6609,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -6965,7 +6965,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 95.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -6978,7 +6978,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 960.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -6991,7 +6991,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 290.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue3" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue3" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -7822,7 +7822,7 @@
             <link port="ini.NextState" relation="NextStateRelation"/>
             <link port="ini.Comm" relation="CommRelation"/>
         </entity>
-        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -7835,7 +7835,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1495.0, -570.0]">
             </property>
         </entity>
-        <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -7953,11 +7953,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 90, NoH = 2, Requester = 12, Responder = 6, SeqN = 58}, Sender = 4, Type = &quot;RREP&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 90, NoH = 2, Requester = 12, Responder = 6, SeqN = 59}, Sender = 4, Type = &quot;RREP&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="65">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="67">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -7978,7 +7978,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1425.0, -900.0]">
             </property>
         </property>
-        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 6, NoH = 1, SeqN = 58}}">
+        <property name="Table" class="ptolemy.data.expr.Parameter" value="{{Dest = 0, Next = 0, NoH = 0, SeqN = 0}, {Dest = 12, Next = 3, NoH = 7, SeqN = 1}, {Dest = 3, Next = 3, NoH = 1, SeqN = 1}, {Dest = 27, Next = 27, NoH = 1, SeqN = 1}, {Dest = 6, Next = 6, NoH = 1, SeqN = 59}}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -8428,7 +8428,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 165.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -8617,7 +8617,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -8677,7 +8677,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -8716,7 +8716,7 @@
                         <link port="MonitorValue.input" relation="relation2"/>
                     </entity>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -8820,7 +8820,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 210.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -9084,7 +9084,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -9194,7 +9194,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -9550,7 +9550,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 95.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -9563,7 +9563,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 960.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -9576,7 +9576,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 290.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue3" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue3" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -10407,7 +10407,7 @@
             <link port="ini.NextState" relation="NextStateRelation"/>
             <link port="ini.Comm" relation="CommRelation"/>
         </entity>
-        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -10420,7 +10420,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1495.0, -570.0]">
             </property>
         </entity>
-        <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -10538,11 +10538,11 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1274.6640625, -692.0893770578552}">
         </property>
-        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 90, NoH = 2, Requester = 12, Responder = 6, SeqN = 58}, Sender = 4, Type = &quot;RREP&quot;}">
+        <property name="MsgId" class="ptolemy.data.expr.Parameter" value="{Data = {IdReq = 10, Lifetime = 90, NoH = 2, Requester = 12, Responder = 6, SeqN = 59}, Sender = 4, Type = &quot;RREP&quot;}">
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="6">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="59">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="60">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -11013,7 +11013,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 165.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -11202,7 +11202,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -11262,7 +11262,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -11301,7 +11301,7 @@
                         <link port="MonitorValue.input" relation="relation2"/>
                     </entity>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -11405,7 +11405,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 210.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -11669,7 +11669,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -11779,7 +11779,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -12135,7 +12135,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 95.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -12148,7 +12148,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 960.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -12161,7 +12161,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 290.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue3" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue3" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -12992,7 +12992,7 @@
             <link port="ini.NextState" relation="NextStateRelation"/>
             <link port="ini.Comm" relation="CommRelation"/>
         </entity>
-        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -13005,7 +13005,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1495.0, -570.0]">
             </property>
         </entity>
-        <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -13145,7 +13145,7 @@
         </property>
         <property name="NodeId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="64">
+        <property name="SeqN" class="ptolemy.data.expr.Parameter" value="65">
         </property>
         <property name="inrange" class="ptolemy.data.expr.Parameter" value="200.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -13616,7 +13616,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 165.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -13805,7 +13805,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -13865,7 +13865,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -13904,7 +13904,7 @@
                         <link port="MonitorValue.input" relation="relation2"/>
                     </entity>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -14008,7 +14008,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 210.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -14272,7 +14272,7 @@
                     </port>
                     <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
                         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a&#361;ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a&#361;ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a&#361;adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
+                            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OJO: LEE el valor de MsgId, antes de cada iteracion incluso antes de lanza el evento de la Tabla.!!!&#10;&#10;&#10;Busco al destinatario (para generar el RREP o reenviar el RREQ)&#10;Busco al emisor, si es el 1er mensaje q recibo de un nodo vecino (a 1 salto de distancia)&#10; lo a?ado a la tabla&#10;&#10;Busco al fuente (nodo que quiere una ruta con el nodo destino) si no exite en la Tabla lo a?ado.&#10; si ya esta (p ej, si me llega el mensaje dsd varios nodos) no vuelvo a a?adirlo&#10;&#10;(el objetivo es optimizar la ruta en funcion del SeqN, por el momento me conformo con que se creen bien)">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 495.0]">
                             </property>
@@ -14382,7 +14382,7 @@
                                 <property name="input"/>
                             </port>
                         </entity>
-                        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                             <doc>Monitor and display values</doc>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                             </property>
@@ -14738,7 +14738,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 95.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -14751,7 +14751,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 960.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -14764,7 +14764,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 290.0]">
                     </property>
                 </entity>
-                <entity name="MonitorValue3" class="ptolemy.actor.lib.MonitorValue">
+                <entity name="MonitorValue3" class="ptolemy.actor.lib.gui.MonitorValue">
                     <doc>Monitor and display values</doc>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
                     </property>
@@ -15595,7 +15595,7 @@
             <link port="ini.NextState" relation="NextStateRelation"/>
             <link port="ini.Comm" relation="CommRelation"/>
         </entity>
-        <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
@@ -15608,7 +15608,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-1495.0, -570.0]">
             </property>
         </entity>
-        <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
+        <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
             <doc>Monitor and display values</doc>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
