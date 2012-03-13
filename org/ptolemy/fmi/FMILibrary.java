@@ -125,7 +125,7 @@ public interface FMILibrary extends Library {
          *  with message.
          */
         // FIXME: Handle vargargs
-        void apply(Pointer fmiComponent, Pointer instanceName, int status, Pointer category, Pointer message, String ... parameters);
+        void apply(Pointer fmiComponent, String instanceName, int status, String category, String message, String ... parameters);
     };
 
     /** A callback for the fmiCallbackAllocateMemory() function.

@@ -55,10 +55,8 @@ public class FMUCoSimulation {
         // need to have method bodies, so we need an actual class.
         public class FMULogger implements FMICallbackLogger {
             // What to do about jni callbacks with varargs?  
-            // See http://osdir.com/ml/java.jna.user/2008-08/msg00103.html
-            // I'm getting an exception:
-            // "Callback argument class [Lcom.sun.jna.Pointer; requires custom type conversion"
-            public void apply(Pointer c, Pointer instanceName, int status, Pointer category, Pointer message, String ... parameters) {
+            // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
+            public void apply(Pointer fmiComponent, String instanceName, int status, String category, String message, String ... parameters) {
                 System.out.println("Java FMULogger, status: " + status);
                 System.out.println("Java FMULogger, message: " + message.getString(0));
             }
