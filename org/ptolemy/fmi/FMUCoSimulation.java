@@ -56,9 +56,9 @@ public class FMUCoSimulation {
         public class FMULogger implements FMICallbackLogger {
             // What to do about jni callbacks with varargs?  
             // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
-            public void apply(Pointer fmiComponent, String instanceName, int status, String category, String message, String ... parameters) {
+            public void apply(Pointer fmiComponent, String instanceName, int status, String category, String message, Pointer ... parameters) {
                 System.out.println("Java FMULogger, status: " + status);
-                System.out.println("Java FMULogger, message: " + message.getString(0));
+                System.out.println("Java FMULogger, message: " + message/*.getString(0)*/);
             }
         }
         //http://markmail.org/message/6ssggt4q6lkq3hen

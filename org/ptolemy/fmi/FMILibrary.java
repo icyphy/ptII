@@ -30,6 +30,8 @@ package org.ptolemy.fmi;
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Pointer;
+import com.sun.jna.TypeMapper;
+
 /**
  * A Java Native Acess (JNA) Wrapper for a Functional Mock-up Unit shared library.
  *
@@ -125,7 +127,7 @@ public interface FMILibrary extends Library {
          *  with message.
          */
         // FIXME: Handle vargargs
-        void apply(Pointer fmiComponent, String instanceName, int status, String category, String message, String ... parameters);
+        void apply(Pointer fmiComponent, String instanceName, int status, String category, String message, Pointer ... parameters);
     };
 
     /** A callback for the fmiCallbackAllocateMemory() function.
@@ -166,4 +168,6 @@ public interface FMILibrary extends Library {
          */
         void apply(Pointer fmiComponent, int status);
     };
+
+    public TypeMapper TYPE_MAPPER = FMITypeMapper.FMITYPEMAPPER;
 }
