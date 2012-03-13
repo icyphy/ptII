@@ -214,8 +214,8 @@ public class FMUCoSimulation {
                 new FMULibrary.FMUAllocateMemory(),
                 new FMULibrary.FMUFreeMemory(),
                 new FMULibrary.FMUStepFinished());
-        // Turn off logging because of problems with varargs
-        byte loggingOn = (byte)0;
+        // Logging tends to cause segfaults because of vararg callbacks.
+        byte loggingOn = (enableLogging ? (byte)1 : (byte)0);
 
         if (enableLogging) {
             System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInstantiateSlave");
