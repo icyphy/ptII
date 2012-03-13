@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,7 +58,7 @@ import ptolemy.vergil.basic.export.ExportModel;
  *
  * <p>To run these tests, use:
  * <pre>
- * (cd $PTII/ptolemy/vergil/basic/export/test/junit/; java -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true -classpath ${PTII}:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModeMostDemosJUnitTest)
+ * (cd $PTII/ptolemy/vergil/basic/export/test/junit/; java -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true -classpath ${PTII}:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest)
  * </pre>
  * 
  * <p>
@@ -99,7 +100,10 @@ public class ExportModelJUnitTest {
         boolean run = _runDemo(modelPath);
 
 	_count++;
-        System.out.println("####### " + _count + " $PTII/bin/ptinvoke "
+	Date date = new Date();
+	// Print to stderr so that we get logging in the nightly build
+        System.err.println("####### " + _count + " " + date + " " + modelPath);
+        System.out.println("####### " + _count + " " + date +" $PTII/bin/ptinvoke "
                 + "ptolemy.vergil.basic.export.ExportModel -force htm "
 			   + (run ? "-run " : " ")
 			   + (openComposites ? "-openComposites " : " ")
@@ -119,6 +123,7 @@ public class ExportModelJUnitTest {
 				    false /* save */,
 				    true /* whitebackground */);
 	} catch (Throwable throwable) {
+	    throwable.printStackTrace();
 	    // If exporting html throws an exception, then that is a
 	    // test failure, not a test error.
 	    Assert.fail("Exporting HTML for " + modelPath
