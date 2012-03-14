@@ -59,12 +59,12 @@ import ptolemy.kernel.util.InternalErrorException;
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */
-public class PtidesBasicReceiver extends DEReceiver {
+public class PtidesReceiver extends DEReceiver {
 
     /**
      * Construct an empty queue with no container.
      */
-    public PtidesBasicReceiver() {
+    public PtidesReceiver() {
         super();
     }
 
@@ -77,27 +77,10 @@ public class PtidesBasicReceiver extends DEReceiver {
      *                If this receiver cannot be contained by the proposed
      *                container.
      */
-    public PtidesBasicReceiver(IOPort container) throws IllegalActionException {
+    public PtidesReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
 
-    //    /**
-    //     * Return true if there are <i>numberOfTokens</i> tokens tokens available to
-    //     * the get() method.
-    //     *
-    //     * @param numberOfTokens
-    //     *            An int indicating how many tokens are needed.
-    //     * @return True if there are numberOfTokens tokens available.
-    //     */
-    //    public boolean hasToken(int numberOfTokens) {
-    //        try {
-    //            throw new IllegalActionException(
-    //                    "This method should not be used in PtidesBasicReceiver");
-    //        } catch (IllegalActionException e) {
-    //            e.printStackTrace();
-    //        }
-    //        return false;
-    //    }
 
     /**
      * Wrap the token in an DETokenEvent and post the trigger event to the director.
@@ -148,7 +131,7 @@ public class PtidesBasicReceiver extends DEReceiver {
      *                container actor, or if the actor has no director, or if
      *                the director is not an instance of DEDirector.
      */
-    private PtidesBasicDirector _getDirector() throws IllegalActionException {
+    private PtidesDirector _getDirector() throws IllegalActionException {
         IOPort port = getContainer();
 
         if (port != null) {
@@ -173,7 +156,7 @@ public class PtidesBasicReceiver extends DEReceiver {
                     }
 
                     if (dir != null) { 
-                        _director =  (PtidesBasicDirector) dir;
+                        _director =  (PtidesDirector) dir;
                         _directorVersion = port.workspace().getVersion();
                         return _director; 
                     }
@@ -191,7 +174,7 @@ public class PtidesBasicReceiver extends DEReceiver {
     ////                         private variables                 ////
 
     // The director where this DEReceiver should register for ptides events.
-    private PtidesBasicDirector _director;
+    private PtidesDirector _director;
 
     /**
      * An Event is an aggregation consisting of a Token, a time stamp and

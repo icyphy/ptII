@@ -45,6 +45,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+import ptolemy.domains.ptides.kernel.PtidesDirector;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -126,7 +127,7 @@ public class NetworkTransmitterPort extends PtidesPort {
      */
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException { 
-        PtidesBasicDirector director = (PtidesBasicDirector) ((CompositeActor)getContainer()).getDirector();
+        PtidesDirector director = (PtidesDirector) ((CompositeActor)getContainer()).getDirector();
         
         String[] labels = new String[] { timestamp, microstep, payload };
         Token[] values = new Token[] {
@@ -135,7 +136,7 @@ public class NetworkTransmitterPort extends PtidesPort {
                 new IntToken(director.getMicrostep()), token };
         RecordToken record = new RecordToken(labels, values); 
         try {
-        super.send(channelIndex, record);
+            super.send(channelIndex, record);
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(this, ex.getMessage());
         }

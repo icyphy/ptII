@@ -133,7 +133,7 @@ public class PtidesListEventQueue implements DEEventQueue {
         PtidesEvent ptidesEvent = (PtidesEvent) _listQueue.remove();
         // put the token of this event into the destined receiver.
         if (ptidesEvent.receiver() != null) {
-            ((PtidesBasicReceiver) (ptidesEvent).receiver())
+            ((PtidesReceiver) (ptidesEvent).receiver())
                     .putToReceiver((ptidesEvent).token());
         }
         if (_debugging) {
@@ -160,8 +160,13 @@ public class PtidesListEventQueue implements DEEventQueue {
         PtidesEvent ptidesEvent = (PtidesEvent) _listQueue.remove(index);
         // put the token of this event into the destined receiver.
         if (ptidesEvent.receiver() != null) {
-            ((PtidesBasicReceiver) (ptidesEvent).receiver())
-                    .putToReceiver((ptidesEvent).token());
+            if (ptidesEvent.receiver() instanceof PtidesReceiver) {
+                ((PtidesReceiver) ptidesEvent.receiver())
+                        .putToReceiver(ptidesEvent.token());
+            } else {
+                ((PtidesBasicReceiver) ptidesEvent.receiver())
+                    .putToReceiver(ptidesEvent.token());
+            }
         }
         if (_debugging) {
             _debug("--- taking " + index + "th element from queue: "

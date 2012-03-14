@@ -37,7 +37,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -47,8 +49,9 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;  
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
+import ptolemy.data.type.Type; 
+import ptolemy.domains.ptides.kernel.PtidesDirector;
+import ptolemy.domains.ptides.kernel.PtidesEvent;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -134,7 +137,7 @@ public class NetworkReceiverPort extends PtidesPort {
      */
     public void sendInside(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
-        PtidesBasicDirector director = (PtidesBasicDirector) ((CompositeActor)getContainer()).getDirector();
+        PtidesDirector director = (PtidesDirector) ((CompositeActor)getContainer()).getDirector();
 
         if (!(token instanceof RecordToken) || ((RecordToken)token).labelSet().size() != 3) {
             throw new IllegalActionException(this, 
@@ -151,14 +154,13 @@ public class NetworkReceiverPort extends PtidesPort {
 
         int recordMicrostep = ((IntToken) (record.get(microstep)))
                 .intValue(); 
-        
-        Time lastModelTime = director.getModelTime();
-        int lastMicrostep = director.getMicrostep();
-        director.setTag(recordTimeStamp, recordMicrostep);
-        
-        director.setTag(lastModelTime, lastMicrostep);
-        director.setModelTime(recordTimeStamp);
-        super.sendInside(channelIndex, record.get(payload));
+
+        Receiver[][] farReceivers = deepGetReceivers(); 
+        for (int i = 0; i < farReceivers[channelIndex].length; i++) { 
+            director.addInputEvent(new PtidesEvent(this, channelIndex, recordTimeStamp, 
+                    recordMicrostep, -1, (Token) record.get(payload), farReceivers[channelIndex][i]));
+                    
+        } 
     }
     
     /** Override conversion such that only payload of recordtoken is
