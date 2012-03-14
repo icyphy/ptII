@@ -177,10 +177,12 @@ public class GetDocumentationAction extends FigureAction {
                 context = Configuration.findEffigy(container);
                 container = container.getContainer();
             }
+            /* This test is pointless, since it shows the doc anyway.
             if (context == null) {
                 MessageHandler.error("Cannot find an effigy for "
                         + target.getFullName());
             }
+            */
             getDocumentation(_configuration, className, context);
         }
     }
