@@ -77,8 +77,11 @@ JCLASS =	$(JSRCS:%.java=%.class)
 
 # COMPLETE_CLASSPATH and JUNIT_JAVA_ARGS are set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	(cd ..;	CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(COMPLETE_CLASSPATH)" "$(JAVA)" -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest)
+	@echo "Run 'make long_test' to generate html for all the demos."
 	(cd ..;	CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.JUnitTclTest)
+
+long_test: $(EXTRA_SRCS) jclass test_java #test_jsimple
+	CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)$(CLASSPATHSEPARATOR)$(COMPLETE_CLASSPATH)" "$(JAVA)" -Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest
 
 test_java: jclass
 

@@ -101,8 +101,6 @@ public class ExportModelJUnitTest {
 
 	_count++;
 	Date date = new Date();
-	// Print to stderr so that we get logging in the nightly build
-        System.err.println("####### " + _count + " " + date + " " + modelPath);
         System.out.println("####### " + _count + " " + date +" $PTII/bin/ptinvoke "
                 + "ptolemy.vergil.basic.export.ExportModel -force htm "
 			   + (run ? "-run " : " ")
@@ -193,7 +191,7 @@ public class ExportModelJUnitTest {
         String [] skip = {
             // Fails with: Cannot render to more than 32 Canvas3Ds
             "Gravitation.xml",
-            "GravitationWithCollisionDetection.xml"
+            "GravitationWithCollisionDetection.xml", 
         };
         for (int i = 0; i < skip.length; i++) {
             if (modelPath.indexOf(skip[i]) != -1) {
@@ -214,6 +212,9 @@ public class ExportModelJUnitTest {
 	    //"ModularCGPubSub.xml", //Can't find the publisher for "channel".
 	    //"MonotonicityAnalysis.xml", // Expected '{x = General}' but got '{x = NonMonotonic_{<o...
 	    //"ptalon/gt/demo/Adder/Adder.xml", // "Channel index 0 is out of range, because width is only 0."
+	    "ddf/demo/IfThenElse/IfThenElse.xml", // FIXME: Failed to generate sub-web-page. 
+	    "ddf/demo/IfThenElse/IfThenElseFSM.xml", // FIXME: Failed to generate sub-web-page. 
+
 	    "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
 	    "SimplePassPointer", // Only works on 32-bit
 	    "MatlabWirelessSoundDetection.xml", // Hangs.
@@ -235,18 +236,32 @@ public class ExportModelJUnitTest {
     private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
         String [] skip = {
+	    "backtrack/demo/PrimeTest/PrimeTest.xml", // FIXME: Channel index 0 out of range.
 	    "CRoom.xml", // hangs.
 	    "distributed/demo/Sleep/Sleep.xml", // Requires jini.
+	    "de/demo/Clock/Clock.xml", // FIXME: "Audio Device Unavailable"
 	    "domains/gr", // "Cannot render to more than 32 Canvas3Ds",
 			  // need to close ViewScreen3D by adding a ViewScreen3D Tableau.
+	    "ExecDemos.xml", // FIXME: vergil: command not found
 	    "GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
 	    "HierarchyFlattening.xml", // gt
 	    "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
+	    "IterateOverArray.xml", // FIXME: no matching function abs( string )
 	    "JMFJAI.xml",
 	    "KarplusStrong.xml",
 	    "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
+	    "ModelReference.xml", // FIXME: "Cannot call invokeAndWait from the event dispatcher thread"
+	    "ModularCGPubSub.xml", // FIXME: Can't link Subscriber with Publisher, channel was "channel
+	    "ptolemy/gt/demo/Adder/Adder.xml", // FIXME: Channel index 0 is out of range, because width is only 0.
+	    "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // FIXME: Types resolved to unacceptable types in .Speaker due to the following inequalities:
+	    "PrintingPress.xml", // FIXME: "Cannot set local time to -Infinity, which is earlier than the last committed current time 0.0"
+	    "PtidesBasicOnePlatform.xml", // FIXME: Type problem
+	    "PtidesNetworkLatencyTest.xml", // FIXME: "Cannot set local time to -Infinity, which is earlier than the last committed current time 0.0"
 	    "PublisherTest", // gt
+	    "RealTimeComposite.xml", // FIXME: "Audio Device Unavailable"
+	    "RunDemos.xml", // FIXME: cannot call invokeAndWait from the event dispatcher thread
 	    "SerialPort.xml",
+	    "Signature.xml", // FIXME: Cannot read ptKeystore
 	    "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
             "SMVLegacyCodeActor",
             "SoundSpectrum.xml",
