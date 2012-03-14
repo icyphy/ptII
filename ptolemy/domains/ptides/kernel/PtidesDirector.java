@@ -41,7 +41,6 @@ import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -63,7 +62,6 @@ import ptolemy.domains.ptides.lib.io.PtidesPort;
 import ptolemy.domains.ptides.lib.io.SensorPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -119,15 +117,8 @@ public class PtidesDirector extends DEDirector {
      *  @param event New input event.
      *  @throws IllegalActionException If device delay parameter cannot be computed.
      */
-    public void addInputEvent(PtidesEvent event) throws IllegalActionException {
-        
-        // FIXME: Won't work, event.ioPort() is the destination port, not the sensor port.
-        Double deviceDelay = _getDoubleParameterValue(event.ioPort(), "deviceDelay");
-
-        Time inputReady = _localClock.getLocalTimeForCurrentEnvironmentTime();
-        if (deviceDelay != null) {
-            inputReady = inputReady.add(deviceDelay);
-        } 
+    public void addInputEvent(PtidesEvent event, double deviceDelay) throws IllegalActionException { 
+        Time inputReady = _localClock.getLocalTimeForCurrentEnvironmentTime().add(deviceDelay);
         List<PtidesEvent> list = _inputEventQueue.get(inputReady);
         if (list == null) {
             list = new ArrayList<PtidesEvent>();
