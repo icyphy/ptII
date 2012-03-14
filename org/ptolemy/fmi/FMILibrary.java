@@ -127,7 +127,7 @@ public interface FMILibrary extends Library {
          *  with message.
          */
         // FIXME: Handle vargargs
-        void apply(Pointer fmiComponent, String instanceName, int status, String category, String message, Pointer ... parameters);
+        void apply(Pointer fmiComponent, String instanceName, int status, String category, String message/*, Pointer ... parameters*/);
     };
 
     /** A callback for the fmiCallbackAllocateMemory() function.
@@ -169,5 +169,5 @@ public interface FMILibrary extends Library {
         void apply(Pointer fmiComponent, int status);
     };
 
-    public TypeMapper TYPE_MAPPER = FMITypeMapper.FMITYPEMAPPER;
+    //public TypeMapper TYPE_MAPPER = FMITypeMapper.FMITYPEMAPPER;
 }

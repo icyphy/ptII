@@ -81,14 +81,25 @@ public class FMITypeMapper extends DefaultTypeMapper {
                 return new Long(((Pointer)value).indexOf((long)0,(byte)0));
             }
             public Object fromNative(Object value, FromNativeContext context) {
-                System.out.println("FMITypeMapper().pointerConverter.fromNative(): " + value + " " + context);
                 if (value == null) {
                     return null;
                 }
-                //if (value instanceof Pointer []) {
-                    return new Long(((Pointer[])value)[0].getLong(0));
-                    //}
-                    //return new Long(((Pointer)value).getLong(0));
+                System.out.println("FMITypeMapper().pointerConverter.fromNative(): " + value
+                        + (value instanceof Pointer [] ? " Pointer []" : value.getClass().getName())
+                        + " " + context);
+
+                if (value instanceof Pointer []) {
+                    //return new Long(((Pointer[])value)[0].getLong(0));
+                    Pointer [] pointerArray = (Pointer[])value;
+                    Long [] result = new Long[pointerArray.length];
+                    for (int i = 0; i < pointerArray.length; i++) {
+                        System.out.println("FMITypeMapper().pointerConverter.fromNative(): " + value + " copying " + i);
+                        result[i] = new Long(pointerArray[i].getLong(0));
+                    }
+                    return result;
+                }
+                new Exception ("FMITypeMapper().pointerConverter.fromNative(): " + value + " getLong").printStackTrace();
+                return new Long(((Pointer)value).getLong(0));
             }
             public Class nativeType() {
                 return Pointer.class;
@@ -97,6 +108,7 @@ public class FMITypeMapper extends DefaultTypeMapper {
 
         //addTypeConverter(Pointer.class, pointerConverter);
         addTypeConverter(Pointer[].class, pointerConverter);
+        //addToNativeConverter(Pointer[].class, pointerConverter);
 
         TypeConverter objectConverter = new TypeConverter() {
             public Object toNative(Object value, ToNativeContext context) {

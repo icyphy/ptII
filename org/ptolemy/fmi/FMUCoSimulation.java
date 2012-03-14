@@ -56,7 +56,7 @@ public class FMUCoSimulation {
         public class FMULogger implements FMICallbackLogger {
             // What to do about jni callbacks with varargs?  
             // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#fmiCalbackLogger
-            public void apply(Pointer fmiComponent, String instanceName, int status, String category, String message, Pointer ... parameters) {
+            public void apply(Pointer fmiComponent, String instanceName, int status, String category, String message/*, Pointer ... parameters*/) {
                 System.out.println("Java FMULogger, status: " + status);
                 System.out.println("Java FMULogger, message: " + message/*.getString(0)*/);
             }
@@ -214,7 +214,7 @@ public class FMUCoSimulation {
                 new FMULibrary.FMUStepFinished());
         // Logging tends to cause segfaults because of vararg callbacks.
         byte loggingOn = (enableLogging ? (byte)1 : (byte)0);
-
+        loggingOn = (byte)0;
         if (enableLogging) {
             System.out.println("FMUCoSimulation: about to call " + modelIdentifier + "_fmiInstantiateSlave");
         }
