@@ -206,15 +206,17 @@ public class ExportModel {
             // Delete the directory containing the .html file or 
             // delete the image file.
             if (isHTM) {
-                if (!FileUtilities.deleteDirectory(htmlDirectory)) {
-                    System.err.println("Could not delete \""
-                            + htmlDirectory + "\".");
-                }
+		if (htmlDirectory.exists() 
+		    && !FileUtilities.deleteDirectory(htmlDirectory)) {
+		    System.err.println("Could not delete \""
+				       + htmlDirectory + "\".");
+		}
             } else {
                 // A gif/jpg/png file
-                if (!imageFile.delete()) {
+                if (imageFile.exists()
+		    && !imageFile.delete()) {
                     System.err.println("Could not delete \""
-                            + imageFile + "\".");
+				       + imageFile + "\".");
                 }
             }
         }
