@@ -41,6 +41,7 @@ import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -62,6 +63,7 @@ import ptolemy.domains.ptides.lib.io.PtidesPort;
 import ptolemy.domains.ptides.lib.io.SensorPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -72,8 +74,8 @@ import ptolemy.kernel.util.NamedObj;
    @version $Id$
    @since Ptolemy II 0.2
 
-   @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (neuendor)
+   @Pt.ProposedRating Red (derler)
+   @Pt.AcceptedRating Red (derler)
  */ 
 public class PtidesDirector extends DEDirector {
 
@@ -103,8 +105,8 @@ public class PtidesDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////    
     
-    /** Bound on clock synchronization error accross all platforms.
-     *  FIXME: evenutally set parameter per platform or for some 
+    /** Bound on clock synchronization error across all platforms.
+     *  FIXME: eventually set parameter per platform or for some 
      *  platforms.
      */
     public SharedParameter clockSynchronizationErrorBound;
@@ -118,11 +120,13 @@ public class PtidesDirector extends DEDirector {
      *  @throws IllegalActionException If device delay parameter cannot be computed.
      */
     public void addInputEvent(PtidesEvent event) throws IllegalActionException {
+        
+        // FIXME: Won't work, event.ioPort() is the destination port, not the sensor port.
         Double deviceDelay = _getDoubleParameterValue(event.ioPort(), "deviceDelay");
 
         Time inputReady = _localClock.getLocalTimeForCurrentEnvironmentTime();
         if (deviceDelay != null) {
-            inputReady = inputReady.subtract(deviceDelay);
+            inputReady = inputReady.add(deviceDelay);
         } 
         List<PtidesEvent> list = _inputEventQueue.get(inputReady);
         if (list == null) {
@@ -141,6 +145,39 @@ public class PtidesDirector extends DEDirector {
      */
     public Dependency defaultDependency() {
         return SuperdenseDependency.OTIMES_IDENTITY;
+    }
+   
+    /**
+     * Before super.fire() is called, transfer all input events that are ready are 
+     * transferred. After super.fire() is called, transfer all output events that
+     * are ready are transferred.
+     */
+    public void fire() throws IllegalActionException {
+        
+        // Transfer all inputs that are ready.
+        List<PtidesEvent> list = _inputEventQueue.get(getModelTime());
+        if (list != null) {
+            for (PtidesEvent event : list) {
+                _currentLogicalTime = event.timeStamp();
+                event.receiver().put(event.token()); 
+                _currentLogicalTime = null;
+            }
+            _inputEventQueue.remove(getModelTime());
+        }
+        
+        super.fire();
+        
+        // Transfer all outputs that are ready.
+        list = _outputEventQueue.get(getModelTime());
+        if (list != null) {
+            for (PtidesEvent event : list) { 
+                _currentLogicalTime = event.timeStamp();
+                event.ioPort().send(0, event.token());
+                _currentLogicalTime = null;
+            }
+            _outputEventQueue.remove(getModelTime());
+        }
+        
     }
     
     /** Return the local time or, (i) if an actor is executing or (ii) an input
@@ -221,36 +258,35 @@ public class PtidesDirector extends DEDirector {
             // If there is a still event on the event queue with time stamp
             // equal to the stop time, we want to process that event before
             // we declare that we are done.
+            // FIXME: With EDF, event at head of event queue may not have smallest timestamp.
             if (!_eventQueue.get().timeStamp().equals(getModelStopTime())) {
                 result = false;
             }
         }
         
-        Time smallestOutputTime = Time.POSITIVE_INFINITY;
+        // Potentially set next fire time from _outputEventQueue.
         Set<Time> deliveryTimes = _outputEventQueue.keySet();
         if (deliveryTimes.size() > 0) {
             TreeSet<Time> set = new TreeSet<Time>(deliveryTimes);
-            smallestOutputTime = set.first(); 
+            _setNextFireTime(set.first()); 
+        }
+        //... or from _inputEventQueue
+        deliveryTimes = _inputEventQueue.keySet();
+        if (deliveryTimes.size() > 0) {
+            TreeSet<Time> set = new TreeSet<Time>(deliveryTimes);
+            _setNextFireTime(set.first()); 
+        }
+        // ... or could also have already been set in safeToProcess().
+        
+        // If not null, request refiring.
+        if(_nextFireTime != null) {
+            if(_debugging) {
+                _debug("Fire " + this.getName() + " next at " + _nextFireTime.toString());
+            }
+            fireContainerAt(_nextFireTime, 1);
         }
         
-        if (_nextSafeToProcessTime == null || _eventQueue.size() == 0) {
-            _nextSafeToProcessTime = Time.POSITIVE_INFINITY;
-        } 
-        
-        int compare = smallestOutputTime.compareTo(_nextSafeToProcessTime);
-        
-        if (compare <= 0) {
-            if (_debugging) {
-                _debug("postfire: fire container at " + smallestOutputTime);
-            }
-            fireContainerAt(smallestOutputTime, 1);
-        } else if (compare > 0) {
-            if (_debugging) {
-                _debug("postfire: fire container at " + _nextSafeToProcessTime);
-            }
-            fireContainerAt(_nextSafeToProcessTime, 1);
-        }
-        
+
         return result;
     }
     
@@ -266,6 +302,7 @@ public class PtidesDirector extends DEDirector {
             _debug("...prefire @ " + _localClock.getLocalTime());
         }
         setIndex(1);
+        _nextFireTime = null;
         return true;
     }
     
@@ -280,9 +317,8 @@ public class PtidesDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /** Calculate the delay offset for each input port. If the parameter 
-     * 'considerTriggerPorts' is true, then only paths through trigger ports 
-     * are considered. The delay offset is used in safe-to-process analysis
+    /** Calculate the delay offset for each input port. 
+     * The delay offset is used in the safe-to-process analysis
      * to know when no future events can occur at a sensor or network 
      * receiver port that can result in an event arriving at an input port
      * with an earlier timestamp than the event currently there.
@@ -328,7 +364,7 @@ public class PtidesDirector extends DEDirector {
                     delayOffset = thisDelayOffset;
                 }           
             }
-            _setDelayOffset(port, delayOffset + ((DoubleToken) clockSynchronizationErrorBound
+            _setDelayOffset(port, delayOffset - ((DoubleToken) clockSynchronizationErrorBound
                     .getToken()).doubleValue());
         }
     }
@@ -584,6 +620,8 @@ public class PtidesDirector extends DEDirector {
                 ioPort.getChannelForReceiver(receiver), getModelTime(),
                 1, depth, token, receiver); 
         
+        // FIXME: any way of knowing if coming from sensor?
+        
         if (ioPort.isOutput()) {
             // FIXME: add deviceDelay
             Time deliveryTime;
@@ -632,17 +670,14 @@ public class PtidesDirector extends DEDirector {
     } 
     
     /** Return the actor to fire in this iteration, or null if no actor should
-     * be fired. To simulate execution time, an event may be marked as being
-     * processed, but the actor is only fired when execution time expires. This
-     * is based on the assumption that an actor only produces events when it
-     * is done firing, not during firing. Since _checkForNextEvent() always
+     * be fired. Since _checkForNextEvent() always
      * returns true, this method will keep being called until it returns null.  
-     * @exception IllegalActionException If getPlatformPhysicalTag() throws it
-     * or missed firing actor at correct time.
+     * @exception IllegalActionException If _isSafeToProcess() throws it.
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
         Actor nextActorToFire = null;
         if (_refireActor != null) {
+            // FIXME: Can an actor ever call more than one fireAt in firing?
             _currentLogicalTime = _refireTime;
             nextActorToFire = _refireActor;
             _refireActor = null; 
@@ -678,7 +713,7 @@ public class PtidesDirector extends DEDirector {
         if (currentPlatformTime.compareTo(eventTimestamp.subtract(delayOffset)) >= 0) {
             return true;
         }
-        _nextSafeToProcessTime = eventTimestamp.subtract(delayOffset);
+        _setNextFireTime(eventTimestamp.subtract(delayOffset));
         return false;
     }
     
@@ -707,6 +742,7 @@ public class PtidesDirector extends DEDirector {
      * event.
      */
     protected List<PtidesEvent> _removeEventsFromQueue(PtidesEvent event) {
+        // FIXME: Move to PtidesListEventQueue?
         List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
         int i = 0;
         while(i < _eventQueue.size()) {
@@ -734,6 +770,7 @@ public class PtidesDirector extends DEDirector {
     protected void _setDelayOffset(TypedIOPort port, Double delayOffset) 
             throws IllegalActionException {
         
+        // FIXME: change method to _setDoubleParameterValue?
         DoubleToken token = new DoubleToken(delayOffset);    
         Parameter parameter = (Parameter)port.getAttribute("delayOffset");
         if(parameter == null) {
@@ -750,40 +787,46 @@ public class PtidesDirector extends DEDirector {
 
     }
     
-    /** Transfer at most one data token from the given input port of
-     *  the container to the ports it is connected to on the inside.
-     *  This method delegates the operation to the IOPort, so that the
-     *  subclass of IOPort, TypedIOPort, can override this method to
-     *  perform run-time type conversion. Check if any previously received
-     *  inputs became available.
+    /** Set the next time to fire the director to the provided time if it is earlier than
+     * the currently set next fire time.
+     * @param time
+     */
+    protected void _setNextFireTime(Time time) {
+        if(_nextFireTime == null) {
+            _nextFireTime = time;
+        } else if(_nextFireTime.compareTo(time) > 0) {
+            _nextFireTime = time;
+        }
+    }
+    
+    
+    /** Transfer any tokens at the input port to the _inputEventQueue.
      *
      *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
+     *  input port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
-     *  @see IOPort#transferInputs
      */
     protected boolean _transferInputs(IOPort port) throws IllegalActionException {
-        boolean result = false; 
-        result = super._transferInputs(port); 
         
-        List<PtidesEvent> list = _inputEventQueue.get(_localClock.getLocalTimeForCurrentEnvironmentTime());
-        if (list != null) {
-            for (PtidesEvent event : list) {
-                _currentLogicalTime = event.timeStamp();
-                event.receiver().put(event.token()); 
-                _currentLogicalTime = null;
-                result = true;
-            }
-            _inputEventQueue.remove(getModelTime());
+        boolean result = false; 
+        
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferInputs on a port that "
+                            + "is not an opaque input port.");
         }
         
+        // FIXME: remove
+        result = super._transferInputs(port);
+        
+        // FIXME: Remove (all?) tokens from input port, create a PtidesEvent for each destination
+        // input port, and add to _inputEventQueue.
+
         return result;
     }
 
-    /** Transfer at most one data token from the given output port of
-     *  the container to the ports it is connected to on the outside.
-     *  Transfer actuator outputs their time has come.
+    /** The fire() method handles transferring output tokens, so do nothing.
      *  
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
@@ -801,17 +844,6 @@ public class PtidesDirector extends DEDirector {
         }
         boolean result = false;
         
-        List<PtidesEvent> list = _outputEventQueue.get(getModelTime());
-        if (list != null) {
-            for (PtidesEvent event : list) { 
-                _currentLogicalTime = event.timeStamp();
-                event.ioPort().send(0, event.token());
-                _currentLogicalTime = null;
-                result = true;
-            }
-            _outputEventQueue.remove(getModelTime());
-        }
-        
         return result;
     }
     
@@ -825,6 +857,9 @@ public class PtidesDirector extends DEDirector {
     
     /** Map an input port to a set which is its input port group. */
     protected Map<TypedIOPort, Set<TypedIOPort>> _inputPortGroups;
+    
+    /** The earliest time this director should be refired. */
+    protected Time _nextFireTime;
     
     /** Store the superdense dependency between pairs of input ports using 
      * nested Maps. Providing the source input as a key will return a Map 
@@ -865,8 +900,6 @@ public class PtidesDirector extends DEDirector {
     ////                         private variables                 ////
     
     private HashMap<Time, List<PtidesEvent>> _inputEventQueue;
-    
-    private Time _nextSafeToProcessTime;
     
     private HashMap<Time, List<PtidesEvent>> _outputEventQueue;
     
