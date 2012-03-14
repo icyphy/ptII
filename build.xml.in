@@ -60,7 +60,7 @@
   <property name="timeout.long" value="4000000" />
 
   <!-- The timeout in seconds for longest running junit tests. -->
-  <property name="timeout.longest" value="10800000" />
+  <property name="timeout.longest" value="14400000" />
 
 
   <!-- Ant paths. Alphabetize, please -->
@@ -520,9 +520,101 @@ For example:
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
-	   maxmemory="1500m"
+	   maxmemory="2500m"
 	   printsummary="withOutAndErr"
-	   showoutput="no"
+	   showoutput="yes"
+	   timeout="${timeout.longest}">
+      <classpath>
+	<path location="${instrumented.dir}" />
+	<path refid="ptII.classpath" />
+	<path refid="cobertura.classpath" />
+      </classpath>
+      <formatter type="${junit.formatter}" />
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <!-- Include the long running tests. -->
+	  <patternset refid="test.longest.includes" />
+	  <patternset refid="ptII.excludes" />
+	  <patternset refid="test.excludes" />
+	  <!-- Exclude the long running tests -->
+	  <patternset refid="test.long.excludes" />
+	</fileset>
+      </batchtest>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
+    </junit>
+
+    <cobertura-report format="xml" destdir="${coveragereport.dir}" srcdir="${basedir}" />
+  </target>
+
+
+  <!-- Cobertura: code coverage tool.  Run the longest tests. -->
+  <target name="test.cobertura.longest" depends="build, initReports">
+    <echo>Run the longest tests using code coverage
+    </echo>
+    <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
+    <property name="cobertura.dir" value="ptserver/lib" />
+    <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
+    <path id="cobertura.classpath">
+      <fileset dir="${cobertura.dir}">
+	<include name="cobertura.jar" />
+	<include name="asm-3.0.jar" />
+	<include name="asm-tree-3.0.jar" />
+	<include name="jakarta-oro-2.0.8.jar" />
+	<include name="log4j-1.2.9.jar" />
+      </fileset>
+    </path>
+
+    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+
+    <delete file="cobertura.ser" />
+    <delete dir="${instrumented.dir}" />
+    
+    <cobertura-instrument todir="${instrumented.dir}">
+      <fileset defaultexcludes="yes"
+	       dir="${basedir}">
+	<include name="org.ptolemy/**/*.class" />
+	<include name="ptolemy/**/*.class" />
+	<exclude name="**/test/*.class" />
+	<exclude name="**/junit/*.class" />
+      </fileset>
+    </cobertura-instrument>
+
+
+    <!-- About forkmode,
+	 http://cobertura.sourceforge.net/anttaskreference.html says:
+
+	 "For this same reason, if you're using ant 1.6.2 or higher
+	 then you might want to set forkmode="once" This will cause
+	 only one JVM to be started for all your JUnit tests, and will
+	 reduce the overhead of Cobertura reading/writing the coverage
+	 data file each time a JVM starts/stops."
+
+	 http://ant.apache.org/manual/Tasks/junit.html says:
+	 "Controls how many Java Virtual Machines get created if you want to
+	 fork some tests. Possible values are "perTest" (the default),
+	 "perBatch" and "once". "once" creates only a single Java VM for all
+	 tests while "perTest" creates a new VM for each TestCase
+	 class. "perBatch" creates a VM for each nested <batchtest> and one
+	 collecting all nested <test>s. Note that only tests with the same
+	 settings of filtertrace, haltonerror, haltonfailure, errorproperty and
+	 failureproperty can share a VM, so even if you set forkmode to "once",
+	 Ant may have to create more than a single Java VM. This attribute is
+	 ignored for tests that don't get forked into a new Java VM. since Ant
+	 1.6.2"
+
+	 However, we have to use "perTest" because javachdir needs to be
+	 run for each test so that we run the test from the test directory.
+      -->
+
+    <echo> Run the longest tests with timeout=${timeout.longest} </echo>
+    <junit fork="yes"
+	   forkmode="perTest"
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   maxmemory="2500m"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
 	   timeout="${timeout.longest}">
       <classpath>
 	<path location="${instrumented.dir}" />
