@@ -2791,6 +2791,7 @@ update_andrews:
 	# Copy over doc/coding/eclipse.htm and doc/eclipse/
 	ssh andrews mkdir -p $(PTEXTERNAL_NIGHTLY)/doc/coding
 	scp -Bprq $(HUDSON_PTII)/doc/coding/addinganactor.htm andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/addinganactor.htm
+	scp -Bprq $(HUDSON_PTII)/doc/coding/ant.htm andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/ant.htm
 	scp -Bprq $(HUDSON_PTII)/doc/coding/performance.htm andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/performance.htm
 	scp -Bprq $(HUDSON_PTII)/doc/coding/svn-config-auto-props.txt andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/svn-config-auto-props.txt
 	scp -Bprq $(HUDSON_PTII)/doc/coding/eclipse.htm andrews:$(PTEXTERNAL_NIGHTLY)/doc/coding/eclipse.htm
