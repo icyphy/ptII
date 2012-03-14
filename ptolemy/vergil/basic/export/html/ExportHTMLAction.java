@@ -320,6 +320,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
             // We now have a directory and permission to write to it.
             // First, if appropriate, copy needed files.
             boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
+            usePtWebsite = usePtWebsite || parameters.usePtWebsite;
             if (parameters.copyJavaScriptFiles && !usePtWebsite) {
                 // Copy Javascript source files into destination directory,
                 // if they are available. The files are under an MIT license,
@@ -531,6 +532,7 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
         // Side Includes (SSI).  FIXME: this is a bit of a hack, we should
         // use templates instead.
         boolean usePtWebsite = Boolean.valueOf(StringUtilities.getProperty("ptolemy.ptII.exportHTML.usePtWebsite"));
+        usePtWebsite = usePtWebsite || parameters.usePtWebsite;
 
         File indexFile = new File(parameters.directoryToExportTo, "index.html");
 
@@ -633,7 +635,6 @@ public class ExportHTMLAction extends AbstractAction implements HTMLExportable, 
 	    }
 
             index.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + jsLibrary + "javascript/" + FILENAMES[2] + "\" media=\"screen\"/>");
-
 
 	    if (usePtWebsite) {
 	        // FIXME: this absolute path is not very safe.  The

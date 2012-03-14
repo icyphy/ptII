@@ -96,6 +96,11 @@ public class WebExportParameters extends Attribute {
         copyJavaScriptFiles = new Parameter(this, "copyJavaScriptFiles");
         copyJavaScriptFiles.setTypeEquals(BaseType.BOOLEAN);
         copyJavaScriptFiles.setExpression("false");
+        
+        usePtWebsite = new Parameter(this, "usePtWebsite");
+        usePtWebsite.setTypeEquals(BaseType.BOOLEAN);
+        usePtWebsite.setExpression("false");
+        usePtWebsite.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,6 +148,13 @@ public class WebExportParameters extends Attribute {
      */
     public Parameter showInBrowser;
     
+    /** If true, use the server-side includes of the Ptolemy website.
+     *  This is a boolean that defaults to false. This parameter
+     *  is marked as an expert parameter, so by default, it is not
+     *  visible.
+     */
+    public Parameter usePtWebsite;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
@@ -169,6 +181,9 @@ public class WebExportParameters extends Attribute {
         } else if (attribute == showInBrowser) {
             _parameters.showInBrowser
                 = ((BooleanToken)showInBrowser.getToken()).booleanValue();
+        } else if (attribute == usePtWebsite) {
+            _parameters.usePtWebsite
+                = ((BooleanToken)usePtWebsite.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }

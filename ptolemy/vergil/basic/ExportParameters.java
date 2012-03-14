@@ -168,6 +168,9 @@ public class ExportParameters {
      */
     public boolean showInBrowser;
     
+    /** If true, use the server-side includes of the Ptolemy website. */
+    public boolean usePtWebsite;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
 
