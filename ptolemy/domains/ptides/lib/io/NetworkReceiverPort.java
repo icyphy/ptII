@@ -154,13 +154,14 @@ public class NetworkReceiverPort extends PtidesPort {
 
         int recordMicrostep = ((IntToken) (record.get(microstep)))
                 .intValue(); 
+        
+        
 
         Receiver[][] farReceivers = deepGetReceivers(); 
         for (int i = 0; i < farReceivers[channelIndex].length; i++) { 
             director.addInputEvent(new PtidesEvent(this, channelIndex, recordTimeStamp, 
-                            recordMicrostep, -1, (Token) record.get(payload),
-                            farReceivers[channelIndex][i]),
-                    0);
+                    recordMicrostep, -1, (Token) record.get(payload), farReceivers[channelIndex][i]), 
+                    ((DoubleToken)deviceDelay.getToken()).doubleValue());
                     
         } 
     }
