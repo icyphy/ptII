@@ -158,7 +158,9 @@ public class NetworkReceiverPort extends PtidesPort {
         Receiver[][] farReceivers = deepGetReceivers(); 
         for (int i = 0; i < farReceivers[channelIndex].length; i++) { 
             director.addInputEvent(new PtidesEvent(this, channelIndex, recordTimeStamp, 
-                    recordMicrostep, -1, (Token) record.get(payload), farReceivers[channelIndex][i]));
+                            recordMicrostep, -1, (Token) record.get(payload),
+                            farReceivers[channelIndex][i]),
+                    0);
                     
         } 
     }
