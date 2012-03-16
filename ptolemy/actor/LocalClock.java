@@ -291,13 +291,17 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         }
     }
     
-    /** Set local time without committing.
-     *  This is allowed to set
-     *  time earlier than the last committed local time.
+    /** Set local time and commit.
+     *  This is allowed to set time earlier than the 
+     *  last committed local time.
      *  @param time The new local time. 
      */
     public void resetLocalTime(Time time) {
+        if (_debugging) {
+            _debug("reset local time to " + time);
+        } 
         _localTime = time;
+        _commit();
     }
     
     /** Set the new clock drift but do not commit. The commit
@@ -306,8 +310,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  @throws IllegalActionException If the specified drift is
      *   non-positive.
      */
-    public void setClockDrift(double drift) throws IllegalActionException {
-        Time environmentTime = _director.getEnvironmentTime(); 
+    public void setClockDrift(double drift) throws IllegalActionException {  
         if (drift <= 0.0) {
             throw new IllegalActionException(_director,
                     "Illegal clock drift: "
@@ -325,7 +328,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  @throws IllegalActionException If the specified time is
      *   earlier than the current time.
      */
-    public void setLocalTime(Time time) throws IllegalActionException {
+    public void setLocalTime(Time time) throws IllegalActionException { 
         if (_lastCommitLocalTime != null && time.compareTo(_lastCommitLocalTime) < 0) {
             throw new IllegalActionException(_director,
                     "Cannot set local time to "
