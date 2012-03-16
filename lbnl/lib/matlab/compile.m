@@ -1,25 +1,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This file compiles the BSD socket interface for Simulink.
-% It is called by the Makefile.
+% It is called by the makefile.
 %
 % On Windows, it requires the Microsoft compiler
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Note: We set the number of outputs to 128, since matlab requires the
+% Note: We set the number of outputs to 1024, since matlab requires the
 %       size of output arrays to be fixed.
-%       If more elements are required, changed the number in the
-%       assignment of 'funSpe' below, and in the file simulinkSocket.h.
-%       Then, start matlab and run 'generateCode'. This will recompile
-%       all required files.
+%       If more elements are required, changed the entry y4[1024] in the
+%       assignment of 'funSpe' below, and in the file lib/defines.h,
+%       change the entry #define NDBLMAX 1024 to the required number of
+%       elements.
+%
 %       If you change the number of I/O, you may want to regenerate the
 %       Simulink blocks to update the graphic annotations with the
 %       correct number of I/O values. (Regenerating the blocks does not
-%       seem necessairy for the computation.
+%       seem necessairy for the computation.)
 %       Regenerating the blocks can be done by changing the Makefile.
+%
 %
 %
 % Compile matlab library
 % This creates a file bcvtbMatlab.m with the function prototypes.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 os=deblank(getenv('BCVTB_OS'));
 if (strcmp(os,'windows')) % have Windows  
   LIBBCVTB='..\util\bcvtb';
@@ -54,7 +57,7 @@ else
   
   funNam = {'establishBSDSocket', 'exchangeDoublesWithBSDSocket', 'closeBSDSocket'};
   funSpe = {'int16 y1 = establishBSDSocket(int16 u1[1])', ...
-            'int16 y1 = exchangeDoublesWithBSDSocket(int16 u1[1], int16 u2[1], int16 y2[1], int16 u3[1], double u4[1], double u5[], double y3[1], double y4[128])', ...
+            'int16 y1 = exchangeDoublesWithBSDSocket(int16 u1[1], int16 u2[1], int16 y2[1], int16 u3[1], double u4[1], double u5[], double y3[1], double y4[1024])', ...
             'int16 y1 = closeBSDSocket(int16 u1[1], int16 u2[1])'};
   
   
@@ -74,22 +77,35 @@ else
     %% new (or deleted) files. When an empty string is 
     %% passed as an input the entire path is rechecked. 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Compilation for Windows
-    if (strcmp(os, 'windows')) % have Windows    
-      disp('*** Compiling for Windows')
-      legacy_code('compile', def, ...
-                  {'../util/bcvtb.lib', 'simulinkSocket.c', '-I../util', '-I..'})
-    else
-      % Compilation for Mac OS X and Linux
-      legacy_code('compile', def, ...
-                  {'-lxml2', ...
-                   '-I..', ...
-                   '-L../util', ...
-                   '-lbcvtb'})
+    try
+      % Compilation for Windows
+      if (strcmp(os, 'windows')) % have Windows    
+        disp('*** Compiling MATLAB interface for Windows')
+        legacy_code('compile', def, {'../util/bcvtb.lib', 'simulinkSocket.c', '-I../util', '-I..'})
+      else
+        % Compilation for Mac OS X and Linux
+        disp('*** Compiling MATLAB interface for Mac OS X or Linux')
+        
+        legacy_code('compile', def, {'-lxml2', '-I..', '-L../util', '-lbcvtb'})
+      end
+    catch ME
+      disp('*** Error when compiling MATLAB interface ***')
+      disp(getReport(ME, 'extended'))
+      disp('*** Exit with error.')
+      exit(1)
     end
+
+    disp('*** Returned from legacy_code')
     if makeSBlock
-      disp('*** Generating s block')
-      legacy_code('slblock_generate', def, modelName)
+      disp('*** Generating Simulink block')
+      try
+        legacy_code('slblock_generate', def, modelName)
+      catch ME
+        disp('*** Error when generating Simulink interface ***')
+        disp(getReport(ME, 'extended'))
+        disp('*** Exit with error.')
+        exit(1)
+      end
     end
     % delete the files that we no longer need
     fn = [char(funNam(i)), '.c'];
