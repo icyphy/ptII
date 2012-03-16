@@ -34,7 +34,7 @@ function [retVal, flaRea, simTimRea, dblValRea ] = ...
 %             Charles Corbin, UC Boulder
   
   % Maximum number of double values. See defines.h for how to change it.
-  NDBLMAX=128;
+  NDBLMAX=1024;
   
   % Ensure that we will not attempt to read too many double values
   if ( nDblRea > NDBLMAX )
@@ -54,32 +54,23 @@ function [retVal, flaRea, simTimRea, dblValRea ] = ...
   myFlaRea = libpointer(INT32PTR, int32(0));
   
   nDblWri = libpointer(INT32PTR, length(dblValWri));
-  nIntWri = libpointer(INT32PTR, int32(0));
-  nBooWri = libpointer(INT32PTR, int32(0));
-  
-  nIntRea = libpointer(INT32PTR, int32(0));
-  nBooRea = libpointer(INT32PTR, int32(0));
   
   mySimTimWri = libpointer(DBLPTR, double(simTimWri));
   myDblValWri = libpointer(DBLPTR, double(dblValWri));
-  intValWri = libpointer(INT32PTR, int32(0));
-  booValWri = libpointer(INT32PTR, int32(0));
   
   mySimTimRea = libpointer(DBLPTR, double(0));
   myNDblRea   = libpointer(INT32PTR, int32(0));
   myDblValRea = libpointer(DBLPTR, double( zeros(1, nDblRea) ));
-  intValRea = libpointer(INT32PTR, int32(0));
-  booValRea = libpointer(INT32PTR, int32(0));
 
   % Exchange data
-  retVal = calllib(getBCVTBLibName(),'exchangewithsocket', sockfd, ...
+  retVal = calllib(getBCVTBLibName(),'exchangedoubleswithsocket', sockfd, ...
                    myFlaWri, myFlaRea, ...
-                   nDblWri, nIntWri, nBooWri, ...
-                   myNDblRea, nIntRea, nBooRea, ...
+                   nDblWri, ...
+                   myNDblRea, ...
                    mySimTimWri, ...
-                   myDblValWri, intValWri, booValWri, ...
+                   myDblValWri, ...
                    mySimTimRea, ...
-                   myDblValRea, intValRea, booValRea);
+                   myDblValRea);
   VAL='Value';
   nDblReceived = get(myNDblRea, VAL);
   
