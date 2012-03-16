@@ -7,14 +7,14 @@ function retVal = closeIPC(sockfd)
 
 %  Revision history
 %  ----------------  
-%  2009-07-14 MWetter@lbl.gov: Corrected argument for libisloaded(...)
+%  2009-09-20 Metter@lbl.gov: Removed warning if bcvtb library is not loaded.
 %  2009-06-26 MWetter@lbl.gov: First version, based on code of 
 %             Charles Corbin, UC Boulder
 if (sockfd < 0 )
   fprintf('Warning: Cannot close socket in closeIPC(%d) because argument is negative', sockfd);
   retVal = -1;
 elseif ~libisloaded(getBCVTBLibName())
-  fprintf('Warning: Cannot close socket in closeIPC because BCVTB library is not loaded');
+  % bcvtb library is not loaded
   retVal = -2;
 else
   retVal = calllib(getBCVTBLibName(),'closeipc',int16(sockfd));
