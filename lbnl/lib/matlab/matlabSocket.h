@@ -5,7 +5,7 @@
 ///         using BSD sockets.
 ///
 /// \author Michael Wetter,
-///         Simulation Research Group,
+///         Simulation Research Group, 
 ///         LBNL,
 ///         MWetter@lbl.gov
 ///
@@ -52,30 +52,21 @@ int sendclienterror(const int *sockfd, const int *flaWri);
 ///\param flaWri Communication flag to write to the socket stream.
 ///\param flaRea Communication flag read from the socket stream.
 ///\param nDblWri Number of double values to write.
-///\param nIntWri Number of integer values to write.
-///\param nBooWri Number of boolean values to write.
 ///\param nDblRea Number of double values to read.
-///\param nIntRea Number of integer values to read.
-///\param nBooRea Number of boolean values to read.
 ///\param simTimWri Current simulation time in seconds to write.
 ///\param dblValWri Double values to write.
-///\param intlValWri Integer values to write.
-///\param boolValWri Boolean values to write.
 ///\param simTimRea Current simulation time in seconds read from socket.
 ///\param dblValRea Double values read from socket.
-///\param intlValRea Integer values read from socket.
-///\param boolValRea Boolean values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send or \c read, or a negative value if an error occured.
-int exchangewithsocket(const int *sockfd,
-                       const int *flaWri, int *flaRea,
-                       const int *nDblWri, const int *nIntWri, const int *nBooWri,
-                       int *nDblRea, int *nIntRea, int *nBooRea,
-                       double *simTimWri,
-                       double dblValWri[], int intValWri[], int booValWri[],
-                       double *simTimRea,
-                       double dblValRea[], int intValRea[], int booValRea[]);
-
+int exchangedoubleswithsocket(const int *sockfd, 
+			      const int *flaWri, int *flaRea,
+			      const int *nDblWri,
+			      int *nDblRea,
+			      double *simTimWri,
+			      double dblValWri[],
+			      double *simTimRea,
+			      double dblValRea[]);
 
 ///////////////////////////////////////////////////////////
 /// Closes the inter process communication socket.
@@ -134,7 +125,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
+      derived from this software without specific prior written permission. 
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
