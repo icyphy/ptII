@@ -13,7 +13,7 @@ function retVal = sendClientError(sockfd, flaWri)
 if (sockfd < 0 )
   fprintf('Warning: Cannot close socket in closeIPC(%d) because argument is negative', sockfd);
   retVal = -1;
-elseif ~libisloaded('bcvtb')
+elseif ~libisloaded(getBCVTBLibName())
   fprintf('Warning: Cannot close socket in closeIPC because BCVTB library is not loaded');
   retVal = -2;
 else
