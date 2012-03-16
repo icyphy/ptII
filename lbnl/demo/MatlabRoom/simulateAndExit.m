@@ -53,10 +53,8 @@ while (simulate)
                                   TRoo);
   catch ME1
     % exchangeDoublesWithSocket had an error. Terminate the connection
-    disp(['Error: ', ME1.message])
-    sendClientError(sockfd, -1);
-    closeIPC(sockfd);
-    rethrow(ME1)
+    processError(ME1, sockfd, -1);
+    simulate=false;
   end
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
   % Check return flags
@@ -67,17 +65,18 @@ while (simulate)
   end
 
   if (retVal < 0) % Error during data exchange
-    fprintf('Error: exchangeDoublesWithSocket has return value %d', retVal);
-    sendClientError(sockfd, -1);
-    closeIPC(sockfd);
+    exception = MException('BCVTB:RuntimeError', ...
+                           'exchangeDoublesWithSocket returned value %d', ...
+                           retVal);
+    processError(exception, sockfd, -1);
     simulate=false;
   end
 
   if (flaRea > 1) % BCVTB requests termination due to an error.
-    fprintf('Error: BCVTB requested termination of the simulation by sending %d\n       Exit simulation.', ...
-                     retVal);
-    sendClientError(sockfd, -1);
-    closeIPC(sockfd);
+    exception = MException('BCVTB:RuntimeError', ...
+                           ['BCVTB requested MATLAB to terminate by sending %d\n', ...
+                            'Exit simulation.\n'], retVal);
+    processError(exception, sockfd, -1);
     simulate=false;
   end
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
