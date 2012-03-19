@@ -424,6 +424,8 @@ public class InequalitySolver {
         // a reference to the term of its enclosing type.
         boolean allSatisfied = false;
 
+        LinkedList prevNS = null;
+        int loopCnt = 0;
         while (!allSatisfied) {
             // solve the inequalities
             while (_NS.size() > 0) {
@@ -482,7 +484,7 @@ public class InequalitySolver {
             }
 
             allSatisfied = true;
-
+            
             for (int i = 0; i < _Ilist.size(); i++) {
                 Info info = (Info) _Ilist.get(i);
 
@@ -495,6 +497,19 @@ public class InequalitySolver {
                         allSatisfied = false;
                     }
                 }
+            }
+            
+            // Avoid infinite loops.
+            if (prevNS == null) {
+                prevNS = _NS;
+            } else if (_NS.size() > 0 && prevNS.size() == _NS.size() && prevNS.containsAll(_NS) && loopCnt > 1) {
+                loopCnt++;
+                String errorMessage = "";
+                for (Object o : _NS) {
+                    Integer i = (Integer) o; 
+                    errorMessage += " (" + ((Info)_Ilist.get(i))._ineq.getGreaterTerm() + ", " + ((Info)_Ilist.get(i))._ineq.getLesserTerm() + ") ";
+                }
+                throw new InvalidStateException("Cound not resolve types: " + errorMessage);
             }
         }
 
