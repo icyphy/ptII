@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Discrete Event domain demos
+# Makefile for Ptolemy II Discrete Event domain demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 1998-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,15 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/de/demo
+ME =		ptolemy/domains/de/demo/Trilateration
 
 # Root of the Java directory
-ROOT =		../../../..
-
-DIRS =		AssemblyLine Clock ClockDrift \
-		Inspection LongRuns ModalModel \
-		QueueAndServer TimingParadox RealTimeComposite \
-		SmartSender VariableDelay
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -46,43 +41,44 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	Trilateration
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	AssemblyLine/AssemblyLine.jar \
-	Clock/Clock.jar \
-	ClockDrift/ClockDrift.jar \
-	Inspection/Inspection.jar \
-	LongRuns/LongRuns.jar \
-	ModalModel/ModalModel.jar \
-	QueueAndServer/QueueAndServer.jar \
-	RealTimeComposite/RealTimeComposite.jar \
-	SmartSender/SmartSender.jar \
-	TimingParadox/TimingParadox.jar \
-	Trilateration/Trilateration.jar \
-	VariableDelay/VariableDelay.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	Trilateration.xml
 
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS =	index.htm
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = mems
+OPTIONAL_FILES =
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all jars
 
-demo: subdemo
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer Trilateration.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Trilateration.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Trilateration.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
