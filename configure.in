@@ -3669,12 +3669,14 @@ else
             PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_PREFIX'])
 
             AC_MSG_CHECKING([for the proper shared library suffix])
+	    # PTJNI_SHAREDLIBRARY_SUFFIX2 can use glob wildcards like *
 	    PTJNI_SHAREDLIBRARY_SUFFIX2=""
             case "`uname -s`" in
                 CYGWIN_*)    PTJNI_SHAREDLIBRARY_SUFFIX=dll
 	    		     PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
 	        SunOS)	     PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	        Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	        Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so
+			     PTJNI_SHAREDLIBRARY_SUFFIX=so.*;;
 	        Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib
 	    	  	     PTJNI_SHAREDLIBRARY_SUFFIX2=dylib;;
 	        *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown
@@ -5114,11 +5116,20 @@ else
 	       LIBEXPAT_LIB_DIR=$dir
 	       break;
            else
-	   # Mac OS X could have jnilib or dylib, Cygwin has /usr/lib/libexpat.dll.a
-	       if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}"; then
-                   PT_MSG_RESULT([$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}])
-	           LIBEXPAT_LIB_DIR=$dir
-	           break;
+		# Mac OS X could have jnilib or dylib,
+		# Cygwin has /usr/lib/libexpat.dll.a
+	   	# Ubuntu could have .so.2
+	       for libfile in $dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}
+	       do
+	           if test -f "$libfile"; then
+		       PT_MSG_RESULT([$libfile])
+	               LIBEXPAT_LIB_DIR=$dir
+		       LIBEXPAT_SUFFIX2=$file
+	               break
+		   fi    
+               done
+	       if test ! -z "$LIBEXPAT_LIB_DIR"; then
+                   break;
                fi
            fi
        done
@@ -5157,7 +5168,7 @@ else
 fi
 
 if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
-   if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
+   if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_SUFFIX2" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
       # Used in $PTII/lbnl/lib/util/makefile
       PTLIBEXPAT_DIR=util
       # Used in $PTII/makefile
