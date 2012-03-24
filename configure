@@ -9898,12 +9898,14 @@ $as_echo "'$PTJNI_SHAREDLIBRARY_PREFIX'" >&6; }; fi
 
             { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the proper shared library suffix" >&5
 $as_echo_n "checking for the proper shared library suffix... " >&6; }
+	    # PTJNI_SHAREDLIBRARY_SUFFIX2 can use glob wildcards like *
 	    PTJNI_SHAREDLIBRARY_SUFFIX2=""
             case "`uname -s`" in
                 CYGWIN_*)    PTJNI_SHAREDLIBRARY_SUFFIX=dll
 	    		     PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
 	        SunOS)	     PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	        Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	        Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so
+			     PTJNI_SHAREDLIBRARY_SUFFIX=so.*;;
 	        Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib
 	    	  	     PTJNI_SHAREDLIBRARY_SUFFIX2=dylib;;
 	        *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown
@@ -12077,13 +12079,22 @@ $as_echo "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" >&6; }; fi
 	       LIBEXPAT_LIB_DIR=$dir
 	       break;
            else
-	   # Mac OS X could have jnilib or dylib, Cygwin has /usr/lib/libexpat.dll.a
-	       if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}"; then
-                   if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}" >&5
-$as_echo "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}" >&6; }; fi
-	           LIBEXPAT_LIB_DIR=$dir
-	           break;
+		# Mac OS X could have jnilib or dylib,
+		# Cygwin has /usr/lib/libexpat.dll.a
+	   	# Ubuntu could have .so.2
+	       for libfile in $dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}
+	       do
+	           if test -f "$libfile"; then
+		       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $libfile" >&5
+$as_echo "$libfile" >&6; }; fi
+	               LIBEXPAT_LIB_DIR=$dir
+		       LIBEXPAT_SUFFIX2=$file
+	               break
+		   fi
+               done
+	       if test ! -z "$LIBEXPAT_LIB_DIR"; then
+                   break;
                fi
            fi
        done
@@ -12139,7 +12150,7 @@ $as_echo "$as_me: WARNING: Failed to find expat.h
 fi
 
 if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
-   if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
+   if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_SUFFIX2" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
       # Used in $PTII/lbnl/lib/util/makefile
       PTLIBEXPAT_DIR=util
       # Used in $PTII/makefile
