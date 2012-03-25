@@ -3676,7 +3676,7 @@ else
 	    		     PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
 	        SunOS)	     PTJNI_SHAREDLIBRARY_SUFFIX=so;;
 	        Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so
-			     PTJNI_SHAREDLIBRARY_SUFFIX=so.*;;
+			     PTJNI_SHAREDLIBRARY_SUFFIX2=so.*;;
 	        Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib
 	    	  	     PTJNI_SHAREDLIBRARY_SUFFIX2=dylib;;
 	        *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown
