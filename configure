@@ -12072,29 +12072,18 @@ $as_echo_n "checking for libexpat... " >&6; }
        dirs="$PTII/vendors/libexpat /usr/local/lib /usr/lib"
        for dir in $dirs
        do
-           if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}"; then
-               if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" >&5
-$as_echo "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" >&6; }; fi
-	       LIBEXPAT_LIB_DIR=$dir
-	       break;
-           else
-		# Mac OS X could have jnilib or dylib,
-		# Cygwin has /usr/lib/libexpat.dll.a
-	   	# Ubuntu could have .so.2
-	       for libfile in $dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}
-	       do
-	           if test -f "$libfile"; then
-		       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $libfile" >&5
-$as_echo "$libfile" >&6; }; fi
-	               LIBEXPAT_LIB_DIR=$dir
-		       LIBEXPAT_SUFFIX2=$file
-	               break
-		   fi
-               done
-	       if test ! -z "$LIBEXPAT_LIB_DIR"; then
-                   break;
+	   # Mac OS X could have jnilib or dylib,
+	   # Cygwin has /usr/lib/libexpat.dll.a
+	   # Ubuntu could have .so.2 or /usr/lib/x86_64-linux-gnu/libexpat.so
+	   if test -d $dir; then
+	       libexpat=`$FIND $dir -name "libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -name "libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}" | head -1`
+
+               if test -f "$libexpat"; then
+                   if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $libexpat}" >&5
+$as_echo "$libexpat}" >&6; }; fi
+	           LIBEXPAT_LIB_DIR=`dirname $libexpat`
+	           break;
                fi
            fi
        done
@@ -12149,18 +12138,16 @@ $as_echo "$as_me: WARNING: Failed to find expat.h
    fi
 fi
 
-if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
-   if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_SUFFIX2" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
-      # Used in $PTII/lbnl/lib/util/makefile
-      PTLIBEXPAT_DIR=util
-      # Used in $PTII/makefile
-      PTLBNL_DIR=lbnl
-      # Set to the lbnl jars that need to be signed if libexpat was found
-      # and used in jnlp.mk.
-      PTLBNL_JARS="lbnl/lbnl.jar lbnl/demo/demo.jar"
-      # Used in $PTII/doc/makefile
-      PTLBNL_PACKAGES="lbnl.actor.lib lbnl.actor.lib.net lbnl.lib.labview lbnl.util"
-   fi
+if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h" -a -d "$LIBEXPAT_LIB_DIR"; then
+    # Used in $PTII/lbnl/lib/util/makefile
+    PTLIBEXPAT_DIR=util
+    # Used in $PTII/makefile
+    PTLBNL_DIR=lbnl
+    # Set to the lbnl jars that need to be signed if libexpat was found
+    # and used in jnlp.mk.
+    PTLBNL_JARS="lbnl/lbnl.jar lbnl/demo/demo.jar"
+    # Used in $PTII/doc/makefile
+    PTLBNL_PACKAGES="lbnl.actor.lib lbnl.actor.lib.net lbnl.lib.labview lbnl.util"
 fi
 
 # Packages to exclude from Ant targets that call javadoc
