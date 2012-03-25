@@ -220,6 +220,7 @@ $CLASSPATH/ptolemy/domains/de/demo/QueueAndServer/QueueAndServer.xml
 $CLASSPATH/ptolemy/domains/de/demo/RealTimeComposite/RealTimeComposite.xml
 $CLASSPATH/ptolemy/domains/de/demo/SmartSender/SmartSender.xml
 $CLASSPATH/ptolemy/domains/de/demo/TimingParadox/TimingParadox.xml
+$CLASSPATH/ptolemy/domains/de/demo/Trilateration/Trilateration.xml
 $CLASSPATH/ptolemy/domains/de/demo/VariableDelay/VariableDelay.xml
 $CLASSPATH/ptolemy/domains/dt/demo/Eye/Eye.xml
 $CLASSPATH/ptolemy/domains/fsm/demo/ABP/ABP.xml
