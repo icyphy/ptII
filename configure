@@ -647,6 +647,7 @@ PTOPENCVCG_DIR
 PTOPENCV_DIR
 PTMESCAL_DIR
 PTMATLAB_PACKAGES
+PTMATLAB_MEXEXT
 PTMATLAB_64LD_ARGS
 PTMATLAB_LD_ARGS
 PTMATLAB_JARS
@@ -10165,7 +10166,11 @@ fi
 PTMATLAB_DIR=
 PTMATLAB_LIBDIR=
 
+# Extension for matlab .mex files, for example "mexmaci64"
+PTMATLAB_MEXEXT=
+
 PTMATLAB_SUPPORTED=no
+
 case "`uname -s`" in
 Darwin)
 	if test -f "$PTJNI_INCLUDE/jni.h"; then
@@ -10466,6 +10471,14 @@ done
 
 	    CC="$OLDCC"
 
+	    # Extension for matlab .mex files, for example "mexmaci64"
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking the extension for Matlab .mex files" >&5
+$as_echo_n "checking the extension for Matlab .mex files... " >&6; }
+	    PTMATLAB_MEXEXT=`${MATLAB_DIR}/bin/mexext`
+	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTMATLAB_MEXEXT" >&5
+$as_echo "$PTMATLAB_MEXEXT" >&6; }; fi
+
 	    cd "$srcdir/config"
 	    if "$JAVAC" MajorOSName.java ; then
 	        { $as_echo "$as_me:${as_lineno-$LINENO}: checking which major type of OS we are running under" >&5
@@ -10488,6 +10501,7 @@ $as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed
     (cd \"$PTII/ptolemy/matlab\"; make install)" >&2;};
 		fi
 	    fi
+
 	    cd "$startdir"
 		MATLAB_USE_MSVC="no"
 		# These flags work for MacOSX r2009a, Linux r2008a, Windows r2008a
@@ -12753,6 +12767,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile
+
+
+# Extension for matlab .mex files, for example "mexmaci64"
 
 
 # Used in $PTII/doc/makefile
