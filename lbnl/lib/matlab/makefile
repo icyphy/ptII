@@ -95,10 +95,20 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Files to remove with 'make clean'
-KRUFT =
+# The compile.m file generates Matlab .mex* files.
+# PTMATLAB_MEXEXT is determined in $PTII/configure by running
+# $(PTMATLAB_DIR)/bin/mexext
+EXTRA_TARGETS = closeBSDSocket.$(PTMATLAB_MEXEXT)
 
-all: jclass
+# Files to remove with 'make clean'
+KRUFT = *.$(PTMATLAB_MEXEXT)
+
+all: jclass $(EXTRA_TARGETS)
+
+# FIXME: these dependencies are not necessarily correct
+closeBSDSocket.$(PTMATLAB_MEXEXT): simulinkSocket.c simulinkSocket.h
+	@echo "Invoking matlab to read compile.m and create $@"
+	matlab -nodisplay -r compile
 
 jclass: $(PTLIB)
 install: $(PTLIB) jclass jars

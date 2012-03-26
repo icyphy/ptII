@@ -3876,7 +3876,11 @@ fi
 PTMATLAB_DIR=
 PTMATLAB_LIBDIR=
 
+# Extension for matlab .mex files, for example "mexmaci64"
+PTMATLAB_MEXEXT=
+
 PTMATLAB_SUPPORTED=no
+
 case "`uname -s`" in
 Darwin)
 	if test -f "$PTJNI_INCLUDE/jni.h"; then
@@ -3985,6 +3989,11 @@ changequote([, ])dnl
 	    AC_CHECK_FUNCS(malloc_size, MALLOC_SIZE_FLAG=-DHAVE_MALLOC_SIZE)
 	    CC="$OLDCC"
 
+	    # Extension for matlab .mex files, for example "mexmaci64"
+	    AC_MSG_CHECKING([the extension for Matlab .mex files])
+	    PTMATLAB_MEXEXT=`${MATLAB_DIR}/bin/mexext`
+	    PT_MSG_RESULT($PTMATLAB_MEXEXT) 
+
 	    cd "$srcdir/config"
 	    if "$JAVAC" MajorOSName.java ; then
 	        AC_MSG_CHECKING([which major type of OS we are running under])
@@ -4000,6 +4009,7 @@ changequote([, ])dnl
     (cd "$PTII/ptolemy/matlab"; make install)]);		    
 		fi
 	    fi
+
 	    cd "$startdir"
 		MATLAB_USE_MSVC="no"
 		# These flags work for MacOSX r2009a, Linux r2008a, Windows r2008a
@@ -5774,6 +5784,9 @@ AC_SUBST(PTMATLAB_LD_ARGS)
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile
 AC_SUBST(PTMATLAB_64LD_ARGS)
+
+# Extension for matlab .mex files, for example "mexmaci64"
+AC_SUBST(PTMATLAB_MEXEXT)
 
 # Used in $PTII/doc/makefile
 AC_SUBST(PTMATLAB_PACKAGES)

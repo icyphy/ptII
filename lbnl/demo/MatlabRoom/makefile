@@ -95,8 +95,24 @@ demo: demo_vergil
 demo_vergil:
 	BCVTB_HOME="$(PTII)/lbnl"; export BCVTB_HOME \
 	PATH="`pwd`:`$(PTII)/bin/ptcygpath -u $(PTII)/lbnl/lib/util`:$(PTII)/lib:$(PATH)"; export PATH; \
-	LD_LIBRARY_PATH="`pwd`:$(PTII)lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
-	"$(PTII)/bin/vergil" \
+	LD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
+	DYLD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(DYLD_LIBRARY_PATH)"; export DYLD_LIBRARY_PATH; \
+	MATLABPATH="$(PTII)/lbnl/demo/MatlabRoom"; export MATLABPATH; \
+	matlab -nojvm -nosplash -logfile matlab.log -r simulateAndExit &  \
+	"$(PTII)/bin/vergil" -v \
 		$(MODELS)
+
+
+
+demo_matlab:
+	@echo "Starting matlab in the background"
+	BCVTB_HOME="$(PTII)/lbnl"; export BCVTB_HOME \
+	PATH="`pwd`:`$(PTII)/bin/ptcygpath -u $(PTII)/lbnl/lib/util`:$(PTII)/lib:$(PATH)"; export PATH; \
+	LD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
+	DYLD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(DYLD_LIBRARY_PATH)"; export DYLD_LIBRARY_PATH; \
+	MATLABPATH="$(PTII)/lbnl/demo/MatlabRoom"; export MATLABPATH; \
+
+
+
 
 include $(ROOT)/mk/ptcommon.mk

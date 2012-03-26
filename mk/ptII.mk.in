@@ -748,6 +748,9 @@ PTMATLAB_LD_ARGS = @PTMATLAB_LD_ARGS@
 # $PTII/ptolemy/matlab/makefile (64 bit)
 PTMATLAB_64LD_ARGS = @PTMATLAB_64LD_ARGS@
 
+# Extension for matlab .mex files, for example "mexmaci64"
+PTMATLAB_MEXEXT = @PTMATLAB_MEXEXT@
+
 # Used in $PTII/doc/makefile
 PTMATLAB_PACKAGES = @PTMATLAB_PACKAGES@
 

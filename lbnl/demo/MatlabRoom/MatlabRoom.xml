@@ -21,7 +21,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[17.0, 625.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 695.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -110,13 +110,13 @@ This is for illustration purposes only and not needed by the above model.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={404, 120, 1105, 784}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={404, 120, 1129, 847}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[892, 674]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[916, 737]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{446.0, 337.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{458.0, 368.5}">
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -155,6 +155,18 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this demo to work, the libbcvtb share library&#10;must be present and in the &#10;PATH (Windows),  LD_LIBRARY_PATH (Linux)&#10;or DYLD_LIBRARY_PATH (Mac OS X). &#10;Usually, libbcvtb is found in&#10;ptII/lbnl/lib/util or ptII/lib.&#10;&#10;In addition, BCVTB_HOME must be set to &#10;$PTII/lbnl&#10;&#10;MATLABPATH must be set to&#10;$PTII/lbnl/lib/matlab&#10;&#10;One way to do this is to run:&#10; cd $PTII/lbnl/demo/MatlabRoom&#10; make demo">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 85.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo might not work under Mac OS X.&#10;If too many arguments are passed in a method call, then the following message is produced:&#10;&quot;Too many inputs passed to SimpleFunctionThunk&quot;&#10;See&#10;http://www.mathworks.com/support/solutions/en/data/1-2R385T/index.html?product=ML&amp;solution=1-2R385T">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 620.0]">
         </property>
     </property>
     <entity name="MATLAB" class="lbnl.actor.lib.Simulator">
