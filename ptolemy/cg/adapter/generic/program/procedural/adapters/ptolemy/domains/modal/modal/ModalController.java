@@ -361,8 +361,8 @@ public class ModalController extends NamedProgramCodeGeneratorAdapter {
             throw new IllegalActionException(port, "the rate: " + rate
                     + " is negative.");
         }
-        NamedProgramCodeGeneratorAdapter portHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                .getAdapter(port);
+        //NamedProgramCodeGeneratorAdapter portHelper = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+        //        .getAdapter(port);
         String str;
         Receiver rec[][] = port.getRemoteReceivers();
 
