@@ -157,18 +157,6 @@ T_{k+1}. The control action is computed in Ptolemy II.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 85.0]">
         </property>
     </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo might not work under Mac OS X.&#10;If too many arguments are passed in a method call, then the following message is produced:&#10;&quot;Too many inputs passed to SimpleFunctionThunk&quot;&#10;See&#10;http://www.mathworks.com/support/solutions/en/data/1-2R385T/index.html?product=ML&amp;solution=1-2R385T">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 620.0]">
-        </property>
-    </property>
     <entity name="MATLAB" class="lbnl.actor.lib.Simulator">
         <property name="programName" class="ptolemy.data.expr.FileParameter" value="matlab">
         </property>
