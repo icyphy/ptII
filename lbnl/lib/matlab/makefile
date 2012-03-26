@@ -67,6 +67,7 @@ MSRCS = \
 	establishClientSocket.m \
 	exchangeDoublesWithSocket.m \
 	getBCVTBLibName.m \
+	processError.m \
 	sendClientError.m \
 	slblocks.m
 
@@ -101,13 +102,17 @@ JCLASS = $(JSRCS:%.java=%.class)
 EXTRA_TARGETS = closeBSDSocket.$(PTMATLAB_MEXEXT)
 
 # Files to remove with 'make clean'
-KRUFT = *.$(PTMATLAB_MEXEXT)
+KRUFT = *.$(PTMATLAB_MEXEXT) \
+	libbcvtb_thunk_*
 
 all: jclass $(EXTRA_TARGETS)
 
 # FIXME: these dependencies are not necessarily correct
 closeBSDSocket.$(PTMATLAB_MEXEXT): simulinkSocket.c simulinkSocket.h
 	@echo "Invoking matlab to read compile.m and create $@"
+	PATH="`pwd`:`$(PTII)/bin/ptcygpath -u $(PTII)/lbnl/lib/util`:$(PTII)/lib:$(PATH)"; export PATH; \
+	LD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
+	DYLD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(DYLD_LIBRARY_PATH)"; export DYLD_LIBRARY_PATH; \
 	matlab -nodisplay -r compile
 
 jclass: $(PTLIB)

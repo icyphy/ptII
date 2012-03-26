@@ -31,9 +31,9 @@
 # $(ME) is used in ptdir.mk
 ME =		lbnl/lib
 
-# PTLIBXML2_DIR is set to util by configure if libxml2 was found
+# PTLIBEXPAT_DIR is set to util by configure if libxml2 was found
 # PTMATLAB_DIR is set to matlab by configure if matlab was found
-DIRS = 		$(PTLIBEXPAT_DIR) $(PTMATLAB_DIR)
+DIRS = 		$(PTLIBEXPAT_DIR) $(PTMATLAB_DIR) 
 
 # Root of Ptolemy II directory
 ROOT =		../..
