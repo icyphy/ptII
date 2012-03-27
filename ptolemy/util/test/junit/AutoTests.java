@@ -35,6 +35,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ptolemy.util.StringUtilities;
+
 ///////////////////////////////////////////////////////////////////
 //// AutoTests
 /**
@@ -99,8 +101,29 @@ public class AutoTests extends ModelTests {
                     + System.getProperty("user.dir"));
             return;
         }
-        System.out.println("----------------- testing " + fullPath);
-        System.out.flush();
-        _applicationConstructor.newInstance(fullPath);
+        if (modelFileIsOK(fullPath)) {
+            System.out.println("----------------- testing " + fullPath);
+            System.out.flush();
+            _applicationConstructor.newInstance(fullPath);
+        } else {
+            System.err.println("----------------- *** Skipping testing of " + fullPath);
+            System.err.flush();
+            
+        }
+    }
+
+    /** Return true if the model should be run.
+     *  This is a hack to avoid a problem where certain models
+     *  interact badly with the Cobertura code coverage tool.
+     *  @param fullPath The full path of the model to be executed
+     *  @return true if the model should be run.
+     */
+    public boolean modelFileIsOK(String fullPath) {
+        if (fullPath.endsWith("de/test/auto/ThreadedComposite.xml")
+                && ! StringUtilities.getProperty("net.sourceforge.cobertura.datafile").equals("")) {
+            System.err.println("ModelTests: Skipping de/test/auto/ThreadedComposite.xml because it interacts badly with Cobertura.");
+            return false;
+        }
+        return true;
     }
 }
