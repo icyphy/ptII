@@ -1,6 +1,6 @@
 /* A code generator adapter that is auto generated and calls actor code.
 
-   Copyright (c) 2010-2011 The Regents of the University of California.
+   Copyright (c) 2010-2012 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -1032,7 +1032,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */   
     private String _generateActorInstantiation(NamedObj actor,
             String actorSymbol, String containerSymbol,
-            boolean generateContainmentCode, boolean generateContainedVariables, boolean generateElectricityConnections)
+            boolean generateContainmentCode,
+            boolean generateContainedVariables, 
+            boolean generateElectricityConnections)
             throws IllegalActionException {
         //String actorSymbol = getCodeGenerator().generateVariableName(
         //            actor) + "_actor";
@@ -1173,7 +1175,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         return containmentCode.toString();
     }
 
-    /** Instantiate Variables and locations for those actors that access parameters in their container. 
+    /** Instantiate Variables and locations for those actors that
+     *  access parameters in their container.
      *  @param container The container in which we should look for variables and locations
      *  @param containerSymbol The java variable present in the generated code that refers
      *  to the container.
@@ -1690,6 +1693,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // remote actor is null.  Needed for:
             // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/PortWithStarsInName2.xml
             if (remoteActor.getContainer().getContainer() == null) {
+                if (verbosityLevel > 4) {
+                    System.out.println(getComponent().getFullName() + " remote actor " + remoteActor.getFullName() + " is close to the top, setting readingRemoteParameters to false");
+                }
                 readingRemoteParameters = false;
             } else {
                 String remoteActorSymbol = getCodeGenerator().generateVariableName(
@@ -1703,12 +1709,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 NamedObj remoteActorContainerContainer = remoteActorContainer.getContainer();
                 String remoteActorContainerContainerSymbol = _generatePtTypedCompositeActorName(remoteActorContainerContainer,
                         remoteActorContainerContainer.getName());
+                if (verbosityLevel > 4) {
+                    System.out.println(getComponent().getFullName() + " remote actor " + remoteActor.getFullName() + "Setting readingRemoteParameters " +
+                            (remoteActor.getContainer().getContainer() != port.getContainer().getContainer()) + " " + remoteActor.getContainer().getContainer().getContainer() != null);
+                }
                 if (remoteActor.getContainer().getContainer() != port.getContainer().getContainer()
                         && remoteActor.getContainer().getContainer().getContainer() != null) {
                     // The remoteActor could be contained by a composite, so we create connections
                     // all the way up.
                     // FIXME: In theory, we should have a loop here to deal with arbitrary depth
                     readingRemoteParametersDepth = 1;
+                    if (verbosityLevel > 4) {
+                        System.out.println(getComponent().getFullName() + " remote actor " + remoteActor.getFullName() + "Setting readingRemoteParametersDepth " + readingRemoteParametersDepth);
+                    }
                     //String remoteActorC3Symbol = getCodeGenerator().generateVariableName((((NamedObj) remoteActor).getContainer().getContainer().getContainer()));
                     NamedObj remoteActorC3 = ((((NamedObj) remoteActor).getContainer().getContainer().getContainer()));
                     String remoteActorC3Symbol = _generatePtTypedCompositeActorName(remoteActorC3, remoteActorC3.getName());
@@ -2740,9 +2753,12 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                         }
                     }
                     if (!foundAutoAdapteredUpstreamActor) {
-                        // Oddly, if we found an upstream auto adaptered actor and there are parameters in the container.
-                        // However, if the remote actor does not have an upstream auto adaptered actor, then return false
-                        // because we will catch these parameters elsewhere.
+                        // Oddly, if we found an upstream auto
+                        // adaptered actor and there are parameters in
+                        // the container.  However, if the remote
+                        // actor does not have an upstream auto
+                        // adaptered actor, then return false because
+                        // we will catch these parameters elsewhere.
                         Iterator entities = ((TypedCompositeActor)remoteContainer).allAtomicEntityList().iterator();
                         while (entities.hasNext()) {
                             NamedObj namedObj = (NamedObj)entities.next();
