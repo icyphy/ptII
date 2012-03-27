@@ -6356,27 +6356,7 @@ Then delete this annotation.</text>
                 <display name="proxy clock"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-340.0, 110.0]">
                 </property>
-                <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                    <property name="LocalClock" class="ptolemy.actor.LocalClock">
-                        <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
-                        </property>
-                    </property>
-                    <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
-                    </property>
-                    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
-                    </property>
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 189, 815, 517}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9203336209376">
-                </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{197.9687500000001, -290.6875}">
-                </property>
-                <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+<property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -6402,6 +6382,26 @@ Then delete this annotation.</text>
                     </property>
                     <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                     </property>
+                </property>
+                <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                    <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                        <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
+                        </property>
+                    </property>
+                    <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 189, 815, 517}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9203336209376">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{197.9687500000001, -290.6875}">
                 </property>
                 <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                     <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The clockRate parameter port sets the clockRate attribute of the DE director.&#10;This in turn is the rate parameter used by the director in computing the advancment&#10;of the local clock with respect to its environment. A clockRate of 1.0 indicates&#10;that the local and environment clocks run at the same rate, i.e. have the same &#10;definition of the second.&#10;&#10;The purpose of this clock is to provide a proxy for the actual controlled clock. &#10;In particular this proxy is driven by the same rate signal as the controlled clock&#10;and therefore provides the same local time as the controlled clock which can be &#10;used internally by the controller during tracking of time from the master.">
@@ -7564,27 +7564,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
             <display name="Detector 1"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 135.0]">
             </property>
-            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="LocalClock" class="ptolemy.actor.LocalClock">
-                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
-                    </property>
-                </property>
-                <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
-                </property>
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 109, 815, 517}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1141414727558">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{141.265625, -328.4895833333333}">
-            </property>
-            <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+<property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -7610,6 +7590,26 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 </property>
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
+                    </property>
+                </property>
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 109, 815, 517}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1141414727558">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{141.265625, -328.4895833333333}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When an event is received on the eventTrigger port the receipt time is sent to the&#10;eventTime port.&#10;&#10;The clockRate parameter port sets the clockRate attribute of the DE director.&#10;This in turn is the rate parameter used by the director in computing the advancment&#10;of the local clock with respect to its environment. A clockRate of 1.0 indicates&#10;that the local and environment clocks run at the same rate, i.e. have the same &#10;definition of the second.">
@@ -8527,27 +8527,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 <display name="proxy clock"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-340.0, 110.0]">
                 </property>
-                <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                    <property name="LocalClock" class="ptolemy.actor.LocalClock">
-                        <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
-                        </property>
-                    </property>
-                    <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
-                    </property>
-                    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
-                    </property>
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 189, 815, 517}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9203336209376">
-                </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{197.9687500000001, -290.6875}">
-                </property>
-                <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+<property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -8573,6 +8553,27 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                     </property>
                     <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                     </property>
+                </property>
+
+                <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                    <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                        <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
+                        </property>
+                    </property>
+                    <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 189, 815, 517}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9203336209376">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{197.9687500000001, -290.6875}">
                 </property>
                 <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                     <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The clockRate parameter port sets the clockRate attribute of the DE director.&#10;This in turn is the rate parameter used by the director in computing the advancment&#10;of the local clock with respect to its environment. A clockRate of 1.0 indicates&#10;that the local and environment clocks run at the same rate, i.e. have the same &#10;definition of the second.&#10;&#10;The purpose of this clock is to provide a proxy for the actual controlled clock. &#10;In particular this proxy is driven by the same rate signal as the controlled clock&#10;and therefore provides the same local time as the controlled clock which can be &#10;used internally by the controller during tracking of time from the master.">
@@ -9733,27 +9734,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
             <display name="Detector 2"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 45.0]">
             </property>
-            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="LocalClock" class="ptolemy.actor.LocalClock">
-                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
-                    </property>
-                </property>
-                <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
-                </property>
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 251, 815, 517}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1141414727558">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{141.265625, -328.4895833333333}">
-            </property>
-            <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+<property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -9779,6 +9760,26 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 </property>
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
+                    </property>
+                </property>
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 251, 815, 517}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1141414727558">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{141.265625, -328.4895833333333}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When an event is received on the eventTrigger port the receipt time is sent to the&#10;eventTime port.&#10;&#10;The clockRate parameter port sets the clockRate attribute of the DE director.&#10;This in turn is the rate parameter used by the director in computing the advancment&#10;of the local clock with respect to its environment. A clockRate of 1.0 indicates&#10;that the local and environment clocks run at the same rate, i.e. have the same &#10;definition of the second.">
@@ -10622,27 +10623,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 <display name="proxy clock"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-340.0, 110.0]">
                 </property>
-                <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                    <property name="LocalClock" class="ptolemy.actor.LocalClock">
-                        <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
-                        </property>
-                    </property>
-                    <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
-                    </property>
-                    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
-                    </property>
-                </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 189, 815, 517}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9203336209376">
-                </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{197.9687500000001, -290.6875}">
-                </property>
-                <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+ <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -10669,6 +10650,27 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                     <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                     </property>
                 </property>
+                <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                    <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                        <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
+                        </property>
+                    </property>
+                    <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 189, 815, 517}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9203336209376">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{197.9687500000001, -290.6875}">
+                </property>
+               
                 <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                     <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The clockRate parameter port sets the clockRate attribute of the DE director.&#10;This in turn is the rate parameter used by the director in computing the advancment&#10;of the local clock with respect to its environment. A clockRate of 1.0 indicates&#10;that the local and environment clocks run at the same rate, i.e. have the same &#10;definition of the second.&#10;&#10;The purpose of this clock is to provide a proxy for the actual controlled clock. &#10;In particular this proxy is driven by the same rate signal as the controlled clock&#10;and therefore provides the same local time as the controlled clock which can be &#10;used internally by the controller during tracking of time from the master.">
                     </property>
@@ -11828,27 +11830,7 @@ the connection patterns to the clockRate generation actors.</text></svg></config
             <display name="Detector 3"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 45.0]">
             </property>
-            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="LocalClock" class="ptolemy.actor.LocalClock">
-                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
-                    </property>
-                </property>
-                <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
-                </property>
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
-                </property>
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 251, 815, 517}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1141414727558">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{141.265625, -328.4895833333333}">
-            </property>
-            <property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+<property name="clockRate" class="ptolemy.actor.parameters.PortParameter" value="1.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -11875,6 +11857,27 @@ the connection patterns to the clockRate generation actors.</text></svg></config
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                <property name="LocalClock" class="ptolemy.actor.LocalClock">
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="clockRate">
+                    </property>
+                </property>
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, -440.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 251, 815, 517}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1141414727558">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{141.265625, -328.4895833333333}">
+            </property>
+            
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When an event is received on the eventTrigger port the receipt time is sent to the&#10;eventTime port.&#10;&#10;The clockRate parameter port sets the clockRate attribute of the DE director.&#10;This in turn is the rate parameter used by the director in computing the advancment&#10;of the local clock with respect to its environment. A clockRate of 1.0 indicates&#10;that the local and environment clocks run at the same rate, i.e. have the same &#10;definition of the second.">
                 </property>
