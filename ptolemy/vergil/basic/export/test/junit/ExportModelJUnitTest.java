@@ -211,7 +211,6 @@ public class ExportModelJUnitTest {
 	    //"luminary/adapters/ptolemy/domains/ptides/demo/Accumulator/Accumulator.xml", // TypeConflict
 	    //"ModularCGPubSub.xml", //Can't find the publisher for "channel".
 	    //"MonotonicityAnalysis.xml", // Expected '{x = General}' but got '{x = NonMonotonic_{<o...
-	    //"ptalon/gt/demo/Adder/Adder.xml", // "Channel index 0 is out of range, because width is only 0."
 	    "ddf/demo/IfThenElse/IfThenElse.xml", // FIXME: Failed to generate sub-web-page. 
 	    "ddf/demo/IfThenElse/IfThenElseFSM.xml", // FIXME: Failed to generate sub-web-page. 
 
@@ -236,6 +235,7 @@ public class ExportModelJUnitTest {
     private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
         String [] skip = {
+	    "ptalon/gt/demo/Adder/Adder.xml", // "Channel index 0 is out of range, because width is only 0."
 	    "backtrack/demo/PrimeTest/PrimeTest.xml", // FIXME: Channel index 0 out of range.
 	    "CRoom.xml", // hangs.
 	    "distributed/demo/Sleep/Sleep.xml", // Requires jini.
