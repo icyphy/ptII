@@ -93,6 +93,7 @@ import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.BrowserEffigy;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
@@ -896,13 +897,26 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param model The NamedObj for the model.  See
      *  {@link ptolemy.actor.gui.ConfigurationApplication#openModel(String)}
      *  for a static method that returns the model
-     *  @return The BasicGraphFrame that corresponds with the model.
+     *  @return The BasicGraphFrame that corresponds with the model or
+     *  null if the model argument was null, the effigy for the model
+     *  cannot be found or if the Effigy does not contain a Tableau.
      */
     public static BasicGraphFrame getBasicGraphFrame(NamedObj model) {
-        // See PtolemyLayoutAction for similar code.
         BasicGraphFrame frame = null;
-        Iterator tableaux = Configuration.findEffigy(model)
-                .entityList(Tableau.class).iterator();
+
+        if (model == null) {
+            return null;
+        }
+        // See PtolemyLayoutAction for similar code.
+        Effigy effigy = Configuration.findEffigy(model);
+        if (effigy == null) {
+            return null;
+        }
+        List entities = effigy.entityList(Tableau.class);
+        if (entities == null) {
+            return null;
+        }
+        Iterator tableaux = entities.iterator();
         while (tableaux.hasNext()) {
             Tableau tableau = (Tableau) tableaux.next();
             if (tableau.getFrame() instanceof BasicGraphFrame) {

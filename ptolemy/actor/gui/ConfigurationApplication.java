@@ -349,7 +349,7 @@ public class ConfigurationApplication implements ExecutionListener {
      *  @see #openModel(String)
      */
     public static void closeModelWithoutSavingOrExiting(
-            TypedCompositeActor model) throws IllegalActionException,
+            CompositeEntity model) throws IllegalActionException,
             NameDuplicationException {
         Effigy effigy = Configuration.findEffigy(model.toplevel());
         // Avoid being prompted for save.
@@ -360,7 +360,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
         // FIXME: are all these necessary?
         effigy.closeTableaux();
-        ((CompositeActor) model).setContainer(null);
+        model.setContainer(null);
         MoMLParser.purgeAllModelRecords();
     }
 
@@ -482,13 +482,60 @@ public class ConfigurationApplication implements ExecutionListener {
      *  Thus $CLASSPATH/Foo.xml should have a toplevel named "Foo".
      *  If the name of the model and the name of the top level do
      *  not match, then the last CompositeActor is returned.
-     *  @see #closeModelWithoutSavingOrExiting(TypedCompositeActor)
+     *  @see #closeModelWithoutSavingOrExiting(CompositeEntity)
      *  @return The model that was opened.
      *  @exception Throwable If the model cannot be opened.
+     *  @deprecated Use #openModelOrEntity(String) instead and handle
+     *  the case where the modelFileName refers to a HTML or text file
+     *  or an interface diagram.
      */
     public static TypedCompositeActor openModel(String modelFileName)
             throws Throwable {
-        TypedCompositeActor result = null;
+        CompositeEntity model = openModelOrEntity(modelFileName);
+        if (!(model instanceof TypedCompositeActor)) {
+            System.out.println("Failed to find a CompositeActor, found a "
+                    + model.getClass().getName()
+                    + ".  This can happen when opening a HTML or text file. ");
+            return null;
+        } else {
+            return (TypedCompositeActor)model; 
+        }
+    }
+
+    /** Open a model and display it.
+     *
+     *  <p>The caller of this method should be in the Swing Event Thread.
+     *  Typically, this is done with code like:</p>
+     *  <pre>
+     *   Runnable openModelAction = new Runnable() {
+     *       public void run() {
+     *           try {
+     *               model[0] = ConfigurationApplication.openModelOrEntity(modelFileName);
+     *           } catch (Exception ex) {
+     *               throw new RuntimeException(ex);
+     *           }
+     *       }
+     *   };
+     *   SwingUtilities.invokeAndWait(openModelAction);
+     *  </pre>
+     *  <p>This method is primarily used for testing.  To get the
+     *  ptolemy.vergil.basic.BasicGraphFrame from a model returned
+     *  by this method, see
+     *  ptolemy.vergil.basic.BasicGraphFrame.getBasicGraphFrame().</p>
+     *
+     *  @param modelFileName The pathname to the model.  Usually the
+     *  pathname starts with "$CLASSPATH".  The name of the top level
+     *  of the model must match the base name of the modelFileName.
+     *  Thus $CLASSPATH/Foo.xml should have a toplevel named "Foo".
+     *  If the name of the model and the name of the top level do
+     *  not match, then the last CompositeActor is returned.
+     *  @see #closeModelWithoutSavingOrExiting(CompositeEntity)
+     *  @return The model that was opened.
+     *  @exception Throwable If the model cannot be opened.
+     */
+    public static CompositeEntity openModelOrEntity(String modelFileName)
+            throws Throwable {
+        CompositeEntity result = null;
         try {
             // We set the list of MoMLFilters to handle Backward Compatibility.
             MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
@@ -508,7 +555,7 @@ public class ConfigurationApplication implements ExecutionListener {
                             "ptolemy/configs/full/configuration.xml",
                             canonicalModelFileName });
 
-            // Find the first CompositeActor whos name matches
+            // Find the first CompositeEntity whos name matches
             // the basename of the file, skipping the
             // Configuration etc.
 
@@ -521,29 +568,18 @@ public class ConfigurationApplication implements ExecutionListener {
             // The basename of the model.
             String baseName = modelFileName.substring(
                     modelFileName.lastIndexOf(File.separator) + 1, indexOfDot);
-            StringBuffer names = new StringBuffer();
             NamedObj model = null;
             Iterator models = application.models().iterator();
             while (models.hasNext()) {
                 model = (NamedObj) models.next();
-                if (names.length() > 0) {
-                    names.append(", ");
-                }
-                names.append(model.getFullName());
-                if (model instanceof TypedCompositeActor) {
-                    result = (TypedCompositeActor) model;
+                if (model instanceof CompositeEntity
+                        && !(model instanceof Configuration)) {
+                    result = (CompositeEntity) model;
                     if (model.getName().equals(baseName)) {
                         break;
                     }
                 }
             }
-            if (!(model instanceof TypedCompositeActor)) {
-                System.out.println("Failed to find a CompositeActor. "
-                        + "This can happen when opening a HTML or text file. "
-                        + "Models were: " + names);
-                return null;
-            }
-
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             throw throwable;

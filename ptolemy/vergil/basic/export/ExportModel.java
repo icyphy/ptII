@@ -137,7 +137,8 @@ public class ExportModel {
         // use an array as a final variable, but we change the value
         // of the element of the array.  Is this thread safe?
         // Perhaps we should make this a field?
-        final TypedCompositeActor[] model = new TypedCompositeActor[1];
+        //final TypedCompositeActor[] model = new TypedCompositeActor[1];
+        final CompositeEntity[] model = new CompositeEntity[1];
 
         /////
         // Open the model.
@@ -146,7 +147,7 @@ public class ExportModel {
             public void run() {
                 try {
                     model[0] = ConfigurationApplication
-                            .openModel(modelFileName);
+                            .openModelOrEntity(modelFileName);
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                     throw new RuntimeException(throwable);
@@ -226,15 +227,22 @@ public class ExportModel {
             Runnable runAction = new Runnable() {
                 public void run() {
                     try {
-                        System.out.println("Running " + model[0].getFullName());
-                        Manager manager = model[0].getManager();
-                        if (manager == null) {
-                            manager = new Manager(model[0].workspace(),
-                                    "MyManager");
-                            (model[0]).setManager(manager);
+                        if (!(model[0] instanceof TypedCompositeActor)) {
+                            System.out.println( model[0].getFullName() + " is a "
+                                    + model[0].getClass().getName()
+                                    + " not a TypedCompositeActor, so it cannot be run.");
+                            return;
                         }
-                        (model[0])
-                                .setModelErrorHandler(new BasicModelErrorHandler());
+                        TypedCompositeActor composite = (TypedCompositeActor)model[0];
+                        System.out.println("Running " + composite.getFullName());
+                        Manager manager = composite.getManager();
+                        if (manager == null) {
+                            manager = new Manager(composite.workspace(),
+                                    "MyManager");
+                            (composite).setManager(manager);
+                        }
+                        (composite)
+                            .setModelErrorHandler(new BasicModelErrorHandler());
                         _timer = new Timer(true);
                         final Manager finalManager = manager;
                         TimerTask doTimeToDie = new TimerTask() {                            
@@ -440,7 +448,7 @@ public class ExportModel {
         SwingUtilities.invokeAndWait(exportModelAction);
         _sleep();
 
-        if (openResults) {
+        if (openResults && !isHTM) {
             // Optionally open the results.
             Runnable openResultsAction = new Runnable() {
                 public void run() {
