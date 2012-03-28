@@ -98,7 +98,6 @@ demo_vergil:
 	LD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
 	DYLD_LIBRARY_PATH="`pwd`:$(PTII)/lbnl/lib/util:$(PTII)/lib:$(DYLD_LIBRARY_PATH)"; export DYLD_LIBRARY_PATH; \
 	MATLABPATH="$(PTII)/lbnl/demo/MatlabRoom"; export MATLABPATH; \
-	matlab -nojvm -nosplash -logfile matlab.log -r simulateAndExit &  \
 	"$(PTII)/bin/vergil" -v \
 		$(MODELS)
 
