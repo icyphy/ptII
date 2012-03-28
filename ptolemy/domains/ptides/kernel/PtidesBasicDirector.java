@@ -893,7 +893,9 @@ public class PtidesBasicDirector extends DEDirector {
         } else {
             // the new time is equal to the current time, do nothing.
         }
-        _localClock.setLocalTime(newTime);
+        if (newTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
+            _localClock.setLocalTime(newTime);
+        }
     }
 
     /** Set the timestamp and microstep of the current time.
