@@ -1,5 +1,0 @@
-ThisReference is {
-	inport x;
-	outport y;
-	this(x := y);
-}

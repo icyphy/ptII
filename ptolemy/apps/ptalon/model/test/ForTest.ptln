@@ -1,5 +1,0 @@
-ForTest is {
-	for i initially [[0]] [[i < 10]] {
-		inport p[[i]];
-	} next [[i + 1]]	
-}
