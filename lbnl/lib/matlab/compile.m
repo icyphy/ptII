@@ -65,9 +65,9 @@ else
   for i=1:3
     def.SFunctionName = char(funNam(i));
     def.OutputFcnSpec = char(funSpe(i));
-    disp('*** Generating mex file')
+    disp('### Generating mex file')
     legacy_code('sfcn_cmex_generate', def)
-    disp('*** Compiling code')
+    disp('### Compiling code')
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%% fix from Mathworks (email from 2/7/08)
     fschange('');
@@ -81,30 +81,30 @@ else
     try
       % Compilation for Windows
       if (strcmp(os, 'windows')) % have Windows    
-        disp('*** Compiling MATLAB interface for Windows')
+        disp('### Compiling MATLAB interface for Windows')
         legacy_code('compile', def, {'../util/bcvtb.lib', 'simulinkSocket.c', '-I../util', '-I..'})
       else
         % Compilation for Mac OS X and Linux
-        disp('*** Compiling MATLAB interface for Mac OS X or Linux')
+        disp('### Compiling MATLAB interface for Mac OS X or Linux')
         
         legacy_code('compile', def, {'-lxml2', '-I..', '-L../util', '-lbcvtb'})
       end
     catch ME
-      disp('*** Error when compiling MATLAB interface ***')
+      disp('*** Error when compiling MATLAB interface ###')
       disp(getReport(ME, 'extended'))
-      disp('*** Exit with error.')
+      disp('### Exit with error.')
       exit(1)
     end
 
-    disp('*** Returned from legacy_code')
+    disp('### Returned from legacy_code')
     if makeSBlock
-      disp('*** Generating Simulink block')
+      disp('### Generating Simulink block')
       try
         legacy_code('slblock_generate', def, modelName)
       catch ME
         disp('*** Error when generating Simulink interface ***')
         disp(getReport(ME, 'extended'))
-        disp('*** Exit with error.')
+        disp('### Exit with error.')
         exit(1)
       end
     end
