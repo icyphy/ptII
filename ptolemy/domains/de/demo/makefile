@@ -36,7 +36,8 @@ ROOT =		../../../..
 
 DIRS =		AssemblyLine Clock ClockDrift \
 		Inspection LongRuns ModalModel \
-		QueueAndServer TimingParadox RealTimeComposite \
+		QueueAndServer TimingParadox \
+		Trilateration RealTimeComposite \
 		SmartSender VariableDelay
 
 CLASSPATH =	$(ROOT)
