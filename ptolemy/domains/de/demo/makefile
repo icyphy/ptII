@@ -35,7 +35,7 @@ ME =		ptolemy/domains/de/demo
 ROOT =		../../../..
 
 DIRS =		AssemblyLine Clock ClockDrift \
-		Inspection LongRuns ModalModel \
+		Inspection LineFault LongRuns ModalModel \
 		QueueAndServer TimingParadox \
 		Trilateration RealTimeComposite \
 		SmartSender VariableDelay
@@ -56,6 +56,7 @@ PTCLASSALLJARS = \
 	Clock/Clock.jar \
 	ClockDrift/ClockDrift.jar \
 	Inspection/Inspection.jar \
+	LineFault/LineFault.jar \
 	LongRuns/LongRuns.jar \
 	ModalModel/ModalModel.jar \
 	QueueAndServer/QueueAndServer.jar \
