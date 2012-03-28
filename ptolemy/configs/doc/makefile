@@ -159,6 +159,8 @@ update: $(DERIVED_FILES)
 	svn commit -m "Master files changed" $(DERIVED_FILES)
 	rm -f doc.jar
 	$(MAKE) doc.jar
+	# The first commit will change completeDemosPtiny.htm, which will cause completeDemosBcvtb.htm to be updated
+	svn commit -m "Master files changed" $(DERIVED_FILES)
 
 update_clean: 
 	rm -f $(DERIVED_FILES)
