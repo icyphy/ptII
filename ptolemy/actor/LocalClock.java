@@ -1,6 +1,6 @@
 /* A clock that keeps track of model time at a level of the model hierarchy.
 
- Copyright (c) 1999-2010 The Regents of the University of California.
+ Copyright (c) 2012 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,37 +53,38 @@ import ptolemy.math.ExtendedMath;
  *  clock has a notion of local time and committed time. The committed time 
  *  is "simultaneous" with the environment time.  
  *  
- *  The local time is
+ *  <p>The local time is
  *  not allowed to move backwards past the committed time, but ahead
- *  of that time, it can move around at will. 
+ *  of that time, it can move around at will. </p>
  *  <p>
  *  There is no way of explicitly committing time, but 
  *  several methods have the side effect of committing the current
  *  local time. For example, {@link #setClockDrift(double)} will commit
  *  the current local time and change the clock drift.  So will
- *  {@link #start()} and {@link #stop()}
+ *  {@link #start()} and {@link #stop()} </p>
+ *
  *  <p>
  *  The value of the clock is exposed as an attribute that, by default, 
  *  is non editable. The clock drift is a contained attribute that can 
- *  be modified.
- *  <p>
- *  This class also specifies a parameter <i>timeResolution</i>. This is a double
-     with default 1E-10, which is 10<sup>-10</sup>.
-     All time values are rounded to the nearest multiple of this
-     value. If the value is changed during a run, an exception is thrown.
-     This is a shared parameter, which means
-     that all instances of Director in the model will have the same value for
-     this parameter. Changing one of them changes all of them.
+ *  be modified. </p>
+ *
+ *  <p> This class also specifies a <i>globalTimeResolution</i>
+ *  parameter. This is a double with default 1E-10, which is
+ *  10<sup>-10</sup>.  All time values are rounded to the nearest
+ *  multiple of this value. If the value is changed during a run, an
+ *  exception is thrown.  This is a shared parameter, which means that
+ *  all instances of Director in the model will have the same value
+ *  for this parameter. Changing one of them changes all of them. </p>
  *  
- *  FIXME: Setting of clock drift must be controlled because it commits
- *  time. 
- @author Ilge Akkaya, Patricia Derler, Edward A. Lee, Christos Stergiou, Michael Zimmer
- @version $Id$
- @since Ptolemy II 8.0
- @Pt.ProposedRating yellow (eal)
- @Pt.AcceptedRating red (eal)
+ *  <p>FIXME: Setting of clock drift must be controlled because it commits
+ *  time. </p> 
+ *
+ * @author Ilge Akkaya, Patricia Derler, Edward A. Lee, Christos Stergiou, Michael Zimmer
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating yellow (eal)
+ * @Pt.AcceptedRating red (eal)
  */
-
 public class LocalClock extends AbstractSettableAttribute implements ValueListener {
 
     /** Construct an attribute with the given name contained by the specified
@@ -157,7 +158,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  @param workspace The workspace for the cloned object.
      *  @param director The director for the cloned object.
      *  @return The cloned object.
-     *  @throws CloneNotSupportedException Thrown by super class.
+     *  @exception CloneNotSupportedException Thrown by super class.
      */
     public Object clone(Workspace workspace, Director director) throws CloneNotSupportedException { 
         LocalClock newObject = (LocalClock) super.clone(workspace);
@@ -170,8 +171,10 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     
     /** Get clock drift. 
      *  @return The clock drift.
+     *  @see #setClockDrift(double)
      */
     public double getClockDrift() { 
+        // FIXME: This returns a double, what does 1.0 mean?  0.0?
         return _drift;
     }  
     
@@ -195,7 +198,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  greater than the committed time when this method is called.
      *  @param time The local Time.
      *  @return The corresponding environment Time.
-     *  @throws IllegalActionException If the specified local time
+     *  @exception IllegalActionException If the specified local time
      *   is in the past, or if Time objects cannot be created.
      */
     public Time getEnvironmentTimeForLocalTime(Time time) throws IllegalActionException {
@@ -220,6 +223,8 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     /** Get current local time. If it has never been set, then this will return
      *  Time.NEGATIVE_INFINITY. The returned value may have been set by
      *  {@link #setLocalTime(Time)}.
+     *  @return The current local time.
+     *  @see #setLocalTime(Time)
      */
     public Time getLocalTime() {
         return _localTime;
@@ -229,7 +234,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  The current environment time is required to be greater than or equal
      *  to the environment time corresponding to the last committed local time.
      *  @return The corresponding local time.
-     *  @throws IllegalActionException If Time objects cannot be created, or
+     *  @exception IllegalActionException If Time objects cannot be created, or
      *   if the current environment time is less than the time
      *   corresponding to the last committed local time.
      */
@@ -242,7 +247,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  to the environment time corresponding to the last committed local time.
      *  @param time The environment time.
      *  @return The corresponding local time.
-     *  @throws IllegalActionException If the specified environment time
+     *  @exception IllegalActionException If the specified environment time
      *   is less than the environment time corresponding to the last
      *   committed local time, or if Time objects cannot be created.
      */
@@ -270,6 +275,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     
     /** Return visibility of local clock. If visibility hasn't been
      *  set it returns {@link Settable.NOT_EDITABLE}.
+     *  @see #setVisibility(Visibility)
      */
     public Visibility getVisibility() {
         if (_visibility == null) {
@@ -282,6 +288,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  the value of the <i>timeResolution</i> parameter. This is the
      *  smallest time unit for the model.
      *  @return The time resolution of the model.
+     *  @see #setTimeResolution(double)
      */
     public final double getTimeResolution() {
         // This method is final for performance reason.
@@ -316,10 +323,12 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     /** Set the new clock drift but do not commit. The commit
      *  is done via {@link #commitClockDriftAndValue()}.
      *  @param drift New clock drift.  
-     *  @throws IllegalActionException If the specified drift is
+     *  @exception IllegalActionException If the specified drift is
      *   non-positive.
+     *  @see #getClockDrift()
      */
     public void setClockDrift(double drift) throws IllegalActionException {  
+        // FIXME: This returns a double, what does 1.0 mean?  0.0?
         if (drift <= 0.0) {
             throw new IllegalActionException(_director,
                     "Illegal clock drift: "
@@ -334,8 +343,9 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
      *  This is not allowed to set
      *  time earlier than the last committed local time.
      *  @param time The new local time.
-     *  @throws IllegalActionException If the specified time is
+     *  @exception IllegalActionException If the specified time is
      *   earlier than the current time.
+     *  @see #getLocalTime()
      */
     public void setLocalTime(Time time) throws IllegalActionException { 
         if (_lastCommitLocalTime != null && time.compareTo(_lastCommitLocalTime) < 0) {
@@ -359,6 +369,7 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
     
     /** Set time resolution.
      *  @param timeResolution The new time resolution.
+     *  @see #getTimeResolution()
      */
     public void setTimeResolution(double timeResolution) {
         _timeResolution = timeResolution;
@@ -384,17 +395,19 @@ public class LocalClock extends AbstractSettableAttribute implements ValueListen
         _commit();
     } 
     
-    /** FIXME: is there anything that needs to be done here?
-     *  @return Nothing.
+    /** Check the validity of the expression set in setExpression().
+     *  @return null, indicating that no settables are also validated.
+     *  @exception IllegalActionException not thrown in this class.
      */
     public Collection validate() throws IllegalActionException { 
+        // FIXME: is there anything that needs to be done here?
         return null;
     }
     
     /** React to the change in the clock drift parameter.
      *  @param settable The object that has changed value.
-     * @throws IllegalActionException If Token cannot be parsed or time object
-     *    cannot be created.
+     *  @exception IllegalActionException If Token cannot be parsed or
+     *  time object cannot be created.
      */
     public void valueChanged(Settable settable) {
         try {

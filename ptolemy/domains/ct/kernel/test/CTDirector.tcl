@@ -135,10 +135,7 @@ test CTDirector-2.2 {set Parameters by expression} {
     $param setExpression 100.0
     $param getToken
 
-    set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute timeResolution]]
-    $param setExpression {1E-11}
-    $param getToken
+    $dir setTimeResolution 1E-11
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute valueResolution]]
@@ -208,9 +205,7 @@ test CTDirector-2.2a {set Parameters} {
     set token [java::new ptolemy.data.DoubleToken 100.0]
     $param setToken $token
 
-    set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute timeResolution]]
-    $param setToken {1E-11}
+    $dir setTimeResolution 1E-11
 
     set param [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute valueResolution]]

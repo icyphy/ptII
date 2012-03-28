@@ -807,6 +807,7 @@ public class Director extends Attribute implements Executable {
      *  the value of the <i>timeResolution</i> parameter. This is the
      *  smallest time unit for the model.
      *  @return The time resolution of the model.
+     *  @see #setTimeResolution(double)
      */
     public final double getTimeResolution() {
         // This method is final for performance reason.
@@ -1336,6 +1337,14 @@ public class Director extends Attribute implements Executable {
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
         _localClock.setLocalTime(newTime);
+    }
+
+    /** Set time resolution.
+     *  @param timeResolution The new time resolution.
+     *  @see #getTimeResolution()
+     */
+    public void setTimeResolution(double timeResolution) {
+        _localClock.setTimeResolution(timeResolution);
     }
 
     /** Request that the director cease execution altogether.
