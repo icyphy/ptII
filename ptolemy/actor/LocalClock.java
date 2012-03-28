@@ -66,6 +66,15 @@ import ptolemy.math.ExtendedMath;
  *  The value of the clock is exposed as an attribute that, by default, 
  *  is non editable. The clock drift is a contained attribute that can 
  *  be modified.
+ *  <p>
+ *  This class also specifies a parameter <i>timeResolution</i>. This is a double
+     with default 1E-10, which is 10<sup>-10</sup>.
+     All time values are rounded to the nearest multiple of this
+     value. If the value is changed during a run, an exception is thrown.
+     This is a shared parameter, which means
+     that all instances of Director in the model will have the same value for
+     this parameter. Changing one of them changes all of them.
+ *  
  *  FIXME: Setting of clock drift must be controlled because it commits
  *  time. 
  @author Ilge Akkaya, Patricia Derler, Edward A. Lee, Christos Stergiou, Michael Zimmer

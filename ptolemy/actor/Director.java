@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
@@ -98,14 +99,6 @@ import ptolemy.math.ExtendedMath;
  require write access, then it is safe to set the workspace to be read-only,
  which will result in faster execution.
  <p>
- This class also specifies a parameter <i>timeResolution</i>. This is a double
- with default 1E-10, which is 10<sup>-10</sup>.
- All time values are rounded to the nearest multiple of this
- value. If the value is changed during a run, an exception is thrown.
- This is a shared parameter, which means
- that all instances of Director in the model will have the same value for
- this parameter. Changing one of them changes all of them.
-
  @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
  @version $Id$
  @since Ptolemy II 0.2
@@ -131,7 +124,6 @@ public class Director extends Attribute implements Executable {
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  Create the timeResolution parameter.
      *
      *  @param container The container.
      *  @param name The name of this director.
@@ -155,7 +147,8 @@ public class Director extends Attribute implements Executable {
      *  @throws NameDuplicationException If construction of Time objects fails.
      *  @throws IllegalActionException If construction of Time objects fails.
      */
-    public Director(Workspace workspace) throws IllegalActionException, NameDuplicationException {
+    public Director(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _addIcon();
         _initializeParameters();
@@ -163,7 +156,7 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
-    
+
     /** The local time of model when this director is initialized.
      *  By default, this is blank, which
      *  indicates that the start time is the current time of the enclosing
@@ -212,7 +205,10 @@ public class Director extends Attribute implements Executable {
      *   preinitialize()).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException { 
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug("attribute " + attribute + " changed");
+        }
         if (attribute == startTime) {
             DoubleToken startTimeValue = (DoubleToken) startTime.getToken();
             if (startTimeValue == null) {
@@ -229,16 +225,18 @@ public class Director extends Attribute implements Executable {
                 _stopTime = null;
             }
         } else if (_localClock != null && attribute == _localClock.clockDrift) {
-            double drift; 
-            drift = ((DoubleToken) _localClock.clockDrift.getToken()).doubleValue();
+            double drift;
+            drift = ((DoubleToken) _localClock.clockDrift.getToken())
+                    .doubleValue();
             if (drift != _localClock.getClockDrift()) {
                 _localClock.setClockDrift(drift);
-            } 
-        } else if (_localClock != null && attribute == _localClock.globalTimeResolution) { 
+            }
+        } else if (_localClock != null
+                && attribute == _localClock.globalTimeResolution) {
             // This is extremely frequently used, so cache the value.
             // Prevent this from changing during a run!
-            double newResolution = ((DoubleToken) _localClock.globalTimeResolution.getToken())
-                    .doubleValue();
+            double newResolution = ((DoubleToken) _localClock.globalTimeResolution
+                    .getToken()).doubleValue();
 
             // FindBugs reports this comparison as a problem, but it
             // is not an issue because we usually don't calculate
@@ -278,7 +276,7 @@ public class Director extends Attribute implements Executable {
 
         super.attributeChanged(attribute);
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -289,9 +287,10 @@ public class Director extends Attribute implements Executable {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Director newObject = (Director) super.clone(workspace);
         newObject._actorsFinishedExecution = null;
-        newObject._initializables = null;  
-        newObject._zeroTime = new Time(newObject);  
-        newObject._localClock = (LocalClock) _localClock.clone(workspace, newObject); 
+        newObject._initializables = null;
+        newObject._zeroTime = new Time(newObject);
+        newObject._localClock = (LocalClock) _localClock.clone(workspace,
+                newObject);
         return newObject;
     }
 
@@ -321,7 +320,7 @@ public class Director extends Attribute implements Executable {
             return BooleanDependency.OTIMES_IDENTITY;
         }
     }
-    
+
     /** Return a boolean dependency representing a model-time delay
      *  of the specified amount. This base clear returns
      *  BooleanDependency.OTIMES_IDENTITY, which indicates a delay
@@ -539,7 +538,7 @@ public class Director extends Attribute implements Executable {
     public Time fireContainerAt(Time time) throws IllegalActionException {
         return fireContainerAt(time, 0);
     }
-    
+
     /** Request a firing of the container of this director at the specified time,
      *  adjusted by the current offset and drift of the local clock,
      *  and the specified microstep.
@@ -559,7 +558,7 @@ public class Director extends Attribute implements Executable {
      *   is no director.
      */
     public Time fireContainerAt(Time time, int microstep)
-            throws IllegalActionException { 
+            throws IllegalActionException {
         Actor container = (Actor) getContainer();
         if (container != null) {
             Director director = container.getExecutiveDirector();
@@ -569,17 +568,19 @@ public class Director extends Attribute implements Executable {
                             + time + " with microstep " + microstep);
                 }
                 // Translate the local time into an environment time.
-                Time environmentTime = _localClock.getEnvironmentTimeForLocalTime(time);
-                Time result = director.fireAt(container, environmentTime, microstep);
+                Time environmentTime = _localClock
+                        .getEnvironmentTimeForLocalTime(time);
+                Time result = director.fireAt(container, environmentTime,
+                        microstep);
                 if (!result.equals(environmentTime)) {
-                    throw new IllegalActionException(this, 
+                    throw new IllegalActionException(this,
                             "Timing incompatibility error: "
-                            + director.getName()
-                            + " is unable to fire " + container.getName()
-                            + " at the requested time: " + time
-                            + ". It responds it will fire it at: "
-                            + result
-                            + ".");
+                                    + director.getName()
+                                    + " is unable to fire "
+                                    + container.getName()
+                                    + " at the requested time: " + time
+                                    + ". It responds it will fire it at: "
+                                    + result + ".");
                 }
                 // Translate the response from the environment into a local time.
                 return _localClock.getLocalTimeForEnvironmentTime(result);
@@ -587,7 +588,7 @@ public class Director extends Attribute implements Executable {
         }
         return _localClock.getLocalTime();
     }
-    
+
     /** Return a causality interface for the composite actor that
      *  contains this director. This base class returns an
      *  instance of {@link CausalityInterfaceForComposites}, but
@@ -614,7 +615,7 @@ public class Director extends Attribute implements Executable {
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
     }
-    
+
     /** Get current environment time.
      *  This is the current time of the enclosing executive
      *  director, if there is one, and null otherwise.
@@ -622,13 +623,13 @@ public class Director extends Attribute implements Executable {
      */
     public Time getEnvironmentTime() {
         if (getContainer() instanceof Actor) {
-            Actor container = (Actor) getContainer(); 
+            Actor container = (Actor) getContainer();
             if (container != null && container.getContainer() != null) {
                 Director executiveDirector = container.getExecutiveDirector();
                 if (executiveDirector != null) {
                     return executiveDirector.getModelTime();
                 }
-            } 
+            }
         }
         return _localClock.getLocalTime();
     }
@@ -693,7 +694,7 @@ public class Director extends Attribute implements Executable {
         }
         return getModelTime();
     }
-    
+
     /** Return the start time parameter value, if it has been explicitly
      *  set. Otherwise, return the current time of the enclosing director,
      *  if there is one, and return a Time with value 0.0 otherwise.
@@ -701,7 +702,7 @@ public class Director extends Attribute implements Executable {
      *  @throws IllegalActionException If the executive director throws it.
      */
     public final Time getModelStartTime() throws IllegalActionException {
-        
+
         // This method is final for performance reason.
         if (_startTime == null) {
             if (isEmbedded() && getContainer() instanceof Actor) {
@@ -709,11 +710,12 @@ public class Director extends Attribute implements Executable {
                 // during initialize. Is this a valid assumption? No, it's not.
                 // It is called when attributeChanged() on startTime, and also
                 // when cloning.
-                Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
+                Director executiveDirector = ((Actor) getContainer())
+                        .getExecutiveDirector();
                 if (executiveDirector != null) {
                     return executiveDirector.getModelTime();
                 } else {
-                    return _zeroTime;                    
+                    return _zeroTime;
                 }
             } else {
                 return _zeroTime;
@@ -746,7 +748,7 @@ public class Director extends Attribute implements Executable {
     public Time getModelTime() {
         return _localClock.getLocalTime();
     }
-    
+
     /** Return the next time of interest in the model being executed by
      *  this director. This method is useful for domains that perform
      *  speculative execution (such as CT).  Such a domain in a hierarchical
@@ -1083,13 +1085,13 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Director: Called prefire().");
         }
-        
+
         setModelTime(_localClock.getLocalTimeForCurrentEnvironmentTime());
-        
+
         if (_debugging) {
             _debug("-- Setting current time to " + getModelTime());
-        } 
- 
+        }
+
         return true;
     }
 
@@ -1131,9 +1133,9 @@ public class Director extends Attribute implements Executable {
         // access current time, set the start time. This is required
         // for instance in DDF.
         // The following will be repeated in initialize(). 
-        _localClock.resetLocalTime(getModelStartTime()); 
+        _localClock.resetLocalTime(getModelStartTime());
         _localClock.start();
-        
+
         // preinitialize protected variables.
         _stopRequested = false;
         _finishRequested = false;
@@ -1225,13 +1227,13 @@ public class Director extends Attribute implements Executable {
             }
         }
     }
-    
+
     /** Start or resume the actor, which means (re)start the local clock.
      *  If the clock is not stopped then this has no effect.
      *  @exception IllegalActionException If the fireAt() request throws it.
      */
-    public void resume() throws IllegalActionException { 
-        _localClock.start(); 
+    public void resume() throws IllegalActionException {
+        _localClock.start();
     }
 
     /** Specify the container.  If the specified container is an instance
@@ -1325,7 +1327,7 @@ public class Director extends Attribute implements Executable {
     public void setCurrentTime(double newTime) throws IllegalActionException {
         setModelTime(new Time(this, newTime));
     }
-    
+
     /** Set a new value to the current time of the model.
      *  @exception IllegalActionException If the new time is less than
      *   the current time returned by getCurrentTime().
@@ -1333,8 +1335,8 @@ public class Director extends Attribute implements Executable {
      *  @see #getModelTime()
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
-       _localClock.setLocalTime(newTime);
-    } 
+        _localClock.setLocalTime(newTime);
+    }
 
     /** Request that the director cease execution altogether.
      *  This causes a call to stop() on all actors contained by
@@ -1423,7 +1425,7 @@ public class Director extends Attribute implements Executable {
     public boolean supportMultirateFiring() {
         return false;
     }
-    
+
     /** Suspend the actor at the specified time. This will stop the local 
      *  clock.
      *  @exception IllegalActionException If the suspend cannot be completed.
@@ -1641,6 +1643,9 @@ public class Director extends Attribute implements Executable {
                     "Attempted to transferInputs on a port is not an opaque"
                             + "input port.");
         }
+        if (port instanceof ParameterPort) {
+            int i = 0;
+        }
 
         boolean wasTransferred = false;
 
@@ -1774,8 +1779,9 @@ public class Director extends Attribute implements Executable {
      *  @throws IllegalActionException
      *  @throws NameDuplicationException
      */
-    private void _initializeParameters() throws IllegalActionException, NameDuplicationException {
-        _localClock = new LocalClock(this, "LocalClock"); 
+    private void _initializeParameters() throws IllegalActionException,
+            NameDuplicationException {
+        _localClock = new LocalClock(this, "LocalClock");
         _localClock.setVisibility(Settable.NOT_EDITABLE);
         _zeroTime = new Time(this, 0.0);
 
@@ -1788,7 +1794,7 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Start time. */
     private transient Time _startTime;
 
