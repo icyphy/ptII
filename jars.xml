@@ -5346,6 +5346,9 @@
 	<include name="ptolemy/domains/de/demo/TimingParadox/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
+	<include name="ptolemy/domains/de/demo/Trilateration/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/de/demo/VariableDelay/*.xml"/>
       </fileset>
     </jar>
