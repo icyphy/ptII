@@ -1994,10 +1994,14 @@ creating a new demonstration.
 </li>
 
 <li> Is there a makefile in the directory that contains the
-  demonstration and does the upper level makefile in the demos
+  demonstration?
+<div class="p"><!----></div>
+<li>  Does the upper level makefile in the demos
   directory include the jar file produced in the directory?  If your
   model is demo/Foo/Foo.xml, then demo/makefile should include
-  Foo/Foo.jar in PTCLASSALLJARS.
+  Foo/Foo.jar in PTCLASSALLJARS.  In addition, the demonstration
+  directory should be added to the <code>DIRS</code> makefile variable in
+  the upper level makefile.
 <div class="p"><!----></div>
 </li>
 
@@ -2037,6 +2041,8 @@ creating a new demonstration.
 
 <li> Has the demonstration been added to
   $PTII/doc/coding/completeDemos.htm?
+  After updating completeDemos.htm,
+  cd to \$PTII/ptolemy/configs/doc and run <code>make update</code>.
 <div class="p"><!----></div>
 </li>
 
