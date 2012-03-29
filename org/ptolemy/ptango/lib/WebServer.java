@@ -27,7 +27,7 @@
 
  */
 
-package org.ptolemy.ptango;
+package org.ptolemy.ptango.lib;
 
 import javax.servlet.http.HttpServlet;
 

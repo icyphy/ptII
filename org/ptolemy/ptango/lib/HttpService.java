@@ -1,4 +1,4 @@
-package org.ptolemy.ptango;
+package org.ptolemy.ptango.lib;
 import java.io.IOException;
 import java.util.Iterator;
 
