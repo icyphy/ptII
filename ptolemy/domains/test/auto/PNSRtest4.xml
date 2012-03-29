@@ -1,0 +1,310 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PNSRtest4" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1200, 519]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[235, 159]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 57, 1421, 629}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0851442620171">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{534.078125, 253.1387109375}">
+    </property>
+    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 55.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Ivan Jeukens, Christopher Brooks">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 325.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This one I did originally for SDF, to test what&#10;happens when an output of the inner SR actor is &#10;absent. Here in PN works ok, since some actors &#10;are read blocked waiting for a token that never &#10;will come.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 10.0]">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="topologia SR" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 115.0]">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[392, 113]">
+        </property>
+        <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
+                    </property>
+                    <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 60.0">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 195.0">
+            </property>
+        </port>
+        <port name="port3" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 195.0">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 290.0">
+            </property>
+        </port>
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 195.0">
+            </property>
+        </entity>
+        <entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
+            <property name="outputType" class="ptolemy.kernel.util.StringAttribute" value="int">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="boolean" class="ptolemy.kernel.util.StringAttribute" value="boolean">
+                    </property>
+                    <property name="complex" class="ptolemy.kernel.util.StringAttribute" value="complex">
+                    </property>
+                    <property name="double" class="ptolemy.kernel.util.StringAttribute" value="double">
+                    </property>
+                    <property name="fix" class="ptolemy.kernel.util.StringAttribute" value="fix">
+                    </property>
+                    <property name="int" class="ptolemy.kernel.util.StringAttribute" value="int">
+                    </property>
+                    <property name="long" class="ptolemy.kernel.util.StringAttribute" value="long">
+                    </property>
+                    <property name="string" class="ptolemy.kernel.util.StringAttribute" value="string">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 290.0">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port3" relation="relation4"/>
+        <link port="port2" relation="relation3"/>
+        <link port="Scale.input" relation="relation"/>
+        <link port="Scale.output" relation="relation4"/>
+        <link port="Absent.output" relation="relation3"/>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1065.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 4, 6, 8, 10, 12, 14}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{630.0, 135.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{845.0, 185.0}">
+        </property>
+    </entity>
+    <entity name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{765, 185}">
+        </property>
+    </entity>
+    <entity name="TrueGate2" class="ptolemy.actor.lib.logic.TrueGate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[775.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="LogicFunction2" class="ptolemy.actor.lib.logic.LogicFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
+                </property>
+                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
+                </property>
+                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
+                </property>
+                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
+                </property>
+                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
+                </property>
+                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[945.0, 245.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[270.0, 205.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{895.0, 215.0}">
+        </vertex>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{1005.0, 245.0}">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{860.0, 275.0}">
+        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{705.0, 305.0}">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{565.0, 305.0}">
+        </vertex>
+    </relation>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="topologia SR.port" relation="relation"/>
+    <link port="topologia SR.port3" relation="relation4"/>
+    <link port="topologia SR.port2" relation="relation5"/>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.minus" relation="relation6"/>
+    <link port="AddSubtract.output" relation="relation13"/>
+    <link port="SampleDelay.input" relation="relation5"/>
+    <link port="SampleDelay.output" relation="relation6"/>
+    <link port="Stop.input" relation="relation14"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test.output" relation="relation10"/>
+    <link port="Test2.input" relation="relation"/>
+    <link port="Test2.output" relation="relation11"/>
+    <link port="Test3.input" relation="relation13"/>
+    <link port="Test3.output" relation="relation15"/>
+    <link port="TrueGate.input" relation="relation12"/>
+    <link port="TrueGate.output" relation="relation16"/>
+    <link port="LogicFunction.input" relation="relation10"/>
+    <link port="LogicFunction.input" relation="relation11"/>
+    <link port="LogicFunction.output" relation="relation12"/>
+    <link port="TrueGate2.input" relation="relation15"/>
+    <link port="TrueGate2.output" relation="relation9"/>
+    <link port="LogicFunction2.input" relation="relation16"/>
+    <link port="LogicFunction2.input" relation="relation9"/>
+    <link port="LogicFunction2.output" relation="relation14"/>
+</entity>
