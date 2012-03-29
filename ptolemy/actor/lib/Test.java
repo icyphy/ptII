@@ -133,8 +133,11 @@ public class Test extends NonStrictTest {
 
     /** Read one token from each input channel and compare against
      *  the value specified in <i>correctValues</i>. If the value
-     *  matches, then output false (to indicate that the test is not
-     *  complete yet) and return.  Otherwise, throw an exception.
+     *  does not match, then throw an exception. If the value
+     *  matches, then output false if additional inputs are
+     *  expected (to indicate that the test is not
+     *  complete yet), and output true if this is the last expected
+     *  input.
      *  If the iteration count is larger than the length of
      *  <i>correctValues</i>, then output <i>true</i> and return,
      *  indicating that the test is complete, i.e. that all
@@ -191,6 +194,8 @@ public class Test extends NonStrictTest {
             return;
         }
 
+        // If we are past the end of the expected inputs, then read
+        // and discard all inputs and output true
         if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
                 .length()) {
             if (_debugging) {
@@ -209,10 +214,6 @@ public class Test extends NonStrictTest {
                 output.send(0, new BooleanToken(true));
             }
             return;
-        }
-
-        if (output.numberOfSinks() > 0) {
-            output.send(0, new BooleanToken(false));
         }
 
         Token referenceToken = ((ArrayToken) (correctValues.getToken()))
@@ -297,6 +298,17 @@ public class Test extends NonStrictTest {
         }
 
         _numberOfInputTokensSeen++;
+        
+        if (output.numberOfSinks() > 0) {
+            if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
+                    .length()) {
+                // Seen all expected inputs.
+                output.send(0, new BooleanToken(true));
+            } else {
+                // More inputs expected.
+                output.send(0, new BooleanToken(false));
+            }
+        }
     }
 
     /** Override the base class to do nothing and return true.
