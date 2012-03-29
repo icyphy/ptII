@@ -276,7 +276,10 @@ public class Subscriber extends TypedAtomicActor {
             if (container instanceof Publisher) {
                 results.add((Publisher) container);
             } else {
+                results.addAll(_publishers(port));
                 // Handle ports in TypedComposites?
+                // FIXME: This seems wrong.  Why getRemoteReceivers()?
+                // Can't we simplify this?
                 Receiver[][] receivers = port.getRemoteReceivers();
                 if (receivers != null) {
                     for (int i = 0; i < receivers.length; i++) {
@@ -286,10 +289,7 @@ public class Subscriber extends TypedAtomicActor {
                                     IOPort remotePort = receivers[i][j]
                                             .getContainer();
                                     if (remotePort != null) {
-                                        container = remotePort.getContainer();
-                                        if (container instanceof Publisher) {
-                                            results.add((Publisher) container);
-                                        }
+                                        results.addAll(_publishers(remotePort));
                                     }
                                 }
                             }
@@ -402,5 +402,54 @@ public class Subscriber extends TypedAtomicActor {
     protected boolean _global;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         private methods                   ////
+
+    /** Return the set of all the publishers connected to a port.
+     *  This method traverses opaque composites.   
+     *  @param remotePort The port to be checked   
+     *  @return The Set of all Publishers connected to the port.
+     */
+    private Set<Publisher> _publishers(IOPort remotePort) {
+        Set<Publisher> results = new HashSet<Publisher>();
+        NamedObj container = remotePort.getContainer();
+        if (container instanceof Publisher) {
+            results.add((Publisher) container);
+        } else {
+
+            // Handle cases where the Publisher is deep inside opaque actors.
+            for( IOPort insidePort : remotePort.insideSourcePortList()) {
+                Iterator sourcePorts = insidePort.insideSourcePortList().iterator();
+                while (sourcePorts.hasNext()) {
+                    IOPort sourcePort = (IOPort)sourcePorts.next();
+                    container = sourcePort.getContainer();
+                    if (container instanceof Publisher) {
+                        results.add((Publisher) container);
+                    } else {
+                        results.addAll(_publishers(sourcePort));
+                    }
+                }
+            }
+
+            // Handle cases where the Subscriber is deep inside opaque actors.
+            Iterator remoteSourcePorts = remotePort.sourcePortList().iterator();
+            while (remoteSourcePorts.hasNext()) {
+                IOPort remoteSourcePort = (IOPort)remoteSourcePorts.next();
+                container = remoteSourcePort.getContainer();
+                if (container instanceof Publisher) {
+                    results.add((Publisher) container);
+                }
+                Iterator sourcePorts = remoteSourcePort.sourcePortList().iterator();
+                while (sourcePorts.hasNext()) {
+                    IOPort sourcePort = (IOPort)sourcePorts.next();
+                    container = sourcePort.getContainer();
+                    if (container instanceof Publisher) {
+                        results.add((Publisher) container);
+                    } else {
+                        results.addAll(_publishers(sourcePort));
+                    }
+                }
+            }
+        }
+    return results;
+    }
 }

@@ -293,6 +293,7 @@ public class Publisher extends TypedAtomicActor {
      */
     public Set<Subscriber> subscribers()
             throws IllegalActionException {
+        //System.out.println("Publisher.subscribers: start");
         // This method will be used by the gui so that the user can
         // ask which Subscribers are connected to a Publisher.
 
@@ -309,6 +310,7 @@ public class Publisher extends TypedAtomicActor {
             if (container instanceof Subscriber) {
                 results.add((Subscriber) container);
             } else {
+                results.addAll(_subscribers(port));
                 // Handle ports in TypedComposites?
                 Receiver[][] receivers = port.getRemoteReceivers();
                 if (receivers != null) {
@@ -319,10 +321,8 @@ public class Publisher extends TypedAtomicActor {
                                     IOPort remotePort = receivers[i][j]
                                             .getContainer();
                                     if (remotePort != null) {
-                                        container = remotePort.getContainer();
-                                        if (container instanceof Subscriber) {
-                                            results.add((Subscriber) container);
-                                        }
+                                        results.addAll(_subscribers(remotePort));
+                                        //System.out.println("Publisher.subscribers0: " + results);
                                     }
                                 }
                             }
@@ -331,6 +331,7 @@ public class Publisher extends TypedAtomicActor {
                 }
             }
         }
+        //System.out.println("Publisher.subscribers: end " + results);
         return results;
     }   
 
@@ -447,6 +448,62 @@ public class Publisher extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+
+    /** Return the set of all the subscribers connected to a port.
+     *  This method traverses opaque composites.   
+     *  @param remotePort The port to be checked   
+     *  @return The Set of all Subscribers connected to the port.
+     */
+    private Set<Subscriber> _subscribers(IOPort remotePort) {
+        //System.out.println("Publisher._subscribers(): " + remotePort.getFullName());
+        Set<Subscriber> results = new HashSet<Subscriber>();
+        NamedObj container = remotePort.getContainer();
+        if (container instanceof Subscriber) {
+            results.add((Subscriber) container);
+        } else {
+
+            // Handle cases where the Publisher is deep inside opaque actors.
+            Iterator insidePorts = remotePort.sinkPortList().iterator();
+            while (insidePorts.hasNext()) {
+                IOPort insidePort = (IOPort)insidePorts.next();
+                container = insidePort.getContainer();
+                if (container instanceof Subscriber) {
+                    results.add((Subscriber) container);
+                }
+                Iterator sourcePorts = insidePort.sinkPortList().iterator();
+                while (sourcePorts.hasNext()) {
+                    IOPort sourcePort = (IOPort)sourcePorts.next();
+                    container = sourcePort.getContainer();
+                    if (container instanceof Subscriber) {
+                        results.add((Subscriber) container);
+                    } else {
+                        results.addAll(_subscribers(sourcePort));
+                    }
+                }
+            }
+
+            // Handle cases where the Subscriber is deep inside opaque actors.
+            for( IOPort insidePort : remotePort.insideSourcePortList()) {
+                //System.out.println("Publisher._subscribers(): " + remotePort.getFullName() + " insidePort: " + insidePort.getFullName());
+                container = insidePort.getContainer();
+                if (container instanceof Subscriber) {
+                    results.add((Subscriber) container);
+                } 
+                Iterator sourcePorts = insidePort.deepConnectedInPortList().iterator();
+                while (sourcePorts.hasNext()) {
+                    IOPort sourcePort = (IOPort)sourcePorts.next();
+                    //System.out.println("Publisher._subscribers(): " + remotePort.getFullName() + " insidePort: " + insidePort.getFullName() + " sourcePort: " + sourcePort.getFullName());
+                    container = sourcePort.getContainer();
+                    if (container instanceof Subscriber) {
+                        results.add((Subscriber) container);
+                    } else {
+                        results.addAll(_subscribers(sourcePort));
+                    }
+                }
+            }
+        }
+        return results;
+    }
 
     /** Update the channel name of any connected Subscribers.
      *  Note that the channel name of connected Subscription Aggregators

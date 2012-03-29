@@ -410,12 +410,13 @@ test Publisher-4.2 {Channel Name Change: change the Publisher name in an Opaque 
 	$subscribers
 } {{CompositeActor.CompositeActor.Publisher channel4} {CompositeActor.Subscriber channel4} .PublisherSubscriberOpaque.CompositeActor.Subscriber}
 
-test Publisher-4.2.5 {test out subscribers() and publishers()} {
+test Publisher-4.2.5 {test out subscribers() and publishers() on an opaque} {
     # Uses 4.2 above
     list \
 	[getPublishers $model CompositeActor.Subscriber] "\n" \
-	[getSubscribers $model CompositeActor.CompositeActor.Publisher] "\n"
-} {}
+	[getSubscribers $model CompositeActor.CompositeActor.Publisher]
+} {{CompositeActor.Subscriber .PublisherSubscriberOpaque.CompositeActor.CompositeActor.Publisher} {
+} {CompositeActor.CompositeActor.Publisher .PublisherSubscriberOpaque.CompositeActor.Subscriber}}
 
 test Publisher-4.3 {Channel Name Change: change the Publisher name in an Opaque model} {
     # Run the model from 4.2
@@ -423,6 +424,46 @@ test Publisher-4.3 {Channel Name Change: change the Publisher name in an Opaque 
     $model setManager $manager 
     $manager execute
 } {}
+
+test Publisher-4.4 {test out subscribers() and publishers() on a deep opaque} {
+    set model4_4 [readModel auto/PublisherSubscriberOpaqueD3.xml]
+    list \
+	[getPublishers $model4_4 CompositeActor.Subscriber] "\n" \
+	[getSubscribers $model4_4 CompositeActor.CompositeActor.CompositeActor.CompositeActor.Publisher]
+} {{CompositeActor.Subscriber .PublisherSubscriberOpaqueD3.CompositeActor.CompositeActor.CompositeActor.CompositeActor.Publisher} {
+} {CompositeActor.CompositeActor.CompositeActor.CompositeActor.Publisher .PublisherSubscriberOpaqueD3.CompositeActor.Subscriber}}
+
+test Publisher-4.5 {test out subscribers() and publishers() on a deep opaque} {
+    set model4_5 [readModel auto/PublisherSubscriberOpaqueD3Reverse.xml]
+    list \
+	[getPublishers $model4_5 CompositeActor.CompositeActor.CompositeActor.CompositeActor.Subscriber] "\n" \
+	[getSubscribers $model4_5 CompositeActor.Publisher] 
+} {{CompositeActor.CompositeActor.CompositeActor.CompositeActor.Subscriber .PublisherSubscriberOpaqueD3Reverse.CompositeActor.Publisher} {
+} {CompositeActor.Publisher .PublisherSubscriberOpaqueD3Reverse.CompositeActor.CompositeActor.CompositeActor.CompositeActor.Subscriber}}
+
+test Publisher-4.6 {test out subscribers() and publishers() on a deep transparent} {
+    set model4_6 [readModel auto/PublisherSubscriberD3.xml]
+    list \
+	[getPublishers $model4_6 CompositeActor.Subscriber] "\n" \
+	[getSubscribers $model4_6 CompositeActor.CompositeActor.CompositeActor.CompositeActor.Publisher]
+} {{CompositeActor.Subscriber .PublisherSubscriberD3.CompositeActor.CompositeActor.CompositeActor.CompositeActor.Publisher} {
+} {CompositeActor.CompositeActor.CompositeActor.CompositeActor.Publisher .PublisherSubscriberD3.CompositeActor.Subscriber}}
+
+test Publisher-4.7 {test out subscribers() and publishers() on a deep transparent} {
+    set model4_7 [readModel auto/PublisherSubscriberD3Reverse.xml]
+    list \
+	[getPublishers $model4_7 CompositeActor.CompositeActor.CompositeActor.CompositeActor.Subscriber] "\n" \
+	[getSubscribers $model4_7 CompositeActor.Publisher]
+} {{CompositeActor.CompositeActor.CompositeActor.CompositeActor.Subscriber .PublisherSubscriberD3Reverse.CompositeActor.Publisher} {
+} {CompositeActor.Publisher .PublisherSubscriberD3Reverse.CompositeActor.CompositeActor.CompositeActor.CompositeActor.Subscriber}}
+
+test Publisher-4.8 {test out subscribers() and publishers() on a deep transparent where the Pub and the Sub are adjacent} {
+    set model4_8 [readModel auto/PublisherSubscriberAdjacent.xml]
+    list \
+	[getPublishers $model4_8 CompositeActor.CompositeActor2.CompositeActor.CompositeActor.Subscriber] "\n" \
+	[getSubscribers $model4_8 CompositeActor.CompositeActor.CompositeActor.CompositeActor.Publisher]
+} {{CompositeActor.CompositeActor2.CompositeActor.CompositeActor.Subscriber .PublisherSubscriberAdjacent.CompositeActor.CompositeActor.CompositeActor.CompositeActor.Publisher} {
+} {CompositeActor.CompositeActor.CompositeActor.CompositeActor.Publisher .PublisherSubscriberAdjacent.CompositeActor.CompositeActor2.CompositeActor.CompositeActor.Subscriber}}
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
